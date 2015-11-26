@@ -9,9 +9,11 @@ angular.module('myApp.StopPlaceListView', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceListViewCtrl', ['$scope', function($scope) {
+.controller('StopPlaceListViewCtrl', ['$scope', '$http', function($scope, $http) {
 
-	$scope.stopPlaces = [{name: "Ikea Slependen", stopPlaceType: "bus"}, {name: "Sandvika", stopPlaceType: "train"}];
-
-
+	// add error handling, do this in a service or factory for reuse. Configure it.
+    $http.get('http://localhost:1871/jersey/stop_place').
+        success(function(data) {
+            $scope.stopPlaces = data;
+        });
 }]);
