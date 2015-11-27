@@ -1,12 +1,12 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+angular.module('abzu', [
   'ngRoute',
-  'myApp.view1',
-  'myApp.StopPlaceListView',
-  'myApp.version'
+  'abzu.view1',
+  'abzu.StopPlaceListView',
+  'abzu.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.otherwise({redirectTo: '/StopPlaceListView'});
 }]);

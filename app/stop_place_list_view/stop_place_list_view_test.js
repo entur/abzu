@@ -1,14 +1,13 @@
 'use strict';
 
-describe('myApp.StopPlaceListViewCtrl module', function() {
+describe('abzu.StopPlaceListView module', function() {
 
-  beforeEach(module('myApp.StopPlaceListViewCtrl'));
+  beforeEach(module('abzu.StopPlaceListView'));
 
-  describe('StopPlaceListViewCtrl controller', function(){
-
-    it('should ....', inject(function($controller) {
-      //spec body
-      var stopPlaceListViewCtrl = $controller('StopPlaceListViewCtrl');
+  describe('StopPlaceListView controller', function() {
+  	var $scope = {};
+    it('should be defined', inject(function($controller) {
+      var stopPlaceListViewCtrl = $controller('StopPlaceListViewCtrl', { $scope: $scope });
       expect(stopPlaceListViewCtrl).toBeDefined();
     }));
 

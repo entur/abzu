@@ -32,13 +32,13 @@
       'bower_components/angular-route/angular-route.js',
       'app.js',
       'view1/view1.js',
-      'view2/view2.js',
+      'stop-place-list-view/stop-place-list-view.js',
       'components/version/version.js',
       'components/version/version-directive.js',
       'components/version/interpolate-filter.js'
     ], function() {
       // when all is done, execute bootstrap angular application
-      angular.bootstrap(document, ['myApp']);
+      angular.bootstrap(document, ['abzu']);
     });
   </script>
   <title>My AngularJS App</title>
@@ -47,7 +47,7 @@
 <body ng-cloak>
   <ul class="menu">
     <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
+    <li><a href="#/StopPlaceListView">StopPlaceListView</a></li>
   </ul>
 
   <div ng-view></div>

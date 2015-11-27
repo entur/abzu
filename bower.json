@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
-  "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
-  "license": "MIT",
+  "name": "abzu",
+  "description": "Abzu, the user interface for Tiamat",
+  "version": "0.0.1",
+  "homepage": "https://bitbucket.org/rutebanken/abzu",
+  "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "angular": "~1.4.0",
