@@ -9,11 +9,9 @@ angular.module('abzu.StopPlaceListView', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceListViewCtrl', ['$scope', '$http', function($scope, $http) {
-
-	// add error handling, do this in a service or factory for reuse. Configure it.
-    $http.get('http://localhost:1871/jersey/stop_place').
-        success(function(data) {
-            $scope.stopPlaces = data;
-        });
+.controller('StopPlaceListViewCtrl', ['$scope', 'stopPlaceService', function($scope, stopPlaceService) {
+    stopPlaceService.getStopPlaces().then(
+    	function(stopPlaces) {
+    		$scope.stopPlaces = stopPlaces
+    	});
 }]);

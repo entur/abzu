@@ -2,7 +2,10 @@
 
 describe('abzu.StopPlaceListView module', function() {
 
-  beforeEach(module('abzu.StopPlaceListView'));
+  beforeEach(function() {
+  	module('abzu.StopPlaceListView');
+  	module('abzu.service');
+  });
 
   describe('StopPlaceListView controller', function() {
   	var $scope = {};

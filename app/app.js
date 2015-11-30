@@ -5,6 +5,7 @@ angular.module('abzu', [
   'ngRoute',
   'abzu.view1',
   'abzu.StopPlaceListView',
+  'abzu.service',
   'abzu.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
