@@ -10,8 +10,22 @@ angular.module('abzu.StopPlaceList', ['ngRoute'])
 }])
 
 .controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', function($scope, stopPlaceService) {
+   
     stopPlaceService.getStopPlaces().then(
     	function(stopPlaces) {
     		$scope.stopPlaces = stopPlaces;
     	});
+
+    $scope.search = { query: "" };
+
+    $scope.change = function(){
+    	console.log("form changed");
+    	console.log($scope.search.query);
+
+    	stopPlaceService.findStopPlacesByName($scope.search.query).then(
+    		function(stopPlaces) {
+    			$scope.stopPlaces = stopPlaces;
+    	});
+  	};
+
 }]);
