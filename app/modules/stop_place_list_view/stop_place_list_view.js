@@ -4,7 +4,7 @@ angular.module('abzu.StopPlaceListView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/StopPlaceListView', {
-    templateUrl: 'stop_place_list_view/stop_place_list_view.html',
+    templateUrl: 'modules/stop_place_list_view/stop_place_list_view.html',
     controller: 'StopPlaceListViewCtrl'
   });
 }])
