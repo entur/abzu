@@ -11,8 +11,11 @@ To run the application, execute:
 Browse:
 ```http://localhost:8000/app```
 
+## Testing
+See the script section in package.json for configuration of the npm commands below.
+The test runner is https://www.npmjs.com/package/karma. Karma is configured in karma.conf.json.
 
-Run tests:
+Run unit tests:
 ```npm run test```
 
 Single run unit tests:
