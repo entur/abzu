@@ -10,3 +10,13 @@ To run the application, execute:
 
 Browse:
 ```http://localhost:8000/app```
+
+
+Run tests:
+```npm run test```
+
+Single run tests:
+```npm run test-single-run```
+
+Single run tests with PhantomJS:
+```npm run test-single-ci-run```
