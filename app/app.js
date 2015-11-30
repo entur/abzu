@@ -4,10 +4,10 @@
 angular.module('abzu', [
   'ngRoute',
   'abzu.view1',
-  'abzu.StopPlaceListView',
+  'abzu.StopPlaceList',
   'abzu.service',
   'abzu.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/StopPlaceListView'});
+  $routeProvider.otherwise({redirectTo: '/StopPlaceList'});
 }]);
