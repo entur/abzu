@@ -15,8 +15,8 @@ Browse:
 Run tests:
 ```npm run test```
 
-Single run tests:
+Single run unit tests:
 ```npm run test-single-run```
 
-Single run tests with PhantomJS:
+Single run unit tests with PhantomJS.
 ```npm run test-single-ci-run```
