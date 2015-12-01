@@ -23,3 +23,11 @@ Single run unit tests:
 
 Single run unit tests with PhantomJS.
 ```npm run test-single-ci-run```
+
+Prepare protractor
+```npm run preprotractor```
+
+Run protractor
+```npm run protractor``
+
+See https://angular.github.io/protractor
