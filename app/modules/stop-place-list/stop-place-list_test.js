@@ -13,22 +13,37 @@ describe('abzu.StopPlaceList module', function() {
       var stopPlaceListCtrl = $controller('StopPlaceListCtrl', { $scope: $scope });
       expect(stopPlaceListCtrl).toBeDefined();
     }));
-   /* 
-    it('calls the stop place service if query changed', inject(function($controller) {
+   
+    it('calls the stop place service to do a new search if query changed', inject(function($controller) {
       var $scope = {};
 
+      var findStopPlacesByNameCalled = false;
+
       var stopPlaceService = {
-        findStopPlacesByName: function() { return { then: function(query) { return {}}}},
-        getStopPlaces: function() { return { then: function() {}}}
+        findStopPlacesByName : function (name) {
+          console.log("findStopPlacesByName "+name);
+          return {
+            then : function(functionReference) {
+              console.log("findStopPlacesByName.then");
+              findStopPlacesByNameCalled = true;
+
+            }
+          }
+        },
+        getStopPlaces : function () {
+         return {
+            then : function(functionReference) {
+              return {name: "name"}
+            }
+          }
+        }
       };
 
-      spyOn(stopPlaceService, "findStopPlacesByName");
-
       var controller = $controller('StopPlaceListCtrl', { $scope: $scope, stopPlaceService: stopPlaceService });
-      $scope.name = "Slependen";
+      $scope.search.query = "Slependen";
       $scope.change();
-      expect(stopPlaceService.findStopPlacesByName).toHaveBeenCalled();
-    })); */
+      expect(findStopPlacesByNameCalled).toBe(true);
+    })); 
   });
 
 });
