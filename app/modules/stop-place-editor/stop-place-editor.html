@@ -1,0 +1,15 @@
+<h2>Edit {{ stopPlace.name }}</h2>
+
+
+Id: {{ stopPlace.id }}
+
+
+<form class="simple-form">
+
+	Name: <input type="text" ng-model="stopPlace.name" required/>
+
+    <input type="button" ng-click="reset()" value="Reset" />
+
+    <input type="submit" ng-click="update(stopPlace)" value="Save" />
+
+</form>

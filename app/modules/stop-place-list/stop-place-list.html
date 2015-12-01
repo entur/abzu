@@ -7,6 +7,6 @@
          placeholder="Filtrer på holdeplassnavn" />
 
 	<li ng-repeat="stopPlace in stopPlaces">
-		<b>{{ stopPlace.name }}</b> <small>{{ stopPlace.id }}</small>  {{ stopPlace.stopPlaceType }}
+		<b>{{ stopPlace.name }}</b> <small>{{ stopPlace.id }}</small>  {{ stopPlace.stopPlaceType }} <a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a>
 	</li>
 </ul>

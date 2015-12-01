@@ -1,9 +1,9 @@
 'use strict';
 
-describe('abzu.StopPlaceList module', function() {
+describe('abzu.stopPlaceList module', function() {
 
   beforeEach(function() {
-  	module('abzu.StopPlaceList');
+  	module('abzu.stopPlaceList');
   	module('abzu.service');
   });
 

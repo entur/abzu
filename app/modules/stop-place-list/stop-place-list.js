@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('abzu.StopPlaceList', ['ngRoute'])
+angular.module('abzu.stopPlaceList', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/StopPlaceList', {
+  $routeProvider.when('/stopPlaceList', {
     templateUrl: 'modules/stop-place-list/stop-place-list.html',
     controller: 'StopPlaceListCtrl'
   });
