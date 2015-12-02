@@ -11,10 +11,28 @@
 <hr>
 <form class="simple-form">
 
-	Name: <input type="text" ng-model="stopPlace.name" required/>
+	Navn: <input type="text" ng-model="stopPlace.name" required/>
+	Kort navn: <input type="text" ng-model="stopPlace.shortName" />
+	Beskrivelse: <input type="text" ng-model="stopPlace.description" />
+
+	Stoppestedstype:
+	 <select ng-model="stopPlace.stopPlaceType">
+	 	<option ng-repeat="stopPlaceType in stopPlaceTypes" 
+	 			value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
+	 	</option>
+	 </select>
 
     <input type="button" ng-click="reset()" value="Reset" />
 
     <input type="submit" ng-click="update(stopPlace)" value="Save" />
 
+
+    <hr>
+    
+    Stoppesteder:
+    <ul>
+    	<li ng-repeat="stopPlaceType in stopPlaceTypes">
+    		{{ stopPlaceType.name }} : <b>{{ stopPlaceType.value }}</b>
+   		 </li>
+    </ul>
 </form>

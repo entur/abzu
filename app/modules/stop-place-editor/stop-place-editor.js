@@ -9,10 +9,12 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 
-	function($window, $routeParams, $scope, stopPlaceService) {
+.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 
+	function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService) {
 
 		var stopPlaceId = $routeParams.stopPlaceId;
+
+		$scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
 
 		stopPlaceService.getStopPlace(stopPlaceId).then(function(stopPlace) {
 			$scope.stopPlace = stopPlace;

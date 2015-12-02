@@ -1,5 +1,7 @@
 'use strict';
 
+angular.module("abzu.service", []);
+
 // Declare app level module which depends on views, and components
 angular.module('abzu', [
   'ngRoute',

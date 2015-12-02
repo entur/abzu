@@ -7,12 +7,13 @@
          placeholder="Filtrer på holdeplassnavn" />
 
 <table>
-	<th>name</th><th>Id</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th>
+	<th>Navn</th><th>Id</th><th>Kortnavn</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th>
 
 	<tr ng-repeat="stopPlace in stopPlaces">
 		<td>{{ stopPlace.name }}</td>
 		<td>{{ stopPlace.id }}</td>
-		<td>{{ stopPlace.stopPlaceType }}</td>
+		<td>{{ stopPlace.shortName }}</td>
+		<td>{{ stopPlace.stopPlaceTypeName }}</td>
 		<td>{{ stopPlace.centroid.location.latitude }}</td>
 		<td>{{ stopPlace.centroid.location.longitude }}</td>
 		<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
