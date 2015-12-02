@@ -12,15 +12,18 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
 .controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService',
     function($scope, stopPlaceService, stopPlaceTypeService) {
 
-    stopPlaceService.getStopPlaces().then(
-    	function(stopPlaces) {
-    		$scope.stopPlaces = stopPlaces;
-
-            for(var i in $scope.stopPlaces) {
+    var setStopPlaceTypes = function() {
+        for(var i in $scope.stopPlaces) {
+                console.log("Populating stop place type for "+$scope.stopPlaces[i].name);
                 $scope.stopPlaces[i].stopPlaceTypeName = stopPlaceTypeService
                     .getStopPlaceTypeNameFromValue($scope.stopPlaces[i].stopPlaceType);
             }
+    };
 
+    stopPlaceService.getStopPlaces().then(
+    	function(stopPlaces) {
+    		$scope.stopPlaces = stopPlaces;
+            setStopPlaceTypes();
         });
 
     $scope.search = { query: "" };
@@ -29,6 +32,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     	stopPlaceService.findStopPlacesByName($scope.search.query).then(
     		function(stopPlaces) {
     			$scope.stopPlaces = stopPlaces;
+                setStopPlaceTypes();
     	});
   	};
 }]);
