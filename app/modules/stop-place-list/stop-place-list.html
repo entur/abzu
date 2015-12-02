@@ -6,13 +6,17 @@
          ng-model-options="{ debounce: 600 }"
          placeholder="Filtrer på holdeplassnavn" />
 
-	<li ng-repeat="stopPlace in stopPlaces">
-		<b>{{ stopPlace.name }}</b>
-		<b>id:</b> <small>{{ stopPlace.id }}</small> 
-		<b>type:</b> {{ stopPlace.stopPlaceType }}
-		<b>latitude:</b> {{ stopPlace.centroid.location.latitude }}
-		<b>longitude:</b> {{ stopPlace.centroid.location.longitude }}
+<table>
+	<th>name</th><th>Id</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th>
 
-		<a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a>
-	</li>
-</ul>
+	<tr ng-repeat="stopPlace in stopPlaces">
+		<td>{{ stopPlace.name }}</td>
+		<td>{{ stopPlace.id }}</td>
+		<td>{{ stopPlace.stopPlaceType }}</td>
+		<td>{{ stopPlace.centroid.location.latitude }}</td>
+		<td>{{ stopPlace.centroid.location.longitude }}</td>
+		<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
+	</tr>
+
+</table>
+
