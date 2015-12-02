@@ -10,6 +10,8 @@
     "angular-route": "~1.4.0",
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
-    "html5-boilerplate": "~5.2.0"
+    "html5-boilerplate": "~5.2.0",
+    "leaflet": "leaflet-dist#~0.7.2",
+    "angular-leaflet-directive": "^0.10.0" 
   }
 }

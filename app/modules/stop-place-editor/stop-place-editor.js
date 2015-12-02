@@ -22,6 +22,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 			$scope.master = angular.copy($scope.stopPlace);
 		});
 
+		angular.extend($scope, {
+            scrollWheelZoom: false
+
+		});
+
 		$scope.update = function(stopPlace) {
         	$scope.master = angular.copy(stopPlace);
         	stopPlaceService.saveStopPlace($scope.stopPlace).then(function() {
