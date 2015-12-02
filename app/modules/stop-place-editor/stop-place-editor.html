@@ -1,9 +1,14 @@
 <h2>Edit {{ stopPlace.name }}</h2>
 
+<table>
+	<tr><td>Id:</td><td>{{ stopPlace.id }}</td></tr>
+	<tr><td>type:</td><td>{{ stopPlace.stopPlaceType }}</td></tr>
+	<tr><td>latitude:</td><td>{{ stopPlace.centroid.location.latitude }}</td></tr>
+	<tr><td>longitude:</td><td>{{ stopPlace.centroid.location.longitude }}</td></tr>
 
-Id: {{ stopPlace.id }}
+</table>
 
-
+<hr>
 <form class="simple-form">
 
 	Name: <input type="text" ng-model="stopPlace.name" required/>
