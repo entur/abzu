@@ -5,7 +5,7 @@ angular.module("abzu.service", []);
 // Declare app level module which depends on views, and components
 angular.module('abzu', [
   'ngRoute',
-  'leaflet-directive',
+  'ui-leaflet',
   'abzu.stopPlaceEditor',
   'abzu.stopPlaceList',
   'abzu.service',
