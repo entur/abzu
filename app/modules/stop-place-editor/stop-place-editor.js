@@ -28,6 +28,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		stopPlaceService.getStopPlace(stopPlaceId).then(function(stopPlace) {
 			$scope.stopPlace = stopPlace;
+			$scope.master = angular.copy($scope.stopPlace);
 
 			var latitude = parseFloat($scope.stopPlace.centroid.location.latitude);
 			var longitude = parseFloat($scope.stopPlace.centroid.location.longitude);
@@ -48,7 +49,12 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 				}
 			};
 
-			$scope.master = angular.copy($scope.stopPlace);
+            $scope.$on("leafletDirectiveMarker.dragend", function(event, args){
+                $scope.stopPlace.centroid.location.latitude = args.model.lat.toString();
+                $scope.stopPlace.centroid.location.longitude = args.model.lng.toString();
+            });
+
+
 		});
 
 		$scope.update = function(stopPlace) {
