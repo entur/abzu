@@ -14,19 +14,13 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		var stopPlaceId = $routeParams.stopPlaceId;
 
-		var round = function(number) {
-			var result = Math.ceil(number*100)/100;
-			console.log("Rounded "+number+" to "+ result);
-			return result;
-		};
-
 		$scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
 
 		stopPlaceService.getStopPlace(stopPlaceId).then(function(stopPlace) {
 			$scope.stopPlace = stopPlace;
 
-			var latitude = round($scope.stopPlace.centroid.location.latitude);
-			var longitude = round($scope.stopPlace.centroid.location.longitude);
+			var latitude = parseFloat($scope.stopPlace.centroid.location.latitude);
+			var longitude = parseFloat($scope.stopPlace.centroid.location.longitude);
 
 
 			$scope.center.lat = latitude;
@@ -42,8 +36,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		});
 
-
-
 		angular.extend($scope, {
 			center: {
 	            lat: 59.91,
@@ -54,7 +46,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	            mainMarker: {
 	                lat: 59.91,
 	                lng: 10.75,
-	                message: "I want to travel here!",
+	                message: "No yet fetched",
 	                focus: true,
 	                draggable: false
 	            }
