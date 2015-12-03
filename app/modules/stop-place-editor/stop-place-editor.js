@@ -16,44 +16,41 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		$scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
 
+		// Before stop place is loaded
+		angular.extend($scope, {
+            center: {
+                lat: 0,
+                lng: 0,
+                zoom: 2
+            }
+        });
+
+
 		stopPlaceService.getStopPlace(stopPlaceId).then(function(stopPlace) {
 			$scope.stopPlace = stopPlace;
 
 			var latitude = parseFloat($scope.stopPlace.centroid.location.latitude);
 			var longitude = parseFloat($scope.stopPlace.centroid.location.longitude);
 
+			$scope.center = {
+				lat: latitude,
+				lng: longitude,
+				zoom: 15
+			};
 
-			$scope.center.lat = latitude;
-			$scope.center.lng = longitude;
-			$scope.markers.mainMarker.lat = latitude
-			$scope.markers.mainMarker.lng = longitude;
-			$scope.markers.mainMarker.message = $scope.stopPlace.name;
-			
-			console.log($scope.center);
-			console.log($scope.markers.mainMarker);
+			$scope.markers = {
+				mainMarker: {
+					lat: latitude,
+					lng: longitude,
+					message: $scope.stopPlace.name,
+					focus: true,
+		            draggable: true
+				}
+			};
 
 			$scope.master = angular.copy($scope.stopPlace);
-
 		});
 
-		angular.extend($scope, {
-			center: {
-	            lat: 59.91,
-	            lng: 10.75,
-	            zoom: 12
-	        },
-	        markers: {
-	            mainMarker: {
-	                lat: 59.91,
-	                lng: 10.75,
-	                message: "No yet fetched",
-	                focus: true,
-	                draggable: false
-	            }
-	        },
-            scrollWheelZoom: false
-
-		});
 		$scope.update = function(stopPlace) {
         	$scope.master = angular.copy(stopPlace);
         	stopPlaceService.saveStopPlace($scope.stopPlace).then(function() {

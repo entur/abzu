@@ -11,7 +11,7 @@
 <hr>
 <form class="simple-form">
 
-	Navn: <input type="text" ng-model="stopPlace.name" required/>
+	Navn: <input type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
 	Kort navn: <input type="text" ng-model="stopPlace.shortName" />
 	Beskrivelse: <input type="text" ng-model="stopPlace.description" />
 
