@@ -53,8 +53,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
                 $scope.stopPlace.centroid.location.latitude = args.model.lat.toString();
                 $scope.stopPlace.centroid.location.longitude = args.model.lng.toString();
             });
-
-
 		});
 
 		$scope.update = function(stopPlace) {

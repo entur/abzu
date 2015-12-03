@@ -9,8 +9,10 @@ describe('abzu.stopPlaceList module', function() {
 
   describe('StopPlaceList controller', function() {
   	var $scope = {};
+    var leafletData = {};
+
     it('should be defined', inject(function($controller) {
-      var stopPlaceListCtrl = $controller('StopPlaceListCtrl', { $scope: $scope });
+      var stopPlaceListCtrl = $controller('StopPlaceListCtrl', { $scope: $scope, leafletData: leafletData });
       expect(stopPlaceListCtrl).toBeDefined();
     }));
    
@@ -39,7 +41,8 @@ describe('abzu.stopPlaceList module', function() {
         }
       };
 
-      var controller = $controller('StopPlaceListCtrl', { $scope: $scope, stopPlaceService: stopPlaceService });
+
+      var controller = $controller('StopPlaceListCtrl', { $scope: $scope, stopPlaceService: stopPlaceService, leafletData: leafletData });
       $scope.search.query = "Slependen";
       $scope.change();
       expect(findStopPlacesByNameCalled).toBe(true);

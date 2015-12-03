@@ -9,30 +9,63 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService',
-    function($scope, stopPlaceService, stopPlaceTypeService) {
-
-    var setStopPlaceTypes = function() {
-        for(var i in $scope.stopPlaces) {
-                console.log("Populating stop place type for "+$scope.stopPlaces[i].name);
-                $scope.stopPlaces[i].stopPlaceTypeName = stopPlaceTypeService
-                    .getStopPlaceTypeNameFromValue($scope.stopPlaces[i].stopPlaceType);
-            }
-    };
-
-    stopPlaceService.getStopPlaces().then(
-    	function(stopPlaces) {
-    		$scope.stopPlaces = stopPlaces;
-            setStopPlaceTypes();
-        });
+.controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData',
+    function($scope, stopPlaceService, stopPlaceTypeService, leafletData) {
 
     $scope.search = { query: "" };
+
+    angular.extend($scope, {
+        center: {
+          autodiscover: true
+        }
+    });
+
+    stopPlaceService.getStopPlaces().then(
+    function(stopPlaces) {
+        $scope.stopPlaces = stopPlaces;
+        updateScope();
+    });
+
+    var updateScope = function() {
+        $scope.markers = {};
+        var bounds = [];
+        var markers = {};
+        for(var i in $scope.stopPlaces) {
+
+            var stopPlace = $scope.stopPlaces[i];
+            console.log("Populating stop place type for "+stopPlace.name);
+            stopPlace.stopPlaceTypeName = stopPlaceTypeService
+                .getStopPlaceTypeNameFromValue(stopPlace.stopPlaceType);
+
+            var latitude = parseFloat(stopPlace.centroid.location.latitude);
+            var longitude = parseFloat(stopPlace.centroid.location.longitude);
+
+            var key = stopPlace.name.replace(/[^a-zA-Z]+/g, '')+i;
+            markers[key] = {
+                group: "stops",
+                lat: latitude,
+                lng: longitude,
+                message: stopPlace.name,
+                draggable: false
+            };
+
+            bounds.push([latitude, longitude]);
+        }
+
+        leafletData.getMap().then(function(map) {
+            $scope.markers = markers;
+            console.log($scope.markers);
+
+            map.fitBounds(bounds);
+        });
+
+    };
 
     $scope.change = function(){
     	stopPlaceService.findStopPlacesByName($scope.search.query).then(
     		function(stopPlaces) {
     			$scope.stopPlaces = stopPlaces;
-                setStopPlaceTypes();
+                updateScope();
     	});
   	};
 }]);

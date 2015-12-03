@@ -26,14 +26,6 @@
 
     <input type="submit" ng-click="update(stopPlace)" value="Save" />
 
-    <leaflet markers="markers" center="center" height="480px" width="640px"></leaflet>
+    <leaflet markers="markers" center="center" height="300px" width="640px"></leaflet>
 
-    <hr>
-    
-    Stoppesteder:
-    <ul>
-    	<li ng-repeat="stopPlaceType in stopPlaceTypes">
-    		{{ stopPlaceType.name }} : <b>{{ stopPlaceType.value }}</b>
-   		 </li>
-    </ul>
 </form>
