@@ -20,7 +20,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         },
         events: {
             map: {
-                enable: [rr],
+                enable: [],
                 logic: 'emit'
             }
         }
