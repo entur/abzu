@@ -1,7 +1,7 @@
 <h1>Holdeplasser</h1>
 
-<input type="text" 
-         ng-model="search.query" 
+<input type="text"
+         ng-model="search.query"
          ng-change="change()"
          ng-model-options="{ debounce: 600 }"
          placeholder="Filtrer på holdeplassnavn" />
@@ -19,8 +19,7 @@
 		<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
 	</tr>
 
-    <leaflet markers="markers" event-broadcast="events" height="250px" width="800px"></leaflet>
 
 
 </table>
-
+<leaflet markers="markers" event-broadcast="events" height="250px" width="800px"></leaflet>
