@@ -27,7 +27,7 @@ var logout = function(){
     window.location = auth.logoutUrl;
 };
 
-module.run(function ($http) {
+module.config(function () {
 	console.log("Setting up keycloak")
     var keycloakAuth = new Keycloak('keycloak.json');
     auth.loggedIn = false;
