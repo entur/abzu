@@ -6,20 +6,20 @@
          ng-model-options="{ debounce: 600 }"
          placeholder="Filtrer på holdeplassnavn" />
 
-<table border="1">
-	<th>Navn</th><th>Id</th><th>Kortnavn</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th>
+<table class="u-full-width">
+	<thead><th>Navn</th><th>Id</th><th>Kortnavn</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th></thead>
 
-	<tr ng-repeat="stopPlace in stopPlaces">
-		<td>{{ stopPlace.name }}</td>
-		<td>{{ stopPlace.id }}</td>
-		<td>{{ stopPlace.shortName }}</td>
-		<td>{{ stopPlace.stopPlaceTypeName }}</td>
-		<td>{{ stopPlace.centroid.location.latitude }}</td>
-		<td>{{ stopPlace.centroid.location.longitude }}</td>
-		<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
-	</tr>
-
-
-
+	<tbody>
+		<tr ng-repeat="stopPlace in stopPlaces">
+			<td>{{ stopPlace.name }}</td>
+			<td>{{ stopPlace.id }}</td>
+			<td>{{ stopPlace.shortName }}</td>
+			<td>{{ stopPlace.stopPlaceTypeName }}</td>
+			<td>{{ stopPlace.centroid.location.latitude }}</td>
+			<td>{{ stopPlace.centroid.location.longitude }}</td>
+			<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
+		</tr>
+	</tbody>
 </table>
+
 <leaflet markers="markers" event-broadcast="events" height="250px" width="800px"></leaflet>
