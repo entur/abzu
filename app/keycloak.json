@@ -6,5 +6,6 @@
   "resource": "holdeplassregister_ui",
   "credentials": {
     "secret": "713d9c74-5cd2-4149-b2ee-7a05807c38bc"
-  }
+  },
+  "enable-cors": true
 }
