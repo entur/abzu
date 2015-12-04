@@ -1,30 +1,38 @@
-<h2>Edit {{ stopPlace.name }}</h2>
+<h2>Rediger stoppested: {{ stopPlace.name }}</h2>
 
 <table>
 	<tr><td>Id:</td><td>{{ stopPlace.id }}</td></tr>
-	<tr><td>type:</td><td>{{ stopPlace.stopPlaceType }}</td></tr>
-	<tr><td>latitude:</td><td>{{ stopPlace.centroid.location.latitude }}</td></tr>
-	<tr><td>longitude:</td><td>{{ stopPlace.centroid.location.longitude }}</td></tr>
-
+	<tr><td>Stoppestedstype:</td><td>{{ stopPlace.stopPlaceType }}</td></tr>
+	<tr><td>Latitude:</td><td>{{ stopPlace.centroid.location.latitude }}</td></tr>
+	<tr><td>Longitude:</td><td>{{ stopPlace.centroid.location.longitude }}</td></tr>
 </table>
 
 <hr>
 <form class="simple-form">
+	<fieldset>
+		Navn: <input type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
+	</fieldset>
 
-	Navn: <input type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
-	Kort navn: <input type="text" ng-model="stopPlace.shortName" />
-	Beskrivelse: <input type="text" ng-model="stopPlace.description" />
+	<fieldset>
+		Kort navn: <input type="text" ng-model="stopPlace.shortName" />
+	</fieldset>
+	
+	<fieldset>
+		Beskrivelse: <input type="text" ng-model="stopPlace.description" />
+	</fieldset>
 
+	<fieldset>
 	Stoppestedstype:
 	 <select ng-model="stopPlace.stopPlaceType">
 	 	<option ng-repeat="stopPlaceType in stopPlaceTypes" 
 	 			value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
 	 	</option>
 	 </select>
+	</fieldset>
 
-    <input type="button" ng-click="reset()" value="Reset" />
+    <input type="button" ng-click="reset()" value="Gjenopprett" />
 
-    <input type="submit" ng-click="update(stopPlace)" value="Save" />
+    <input type="submit" ng-click="update(stopPlace)" value="Lagre" />
 
     <leaflet markers="markers" center="center" height="300px" width="640px"></leaflet>
 

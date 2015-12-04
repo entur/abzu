@@ -17,6 +17,12 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     angular.extend($scope, {
         center: {
           autodiscover: true
+        },
+        events: {
+            map: {
+                enable: [rr],
+                logic: 'emit'
+            }
         }
     });
 
@@ -33,7 +39,6 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         for(var i in $scope.stopPlaces) {
 
             var stopPlace = $scope.stopPlaces[i];
-            console.log("Populating stop place type for "+stopPlace.name);
             stopPlace.stopPlaceTypeName = stopPlaceTypeService
                 .getStopPlaceTypeNameFromValue(stopPlace.stopPlaceType);
 
@@ -45,20 +50,21 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
                 group: "stops",
                 lat: latitude,
                 lng: longitude,
-                message: stopPlace.name,
-                draggable: false
+                message: "<a href='#/stopPlaceEditor/"+stopPlace.id+"'>"+stopPlace.name+"</a>",
+                draggable: false,
+                clickable: true,
+                riseOnHover: true
             };
 
             bounds.push([latitude, longitude]);
         }
 
         leafletData.getMap().then(function(map) {
+            console.log("leafletData.getMap");
             $scope.markers = markers;
             console.log($scope.markers);
-
             map.fitBounds(bounds);
         });
-
     };
 
     $scope.change = function(){
