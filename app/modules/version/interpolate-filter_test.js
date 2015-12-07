@@ -1,10 +1,10 @@
 'use strict';
 
 describe('abzu.version module', function() {
-  beforeEach(module('abzu.version'));
+  beforeEach(angular.mock.module('abzu.version'));
 
   describe('interpolate filter', function() {
-    beforeEach(module(function($provide) {
+    beforeEach(angular.mock.module(function($provide) {
       $provide.value('version', 'TEST_VER');
     }));
 

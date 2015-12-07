@@ -3,8 +3,8 @@
 describe('abzu.stopPlaceList module', function() {
 
   beforeEach(function() {
-  	module('abzu.stopPlaceList');
-  	module('abzu.service');
+  	angular.mock.module('abzu.stopPlaceList');
+  	angular.mock.module('abzu.service');
   });
 
   describe('StopPlaceList controller', function() {

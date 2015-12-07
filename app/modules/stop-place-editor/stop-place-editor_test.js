@@ -3,8 +3,8 @@
 describe('abzu.stopPlaceEditor module', function() {
 
   beforeEach(function() {
-  	module('abzu.stopPlaceEditor');
-  	module('abzu.service');
+  	angular.mock.module('abzu.stopPlaceEditor');
+  	angular.mock.module('abzu.service');
   });
 
   describe('stopPlaceEditor controller', function(){

@@ -1,11 +1,11 @@
 'use strict';
 
 describe('abzu.version module', function() {
-  beforeEach(module('abzu.version'));
+  beforeEach(angular.mock.module('abzu.version'));
 
   describe('app-version directive', function() {
     it('should print current version', function() {
-      module(function($provide) {
+      angular.mock.module(function($provide) {
         $provide.value('version', 'TEST_VER');
       });
       inject(function($compile, $rootScope) {

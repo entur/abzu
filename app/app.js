@@ -22,6 +22,7 @@ module.config(['$routeProvider', function($routeProvider) {
 angular.element(document).ready(function () {
 
 	console.log("Setting up keycloak");
+	console.log(Keycloak);
     var keycloakAuth = new Keycloak('keycloak.json');
     keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
     	console.log("Keycloak init success");

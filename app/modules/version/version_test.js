@@ -1,7 +1,7 @@
 'use strict';
 
 describe('abzu.version module', function() {
-  beforeEach(module('abzu.version'));
+  beforeEach(angular.mock.module('abzu.version'));
 
   describe('version service', function() {
     it('should return current version', inject(function(version) {
