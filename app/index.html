@@ -19,10 +19,10 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
-  <ul class="menu">
-    <li><a href="#/stopPlaceList">stopPlaceList</a></li>
-  </ul>
-
+  <!-- Top bar configured directly -->
+  <div ng-controller="TopBarCtrl" ng-include=" 'modules/top-bar/top-bar.html' "></div>
+  
+  <!-- Most views will be here, thanks to $routeProvider -->
   <div ng-view></div>
 
   <div>Abzu: v<span app-version></span></div>
@@ -48,6 +48,8 @@
 
   <script src="modules/stop-place-editor/stop-place-editor.js"></script>
   <script src="modules/stop-place-list/stop-place-list.js"></script>
+  <script src="modules/top-bar/top-bar.js"></script>
+
   <script src="modules/version/version.js"></script>
   <script src="modules/version/version-directive.js"></script>
   <script src="modules/version/interpolate-filter.js"></script>

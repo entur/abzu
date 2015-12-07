@@ -1,7 +1,6 @@
 'use strict';
 
-
-angular.module("abzu.service", []);
+angular.module('abzu.service', []);
 
 // Declare app level module which depends on views, and components
 var module = angular.module('abzu', [
@@ -10,6 +9,7 @@ var module = angular.module('abzu', [
   'abzu.stopPlaceEditor',
   'abzu.stopPlaceList',
   'abzu.service',
+  'abzu.topBar',
   'abzu.version'
 ]);
 
