@@ -2,7 +2,11 @@
 
 angular.module("abzu.service").factory('stopPlaceService', ['$http', function($http) {
 
+	console.log("Setting up stopPlaceService");
+
 	function getStopPlaces() {
+				console.log("get stop places");
+
 		return $http.get('http://localhost:1871/jersey/stop_place').
         	then(function(data) {
 				return data.data; 

@@ -11,7 +11,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
 
 .controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData',
     function($scope, stopPlaceService, stopPlaceTypeService, leafletData) {
-
+console.log("stop place list controller");
     $scope.search = { query: "" };
 
     angular.extend($scope, {

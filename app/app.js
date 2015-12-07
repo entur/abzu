@@ -18,47 +18,43 @@ module.config(['$routeProvider', function($routeProvider) {
  	$routeProvider.otherwise({redirectTo: '/stopPlaceList'});
 }]);
 
-console.log("Creating auth object");
-var auth = {};
-var logout = function(){
-    console.log('*** LOGOUT');
-    auth.loggedIn = false;
-    auth.authz = null;
-    window.location = auth.logoutUrl;
-};
+// Set up keycloak and the Auth service.
+angular.element(document).ready(function () {
 
-module.config(function () {
-	console.log("Setting up keycloak")
+	console.log("Setting up keycloak");
     var keycloakAuth = new Keycloak('keycloak.json');
-    auth.loggedIn = false;
-
     keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
-        auth.loggedIn = true;
-        auth.authz = keycloakAuth;
-        auth.logoutUrl = keycloakAuth.authServerUrl + "/realms/demo/tokens/logout?redirect_uri=/angular-product/index.html";
-        console.log("create factory Auth");
+    	console.log("Keycloak init success");
         module.factory('Auth', function() {
-            return auth;
+            var Auth = {};
+
+            Auth.logout = function() {
+                keycloakAuth.logout();
+            }
+
+            Auth.getIdentity = function() {
+                return keycloakAuth.idTokenParsed;
+            }
+
+            Auth.getToken = function() {
+                return keycloakAuth.token;
+            }
+
+            Auth.updateToken = function(seconds) {
+            	return keycloakAuth.updateToken(seconds);
+            }
+
+            return Auth;
         });
-    //    angular.bootstrap(document, ["product"]);
 
-
-    }).error(function () {
-    	console.log("Error from keycloakAuth.init");
-        //If error in the app, this will cause endless redirect: window.location.reload();
-    });
-});
-
-// Registering the authInterceptor must run after Auth is available.
-module.run(function() {
-	module.factory('authInterceptor', ["$q", "Auth", function($q, Auth) {
-	    return {
-	        'request': function (config) {
+        module.factory('authInterceptor', ["$q", "Auth", function($q, Auth) {
+       	    function request(config) {
+	        	console.log("request");
 	            var deferred = $q.defer();
-	            if (Auth.authz.token) {
-	                Auth.authz.updateToken(5).success(function() {
+	            if (Auth.getToken()) {
+	                Auth.updateToken(5).success(function() {
 	                    config.headers = config.headers || {};
-	                    config.headers.Authorization = 'Bearer ' + Auth.authz.token;
+	                    config.headers.Authorization = 'Bearer ' + Auth.getToken();
 
 	                    deferred.resolve(config);
 	                }).error(function() {
@@ -66,29 +62,35 @@ module.run(function() {
 	                });
 	            }
 	            return deferred.promise;
-	        },
-	        'requestError': function(response) {
-	    		if (response.status == 401) {
-	                console.log('session timeout?');
-	                logout();
-	            } else if (response.status == 403) {
-	                alert("Forbidden");
-	            } else if (response.status == 404) {
-	                alert("Not found");
-	            } else if (response.status) {
-	                if (response.data && response.data.errorMessage) {
-	                    alert(response.data.errorMessage);
-	                } else {
-	                    alert("An unexpected server error has occurred");
-	                }
+	        };
+
+	        function requestError(response) {
+	        	console.log("Request error ")
+	        	console.log(response);
+				if (response.status == 401) {
+	                console.log("Got 401. logout.")
+	                console.log(response);
+	                Auth.logout();
 	            }
 	            return $q.reject(response);
-	        }
-	    };
-	}]);
+       		 };
 
-	module.config(['$httpProvider', function($httpProvider) {
-		console.log("Setting up httpProvider provider");
-    	$httpProvider.interceptors.push('authInterceptor');
-	}]);
+		    return {
+		        request: request,
+		        requestError: requestError
+		    };
+        }]);
+
+		module.config(function($httpProvider) {
+			console.log("Setting up httpProvider with the authInterceptor");
+    		$httpProvider.interceptors.push('authInterceptor');
+		});
+
+		console.log("Calling angular bootstrap");
+		angular.bootstrap(document, ['abzu']);
+
+    }).error(function () {
+        //window.location.reload();
+        console.log("ERROR setting up keycloak");
+    });
 });
