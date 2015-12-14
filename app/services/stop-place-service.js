@@ -5,9 +5,16 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', function($h
 	console.log("Setting up stopPlaceService");
 
 	function getStopPlaces() {
-				console.log("get stop places");
-
 		return $http.get('http://localhost:1871/jersey/stop_place').
+        	then(function(data) {
+				return data.data; 
+        	});
+	};
+
+
+
+	function getStopPlacesWithin(boundingBox) {
+		return $http.post('http://localhost:1871/jersey/stop_place/search', boundingBox).
         	then(function(data) {
 				return data.data; 
         	});
@@ -40,6 +47,7 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', function($h
 	return {
 		getStopPlaces: getStopPlaces,
 		findStopPlacesByName: findStopPlacesByName,
+		getStopPlacesWithin: getStopPlacesWithin,
 		getStopPlace: getStopPlace,
 		saveStopPlace: saveStopPlace
 	}

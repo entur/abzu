@@ -22,7 +22,6 @@ module.config(['$routeProvider', function($routeProvider) {
 angular.element(document).ready(function () {
 
 	console.log("Setting up keycloak");
-	console.log(Keycloak);
     var keycloakAuth = new Keycloak('keycloak.json');
     keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
     	console.log("Keycloak init success");
@@ -50,7 +49,7 @@ angular.element(document).ready(function () {
 
         module.factory('authInterceptor', ["$q", "Auth", function($q, Auth) {
        	    function request(config) {
-	        	console.log("request");
+	        	  console.log("request");
 	            var deferred = $q.defer();
 	            if (Auth.getToken()) {
 	                Auth.updateToken(5).success(function() {
@@ -68,7 +67,7 @@ angular.element(document).ready(function () {
 	        function requestError(response) {
 	        	console.log("Request error ")
 	        	console.log(response);
-				if (response.status == 401) {
+		    		if (response.status == 401) {
 	                console.log("Got 401. logout.")
 	                console.log(response);
 	                Auth.logout();
