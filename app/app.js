@@ -75,10 +75,10 @@ angular.element(document).ready(function () {
 	            return $q.reject(response);
        		 };
 
-		    return {
-		        request: request,
-		        requestError: requestError
-		    };
+    		  return {
+            request: request,
+            requestError: requestError
+    		  };
         }]);
 
 		module.config(function($httpProvider) {
