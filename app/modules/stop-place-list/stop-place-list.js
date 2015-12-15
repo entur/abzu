@@ -11,7 +11,6 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
 
 .controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData',
     function($scope, stopPlaceService, stopPlaceTypeService, leafletData) {
-console.log("stop place list controller");
     $scope.search = { query: "" };
 
     angular.extend($scope, {
@@ -60,10 +59,10 @@ console.log("stop place list controller");
         }
 
         leafletData.getMap().then(function(map) {
-            console.log("leafletData.getMap");
             $scope.markers = markers;
-            console.log($scope.markers);
-            map.fitBounds(bounds);
+            if(Object.keys($scope.markers).length > 0) {
+                map.fitBounds(bounds);
+            }
         });
     };
 

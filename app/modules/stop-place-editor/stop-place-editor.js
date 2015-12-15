@@ -21,9 +21,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
             center: {
                 lat: 0,
                 lng: 0
-            },
-            defaults: {
-          	   
             }
         });
 
@@ -50,7 +47,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 			$scope.center = {
 				lat: latitude,
 				lng: longitude,
-				zoom: 15
+				zoom: 17
 			};
 
 			$scope.markers = {
@@ -65,8 +62,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 			$scope.originalMarker = angular.copy($scope.markers);
 
-
-
             $scope.$on("leafletDirectiveMarker.dragend", function(event, args){
                 $scope.stopPlace.centroid.location.latitude = args.model.lat.toString();
                 $scope.stopPlace.centroid.location.longitude = args.model.lng.toString();
@@ -74,11 +69,9 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
             leafletData.getMap().then(function(map) {
 	            map.on('moveend', function() { 
-					stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
+	            	stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
 				});
-
 				stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
-
 	        });
         };
 
@@ -97,7 +90,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	    var populateNearbyMarkers = function(stopPlacesWithinBoundingBox) {
 			console.log("Got " + stopPlacesWithinBoundingBox.length +" stop places from current bounding box");
 
-
 			$scope.markers = angular.copy($scope.originalMarker);
 	
 			for(var i in stopPlacesWithinBoundingBox) {
@@ -112,7 +104,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 				}
 
 	            $scope.markers[key] = {
-	                group: "stops",
 	                lat: relatedStopPlace.centroid.location.latitude,
 	                lng: relatedStopPlace.centroid.location.longitude,
 	                message: "<a href='#/stopPlaceEditor/"+relatedStopPlace.id+"'>"+relatedStopPlace.name+"</a>",
@@ -125,6 +116,5 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 		};
 
 		stopPlaceService.getStopPlace(stopPlaceId).then(populateStopPlace);
-     
 	}
 ]);
