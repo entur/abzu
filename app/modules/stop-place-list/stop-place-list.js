@@ -13,6 +13,19 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     function($scope, stopPlaceService, stopPlaceTypeService, leafletData) {
     $scope.search = { query: "" };
 
+    $scope.definedLayers = {
+        local_map: {
+            name: 'Tessera tiles',
+            url: 'http://localhost:8088/hsl-map/{z}/{x}/{y}.png',
+            type: 'xyz'
+        },
+        osm: {
+            name: 'OpenStreetMap',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            type: 'xyz'
+        }
+    };
+
     angular.extend($scope, {
         center: {
           autodiscover: true
@@ -22,8 +35,23 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
                 enable: [],
                 logic: 'emit'
             }
+        },
+        layers: {
+            baselayers: {
+                osm: $scope.definedLayers.osm,
+                local_map: $scope.definedLayers.local_map
+            }
         }
     });
+
+    $scope.toggleLayer = function(layerName) {
+        var baselayers = $scope.layers.baselayers;
+        if (baselayers.hasOwnProperty(layerName)) {
+            delete baselayers[layerName];
+        } else {
+            baselayers[layerName] = $scope.definedLayers[layerName];
+        }
+    };
 
     stopPlaceService.getStopPlaces().then(
     function(stopPlaces) {
