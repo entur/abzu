@@ -12,17 +12,40 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 .controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData',
 	function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData) {
 
-		var stopPlaceId = $routeParams.stopPlaceId;
+        $scope.definedLayers = {
+            local_map: {
+                name: 'Tessera tiles',
+                url: 'http://localhost:8088/hsl-map/{z}/{x}/{y}.png',
+                type: 'xyz'
+            },
+            osm: {
+                name: 'OpenStreetMap',
+                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                type: 'xyz'
+            }
+        };
 
-		$scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
-
-		// Before stop place is loaded
 		angular.extend($scope, {
             center: {
                 lat: 0,
                 lng: 0
+            },
+            layers: {
+                baselayers: {
+                    osm: $scope.definedLayers.osm,
+                    local_map: $scope.definedLayers.local_map
+                }
             }
         });
+
+	    $scope.toggleLayer = function(layerName) {
+            var baselayers = $scope.layers.baselayers;
+            if (baselayers.hasOwnProperty(layerName)) {
+                delete baselayers[layerName];
+            } else {
+                baselayers[layerName] = $scope.definedLayers[layerName];
+            }
+	    };
 
 
 		$scope.update = function(stopPlace) {
@@ -115,6 +138,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		};
 
+		var stopPlaceId = $routeParams.stopPlaceId;
 		stopPlaceService.getStopPlace(stopPlaceId).then(populateStopPlace);
 	}
 ]);
