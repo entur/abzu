@@ -9,16 +9,16 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData',
-    function($scope, stopPlaceService, stopPlaceTypeService, leafletData) {
+.controller('StopPlaceListCtrl', ['$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig',
+    function($scope, stopPlaceService, stopPlaceTypeService, leafletData, config) {
     $scope.search = { query: "" };
-
+console.log(config.leaflet);
     $scope.definedLayers = {
-        local_map: {
+        local_map: config.leaflet.tesseraLayer/*{
             name: 'Tessera tiles',
             url: 'http://localhost:8088/hsl-map/{z}/{x}/{y}.png',
             type: 'xyz'
-        },
+        }*/,
         osm: {
             name: 'OpenStreetMap',
             url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

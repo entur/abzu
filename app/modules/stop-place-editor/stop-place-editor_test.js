@@ -27,7 +27,6 @@ describe('abzu.stopPlaceEditor module', function() {
           }
         }
       };
-
    });
 
   describe('stopPlaceEditor controller', function(){
@@ -36,7 +35,7 @@ describe('abzu.stopPlaceEditor module', function() {
       var $routeParams = {
       	stopPlaceId : 123
       };
-      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: $routeParams});
+      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: $routeParams, appConfig: {leaflet: {tesseraLayer: {}}}});
       
       expect(StopPlaceEditorCtrl).toBeDefined();
 
@@ -48,7 +47,7 @@ describe('abzu.stopPlaceEditor module', function() {
 
       var stopPlace = { id: "123" };
       var $scope = { stopPlace: stopPlace };
-      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: {stopPlaceId: stopPlace.id}});
+      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: {stopPlaceId: stopPlace.id}, appConfig: {leaflet: {tesseraLayer: {}}}});
 
       $scope.update();
 

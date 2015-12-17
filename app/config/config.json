@@ -1,6 +1,12 @@
 {
-	"tiamat" : {
+	"tiamat": {
 		"baseUrl": "http://localhost:1871/jersey"
+	},
+	"leaflet": {
+		"tesseraLayer": {
+	        "name": "Tessera tiles",
+	        "url": "http://localhost:8088/hsl-map/{z}/{x}/{y}.png",
+	        "type": "xyz"
+	    }
 	}
-
 }
