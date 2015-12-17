@@ -11,8 +11,6 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', function($h
         	});
 	};
 
-
-
 	function getStopPlacesWithin(boundingBox) {
 		return $http.post('http://localhost:1871/jersey/stop_place/search', boundingBox).
         	then(function(data) {

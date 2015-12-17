@@ -48,8 +48,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	    };
 
 
-		$scope.update = function(stopPlace) {
-        	$scope.master = angular.copy(stopPlace);
+		$scope.update = function() {
+        	$scope.master = angular.copy($scope.stopPlace);
         	stopPlaceService.saveStopPlace($scope.stopPlace).then(function() {
         		console.log("saved");
 				$window.location.href = '#/';
