@@ -15,7 +15,7 @@ describe('abzu.stopPlaceEditor module', function() {
       var $routeParams = {
       	stopPlaceId : 123
       };
-      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, $routeParams: $routeParams});
+      var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, $routeParams: $routeParams});
       
       expect(StopPlaceEditorCtrl).toBeDefined();
 
