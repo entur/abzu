@@ -11,6 +11,9 @@ To run the application, execute:
 Browse:
 ```http://localhost:8000/app```
 
+# Configuration
+There is a configuration file config.json in the app/config folder. See POC-104. This is loaded at the startup of Abzu.
+
 ## Testing
 See the script section in package.json for configuration of the npm commands below.
 The test runner is https://www.npmjs.com/package/karma. Karma is configured in karma.conf.json.
