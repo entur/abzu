@@ -22,7 +22,7 @@ module.config(['$routeProvider', function($routeProvider) {
 angular.element(document).ready(function () {
   console.log("Setting up keycloak");
 
-  var keycloakAuth = new Keycloak('keycloak.json');
+  var keycloakAuth = new Keycloak('config/keycloak.json');
   keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
     
     module.factory('Auth', function() {
@@ -89,9 +89,7 @@ angular.element(document).ready(function () {
 
     console.log("Read config from file before angular bootstrap");
 
-    getJson("config/config.json", function(config) {
-
-        console.log(config);
+    getJson('config/config.json', function(config) {
         module.value('appConfig', config);
 
         console.log("Calling angular bootstrap");
