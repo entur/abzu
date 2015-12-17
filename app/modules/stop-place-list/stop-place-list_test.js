@@ -5,6 +5,9 @@ describe('abzu.stopPlaceList module', function() {
   beforeEach(function() {
   	angular.mock.module('abzu.stopPlaceList');
   	angular.mock.module('abzu.service');
+    angular.mock.module(function ($provide) {
+      $provide.value('appConfig', {tiamat: {baseUrl: "http://localhost"}});
+    });
   });
 
   describe('StopPlaceList controller', function() {
@@ -12,6 +15,7 @@ describe('abzu.stopPlaceList module', function() {
     var leafletData = {};
 
     it('should be defined', inject(function($controller) {
+
       var stopPlaceListCtrl = $controller('StopPlaceListCtrl', { $scope: $scope, leafletData: leafletData });
       expect(stopPlaceListCtrl).toBeDefined();
     }));

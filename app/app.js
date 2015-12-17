@@ -21,7 +21,7 @@ module.config(['$routeProvider', function($routeProvider) {
 // Set up keycloak and the Auth service.
 angular.element(document).ready(function () {
   console.log("Setting up keycloak");
- 
+
   var keycloakAuth = new Keycloak('keycloak.json');
   keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
     
@@ -87,10 +87,38 @@ angular.element(document).ready(function () {
     	$httpProvider.interceptors.push('authInterceptor');
 		});
 
-		console.log("Calling angular bootstrap");
-		angular.bootstrap(document, ['abzu']);
+    console.log("Read config from file before angular bootstrap");
 
+    getJson("config/config.json", function(config) {
+
+        console.log(config);
+        module.value('appConfig', config);
+
+        console.log("Calling angular bootstrap");
+        angular.bootstrap(document, ['abzu']);
+
+      }, function(error) {
+        console.log("Error reading configuration file 'config/config.json'. Angular bootstrap will not be called.");
+        console.log(error);
+      });
     }).error(function () {
       console.log("ERROR setting up keycloak");
     });
 });
+
+function getJson(path, success, error) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function()
+{
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        success(JSON.parse(xhr.responseText));
+      } else {
+        error(xhr);    
+      }
+    }
+  };
+  xhr.open("GET", path, true);
+  xhr.send();
+}
+
