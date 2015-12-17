@@ -136,5 +136,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		var stopPlaceId = $routeParams.stopPlaceId;
 		stopPlaceService.getStopPlace(stopPlaceId).then(populateStopPlace);
+
+		$scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
 	}
 ]);
