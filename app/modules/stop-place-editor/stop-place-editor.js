@@ -12,6 +12,15 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 .controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig',
 	function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData, config) {
 
+
+		var extraMarkerIcon = {
+            type: 'extraMarker',
+            icon: 'ion-gear-a',
+            markerColor: 'grey',
+            prefix: 'ion',
+            shape: 'circle' 
+		};
+
         $scope.definedLayers = {
             local_map: config.leaflet.tesseraLayer,
             osm: {
@@ -66,7 +75,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 			$scope.center = {
 				lat: latitude,
 				lng: longitude,
-				zoom: 17
+				zoom: 13
 			};
 
 			$scope.markers = {
@@ -75,9 +84,26 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 					lng: longitude,
 					message: $scope.stopPlace.name,
 					focus: true,
-		            draggable: true
+		            draggable: true,
+		            icon: extraMarkerIcon
 				}			
 			};
+
+
+			if(stopPlace.quays) {
+				for(var i in stopPlace.quays) {
+					var quay = stopPlace.quays[i];
+					$scope.markers["quay1"] = {
+						lat: quay.centroid.location.latitude,
+						lng: quay.centroid.location.longitude,
+						message: "Stoppunkt "+quay.name,
+						icon: extraMarkerIcon,
+						focus: true,
+			            draggable: true
+					}
+				}
+				
+			}
 
 			$scope.originalMarker = angular.copy($scope.markers);
 

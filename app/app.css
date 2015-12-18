@@ -33,6 +33,6 @@ th, td {
   padding: 2px 4px;
 }
 
-tr.hover-row:hover {
+.hover-row:hover {
   background-color: #DFE6E6;
 }

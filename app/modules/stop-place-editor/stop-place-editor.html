@@ -24,6 +24,11 @@
 		    	<input type="button" ng-click="reset()" value="Gjenopprett" />
 		    	<input type="submit" ng-click="update()" value="Lagre" />
 		    </div>
+
+		    <div ng-repeat="quay in stopPlace.quays" class="hover-row">
+		    	<label for="quayName{{ $index }}">Stoppested:</label>
+				<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
+		    </div>
 		</div>
 
 		<div class="six columns">
