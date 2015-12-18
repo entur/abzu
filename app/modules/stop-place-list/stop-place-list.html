@@ -1,25 +1,27 @@
-<h1>Holdeplasser</h1>
-
-<input type="text"
-         ng-model="search.query"
-         ng-change="change()"
-         ng-model-options="{ debounce: 600 }"
-         placeholder="Filtrer på holdeplassnavn" />
+<h5>Holdeplasser</h5>
 
 <div class="row">
 
-	<table class="six columns">
-		<thead><th>Navn</th><th>Kortnavn</th><th>Type</th><th></th></thead>
+	<div class="six columns">
+		<input type="text"
+	         ng-model="search.query"
+	         ng-change="change()"
+	         ng-model-options="{ debounce: 600 }"
+	         placeholder="Filtrer på holdeplassnavn"
+	         class="u-full-width" />
 
-		<tbody>
-			<tr ng-repeat="stopPlace in stopPlaces">
-				<td>{{ stopPlace.name }}</td>
-				<td>{{ stopPlace.shortName }}</td>
-				<td>{{ stopPlace.stopPlaceTypeName }}</td>
-				<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
-			</tr>
-		</tbody>
-	</table>
+		<table class="u-full-width">
+			<thead><th>Navn</th><th>Kortnavn</th><th>Type</th><th></th></thead>
+
+			<tbody>
+				<tr ng-repeat="stopPlace in stopPlaces" class="hover-row" ng-click="edit(stopPlace.id)">
+					<td>{{ stopPlace.name }}</td>
+					<td>{{ stopPlace.shortName }}</td>
+					<td>{{ stopPlace.stopPlaceTypeName }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<div class="six columns">
 		<leaflet markers="markers" event-broadcast="events" layers="layers" height="250px" width="450px"></leaflet>
