@@ -13,13 +13,10 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     function($scope, stopPlaceService, stopPlaceTypeService, leafletData, config, $location) {
 
     $scope.search = { query: "" };
+    $scope.markers = {};
 
     $scope.definedLayers = {
-        local_map: config.leaflet.tesseraLayer/*{
-            name: 'Tessera tiles',
-            url: 'http://localhost:8088/hsl-map/{z}/{x}/{y}.png',
-            type: 'xyz'
-        }*/,
+        local_map: config.leaflet.tesseraLayer,
         osm: {
             name: 'OpenStreetMap',
             url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -45,6 +42,12 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         }
     });
 
+    stopPlaceService.getStopPlaces().then(
+        function(stopPlaces) {
+            $scope.stopPlaces = stopPlaces;
+            updateScope();
+    });
+
     $scope.toggleLayer = function(layerName) {
         var baselayers = $scope.layers.baselayers;
         if (baselayers.hasOwnProperty(layerName)) {
@@ -54,12 +57,6 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         }
     };
 
-    stopPlaceService.getStopPlaces().then(
-    function(stopPlaces) {
-        $scope.stopPlaces = stopPlaces;
-        updateScope();
-    });
-
     $scope.edit = function(stopPlaceId) {
         $location.path("/stopPlaceEditor/"+stopPlaceId);
     };
@@ -67,9 +64,11 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     var updateScope = function() {
         $scope.markers = {};
         var bounds = [];
-        var markers = {};
-        for(var i in $scope.stopPlaces) {
+       
+        // Use time in millis in cluster group to avoid problem with missing markers/clusters.
+        var timeInMillis = new Date().getTime();
 
+        for(var i in $scope.stopPlaces) {
             var stopPlace = $scope.stopPlaces[i];
             stopPlace.stopPlaceTypeName = stopPlaceTypeService
                 .getStopPlaceTypeNameFromValue(stopPlace.stopPlaceType);
@@ -78,8 +77,8 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
             var longitude = parseFloat(stopPlace.centroid.location.longitude);
 
             var key = stopPlace.name.replace(/[^a-zA-Z]+/g, '')+i;
-            markers[key] = {
-                group: "stops",
+            $scope.markers[key] = {
+                group: "stops"+timeInMillis,
                 lat: latitude,
                 lng: longitude,
                 message: "<a href='#/stopPlaceEditor/"+stopPlace.id+"'>"+stopPlace.name+"</a>",
@@ -92,8 +91,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         }
 
         leafletData.getMap().then(function(map) {
-            $scope.markers = markers;
-            if(Object.keys($scope.markers).length > 0) {
+            if(bounds.length > 0) {
                 map.fitBounds(bounds);
             }
         });
