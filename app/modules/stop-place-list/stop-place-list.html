@@ -6,20 +6,23 @@
          ng-model-options="{ debounce: 600 }"
          placeholder="Filtrer på holdeplassnavn" />
 
-<table class="u-full-width">
-	<thead><th>Navn</th><th>Id</th><th>Kortnavn</th><th>Type</th><th>Latitude</th><th>Longitude</th><th></th></thead>
+<div class="row">
 
-	<tbody>
-		<tr ng-repeat="stopPlace in stopPlaces">
-			<td>{{ stopPlace.name }}</td>
-			<td>{{ stopPlace.id }}</td>
-			<td>{{ stopPlace.shortName }}</td>
-			<td>{{ stopPlace.stopPlaceTypeName }}</td>
-			<td>{{ stopPlace.centroid.location.latitude }}</td>
-			<td>{{ stopPlace.centroid.location.longitude }}</td>
-			<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
-		</tr>
-	</tbody>
-</table>
+	<table class="six columns">
+		<thead><th>Navn</th><th>Kortnavn</th><th>Type</th><th></th></thead>
 
-<leaflet markers="markers" event-broadcast="events" layers="layers" height="250px" width="800px"></leaflet>
+		<tbody>
+			<tr ng-repeat="stopPlace in stopPlaces">
+				<td>{{ stopPlace.name }}</td>
+				<td>{{ stopPlace.shortName }}</td>
+				<td>{{ stopPlace.stopPlaceTypeName }}</td>
+				<td><a href="#/stopPlaceEditor/{{ stopPlace.id }}">edit</a></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="six columns">
+		<leaflet markers="markers" event-broadcast="events" layers="layers" height="250px" width="450px"></leaflet>
+	</div>
+
+</div>
