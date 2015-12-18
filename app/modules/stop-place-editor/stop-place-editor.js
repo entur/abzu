@@ -32,8 +32,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 		angular.extend($scope, {
             center: {
-                lat: 0,
-                lng: 0
+       		   autodiscover: true,
+       		   zoom: 6
             },
             layers: {
                 baselayers: {
@@ -72,11 +72,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 			var latitude = $scope.stopPlace.centroid.location.latitude;
 			var longitude = $scope.stopPlace.centroid.location.longitude;
 
-			$scope.center = {
-				lat: latitude,
-				lng: longitude,
-				zoom: 13
-			};
+	        var bounds = [];
+            bounds.push([latitude, longitude]);
+
+
+			
 
 			$scope.markers = {
 				mainMarker: {
@@ -101,6 +101,9 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 						focus: true,
 			            draggable: true
 					}
+
+					bounds.push([quay.centroid.location.latitude, quay.centroid.location.longitude]);
+
 				}
 				
 			}
@@ -113,6 +116,9 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
             });
 
             leafletData.getMap().then(function(map) {
+            	if(bounds.length > 0) {
+            		map.fitBounds(bounds);
+            	}
 	            map.on('moveend', function() { 
 	            	stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
 				});
