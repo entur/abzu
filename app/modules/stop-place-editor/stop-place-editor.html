@@ -4,31 +4,33 @@
 
 <hr>
 <form class="simple-form">
-	<fieldset>
-		Navn: <input type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
-	</fieldset>
+	<div class="row">
 
-	<fieldset>
-		Kort navn: <input type="text" ng-model="stopPlace.shortName" />
-	</fieldset>
-	
-	<fieldset>
-		Beskrivelse: <input type="text" ng-model="stopPlace.description" />
-	</fieldset>
+    	<div class="six columns">
+			<label for="stopPlaceName">Navn:</label>
+			<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
 
-	<fieldset>
-	Stoppestedstype:
-	 <select ng-model="stopPlace.stopPlaceType">
-	 	<option ng-repeat="stopPlaceType in stopPlaceTypes" 
-	 			value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
-	 	</option>
-	 </select>
-	</fieldset>
+			<label for="stopPlaceShortName">Kort navn:</label>
+			<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
 
-    <input type="button" ng-click="reset()" value="Gjenopprett" />
+			<label for="stopPlaceDescription">Beskrivelse:</label>
+			<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
 
-    <input type="submit" ng-click="update()" value="Lagre" />
+			<label for="stopPlaceType">Stoppestedstype:</label>
+			<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
+				<option ng-repeat="stopPlaceType in stopPlaceTypes" 
+						value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
+				</option>
+			</select>
 
-    <leaflet markers="markers" defaults="defaults" layers="layers" center="center" height="300px" width="640px"></leaflet>
+			<div>
+		    	<input type="button" ng-click="reset()" value="Gjenopprett" />
+		    	<input type="submit" ng-click="update()" value="Lagre" />
+		    </div>
+		</div>
 
+		<div class="six_columns">
+		    <leaflet markers="markers" defaults="defaults" layers="layers" center="center" height="300px" width="640px"></leaflet>
+		</div>
+	</div>
 </form>
