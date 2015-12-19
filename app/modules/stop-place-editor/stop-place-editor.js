@@ -65,6 +65,10 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
        		$scope.stopPlace = angular.copy($scope.master);
 	    };
 
+	    $scope.newQuay = function() {
+	    	$scope.stopPlace.quays.push({});
+	    };
+
 	    var populateStopPlace = function(stopPlace) {
 			$scope.stopPlace = stopPlace;
 			$scope.master = angular.copy($scope.stopPlace);
@@ -160,7 +164,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	                message: "<a href='#/stopPlaceEditor/"+relatedStopPlace.id+"'>"+relatedStopPlace.name+"</a>",
 	                draggable: false,
 	                clickable: true,
-	                riseOnHover: true
+	                riseOnHover: true,
+	                group: "nearby"
 	            };
 			}
 

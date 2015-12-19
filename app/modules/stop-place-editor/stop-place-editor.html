@@ -2,9 +2,8 @@
 
 <form class="simple-form">
 	<div class="row">
-
-    	<div class="six columns">
-			<label for="stopPlaceName">Navn:</label>
+		<div class="six columns">
+			<label for="stopPlaceName">Stoppestedsnavn:</label>
 			<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
 
 			<label for="stopPlaceShortName">Kort navn:</label>
@@ -20,19 +19,26 @@
 				</option>
 			</select>
 
-			<div>
-		    	<input type="button" ng-click="reset()" value="Gjenopprett" />
-		    	<input type="submit" ng-click="update()" value="Lagre" />
-		    </div>
+			<div class="coloured-block">
 
-		    <div ng-repeat="quay in stopPlace.quays" class="hover-row">
-		    	<label for="quayName{{ $index }}">Stoppested:</label>
-				<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
-		    </div>
+				<button class="primary-button ion-plus-round" ng-click="newQuay()" ></button>
+			    <div ng-repeat="quay in stopPlace.quays" class="hover-row">
+			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
+					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
+			    </div>
+			</div>
 		</div>
-
+			
 		<div class="six columns">
-		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="300px" width="640px"></leaflet>
+		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="300px" width="100%"></leaflet>
 		</div>
+
 	</div>
+
+	
+
+	<div class="row">
+    	<input type="button" ng-click="reset()" value="Gjenopprett" />
+    	<input type="submit" ng-click="update()" value="Lagre" />
+    </div>
 </form>
