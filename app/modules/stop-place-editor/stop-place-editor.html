@@ -19,10 +19,10 @@
 				</option>
 			</select>
 
-			<div class="coloured-block">
+			<div class="">
 
 				<button class="primary-button ion-plus-round" ng-click="newQuay()" ></button>
-			    <div ng-repeat="quay in stopPlace.quays" class="hover-row">
+			    <div ng-repeat="quay in stopPlace.quays" class="hover-row" ng-class="{'edit': isEditingQuay(quay.id)}" ng-click="quayFormClicked(quay)">
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
 					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
 			    </div>
@@ -41,4 +41,17 @@
     	<input type="button" ng-click="reset()" value="Gjenopprett" />
     	<input type="submit" ng-click="update()" value="Lagre" />
     </div>
+
+Current object:
+
+	{{ currentObject }}
+<hr>
+
+Current stop place centroid:
+    {{ stopPlace.centroid }}
+
+<hr>
+Current quay centroid:
+    {{ currentQuay.centroid }}
+
 </form>
