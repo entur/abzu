@@ -51,7 +51,6 @@ describe('abzu.stopPlaceEditor module', function() {
 
       $scope.update();
 
-      expect($scope.master).toEqual(stopPlace);
       expect(stopPlaceService.updateCalled).toBe(true);
     }));
   });
