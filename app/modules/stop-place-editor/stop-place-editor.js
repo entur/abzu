@@ -76,6 +76,15 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 	    $scope.newQuay = function() {
 	    	$scope.stopPlace.quays.push({});
+
+			$scope.markers.newQuayMarker = {
+				lat: $scope.stopPlace.centroid.location.latitude,
+				lng: $scope.stopPlace.centroid.location.longitude,
+				message: "Nytt stoppunkt",
+				icon: quayMarkerIcon,
+				focus: true,
+	            draggable: true
+			};
 	    };
 
 	    $scope.isEditingQuay = function(quayId) {
@@ -115,13 +124,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	    var createQuayMarkers = function(quays, bounds) {
 			for(var i in quays) {
 				var quay = quays[i];
+
 				createQuayMarker(quay);
 				bounds.push(createBoundsArray(quay.centroid));
 			}
 	    };
-
-
-
 
 	    var populateStopPlace = function(stopPlace) {
 
@@ -161,7 +168,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
              $scope.$on("leafletDirectiveMarker.popupopen", function(event, args){
             	console.log("Popup open on marker for object with id "+args.model.id);
            
-            	if(args.model.id && args.model.id == $scope.stopPlace.id) {
+            	if(args.model.id && args.model.id === $scope.stopPlace.id) {
 
             		console.log("We are currently editing a stop place");
 
@@ -175,10 +182,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
             		}
 
             	} else if(args.model.id) {
-
-
             		console.log("We are currently not editing a stop place, but a quay. "+args.model.id);
-
 
 	    			for(var q in $scope.stopPlace.quays) {
 	    				var quay = $scope.stopPlace.quays[q];
@@ -226,11 +230,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	    var populateNearbyMarkers = function(stopPlacesWithinBoundingBox) {
 			console.log("Got " + stopPlacesWithinBoundingBox.length +" stop places from current bounding box");
 
-	
 			for(var i in stopPlacesWithinBoundingBox) {
-
 				var relatedStopPlace = stopPlacesWithinBoundingBox[i];
-				
 
 				if(relatedStopPlace.id == $scope.stopPlace.id) {
 					//console.log("Ignoring stop place with id " + $scope.stopPlace.id);
@@ -249,7 +250,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	                group: "nearby"
 	            };
 			}
-
 		};
 
 		var stopPlaceId = $routeParams.stopPlaceId;
