@@ -111,9 +111,9 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 	    $scope.quayFormClicked = function(quay) {
 			console.log("Quay form clicked for quay with marker key "+quay.markerKey);
-	    	$scope.markers[quay.markerKey].focus = false;
 	    	$scope.markers[quay.markerKey].focus = true;
-
+	    	$scope.currentQuay = quay;
+	    	$scope.currentObject = quay;
 	    };
 
 	    var createBoundsArray = function(centroid) {
@@ -204,21 +204,12 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 			console.log($scope.stopPlace.markerKey);
 
         	if(args.model.markerKey && args.model.markerKey === $scope.stopPlace.markerKey) {
-
         		console.log("We are currently editing a stop place");
 
         		$scope.currentQuay = {};
         		$scope.currentObject = $scope.stopPlace;
-
-        	/*	for(var m in $scope.markers) {
-        			if($scope.markers[m].markerKey != $scope.stopPlace.markerKey) {
-        				$scope.markers[m].focus = false;
-        			}
-        		}*/
-
         	} else if(args.model.markerKey) {
         		console.log("We are currently not editing a stop place, but a quay. "+args.model.markerKey);
-
 
     			for(var q in $scope.stopPlace.quays) {
     				var quay = $scope.stopPlace.quays[q];
@@ -232,7 +223,17 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     				}
     			}
         	}
+
+        	removeFocusOnAllMarkers(args.model.markerKey);
         }
+
+        var removeFocusOnAllMarkers = function(ignoreKey) {
+    		for(var m in $scope.markers) {
+        		if($scope.markers[m].markerKey != ignoreKey && $scope.markers[m].group == "nearby") {
+        			$scope.markers[m].focus = false;
+       			}
+        	}
+        };
 
         var createBoundingBox = function(map) {
 			var bounds = map.getBounds();
