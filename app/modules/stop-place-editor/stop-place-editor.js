@@ -17,7 +17,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
             icon: 'ion-gear-a',
             markerColor: 'red',
             prefix: 'ion',
-            shape: 'circle' 
+            shape: 'circle'
 		};
 
 		var quayMarkerIcon = {
@@ -111,9 +111,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
 	    $scope.quayFormClicked = function(quay) {
 			console.log("Quay form clicked for quay with marker key "+quay.markerKey);
-	    	$scope.markers[quay.markerKey].focus = true;
-	    	$scope.currentQuay = quay;
-	    	$scope.currentObject = quay;
+			if(quay.markerKey && $scope.markers[quay.markerKey]) {
+				$scope.markers[quay.markerKey].focus = true;
+				$scope.currentQuay = quay;
+				$scope.currentObject = quay;
+			}
 	    };
 
 	    var createBoundsArray = function(centroid) {
@@ -167,8 +169,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 	            lat: $scope.stopPlace.centroid.location.latitude,
 	            lng: $scope.stopPlace.centroid.location.longitude,
 	            markerKey: markerKey
-			};	
-		
+			};
+
 			$scope.stopPlace.markerKey = markerKey;
 
 			if(stopPlace.quays) {
@@ -191,7 +193,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
             	if(bounds.length > 0) {
             		map.fitBounds(bounds);
             	}
-	            map.on('moveend', function() { 
+	            map.on('moveend', function() {
 	            	stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
 				});
 				stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
@@ -200,7 +202,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
         var switchingCurrentEditingObjectFromLeafletEvent = function(args) {
         	console.log("Event for marker with key: " + args.model.markerKey);
-           
+
 			console.log($scope.stopPlace.markerKey);
 
         	if(args.model.markerKey && args.model.markerKey === $scope.stopPlace.markerKey) {
