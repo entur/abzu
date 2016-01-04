@@ -118,10 +118,13 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
     $scope.quayFormClicked = function(quay) {
       console.log("Quay form clicked for quay with marker key " + quay.markerKey);
+      console.log($scope.markers[quay.markerKey]);
+
       if (quay.markerKey && $scope.markers[quay.markerKey]) {
+        removeFocusOnAllMarkersExceptNearby();
+
+        console.log("Setting focus for marker");
         $scope.markers[quay.markerKey].focus = true;
-        $scope.currentQuay = quay;
-        $scope.currentObject = quay;
       }
     };
 
@@ -209,8 +212,6 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     var switchingCurrentEditingObjectFromLeafletEvent = function(args) {
       console.log("Event for marker with key: " + args.model.markerKey);
 
-      console.log($scope.stopPlace.markerKey);
-
       if (args.model.markerKey && args.model.markerKey === $scope.stopPlace.markerKey) {
         console.log("We are currently editing a stop place");
 
@@ -232,12 +233,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         }
       }
 
-      removeFocusOnAllMarkers(args.model.markerKey);
     }
 
-    var removeFocusOnAllMarkers = function(ignoreKey) {
+    var removeFocusOnAllMarkersExceptNearby = function() {
       for (var m in $scope.markers) {
-        if ($scope.markers[m].markerKey != ignoreKey && $scope.markers[m].group == "nearby") {
+        if ($scope.markers[m].group !== "nearby") {
           $scope.markers[m].focus = false;
         }
       }
