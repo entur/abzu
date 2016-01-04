@@ -25,7 +25,7 @@
 				<button class="button-primary ion-plus-round" ng-click="newQuay()" ng-hide="markers.newQuayMarker" title="Legg til nytt stoppunkt"></button>
 			    <div ng-repeat="quay in stopPlace.quays" class="editing-segment" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
-					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
+					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
 					<button class="button-primary ion-minus-round" ng-click="removeQuay()" title="Fjern stopppunkt"></button>
 			    </div>

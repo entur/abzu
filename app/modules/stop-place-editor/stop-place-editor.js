@@ -112,7 +112,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
     $scope.removeQuay = function(quay) {
       $scope.stopPlace.quays.splice($scope.stopPlace.quays.indexOf(quay), 1);
-    }
+    };
+
+    $scope.quayNameChanged = function(quay) {
+      $scope.markers[quay.markerKey].message = "Stoppunkt: " + quay.name;
+    };
 
     $scope.isEditingQuay = function(quay) {
       if (!$scope.currentQuay) return false;
