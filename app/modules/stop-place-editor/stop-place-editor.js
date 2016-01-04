@@ -83,23 +83,26 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
       // For new quays, we cannot use the quay ID for marker key generation.
       var markerKey = new Date().getTime();
-      var longitude = $scope.stopPlace.centroid.location.longitude;
-      var latitude = $scope.stopPlace.centroid.location.latitude;
+      var longitude = $scope.stopPlace.centroid.location.longitude-0.0001;
+      var latitude = $scope.stopPlace.centroid.location.latitude-0.0001;
 
-      $scope.stopPlace.quays.push({
+      var quay = {
         markerKey: markerKey,
+        name: "Nytt stopppunkt",
         centroid: {
           location: {
             latitude: latitude,
             longitude: longitude
           }
         }
-      });
+      };
+
+      $scope.stopPlace.quays.push(quay);
 
       $scope.markers.newQuayMarker = {
         lat: latitude,
         lng: longitude,
-        message: "Nytt stoppunkt",
+        message: quay.name,
         icon: quayMarkerIcon,
         focus: true,
         draggable: true,
