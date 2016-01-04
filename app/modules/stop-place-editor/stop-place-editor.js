@@ -112,8 +112,19 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     }
 
     $scope.isEditingQuay = function(quay) {
-      if (!$scope.currentQuay.markerKey) return false;
-      return $scope.currentQuay.markerKey == quay.markerKey;
+      if (!$scope.currentQuay) return false;
+      return $scope.currentQuay.markerKey === quay.markerKey;
+    };
+
+    $scope.isEditingStopPlace = function() {
+      return $scope.stopPlace === $scope.currentObject;
+    };
+
+    $scope.stopPlaceClicked = function() {
+      $scope.currentObject = $scope.stopPlace;
+      $scope.currentQuay = null;
+      removeFocusOnAllMarkersExceptNearby();
+      $scope.markers[$scope.stopPlace.markerKey].focus = true;
     };
 
     $scope.quayFormClicked = function(quay) {

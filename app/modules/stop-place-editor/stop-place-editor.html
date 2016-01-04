@@ -3,22 +3,23 @@
 <form class="simple-form">
 	<div class="row">
 		<div class="six columns">
-			<label for="stopPlaceName">Stoppestedsnavn:</label>
-			<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
+			<div ng-class="{'edit': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
+				<label for="stopPlaceName">Stoppestedsnavn:</label>
+				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
 
-			<label for="stopPlaceShortName">Kort navn:</label>
-			<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
+				<label for="stopPlaceShortName">Kort navn:</label>
+				<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
 
-			<label for="stopPlaceDescription">Beskrivelse:</label>
-			<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
+				<label for="stopPlaceDescription">Beskrivelse:</label>
+				<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
 
-			<label for="stopPlaceType">Stoppestedstype:</label>
-			<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
-				<option ng-repeat="stopPlaceType in stopPlaceTypes" 
-						value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
-				</option>
-			</select>
-
+				<label for="stopPlaceType">Stoppestedstype:</label>
+				<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
+					<option ng-repeat="stopPlaceType in stopPlaceTypes"
+							value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
+					</option>
+				</select>
+			</div>
 			<div class="">
 
 				<button class="button-primary ion-plus-round" ng-click="newQuay()" ng-hide="markers.newQuayMarker" title="Legg til nytt stoppunkt"></button>
@@ -30,14 +31,14 @@
 			    </div>
 			</div>
 		</div>
-			
+
 		<div class="six columns">
 		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="300px" width="100%"></leaflet>
 		</div>
 
 	</div>
 
-	
+
 
 	<div class="row">
     	<input type="button" ng-click="reset()" value="Gjenopprett" />
