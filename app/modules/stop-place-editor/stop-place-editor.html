@@ -5,7 +5,7 @@
 		<div class="six columns">
 			<div ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()" class="editing-segment">
 				<label for="stopPlaceName">Stoppestedsnavn:</label>
-				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
+				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
 
 				<label for="stopPlaceShortName">Kort navn:</label>
 				<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
@@ -22,7 +22,7 @@
 			</div>
 			<div class="">
 
-				<button class="button-primary ion-plus-round" ng-click="newQuay()" ng-hide="markers.newQuayMarker" title="Legg til nytt stoppunkt"></button>
+				<button class="button-primary ion-plus-round" ng-click="newQuay()" title="Legg til nytt stoppunkt"></button>
 			    <div ng-repeat="quay in stopPlace.quays" class="editing-segment" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
 					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>

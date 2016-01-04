@@ -76,7 +76,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     };
 
     $scope.reset = function() {
-      $scope.stopPlace = angular.copy($scope.master);
+      var stopPlace = angular.copy($scope.master);
+      populateStopPlace(stopPlace);
     };
 
     $scope.newQuay = function() {
@@ -99,7 +100,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
       $scope.stopPlace.quays.push(quay);
 
-      $scope.markers.newQuayMarker = {
+      $scope.markers[markerKey] = {
         lat: latitude,
         lng: longitude,
         message: quay.name,
@@ -118,6 +119,10 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
     $scope.quayNameChanged = function(quay) {
       $scope.markers[quay.markerKey].message = "Stoppunkt: " + quay.name;
+    };
+
+    $scope.stopPlaceNameChanged = function() {
+      $scope.markers[$scope.stopPlace.markerKey].message = $scope.stopPlace.name;
     };
 
     $scope.isEditingQuay = function(quay) {
@@ -210,8 +215,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         console.log("marker dragged for object with markerKey " + args.model.markerKey);
 
         switchingCurrentEditingObjectFromLeafletEvent(args);
-        $scope.currentObject.centroid.location.latitude = args.model.lat.toString();
-        $scope.currentObject.centroid.location.longitude = args.model.lng.toString();
+        $scope.currentObject.centroid.location.latitude = args.model.lat;
+        $scope.currentObject.centroid.location.longitude = args.model.lng;
+
+        $scope.markers[args.model.markerKey].lat = args.model.lat;
+        $scope.markers[args.model.markerKey].lng = args.model.lng;
       });
 
       $scope.$on("leafletDirectiveMarker.popupopen", function(event, args) {
@@ -243,17 +251,14 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         for (var q in $scope.stopPlace.quays) {
           var quay = $scope.stopPlace.quays[q];
 
-          if (quay.markerKey == args.model.markerKey) {
+          if (quay.markerKey === args.model.markerKey) {
             $scope.currentObject = quay;
             $scope.currentQuay = quay;
-            //$scope.markers[createMarkerKey($scope.stopPlace.id)].focus = false;
-
             break;
           }
         }
       }
-
-    }
+    };
 
     var removeFocusOnAllMarkersExceptNearby = function() {
       for (var m in $scope.markers) {
