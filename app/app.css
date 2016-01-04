@@ -33,15 +33,15 @@ th, td {
   padding: 2px 4px;
 }
 
-.hover-row:hover {
-  background-color: #DFE6E6;
-}
-
 .coloured-block {
   background-color: #E8ECF1;
 }
 
+.editing-segment:hover {
+  cursor: pointer;
+  background-color: #DFE6E6;
+}
 
-.edit {
+.currently-editing {
   background-color: #E8ECF1;
 }
