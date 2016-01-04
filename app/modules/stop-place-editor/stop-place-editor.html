@@ -21,10 +21,12 @@
 
 			<div class="">
 
-				<button class="primary-button ion-plus-round" ng-click="newQuay()" ></button>
-			    <div ng-repeat="quay in stopPlace.quays" class="hover-row" ng-class="{'edit': isEditingQuay(quay.id)}" ng-click="quayFormClicked(quay)">
+				<button class="button-primary ion-plus-round" ng-click="newQuay()" ng-hide="markers.newQuayMarker" title="Legg til nytt stoppunkt"></button>
+			    <div ng-repeat="quay in stopPlace.quays" class="hover-row" ng-class="{'edit': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
 					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
+
+					<button class="button-primary ion-minus-round" ng-click="removeQuay()" title="Fjern stopppunkt"></button>
 			    </div>
 			</div>
 		</div>
