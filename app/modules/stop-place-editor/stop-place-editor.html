@@ -27,7 +27,7 @@
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
 					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
-					<button class="button-primary ion-minus-round" ng-click="removeQuay()" title="Fjern stopppunkt"></button>
+					<button class="button-primary ion-minus-round" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt"></button>
 			    </div>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 
 	<div class="row">
     	<input type="button" ng-click="reset()" value="Gjenopprett" />
-    	<input type="submit" ng-click="update()" value="Lagre" />
+    	<input type="submit" ng-click="save()" value="Lagre" />
     </div>
 
 Current object:

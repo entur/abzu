@@ -62,7 +62,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       }
     };
 
-    $scope.update = function() {
+    $scope.save = function() {
       delete $scope.stopPlace.markerKey;
 
       for (var q in $scope.stopPlace.quays) {
@@ -110,7 +110,9 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       };
     };
 
-    $scope.removeQuay = function(quay) {
+    $scope.removeQuay = function(quay, $event) {
+      $event.stopPropagation();
+      delete $scope.markers[quay.markerKey];
       $scope.stopPlace.quays.splice($scope.stopPlace.quays.indexOf(quay), 1);
     };
 
@@ -236,7 +238,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         $scope.currentQuay = {};
         $scope.currentObject = $scope.stopPlace;
       } else if (args.model.markerKey) {
-        console.log("We are currently not editing a stop place, but a quay. " + args.model.markerKey);
+        console.log("We are currently editing a quay with marker key: " + args.model.markerKey);
 
         for (var q in $scope.stopPlace.quays) {
           var quay = $scope.stopPlace.quays[q];
