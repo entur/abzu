@@ -9,8 +9,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig',
-  function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData, config) {
+.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig', 'quayTypeService',
+  function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData, config, quayTypeService) {
 
     var stopPlaceMarkerIcon = {
       type: 'extraMarker',
@@ -313,5 +313,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     stopPlaceService.getStopPlace(stopPlaceId).then(populateStopPlace);
 
     $scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
+    $scope.quayTypes = quayTypeService.getQuayTypes();
+
   }
 ]);

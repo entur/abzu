@@ -27,6 +27,13 @@
 			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
 					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
+					<select id="quayType" ng-model="quay.quayType">
+						<option ng-repeat="quayType in quayTypes"
+							value="{{ quayType.value }}">
+							{{ quayType.name }}
+						</option>
+					</select>
+
 					<button class="button-primary ion-minus-round" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt"></button>
 			    </div>
 			</div>
