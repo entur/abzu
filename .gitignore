@@ -6,3 +6,4 @@ tmp
 .DS_Store
 .idea
 npm-debug.log
+test-results.xml

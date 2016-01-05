@@ -1,6 +1,5 @@
 module.exports = function(config){
   config.set({
-
     basePath : './',
 
     files : [
@@ -27,7 +26,9 @@ module.exports = function(config){
             ],
 
     junitReporter : {
-      outputFile: 'test_out/unit.xml',
+      outputDir: '.',
+      useBrowserName: false,
+      outputFile: 'test-results.xml',
       suite: 'unit'
     }
 

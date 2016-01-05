@@ -13,8 +13,8 @@
     "karma-chrome-launcher": "^0.2.1",
     "karma-jasmine": "^0.3.6",
     "karma-junit-reporter": "^0.3.8",
-    "phantomjs": "^1.9",
     "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9",
     "protractor": "^2.1.0",
     "shelljs": "^0.2.6"
   },
@@ -25,7 +25,7 @@
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",
-    "test-single-ci-run": "karma start karma.conf.js  --single-run --browsers PhantomJS",
+    "test-single-ci-run": "karma start karma.conf.js  --single-run --browsers PhantomJS --reporters junit,progress",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
