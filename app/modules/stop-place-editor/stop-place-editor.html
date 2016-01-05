@@ -19,6 +19,10 @@
 							value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
 					</option>
 				</select>
+
+				<label for=="allAreasWheelchairAccessible">Alle områder i stoppested tilgjengelig for rullestol:</label>
+				<input id="allAreasWheelchairAccessible" type="checkbox" ng-model="stopPlace.allAreasWheelchairAccessible" />
+
 			</div>
 
 			<div class="">
@@ -30,7 +34,7 @@
 						<label for="quayName{{ $index }}">Stoppunkt</label>
 						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
-						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle omraåder tilgjengelig for rullestol:</label>
+						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle områder i stoppunkt tilgjengelig for rullestol:</label>
 						<input id="allAreasWheelchairAccessible{{ $index }}" type="checkbox" ng-model="quay.allAreasWheelchairAccessible" />
 					</div>
 
