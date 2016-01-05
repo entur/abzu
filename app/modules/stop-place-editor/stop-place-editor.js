@@ -9,8 +9,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
   });
 }])
 
-.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig',
-  function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData, config) {
+.controller('StopPlaceEditorCtrl', ['$window', '$routeParams', '$scope', 'stopPlaceService', 'stopPlaceTypeService', 'leafletData', 'appConfig', 'quayTypeService',
+  function($window, $routeParams, $scope, stopPlaceService, stopPlaceTypeService, leafletData, config, quayTypeService) {
 
     var stopPlaceMarkerIcon = {
       type: 'extraMarker',
@@ -62,7 +62,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       }
     };
 
-    $scope.update = function() {
+    $scope.save = function() {
       delete $scope.stopPlace.markerKey;
 
       for (var q in $scope.stopPlace.quays) {
@@ -76,30 +76,34 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     };
 
     $scope.reset = function() {
-      $scope.stopPlace = angular.copy($scope.master);
+      var stopPlace = angular.copy($scope.master);
+      populateStopPlace(stopPlace);
     };
 
     $scope.newQuay = function() {
 
       // For new quays, we cannot use the quay ID for marker key generation.
       var markerKey = new Date().getTime();
-      var longitude = $scope.stopPlace.centroid.location.longitude;
-      var latitude = $scope.stopPlace.centroid.location.latitude;
+      var longitude = $scope.stopPlace.centroid.location.longitude-0.0001;
+      var latitude = $scope.stopPlace.centroid.location.latitude-0.0001;
 
-      $scope.stopPlace.quays.push({
+      var quay = {
         markerKey: markerKey,
+        name: "Nytt stopppunkt",
         centroid: {
           location: {
             latitude: latitude,
             longitude: longitude
           }
         }
-      });
+      };
 
-      $scope.markers.newQuayMarker = {
+      $scope.stopPlace.quays.push(quay);
+
+      $scope.markers[markerKey] = {
         lat: latitude,
         lng: longitude,
-        message: "Nytt stoppunkt",
+        message: quay.name,
         icon: quayMarkerIcon,
         focus: true,
         draggable: true,
@@ -107,21 +111,45 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       };
     };
 
-    $scope.removeQuay = function(quay) {
+    $scope.removeQuay = function(quay, $event) {
+      $event.stopPropagation();
+      delete $scope.markers[quay.markerKey];
       $scope.stopPlace.quays.splice($scope.stopPlace.quays.indexOf(quay), 1);
-    }
+    };
+
+    $scope.quayNameChanged = function(quay) {
+      $scope.markers[quay.markerKey].message = "Stoppunkt: " + quay.name;
+    };
+
+    $scope.stopPlaceNameChanged = function() {
+      $scope.markers[$scope.stopPlace.markerKey].message = $scope.stopPlace.name;
+    };
 
     $scope.isEditingQuay = function(quay) {
-      if (!$scope.currentQuay.markerKey) return false;
-      return $scope.currentQuay.markerKey == quay.markerKey;
+      if (!$scope.currentQuay) return false;
+      return $scope.currentQuay.markerKey === quay.markerKey;
+    };
+
+    $scope.isEditingStopPlace = function() {
+      return $scope.stopPlace === $scope.currentObject;
+    };
+
+    $scope.stopPlaceClicked = function() {
+      $scope.currentObject = $scope.stopPlace;
+      $scope.currentQuay = null;
+      removeFocusOnAllMarkersExceptNearby();
+      $scope.markers[$scope.stopPlace.markerKey].focus = true;
     };
 
     $scope.quayFormClicked = function(quay) {
       console.log("Quay form clicked for quay with marker key " + quay.markerKey);
+      console.log($scope.markers[quay.markerKey]);
+
       if (quay.markerKey && $scope.markers[quay.markerKey]) {
+        removeFocusOnAllMarkersExceptNearby();
+
+        console.log("Setting focus for marker");
         $scope.markers[quay.markerKey].focus = true;
-        $scope.currentQuay = quay;
-        $scope.currentObject = quay;
       }
     };
 
@@ -187,8 +215,11 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         console.log("marker dragged for object with markerKey " + args.model.markerKey);
 
         switchingCurrentEditingObjectFromLeafletEvent(args);
-        $scope.currentObject.centroid.location.latitude = args.model.lat.toString();
-        $scope.currentObject.centroid.location.longitude = args.model.lng.toString();
+        $scope.currentObject.centroid.location.latitude = args.model.lat;
+        $scope.currentObject.centroid.location.longitude = args.model.lng;
+
+        $scope.markers[args.model.markerKey].lat = args.model.lat;
+        $scope.markers[args.model.markerKey].lng = args.model.lng;
       });
 
       $scope.$on("leafletDirectiveMarker.popupopen", function(event, args) {
@@ -209,35 +240,29 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     var switchingCurrentEditingObjectFromLeafletEvent = function(args) {
       console.log("Event for marker with key: " + args.model.markerKey);
 
-      console.log($scope.stopPlace.markerKey);
-
       if (args.model.markerKey && args.model.markerKey === $scope.stopPlace.markerKey) {
         console.log("We are currently editing a stop place");
 
         $scope.currentQuay = {};
         $scope.currentObject = $scope.stopPlace;
       } else if (args.model.markerKey) {
-        console.log("We are currently not editing a stop place, but a quay. " + args.model.markerKey);
+        console.log("We are currently editing a quay with marker key: " + args.model.markerKey);
 
         for (var q in $scope.stopPlace.quays) {
           var quay = $scope.stopPlace.quays[q];
 
-          if (quay.markerKey == args.model.markerKey) {
+          if (quay.markerKey === args.model.markerKey) {
             $scope.currentObject = quay;
             $scope.currentQuay = quay;
-            //$scope.markers[createMarkerKey($scope.stopPlace.id)].focus = false;
-
             break;
           }
         }
       }
+    };
 
-      removeFocusOnAllMarkers(args.model.markerKey);
-    }
-
-    var removeFocusOnAllMarkers = function(ignoreKey) {
+    var removeFocusOnAllMarkersExceptNearby = function() {
       for (var m in $scope.markers) {
-        if ($scope.markers[m].markerKey != ignoreKey && $scope.markers[m].group == "nearby") {
+        if ($scope.markers[m].group !== "nearby") {
           $scope.markers[m].focus = false;
         }
       }
@@ -288,5 +313,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     stopPlaceService.getStopPlace(stopPlaceId).then(populateStopPlace);
 
     $scope.stopPlaceTypes = stopPlaceTypeService.getStopPlaceTypes();
+    $scope.quayTypes = quayTypeService.getQuayTypes();
+
   }
 ]);

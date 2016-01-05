@@ -36,7 +36,7 @@ describe('abzu.stopPlaceEditor module', function() {
       	stopPlaceId : 123
       };
       var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: $routeParams, appConfig: {leaflet: {tesseraLayer: {}}}});
-      
+
       expect(StopPlaceEditorCtrl).toBeDefined();
 
     }));
@@ -49,7 +49,7 @@ describe('abzu.stopPlaceEditor module', function() {
       var $scope = { stopPlace: stopPlace };
       var StopPlaceEditorCtrl = $controller('StopPlaceEditorCtrl', {$scope: $scope, leafletData: {}, stopPlaceService: stopPlaceService, $routeParams: {stopPlaceId: stopPlace.id}, appConfig: {leaflet: {tesseraLayer: {}}}});
 
-      $scope.update();
+      $scope.save();
 
       expect(stopPlaceService.updateCalled).toBe(true);
     }));

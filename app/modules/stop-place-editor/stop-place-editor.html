@@ -3,46 +3,67 @@
 <form class="simple-form">
 	<div class="row">
 		<div class="six columns">
-			<label for="stopPlaceName">Stoppestedsnavn:</label>
-			<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="markers.mainMarker.message=stopPlace.name" required/>
+			<div class="editing-segment" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
+				<label for="stopPlaceName">Stoppestedsnavn:</label>
+				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
 
-			<label for="stopPlaceShortName">Kort navn:</label>
-			<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
+				<label for="stopPlaceShortName">Kort navn:</label>
+				<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
 
-			<label for="stopPlaceDescription">Beskrivelse:</label>
-			<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
+				<label for="stopPlaceDescription">Beskrivelse:</label>
+				<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
 
-			<label for="stopPlaceType">Stoppestedstype:</label>
-			<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
-				<option ng-repeat="stopPlaceType in stopPlaceTypes" 
-						value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
-				</option>
-			</select>
+				<label for="stopPlaceType">Stoppestedstype:</label>
+				<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
+					<option ng-repeat="stopPlaceType in stopPlaceTypes"
+							value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
+					</option>
+				</select>
+
+				<label for=="allAreasWheelchairAccessible">Alle områder i stoppested tilgjengelig for rullestol:</label>
+				<input id="allAreasWheelchairAccessible" type="checkbox" ng-model="stopPlace.allAreasWheelchairAccessible" />
+
+			</div>
 
 			<div class="">
+				<button class="button-primary" ng-click="newQuay()" title="Legg til nytt stoppunkt">Nytt stoppunkt</button>
 
-				<button class="button-primary ion-plus-round" ng-click="newQuay()" ng-hide="markers.newQuayMarker" title="Legg til nytt stoppunkt"></button>
-			    <div ng-repeat="quay in stopPlace.quays" class="hover-row" ng-class="{'edit': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
-			    	<label for="quayName{{ $index }}">Stoppunkt:</label>
-					<input id="quayName{{ $index }}" type="text" ng-model="quay.name" />
+				<div ng-repeat="quay in stopPlace.quays" class="editing-segment row" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 
-					<button class="button-primary ion-minus-round" ng-click="removeQuay()" title="Fjern stopppunkt"></button>
-			    </div>
+					<div class="five columns">
+						<label for="quayName{{ $index }}">Stoppunkt</label>
+						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
+
+						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle områder i stoppunkt tilgjengelig for rullestol:</label>
+						<input id="allAreasWheelchairAccessible{{ $index }}" type="checkbox" ng-model="quay.allAreasWheelchairAccessible" />
+					</div>
+
+					<div class="five columns">
+						<label for="quayType{{ $index }}">Type:</label>
+						<select id="quayType{{ $index }}" ng-model="quay.quayType">
+							<option ng-repeat="quayType in quayTypes" value="{{ quayType.value }}">
+								{{ quayType.name }}
+							</option>
+						</select>
+					</div>
+					<div class="two columns">
+						<button class="button-primary" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt">fjern</button>
+					</div>
+				</div>
 			</div>
 		</div>
-			
+
 		<div class="six columns">
-		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="300px" width="100%"></leaflet>
-		</div>
-
-	</div>
-
-	
-
-	<div class="row">
-    	<input type="button" ng-click="reset()" value="Gjenopprett" />
-    	<input type="submit" ng-click="update()" value="Lagre" />
+		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="600px" width="100%"></leaflet>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <input type="button" ng-click="reset()" value="Gjenopprett" />
+      <input type="submit" ng-click="save()" value="Lagre" />
+    </div>
+  </div>
 
 Current object:
 
