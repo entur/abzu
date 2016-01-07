@@ -45,3 +45,8 @@ th, td {
 .currently-editing {
   background-color: #E8ECF1;
 }
+
+.row-hover:hover {
+  cursor: pointer;
+  background-color: #DFE6E6;
+}
