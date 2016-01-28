@@ -17,6 +17,7 @@
     "keycloak": "~1.6.1",
     "skeleton": "~2.0.4",
     "Leaflet.extra-markers": "~1.0.3",
-    "Ionicons": "ionicons#~2.0.1"
+    "Ionicons": "ionicons#~2.0.1",
+    "leaflet-plugins": "~1.4.2"
   }
 }
