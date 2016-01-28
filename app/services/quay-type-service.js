@@ -18,7 +18,7 @@ angular.module("abzu.service").factory('quayTypeService', [function() {
 	    name: "Busstopp",
 	    value: "busStop"
 	  }, {
-	    name: "Bussholdeplass",
+	    name: "Busslomme",
 	    value: "busBay"
 	  }, {
 	    name: "Trikkeperrong",
@@ -27,10 +27,10 @@ angular.module("abzu.service").factory('quayTypeService', [function() {
 	    name: "Trikkestopp",
 	    value: "tramStop"
 	  }, {
-	    name: "Båtstopp",
+	    name: "Brygge",
 	    value: "boatQuay"
 	  }, {
-	    name: "Fergestopp",
+	    name: "Fergekai",
 	    value: "ferryLanding"
 	  }, {
 	    name: "Gondolbaneplattform",
