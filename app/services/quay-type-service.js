@@ -33,7 +33,7 @@ angular.module("abzu.service").factory('quayTypeService', [function() {
 	    name: "Fergekai",
 	    value: "ferryLanding"
 	  }, {
-	    name: "Gondolbaneplattform",
+	    name: "Taubaneplattform",
 	    value: "telecabinePlatform"
 	  }, {
 	    name: "Taxiholdeplass",
