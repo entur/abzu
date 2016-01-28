@@ -3,7 +3,7 @@
 angular.module("abzu.service").factory('stopPlaceTypeService', [function() {
 
 	var stopPlaceTypes = [
-		{ name : "Bussholdeplass", value: "onstreetBus"}, 
+		{ name : "Busstopp", value: "onstreetBus"}, 
 		{ name : "Trikkeholdeplass", value: "onstreetTram"},
 		{ name : "Flyplass", value: "airport"},
 		{ name : "Togstasjon", value: "railStation"},
