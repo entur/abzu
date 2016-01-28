@@ -4,7 +4,7 @@
 	},
 	"leaflet": {
 		"tesseraLayer": {
-	        "name": "Tessera tiles",
+	        "name": "Rutebankens kart",
 	        "url": "http://map.rutebanken.org/hsl-map/{z}/{x}/{y}.png",
 	        "type": "xyz"
 	    }
