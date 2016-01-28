@@ -89,7 +89,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
       var quay = {
         markerKey: markerKey,
-        name: "Nytt stopppunkt",
+        name: "Ny Quay",
         centroid: {
           location: {
             latitude: latitude,
@@ -118,7 +118,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     };
 
     $scope.quayNameChanged = function(quay) {
-      $scope.markers[quay.markerKey].message = "Stoppunkt: " + quay.name;
+      $scope.markers[quay.markerKey].message = "Quay: " + quay.name;
     };
 
     $scope.stopPlaceNameChanged = function() {
@@ -173,7 +173,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         $scope.markers[markerKey] = {
           lat: quay.centroid.location.latitude,
           lng: quay.centroid.location.longitude,
-          message: "Stoppunkt: " + quay.name,
+          message: "Quay: " + quay.name,
           icon: quayMarkerIcon,
           focus: false,
           draggable: true,
