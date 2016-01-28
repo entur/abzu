@@ -1,4 +1,6 @@
-<h5>Holdeplasser</h5>
+<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
+	Stop Place list <span class="ion-help-circled pull-right"/>
+</h5>
 
 <div class="row">
 
@@ -7,7 +9,7 @@
 	         ng-model="search.query"
 	         ng-change="change()"
 	         ng-model-options="{ debounce: 600 }"
-	         placeholder="Filtrer på holdeplassnavn"
+	         placeholder="Filtrer på navn"
 	         class="u-full-width" />
 
 		<table class="u-full-width">
@@ -26,7 +28,7 @@
 	</div>
 
 	<div class="six columns">
-		<leaflet markers="markers" event-broadcast="events" layers="layers" height="250px" width="450px"></leaflet>
+		<leaflet markers="markers" event-broadcast="events" layers="layers" height="600px" width="100%"></leaflet>
 	</div>
 
 </div>

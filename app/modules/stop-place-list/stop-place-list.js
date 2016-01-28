@@ -15,15 +15,6 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     $scope.search = { query: "" };
     $scope.markers = {};
 
-    $scope.definedLayers = {
-        local_map: config.leaflet.tesseraLayer,
-        osm: {
-            name: 'OpenStreetMap',
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            type: 'xyz'
-        }
-    };
-
     angular.extend($scope, {
         center: {
           autodiscover: true
@@ -35,10 +26,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
             }
         },
         layers: {
-            baselayers: {
-                osm: $scope.definedLayers.osm,
-                local_map: $scope.definedLayers.local_map
-            }
+            baselayers: config.leaflet.layers
         }
     });
 
@@ -53,7 +41,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         if (baselayers.hasOwnProperty(layerName)) {
             delete baselayers[layerName];
         } else {
-            baselayers[layerName] = $scope.definedLayers[layerName];
+            baselayers[layerName] = layers.baselayers[layerName];
         }
     };
 
@@ -64,7 +52,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     var updateScope = function() {
         $scope.markers = {};
         var bounds = [];
-       
+
         // Use time in millis in cluster group to avoid problem with missing markers/clusters.
         var timeInMillis = new Date().getTime();
 
