@@ -28,25 +28,13 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       prefix: 'ion',
     };
 
-    $scope.definedLayers = {
-      local_map: config.leaflet.tesseraLayer,
-      osm: {
-        name: 'OpenStreetMap',
-        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        type: 'xyz'
-      }
-    };
-
     angular.extend($scope, {
       center: {
         autodiscover: true,
         zoom: 6
       },
       layers: {
-        baselayers: {
-          local_map: $scope.definedLayers.local_map,
-          osm: $scope.definedLayers.osm
-        }
+        baselayers: config.leaflet.layers
       },
       markers: {}
     });
@@ -58,7 +46,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       if (baselayers.hasOwnProperty(layerName)) {
         delete baselayers[layerName];
       } else {
-        baselayers[layerName] = $scope.definedLayers[layerName];
+        baselayers[layerName] = $scope.layers.baselayers[layerName];
       }
     };
 
