@@ -36,8 +36,8 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
         },
         layers: {
             baselayers: {
-                osm: $scope.definedLayers.osm,
-                local_map: $scope.definedLayers.local_map
+              local_map: $scope.definedLayers.local_map,
+              osm: $scope.definedLayers.osm
             }
         }
     });
@@ -64,7 +64,7 @@ angular.module('abzu.stopPlaceList', ['ngRoute'])
     var updateScope = function() {
         $scope.markers = {};
         var bounds = [];
-       
+
         // Use time in millis in cluster group to avoid problem with missing markers/clusters.
         var timeInMillis = new Date().getTime();
 

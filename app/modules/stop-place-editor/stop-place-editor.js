@@ -44,8 +44,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
       },
       layers: {
         baselayers: {
-          osm: $scope.definedLayers.osm,
-          local_map: $scope.definedLayers.local_map
+          local_map: $scope.definedLayers.local_map,
+          osm: $scope.definedLayers.osm
         }
       },
       markers: {}
