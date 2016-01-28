@@ -1,10 +1,11 @@
-<a href="#/stopPlaceList">Tilbake til holdeplasser</a>
+<a href="#/stopPlaceList">Tilbake til Stop Places</a>
 
 <form class="simple-form">
 	<div class="row">
 		<div class="six columns">
 			<div class="editing-segment" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
-				<label for="stopPlaceName">Stoppestedsnavn:</label>
+				<h5>Stop Place</h5>
+				<label for="stopPlaceName">Navn:</label>
 				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
 
 				<label for="stopPlaceShortName">Kort navn:</label>
@@ -13,7 +14,7 @@
 				<label for="stopPlaceDescription">Beskrivelse:</label>
 				<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
 
-				<label for="stopPlaceType">Stoppestedstype:</label>
+				<label for="stopPlaceType">type:</label>
 				<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
 					<option ng-repeat="stopPlaceType in stopPlaceTypes"
 							value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
@@ -26,12 +27,12 @@
 			</div>
 
 			<div class="">
-				<button class="button-primary" ng-click="newQuay()" title="Legg til nytt stoppunkt">Nytt stoppunkt</button>
+				<button class="button-primary" ng-click="newQuay()" title="Legg til nytt stoppunkt">Ny Quay</button>
 
 				<div ng-repeat="quay in stopPlace.quays" class="editing-segment row" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 
 					<div class="five columns">
-						<label for="quayName{{ $index }}">Stoppunkt</label>
+						<label for="quayName{{ $index }}">Quay</label>
 						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
 						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle områder i stoppunkt tilgjengelig for rullestol:</label>
