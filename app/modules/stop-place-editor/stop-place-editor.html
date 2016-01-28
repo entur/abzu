@@ -23,7 +23,9 @@
 					</option>
 				</select>
 
-				<label for=="allAreasWheelchairAccessible">Alle områder i stoppested tilgjengelig for rullestol:</label>
+				<label for=="allAreasWheelchairAccessible" title="Whether all areas of component are accessible in a Wheelchair.">
+					Alle områder i stoppested tilgjengelig for rullestol: <span class="ion-help-circled pull-right"/>
+				</label>
 				<input id="allAreasWheelchairAccessible" type="checkbox" ng-model="stopPlace.allAreasWheelchairAccessible" />
 
 			</div>
@@ -43,7 +45,9 @@
 
 						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
-						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle områder i stoppunkt tilgjengelig for rullestol:</label>
+						<label for=="allAreasWheelchairAccessible{{ $index }}" title="Whether all areas of component are accessible in a Wheelchair.">
+							Alle områder i stoppunkt tilgjengelig for rullestol: <span class="ion-help-circled pull-right"/>
+						</label>
 						<input id="allAreasWheelchairAccessible{{ $index }}" type="checkbox" ng-model="quay.allAreasWheelchairAccessible" />
 					</div>
 
