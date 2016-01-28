@@ -4,7 +4,9 @@
 	<div class="row">
 		<div class="six columns">
 			<div class="editing-segment" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
-				<h5>Stop Place</h5>
+				<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
+					Stop Place <span class="ion-help-circled pull-right"/>
+				</h5>
 				<label for="stopPlaceName">Navn:</label>
 				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
 
@@ -27,12 +29,18 @@
 			</div>
 
 			<div class="">
-				<button class="button-primary" ng-click="newQuay()" title="Legg til nytt stoppunkt">Ny Quay</button>
+				<button class="button-primary" ng-click="newQuay()" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
+					Ny Quay
+				</button>
 
 				<div ng-repeat="quay in stopPlace.quays" class="editing-segment row" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 
 					<div class="five columns">
-						<label for="quayName{{ $index }}">Quay</label>
+						<label for="quayName{{ $index }}" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
+							Quay
+							<span class="ion-help-circled pull-right"/>
+						</label>
+
 						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
 
 						<label for=="allAreasWheelchairAccessible{{ $index }}">Alle områder i stoppunkt tilgjengelig for rullestol:</label>
