@@ -3,7 +3,7 @@
 angular.module("abzu.service").factory('stopPlaceTypeService', [function() {
 
 	var stopPlaceTypes = [
-		{ name : "Busstopp", value: "onstreetBus"}, 
+		{ name : "Buss	topp", value: "onstreetBus"},
 		{ name : "Trikkeholdeplass", value: "onstreetTram"},
 		{ name : "Flyplass", value: "airport"},
 		{ name : "Togstasjon", value: "railStation"},
@@ -14,7 +14,7 @@ angular.module("abzu.service").factory('stopPlaceTypeService', [function() {
 		{ name : "Kai", value: "harbourPort"},
 		{ name : "Fergekai", value: "ferryPort"},
 		{ name : "Fergestopp", value: "ferryStop"},
-		{ name : "Heisstasjon", value: "liftStation"},
+		{ name : "Gondolbanestasjon", value: "liftStation"},
 		{ name : "Overgang buss tog", value: "vehicleRailInterchange"},
 		{ name : "Annet", value: "other"}
 	];
