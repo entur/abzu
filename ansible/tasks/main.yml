@@ -1,6 +1,6 @@
 ---
-#- set_fact: build_home="/usr/src/jenkinsbuild/workspace/abzu"
-- set_fact: build_home="/home/en/git/rutebanken/abzu"
+- set_fact: build_home="/usr/src/jenkinsbuild/workspace/abzu"
+#- set_fact: build_home="/home/en/git/rutebanken/abzu"
 
 - name: Make abzu target directory structure
   file: path={{abzu_root}}/ state=directory mode=0755 group=users
