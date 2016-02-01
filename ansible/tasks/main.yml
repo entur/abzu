@@ -1,0 +1,23 @@
+---
+#- set_fact: build_home="/usr/src/jenkinsbuild/workspace/abzu"
+- set_fact: build_home="/home/en/git/rutebanken/abzu"
+
+- name: Make abzu target directory structure
+  file: path={{abzu_root}}/ state=directory mode=0755 group=users
+
+- name: Copy the abzu sources to staging directory
+  copy: force=true src={{ build_home }}/ dest={{abzu_root}}/source
+
+- name: Copy config.json
+  copy: force=true src=config.json dest={{abzu_root}}/abzu_config.json
+
+- name: Move Dockerfile
+  template: src=Dockerfile.j2 dest={{abzu_root}}/Dockerfile mode=0755
+
+- name: Build the abzu docker image (this takes about 2 minutes)
+  shell: docker build --tag={{ abzu_docker_image|quote }} --force-rm=true {{abzu_root}}
+  register: image
+
+- name: Push abzu docker image if built
+  when: image.changed
+  shell: echo docker push {{ abzu_docker_image|quote }}

@@ -1,0 +1,24 @@
+{
+	"tiamat": {
+		"baseUrl": "http://nhr.rutebanken.org/jersey"
+	},
+	"leaflet": {
+		"layers" : {
+			"local_map": {
+				"name": "Rutebankens kart",
+				"url": "http://map.rutebanken.org/hsl-map/{z}/{x}/{y}.png",
+				"type": "xyz"
+			},
+			"google_hybrid": {
+				"name": "Google Hybrid",
+				"layerType": "HYBRID",
+				"type": "google"
+			},
+			"osm": {
+				"name": "OpenStreetMap",
+				"url": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+				"type": "xyz"
+			}
+		}
+	}
+}
