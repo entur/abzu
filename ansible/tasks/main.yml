@@ -20,4 +20,4 @@
 
 - name: Push abzu docker image if built
   when: image.changed
-  shell: echo docker push {{ abzu_docker_image|quote }}
+  shell: docker push {{ abzu_docker_image|quote }}
