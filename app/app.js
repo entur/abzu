@@ -1,3 +1,5 @@
+// app.js where keycloack is disabled.
+
 'use strict';
 
 angular.module('abzu.service', []);
@@ -22,9 +24,27 @@ module.config(['$routeProvider', function($routeProvider) {
 angular.element(document).ready(function () {
   console.log("Setting up keycloak");
 
+  module.factory('Auth', function() {
+    var Auth = {};
+
+    Auth.logout = function() {
+    }
+
+    Auth.getIdentity = function() {
+    }
+
+    Auth.getToken = function() {
+    }
+
+    Auth.updateToken = function(seconds) {
+    }
+
+    return Auth;
+  });
+/*
   var keycloakAuth = new Keycloak('config/keycloak.json');
   keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
-    
+
     module.factory('Auth', function() {
       var Auth = {};
 
@@ -99,9 +119,24 @@ angular.element(document).ready(function () {
         console.log("Error reading configuration file 'config/config.json'. Angular bootstrap will not be called.");
         console.log(error);
       });
+
     }).error(function () {
       console.log("ERROR setting up keycloak");
     });
+
+    */
+
+    getJson('config/config.json', function(config) {
+        module.value('appConfig', config);
+
+        console.log("Calling angular bootstrap");
+        angular.bootstrap(document, ['abzu']);
+
+      }, function(error) {
+        console.log("Error reading configuration file 'config/config.json'. Angular bootstrap will not be called.");
+        console.log(error);
+      });
+
 });
 
 function getJson(path, success, error) {
@@ -112,11 +147,10 @@ function getJson(path, success, error) {
       if (xhr.status === 200) {
         success(JSON.parse(xhr.responseText));
       } else {
-        error(xhr);    
+        error(xhr);
       }
     }
   };
   xhr.open("GET", path, true);
   xhr.send();
 }
-
