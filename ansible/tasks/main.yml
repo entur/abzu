@@ -5,11 +5,8 @@
 - name: Make abzu target directory structure
   file: path={{abzu_root}}/ state=directory mode=0755 group=users
 
-- name: Remove old copied source files
-  file: path={{abzu_root}}/source state=absent
-
-- name: Copy the abzu sources to staging directory
-  copy: force=true src={{ build_home }}/ dest={{abzu_root}}/source
+- name: Copy the abzu sources to staging directory 
+  command: rsync -ar --delete {{ build_home }}/ {{abzu_root}}/source
 
 - name: Copy config.json
   copy: force=true src=config.json dest={{abzu_root}}/abzu_config.json
