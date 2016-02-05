@@ -1,80 +1,119 @@
 <a href="#/stopPlaceList">Tilbake til Stop Places</a>
 
-<form class="simple-form">
+<form class="">
 	<div class="row">
-		<div class="six columns">
-			<div class="editing-segment" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
-				<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
-					Stop Place <span class="ion-help-circled pull-right"/>
-				</h5>
-				<label for="stopPlaceName">Navn:</label>
-				<input id="stopPlaceName" type="text" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
+		<div class="col-md-6">
+			<div class="row bottom-buffer">
+				<div class="editing-segment col-sm-12" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
 
-				<label for="stopPlaceShortName">Kort navn:</label>
-				<input id="stopPlaceShortName" type="text" ng-model="stopPlace.shortName" />
+					<div class="row">
+						<div class="col-sm-12">
+							<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
+								Stop Place <span class="ion-help-circled"/>
+							</h5>
+						</div>
+					</div>
 
-				<label for="stopPlaceDescription">Beskrivelse:</label>
-				<input id="stopPlaceDescription" type="text" ng-model="stopPlace.description" />
+					<div class="row">
+						<div class="col-md-6">
+							<label for="stopPlaceName">Navn:</label>
+							<input id="stopPlaceName" type="text" class="form-control" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
+						</div>
+						<div class="col-md-6">
+							<label for="stopPlaceShortName">Kort navn:</label>
+							<input id="stopPlaceShortName" type="text" class="form-control" ng-model="stopPlace.shortName" />
+						</div>
+					</div>
 
-				<label for="stopPlaceType">type:</label>
-				<select id="stopPlaceType" ng-model="stopPlace.stopPlaceType">
-					<option ng-repeat="stopPlaceType in stopPlaceTypes"
-							value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
-					</option>
-				</select>
+					<div class="row">
+						<div class="col-md-12">
+							<label for="stopPlaceDescription">Beskrivelse:</label>
+							<input id="stopPlaceDescription" type="text" class="form-control" ng-model="stopPlace.description" />
+						</div>
+					</div>
 
-				<label for=="allAreasWheelchairAccessible" title="Whether all areas of component are accessible in a Wheelchair.">
-					Alle områder i stoppested tilgjengelig for rullestol: <span class="ion-help-circled pull-right"/>
-				</label>
-				<input id="allAreasWheelchairAccessible" type="checkbox" ng-model="stopPlace.allAreasWheelchairAccessible" />
+					<div class="row">
+						<div class="col-md-6">
+							<label for="stopPlaceType">type:</label>
+							<select id="stopPlaceType" class="form-control" ng-model="stopPlace.stopPlaceType">
+								<option ng-repeat="stopPlaceType in stopPlaceTypes"
+										value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
+									</option>
+							</select>
+						</div>
+					</div>
 
+					<div class="row top-buffer">
+						<div class="col-md-12">
+							<label class="checkbox-inline" title="Whether all areas of component are accessible in a Wheelchair.">
+								<input id="allAreasWheelchairAccessible" type="checkbox" ng-model="stopPlace.allAreasWheelchairAccessible" />
+								Alle områder i Stop Place tilgjengelig for rullestol: <span class="ion-help-circled"/>
+							</label>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<div class="">
-				<button class="button-primary" ng-click="newQuay()" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
-					Ny Quay
-				</button>
+			<div class="row top-buffer bottom-buffer">
+				<div class="col-sm-12">
+					<button class="btn btn-primary" class="form-control" ng-click="newQuay()" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
+						Ny Quay
+					</button>
+				</div>
+			</div>
 
-				<div ng-repeat="quay in stopPlace.quays" class="editing-segment row" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
+			<!-- Quays -->
+			<div ng-repeat="quay in stopPlace.quays" class="editing-segment row bottom-buffer" ng-class="{'currently-editing': isEditingQuay(quay)}" ng-click="quayFormClicked(quay)">
 
-					<div class="five columns">
-						<label for="quayName{{ $index }}" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
-							Quay
-							<span class="ion-help-circled pull-right"/>
-						</label>
-
-						<input id="quayName{{ $index }}" type="text" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
-
-						<label for=="allAreasWheelchairAccessible{{ $index }}" title="Whether all areas of component are accessible in a Wheelchair.">
-							Alle områder i stoppunkt tilgjengelig for rullestol: <span class="ion-help-circled pull-right"/>
-						</label>
-						<input id="allAreasWheelchairAccessible{{ $index }}" type="checkbox" ng-model="quay.allAreasWheelchairAccessible" />
+				<div class="col-md-12">
+					<div class="row top-buffer">
+						<div class="col-md-10">
+							<div title="A place such as platform, stance, or quayside where passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
+								Quay <span class="ion-help-circled"/>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary pull-right" class="form-control" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt">fjern</button>
+						</div>
 					</div>
 
-					<div class="five columns">
-						<label for="quayType{{ $index }}">Type:</label>
-						<select id="quayType{{ $index }}" ng-model="quay.quayType">
-							<option ng-repeat="quayType in quayTypes" value="{{ quayType.value }}">
-								{{ quayType.name }}
-							</option>
-						</select>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="quayName{{ $index }}">Navn</label>
+							<input id="quayName{{ $index }}" type="text" class="form-control" ng-model="quay.name" ng-change="quayNameChanged(quay)"/>
+						</div>
+						<div class="col-md-6">
+							<label for="quayType{{ $index }}">Type:</label>
+							<select id="quayType{{ $index }}" class="form-control" ng-model="quay.quayType">
+								<option ng-repeat="quayType in quayTypes" value="{{ quayType.value }}">
+									{{ quayType.name }}
+								</option>
+							</select>
+						</div>
 					</div>
-					<div class="two columns">
-						<button class="button-primary" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt">fjern</button>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline" title="Whether all areas of component are accessible in a Wheelchair.">
+								<input id="allAreasWheelchairAccessible{{ $index }}" type="checkbox" ng-model="quay.allAreasWheelchairAccessible" />
+
+								Alle områder i Quay tilgjengelig for rullestol: <span class="ion-help-circled"/>
+							</label>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="six columns">
-		    <leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="600px" width="100%"></leaflet>
-    </div>
-  </div>
+		<div class="col-md-6">
+			<leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="600px" width="100%"></leaflet>
+	  </div>
+	</div>
 
-  <div class="row">
-    <div class="twelve columns">
-      <input type="button" ng-click="reset()" value="Gjenopprett" />
-      <input type="submit" ng-click="save()" value="Lagre" />
+	<div class="row">
+  	<div class="col-md-12">
+    	<input type="button" class="btn btn-primary" ng-click="reset()" value="Gjenopprett" />
+    	<input type="submit" class="btn btn-primary" ng-click="save()" value="Lagre" />
     </div>
-  </div>
+	</div>
 </form>
