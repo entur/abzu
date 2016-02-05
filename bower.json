@@ -11,7 +11,6 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "angular-resource": "~1.4.8",
-    "html5-boilerplate": "~5.2.0",
     "ui-leaflet": "^1.0.0",
     "leaflet.markercluster": "^0.4.0",
     "keycloak": "~1.6.1",
