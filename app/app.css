@@ -39,7 +39,7 @@ th, td {
 
 .editing-segment:hover {
   cursor: pointer;
-  background-color: #DFE6E6;
+  outline: 1px solid orange;
 }
 
 .currently-editing {
@@ -50,3 +50,7 @@ th, td {
   cursor: pointer;
   background-color: #DFE6E6;
 }
+
+.top-buffer { margin-top:20px; }
+
+.bottom-buffer { margin-bottom: 20px; }
