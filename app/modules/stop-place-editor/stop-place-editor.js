@@ -15,7 +15,7 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
     var stopPlaceMarkerIcon = {
       type: 'extraMarker',
       icon: 'ion-gear-a',
-      markerColor: 'red',
+      markerColor: 'black',
       prefix: 'ion',
       shape: 'circle'
     };
