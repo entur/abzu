@@ -7,9 +7,9 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', 'appConfig'
 	}
 
 	function getStopPlaces() {
-		return $http.get(config.tiamat.baseUrl+'/stop_place').
+		return $http.get(config.tiamat.baseUrl+'/stop_place?size=15').
 	    	then(function(data) {
-				return data.data; 
+				return data.data;
 	    	});
 	};
 
@@ -23,7 +23,7 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', 'appConfig'
 	function getStopPlace(stopPlaceId) {
 		return $http.get(config.tiamat.baseUrl+'/stop_place/'+stopPlaceId).
         	then(function(data) {
-				return data.data; 
+				return data.data;
         	});
 	};
 
@@ -32,7 +32,7 @@ angular.module("abzu.service").factory('stopPlaceService', ['$http', 'appConfig'
 		console.log(stopPlace);
 		return $http.post(config.tiamat.baseUrl+'/stop_place/'+stopPlace.id, stopPlace).
         	then(function(data) {
-				return data.data; 
+				return data.data;
         	});
 	};
 
