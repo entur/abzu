@@ -1,45 +1,19 @@
 /* app css stylesheet */
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-th, td {
-  padding: 2px 4px;
-}
-
 .coloured-block {
   background-color: #E8ECF1;
 }
 
+.editing-segment {
+  border: 1px solid #eee;
+  border-left: 5px solid #16c1f3;
+  border-radius: 3px;
+  padding-bottom: 20px;
+}
+
 .editing-segment:hover {
   cursor: pointer;
-  outline: 1px solid orange;
+  outline: 2px solid #eee;
 }
 
 .currently-editing {
@@ -51,6 +25,6 @@ th, td {
   background-color: #DFE6E6;
 }
 
-.top-buffer { margin-top:20px; }
+.top-buffer { margin-top:10px; }
 
-.bottom-buffer { margin-bottom: 20px; }
+.bottom-buffer { margin-bottom: 10px; }
