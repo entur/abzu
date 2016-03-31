@@ -6,7 +6,7 @@
 		"layers" : {
 			"local_map": {
 				"name": "Rutebankens kart",
-				"url": "http://map.rutebanken.org/hsl-map/{z}/{x}/{y}.png",
+				"url": "http://apiman.rutebanken.org//apiman-gateway/rutebanken/map/{z}/{x}/{y}.png",
 				"type": "xyz"
 			},
 			"google_hybrid": {
