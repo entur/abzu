@@ -1,6 +1,6 @@
 {
 	"tiamat": {
-		"baseUrl": "http://nhr.rutebanken.org/jersey"
+		"baseUrl": "http://localhost:1888/jersey"
 	},
 	"leaflet": {
 		"layers" : {

@@ -22,7 +22,8 @@ module.config(['$routeProvider', function($routeProvider) {
 
 // Set up keycloak and the Auth service.
 angular.element(document).ready(function () {
-  console.log("Setting up keycloak");
+
+  console.log("Setting up keycloak: Keycloak is never used");
 
   module.factory('Auth', function() {
     var Auth = {};
@@ -141,8 +142,7 @@ angular.element(document).ready(function () {
 
 function getJson(path, success, error) {
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function()
-{
+  xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         success(JSON.parse(xhr.responseText));

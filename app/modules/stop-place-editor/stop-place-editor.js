@@ -59,7 +59,8 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
 
       stopPlaceService.saveStopPlace($scope.stopPlace).then(function() {
         console.log("saved");
-        $window.location.href = '#/';
+        notification.notify("success", "Stop place was saved successfully");
+        //$window.location.href = '#/';
       });
     };
 

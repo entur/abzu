@@ -17,6 +17,8 @@
     "Leaflet.extra-markers": "~1.0.3",
     "Ionicons": "ionicons#~2.0.1",
     "leaflet-plugins": "~1.4.2",
-    "bootstrap": "^3.3.6"
+    "notification-js": "^1.1.1",
+    "node-sass": "^3.8.0",
+    "bootstrap-sass": "^3.3.6"
   }
 }

@@ -1,12 +1,19 @@
-<a href="#/stopPlaceList">Tilbake til Stop Places</a>
+
+<a class="return top-buffer" href="#/stopPlaceList">Tilbake til Stop Places</a>
 
 <form class="">
 	<div class="row">
 		<div class="col-md-6">
+			<leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="600px" width="100%"></leaflet>
+		</div>
+	</div>
+	</div>
+	<div class="row top-buffer">
+		<div class="col-md-6 left-buffer">
 			<div class="row bottom-buffer">
 				<div class="editing-segment col-sm-12" ng-class="{'currently-editing': isEditingStopPlace()}" ng-click="stopPlaceClicked()">
 
-					<div class="row">
+					<div class="row bottom-buffer">
 						<div class="col-sm-12">
 							<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
 								Stop Place <span class="ion-help-circled"/>
@@ -16,25 +23,25 @@
 
 					<div class="row">
 						<div class="col-md-6">
-							<label for="stopPlaceName">Navn:</label>
+							<label for="stopPlaceName">Navn</label>
 							<input id="stopPlaceName" type="text" class="form-control" ng-model="stopPlace.name" ng-change="stopPlaceNameChanged()" required/>
 						</div>
-						<div class="col-md-6">
+						<!--<div class="col-md-6">
 							<label for="stopPlaceShortName">Kort navn:</label>
 							<input id="stopPlaceShortName" type="text" class="form-control" ng-model="stopPlace.shortName" />
-						</div>
+						</div>-->
 					</div>
 
 					<div class="row">
 						<div class="col-md-12">
-							<label for="stopPlaceDescription">Beskrivelse:</label>
+							<label for="stopPlaceDescription">Beskrivelse</label>
 							<input id="stopPlaceDescription" type="text" class="form-control" ng-model="stopPlace.description" />
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-6">
-							<label for="stopPlaceType">type:</label>
+							<label for="stopPlaceType">Type</label>
 							<select id="stopPlaceType" class="form-control" ng-model="stopPlace.stopPlaceType">
 								<option ng-repeat="stopPlaceType in stopPlaceTypes"
 										value="{{ stopPlaceType.value }}">{{ stopPlaceType.name }}
@@ -50,16 +57,18 @@
 								Alle områder i Stop Place tilgjengelig for rullestol: <span class="ion-help-circled"/>
 							</label>
 						</div>
+						<div class="col-md-6 top-buffer">
+							<button class="btn btn-primary btn-large" class="form-control" ng-click="newQuay()" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
+								Ny Quay
+							</button>
+						</div>
 					</div>
+
 				</div>
 			</div>
 
 			<div class="row top-buffer bottom-buffer">
-				<div class="col-sm-12">
-					<button class="btn btn-primary" class="form-control" ng-click="newQuay()" title="A place such as platform, stance, or quayside where  passengers have access to PT vehicles, Taxi, cars or other means of transportation. A QUAY may serve one or more VEHICLE STOPPING PLACEs and be associated with one or more STOP POINTS.">
-						Ny Quay
-					</button>
-				</div>
+
 			</div>
 
 			<!-- Quays -->
@@ -73,7 +82,7 @@
 							</div>
 						</div>
 						<div class="col-md-2">
-							<button class="btn btn-primary pull-right" class="form-control" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt">fjern</button>
+							<button class="btn btn-primary pull-right" class="form-control" ng-click="removeQuay(quay, $event)" title="Fjern stopppunkt">Fjern</button>
 						</div>
 					</div>
 
@@ -105,14 +114,9 @@
 			</div>
 		</div>
 
-		<div class="col-md-6">
-			<leaflet markers="markers" defaults="defaults" layers="layers" lf-center="center" height="600px" width="100%"></leaflet>
-	  </div>
-	</div>
-
 	<div class="row">
-  	<div class="col-md-12">
-    	<input type="button" class="btn btn-primary" ng-click="reset()" value="Gjenopprett" />
+  	<div class="col-md-12 left-buffer bottom-buffer">
+    	<input type="button" class="btn btn-primary" ng-click="reset()" value="Nullstill" />
     	<input type="submit" class="btn btn-primary" ng-click="save()" value="Lagre" />
     </div>
 	</div>

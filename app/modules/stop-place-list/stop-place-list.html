@@ -1,8 +1,14 @@
-<h5 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
+<h2 title="A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.">
 	Stop Place list <span class="ion-help-circled"/>
-</h5>
+</h2>
 
-<div class="row">
+<div class="row top-buffer">
+	<div class="col-md-6">
+		<leaflet markers="markers" event-broadcast="events" layers="layers" height="600px" width="100%"></leaflet>
+	</div>
+</div>
+
+<div class="row top-buffer">
 
 	<div class="col-md-6">
 		<input type="text"
@@ -14,7 +20,6 @@
 
 		<table class="table table-striped table-hover table-responsive">
 			<thead><th>Navn</th><th>Kortnavn</th><th>Type</th><th>Kommune</th><th>Fylke</th></thead>
-
 			<tbody>
 				<tr ng-repeat="stopPlace in stopPlaces" ng-click="edit(stopPlace.id)">
 					<td>{{ stopPlace.name }}</td>
@@ -27,7 +32,4 @@
 		</table>
 	</div>
 
-	<div class="col-md-6">
-		<leaflet markers="markers" event-broadcast="events" layers="layers" height="600px" width="100%"></leaflet>
-	</div>
 </div>

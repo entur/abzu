@@ -1,4 +1,7 @@
-/* app css stylesheet */
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "./partials/_navigations";
+
+/* general styling */
 
 .coloured-block {
   background-color: #E8ECF1;
@@ -28,3 +31,5 @@
 .top-buffer { margin-top:10px; }
 
 .bottom-buffer { margin-bottom: 10px; }
+
+.left-buffer {  margin-left: 10px; }
