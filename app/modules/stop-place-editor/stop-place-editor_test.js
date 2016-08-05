@@ -3,6 +3,10 @@
 describe('abzu.stopPlaceEditor module', function() {
 
   var stopPlaceService;
+  window.notification  = {
+    notify: function() {
+    }
+  }
 
   beforeEach(function() {
       angular.mock.module('abzu.service');
