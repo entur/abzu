@@ -1,6 +1,6 @@
 {
 	"tiamat": {
-		"baseUrl": "https://test.rutebanken.org/admin/nhr/jersey"
+		"baseUrl": "https://test.rutebanken.org/admin/nsr/jersey"
 	},
 	"leaflet": {
 		"layers" : {
