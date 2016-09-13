@@ -1,0 +1,1 @@
+export MapActionCreator from './MapActionCreator'
