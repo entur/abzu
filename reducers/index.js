@@ -1,2 +1,3 @@
 export userReducer from './userReducer'
-export mapReducer from './mapReducer'
+export stopPlacesReducer from './stopPlacesReducer'
+export editStopReducer from './editStopReducer'

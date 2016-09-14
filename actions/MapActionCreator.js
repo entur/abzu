@@ -17,4 +17,5 @@ MapActionCreator.setActiveMarkers = (activeMarkers, centerPosition) => {
   }
 }
 
+
 export default MapActionCreator

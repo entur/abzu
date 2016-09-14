@@ -1,9 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 
-const CustomPopupMarker = ({ children, position }) => {
+const CustomPopupMarker = ({ children, position, draggable, isQuay }) => {
+
+  if (isQuay) {
+    children += " (quay) "
+  }
+  
   return (
-    <Marker position={position}>
+    <Marker draggable={draggable} position={position}>
       <Popup>
         <span>{children}</span>
       </Popup>

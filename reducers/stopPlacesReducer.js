@@ -9,7 +9,7 @@ const intialState = {
   zoom: 7
 }
 
-const mapReducer = (state = intialState, action) => {
+const stopPlacesReducer = (state = intialState, action) => {
 
   switch (action.type) {
 
@@ -27,4 +27,4 @@ const mapReducer = (state = intialState, action) => {
   }
 }
 
-export default mapReducer
+export default stopPlacesReducer
