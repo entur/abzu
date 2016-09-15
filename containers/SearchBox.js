@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
-import dataSource from '../config/restMock.js'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import { MapActionCreator } from '../actions/'
@@ -24,35 +23,13 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarkers } = this.props
+    const { activeMarkers, dataSource } = this.props
 
     let selectedMarker = null
 
     if (activeMarkers.length) {
       selectedMarker = activeMarkers[0]
     }
-
-    // TODO - This mapping will of course be moved to action creator from REST response
-    const suggestions = dataSource.map( (stop, index) => {
-        return {
-          text: `${stop.name}, ${stop.municipality} (${stop.county})`,
-          value: stop.id,
-          location: {
-            lng: stop.centroid.location.longitude,
-            lat: stop.centroid.location.latitude
-          },
-          markerProps: {
-            key: `marker${index}`,
-            position: [stop.centroid.location.latitude, stop.centroid.location.longitude],
-            children: stop.name,
-            description: stop.description,
-            municipality: stop.municipality,
-            county: stop.county,
-            quays: stop.quays,
-            draggable: false
-          }
-        }
-    })
 
     const SbStyle = {
       top: "100px",
@@ -70,7 +47,7 @@ class SearchBox extends React.Component {
         <div style={{float: "left", width: "90%"}}>
           <AutoComplete
            hintText="Filtrer på navn"
-           dataSource={suggestions}
+           dataSource={dataSource}
            filter={AutoComplete.caseInsensitiveFilter}
            onUpdateInput={this.handleUpdateInput}
            maxSearchResults={5}
@@ -94,7 +71,8 @@ class SearchBox extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeMarkers: state.stopPlacesReducer.activeMarkers
+    activeMarkers: state.stopPlacesReducer.activeMarkers,
+    dataSource: state.stopPlacesReducer.dataSource
   }
 }
 

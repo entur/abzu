@@ -1,9 +1,18 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
 import LeafLetMap from '../components/LeafLetMap'
+import AjaxCreator from '../actions/AjaxCreator'
+
 
 class StopPlacesMap extends React.Component {
+
+  handleClick() {
+    console.log("map clicked")
+  }
+
+  componentDidMount() {
+    this.props.dispatch(AjaxCreator.getDataSource())
+  }
 
   render() {
 
@@ -21,10 +30,7 @@ class StopPlacesMap extends React.Component {
         markers={markers}
         zoom={zoom}
         lmapStyle={lmapStyle}
-        LayersControl={LayersControl}
-        Lmap={Lmap}
-        TileLayer={TileLayer}
-        ZoomControl={ZoomControl}
+        onClick={this.handleClick}
       />
     )
   }

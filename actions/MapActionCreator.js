@@ -1,6 +1,6 @@
 import * as types from './actionTypes'
 
-const MapActionCreator = {}
+var MapActionCreator = {}
 
 const sendData = (type, payLoad) => {
   return {

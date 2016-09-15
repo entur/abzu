@@ -6,7 +6,7 @@ const MarkerList = ({ stops }) => {
   if (!stops.length) return null
 
   const items = stops.map(({ quays, draggable, key, ...props }) => {
-    
+
     let popupMarkers = []
     let quayPopupMarkers = quays
       .map( (quay, index) => {

@@ -6,7 +6,8 @@ const intialState = {
     lng: 6.4423426500000005,
   },
   activeMarkers: [],
-  zoom: 7
+  zoom: 7,
+  dataSource: []
 }
 
 const stopPlacesReducer = (state = intialState, action) => {
@@ -21,6 +22,9 @@ const stopPlacesReducer = (state = intialState, action) => {
 
     case types.SET_ZOOM:
       return Object.assign({}, state, {zoom: action.payLoad})
+
+    case types.RECEIVED_DATASOURCE:
+      return Object.assign({}, state, {dataSource: action.payLoad})
 
     default:
       return state
