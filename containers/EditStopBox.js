@@ -4,23 +4,71 @@ import AutoComplete from 'material-ui/AutoComplete'
 import dataSource from '../config/restMock.js'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import { MapActionCreator } from '../actions/'
+import { MapActionCreator, AjaxCreator } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
+import QuayItem from '../components/QuayItem'
+import RefreshIndicator from 'material-ui/RefreshIndicator'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+import FlatButton from 'material-ui/FlatButton'
 
 class EditStopBox extends React.Component {
 
+  handleAddQuay() {
+    const {dispatch} = this.props
+    dispatch(MapActionCreator.addNewQuay())
+  }
+
+  handleRemoveQuay(index) {
+    const {dispatch} = this.props
+    dispatch(MapActionCreator.removeQuay(index))
+  }
+
+  handleSave() {
+    const {dispatch} = this.props
+    dispatch(AjaxCreator.saveEditingStop())
+  }
+
   render() {
 
-    const { activeMarkers } = this.props
+    const { activeStopPlace, isLoading, activeMarkers } = this.props
+
+    const loadingStyle = {
+      top: "200px",
+      height: "auto",
+      width: "380px",
+      margin: "20px",
+      position: "absolute",
+      zIndex: "2",
+      padding: "10px"
+    }
+
+    if (isLoading) {
+      return <div style={loadingStyle}>
+        <RefreshIndicator
+          size={50}
+          left={70}
+          top={0}
+          status="loading"
+          />
+      </div>
+    }
 
     let selectedMarker = null
 
-    if (activeMarkers && activeMarkers.length) {
-      selectedMarker = activeMarkers[0]
-      console.log(selectedMarker)
+    if (activeStopPlace && activeStopPlace.length) {
+      selectedMarker = activeStopPlace[0]
     }
 
-    if (selectedMarker == null) return null
+    const categoryStyle = {
+      fontWeight: "600",
+      marginRight: "2%"
+    }
+
+    const quayStyle = {
+      border: "1px solid #e5e5e5",
+      padding: "10px"
+    }
 
     const SbStyle = {
       top: "200px",
@@ -33,35 +81,50 @@ class EditStopBox extends React.Component {
       padding: "10px"
     }
 
-    const titleSyle = {
-      fontWeight: "600",
-      marginLeft: "2%"
+    const addQuayStyle = {
+      display:"inline-block",
+      float: "right"
     }
-
-    const quayStyle = {
-      border: "1px solid #e5e5e5",
-      padding: "10px"
-    }
-
-    const quayItemStyle = {
-      color: "#2196F3",
-      borderBottom: "1px dotted black",
-      cursor: "pointer"
-    }
-
 
     return (
       <div style={SbStyle}>
-        <div>Stoppested:
-          <span style={titleSyle}>{selectedMarker.children}</span>
+        <div>
+          <span style={categoryStyle}>
+            Stoppested:
+          </span>
+          {selectedMarker.text}
         </div>
-        <p>{selectedMarker.description}</p>
-        <p>{selectedMarker.type}</p>
+        <p>
+          {selectedMarker.description}
+        </p>
+        <p>
+          <span style={categoryStyle}>Type:</span> {selectedMarker.type || 'Not specified'}
+        </p>
+        <FlatButton onClick={this.handleSave.bind(this)} label="Save" style={{float:"right", marginTop: "-60px"}} />
+
+      { selectedMarker.markerProps
+        ?
         <div style={quayStyle}>
-          <h3>Quays</h3>
-          { selectedMarker.quays.map( (quay,index) => <span style={quayItemStyle} key={"quay-" + index}>{++index + " " + quay.name}</span>)}
-          <button style={{display:"block", marginTop:"20px"}}>+ Quay</button>
+          <div style={{marginBottom: "40px"}}>
+            <span style={{fontWeight: "600"}}>Quays</span>
+              <FloatingActionButton onClick={this.handleAddQuay.bind(this)} style={addQuayStyle} mini={true}>
+                <ContentAdd />
+            </FloatingActionButton>
+          </div>
+
+          { selectedMarker.markerProps.quays.map( (quay,index) =>
+
+            <QuayItem
+              key={"quay-" + index}
+              quay={quay}
+              index={index}
+              removeQuay={() => this.handleRemoveQuay(index)}
+              />
+          )}
+
         </div>
+        : null
+      }
       </div>
     )
   }
@@ -69,7 +132,8 @@ class EditStopBox extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeMarkers: state.stopPlacesReducer.activeMarkers,
+    activeStopPlace: state.editStopReducer.activeStopPlace,
+    isLoading: state.editStopReducer.activeStopIsLoading
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

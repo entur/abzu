@@ -2,12 +2,11 @@ import React from 'react'
 import MarkerList from './MarkerList'
 import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
 
-
 export default class LeafLetMap extends React.Component {
 
   render() {
 
-    const { lmapStyle, position, zoom, markers, onClick } = this.props
+    const { lmapStyle, position, zoom, markers, handleDragEnd } = this.props
 
     const { BaseLayer, Overlay } = LayersControl
 
@@ -18,7 +17,6 @@ export default class LeafLetMap extends React.Component {
         zoom={zoom}
         zoomControl={false}
         length={4}
-        onClick={(event) => onClick(event, this.refs.map)}
       >
         <LayersControl position='topright'>
           <BaseLayer checked name='Rutebankens kart'>
@@ -35,7 +33,7 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
         </LayersControl>
         <ZoomControl position='bottomright' />
-        <MarkerList stops={markers}/>
+        <MarkerList stops={markers || []} handleDragEnd={handleDragEnd}/>
       </Lmap>)
   }
 }

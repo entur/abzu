@@ -36,12 +36,10 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   // Read contents from configUrl if it is given
   request( configUrl, function( error, response, body ) {
     if ( !error && response.statusCode == 200 ) {
-      // Reconfigure if config was read:
-      fs.writeFileSync('/tmp/bel_config.json',body);
-      conf.loadFile('/tmp/bel_config.json');
+      conf.load(body);
       conf.validate({strict: true});
     } else {
-      var err = "Could not load data from "+configUrl
+      var err = "Could not load data from " + configUrl
       throw new Error(err);
     }
   });

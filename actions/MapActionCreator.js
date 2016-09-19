@@ -17,5 +17,52 @@ MapActionCreator.setActiveMarkers = (activeMarkers, centerPosition) => {
   }
 }
 
+MapActionCreator.addNewQuay = () => {
+  return function(dispatch) {
+    dispatch( sendData(types.ADDED_NEW_QUAY, null) )
+  }
+}
+
+MapActionCreator.removeQuay = (index) => {
+  return function(dispatch) {
+    dispatch( sendData(types.REMOVED_QUAY, index) )
+  }
+}
+
+MapActionCreator.changeQuayName = (index, name) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_QUAY_NAME, {
+      name: name,
+      index: index
+    }))
+  }
+}
+
+MapActionCreator.changeQuayType = (index, type) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_QUAY_TYPE, {
+      index: index,
+      type: type
+    }))
+  }
+}
+
+MapActionCreator.changeQuayPosition = (index, position) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_QUAY_POSITION, {
+      index: index,
+      position: position
+    }))
+  }
+}
+
+MapActionCreator.changeQuayDescription = (index, description) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_QUAY_DESCRIPTION, {
+      index: index,
+      description: description
+    }))
+  }
+}
 
 export default MapActionCreator

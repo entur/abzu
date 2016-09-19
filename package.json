@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.config.js --progress --colors",
     "start": "node server.js",
-    "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/nock/index.js",
+    "test-creators": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/creators/index.js",
+    "test-reducer": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/reducers/index.js",
     "dev": "NODE_ENV=development node server.js"
   },
   "author": "Sean Erik Scully",
@@ -19,6 +20,7 @@
     "classnames": "^2.2.5",
     "convict": "^1.4.0",
     "describe": "^1.2.0",
+    "expect": "^1.20.2",
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
     "jsdom": "9.4.2",
@@ -28,6 +30,7 @@
     "material-ui": "^0.15.4",
     "mocha": "^3.0.2",
     "nightwatch": "^0.9.6",
+    "nock": "^8.0.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-icons": "^2.2.1",
@@ -41,6 +44,7 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-logger": "^2.6.1",
+    "redux-mock-store": "^1.2.0",
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {

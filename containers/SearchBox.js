@@ -3,18 +3,27 @@ import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import { MapActionCreator } from '../actions/'
+import { MapActionCreator, AjaxCreator } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 class SearchBox extends React.Component {
 
-  handleUpdateInput(input) {
-    // TODO: dispatch action to update our dataSource
+
+  handleEdit(id) {
+    this.props.dispatch(AjaxCreator.getStop(id))
+    browserHistory.push('/edit')
   }
 
-  handleNewRequest({ markerProps, location }) {
+  handleUpdateInput(input) {
+    this.props.dispatch(AjaxCreator.getStopNames(input))
+  }
+
+  handleNewRequest({markerProps, position}) {
     if (typeof(markerProps) !== 'undefined') {
-      this.props.dispatch(MapActionCreator.setActiveMarkers(markerProps, location))
+      this.props.dispatch(MapActionCreator.setActiveMarkers(markerProps, position))
+    } else {
+      console.warn('markerProps is not defined in handleNewRequest')
     }
   }
 
@@ -23,13 +32,10 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarkers, dataSource } = this.props
+    const { activeMarkers } = this.props
 
-    let selectedMarker = null
-
-    if (activeMarkers.length) {
-      selectedMarker = activeMarkers[0]
-    }
+    let dataSource = this.props.dataSource || []
+    let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
 
     const SbStyle = {
       top: "100px",
@@ -49,7 +55,7 @@ class SearchBox extends React.Component {
            hintText="Filtrer på navn"
            dataSource={dataSource}
            filter={AutoComplete.caseInsensitiveFilter}
-           onUpdateInput={this.handleUpdateInput}
+           onUpdateInput={this.handleUpdateInput.bind(this)}
            maxSearchResults={5}
            onNewRequest={this.handleNewRequest.bind(this)}
            fullWidth={true}
@@ -61,7 +67,7 @@ class SearchBox extends React.Component {
           </IconButton>
         </div>
         {selectedMarker
-          ?  <SearchBoxDetails marker={selectedMarker}/>
+          ?  <SearchBoxDetails handleEdit={::this.handleEdit} marker={selectedMarker}/>
           :  <SearchBoxDetails hidden/>
         }
       </div>
@@ -72,7 +78,7 @@ class SearchBox extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     activeMarkers: state.stopPlacesReducer.activeMarkers,
-    dataSource: state.stopPlacesReducer.dataSource
+    dataSource: state.stopPlacesReducer.stopPlaceNames.places
   }
 }
 

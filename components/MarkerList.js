@@ -1,39 +1,51 @@
 import React, { Component, PropTypes } from 'react'
 import CustomPopupMarker from './CustomPopupMarker'
 
-const MarkerList = ({ stops }) => {
+const MarkerList = ({ stops, handleDragEnd }) => {
 
-  if (!stops.length) return null
+  let popupMarkers = []
 
-  const items = stops.map(({ quays, draggable, key, ...props }) => {
+  stops.forEach(({ text, position, key, quays, markerProps }) => {
 
-    let popupMarkers = []
-    let quayPopupMarkers = quays
-      .map( (quay, index) => {
-        const position = [quay.centroid.location.latitude, quay.centroid.location.longitude]
-        return (
-          <CustomPopupMarker
-            draggable={draggable}
-            key={key + "-quay" + index}
-            draggable
-            position={position}
-            isQuay
-            children={quay.name}
-          />)
-      })
+    // support both parent position (i.e. stop place) and quays
+    quays = markerProps ? markerProps.quays : quays
 
-    popupMarkers.push((<CustomPopupMarker draggable={draggable} key={key} {...props} />))
-    popupMarkers.push(quayPopupMarkers)
+    popupMarkers.push((
+      <CustomPopupMarker
+        key={"custom-pm-parent"}
+        index="-1"
+        position={position}
+        key={"custom-pm-"}
+        children={text}
+        handleDragEnd={handleDragEnd}
+      />
+    ))
 
-    return popupMarkers
+    if (quays) {
 
-  }).reduce( (prev, curr) => curr.concat(prev))
+       quays.map( (quay, index) => {
+          popupMarkers.push(
+            <CustomPopupMarker
+              index={index}
+              position={{
+                lat: quay.centroid.location.latitude,
+                lng: quay.centroid.location.longitude
+              }}
+              isQuay
+              key={"custom-pm-" + index}
+              children={text}
+              handleDragEnd={handleDragEnd}
+            />)
+        })
+    }
+  })
 
-  return <div style={{display: 'none'}}>{items}</div>
+  return <div style={{display: 'none'}}>{popupMarkers}</div>
 }
 
 MarkerList.propTypes = {
   stops: PropTypes.array.isRequired,
+  handleDragEnd: PropTypes.func.isRequired
 }
 
 export default MarkerList

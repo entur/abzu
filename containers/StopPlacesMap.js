@@ -3,15 +3,14 @@ import React, { Component, PropTypes } from 'react'
 import LeafLetMap from '../components/LeafLetMap'
 import AjaxCreator from '../actions/AjaxCreator'
 
-
 class StopPlacesMap extends React.Component {
 
   handleClick() {
     console.log("map clicked")
   }
 
-  componentDidMount() {
-    this.props.dispatch(AjaxCreator.getDataSource())
+  handleDragEnd() {
+    console.log("handleDragEnd fired!")
   }
 
   render() {
@@ -31,7 +30,8 @@ class StopPlacesMap extends React.Component {
         zoom={zoom}
         lmapStyle={lmapStyle}
         onClick={this.handleClick}
-      />
+        handleDragEnd={this.handleDragEnd}
+        />
     )
   }
 }

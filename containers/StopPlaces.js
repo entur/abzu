@@ -7,11 +7,11 @@ require('../sass/main.scss')
 export default class StopPlaces extends React.Component {
 
   render() {
-      return (
-        <div>
-          <SearchBox/>
-          <StopPlacesMap/>
-        </div>
-      )
+    return (
+      <div>
+        <SearchBox/>
+        <StopPlacesMap/>
+      </div>
+    )
   }
 }
