@@ -36,8 +36,7 @@ const stopPlacesReducer = (state = intialState, action) => {
       return Object.assign({}, state, { stopPlaceNames: { isLoading: true } } )
 
     case types.RECEIVED_STOP_NAMES:
-      const bitch =  Object.assign({}, state, {  stopPlaceNames: { places: action.payLoad } } )
-      return bitch
+      return Object.assign({}, state, {  stopPlaceNames: { places: action.payLoad } } )
 
     case types.ERROR_STOP_NAMES:
       return Object.assign({}, state, { stopPlaceNames: { errorMessage: action.payLoad } } )
