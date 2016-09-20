@@ -19,10 +19,6 @@ class QuayItem extends React.Component {
     this.setState({hidden : !hidden})
   }
 
-  handleChange = (event, index, value) => {
-    console.log("value", value)
-  }
-
   handleNameChange = (event) => {
     const {dispatch, index} = this.props
     dispatch(MapActionCreator.changeQuayName(index, event.target.value))

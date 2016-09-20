@@ -5,10 +5,7 @@ const MarkerList = ({ stops, handleDragEnd }) => {
 
   let popupMarkers = []
 
-  stops.forEach(({ text, position, key, quays, markerProps }) => {
-
-    // support both parent position (i.e. stop place) and quays
-    quays = markerProps ? markerProps.quays : quays
+  stops.forEach(({ text, quays, position, key, markerProps }) => {
 
     popupMarkers.push((
       <CustomPopupMarker

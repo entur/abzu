@@ -14,7 +14,9 @@ class CustomPopupMarker extends React.Component {
     return (
       <Marker ref="marker" key={"marker-key" + index } onDragend={() => { handleDragEnd(this.refs.marker, index) }} draggable={true} position={position}>
         <Popup>
-          <span>{children}</span>
+          <div>
+            <span>{children}</span>
+          </div>
         </Popup>
       </Marker>
     )

@@ -9,8 +9,8 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 class SearchBox extends React.Component {
 
-
   handleEdit(id) {
+    console.log("handleEdit", id)
     this.props.dispatch(AjaxCreator.getStop(id))
     browserHistory.push('/edit')
   }
@@ -19,9 +19,9 @@ class SearchBox extends React.Component {
     this.props.dispatch(AjaxCreator.getStopNames(input))
   }
 
-  handleNewRequest({markerProps, position}) {
-    if (typeof(markerProps) !== 'undefined') {
-      this.props.dispatch(MapActionCreator.setActiveMarkers(markerProps, position))
+  handleNewRequest(result) {
+    if (typeof(result.markerProps) !== 'undefined') {
+      this.props.dispatch(MapActionCreator.setActiveMarkers(result))
     } else {
       console.warn('markerProps is not defined in handleNewRequest')
     }

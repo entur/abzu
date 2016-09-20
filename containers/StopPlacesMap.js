@@ -17,6 +17,8 @@ class StopPlacesMap extends React.Component {
 
     const { position, markers, zoom } = this.props
 
+    console.log("StopPlacesMap", markers)
+
     const lmapStyle = {
       height: "800px",
       width: "100%",

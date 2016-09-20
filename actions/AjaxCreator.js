@@ -127,6 +127,7 @@ AjaxCreator.saveEditingStop = () => {
     return axios.post(URL, savableStop)
     .then(function(response) {
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      dispatch( sendData(types.UNLIST_QUAYS_AS_NEW, response.data) )
     })
     .catch(function(response){
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )

@@ -86,11 +86,26 @@ const editStopReducer = (state = intialState, action) => {
       if (action.payLoad.index >= 0) {
         qpLocation = markerToChangeQP.markerProps.quays[action.payLoad.index].centroid.location
       }
-      
+
       qpLocation.latitude  = action.payLoad.position.lat
       qpLocation.longitude  = action.payLoad.position.lng
 
       return Object.assign({}, state, {activeStopPlace: [markerToChangeQP]})
+
+    case types.UNLIST_QUAYS_AS_NEW:
+      let markersToUnlistAsNew = Object.assign({}, state.activeStopPlace[0],{})
+
+      if (!markersToUnlistAsNew.markerProps.quays) return state
+
+      let updatedQuays = markersToUnlistAsNew.markerProps.quays.map( (quay) => {
+        delete quay.new
+        return quay
+      })
+
+      markersToUnlistAsNew.markerProps.quays = updatedQuays
+
+      return Object.assign({}, state, {activeStopPlace: [markersToUnlistAsNew]})
+
 
     default:
       return state
