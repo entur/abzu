@@ -6,7 +6,7 @@ export default class LeafLetMap extends React.Component {
 
   render() {
 
-    const { lmapStyle, position, zoom, markers, handleDragEnd } = this.props
+    const { lmapStyle, position, zoom, markers, handleDragEnd, handleMapMoveEnd } = this.props
 
     const { BaseLayer, Overlay } = LayersControl
 
@@ -17,6 +17,7 @@ export default class LeafLetMap extends React.Component {
         zoom={zoom}
         zoomControl={false}
         length={4}
+        onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
       >
         <LayersControl position='topright'>
           <BaseLayer checked name='Rutebankens kart'>

@@ -5,13 +5,15 @@ const MarkerList = ({ stops, handleDragEnd }) => {
 
   let popupMarkers = []
 
-  stops.forEach(({ text, quays, position, key, markerProps }) => {
+  stops.forEach(({ text, key, markerProps }, stopIndex) => {
+
+    const quays = markerProps.quays
 
     popupMarkers.push((
       <CustomPopupMarker
         key={"custom-pm-parent"}
         index="-1"
-        position={position}
+        position={markerProps.position}
         key={"custom-pm-"}
         children={text}
         handleDragEnd={handleDragEnd}
@@ -24,12 +26,11 @@ const MarkerList = ({ stops, handleDragEnd }) => {
           popupMarkers.push(
             <CustomPopupMarker
               index={index}
-              position={{
-                lat: quay.centroid.location.latitude,
-                lng: quay.centroid.location.longitude
-              }}
+              position={[quay.centroid.location.latitude,
+                quay.centroid.location.longitude
+              ]}
               isQuay
-              key={"custom-pm-" + index}
+              key={"custom-" + stopIndex + "-" + index}
               children={text}
               handleDragEnd={handleDragEnd}
             />)

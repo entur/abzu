@@ -31,6 +31,23 @@ AjaxCreator.getStopNames = (filter) => {
   }
 }
 
+AjaxCreator.getStopsNearby = (boundingBox) => {
+
+  return function(dispatch) {
+
+    const URL = 'http://localhost:1888/jersey/stop_place/search'
+
+    return axios.post(URL, boundingBox)
+    .then(function(response) {
+      dispatch (sendData(types.RECEIVED_STOPS_NEARBY, formatMarkers(response.data)))
+    })
+    .catch(function(response) {
+      dispatch (sendData(types.ERROR_STOPS_NEARBY, response.data))
+    })
+
+  }
+}
+
 const formatMarkers = (data) => {
 
   const suggestions = data.map ( (stop, index) => {
@@ -38,10 +55,6 @@ const formatMarkers = (data) => {
     return {
       text: `${stop.name}, ${stop.municipality} (${stop.county})`,
       value: stop.id,
-      position: {
-        lng: stop.centroid.location.longitude,
-        lat: stop.centroid.location.latitude
-      },
       markerProps: {
         key: `marker${index}`,
         name: stop.name,
@@ -80,13 +93,11 @@ AjaxCreator.getStop = (stopId) => {
 
 }
 
-const prepareStopForSaving = (original) => {
+const prepareStopForSaving = (stop) => {
 
-  let stop = Object.assign({}, original, {})
   let savableStop = {}
 
   savableStop.name = stop.markerProps.name
-  savableStop.shortName = null // TODO: Is this used?
   savableStop.description = stop.markerProps.description
   savableStop.id = stop.markerProps.id
   savableStop.centroid = {}
@@ -100,9 +111,10 @@ const prepareStopForSaving = (original) => {
   savableStop.county = stop.markerProps.county
 
   if (stop.markerProps.quays) {
-    savableStop.quays = stop.markerProps.quays.map ( (map) => {
-      delete map.new
-      return map
+    savableStop.quays = []
+    stop.markerProps.quays.forEach ( (quay) => {
+      delete quay.new
+      savableStop.quays.push(quay)
     })
   }
 
@@ -113,7 +125,7 @@ AjaxCreator.saveEditingStop = () => {
 
   return function(dispatch, getState) {
 
-    const stop = getState().editStopReducer.activeStopPlace[0]
+    var stop = {...getState().editStopReducer.activeStopPlace[0]}
 
     if (!stop) {
       console.error('Did not find stop to save')
@@ -123,10 +135,11 @@ AjaxCreator.saveEditingStop = () => {
     const URL = 'http://localhost:1888/jersey/stop_place/' + stop.markerProps.id
 
     var savableStop = prepareStopForSaving(stop)
-
     return axios.post(URL, savableStop)
     .then(function(response) {
+      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      // TODO : REMOVE THIS
       dispatch( sendData(types.UNLIST_QUAYS_AS_NEW, response.data) )
     })
     .catch(function(response){

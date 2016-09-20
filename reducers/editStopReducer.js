@@ -35,15 +35,14 @@ const editStopReducer = (state = intialState, action) => {
 
     case types.ADDED_NEW_QUAY:
       let markerToExpand = Object.assign({}, state.activeStopPlace[0], {})
-
       let newQuay = {
         name: "",
         shortName: "",
         description: "",
         centroid: {
           location: {
-            longitude: markerToExpand.position.lng + ( Math.floor((Math.random() * 10) + 1) / 10000),
-            latitude: markerToExpand.position.lat + ( Math.floor((Math.random() * 10) + 1) / 10000 )
+            longitude: markerToExpand.markerProps.position[1] + ( Math.floor((Math.random() * 10) + 1) / 10000),
+            latitude: markerToExpand.markerProps.position[0] + ( Math.floor((Math.random() * 10) + 1) / 10000 )
           }
         },
         allAreasWheelchairAccessible: false,
@@ -80,15 +79,16 @@ const editStopReducer = (state = intialState, action) => {
 
     case types.CHANGED_QUAY_POSITION:
       let markerToChangeQP = Object.assign({}, state.activeStopPlace[0],{})
-
-      let qpLocation = markerToChangeQP.position
+      let location = [action.payLoad.position.lat, action.payLoad.position.lng]
 
       if (action.payLoad.index >= 0) {
-        qpLocation = markerToChangeQP.markerProps.quays[action.payLoad.index].centroid.location
+        markerToChangeQP.markerProps.quays[action.payLoad.index].centroid.location = {
+          latitude: action.payLoad.position.lat,
+          longitude: action.payLoad.position.lng
+        }
+      } else {
+        markerToChangeQP.markerProps.position = location
       }
-
-      qpLocation.latitude  = action.payLoad.position.lat
-      qpLocation.longitude  = action.payLoad.position.lng
 
       return Object.assign({}, state, {activeStopPlace: [markerToChangeQP]})
 
@@ -106,6 +106,8 @@ const editStopReducer = (state = intialState, action) => {
 
       return Object.assign({}, state, {activeStopPlace: [markersToUnlistAsNew]})
 
+    case types.RECEIVED_STOPS_NEARBY:
+      return Object.assign({}, state, {activeStopPlace: state.activeStopPlace.concat(action.payLoad)})
 
     default:
       return state

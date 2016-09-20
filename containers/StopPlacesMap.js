@@ -9,15 +9,15 @@ class StopPlacesMap extends React.Component {
     console.log("map clicked")
   }
 
-  handleDragEnd() {
-    console.log("handleDragEnd fired!")
+  handleDragEnd(marker, index) {
+  }
+
+  handleMapMoveEnd() {
   }
 
   render() {
 
     const { position, markers, zoom } = this.props
-
-    console.log("StopPlacesMap", markers)
 
     const lmapStyle = {
       height: "800px",
@@ -33,6 +33,7 @@ class StopPlacesMap extends React.Component {
         lmapStyle={lmapStyle}
         onClick={this.handleClick}
         handleDragEnd={this.handleDragEnd}
+        handleMapMoveEnd={this.handleMapMoveEnd}
         />
     )
   }

@@ -3,17 +3,31 @@ import React, { Component, PropTypes } from 'react'
 import MarkerList from '../components/MarkerList'
 import leafletConfig from '../config/leafletConfig'
 import LeafLetMap from '../components/LeafLetMap'
-import MapActionCreator from '../actions/MapActionCreator'
+import { MapActionCreator, AjaxCreator } from '../actions/'
 
 class EditStopMap extends React.Component {
 
   handleClick(event, map) {
-    let LeafLetMap = map.leafletElemenet
+    let leafletMap = map.leafletElemenet
   }
 
   handleDragEnd(marker, index) {
     const position = marker.leafletElement.getLatLng()
     this.props.dispatch( MapActionCreator.changeQuayPosition(index, position) )
+  }
+
+  handleMapMoveEnd(event, {leafletElement}) {
+
+    var bounds = leafletElement.getBounds()
+
+    var boundingBox = {
+      xMin: bounds.getSouthWest().lng,
+      yMin: bounds.getSouthWest().lat,
+      xMax: bounds.getNorthEast().lng,
+      yMax: bounds.getNorthEast().lat
+    }
+
+    this.props.dispatch( AjaxCreator.getStopsNearby(boundingBox) )
   }
 
   render() {
@@ -34,6 +48,7 @@ class EditStopMap extends React.Component {
         lmapStyle={lmapStyle}
         onClick={this.handleClick}
         handleDragEnd={::this.handleDragEnd}
+        handleMapMoveEnd={::this.handleMapMoveEnd}
         />
     )
   }

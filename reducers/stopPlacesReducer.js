@@ -7,7 +7,6 @@ export const intialState = {
   },
   activeMarkers: [],
   zoom: 7,
-  dataSource: [],
   stopPlaceNames: {
     isLoading: false,
     errorMessage: '',

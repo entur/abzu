@@ -10,7 +10,6 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 class SearchBox extends React.Component {
 
   handleEdit(id) {
-    console.log("handleEdit", id)
     this.props.dispatch(AjaxCreator.getStop(id))
     browserHistory.push('/edit')
   }

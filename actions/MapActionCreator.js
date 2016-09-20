@@ -12,7 +12,7 @@ const sendData = (type, payLoad) => {
 MapActionCreator.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_ACTIVE_MARKERS, activeMarker) )
-    dispatch( sendData(types.CHANGED_MAP_CENTER, activeMarker.position) )
+    dispatch( sendData(types.CHANGED_MAP_CENTER, activeMarker.markerProps.position) )
     dispatch( sendData(types.SET_ZOOM, 15) )
   }
 }
