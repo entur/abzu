@@ -92,20 +92,6 @@ const editStopReducer = (state = intialState, action) => {
 
       return Object.assign({}, state, {activeStopPlace: [markerToChangeQP]})
 
-    case types.UNLIST_QUAYS_AS_NEW:
-      let markersToUnlistAsNew = Object.assign({}, state.activeStopPlace[0],{})
-
-      if (!markersToUnlistAsNew.markerProps.quays) return state
-
-      let updatedQuays = markersToUnlistAsNew.markerProps.quays.map( (quay) => {
-        delete quay.new
-        return quay
-      })
-
-      markersToUnlistAsNew.markerProps.quays = updatedQuays
-
-      return Object.assign({}, state, {activeStopPlace: [markersToUnlistAsNew]})
-
     case types.RECEIVED_STOPS_NEARBY:
       return Object.assign({}, state, {activeStopPlace: state.activeStopPlace.concat(action.payLoad)})
 

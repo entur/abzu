@@ -11,10 +11,9 @@ const MarkerList = ({ stops, handleDragEnd }) => {
 
     popupMarkers.push((
       <CustomPopupMarker
-        key={"custom-pm-parent"}
+        key={"custom-parent- " + stopIndex}
         index="-1"
         position={markerProps.position}
-        key={"custom-pm-"}
         children={text}
         handleDragEnd={handleDragEnd}
       />

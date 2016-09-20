@@ -139,8 +139,6 @@ AjaxCreator.saveEditingStop = () => {
     .then(function(response) {
       dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
-      // TODO : REMOVE THIS
-      dispatch( sendData(types.UNLIST_QUAYS_AS_NEW, response.data) )
     })
     .catch(function(response){
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
