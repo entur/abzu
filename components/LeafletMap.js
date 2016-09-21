@@ -1,5 +1,7 @@
 import React from 'react'
 import MarkerList from './MarkerList'
+import MarkerCluster from './MarkerCluster'
+
 import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
 
 export default class LeafLetMap extends React.Component {
@@ -34,7 +36,9 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
         </LayersControl>
         <ZoomControl position='bottomright' />
-        <MarkerList stops={markers || []} handleDragEnd={handleDragEnd}/>
+        <MarkerCluster>
+          <MarkerList stops={markers || []} handleDragEnd={handleDragEnd}/>
+        </MarkerCluster>
       </Lmap>)
   }
 }

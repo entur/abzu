@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import * as types from './../../actions/actionTypes'
 import nock from 'nock'
 import expect from 'expect'
-import { AjaxCreator } from './../../actions/'
+import {  AjaxActions } from './../../actions/'
 import cfgreader from './../../config/readConfig'
 import fs from 'fs'
 
@@ -46,7 +46,7 @@ describe('async actions', () => {
       }
     })
 
-    return store.dispatch(AjaxCreator.getStopNames(placeName))
+    return store.dispatch( AjaxActions.getStopNames(placeName))
       .then((result) => {
         expect(store.getActions()).toEqual(expectedActions)
       })

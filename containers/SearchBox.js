@@ -3,24 +3,23 @@ import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import { MapActionCreator, AjaxCreator } from '../actions/'
+import { MapActions,  AjaxActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 class SearchBox extends React.Component {
 
   handleEdit(id) {
-    this.props.dispatch(AjaxCreator.getStop(id))
-    browserHistory.push('/edit')
+    browserHistory.push('/edit/' + id)
   }
 
   handleUpdateInput(input) {
-    this.props.dispatch(AjaxCreator.getStopNames(input))
+    this.props.dispatch( AjaxActions.getStopNames(input))
   }
 
   handleNewRequest(result) {
     if (typeof(result.markerProps) !== 'undefined') {
-      this.props.dispatch(MapActionCreator.setActiveMarkers(result))
+      this.props.dispatch(MapActions.setActiveMarkers(result))
     } else {
       console.warn('markerProps is not defined in handleNewRequest')
     }

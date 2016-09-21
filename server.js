@@ -21,7 +21,7 @@ app.get(ENDPOINTBASE, function(req, res) {
   res.sendFile(__dirname + '/index.html')
 })
 
-app.get(ENDPOINTBASE + 'edit', function(req, res) {
+app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 })
 

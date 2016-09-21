@@ -78,19 +78,25 @@ const editStopReducer = (state = intialState, action) => {
       return Object.assign({}, state, {activeStopPlace: [markerToChangeQT]})
 
     case types.CHANGED_QUAY_POSITION:
-      let markerToChangeQP = Object.assign({}, state.activeStopPlace[0],{})
+
+      let stopIndex = action.payLoad.stopIndex
+      let markerIndex = action.payLoad.markerIndex
       let location = [action.payLoad.position.lat, action.payLoad.position.lng]
 
-      if (action.payLoad.index >= 0) {
-        markerToChangeQP.markerProps.quays[action.payLoad.index].centroid.location = {
-          latitude: action.payLoad.position.lat,
-          longitude: action.payLoad.position.lng
+      let activeStopPlacesQP = state.activeStopPlace.slice(0)
+
+      if (markerIndex >= 0) {
+
+        activeStopPlacesQP[stopIndex].markerProps.quays[markerIndex].centroid.location = {
+          latitude: location[0],
+          longitude: location[1]
         }
+
       } else {
-        markerToChangeQP.markerProps.position = location
+        activeStopPlacesQP[stopIndex].markerProps.position = location
       }
 
-      return Object.assign({}, state, {activeStopPlace: [markerToChangeQP]})
+      return Object.assign({}, state, {activeStopPlace: activeStopPlacesQP})
 
     case types.RECEIVED_STOPS_NEARBY:
       return Object.assign({}, state, {activeStopPlace: state.activeStopPlace.concat(action.payLoad)})

@@ -1,6 +1,6 @@
 import * as types from './actionTypes'
 
-var MapActionCreator = {}
+var MapActions = {}
 
 const sendData = (type, payLoad) => {
   return {
@@ -9,7 +9,7 @@ const sendData = (type, payLoad) => {
   }
 }
 
-MapActionCreator.setActiveMarkers = (activeMarker) => {
+MapActions.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_ACTIVE_MARKERS, activeMarker) )
     dispatch( sendData(types.CHANGED_MAP_CENTER, activeMarker.markerProps.position) )
@@ -17,19 +17,19 @@ MapActionCreator.setActiveMarkers = (activeMarker) => {
   }
 }
 
-MapActionCreator.addNewQuay = () => {
+MapActions.addNewQuay = () => {
   return function(dispatch) {
     dispatch( sendData(types.ADDED_NEW_QUAY, null) )
   }
 }
 
-MapActionCreator.removeQuay = (index) => {
+MapActions.removeQuay = (index) => {
   return function(dispatch) {
     dispatch( sendData(types.REMOVED_QUAY, index) )
   }
 }
 
-MapActionCreator.changeQuayName = (index, name) => {
+MapActions.changeQuayName = (index, name) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_NAME, {
       name: name,
@@ -38,7 +38,7 @@ MapActionCreator.changeQuayName = (index, name) => {
   }
 }
 
-MapActionCreator.changeQuayType = (index, type) => {
+MapActions.changeQuayType = (index, type) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_TYPE, {
       index: index,
@@ -47,16 +47,17 @@ MapActionCreator.changeQuayType = (index, type) => {
   }
 }
 
-MapActionCreator.changeQuayPosition = (index, position) => {
+MapActions.changeQuayPosition = (stopIndex, markerIndex, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
-      index: index,
+      stopIndex: stopIndex,
+      markerIndex: markerIndex,
       position: position
     }))
   }
 }
 
-MapActionCreator.changeQuayDescription = (index, description) => {
+MapActions.changeQuayDescription = (index, description) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_DESCRIPTION, {
       index: index,
@@ -65,4 +66,4 @@ MapActionCreator.changeQuayDescription = (index, description) => {
   }
 }
 
-export default MapActionCreator
+export default MapActions

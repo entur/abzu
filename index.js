@@ -33,7 +33,7 @@ function renderIndex() {
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={StopPlaces}/>
-          <Route path="edit" component={EditStopPlace}/>
+          <Route path="edit/:stopId" component={EditStopPlace}/>
         </Route>
       </Router>
     </Provider>,

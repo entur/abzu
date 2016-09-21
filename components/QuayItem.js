@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import quayTypes from './quayTypes'
-import { MapActionCreator } from '../actions/'
+import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import { IconButton, FontIcon } from 'material-ui'
 
@@ -21,18 +21,18 @@ class QuayItem extends React.Component {
 
   handleNameChange = (event) => {
     const {dispatch, index} = this.props
-    dispatch(MapActionCreator.changeQuayName(index, event.target.value))
+    dispatch(MapActions.changeQuayName(index, event.target.value))
   }
 
   handleTypeChange = (event, index, value) => {
     const {dispatch} = this.props
     const quayIndex = this.props.index
-    dispatch(MapActionCreator.changeQuayType(quayIndex, value))
+    dispatch(MapActions.changeQuayType(quayIndex, value))
   }
 
   handleDescriptionChange = (event) => {
     const {dispatch, index} = this.props
-    dispatch(MapActionCreator.changeQuayDescription(index, event.target.value))
+    dispatch(MapActions.changeQuayDescription(index, event.target.value))
   }
 
   render() {

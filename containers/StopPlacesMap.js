@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import AjaxCreator from '../actions/AjaxCreator'
+import { AjaxActions } from '../actions/'
 
 class StopPlacesMap extends React.Component {
 

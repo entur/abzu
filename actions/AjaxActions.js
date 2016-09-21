@@ -2,7 +2,7 @@ import suggestions from '../config/restMock.js'
 import * as types from './actionTypes'
 import axios from 'axios'
 
-var AjaxCreator = {}
+var AjaxActions = {}
 
 const sendData = (type, payLoad) => {
   return {
@@ -11,7 +11,7 @@ const sendData = (type, payLoad) => {
   }
 }
 
-AjaxCreator.getStopNames = (filter) => {
+ AjaxActions.getStopNames = (filter) => {
 
   return function(dispatch) {
 
@@ -31,13 +31,20 @@ AjaxCreator.getStopNames = (filter) => {
   }
 }
 
-AjaxCreator.getStopsNearby = (boundingBox) => {
+ AjaxActions.getStopsNearby = (boundingBox, ignoreStopPlaceId) => {
 
   return function(dispatch) {
 
     const URL = 'http://localhost:1888/jersey/stop_place/search'
 
-    return axios.post(URL, boundingBox)
+    let payLoad = {
+      boundingBox: boundingBox,
+      ignoreStopPlaceId: ignoreStopPlaceId
+    }
+
+    console.log("payLoad", payLoad)
+
+    return axios.post(URL, payLoad)
     .then(function(response) {
       dispatch (sendData(types.RECEIVED_STOPS_NEARBY, formatMarkers(response.data)))
     })
@@ -72,7 +79,7 @@ const formatMarkers = (data) => {
   return suggestions
 }
 
-AjaxCreator.getStop = (stopId) => {
+ AjaxActions.getStop = (stopId) => {
 
   return function(dispatch) {
 
@@ -82,8 +89,10 @@ AjaxCreator.getStop = (stopId) => {
 
     return axios.get(URL)
     .then(function(response) {
-      const suggestions = formatMarkers([response.data])
-      dispatch( sendData(types.RECEIVED_STOP, suggestions) )
+      const stops = formatMarkers([response.data])
+      dispatch( sendData(types.RECEIVED_STOP, stops) )
+      dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
+      dispatch( sendData(types.SET_ZOOM, 15) )
     })
     .catch(function(response){
       dispatch( sendData(types.ERROR_STOP, response.data) )
@@ -121,7 +130,7 @@ const prepareStopForSaving = (stop) => {
   return savableStop
 }
 
-AjaxCreator.saveEditingStop = () => {
+ AjaxActions.saveEditingStop = () => {
 
   return function(dispatch, getState) {
 
@@ -137,8 +146,8 @@ AjaxCreator.saveEditingStop = () => {
     var savableStop = prepareStopForSaving(stop)
     return axios.post(URL, savableStop)
     .then(function(response) {
-      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
     })
     .catch(function(response){
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
@@ -148,5 +157,4 @@ AjaxCreator.saveEditingStop = () => {
 }
 
 
-
-export default AjaxCreator
+export default AjaxActions

@@ -1,2 +1,3 @@
-export MapActionCreator from './MapActionCreator'
-export AjaxCreator from './AjaxCreator'
+export MapActions from './MapActions'
+export AjaxActions from './AjaxActions'
+export UserActions from './UserActions'
