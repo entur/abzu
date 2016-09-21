@@ -24,7 +24,7 @@
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
     "jsdom": "9.4.2",
-    "jsdom-global": "2.1.0",
+    "jsdom-global": "^2.1.0",
     "keycloak-js": "^1.9.8",
     "leaflet": "^0.7.7",
     "material-ui": "^0.15.4",
