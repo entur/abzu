@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import LeafLetMap from '../components/LeafLetMap'
+import LeafletMap from '../components/LeafletMap'
 import AjaxCreator from '../actions/AjaxCreator'
 
 class StopPlacesMap extends React.Component {
@@ -26,7 +26,7 @@ class StopPlacesMap extends React.Component {
     }
 
     return (
-      <LeafLetMap
+      <LeafletMap
         position={position}
         markers={markers}
         zoom={zoom}

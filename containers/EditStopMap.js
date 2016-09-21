@@ -2,13 +2,13 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import MarkerList from '../components/MarkerList'
 import leafletConfig from '../config/leafletConfig'
-import LeafLetMap from '../components/LeafLetMap'
+import LeafletMap from '../components/LeafletMap'
 import { MapActionCreator, AjaxCreator } from '../actions/'
 
 class EditStopMap extends React.Component {
 
   handleClick(event, map) {
-    let leafletMap = map.leafletElemenet
+    let LeafletMap = map.leafletElemenet
   }
 
   handleDragEnd(marker, index) {
@@ -41,7 +41,7 @@ class EditStopMap extends React.Component {
     }
 
     return (
-      <LeafLetMap
+      <LeafletMap
         position={position}
         markers={markers}
         zoom={zoom}
