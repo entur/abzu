@@ -219,10 +219,14 @@ angular.module('abzu.stopPlaceEditor', ['ngRoute'])
         if (bounds.length > 0) {
           map.fitBounds(bounds);
         }
+        var stopPlaceSearch = {
+          boundingBox : createBoundingBox(map),
+          ignoreStopPlaceId: stopPlace.id
+        }
         map.on('moveend', function() {
-          stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
+          stopPlaceService.getStopPlacesWithin(stopPlaceSearch).then(populateNearbyMarkers);
         });
-        stopPlaceService.getStopPlacesWithin(createBoundingBox(map)).then(populateNearbyMarkers);
+        stopPlaceService.getStopPlacesWithin(stopPlaceSearch).then(populateNearbyMarkers);
       });
     };
 
