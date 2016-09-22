@@ -6,12 +6,12 @@ RUN wget --quiet https://github.com/Yelp/dumb-init/releases/download/v1.0.0/dumb
 RUN dpkg -i dumb-init_*.deb
 RUN npm set progress=false
 
-EXPOSE 8000
-
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY source/ .
-COPY abzu_config.json app/config/config.json
 RUN npm install
+
+EXPOSE 8000
+ENV port 8000
 
 CMD [ "dumb-init", "npm", "start" ]

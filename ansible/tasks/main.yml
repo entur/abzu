@@ -13,9 +13,6 @@
 - name: Copy the abzu sources to staging directory
   command: rsync -ar --delete {{ build_home }}/ {{abzu_root}}/source
 
-- name: Copy config.json
-  copy: force=true src=config.json dest={{abzu_root}}/abzu_config.json
-
 - name: Move Dockerfile
   template: src=Dockerfile.j2 dest={{abzu_root}}/Dockerfile mode=0755
 
