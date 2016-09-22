@@ -1,0 +1,47 @@
+{
+  "text": "Stadiontunet Hålogalandsgt., Bodø (Nordland)",
+  "value": "e7aa67af-604f-41a5-8709-ab1667531f63",
+  "markerProps": {
+    "key": "marker1",
+    "name": "Stadiontunet Hålogalandsgt.",
+    "id": "e7aa67af-604f-41a5-8709-ab1667531f63",
+    "position": [
+      67.2793045,
+      14.415265999999999
+    ],
+    "children": "Stadiontunet Hålogalandsgt.",
+    "description": null,
+    "municipality": "Bodø",
+    "county": "Nordland",
+    "quays": [
+      {
+        "name": "Stadiontunet Hålogalandsgt.",
+        "shortName": null,
+        "description": "",
+        "id": "fc8fc946-c5a4-4d6a-932a-cdd10ffbd41d",
+        "centroid": {
+          "location": {
+            "longitude": 14.415417,
+            "latitude": 67.279259
+          }
+        },
+        "allAreasWheelchairAccessible": false,
+        "quayType": null
+      },
+      {
+        "name": "Stadiontunet Hålogalandsgt.",
+        "shortName": null,
+        "description": "",
+        "id": "8fac3ee4-a2c1-4623-8e5e-82e9071428a1",
+        "centroid": {
+          "location": {
+            "longitude": 14.415115,
+            "latitude": 67.27935
+          }
+        },
+        "allAreasWheelchairAccessible": false,
+        "quayType": null
+      }
+    ]
+  }
+}
