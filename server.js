@@ -3,7 +3,11 @@ var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var convict = require('./config/convict.js')
 
+<<<<<<< HEAD
 var ENDPOINTBASE = convict.get('endpointBase')
+=======
+var ENDPOINTBASE = '/admin/nsr/'
+>>>>>>> f0df1fae1b15481a8341b988f921e3161f13e9bf
 
 var app = new (require('express'))()
 var port = process.env.port || 8988
