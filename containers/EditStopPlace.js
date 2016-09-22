@@ -25,7 +25,7 @@ class EditStopPlace extends React.Component {
 
         window.config = config
         var hrefId = window.location.pathname
-          .replace('admin/abzu/edit/','')
+          .replace('admin/nsr/edit/','')
           .replace('/', '')
 
         dispatch( AjaxActions.getStop(hrefId) )
