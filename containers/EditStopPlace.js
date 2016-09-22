@@ -12,7 +12,6 @@ import FlatButton from 'material-ui/FlatButton'
 import {  AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 
-
 require('../sass/main.scss')
 
 class EditStopPlace extends React.Component {
@@ -22,10 +21,9 @@ class EditStopPlace extends React.Component {
       const { dispatch} = this.props
 
       cfgreader.readConfig( (function(config) {
-
         window.config = config
         var hrefId = window.location.pathname
-          .replace('admin/abzu/edit/','')
+          .replace(config.endpointBase + 'edit','')
           .replace('/', '')
 
         dispatch( AjaxActions.getStop(hrefId) )

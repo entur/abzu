@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const baseURL = process.env.BASE_URL || '/static/'
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -10,9 +9,9 @@ module.exports = {
   ],
 
   output: {
-    path: path.join(__dirname, 'public'),
+    path: __dirname + '/public/',
     filename: 'bundle.js',
-    publicPath: '/admin/bel/static/'
+    publicPath: __dirname + '/public/' + 'bundle.js'
   },
 
   plugins: [
@@ -31,14 +30,22 @@ module.exports = {
   ],
 
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      exclude: /node_modules/,
-      include: __dirname
-    },{
-      test: /\.scss$/,
-      loaders: ['style', 'css', 'sass']
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: __dirname,
+        loader: 'babel',
+        query: {
+          presets: ['es2015', 'stage-1', 'react']
+        }
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        include: __dirname,
+        loaders: ['style', 'css', 'sass']
+      }
+    ]
   }
 }

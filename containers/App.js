@@ -11,6 +11,7 @@ class App extends React.Component {
 
     cfgreader.readConfig( (function(config) {
       window.config = config
+      console.log("Config", config)
     }).bind(this))
   }
 

@@ -9,11 +9,12 @@ import App from './containers/App'
 import configureStore from './store/store'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import cfgreader from './config/readConfig'
+
 // used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
-renderIndex()
 /* use authWithKeyCloak(renderIndex) for keycloak authentification */
 function authWithKeyCloak(renderCallback) {
   let keycloakAuth = new Keycloak('config/keycloak.json')
@@ -23,7 +24,13 @@ function authWithKeyCloak(renderCallback) {
   })
 }
 
-function renderIndex() {
+cfgreader.readConfig( (function(config) {
+  window.config = config
+  renderIndex(config.endpointBase)
+}).bind(this))
+
+
+function renderIndex(path) {
 
   const store = configureStore()
   const history = syncHistoryWithStore(browserHistory, store)
@@ -31,9 +38,9 @@ function renderIndex() {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route path="/admin/nsr/" component={App}>
+        <Route path={path} component={App}>
           <IndexRoute component={StopPlaces}/>
-          <Route path="/admin/nsr/edit/:stopId" component={EditStopPlace}/>
+          <Route path={path + 'edit/:stopId'} component={EditStopPlace}/>
         </Route>
       </Router>
     </Provider>,

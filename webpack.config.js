@@ -8,24 +8,33 @@ module.exports = {
     './index'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: '/admin/abzu/',
+    publicPath: __dirname,
     filename: 'bundle.js',
-    publicPath: '/admin/nsr/static/'
+    hotUpdateChunkFilename: '/hot/hot-update.js',
+    hotUpdateMainFilename: '/hot/hot-update.json'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      exclude: /node_modules/,
-      include: __dirname
-    },{
-      test: /\.scss$/,
-      loaders: ['style', 'css', 'sass']
-    },
-    {test: /\.svg/, loader: 'svg-url-loader'}]
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: __dirname,
+        loader: 'babel',
+        query: {
+          presets: ['es2015', 'stage-1', 'react']
+        }
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        include: __dirname,
+        loaders: ['style', 'css', 'sass']
+      }
+    ]
   }
 }

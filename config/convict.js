@@ -16,16 +16,24 @@ var conf = convict({
     env: "CONFIG_URL"
   },
   tiamatBaseUrl: {
-    doc: "Base URL for for marduk including slash",
+    doc: "Base URL for for timat including slash",
     format: "url",
-    default: "http://localhost:18080/",
-    env: "TIMAT_BASE_URL"
+    default: "http://localhost:1888/",
+    env: "TIAMAT_BASE_URL"
+  },
+
+  endpointBase: {
+    doc: "Base URL for for timat including slash",
+    format: String,
+    default: "/",
+    env: "ENDPOINTBASE"
   }
 
 });
 
 // If configuration URL exists, read it and update the configuration object
 var configUrl = conf.get('configUrl');
+
 if ( configUrl.indexOf("do_not_read") == -1 ) {
   // Read contents from configUrl if it is given
   request( configUrl, function( error, response, body ) {

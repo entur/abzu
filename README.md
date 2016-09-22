@@ -1,8 +1,8 @@
 # Abzu
 
-## Run the app
+## Run the app for development with hot reload
 
 ```
 npm install
-npm start
+npm run dev
 ```

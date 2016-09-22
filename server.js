@@ -3,33 +3,42 @@ var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var convict = require('./config/convict.js')
 
-var ENDPOINTBASE = '/admin/abzu/'
+var ENDPOINTBASE = convict.get('endpointBase')
 
 var app = new (require('express'))()
 var port = process.env.port || 8988
 
-// TODO: optimize webpack.production.config and use this instead
-var config = require('./webpack.config')
-var compiler = webpack(config)
+var config = (process.env.NODE_ENV !== 'production')
+  ? require('./webpack.config')
+  : require('./webpack.prod.config')
 
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
+var compiler = new webpack(config)
 
-// TODO: Considering pro/cons using hotMiddleware in production, but most likely disable thisf
-app.use(webpackHotMiddleware(compiler))
+if (process.env.NODE_ENV !== 'production') {
+  config.output.path = ENDPOINTBASE + 'public/'
+  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.path, stats: {colors: true} }))
+  app.use(webpackHotMiddleware(compiler))
+} else {
+  // expose build bundle for production
+  app.get(ENDPOINTBASE + 'public/bundle.js', function(req, res) {
+    res.sendFile(__dirname + '/public/bundle.js')
+  })
+}
 
-app.get(ENDPOINTBASE + "config.json", function(req, res) {
+app.get([ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'], function(req, res) {
   var cfg = {
-    tiamatBaseUrl: convict.get('tiamatBaseUrl')
+    tiamatBaseUrl: convict.get('tiamatBaseUrl'),
+    endpointBase: convict.get('endpointBase')
   }
   res.send(cfg)
 })
 
 app.get(ENDPOINTBASE, function(req, res) {
-  res.sendFile(__dirname + '/index.html')
+  res.send(getIndexHTML())
 })
 
 app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
-  res.sendFile(__dirname + '/index.html')
+  res.send(getIndexHTML())
 })
 
 app.get(ENDPOINTBASE + '_health', function(req, res) {
@@ -40,24 +49,29 @@ app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
   res.sendFile(__dirname + '/config/keycloak.json')
 })
 
-app.get(ENDPOINTBASE + 'config.json', function(req, res) {
-  var cfg = {
-    nabuBaseUrl: convict.get('nabuBaseUrl'),
-    mardukBaseUrl: convict.get('mardukBaseUrl')
-  }
-  res.send(cfg)
-})
-
 app.get(ENDPOINTBASE + '_NODE_ENV', function(req, res) {
   res.send({
-    NODE_ENV: process.env.NODE_ENV
+    NODE_ENV: process.env.NODE_ENV,
+    ENDPOINTBASE: ENDPOINTBASE
   })
 })
 
 app.listen(port, function(error) {
   if (error) {
     console.error(error)
-  } else {
-    console.info('==> Listening on port %s. Open up http://localhost:%s in your browser.', port, port)
   }
 })
+
+const getIndexHTML = () =>
+  `<html>
+    <head>
+      <title>Stop places</title>
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+      <div id="root">
+      </div>
+      <script src="${ENDPOINTBASE}public/bundle.js"></script>
+    </body>
+  </html>`

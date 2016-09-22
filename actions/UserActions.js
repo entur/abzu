@@ -14,10 +14,14 @@ const sendData = (type, payLoad) => {
 UserActions.navigateTo = (path, id) => {
   return function(dispatch) {
     dispatch( sendData(types.NAVIGATE_TO, id) )
-    const basePath = '/admin/nsr'
+    const basePath = window.config.endpointBase
+
+    if (path.length && path[0] === '/') {
+      path = path.slice(1)
+    }
+
     browserHistory.push(basePath+path+id)
   }
 }
-
 
 export default UserActions
