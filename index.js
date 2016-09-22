@@ -31,9 +31,9 @@ function renderIndex() {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route path="/admin/abzu/" component={App}>
+        <Route path="/admin/nsr/" component={App}>
           <IndexRoute component={StopPlaces}/>
-          <Route path="/admin/abzu/edit/:stopId" component={EditStopPlace}/>
+          <Route path="/admin/nsr/edit/:stopId" component={EditStopPlace}/>
         </Route>
       </Router>
     </Provider>,
