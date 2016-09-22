@@ -10,14 +10,27 @@ import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
 import FlatButton from 'material-ui/FlatButton'
 import {  AjaxActions } from '../actions/'
+import cfgreader from './../config/readConfig'
+
 
 require('../sass/main.scss')
 
 class EditStopPlace extends React.Component {
 
   componentDidMount() {
-      var hrefId = window.location.pathname.replace('/edit/','')
-      this.props.dispatch( AjaxActions.getStop(hrefId))
+
+      const { dispatch} = this.props
+
+      cfgreader.readConfig( (function(config) {
+
+        window.config = config
+        var hrefId = window.location.pathname
+          .replace('admin/abzu/edit/','')
+          .replace('/', '')
+
+        dispatch( AjaxActions.getStop(hrefId) )
+
+      }).bind(this))
   }
 
   render() {

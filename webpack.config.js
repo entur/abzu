@@ -1,7 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-// TODO : point to correct endpoint
-//const baseURL = process.env.BASE_URL || 'static/'
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -12,7 +10,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/admin/bel/static/'
+    publicPath: '/admin/abzu/static/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),

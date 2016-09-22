@@ -14,7 +14,8 @@ const sendData = (type, payLoad) => {
 UserActions.navigateTo = (path, id) => {
   return function(dispatch) {
     dispatch( sendData(types.NAVIGATE_TO, id) )
-    browserHistory.push(path+id)
+    const basePath = '/admin/abzu'
+    browserHistory.push(basePath+path+id)
   }
 }
 

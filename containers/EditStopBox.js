@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
-import dataSource from '../config/restMock.js'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import SearchBoxDetails from '../components/SearchBoxDetails'
@@ -38,6 +37,12 @@ class EditStopBox extends React.Component {
       selectedMarker = activeStopPlace[0]
     }
 
+    if (!selectedMarker) return (
+      <div>
+        <span style={{ margin: "20px", color: "red"}}>Something went wrong!</span>
+      </div>
+    )
+
     const categoryStyle = {
       fontWeight: "600",
       marginRight: "2%"
@@ -63,6 +68,7 @@ class EditStopBox extends React.Component {
       display:"inline-block",
       float: "right"
     }
+
 
     return (
       <div style={SbStyle}>

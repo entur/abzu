@@ -1,4 +1,3 @@
-import suggestions from '../config/restMock.js'
 import * as types from './actionTypes'
 import axios from 'axios'
 
@@ -15,7 +14,7 @@ const sendData = (type, payLoad) => {
 
   return function(dispatch) {
 
-    const URL = 'http://localhost:1888/jersey/stop_place/?name=' + filter
+    const URL = window.config.tiamatBaseUrl + 'jersey/stop_place/?name=' + filter
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
 
@@ -35,14 +34,12 @@ const sendData = (type, payLoad) => {
 
   return function(dispatch) {
 
-    const URL = 'http://localhost:1888/jersey/stop_place/search'
+    const URL =  window.config.tiamatBaseUrl + 'jersey/stop_place/search'
 
     let payLoad = {
       boundingBox: boundingBox,
       ignoreStopPlaceId: ignoreStopPlaceId
     }
-
-    console.log("payLoad", payLoad)
 
     return axios.post(URL, payLoad)
     .then(function(response) {
@@ -83,7 +80,7 @@ const formatMarkers = (data) => {
 
   return function(dispatch) {
 
-    const URL = 'http://localhost:1888/jersey/stop_place/' + stopId
+    const URL = window.config.tiamatBaseUrl + 'jersey/stop_place/' + stopId
 
     dispatch( sendData(types.REQUESTED_STOP, null) )
 
@@ -141,7 +138,7 @@ const prepareStopForSaving = (stop) => {
       return
     }
 
-    const URL = 'http://localhost:1888/jersey/stop_place/' + stop.markerProps.id
+    const URL = window.config.tiamatBaseUrl + 'jersey/stop_place/' + stop.markerProps.id
 
     var savableStop = prepareStopForSaving(stop)
     return axios.post(URL, savableStop)

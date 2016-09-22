@@ -3,14 +3,14 @@ import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import { MapActions,  AjaxActions } from '../actions/'
+import { MapActions, AjaxActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 class SearchBox extends React.Component {
 
   handleEdit(id) {
-    browserHistory.push('/edit/' + id)
+    this.props.dispatch( UserActions.navigateTo('/edit/', id ) )
   }
 
   handleUpdateInput(input) {
@@ -26,6 +26,9 @@ class SearchBox extends React.Component {
   }
 
   handleFocusMap() {
+    if (activeMarkers) {
+      // TODO : focus to current position of map where activeMarkers are located
+    }
   }
 
   render() {

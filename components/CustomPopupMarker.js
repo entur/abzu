@@ -12,6 +12,10 @@ class CustomPopupMarker extends React.Component {
       children += ` (quay ${markerIndex+1})`
     }
 
+    const style = {
+      color: '#0086b3'
+    }
+
     return (
 
       <Marker
@@ -23,7 +27,7 @@ class CustomPopupMarker extends React.Component {
         >
         <Popup>
           <div>
-            <span onClick={handleOnClick}>{children}</span>
+            <span style={{style}} onClick={handleOnClick}>{children}</span>
           </div>
         </Popup>
       </Marker>

@@ -15,17 +15,11 @@ var conf = convict({
     default: "http://rutebanken.org/do_not_read",
     env: "CONFIG_URL"
   },
-  nabuBaseUrl: {
-    doc: "Base URL for for nabu including slash",
-    format: "url",
-    default: "http://localhost:18081/",
-    env: "NABU_BASE_URL"
-  },
-  mardukBaseUrl: {
+  tiamatBaseUrl: {
     doc: "Base URL for for marduk including slash",
     format: "url",
     default: "http://localhost:18080/",
-    env: "MARDUK_BASE_URL"
+    env: "TIMAT_BASE_URL"
   }
 
 });
