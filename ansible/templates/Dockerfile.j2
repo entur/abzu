@@ -1,0 +1,17 @@
+FROM node:6.3
+# https://hub.docker.com/_/node/
+
+# https://github.com/Yelp/dumb-init
+RUN wget --quiet https://github.com/Yelp/dumb-init/releases/download/v1.0.0/dumb-init_1.0.0_amd64.deb
+RUN dpkg -i dumb-init_*.deb
+RUN npm set progress=false
+
+EXPOSE 8000
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY source/ .
+COPY abzu_config.json app/config/config.json
+RUN npm install
+
+CMD [ "dumb-init", "npm", "start" ]
