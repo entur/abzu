@@ -39,7 +39,7 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   request( configUrl, function( error, response, body ) {
     if ( !error && response.statusCode == 200 ) {
       conf.load(body);
-      conf.validate({strict: true});
+      conf.validate();
     } else {
       var err = "Could not load data from " + configUrl
       throw new Error(err);
@@ -47,7 +47,7 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   });
 } else {
   console.log("The CONFIG_URL element has not been set, so you use the default dev-mode configuration")
-  conf.validate({strict: true});
+  conf.validate();
 }
 
 module.exports = conf;
