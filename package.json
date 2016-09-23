@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.config.js --progress --colors",
     "dev": "node server.js",
-    "start": "npm run build && BABEL_ENV=production NODE_ENV=production node server.js",
+    "start": "npm run build && node server.js",
     "test-creators": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/creators/index.js",
     "test-reducers": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/reducers/index.js",
     "dev": "NODE_ENV=development node server.js"
