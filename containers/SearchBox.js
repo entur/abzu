@@ -6,8 +6,15 @@ import IconButton from 'material-ui/IconButton'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import cfgreader from '../config/readConfig'
 
 class SearchBox extends React.Component {
+
+  componentDidMount() {
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+    }).bind(this))
+  }
 
   handleEdit(id) {
     this.props.dispatch( UserActions.navigateTo('/edit/', id ) )

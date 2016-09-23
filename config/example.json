@@ -1,4 +1,4 @@
 {
   "endpointBase": "/admin/nsr/",
-  "timatBaseUrl": "https://test.rutebanken.org/admin/nsr/jersey/"
+  "tiamatBaseUrl": "https://test.rutebanken.org/admin/nsr/jersey/"
 }
