@@ -34,11 +34,14 @@ var conf = convict({
 // If configuration URL exists, read it and update the configuration object
 var configUrl = conf.get('configUrl');
 
+console.log("configUrl", configUrl);
+
 if ( configUrl.indexOf("do_not_read") == -1 ) {
   // Read contents from configUrl if it is given
   request( configUrl, function( error, response, body ) {
     if ( !error && response.statusCode == 200 ) {
       conf.load(body);
+      console.log("configUrl body", body);
       conf.validate({strict: true});
     } else {
       var err = "Could not load data from " + configUrl
