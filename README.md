@@ -23,7 +23,7 @@ port=YOUR_PORT
 To override timatBaseURL the easiest way is by adding `TIAMAT_BASE_URL` as environment variables, e.g.
 
 ```
-TIAMAT_BASE_URL=http://localhost:9011 port=9000 npm run dev
+TIAMAT_BASE_URL=http://localhost:9011/ port=9000 npm run dev
 ```
 
 ## Configuration

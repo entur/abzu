@@ -19,7 +19,7 @@ module.exports = new Promise(function(resolve, reject){
     tiamatBaseUrl: {
       doc: "Base URL for for timat including slash",
       format: "url",
-      default: "http://localhost:1888/",
+      default: "http://localhost:1888/jersey/",
       env: "TIAMAT_BASE_URL"
     },
     endpointBase: {
