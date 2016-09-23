@@ -40,7 +40,7 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   // Read contents from configUrl if it is given
   request( configUrl, function( error, response, body ) {
     if ( !error && response.statusCode == 200 ) {
-      console.log("configUrl body", body
+      console.log("configUrl body", body);
       conf.load(body);
       conf.validate();
     } else {
