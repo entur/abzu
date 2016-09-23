@@ -15,7 +15,5 @@ RUN npm build
 
 EXPOSE 8000
 ENV port 8000
-ENV NODE_ENV production
-ENV BABEL_ENV production
 
-CMD [ "dumb-init", "npm", "start" ]
+CMD [ "dumb-init", "npm", "run prod" ]
