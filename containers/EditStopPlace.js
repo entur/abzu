@@ -23,11 +23,7 @@ class EditStopPlace extends React.Component {
       cfgreader.readConfig( (function(config) {
         window.config = config
         var hrefId = window.location.pathname
-<<<<<<< HEAD
           .replace(config.endpointBase + 'edit','')
-=======
-          .replace('admin/nsr/edit/','')
->>>>>>> f0df1fae1b15481a8341b988f921e3161f13e9bf
           .replace('/', '')
 
         dispatch( AjaxActions.getStop(hrefId) )
