@@ -9,10 +9,13 @@ RUN npm set progress=false
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY source/ .
-RUN npm build
+
 RUN npm install
+RUN npm build
 
 EXPOSE 8000
 ENV port 8000
+ENV NODE_ENV production
+ENV BABEL_ENV production
 
 CMD [ "dumb-init", "npm", "start" ]
