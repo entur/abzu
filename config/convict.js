@@ -40,9 +40,8 @@ if ( configUrl.indexOf("do_not_read") == -1 ) {
   // Read contents from configUrl if it is given
   request( configUrl, function( error, response, body ) {
     if ( !error && response.statusCode == 200 ) {
-      console.log("configUrl body", body);
-      conf.load(body);
-      conf.validate();
+      conf.load(JSON.parse(body));
+      conf.validate({strict: true});
     } else {
       var err = "Could not load data from " + configUrl
       throw new Error(err);

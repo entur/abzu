@@ -22,7 +22,6 @@ module.exports = new Promise(function(resolve, reject){
       default: "http://localhost:1888/",
       env: "TIAMAT_BASE_URL"
     },
-
     endpointBase: {
       doc: "Base URL for for timat including slash",
       format: String,
@@ -41,13 +40,12 @@ module.exports = new Promise(function(resolve, reject){
     // Read contents from configUrl if it is given
     request( configUrl, function( error, response, body ) {
       if ( !error && response.statusCode == 200 ) {
-        console.log("configUrl body", body);
+        body = JSON.parse(body)
         conf.load(body);
         conf.validate();
         resolve(conf)
       } else {
-        var err = "Could not load data from " + configUrl
-        reject(err)
+        reject("Could not load data from " + configUrl, error)
       }
     });
   } else {

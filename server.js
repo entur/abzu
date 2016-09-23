@@ -12,11 +12,12 @@ var config = (process.env.NODE_ENV !== 'production')
 
 var compiler = new webpack(config)
 
-console.log(convictPromise)
-
 convictPromise.then( (convict) => {
 
   var ENDPOINTBASE = convict.get('endpointBase')
+
+  console.log("ENDPOINTBASE", ENDPOINTBASE)
+
   if (process.env.NODE_ENV !== 'production') {
     config.output.path = ENDPOINTBASE + 'public/'
     app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.path, stats: {colors: true} }))
