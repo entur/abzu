@@ -9,6 +9,7 @@ RUN npm set progress=false
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY source/ .
+RUN npm build
 RUN npm install
 
 EXPOSE 8000
