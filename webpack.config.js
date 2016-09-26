@@ -8,15 +8,17 @@ module.exports = {
     './index'
   ],
   output: {
-    path: '/admin/abzu/',
-    publicPath: __dirname,
-    filename: 'bundle.js',
-    hotUpdateChunkFilename: '/hot/hot-update.js',
-    hotUpdateMainFilename: '/hot/hot-update.json'
+    path: __dirname + '/public',
+    filename: 'bundle.js'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('development')
+      }
+    })
   ],
   module: {
     loaders: [

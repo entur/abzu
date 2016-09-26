@@ -1,16 +1,8 @@
 var webpack = require('webpack')
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackHotMiddleware = require('webpack-hot-middleware')
 var convictPromise = require('./config/convict-promise.js')
 
 var app = new (require('express'))()
 var port = process.env.port || 8988
-
-var config = (process.env.NODE_ENV !== 'production')
-  ? require('./webpack.config')
-  : require('./webpack.prod.config')
-
-var compiler = new webpack(config)
 
 convictPromise.then( (convict) => {
 
@@ -19,9 +11,19 @@ convictPromise.then( (convict) => {
   console.log("ENDPOINTBASE", ENDPOINTBASE)
 
   if (process.env.NODE_ENV !== 'production') {
-    config.output.path = ENDPOINTBASE + 'public/'
-    app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.path, stats: {colors: true} }))
-    app.use(webpackHotMiddleware(compiler))
+
+    let config = require('./webpack.config')
+
+    config.output.publicPath = ENDPOINTBASE + 'public/'
+
+    var compiler = new webpack(config)
+
+    app.use(require("webpack-dev-middleware")(compiler, {
+      noInfo: true, publicPath: config.output.publicPath, stats: {colors: true}
+    }))
+
+    app.use(require("webpack-hot-middleware")(compiler))
+
   } else {
     // expose build bundle for production
     app.get(ENDPOINTBASE + 'public/bundle.js', function(req, res) {
@@ -51,13 +53,6 @@ convictPromise.then( (convict) => {
 
   app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
     res.sendFile(__dirname + '/config/keycloak.json')
-  })
-
-  app.get(ENDPOINTBASE + '_NODE_ENV', function(req, res) {
-    res.send({
-      NODE_ENV: process.env.NODE_ENV,
-      ENDPOINTBASE: ENDPOINTBASE
-    })
   })
 
   app.listen(port, function(error) {

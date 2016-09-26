@@ -11,21 +11,30 @@ import { createDevTools, persistState } from 'redux-devtools'
 
 const loggerMiddleware = createLogger()
 
-const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-  </DockMonitor>
-)
+var enchancer = {}
 
-const enchancer = compose(
-  applyMiddleware(thunkMiddleware, loggerMiddleware),
-  DevTools.instrument(),
-  persistState(
-    window.location.href.match(
-      /[?&]debug_session=([^&#]+)\b/
+if (process.env.NODE_ENV === 'development') {
+
+  const DevTools = createDevTools(
+    <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+      <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+    </DockMonitor>
+  )
+
+  enchancer = compose(
+    applyMiddleware(thunkMiddleware, loggerMiddleware),
+    DevTools.instrument(),
+    persistState(
+      window.location.href.match(
+        /[?&]debug_session=([^&#]+)\b/
+      )
     )
   )
-)
+} else {
+  enchancer = compose(
+    applyMiddleware(thunkMiddleware)
+  )
+}
 
 const initialState = {}
 
