@@ -75,7 +75,7 @@ class SearchBox extends React.Component {
           </IconButton>
         </div>
         {selectedMarker
-          ?  <SearchBoxDetails handleEdit={::this.handleEdit} marker={selectedMarker}/>
+          ?  <SearchBoxDetails handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
           :  <SearchBoxDetails hidden/>
         }
       </div>

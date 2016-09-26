@@ -48,8 +48,8 @@ class EditStopMap extends React.Component {
         zoom={zoom}
         lmapStyle={lmapStyle}
         onClick={this.handleClick}
-        handleDragEnd={::this.handleDragEnd}
-        handleMapMoveEnd={::this.handleMapMoveEnd}
+        handleDragEnd={this.handleDragEnd.bind(this)}
+        handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         />
     )
   }

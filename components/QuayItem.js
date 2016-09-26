@@ -5,7 +5,7 @@ import MenuItem from 'material-ui/MenuItem'
 import quayTypes from './quayTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
-import { IconButton, FontIcon } from 'material-ui'
+import { IconButton, FontIcon, Checkbox } from 'material-ui'
 
 class QuayItem extends React.Component {
 
@@ -78,11 +78,16 @@ class QuayItem extends React.Component {
           value={quay.description || ''}
           onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
         />
-      <SelectField value={quay.quayType} autoWidth={true} onChange={this.handleTypeChange} floatingLabelText="Type" floatingLabelFixed={true}>
+        <SelectField value={quay.quayType} autoWidth={true} onChange={this.handleTypeChange} floatingLabelText="Type" floatingLabelFixed={true}>
           { quayTypes.map( (type, index) =>
               <MenuItem key={'quayType' + index} value={type.value} primaryText={type.name} />
           ) }
         </SelectField>
+        <Checkbox
+          defaultChecked={quay.allAreasWheelchairAccessible}
+          label="All areas are wheelchair accessible"
+          style={{marginBottom: "10px", marginTop: "10px"}}
+          />
         </div>
       }
       </div>

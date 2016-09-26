@@ -8,7 +8,7 @@ convictPromise.then( (convict) => {
 
   var ENDPOINTBASE = convict.get('endpointBase')
 
-  console.log("ENDPOINTBASE", ENDPOINTBASE)
+  console.info("ENDPOINTBASE is set to", ENDPOINTBASE)
 
   if (process.env.NODE_ENV !== 'production') {
 
