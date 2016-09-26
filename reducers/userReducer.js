@@ -1,10 +1,10 @@
 import * as types from './../actions/actionTypes'
 
-const intialState = {
-  path: ''
+const initialState = {
+  path: '/'
 }
 
-const userReducer = (state = intialState, action) => {
+const userReducer = (state = initialState, action) => {
 
   switch (action.type) {
 

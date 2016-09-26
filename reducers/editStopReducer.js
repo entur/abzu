@@ -1,17 +1,16 @@
 import * as types from './../actions/actionTypes'
 
-const intialState = {
+const initialState = {
   centerPosition: {
     lat: 67.928595,
     lng: 13.0830025,
   },
   activeMarkers: [],
   zoom: 17,
-  lastUpdated: Date.now(),
   activeStopIsLoading: false
 }
 
-const editStopReducer = (state = intialState, action) => {
+const editStopReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
@@ -20,9 +19,6 @@ const editStopReducer = (state = intialState, action) => {
 
     case types.SET_ACTIVE_MARKERS:
       return Object.assign({}, state, {activeMarkers: [action.payLoad]})
-
-    case types.UPDATE_MAP:
-      return Object.assign({}, state, {lastUpdated: action.payLoad})
 
     case types.RECEIVED_STOP:
       const stop = Object.assign({}, state, { activeStopIsLoading: false, activeStopPlace: action.payLoad })
