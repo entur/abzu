@@ -33,6 +33,8 @@ class SearchBox extends React.Component {
   }
 
   handleFocusMap() {
+    const { activeMarkers } = this.props
+
     if (activeMarkers) {
       // TODO : focus to current position of map where activeMarkers are located
     }
@@ -70,8 +72,8 @@ class SearchBox extends React.Component {
           />
         </div>
         <div style={{float: "right", width: "10%"}}>
-          <IconButton onClick={this.handleFocusMap.bind(this)}  iconClassName="material-icons" tooltip="Search">
-            search
+          <IconButton onClick={this.handleFocusMap.bind(this)}  iconClassName="material-icons" tooltip="Clear">
+            clear
           </IconButton>
         </div>
         {selectedMarker

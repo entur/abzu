@@ -14,7 +14,6 @@ const sendData = (type, payLoad) => {
 
   return function(dispatch) {
 
-    console.log("windows.config", window.config)
     const URL = window.config.tiamatBaseUrl + 'stop_place/?name=' + filter
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )

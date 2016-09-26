@@ -35,6 +35,11 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeQuayDescription(index, event.target.value))
   }
 
+  handleWHAChange = (event) => {
+    const { dispatch, index } = this.props
+    dispatch(MapActions.changeWHA(index, event.target.checked))
+  }
+
   render() {
 
     const { quay, index } = this.props
@@ -86,6 +91,7 @@ class QuayItem extends React.Component {
         <Checkbox
           defaultChecked={quay.allAreasWheelchairAccessible}
           label="All areas are wheelchair accessible"
+          onCheck={this.handleWHAChange}
           style={{marginBottom: "10px", marginTop: "10px"}}
           />
         </div>

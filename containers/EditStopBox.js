@@ -45,16 +45,24 @@ class EditStopBox extends React.Component {
 
     const categoryStyle = {
       fontWeight: "600",
-      marginRight: "2%"
+      marginRight: "5px"
+    }
+
+    const fixedHeader = {
+      position: "absolute",
+      width: "95%",
+      margin: "auto"
     }
 
     const quayStyle = {
       border: "1px solid #e5e5e5",
-      padding: "10px"
+      padding: "20px",
+      overflow: "scroll",
+      height: "500px"
     }
 
     const SbStyle = {
-      top: "200px",
+      top: "100px",
       background: "white",
       height: "auto",
       width: "380px",
@@ -64,54 +72,63 @@ class EditStopBox extends React.Component {
       padding: "10px"
     }
 
+    const scrollable = {
+      overflow: "auto",
+      height: "550px",
+      zIndex: "2"
+    }
+
     const addQuayStyle = {
       display:"inline-block",
       float: "right"
     }
 
-
     return (
+
       <div style={SbStyle}>
-        <div>
-          <span style={categoryStyle}>
-            Stoppested:
-          </span>
-          {selectedMarker.text}
-        </div>
-        <p>
-          {selectedMarker.description}
-        </p>
-        <p>
-          <span style={categoryStyle}>Type:</span> {selectedMarker.type || 'Not specified'}
-        </p>
-        <FlatButton onClick={this.handleSave.bind(this)} label="Save" style={{float:"right", marginTop: "-60px"}} />
-
-      { selectedMarker.markerProps
-        ?
-        <div style={quayStyle}>
-          <div style={{marginBottom: "40px"}}>
-            <span style={{fontWeight: "600"}}>Quays</span>
-              <FloatingActionButton onClick={this.handleAddQuay.bind(this)} style={addQuayStyle} mini={true}>
-                <ContentAdd />
-            </FloatingActionButton>
-          </div>
-
-          { selectedMarker.markerProps.quays.map( (quay,index) =>
-
-            <QuayItem
-              key={"quay-" + index}
-              quay={quay}
-              index={index}
-              removeQuay={() => this.handleRemoveQuay(index)}
+        <div style={fixedHeader}>
+            {selectedMarker.text}
+            <FlatButton
+              onClick={this.handleSave.bind(this)}
+              label="Save"
+              style={{float:"right"}}
               />
-          )}
-
         </div>
-        : null
-      }
-      </div>
-    )
-  }
+        <div style={{scrollable}}>
+          <p>
+            {selectedMarker.description}
+          </p>
+          <p style={{marginTop: "30px"}}>
+            <span style={categoryStyle}>Type:</span>
+            { selectedMarker.type || 'Not specified' }
+          </p>
+
+          { selectedMarker.markerProps
+            ?
+            <div style={quayStyle}>
+              <div style={{marginBottom: "40px"}}>
+                <span style={{fontWeight: "600"}}>Quays</span>
+                <FloatingActionButton
+                  onClick={this.handleAddQuay.bind(this)}
+                  style={addQuayStyle}
+                  mini={true}>
+                  <ContentAdd />
+                </FloatingActionButton>
+              </div>
+              { selectedMarker.markerProps.quays.map( (quay,index) =>
+                <QuayItem
+                  key={"quay-" + index}
+                  quay={quay}
+                  index={index}
+                  removeQuay={() => this.handleRemoveQuay(index)}
+                  />
+              )}
+            </div>
+            : null
+          }
+        </div>
+      </div> )
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {

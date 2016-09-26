@@ -35,5 +35,4 @@ const quayTypes = [{
     }
   ]
 
-
   export default quayTypes

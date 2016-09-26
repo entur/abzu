@@ -66,4 +66,13 @@ MapActions.changeQuayDescription = (index, description) => {
   }
 }
 
+MapActions.changeWHA = (index, value) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_WHA, {
+      index: index,
+      value: value
+    }))
+  }
+}
+
 export default MapActions

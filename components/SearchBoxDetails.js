@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react'
 import { Link, browserHistory } from 'react-router'
+import Edit from 'material-ui/svg-icons/editor/mode-edit'
+import FlatButton from 'material-ui/FlatButton'
 
 const SearchBoxDetails = ({hidden, marker, handleEdit}) => {
-
 
   if (hidden) return null
 
@@ -20,7 +21,14 @@ const SearchBoxDetails = ({hidden, marker, handleEdit}) => {
     <div style={style}>
       <h2>{markerInfo.name}</h2>
       <p>{description}</p>
-      <button onClick={() => handleEdit(markerInfo.id)}>edit</button>
+      <FlatButton
+        onClick={() => handleEdit(markerInfo.id)}
+        >
+        <Edit style={{width: "16px", verticalAlign: "middle", height: "16px"}}/>
+        <span style={{fontSize: ".8em", marginLeft: "5px"}}>
+          Rediger
+        </span>
+      </FlatButton>
     </div>
   )
 }

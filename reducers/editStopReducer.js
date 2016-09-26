@@ -73,6 +73,12 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {activeStopPlace: [markerToChangeQT]})
 
+    case types.CHANGED_WHA:
+      let markerToChangeWHA = Object.assign({}, state.activeStopPlace[0],{})
+      markerToChangeWHA.markerProps.quays[action.payLoad.index].allAreasWheelchairAccessible = action.payLoad.value
+
+      return Object.assign({}, state, {activeStopPlace: [markerToChangeWHA]})
+
     case types.CHANGED_QUAY_POSITION:
 
       let stopIndex = action.payLoad.stopIndex
