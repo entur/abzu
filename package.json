@@ -7,8 +7,7 @@
     "build": "webpack --config ./webpack.prod.config.js --progress --colors",
     "dev": "NODE_ENV=development node server.js",
     "prod": "NODE_ENV=production node server.js",
-    "test-creators": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/creators/index.js",
-    "test-reducers": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./tests/reducers/index.js"
+    "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./test/**"
   },
   "author": "Sean Erik Scully",
   "license": "MIT",
