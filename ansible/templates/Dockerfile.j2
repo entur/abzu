@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 COPY source/ .
 
 RUN npm install
-RUN npm build
+RUN npm run build
 
 EXPOSE 8000
 ENV port 8000
