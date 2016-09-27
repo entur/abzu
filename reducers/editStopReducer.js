@@ -21,8 +21,8 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {activeMarkers: [action.payLoad]})
 
     case types.RECEIVED_STOP:
-      const stop = Object.assign({}, state, { activeStopIsLoading: false, activeStopPlace: action.payLoad })
-      return stop
+      return Object.assign({}, state, { activeStopIsLoading: false, activeStopPlace: action.payLoad })
+
     case types.REQUESTED_STOP:
       return Object.assign({}, state, { activeStopIsLoading: true})
 
@@ -31,14 +31,15 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.ADDED_NEW_QUAY:
       let markerToExpand = Object.assign({}, state.activeStopPlace[0], {})
+
       let newQuay = {
         name: "",
         shortName: "",
         description: "",
         centroid: {
           location: {
-            longitude: markerToExpand.markerProps.position[1] + ( Math.floor((Math.random() * 10) + 1) / 10000),
-            latitude: markerToExpand.markerProps.position[0] + ( Math.floor((Math.random() * 10) + 1) / 10000 )
+            latitude: markerToExpand.markerProps.position[0] + ( Math.floor((Math.random() * 10) + 1) / 10000 ),
+            longitude: markerToExpand.markerProps.position[1] + ( Math.floor((Math.random() * 10) + 1) / 10000)
           }
         },
         allAreasWheelchairAccessible: false,
@@ -47,6 +48,7 @@ const editStopReducer = (state = initialState, action) => {
       }
 
       markerToExpand.markerProps.quays.push(newQuay)
+
       return Object.assign({}, state, {activeStopPlace: [markerToExpand]})
 
     case types.REMOVED_QUAY:
@@ -102,6 +104,12 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.RECEIVED_STOPS_NEARBY:
       return Object.assign({}, state, {activeStopPlace: state.activeStopPlace.concat(action.payLoad)})
+
+    case types.CHANGED_STOP_NAME:
+      let activeStopPlaceCSN = state.activeStopPlace.slice(0)
+      activeStopPlaceCSN[0].markerProps.name = action.payLoad
+
+      return Object.assign({}, state, {activeStopPlace: activeStopPlaceCSN})
 
     default:
       return state

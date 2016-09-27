@@ -36,4 +36,32 @@ describe('edit stop reducer', () => {
       .toEqual(Object.assign({}, initialState, {activeMarkers: []}))
   })
 
+
+  it('Should append stops nearby to active stop place', () => {
+    let stops = JSON.parse(fs.readFileSync(__dirname + '/json/activeStopPlaces.json', 'utf-8'))
+    let activeStop = stops[0]
+    let nearbyStops = stops.slice(1)
+
+    let newState = editStopReducer({ activeStopPlace: [activeStop]}, {
+      type: types.RECEIVED_STOPS_NEARBY,
+      payLoad: nearbyStops
+    })
+
+    expect(newState.activeStopPlace).toEqual(stops)
+
+  })
+
+  it('Should change name of active stop place', () => {
+
+    let stopPlaces = JSON.parse(fs.readFileSync(__dirname + '/json/activeStopPlaces.json', 'utf-8'))
+    const name = 'Somewhere over the rainbow'
+    let newState = editStopReducer({ activeStopPlace: stopPlaces }, {
+      type: types.CHANGED_STOP_NAME,
+      payLoad: name
+    })
+
+    expect(newState.activeStopPlace[0].markerProps.name).toEqual( name)
+
+  })
+
 })

@@ -9,6 +9,12 @@ const sendData = (type, payLoad) => {
   }
 }
 
+MapActions.changeStopName = (name) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_STOP_NAME, name) )
+  }
+}
+
 MapActions.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_ACTIVE_MARKERS, activeMarker) )
