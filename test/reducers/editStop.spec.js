@@ -17,6 +17,8 @@ const initialState = {
 
 describe('edit stop reducer', () => {
 
+  let stopPlaces = JSON.parse(fs.readFileSync(__dirname + '/json/activeStopPlaces.json', 'utf-8'))
+
   it('Should return the initial state', () => {
     expect(editStopReducer(undefined, {}))
       .toEqual(initialState)
@@ -53,14 +55,37 @@ describe('edit stop reducer', () => {
 
   it('Should change name of active stop place', () => {
 
-    let stopPlaces = JSON.parse(fs.readFileSync(__dirname + '/json/activeStopPlaces.json', 'utf-8'))
     const name = 'Somewhere over the rainbow'
     let newState = editStopReducer({ activeStopPlace: stopPlaces }, {
       type: types.CHANGED_STOP_NAME,
       payLoad: name
     })
 
-    expect(newState.activeStopPlace[0].markerProps.name).toEqual( name)
+    expect(newState.activeStopPlace[0].markerProps.name).toEqual(name)
+
+  })
+
+  it('Should change description of active stop place', () => {
+
+    const description = 'The pot of gold is found here'
+    let newState = editStopReducer({ activeStopPlace: stopPlaces }, {
+      type: types.CHANGED_STOP_DESCRIPTION,
+      payLoad: description
+    })
+
+    expect(newState.activeStopPlace[0].markerProps.description).toEqual(description)
+
+  })
+
+  it('Should change stop type of active stop place', () => {
+
+    const stopPlaceType = 'busStop'
+    let newState = editStopReducer({ activeStopPlace: stopPlaces }, {
+      type: types.CHANGED_STOP_TYPE,
+      payLoad: stopPlaceType
+    })
+
+    expect(newState.activeStopPlace[0].markerProps.stopPlaceType).toEqual(stopPlaceType)
 
   })
 

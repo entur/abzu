@@ -10,7 +10,6 @@ const sendData = (type, payLoad) => {
   }
 }
 
-
 UserActions.navigateTo = (path, id) => {
   return function(dispatch) {
     dispatch( sendData(types.NAVIGATE_TO, id) )
@@ -21,6 +20,20 @@ UserActions.navigateTo = (path, id) => {
     }
 
     browserHistory.push(basePath+path+id)
+  }
+}
+
+UserActions.toggleIsCreatingNewStop = () => {
+  return function(dispatch, getState) {
+
+    const state = getState()
+    const isCreatingNewStop = state.userReducer.isCreatingNewStop
+
+    if (isCreatingNewStop) {
+      dispatch( sendData( types.DESTROYED_NEW_STOP, null) )
+    }
+
+    dispatch( sendData (types.TOGGLED_IS_CREATING_NEW_STOP, null) )
   }
 }
 

@@ -3,10 +3,13 @@ import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import cfgreader from '../config/readConfig'
+import NewStopPlace from '../components/NewStopPlace'
 
 class SearchBox extends React.Component {
 
@@ -26,60 +29,83 @@ class SearchBox extends React.Component {
 
   handleNewRequest(result) {
     if (typeof(result.markerProps) !== 'undefined') {
-      this.props.dispatch(MapActions.setActiveMarkers(result))
+      this.props.dispatch( MapActions.setActiveMarkers(result) )
     } else {
       console.warn('markerProps is not defined in handleNewRequest')
     }
   }
 
-  handleFocusMap() {
-    const { activeMarkers } = this.props
+  handleNewStop() {
+    const { dispatch } = this.props
+    dispatch( UserActions.toggleIsCreatingNewStop() ) 
+  }
 
-    if (activeMarkers) {
-      // TODO : focus to current position of map where activeMarkers are located
-    }
+  handleClearSearch() {
+    this.refs.searchInput.setState({
+      searchText: '',
+      open: true,
+      focusTextField: true
+    })
   }
 
   render() {
 
-    const { activeMarkers } = this.props
+    const { activeMarkers, isCreatingNewStop } = this.props
 
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
 
     const SbStyle = {
-      top: "100px",
+      top: "90px",
       background: "white",
       height: "auto",
-      width: "380px",
-      margin: "20px",
+      width: "410px",
+      margin: "10px",
       position: "absolute",
       zIndex: "2",
       padding: "10px"
     }
 
+    const topLevelMargin = selectedMarker ? "0px" : "80px"
+
     return (
       <div style={SbStyle}>
-        <div style={{float: "left", width: "90%"}}>
-          <AutoComplete
-           hintText="Filtrer på navn"
-           dataSource={dataSource}
-           filter={AutoComplete.caseInsensitiveFilter}
-           onUpdateInput={this.handleUpdateInput.bind(this)}
-           maxSearchResults={5}
-           onNewRequest={this.handleNewRequest.bind(this)}
-           fullWidth={true}
-          />
+        <div style={{marginBottom: topLevelMargin}}>
+          <div style={{float: "left", width: "85%"}}>
+            <AutoComplete
+             hintText="Filtrer på navn"
+             dataSource={dataSource}
+             filter={AutoComplete.caseInsensitiveFilter}
+             onUpdateInput={this.handleUpdateInput.bind(this)}
+             maxSearchResults={5}
+             ref="searchInput"
+             onNewRequest={this.handleNewRequest.bind(this)}
+             fullWidth={true}
+            />
+          </div>
+          <div style={{float: "right", width: "10%"}}>
+            <IconButton onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
+              clear
+            </IconButton>
+          </div>
         </div>
-        <div style={{float: "right", width: "10%"}}>
-          <IconButton onClick={this.handleFocusMap.bind(this)}  iconClassName="material-icons" tooltip="Clear">
-            clear
-          </IconButton>
-        </div>
+
         {selectedMarker
           ?  <SearchBoxDetails handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
           :  <SearchBoxDetails hidden/>
         }
+        <div style={{marginTop: "30px"}}>
+          { isCreatingNewStop
+          ? <NewStopPlace/>
+          :
+          <FloatingActionButton
+            onClick={this.handleNewStop.bind(this)}
+            style={{float: "right"}}
+            mini={true}>
+            <ContentAdd />
+          </FloatingActionButton>
+          }
+        </div>
       </div>
     )
   }
@@ -88,7 +114,8 @@ class SearchBox extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     activeMarkers: state.stopPlacesReducer.activeMarkers,
-    dataSource: state.stopPlacesReducer.stopPlaceNames.places
+    dataSource: state.stopPlacesReducer.stopPlaceNames.places,
+    isCreatingNewStop: state.userReducer.isCreatingNewStop
   }
 }
 

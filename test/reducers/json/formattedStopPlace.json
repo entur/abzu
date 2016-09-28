@@ -13,6 +13,7 @@
     "description": null,
     "municipality": "Bodø",
     "county": "Nordland",
+    "stopPlaceType" : "tramStop",
     "quays": [
       {
         "name": "Stadiontunet Hålogalandsgt.",

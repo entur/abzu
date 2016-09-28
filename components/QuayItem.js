@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { IconButton, FontIcon, Checkbox } from 'material-ui'
 import Divider from 'material-ui/Divider';
 
-
 class QuayItem extends React.Component {
 
   constructor(props) {

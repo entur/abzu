@@ -8,9 +8,13 @@ export default class LeafLetMap extends React.Component {
 
   render() {
 
-    const { lmapStyle, position, zoom, markers, handleDragEnd, handleMapMoveEnd } = this.props
-
+    const { lmapStyle, position, zoom, handleDragEnd, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
+    let { markers } = this.props
     const { BaseLayer, Overlay } = LayersControl
+
+    if (newStopPlace && typeof newStopPlace == 'object') {
+      markers = markers.concat(newStopPlace)
+    }
 
     return (
       <Lmap ref='map'
@@ -19,6 +23,7 @@ export default class LeafLetMap extends React.Component {
         zoom={zoom}
         zoomControl={false}
         length={4}
+        onDblclick={ e => onDoubleClick && onDoubleClick(e, this.refs.map) }
         onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
       >
         <LayersControl position='topright'>

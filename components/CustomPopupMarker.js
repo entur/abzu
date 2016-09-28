@@ -8,18 +8,18 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick, handleDragEnd, isQuay, markerIndex, stopIndex } = this.props
 
-    if (isQuay) {
-      children += ` (quay ${markerIndex+1})`
+    if (!children && !children.length) {
+      children = 'Uten navn'
     }
 
-    const style = {
-      color: '#0086b3'
-    }
+    const style = !isQuay ? {
+      color: '#0086b3',
+      cursor: "pointer"
+    } : { color: '#00cc00' }
 
     return (
-
       <Marker
-        ref="marker" 
+        ref="marker"
         key={"marker-key" + markerIndex }
         onDragend={() => { handleDragEnd(stopIndex, markerIndex, this.refs.marker) }}
         draggable={true}
@@ -27,18 +27,12 @@ class CustomPopupMarker extends React.Component {
         >
         <Popup>
           <div>
-            <span style={{style}} onClick={handleOnClick}>{children}</span>
+            <span style={style} onClick={handleOnClick}>{children}</span>
           </div>
         </Popup>
       </Marker>
     )
   }
-}
-
-CustomPopupMarker.propTypes = {
-  children: PropTypes.string,
-  isQuay: PropTypes.bool,
-  positon: PropTypes.object
 }
 
 export default CustomPopupMarker

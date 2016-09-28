@@ -1,4 +1,5 @@
 import * as types from './actionTypes'
+import UserActions from './UserActions'
 import axios from 'axios'
 
 var AjaxActions = {}
@@ -52,25 +53,37 @@ const sendData = (type, payLoad) => {
   }
 }
 
-const formatMarkers = (data) => {
+export const formatMarkers = (data) => {
 
   const suggestions = data.map ( (stop, index) => {
 
-    return {
-      text: `${stop.name}, ${stop.municipality} (${stop.county})`,
+    const suggestion = {
+      text: '<<Navn ikke satt>>',
       value: stop.id,
       markerProps: {
         key: `marker${index}`,
-        name: stop.name,
+        name: stop.name || '',
         id: stop.id,
         position: [stop.centroid.location.latitude, stop.centroid.location.longitude],
         children: stop.name,
-        description: stop.description,
+        description: stop.description || '',
         municipality: stop.municipality,
         county: stop.county,
-        quays: stop.quays
+        quays: stop.quays,
+        stopPlaceType: stop.stopPlaceType
       }
     }
+
+    if (stop.name) {
+      suggestion.text = stop.name
+    }
+
+    if (stop.municipality && stop.county) {
+      suggestion.text += `, ${stop.municipality} (${stop.county})`
+    }
+
+    return suggestion
+
   })
 
   return suggestions
@@ -78,28 +91,39 @@ const formatMarkers = (data) => {
 
  AjaxActions.getStop = (stopId) => {
 
-  return function(dispatch) {
+  return function(dispatch, getState) {
 
-    const URL = window.config.tiamatBaseUrl + 'stop_place/' + stopId
+    if (stopId !== 'new_stop') {
+      const URL = window.config.tiamatBaseUrl + 'stop_place/' + stopId
 
-    dispatch( sendData(types.REQUESTED_STOP, null) )
+      dispatch( sendData(types.REQUESTED_STOP, null) )
 
-    return axios.get(URL)
-    .then(function(response) {
-      const stops = formatMarkers([response.data])
-      dispatch( sendData(types.RECEIVED_STOP, stops) )
-      dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
+      return axios.get(URL)
+      .then(function(response) {
+        const stops = formatMarkers([response.data])
+        dispatch( sendData(types.RECEIVED_STOP, stops) )
+        dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
+        dispatch( sendData(types.SET_ZOOM, 15) )
+      })
+      .catch(function(response){
+        dispatch( sendData(types.ERROR_STOP, response.data) )
+      })
+    } else {
+
+      const state = getState()
+
+      const newStop = Object.assign({}, state.stopPlacesReducer.newStopPlace, {})
+      delete newStop.isNewStop
+
+      dispatch( sendData(types.RECEIVED_STOP, [newStop]) )
+      dispatch( sendData(types.CHANGED_MAP_CENTER, newStop.markerProps.position) )
       dispatch( sendData(types.SET_ZOOM, 15) )
-    })
-    .catch(function(response){
-      dispatch( sendData(types.ERROR_STOP, response.data) )
-    })
-
+    }
   }
 
 }
 
-const prepareStopForSaving = (stop) => {
+export const prepareStopForSaving = (stop) => {
 
   let savableStop = {}
 
@@ -111,13 +135,13 @@ const prepareStopForSaving = (stop) => {
     latitude: stop.markerProps.position[0],
     longitude: stop.markerProps.position[1],
   }
-  savableStop.allAreasWheelchairAccessible = false // TODO: Used?
-  savableStop.stopPlaceType = null // TODO : support this
+  savableStop.allAreasWheelchairAccessible = false
+  savableStop.stopPlaceType = stop.markerProps.stopPlaceType
   savableStop.municipality = stop.markerProps.municipality
   savableStop.county = stop.markerProps.county
+  savableStop.quays = []
 
   if (stop.markerProps.quays) {
-    savableStop.quays = []
     stop.markerProps.quays.forEach ( (quay) => {
       delete quay.new
       savableStop.quays.push(quay)
@@ -153,5 +177,30 @@ const prepareStopForSaving = (stop) => {
   }
 }
 
+AjaxActions.saveNewStop = () => {
+  return function(dispatch, getState) {
+
+    var stop = {...getState().stopPlacesReducer.newStopPlace}
+
+    if (!stop) {
+      console.error('Did not find stop to save')
+      return
+    }
+
+    const URL = window.config.tiamatBaseUrl + 'stop_place/'
+
+    var savableStop = prepareStopForSaving(stop)
+    return axios.post(URL, savableStop)
+    .then(function(response) {
+      dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
+      dispatch ( UserActions.navigateTo('/edit/', response.data.id) )
+    })
+    .catch(function(response){
+      dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
+    })
+
+  }
+}
 
 export default AjaxActions

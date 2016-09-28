@@ -25,6 +25,12 @@ const stopPlacesReducer = (state = intialState, action) => {
     case types.SET_ACTIVE_MARKERS:
       return Object.assign({}, state, {activeMarkers: [action.payLoad]})
 
+    case types.CREATE_NEW_STOP:
+      return Object.assign({}, state, { newStopPlace: action.payLoad })
+
+    case types.DESTROYED_NEW_STOP:
+      return Object.assign({}, state, { newStopPlace: undefined })
+
     case types.SET_ZOOM:
       return Object.assign({}, state, {zoom: action.payLoad})
 
@@ -39,8 +45,6 @@ const stopPlacesReducer = (state = intialState, action) => {
 
     case types.ERROR_STOP_NAMES:
       return Object.assign({}, state, { stopPlaceNames: { errorMessage: action.payLoad } } )
-
-    // console.warn("stopPlacesReducer: Unhandled type", action.type)
 
     default:
       return state

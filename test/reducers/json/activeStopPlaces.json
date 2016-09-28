@@ -14,6 +14,7 @@
       "description": null,
       "municipality": "Vennesla",
       "county": "Vest-Agder",
+      "stopType" : "tramStop",
       "quays": [
         {
           "name": "Vormbrokka",

@@ -42,7 +42,7 @@ describe('stop places reducer', () => {
       })
     })
 
-    it('Should zoom level of stop places map', () => {
+    it('Should set zoom level of stop places map', () => {
 
       const zoomLevel = 13
 
@@ -87,7 +87,7 @@ describe('stop places reducer', () => {
 
       })
 
-      it('Should retturn error message upon running into an error when receiving stop names', () => {
+      it('Should return error message upon running into an error when receiving stop names', () => {
 
         const errorMessage = 'Error 404 – Not Found'
 
@@ -99,6 +99,30 @@ describe('stop places reducer', () => {
           stopPlaceNames: {
             errorMessage: errorMessage
           }
+        })
+      })
+
+      it('Should add new stop place to map when creating a new stop', () => {
+
+        const newStopPlace = {
+          "name": "New stop",
+          "centroid": {
+            "location": {
+              "longitude": 10.160476,
+              "latitude": 59.079567
+            }
+          },
+          "allAreasWheelchairAccessible": false,
+          "stopPlaceType": null,
+          "quays": []
+         }
+
+        expect(stopPlacesReducer({}, {
+          type: types.CREATE_NEW_STOP,
+          payLoad: newStopPlace
+        }))
+        .toEqual({
+          newStopPlace: newStopPlace
         })
       })
     })

@@ -111,6 +111,19 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {activeStopPlace: activeStopPlaceCSN})
 
+    case types.CHANGED_STOP_DESCRIPTION:
+      let activeStopPlaceCSD = state.activeStopPlace.slice(0)
+      activeStopPlaceCSD[0].markerProps.description = action.payLoad
+
+      return Object.assign({}, state, {activeStopPlace: activeStopPlaceCSD})
+
+    case types.CHANGED_STOP_TYPE:
+      let activeStopPlaceCST = state.activeStopPlace.slice(0)
+      activeStopPlaceCST[0].markerProps.stopPlaceType = action.payLoad
+
+      return Object.assign({}, state, {activeStopPlace: activeStopPlaceCST})
+
+
     default:
       return state
   }

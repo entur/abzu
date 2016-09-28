@@ -7,9 +7,12 @@ import SearchBoxDetails from '../components/SearchBoxDetails'
 import QuayItem from '../components/QuayItem'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions } from '../actions/'
 import TextField from 'material-ui/TextField'
+import stopTypes from '../components/stopTypes'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 class EditStopBox extends React.Component {
 
@@ -25,12 +28,27 @@ class EditStopBox extends React.Component {
 
   handleSave() {
     const { dispatch } = this.props
-    dispatch(AjaxActions.saveEditingStop())
+
+    if (window.location.pathname.indexOf('new_stop') > 0) {
+      dispatch(AjaxActions.saveNewStop())
+    } else {
+      dispatch(AjaxActions.saveEditingStop())
+    }
   }
 
   handleStopNameChange(event) {
     const { dispatch } = this.props
     dispatch(MapActions.changeStopName(event.target.value))
+  }
+
+  handleStopDescriptionChange(event) {
+    const { dispatch } = this.props
+    dispatch(MapActions.changeStopDescription(event.target.value))
+  }
+
+  handleStopTypeChange(event, index, value) {
+    const { dispatch } = this.props
+    dispatch(MapActions.changeStopType(value))
   }
 
   render() {
@@ -102,6 +120,28 @@ class EditStopBox extends React.Component {
             value={selectedMarker.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
+            <TextField
+              hintText="Beskrivelse"
+              floatingLabelText="Beskrivelse"
+              style={{width: "350px"}}
+              value={selectedMarker.markerProps.description}
+              onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
+              />
+            <SelectField value={selectedMarker.markerProps.stopPlaceType}
+                autoWidth={true}
+                onChange={this.handleStopTypeChange.bind(this)}
+                floatingLabelText="Type"
+                floatingLabelFixed={true}
+                style={{width: "95%"}}
+                >
+                { stopTypes.map( (type, index) =>
+                    <MenuItem
+                      key={'stopType' + index}
+                      value={type.value}
+                      primaryText={type.name}
+                      />
+                ) }
+              </SelectField>
           <div style={{marginBottom: "10px"}}>
             <FloatingActionButton
               onClick={this.handleAddQuay.bind(this)}
@@ -124,11 +164,11 @@ class EditStopBox extends React.Component {
             )}
           </div>
         </div>
-
-        <FlatButton
-          onClick={this.handleSave.bind(this)}
+        <RaisedButton
+          primary={true}
           label="Save"
           style={{float:"right", marginTop: "6px", zIndex: "999"}}
+          onClick={this.handleSave.bind(this)}
           />
       </div> )
     }

@@ -36,7 +36,7 @@ class EditStopMap extends React.Component {
     const { position, markers, zoom } = this.props
 
     const lmapStyle = {
-      height: "800px",
+      height: "100%",
       width: "100%",
       border: "2px solid #eee"
     }

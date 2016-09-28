@@ -1,4 +1,5 @@
 import * as types from './actionTypes'
+import { formatMarkers } from './AjaxActions'
 
 var MapActions = {}
 
@@ -12,6 +13,18 @@ const sendData = (type, payLoad) => {
 MapActions.changeStopName = (name) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_STOP_NAME, name) )
+  }
+}
+
+MapActions.changeStopDescription = (description) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_STOP_DESCRIPTION, description) )
+  }
+}
+
+MapActions.changeStopType = (type) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_STOP_TYPE, type) )
   }
 }
 
@@ -79,6 +92,38 @@ MapActions.changeWHA = (index, value) => {
       value: value
     }))
   }
+}
+
+MapActions.createNewStop = (coordinates) => {
+  return function(dispatch) {
+    let stop = createNewStopTemplate(coordinates)
+    dispatch (sendData (types.CREATE_NEW_STOP, stop) )
+  }
+}
+
+const createNewStopTemplate = (coordinates) => {
+
+  let newStopPlace = formatMarkers([{
+    name: "",
+    description: "",
+    municipality: "",
+    isNewStop: true,
+    county: "",
+    centroid: {
+      location: {
+        longitude: -1,
+        latitude: -1
+      }
+    },
+    allAreasWheelchairAccessible: false,
+    stopPlaceType: null,
+    quays: []
+  }])[0]
+
+  newStopPlace.markerProps.position = [coordinates.lat, coordinates.lng]
+  newStopPlace.isNewStop = true
+
+  return newStopPlace
 }
 
 export default MapActions
