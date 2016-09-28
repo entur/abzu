@@ -55,6 +55,10 @@ convictPromise.then( (convict) => {
     res.sendFile(__dirname + '/config/keycloak.json')
   })
 
+  app.get(ENDPOINTBASE + '*', function(req, res) {
+    res.status(404).send(get404Page())
+  })
+
   app.listen(port, function(error) {
     if (error) {
       console.error(error)
@@ -76,6 +80,21 @@ convictPromise.then( (convict) => {
         <script src="${ENDPOINTBASE}public/bundle.js"></script>
       </body>
     </html>`
+
+   const get404Page = () =>
+     `<html>
+       <head>
+         <title>404 - Stop places</title>
+       </head>
+       <body>
+         <div id="root">
+          <h1>Stop places</h1>
+          <h2>Oops, this page does not exist!<h2>
+          <a href="${ENDPOINTBASE}">Back to the site!</a>
+         </div>
+       </body>
+     </html>`
+
 }).catch(function(err) {
   console.error("Unable to load convict configuration", err)
 })
