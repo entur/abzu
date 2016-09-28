@@ -37,7 +37,7 @@ class SearchBox extends React.Component {
 
   handleNewStop() {
     const { dispatch } = this.props
-    dispatch( UserActions.toggleIsCreatingNewStop() ) 
+    dispatch( UserActions.toggleIsCreatingNewStop() )
   }
 
   handleClearSearch() {
@@ -66,7 +66,7 @@ class SearchBox extends React.Component {
       padding: "10px"
     }
 
-    const topLevelMargin = selectedMarker ? "0px" : "80px"
+    const topLevelMargin = selectedMarker ? "0px" : "60px"
 
     return (
       <div style={SbStyle}>

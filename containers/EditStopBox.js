@@ -96,7 +96,7 @@ class EditStopBox extends React.Component {
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: "500px",
+      height: "400px",
       position: "relative",
       display: "block",
       zIndex: "2"
@@ -111,7 +111,6 @@ class EditStopBox extends React.Component {
     return (
 
       <div style={SbStyle}>
-
         <div style={fixedHeader}>
           <TextField
             hintText="Name"

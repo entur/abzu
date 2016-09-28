@@ -8,6 +8,17 @@ class NewStopMarker extends React.Component {
 
     let { children, position, handleOnClick, handleDragEnd } = this.props
 
+    const buttonStyle = {
+      borderStyle: "none",
+      fontWeight: "600",
+      cursor: "pointer",
+      textDecoration: "underline",
+      background: "#fff",
+      padding: "1px",
+      width: "100%",
+      verticalAlign: "middle"
+    }
+
     return (
 
       <Marker
@@ -20,9 +31,11 @@ class NewStopMarker extends React.Component {
         <Popup>
           <div>
             <span onClick={handleOnClick}>{children}</span>
-              <div>Du lager en nytt stoppested. Vil du opprette et stoppested her?
+              <div>
+                <p style={{fontWeight: "600"}}>Du lager en nytt stoppested</p>
+                <p>Vil du opprette et stoppested her?</p>
                 <button
-                  style={{border: "1px solid #000", marginLeft: "2px", background: "#fff", padding: "1px", textAlign: "middle"}}
+                  style={buttonStyle}
                   onClick={() => { handleOnClick(position) } }
                   >
                   Opprett nå

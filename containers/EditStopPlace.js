@@ -13,6 +13,13 @@ require('../sass/main.scss')
 
 class EditStopPlace extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: true
+    }
+  }
+
   componentDidMount() {
 
       const { dispatch} = this.props
@@ -26,6 +33,10 @@ class EditStopPlace extends React.Component {
         dispatch( AjaxActions.getStop(hrefId) )
 
       }).bind(this))
+  }
+
+  handleRequestClose() {
+    this.setState({open: false})
   }
 
   render() {
