@@ -15,7 +15,7 @@ convictPromise.then( (convict) => {
     let config = require('./webpack.config')
 
     config.output.publicPath = ENDPOINTBASE + 'public/'
-
+    
     var compiler = new webpack(config)
 
     app.use(require("webpack-dev-middleware")(compiler, {

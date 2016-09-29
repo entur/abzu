@@ -43,7 +43,6 @@ class SearchBox extends React.Component {
   handleClearSearch() {
     this.refs.searchInput.setState({
       searchText: '',
-      open: true,
       focusTextField: true
     })
   }

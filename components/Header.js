@@ -8,19 +8,22 @@ import FlatButton from 'material-ui/FlatButton'
 import ActionHome from 'material-ui/svg-icons/action/home'
 import { Link, browserHistory } from 'react-router'
 
-const Header = (props) =>
-  (<AppBar
+const Header = (props) =>(
+
+  <AppBar
+
     title="Stoppestedregister"
     showMenuIconButton={true}
     style={{background: "#2F2F2F", color: "#fff"}}
+
     iconElementLeft={
       <IconButton
-        onTouchTap={() => browserHistory.push('/')}
+        onTouchTap={() => props.handleNavigateToMain()}
         >
         <ActionHome />
       </IconButton>
-
     }
+
     iconElementRight={
       <IconMenu
         iconButtonElement={
