@@ -11,15 +11,23 @@ const sendData = (type, payLoad) => {
   }
 }
 
- AjaxActions.getStopNames = (filter) => {
+ AjaxActions.getStopNames = (name) => {
 
-  return function(dispatch) {
+  return function(dispatch, getState) {
 
-    const URL = window.config.tiamatBaseUrl + 'stop_place/?name=' + filter
+    let URL = window.config.tiamatBaseUrl + 'stop_place/?name=' + name
+    const state = getState()
+    const stopTypeFilters = state.userReducer.searchFilters.stopType
+
+    let queryParams = ''
+
+    if (stopTypeFilters && stopTypeFilters.length) {
+      queryParams += stopTypeFilters.map( (type) => `&stopPlaceType=${type}`).join('')
+    }
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
 
-    return axios.get(URL)
+    return axios.get(URL+queryParams)
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
       dispatch( sendData(types.RECEIVED_STOP_NAMES, suggestions) )

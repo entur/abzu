@@ -10,6 +10,9 @@ import SearchBoxDetails from '../components/SearchBoxDetails'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
+import SelectField from 'material-ui/SelectField'
+import FilterPopover from '../components/FilterPopover'
+import stopTypes from '../components/stopTypes'
 
 class SearchBox extends React.Component {
 
@@ -30,8 +33,6 @@ class SearchBox extends React.Component {
   handleNewRequest(result) {
     if (typeof(result.markerProps) !== 'undefined') {
       this.props.dispatch( MapActions.setActiveMarkers(result) )
-    } else {
-      console.warn('markerProps is not defined in handleNewRequest')
     }
   }
 
@@ -47,9 +48,14 @@ class SearchBox extends React.Component {
     })
   }
 
+  handlePopoverDismiss(filters) {
+    const { dispatch } = this.props
+    dispatch( UserActions.applyStopTypeSearchFilter(filters) )
+  }
+
   render() {
 
-    const { activeMarkers, isCreatingNewStop } = this.props
+    const { activeMarkers, isCreatingNewStop, stopPlaceFilter } = this.props
 
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
@@ -65,7 +71,7 @@ class SearchBox extends React.Component {
       padding: "10px"
     }
 
-    const topLevelMargin = selectedMarker ? "0px" : "60px"
+    const topLevelMargin = selectedMarker ? "60px" : "100px"
 
     return (
       <div style={SbStyle}>
@@ -81,6 +87,7 @@ class SearchBox extends React.Component {
              onNewRequest={this.handleNewRequest.bind(this)}
              fullWidth={true}
             />
+          <FilterPopover items={stopTypes} filter={stopPlaceFilter} onDismiss={this.handlePopoverDismiss.bind(this)}/>
           </div>
           <div style={{float: "right", width: "10%"}}>
             <IconButton onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
@@ -114,7 +121,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     activeMarkers: state.stopPlacesReducer.activeMarkers,
     dataSource: state.stopPlacesReducer.stopPlaceNames.places,
-    isCreatingNewStop: state.userReducer.isCreatingNewStop
+    isCreatingNewStop: state.userReducer.isCreatingNewStop,
+    stopPlaceFilter: state.userReducer.searchFilters.stopType
   }
 }
 

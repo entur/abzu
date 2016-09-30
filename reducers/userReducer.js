@@ -2,7 +2,10 @@ import * as types from './../actions/actionTypes'
 
 const initialState = {
   path: '/',
-  isCreatingNewStop: false
+  isCreatingNewStop: false,
+  searchFilters: {
+    stopType: []
+  }
 }
 
 const userReducer = (state = initialState, action) => {
@@ -14,6 +17,9 @@ const userReducer = (state = initialState, action) => {
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
       return Object.assign({}, state, { isCreatingNewStop: !state.isCreatingNewStop })
+
+    case types.APPLIED_STOPTYPE_SEARCH_FILTER:
+      return Object.assign({}, state, { searchFilters: { stopType: action.payLoad}})
 
     default:
       return state

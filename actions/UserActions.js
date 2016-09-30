@@ -12,7 +12,9 @@ const sendData = (type, payLoad) => {
 
 UserActions.navigateTo = (path, id) => {
   return function(dispatch) {
+
     dispatch( sendData(types.NAVIGATE_TO, id) )
+
     const basePath = window.config.endpointBase
 
     if (path.length && path[0] === '/') {
@@ -34,6 +36,12 @@ UserActions.toggleIsCreatingNewStop = () => {
     }
 
     dispatch( sendData (types.TOGGLED_IS_CREATING_NEW_STOP, null) )
+  }
+}
+
+UserActions.applyStopTypeSearchFilter = (filters) => {
+  return function(dispatch) {
+    dispatch( sendData (types.APPLIED_STOPTYPE_SEARCH_FILTER, filters))
   }
 }
 
