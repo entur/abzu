@@ -63,13 +63,13 @@ class EditStopBox extends React.Component {
 
     if (!selectedMarker) return (
       <div>
-        <span style={{ margin: "20px", color: "red"}}>Something went wrong!</span>
+        <span style={{ margin: 20, color: "red"}}>Something went wrong!</span>
       </div>
     )
 
     const categoryStyle = {
-      fontWeight: "600",
-      marginRight: "5px"
+      fontWeight: 600,
+      marginRight: 5
     }
 
     const fixedHeader = {
@@ -78,33 +78,35 @@ class EditStopBox extends React.Component {
     }
 
     const quayStyle = {
-      height: "500px",
+      height: 220,
       position: "relative",
       display: "block"
     }
 
     const SbStyle = {
-      top: "80px",
+      top: 80,
+      border: "1px solid #511E12",
       background: "white",
-      width: "380px",
-      margin: "20px",
+      width: 380,
+      margin: 20,
       position: "absolute",
-      zIndex: "2",
-      padding: "10px"
+      zIndex: 2,
+      padding: 10
     }
 
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: "400px",
+      height: 300,
       position: "relative",
       display: "block",
-      zIndex: "2"
+      zIndex: 2
     }
 
     const addQuayStyle = {
-      position: "relative",
-      top: "-5px",
+      position: "absolute",
+      zIndex: 999,
+      top: -5,
       float: "right"
     }
 
@@ -115,14 +117,14 @@ class EditStopBox extends React.Component {
           <TextField
             hintText="Name"
             floatingLabelText="Name"
-            style={{width: "350px", marginTop: "10px"}}
+            style={{width: 350}}
             value={selectedMarker.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
             <TextField
               hintText="Beskrivelse"
               floatingLabelText="Beskrivelse"
-              style={{width: "350px"}}
+              style={{width: 350}}
               value={selectedMarker.markerProps.description}
               onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
               />
@@ -141,16 +143,14 @@ class EditStopBox extends React.Component {
                       />
                 ) }
               </SelectField>
-          <div style={{marginBottom: "10px"}}>
-            <FloatingActionButton
-              onClick={this.handleAddQuay.bind(this)}
-              style={addQuayStyle}
-              mini={true}>
-              <ContentAdd />
-            </FloatingActionButton>
-          </div>
         </div>
-        <span style={{fontWeight: "600"}}>Quays ({selectedMarker.markerProps.quays.length})</span>
+        <span style={{fontWeight: 600}}>Quays ({selectedMarker.markerProps.quays.length})</span>
+        <FloatingActionButton
+          onClick={this.handleAddQuay.bind(this)}
+          style={addQuayStyle}
+          mini={true}>
+          <ContentAdd />
+        </FloatingActionButton>
         <div style={scrollable}>
           <div style={quayStyle}>
             { selectedMarker.markerProps.quays.map( (quay,index) =>
@@ -163,12 +163,14 @@ class EditStopBox extends React.Component {
             )}
           </div>
         </div>
-        <RaisedButton
-          primary={true}
-          label="Save"
-          style={{float:"right", marginTop: "6px", zIndex: "999"}}
-          onClick={this.handleSave.bind(this)}
-          />
+        <div style={{border: "1px solid #efeeef"}}>
+          <RaisedButton
+            primary={true}
+            label="Save"
+            style={{float:"right", marginTop: 10, zIndex: 999}}
+            onClick={this.handleSave.bind(this)}
+            />
+        </div>
       </div> )
     }
 }

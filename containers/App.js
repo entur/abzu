@@ -1,7 +1,6 @@
 import React from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Header from '../components/Header'
-import Footer from '../components/Footer'
 import cfgreader from '../config/readConfig'
 import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
@@ -31,7 +30,6 @@ class App extends React.Component {
         <div>
           <Header handleNavigateToMain={this.handleNavigateToMain.bind(this)}/>
           {children}
-          <Footer/>
         </div>
       </MuiThemeProvider>
     )

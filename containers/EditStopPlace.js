@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
 import Loader from '../components/Loader'
 import SearchBox from './SearchBox'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
-import {  AjaxActions } from '../actions/'
+import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 
 require('../sass/main.scss')
