@@ -4,6 +4,8 @@ import Header from '../components/Header'
 import cfgreader from '../config/readConfig'
 import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
+import Snackbar from 'material-ui/Snackbar'
+import * as types from './../actions/actionTypes'
 
 class App extends React.Component {
 
@@ -21,15 +23,28 @@ class App extends React.Component {
     dispatch ( UserActions.navigateTo('/', '') )
   }
 
-  render() {
+  handleRequestClose() {
+    const { dispatch } = this.props
+    dispatch ( UserActions.dismissSnackbar() )
+  }
 
-    const { children } = this.props
+  render() {
+    // TODO: move snackbar as standalone component and resolve issue around styles 
+    const { children, snackbarOptions } = this.props
+    let { message, isOpen } = snackbarOptions
 
     return (
       <MuiThemeProvider>
         <div>
           <Header handleNavigateToMain={this.handleNavigateToMain.bind(this)}/>
           {children}
+          <Snackbar
+            open={isOpen}
+            message={message || ''}
+            bodyStyle={{background: 'white'}}
+            autoHideDuration={4000}
+            onRequestClose={this.handleRequestClose.bind(this)}
+            />
         </div>
       </MuiThemeProvider>
     )
@@ -42,4 +57,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    snackbarOptions: state.userReducer.snackbarOptions
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

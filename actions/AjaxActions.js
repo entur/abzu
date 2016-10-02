@@ -176,9 +176,11 @@ export const prepareStopForSaving = (stop) => {
     return axios.post(URL, savableStop)
     .then(function(response) {
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
       dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
     })
     .catch(function(response){
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
     })
 
@@ -202,9 +204,11 @@ AjaxActions.saveNewStop = () => {
     .then(function(response) {
       dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
       dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
       dispatch ( UserActions.navigateTo('/edit/', response.data.id) )
     })
     .catch(function(response){
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
     })
 

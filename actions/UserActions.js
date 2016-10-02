@@ -45,4 +45,16 @@ UserActions.applyStopTypeSearchFilter = (filters) => {
   }
 }
 
+UserActions.openSnackbar = (message) => {
+  return function(dispatch) {
+    dispatch( sendData(types.OPENED_SNACKBAR, message) )
+  }
+}
+
+UserActions.dismissSnackbar = () => {
+  return function(dispatch) {
+    dispatch ( sendData(types.DISMISSED_SNACKBAR, null) )
+  }
+}
+
 export default UserActions

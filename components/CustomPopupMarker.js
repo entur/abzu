@@ -6,7 +6,9 @@ class CustomPopupMarker extends React.Component {
 
   render() {
 
-    let { children, position, handleOnClick, handleDragEnd, isQuay, markerIndex, stopIndex } = this.props
+    let { children, position, handleOnClick,
+          handleDragEnd, isQuay, markerIndex,
+          stopIndex, source } = this.props
 
     if (!children && !children.length) {
       children = 'Uten navn'
@@ -16,6 +18,17 @@ class CustomPopupMarker extends React.Component {
       color: '#0086b3',
       cursor: "pointer"
     } : { color: '#00cc00' }
+
+    const coordStyles = {
+      display: 'block',
+      marginTop: 5
+    }
+
+    const editCoordsStyle = {
+      display: 'block',
+      borderBottom: '1px dotted black',
+      cursor: 'pointer'
+    }
 
     return (
       <Marker
@@ -28,6 +41,15 @@ class CustomPopupMarker extends React.Component {
         <Popup>
           <div>
             <span style={style} onClick={handleOnClick}>{children}</span>
+            <div style={coordStyles}>
+              <span style={{fontWeight: 600}}>Koordinater</span>
+                <div
+                  style={editCoordsStyle}
+                  >
+                  <span>{position[0]},</span>
+                  <span style={{marginLeft: 2}}>{position[1]}</span>
+                </div>
+            </div>
           </div>
         </Popup>
       </Marker>

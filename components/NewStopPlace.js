@@ -18,10 +18,12 @@ class NewStopPlace extends React.Component {
           style={{float: "right"}}
           onClick={this.handleOnClick.bind(this)}
           iconClassName="material-icons">
-          clear
+          remove
         </IconButton>
         <h3>Du lager nå et nytt stoppested</h3>
-        <span style={{fontSize: ".8em"}}>Dobbelklikk på kartet for å sette lokasjon.</span>
+        <span style={{fontSize: ".8em"}}>Dobbelklikk på kartet for å sette lokasjon.
+          Klikk deretter på markøren for flere valg.
+        </span>
       </div>
     )
 

@@ -6,7 +6,8 @@ import quayTypes from './quayTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import { IconButton, FontIcon, Checkbox } from 'material-ui'
-import Divider from 'material-ui/Divider';
+import Divider from 'material-ui/Divider'
+import { NavigationExpandMore, MapsMyLocation, NavigationExpandLess } from 'material-ui/svg-icons/'
 
 class QuayItem extends React.Component {
 
@@ -41,6 +42,15 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeWHA(index, event.target.checked))
   }
 
+  locateOnMap = () => {
+    const { dispatch, quay } = this.props
+    const position = {
+      lat: quay.centroid.location.latitude,
+      lng: quay.centroid.location.longitude
+    }
+    dispatch(MapActions.changeMapCenter(position, 7))
+  }
+
   render() {
 
     const { quay, index } = this.props
@@ -51,25 +61,42 @@ class QuayItem extends React.Component {
     const style = {
       color: "#2196F3",
       cursor: "pointer",
-      marginTop: "20px"
+      marginTop: "30px",
+      display: "block",
+      marginBottom: 50
     }
 
     const removeStyle = {
-      verticalAlign: "middle",
-      width: "10px",
-      top: "-15px",
-      right: "0",
+      right: 0,
+      float: "right",
+      paddingBottom: 20
+    }
+
+    const locationStyle = {
+      marginRight: 5,
+      verticalAlign: 'text-top',
+      height: 16,
+      width: 16
     }
 
     return (
 
       <div>
         <div style={style}>
-          <div style={{float: "left", width: "85%"}}>
-            <span onClick={() => this.toggleHidden()}>{`${index+1} - ${quay.name}`}</span>
+          <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
+            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>{quay.name}
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}> - unsaved</span> : null}
+            { hidden
+              ? <NavigationExpandMore
+                  onClick={() => this.toggleHidden()}
+                  style={{float: "right"}}
+                />
+              : <NavigationExpandLess
+                  onClick={() => this.toggleHidden()}
+                  style={{float: "right"}}
+                />
+             }
           </div>
-          <IconButton iconClassName="material-icons" onClick={this.props.removeQuay} style={removeStyle}>delete</IconButton>
         </div>
        { hidden ? null
        : <div>
@@ -108,7 +135,17 @@ class QuayItem extends React.Component {
             onCheck={this.handleWHAChange}
             style={{marginBottom: "10px", width: "95%", marginTop: "10px"}}
             />
-          <Divider inset={true}/>
+          <IconButton
+            iconClassName="material-icons"
+            onClick={this.props.removeQuay}
+            style={removeStyle}
+          >
+          delete
+          </IconButton>
+          <Divider
+            style={{marginBottom: 10}}
+            inset={true}
+            />
         </div>
         }
       </div>

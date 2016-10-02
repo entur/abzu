@@ -6,6 +6,7 @@ import expect from 'expect'
 import {  AjaxActions } from './../../actions/'
 import cfgreader from './../../config/readConfig'
 import fs from 'fs'
+import formatMarkers from './../../actions/AjaxActions'
 
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
@@ -14,8 +15,10 @@ cfgreader.readConfig( (function(config) {
   window.config = config
 }))
 
+const tiamatBaseUrl = 'http://localhost/'
+
 window.config = {
-  tiamatBaseUrl: "http://localhost/jersey/"
+  tiamatBaseUrl: tiamatBaseUrl
 }
 
 describe('async actions', () => {
@@ -28,9 +31,9 @@ describe('async actions', () => {
     const placeName = 'Skalleberg'
     const stopPlacesExample = JSON.parse(fs.readFileSync(__dirname + '/json/stopPlaces.json', 'utf-8'))
 
-    nock('http://localhost/jersey')
+    nock(tiamatBaseUrl + 'stop_place/')
       .log(console.log)
-      .get('stop_place?name=' + placeName)
+      .get('?name=' + placeName)
       .reply(200, stopPlacesExample)
 
     const expectedActions = [
@@ -39,10 +42,15 @@ describe('async actions', () => {
     ]
 
     const store = mockStore({
-      stopPlaceNames: {
-        isLoading: false,
-        errorMessage: '',
-        content: []
+      userReducer: {
+        stopPlaceNames: {
+          isLoading: false,
+          errorMessage: '',
+          content: []
+        },
+        searchFilters: {
+          stopType: []
+        }
       }
     })
 

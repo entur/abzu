@@ -31,8 +31,14 @@ MapActions.changeStopType = (type) => {
 MapActions.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_ACTIVE_MARKERS, activeMarker) )
-    dispatch( sendData(types.CHANGED_MAP_CENTER, activeMarker.markerProps.position) )
-    dispatch( sendData(types.SET_ZOOM, 15) )
+    dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
+  }
+}
+
+MapActions.changeMapCenter = (position, zoom) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_MAP_CENTER, position) )
+    dispatch( sendData(types.SET_ZOOM, zoom) )
   }
 }
 

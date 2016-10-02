@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import QuayItem from '../components/QuayItem'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
@@ -13,8 +12,16 @@ import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import { NavigationExpandMore, NavigationExpandLess } from 'material-ui/svg-icons/'
 
 class EditStopBox extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      quaysExpanded: true
+    }
+  }
 
   handleAddQuay() {
     const { dispatch } = this.props
@@ -51,9 +58,17 @@ class EditStopBox extends React.Component {
     dispatch(MapActions.changeStopType(value))
   }
 
+  toggleQuayExpanded() {
+    const { quaysExpanded } = this.state
+    this.setState({
+      quaysExpanded: !quaysExpanded
+    })
+  }
+
   render() {
 
     const { activeStopPlace, activeMarkers, dispatch } = this.props
+    const { quaysExpanded } = this.state
 
     let selectedMarker = null
 
@@ -66,6 +81,12 @@ class EditStopBox extends React.Component {
         <span style={{ margin: 20, color: "red"}}>Something went wrong!</span>
       </div>
     )
+
+    let captionText = 'Du oppretter nå et nytt stopp'
+
+    if (selectedMarker.markerProps.id) {
+      captionText = `Redigerer ${selectedMarker.markerProps.name} (${selectedMarker.markerProps.id})`
+    }
 
     const categoryStyle = {
       fontWeight: 600,
@@ -80,7 +101,8 @@ class EditStopBox extends React.Component {
     const quayStyle = {
       height: 220,
       position: "relative",
-      display: "block"
+      display: "block",
+      marginTop: -40
     }
 
     const SbStyle = {
@@ -106,13 +128,29 @@ class EditStopBox extends React.Component {
     const addQuayStyle = {
       position: "absolute",
       zIndex: 999,
-      top: -5,
+      top: 566,
       float: "right"
+    }
+
+    const stopBoxBar = {
+      float: 'right',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 10,
+      top: -10,
+      left: 10,
+      position:'relative',
+      color: '#fff',
+      background: '#191919',
+      width: '100%',
+      textAlign: 'left',
+      fontWeight: '0.8em'
     }
 
     return (
 
       <div style={SbStyle}>
+        <div style={stopBoxBar}>{captionText}</div>
         <div style={fixedHeader}>
           <TextField
             hintText="Name"
@@ -144,24 +182,35 @@ class EditStopBox extends React.Component {
                 ) }
               </SelectField>
         </div>
-        <span style={{fontWeight: 600}}>Quays ({selectedMarker.markerProps.quays.length})</span>
-        <FloatingActionButton
-          onClick={this.handleAddQuay.bind(this)}
-          style={addQuayStyle}
-          mini={true}>
-          <ContentAdd />
-        </FloatingActionButton>
+        <div style={{fontWeight: 600, marginTop: 10}}>
+          Quays ({selectedMarker.markerProps.quays.length})
+          { quaysExpanded
+          ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
+          : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
+          }
+        </div>
+        { quaysExpanded
+          ? <FloatingActionButton
+              onClick={this.handleAddQuay.bind(this)}
+              style={addQuayStyle}
+              mini={true}>
+              <ContentAdd />
+            </FloatingActionButton>
+          : null }
         <div style={scrollable}>
-          <div style={quayStyle}>
-            { selectedMarker.markerProps.quays.map( (quay,index) =>
-              <QuayItem
-                key={"quay-" + index}
-                quay={quay}
-                index={index}
-                removeQuay={() => this.handleRemoveQuay(index)}
-                />
-            )}
-          </div>
+          { quaysExpanded
+            ? <div style={quayStyle}>
+              { selectedMarker.markerProps.quays.map( (quay,index) =>
+                <QuayItem
+                  key={"quay-" + index}
+                  quay={quay}
+                  index={index}
+                  removeQuay={() => this.handleRemoveQuay(index)}
+                  />
+              )}
+            </div>
+            : null
+          }
         </div>
         <div style={{border: "1px solid #efeeef"}}>
           <RaisedButton

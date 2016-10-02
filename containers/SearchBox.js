@@ -68,7 +68,8 @@ class SearchBox extends React.Component {
       margin: "10px",
       position: "absolute",
       zIndex: "2",
-      padding: "10px"
+      padding: "10px",
+      border: "1px solid rgb(81, 30, 18)"
     }
 
     const topLevelMargin = selectedMarker ? "60px" : "100px"

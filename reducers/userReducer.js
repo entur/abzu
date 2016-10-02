@@ -5,6 +5,10 @@ const initialState = {
   isCreatingNewStop: false,
   searchFilters: {
     stopType: []
+  },
+  snackbarOptions: {
+    isOpen: false,
+    message: ''
   }
 }
 
@@ -20,6 +24,12 @@ const userReducer = (state = initialState, action) => {
 
     case types.APPLIED_STOPTYPE_SEARCH_FILTER:
       return Object.assign({}, state, { searchFilters: { stopType: action.payLoad}})
+
+    case types.OPENED_SNACKBAR:
+      return Object.assign({}, state, {snackbarOptions: { isOpen: true, message: action.payLoad}})
+
+    case types.DISMISSED_SNACKBAR:
+      return Object.assign({}, state, {snackbarOptions: { isOpen: false }})
 
     default:
       return state
