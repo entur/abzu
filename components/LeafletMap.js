@@ -8,7 +8,7 @@ export default class LeafLetMap extends React.Component {
 
   render() {
 
-    const { lmapStyle, position, zoom, handleDragEnd, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
+    const { lmapStyle, position, zoom, handleDragEnd, handleChangeCoordinates, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
     let { markers } = this.props
     const { BaseLayer, Overlay } = LayersControl
 
@@ -42,7 +42,11 @@ export default class LeafLetMap extends React.Component {
         </LayersControl>
         <ZoomControl position='bottomright' />
         <MarkerCluster>
-          <MarkerList stops={markers || []} handleDragEnd={handleDragEnd}/>
+          <MarkerList
+            changeCoordinates={handleChangeCoordinates} 
+            stops={markers || []}
+            handleDragEnd={handleDragEnd}
+            />
         </MarkerCluster>
       </Lmap>)
   }

@@ -84,7 +84,7 @@ class QuayItem extends React.Component {
       <div>
         <div style={style}>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>{quay.name}
+            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>{`${quay.name} (${quay.id || '?'})`}
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}> - unsaved</span> : null}
             { hidden
               ? <NavigationExpandMore

@@ -7,10 +7,6 @@ import { connect } from 'react-redux'
 
 class MarkerList extends React.Component {
 
-  handleQuayOnClick(id) {
-    console.log("Quay clicked", id)
-  }
-
   handleStopOnClick(id) {
     const { path } = this.props
      // Prevent loading resource already loaded and being edited
@@ -26,7 +22,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd } = this.props
+    const { stops, handleDragEnd, changeCoordinates } = this.props
 
     let popupMarkers = []
 
@@ -54,6 +50,7 @@ class MarkerList extends React.Component {
             position={markerProps.position}
             children={text}
             handleDragEnd={handleDragEnd}
+            changeCoordinates={changeCoordinates}
             handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
             />
           )
@@ -73,6 +70,7 @@ class MarkerList extends React.Component {
                   key={"custom-" + stopIndex + "-" + index}
                   children={quay.name}
                   handleDragEnd={handleDragEnd}
+                  changeCoordinates={changeCoordinates}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)
             })

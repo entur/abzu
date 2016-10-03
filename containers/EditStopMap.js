@@ -13,7 +13,7 @@ class EditStopMap extends React.Component {
 
   handleDragEnd(stopIndex, markerIndex, marker) {
     const position = marker.leafletElement.getLatLng()
-    this.props.dispatch( MapActions.changeQuayPosition(stopIndex, markerIndex, position) )
+    this.props.dispatch( MapActions.changeMarkerPosition(stopIndex, markerIndex, position) )
   }
 
   handleMapMoveEnd(event, {leafletElement}) {
@@ -29,6 +29,20 @@ class EditStopMap extends React.Component {
     }
 
     this.props.dispatch(  AjaxActions.getStopsNearby(boundingBox, ignoreStopPlaceId) )
+  }
+
+  handleChangeCoordinates(stopIndex, markerIndex, position) {
+    const defaultValue = position.join(',')
+    const value = prompt("Set coordinates for stop: ", defaultValue)
+
+    // simple validation of coordinates
+    if (value && value.length && value.split(',').length == 2
+        && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
+      this.props.dispatch( MapActions.changeMarkerPosition(stopIndex, markerIndex, {
+        lat: value.split(',')[0],
+        lng: value.split(',')[1]
+      }))
+    }
   }
 
   render() {
@@ -50,6 +64,7 @@ class EditStopMap extends React.Component {
         onClick={this.handleClick}
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
+        handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
         />
     )
   }

@@ -72,7 +72,7 @@ MapActions.changeQuayType = (index, type) => {
   }
 }
 
-MapActions.changeQuayPosition = (stopIndex, markerIndex, position) => {
+MapActions.changeMarkerPosition = (stopIndex, markerIndex, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
       stopIndex: stopIndex,

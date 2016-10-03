@@ -29,7 +29,7 @@ class App extends React.Component {
   }
 
   render() {
-    // TODO: move snackbar as standalone component and resolve issue around styles 
+    // TODO: move snackbar as standalone component and resolve issue around styles
     const { children, snackbarOptions } = this.props
     let { message, isOpen } = snackbarOptions
 
@@ -41,7 +41,7 @@ class App extends React.Component {
           <Snackbar
             open={isOpen}
             message={message || ''}
-            bodyStyle={{background: 'white'}}
+            bodyStyle={{background: '#fff'}}
             autoHideDuration={4000}
             onRequestClose={this.handleRequestClose.bind(this)}
             />

@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 var convictPromise = require('./config/convict-promise.js')
-
-var app = new (require('express'))()
+var express = require('express')
+var app = new express()
 var port = process.env.port || 8988
 
 convictPromise.then( (convict) => {
@@ -15,7 +15,9 @@ convictPromise.then( (convict) => {
     let config = require('./webpack.config')
 
     config.output.publicPath = ENDPOINTBASE + 'public/'
-    
+
+    app.use(ENDPOINTBASE + 'static/', express.static(__dirname + '/static'))
+
     var compiler = new webpack(config)
 
     app.use(require("webpack-dev-middleware")(compiler, {
