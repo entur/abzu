@@ -34,7 +34,6 @@ class EditStopMap extends React.Component {
   handleChangeCoordinates(stopIndex, markerIndex, position) {
     const defaultValue = position.join(',')
     const value = prompt("Set coordinates for stop: ", defaultValue)
-
     // simple validation of coordinates
     if (value && value.length && value.split(',').length == 2
         && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
@@ -49,18 +48,11 @@ class EditStopMap extends React.Component {
 
     const { position, markers, zoom } = this.props
 
-    const lmapStyle = {
-      height: "100%",
-      width: "100%",
-      border: "2px solid #eee"
-    }
-
     return (
       <LeafletMap
         position={position}
         markers={markers}
         zoom={zoom}
-        lmapStyle={lmapStyle}
         onClick={this.handleClick}
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}

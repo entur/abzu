@@ -8,12 +8,18 @@ export default class LeafLetMap extends React.Component {
 
   render() {
 
-    const { lmapStyle, position, zoom, handleDragEnd, handleChangeCoordinates, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
+    const { position, zoom, handleDragEnd, handleChangeCoordinates, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
     let { markers } = this.props
     const { BaseLayer, Overlay } = LayersControl
 
     if (newStopPlace && typeof newStopPlace == 'object') {
       markers = markers.concat(newStopPlace)
+    }
+
+    const lmapStyle = {
+      height: "95%",
+      width: "100%",
+      border: "2px solid #eee"
     }
 
     return (

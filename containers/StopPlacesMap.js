@@ -27,19 +27,12 @@ class StopPlacesMap extends React.Component {
 
     const { position, markers, zoom, newStopPlace } = this.props
 
-    const lmapStyle = {
-      height: "100%",
-      width: "100%",
-      border: "2px solid #eee"
-    }
-
     return (
       <LeafletMap
         position={position}
         markers={markers}
         newStopPlace={newStopPlace}
         zoom={zoom}
-        lmapStyle={lmapStyle}
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd}
         handleMapMoveEnd={this.handleMapMoveEnd}
