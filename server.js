@@ -80,6 +80,9 @@ convictPromise.then( (convict) => {
   })
 
   const getTranslations = (req) => {
+
+    const supportedLanguages = ['en', 'nb']
+
     const translations = globSync(__dirname + '/static/lang/*.json')
       .map((filename) => [
           path.basename(filename, '.json'),
@@ -89,16 +92,19 @@ convictPromise.then( (convict) => {
           return messages
       }, {})
 
-      let locale = 'en' // fallback language
+      let locale = 'en' // i.e. fallback language
 
-      if (req.acceptsLanguages()) {
+      if (typeof req.query.locale !== 'undefined' && supportedLanguages.indexOf(req.query.locale) > -1) {
+        locale = req.query.locale
+      } else {
 
-        for (let i = 0; i < req.acceptsLanguages().length; i++ ) {
+        if (req.acceptsLanguages()) {
 
-          locale = req.acceptsLanguages()[i]
-
-          if (translations[locale]) {
-            break
+          for (let i = 0; i < req.acceptsLanguages().length; i++ ) {
+            if (translations[req.acceptsLanguages()[i]]) {
+              locale = req.acceptsLanguages()[i]
+              break
+            }
           }
         }
       }
