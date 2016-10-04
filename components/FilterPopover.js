@@ -73,7 +73,7 @@ class FilterPopover extends React.Component {
 
     render() {
 
-      const { items, filter } = this.props
+      const { items, filter, caption } = this.props
 
       const allTypesChecked = !filter.length
 
@@ -96,7 +96,7 @@ class FilterPopover extends React.Component {
         <div>
           <RaisedButton
             onTouchTap={this.handleTouchTap.bind(this)}
-            label="Type"
+            label={caption}
             style={buttonStyle}
             />
           <Popover

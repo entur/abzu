@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
 import Snackbar from 'material-ui/Snackbar'
 import * as types from './../actions/actionTypes'
+import {intlShape, injectIntl, defineMessages} from 'react-intl'
 
 class App extends React.Component {
 
@@ -31,12 +32,19 @@ class App extends React.Component {
   render() {
     // TODO: move snackbar as standalone component and resolve issue around styles
     const { children, snackbarOptions } = this.props
+    const { formatMessage } = this.props.intl
+
     let { message, isOpen } = snackbarOptions
+    let headerText = {
+      signOut: formatMessage({id: 'sign_out'}),
+      help: formatMessage({id: 'help'}),
+      title: formatMessage({id: '_title'})
+    }
 
     return (
       <MuiThemeProvider>
         <div>
-          <Header handleNavigateToMain={this.handleNavigateToMain.bind(this)}/>
+          <Header text={headerText} handleNavigateToMain={this.handleNavigateToMain.bind(this)}/>
           {children}
           <Snackbar
             open={isOpen}
@@ -63,4 +71,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(App))

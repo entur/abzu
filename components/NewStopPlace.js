@@ -12,6 +12,8 @@ class NewStopPlace extends React.Component {
 
   render() {
 
+    const { headerText, bodyText } = this.props.text
+
     return (
       <div style={{background: "#f5fefa", border: "1px dotted black", padding: "5px"}}>
         <IconButton
@@ -20,13 +22,12 @@ class NewStopPlace extends React.Component {
           iconClassName="material-icons">
           remove
         </IconButton>
-        <h3>Du lager nå et nytt stoppested</h3>
-        <span style={{fontSize: ".8em"}}>Dobbelklikk på kartet for å sette lokasjon.
-          Klikk deretter på markøren for flere valg.
+        <h3>{headerText}</h3>
+        <span style={{fontSize: ".8em"}}>
+          {bodyText}
         </span>
       </div>
     )
-
   }
 }
 

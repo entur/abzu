@@ -13,6 +13,7 @@ import NewStopPlace from '../components/NewStopPlace'
 import SelectField from 'material-ui/SelectField'
 import FilterPopover from '../components/FilterPopover'
 import stopTypes from '../components/stopTypes'
+import {intlShape, injectIntl, defineMessages} from 'react-intl'
 
 class SearchBox extends React.Component {
 
@@ -60,6 +61,18 @@ class SearchBox extends React.Component {
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
 
+    const { formatMessage } = this.props.intl
+
+    let text = {
+      emptyDescription: formatMessage({id: 'empty_description'}),
+      edit: formatMessage({id: 'edit'})
+    }
+
+    let newStopText = {
+      headerText: formatMessage({id: 'making_stop_place_title'}),
+      bodyText: formatMessage({id: 'making_stop_place_hint'})
+    }
+
     const SbStyle = {
       top: "90px",
       background: "white",
@@ -79,7 +92,7 @@ class SearchBox extends React.Component {
         <div style={{marginBottom: topLevelMargin}}>
           <div style={{float: "left", width: "85%"}}>
             <AutoComplete
-             hintText="Filtrer på navn"
+             hintText={formatMessage({id: "filter_by_name"})}
              dataSource={dataSource}
              filter={AutoComplete.caseInsensitiveFilter}
              onUpdateInput={this.handleUpdateInput.bind(this)}
@@ -88,7 +101,12 @@ class SearchBox extends React.Component {
              onNewRequest={this.handleNewRequest.bind(this)}
              fullWidth={true}
             />
-          <FilterPopover items={stopTypes} filter={stopPlaceFilter} onDismiss={this.handlePopoverDismiss.bind(this)}/>
+          <FilterPopover
+            caption={formatMessage({id: "type"})}
+            items={stopTypes}
+            filter={stopPlaceFilter}
+            onDismiss={this.handlePopoverDismiss.bind(this)}
+            />
           </div>
           <div style={{float: "right", width: "10%"}}>
             <IconButton onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
@@ -98,12 +116,12 @@ class SearchBox extends React.Component {
         </div>
 
         {selectedMarker
-          ?  <SearchBoxDetails handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
+          ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
           :  <SearchBoxDetails hidden/>
         }
         <div style={{marginTop: "30px"}}>
           { isCreatingNewStop
-          ? <NewStopPlace/>
+          ? <NewStopPlace text={newStopText}/>
           :
           <FloatingActionButton
             onClick={this.handleNewStop.bind(this)}
@@ -133,7 +151,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+export default injectIntl(connect(
   mapStateToProps,
   mapDispatchToProps
-)(SearchBox)
+)(SearchBox))

@@ -3,6 +3,9 @@ var convictPromise = require('./config/convict-promise.js')
 var express = require('express')
 var app = new express()
 var port = process.env.port || 8988
+var globSync = require('glob').sync
+var path = require('path')
+var fs = require('fs').readFileSync
 
 convictPromise.then( (convict) => {
 
@@ -41,10 +44,6 @@ convictPromise.then( (convict) => {
     res.send(cfg)
   })
 
-  app.get(ENDPOINTBASE, function(req, res) {
-    res.send(getIndexHTML())
-  })
-
   app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
     res.send(getIndexHTML())
   })
@@ -56,6 +55,39 @@ convictPromise.then( (convict) => {
   app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
     res.sendFile(__dirname + '/config/keycloak.json')
   })
+
+  app.get(ENDPOINTBASE + 'translation.json', function(req, res) {
+    const translations = globSync(__dirname + '/static/lang/*.json')
+      .map((filename) => [
+          path.basename(filename, '.json'),
+          fs(filename, 'utf8'),
+      ]).reduce((messages, [namespace, collection]) => {
+          messages[namespace] = collection
+          return messages
+      }, {})
+
+      let locale = 'en' // fallback language
+
+      if (req.acceptsLanguages()) {
+
+        for (let i = 0; i < req.acceptsLanguages().length; i++ ) {
+
+          locale = req.acceptsLanguages()[i]
+
+          if (translations[locale]) {
+            break
+          }
+        }
+      }
+
+      let messages = translations[locale]
+
+      res.send({locale, messages})
+  })
+
+    app.get(ENDPOINTBASE, function(req, res) {
+      res.send(getIndexHTML())
+    })
 
   app.get(ENDPOINTBASE + '*', function(req, res) {
     res.status(404).send(get404Page())

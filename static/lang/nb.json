@@ -1,0 +1,11 @@
+{
+  "_title": "Stoppestedregister",
+  "filter_by_name": "Filtrer på navn",
+  "type": "type",
+  "empty_description": "Dette stoppestedet mangler en beskrivelse ...",
+  "edit": "Rediger",
+  "making_stop_place_title": "Du lager nå et nytt stoppested",
+  "making_stop_place_hint": "Dobbelklikk på kartet for å sette lokasjon. Klikk deretter på markøren for flere valg.",
+  "help" : "Hjelp",
+  "sign_out" : "Logg ut"
+}
