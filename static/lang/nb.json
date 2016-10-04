@@ -4,8 +4,20 @@
   "type": "type",
   "empty_description": "Dette stoppestedet mangler en beskrivelse ...",
   "edit": "Rediger",
+  "editing": "Redigerer",
   "making_stop_place_title": "Du lager nå et nytt stoppested",
   "making_stop_place_hint": "Dobbelklikk på kartet for å sette lokasjon. Klikk deretter på markøren for flere valg.",
   "help" : "Hjelp",
-  "sign_out" : "Logg ut"
+  "sign_out" : "Logg ut",
+  "untitled" : "Uten navn",
+  "coordinates" : "Koordinater",
+  "new_stop_title" : "Du oppretter et nytt stoppested",
+  "new_stop_question" : "Vil du opprette et stoppested her?",
+  "create_now" : "Opprett nå",
+  "something_went_wrong" : "Noe gikk galt!",
+  "name" : "Navn",
+  "description" : "Beskrivelse",
+  "type" : "Type",
+  "save" : "Lagre",
+  "set_coordinates_prompt" : "Sett koordinater for stopp"
 }

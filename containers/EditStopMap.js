@@ -4,6 +4,7 @@ import MarkerList from '../components/MarkerList'
 import leafletConfig from '../config/leafletConfig'
 import LeafletMap from '../components/LeafletMap'
 import { MapActions,  AjaxActions } from '../actions/'
+import { injectIntl } from 'react-intl'
 
 class EditStopMap extends React.Component {
 
@@ -32,8 +33,9 @@ class EditStopMap extends React.Component {
   }
 
   handleChangeCoordinates(stopIndex, markerIndex, position) {
+    const { formatMessage } = this.props.intl
     const defaultValue = position.join(',')
-    const value = prompt("Set coordinates for stop: ", defaultValue)
+    const value = prompt(formatMessage({id: 'set_coordinates_prompt'}), defaultValue)
     // simple validation of coordinates
     if (value && value.length && value.split(',').length == 2
         && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
@@ -77,7 +79,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+export default injectIntl(connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditStopMap)
+)(EditStopMap))

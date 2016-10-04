@@ -13,7 +13,7 @@ import NewStopPlace from '../components/NewStopPlace'
 import SelectField from 'material-ui/SelectField'
 import FilterPopover from '../components/FilterPopover'
 import stopTypes from '../components/stopTypes'
-import {intlShape, injectIntl, defineMessages} from 'react-intl'
+import { injectIntl } from 'react-intl'
 
 class SearchBox extends React.Component {
 

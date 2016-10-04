@@ -4,6 +4,7 @@ import NewStopMarker from './NewStopMarker'
 import { Link, browserHistory } from 'react-router'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
 
 class MarkerList extends React.Component {
 
@@ -23,10 +24,24 @@ class MarkerList extends React.Component {
   render() {
 
     const { stops, handleDragEnd, changeCoordinates } = this.props
+    const { formatMessage } = this.props.intl
 
     let popupMarkers = []
 
+    const CustomPopupMarkerText = {
+      untitled: formatMessage({id: 'untitled'}),
+      coordinates: formatMessage({id: 'coordinates'})
+    }
+
+    const newStopMarkerText = {
+      newStopTitle: formatMessage({id: 'new_stop_title'}),
+      newStopQuestion: formatMessage({id: 'new_stop_question'}),
+      createNow: formatMessage({id: 'create_now'})
+    }
+
     stops.forEach(({ text, key, markerProps, isNewStop }, stopIndex) => {
+
+      if (!markerProps) return null
 
       const quays = markerProps.quays
 
@@ -36,6 +51,7 @@ class MarkerList extends React.Component {
               key={"newstop-parent- " + stopIndex}
               position={markerProps.position}
               handleDragEnd={ () => {}}
+              text={newStopMarkerText}
               handleOnClick={() => { this.handleNewStopClick(markerProps.position)}}
             />
           )
@@ -51,6 +67,7 @@ class MarkerList extends React.Component {
             children={text}
             handleDragEnd={handleDragEnd}
             changeCoordinates={changeCoordinates}
+            text={CustomPopupMarkerText}
             handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
             />
           )
@@ -71,6 +88,7 @@ class MarkerList extends React.Component {
                   children={quay.name}
                   handleDragEnd={handleDragEnd}
                   changeCoordinates={changeCoordinates}
+                  text={newStopMarkerText}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)
             })
@@ -102,7 +120,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+export default injectIntl(connect(
   mapStateToProps,
   mapDispatchToProps
-)(MarkerList)
+)(MarkerList))

@@ -6,6 +6,7 @@ var port = process.env.port || 8988
 var globSync = require('glob').sync
 var path = require('path')
 var fs = require('fs').readFileSync
+var serialize = require('serialize-javascript')
 
 convictPromise.then( (convict) => {
 
@@ -56,7 +57,29 @@ convictPromise.then( (convict) => {
     res.sendFile(__dirname + '/config/keycloak.json')
   })
 
-  app.get(ENDPOINTBASE + 'translation.json', function(req, res) {
+  app.get([ENDPOINTBASE + 'translation.json', ENDPOINTBASE + 'edit/translation.json'], function(req, res) {
+    let translations = getTranslations(req)
+    res.send(translations)
+  })
+
+  app.get(ENDPOINTBASE, function(req, res) {
+    let translations = getTranslations(req)
+    res.send(getIndexHTML(translations))
+  })
+
+  app.get(ENDPOINTBASE + '*', function(req, res) {
+    res.status(404).send(get404Page())
+  })
+
+  app.listen(port, function(error) {
+    if (error) {
+      console.error(error)
+    } else {
+      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
+    }
+  })
+
+  const getTranslations = (req) => {
     const translations = globSync(__dirname + '/static/lang/*.json')
       .map((filename) => [
           path.basename(filename, '.json'),
@@ -80,26 +103,11 @@ convictPromise.then( (convict) => {
         }
       }
 
-      let messages = translations[locale]
-
-      res.send({locale, messages})
-  })
-
-    app.get(ENDPOINTBASE, function(req, res) {
-      res.send(getIndexHTML())
-    })
-
-  app.get(ENDPOINTBASE + '*', function(req, res) {
-    res.status(404).send(get404Page())
-  })
-
-  app.listen(port, function(error) {
-    if (error) {
-      console.error(error)
-    } else {
-      console.info("==> Listening on port %s. Open up http://localhost:%s%s in your browser.", port, port, ENDPOINTBASE)
-    }
-  })
+      return {
+        "locale": locale,
+        "messages": translations[locale]
+      }
+  }
 
   const getIndexHTML = () =>
     `<html>

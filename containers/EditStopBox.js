@@ -13,6 +13,7 @@ import stopTypes from '../components/stopTypes'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { NavigationExpandMore, NavigationExpandLess } from 'material-ui/svg-icons/'
+import { injectIntl } from 'react-intl'
 
 class EditStopBox extends React.Component {
 
@@ -69,6 +70,7 @@ class EditStopBox extends React.Component {
 
     const { activeStopPlace, activeMarkers, dispatch } = this.props
     const { quaysExpanded } = this.state
+    const { formatMessage } = this.props.intl
 
     let selectedMarker = null
 
@@ -78,14 +80,16 @@ class EditStopBox extends React.Component {
 
     if (!selectedMarker) return (
       <div>
-        <span style={{ margin: 20, color: "red"}}>Something went wrong!</span>
+        <span style={{ margin: 20, color: "red"}}>
+          {formatMessage({id: 'something_went_wrong'})}
+        </span>
       </div>
     )
 
-    let captionText = 'Du oppretter nå et nytt stopp'
+    let captionText = formatMessage({id: 'new_stop_title'})
 
     if (selectedMarker.markerProps.id) {
-      captionText = `Redigerer ${selectedMarker.markerProps.name} (${selectedMarker.markerProps.id})`
+      captionText = `${formatMessage({id: 'editing'})} ${selectedMarker.markerProps.name} (${selectedMarker.markerProps.id})`
     }
 
     const categoryStyle = {
@@ -153,15 +157,15 @@ class EditStopBox extends React.Component {
         <div style={stopBoxBar}>{captionText}</div>
         <div style={fixedHeader}>
           <TextField
-            hintText="Name"
-            floatingLabelText="Name"
+            hintText={formatMessage({id: 'name'})}
+            floatingLabelText={formatMessage({id: 'name'})}
             style={{width: 350}}
             value={selectedMarker.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
             <TextField
-              hintText="Beskrivelse"
-              floatingLabelText="Beskrivelse"
+              hintText={formatMessage({id: 'description'})}
+              floatingLabelText={formatMessage({id: 'description'})}
               style={{width: 350}}
               value={selectedMarker.markerProps.description}
               onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
@@ -169,7 +173,7 @@ class EditStopBox extends React.Component {
             <SelectField value={selectedMarker.markerProps.stopPlaceType}
                 autoWidth={true}
                 onChange={this.handleStopTypeChange.bind(this)}
-                floatingLabelText="Type"
+                floatingLabelText={formatMessage({id: 'type'})}
                 floatingLabelFixed={true}
                 style={{width: "95%"}}
                 >
@@ -215,7 +219,7 @@ class EditStopBox extends React.Component {
         <div style={{border: "1px solid #efeeef"}}>
           <RaisedButton
             primary={true}
-            label="Save"
+            label={formatMessage({id: 'save'})}
             style={{float:"right", marginTop: 10, zIndex: 999}}
             onClick={this.handleSave.bind(this)}
             />
@@ -236,7 +240,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+export default injectIntl(connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditStopBox)
+)(EditStopBox))

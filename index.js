@@ -14,6 +14,7 @@ import { IntlProvider } from 'react-intl'
 import axios from 'axios'
 import { addLocaleData } from 'react-intl'
 
+
 // used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
@@ -29,7 +30,7 @@ function authWithKeyCloak(renderCallback) {
 
 cfgreader.readConfig( (function(config) {
   window.config = config
-  axios.get('translation.json').then((response) => {
+  axios.get(config.endpointBase + 'translation.json').then((response) => {
     renderIndex(config.endpointBase, response.data)
   })
 
@@ -52,7 +53,10 @@ function renderIndex(path, translation) {
         <Router history={history}>
           <Route path={path} component={App}>
             <IndexRoute component={StopPlaces}/>
-            <Route path={path + 'edit/:stopId'} component={EditStopPlace}/>
+            <Route
+              path={path + 'edit/:stopId'}
+              component={EditStopPlace}
+              />
           </Route>
         </Router>
       </IntlProvider>

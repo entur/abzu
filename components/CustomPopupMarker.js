@@ -5,15 +5,14 @@ import L, { divIcon } from 'leaflet'
 
 class CustomPopupMarker extends React.Component {
 
-
   render() {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex,
-          stopIndex, changeCoordinates } = this.props
+          stopIndex, changeCoordinates, text  } = this.props
 
     if (!children && !children.length) {
-      children = 'Uten navn'
+      children = text.untitled
     }
 
     const style = !isQuay ? {
@@ -63,7 +62,7 @@ class CustomPopupMarker extends React.Component {
           <div>
             <span style={style} onClick={handleOnClick}>{children}</span>
             <div style={coordStyles}>
-              <span style={{fontWeight: 600}}>Koordinater</span>
+              <span style={{fontWeight: 600}}>{text.coordinates}</span>
                 <div
                   style={editCoordsStyle}
                   onClick={() => changeCoordinates && changeCoordinates(stopIndex, markerIndex, position)}

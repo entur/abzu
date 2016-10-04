@@ -6,7 +6,7 @@ class NewStopMarker extends React.Component {
 
   render() {
 
-    let { children, position, handleOnClick, handleDragEnd } = this.props
+    let { children, position, handleOnClick, handleDragEnd, text } = this.props
 
     const buttonStyle = {
       borderStyle: "none",
@@ -32,13 +32,13 @@ class NewStopMarker extends React.Component {
           <div>
             <span onClick={handleOnClick}>{children}</span>
               <div>
-                <p style={{fontWeight: "600"}}>Du lager en nytt stoppested</p>
-                <p>Vil du opprette et stoppested her?</p>
+                <p style={{fontWeight: "600"}}>{text.newStopTitle}</p>
+                <p>{text.newStopQuestion}</p>
                 <button
                   style={buttonStyle}
                   onClick={() => { handleOnClick(position) } }
                   >
-                  Opprett nå
+                  {text.createNow}
                 </button>
               </div>
           </div>

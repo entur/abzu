@@ -66,7 +66,7 @@ export const formatMarkers = (data) => {
   const suggestions = data.map ( (stop, index) => {
 
     const suggestion = {
-      text: '<<Navn ikke satt>>',
+      text: '<<>>',
       value: stop.id,
       markerProps: {
         key: `marker${index}`,
@@ -119,6 +119,12 @@ export const formatMarkers = (data) => {
     } else {
 
       const state = getState()
+
+      // caused by hard-reload, return to main screen
+      if (!state.stopPlacesReducer.newStopPlace) {
+        dispatch( UserActions.navigateTo('/',''))
+        return
+      }
 
       const newStop = Object.assign({}, state.stopPlacesReducer.newStopPlace, {})
       delete newStop.isNewStop

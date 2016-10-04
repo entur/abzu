@@ -4,8 +4,20 @@
   "type": "type",
   "empty_description": "This stop place has not got a description",
   "edit" : "Edit",
+  "editing": "Editing",
   "making_stop_place_title" : "You are now making a new stop place",
   "making_stop_place_hint" : "Double click anywhere on the map to set desired location. Click the marker for more options",
   "help" : "Help",
-  "sign_out" : "Sign out"
+  "sign_out" : "Sign out",
+  "untitled" : "Untitled",
+  "coordinates" : "Coordinates",
+  "new_stop_title" : "You are now creating a new stop place",
+  "new_stop_question" : "Do you wish to create a new stop here?",
+  "create_now" : "Create now",
+  "something_went_wrong" : "Something went wrong!",
+  "name" : "Name",
+  "description" : "Description",
+  "type" : "Type",
+  "save" : "Save",
+  "set_coordinates_prompt" : "Set coordinates for stop"
 }
