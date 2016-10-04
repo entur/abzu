@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
+const markerShadow = require("../static/icons/marker-shadow.png")
+const stopIcon = require("../static/icons/stop-icon-2x.png")
+const quayIcon = require('../static/icons/quay-icon-2x.png')
+const otherStopIcon = require('../static/icons/other-stop-icon-2x.png')
 
 class CustomPopupMarker extends React.Component {
 
@@ -33,8 +37,8 @@ class CustomPopupMarker extends React.Component {
 
     var iconBase = L.Icon.extend({
       options: {
-          iconUrl: "../static/icons/stop-icon-2x.png",
-          shadowUrl: "../static/icons/marker-shadow.png",
+          iconUrl: stopIcon,
+          shadowUrl: markerShadow,
           iconSize: [ 35, 45 ],
           iconAnchor: [ 17, 42 ],
           popupAnchor: [ 1, -32 ],
@@ -44,9 +48,9 @@ class CustomPopupMarker extends React.Component {
     })
 
     const icon = new iconBase({
-      iconUrl: (isQuay && stopIndex == 0) ? '../static/icons/quay-icon-2x.png'
+      iconUrl: (isQuay && stopIndex == 0) ? quayIcon
         : (stopIndex == 0 && !isQuay)
-        ? '../static/icons/stop-icon-2x.png' : '../static/icons/other-stop-icon-2x.png'
+        ? stopIcon : otherStopIcon
     })
 
     return (

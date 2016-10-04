@@ -14,13 +14,13 @@ convictPromise.then( (convict) => {
 
   console.info("ENDPOINTBASE is set to", ENDPOINTBASE)
 
+  app.use([ENDPOINTBASE + 'public/', ENDPOINTBASE + 'edit/public/'], express.static(__dirname + '/public'))
+
   if (process.env.NODE_ENV !== 'production') {
 
     let config = require('./webpack.config')
 
     config.output.publicPath = ENDPOINTBASE + 'public/'
-
-    app.use(ENDPOINTBASE + 'static/', express.static(__dirname + '/static'))
 
     var compiler = new webpack(config)
 
