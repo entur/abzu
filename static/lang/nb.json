@@ -1,4 +1,5 @@
 {
+  "_empty": " ",
   "_title": "Stoppestedregister",
   "filter_by_name": "Filtrer på navn",
   "type": "type",
@@ -19,5 +20,10 @@
   "description" : "Beskrivelse",
   "type" : "Type",
   "save" : "Lagre",
-  "set_coordinates_prompt" : "Sett koordinater for stopp"
+  "set_coordinates_prompt" : "Sett koordinater for stopp",
+  "language" : "Språk",
+  "english" : "Engelsk",
+  "norwegian" : "Norsk",
+  "snackbar_message_saved" : "Lagret!",
+  "snackbar_message_failed" : "Lagring feilet"
 }

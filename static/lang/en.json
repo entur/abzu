@@ -1,4 +1,5 @@
 {
+  "_empty": " ",
   "_title": "Stop Place Register",
   "filter_by_name": "Filter by name",
   "type": "type",
@@ -19,5 +20,10 @@
   "description" : "Description",
   "type" : "Type",
   "save" : "Save",
-  "set_coordinates_prompt" : "Set coordinates for stop"
+  "set_coordinates_prompt" : "Set coordinates for stop",
+  "language" : "Language",
+  "english" : "English",
+  "norwegian" : "Norwegian",
+  "snackbar_message_saved" : "Saved!",
+  "snackbar_message_failed" : "Saving failed!"
 }
