@@ -4,7 +4,7 @@
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
-    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
+    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "dev": "NODE_ENV=development node server.js",
     "prod": "NODE_ENV=production node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./test/**"
