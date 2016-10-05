@@ -4,7 +4,7 @@
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
-    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
+    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
     "dev": "NODE_ENV=development node server.js",
     "prod": "NODE_ENV=production node server.js",
     "test": "./node_modules/.bin/mocha -r jsdom-global/register --compilers js:babel-core/register ./test/**"
@@ -41,7 +41,6 @@
     "nock": "^8.0.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
-    "react-icons": "^2.2.1",
     "react-intl": "^2.1.5",
     "react-leaflet": "^0.12.2",
     "react-redux": "^4.4.5",

@@ -1,7 +1,6 @@
 import React from 'react'
 import MarkerList from './MarkerList'
 import MarkerCluster from './MarkerCluster'
-
 import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
 
 export default class LeafLetMap extends React.Component {

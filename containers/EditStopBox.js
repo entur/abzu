@@ -13,7 +13,8 @@ import stopTypes from '../components/stopTypes'
 import quayTypes from '../components/quayTypes'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import { NavigationExpandMore, NavigationExpandLess } from 'material-ui/svg-icons/'
+import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import { injectIntl } from 'react-intl'
 
 class EditStopBox extends React.Component {
