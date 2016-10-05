@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import quayTypes from './quayTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import { IconButton, FontIcon, Checkbox } from 'material-ui'
@@ -53,7 +52,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, index } = this.props
+    const { quay, index, quayTypes } = this.props
     const { hidden } = this.state
 
     quay.quayType = quay.quayType || 'other'

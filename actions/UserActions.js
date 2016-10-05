@@ -1,5 +1,6 @@
 import * as types from './actionTypes'
 import { Link, browserHistory } from 'react-router'
+import configureLocalization from '../localization/localization'
 
 var UserActions = {}
 
@@ -53,7 +54,22 @@ UserActions.openSnackbar = (message) => {
 
 UserActions.dismissSnackbar = () => {
   return function(dispatch) {
-    dispatch ( sendData(types.DISMISSED_SNACKBAR, null) )
+    dispatch( sendData(types.DISMISSED_SNACKBAR, null) )
+  }
+}
+
+UserActions.applyLocale = (locale) => {
+  return function(dispatch) {
+    dispatch ( sendData(types.APPLIED_LOCALE, locale) )
+    configureLocalization(locale).then( (localization) => {
+      dispatch ( UserActions.changeLocalization(localization) )
+    })
+  }
+}
+
+UserActions.changeLocalization = (localization) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_LOCALIZATION, localization) )
   }
 }
 

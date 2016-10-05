@@ -63,12 +63,11 @@ convictPromise.then( (convict) => {
   })
 
   app.get(ENDPOINTBASE, function(req, res) {
-    let translations = getTranslations(req)
-    res.send(getIndexHTML(translations))
+    res.send(getIndexHTML())
   })
 
   app.get(ENDPOINTBASE + '*', function(req, res) {
-    res.status(404).send(get404Page())
+    res.redirect(ENDPOINTBASE)
   })
 
   app.listen(port, function(error) {
@@ -97,9 +96,7 @@ convictPromise.then( (convict) => {
       if (typeof req.query.locale !== 'undefined' && supportedLanguages.indexOf(req.query.locale) > -1) {
         locale = req.query.locale
       } else {
-
         if (req.acceptsLanguages()) {
-
           for (let i = 0; i < req.acceptsLanguages().length; i++ ) {
             if (translations[req.acceptsLanguages()[i]]) {
               locale = req.acceptsLanguages()[i]
@@ -129,19 +126,6 @@ convictPromise.then( (convict) => {
       </body>
     </html>`
 
-   const get404Page = () =>
-     `<html>
-       <head>
-         <title>404 - Stop places</title>
-       </head>
-       <body>
-         <div id="root">
-          <h1>Stop places</h1>
-          <h2>Oops, this page does not exist!<h2>
-          <a href="${ENDPOINTBASE}">Back to the site!</a>
-         </div>
-       </body>
-     </html>`
 
 }).catch(function(err) {
   console.error("Unable to load convict configuration", err)

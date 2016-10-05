@@ -29,8 +29,13 @@ class App extends React.Component {
     dispatch ( UserActions.dismissSnackbar() )
   }
 
+  handleSetLanguage(locale) {
+    const { dispatch } = this.props
+    dispatch ( UserActions.applyLocale(locale) )
+  }
+
   render() {
-    // TODO: move snackbar as standalone component and resolve issue around styles
+
     const { children, snackbarOptions } = this.props
     const { formatMessage } = this.props.intl
 
@@ -38,17 +43,26 @@ class App extends React.Component {
     let headerText = {
       signOut: formatMessage({id: 'sign_out'}),
       help: formatMessage({id: 'help'}),
-      title: formatMessage({id: '_title'})
+      title: formatMessage({id: '_title'}),
+      language: formatMessage({id: 'language'}),
+      english: formatMessage({id: 'english'}),
+      norwegian: formatMessage({id: 'norwegian'}),
     }
+
+    let snackBarMessage = formatMessage({id: (message || '_empty')})
 
     return (
       <MuiThemeProvider>
         <div>
-          <Header text={headerText} handleNavigateToMain={this.handleNavigateToMain.bind(this)}/>
+          <Header
+            text={headerText}
+            handleNavigateToMain={this.handleNavigateToMain.bind(this)}
+            setLanguage={this.handleSetLanguage.bind(this)}
+            />
           {children}
           <Snackbar
             open={isOpen}
-            message={message || ''}
+            message={snackBarMessage}
             bodyStyle={{background: '#fff'}}
             autoHideDuration={4000}
             onRequestClose={this.handleRequestClose.bind(this)}

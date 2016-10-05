@@ -10,6 +10,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions } from '../actions/'
 import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
+import quayTypes from '../components/quayTypes'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { NavigationExpandMore, NavigationExpandLess } from 'material-ui/svg-icons/'
@@ -70,7 +71,7 @@ class EditStopBox extends React.Component {
 
     const { activeStopPlace, activeMarkers, dispatch } = this.props
     const { quaysExpanded } = this.state
-    const { formatMessage } = this.props.intl
+    const { formatMessage, locale } = this.props.intl
 
     let selectedMarker = null
 
@@ -177,7 +178,7 @@ class EditStopBox extends React.Component {
                 floatingLabelFixed={true}
                 style={{width: "95%"}}
                 >
-                { stopTypes.map( (type, index) =>
+                { stopTypes[locale].map( (type, index) =>
                     <MenuItem
                       key={'stopType' + index}
                       value={type.value}
@@ -209,6 +210,7 @@ class EditStopBox extends React.Component {
                   key={"quay-" + index}
                   quay={quay}
                   index={index}
+                  quayTypes={quayTypes[locale]}
                   removeQuay={() => this.handleRemoveQuay(index)}
                   />
               )}

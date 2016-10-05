@@ -9,7 +9,12 @@ const initialState = {
   snackbarOptions: {
     isOpen: false,
     message: ''
-  }
+  },
+  localization: {
+    locale: null,
+    messages: []
+  },
+  appliedLocale: null
 }
 
 const userReducer = (state = initialState, action) => {
@@ -30,6 +35,12 @@ const userReducer = (state = initialState, action) => {
 
     case types.DISMISSED_SNACKBAR:
       return Object.assign({}, state, {snackbarOptions: { isOpen: false }})
+
+    case types.CHANGED_LOCALIZATION:
+      return Object.assign({}, state, {localization: action.payLoad})
+
+    case types.APPLIED_LOCALE:
+      return Object.assign({}, state, { appliedLocale: action.payLoad })
 
     default:
       return state

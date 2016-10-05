@@ -61,7 +61,7 @@ class SearchBox extends React.Component {
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
 
-    const { formatMessage } = this.props.intl
+    const { formatMessage, locale } = this.props.intl
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -103,7 +103,7 @@ class SearchBox extends React.Component {
             />
           <FilterPopover
             caption={formatMessage({id: "type"})}
-            items={stopTypes}
+            items={stopTypes[locale]}
             filter={stopPlaceFilter}
             onDismiss={this.handlePopoverDismiss.bind(this)}
             />

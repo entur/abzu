@@ -1,20 +1,21 @@
 import { addLocaleData } from 'react-intl'
 import axios from 'axios'
 
-const localization = (config) => {
+const localization = (locale) => {
 
   const localStorageKey = '__stop_place__'
 
   return new Promise( (resolve, reject) => {
 
-    let storedLocalization = localStorage.getItem(localStorageKey)
+    let preferredLocale = locale || localStorage.getItem(localStorageKey)
+
     let queryParams = ''
 
-    if (storedLocalization) {
-      queryParams = '?locale=' + storedLocalization
+    if (preferredLocale) {
+      queryParams = '?locale=' + preferredLocale
     }
 
-    axios.get(config.endpointBase + 'translation.json' + queryParams).then(({ data }) => {
+    axios.get(window.config.endpointBase + 'translation.json' + queryParams).then(({ data }) => {
 
       const locale = data.locale
       const messages = JSON.parse(data.messages)
