@@ -33,10 +33,10 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         exclude: /node_modules/,
         include: __dirname,
-        loaders: ['style', 'css', 'sass']
+        loaders: ['style', 'css']
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,

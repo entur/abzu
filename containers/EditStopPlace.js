@@ -7,7 +7,7 @@ import EditStopBox from './EditStopBox'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 
-require('../sass/main.scss')
+require('../styles/main.css')
 
 class EditStopPlace extends React.Component {
 

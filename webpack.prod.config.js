@@ -2,12 +2,10 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
-
-  entry: [
-    './index'
-  ],
-
+  entry: {
+      app: './index',
+      react: ['react', 'react-redux', 'react-router', 'react-router-redux']
+  },
   output: {
     path: __dirname + '/public/',
     filename: 'bundle.js',
@@ -15,6 +13,7 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin("react", "react.bundle.js"),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
@@ -44,10 +43,10 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         exclude: /node_modules/,
         include: __dirname,
-        loaders: ['style', 'css', 'sass']
+        loaders: ['style', 'css']
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,

@@ -6,7 +6,6 @@ var port = process.env.port || 8988
 var globSync = require('glob').sync
 var path = require('path')
 var fs = require('fs').readFileSync
-var serialize = require('serialize-javascript')
 
 convictPromise.then( (convict) => {
 
@@ -35,6 +34,10 @@ convictPromise.then( (convict) => {
     app.get(ENDPOINTBASE + 'public/bundle.js', function(req, res) {
       res.sendFile(__dirname + '/public/bundle.js')
     })
+
+    app.get(ENDPOINTBASE + 'public/react.bundle.js', function(req, res) {
+      res.sendFile(__dirname + '/public/react.bundle.js')
+    })
   }
 
   app.get([ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'], function(req, res) {
@@ -46,7 +49,7 @@ convictPromise.then( (convict) => {
   })
 
   app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
-    res.send(getIndexHTML())
+    res.send(getPage())
   })
 
   app.get(ENDPOINTBASE + '_health', function(req, res) {
@@ -63,7 +66,7 @@ convictPromise.then( (convict) => {
   })
 
   app.get(ENDPOINTBASE, function(req, res) {
-    res.send(getIndexHTML())
+    res.send(getPage())
   })
 
   app.get(ENDPOINTBASE + '*', function(req, res) {
@@ -112,7 +115,7 @@ convictPromise.then( (convict) => {
       }
   }
 
-  const getIndexHTML = () =>
+  const getPage = (dependencies) =>
     `<html>
       <head>
         <title>Stop places</title>
@@ -122,9 +125,20 @@ convictPromise.then( (convict) => {
       <body>
         <div id="root">
         </div>
-        <script src="${ENDPOINTBASE}public/bundle.js"></script>
+        ${getDependencies()}
       </body>
     </html>`
+
+  const getDependencies = () => {
+    if (process.env.NODE_ENV === 'production') {
+      return (`
+        <script src="${ENDPOINTBASE}public/react.bundle.js"></script>
+        <script src="${ENDPOINTBASE}public/bundle.js"></script>
+      `)
+    }
+
+    return '<script src="${ENDPOINTBASE}public/react.bundle.js"></script>'
+  }
 
 
 }).catch(function(err) {
