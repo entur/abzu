@@ -19,7 +19,13 @@ const initialState = {
     locale: null,
     messages: []
   },
-  appliedLocale: null
+  appliedLocale: null,
+  topoi: [], // source for TopographicalFilter autocomplete
+  topoiChips: [
+   {key: 0, label: 'Nordland', type: 'county'},
+   {key: 1, label: 'Oslo', type: 'municipality'},
+   {key: 3, label: 'Fredrikstad', type: 'county'},
+  ]
 }
 
 describe('user reducer', () => {

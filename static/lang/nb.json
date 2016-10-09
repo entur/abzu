@@ -1,7 +1,8 @@
 {
   "_empty": " ",
   "_title": "Stoppestedregister",
-  "filter_by_name": "Filtrer på navn",
+  "filter_by_name": "Navn",
+  "filter_by_topography" : "Kommune / fylke",
   "type": "type",
   "empty_description": "Dette stoppestedet mangler en beskrivelse ...",
   "edit": "Rediger",

@@ -8,6 +8,7 @@ import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 import Divider from 'material-ui/Divider'
+// TODO : refactor import to only import specific icon 
 import { NavigationExpandMore, MapsMyLocation, NavigationExpandLess } from 'material-ui/svg-icons/'
 
 class QuayItem extends React.Component {

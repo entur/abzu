@@ -125,19 +125,18 @@ convictPromise.then( (convict) => {
       <body>
         <div id="root">
         </div>
-        ${getDependencies()}
+        ${getBundles()}
       </body>
     </html>`
 
-  const getDependencies = () => {
+  const getBundles = () => {
     if (process.env.NODE_ENV === 'production') {
       return (`
         <script src="${ENDPOINTBASE}public/react.bundle.js"></script>
         <script src="${ENDPOINTBASE}public/bundle.js"></script>
       `)
     }
-
-    return '<script src="${ENDPOINTBASE}public/react.bundle.js"></script>'
+    return `<script src="${ENDPOINTBASE}public/bundle.js"></script>`
   }
 
 

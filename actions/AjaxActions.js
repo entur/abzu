@@ -18,6 +18,9 @@ const sendData = (type, payLoad) => {
     let URL = window.config.tiamatBaseUrl + 'stop_place/?name=' + name
     const state = getState()
     const stopTypeFilters = state.userReducer.searchFilters.stopType
+    const toposfilter = state.userReducer.topoiChips
+
+    // todo : map topoiChips to queryParams
 
     let queryParams = ''
 

@@ -9,7 +9,8 @@ const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
 
   const style = {
     color: "#191919",
-    paddingTop: "40px"
+    border: "1px dotted #add8e6",
+    padding: 5
   }
 
   const markerInfo = marker.markerProps
@@ -24,8 +25,8 @@ const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
       <FlatButton
         onClick={() => handleEdit(markerInfo.id)}
         >
-        <Edit style={{width: "16px", verticalAlign: "middle", height: "16px"}}/>
-        <span style={{fontSize: ".8em", marginLeft: "5px"}}>
+        <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
+        <span style={{fontSize: ".8em", marginLeft: 5}}>
           { text.edit }
         </span>
       </FlatButton>

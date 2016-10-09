@@ -14,6 +14,7 @@ import SelectField from 'material-ui/SelectField'
 import FilterPopover from '../components/FilterPopover'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
+import TopographicalFilter from '../components/TopographicalFilter'
 
 class SearchBox extends React.Component {
 
@@ -24,44 +25,54 @@ class SearchBox extends React.Component {
   }
 
   handleEdit(id) {
-    this.props.dispatch( UserActions.navigateTo('/edit/', id ) )
+    this.props.dispatch(UserActions.navigateTo('/edit/', id ))
   }
 
   handleUpdateInput(input) {
-    this.props.dispatch( AjaxActions.getStopNames(input))
+    this.props.dispatch(AjaxActions.getStopNames(input))
+  }
+
+  handleTopoInput(input) {
+    this.props.dispatch(UserActions.getTopographicalPlaces(input))
   }
 
   handleNewRequest(result) {
-    if (typeof(result.markerProps) !== 'undefined') {
-      this.props.dispatch( MapActions.setActiveMarkers(result) )
-    }
+   if (typeof(result.markerProps) !== 'undefined') {
+     this.props.dispatch( MapActions.setActiveMarkers(result) )
+   }
+  }
+
+  handleAddChip(result) {
+    let newChip =  {label: result.name, type: result.type}
+    this.props.dispatch(UserActions.addToposChip(newChip))
+    this.refs.topoFilter.setState({
+      searchText: ''
+    })
   }
 
   handleNewStop() {
-    const { dispatch } = this.props
-    dispatch( UserActions.toggleIsCreatingNewStop() )
+    this.props.dispatch(UserActions.toggleIsCreatingNewStop())
   }
 
   handleClearSearch() {
-    this.refs.searchInput.setState({
-      searchText: '',
-      focusTextField: true
+    this.refs.searchText.setState({
+      searchText: ''
     })
   }
 
   handlePopoverDismiss(filters) {
-    const { dispatch } = this.props
-    dispatch( UserActions.applyStopTypeSearchFilter(filters) )
+    this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
   }
 
   render() {
 
-    const { activeMarkers, isCreatingNewStop, stopPlaceFilter } = this.props
+    const { activeMarkers, isCreatingNewStop } = this.props
+    const { stopPlaceFilter, topographicalSource } = this.props
+    const { formatMessage, locale } = this.props.intl
 
     let dataSource = this.props.dataSource || []
-    let selectedMarker = (activeMarkers && activeMarkers.length) ? activeMarkers[0] : null
-
-    const { formatMessage, locale } = this.props.intl
+    let selectedMarker = (activeMarkers && activeMarkers.length)
+      ? activeMarkers[0] : null
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -73,7 +84,7 @@ class SearchBox extends React.Component {
       bodyText: formatMessage({id: 'making_stop_place_hint'})
     }
 
-    const SbStyle = {
+    const searchBoxWrapperStyle = {
       top: "90px",
       background: "white",
       height: "auto",
@@ -85,11 +96,14 @@ class SearchBox extends React.Component {
       border: "1px solid rgb(81, 30, 18)"
     }
 
-    const topLevelMargin = selectedMarker ? "60px" : "100px"
+    const topoiSourceConfig = {
+      text: 'name',
+      value: 'ref',
+    }
 
     return (
-      <div style={SbStyle}>
-        <div style={{marginBottom: topLevelMargin}}>
+      <div style={searchBoxWrapperStyle}>
+        <div key='search-name-wrapper'>
           <div style={{float: "left", width: "85%"}}>
             <AutoComplete
              hintText={formatMessage({id: "filter_by_name"})}
@@ -97,15 +111,9 @@ class SearchBox extends React.Component {
              filter={AutoComplete.caseInsensitiveFilter}
              onUpdateInput={this.handleUpdateInput.bind(this)}
              maxSearchResults={5}
-             ref="searchInput"
+             ref="searchText"
              onNewRequest={this.handleNewRequest.bind(this)}
              fullWidth={true}
-            />
-          <FilterPopover
-            caption={formatMessage({id: "type"})}
-            items={stopTypes[locale]}
-            filter={stopPlaceFilter}
-            onDismiss={this.handlePopoverDismiss.bind(this)}
             />
           </div>
           <div style={{float: "right", width: "10%"}}>
@@ -114,22 +122,43 @@ class SearchBox extends React.Component {
             </IconButton>
           </div>
         </div>
-
-        {selectedMarker
-          ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
-          :  <SearchBoxDetails hidden/>
-        }
-        <div style={{marginTop: "30px"}}>
-          { isCreatingNewStop
-          ? <NewStopPlace text={newStopText}/>
-          :
-          <FloatingActionButton
-            onClick={this.handleNewStop.bind(this)}
-            style={{float: "right"}}
-            mini={true}>
-            <ContentAdd />
-          </FloatingActionButton>
+        <div key='filter-wrapper' style={{width: '100%'}}>
+          <h4>Filter:</h4>
+          <FilterPopover
+            caption={formatMessage({id: "type"})}
+            items={stopTypes[locale]}
+            filter={stopPlaceFilter}
+            onDismiss={this.handlePopoverDismiss.bind(this)}
+            />
+            <TopographicalFilter/>
+              <AutoComplete
+               hintText={formatMessage({id: "filter_by_topography"})}
+               dataSource={topographicalSource}
+               dataSourceConfig={topoiSourceConfig}
+               filter={AutoComplete.caseInsensitiveFilter}
+               onUpdateInput={this.handleTopoInput.bind(this)}
+               maxSearchResults={5}
+               ref="topoFilter"
+               onNewRequest={this.handleAddChip.bind(this)}
+              />
+        </div>
+        <div key='searchbox-edit'>
+          {selectedMarker
+            ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
+            :  <SearchBoxDetails hidden/>
           }
+          <div style={{marginTop: "30px"}}>
+            { isCreatingNewStop
+            ? <NewStopPlace text={newStopText}/>
+            :
+            <FloatingActionButton
+              onClick={this.handleNewStop.bind(this)}
+              style={{float: "right"}}
+              mini={true}>
+              <ContentAdd />
+            </FloatingActionButton>
+            }
+          </div>
         </div>
       </div>
     )
@@ -141,7 +170,8 @@ const mapStateToProps = (state, ownProps) => {
     activeMarkers: state.stopPlacesReducer.activeMarkers,
     dataSource: state.stopPlacesReducer.stopPlaceNames.places,
     isCreatingNewStop: state.userReducer.isCreatingNewStop,
-    stopPlaceFilter: state.userReducer.searchFilters.stopType
+    stopPlaceFilter: state.userReducer.searchFilters.stopType,
+    topographicalSource: state.userReducer.topoi
   }
 }
 
@@ -150,6 +180,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     dispatch: dispatch
   }
 }
+
 
 export default injectIntl(connect(
   mapStateToProps,

@@ -1,7 +1,8 @@
 {
   "_empty": " ",
   "_title": "Stop Place Register",
-  "filter_by_name": "Filter by name",
+  "filter_by_name": "Name",
+  "filter_by_topography" : "Muncipality / county",
   "type": "type",
   "empty_description": "This stop place has not got a description",
   "edit" : "Edit",

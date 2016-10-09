@@ -73,4 +73,23 @@ UserActions.changeLocalization = (localization) => {
   }
 }
 
+UserActions.getTopographicalPlaces = (input) => {
+  return function(dispatch) {
+    dispatch ( sendData(types.GET_TOPOGRAPHICAL_PLACES, input) )
+  }
+}
+
+UserActions.addToposChip = (chip) => {
+  return function(dispatch) {
+    if (typeof chip.label !== 'undefined' && typeof chip.type !== 'undefined')
+      dispatch(sendData(types.ADDED_TOPOS_CHIP, chip))
+  }
+}
+
+UserActions.deleteChip = (key) => {
+  return function(dispatch) {
+    dispatch(sendData(types.DELETED_TOPOS_CHIP, key))
+  }
+}
+
 export default UserActions
