@@ -14,7 +14,7 @@ const ModalityIcon = (props) =>  {
   return (
     <span style={{float: 'left', transform: 'translateY(8px)'}}>
       <svg style={iconStyle}>
-        <use xlinkHref={"../static/icons/svg-sprite.svg#icon-icon_" + iconId} />
+        <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg' + "#icon-icon_" + iconId} />
       </svg>
     </span>
   )
