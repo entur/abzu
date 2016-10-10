@@ -15,6 +15,8 @@ import FilterPopover from '../components/FilterPopover'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import TopographicalFilter from '../components/TopographicalFilter'
+import MenuItem from 'material-ui/MenuItem'
+import ModalityIcon from '../components/ModalityIcon'
 
 class SearchBox extends React.Component {
 
@@ -101,11 +103,22 @@ class SearchBox extends React.Component {
       value: 'ref',
     }
 
+    dataSource.map( (r) => {
+      r.value = (
+        <MenuItem
+          primaryText={r.text}
+          secondaryText={(<ModalityIcon type={r.markerProps.stopPlaceType}/>)}
+       />
+      )
+      return r
+    })
+
     return (
       <div style={searchBoxWrapperStyle}>
         <div key='search-name-wrapper'>
           <div style={{float: "left", width: "85%"}}>
             <AutoComplete
+             openOnFocus={true}
              hintText={formatMessage({id: "filter_by_name"})}
              dataSource={dataSource}
              filter={AutoComplete.caseInsensitiveFilter}
@@ -123,7 +136,7 @@ class SearchBox extends React.Component {
           </div>
         </div>
         <div key='filter-wrapper' style={{width: '100%'}}>
-          <h4>Filter:</h4>
+          <span style={{fontWeight: 600}}>Filter:</span>
           <FilterPopover
             caption={formatMessage({id: "type"})}
             items={stopTypes[locale]}

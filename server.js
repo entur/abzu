@@ -65,6 +65,10 @@ convictPromise.then( (convict) => {
     res.send(translations)
   })
 
+  app.get(ENDPOINTBASE + 'static/icons/svg-sprite.svg', function(req, res) {
+    res.sendFile(__dirname + '/static/icons/svg-sprite.svg')
+  })
+
   app.get(ENDPOINTBASE, function(req, res) {
     res.send(getPage())
   })

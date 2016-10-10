@@ -89,7 +89,8 @@ class FilterPopover extends React.Component {
       }
 
       const buttonStyle = {
-        borderBottom: "1px dotted #000"
+        borderBottom: "1px dotted #000",
+        marginBottom: 5
       }
 
       return (
