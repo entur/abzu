@@ -12,7 +12,7 @@ const ModalityIcon = (props) =>  {
   const iconId = getIconIdByModality(props.type)
 
   return (
-    <span style={{float: 'left', transform: 'translateY(8px)'}}>
+    <span style={{float: 'left', transform: 'translateY(10px)'}}>
       <svg style={iconStyle}>
         <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg' + "#icon-icon_" + iconId} />
       </svg>

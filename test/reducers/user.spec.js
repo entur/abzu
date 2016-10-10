@@ -9,7 +9,12 @@ const initialState = {
   path: '/',
   isCreatingNewStop: false,
   searchFilters: {
-    stopType: []
+    stopType: [],
+    topoiChips: [
+     {key: 0, label: 'Nordland', type: 'county'},
+     {key: 1, label: 'Oslo', type: 'municipality'},
+     {key: 3, label: 'Fredrikstad', type: 'county'},
+    ]
   },
   snackbarOptions: {
     isOpen: false,
@@ -21,11 +26,6 @@ const initialState = {
   },
   appliedLocale: null,
   topoi: [], // source for TopographicalFilter autocomplete
-  topoiChips: [
-   {key: 0, label: 'Nordland', type: 'county'},
-   {key: 1, label: 'Oslo', type: 'municipality'},
-   {key: 3, label: 'Fredrikstad', type: 'county'},
-  ]
 }
 
 describe('user reducer', () => {
@@ -63,7 +63,7 @@ describe('user reducer', () => {
       payLoad: filters
     }))
       .toEqual({
-        ...initialState, searchFilters: { stopType:filters }
+        ...initialState, searchFilters: { ...initialState.searchFilters, stopType:filters }
       })
   })
 

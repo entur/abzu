@@ -66,6 +66,10 @@ class SearchBox extends React.Component {
     this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
   }
 
+  handleSaveFavorite(inputField) {
+    this.props.dispatch( UserActions.saveSearchAsFavorite(inputField.state.searchText) )
+  }
+
   render() {
 
     const { activeMarkers, isCreatingNewStop } = this.props
@@ -143,6 +147,7 @@ class SearchBox extends React.Component {
             filter={stopPlaceFilter}
             onDismiss={this.handlePopoverDismiss.bind(this)}
             />
+          <button onClick={() => { this.handleSaveFavorite(this.refs.searchText) }} style={{display: 'none', float:'right'}}>*FAV*</button>
             <TopographicalFilter/>
               <AutoComplete
                hintText={formatMessage({id: "filter_by_topography"})}

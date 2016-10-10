@@ -22,7 +22,7 @@ class TopographicalFilter extends React.Component {
     return (
       <Chip
         key={data.key}
-        onRequestDelete={() => this.handleRequestDelete(data.key).bind(this)}
+        onRequestDelete={() => this.handleRequestDelete(data.key)}
         style={chipStyle}
       >
         <span style={{color: typeTextColor}}>{data.label}</span>
@@ -49,7 +49,7 @@ class TopographicalFilter extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    topoiChips: state.userReducer.topoiChips
+    topoiChips: state.userReducer.searchFilters.topoiChips
   }
 }
 

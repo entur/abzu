@@ -1,6 +1,7 @@
 import * as types from './actionTypes'
 import { Link, browserHistory } from 'react-router'
 import configureLocalization from '../localization/localization'
+import FavoriteManager from '../singletons/FavoriteManager'
 
 var UserActions = {}
 
@@ -89,6 +90,17 @@ UserActions.addToposChip = (chip) => {
 UserActions.deleteChip = (key) => {
   return function(dispatch) {
     dispatch(sendData(types.DELETED_TOPOS_CHIP, key))
+  }
+}
+
+UserActions.saveSearchAsFavorite = (searchText) => {
+  return function(dispatch, getState) {
+    const state = getState()
+    const searchFilters =  state.userReducer.searchFilters
+    const savableContent = {
+      ...searchFilters, searchText: searchText
+    }
+    new FavoriteManager().save('__favorites__', savableContent)
   }
 }
 
