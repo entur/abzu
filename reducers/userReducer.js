@@ -6,9 +6,7 @@ const initialState = {
   searchFilters: {
     stopType: [],
     topoiChips: [
-     {key: 0, label: 'Nordland', type: 'county'},
-     {key: 1, label: 'Oslo', type: 'municipality'},
-     {key: 3, label: 'Fredrikstad', type: 'county'},
+     // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
     ]
   },
   snackbarOptions: {
@@ -20,24 +18,10 @@ const initialState = {
     messages: []
   },
   appliedLocale: null,
-  topoi: [], // source for TopographicalFilter autocomplete
-}
-
-const getMockedTopi = () => {
-  const asker = {
-    ref: '1',
-    name: 'Asker',
-    county: 'Akershus',
-    type: 'municipality'
-  }
-
-  const akerhus = {
-    ref: '2',
-    type: 'county',
-    name: 'Akershus'
-  }
-
-  return [asker, akerhus]
+  // received data from GET:/topographic_place
+  topoiSource: [],
+  // source for TopographicalFilter autocomplete
+  topoiSuggestions: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -65,9 +49,11 @@ const userReducer = (state = initialState, action) => {
     case types.APPLIED_LOCALE:
       return Object.assign({}, state, { appliedLocale: action.payLoad })
 
+    case types.RECEIVED_TOPOGRAPHICAL_PLACES:
+      return Object.assign({}, state, { topoiSource: action.payLoad })
+
     case types.GET_TOPOGRAPHICAL_PLACES:
-      // TODO : Should filter out chips already present
-      return Object.assign({}, state, { topoi: getMockedTopi()})
+      return Object.assign({}, state, { topoiSuggestions: action.payLoad })
 
     case types.ADDED_TOPOS_CHIP:
       let newChipList = state.searchFilters.topoiChips.splice(0)

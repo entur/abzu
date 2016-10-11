@@ -1,51 +1,91 @@
 let instance = null
+const key = '__favorites__'
 
 class FavoriteManager {
 
   constructor() {
+
     if (!instance) {
       instance = this
-      this.favorites = []
     }
     return instance
   }
 
   getFavorites() {
-    return this.favorites
+    return this._loadLocalFavorites()
   }
 
-  save(key, content) {
+  saveFavorites(favorites) {
+    localStorage.setItem(key, JSON.stringify(favorites))
+  }
+
+  isFavoriteAlreadyStored(savableContent) {
+
+    let favorites = this.getFavorites()
+
+    for (let i = 0; i < favorites.length; i++) {
+      if (JSON.stringify(favorites[i]) === JSON.stringify(savableContent)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  createSavableContent(searchText, stopType, topoiChips) {
+    return {
+      stopType: stopType,
+      topoiChips: topoiChips,
+      searchText: searchText
+    }
+  }
+
+  remove(content) {
+    let favorites = this.getFavorites()
+
+    for (let i = 0; i < favorites.length; i++) {
+      if (JSON.stringify(favorites[i]) === JSON.stringify(content)) {
+        favorites.splice(i,1)
+      }
+    }
+    this.saveFavorites(favorites)
+  }
+
+  save(content) {
 
     try {
 
-      var contentToSave = []
-
-      if (localStorage.getItem(key) !== null) {
-
-        var exisitingContent = JSON.parse(localStorage.getItem(key))
-
-        // TODO : Check if content already is saved
-
-        exisitingContent.push(content)
-        contentToSave = exisitingContent
-
-      } else {
-        contentToSave.push(content)
+      if (!this.isFavoriteAlreadyStored(content)) {
+        let favorites = this.getFavorites()
+        favorites.push(content)
+        this.saveFavorites(favorites)
       }
-
-      localStorage.setItem(key, JSON.stringify(contentToSave))
-      console.info("favorite saved in localStorage")
 
     } catch (e) {
       console.error('error saving content in localStorage', e)
     }
+  }
 
+  _loadLocalFavorites() {
+
+    try {
+
+      if (localStorage.getItem(key) !== null ) {
+          let localFavorites = JSON.parse(localStorage.getItem(key))
+          if (Array.isArray(localFavorites)) return localFavorites
+      }
+
+      return []
+
+    } catch (e) {
+      console.error('Invalid data in localStorage for key', key, 'returning []')
+      localStorage.removeItem(key)
+      return []
+    }
 
   }
+
 }
 
-const isArray = (obj) => {
-  return !!obj && Array === obj.constructor
-}
 
 export default FavoriteManager

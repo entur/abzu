@@ -15,17 +15,37 @@ const sendData = (type, payLoad) => {
 
   return function(dispatch, getState) {
 
-    let URL = window.config.tiamatBaseUrl + 'stop_place/?name=' + name
+    let URL = window.config.tiamatBaseUrl + 'stop_place/'
     const state = getState()
     const stopTypeFilters = state.userReducer.searchFilters.stopType
-    const toposfilter = state.userReducer.topoiChips
-
-    // todo : map topoiChips to queryParams
 
     let queryParams = ''
 
+    if (name.length) {
+      queryParams += '?name=' + name
+    }
+
     if (stopTypeFilters && stopTypeFilters.length) {
       queryParams += stopTypeFilters.map( (type) => `&stopPlaceType=${type}`).join('')
+    }
+
+    const topoiChips = state.userReducer.searchFilters.topoiChips
+
+    let countyRefParams = ''
+    let municipalityRefParams = ''
+
+    topoiChips.forEach( (t) => {
+      if (t.type === 'county') {
+        countyRefParams += `&countyReference=${t.ref}`
+      } else {
+        municipalityRefParams += `&municipalityReference=${t.ref}`
+      }
+    })
+
+    queryParams += countyRefParams + municipalityRefParams
+
+    if (!queryParams.length) {
+      return
     }
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
@@ -220,7 +240,19 @@ AjaxActions.saveNewStop = () => {
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
       dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
     })
+  }
+}
 
+AjaxActions.populateTopograhicalPlaces = () => {
+  return function(dispatch) {
+    const URL = window.config.tiamatBaseUrl + 'topographic_place/'
+    return axios.get(URL)
+    .then(function(response) {
+      dispatch( sendData(types.RECEIVED_TOPOGRAPHICAL_PLACES, response.data))
+    })
+    .catch(function(response) {
+      console.error('Unable to populate topopgraphical places')
+    })
   }
 }
 

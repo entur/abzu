@@ -17,8 +17,17 @@ import { injectIntl } from 'react-intl'
 import TopographicalFilter from '../components/TopographicalFilter'
 import MenuItem from 'material-ui/MenuItem'
 import ModalityIcon from '../components/ModalityIcon'
+import StarIcon from 'material-ui/svg-icons/toggle/star'
+import FavoriteManager from '../singletons/FavoriteManager'
 
 class SearchBox extends React.Component {
+
+  constructor(props) {
+    super(props)
+    var favoriteManager = new FavoriteManager()
+    this.handleEnsureFavorited()
+    this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
+  }
 
   componentDidMount() {
     cfgreader.readConfig( (function(config) {
@@ -45,8 +54,7 @@ class SearchBox extends React.Component {
   }
 
   handleAddChip(result) {
-    let newChip =  {label: result.name, type: result.type}
-    this.props.dispatch(UserActions.addToposChip(newChip))
+    this.props.dispatch(UserActions.addToposChip(result))
     this.refs.topoFilter.setState({
       searchText: ''
     })
@@ -66,15 +74,41 @@ class SearchBox extends React.Component {
     this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
   }
 
-  handleSaveFavorite(inputField) {
-    this.props.dispatch( UserActions.saveSearchAsFavorite(inputField.state.searchText) )
+  handleToggleFavorite(inputField) {
+
+    const { favorited } = this.state
+
+    if (!favorited) {
+      this.props.dispatch( UserActions.saveSearchAsFavorite(inputField.state.searchText) )
+    } else {
+      this.props.dispatch( UserActions.removeSearchAsFavorite(inputField.state.searchText) )
+    }
+
+    this.setState({
+      favorited: !favorited
+    })
+  }
+
+  handleEnsureFavorited() {
+    var favoriteManager = new FavoriteManager()
+    var searchText = (this.refs.searchText ? this.refs.searchText.state.searchText : '')
+    const { stopPlaceFilter, topoiChips } = this.props
+    var favoriteContent = favoriteManager.createSavableContent(searchText, stopPlaceFilter, topoiChips)
+    var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
+    this.state = {
+      favorited: favorited
+    }
+
+    return favorited
   }
 
   render() {
 
     const { activeMarkers, isCreatingNewStop } = this.props
-    const { stopPlaceFilter, topographicalSource } = this.props
+    const { stopPlaceFilter, topographicalSource, topoiChips } = this.props
     const { formatMessage, locale } = this.props.intl
+
+    let favorited = this.handleEnsureFavorited()
 
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length)
@@ -101,6 +135,18 @@ class SearchBox extends React.Component {
       padding: "10px",
       border: "1px solid rgb(81, 30, 18)"
     }
+
+    let starIconStyle = {
+      stroke: '#191919',
+      marginTop: 10,
+      height: 32,
+      width: 32,
+      cursor: 'pointer',
+      fill: '#f4bc42',
+      float:'right'
+    }
+
+    if (!favorited) starIconStyle.fill = '#fff'
 
     const topoiSourceConfig = {
       text: 'name',
@@ -139,7 +185,11 @@ class SearchBox extends React.Component {
             </IconButton>
           </div>
         </div>
-        <div key='filter-wrapper' style={{width: '100%'}}>
+        <StarIcon
+          onClick={() => { this.handleToggleFavorite(this.refs.searchText) }}
+          style={starIconStyle}
+          />
+        <div key='filter-wrapper' style={{marginTop: 60, width: '100%'}}>
           <span style={{fontWeight: 600}}>Filter:</span>
           <FilterPopover
             caption={formatMessage({id: "type"})}
@@ -147,7 +197,6 @@ class SearchBox extends React.Component {
             filter={stopPlaceFilter}
             onDismiss={this.handlePopoverDismiss.bind(this)}
             />
-          <button onClick={() => { this.handleSaveFavorite(this.refs.searchText) }} style={{display: 'none', float:'right'}}>*FAV*</button>
             <TopographicalFilter/>
               <AutoComplete
                hintText={formatMessage({id: "filter_by_topography"})}
@@ -189,7 +238,8 @@ const mapStateToProps = (state, ownProps) => {
     dataSource: state.stopPlacesReducer.stopPlaceNames.places,
     isCreatingNewStop: state.userReducer.isCreatingNewStop,
     stopPlaceFilter: state.userReducer.searchFilters.stopType,
-    topographicalSource: state.userReducer.topoi
+    topographicalSource: state.userReducer.topoiSuggestions,
+    topoiChips: state.userReducer.searchFilters.topoiChips
   }
 }
 

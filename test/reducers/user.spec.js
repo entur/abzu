@@ -11,9 +11,7 @@ const initialState = {
   searchFilters: {
     stopType: [],
     topoiChips: [
-     {key: 0, label: 'Nordland', type: 'county'},
-     {key: 1, label: 'Oslo', type: 'municipality'},
-     {key: 3, label: 'Fredrikstad', type: 'county'},
+     // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
     ]
   },
   snackbarOptions: {
@@ -25,7 +23,10 @@ const initialState = {
     messages: []
   },
   appliedLocale: null,
-  topoi: [], // source for TopographicalFilter autocomplete
+  // received data from GET:/topographic_place
+  topoiSource: [],
+  // source for TopographicalFilter autocomplete
+  topoiSuggestions: []
 }
 
 describe('user reducer', () => {
@@ -123,6 +124,19 @@ describe('user reducer', () => {
     }))
       .toEqual({
         ...initialState, appliedLocale: locale
+      })
+  })
+
+  it('Should get topographical places', () => {
+
+    let topographicalPlaces = require('./json/topographicalPlaces.json')
+
+    expect(userReducer(undefined, {
+      type: types.GET_TOPOGRAPHICAL_PLACES,
+      payLoad: topographicalPlaces
+    }))
+      .toEqual({
+        ...initialState, topoiSuggestions: topographicalPlaces
       })
 
   })

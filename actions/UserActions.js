@@ -75,14 +75,32 @@ UserActions.changeLocalization = (localization) => {
 }
 
 UserActions.getTopographicalPlaces = (input) => {
-  return function(dispatch) {
-    dispatch ( sendData(types.GET_TOPOGRAPHICAL_PLACES, input) )
+
+  return function(dispatch, getState) {
+
+    const state = getState()
+
+    let chipsAlreadyAdded = state.userReducer.searchFilters.topoiChips
+    let suggestions = state.userReducer.topoiSource
+
+    suggestions = suggestions.filter( (suggestion) => {
+
+      for (let i = 0; i < chipsAlreadyAdded.length; i++) {
+        if (JSON.stringify(chipsAlreadyAdded[i]) === JSON.stringify(suggestion)) {
+          return false
+        }
+      }
+      return true
+    })
+
+    dispatch ( sendData(types.GET_TOPOGRAPHICAL_PLACES, suggestions) )
   }
 }
 
+
 UserActions.addToposChip = (chip) => {
   return function(dispatch) {
-    if (typeof chip.label !== 'undefined' && typeof chip.type !== 'undefined')
+    if (typeof chip.name !== 'undefined' && typeof chip.type !== 'undefined')
       dispatch(sendData(types.ADDED_TOPOS_CHIP, chip))
   }
 }
@@ -97,10 +115,19 @@ UserActions.saveSearchAsFavorite = (searchText) => {
   return function(dispatch, getState) {
     const state = getState()
     const searchFilters =  state.userReducer.searchFilters
-    const savableContent = {
-      ...searchFilters, searchText: searchText
-    }
-    new FavoriteManager().save('__favorites__', savableContent)
+    let favoriteManager = new FavoriteManager()
+    let savableContent = favoriteManager.createSavableContent(searchText, searchFilters.stopType, searchFilters.topoiChips)
+    favoriteManager.save(savableContent)
+  }
+}
+
+UserActions.removeSearchAsFavorite = (searchText) => {
+  return function(dispatch, getState) {
+    const state = getState()
+    const searchFilters =  state.userReducer.searchFilters
+    let favoriteManager = new FavoriteManager()
+    let savableContent = favoriteManager.createSavableContent(searchText, searchFilters.stopType, searchFilters.topoiChips)
+    favoriteManager.remove(savableContent)
   }
 }
 

@@ -25,7 +25,7 @@ class TopographicalFilter extends React.Component {
         onRequestDelete={() => this.handleRequestDelete(data.key)}
         style={chipStyle}
       >
-        <span style={{color: typeTextColor}}>{data.label}</span>
+        <span style={{color: typeTextColor}}>{data.name}</span>
       </Chip>
     )
   }
