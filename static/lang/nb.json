@@ -31,5 +31,6 @@
   "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
   "cancel" : "Avbryt",
   "use" : "Bruk",
-  "field_is_required" : "Feltet er påkrevd"
+  "field_is_required" : "Feltet er påkrevd",
+  "no_favorites_found" : "Du har foreløpig ingen favorittsøk. Trykk på stjernen for å lagre ditt søk."
 }

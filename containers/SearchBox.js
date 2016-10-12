@@ -160,6 +160,7 @@ class SearchBox extends React.Component {
               filter={stopPlaceFilter}
               onItemClick={this.handleRetrieveFilter.bind(this)}
               onDismiss={this.handlePopoverDismiss.bind(this)}
+              noFavoritesFoundText={formatMessage({id: 'no_favorites_found'})}
               />
             <AutoComplete
              openOnFocus={true}

@@ -31,5 +31,6 @@
   "title_for_favorite": "What do you want to remember your search as?",
   "cancel" : "Cancel",
   "use" : "Use",
-  "field_is_required" : "Field is required"
+  "field_is_required" : "Field is required",
+  "no_favorites_found" : "You have currenly no favorite searches. Click the star to save your search."
 }

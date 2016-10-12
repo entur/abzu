@@ -32,11 +32,11 @@ class FilterPopover extends React.Component {
 
     render() {
 
-      const { items, filter, caption, onItemClick } = this.props
+      const { items, filter, caption, onItemClick, noFavoritesFoundText } = this.props
 
       let favorites = new FavoriteManager().getFavorites()
 
-      const popoverstyle = {
+      let popoverstyle = {
         width: 'auto',
         overflowY: "hidden"
       }
@@ -61,21 +61,28 @@ class FilterPopover extends React.Component {
            style={popoverstyle}
            >
 
-           { favorites.map( (item, index) =>  {
+           { favorites.length
 
-             return (
-               <MenuItem
-                 key={'favorite' + index}
-                 style={{
-                   cursor: 'pointer',
-                   background: '#fff'
-                 }}
-                 onClick={() => { this.handleRequestClose(this.refs); onItemClick(item) }}
+              ? favorites.map( (item, index) =>  {
+               return (
+                 <MenuItem
+                   key={'favorite' + index}
+                   style={{
+                     cursor: 'pointer',
+                     background: '#fff'
+                   }}
+                   onClick={() => { this.handleRequestClose(this.refs); onItemClick(item) }}
+                  >
+                   {`${item.title}`}
+                 </MenuItem>
+                )
+             })
+             : <div
+                style={{padding: 15, margin: 'auto', lineHeight: 1.5, fontWeight: 600, width: 300}}
                 >
-                 {`${item.title}`}
-               </MenuItem>
-              )
-           })}
+                {noFavoritesFoundText}
+              </div>
+         }
             </Popover>
         </div>
       )

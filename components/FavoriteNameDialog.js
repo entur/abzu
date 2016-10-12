@@ -65,7 +65,7 @@ class FavoriteNameDialog extends React.Component {
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.handleSubmit.bind(this)}
-      />,
+      />
     ]
 
     return (
