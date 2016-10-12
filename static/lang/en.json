@@ -26,5 +26,10 @@
   "english" : "English",
   "norwegian" : "Norwegian",
   "snackbar_message_saved" : "Saved!",
-  "snackbar_message_failed" : "Saving failed!"
+  "snackbar_message_failed" : "Saving failed!",
+  "favorites" : "Favorites",
+  "title_for_favorite": "What do you want to remember your search as?",
+  "cancel" : "Cancel",
+  "use" : "Use",
+  "field_is_required" : "Field is required"
 }

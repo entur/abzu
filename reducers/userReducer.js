@@ -7,7 +7,8 @@ const initialState = {
     stopType: [],
     topoiChips: [
      // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
-    ]
+   ],
+   text: ''
   },
   snackbarOptions: {
     isOpen: false,
@@ -21,7 +22,9 @@ const initialState = {
   // received data from GET:/topographic_place
   topoiSource: [],
   // source for TopographicalFilter autocomplete
-  topoiSuggestions: []
+  topoiSuggestions: [],
+  favoriteNameDialogIsOpen: false,
+  removedFavorites: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -70,6 +73,32 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, { searchFilters: {
         ...state.searchFilters, topoiChips: chips
       }})
+
+    case types.SET_TOPOS_CHIPS:
+      return Object.assign({}, state, { searchFilters:  {
+          ...state.searchFilters, topoiChips: action.payLoad
+      }})
+
+    case types.SET_STOP_PLACE_TYPES:
+      return Object.assign({}, state, { searchFilters: {
+        ...state.searchFilters, stopType: action.payLoad
+      }})
+
+    case types.SET_SEARCH_TEXT:
+      return Object.assign({}, state, { searchFilters: {
+        ...state.searchFilters, text: action.payLoad
+      }})
+
+    case types.OPENED_FAVORITE_NAME_DIALOG:
+      return Object.assign({}, state, {favoriteNameDialogIsOpen: true})
+
+    case types.CLOSED_FAVORITE_NAME_DIALOG:
+      return Object.assign({}, state, {favoriteNameDialogIsOpen: false})
+
+    case types.REMOVE_SEARCH_AS_FAVORITE:
+      return Object.assign({}, state, {
+        removedFavorites: state.removedFavorites.concat(action.payLoad)
+      })
 
       break;
 

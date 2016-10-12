@@ -26,5 +26,10 @@
   "english" : "Engelsk",
   "norwegian" : "Norsk",
   "snackbar_message_saved" : "Lagret!",
-  "snackbar_message_failed" : "Lagring feilet"
+  "snackbar_message_failed" : "Lagring feilet",
+  "favorites" : "Favoritter",
+  "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
+  "cancel" : "Avbryt",
+  "use" : "Bruk",
+  "field_is_required" : "Feltet er påkrevd"
 }

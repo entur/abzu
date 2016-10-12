@@ -84,7 +84,6 @@ UserActions.getTopographicalPlaces = (input) => {
     let suggestions = state.userReducer.topoiSource
 
     suggestions = suggestions.filter( (suggestion) => {
-
       for (let i = 0; i < chipsAlreadyAdded.length; i++) {
         if (JSON.stringify(chipsAlreadyAdded[i]) === JSON.stringify(suggestion)) {
           return false
@@ -105,29 +104,69 @@ UserActions.addToposChip = (chip) => {
   }
 }
 
+UserActions.setToposchips = (chips) => {
+  return function(dispatch) {
+    dispatch(sendData(types.SET_TOPOS_CHIPS, chips))
+  }
+}
+
+UserActions.setStopPlaceTypes = (stopPlaces) => {
+  return function(dispatch) {
+    dispatch(sendData(types.SET_STOP_PLACE_TYPES, stopPlaces))
+  }
+}
+
 UserActions.deleteChip = (key) => {
   return function(dispatch) {
     dispatch(sendData(types.DELETED_TOPOS_CHIP, key))
   }
 }
 
-UserActions.saveSearchAsFavorite = (searchText) => {
+UserActions.saveSearchAsFavorite = (title) => {
   return function(dispatch, getState) {
     const state = getState()
     const searchFilters =  state.userReducer.searchFilters
     let favoriteManager = new FavoriteManager()
-    let savableContent = favoriteManager.createSavableContent(searchText, searchFilters.stopType, searchFilters.topoiChips)
+    let savableContent = favoriteManager.createSavableContent(title, searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.save(savableContent)
+    dispatch(UserActions.closeFavoriteNameDialog())
   }
 }
 
-UserActions.removeSearchAsFavorite = (searchText) => {
+UserActions.removeSearchAsFavorite = () => {
   return function(dispatch, getState) {
     const state = getState()
     const searchFilters =  state.userReducer.searchFilters
     let favoriteManager = new FavoriteManager()
-    let savableContent = favoriteManager.createSavableContent(searchText, searchFilters.stopType, searchFilters.topoiChips)
+    let savableContent = favoriteManager.createSavableContent('', searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.remove(savableContent)
+    dispatch(sendData(types.REMOVE_SEARCH_AS_FAVORITE, savableContent))
+  }
+}
+
+UserActions.setSearchText = (name) => {
+  return function(dispatch) {
+    dispatch(sendData(types.SET_SEARCH_TEXT, name))
+  }
+}
+
+UserActions.loadFavoriteSearch = (favorite) => {
+  return function(dispatch) {
+    dispatch(UserActions.setToposchips(favorite.topoiChips))
+    dispatch(UserActions.setStopPlaceTypes(favorite.stopType))
+    dispatch(UserActions.setSearchText(favorite.searchText))
+  }
+}
+
+UserActions.openFavoriteNameDialog = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.OPENED_FAVORITE_NAME_DIALOG, null))
+  }
+}
+
+UserActions.closeFavoriteNameDialog = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.CLOSED_FAVORITE_NAME_DIALOG, null))
   }
 }
 

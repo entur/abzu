@@ -12,7 +12,8 @@ const initialState = {
     stopType: [],
     topoiChips: [
      // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
-    ]
+   ],
+   text: ''
   },
   snackbarOptions: {
     isOpen: false,
@@ -26,7 +27,9 @@ const initialState = {
   // received data from GET:/topographic_place
   topoiSource: [],
   // source for TopographicalFilter autocomplete
-  topoiSuggestions: []
+  topoiSuggestions: [],
+  favoriteNameDialogIsOpen: false,
+  removedFavorites: []
 }
 
 describe('user reducer', () => {

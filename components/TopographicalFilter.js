@@ -10,6 +10,7 @@ class TopographicalFilter extends React.Component {
   }
 
   renderChip(data) {
+
     const isCounty = data.type === 'county'
     const typeColor = isCounty ? '#73919b' : '#cde7eb'
     const typeTextColor = isCounty ? '#fff' : "#000"
@@ -35,7 +36,8 @@ class TopographicalFilter extends React.Component {
     const wrapperStyle = {
       display: 'flex',
       flexWrap: 'wrap',
-      margin: 5,
+      marginTop: 20,
+      marginBottom: 10,
       width: '100%'
     }
 

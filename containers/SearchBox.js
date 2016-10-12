@@ -12,6 +12,8 @@ import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
 import SelectField from 'material-ui/SelectField'
 import FilterPopover from '../components/FilterPopover'
+import FavoritePopover from '../components/FavoritePopover'
+import FavoriteNameDialog from '../components/FavoriteNameDialog'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import TopographicalFilter from '../components/TopographicalFilter'
@@ -25,7 +27,6 @@ class SearchBox extends React.Component {
   constructor(props) {
     super(props)
     var favoriteManager = new FavoriteManager()
-    this.handleEnsureFavorited()
     this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
   }
 
@@ -41,6 +42,7 @@ class SearchBox extends React.Component {
 
   handleUpdateInput(input) {
     this.props.dispatch(AjaxActions.getStopNames(input))
+    this.props.dispatch(UserActions.setSearchText(input))
   }
 
   handleTopoInput(input) {
@@ -68,47 +70,31 @@ class SearchBox extends React.Component {
     this.refs.searchText.setState({
       searchText: ''
     })
+    this.props.dispatch(UserActions.setSearchText(''))
   }
 
   handlePopoverDismiss(filters) {
     this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
   }
 
-  handleToggleFavorite(inputField) {
-
-    const { favorited } = this.state
+  handleToggleFavorite(favorited) {
 
     if (!favorited) {
-      this.props.dispatch( UserActions.saveSearchAsFavorite(inputField.state.searchText) )
+      this.props.dispatch(UserActions.openFavoriteNameDialog())
     } else {
-      this.props.dispatch( UserActions.removeSearchAsFavorite(inputField.state.searchText) )
+      this.props.dispatch(UserActions.removeSearchAsFavorite())
     }
-
-    this.setState({
-      favorited: !favorited
-    })
   }
 
-  handleEnsureFavorited() {
-    var favoriteManager = new FavoriteManager()
-    var searchText = (this.refs.searchText ? this.refs.searchText.state.searchText : '')
-    const { stopPlaceFilter, topoiChips } = this.props
-    var favoriteContent = favoriteManager.createSavableContent(searchText, stopPlaceFilter, topoiChips)
-    var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
-    this.state = {
-      favorited: favorited
-    }
-
-    return favorited
+  handleRetrieveFilter(item) {
+    this.props.dispatch(UserActions.loadFavoriteSearch(item))
   }
 
   render() {
 
-    const { activeMarkers, isCreatingNewStop } = this.props
+    const { activeMarkers, isCreatingNewStop, searchText, favorited } = this.props
     const { stopPlaceFilter, topographicalSource, topoiChips } = this.props
     const { formatMessage, locale } = this.props.intl
-
-    let favorited = this.handleEnsureFavorited()
 
     let dataSource = this.props.dataSource || []
     let selectedMarker = (activeMarkers && activeMarkers.length)
@@ -125,24 +111,25 @@ class SearchBox extends React.Component {
     }
 
     const searchBoxWrapperStyle = {
-      top: "90px",
+      top: 90,
       background: "white",
       height: "auto",
-      width: "410px",
-      margin: "10px",
+      width: 410,
+      margin: 10,
       position: "absolute",
-      zIndex: "2",
-      padding: "10px",
+      zIndex: 2,
+      padding: 10,
       border: "1px solid rgb(81, 30, 18)"
     }
 
     let starIconStyle = {
       stroke: '#191919',
-      marginTop: 10,
+      marginTop: 50,
+      marginRight: 15,
       height: 32,
       width: 32,
       cursor: 'pointer',
-      fill: '#f4bc42',
+      fill: '#ffb504',
       float:'right'
     }
 
@@ -167,6 +154,13 @@ class SearchBox extends React.Component {
       <div style={searchBoxWrapperStyle}>
         <div key='search-name-wrapper'>
           <div style={{float: "left", width: "85%"}}>
+            <FavoritePopover
+              caption={formatMessage({id: "favorites"})}
+              items={[]}
+              filter={stopPlaceFilter}
+              onItemClick={this.handleRetrieveFilter.bind(this)}
+              onDismiss={this.handlePopoverDismiss.bind(this)}
+              />
             <AutoComplete
              openOnFocus={true}
              hintText={formatMessage({id: "filter_by_name"})}
@@ -174,23 +168,24 @@ class SearchBox extends React.Component {
              filter={AutoComplete.caseInsensitiveFilter}
              onUpdateInput={this.handleUpdateInput.bind(this)}
              maxSearchResults={5}
+             searchText={searchText}
              ref="searchText"
              onNewRequest={this.handleNewRequest.bind(this)}
              fullWidth={true}
             />
           </div>
-          <div style={{float: "right", width: "10%"}}>
+          <div style={{float: "right", marginTop: 35}}>
             <IconButton onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
               clear
             </IconButton>
           </div>
+          <StarIcon
+            onClick={() => { this.handleToggleFavorite(!!favorited) }}
+            style={starIconStyle}
+            />
         </div>
-        <StarIcon
-          onClick={() => { this.handleToggleFavorite(this.refs.searchText) }}
-          style={starIconStyle}
-          />
-        <div key='filter-wrapper' style={{marginTop: 60, width: '100%'}}>
-          <span style={{fontWeight: 600}}>Filter:</span>
+        <div key='filter-wrapper' style={{marginTop: 120, width: '100%'}}>
+          <FavoriteNameDialog/>
           <FilterPopover
             caption={formatMessage({id: "type"})}
             items={stopTypes[locale]}
@@ -204,6 +199,7 @@ class SearchBox extends React.Component {
                dataSourceConfig={topoiSourceConfig}
                filter={AutoComplete.caseInsensitiveFilter}
                onUpdateInput={this.handleTopoInput.bind(this)}
+               style={{marginBottom: 20}}
                maxSearchResults={5}
                ref="topoFilter"
                onNewRequest={this.handleAddChip.bind(this)}
@@ -233,13 +229,21 @@ class SearchBox extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+
+  var favoriteManager = new FavoriteManager()
+  const { stopType, topoiChips, text } = state.userReducer.searchFilters
+  var favoriteContent = favoriteManager.createSavableContent('', text, stopType, topoiChips)
+  var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
+
   return {
     activeMarkers: state.stopPlacesReducer.activeMarkers,
     dataSource: state.stopPlacesReducer.stopPlaceNames.places,
     isCreatingNewStop: state.userReducer.isCreatingNewStop,
     stopPlaceFilter: state.userReducer.searchFilters.stopType,
     topographicalSource: state.userReducer.topoiSuggestions,
-    topoiChips: state.userReducer.searchFilters.topoiChips
+    topoiChips: state.userReducer.searchFilters.topoiChips,
+    searchText: state.userReducer.searchFilters.text,
+    favorited: favorited
   }
 }
 

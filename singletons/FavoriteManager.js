@@ -24,7 +24,9 @@ class FavoriteManager {
     let favorites = this.getFavorites()
 
     for (let i = 0; i < favorites.length; i++) {
-      if (JSON.stringify(favorites[i]) === JSON.stringify(savableContent)) {
+
+      if (JSON.stringify(this.createComparable(favorites[i]))
+          === JSON.stringify(this.createComparable(savableContent))) {
         return true
       }
     }
@@ -32,11 +34,20 @@ class FavoriteManager {
     return false
   }
 
-  createSavableContent(searchText, stopType, topoiChips) {
+  createSavableContent(title, searchText, stopType, topoiChips) {
     return {
       stopType: stopType,
       topoiChips: topoiChips,
-      searchText: searchText
+      searchText: searchText,
+      title: title
+    }
+  }
+
+  createComparable(content) {
+    return {
+      searchText: content.searchText,
+      stopType: content.stopType,
+      topoiChips: content.topoiChips
     }
   }
 
@@ -44,7 +55,11 @@ class FavoriteManager {
     let favorites = this.getFavorites()
 
     for (let i = 0; i < favorites.length; i++) {
-      if (JSON.stringify(favorites[i]) === JSON.stringify(content)) {
+      let favoriteContent = this.createComparable(favorites[i])
+      let contentToRemove = this.createComparable(content)
+
+      if (JSON.stringify(favoriteContent)
+        === JSON.stringify(contentToRemove)) {
         favorites.splice(i,1)
       }
     }
@@ -82,10 +97,7 @@ class FavoriteManager {
       localStorage.removeItem(key)
       return []
     }
-
   }
-
 }
-
 
 export default FavoriteManager
