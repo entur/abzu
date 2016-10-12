@@ -24,7 +24,7 @@ class NewStopMarker extends React.Component {
       <Marker
         ref="newstop-marker" 
         key={"newstop-key" }
-        onDragend={(e) => { handleDragEnd(e).bind(this) }}
+        onDragend={(e) => { handleDragEnd(e) }}
         draggable={true}
         position={position}
         >

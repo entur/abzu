@@ -36,6 +36,7 @@ class StopPlacesMap extends React.Component {
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd}
         handleMapMoveEnd={this.handleMapMoveEnd}
+        dragableMarkers={false}
         />
     )
   }

@@ -23,7 +23,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers } = this.props
     const { formatMessage } = this.props.intl
 
     let popupMarkers = []
@@ -66,6 +66,7 @@ class MarkerList extends React.Component {
             position={markerProps.position}
             children={text}
             handleDragEnd={handleDragEnd}
+            draggable={dragableMarkers}
             changeCoordinates={changeCoordinates}
             text={CustomPopupMarkerText}
             handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
@@ -88,6 +89,7 @@ class MarkerList extends React.Component {
                   children={quay.name}
                   handleDragEnd={handleDragEnd}
                   changeCoordinates={changeCoordinates}
+                  draggable={dragableMarkers}
                   text={newStopMarkerText}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)

@@ -12,7 +12,7 @@ class CustomPopupMarker extends React.Component {
   render() {
 
     let { children, position, handleOnClick,
-          handleDragEnd, isQuay, markerIndex,
+          handleDragEnd, isQuay, markerIndex, draggable,
           stopIndex, changeCoordinates, text  } = this.props
 
     if (!children && !children.length) {
@@ -29,6 +29,10 @@ class CustomPopupMarker extends React.Component {
       marginTop: 5
     }
 
+    const iconSize = isQuay ? [22, 33] : [30, 45]
+    const iconAnchor = isQuay ? [11, 28] : [17, 42]
+    const shadowAnchor = isQuay ? [11, 8] : [10, 12]
+
     const editCoordsStyle = {
       display: 'block',
       borderBottom: '1px dotted black',
@@ -39,10 +43,10 @@ class CustomPopupMarker extends React.Component {
       options: {
           iconUrl: stopIcon,
           shadowUrl: markerShadow,
-          iconSize: [ 30, 45 ],
-          iconAnchor: [ 17, 42 ],
+          iconSize: iconSize,
+          iconAnchor: iconAnchor,
           popupAnchor: [ 1, -32 ],
-          shadowAnchor: [ 10, 12 ],
+          shadowAnchor: shadowAnchor,
           shadowSize: [ 36, 16 ]
       }
     })
@@ -58,7 +62,7 @@ class CustomPopupMarker extends React.Component {
         ref="marker"
         key={"marker-key" + markerIndex }
         onDragend={() => { handleDragEnd(stopIndex, markerIndex, this.refs.marker) }}
-        draggable={true}
+        draggable={draggable}
         position={position}
         icon={icon}
         >

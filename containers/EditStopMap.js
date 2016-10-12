@@ -59,6 +59,7 @@ class EditStopMap extends React.Component {
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
+        dragableMarkers={true}
         />
     )
   }
