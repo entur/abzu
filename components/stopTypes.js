@@ -4,7 +4,7 @@ const stopTypes = {
         name: "Busstopp",
         value: "onstreetBus"
       }, {
-        name: "Bytrikker",
+        name: "Trikkestop",
         value: "onstreetTram"
       }, {
         name: "Flyplass",
@@ -16,16 +16,16 @@ const stopTypes = {
         name: "T-banestopp",
         value: "metroStation"
       }, {
-        name: "Alle typer buss",
+        name: "Bussterminal",
         value: "busStation"
       }, {
-        name: "Havn",
+        name: "Bilferjekai",
         value: "harbourPort"
       }, {
-        name: "Fergekai",
+        name: "Passasjerbåtkai",
         value: "ferryStop"
       }, {
-        name: "Kabelbane",
+        name: "Kabelbanestopp",
         value: "liftStation"
       },
         {
@@ -51,7 +51,7 @@ const stopTypes = {
         name: "Metro stop",
         value: "metroStation"
       }, {
-        name: "Alle bus stops",
+        name: "Bus terminal",
         value: "busStation"
       }, {
         name: "Harbour port",
