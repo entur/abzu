@@ -32,5 +32,7 @@
   "cancel" : "Avbryt",
   "use" : "Bruk",
   "field_is_required" : "Feltet er påkrevd",
-  "no_favorites_found" : "Du har foreløpig ingen favorittsøk. Trykk på stjernen for å lagre ditt søk."
+  "no_favorites_found" : "Du har foreløpig ingen favorittsøk. Trykk på stjernen for å lagre ditt søk.",
+  "new_stop" : "Ny holdeplass",
+  "new_quay" : "Ny quay"
 }

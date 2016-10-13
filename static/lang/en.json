@@ -32,5 +32,7 @@
   "cancel" : "Cancel",
   "use" : "Use",
   "field_is_required" : "Field is required",
-  "no_favorites_found" : "You have currenly no favorite searches. Click the star to save your search."
+  "no_favorites_found" : "You have currenly no favorite searches. Click the star to save your search.",
+  "new_stop" : "New stop",
+  "new_quay" : "New quay"
 }

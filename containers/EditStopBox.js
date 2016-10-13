@@ -196,12 +196,15 @@ class EditStopBox extends React.Component {
           }
         </div>
         { quaysExpanded
-          ? <FloatingActionButton
+          ?
+            <RaisedButton
               onClick={this.handleAddQuay.bind(this)}
               style={addQuayStyle}
-              mini={true}>
-              <ContentAdd />
-            </FloatingActionButton>
+              mini={true}
+              icon={<ContentAdd/>}
+              secondary={true}
+              label={formatMessage({id: 'new_quay'})}
+            />
           : null }
         <div style={scrollable}>
           { quaysExpanded

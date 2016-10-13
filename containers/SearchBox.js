@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
@@ -215,12 +215,14 @@ class SearchBox extends React.Component {
             { isCreatingNewStop
             ? <NewStopPlace text={newStopText}/>
             :
-            <FloatingActionButton
+            <RaisedButton
               onClick={this.handleNewStop.bind(this)}
               style={{float: "right"}}
-              mini={true}>
-              <ContentAdd />
-            </FloatingActionButton>
+              icon={<ContentAdd/>}
+              primary={true}
+              label={formatMessage({id: 'new_stop'})}
+              mini={true}
+            />
             }
           </div>
         </div>
