@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
 import FavoriteManager from '../singletons/FavoriteManager'
+import StarIcon from 'material-ui/svg-icons/toggle/star'
 
 class FilterPopover extends React.Component {
 
@@ -32,7 +33,7 @@ class FilterPopover extends React.Component {
 
     render() {
 
-      const { items, filter, caption, onItemClick, noFavoritesFoundText } = this.props
+      const { items, filter, caption, onItemClick, text } = this.props
 
       let favorites = new FavoriteManager().getFavorites()
 
@@ -49,17 +50,22 @@ class FilterPopover extends React.Component {
         <div>
           <RaisedButton
             onTouchTap={this.handleTouchTap.bind(this)}
+            icon={<StarIcon/>}
             label={caption}
             style={buttonStyle}
             />
           <Popover
-           open={this.state.open}
-           anchorEl={this.state.anchorEl}
-           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-           targetOrigin={{horizontal: 'left', vertical: 'top'}}
-           onRequestClose={ () => this.handleRequestClose(this.refs)}
-           style={popoverstyle}
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={ () => this.handleRequestClose(this.refs)}
+            style={popoverstyle}
            >
+
+           <div style={{fontWeight: 600, minWidth: 300, width: 'auto',fontSize: '1.2em', padding: 15}}>
+             {text.title}
+          </div>
 
            { favorites.length
 
@@ -78,9 +84,9 @@ class FilterPopover extends React.Component {
                 )
              })
              : <div
-                style={{padding: 15, margin: 'auto', lineHeight: 1.5, fontWeight: 600, width: 300}}
+                style={{padding: 15, margin: 'auto', lineHeight: 1.5, width: 300}}
                 >
-                {noFavoritesFoundText}
+                {text.noFavoritesFoundText}
               </div>
          }
             </Popover>

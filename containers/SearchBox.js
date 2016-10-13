@@ -19,6 +19,7 @@ import { injectIntl } from 'react-intl'
 import TopographicalFilter from '../components/TopographicalFilter'
 import MenuItem from 'material-ui/MenuItem'
 import ModalityIcon from '../components/ModalityIcon'
+import SearchIcon from 'material-ui/svg-icons/action/search'
 import StarIcon from 'material-ui/svg-icons/toggle/star'
 import FavoriteManager from '../singletons/FavoriteManager'
 
@@ -114,7 +115,7 @@ class SearchBox extends React.Component {
       top: 90,
       background: "white",
       height: "auto",
-      width: 410,
+      width: 460,
       margin: 10,
       position: "absolute",
       zIndex: 2,
@@ -133,6 +134,10 @@ class SearchBox extends React.Component {
       float:'right'
     }
 
+    let newStopStyle = {
+      borderTop: '1px solid #191919'
+    }
+
     if (!favorited) starIconStyle.fill = '#fff'
 
     const topoiSourceConfig = {
@@ -140,90 +145,115 @@ class SearchBox extends React.Component {
       value: 'ref',
     }
 
-    dataSource.map( (r) => {
+    let dataSourceContent = []
+
+    dataSource.forEach( (r) => {
       r.value = (
         <MenuItem
+          style={{marginTop:5, marginLeft: -10}}
           primaryText={r.text}
-          secondaryText={(<ModalityIcon type={r.markerProps.stopPlaceType}/>)}
+          secondaryText={(<ModalityIcon
+            type={r.markerProps.stopPlaceType}
+            />
+        )}
        />
       )
-      return r
+      dataSourceContent.push(r)
     })
 
+    let dataSourceWrapper = () => {
+      return (
+        <div>
+          <p>Dine søk</p>
+        </div>
+      )
+    }
+
+    let favoriteText = {
+      title: formatMessage({id: 'favorites_title'}),
+      noFavoritesFoundText: formatMessage({id: 'no_favorites_found'})
+    }
+
     return (
-      <div style={searchBoxWrapperStyle}>
-        <div key='search-name-wrapper'>
-          <div style={{float: "left", width: "85%"}}>
-            <FavoritePopover
-              caption={formatMessage({id: "favorites"})}
-              items={[]}
-              filter={stopPlaceFilter}
-              onItemClick={this.handleRetrieveFilter.bind(this)}
-              onDismiss={this.handlePopoverDismiss.bind(this)}
-              noFavoritesFoundText={formatMessage({id: 'no_favorites_found'})}
-              />
-            <AutoComplete
-             openOnFocus={true}
-             hintText={formatMessage({id: "filter_by_name"})}
-             dataSource={dataSource}
-             filter={AutoComplete.caseInsensitiveFilter}
-             onUpdateInput={this.handleUpdateInput.bind(this)}
-             maxSearchResults={5}
-             searchText={searchText}
-             ref="searchText"
-             onNewRequest={this.handleNewRequest.bind(this)}
-             fullWidth={true}
-            />
-          </div>
-          <div style={{float: "right", marginTop: 35}}>
-            <IconButton onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
-              clear
-            </IconButton>
-          </div>
-          <StarIcon
-            onClick={() => { this.handleToggleFavorite(!!favorited) }}
-            style={starIconStyle}
-            />
-        </div>
-        <div key='filter-wrapper' style={{marginTop: 120, width: '100%'}}>
-          <FavoriteNameDialog/>
-          <FilterPopover
-            caption={formatMessage({id: "type"})}
-            items={stopTypes[locale]}
-            filter={stopPlaceFilter}
-            onDismiss={this.handlePopoverDismiss.bind(this)}
-            />
-            <TopographicalFilter/>
+      <div>
+        <div style={searchBoxWrapperStyle}>
+          <div key='search-name-wrapper'>
+            <div style={{float: "left", width: "88%"}}>
+              <FavoritePopover
+                caption={formatMessage({id: "favorites"})}
+                items={[]}
+                filter={stopPlaceFilter}
+                onItemClick={this.handleRetrieveFilter.bind(this)}
+                onDismiss={this.handlePopoverDismiss.bind(this)}
+                text={favoriteText}
+                />
+            <div>
+              <SearchIcon style={{verticalAlign: 'middle', marginRight: 5}}/>
               <AutoComplete
-               hintText={formatMessage({id: "filter_by_topography"})}
-               dataSource={topographicalSource}
-               dataSourceConfig={topoiSourceConfig}
-               filter={AutoComplete.caseInsensitiveFilter}
-               onUpdateInput={this.handleTopoInput.bind(this)}
-               style={{marginBottom: 20}}
-               maxSearchResults={5}
-               ref="topoFilter"
-               onNewRequest={this.handleAddChip.bind(this)}
+                 textFieldStyle={{width: 380}}
+                 openOnFocus={true}
+                 hintText={formatMessage({id: "filter_by_name"})}
+                 dataSource={dataSourceContent}
+                 filter={AutoComplete.caseInsensitiveFilter}
+                 onUpdateInput={this.handleUpdateInput.bind(this)}
+                 maxSearchResults={5}
+                 searchText={searchText}
+                 ref="searchText"
+                 onNewRequest={this.handleNewRequest.bind(this)}
+                 listStyle={{width: 380}}
+                />
+            </div>
+            </div>
+            <div style={{float: "right", marginTop: 41}}>
+              <IconButton style={{verticalAlign: 'middle'}} onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
+                clear
+              </IconButton>
+            </div>
+            <StarIcon
+              onClick={() => { this.handleToggleFavorite(!!favorited) }}
+              style={starIconStyle}
               />
-        </div>
-        <div key='searchbox-edit'>
-          {selectedMarker
-            ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
-            :  <SearchBoxDetails hidden/>
-          }
-          <div style={{marginTop: "30px"}}>
-            { isCreatingNewStop
-            ? <NewStopPlace text={newStopText}/>
-            :
-            <RaisedButton
-              onClick={this.handleNewStop.bind(this)}
-              style={{float: "right"}}
-              icon={<ContentAdd/>}
-              primary={true}
-              label={formatMessage({id: 'new_stop'})}
-              mini={true}
-            />
+          </div>
+          <div key='filter-wrapper' style={{marginTop: 120, width: '100%'}}>
+            <FavoriteNameDialog/>
+            <FilterPopover
+              caption={formatMessage({id: "type"})}
+              items={stopTypes[locale]}
+              filter={stopPlaceFilter}
+              onDismiss={this.handlePopoverDismiss.bind(this)}
+              />
+              <TopographicalFilter/>
+                <AutoComplete
+                 hintText={formatMessage({id: "filter_by_topography"})}
+                 dataSource={topographicalSource}
+                 dataSourceConfig={topoiSourceConfig}
+                 filter={AutoComplete.caseInsensitiveFilter}
+                 onUpdateInput={this.handleTopoInput.bind(this)}
+                 style={{marginBottom: 20}}
+                 maxSearchResults={5}
+                 ref="topoFilter"
+                 onNewRequest={this.handleAddChip.bind(this)}
+                />
+          </div>
+          <div key='searchbox-edit' style={newStopStyle}>
+            {selectedMarker
+              ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
+              :  <SearchBoxDetails hidden/>
             }
+            <div style={{marginTop: "30px"}}>
+              { isCreatingNewStop
+              ? <NewStopPlace text={newStopText}/>
+              :
+              <RaisedButton
+                onClick={this.handleNewStop.bind(this)}
+                style={{float: "right"}}
+                icon={<ContentAdd/>}
+                primary={true}
+                label={formatMessage({id: 'new_stop'})}
+                mini={true}
+              />
+              }
+            </div>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ class NewStopPlace extends React.Component {
     const { headerText, bodyText } = this.props.text
 
     return (
-      <div style={{background: "#f5fefa", border: "1px dotted black", padding: "5px"}}>
+      <div style={{background: "#f5feeb", border: "1px dotted #191919", padding: "5px"}}>
         <IconButton
           style={{float: "right"}}
           onClick={this.handleOnClick.bind(this)}
@@ -23,7 +23,7 @@ class NewStopPlace extends React.Component {
           remove
         </IconButton>
         <h3>{headerText}</h3>
-        <span style={{fontSize: ".8em"}}>
+        <span style={{fontSize: ".9em"}}>
           {bodyText}
         </span>
       </div>
