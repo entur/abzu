@@ -7,10 +7,9 @@ import QuayItem from '../components/QuayItem'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import RaisedButton from 'material-ui/RaisedButton'
-import { MapActions,  AjaxActions } from '../actions/'
+import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
-import quayTypes from '../components/quayTypes'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
@@ -27,13 +26,11 @@ class EditStopBox extends React.Component {
   }
 
   handleAddQuay() {
-    const { dispatch } = this.props
-    dispatch(MapActions.addNewQuay())
+    this.props.dispatch(MapActions.addNewQuay())
   }
 
   handleRemoveQuay(index) {
-    const { dispatch } = this.props
-    dispatch(MapActions.removeQuay(index))
+    this.props.dispatch(MapActions.removeQuay(index))
   }
 
   handleSave() {
@@ -47,18 +44,15 @@ class EditStopBox extends React.Component {
   }
 
   handleStopNameChange(event) {
-    const { dispatch } = this.props
-    dispatch(MapActions.changeStopName(event.target.value))
+    this.props.dispatch(MapActions.changeStopName(event.target.value))
   }
 
   handleStopDescriptionChange(event) {
-    const { dispatch } = this.props
-    dispatch(MapActions.changeStopDescription(event.target.value))
+    this.props.dispatch(MapActions.changeStopDescription(event.target.value))
   }
 
   handleStopTypeChange(event, index, value) {
-    const { dispatch } = this.props
-    dispatch(MapActions.changeStopType(value))
+    this.props.dispatch(MapActions.changeStopType(value))
   }
 
   toggleQuayExpanded() {
@@ -68,9 +62,17 @@ class EditStopBox extends React.Component {
     })
   }
 
+  handleGoBack() {
+    this.props.dispatch(UserActions.navigateTo('/', ''))
+  }
+
+  handleDiscardChanges() {
+    this.props.dispatch(MapActions.discardChangesForEditingStop())
+  }
+
   render() {
 
-    const { activeStopPlace, activeMarkers, dispatch } = this.props
+    const { activeStopPlace, activeMarkers, dispatch, hasContentChanged } = this.props
     const { quaysExpanded } = this.state
     const { formatMessage, locale } = this.props.intl
 
@@ -115,7 +117,7 @@ class EditStopBox extends React.Component {
       top: 80,
       border: "1px solid #511E12",
       background: "white",
-      width: 380,
+      width: 460,
       margin: 20,
       position: "absolute",
       zIndex: 2,
@@ -150,7 +152,7 @@ class EditStopBox extends React.Component {
       background: '#191919',
       width: '100%',
       textAlign: 'left',
-      fontWeight: '0.8em'
+      fontWeight: '0.9em'
     }
 
     return (
@@ -202,7 +204,6 @@ class EditStopBox extends React.Component {
               style={addQuayStyle}
               mini={true}
               icon={<ContentAdd/>}
-              secondary={true}
               label={formatMessage({id: 'new_quay'})}
             />
           : null }
@@ -213,8 +214,8 @@ class EditStopBox extends React.Component {
                 <QuayItem
                   key={"quay-" + index}
                   quay={quay}
+                  ref={'quay-' + index}
                   index={index}
-                  quayTypes={quayTypes[locale]}
                   removeQuay={() => this.handleRemoveQuay(index)}
                   />
               )}
@@ -222,11 +223,25 @@ class EditStopBox extends React.Component {
             : null
           }
         </div>
-        <div style={{border: "1px solid #efeeef"}}>
+        <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
+          { hasContentChanged
+            ? <RaisedButton
+                secondary={true}
+                label={formatMessage({id: 'undo_changes'})}
+                style={{margin: '15 5', zIndex: 999}}
+                onClick={this.handleDiscardChanges.bind(this)}
+                />
+            : <RaisedButton
+                secondary={true}
+                label={formatMessage({id: 'go_back'})}
+                style={{margin: '15 5', zIndex: 999}}
+                onClick={this.handleGoBack.bind(this)}
+                />
+          }
           <RaisedButton
             primary={true}
             label={formatMessage({id: 'save'})}
-            style={{float:"right", marginTop: 10, zIndex: 999}}
+            style={{margin: '15 5', zIndex: 999}}
             onClick={this.handleSave.bind(this)}
             />
         </div>
@@ -237,7 +252,8 @@ class EditStopBox extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     activeStopPlace: state.editStopReducer.activeStopPlace,
-    isLoading: state.editStopReducer.activeStopIsLoading
+    isLoading: state.editStopReducer.activeStopIsLoading,
+    hasContentChanged: state.editStopReducer.editedStopChanged
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

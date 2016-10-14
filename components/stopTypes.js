@@ -27,10 +27,6 @@ const stopTypes = {
       }, {
         name: "Kabelbanestopp",
         value: "liftStation"
-      },
-        {
-        name: "Annet",
-        value: "other"
       }
     ],
 
@@ -62,10 +58,6 @@ const stopTypes = {
       }, {
         name: "Lift station",
         value: "liftStation"
-      },
-        {
-        name: "Other",
-        value: "other"
       }
     ]
   }

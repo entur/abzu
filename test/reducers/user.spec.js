@@ -32,6 +32,7 @@ const initialState = {
   removedFavorites: []
 }
 
+
 describe('user reducer', () => {
 
   it('Should return the initial state', () => {

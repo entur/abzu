@@ -8,8 +8,10 @@ import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 import Divider from 'material-ui/Divider'
-// TODO : refactor import to only import specific icon 
-import { NavigationExpandMore, MapsMyLocation, NavigationExpandLess } from 'material-ui/svg-icons/'
+import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
+import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
+
 
 class QuayItem extends React.Component {
 
@@ -26,12 +28,6 @@ class QuayItem extends React.Component {
   handleNameChange = (event) => {
     const {dispatch, index} = this.props
     dispatch(MapActions.changeQuayName(index, event.target.value))
-  }
-
-  handleTypeChange = (event, index, value) => {
-    const {dispatch} = this.props
-    const quayIndex = this.props.index
-    dispatch(MapActions.changeQuayType(quayIndex, value))
   }
 
   handleDescriptionChange = (event) => {
@@ -55,22 +51,20 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, index, quayTypes } = this.props
+    const { quay, index } = this.props
     const { hidden } = this.state
-
-    quay.quayType = quay.quayType || 'other'
 
     const style = {
       color: "#2196F3",
       cursor: "pointer",
-      marginTop: "30px",
+      marginTop: 30,
       display: "block",
       marginBottom: 50
     }
 
     const removeStyle = {
-      right: 0,
-      float: "right",
+      width: '100%',
+      textAlign: 'right',
       paddingBottom: 20
     }
 
@@ -116,21 +110,6 @@ class QuayItem extends React.Component {
             style={{width: "95%"}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
-          <SelectField value={quay.quayType}
-            autoWidth={true}
-            onChange={this.handleTypeChange}
-            floatingLabelText="Type"
-            floatingLabelFixed={true}
-            style={{width: "95%"}}
-            >
-            { quayTypes.map( (type, index) =>
-                <MenuItem
-                  key={'quayType' + index}
-                  value={type.value}
-                  primaryText={type.name}
-                  />
-            ) }
-          </SelectField>
           <Checkbox
             defaultChecked={quay.allAreasWheelchairAccessible}
             label="All areas are wheelchair accessible"

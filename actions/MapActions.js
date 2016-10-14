@@ -63,15 +63,6 @@ MapActions.changeQuayName = (index, name) => {
   }
 }
 
-MapActions.changeQuayType = (index, type) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_TYPE, {
-      index: index,
-      type: type
-    }))
-  }
-}
-
 MapActions.changeMarkerPosition = (stopIndex, markerIndex, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
@@ -103,7 +94,13 @@ MapActions.changeWHA = (index, value) => {
 MapActions.createNewStop = (coordinates) => {
   return function(dispatch) {
     let stop = createNewStopTemplate(coordinates)
-    dispatch (sendData (types.CREATE_NEW_STOP, stop) )
+    dispatch(sendData (types.CREATE_NEW_STOP, stop))
+  }
+}
+
+MapActions.discardChangesForEditingStop = () => {
+  return function(dispatch) {
+    dispatch(sendData (types.RESTORED_TO_ORIGINAL_STOP_PLACE, null))
   }
 }
 

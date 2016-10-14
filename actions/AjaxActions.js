@@ -86,38 +86,43 @@ const sendData = (type, payLoad) => {
 
 export const formatMarkers = (data) => {
 
-  const suggestions = data.map ( (stop, index) => {
+  try {
 
-    const suggestion = {
-      text: '<<>>',
-      value: stop.id,
-      markerProps: {
-        key: `marker${index}`,
-        name: stop.name || '',
-        id: stop.id,
-        position: [stop.centroid.location.latitude, stop.centroid.location.longitude],
-        children: stop.name,
-        description: stop.description || '',
-        municipality: stop.municipality,
-        county: stop.county,
-        quays: stop.quays,
-        stopPlaceType: stop.stopPlaceType
+    return data.map ( (stop, index) => {
+
+      let suggestion = {
+        text: '<<>>',
+        value: stop.id,
+        markerProps: {
+          key: `marker${index}`,
+          name: stop.name || '',
+          id: stop.id,
+          position: [stop.centroid.location.latitude, stop.centroid.location.longitude],
+          children: stop.name,
+          description: stop.description || '',
+          municipality: stop.municipality,
+          county: stop.county,
+          quays: stop.quays,
+          stopPlaceType: stop.stopPlaceType
+        }
       }
-    }
 
-    if (stop.name) {
-      suggestion.text = stop.name
-    }
+      if (stop.name) {
+        suggestion.text = stop.name
+      }
 
-    if (stop.municipality && stop.county) {
-      suggestion.text += `, ${stop.municipality} (${stop.county})`
-    }
+      if (stop.municipality && stop.county) {
+        suggestion.text += `, ${stop.municipality} (${stop.county})`
+      }
 
-    return suggestion
+      return suggestion
 
-  })
+    })
 
-  return suggestions
+  } catch (e) {
+    console.error('error formating markers', e)
+    return []
+  }
 }
 
  AjaxActions.getStop = (stopId) => {
@@ -131,8 +136,7 @@ export const formatMarkers = (data) => {
 
       return axios.get(URL)
       .then(function(response) {
-        const stops = formatMarkers([response.data])
-        dispatch( sendData(types.RECEIVED_STOP, stops) )
+        dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])))
         dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
         dispatch( sendData(types.SET_ZOOM, 15) )
       })
@@ -181,6 +185,7 @@ export const prepareStopForSaving = (stop) => {
   if (stop.markerProps.quays) {
     stop.markerProps.quays.forEach ( (quay) => {
       delete quay.new
+      quay.type = ''
       savableStop.quays.push(quay)
     })
   }

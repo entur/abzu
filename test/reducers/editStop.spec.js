@@ -12,7 +12,9 @@ const initialState = {
   },
   activeMarkers: [],
   zoom: 17,
-  activeStopIsLoading: false
+  activeStopIsLoading: false,
+  editedStopChanged: false,
+  activeStopPlaceOriginal: []
 }
 
 describe('edit stop reducer', () => {
