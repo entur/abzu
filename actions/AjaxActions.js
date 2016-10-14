@@ -22,7 +22,7 @@ const sendData = (type, payLoad) => {
     let queryParams = ''
 
     if (name.length) {
-      queryParams += '?name=' + name
+      queryParams += 'q=' + name
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
@@ -50,7 +50,7 @@ const sendData = (type, payLoad) => {
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
 
-    return axios.get(URL+queryParams)
+    return axios.get(URL + '?' + queryParams)
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
       dispatch( sendData(types.RECEIVED_STOP_NAMES, suggestions) )
