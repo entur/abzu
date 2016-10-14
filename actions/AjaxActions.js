@@ -22,7 +22,7 @@ const sendData = (type, payLoad) => {
     let queryParams = ''
 
     if (name.length) {
-      queryParams += 'q=' + name
+      queryParams += 'name=' + name
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
@@ -70,11 +70,8 @@ const sendData = (type, payLoad) => {
 
     let payLoad = {
       boundingBox: boundingBox,
-      ignoreStopPlaceId: ignoreStopPlaceId
+      ignoreStopPlaceId: ignoreStopPlaceId || 0
     }
-
-    if (typeof ignoreStopPlaceId === 'undefined')
-      delete payLoad.ignoreStopPlaceId
 
     return axios.post(URL, payLoad)
     .then(function(response) {
