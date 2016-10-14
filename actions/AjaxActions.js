@@ -22,7 +22,7 @@ const sendData = (type, payLoad) => {
     let queryParams = ''
 
     if (name.length) {
-      queryParams += 'name=' + name
+      queryParams += 'q=' + name
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
