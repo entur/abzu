@@ -29,7 +29,8 @@ const initialState = {
   // source for TopographicalFilter autocomplete
   topoiSuggestions: [],
   favoriteNameDialogIsOpen: false,
-  removedFavorites: []
+  removedFavorites: [],
+  activeBaselayer: 'Rutebankens kart'
 }
 
 
@@ -131,7 +132,7 @@ describe('user reducer', () => {
       })
   })
 
-  it('Should get topographical places', () => {
+  it('Should set topographical places', () => {
 
     let topographicalPlaces = require('./json/topographicalPlaces.json')
 
@@ -142,7 +143,18 @@ describe('user reducer', () => {
       .toEqual({
         ...initialState, topoiSuggestions: topographicalPlaces
       })
+  })
 
+  it('Should set active baselayer for maps', () => {
+    let newBaselayer = 'OpenStreetMap'
+
+    expect(userReducer(undefined, {
+      type: types.CHANGED_ACTIVE_BASELAYER,
+      payLoad: newBaselayer
+    }))
+      .toEqual({
+        ...initialState, activeBaselayer: newBaselayer
+      })
   })
 
 })

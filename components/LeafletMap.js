@@ -2,10 +2,22 @@ import React from 'react'
 import MarkerList from './MarkerList'
 import MarkerCluster from './MarkerCluster'
 import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
+import { GoogleLayer } from './google-maps/'
 
 export default class LeafLetMap extends React.Component {
 
+  getCheckedBaseLayerByValue(value) {
+    return this.props.activeBaselayer === value
+  }
+
+  handleBaselayerChanged(element) {
+    this.props.handleBaselayerChanged(element.name)
+  }
+
   render() {
+
+    // NB: this key is owned by rutebanken.official
+    const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLes'
 
     const { position, zoom, handleDragEnd, handleChangeCoordinates } = this.props
     const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
@@ -32,19 +44,23 @@ export default class LeafLetMap extends React.Component {
         length={4}
         onDblclick={ e => onDoubleClick && onDoubleClick(e, this.refs.map) }
         onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
-      >
+        OnBaselayerChange={this.handleBaselayerChanged.bind(this)}
+        >
         <LayersControl position='topright'>
-          <BaseLayer checked name='Rutebankens kart'>
+          <BaseLayer checked={this.getCheckedBaseLayerByValue('Rutebankens kart')} name='Rutebankens kart'>
             <TileLayer
               attribution='&copy; <a href="http://test.rutebanken.org">Rutebankens kart'
               url='https://test.rutebanken.org/apiman-gateway/rutebanken/map/1.0/{z}/{x}/{y}.png'
             />
           </BaseLayer>
-          <BaseLayer name='OpenStreetMap'>
+          <BaseLayer checked={this.getCheckedBaseLayerByValue('OpenStreetMap')} name='OpenStreetMap'>
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
+          </BaseLayer>
+          <BaseLayer checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')} name='Google Maps Hydrid'>
+            <GoogleLayer googlekey={googleApiKey} type='HYBRID'/>
           </BaseLayer>
         </LayersControl>
         <ZoomControl position='bottomright' />

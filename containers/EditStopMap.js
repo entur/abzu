@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import MarkerList from '../components/MarkerList'
 import leafletConfig from '../config/leafletConfig'
 import LeafletMap from '../components/LeafletMap'
-import { MapActions,  AjaxActions } from '../actions/'
+import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 
 class EditStopMap extends React.Component {
@@ -29,7 +29,11 @@ class EditStopMap extends React.Component {
       yMax: bounds.getNorthEast().lat
     }
 
-    this.props.dispatch(  AjaxActions.getStopsNearby(boundingBox, ignoreStopPlaceId) )
+    this.props.dispatch(AjaxActions.getStopsNearby(boundingBox, ignoreStopPlaceId))
+  }
+
+  handleBaselayerChanged(value) {
+    this.props.dispatch(UserActions.changeActiveBaselayer(value))
   }
 
   handleChangeCoordinates(stopIndex, markerIndex, position) {
@@ -60,6 +64,8 @@ class EditStopMap extends React.Component {
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
         dragableMarkers={true}
+        activeBaselayer={this.props.activeBaselayer}
+        handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         />
     )
   }
@@ -70,7 +76,8 @@ const mapStateToProps = (state, ownProps) => {
     position: state.editStopReducer.centerPosition,
     markers: state.editStopReducer.activeStopPlace,
     zoom: state.editStopReducer.zoom,
-    lastUpdated: state.editStopReducer.lastUpdated
+    lastUpdated: state.editStopReducer.lastUpdated,
+    activeBaselayer: state.userReducer.activeBaselayer
   }
 }
 

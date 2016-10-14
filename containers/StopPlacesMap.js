@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { AjaxActions, MapActions } from '../actions/'
+import { AjaxActions, MapActions, UserActions } from '../actions/'
 
 class StopPlacesMap extends React.Component {
 
@@ -15,6 +15,10 @@ class StopPlacesMap extends React.Component {
       map.leafletElement.doubleClickZoom.enable()
     }
 
+  }
+
+  handleBaselayerChanged(value) {
+    this.props.dispatch(UserActions.changeActiveBaselayer(value))
   }
 
   handleDragEnd(marker, index) {
@@ -37,6 +41,8 @@ class StopPlacesMap extends React.Component {
         handleDragEnd={this.handleDragEnd}
         handleMapMoveEnd={this.handleMapMoveEnd}
         dragableMarkers={false}
+        activeBaselayer={this.props.activeBaselayer}
+        handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         />
     )
   }
@@ -50,7 +56,8 @@ const mapStateToProps = (state, ownProps) => {
     markers: activeMarkers,
     zoom: zoom,
     newStopPlace: newStopPlace,
-    isCreatingNewStop: isCreatingNewStop
+    isCreatingNewStop: isCreatingNewStop,
+    activeBaselayer: state.userReducer.activeBaselayer
   }
 }
 

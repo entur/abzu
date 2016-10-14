@@ -24,7 +24,8 @@ const initialState = {
   // source for TopographicalFilter autocomplete
   topoiSuggestions: [],
   favoriteNameDialogIsOpen: false,
-  removedFavorites: []
+  removedFavorites: [],
+  activeBaselayer: 'Rutebankens kart'
 }
 
 const userReducer = (state = initialState, action) => {
@@ -99,6 +100,9 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         removedFavorites: state.removedFavorites.concat(action.payLoad)
       })
+
+    case types.CHANGED_ACTIVE_BASELAYER:
+      return Object.assign({}, state, { activeBaselayer: action.payLoad})
 
       break;
 

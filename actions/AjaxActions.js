@@ -73,6 +73,9 @@ const sendData = (type, payLoad) => {
       ignoreStopPlaceId: ignoreStopPlaceId
     }
 
+    if (typeof ignoreStopPlaceId === 'undefined')
+      delete payLoad.ignoreStopPlaceId
+
     return axios.post(URL, payLoad)
     .then(function(response) {
       dispatch (sendData(types.RECEIVED_STOPS_NEARBY, formatMarkers(response.data)))

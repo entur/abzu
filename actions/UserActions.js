@@ -170,4 +170,10 @@ UserActions.closeFavoriteNameDialog = () => {
   }
 }
 
+UserActions.changeActiveBaselayer = (name) => {
+  return function(dispatch) {
+    dispatch(sendData(types.CHANGED_ACTIVE_BASELAYER, name))
+  }
+}
+
 export default UserActions
