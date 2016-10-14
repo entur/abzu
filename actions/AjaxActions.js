@@ -19,14 +19,14 @@ const sendData = (type, payLoad) => {
     const state = getState()
     const stopTypeFilters = state.userReducer.searchFilters.stopType
 
-    let queryParams = ''
+    let queryParams = [];
 
     if (name.length) {
-      queryParams += 'q=' + name
+      queryParams.push('q=' + name);
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
-      queryParams += stopTypeFilters.map( (type) => `&stopPlaceType=${type}`).join('')
+      Array.prototype.push.apply(queryParams, stopTypeFilters.map( (type) => `stopPlaceType=${type}`));
     }
 
     const topoiChips = state.userReducer.searchFilters.topoiChips
@@ -36,13 +36,11 @@ const sendData = (type, payLoad) => {
 
     topoiChips.forEach( (t) => {
       if (t.type === 'county') {
-        countyRefParams += `&countyReference=${t.ref}`
+        queryParams.push(`countyReference=${t.ref}`)
       } else {
-        municipalityRefParams += `&municipalityReference=${t.ref}`
+        queryParams.push(`municipalityReference=${t.ref}`)
       }
     })
-
-    queryParams += countyRefParams + municipalityRefParams
 
     if (!queryParams.length) {
       return
@@ -50,7 +48,7 @@ const sendData = (type, payLoad) => {
 
     dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
 
-    return axios.get(URL + '?' + queryParams)
+    return axios.get(URL + '?' + queryParams.join('&'))
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
       dispatch( sendData(types.RECEIVED_STOP_NAMES, suggestions) )
