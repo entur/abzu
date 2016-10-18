@@ -192,7 +192,7 @@ class SearchBox extends React.Component {
                  openOnFocus={true}
                  hintText={formatMessage({id: "filter_by_name"})}
                  dataSource={dataSourceContent}
-                 filter={AutoComplete.caseInsensitiveFilter}
+                 filter={() => true}
                  onUpdateInput={this.handleUpdateInput.bind(this)}
                  maxSearchResults={5}
                  searchText={searchText}
