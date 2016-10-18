@@ -176,4 +176,10 @@ UserActions.changeActiveBaselayer = (name) => {
   }
 }
 
+UserActions.removeStopsNearbyForOverview = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null))
+  }
+}
+
 export default UserActions

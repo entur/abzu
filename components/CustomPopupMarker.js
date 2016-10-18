@@ -5,7 +5,7 @@ import L, { divIcon } from 'leaflet'
 const markerShadow = require("../static/icons/marker-shadow.png")
 const stopIcon = require("../static/icons/stop-icon-2x.png")
 const quayIcon = require('../static/icons/quay-icon-2x.png')
-const otherStopIcon = require('../static/icons/other-stop-icon-2x.png')
+const neighbouringStopIcon = require('../static/icons/other-stop-icon-2x.png')
 
 class CustomPopupMarker extends React.Component {
 
@@ -13,7 +13,7 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
-          stopIndex, changeCoordinates, text  } = this.props
+          stopIndex, changeCoordinates, text, active  } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
@@ -36,7 +36,7 @@ class CustomPopupMarker extends React.Component {
     const editCoordsStyle = {
       display: 'block',
       borderBottom: '1px dotted black',
-      cursor: 'pointer'
+      cursor: 'pointer',
     }
 
     var iconBase = L.Icon.extend({
@@ -51,18 +51,26 @@ class CustomPopupMarker extends React.Component {
       }
     })
 
-    const icon = new iconBase({
-      iconUrl: (isQuay && stopIndex == 0) ? quayIcon
-        : (stopIndex == 0 && !isQuay)
-        ? stopIcon : otherStopIcon
-    })
+    let iconUrl = stopIcon
 
+    if (!active) {
+      iconUrl = neighbouringStopIcon
+    }
+
+    if (isQuay && active) {
+      iconUrl = quayIcon
+    }
+
+    let icon = new iconBase({
+      iconUrl: iconUrl
+    })
+    
     return (
       <Marker
         ref="marker"
         key={"marker-key" + markerIndex }
-        onDragend={() => { handleDragEnd(stopIndex, markerIndex, this.refs.marker) }}
-        draggable={draggable}
+        onDragend={(event) => { handleDragEnd(isQuay, markerIndex, event) }}
+        draggable={draggable && active}
         position={position}
         icon={icon}
         >
@@ -73,7 +81,7 @@ class CustomPopupMarker extends React.Component {
               <span style={{fontWeight: 600}}>{text.coordinates}</span>
                 <div
                   style={editCoordsStyle}
-                  onClick={() => changeCoordinates && changeCoordinates(stopIndex, markerIndex, position)}
+                  onClick={() => changeCoordinates && changeCoordinates(isQuay, markerIndex, position)}
                   >
                   <span>{position[0]},</span>
                   <span style={{marginLeft: 2}}>{position[1]}</span>

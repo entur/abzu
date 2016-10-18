@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Marker, Popup } from 'react-leaflet'
+import L, { divIcon } from 'leaflet'
+const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
+const markerShadow = require("../static/icons/marker-shadow.png")
 
 class NewStopMarker extends React.Component {
 
@@ -19,14 +22,25 @@ class NewStopMarker extends React.Component {
       verticalAlign: "middle"
     }
 
+    var icon = L.icon({
+      iconUrl: newStopIcon,
+      shadowUrl: markerShadow,
+      iconSize: [30, 45],
+      iconAnchor: [17, 42],
+      popupAnchor: [1, -32],
+      shadowAnchor: [10, 12],
+      shadowSize: [36, 16]
+    })
+
     return (
 
       <Marker
-        ref="newstop-marker" 
+        ref="newstopMarker" 
         key={"newstop-key" }
         onDragend={(e) => { handleDragEnd(e) }}
         draggable={true}
         position={position}
+        icon={icon}
         >
         <Popup>
           <div>

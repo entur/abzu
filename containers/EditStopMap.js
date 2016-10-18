@@ -12,15 +12,22 @@ class EditStopMap extends React.Component {
     let LeafletMap = map.leafletElemenet
   }
 
-  handleDragEnd(stopIndex, markerIndex, marker) {
-    const position = marker.leafletElement.getLatLng()
-    this.props.dispatch( MapActions.changeMarkerPosition(stopIndex, markerIndex, position) )
+  handleDragEnd(isQuay, index, event) {
+
+    const { dispatch } = this.props
+    const position = event.target.getLatLng()
+
+    if (isQuay) {
+      dispatch(MapActions.changeQuayPosition(index, position))
+    } else {
+      dispatch(MapActions.changeActiveStopPosition(position))
+    }
   }
 
   handleMapMoveEnd(event, {leafletElement}) {
 
     let bounds = leafletElement.getBounds()
-    let ignoreStopPlaceId = this.props.markers[0].value
+    let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
 
     let boundingBox = {
       xMin: bounds.getSouthWest().lng,
@@ -29,30 +36,49 @@ class EditStopMap extends React.Component {
       yMax: bounds.getNorthEast().lat
     }
 
-    this.props.dispatch(AjaxActions.getStopsNearby(boundingBox, ignoreStopPlaceId))
+    this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
   }
 
   handleBaselayerChanged(value) {
     this.props.dispatch(UserActions.changeActiveBaselayer(value))
   }
 
-  handleChangeCoordinates(stopIndex, markerIndex, position) {
+  handleChangeCoordinates(isQuay, quayIndex, position) {
     const { formatMessage } = this.props.intl
     const defaultValue = position.join(',')
     const value = prompt(formatMessage({id: 'set_coordinates_prompt'}), defaultValue)
     // simple validation of coordinates
     if (value && value.length && value.split(',').length == 2
         && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
-      this.props.dispatch( MapActions.changeMarkerPosition(stopIndex, markerIndex, {
-        lat: value.split(',')[0],
-        lng: value.split(',')[1]
-      }))
+
+      if (isQuay) {
+        this.props.dispatch( MapActions.changeQuayPosition(quayIndex, {
+          lat: Number(value.split(',')[0]),
+          lng: Number(value.split(',')[1])
+        }))
+      } else {
+        this.props.dispatch( MapActions.changeActiveStopPosition({
+          lat: Number(value.split(',')[0]),
+          lng: Number(value.split(',')[1])
+        }))
+      }
+
     }
   }
 
   render() {
 
-    const { position, markers, zoom } = this.props
+    const { position, stopPlaceMarker, neighbouringMarkers, zoom } = this.props
+
+    let markers = []
+
+    if (stopPlaceMarker) {
+      markers = markers.concat(stopPlaceMarker)
+    }
+
+    if (neighbouringMarkers && neighbouringMarkers.length) {
+      markers = markers.concat(neighbouringMarkers)
+    }
 
     return (
       <LeafletMap
@@ -74,7 +100,8 @@ class EditStopMap extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     position: state.editStopReducer.centerPosition,
-    markers: state.editStopReducer.activeStopPlace,
+    stopPlaceMarker: state.editStopReducer.activeStopPlace,
+    neighbouringMarkers: state.editStopReducer.neighbouringMarkers,
     zoom: state.editStopReducer.zoom,
     lastUpdated: state.editStopReducer.lastUpdated,
     activeBaselayer: state.userReducer.activeBaselayer

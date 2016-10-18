@@ -11,35 +11,22 @@ require('../styles/main.css')
 
 class EditStopPlace extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      open: true
-    }
-  }
-
   componentDidMount() {
+    const { dispatch} = this.props
+    cfgreader.readConfig( (function(config) {
+      window.config = config
+      var hrefId = window.location.pathname
+        .replace(config.endpointBase + 'edit','')
+        .replace('/', '')
 
-      const { dispatch} = this.props
+      dispatch( AjaxActions.getStop(hrefId) )
 
-      cfgreader.readConfig( (function(config) {
-        window.config = config
-        var hrefId = window.location.pathname
-          .replace(config.endpointBase + 'edit','')
-          .replace('/', '')
-
-        dispatch( AjaxActions.getStop(hrefId) )
-
-      }).bind(this))
-  }
-
-  handleRequestClose() {
-    this.setState({open: false})
+    }).bind(this))
   }
 
   render() {
 
-    let { activeMarkers, isLoading } = this.props
+    let { isLoading } = this.props
 
     return (
       <div>
@@ -52,8 +39,7 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeMarkers: state.editStopReducer.activeStopPlace,
-    isLoading: state.editStopReducer.activeStopIsLoading,
+    isLoading: state.editStopReducer.activeStopIsLoading
   }
 }
 

@@ -93,13 +93,11 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarkers, isCreatingNewStop, searchText, favorited } = this.props
+    const { activeMarker, isCreatingNewStop, searchText, favorited } = this.props
     const { stopPlaceFilter, topographicalSource, topoiChips } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let dataSource = this.props.dataSource || []
-    let selectedMarker = (activeMarkers && activeMarkers.length)
-      ? activeMarkers[0] : null
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -236,8 +234,8 @@ class SearchBox extends React.Component {
                 />
           </div>
           <div key='searchbox-edit' style={newStopStyle}>
-            {selectedMarker
-              ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={selectedMarker}/>
+            {activeMarker
+              ?  <SearchBoxDetails text={text} handleEdit={this.handleEdit.bind(this)} marker={activeMarker}/>
               :  <SearchBoxDetails hidden/>
             }
             <div style={{marginTop: "30px"}}>
@@ -269,7 +267,7 @@ const mapStateToProps = (state, ownProps) => {
   var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
-    activeMarkers: state.stopPlacesReducer.activeMarkers,
+    activeMarker: state.stopPlacesReducer.activeMarker,
     dataSource: state.stopPlacesReducer.stopPlaceNames.places,
     isCreatingNewStop: state.userReducer.isCreatingNewStop,
     stopPlaceFilter: state.userReducer.searchFilters.stopType,

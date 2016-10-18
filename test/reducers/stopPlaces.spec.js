@@ -4,12 +4,47 @@ import * as types from './../../actions/actionTypes'
 import expect from 'expect'
 import fs from 'fs'
 
+const initialState = {
+  centerPosition: {
+    lat: 61.670029,
+    lng: 6.4423426500000005
+  },
+  activeMarker: null,
+  neighbouringMarkers: [],
+  zoom: 7,
+  stopPlaceNames: {
+    isLoading: false,
+    errorMessage: '',
+    places: []
+  },
+  activeStopPlace: {}
+}
+
+const newStop = {
+  "text": "<<>>",
+  "markerProps": {
+    "key": "marker0",
+    "name": "",
+    "position": [
+      60.127827768866226,
+      9.714660644531248
+    ],
+    "children": "",
+    "description": "",
+    "municipality": "",
+    "county": "",
+    "quays": [],
+    "stopPlaceType": null
+  },
+  "isNewStop": true
+}
+
 import { stopPlacesReducer } from './../../reducers/'
 
 describe('stop places reducer', () => {
 
   it('Should return the initial state', () => {
-    expect(stopPlacesReducer(null, {})).toNotEqual({})
+    expect(stopPlacesReducer(undefined, {})).toEqual(initialState)
   })
 
   it('Should correctly set center position of stop places map', () => {
@@ -34,11 +69,11 @@ describe('stop places reducer', () => {
       + '/json/formattedStopPlace.json', 'utf-8'))
 
       expect(stopPlacesReducer({}, {
-        type: types.SET_ACTIVE_MARKERS,
+        type: types.SET_ACTIVE_MARKER,
         payLoad: formattedStopPlace
       }))
       .toEqual({
-        activeMarkers: [formattedStopPlace]
+        activeMarker: formattedStopPlace
       })
     })
 
@@ -53,6 +88,30 @@ describe('stop places reducer', () => {
       .toEqual({
         zoom: zoomLevel
       })
+    })
+
+    it('Should create a new stop', () => {
+
+      expect(stopPlacesReducer(initialState, {
+        type: types.CREATED_NEW_STOP,
+        payLoad: newStop
+      }))
+        .toEqual({...initialState, newStopPlace: newStop})
+    })
+
+    it('Should destroy new stop created', () => {
+
+      let newState = stopPlacesReducer(initialState, {
+        type: types.CREATED_NEW_STOP,
+        payLoad: newStop
+      })
+
+      let finalState = stopPlacesReducer(newState, {
+        type: types.DESTROYED_NEW_STOP
+      })
+
+      expect(finalState.newStopPlace).toNotEqual(newStop)
+
     })
 
     it('Requesting stop names should indicate loading', () => {
@@ -81,6 +140,7 @@ describe('stop places reducer', () => {
         }))
         .toEqual({
           stopPlaceNames: {
+            isLoading: false,
             places: stopPlaces
           }
         })
@@ -97,32 +157,9 @@ describe('stop places reducer', () => {
         }))
         .toEqual({
           stopPlaceNames: {
+            isLoading: false,
             errorMessage: errorMessage
           }
-        })
-      })
-
-      it('Should add new stop place to map when creating a new stop', () => {
-
-        const newStopPlace = {
-          "name": "New stop",
-          "centroid": {
-            "location": {
-              "longitude": 10.160476,
-              "latitude": 59.079567
-            }
-          },
-          "allAreasWheelchairAccessible": false,
-          "stopPlaceType": null,
-          "quays": []
-         }
-
-        expect(stopPlacesReducer({}, {
-          type: types.CREATE_NEW_STOP,
-          payLoad: newStopPlace
-        }))
-        .toEqual({
-          newStopPlace: newStopPlace
         })
       })
     })

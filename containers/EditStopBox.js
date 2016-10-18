@@ -76,13 +76,7 @@ class EditStopBox extends React.Component {
     const { quaysExpanded } = this.state
     const { formatMessage, locale } = this.props.intl
 
-    let selectedMarker = null
-
-    if (activeStopPlace && activeStopPlace.length) {
-      selectedMarker = activeStopPlace[0]
-    }
-
-    if (!selectedMarker) return (
+    if (!activeStopPlace) return (
       <div>
         <span style={{ margin: 20, color: "red"}}>
           {formatMessage({id: 'something_went_wrong'})}
@@ -92,8 +86,8 @@ class EditStopBox extends React.Component {
 
     let captionText = formatMessage({id: 'new_stop_title'})
 
-    if (selectedMarker.markerProps.id) {
-      captionText = `${formatMessage({id: 'editing'})} ${selectedMarker.markerProps.name} (${selectedMarker.markerProps.id})`
+    if (activeStopPlace && activeStopPlace.markerProps.id) {
+      captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
     }
 
     const categoryStyle = {
@@ -164,17 +158,17 @@ class EditStopBox extends React.Component {
             hintText={formatMessage({id: 'name'})}
             floatingLabelText={formatMessage({id: 'name'})}
             style={{width: 350}}
-            value={selectedMarker.markerProps.name}
+            value={activeStopPlace.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
             <TextField
               hintText={formatMessage({id: 'description'})}
               floatingLabelText={formatMessage({id: 'description'})}
               style={{width: 350}}
-              value={selectedMarker.markerProps.description}
+              value={activeStopPlace.markerProps.description}
               onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
               />
-            <SelectField value={selectedMarker.markerProps.stopPlaceType}
+            <SelectField value={activeStopPlace.markerProps.stopPlaceType}
                 autoWidth={true}
                 onChange={this.handleStopTypeChange.bind(this)}
                 floatingLabelText={formatMessage({id: 'type'})}
@@ -191,7 +185,7 @@ class EditStopBox extends React.Component {
               </SelectField>
         </div>
         <div style={{fontWeight: 600, marginTop: 10}}>
-          Quays ({selectedMarker.markerProps.quays.length})
+          Quays ({activeStopPlace.markerProps.quays.length})
           { quaysExpanded
           ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
           : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
@@ -210,7 +204,7 @@ class EditStopBox extends React.Component {
         <div style={scrollable}>
           { quaysExpanded
             ? <div style={quayStyle}>
-              { selectedMarker.markerProps.quays.map( (quay,index) =>
+              { activeStopPlace.markerProps.quays.map( (quay,index) =>
                 <QuayItem
                   key={"quay-" + index}
                   quay={quay}

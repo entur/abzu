@@ -24,12 +24,35 @@ class StopPlacesMap extends React.Component {
   handleDragEnd(marker, index) {
   }
 
-  handleMapMoveEnd() {
+  handleMapMoveEnd(event, map) {
+    let zoom = map.leafletElement._zoom
+
+    if (zoom > 12) {
+
+      let bounds = map.leafletElement.getBounds()
+
+      let boundingBox = {
+        xMin: bounds.getSouthWest().lng,
+        yMin: bounds.getSouthWest().lat,
+        xMax: bounds.getNorthEast().lng,
+        yMax: bounds.getNorthEast().lat
+      }
+
+      this.props.dispatch(AjaxActions.getStopsNearbyForOverview(boundingBox))
+    } else {
+      this.props.dispatch(UserActions.removeStopsNearbyForOverview())
+    }
   }
 
   render() {
 
-    const { position, markers, zoom, newStopPlace } = this.props
+    const { position, activeMarker, neighbouringMarkers, zoom, newStopPlace } = this.props
+
+    let markers = activeMarker ? [activeMarker] : []
+
+    if (neighbouringMarkers && neighbouringMarkers.length) {
+      markers = markers.concat(neighbouringMarkers)
+    }
 
     return (
       <LeafletMap
@@ -39,7 +62,7 @@ class StopPlacesMap extends React.Component {
         zoom={zoom}
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd}
-        handleMapMoveEnd={this.handleMapMoveEnd}
+        handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         dragableMarkers={false}
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
@@ -49,15 +72,16 @@ class StopPlacesMap extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { centerPosition, activeMarkers, zoom, newStopPlace } = state.stopPlacesReducer
+  const { centerPosition, activeMarker, zoom, newStopPlace, neighbouringMarkers } = state.stopPlacesReducer
   const { isCreatingNewStop } = state.userReducer
   return {
     position: centerPosition,
-    markers: activeMarkers,
+    activeMarker: activeMarker,
     zoom: zoom,
     newStopPlace: newStopPlace,
     isCreatingNewStop: isCreatingNewStop,
-    activeBaselayer: state.userReducer.activeBaselayer
+    activeBaselayer: state.userReducer.activeBaselayer,
+    neighbouringMarkers: neighbouringMarkers
   }
 }
 

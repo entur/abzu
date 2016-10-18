@@ -30,7 +30,8 @@ MapActions.changeStopType = (type) => {
 
 MapActions.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
-    dispatch( sendData(types.SET_ACTIVE_MARKERS, activeMarker) )
+    activeMarker.active = true
+    dispatch( sendData(types.SET_ACTIVE_MARKER, activeMarker) )
     dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
   }
 }
@@ -63,11 +64,20 @@ MapActions.changeQuayName = (index, name) => {
   }
 }
 
-MapActions.changeMarkerPosition = (stopIndex, markerIndex, position) => {
+MapActions.changeQuayPosition = (index, position) => {
+  console.log("quayPos", position)
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
-      stopIndex: stopIndex,
-      markerIndex: markerIndex,
+      quayIndex: index,
+      position: position
+    }))
+  }
+}
+
+MapActions.changeActiveStopPosition = (position) => {
+  console.log("stopPos", position)
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
       position: position
     }))
   }
@@ -94,7 +104,7 @@ MapActions.changeWHA = (index, value) => {
 MapActions.createNewStop = (coordinates) => {
   return function(dispatch) {
     let stop = createNewStopTemplate(coordinates)
-    dispatch(sendData (types.CREATE_NEW_STOP, stop))
+    dispatch(sendData (types.CREATED_NEW_STOP, stop))
   }
 }
 

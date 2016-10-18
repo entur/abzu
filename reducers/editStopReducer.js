@@ -5,11 +5,13 @@ const initialState = {
     lat: 67.928595,
     lng: 13.0830025,
   },
-  activeMarkers: [],
+  neighbouringMarkers: [],
   zoom: 17,
   activeStopIsLoading: false,
   editedStopChanged: false,
-  activeStopPlaceOriginal: []
+  activeStopPlaceOriginal: [],
+  activeStopPlace: null,
+  neighbouringMarkers: []
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -18,9 +20,6 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, { centerPosition: action.payLoad })
-
-    case types.SET_ACTIVE_MARKERS:
-      return Object.assign({}, state, { activeMarkers: [action.payLoad] })
 
     case types.RECEIVED_STOP:
       const original = JSON.parse(JSON.stringify(action.payLoad))
@@ -38,7 +37,7 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, { activeStopIsLoading: false})
 
     case types.ADDED_NEW_QUAY:
-      let markerToExpand = Object.assign({}, state.activeStopPlace[0], {})
+      let markerToExpand = Object.assign({}, state.activeStopPlace, {})
 
       let newQuay = {
         name: "",
@@ -57,71 +56,70 @@ const editStopReducer = (state = initialState, action) => {
 
       markerToExpand.markerProps.quays.push(newQuay)
 
-      return Object.assign({}, state, { editedStopChanged: true, activeStopPlace: [markerToExpand]})
+      return Object.assign({}, state, { editedStopChanged: true, activeStopPlace: markerToExpand})
 
     case types.REMOVED_QUAY:
-      let markerToReduce = Object.assign({}, state.activeStopPlace[0], {})
+      let markerToReduce = Object.assign({}, state.activeStopPlace, {})
       markerToReduce.markerProps.quays.splice(action.payLoad,1)
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: [markerToReduce]})
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToReduce})
 
     case types.CHANGED_QUAY_NAME:
-      let markerToChangeQN = Object.assign({}, state.activeStopPlace[0],{})
+      let markerToChangeQN = Object.assign({}, state.activeStopPlace,{})
       markerToChangeQN.markerProps.quays[action.payLoad.index].name = action.payLoad.name
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: [markerToChangeQN]})
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQN})
 
     case types.CHANGED_QUAY_DESCRIPTION:
-      let markerToChangeQD = Object.assign({}, state.activeStopPlace[0],{})
+      let markerToChangeQD = Object.assign({}, state.activeStopPlace,{})
       markerToChangeQD.markerProps.quays[action.payLoad.index].description = action.payLoad.description
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: [markerToChangeQD]})
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQD})
 
     case types.CHANGED_WHA:
-      let markerToChangeWHA = Object.assign({}, state.activeStopPlace[0],{})
+      let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
       markerToChangeWHA.markerProps.quays[action.payLoad.index].allAreasWheelchairAccessible = action.payLoad.value
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: [markerToChangeWHA]})
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeWHA})
 
     case types.CHANGED_QUAY_POSITION:
 
-      let stopIndex = action.payLoad.stopIndex
-      let markerIndex = action.payLoad.markerIndex
-      let location = [action.payLoad.position.lat, action.payLoad.position.lng]
+      let quayIndex = action.payLoad.quayIndex
 
-      let activeStopPlacesQP = state.activeStopPlace.slice(0)
+      let activeStopPlacesQP = {...state.activeStopPlace}
 
-      if (markerIndex >= 0) {
-
-        activeStopPlacesQP[stopIndex].markerProps.quays[markerIndex].centroid.location = {
-          latitude: location[0],
-          longitude: location[1]
-        }
-
-      } else {
-        activeStopPlacesQP[stopIndex].markerProps.position = location
+      activeStopPlacesQP.markerProps.quays[quayIndex].centroid.location = {
+          latitude: action.payLoad.position.lat,
+          longitude: action.payLoad.position.lng
       }
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesQP})
 
-    case types.RECEIVED_STOPS_NEARBY:
-      return Object.assign({}, state, {activeStopPlace: state.activeStopPlace.concat(action.payLoad)})
+    case types.CHANGED_ACTIVE_STOP_POSITION:
+      let activeStopPlacesASP = {...state.activeStopPlace}
+      const { position } = action.payLoad
+      activeStopPlacesASP.markerProps.position = [position.lat, position.lng]
+
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesASP})
+
+    case types.RECEIVED_STOPS_EDITING_NEARBY:
+      return Object.assign({}, state, {neighbouringMarkers: action.payLoad})
 
     case types.CHANGED_STOP_NAME:
-      let activeStopPlaceCSN = state.activeStopPlace.slice(0)
-      activeStopPlaceCSN[0].markerProps.name = action.payLoad
+      let activeStopPlaceCSN = {...state.activeStopPlace}
+      activeStopPlaceCSN.markerProps.name = action.payLoad
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCSN})
 
     case types.CHANGED_STOP_DESCRIPTION:
-      let activeStopPlaceCSD = state.activeStopPlace.slice(0)
-      activeStopPlaceCSD[0].markerProps.description = action.payLoad
+      let activeStopPlaceCSD = {...state.activeStopPlace}
+      activeStopPlaceCSD.markerProps.description = action.payLoad
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCSD})
 
     case types.CHANGED_STOP_TYPE:
-      let activeStopPlaceCST = state.activeStopPlace.slice(0)
-      activeStopPlaceCST[0].markerProps.stopPlaceType = action.payLoad
+      let activeStopPlaceCST = {...state.activeStopPlace}
+      activeStopPlaceCST.markerProps.stopPlaceType = action.payLoad
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCST})
 

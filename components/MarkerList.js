@@ -11,7 +11,7 @@ class MarkerList extends React.Component {
   handleStopOnClick(id) {
     const { path } = this.props
      // Prevent loading resource already loaded and being edited
-    if (path && id && path !== id) {
+    if (id && path !== id) {
       this.props.dispatch(UserActions.navigateTo('/edit/', id))
       this.props.dispatch(AjaxActions.getStop(id))
     }
@@ -19,6 +19,10 @@ class MarkerList extends React.Component {
 
   handleNewStopClick(position) {
     this.props.dispatch( UserActions.navigateTo('/edit/', 'new_stop') )
+  }
+
+  handleDragEndNewStop(event) {
+    this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
   }
 
   render() {
@@ -39,7 +43,7 @@ class MarkerList extends React.Component {
       createNow: formatMessage({id: 'create_now'})
     }
 
-    stops.forEach(({ text, key, markerProps, isNewStop }, stopIndex) => {
+    stops.forEach(({ text, key, markerProps, isNewStop, active }, stopIndex) => {
 
       if (!markerProps) return null
 
@@ -50,7 +54,7 @@ class MarkerList extends React.Component {
           (<NewStopMarker
               key={"newstop-parent- " + stopIndex}
               position={markerProps.position}
-              handleDragEnd={ () => {}}
+              handleDragEnd={this.handleDragEndNewStop.bind(this)}
               text={newStopMarkerText}
               handleOnClick={() => { this.handleNewStopClick(markerProps.position)}}
             />
@@ -66,6 +70,7 @@ class MarkerList extends React.Component {
             position={markerProps.position}
             children={text}
             handleDragEnd={handleDragEnd}
+            active={active}
             draggable={dragableMarkers}
             changeCoordinates={changeCoordinates}
             text={CustomPopupMarkerText}
@@ -88,6 +93,7 @@ class MarkerList extends React.Component {
                   key={"custom-" + stopIndex + "-" + index}
                   children={quay.name}
                   handleDragEnd={handleDragEnd}
+                  active={active}
                   changeCoordinates={changeCoordinates}
                   draggable={dragableMarkers}
                   text={newStopMarkerText}

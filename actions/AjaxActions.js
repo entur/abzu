@@ -19,14 +19,14 @@ const sendData = (type, payLoad) => {
     const state = getState()
     const stopTypeFilters = state.userReducer.searchFilters.stopType
 
-    let queryParams = [];
+    let queryParams = []
 
     if (name.length) {
-      queryParams.push('q=' + name);
+      queryParams.push('q=' + name)
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
-      Array.prototype.push.apply(queryParams, stopTypeFilters.map( (type) => `stopPlaceType=${type}`));
+      Array.prototype.push.apply(queryParams, stopTypeFilters.map( (type) => `stopPlaceType=${type}`))
     }
 
     const topoiChips = state.userReducer.searchFilters.topoiChips
@@ -60,7 +60,36 @@ const sendData = (type, payLoad) => {
   }
 }
 
- AjaxActions.getStopsNearby = (boundingBox, ignoreStopPlaceId) => {
+AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
+
+ return function(dispatch, getState) {
+
+   const URL =  window.config.tiamatBaseUrl + 'stop_place/search'
+   const state = getState()
+
+   let ignoreStopPlaceId = 0
+
+   if (state.stopPlacesReducer.activeMarker) {
+     ignoreStopPlaceId = state.stopPlacesReducer.activeMarker.markerProps.id
+   }
+
+   let payLoad = {
+     boundingBox: boundingBox,
+     ignoreStopPlaceId: ignoreStopPlaceId
+   }
+
+   return axios.post(URL, payLoad)
+   .then(function(response) {
+     dispatch (sendData(types.RECEIVED_STOPS_OVERVIEW_NEARBY, formatMarkers(response.data)))
+   })
+   .catch(function(response) {
+     dispatch (sendData(types.ERROR_STOPS_OVERVIEW_NEARBY, response.data))
+   })
+ }
+}
+
+
+ AjaxActions.getStopsNearbyForEditingStop = (boundingBox, ignoreStopPlaceId) => {
 
   return function(dispatch) {
 
@@ -73,12 +102,11 @@ const sendData = (type, payLoad) => {
 
     return axios.post(URL, payLoad)
     .then(function(response) {
-      dispatch (sendData(types.RECEIVED_STOPS_NEARBY, formatMarkers(response.data)))
+      dispatch (sendData(types.RECEIVED_STOPS_EDITING_NEARBY, formatMarkers(response.data)))
     })
     .catch(function(response) {
-      dispatch (sendData(types.ERROR_STOPS_NEARBY, response.data))
+      dispatch (sendData(types.ERROR_STOPS_EDITING_NEARBY, response.data))
     })
-
   }
 }
 
@@ -134,7 +162,9 @@ export const formatMarkers = (data) => {
 
       return axios.get(URL)
       .then(function(response) {
-        dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])))
+        let stops = formatMarkers([response.data])
+        stops[0].active = true
+        dispatch( sendData(types.RECEIVED_STOP, stops[0]))
         dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
         dispatch( sendData(types.SET_ZOOM, 15) )
       })
@@ -151,10 +181,11 @@ export const formatMarkers = (data) => {
         return
       }
 
-      const newStop = Object.assign({}, state.stopPlacesReducer.newStopPlace, {})
+      let newStop = Object.assign({}, state.stopPlacesReducer.newStopPlace, {})
       delete newStop.isNewStop
+      newStop.active = true
 
-      dispatch( sendData(types.RECEIVED_STOP, [newStop]) )
+      dispatch( sendData(types.RECEIVED_STOP, newStop) )
       dispatch( sendData(types.CHANGED_MAP_CENTER, newStop.markerProps.position) )
       dispatch( sendData(types.SET_ZOOM, 15) )
     }
@@ -195,21 +226,19 @@ export const prepareStopForSaving = (stop) => {
 
   return function(dispatch, getState) {
 
-    var stop = {...getState().editStopReducer.activeStopPlace[0]}
-
-    if (!stop) {
-      console.error('Did not find stop to save')
-      return
-    }
+    var stop = { ...getState().editStopReducer.activeStopPlace }
 
     const URL = window.config.tiamatBaseUrl + 'stop_place/' + stop.markerProps.id
 
     var savableStop = prepareStopForSaving(stop)
+
     return axios.post(URL, savableStop)
     .then(function(response) {
-      dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
+      let responseStop = formatMarkers([response.data])[0]
+      responseStop.active = true
+      dispatch( sendData(types.SUCCESS_STOP_SAVED, responseStop) )
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
-      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
+      dispatch( sendData(types.RECEIVED_STOP, responseStop) )
     })
     .catch(function(response){
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
@@ -220,28 +249,29 @@ export const prepareStopForSaving = (stop) => {
 }
 
 AjaxActions.saveNewStop = () => {
+
   return function(dispatch, getState) {
 
-    var stop = {...getState().stopPlacesReducer.newStopPlace}
-
-    if (!stop) {
-      console.error('Did not find stop to save')
-      return
-    }
+    var stop = { ...getState().stopPlacesReducer.newStopPlace }
+    let savableStop = prepareStopForSaving(stop)
 
     const URL = window.config.tiamatBaseUrl + 'stop_place/'
 
-    var savableStop = prepareStopForSaving(stop)
     return axios.post(URL, savableStop)
     .then(function(response) {
-      dispatch( sendData(types.SUCCESS_STOP_SAVED, response.data) )
-      dispatch( sendData(types.RECEIVED_STOP, formatMarkers([response.data])) )
+
+      let formattedMarker = formatMarkers([response.data])
+      let marker = formattedMarker[0]
+      marker.active = true
+
+      dispatch( sendData(types.SUCCESS_STOP_SAVED, marker) )
+      dispatch( sendData(types.RECEIVED_STOP, marker) )
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
       dispatch ( UserActions.navigateTo('/edit/', response.data.id) )
     })
     .catch(function(response){
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
-      dispatch( sendData(types.ERROR_STOP_SAVED, response.data) )
+      dispatch( sendData(types.ERROR_STOP_SAVED, response) )
     })
   }
 }
