@@ -21,7 +21,6 @@ const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
   return (
     <div style={style}>
       <h2>{markerInfo.name}</h2>
-      <p>{description}</p>
       <FlatButton
         onClick={() => handleEdit(markerInfo.id)}
         >

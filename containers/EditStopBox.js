@@ -161,19 +161,12 @@ class EditStopBox extends React.Component {
             value={activeStopPlace.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
-            <TextField
-              hintText={formatMessage({id: 'description'})}
-              floatingLabelText={formatMessage({id: 'description'})}
-              style={{width: 350}}
-              value={activeStopPlace.markerProps.description}
-              onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
-              />
             <SelectField value={activeStopPlace.markerProps.stopPlaceType}
                 autoWidth={true}
                 onChange={this.handleStopTypeChange.bind(this)}
                 floatingLabelText={formatMessage({id: 'type'})}
                 floatingLabelFixed={true}
-                style={{width: "95%"}}
+                style={{width: 350}}
                 >
                 { stopTypes[locale].map( (type, index) =>
                     <MenuItem
@@ -183,6 +176,13 @@ class EditStopBox extends React.Component {
                       />
                 ) }
               </SelectField>
+              <TextField
+                hintText={formatMessage({id: 'description'})}
+                floatingLabelText={formatMessage({id: 'description'})}
+                style={{width: 350}}
+                value={activeStopPlace.markerProps.description}
+                onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
+                />
         </div>
         <div style={{fontWeight: 600, marginTop: 10}}>
           Quays ({activeStopPlace.markerProps.quays.length})
