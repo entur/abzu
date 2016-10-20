@@ -97,6 +97,12 @@ UserActions.getTopographicalPlaces = (input) => {
 }
 
 
+UserActions.clearSearchResults = () => {
+  return function(dispatch) {
+    dispatch( sendData(types.RECEIVED_STOP_NAMES, []) )
+  }
+}
+
 UserActions.addToposChip = (chip) => {
   return function(dispatch) {
     if (typeof chip.name !== 'undefined' && typeof chip.type !== 'undefined')

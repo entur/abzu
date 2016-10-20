@@ -42,8 +42,12 @@ class SearchBox extends React.Component {
   }
 
   handleUpdateInput(input) {
-    this.props.dispatch(AjaxActions.getStopNames(input))
-    this.props.dispatch(UserActions.setSearchText(input))
+    if (!input || !input.length) {
+      this.props.dispatch(UserActions.clearSearchResults())
+    } else {
+      this.props.dispatch(AjaxActions.getStopNames(input))
+      this.props.dispatch(UserActions.setSearchText(input))
+    }
   }
 
   handleTopoInput(input) {
