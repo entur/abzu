@@ -124,11 +124,12 @@ const getIconIdByModality = (type) => {
     'busStation': 'bus-withoutBox',
     'ferryStop' : 'ferry-withoutBox',
     'airport' : 'airplane-withoutBox',
-    'harbourPort' : 'ferry-withoutBox'
+    'harbourPort' : 'ferry-withoutBox',
+    'liftStation': 'lift'
   }
   var iconId = modalityMap[type]
 
-  return iconId || 'no-availability'
+  return iconId || 'no-information'
 }
 
 

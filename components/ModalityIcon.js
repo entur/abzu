@@ -27,7 +27,6 @@ const ModalityIcon = (props) =>  {
 
 const getIconIdByModality = (type) => {
 
-  // TODO: not supported: liftStation
   const modalityMap = {
     'onstreetBus': 'bus-withoutBox',
     'onstreetTram' : 'tram-withoutBox',
@@ -37,6 +36,7 @@ const getIconIdByModality = (type) => {
     'ferryStop' : 'ferry-withoutBox',
     'airport' : 'airplane-withoutBox',
     'harbourPort' : 'ferry-withoutBox',
+    'liftStation' : 'lift',
     'other' : 'no-information'
   }
   var iconId = modalityMap[type]
