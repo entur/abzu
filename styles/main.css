@@ -8,3 +8,58 @@ body {
 p, h1,h2,h3,h4,h5, span {
   color: #191919;
 }
+
+
+.stop-marker-parent {
+  height: 46px;
+  width: 46px;
+  z-index: 999;
+  fill: #132E40;
+  transform: translate(-9px,-2px);
+}
+
+.quay {
+  fill: #9A332C;
+  height: 38px;
+  transform: translate(-4px,5px);
+  width: 38px;
+}
+
+.neighbour-stop {
+  fill: grey;
+}
+
+.q-marker {
+  height: 200px;
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.8em;
+}
+
+.stop-marker-svg {
+  height: 24px;
+  width: 24px;
+  left: 2px;
+  top: 2px;
+  fill: #fff;
+  z-index: 999;
+  position: absolute;
+}
+
+.stop-marker-shadow {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  z-index: 998;
+  top: 22px;
+  left: 8px;
+}
+
+.leaflet-marker-icon {
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}

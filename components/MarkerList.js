@@ -65,12 +65,13 @@ class MarkerList extends React.Component {
         popupMarkers.push(
           (<CustomPopupMarker
             key={"custom-parent- " + stopIndex}
-            markerIndex={-1}
+            markerIndex={stopIndex + "--1"}
             stopIndex={stopIndex}
             position={markerProps.position}
             children={text}
             handleDragEnd={handleDragEnd}
             active={active}
+            stopType={markerProps.stopPlaceType}
             draggable={dragableMarkers}
             changeCoordinates={changeCoordinates}
             text={CustomPopupMarkerText}
@@ -90,7 +91,7 @@ class MarkerList extends React.Component {
                     quay.centroid.location.longitude
                   ]}
                   isQuay
-                  key={"custom-" + stopIndex + "-" + index}
+                  key={"quay-" + stopIndex + "-" + index}
                   children={quay.name}
                   handleDragEnd={handleDragEnd}
                   active={active}

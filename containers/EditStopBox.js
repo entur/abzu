@@ -15,6 +15,7 @@ import MenuItem from 'material-ui/MenuItem'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import { injectIntl } from 'react-intl'
+import ModalityIcon from '../components/ModalityIcon'
 
 class EditStopBox extends React.Component {
 
@@ -173,6 +174,10 @@ class EditStopBox extends React.Component {
                       key={'stopType' + index}
                       value={type.value}
                       primaryText={type.name}
+                      secondaryText={(<ModalityIcon
+                        iconStyle={{float: 'left', marginLeft: '-18'}}
+                        type={type.value}
+                      />)}
                       />
                 ) }
               </SelectField>

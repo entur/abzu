@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link, browserHistory } from 'react-router'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import FlatButton from 'material-ui/FlatButton'
+import ModalityIcon from '../components/ModalityIcon'
 
 const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
 
@@ -21,6 +22,10 @@ const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
   return (
     <div style={style}>
       <h2>{markerInfo.name}</h2>
+      <ModalityIcon
+        iconStyle={{float: 'right', transform: 'translateY(-55px)'}}
+        type={markerInfo.stopPlaceType}
+        />
       <FlatButton
         onClick={() => handleEdit(markerInfo.id)}
         >

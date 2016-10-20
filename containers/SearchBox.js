@@ -151,6 +151,7 @@ class SearchBox extends React.Component {
           style={{marginTop:5, marginLeft: -10}}
           primaryText={r.text}
           secondaryText={(<ModalityIcon
+            iconStyle={{float: 'left', transform: 'translateY(10px)'}}
             type={r.markerProps.stopPlaceType}
             />
         )}

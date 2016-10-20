@@ -2,18 +2,23 @@ import React from 'react'
 
 const ModalityIcon = (props) =>  {
 
-  const iconStyle = {
+  const svgStyle = props.svgStyle || {
     width: 25,
     height: 25,
     display: 'inline-block',
     marginRight: 5
   }
 
+  const iconStyle = props.iconStyle || {
+    float: 'left',
+    transform: 'translateY(2px)'
+  }
+
   const iconId = getIconIdByModality(props.type)
 
   return (
-    <span style={{float: 'left', transform: 'translateY(10px)'}}>
-      <svg style={iconStyle}>
+    <span style={iconStyle}>
+      <svg style={svgStyle}>
         <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg' + "#icon-icon_" + iconId} />
       </svg>
     </span>
@@ -22,9 +27,7 @@ const ModalityIcon = (props) =>  {
 
 const getIconIdByModality = (type) => {
 
-  // TODO: not supported:
-  // harbourPort, liftStation
-
+  // TODO: not supported: liftStation
   const modalityMap = {
     'onstreetBus': 'bus-withoutBox',
     'onstreetTram' : 'tram-withoutBox',
@@ -33,6 +36,7 @@ const getIconIdByModality = (type) => {
     'busStation': 'bus-withoutBox',
     'ferryStop' : 'ferry-withoutBox',
     'airport' : 'airplane-withoutBox',
+    'harbourPort' : 'ferry-withoutBox',
     'other' : 'no-information'
   }
   var iconId = modalityMap[type]
