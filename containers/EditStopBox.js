@@ -16,13 +16,16 @@ import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import { injectIntl } from 'react-intl'
 import ModalityIcon from '../components/ModalityIcon'
+import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
+import IconButton from 'material-ui/IconButton'
 
 class EditStopBox extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      quaysExpanded: true
+      quaysExpanded: true,
+      stopTypeOpen: false
     }
   }
 
@@ -52,13 +55,15 @@ class EditStopBox extends React.Component {
     this.props.dispatch(MapActions.changeStopDescription(event.target.value))
   }
 
-  handleStopTypeChange(event, index, value) {
+  handleStopTypeChange(value) {
+    this.handleCloseStopPlaceTypePopover()
     this.props.dispatch(MapActions.changeStopType(value))
   }
 
   toggleQuayExpanded() {
     const { quaysExpanded } = this.state
     this.setState({
+      ...this.state,
       quaysExpanded: !quaysExpanded
     })
   }
@@ -69,6 +74,21 @@ class EditStopBox extends React.Component {
 
   handleDiscardChanges() {
     this.props.dispatch(MapActions.discardChangesForEditingStop())
+  }
+
+  handleOpenStopPlaceTypePopover(event) {
+    this.setState({
+      ...this.state,
+      stopTypeOpen: true,
+      anchorEl: event.currentTarget
+    })
+  }
+
+  handleCloseStopPlaceTypePopover() {
+    this.setState({
+      ...this.state,
+      stopTypeOpen: false
+    })
   }
 
   render() {
@@ -137,7 +157,8 @@ class EditStopBox extends React.Component {
     const addQuayStyle = {
       position: "absolute",
       zIndex: 999,
-      top: 566,
+      top: 538,
+      marginLeft: 10,
       float: "right"
     }
 
@@ -168,32 +189,44 @@ class EditStopBox extends React.Component {
             value={activeStopPlace.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
             />
-            <SelectField value={activeStopPlace.markerProps.stopPlaceType}
-                autoWidth={true}
-                onChange={this.handleStopTypeChange.bind(this)}
-                floatingLabelText={formatMessage({id: 'type'})}
-                floatingLabelFixed={true}
-                style={{width: 350}}
-                >
-                { stopTypes[locale].map( (type, index) =>
-                    <MenuItem
-                      key={'stopType' + index}
-                      value={type.value}
-                      primaryText={type.name}
-                      secondaryText={(<ModalityIcon
-                        iconStyle={{float: 'left', marginLeft: '-18'}}
-                        type={type.value}
-                      />)}
-                      />
-                ) }
-              </SelectField>
-              <TextField
-                hintText={formatMessage({id: 'description'})}
-                floatingLabelText={formatMessage({id: 'description'})}
-                style={{width: 350}}
-                value={activeStopPlace.markerProps.description}
-                onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
+          <IconButton
+            style={{float: 'right'}}
+            onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
+            >
+            <ModalityIcon
+              type={activeStopPlace.markerProps.stopPlaceType}
+            />
+          </IconButton>
+          <Popover
+            open={this.state.stopTypeOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
+            animation={PopoverAnimationVertical}
+          >
+          { stopTypes[locale].map( (type, index) =>
+              <MenuItem
+                key={'stopType' + index}
+                value={type.value}
+                style={{padding: '0px 10px'}}
+                primaryText={type.name}
+                onClick={() => { this.handleStopTypeChange(type.value) }}
+                secondaryText={(
+                <ModalityIcon
+                  iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
+                  type={type.value}
+                />)}
                 />
+          ) }
+          </Popover>
+          <TextField
+            hintText={formatMessage({id: 'description'})}
+            floatingLabelText={formatMessage({id: 'description'})}
+            style={{width: 350}}
+            value={activeStopPlace.markerProps.description}
+            onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
+            />
         </div>
         <div style={{fontWeight: 600, marginTop: 10}}>
           Quays ({activeStopPlace.markerProps.quays.length})
