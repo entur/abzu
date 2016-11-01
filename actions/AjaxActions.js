@@ -81,7 +81,9 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
    return axios.post(URL, payLoad)
    .then(function(response) {
-     dispatch (sendData(types.RECEIVED_STOPS_OVERVIEW_NEARBY, formatMarkers(response.data)))
+     let formattedMarkers = formatMarkers(response.data)
+     formattedMarkers = removeQuaysForStops(formattedMarkers)
+     dispatch (sendData(types.RECEIVED_STOPS_OVERVIEW_NEARBY, formattedMarkers))
    })
    .catch(function(response) {
      dispatch (sendData(types.ERROR_STOPS_OVERVIEW_NEARBY, response.data))
@@ -103,12 +105,23 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
     return axios.post(URL, payLoad)
     .then(function(response) {
-      dispatch (sendData(types.RECEIVED_STOPS_EDITING_NEARBY, formatMarkers(response.data)))
+      let formattedMarkers = formatMarkers(response.data)
+      formattedMarkers = removeQuaysForStops(formattedMarkers)
+      dispatch (sendData(types.RECEIVED_STOPS_EDITING_NEARBY, formattedMarkers))
     })
     .catch(function(response) {
       dispatch (sendData(types.ERROR_STOPS_EDITING_NEARBY, response.data))
     })
   }
+}
+
+const removeQuaysForStops = (markers) => {
+  markers.map( (marker) => {
+    marker.markerProps.quays = []
+    return marker
+  })
+
+  return markers
 }
 
 export const formatMarkers = (data) => {

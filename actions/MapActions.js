@@ -65,7 +65,6 @@ MapActions.changeQuayName = (index, name) => {
 }
 
 MapActions.changeQuayPosition = (index, position) => {
-  console.log("quayPos", position)
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
       quayIndex: index,
@@ -75,7 +74,6 @@ MapActions.changeQuayPosition = (index, position) => {
 }
 
 MapActions.changeActiveStopPosition = (position) => {
-  console.log("stopPos", position)
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
       position: position
