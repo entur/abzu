@@ -51,7 +51,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, index } = this.props
+    const { quay, index, translations } = this.props
     const { hidden } = this.state
 
     const style = {
@@ -97,22 +97,22 @@ class QuayItem extends React.Component {
        { hidden ? null
        : <div>
           <TextField
-            hintText="Name"
-            floatingLabelText="Name"
+            hintText={translations.name}
+            floatingLabelText={translations.name}
             value={quay.name}
             style={{width: "95%"}}
             onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
           />
           <TextField
-            hintText="Description"
-            floatingLabelText="Description"
+            hintText={translations.description}
+            floatingLabelText={translations.description}
             value={quay.description || ''}
             style={{width: "95%"}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
           <Checkbox
             defaultChecked={quay.allAreasWheelchairAccessible}
-            label="All areas are wheelchair accessible"
+            label={translations.allAreasWheelchairAccessible}
             onCheck={this.handleWHAChange}
             style={{marginBottom: "10px", width: "95%", marginTop: "10px"}}
             />

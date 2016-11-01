@@ -91,6 +91,12 @@ class EditStopBox extends React.Component {
       captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
     }
 
+    const quayItemTranslations = {
+      name: formatMessage({id: 'name'}),
+      description: formatMessage({id: 'description'}),
+      allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'})
+    }
+
     const categoryStyle = {
       fontWeight: 600,
       marginRight: 5
@@ -211,6 +217,7 @@ class EditStopBox extends React.Component {
             ? <div style={quayStyle}>
               { activeStopPlace.markerProps.quays.map( (quay,index) =>
                 <QuayItem
+                  translations={quayItemTranslations}
                   key={"quay-" + index}
                   quay={quay}
                   ref={'quay-' + index}

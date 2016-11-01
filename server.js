@@ -119,7 +119,7 @@ convictPromise.then( (convict) => {
       }
   }
 
-  const getPage = (dependencies) =>
+  const getPage = () =>
     `<html>
       <head>
         <title>Stop places</title>
