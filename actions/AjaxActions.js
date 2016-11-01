@@ -1,6 +1,7 @@
 import * as types from './actionTypes'
 import UserActions from './UserActions'
 import axios from 'axios'
+import { setDecimalPrecision } from '../utils'
 
 var AjaxActions = {}
 
@@ -116,6 +117,14 @@ export const formatMarkers = (data) => {
 
     return data.map ( (stop, index) => {
 
+      let quays = stop.quays
+      quays.map( (quay) => {
+        quay.centroid.location = {
+          latitude: setDecimalPrecision(quay.centroid.location.latitude, 6),
+          longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
+        }
+      })
+
       let suggestion = {
         text: '<<>>',
         value: stop.id,
@@ -123,12 +132,15 @@ export const formatMarkers = (data) => {
           key: `marker${index}`,
           name: stop.name || '',
           id: stop.id,
-          position: [stop.centroid.location.latitude, stop.centroid.location.longitude],
+          position: [
+            setDecimalPrecision(stop.centroid.location.latitude,6),
+            setDecimalPrecision(stop.centroid.location.longitude,6)
+          ],
           children: stop.name,
           description: stop.description || '',
           municipality: stop.municipality,
           county: stop.county,
-          quays: stop.quays,
+          quays: quays,
           stopPlaceType: stop.stopPlaceType
         }
       }

@@ -5,6 +5,7 @@ import leafletConfig from '../config/leafletConfig'
 import LeafletMap from '../components/LeafletMap'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
+import { setDecimalPrecision } from '../utils'
 
 class EditStopMap extends React.Component {
 
@@ -17,10 +18,15 @@ class EditStopMap extends React.Component {
     const { dispatch } = this.props
     const position = event.target.getLatLng()
 
+    let formattedPosition = {
+      lat: setDecimalPrecision(position.lat,6),
+      lng: setDecimalPrecision(position.lng,6)
+    }
+
     if (isQuay) {
-      dispatch(MapActions.changeQuayPosition(index, position))
+      dispatch(MapActions.changeQuayPosition(index, formattedPosition))
     } else {
-      dispatch(MapActions.changeActiveStopPosition(position))
+      dispatch(MapActions.changeActiveStopPosition(formattedPosition))
     }
   }
 
