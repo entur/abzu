@@ -38,6 +38,8 @@
   "favorites_title" : "Your saved searches",
   "go_back" : "Back",
   "undo_changes" : "Discard",
-  "all_areas_wheelchair_accessible" : "All areas wheelchair accessible"
-
+  "all_areas_wheelchair_accessible" : "All areas wheelchair accessible",
+  "platform" : "Platform",
+  "track": "Track",
+  "gate" : "Gate"
 }

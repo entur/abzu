@@ -105,16 +105,28 @@ class EditStopBox extends React.Component {
       </div>
     )
 
-    let captionText = formatMessage({id: 'new_stop_title'})
+   let captionText = formatMessage({id: 'new_stop_title'})
+
+   let quayItemName = null
+
+   stopTypes[locale].forEach( (stopType) => {
+    if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
+      quayItemName = stopType.quayItemName
+    } 
+   })
 
     if (activeStopPlace && activeStopPlace.markerProps.id) {
       captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
     }
 
-    const quayItemTranslations = {
+    let quayItemTranslations = {
       name: formatMessage({id: 'name'}),
       description: formatMessage({id: 'description'}),
-      allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'})
+      allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
+    }
+
+    if (quayItemName !== null) {
+      quayItemTranslations.quayItemName = formatMessage({id: quayItemName})
     }
 
     const categoryStyle = {

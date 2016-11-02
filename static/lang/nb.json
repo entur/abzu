@@ -38,5 +38,8 @@
   "favorites_title" : "Dine lagrede søk",
   "go_back" : "Tilbake",
   "undo_changes" : "Forkast",
-  "all_areas_wheelchair_accessible" : "Alle områder er rullestolvennlige"
+  "all_areas_wheelchair_accessible" : "Alle områder er rullestolvennlige",
+  "platform" : "Plattform",
+  "track": "Spor",
+  "gate" : "Gate"
 }

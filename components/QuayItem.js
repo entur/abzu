@@ -25,9 +25,14 @@ class QuayItem extends React.Component {
     this.setState({hidden : !hidden})
   }
 
-  handleNameChange = (event) => {
+  handleNameChange = (event, textPadding) => {
     const {dispatch, index} = this.props
-    dispatch(MapActions.changeQuayName(index, event.target.value))
+    let newName = event.target.value.replace(textPadding, '')
+    if (event.target.value.length < textPadding.length) {
+      newName = ''
+    }
+
+    dispatch(MapActions.changeQuayName(index, newName))
   }
 
   handleDescriptionChange = (event) => {
@@ -53,6 +58,7 @@ class QuayItem extends React.Component {
 
     const { quay, index, translations } = this.props
     const { hidden } = this.state
+
 
     const style = {
       color: "#2196F3",
@@ -96,13 +102,18 @@ class QuayItem extends React.Component {
         </div>
        { hidden ? null
        : <div>
+          {
+          translations.quayItemName
+          ?
           <TextField
-            hintText={translations.name}
-            floatingLabelText={translations.name}
-            value={quay.name}
+            hintText={translations.quayItemName}
+            floatingLabelText={translations.quayItemName}
+            value={translations.quayItemName + '-' + quay.name}
             style={{width: "95%"}}
-            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
+            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e, translations.quayItemName + '-')}
           />
+          : null
+          }
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
