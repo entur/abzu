@@ -112,7 +112,7 @@ class EditStopBox extends React.Component {
    stopTypes[locale].forEach( (stopType) => {
     if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
       quayItemName = stopType.quayItemName
-    } 
+    }
    })
 
     if (activeStopPlace && activeStopPlace.markerProps.id) {
@@ -123,6 +123,7 @@ class EditStopBox extends React.Component {
       name: formatMessage({id: 'name'}),
       description: formatMessage({id: 'description'}),
       allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
+      unsaved: formatMessage({id: 'unsaved'})
     }
 
     if (quayItemName !== null) {

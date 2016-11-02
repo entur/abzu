@@ -41,5 +41,6 @@
   "all_areas_wheelchair_accessible" : "All areas wheelchair accessible",
   "platform" : "Platform",
   "track": "Track",
-  "gate" : "Gate"
+  "gate" : "Gate",
+  "unsaved" : "Unsaved"
 }

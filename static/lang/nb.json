@@ -41,5 +41,6 @@
   "all_areas_wheelchair_accessible" : "Alle områder er rullestolvennlige",
   "platform" : "Plattform",
   "track": "Spor",
-  "gate" : "Gate"
+  "gate" : "Gate",
+  "unsaved" : "Ikke lagret"
 }

@@ -59,7 +59,6 @@ class QuayItem extends React.Component {
     const { quay, index, translations } = this.props
     const { hidden } = this.state
 
-
     const style = {
       color: "#2196F3",
       cursor: "pointer",
@@ -86,8 +85,11 @@ class QuayItem extends React.Component {
       <div>
         <div style={style}>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>{`${quay.name} (${quay.id || '?'})`}
-            { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}> - unsaved</span> : null}
+            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
+            <div style={{display: 'inline-block'}} onClick={() => this.toggleHidden()}>
+              {`${translations.quayItemName ? translations.quayItemName : ''} ${quay.name} (${quay.id || '?'})`}
+            </div>
+            { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
             { hidden
               ? <NavigationExpandMore
                   onClick={() => this.toggleHidden()}
@@ -108,9 +110,9 @@ class QuayItem extends React.Component {
           <TextField
             hintText={translations.quayItemName}
             floatingLabelText={translations.quayItemName}
-            value={translations.quayItemName + '-' + quay.name}
+            value={translations.quayItemName + ' ' + quay.name}
             style={{width: "95%"}}
-            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e, translations.quayItemName + '-')}
+            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e, translations.quayItemName + ' ')}
           />
           : null
           }
