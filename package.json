@@ -34,6 +34,7 @@
     "glob": "7.1.0",
     "google-maps": "^3.2.1",
     "image-webpack-loader": "2.0.0",
+    "intl": "^1.2.5",
     "jsdom": "9.4.2",
     "jsdom-global": "2.1.0",
     "keycloak-js": "1.9.8",

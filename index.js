@@ -8,6 +8,7 @@ import configureStore from './store/store'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import cfgreader from './config/readConfig'
+import 'intl'
 
 // used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
