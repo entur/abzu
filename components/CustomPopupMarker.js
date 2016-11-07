@@ -2,24 +2,29 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
-import markerShadow from "../static/icons/marker-shadow.png"
 import stopIcon from "../static/icons/stop-icon-2x.svg"
 import ModalityIcon from './ModalityIcon'
-import DivIcon from 'react-leaflet-div-icon'
+import ReactDOM from 'react-dom/server'
 
 class CustomPopupMarker extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      popupVisible: false
-    }
-  }
+  /* avoid rerendering markers if significant information to
+     the marker in question has been changed */
+  shouldComponentUpdate(nextProps, nextState) {
 
-  handleTogglePopup() {
-    this.setState({
-      popupVisible: !this.state.popupVisible
-    })
+    if (this.props.markerIndex == '0--1' || this.props.markerIndex  == 0) {
+
+        if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
+          return true
+        }
+        if (this.props.stopType !== nextProps.stopType) {
+          return true
+        }
+        if (this.props.children !== nextProps.children) {
+          return true
+        }
+      }
+    return false
   }
 
   render() {
@@ -27,8 +32,6 @@ class CustomPopupMarker extends React.Component {
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
           changeCoordinates, text, active, stopType  } = this.props
-
-    let { popupVisible } = this.state
 
     if (!children && !children.length) {
       children = text.untitled
@@ -45,73 +48,56 @@ class CustomPopupMarker extends React.Component {
       cursor: "pointer",
     } : { color: '#00cc00' }
 
-    const coordStyles = {
-      display: 'block',
-      marginTop: 5
-    }
 
-    const popupWrapping = {
-      width: 300
-    }
+    let divIconBody = (
+      <SuperIcon
+        markerIndex={markerIndex}
+        isQuay={isQuay}
+        stopType={stopType}
+        active={active}
+        />
+    )
 
-    const closeButton = {
-      fontWeight: 'bold',
-      fontStretch: 'normal',
-      fontSize: 16,
-      lineJeight: 14,
-      float: 'right',
-      color: 'rgb(195, 195, 195)',
-      margin: 10,
-      background: 'transparent'
-    }
+    let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
+
+    let icon = divIcon({html: divIconBodyMarkup})
 
     return (
 
-      <DivIcon
-        position={position}
-        className='markerBus'
+      <Marker
         key={"key" + markerIndex}
+        icon={icon}
+        position={position}
         onDragend={(event) => { handleDragEnd(isQuay, markerIndex, event) }}
         draggable={draggable && active}
         >
-        <div>
-          <div
-            onClick={this.handleTogglePopup.bind(this)}
-            >
-            <SuperIcon
-              markerIndex={markerIndex}
-              isQuay={isQuay}
-              stopType={stopType}
-              active={active}
-              onClick={this.handleTogglePopup.bind(this)}
-              />
+        <Popup
+          style={{bottom: 38, color: 'red'}}
+          >
+          <div>
+            <span style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
+              marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15
+            }}
+            onClick={handleOnClick}
+            >{children}</span>
+            <div
+              id={"pmPosition" + markerIndex}
+              style={{display: 'block', borderBottom: '1px dotted black', cursor: 'pointer', width: 'auto'}}
+              onClick={() => changeCoordinates && changeCoordinates(isQuay, markerIndex, position)}
+              >
+              <span style={{display: 'inline-block', textAlign: 'center'}}>
+                {position[0]}
+              </span>
+              <span style={{display: 'inline-block', marginLeft: 3}}>
+                {position[1]}
+              </span>
+            </div>
           </div>
-          { popupVisible
-            ?
-             (<div style={popupWrapping} className='leaflet-popup-content-wrapper'>
-               <div onClick={this.handleTogglePopup.bind(this)} style={closeButton}>x</div>
-               <div className='leaflet-popup-content'>
-                 <span style={style} onClick={handleOnClick}>{children}</span>
-                 <div style={coordStyles}>
-                   <span style={{fontWeight: 600}}>{text.coordinates}</span>
-                     <div
-                       style={editCoordsStyle}
-                       onClick={() => changeCoordinates && changeCoordinates(isQuay, markerIndex, position)}
-                       >
-                       <span>{position[0]},</span>
-                       <span style={{marginLeft: 2}}>{position[1]}</span>
-                     </div>
-                 </div>
-               </div>
-              </div>)
-            : null
-          }
-          </div>
-       </DivIcon>
+        </Popup>
+      </Marker>
     )
   }
 }
-
 
 
 const getIconIdByModality = (type) => {
@@ -153,10 +139,9 @@ class SuperIcon extends React.Component {
         {isQuay
           ? <div className="q-marker">Q</div>
           : <svg className='stop-marker-svg'>
-              <use xlinkHref={ config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
+              <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
             </svg>
          }
-        <img className='stop-marker-shadow' src={markerShadow}/>
       </div>
     )
   }

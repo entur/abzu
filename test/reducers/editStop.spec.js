@@ -56,10 +56,10 @@ let stopPlace = {
 }
 
 const initialState = {
-  centerPosition: {
-    lat: 67.928595,
-    lng: 13.0830025,
-  },
+  centerPosition: [
+    "67.928595",
+    "13.0830025",
+  ],
   neighbouringMarkers: [],
   zoom: 17,
   activeStopIsLoading: false,
@@ -68,6 +68,7 @@ const initialState = {
   activeStopPlace: null,
   neighbouringMarkers: []
 }
+
 
 describe('edit stop reducer', () => {
 
@@ -79,10 +80,10 @@ describe('edit stop reducer', () => {
   })
 
   it('Should change map upon CHANGED_MAP_CENTER', () => {
-    const centerPosition = {
-      lat: 67.928595,
-      lng: 13.0830025,
-    }
+    const centerPosition = [
+      "67.928595",
+      "13.0830025"
+    ]
     expect(editStopReducer(initialState, { centerPosition: centerPosition} ))
       .toEqual({ ...initialState,centerPosition: centerPosition })
   })

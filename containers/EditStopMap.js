@@ -68,7 +68,6 @@ class EditStopMap extends React.Component {
           lng: Number(value.split(',')[1])
         }))
       }
-
     }
   }
 

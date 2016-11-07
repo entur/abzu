@@ -127,7 +127,7 @@ class EditStopBox extends React.Component {
     }
 
     if (quayItemName !== null) {
-      quayItemTranslations.quayItemName = formatMessage({id: quayItemName})
+      quayItemTranslations.quayItemName = formatMessage({id: quayItemName || 'name'})
     }
 
     const categoryStyle = {
@@ -190,6 +190,8 @@ class EditStopBox extends React.Component {
       fontWeight: '0.9em'
     }
 
+    var stopPlaceType = activeStopPlace.markerProps.stopPlaceType
+
     return (
 
       <div style={SbStyle}>
@@ -207,7 +209,7 @@ class EditStopBox extends React.Component {
             onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
             >
             <ModalityIcon
-              type={activeStopPlace.markerProps.stopPlaceType}
+              type={stopPlaceType}
             />
           </IconButton>
           <Popover
@@ -244,8 +246,8 @@ class EditStopBox extends React.Component {
         <div style={{fontWeight: 600, marginTop: 10}}>
           Quays ({activeStopPlace.markerProps.quays.length})
           { quaysExpanded
-          ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
-          : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()}style={{float: "right"}}/>
+          ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
+          : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
           }
         </div>
         { quaysExpanded
@@ -253,7 +255,6 @@ class EditStopBox extends React.Component {
             <RaisedButton
               onClick={this.handleAddQuay.bind(this)}
               style={addQuayStyle}
-              mini={true}
               icon={<ContentAdd/>}
               label={formatMessage({id: 'new_quay'})}
             />

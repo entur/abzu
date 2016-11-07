@@ -1,28 +1,40 @@
 import React from 'react'
 
-const ModalityIcon = (props) =>  {
+class ModalityIcon extends React.Component {
 
-  const svgStyle = props.svgStyle || {
-    width: 25,
-    height: 25,
-    display: 'inline-block',
-    marginRight: 5
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.type == this.props.type) {
+      return false
+    }
+    return true
   }
 
-  const iconStyle = props.iconStyle || {
-    float: 'left',
-    transform: 'translateY(2px)'
+  render() {
+
+    const svgStyle = this.props.svgStyle || {
+      width: 25,
+      height: 25,
+      display: 'inline-block',
+      marginRight: 5
+    }
+
+    const iconStyle = this.props.iconStyle || {
+      float: 'left',
+      transform: 'translateY(2px)'
+    }
+
+    const iconId = getIconIdByModality(this.props.type)
+
+    /* as of react@15.3.2 the xlinkHref tag is not optimal, and will not reload unless caching is disabled */
+    return (
+      <span style={iconStyle}>
+        <svg
+          style={svgStyle}
+          dangerouslySetInnerHTML={{__html: `<use xlink:href="${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}"></use>`}}
+          />
+      </span>
+    )
   }
-
-  const iconId = getIconIdByModality(props.type)
-
-  return (
-    <span style={iconStyle}>
-      <svg style={svgStyle}>
-        <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg' + "#icon-icon_" + iconId} />
-      </svg>
-    </span>
-  )
 }
 
 const getIconIdByModality = (type) => {
@@ -39,9 +51,7 @@ const getIconIdByModality = (type) => {
     'liftStation' : 'lift',
     'other' : 'no-information'
   }
-  var iconId = modalityMap[type]
-
-  return iconId || 'no-information'
+  return modalityMap[type] || 'no-information'
 }
 
 export default ModalityIcon

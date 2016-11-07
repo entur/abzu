@@ -1,10 +1,10 @@
 import * as types from './../actions/actionTypes'
 
 const initialState = {
-  centerPosition: {
-    lat: 67.928595,
-    lng: 13.0830025,
-  },
+  centerPosition: [
+    "67.928595",
+    "13.0830025",
+  ],
   neighbouringMarkers: [],
   zoom: 17,
   activeStopIsLoading: false,

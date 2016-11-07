@@ -252,7 +252,6 @@ class SearchBox extends React.Component {
                 icon={<ContentAdd/>}
                 primary={true}
                 label={formatMessage({id: 'new_stop'})}
-                mini={true}
               />
               }
             </div>
