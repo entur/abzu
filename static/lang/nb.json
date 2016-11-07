@@ -1,6 +1,7 @@
 {
   "_empty": " ",
   "_title": "Stoppestedregister",
+  "filters" : "Filtre ...",
   "filter_by_name": "Navn",
   "filter_by_topography" : "Kommune / fylke",
   "type": "type",

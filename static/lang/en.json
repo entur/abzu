@@ -1,6 +1,7 @@
 {
   "_empty": " ",
   "_title": "Stop Place Register",
+  "filters" : "Filters ...",
   "filter_by_name": "Name",
   "filter_by_topography" : "Muncipality / county",
   "type": "type",
