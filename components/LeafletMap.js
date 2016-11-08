@@ -35,10 +35,12 @@ export default class LeafLetMap extends React.Component {
       border: "2px solid #eee"
     }
 
+    const centerPosition = position.map( (pos) => Number(pos))
+
     return (
       <Lmap ref='map'
         style={lmapStyle}
-        center={position}
+        center={centerPosition}
         zoom={zoom}
         zoomControl={false}
         length={4}

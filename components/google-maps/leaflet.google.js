@@ -22,7 +22,15 @@ L.Google = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		mapOptions: {
-			backgroundColor: '#dddddd'
+			backgroundColor: '#dddddd',
+			styles: [
+          {
+            featureType: "transit.station.bus",
+            stylers: [
+              { visibility: "off" }
+            ]
+          }
+			]
 		}
 	},
 
@@ -43,7 +51,7 @@ L.Google = L.Class.extend({
 			//this._ready = google.maps.Map !== undefined;
 			//if (!this._ready) L.Google.asyncWait.push(this);
 		});
-		self._type = type || 'SATELLITE';
+		self._type = type || 'TERRAIN';
 	},
 
 	onAdd: function (map, insertAtTheBottom) {

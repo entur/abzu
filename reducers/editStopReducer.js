@@ -2,8 +2,8 @@ import * as types from './../actions/actionTypes'
 
 const initialState = {
   centerPosition: [
-    "67.928595",
-    "13.0830025",
+    67.928595,
+    13.083002,
   ],
   neighbouringMarkers: [],
   zoom: 17,

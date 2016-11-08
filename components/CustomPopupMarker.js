@@ -37,6 +37,8 @@ class CustomPopupMarker extends React.Component {
       children = text.untitled
     }
 
+    console.warn("position", position)
+
     const editCoordsStyle = {
       display: 'block',
       borderBottom: '1px dotted black',
