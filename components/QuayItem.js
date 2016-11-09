@@ -25,16 +25,6 @@ class QuayItem extends React.Component {
     this.setState({hidden : !hidden})
   }
 
-  handleNameChange = (event, textPadding) => {
-    const {dispatch, index} = this.props
-    let newName = event.target.value.replace(textPadding, '')
-    if (event.target.value.length < textPadding.length) {
-      newName = ''
-    }
-
-    dispatch(MapActions.changeQuayName(index, newName))
-  }
-
   handleDescriptionChange = (event) => {
     const {dispatch, index} = this.props
     dispatch(MapActions.changeQuayDescription(index, event.target.value))
@@ -87,7 +77,7 @@ class QuayItem extends React.Component {
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
             <div style={{display: 'inline-block'}} onClick={() => this.toggleHidden()}>
-              {`${translations.quayItemName ? translations.quayItemName : ''} ${quay.name} (${quay.id || '?'})`}
+              {`${translations.quayItemName ? translations.quayItemName : ''} ${index+1} (${quay.id || '?'})`}
             </div>
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
             { hidden
@@ -104,18 +94,6 @@ class QuayItem extends React.Component {
         </div>
        { hidden ? null
        : <div>
-          {
-          translations.quayItemName
-          ?
-          <TextField
-            hintText={translations.quayItemName}
-            floatingLabelText={translations.quayItemName}
-            value={translations.quayItemName + ' ' + quay.name}
-            style={{width: "95%"}}
-            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e, translations.quayItemName + ' ')}
-          />
-          : null
-          }
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}

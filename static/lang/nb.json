@@ -43,5 +43,6 @@
   "platform" : "Plattform",
   "track": "Spor",
   "gate" : "Gate",
-  "unsaved" : "Ikke lagret"
+  "unsaved" : "Ikke lagret",
+  "port" : "Havn"
 }

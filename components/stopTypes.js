@@ -3,11 +3,11 @@ const stopTypes = {
       {
         name: "Busstopp",
         value: "onstreetBus",
-        quayItemName: null
+        quayItemName: 'platform'
       }, {
         name: "Trikkestop",
         value: "onstreetTram",
-        quayItemName: null
+        quayItemName: 'platform'
       }, {
         name: "Flyplass",
         value: "airport",
@@ -19,7 +19,7 @@ const stopTypes = {
       }, {
         name: "T-banestopp",
         value: "metroStation",
-        quayItemName: 'platform'
+        quayItemName: 'track'
       }, {
         name: "Bussterminal",
         value: "busStation",
@@ -27,11 +27,11 @@ const stopTypes = {
       }, {
         name: "Bilferjekai",
         value: "harbourPort",
-        quayItemName: null
+        quayItemName: 'port'
       }, {
         name: "Passasjerbåtkai",
         value: "ferryStop",
-        quayItemName: null
+        quayItemName: 'port'
       }, {
         name: "Kabelbanestopp",
         value: "liftStation",
@@ -42,31 +42,40 @@ const stopTypes = {
     "en" : [
       {
         name: "Bus stop",
-        value: "onstreetBus"
+        value: "onstreetBus",
+        quayItemName: 'platform'
       }, {
         name: "City tram",
-        value: "onstreetTram"
+        value: "onstreetTram",
+        quayItemName: 'platform'
       }, {
         name: "Airport",
-        value: "airport"
+        value: "airport",
+        quayItemName: 'gate'
       }, {
         name: "Rail station",
-        value: "railStation"
+        value: "railStation",
+        quayItemName: 'track'
       }, {
         name: "Metro stop",
-        value: "metroStation"
+        value: "metroStation",
+        quayItemName: 'track'
       }, {
         name: "Bus terminal",
-        value: "busStation"
+        value: "busStation",
+        quayItemName: 'platform'
       }, {
         name: "Harbour port",
-        value: "harbourPort"
+        value: "harbourPort",
+        quayItemName: 'port'
       }, {
         name: "Ferry stop",
-        value: "ferryStop"
+        value: "ferryStop",
+        quayItemName: 'port'
       }, {
         name: "Lift station",
-        value: "liftStation"
+        value: "liftStation",
+        quayItemName: null
       }
     ]
   }

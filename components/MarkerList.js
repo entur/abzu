@@ -5,6 +5,7 @@ import { Link, browserHistory } from 'react-router'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
+import stopTypes from './stopTypes'
 
 class MarkerList extends React.Component {
 
@@ -28,7 +29,7 @@ class MarkerList extends React.Component {
   render() {
 
     const { stops, handleDragEnd, changeCoordinates, dragableMarkers } = this.props
-    const { formatMessage } = this.props.intl
+    const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
 
@@ -46,6 +47,17 @@ class MarkerList extends React.Component {
     stops.forEach(({ text, key, markerProps, isNewStop, active }, stopIndex) => {
 
       if (!markerProps) return null
+
+      let formattedStopTypeId = null
+      let formattedStopType = null
+
+      stopTypes[locale].forEach( (stopType) => {
+       if (stopType.value === markerProps.stopPlaceType) {
+         formattedStopTypeId = stopType.quayItemName
+       }
+      })
+
+      formattedStopType = formattedStopTypeId ? formatMessage({id: formattedStopTypeId || 'name'}) : ''
 
       const quays = markerProps.quays
 
@@ -69,6 +81,7 @@ class MarkerList extends React.Component {
             stopIndex={stopIndex}
             position={markerProps.position}
             children={text}
+            formattedStopType={formattedStopType}
             handleDragEnd={handleDragEnd}
             active={active}
             stopType={markerProps.stopPlaceType}
@@ -92,9 +105,10 @@ class MarkerList extends React.Component {
                   ]}
                   isQuay
                   key={"quay-" + stopIndex + "-" + index}
-                  children={quay.name}
+                  children={text}
                   handleDragEnd={handleDragEnd}
                   active={active}
+                  formattedStopType={formattedStopType}
                   changeCoordinates={changeCoordinates}
                   draggable={dragableMarkers}
                   text={newStopMarkerText}

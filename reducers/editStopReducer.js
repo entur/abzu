@@ -45,8 +45,8 @@ const editStopReducer = (state = initialState, action) => {
         description: "",
         centroid: {
           location: {
-            latitude: markerToExpand.markerProps.position[0] + ( Math.floor((Math.random() * 10) + 1) / 10000 ),
-            longitude: markerToExpand.markerProps.position[1] + ( Math.floor((Math.random() * 10) + 1) / 10000)
+            latitude: Number(Number(markerToExpand.markerProps.position[0]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )),
+            longitude: Number(Number(markerToExpand.markerProps.position[1]) + ( Math.floor((Math.random() * 10) + 1) / 10000 ))
           }
         },
         allAreasWheelchairAccessible: false,

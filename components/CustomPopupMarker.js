@@ -23,6 +23,10 @@ class CustomPopupMarker extends React.Component {
         if (this.props.children !== nextProps.children) {
           return true
         }
+
+        if (this.props.formattedStopType !== nextProps.formattedStopType) {
+          return true
+        }
       }
     return false
   }
@@ -31,13 +35,11 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
-          changeCoordinates, text, active, stopType  } = this.props
+          changeCoordinates, text, active, stopType, formattedStopType  } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
     }
-
-    console.warn("position", position)
 
     const editCoordsStyle = {
       display: 'block',
@@ -81,7 +83,15 @@ class CustomPopupMarker extends React.Component {
               marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15
             }}
             onClick={handleOnClick}
-            >{children}</span>
+            >
+              {children}
+            </span>
+            { isQuay
+            ? <span
+                style={{fontWeight: 600, textAlign: 'center', width: '100%', display: 'inline-block', marginBottom: 5}}
+              >{formattedStopType + " " + (markerIndex+1)}</span>
+            : null
+            }
             <div
               id={"pmPosition" + markerIndex}
               style={{display: 'block', borderBottom: '1px dotted black', cursor: 'pointer', width: 'auto'}}
