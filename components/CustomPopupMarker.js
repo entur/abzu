@@ -132,7 +132,14 @@ class SuperIcon extends React.Component {
           <use xlinkHref={stopIcon + '#marker'}/>
         </svg>
         {isQuay
-          ? <div className="q-marker">Q</div>
+          ? <div className="q-marker">
+              <span style={{color: '#fff', display: 'block'}}>Q</span>
+              <span
+                  style={{color: '#fff', display: 'block', marginRight: 1, fontSize: String(markerIndex+1).length > 1 ? '0.8em' : '1em'}}
+                >
+                {markerIndex+1}
+              </span>
+        </div>
           : <svg className='stop-marker-svg'>
               <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
             </svg>

@@ -23,7 +23,7 @@ export default class LeafLetMap extends React.Component {
     const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
 
     let { markers } = this.props
-    const { BaseLayer, Overlay } = LayersControl
+    const { BaseLayer } = LayersControl
 
     if (newStopPlace && typeof newStopPlace == 'object') {
       markers = markers.concat(newStopPlace)
@@ -35,7 +35,9 @@ export default class LeafLetMap extends React.Component {
       border: "2px solid #eee"
     }
 
-    const centerPosition = position.map( (pos) => Number(pos))
+    const centerPosition = Array.isArray(position)
+        ? position.map( (pos) => Number(pos))
+        : [Number(position.lat), Number(position.lng)]
 
     return (
       <Lmap ref='map'

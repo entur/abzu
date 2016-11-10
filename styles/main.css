@@ -32,8 +32,8 @@ p, h1,h2,h3,h4,h5, span {
   height: 200px;
   color: #fff;
   position: absolute;
-  top: -25px;
-  left: 2px;
+  top: -29px;
+  left: 3px;
   font-size: 0.8em;
   z-index: 9999999;
 }
