@@ -58,8 +58,8 @@ const stopTypes = {
         quayItemName: 'track'
       }, {
         name: "Metro stop",
-        value: "metroStation",
-        quayItemName: 'track'
+        quayItemName: 'track',
+        value: "metroStation"
       }, {
         name: "Bus terminal",
         value: "busStation",

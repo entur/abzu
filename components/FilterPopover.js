@@ -1,8 +1,6 @@
 import React from 'react'
 import Checkbox from 'material-ui/Checkbox'
 import Popover from 'material-ui/Popover'
-import Menu from 'material-ui/Menu'
-import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
 

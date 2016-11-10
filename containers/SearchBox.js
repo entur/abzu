@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
-import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
@@ -26,7 +25,6 @@ class SearchBox extends React.Component {
 
   constructor(props) {
     super(props)
-    var favoriteManager = new FavoriteManager()
     this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
     this.state = {
       showFilter: false
@@ -112,7 +110,7 @@ class SearchBox extends React.Component {
   render() {
 
     const { activeMarker, isCreatingNewStop, searchText, favorited } = this.props
-    const { stopPlaceFilter, topographicalSource, topoiChips } = this.props
+    const { stopPlaceFilter, topographicalSource } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let dataSource = this.props.dataSource || []
@@ -174,13 +172,6 @@ class SearchBox extends React.Component {
       dataSourceContent.push(r)
     })
 
-    let dataSourceWrapper = () => {
-      return (
-        <div>
-          <p>Dine søk</p>
-        </div>
-      )
-    }
 
     let favoriteText = {
       title: formatMessage({id: 'favorites_title'}),

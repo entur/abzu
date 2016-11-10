@@ -32,9 +32,6 @@ const sendData = (type, payLoad) => {
 
     const topoiChips = state.userReducer.searchFilters.topoiChips
 
-    let countyRefParams = ''
-    let municipalityRefParams = ''
-
     topoiChips.forEach( (t) => {
       if (t.type === 'county') {
         queryParams.push(`countyReference=${t.ref}`)
@@ -309,7 +306,7 @@ AjaxActions.populateTopograhicalPlaces = () => {
       dispatch( sendData(types.RECEIVED_TOPOGRAPHICAL_PLACES, response.data))
     })
     .catch(function(response) {
-      console.error('Unable to populate topopgraphical places')
+      console.error('Unable to populate topopgraphical places', response)
     })
   }
 }

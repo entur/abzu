@@ -1,7 +1,5 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import MarkerList from '../components/MarkerList'
-import leafletConfig from '../config/leafletConfig'
 import LeafletMap from '../components/LeafletMap'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
@@ -10,7 +8,7 @@ import { setDecimalPrecision } from '../utils'
 class EditStopMap extends React.Component {
 
   handleClick(event, map) {
-    let LeafletMap = map.leafletElemenet
+    // unused
   }
 
   handleDragEnd(isQuay, index, event) {

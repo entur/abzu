@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import stopIcon from "../static/icons/stop-icon-2x.svg"
-import ModalityIcon from './ModalityIcon'
 import ReactDOM from 'react-dom/server'
 
 class CustomPopupMarker extends React.Component {
@@ -40,17 +38,6 @@ class CustomPopupMarker extends React.Component {
     if (!children && !children.length) {
       children = text.untitled
     }
-
-    const editCoordsStyle = {
-      display: 'block',
-      borderBottom: '1px dotted black',
-      cursor: 'pointer'
-    }
-
-    const style = !isQuay ? {
-      color: '#0086b3',
-      cursor: "pointer",
-    } : { color: '#00cc00' }
 
 
     let divIconBody = (
@@ -138,10 +125,6 @@ class SuperIcon extends React.Component {
     const { markerIndex, isQuay, stopType, active } = this.props
     const iconId = getIconIdByModality(stopType)
     const fillClass = (active && isQuay) ? "quay" : active ? "" : "neighbour-stop"
-
-    const iconSize = isQuay ? [22, 33] : [30, 45]
-    const iconAnchor = isQuay ? [11, 28] : [17, 42]
-    const shadowAnchor = isQuay ? [11, 8] : [10, 12]
 
     return (
       <div id={'stop-marker-' + markerIndex }>

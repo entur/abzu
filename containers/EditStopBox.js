@@ -1,16 +1,11 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import AutoComplete from 'material-ui/AutoComplete'
-import FontIcon from 'material-ui/FontIcon'
-import SearchBoxDetails from '../components/SearchBoxDetails'
 import QuayItem from '../components/QuayItem'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
-import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
@@ -93,7 +88,7 @@ class EditStopBox extends React.Component {
 
   render() {
 
-    const { activeStopPlace, activeMarkers, dispatch, hasContentChanged } = this.props
+    const { activeStopPlace, hasContentChanged } = this.props
     const { quaysExpanded } = this.state
     const { formatMessage, locale } = this.props.intl
 
@@ -128,11 +123,6 @@ class EditStopBox extends React.Component {
 
     if (quayItemName !== null) {
       quayItemTranslations.quayItemName = formatMessage({id: quayItemName || 'name'})
-    }
-
-    const categoryStyle = {
-      fontWeight: 600,
-      marginRight: 5
     }
 
     const fixedHeader = {

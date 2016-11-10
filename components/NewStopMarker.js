@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 const newStopIcon = require("../static/icons/new-stop-icon-2x.png")

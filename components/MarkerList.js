@@ -44,7 +44,7 @@ class MarkerList extends React.Component {
       createNow: formatMessage({id: 'create_now'})
     }
 
-    stops.forEach(({ text, key, markerProps, isNewStop, active }, stopIndex) => {
+    stops.forEach(({ text, markerProps, isNewStop, active }, stopIndex) => {
 
       if (!markerProps) return null
 

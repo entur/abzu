@@ -9,7 +9,7 @@ class Root extends React.Component {
 
   componentDidMount() {
 
-    const { dispatch, localization, appliedLocale } = this.props
+    const { dispatch, appliedLocale } = this.props
 
     configureLocalization(appliedLocale).then( (localization) => {
       dispatch ( UserActions.changeLocalization(localization) )

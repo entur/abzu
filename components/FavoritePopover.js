@@ -1,10 +1,7 @@
 import React from 'react'
-import Checkbox from 'material-ui/Checkbox'
 import Popover from 'material-ui/Popover'
-import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
-import Divider from 'material-ui/Divider'
 import FavoriteManager from '../singletons/FavoriteManager'
 import StarIcon from 'material-ui/svg-icons/toggle/star'
 
@@ -17,7 +14,7 @@ class FilterPopover extends React.Component {
       }
     }
 
-    handleRequestClose(refs) {
+    handleRequestClose() {
       this.setState({
         open: false
       })
@@ -33,7 +30,7 @@ class FilterPopover extends React.Component {
 
     render() {
 
-      const { items, filter, caption, onItemClick, text } = this.props
+      const { caption, onItemClick, text } = this.props
 
       let favorites = new FavoriteManager().getFavorites()
 
@@ -77,7 +74,7 @@ class FilterPopover extends React.Component {
                      cursor: 'pointer',
                      background: '#fff'
                    }}
-                   onClick={() => { this.handleRequestClose(this.refs); onItemClick(item) }}
+                   onClick={() => { this.handleRequestClose(); onItemClick(item) }}
                   >
                    {`${item.title}`}
                  </MenuItem>
