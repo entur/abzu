@@ -12,20 +12,12 @@ class CustomPopupMarker extends React.Component {
 
     if (this.props.markerIndex == '0--1' || this.props.markerIndex  == 0) {
 
-        if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
+      if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position) ||
+            (this.props.stopType !== nextProps.stopType) || (this.props.children !== nextProps.children) ||
+            (this.props.formattedStopType !== nextProps.formattedStopType)) {
           return true
         }
-        if (this.props.stopType !== nextProps.stopType) {
-          return true
-        }
-        if (this.props.children !== nextProps.children) {
-          return true
-        }
-
-        if (this.props.formattedStopType !== nextProps.formattedStopType) {
-          return true
-        }
-      }
+    }
     return false
   }
 

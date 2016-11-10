@@ -4,7 +4,9 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import * as reducers from '../reducers'
 import { Router, Route, browserHistory } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux'
+import createDebounce from 'redux-debounced'
+
 
 const loggerMiddleware = createLogger()
 
@@ -13,12 +15,12 @@ var enchancer = {}
 if (process.env.NODE_ENV === 'development') {
 
   enchancer = compose(
-    applyMiddleware(thunkMiddleware, loggerMiddleware),
+    applyMiddleware(createDebounce(), thunkMiddleware,loggerMiddleware),
   )
 
 } else {
   enchancer = compose(
-    applyMiddleware(thunkMiddleware)
+    applyMiddleware( createDebounce(), thunkMiddleware)
   )
 }
 

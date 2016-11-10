@@ -4,8 +4,10 @@ import LeafletMap from '../components/LeafletMap'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
+import debounce from 'debounce'
 
 class EditStopMap extends React.Component {
+
 
   handleClick(event, map) {
     // unused
@@ -41,6 +43,7 @@ class EditStopMap extends React.Component {
     }
 
     this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
+
   }
 
   handleBaselayerChanged(value) {

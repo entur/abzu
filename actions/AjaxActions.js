@@ -14,7 +14,7 @@ const sendData = (type, payLoad) => {
 
  AjaxActions.getStopNames = (name) => {
 
-  return function(dispatch, getState) {
+  const thunk = function(dispatch, getState) {
 
     let URL = window.config.tiamatBaseUrl + 'stop_place/'
     const state = getState()
@@ -56,11 +56,20 @@ const sendData = (type, payLoad) => {
     })
 
   }
+
+   thunk.meta = {
+     debounce: {
+       time: 300,
+       key: 'search-for-stop'
+     }
+   }
+
+   return thunk
 }
 
 AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
- return function(dispatch, getState) {
+ const thunk = function(dispatch, getState) {
 
    const URL =  window.config.tiamatBaseUrl + 'stop_place/search'
    const state = getState()
@@ -86,12 +95,22 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
      dispatch (sendData(types.ERROR_STOPS_OVERVIEW_NEARBY, response.data))
    })
  }
+
+  thunk.meta = {
+    debounce: {
+      time: 500,
+      key: 'get-stops-nearby-overall'
+    }
+  }
+
+  return thunk
+
 }
 
 
  AjaxActions.getStopsNearbyForEditingStop = (boundingBox, ignoreStopPlaceId) => {
 
-  return function(dispatch) {
+  const thunk = function(dispatch) {
 
     const URL =  window.config.tiamatBaseUrl + 'stop_place/search'
 
@@ -110,6 +129,16 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
       dispatch (sendData(types.ERROR_STOPS_EDITING_NEARBY, response.data))
     })
   }
+
+   thunk.meta = {
+     debounce: {
+       time: 500,
+       key: 'get-stops-nearby-editing'
+     }
+   }
+
+   return thunk
+
 }
 
 const removeQuaysForStops = (markers) => {
