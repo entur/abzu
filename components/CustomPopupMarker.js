@@ -10,14 +10,19 @@ class CustomPopupMarker extends React.Component {
      the marker in question has been changed */
   shouldComponentUpdate(nextProps, nextState) {
 
-    if (this.props.markerIndex == '0--1' || this.props.markerIndex  == 0) {
-
-      if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position) ||
-            (this.props.stopType !== nextProps.stopType) || (this.props.children !== nextProps.children) ||
-            (this.props.formattedStopType !== nextProps.formattedStopType)) {
-          return true
-        }
+    if (this.props.active !== nextProps.active) {
+      return true
     }
+
+    if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
+      return true
+    }
+
+    if (!nextProps.isQuay && ((this.props.stopType !== nextProps.stopType) || (this.props.children !== nextProps.children) ||
+        (this.props.formattedStopType !== nextProps.formattedStopType))) {
+      return true
+    }
+
     return false
   }
 
@@ -54,9 +59,7 @@ class CustomPopupMarker extends React.Component {
         onDragend={(event) => { handleDragEnd(isQuay, markerIndex, event) }}
         draggable={draggable && active}
         >
-        <Popup
-          style={{bottom: 38, color: 'red'}}
-          >
+        <Popup>
           <div>
             <span style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
               marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15
@@ -67,19 +70,19 @@ class CustomPopupMarker extends React.Component {
             </span>
             { isQuay
             ? <span
-                style={{fontWeight: 600, textAlign: 'center', width: '100%', display: 'inline-block', marginBottom: 5}}
+                style={{fontWeight: 600, textAlign: 'center', width: '100%', fontSize: '1.2em', marginTop: -2, display: 'inline-block', marginBottom: 5}}
               >{formattedStopType + " " + (markerIndex+1)}</span>
             : null
             }
             <div
               id={"pmPosition" + markerIndex}
-              style={{display: 'block', borderBottom: '1px dotted black', cursor: 'pointer', width: 'auto'}}
+              style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
               onClick={() => changeCoordinates && changeCoordinates(isQuay, markerIndex, position)}
               >
-              <span style={{display: 'inline-block', textAlign: 'center'}}>
+              <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
                 {position[0]}
               </span>
-              <span style={{display: 'inline-block', marginLeft: 3}}>
+              <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
                 {position[1]}
               </span>
             </div>
@@ -125,12 +128,11 @@ class SuperIcon extends React.Component {
         </svg>
         {isQuay
           ? <div className="q-marker">
-              <span style={{color: '#fff', display: 'block'}}>Q</span>
-              <span
-                  style={{color: '#fff', display: 'block', marginRight: 1, fontSize: String(markerIndex+1).length > 1 ? '0.8em' : '1em'}}
+              <div
+                  style={{color: '#fff', marginRight: 1, fontSize: String(markerIndex+1).length > 1 ? '1em' : '1.2em'}}
                 >
-                {markerIndex+1}
-              </span>
+                Q<sub style={{color: '#fff'}}>{markerIndex+1}</sub>
+              </div>
         </div>
           : <svg className='stop-marker-svg'>
               <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />

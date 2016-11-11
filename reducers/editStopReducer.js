@@ -1,4 +1,5 @@
 import * as types from './../actions/actionTypes'
+import { setDecimalPrecision } from '../utils'
 
 const initialState = {
   centerPosition: [
@@ -23,11 +24,14 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.RECEIVED_STOP:
       const original = JSON.parse(JSON.stringify(action.payLoad))
+      // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder
+      let filteredNeighbouringMarkers = state.neighbouringMarkers.filter((stop) => stop.markerProps.id !== action.payLoad.markerProps.id)
       return Object.assign({}, state, {
         activeStopPlaceOriginal: original,
         editedStopChanged: false,
         activeStopIsLoading: false,
-        activeStopPlace: action.payLoad
+        activeStopPlace: action.payLoad,
+        neighbouringMarkers: filteredNeighbouringMarkers
       })
 
     case types.REQUESTED_STOP:
@@ -45,8 +49,8 @@ const editStopReducer = (state = initialState, action) => {
         description: "",
         centroid: {
           location: {
-            latitude: Number(Number(markerToExpand.markerProps.position[0]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )),
-            longitude: Number(Number(markerToExpand.markerProps.position[1]) + ( Math.floor((Math.random() * 10) + 1) / 10000 ))
+            latitude: setDecimalPrecision(Number(Number(markerToExpand.markerProps.position[0]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )), 6),
+            longitude: setDecimalPrecision(Number(Number(markerToExpand.markerProps.position[1]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )), 6)
           }
         },
         allAreasWheelchairAccessible: false,
@@ -103,7 +107,10 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesASP})
 
     case types.RECEIVED_STOPS_EDITING_NEARBY:
-      return Object.assign({}, state, {neighbouringMarkers: action.payLoad})
+      // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder
+      let filteredStopsNearby = action.payLoad.filter((stop) => stop.markerProps.id !== state.activeStopPlace.markerProps.id)
+
+      return Object.assign({}, state, {neighbouringMarkers: filteredStopsNearby})
 
     case types.CHANGED_STOP_NAME:
       let activeStopPlaceCSN = {...state.activeStopPlace}
