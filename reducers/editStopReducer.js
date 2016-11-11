@@ -12,7 +12,9 @@ const initialState = {
   editedStopChanged: false,
   activeStopPlaceOriginal: [],
   activeStopPlace: null,
-  neighbouringMarkers: []
+  neighbouringMarkers: [],
+  multiPolylineDataSource: [],
+  enablePolylines: true
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -31,7 +33,8 @@ const editStopReducer = (state = initialState, action) => {
         editedStopChanged: false,
         activeStopIsLoading: false,
         activeStopPlace: action.payLoad,
-        neighbouringMarkers: filteredNeighbouringMarkers
+        neighbouringMarkers: filteredNeighbouringMarkers,
+        multiPolylineDataSource: createMultiPolylineFromQuays(action.payLoad.markerProps.quays)
       })
 
     case types.REQUESTED_STOP:
@@ -134,9 +137,34 @@ const editStopReducer = (state = initialState, action) => {
       const originalCopy = JSON.parse(JSON.stringify(state.activeStopPlaceOriginal))
       return Object.assign({}, state, { editedStopChanged: false, activeStopPlace: originalCopy })
 
+    case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
+      return Object.assign({}, state, { enablePolylines: action.payLoad })
+
     default:
       return state
   }
+}
+
+const createMultiPolylineFromQuays = (quays) => {
+  let emptyMultiPolyline = [
+  ]
+
+  console.log("quays", quays)
+  if (!quays || !quays.length || quays.length === 1) return emptyMultiPolyline
+
+  for (let i = 0; i < quays.length; i+=2) {
+    if (!quays[i] || !quays[i+1]) break
+
+    let startQuayPosition = [Number(quays[i].centroid.location.latitude), Number(quays[i].centroid.location.longitude)]
+    let endQuayPosition = [Number(quays[i+1].centroid.location.latitude), Number(quays[i+1].centroid.location.longitude)]
+
+    let polyline = [startQuayPosition, endQuayPosition]
+    emptyMultiPolyline.push(polyline)
+  }
+
+
+
+  return emptyMultiPolyline
 }
 
 export default editStopReducer

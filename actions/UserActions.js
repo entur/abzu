@@ -41,6 +41,12 @@ UserActions.toggleIsCreatingNewStop = () => {
   }
 }
 
+UserActions.toggleMultiPolylinesEnabled = (value) => {
+  return function(dispatch) {
+    dispatch( sendData( types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value))
+  }
+}
+
 UserActions.applyStopTypeSearchFilter = (filters) => {
   return function(dispatch) {
     dispatch( sendData (types.APPLIED_STOPTYPE_SEARCH_FILTER, filters))

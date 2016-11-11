@@ -1,8 +1,9 @@
 import React from 'react'
 import MarkerList from './MarkerList'
 import MarkerCluster from './MarkerCluster'
-import { Map as Lmap, TileLayer, Popup, ZoomControl, LayersControl } from 'react-leaflet'
+import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
 import { GoogleLayer } from './google-maps/'
+import MultiPolylineList from './MultiPolylineList'
 
 export default class LeafLetMap extends React.Component {
 
@@ -20,7 +21,7 @@ export default class LeafLetMap extends React.Component {
     const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLes'
 
     const { position, zoom, handleDragEnd, handleChangeCoordinates } = this.props
-    const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
+    const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace, enablePolylines } = this.props
 
     let { markers } = this.props
     const { BaseLayer } = LayersControl
@@ -34,6 +35,7 @@ export default class LeafLetMap extends React.Component {
       width: "100%",
       border: "2px solid #eee"
     }
+
 
     const centerPosition = Array.isArray(position)
         ? position.map( (pos) => Number(pos))
@@ -76,6 +78,7 @@ export default class LeafLetMap extends React.Component {
             dragableMarkers={dragableMarkers}
             />
         </MarkerCluster>
+        { enablePolylines ? <MultiPolylineList/> : null }
       </Lmap>)
   }
 }

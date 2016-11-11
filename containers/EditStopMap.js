@@ -97,6 +97,7 @@ class EditStopMap extends React.Component {
         dragableMarkers={true}
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+        enablePolylines={this.props.enablePolylines}
         />
     )
   }
@@ -109,7 +110,8 @@ const mapStateToProps = (state, ownProps) => {
     neighbouringMarkers: state.editStopReducer.neighbouringMarkers,
     zoom: state.editStopReducer.zoom,
     lastUpdated: state.editStopReducer.lastUpdated,
-    activeBaselayer: state.userReducer.activeBaselayer
+    activeBaselayer: state.userReducer.activeBaselayer,
+    enablePolylines: state.editStopReducer.enablePolylines
   }
 }
 

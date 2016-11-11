@@ -66,6 +66,7 @@ class StopPlacesMap extends React.Component {
         dragableMarkers={false}
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+        enablePolylines={false}
         />
     )
   }
