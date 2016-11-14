@@ -10,11 +10,11 @@ const initialState = {
   zoom: 17,
   activeStopIsLoading: false,
   editedStopChanged: false,
+  nearbyStopsCancelToken: null,
   activeStopPlaceOriginal: [],
   activeStopPlace: null,
-  neighbouringMarkers: [],
   multiPolylineDataSource: [],
-  enablePolylines: true
+  enablePolylines: true,
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -34,7 +34,7 @@ const editStopReducer = (state = initialState, action) => {
         activeStopIsLoading: false,
         activeStopPlace: action.payLoad,
         neighbouringMarkers: filteredNeighbouringMarkers,
-        multiPolylineDataSource: createMultiPolylineFromQuays(action.payLoad.markerProps.quays)
+       // multiPolylineDataSource: createMultiPolylineFromQuays(action.payLoad.markerProps.quays)
       })
 
     case types.REQUESTED_STOP:
@@ -108,6 +108,15 @@ const editStopReducer = (state = initialState, action) => {
       activeStopPlacesASP.markerProps.position = [position.lat, position.lng]
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesASP})
+
+    case types.REQUESTED_STOPS_EDITING_NEARBY:
+
+      if (state.nearbyStopsCancelToken != null) {
+        let cancelToken = state.nearbyStopsCancelToken
+        cancelToken('Operation canceled by new request.')
+      }
+
+      return Object.assign({}, state, {nearbyStopsCancelToken: action.payLoad})
 
     case types.RECEIVED_STOPS_EDITING_NEARBY:
       // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder

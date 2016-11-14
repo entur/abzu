@@ -8,7 +8,8 @@ export const initialState = {
   stopPlaceNames: {
     isLoading: false,
     errorMessage: '',
-    places: []
+    places: [],
+    cancelToken: null
   },
   activeStopPlace: {}
 }
@@ -36,7 +37,13 @@ const stopPlacesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {dataSource: action.payLoad})
 
     case types.REQUESTED_STOP_NAMES:
-      return Object.assign({}, state, { stopPlaceNames: { isLoading: true } } )
+
+      if (state.stopPlaceNames && state.stopPlaceNames.cancelToken) {
+        let cancelToken = state.stopPlaceNames.cancelToken
+        cancelToken('Operation canceled by new request.')
+      }
+
+      return Object.assign({}, state, { stopPlaceNames: { isLoading: true, cancelToken: action.payLoad } } )
 
     case types.RECEIVED_STOP_NAMES:
       return Object.assign({}, state, {  stopPlaceNames: { places: action.payLoad, isLoading: false } } )

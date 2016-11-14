@@ -13,7 +13,6 @@ import { injectIntl } from 'react-intl'
 import ModalityIcon from '../components/ModalityIcon'
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import IconButton from 'material-ui/IconButton'
-import Toggle from 'material-ui/Toggle'
 
 class EditStopBox extends React.Component {
 
@@ -72,10 +71,6 @@ class EditStopBox extends React.Component {
     this.props.dispatch(MapActions.discardChangesForEditingStop())
   }
 
-  handleToggleEnableMultiPolylines(event, value) {
-    this.props.dispatch(UserActions.toggleMultiPolylinesEnabled(value))
-  }
-
   handleOpenStopPlaceTypePopover(event) {
     this.setState({
       ...this.state,
@@ -93,7 +88,7 @@ class EditStopBox extends React.Component {
 
   render() {
 
-    const { activeStopPlace, hasContentChanged, isMultiPolylinesEnabled } = this.props
+    const { activeStopPlace, hasContentChanged } = this.props
     const { quaysExpanded } = this.state
     const { formatMessage, locale } = this.props.intl
 
@@ -293,13 +288,6 @@ class EditStopBox extends React.Component {
             onClick={this.handleSave.bind(this)}
             />
         </div>
-          <Toggle
-              style={{paddingTop: 5, width: 200, textAlign: 'center'}}
-              label="Vis ganglenker"
-              toggled={isMultiPolylinesEnabled}
-              onToggle={this.handleToggleEnableMultiPolylines.bind(this)}
-              labelStyle={{fontWeight: 600}}
-          />
       </div> )
     }
 }

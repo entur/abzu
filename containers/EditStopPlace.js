@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import Loader from '../components/Loader'
-import SearchBox from './SearchBox'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
+import PathLinkBox from './PathLinkBox'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 

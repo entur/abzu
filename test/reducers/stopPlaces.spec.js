@@ -12,7 +12,8 @@ const initialState = {
   stopPlaceNames: {
     isLoading: false,
     errorMessage: '',
-    places: []
+    places: [],
+    cancelToken: null
   },
   activeStopPlace: {}
 }
@@ -116,10 +117,11 @@ describe('stop places reducer', () => {
       const isLoading = true
 
       expect(stopPlacesReducer({}, {
-        type: types.REQUESTED_STOP_NAMES
+        type: types.REQUESTED_STOP_NAMES, payLoad: null
       }))
       .toEqual({
         stopPlaceNames: {
+          cancelToken: null,
           isLoading: isLoading
         }
       })

@@ -44,15 +44,26 @@ const sendData = (type, payLoad) => {
       return
     }
 
-    dispatch( sendData(types.REQUESTED_STOP_NAMES, null) )
+    const responseURL = URL + '?' + queryParams.join('&')
 
-    return axios.get(URL + '?' + queryParams.join('&'))
+    var CancelToken = axios.CancelToken
+
+    return axios.get(responseURL, {
+      cancelToken: new CancelToken(function executor(cancel) {
+        dispatch( sendData(types.REQUESTED_STOP_NAMES, cancel) )
+      })
+    })
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
+
       dispatch( sendData(types.RECEIVED_STOP_NAMES, suggestions) )
     })
     .catch(function(response){
-      dispatch( sendData(types.ERROR_STOP_NAMES, response.data) )
+      if (axios.isCancel(response)) {
+        console.warn('Request canceled', response.message);
+      } else {
+        dispatch( sendData(types.ERROR_STOP_NAMES, response.data) )
+      }
     })
 
   }
@@ -107,7 +118,6 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
 }
 
-
  AjaxActions.getStopsNearbyForEditingStop = (boundingBox, ignoreStopPlaceId) => {
 
   const thunk = function(dispatch) {
@@ -119,7 +129,13 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
       ignoreStopPlaceId: ignoreStopPlaceId || 0
     }
 
-    return axios.post(URL, payLoad)
+    var CancelToken = axios.CancelToken
+
+    return axios.post(URL, payLoad, {
+      cancelToken: new CancelToken(function(cancel) {
+        dispatch ( sendData(types.REQUESTED_STOPS_EDITING_NEARBY, cancel) )
+      })
+    })
     .then(function(response) {
       let formattedMarkers = formatMarkers(response.data)
       formattedMarkers = removeQuaysForStops(formattedMarkers)

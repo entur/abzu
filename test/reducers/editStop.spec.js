@@ -64,11 +64,11 @@ const initialState = {
   zoom: 17,
   activeStopIsLoading: false,
   editedStopChanged: false,
+  nearbyStopsCancelToken: null,
   activeStopPlaceOriginal: [],
   activeStopPlace: null,
-  neighbouringMarkers: [],
   multiPolylineDataSource: [],
-  enablePolylines: true
+  enablePolylines: true,
 }
 
 describe('edit stop reducer', () => {
