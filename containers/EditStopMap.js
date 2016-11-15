@@ -9,7 +9,14 @@ class EditStopMap extends React.Component {
 
 
   handleClick(event, map) {
-    // unused
+
+    const { isCreatingPolylines, dispatch } = this.props
+
+    if (isCreatingPolylines) {
+      console.log(event)
+      const coords = [event.latlng.lat, event.latlng.lng]
+      dispatch(UserActions.addCoordinatesToPolylines(coords))
+    }
   }
 
   handleDragEnd(isQuay, index, event) {
@@ -90,7 +97,7 @@ class EditStopMap extends React.Component {
         position={position}
         markers={markers}
         zoom={zoom}
-        onClick={this.handleClick}
+        handleOnClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
@@ -111,7 +118,8 @@ const mapStateToProps = (state, ownProps) => {
     zoom: state.editStopReducer.zoom,
     lastUpdated: state.editStopReducer.lastUpdated,
     activeBaselayer: state.userReducer.activeBaselayer,
-    enablePolylines: state.editStopReducer.enablePolylines
+    enablePolylines: state.editStopReducer.enablePolylines,
+    isCreatingPolylines: state.editStopReducer.isCreatingPoylines
   }
 }
 

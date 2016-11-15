@@ -194,4 +194,28 @@ UserActions.removeStopsNearbyForOverview = () => {
   }
 }
 
+UserActions.startCreatingPolyline = (initialCoords, quayIndex) => {
+  return function(dispatch) {
+    dispatch(sendData(types.STARTED_CREATING_POLYLINE, {
+      coordinates: initialCoords,
+      quayIndex: quayIndex
+    }))
+  }
+}
+
+UserActions.addCoordinatesToPolylines = (coords) => {
+  return function(dispatch) {
+    dispatch(sendData(types.ADDED_COORDINATES_TO_POLYLINE, coords))
+  }
+}
+
+UserActions.addFinalCoordinesToPolylines = (coords, quayIndex) => {
+  return function(dispatch) {
+    dispatch(sendData(types.ADDED_FINAL_COORDINATES_TO_POLYLINE, {
+      coordinates: coords,
+      quayIndex: quayIndex
+    }))
+  }
+}
+
 export default UserActions

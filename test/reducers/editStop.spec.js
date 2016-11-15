@@ -69,6 +69,8 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
+  isCreatingPoylines: false,
+  arrayOfPolylines: []
 }
 
 describe('edit stop reducer', () => {
@@ -350,6 +352,129 @@ describe('edit stop reducer', () => {
     })
 
     expect(finalState.activeStopPlace).toEqual(originalStopPlace)
+
+  })
+
+  it('Should create a new path link from a quay and correct of polylines', () => {
+
+    let coordinates = ["59.505176", "10.505176"]
+    const quayIndex = 0
+
+    let newState = editStopReducer(initialState, {
+      type: types.STARTED_CREATING_POLYLINE,
+      payLoad: {
+        coordinates: coordinates,
+        quayIndex: quayIndex
+      }
+    })
+
+    let polyline = {
+      startQuay: {
+        coordinates: coordinates.map( (c) => Number(c)),
+        index: quayIndex
+      },
+      inlinePositions: []
+    }
+    expect(newState.multiPolylineDataSource).toEqual([polyline])
+
+    let arrayOfMultiPolylines = []
+    let arrayOfPolylines = []
+    arrayOfPolylines.push(coordinates.map( (c) => Number(c)))
+
+    arrayOfMultiPolylines.push(arrayOfPolylines)
+
+    expect(newState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
+
+  })
+
+  it('Should add inline positions to path link and correct array of polylines', () => {
+
+    let coordinates = [59.505176, 10.505176]
+    const quayIndex = 0
+
+    let newState = editStopReducer(initialState, {
+      type: types.STARTED_CREATING_POLYLINE,
+      payLoad: {
+        coordinates: coordinates,
+        quayIndex: quayIndex
+      }
+    })
+
+    let polyline = {
+      startQuay: {
+        coordinates: coordinates,
+        index: quayIndex
+      },
+      inlinePositions: []
+    }
+
+    let exampleCoordinates = [59.0, 10.0]
+
+    let finalState = editStopReducer(newState, {
+      type: types.ADDED_COORDINATES_TO_POLYLINE,
+      payLoad: exampleCoordinates
+    })
+
+    polyline.inlinePositions = [exampleCoordinates]
+
+    expect(finalState.multiPolylineDataSource).toEqual([polyline])
+
+    let arrayOfMultiPolylines = []
+    let arrayOfPolylines = []
+    arrayOfPolylines.push(coordinates)
+    arrayOfPolylines.push(exampleCoordinates)
+    arrayOfMultiPolylines.push(arrayOfPolylines)
+
+    expect(finalState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
+
+  })
+
+  it('Should add end quay to path link and correct array of polylines', () => {
+
+    let coordinates = ["59.505176", "10.505176"]
+    const quayIndex = 0
+
+    let newState = editStopReducer(initialState, {
+      type: types.STARTED_CREATING_POLYLINE,
+      payLoad: {
+        coordinates: coordinates,
+        quayIndex: quayIndex
+      }
+    })
+
+    let polyline = {
+      startQuay: {
+        coordinates: coordinates.map( (c) => Number(c)),
+        index: quayIndex
+      },
+      inlinePositions: []
+    }
+
+    let coordinates2 = [58.2, 11.1]
+    const quayIndex2 = 1
+
+    let finalState = editStopReducer(newState, {
+      type: types.ADDED_FINAL_COORDINATES_TO_POLYLINE,
+      payLoad: {
+        coordinates: coordinates2,
+        quayIndex: quayIndex2
+      }
+    })
+
+    polyline.endQuay = {
+      coordinates: coordinates2,
+      index: quayIndex2
+    }
+
+    expect(finalState.multiPolylineDataSource).toEqual([polyline])
+
+    let arrayOfMultiPolylines = []
+    let arrayOfPolylines = []
+    arrayOfPolylines.push(coordinates.map( (c) => Number(c)).reduce( (prev, next) => [prev,next]))
+    arrayOfPolylines.push(coordinates2.map( (c) => Number(c)).reduce( (prev, next) => [prev,next]))
+    arrayOfMultiPolylines.push(arrayOfPolylines)
+
+    expect(finalState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
 
   })
 

@@ -20,7 +20,7 @@ export default class LeafLetMap extends React.Component {
     // NB: this key is owned by rutebanken.official
     const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLes'
 
-    const { position, zoom, handleDragEnd, handleChangeCoordinates } = this.props
+    const { position, zoom, handleDragEnd, handleChangeCoordinates, handleOnClick } = this.props
     const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace, enablePolylines } = this.props
 
     let { markers } = this.props
@@ -51,6 +51,7 @@ export default class LeafLetMap extends React.Component {
         onDblclick={ e => onDoubleClick && onDoubleClick(e, this.refs.map) }
         onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
         OnBaselayerChange={this.handleBaselayerChanged.bind(this)}
+        onclick={(event) => { handleOnClick && handleOnClick(event, this.refs.map)} }
         >
         <LayersControl position='topright'>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Rutebankens kart')} name='Rutebankens kart'>
@@ -78,7 +79,10 @@ export default class LeafLetMap extends React.Component {
             dragableMarkers={dragableMarkers}
             />
         </MarkerCluster>
-        { enablePolylines ? <MultiPolylineList/> : null }
+        { enablePolylines
+            ?
+            <MultiPolylineList/>
+            : null }
       </Lmap>)
   }
 }

@@ -32,6 +32,7 @@ class EditStopPlace extends React.Component {
       <div>
         <EditStopMap/>
         { isLoading ? <Loader/> : <EditStopBox/> }
+        { isLoading ? null : <PathLinkBox/> }
       </div>
     )
   }

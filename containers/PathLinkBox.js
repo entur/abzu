@@ -40,15 +40,15 @@ class PathLinkBox extends React.Component {
         }
 
         const lines = [
-            [0.0, 0.1]
+
         ]
 
         return (
             <div style={boxWrapperStyle}>
                 <div style={stopBoxBar}>Ganglenker</div>
                 <Toggle
-                    style={{paddingTop: 5, width: 200, textAlign: 'center'}}
-                    label="Vis ganglenker"
+                    style={{paddingTop: 5, width: 250, textAlign: 'center'}}
+                    label="Vis ganglenker på kart"
                     toggled={isMultiPolylinesEnabled}
                     onToggle={this.handleToggleEnableMultiPolylines.bind(this)}
                     labelStyle={{fontWeight: 600, width: 'initial'}}

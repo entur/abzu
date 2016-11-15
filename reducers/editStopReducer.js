@@ -15,6 +15,8 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
+  isCreatingPoylines: false,
+  arrayOfPolylines: []
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -33,8 +35,7 @@ const editStopReducer = (state = initialState, action) => {
         editedStopChanged: false,
         activeStopIsLoading: false,
         activeStopPlace: action.payLoad,
-        neighbouringMarkers: filteredNeighbouringMarkers,
-       // multiPolylineDataSource: createMultiPolylineFromQuays(action.payLoad.markerProps.quays)
+        neighbouringMarkers: filteredNeighbouringMarkers
       })
 
     case types.REQUESTED_STOP:
@@ -149,31 +150,123 @@ const editStopReducer = (state = initialState, action) => {
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad })
 
+    case types.STARTED_CREATING_POLYLINE:
+      const multiPolylinesWithNewStarted = addFirstQuayToPolyline(state.multiPolylineDataSource, action.payLoad)
+      const arrayOfCreated = createArrayOfPolylines(multiPolylinesWithNewStarted.slice(0))
+
+      return Object.assign({}, state, {
+        multiPolylineDataSource: multiPolylinesWithNewStarted,
+        isCreatingPoylines: true,
+        arrayOfPolylines: arrayOfCreated
+      })
+
+    case types.ADDED_COORDINATES_TO_POLYLINE:
+      const multiPolylinesWithCoordsAdded = addPointToPolyline(state.multiPolylineDataSource, action.payLoad)
+      const arrayOfAdded = createArrayOfPolylines(multiPolylinesWithCoordsAdded.slice(0))
+
+      return Object.assign({}, state, {
+        multiPolylineDataSource: multiPolylinesWithCoordsAdded,
+        arrayOfPolylines: arrayOfAdded
+      })
+
+    case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
+      const multiPolylinesWithFinalCoordsAdded = addFinalQuayPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
+      const arrayOfFinal = createArrayOfPolylines(multiPolylinesWithFinalCoordsAdded.slice(0))
+
+      return Object.assign({}, state, {
+        multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
+        isCreatingPoylines: false,
+        arrayOfPolylines: arrayOfFinal
+      })
+
     default:
       return state
   }
 }
 
-const createMultiPolylineFromQuays = (quays) => {
-  let emptyMultiPolyline = [
-  ]
+const addFirstQuayToPolyline = (multiPolylineDataSource, source) => {
 
-  console.log("quays", quays)
-  if (!quays || !quays.length || quays.length === 1) return emptyMultiPolyline
+  try {
 
-  for (let i = 0; i < quays.length; i+=2) {
-    if (!quays[i] || !quays[i+1]) break
+    let polyline = {
+      startQuay: {
+        coordinates: source.coordinates.map( (c) => Number(c)),
+        index: source.quayIndex
+      },
+      inlinePositions: []
+    }
 
-    let startQuayPosition = [Number(quays[i].centroid.location.latitude), Number(quays[i].centroid.location.longitude)]
-    let endQuayPosition = [Number(quays[i+1].centroid.location.latitude), Number(quays[i+1].centroid.location.longitude)]
+    return multiPolylineDataSource.concat(polyline)
 
-    let polyline = [startQuayPosition, endQuayPosition]
-    emptyMultiPolyline.push(polyline)
+  } catch(e) {
+    console.error('addFirstQuayToPolyline', e)
+  }
+}
+
+const addPointToPolyline = (multiPolyline, coords) => {
+
+  try {
+
+    let polylineIndex = multiPolyline.length-1
+
+    if (multiPolyline[polylineIndex]) {
+      multiPolyline[polylineIndex].inlinePositions.push([Number(coords[0]), Number(coords[1])])
+    }
+    return multiPolyline
+  } catch(e) {
+    console.error('addPointToPolyline', e)
+  }
+
+}
+
+const createArrayOfPolylines = (source) => {
+
+  let arrayOfPolylines = []
+
+  if (source.length) {
+
+    source.forEach( (dataSourceItem) => {
+
+      let polyLine = []
+
+      if (dataSourceItem.startQuay) {
+        polyLine.push(dataSourceItem.startQuay.coordinates)
+      }
+
+      if (dataSourceItem.inlinePositions.length) {
+        dataSourceItem.inlinePositions.forEach ( (inlinePosition) => {
+          polyLine.push(inlinePosition)
+        })
+      }
+
+      if (dataSourceItem.endQuay) {
+        polyLine.push(dataSourceItem.endQuay.coordinates)
+      }
+
+      arrayOfPolylines.push(polyLine)
+    })
+  }
+  return arrayOfPolylines
+}
+
+const addFinalQuayPointToPolyline = (multiPolyline, source) => {
+
+  try {
+
+    let polylineIndex = multiPolyline.length-1
+
+    if (multiPolyline[polylineIndex]) {
+      multiPolyline[polylineIndex].endQuay = {
+        coordinates: source.coordinates.map( (c) => Number(c)),
+        index: source.quayIndex
+      }
+    }
+    return multiPolyline
+  } catch(e) {
+    console.error('addFinalQuayPointToPolyline', e)
   }
 
 
-
-  return emptyMultiPolyline
 }
 
 export default editStopReducer

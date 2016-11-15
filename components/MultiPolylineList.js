@@ -1,22 +1,34 @@
 import React from 'react'
-import {MultiPolyline, Popup} from 'react-leaflet'
+import {Polyline, Popup, LayersControl, FeatureGroup} from 'react-leaflet'
 import {connect} from 'react-redux'
 
 class MultiPolylineList extends React.Component {
 
-    render() {
+        shouldComponentUpdate(nextProps, nextState) {
+            return (this.props.multiPolylineDataSource !== nextProps.multiPolylineDataSource)
+        }
 
-        const { multiPolylineDataSource } = this.props
+        render() {
 
-        return (
-            <MultiPolyline color='purple' polylines={multiPolylineDataSource} />
-        )
+            const { multiPolylineDataSource } = this.props
+
+            let lines = multiPolylineDataSource.map( (position, index) => {
+                return <Polyline key={'pl'+index} color='purple' positions={position}>
+                    </Polyline>
+            })
+
+            return (
+                    <FeatureGroup>
+                        {lines}
+                    </FeatureGroup>
+            )
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
+
     return {
-        multiPolylineDataSource: state.editStopReducer.multiPolylineDataSource || []
+        multiPolylineDataSource: state.editStopReducer.arrayOfPolylines
     }
 }
 

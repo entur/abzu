@@ -23,6 +23,10 @@ class CustomPopupMarker extends React.Component {
       return true
     }
 
+    if (this.props.isCreatingPoylines !== nextProps.isCreatingPoylines && nextProps.isQuay) {
+      return true
+    }
+
     return false
   }
 
@@ -30,12 +34,11 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
-          changeCoordinates, text, active, stopType, formattedStopType  } = this.props
+          changeCoordinates, text, active, stopType, formattedStopType, handleCreatePathLink, isCreatingPoylines  } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
     }
-
 
     let divIconBody = (
       <SuperIcon
@@ -73,6 +76,13 @@ class CustomPopupMarker extends React.Component {
                 style={{fontWeight: 600, textAlign: 'center', width: '100%', fontSize: '1.2em', marginTop: -2, display: 'inline-block', marginBottom: 5}}
               >{formattedStopType + " " + (markerIndex+1)}</span>
             : null
+            }
+            { !isQuay
+              ? null
+              : <div
+                  style={{fontWeight: 600, marginBottom: 10, cursor: 'pointer', color: 'blue', width: '100%', display: 'inline-block', textAlign: 'center'}}
+                  onClick={() => { handleCreatePathLink(position, markerIndex) }}
+                >{ isCreatingPoylines ? 'Avslutt ganglenke her' : 'Opprett ganglenke' } </div>
             }
             <div
               id={"pmPosition" + markerIndex}
