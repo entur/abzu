@@ -72,7 +72,19 @@ const editStopReducer = (state = initialState, action) => {
       let markerToReduce = Object.assign({}, state.activeStopPlace, {})
       markerToReduce.markerProps.quays.splice(action.payLoad,1)
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToReduce})
+      const multiPolylinesWithQuayRemoved = changePositionInPolyLineUponQuayRemove(
+          state.multiPolylineDataSource.slice(0),
+          action.payLoad
+      )
+
+      const arrayOfMultiPolylinesWithQuayRemoved = createArrayOfPolylines(multiPolylinesWithQuayRemoved.slice(0))
+
+      return Object.assign({}, state, {
+        editedStopChanged: true,
+        activeStopPlace: markerToReduce,
+        multiPolylineDataSource: multiPolylinesWithQuayRemoved,
+        arrayOfPolylines: arrayOfMultiPolylinesWithQuayRemoved
+      })
 
     case types.CHANGED_QUAY_NAME:
       let markerToChangeQN = Object.assign({}, state.activeStopPlace,{})
@@ -103,7 +115,20 @@ const editStopReducer = (state = initialState, action) => {
           longitude: action.payLoad.position.lng
       }
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesQP})
+      let changedQuayMultiPolyline = changePositionInPolyLineUponQuayMove(
+          state.multiPolylineDataSource.slice(0),
+          quayIndex,
+          [action.payLoad.position.lat, action.payLoad.position.lng]
+      )
+
+      let changedQuayMultiPolylineArray = createArrayOfPolylines(changedQuayMultiPolyline.slice(0))
+
+      return Object.assign({}, state, {
+        editedStopChanged: true,
+        activeStopPlace: activeStopPlacesQP,
+        multiPolylineDataSource: changedQuayMultiPolyline,
+        arrayOfPolylines: changedQuayMultiPolylineArray
+      })
 
     case types.CHANGED_ACTIVE_STOP_POSITION:
       let activeStopPlacesASP = {...state.activeStopPlace}
@@ -147,7 +172,12 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
       const originalCopy = JSON.parse(JSON.stringify(state.activeStopPlaceOriginal))
-      return Object.assign({}, state, { editedStopChanged: false, activeStopPlace: originalCopy })
+      return Object.assign({}, state, {
+        editedStopChanged: false,
+        activeStopPlace: originalCopy,
+        multiPolylineDataSource: [],
+        arrayOfPolylines: []
+      })
 
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad })
@@ -159,6 +189,7 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithNewStarted,
         isCreatingPoylines: true,
+        editedStopChanged: true,
         arrayOfPolylines: arrayOfCreated
       })
 
@@ -282,8 +313,30 @@ const addFinalQuayPointToPolyline = (multiPolyline, source) => {
   } catch(e) {
     console.error('addFinalQuayPointToPolyline', e)
   }
+}
 
+const changePositionInPolyLineUponQuayMove = (multiPolyline, quayIndex, coordinates) => {
 
+  multiPolyline.map( (polyline) => {
+
+    if (polyline.startQuay && polyline.startQuay.index == quayIndex) {
+      polyline.startQuay.coordinates = coordinates
+    }
+
+    if (polyline.endQuay && polyline.endQuay.index == quayIndex) {
+      polyline.endQuay.coordinates = coordinates
+    }
+    return polyline
+  })
+  return multiPolyline
+}
+
+const changePositionInPolyLineUponQuayRemove =  (multiPolyline, quayIndex) => {
+
+  return multiPolyline.filter( (polyline) => {
+    return ((polyline.startQuay.index !== quayIndex) &&
+        (polyline.endQuay.index !== quayIndex))
+  })
 }
 
 export default editStopReducer
