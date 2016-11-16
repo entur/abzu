@@ -17,7 +17,7 @@ class PathLinkBox extends React.Component {
         const boxWrapperStyle = {
             background: '#fff',
             position: 'absolute',
-            top: '78vh',
+            top: '82vh',
             padding: 10,
             margin: 20,
             width: 460,
@@ -40,9 +40,6 @@ class PathLinkBox extends React.Component {
             fontWeight: '0.9em'
         }
 
-        const lines = [
-
-        ]
 
         return (
             <div style={boxWrapperStyle}>
@@ -54,21 +51,6 @@ class PathLinkBox extends React.Component {
                     onToggle={this.handleToggleEnableMultiPolylines.bind(this)}
                     labelStyle={{fontWeight: 600, width: 'initial'}}
                 />
-                {
-                    !isMultiPolylinesEnabled
-                    ? null
-                    :
-                    <div>
-                        <ol>
-                            { lines.map( (line, index) => {
-                                return (<li key={'polyline'+index}>
-                                    {line.join(' => ')}
-                                </li>)
-                            })
-                            }
-                        </ol>
-                    </div>
-                }
             </div>
         )
     }
