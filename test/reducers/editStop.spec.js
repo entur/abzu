@@ -477,6 +477,4 @@ describe('edit stop reducer', () => {
     expect(finalState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
 
   })
-
-
 })

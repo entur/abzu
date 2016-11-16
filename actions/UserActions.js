@@ -218,4 +218,10 @@ UserActions.addFinalCoordinesToPolylines = (coords, quayIndex) => {
   }
 }
 
+UserActions.removePolylineFromIndex = (index) => {
+  return function(dispatch) {
+    dispatch(sendData(types.REMOVED_POLYLINE_FROM_INDEX, index))
+  }
+}
+
 export default UserActions

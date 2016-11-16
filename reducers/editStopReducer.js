@@ -181,6 +181,21 @@ const editStopReducer = (state = initialState, action) => {
         arrayOfPolylines: arrayOfFinal
       })
 
+    case types.REMOVED_POLYLINE_FROM_INDEX:
+      const multiPolylinesRemovePolylindex = state.multiPolylineDataSource.slice(0)
+
+      if (multiPolylinesRemovePolylindex[action.payLoad]) {
+        multiPolylinesRemovePolylindex.splice(action.payLoad, 1)
+      }
+
+      const arrayOfRemoved = createArrayOfPolylines(multiPolylinesRemovePolylindex.slice(0))
+      return Object.assign({}, state, {
+        multiPolylineDataSource: multiPolylinesRemovePolylindex,
+        arrayOfPolylines: arrayOfRemoved
+      })
+
+      return
+
     default:
       return state
   }
