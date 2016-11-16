@@ -81,7 +81,7 @@ export default class LeafLetMap extends React.Component {
         </MarkerCluster>
         { enablePolylines
             ?
-            <MultiPolylineList/>
+            <MultiPolylineList map={this.refs.map}/>
             : null }
       </Lmap>)
   }

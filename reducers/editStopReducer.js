@@ -320,11 +320,11 @@ const changePositionInPolyLineUponQuayMove = (multiPolyline, quayIndex, coordina
   multiPolyline.map( (polyline) => {
 
     if (polyline.startQuay && polyline.startQuay.index == quayIndex) {
-      polyline.startQuay.coordinates = coordinates
+      polyline.startQuay.coordinates = coordinates.map( (coordinate) => Number(coordinate))
     }
 
     if (polyline.endQuay && polyline.endQuay.index == quayIndex) {
-      polyline.endQuay.coordinates = coordinates
+      polyline.endQuay.coordinates = coordinates.map( (coordinate) => Number(coordinate))
     }
     return polyline
   })
