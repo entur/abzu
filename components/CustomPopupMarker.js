@@ -122,7 +122,6 @@ const getIconIdByModality = (type) => {
   return iconId || 'no-information'
 }
 
-
 class SuperIcon extends React.Component {
 
   render() {

@@ -56,7 +56,7 @@ const sendData = (type, payLoad) => {
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
 
-      dispatch( sendData(types.RECEIVED_STOP_NAMES, suggestions) )
+      dispatch( sendData(types.RECEIVED_STOP_NAMES, removeQuaysForStops(suggestions)) )
     })
     .catch(function(response){
       if (axios.isCancel(response)) {
