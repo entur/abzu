@@ -132,7 +132,7 @@ class SearchBox extends React.Component {
       width: 460,
       margin: 10,
       position: "absolute",
-      zIndex: 2,
+      zIndex: 999,
       padding: 10,
       border: "1px solid rgb(81, 30, 18)"
     }

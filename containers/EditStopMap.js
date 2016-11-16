@@ -39,16 +39,16 @@ class EditStopMap extends React.Component {
   handleMapMoveEnd(event, {leafletElement}) {
 
     let bounds = leafletElement.getBounds()
-    let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
+	let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
 
-    let boundingBox = {
-      xMin: bounds.getSouthWest().lng,
-      yMin: bounds.getSouthWest().lat,
-      xMax: bounds.getNorthEast().lng,
-      yMax: bounds.getNorthEast().lat
-    }
+	let boundingBox = {
+	  xMin: bounds.getSouthWest().lng,
+	  yMin: bounds.getSouthWest().lat,
+	  xMax: bounds.getNorthEast().lng,
+	  yMax: bounds.getNorthEast().lat
+	}
 
-    this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
+	this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
 
   }
 

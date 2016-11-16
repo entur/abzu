@@ -60,7 +60,7 @@ const sendData = (type, payLoad) => {
     })
     .catch(function(response){
       if (axios.isCancel(response)) {
-        console.warn('Request canceled', response.message);
+        //console.warn('Request canceled', response.message);
       } else {
         dispatch( sendData(types.ERROR_STOP_NAMES, response.data) )
       }
@@ -142,7 +142,11 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
       dispatch (sendData(types.RECEIVED_STOPS_EDITING_NEARBY, formattedMarkers))
     })
     .catch(function(response) {
-      dispatch (sendData(types.ERROR_STOPS_EDITING_NEARBY, response.data))
+      if (axios.isCancel(response)) {
+        //console.warn('Request canceled', response.message);
+      } else {
+        dispatch (sendData(types.ERROR_STOPS_EDITING_NEARBY, response.data))
+      }
     })
   }
 

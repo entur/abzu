@@ -35,7 +35,9 @@ const editStopReducer = (state = initialState, action) => {
         editedStopChanged: false,
         activeStopIsLoading: false,
         activeStopPlace: action.payLoad,
-        neighbouringMarkers: filteredNeighbouringMarkers
+        neighbouringMarkers: filteredNeighbouringMarkers,
+        multiPolylineDataSource: [],
+        arrayOfPolylines: []
       })
 
     case types.REQUESTED_STOP:

@@ -41,8 +41,8 @@ p, h1,h2,h3,h4,h5, span {
 .stop-marker-svg {
   height: 24px;
   width: 24px;
-  left: -7px;
-  top: -38px;
+  left: -7px !important;
+  top: -38px !important;
   fill: #fff;
   z-index: 999;
   position: absolute;

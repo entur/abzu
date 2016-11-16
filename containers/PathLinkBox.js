@@ -17,11 +17,12 @@ class PathLinkBox extends React.Component {
         const boxWrapperStyle = {
             background: '#fff',
             position: 'absolute',
-            top: 720,
+            top: '78vh',
             padding: 10,
             margin: 20,
             width: 460,
-            border: '1px solid #511e12'
+            border: '1px solid #511e12',
+            zIndex: 999
         }
 
         const stopBoxBar = {

@@ -18,9 +18,9 @@ class MultiPolylineList extends React.Component {
             })
 
             return (
-                    <FeatureGroup>
-                        {lines}
-                    </FeatureGroup>
+                <FeatureGroup>
+                    {lines}
+                </FeatureGroup>
             )
     }
 }

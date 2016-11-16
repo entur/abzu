@@ -144,25 +144,23 @@ class EditStopBox extends React.Component {
       width: 460,
       margin: 20,
       position: "absolute",
-      zIndex: 2,
+      zIndex: 999,
       padding: 10
     }
 
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: 300,
+      height: '30vh',
       position: "relative",
       display: "block",
-      zIndex: 2
+      zIndex: 999
     }
 
     const addQuayStyle = {
-      position: "absolute",
-      zIndex: 999,
-      top: 538,
       marginLeft: 10,
-      float: "right"
+      float: "left",
+      margin: '15 10'
     }
 
     const stopBoxBar = {
@@ -240,15 +238,6 @@ class EditStopBox extends React.Component {
           : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
           }
         </div>
-        { quaysExpanded
-          ?
-            <RaisedButton
-              onClick={this.handleAddQuay.bind(this)}
-              style={addQuayStyle}
-              icon={<ContentAdd/>}
-              label={formatMessage({id: 'new_quay'})}
-            />
-          : null }
         <div style={scrollable}>
           { quaysExpanded
             ? <div style={quayStyle}>
@@ -281,6 +270,15 @@ class EditStopBox extends React.Component {
                 onClick={this.handleGoBack.bind(this)}
                 />
           }
+        { quaysExpanded
+            ?
+            <RaisedButton
+                onClick={this.handleAddQuay.bind(this)}
+                style={addQuayStyle}
+                icon={<ContentAdd/>}
+                label={formatMessage({id: 'new_quay'})}
+            />
+            : null }
           <RaisedButton
             primary={true}
             label={formatMessage({id: 'save'})}
