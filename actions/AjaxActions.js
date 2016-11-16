@@ -176,8 +176,9 @@ export const formatMarkers = (data) => {
 
     return data.map ( (stop, index) => {
 
-      let quays = stop.quays
-      quays.map( (quay) => {
+      stop.quays
+          .sort( (q1,q2) => q1.id > q2.id)
+          .map( (quay) => {
         quay.centroid.location = {
           latitude: setDecimalPrecision(quay.centroid.location.latitude, 6),
           longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
@@ -199,7 +200,7 @@ export const formatMarkers = (data) => {
           description: stop.description || '',
           municipality: stop.municipality,
           county: stop.county,
-          quays: quays,
+          quays: stop.quays,
           stopPlaceType: stop.stopPlaceType
         }
       }
