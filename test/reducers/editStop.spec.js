@@ -69,8 +69,7 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
-  isCreatingPoylines: false,
-  arrayOfPolylines: []
+  isCreatingPoylines: false
 }
 
 describe('edit stop reducer', () => {
@@ -355,7 +354,7 @@ describe('edit stop reducer', () => {
 
   })
 
-  it('Should create a new path link from a quay and correct of polylines', () => {
+  it('Should create a new path link from a quay', () => {
 
     let coordinates = ["59.505176", "10.505176"]
     const quayIndex = 0
@@ -377,17 +376,9 @@ describe('edit stop reducer', () => {
     }
     expect(newState.multiPolylineDataSource).toEqual([polyline])
 
-    let arrayOfMultiPolylines = []
-    let arrayOfPolylines = []
-    arrayOfPolylines.push(coordinates.map( (c) => Number(c)))
-
-    arrayOfMultiPolylines.push(arrayOfPolylines)
-
-    expect(newState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
-
   })
 
-  it('Should add inline positions to path link and correct array of polylines', () => {
+  it('Should add inline positions to path link', () => {
 
     let coordinates = [59.505176, 10.505176]
     const quayIndex = 0
@@ -419,17 +410,10 @@ describe('edit stop reducer', () => {
 
     expect(finalState.multiPolylineDataSource).toEqual([polyline])
 
-    let arrayOfMultiPolylines = []
-    let arrayOfPolylines = []
-    arrayOfPolylines.push(coordinates)
-    arrayOfPolylines.push(exampleCoordinates)
-    arrayOfMultiPolylines.push(arrayOfPolylines)
-
-    expect(finalState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
 
   })
 
-  it('Should add end quay to path link and correct array of polylines', () => {
+  it('Should add end quay to path link', () => {
 
     let coordinates = ["59.505176", "10.505176"]
     const quayIndex = 0
@@ -467,14 +451,6 @@ describe('edit stop reducer', () => {
     }
 
     expect(finalState.multiPolylineDataSource).toEqual([polyline])
-
-    let arrayOfMultiPolylines = []
-    let arrayOfPolylines = []
-    arrayOfPolylines.push(coordinates.map( (c) => Number(c)).reduce( (prev, next) => [prev,next]))
-    arrayOfPolylines.push(coordinates2.map( (c) => Number(c)).reduce( (prev, next) => [prev,next]))
-    arrayOfMultiPolylines.push(arrayOfPolylines)
-
-    expect(finalState.arrayOfPolylines).toEqual(arrayOfMultiPolylines)
 
   })
 })

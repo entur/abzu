@@ -16,7 +16,6 @@ const initialState = {
   multiPolylineDataSource: [],
   enablePolylines: true,
   isCreatingPoylines: false,
-  arrayOfPolylines: []
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -37,7 +36,6 @@ const editStopReducer = (state = initialState, action) => {
         activeStopPlace: action.payLoad,
         neighbouringMarkers: filteredNeighbouringMarkers,
         multiPolylineDataSource: [],
-        arrayOfPolylines: []
       })
 
     case types.REQUESTED_STOP:
@@ -77,13 +75,10 @@ const editStopReducer = (state = initialState, action) => {
           action.payLoad
       )
 
-      const arrayOfMultiPolylinesWithQuayRemoved = createArrayOfPolylines(multiPolylinesWithQuayRemoved.slice(0))
-
       return Object.assign({}, state, {
         editedStopChanged: true,
         activeStopPlace: markerToReduce,
         multiPolylineDataSource: multiPolylinesWithQuayRemoved,
-        arrayOfPolylines: arrayOfMultiPolylinesWithQuayRemoved
       })
 
     case types.CHANGED_QUAY_NAME:
@@ -121,13 +116,10 @@ const editStopReducer = (state = initialState, action) => {
           [action.payLoad.position.lat, action.payLoad.position.lng]
       )
 
-      let changedQuayMultiPolylineArray = createArrayOfPolylines(changedQuayMultiPolyline.slice(0))
-
       return Object.assign({}, state, {
         editedStopChanged: true,
         activeStopPlace: activeStopPlacesQP,
         multiPolylineDataSource: changedQuayMultiPolyline,
-        arrayOfPolylines: changedQuayMultiPolylineArray
       })
 
     case types.CHANGED_ACTIVE_STOP_POSITION:
@@ -176,7 +168,6 @@ const editStopReducer = (state = initialState, action) => {
         editedStopChanged: false,
         activeStopPlace: originalCopy,
         multiPolylineDataSource: [],
-        arrayOfPolylines: []
       })
 
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
@@ -184,32 +175,26 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.STARTED_CREATING_POLYLINE:
       const multiPolylinesWithNewStarted = addFirstQuayToPolyline(state.multiPolylineDataSource, action.payLoad)
-      const arrayOfCreated = createArrayOfPolylines(multiPolylinesWithNewStarted.slice(0))
 
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithNewStarted,
         isCreatingPoylines: true,
-        editedStopChanged: true,
-        arrayOfPolylines: arrayOfCreated
+        editedStopChanged: true
       })
 
     case types.ADDED_COORDINATES_TO_POLYLINE:
       const multiPolylinesWithCoordsAdded = addPointToPolyline(state.multiPolylineDataSource, action.payLoad)
-      const arrayOfAdded = createArrayOfPolylines(multiPolylinesWithCoordsAdded.slice(0))
 
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithCoordsAdded,
-        arrayOfPolylines: arrayOfAdded
+        lastAddedCoordinate: action.payLoad
       })
 
     case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
       const multiPolylinesWithFinalCoordsAdded = addFinalQuayPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
-      const arrayOfFinal = createArrayOfPolylines(multiPolylinesWithFinalCoordsAdded.slice(0))
-
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
-        isCreatingPoylines: false,
-        arrayOfPolylines: arrayOfFinal
+        isCreatingPoylines: false
       })
 
     case types.REMOVED_POLYLINE_FROM_INDEX:
@@ -219,13 +204,20 @@ const editStopReducer = (state = initialState, action) => {
         multiPolylinesRemovePolylindex.splice(action.payLoad, 1)
       }
 
-      const arrayOfRemoved = createArrayOfPolylines(multiPolylinesRemovePolylindex.slice(0))
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesRemovePolylindex,
-        arrayOfPolylines: arrayOfRemoved
       })
 
-      return
+    case types.EDITED_TIME_ESTIMATE_FOR_POLYLINE:
+      let multiPolyLineForTimeEstimateChange = state.multiPolylineDataSource.slice(0)
+
+      if (multiPolyLineForTimeEstimateChange[action.payLoad.index] != null) {
+        multiPolyLineForTimeEstimateChange[action.payLoad.index] = {
+            ...multiPolyLineForTimeEstimateChange[action.payLoad.index],
+            estimate: action.payLoad.estimate
+        }
+      }
+      return Object.assign({}, state, { multiPolylineDataSource: multiPolyLineForTimeEstimateChange})
 
     default:
       return state
@@ -265,36 +257,6 @@ const addPointToPolyline = (multiPolyline, coords) => {
     console.error('addPointToPolyline', e)
   }
 
-}
-
-const createArrayOfPolylines = (source) => {
-
-  let arrayOfPolylines = []
-
-  if (source.length) {
-
-    source.forEach( (dataSourceItem) => {
-
-      let polyLine = []
-
-      if (dataSourceItem.startQuay) {
-        polyLine.push(dataSourceItem.startQuay.coordinates)
-      }
-
-      if (dataSourceItem.inlinePositions.length) {
-        dataSourceItem.inlinePositions.forEach ( (inlinePosition) => {
-          polyLine.push(inlinePosition)
-        })
-      }
-
-      if (dataSourceItem.endQuay) {
-        polyLine.push(dataSourceItem.endQuay.coordinates)
-      }
-
-      arrayOfPolylines.push(polyLine)
-    })
-  }
-  return arrayOfPolylines
 }
 
 const addFinalQuayPointToPolyline = (multiPolyline, source) => {

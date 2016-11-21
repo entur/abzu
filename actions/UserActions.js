@@ -224,4 +224,12 @@ UserActions.removePolylineFromIndex = (index) => {
   }
 }
 
+UserActions.editPolylineTimeEstimate = (index, estimate) => {
+  return function(dispatch) {
+    dispatch(sendData(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {
+      index: index,
+      estimate: estimate
+    }))
+  }
+}
 export default UserActions

@@ -7,17 +7,20 @@ import {LatLng} from 'leaflet'
 
 class MultiPolylineList extends React.Component {
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return (this.props.multiPolylineDataSource !== nextProps.multiPolylineDataSource)
-    }
-
     handleRemovePolyline(index) {
         this.props.dispatch(UserActions.removePolylineFromIndex(index))
     }
 
+    handleEditTimeEstimate(index, initValue) {
+        let estimate = prompt("Oppgi estimert gangavstand i minutter", String(initValue || 0))
+        if (estimate && !isNaN(estimate)) {
+            this.props.dispatch(UserActions.editPolylineTimeEstimate(index, parseInt(estimate)))
+        }
+    }
+
     render() {
 
-        const { multiPolylineDataSource } = this.props
+        const { multiPolylineDataSource, lastAddedCoordinate } = this.props
 
         const polylinePopupStyle = {
             cursor: 'pointer',
@@ -29,11 +32,15 @@ class MultiPolylineList extends React.Component {
             fontWeight: 600
         }
 
-        let lines = multiPolylineDataSource.map( (positions, index) => {
+        let lines = multiPolylineDataSource.map( (polyline, index) => {
+
+            let coordsArray = arrayOfPolylinesFromPolyline(polyline)
 
             let color = GenerateColor(index)
 
-            let latlngDistances = positions.map ( (position) => new LatLng(position[0], position[1]))
+            let estimateText = polyline.estimate ? (polyline.estimate + ' minutter') : 'Hvor lang tid tar denne ruten?'
+
+            let latlngDistances = coordsArray.map ( (position) => new LatLng(position[0], position[1]))
             let totalDistance = 0
 
             for (let i = 0; i < latlngDistances.length; i++) {
@@ -42,14 +49,20 @@ class MultiPolylineList extends React.Component {
             }
 
             return (
-                <Polyline weight={10} key={'pl'+index} color={color} positions={positions}>
+                <Polyline weight={10} key={'pl'+index} color={color} positions={coordsArray}>
                     <Popup key={'pl'+index}>
                         <div>
                             <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>Ganglenke {index+1}</div>
                             <div>
                                 <span
-                                    style={{width: '100%', textAlign: 'center', marginTop: '10', fontWeight: 600, display: 'inline-block'}}
+                                    style={{width: '100%', textAlign: 'center', marginTop: 10, fontWeight: 600, display: 'inline-block'}}
                                 >{parseFloat(totalDistance.toFixed(2))} m</span>
+                                <span
+                                    style={polylinePopupStyle}
+                                    onClick={() => this.handleEditTimeEstimate(index, polyline.estimate)}
+                                >
+                                    {estimateText}
+                                </span>
                                 <span
                                     onClick={() => this.handleRemovePolyline(index)}
                                     style={polylinePopupStyle}
@@ -70,9 +83,9 @@ class MultiPolylineList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
     return {
-        multiPolylineDataSource: state.editStopReducer.arrayOfPolylines
+        multiPolylineDataSource: state.editStopReducer.multiPolylineDataSource,
+        lastAddedCoordinate: state.editStopReducer.lastAddedCoordinate
     }
 }
 
@@ -80,6 +93,27 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         dispatch: dispatch
     }
+}
+
+const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
+
+    let arrayOfPolylines = []
+
+    if (dataSourceItem.startQuay) {
+        arrayOfPolylines.push(dataSourceItem.startQuay.coordinates)
+    }
+
+    if (dataSourceItem.inlinePositions.length) {
+        dataSourceItem.inlinePositions.forEach((inlinePosition) => {
+            arrayOfPolylines.push(inlinePosition)
+        })
+    }
+
+    if (dataSourceItem.endQuay) {
+        arrayOfPolylines.push(dataSourceItem.endQuay.coordinates)
+    }
+
+    return arrayOfPolylines
 }
 
 export default connect(
