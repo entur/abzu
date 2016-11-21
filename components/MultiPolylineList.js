@@ -42,6 +42,7 @@ class MultiPolylineList extends React.Component {
 
             let latlngDistances = coordsArray.map ( (position) => new LatLng(position[0], position[1]))
             let totalDistance = 0
+            let isCompleted = polyline.endQuay
 
             for (let i = 0; i < latlngDistances.length; i++) {
                 if (latlngDistances[i+1] == null) break
@@ -49,7 +50,7 @@ class MultiPolylineList extends React.Component {
             }
 
             return (
-                <Polyline weight={10} key={'pl'+index} color={color} positions={coordsArray}>
+                <Polyline weight={6} key={'pl'+index} color={color} positions={coordsArray} opacity={isCompleted ? 0.8: 1.0} dashArray="10,14" lineJoin='round'>
                     <Popup key={'pl'+index}>
                         <div>
                             <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>Ganglenke {index+1}</div>

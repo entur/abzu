@@ -26,8 +26,11 @@ class MarkerList extends React.Component {
     this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
   }
 
-  handleCreatePathLink(coords, quayIndex) {
-    if (this.props.isCreatingPoylines) {
+  handleUpdatePathLink(coords, quayIndex) {
+    if (this.props.isCreatingPolylines && this.props.polylineStartQuay.quayIndex == quayIndex) {
+      this.props.dispatch(UserActions.removeLastPolyline())
+    }
+    else if (this.props.isCreatingPolylines) {
       this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, quayIndex))
     } else {
       this.props.dispatch(UserActions.startCreatingPolyline(coords, quayIndex))
@@ -120,8 +123,7 @@ class MarkerList extends React.Component {
                   changeCoordinates={changeCoordinates}
                   draggable={dragableMarkers}
                   text={newStopMarkerText}
-                  isCreatingPoylines={isCreatingPoylines}
-                  handleCreatePathLink={this.handleCreatePathLink.bind(this)}
+                  handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)
             })
@@ -144,7 +146,8 @@ MarkerList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     path: state.userReducer.path,
-    isCreatingPoylines: state.editStopReducer.isCreatingPoylines
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
+    polylineStartQuay: state.editStopReducer.polylineStartQuay
   }
 }
 

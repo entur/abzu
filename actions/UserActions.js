@@ -224,6 +224,12 @@ UserActions.removePolylineFromIndex = (index) => {
   }
 }
 
+UserActions.removeLastPolyline = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.REMOVED_LAST_POLYLINE, null))
+  }
+}
+
 UserActions.editPolylineTimeEstimate = (index, estimate) => {
   return function(dispatch) {
     dispatch(sendData(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {

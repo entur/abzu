@@ -119,7 +119,7 @@ const mapStateToProps = (state, ownProps) => {
     lastUpdated: state.editStopReducer.lastUpdated,
     activeBaselayer: state.userReducer.activeBaselayer,
     enablePolylines: state.editStopReducer.enablePolylines,
-    isCreatingPolylines: state.editStopReducer.isCreatingPoylines
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
   }
 }
 

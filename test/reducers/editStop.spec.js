@@ -69,8 +69,13 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
-  isCreatingPoylines: false
+  isCreatingPolylines: false,
+  polylineStartQuay: {
+    coordinates: [],
+    quayIndex: null
+  }
 }
+
 
 describe('edit stop reducer', () => {
 

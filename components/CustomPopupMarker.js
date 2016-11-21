@@ -3,6 +3,7 @@ import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import stopIcon from "../static/icons/stop-icon-2x.svg"
 import ReactDOM from 'react-dom/server'
+import { connect } from 'react-redux'
 
 class CustomPopupMarker extends React.Component {
 
@@ -23,7 +24,7 @@ class CustomPopupMarker extends React.Component {
       return true
     }
 
-    if (this.props.isCreatingPoylines !== nextProps.isCreatingPoylines && nextProps.isQuay) {
+    if (this.props.isCreatingPolylines !== nextProps.isCreatingPolylines && nextProps.isQuay) {
       return true
     }
 
@@ -34,7 +35,7 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
-          changeCoordinates, text, active, stopType, formattedStopType, handleCreatePathLink, isCreatingPoylines  } = this.props
+          changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink, isCreatingPolylines, polylineStartQuay  } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
@@ -50,6 +51,10 @@ class CustomPopupMarker extends React.Component {
     )
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
+    let pathLinkText = isCreatingPolylines ? 'Avslutt ganglenke her' : 'Opprett ganglenke'
+    if (isQuay && isCreatingPolylines && polylineStartQuay.quayIndex == markerIndex) {
+      pathLinkText = 'Avbryt ganglenke'
+    }
 
     let icon = divIcon({html: divIconBodyMarkup})
 
@@ -81,8 +86,8 @@ class CustomPopupMarker extends React.Component {
               ? null
               : <div
                   style={{fontWeight: 600, marginBottom: 10, cursor: 'pointer', color: 'blue', width: '100%', display: 'inline-block', textAlign: 'center'}}
-                  onClick={() => { handleCreatePathLink(position, markerIndex) }}
-                >{ isCreatingPoylines ? 'Avslutt ganglenke her' : 'Opprett ganglenke' } </div>
+                  onClick={() => { handleUpdatePathLink(position, markerIndex) }}
+                >{ pathLinkText } </div>
             }
             <div
               id={"pmPosition" + markerIndex}
@@ -152,5 +157,18 @@ class SuperIcon extends React.Component {
   }
 
 }
+const mapStateToProps = (state, ownProps) => {
 
-export default CustomPopupMarker
+  return {
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
+    polylineStartQuay: state.editStopReducer.polylineStartQuay
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    dispatch: dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomPopupMarker)

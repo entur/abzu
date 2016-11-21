@@ -15,7 +15,11 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
-  isCreatingPoylines: false,
+  isCreatingPolylines: false,
+  polylineStartQuay: {
+    coordinates: [],
+    quayIndex: null
+  }
 }
 
 const editStopReducer = (state = initialState, action) => {
@@ -75,10 +79,16 @@ const editStopReducer = (state = initialState, action) => {
           action.payLoad
       )
 
+      let newPolylineStartQuay = state.polylineStartQuay
+      if (newPolylineStartQuay == action.payLoad) {
+        newPolylineStartQuay = null
+      }
+
       return Object.assign({}, state, {
         editedStopChanged: true,
         activeStopPlace: markerToReduce,
         multiPolylineDataSource: multiPolylinesWithQuayRemoved,
+        polylineStartQuay: newPolylineStartQuay
       })
 
     case types.CHANGED_QUAY_NAME:
@@ -178,8 +188,9 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithNewStarted,
-        isCreatingPoylines: true,
-        editedStopChanged: true
+        isCreatingPolylines: true,
+        editedStopChanged: true,
+        polylineStartQuay: action.payLoad
       })
 
     case types.ADDED_COORDINATES_TO_POLYLINE:
@@ -194,7 +205,7 @@ const editStopReducer = (state = initialState, action) => {
       const multiPolylinesWithFinalCoordsAdded = addFinalQuayPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
-        isCreatingPoylines: false
+        isCreatingPolylines: false
       })
 
     case types.REMOVED_POLYLINE_FROM_INDEX:
@@ -205,7 +216,19 @@ const editStopReducer = (state = initialState, action) => {
       }
 
       return Object.assign({}, state, {
-        multiPolylineDataSource: multiPolylinesRemovePolylindex,
+        multiPolylineDataSource: multiPolylinesRemovePolylindex
+      })
+
+    case types.REMOVED_LAST_POLYLINE:
+      let multiPolyLineLastPolylineRemoved = state.multiPolylineDataSource.slice(0)
+
+      if (multiPolyLineLastPolylineRemoved.length) {
+        multiPolyLineLastPolylineRemoved.pop()
+      }
+
+      return Object.assign({}, state, {
+        multiPolylineDataSource: multiPolyLineLastPolylineRemoved,
+        isCreatingPolylines: false
       })
 
     case types.EDITED_TIME_ESTIMATE_FOR_POLYLINE:
