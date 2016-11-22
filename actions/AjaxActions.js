@@ -176,6 +176,7 @@ export const formatMarkers = (data) => {
 
     return data.map ( (stop, index) => {
 
+      if(stop.quays) {
       stop.quays
           .sort( (q1,q2) => q1.id > q2.id)
           .map( (quay) => {
@@ -184,6 +185,7 @@ export const formatMarkers = (data) => {
           longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
         }
       })
+    }
 
       let suggestion = {
         text: '<<>>',
