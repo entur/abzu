@@ -211,15 +211,14 @@ export const formatMarkers = (data) => {
         suggestion.text += `, ${stop.municipality} (${stop.county})`
       }
 
-      if (stop.centroid) {
-        suggestion.position = [
+      if (stop.centroid && stop.centroid.location) {
+        suggestion.markerProps.position = [
             setDecimalPrecision(stop.centroid.location.latitude,6),
             setDecimalPrecision(stop.centroid.location.longitude,6)
         ]
       } else {
         suggestion.markerProps.isMissingPosition = true
       }
-
       return suggestion
     })
 
