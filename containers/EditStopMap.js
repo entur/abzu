@@ -13,7 +13,6 @@ class EditStopMap extends React.Component {
     const { isCreatingPolylines, dispatch } = this.props
 
     if (isCreatingPolylines) {
-      console.log(event)
       const coords = [event.latlng.lat, event.latlng.lng]
       dispatch(UserActions.addCoordinatesToPolylines(coords))
     }

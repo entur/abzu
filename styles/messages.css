@@ -1,0 +1,4 @@
+.warning_message > span {
+    color: darkred;
+    display: block;
+}

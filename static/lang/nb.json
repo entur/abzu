@@ -44,5 +44,6 @@
   "track": "Spor",
   "gate" : "Gate",
   "unsaved" : "Ikke lagret",
-  "port" : "Havn"
+  "port" : "Havn",
+  "is_missing_coordinates" : "Koordinater mangler"
 }

@@ -1,4 +1,5 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskannada.css);
+@import "messages.css";
 
 body {
   font-family: 'Noto Sans Kannada', sans-serif;

@@ -177,15 +177,15 @@ export const formatMarkers = (data) => {
     return data.map ( (stop, index) => {
 
       if(stop.quays) {
-      stop.quays
+        stop.quays
           .sort( (q1,q2) => q1.id > q2.id)
           .map( (quay) => {
-        quay.centroid.location = {
-          latitude: setDecimalPrecision(quay.centroid.location.latitude, 6),
-          longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
-        }
-      })
-    }
+            quay.centroid.location = {
+              latitude: setDecimalPrecision(quay.centroid.location.latitude, 6),
+              longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
+            }
+        })
+      }
 
       let suggestion = {
         text: '<<>>',
@@ -194,18 +194,14 @@ export const formatMarkers = (data) => {
           key: `marker${index}`,
           name: stop.name || '',
           id: stop.id,
-          position: [
-            setDecimalPrecision(stop.centroid.location.latitude,6),
-            setDecimalPrecision(stop.centroid.location.longitude,6)
-          ],
           children: stop.name,
           description: stop.description || '',
           municipality: stop.municipality,
           county: stop.county,
           quays: stop.quays,
           stopPlaceType: stop.stopPlaceType
+          }
         }
-      }
 
       if (stop.name) {
         suggestion.text = stop.name
@@ -215,8 +211,16 @@ export const formatMarkers = (data) => {
         suggestion.text += `, ${stop.municipality} (${stop.county})`
       }
 
-      return suggestion
+      if (stop.centroid) {
+        suggestion.position = [
+            setDecimalPrecision(stop.centroid.location.latitude,6),
+            setDecimalPrecision(stop.centroid.location.longitude,6)
+        ]
+      } else {
+        suggestion.markerProps.isMissingPosition = true
+      }
 
+      return suggestion
     })
 
   } catch (e) {

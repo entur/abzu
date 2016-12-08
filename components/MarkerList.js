@@ -39,7 +39,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, isCreatingPoylines } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
@@ -57,7 +57,9 @@ class MarkerList extends React.Component {
 
     stops.forEach(({ text, markerProps, isNewStop, active }, stopIndex) => {
 
-      if (!markerProps) return null
+      if (!markerProps || !markerProps.position) {
+        return
+      }
 
       let formattedStopTypeId = null
       let formattedStopType = null
@@ -105,7 +107,6 @@ class MarkerList extends React.Component {
         )
 
         if (quays) {
-
            quays.map( (quay, index) => {
               popupMarkers.push(
                 <CustomPopupMarker
@@ -128,9 +129,7 @@ class MarkerList extends React.Component {
                 />)
             })
         }
-
       }
-
     })
 
     return <div>{popupMarkers}</div>
@@ -146,7 +145,6 @@ MarkerList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     path: state.userReducer.path,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
     polylineStartQuay: state.editStopReducer.polylineStartQuay
   }
 }

@@ -44,5 +44,6 @@
   "track": "Track",
   "gate" : "Gate",
   "unsaved" : "Unsaved",
-  "port" : "Port"
+  "port" : "Port",
+  "is_missing_coordinates" : "Missing coordinates"
 }

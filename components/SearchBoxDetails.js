@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
-import { Link, browserHistory } from 'react-router'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import FlatButton from 'material-ui/FlatButton'
 import ModalityIcon from '../components/ModalityIcon'
+import {FormattedMessage} from 'react-intl'
 
 const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
 
@@ -16,18 +16,21 @@ const SearchBoxDetails = ({hidden, marker, handleEdit, text}) => {
 
   const markerInfo = marker.markerProps
 
-  const description =
-    markerInfo.description || text.emptyDescription
-
   return (
     <div style={style}>
       <h2>{markerInfo.name}</h2>
+      {markerInfo.isMissingPosition
+          ? <div className="warning_message">
+              <FormattedMessage className='message_warning' id="is_missing_coordinates"/>
+            </div>
+        : null}
       <ModalityIcon
         iconStyle={{float: 'right', transform: 'translateY(-55px)'}}
         type={markerInfo.stopPlaceType}
         />
       <FlatButton
         onClick={() => handleEdit(markerInfo.id)}
+        disabled={markerInfo.isMissingPosition}
         >
         <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
         <span style={{fontSize: ".8em", marginLeft: 5}}>

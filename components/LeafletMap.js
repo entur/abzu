@@ -15,8 +15,16 @@ export default class LeafLetMap extends React.Component {
     this.props.handleBaselayerChanged(element.name)
   }
 
-  render() {
+  getCenterPosition(position) {
+    if (!position) {
+      return [61.670029, 6.442342]
+    }
+    return Array.isArray(position)
+      ? position.map( (pos) => Number(pos))
+      : [Number(position.lat), Number(position.lng)]
+  }
 
+  render() {
     // NB: this key is owned by rutebanken.official
     const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLes'
 
@@ -36,10 +44,7 @@ export default class LeafLetMap extends React.Component {
       border: "2px solid #eee"
     }
 
-
-    const centerPosition = Array.isArray(position)
-        ? position.map( (pos) => Number(pos))
-        : [Number(position.lat), Number(position.lng)]
+    const centerPosition = this.getCenterPosition(position)
 
     return (
       <Lmap ref='map'
