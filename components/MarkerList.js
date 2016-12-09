@@ -145,7 +145,8 @@ MarkerList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     path: state.userReducer.path,
-    polylineStartQuay: state.editStopReducer.polylineStartQuay
+    polylineStartQuay: state.editStopReducer.polylineStartQuay,
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
   }
 }
 
