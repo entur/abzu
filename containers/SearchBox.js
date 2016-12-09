@@ -43,7 +43,14 @@ class SearchBox extends React.Component {
   handleUpdateInput(input) {
     if (!input || !input.length) {
       this.props.dispatch(UserActions.clearSearchResults())
-    } else {
+      /* This is a work-around to solve bug in Material-UI causing handleUpdateInput to
+         be fired upon handleNewRequest
+       */
+    } else if (input.indexOf('(') > -1 && input.indexOf(')') > -1) {
+      return
+    }
+    else {
+      console.log("input", input)
       this.props.dispatch(AjaxActions.getStopNames(input))
       this.props.dispatch(UserActions.setSearchText(input))
     }
@@ -53,7 +60,7 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.getTopographicalPlaces(input))
   }
 
-  handleNewRequest(result) {
+  handleNewRequest(result, index) {
    if (typeof(result.markerProps) !== 'undefined') {
      this.props.dispatch( MapActions.setActiveMarkers(result) )
    }
@@ -82,7 +89,6 @@ class SearchBox extends React.Component {
   }
 
   handleToggleFavorite(favorited) {
-
     if (!favorited) {
       this.props.dispatch(UserActions.openFavoriteNameDialog())
     } else {
