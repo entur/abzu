@@ -4,6 +4,8 @@ import L, { divIcon } from 'leaflet'
 import stopIcon from "../static/icons/stop-icon-2x.svg"
 import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
+import compassIcon from "../static/icons/compass.png"
+import { MapActions } from '../actions/'
 
 class CustomPopupMarker extends React.Component {
 
@@ -28,7 +30,23 @@ class CustomPopupMarker extends React.Component {
       return true
     }
 
+    if (this.props.compassBearing !== nextProps.compassBearing) {
+      return true
+    }
+
     return false
+  }
+
+  handleSetCompassBearing() {
+    let value = prompt('Compass bearing, 0-360', this.props.compassBearing)
+
+    if (value == null) return
+
+    if (value => 0 && value <= 360) {
+      this.props.dispatch(MapActions.changeQuayCompassBearing(this.props.markerIndex, value))
+    } else {
+      this.handleSetCompassBearing()
+    }
   }
 
   render() {
@@ -103,6 +121,10 @@ class CustomPopupMarker extends React.Component {
                 {position[1]}
               </span>
             </div>
+              { isQuay
+                  ? <div onClick={this.handleSetCompassBearing.bind(this)}><img style={{width: 20, height: 20}} src={compassIcon}/></div>
+                  : null
+              }
           </div>
         </Popup>
       </Marker>
@@ -139,7 +161,7 @@ class SuperIcon extends React.Component {
 
     return (
       <div id={'stop-marker-' + markerIndex }>
-        { isQuay && compassBearing ?
+        { isQuay && typeof compassBearing !== 'undefined' ?
           <svg style={{width: 20, height: 20, marginLeft: -4, marginTop: -55, transform: `rotate(${compassBearing}deg)`}}>
             <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_arrow-forward'} />
           </svg> : null }

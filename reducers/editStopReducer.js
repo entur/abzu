@@ -63,6 +63,7 @@ const editStopReducer = (state = initialState, action) => {
         },
         allAreasWheelchairAccessible: false,
         quayType: 'other',
+        compassBearing: 0,
         new: true
       }
 
@@ -109,7 +110,13 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeWHA})
 
-    case types.CHANGED_QUAY_POSITION:
+      case types.CHANGED_QUAY_COMPASS_BEARING:
+        let markerToChangeCompassBearing = Object.assign({}, state.activeStopPlace,{})
+        markerToChangeCompassBearing.markerProps.quays[action.payLoad.index].compassBearing = action.payLoad.compassBearing
+
+        return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeCompassBearing})
+
+      case types.CHANGED_QUAY_POSITION:
 
       let quayIndex = action.payLoad.quayIndex
 

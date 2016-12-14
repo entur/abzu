@@ -90,6 +90,15 @@ MapActions.changeQuayDescription = (index, description) => {
   }
 }
 
+MapActions.changeQuayCompassBearing = (index, compassBearing) => {
+  return function(dispatch) {
+    dispatch( (sendData(types.CHANGED_QUAY_COMPASS_BEARING, {
+      index: index,
+      compassBearing: compassBearing
+    })))
+  }
+}
+
 MapActions.changeWHA = (index, value) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_WHA, {
