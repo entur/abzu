@@ -107,7 +107,7 @@ class MarkerList extends React.Component {
         )
 
         if (quays) {
-           quays.map( (quay, index) => {
+           quays.forEach( (quay, index) => {
               popupMarkers.push(
                 <CustomPopupMarker
                   markerIndex={index}
@@ -124,6 +124,7 @@ class MarkerList extends React.Component {
                   changeCoordinates={changeCoordinates}
                   draggable={dragableMarkers}
                   text={newStopMarkerText}
+                  compassBearing={quay.compassBearing}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)

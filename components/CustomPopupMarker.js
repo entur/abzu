@@ -35,7 +35,7 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick,
           handleDragEnd, isQuay, markerIndex, draggable,
-          changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink, isCreatingPolylines, polylineStartQuay  } = this.props
+          changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink, isCreatingPolylines, polylineStartQuay, compassBearing  } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
@@ -47,11 +47,13 @@ class CustomPopupMarker extends React.Component {
         isQuay={isQuay}
         stopType={stopType}
         active={active}
+        compassBearing={compassBearing}
         />
     )
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
     let pathLinkText = isCreatingPolylines ? 'Avslutt ganglenke her' : 'Opprett ganglenke'
+
     if (isQuay && isCreatingPolylines && polylineStartQuay.quayIndex == markerIndex) {
       pathLinkText = 'Avbryt ganglenke'
     }
@@ -131,12 +133,16 @@ class SuperIcon extends React.Component {
 
   render() {
 
-    const { markerIndex, isQuay, stopType, active } = this.props
+    const { markerIndex, isQuay, stopType, active, compassBearing } = this.props
     const iconId = getIconIdByModality(stopType)
     const fillClass = (active && isQuay) ? "quay" : active ? "" : "neighbour-stop"
 
     return (
       <div id={'stop-marker-' + markerIndex }>
+        { isQuay && compassBearing ?
+          <svg style={{width: 20, height: 20, marginLeft: -4, marginTop: -55, transform: `rotate(${compassBearing}deg)`}}>
+            <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_arrow-forward'} />
+          </svg> : null }
         <svg className={'stop-marker-parent ' + fillClass}>
           <use xlinkHref={stopIcon + '#marker'}/>
         </svg>
