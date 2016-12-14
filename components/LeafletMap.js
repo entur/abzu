@@ -52,6 +52,7 @@ export default class LeafLetMap extends React.Component {
         center={centerPosition}
         zoom={zoom}
         zoomControl={false}
+        maxZoom={18}
         length={4}
         onDblclick={ e => onDoubleClick && onDoubleClick(e, this.refs.map) }
         onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
