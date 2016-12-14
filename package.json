@@ -40,7 +40,7 @@
     "keycloak-js": "2.4.0",
     "leaflet": "1.0.2",
     "leaflet-plugins": "^3.0.0",
-    "material-ui": "0.16.4",
+    "material-ui": "0.16.5",
     "mocha": "3.2.0",
     "nightwatch": "0.9.9",
     "nock": "9.0.2",
