@@ -117,7 +117,12 @@ const editStopReducer = (state = initialState, action) => {
         let markerToChangeCompassBearing = Object.assign({}, state.activeStopPlace,{})
         markerToChangeCompassBearing.markerProps.quays[action.payLoad.index].compassBearing = action.payLoad.compassBearing
 
-        return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeCompassBearing})
+        return Object.assign({}, state, {
+          editedStopChanged: true,
+          activeStopPlace:
+          markerToChangeCompassBearing,
+          isCompassBearingEnabled: true
+        })
 
       case types.CHANGED_QUAY_POSITION:
 
