@@ -1,5 +1,5 @@
 import React from 'react'
-import stopIcon from "../static/icons/stop-icon-2x.svg"
+const stopIcon = require("../static/icons/stop-icon-2x.svg")
 
 class CustomMarkerIcon extends React.Component {
 

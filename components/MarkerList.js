@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import CustomPopupMarker from './CustomPopupMarker'
 import NewStopMarker from './NewStopMarker'
-import { Link, browserHistory } from 'react-router'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
+import JunctionMarker from './JunctionMarker'
 
 class MarkerList extends React.Component {
 
