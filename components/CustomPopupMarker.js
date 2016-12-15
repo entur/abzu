@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
-import stopIcon from "../static/icons/stop-icon-2x.svg"
 import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
 import compassIcon from "../static/icons/compass.png"
 import { MapActions } from '../actions/'
+import CustomMarkerIcon, { getShortQuayName } from './CustomMarkerIcon'
 
 class CustomPopupMarker extends React.Component {
 
@@ -34,6 +34,18 @@ class CustomPopupMarker extends React.Component {
       return true
     }
 
+    if (getShortQuayName(this.props.quayName) !== getShortQuayName((nextProps.quayName))) {
+      return true
+    }
+
+    if (nextProps.isQuay && this.props.focusedQuayIndex !== nextProps.focusedQuayIndex) {
+      return true
+    }
+
+    if (nextProps.isQuay && this.props.isCompassBearingEnabled !== nextProps.isCompassBearingEnabled) {
+      return true
+    }
+
     return false
   }
 
@@ -51,21 +63,24 @@ class CustomPopupMarker extends React.Component {
 
   render() {
 
-    let { children, position, handleOnClick,
-          handleDragEnd, isQuay, markerIndex, draggable,
-          changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink, isCreatingPolylines, polylineStartQuay, compassBearing  } = this.props
+    let { children, position, handleOnClick, handleDragEnd, isQuay, markerIndex, draggable,
+          changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink,
+          isCreatingPolylines, polylineStartQuay, compassBearing, quayName, focusedQuayIndex, isCompassBearingEnabled } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
     }
 
     let divIconBody = (
-      <SuperIcon
+      <CustomMarkerIcon
         markerIndex={markerIndex}
         isQuay={isQuay}
         stopType={stopType}
         active={active}
         compassBearing={compassBearing}
+        quayName={quayName}
+        shouldBeFocused={focusedQuayIndex === markerIndex}
+        isCompassBearingEnabled={isCompassBearingEnabled}
         />
     )
 
@@ -132,64 +147,13 @@ class CustomPopupMarker extends React.Component {
   }
 }
 
-
-const getIconIdByModality = (type) => {
-
-  const modalityMap = {
-    'onstreetBus': 'bus-withoutBox',
-    'onstreetTram' : 'tram-withoutBox',
-    'railStation' : 'rail-withoutBox',
-    'metroStation' : 'subway-withoutBox',
-    'busStation': 'bus-withoutBox',
-    'ferryStop' : 'ferry-withoutBox',
-    'airport' : 'airplane-withoutBox',
-    'harbourPort' : 'ferry-withoutBox',
-    'liftStation': 'lift'
-  }
-  var iconId = modalityMap[type]
-
-  return iconId || 'no-information'
-}
-
-class SuperIcon extends React.Component {
-
-  render() {
-
-    const { markerIndex, isQuay, stopType, active, compassBearing } = this.props
-    const iconId = getIconIdByModality(stopType)
-    const fillClass = (active && isQuay) ? "quay" : active ? "" : "neighbour-stop"
-
-    return (
-      <div id={'stop-marker-' + markerIndex }>
-        { isQuay && typeof compassBearing !== 'undefined' ?
-          <svg style={{width: 20, height: 20, marginLeft: -4, marginTop: -55, transform: `rotate(${compassBearing}deg)`}}>
-            <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_arrow-forward'} />
-          </svg> : null }
-        <svg className={'stop-marker-parent ' + fillClass}>
-          <use xlinkHref={stopIcon + '#marker'}/>
-        </svg>
-        {isQuay
-          ? <div className="q-marker">
-              <div
-                  style={{color: '#fff', marginRight: 1, fontSize: String(markerIndex+1).length > 1 ? '1em' : '1.2em'}}
-                >
-                Q<sub style={{color: '#fff'}}>{markerIndex+1}</sub>
-              </div>
-        </div>
-          : <svg className='stop-marker-svg'>
-              <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
-            </svg>
-         }
-      </div>
-    )
-  }
-
-}
 const mapStateToProps = (state, ownProps) => {
 
   return {
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    polylineStartQuay: state.editStopReducer.polylineStartQuay
+    polylineStartQuay: state.editStopReducer.polylineStartQuay,
+    focusedQuayIndex: state.editStopReducer.focusedQuayIndex,
+    isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled
   }
 }
 

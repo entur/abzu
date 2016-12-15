@@ -70,6 +70,7 @@ const initialState = {
   multiPolylineDataSource: [],
   enablePolylines: true,
   isCreatingPolylines: false,
+  isCompassBearingEnabled: true,
   polylineStartQuay: {
     coordinates: [],
     quayIndex: null
@@ -94,20 +95,6 @@ describe('edit stop reducer', () => {
     expect(editStopReducer(initialState, { centerPosition: centerPosition} ))
       .toEqual({ ...initialState,centerPosition: centerPosition })
   })
-
-  /* it('Should set active stop upon received stop and keep original', () => {
-
-    expect(editStopReducer(initialState, {
-      type: types.RECEIVED_STOP,
-      payLoad: stopPlace
-    }))
-      .toEqual({ ...initialState,
-        activeStopPlaceOriginal: stopPlace,
-        editedStopChanged: false,
-        activeStopIsLoading: false,
-        activeStopPlace: stopPlace
-      })
-  }) */
 
   it('Should set isLoading when requesting stop', () => {
 

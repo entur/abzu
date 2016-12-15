@@ -45,5 +45,9 @@
   "gate" : "Gate",
   "unsaved" : "Ikke lagret",
   "port" : "Havn",
-  "is_missing_coordinates" : "Koordinater mangler"
+  "is_missing_coordinates" : "Koordinater mangler",
+  "undefined" : "Uten navn",
+  "aditional_map_elements" : "Tilleggselementer for kart",
+  "show_path_links" : "Vis ganglenker",
+  "show_compass_bearing" : "Vis kompassretninger"
 }

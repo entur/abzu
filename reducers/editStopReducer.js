@@ -15,6 +15,7 @@ const initialState = {
   activeStopPlace: null,
   multiPolylineDataSource: [],
   enablePolylines: true,
+  isCompassBearingEnabled: true,
   isCreatingPolylines: false,
   polylineStartQuay: {
     coordinates: [],
@@ -40,6 +41,8 @@ const editStopReducer = (state = initialState, action) => {
         activeStopPlace: action.payLoad,
         neighbouringMarkers: filteredNeighbouringMarkers,
         multiPolylineDataSource: [],
+        focusedQuayIndex: null,
+        isCompassBearingEnabled: setDefaultCompassBearingisEnabled(action.payLoad)
       })
 
     case types.REQUESTED_STOP:
@@ -190,6 +193,9 @@ const editStopReducer = (state = initialState, action) => {
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad })
 
+    case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
+      return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
+
     case types.STARTED_CREATING_POLYLINE:
       const multiPolylinesWithNewStarted = addFirstQuayToPolyline(state.multiPolylineDataSource, action.payLoad)
 
@@ -197,7 +203,8 @@ const editStopReducer = (state = initialState, action) => {
         multiPolylineDataSource: multiPolylinesWithNewStarted,
         isCreatingPolylines: true,
         editedStopChanged: true,
-        polylineStartQuay: action.payLoad
+        polylineStartQuay: action.payLoad,
+        enablePolylines: true
       })
 
     case types.ADDED_COORDINATES_TO_POLYLINE:
@@ -205,14 +212,16 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithCoordsAdded,
-        lastAddedCoordinate: action.payLoad
+        lastAddedCoordinate: action.payLoad,
+        enablePolylines: true
       })
 
     case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
       const multiPolylinesWithFinalCoordsAdded = addFinalQuayPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
-        isCreatingPolylines: false
+        isCreatingPolylines: false,
+        enablePolylines: true
       })
 
     case types.REMOVED_POLYLINE_FROM_INDEX:
@@ -249,13 +258,15 @@ const editStopReducer = (state = initialState, action) => {
       }
       return Object.assign({}, state, { multiPolylineDataSource: multiPolyLineForTimeEstimateChange})
 
-    default:
-      return state
+      case types.SET_FOCUS_ON_QUAY:
+        return Object.assign({}, state, { focusedQuayIndex: action.payLoad})
+
+      default:
+        return state
   }
 }
 
 const addFirstQuayToPolyline = (multiPolylineDataSource, source) => {
-
   try {
 
     let polyline = {
@@ -269,12 +280,11 @@ const addFirstQuayToPolyline = (multiPolylineDataSource, source) => {
     return multiPolylineDataSource.concat(polyline)
 
   } catch(e) {
-    console.error('addFirstQuayToPolyline', e)
+      console.error('addFirstQuayToPolyline', e)
   }
 }
 
 const addPointToPolyline = (multiPolyline, coords) => {
-
   try {
 
     let polylineIndex = multiPolyline.length-1
@@ -290,7 +300,6 @@ const addPointToPolyline = (multiPolyline, coords) => {
 }
 
 const addFinalQuayPointToPolyline = (multiPolyline, source) => {
-
   try {
 
     let polylineIndex = multiPolyline.length-1
@@ -308,7 +317,6 @@ const addFinalQuayPointToPolyline = (multiPolyline, source) => {
 }
 
 const changePositionInPolyLineUponQuayMove = (multiPolyline, quayIndex, coordinates) => {
-
   multiPolyline.map( (polyline) => {
 
     if (polyline.startQuay && polyline.startQuay.index == quayIndex) {
@@ -324,11 +332,22 @@ const changePositionInPolyLineUponQuayMove = (multiPolyline, quayIndex, coordina
 }
 
 const changePositionInPolyLineUponQuayRemove =  (multiPolyline, quayIndex) => {
-
   return multiPolyline.filter( (polyline) => {
     return ((polyline.startQuay.index !== quayIndex) &&
         (polyline.endQuay.index !== quayIndex))
   })
+}
+
+const setDefaultCompassBearingisEnabled = stop => {
+  if (!stop || !stop.markerProps) return false
+
+  const withoutCompassBearing = ['railStation', 'harbourPort', 'busStation', 'airport']
+
+  if (withoutCompassBearing.indexOf(stop.markerProps.stopPlaceType) > -1) {
+    return false
+  }
+
+  return !(stop.markerProps.quays && stop.markerProps.quays.length > 2)
 }
 
 export default editStopReducer

@@ -118,7 +118,8 @@ class EditStopBox extends React.Component {
       name: formatMessage({id: 'name'}),
       description: formatMessage({id: 'description'}),
       allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
-      unsaved: formatMessage({id: 'unsaved'})
+      unsaved: formatMessage({id: 'unsaved'}),
+      undefined: formatMessage({id: 'undefined'})
     }
 
     if (quayItemName !== null) {
@@ -248,6 +249,7 @@ class EditStopBox extends React.Component {
                   quay={quay}
                   ref={'quay-' + index}
                   index={index}
+                  name={quay.name}
                   removeQuay={() => this.handleRemoveQuay(index)}
                   />
               )}

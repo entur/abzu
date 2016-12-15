@@ -125,6 +125,7 @@ class MarkerList extends React.Component {
                   draggable={dragableMarkers}
                   text={newStopMarkerText}
                   compassBearing={quay.compassBearing}
+                  quayName={quay.name}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)

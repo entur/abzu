@@ -32,6 +32,16 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeWHA(index, event.target.checked))
   }
 
+  handleNameChange = (event) => {
+    const { dispatch, index } = this.props
+    dispatch(MapActions.changeQuayName(index, event.target.value))
+  }
+
+  handleSetFocus = () => {
+    const { dispatch, index } = this.props
+    dispatch(MapActions.setQuayFocus(index))
+  }
+
   locateOnMap = () => {
     const { dispatch, quay } = this.props
     const position = {
@@ -43,7 +53,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, index, translations } = this.props
+    const { quay, translations, name } = this.props
     const { hidden } = this.state
 
     const style = {
@@ -67,6 +77,9 @@ class QuayItem extends React.Component {
       width: 16
     }
 
+    const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
+    const quayTitleSuffix = `${(name && name.length) ? name : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
+
     return (
 
       <div>
@@ -74,7 +87,7 @@ class QuayItem extends React.Component {
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
             <div style={{display: 'inline-block'}} onClick={() => this.toggleHidden()}>
-              {`${translations.quayItemName ? translations.quayItemName : ''} ${index+1} (${quay.id || '?'})`}
+              {quayTitlePrefix + quayTitleSuffix}
             </div>
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
             { hidden
@@ -91,12 +104,21 @@ class QuayItem extends React.Component {
         </div>
        { hidden ? null
        : <div>
+           <TextField
+             hintText={translations.name}
+             floatingLabelText={translations.name}
+             value={quay.name || ''}
+             style={{width: "95%"}}
+             onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
+             onFocus={() => this.handleSetFocus()}
+           />
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
             value={quay.description || ''}
             style={{width: "95%"}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
+            onFocus={() => this.handleSetFocus()}
           />
           <Checkbox
             defaultChecked={quay.allAreasWheelchairAccessible}

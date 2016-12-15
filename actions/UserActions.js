@@ -47,6 +47,12 @@ UserActions.toggleMultiPolylinesEnabled = (value) => {
   }
 }
 
+UserActions.toggleCompassBearingEnabled = (value) => {
+  return function(dispatch) {
+    dispatch( sendData( types.TOGGLED_IS_COMPASS_BEARING_ENABLED, value))
+  }
+}
+
 UserActions.applyStopTypeSearchFilter = (filters) => {
   return function(dispatch) {
     dispatch( sendData (types.APPLIED_STOPTYPE_SEARCH_FILTER, filters))

@@ -25,6 +25,13 @@ p, h1,h2,h3,h4,h5, span {
   width: 38px;
 }
 
+.focused {
+  stroke-width: 3px;
+  stroke: #000;
+  stroke-dasharray: 8px;
+  animation: dash 5s linear forwards;
+}
+
 .neighbour-stop {
   fill: grey;
 }

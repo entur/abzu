@@ -5,7 +5,7 @@ import cfgreader from '../config/readConfig'
 import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
 import Snackbar from 'material-ui/Snackbar'
-import {intlShape, injectIntl, defineMessages} from 'react-intl'
+import { injectIntl } from 'react-intl'
 
 class App extends React.Component {
 

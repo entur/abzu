@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
-import PathLinkBox from './PathLinkBox'
+import ToggleMapItemsBox from './ToggleMapItemsBox'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 
@@ -32,7 +32,7 @@ class EditStopPlace extends React.Component {
       <div>
         <EditStopMap/>
         { isLoading ? <Loader/> : <EditStopBox/> }
-        { isLoading ? null : <PathLinkBox/> }
+        { isLoading ? null : <ToggleMapItemsBox/> }
       </div>
     )
   }

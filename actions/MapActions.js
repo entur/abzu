@@ -108,6 +108,12 @@ MapActions.changeWHA = (index, value) => {
   }
 }
 
+MapActions.setQuayFocus = (index) => {
+  return function(dispatch) {
+    dispatch( sendData(types.SET_FOCUS_ON_QUAY, index))
+  }
+}
+
 MapActions.createNewStop = (coordinates) => {
   return function(dispatch) {
     let stop = createNewStopTemplate(coordinates)
