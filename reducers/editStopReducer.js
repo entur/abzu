@@ -263,8 +263,40 @@ const editStopReducer = (state = initialState, action) => {
       }
       return Object.assign({}, state, { multiPolylineDataSource: multiPolyLineForTimeEstimateChange})
 
-      case types.SET_FOCUS_ON_QUAY:
-        return Object.assign({}, state, { focusedQuayIndex: action.payLoad})
+    case types.SET_ACTIVE_MAP:
+      return Object.assign({}, state, { activeMap: action.payLoad})
+
+    case types.SET_FOCUS_ON_QUAY:
+      return Object.assign({}, state, { focusedQuayIndex: action.payLoad})
+
+    case types.ADDED_JUNCTION_ELEMENT:
+
+      let stopToExpand = Object.assign({}, state.activeStopPlace, {})
+      let junctionPosition = action.payLoad.position.slice(0)
+
+      let newJunctionElement = {
+        centroid: {
+          location: {
+            latitude: junctionPosition[0],
+            longitude: junctionPosition[1],
+          }
+        },
+      }
+
+      if (action.payLoad.type === 'pathJunction') {
+        stopToExpand.markerProps.pathJunctions = stopToExpand.markerProps.pathJunctions || []
+        stopToExpand.markerProps.pathJunctions.push(newJunctionElement)
+      } else if (action.payLoad.type === 'entrance') {
+        stopToExpand.markerProps.entrances = stopToExpand.markerProps.entrances || []
+        stopToExpand.markerProps.entrances.push(newJunctionElement)
+      } else {
+        console.error(`Type of ${action.payLoad.type} is not a supported junction element`)
+      }
+
+      return Object.assign({}, state, {
+        editedStopChanged: true,
+        activeStopPlace: stopToExpand
+      })
 
       default:
         return state

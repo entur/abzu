@@ -9,7 +9,6 @@ class EditStopMap extends React.Component {
 
 
   handleClick(event, map) {
-
     const { isCreatingPolylines, dispatch } = this.props
 
     if (isCreatingPolylines) {
@@ -19,7 +18,6 @@ class EditStopMap extends React.Component {
   }
 
   handleDragEnd(isQuay, index, event) {
-
     const { dispatch } = this.props
     const position = event.target.getLatLng()
 
@@ -36,19 +34,16 @@ class EditStopMap extends React.Component {
   }
 
   handleMapMoveEnd(event, {leafletElement}) {
-
     let bounds = leafletElement.getBounds()
-	let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
+	  let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
 
-	let boundingBox = {
-	  xMin: bounds.getSouthWest().lng,
-	  yMin: bounds.getSouthWest().lat,
-	  xMax: bounds.getNorthEast().lng,
-	  yMax: bounds.getNorthEast().lat
-	}
-
-	this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
-
+    let boundingBox = {
+      xMin: bounds.getSouthWest().lng,
+      yMin: bounds.getSouthWest().lat,
+      xMax: bounds.getNorthEast().lng,
+      yMax: bounds.getNorthEast().lat
+    }
+    this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId))
   }
 
   handleBaselayerChanged(value) {
@@ -78,7 +73,6 @@ class EditStopMap extends React.Component {
   }
 
   render() {
-
     const { position, stopPlaceMarker, neighbouringMarkers, zoom } = this.props
 
     let markers = []
@@ -96,6 +90,7 @@ class EditStopMap extends React.Component {
         position={position}
         markers={markers}
         zoom={zoom}
+        ref="leafletMap"
         handleOnClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
@@ -106,6 +101,11 @@ class EditStopMap extends React.Component {
         enablePolylines={this.props.enablePolylines}
         />
     )
+  }
+
+  componentDidMount() {
+    const { leafletElement } = this.refs.leafletMap.refs.map
+    this.props.dispatch(MapActions.setActiveMap(leafletElement))
   }
 }
 

@@ -34,7 +34,7 @@ class ToggleMapItemsBox extends React.Component {
       float: 'right',
       paddingLeft: 10,
       paddingRight: 10,
-      paddingTop: 10,
+      paddingTop: 6,
       top: -10,
       left: 10,
       position:'relative',
@@ -42,7 +42,8 @@ class ToggleMapItemsBox extends React.Component {
       background: '#191919',
       width: '100%',
       textAlign: 'left',
-      fontWeight: '0.9em'
+      fontWeight: '0.9em',
+      fontSize: '0.8em'
     }
 
     return (

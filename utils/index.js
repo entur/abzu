@@ -7,5 +7,5 @@ export const setDecimalPrecision = (number, n) => {
     let splittedNumbers = String(number).split('.')
     let paddedLength = splittedNumbers[0].length
 
-    return number.toPrecision(paddedLength+n)
+    return Number(number.toPrecision(paddedLength+n))
 }

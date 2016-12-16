@@ -49,5 +49,6 @@
   "undefined" : "Uten navn",
   "aditional_map_elements" : "Tilleggselementer for kart",
   "show_path_links" : "Vis ganglenker",
-  "show_compass_bearing" : "Vis kompassretninger"
+  "show_compass_bearing" : "Vis kompassretninger",
+  "new_elements" : "Nye elementer"
 }

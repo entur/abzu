@@ -72,7 +72,7 @@ class MarkerList extends React.Component {
 
       formattedStopType = formattedStopTypeId ? formatMessage({id: formattedStopTypeId || 'name'}) : ''
 
-      const quays = markerProps.quays
+      const { quays, pathJunctions, entrances } = markerProps
 
       if (isNewStop) {
         popupMarkers.push(
@@ -130,6 +130,35 @@ class MarkerList extends React.Component {
                   handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
                 />)
             })
+        }
+
+        if (entrances) {
+          entrances.forEach( (entrance, index) => {
+            popupMarkers.push(
+              <JunctionMarker
+                position={[entrance.centroid.location.latitude,
+                  entrance.centroid.location.longitude
+                ]}
+                index={index}
+                type="entrance"
+              />
+            )
+          })
+        }
+
+        if (pathJunctions) {
+          pathJunctions.forEach( (pathJunction, index) => {
+            popupMarkers.push(
+              <JunctionMarker
+                position={[pathJunction.centroid.location.latitude,
+                  pathJunction.centroid.location.longitude
+                ]}
+                key={'pathjunction-'+index}
+                index={index}
+                type="pathJunction"
+              />
+            )
+          })
         }
       }
     })

@@ -117,13 +117,28 @@ MapActions.setQuayFocus = (index) => {
 MapActions.createNewStop = (coordinates) => {
   return function(dispatch) {
     let stop = createNewStopTemplate(coordinates)
-    dispatch(sendData (types.CREATED_NEW_STOP, stop))
+    dispatch( sendData(types.CREATED_NEW_STOP, stop) )
   }
 }
 
 MapActions.discardChangesForEditingStop = () => {
   return function(dispatch) {
-    dispatch(sendData (types.RESTORED_TO_ORIGINAL_STOP_PLACE, null))
+    dispatch( sendData(types.RESTORED_TO_ORIGINAL_STOP_PLACE, null) )
+  }
+}
+
+MapActions.setActiveMap = (map) => {
+  return function(dispatch) {
+    dispatch( sendData(types.SET_ACTIVE_MAP, map) )
+  }
+}
+
+MapActions.addJunctionElement = (type, latlng) => {
+  return function(dispatch) {
+    dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
+      type: type,
+      position: [latlng.lat, latlng.lng]
+    }))
   }
 }
 
@@ -151,5 +166,6 @@ const createNewStopTemplate = (coordinates) => {
 
   return newStopPlace
 }
+
 
 export default MapActions

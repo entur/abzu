@@ -4,6 +4,7 @@ import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
 import ToggleMapItemsBox from './ToggleMapItemsBox'
+import NewElementsBox from './NewElementsBox'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
 
@@ -33,6 +34,7 @@ class EditStopPlace extends React.Component {
         <EditStopMap/>
         { isLoading ? <Loader/> : <EditStopBox/> }
         { isLoading ? null : <ToggleMapItemsBox/> }
+        { isLoading ? null : <NewElementsBox/> }
       </div>
     )
   }

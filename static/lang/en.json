@@ -49,5 +49,6 @@
   "undefined" : "Not defined",
   "aditional_map_elements" : "Additional map elements",
   "show_path_links" : "Show path links",
-  "show_compass_bearing" : "Show compass bearing"
+  "show_compass_bearing" : "Show compass bearing",
+  "new_elements" : "New elements"
 }
