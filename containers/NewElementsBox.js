@@ -3,6 +3,7 @@ import { connect }  from 'react-redux'
 import { injectIntl } from 'react-intl'
 import L from 'leaflet'
 import { MapActions } from '../actions'
+import { setDecimalPrecision } from '../utils'
 
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
@@ -70,29 +71,31 @@ class NewElementsBox extends React.Component {
       if (ref.draggable) {
         const draggable = new L.Draggable(ref)
 
-        draggable.addEventListener('dragend', () => {
-          const position = draggable._newPos
+        draggable.addEventListener('dragend', (event) => {
+
           const { activeMap } = this.props
+          const { formatMessage } = this.props.intl
+          const { target } = event
+          const position = target._newPos
 
-          let layer = null
+          const widthOffset = -8
+          const heightOffset = -46
 
-          // TODO : Consider using map instead of layer to calculate latlng
-          Object.keys(activeMap._targets).forEach( (_target) => {
-            if (activeMap._targets[_target]._controlContainer &&
-              activeMap._targets[_target]._controlContainer.className == 'leaflet-control-container') {
-              layer = activeMap._targets[_target]
-            }
-          })
+          const xPos = position.x + target._startPoint.x - target._startPos.x + widthOffset
+          const yPos = position.y + target._startPoint.y - target._startPos.y + heightOffset
 
-          // TODO : Fix offset of coordinates
-          const xPos = draggable._startPoint.x + position.x - draggable._startPos.x
-          const yPos = draggable._startPoint.y + position.y - draggable._startPos.y
+          const absolutePosition = new L.Point(xPos, yPos)
 
-          const absolutePosition = new L.Point(xPos, yPos, true)
+          const { lat,lng } = activeMap.layerPointToLatLng(absolutePosition)
 
-          const latlng = layer.layerPointToLatLng(absolutePosition)
+          const latlng = {
+            lat: setDecimalPrecision(lat,6),
+            lng: setDecimalPrecision(lng,6)
+          }
 
-          const userConfirmation = confirm('Do you want to add an entry here at ' + latlng + ' ?')
+          const addEntryMessage = `${formatMessage({id: 'add_entry_message'})} ${formatMessage({id: key})} ${formatMessage({id: 'at'})} `
+
+          const userConfirmation = confirm(`${addEntryMessage} ${latlng.lat},${latlng.lng}?`)
 
           if (userConfirmation) {
             this.handleAddElement(key, latlng)

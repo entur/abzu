@@ -8,12 +8,12 @@ class JunctionMarker extends React.Component {
     position: PropTypes.arrayOf(PropTypes.number).isRequired,
     index: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-    key: PropTypes.string.isRequired
+    handleDragEnd: PropTypes.func.isRequired
   }
 
   render() {
 
-    let { position, index, type, key } = this.props
+    let { position, index, type, handleDragEnd } = this.props
 
     let iconURL = type === 'entrance'
       ? require("../static/icons/entrance-icon-2x.png")
@@ -30,10 +30,10 @@ class JunctionMarker extends React.Component {
 
     return (
       <Marker
-        key={key}
         draggable={true}
         position={position}
         icon={icon}
+        onDragend={(event) => { handleDragEnd(index, type, event) }}
       >
       </Marker>
     )

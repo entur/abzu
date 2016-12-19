@@ -142,6 +142,16 @@ MapActions.addJunctionElement = (type, latlng) => {
   }
 }
 
+MapActions.changeJunctionPosition = (index, type, position) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_JUNCTION_POSITION, {
+      index: index,
+      position: position,
+      type: type
+    }))
+  }
+}
+
 const createNewStopTemplate = (coordinates) => {
 
   let newStopPlace = formatMarkers([{

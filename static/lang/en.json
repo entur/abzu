@@ -50,5 +50,9 @@
   "aditional_map_elements" : "Additional map elements",
   "show_path_links" : "Show path links",
   "show_compass_bearing" : "Show compass bearing",
-  "new_elements" : "New elements"
+  "new_elements" : "New elements",
+  "add_entry_message": "Do you want to add",
+  "at": "at",
+  "pathJunction" : "path junction",
+  "entrance" : "entrance"
 }

@@ -161,7 +161,10 @@ const editStopReducer = (state = initialState, action) => {
         cancelToken('Operation canceled by new request.')
       }
 
-      return Object.assign({}, state, {nearbyStopsCancelToken: action.payLoad})
+      return Object.assign({}, state, {
+        nearbyStopsCancelToken: action.payLoad.cancel,
+        activeMap: action.payLoad.map
+      })
 
     case types.RECEIVED_STOPS_EDITING_NEARBY:
       // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder
@@ -296,6 +299,26 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         editedStopChanged: true,
         activeStopPlace: stopToExpand
+      })
+
+    case types.CHANGED_JUNCTION_POSITION:
+      let stopforNewJunctionPostion = Object.assign({}, state.activeStopPlace, {})
+      let newJunctionCentroidId = {
+        location: {
+          latitude: action.payLoad.position.lat,
+          longitude: action.payLoad.position.lng
+        }
+      }
+
+      if (action.payLoad.type === 'pathJunction') {
+        stopforNewJunctionPostion.markerProps.pathJunctions[action.payLoad.index].centroid = newJunctionCentroidId
+      } else if (action.payLoad.type === 'entrance') {
+        stopforNewJunctionPostion.markerProps.entrances[action.payLoad.index].centroid = newJunctionCentroidId
+      }
+
+      return Object.assign({}, state, {
+        editStopChanged: true,
+        activeStopPlace: stopforNewJunctionPostion
       })
 
       default:

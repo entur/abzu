@@ -6,8 +6,15 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
+import { setDecimalPrecision } from '../utils'
+
 
 class MarkerList extends React.Component {
+
+  static PropTypes = {
+    stops: PropTypes.array.isRequired,
+    handleDragEnd: PropTypes.func.isRequired
+  }
 
   handleStopOnClick(id) {
     const { path } = this.props
@@ -35,6 +42,17 @@ class MarkerList extends React.Component {
     } else {
       this.props.dispatch(UserActions.startCreatingPolyline(coords, quayIndex))
     }
+  }
+
+  handleJunctionDragEnd(index, type, event) {
+    const position = event.target.getLatLng()
+
+    let formattedPosition = {
+      lat: setDecimalPrecision(position.lat,6),
+      lng: setDecimalPrecision(position.lng,6)
+    }
+
+    this.props.dispatch( MapActions.changeJunctionPosition(index, type, formattedPosition))
   }
 
   render() {
@@ -140,7 +158,9 @@ class MarkerList extends React.Component {
                   entrance.centroid.location.longitude
                 ]}
                 index={index}
+                key={'entrance-'+index}
                 type="entrance"
+                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
               />
             )
           })
@@ -156,21 +176,15 @@ class MarkerList extends React.Component {
                 key={'pathjunction-'+index}
                 index={index}
                 type="pathJunction"
+                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
               />
             )
           })
         }
       }
     })
-
     return <div>{popupMarkers}</div>
   }
-
-}
-
-MarkerList.propTypes = {
-  stops: PropTypes.array.isRequired,
-  handleDragEnd: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {

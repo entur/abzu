@@ -118,7 +118,7 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
 }
 
- AjaxActions.getStopsNearbyForEditingStop = (boundingBox, ignoreStopPlaceId) => {
+ AjaxActions.getStopsNearbyForEditingStop = (boundingBox, ignoreStopPlaceId, map) => {
 
   const thunk = function(dispatch) {
 
@@ -133,7 +133,10 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
     return axios.post(URL, payLoad, {
       cancelToken: new CancelToken(function(cancel) {
-        dispatch ( sendData(types.REQUESTED_STOPS_EDITING_NEARBY, cancel) )
+        dispatch ( sendData(types.REQUESTED_STOPS_EDITING_NEARBY, {
+          cancel: cancel,
+          map: map
+        }) )
       })
     })
     .then(function(response) {
