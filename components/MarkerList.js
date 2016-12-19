@@ -114,7 +114,7 @@ class MarkerList extends React.Component {
             children={text}
             formattedStopType={formattedStopType}
             handleDragEnd={handleDragEnd}
-            active={active}
+            active={!!active}
             stopType={markerProps.stopPlaceType}
             draggable={dragableMarkers}
             changeCoordinates={changeCoordinates}

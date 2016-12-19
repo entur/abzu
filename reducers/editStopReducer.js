@@ -31,15 +31,12 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, { centerPosition: action.payLoad })
 
     case types.RECEIVED_STOP:
-      const original = JSON.parse(JSON.stringify(action.payLoad))
-      // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder
-      let filteredNeighbouringMarkers = state.neighbouringMarkers.filter((stop) => stop.markerProps.id !== action.payLoad.markerProps.id)
       return Object.assign({}, state, {
-        activeStopPlaceOriginal: original,
+        activeStopPlaceOriginal: JSON.parse(JSON.stringify(action.payLoad)),
         editedStopChanged: false,
         activeStopIsLoading: false,
         activeStopPlace: action.payLoad,
-        neighbouringMarkers: filteredNeighbouringMarkers,
+        neighbouringMarkers: [],
         multiPolylineDataSource: [],
         focusedQuayIndex: null,
         isCompassBearingEnabled: setDefaultCompassBearingisEnabled(action.payLoad)

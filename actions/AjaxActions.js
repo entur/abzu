@@ -142,6 +142,11 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
     .then(function(response) {
       let formattedMarkers = formatMarkers(response.data)
       formattedMarkers = removeQuaysForStops(formattedMarkers)
+      formattedMarkers = formattedMarkers.map( (stop) => {
+        stop.active = false
+        return stop
+      })
+
       dispatch (sendData(types.RECEIVED_STOPS_EDITING_NEARBY, formattedMarkers))
     })
     .catch(function(response) {

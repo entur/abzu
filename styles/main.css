@@ -26,8 +26,8 @@ p, h1,h2,h3,h4,h5, span {
 }
 
 .focused {
-  stroke-width: 3px;
-  stroke: #000;
+  stroke-width: 20px;
+  stroke: #2196f3;
   stroke-dasharray: 8px;
   animation: dash 5s linear forwards;
 }

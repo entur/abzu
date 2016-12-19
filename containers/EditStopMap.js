@@ -7,7 +7,6 @@ import { setDecimalPrecision } from '../utils'
 
 class EditStopMap extends React.Component {
 
-
   handleClick(event, map) {
     const { isCreatingPolylines, dispatch } = this.props
 

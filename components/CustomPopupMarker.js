@@ -13,8 +13,9 @@ class CustomPopupMarker extends React.Component {
      the marker in question has been changed */
   shouldComponentUpdate(nextProps, nextState) {
 
-    if (this.props.active !== nextProps.active) {
-      return true
+    if (!nextProps.active && (this.props.active == nextProps.active)) {
+      // Prevent re-render of neighbouring stops
+      return false
     }
 
     if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
@@ -114,7 +115,7 @@ class CustomPopupMarker extends React.Component {
             { isQuay
             ? <span
                 style={{fontWeight: 600, textAlign: 'center', width: '100%', fontSize: '1.2em', marginTop: -2, display: 'inline-block', marginBottom: 5}}
-              >{formattedStopType + " " + (markerIndex+1)}</span>
+              >{formattedStopType + " " + (quayName || 'N/A')}</span>
             : null
             }
             { !isQuay

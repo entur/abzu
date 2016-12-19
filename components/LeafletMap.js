@@ -1,6 +1,5 @@
 import React from 'react'
 import MarkerList from './MarkerList'
-import MarkerCluster from './MarkerCluster'
 import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
 import { GoogleLayer } from './google-maps/'
 import MultiPolylineList from './MultiPolylineList'
@@ -77,14 +76,12 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
         </LayersControl>
         <ZoomControl position='bottomright' />
-        <MarkerCluster>
-          <MarkerList
-            changeCoordinates={handleChangeCoordinates} 
-            stops={markers || []}
-            handleDragEnd={handleDragEnd}
-            dragableMarkers={dragableMarkers}
-            />
-        </MarkerCluster>
+        <MarkerList
+          changeCoordinates={handleChangeCoordinates} 
+          stops={markers || []}
+          handleDragEnd={handleDragEnd}
+          dragableMarkers={dragableMarkers}
+          />
         { enablePolylines
             ?
             <MultiPolylineList map={this.refs.map}/>
