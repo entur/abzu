@@ -6,6 +6,12 @@ const markerShadow = require("../static/icons/marker-shadow.png")
 
 class NewStopMarker extends React.Component {
 
+  static PropTypes = {
+    text: PropTypes.string.isRequired,
+    handleOnClick: PropTypes.func.isRequired,
+    handleDragEnd: PropTypes.func.isRequired,
+  }
+
   render() {
 
     let { children, position, handleOnClick, handleDragEnd, text } = this.props
@@ -27,7 +33,7 @@ class NewStopMarker extends React.Component {
       iconSize: [30, 45],
       iconAnchor: [17, 42],
       popupAnchor: [1, -32],
-      shadowAnchor: [10, 12],
+      shadowAnchor: [12, 12],
       shadowSize: [36, 16]
     })
 
