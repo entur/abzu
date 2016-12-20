@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import CustomPopupMarker from './CustomPopupMarker'
 import NewStopMarker from './NewStopMarker'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
@@ -7,7 +7,6 @@ import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
-
 
 class MarkerList extends React.Component {
 
@@ -33,14 +32,16 @@ class MarkerList extends React.Component {
     this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
   }
 
-  handleUpdatePathLink(coords, quayIndex) {
-    if (this.props.isCreatingPolylines && this.props.polylineStartQuay.quayIndex == quayIndex) {
+  handleUpdatePathLink(coords, index, type) {
+    const { isCreatingPolylines, polylineStartPoint } = this.props
+
+    if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
       this.props.dispatch(UserActions.removeLastPolyline())
     }
-    else if (this.props.isCreatingPolylines) {
-      this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, quayIndex))
+    else if (isCreatingPolylines) {
+      this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, index, type))
     } else {
-      this.props.dispatch(UserActions.startCreatingPolyline(coords, quayIndex))
+      this.props.dispatch(UserActions.startCreatingPolyline(coords, index, type))
     }
   }
 
@@ -48,8 +49,8 @@ class MarkerList extends React.Component {
     const position = event.target.getLatLng()
 
     let formattedPosition = {
-      lat: setDecimalPrecision(position.lat,6),
-      lng: setDecimalPrecision(position.lng,6)
+      lat: setDecimalPrecision(position.lat, 6),
+      lng: setDecimalPrecision(position.lng, 6)
     }
 
     this.props.dispatch( MapActions.changeJunctionPosition(index, type, formattedPosition))
@@ -64,7 +65,10 @@ class MarkerList extends React.Component {
 
     const CustomPopupMarkerText = {
       untitled: formatMessage({id: 'untitled'}),
-      coordinates: formatMessage({id: 'coordinates'})
+      coordinates: formatMessage({id: 'coordinates'}),
+      createPathLinkHere: formatMessage({id: 'create_path_link_here'}),
+      terminatePathLinkHere: formatMessage({id: 'terminate_path_link_here'}),
+      cancelPathLink: formatMessage({id: 'cancel_path_link'}),
     }
 
     const newStopMarkerText = {
@@ -141,7 +145,7 @@ class MarkerList extends React.Component {
                   formattedStopType={formattedStopType}
                   changeCoordinates={changeCoordinates}
                   draggable={dragableMarkers}
-                  text={newStopMarkerText}
+                  text={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}
                   quayName={quay.name}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
@@ -151,6 +155,11 @@ class MarkerList extends React.Component {
         }
 
         if (entrances) {
+
+          const junctionMarkerText = {
+            junctionTitle: formatMessage({id: 'entrance'})
+          }
+
           entrances.forEach( (entrance, index) => {
             popupMarkers.push(
               <JunctionMarker
@@ -161,12 +170,19 @@ class MarkerList extends React.Component {
                 key={'entrance-'+index}
                 type="entrance"
                 handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
+                text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
               />
             )
           })
         }
 
         if (pathJunctions) {
+
+          const junctionMarkerText = {
+            junctionTitle: formatMessage({id: 'pathJunction'})
+          }
+
           pathJunctions.forEach( (pathJunction, index) => {
             popupMarkers.push(
               <JunctionMarker
@@ -177,6 +193,8 @@ class MarkerList extends React.Component {
                 index={index}
                 type="pathJunction"
                 handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
+                text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
               />
             )
           })
@@ -190,7 +208,7 @@ class MarkerList extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     path: state.userReducer.path,
-    polylineStartQuay: state.editStopReducer.polylineStartQuay,
+    polylineStartPoint: state.editStopReducer.polylineStartPoint,
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines
   }
 }

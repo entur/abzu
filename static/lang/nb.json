@@ -54,5 +54,8 @@
   "add_entry_message": "Vil du legge til",
   "at": "ved",
   "pathJunction" : "knutepunkt",
-  "entrance" : "inngang"
+  "entrance" : "inngang",
+  "create_path_link_here" : "Opprett ganglenke her",
+  "terminate_path_link_here" : "Avslutt ganglenke her",
+  "cancel_path_link" : "Avbryt ganglenke"
 }

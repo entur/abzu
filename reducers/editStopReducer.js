@@ -1,7 +1,8 @@
 import * as types from './../actions/actionTypes'
 import { setDecimalPrecision } from '../utils'
+import { addStartPointToPolyline, addPointToPolyline, addEndPointToPolyline, changePositionInPolyLineUponPointMove, changePositionInPolyLineUponPointRemove, setDefaultCompassBearingisEnabled } from './editStopReducerUtils'
 
-const initialState = {
+export const initialState = {
   centerPosition: [
     67.928595,
     13.083002,
@@ -17,9 +18,10 @@ const initialState = {
   enablePolylines: true,
   isCompassBearingEnabled: true,
   isCreatingPolylines: false,
-  polylineStartQuay: {
+  polylineStartPoint: {
     coordinates: [],
-    quayIndex: null
+    index: -1,
+    type: null
   }
 }
 
@@ -75,12 +77,13 @@ const editStopReducer = (state = initialState, action) => {
       let markerToReduce = Object.assign({}, state.activeStopPlace, {})
       markerToReduce.markerProps.quays.splice(action.payLoad,1)
 
-      const multiPolylinesWithQuayRemoved = changePositionInPolyLineUponQuayRemove(
+      const multiPolylinesWithQuayRemoved = changePositionInPolyLineUponPointRemove(
           state.multiPolylineDataSource.slice(0),
-          action.payLoad
+          action.payLoad,
+          'quay'
       )
 
-      let newPolylineStartQuay = state.polylineStartQuay
+      let newPolylineStartQuay = state.polylineStartPoint
       if (newPolylineStartQuay == action.payLoad) {
         newPolylineStartQuay = null
       }
@@ -89,7 +92,7 @@ const editStopReducer = (state = initialState, action) => {
         editedStopChanged: true,
         activeStopPlace: markerToReduce,
         multiPolylineDataSource: multiPolylinesWithQuayRemoved,
-        polylineStartQuay: newPolylineStartQuay
+        polylineStartPoint: newPolylineStartQuay
       })
 
     case types.CHANGED_QUAY_NAME:
@@ -132,10 +135,11 @@ const editStopReducer = (state = initialState, action) => {
           longitude: action.payLoad.position.lng
       }
 
-      let changedQuayMultiPolyline = changePositionInPolyLineUponQuayMove(
+      let changedQuayMultiPolyline = changePositionInPolyLineUponPointMove(
           state.multiPolylineDataSource.slice(0),
           quayIndex,
-          [action.payLoad.position.lat, action.payLoad.position.lng]
+          [action.payLoad.position.lat, action.payLoad.position.lng],
+          'quay'
       )
 
       return Object.assign({}, state, {
@@ -202,13 +206,13 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
 
     case types.STARTED_CREATING_POLYLINE:
-      const multiPolylinesWithNewStarted = addFirstQuayToPolyline(state.multiPolylineDataSource, action.payLoad)
+      const multiPolylinesWithNewStarted = addStartPointToPolyline(state.multiPolylineDataSource, action.payLoad)
 
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithNewStarted,
         isCreatingPolylines: true,
         editedStopChanged: true,
-        polylineStartQuay: action.payLoad,
+        polylineStartPoint: action.payLoad,
         enablePolylines: true
       })
 
@@ -222,7 +226,7 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
-      const multiPolylinesWithFinalCoordsAdded = addFinalQuayPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
+      const multiPolylinesWithFinalCoordsAdded = addEndPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
       return Object.assign({}, state, {
         multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
         isCreatingPolylines: false,
@@ -313,98 +317,22 @@ const editStopReducer = (state = initialState, action) => {
         stopforNewJunctionPostion.markerProps.entrances[action.payLoad.index].centroid = newJunctionCentroidId
       }
 
+      let changedJunctionMultiPolyline = changePositionInPolyLineUponPointMove(
+        state.multiPolylineDataSource.slice(0),
+        action.payLoad.index,
+        [action.payLoad.position.lat, action.payLoad.position.lng],
+        action.payLoad.type
+      )
+
       return Object.assign({}, state, {
         editStopChanged: true,
-        activeStopPlace: stopforNewJunctionPostion
+        activeStopPlace: stopforNewJunctionPostion,
+        multiPolylineDataSource: changedJunctionMultiPolyline,
       })
 
       default:
         return state
   }
-}
-
-const addFirstQuayToPolyline = (multiPolylineDataSource, source) => {
-  try {
-
-    let polyline = {
-      startQuay: {
-        coordinates: source.coordinates.map( (c) => Number(c)),
-        index: source.quayIndex
-      },
-      inlinePositions: []
-    }
-
-    return multiPolylineDataSource.concat(polyline)
-
-  } catch(e) {
-      console.error('addFirstQuayToPolyline', e)
-  }
-}
-
-const addPointToPolyline = (multiPolyline, coords) => {
-  try {
-
-    let polylineIndex = multiPolyline.length-1
-
-    if (multiPolyline[polylineIndex]) {
-      multiPolyline[polylineIndex].inlinePositions.push([Number(coords[0]), Number(coords[1])])
-    }
-    return multiPolyline
-  } catch(e) {
-    console.error('addPointToPolyline', e)
-  }
-
-}
-
-const addFinalQuayPointToPolyline = (multiPolyline, source) => {
-  try {
-
-    let polylineIndex = multiPolyline.length-1
-
-    if (multiPolyline[polylineIndex]) {
-      multiPolyline[polylineIndex].endQuay = {
-        coordinates: source.coordinates.map( (c) => Number(c)),
-        index: source.quayIndex
-      }
-    }
-    return multiPolyline
-  } catch(e) {
-    console.error('addFinalQuayPointToPolyline', e)
-  }
-}
-
-const changePositionInPolyLineUponQuayMove = (multiPolyline, quayIndex, coordinates) => {
-  multiPolyline.map( (polyline) => {
-
-    if (polyline.startQuay && polyline.startQuay.index == quayIndex) {
-      polyline.startQuay.coordinates = coordinates.map( (coordinate) => Number(coordinate))
-    }
-
-    if (polyline.endQuay && polyline.endQuay.index == quayIndex) {
-      polyline.endQuay.coordinates = coordinates.map( (coordinate) => Number(coordinate))
-    }
-    return polyline
-  })
-  return multiPolyline
-}
-
-const changePositionInPolyLineUponQuayRemove =  (multiPolyline, quayIndex) => {
-  return multiPolyline.filter( (polyline) => {
-    return ((polyline.startQuay.index !== quayIndex) &&
-        (polyline.endQuay.index !== quayIndex))
-  })
-}
-
-const setDefaultCompassBearingisEnabled = stop => {
-  if (!stop || !stop.markerProps) return false
-
-  const withoutCompassBearing = ['railStation', 'harbourPort', 'busStation', 'airport']
-
-  if (withoutCompassBearing.indexOf(stop.markerProps.stopPlaceType) > -1) {
-    return false
-  }
-
-  return !(stop.markerProps.quays && stop.markerProps.quays.length > 2)
 }
 
 export default editStopReducer

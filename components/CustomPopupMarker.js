@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import ReactDOM from 'react-dom/server'
@@ -66,7 +66,7 @@ class CustomPopupMarker extends React.Component {
 
     let { children, position, handleOnClick, handleDragEnd, isQuay, markerIndex, draggable,
           changeCoordinates, text, active, stopType, formattedStopType, handleUpdatePathLink,
-          isCreatingPolylines, polylineStartQuay, compassBearing, quayName, focusedQuayIndex, isCompassBearingEnabled } = this.props
+          isCreatingPolylines, polylineStartPoint, compassBearing, quayName, focusedQuayIndex, isCompassBearingEnabled } = this.props
 
     if (!children && !children.length) {
       children = text.untitled
@@ -86,10 +86,10 @@ class CustomPopupMarker extends React.Component {
     )
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
-    let pathLinkText = isCreatingPolylines ? 'Avslutt ganglenke her' : 'Opprett ganglenke'
+    let pathLinkText = isCreatingPolylines ? text.terminatePathLinkHere : text.createPathLinkHere
 
-    if (isQuay && isCreatingPolylines && polylineStartQuay.quayIndex == markerIndex) {
-      pathLinkText = 'Avbryt ganglenke'
+    if (isQuay && isCreatingPolylines && polylineStartPoint.type === 'quay' && polylineStartPoint.index == markerIndex) {
+      pathLinkText = text.cancelPathLink
     }
 
     let icon = divIcon({html: divIconBodyMarkup})
@@ -121,8 +121,8 @@ class CustomPopupMarker extends React.Component {
             { !isQuay
               ? null
               : <div
-                  style={{fontWeight: 600, marginBottom: 10, cursor: 'pointer', color: 'blue', width: '100%', display: 'inline-block', textAlign: 'center'}}
-                  onClick={() => { handleUpdatePathLink(position, markerIndex) }}
+                  style={{fontWeight: 600, marginBottom: 10, cursor: 'pointer', color: '#0068ff', width: '100%', display: 'inline-block', textAlign: 'center'}}
+                  onClick={() => { handleUpdatePathLink(position, markerIndex, 'quay') }}
                 >{ pathLinkText } </div>
             }
             <div
@@ -152,7 +152,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    polylineStartQuay: state.editStopReducer.polylineStartQuay,
+    polylineStartPoint: state.editStopReducer.polylineStartPoint,
     focusedQuayIndex: state.editStopReducer.focusedQuayIndex,
     isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled
   }

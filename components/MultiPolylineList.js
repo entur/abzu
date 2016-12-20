@@ -1,5 +1,5 @@
 import React from 'react'
-import {Polyline, Popup, LayersControl, FeatureGroup} from 'react-leaflet'
+import {Polyline, Popup, FeatureGroup} from 'react-leaflet'
 import {connect} from 'react-redux'
 import GenerateColor from './Colors'
 import { UserActions } from '../actions'
@@ -20,7 +20,7 @@ class MultiPolylineList extends React.Component {
 
     render() {
 
-        const { multiPolylineDataSource, lastAddedCoordinate } = this.props
+        const { multiPolylineDataSource } = this.props
 
         const polylinePopupStyle = {
             cursor: 'pointer',
@@ -50,7 +50,7 @@ class MultiPolylineList extends React.Component {
             }
 
             return (
-                <Polyline weight={6} key={'pl'+index} color={color} positions={coordsArray} opacity={isCompleted ? 0.8: 1.0} dashArray="10,14" lineJoin='round'>
+                <Polyline weight={6} key={'pl'+index} color={color} positions={coordsArray} opacity={isCompleted ? 0.8: 1.0} dashArray="8,14" lineJoin='round'>
                     <Popup key={'pl'+index}>
                         <div>
                             <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>Ganglenke {index+1}</div>
@@ -100,8 +100,8 @@ const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
 
     let arrayOfPolylines = []
 
-    if (dataSourceItem.startQuay) {
-        arrayOfPolylines.push(dataSourceItem.startQuay.coordinates)
+    if (dataSourceItem.startPoint) {
+        arrayOfPolylines.push(dataSourceItem.startPoint.coordinates)
     }
 
     if (dataSourceItem.inlinePositions.length) {
@@ -110,8 +110,8 @@ const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
         })
     }
 
-    if (dataSourceItem.endQuay) {
-        arrayOfPolylines.push(dataSourceItem.endQuay.coordinates)
+    if (dataSourceItem.endPoint) {
+        arrayOfPolylines.push(dataSourceItem.endPoint.coordinates)
     }
 
     return arrayOfPolylines

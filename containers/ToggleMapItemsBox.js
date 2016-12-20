@@ -22,10 +22,10 @@ class ToggleMapItemsBox extends React.Component {
     const boxWrapperStyle = {
       background: '#fff',
       position: 'absolute',
-      top: '82vh',
+      top: '82.5vh',
       padding: 10,
       margin: 20,
-      width: 250,
+      width: 230,
       border: '1px solid #511e12',
       zIndex: 999
     }

@@ -54,5 +54,8 @@
   "add_entry_message": "Do you want to add",
   "at": "at",
   "pathJunction" : "path junction",
-  "entrance" : "entrance"
+  "entrance" : "entrance",
+  "create_path_link_here" : "Create path link here",
+  "terminate_path_link_here" : "Terminate path link here",
+  "cancel_path_link" : "Cancel path link"
 }

@@ -1,82 +1,10 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import * as types from './../../actions/actionTypes'
 import expect from 'expect'
 import fs from 'fs'
 import { editStopReducer } from './../../reducers/'
+import { initialState } from './../../reducers/editStopReducer'
 
-let stopPlace = {
-  "text": "Brusvehagen, Gjøvik (Oppland)",
-  "value": "2",
-  "markerProps": {
-    "key": "marker0",
-    "name": "Brusvehagen",
-    "id": "2",
-    "position": [
-      60.78979329910405,
-      10.605239868164062
-    ],
-    "children": "Brusvehagen",
-    "description": "",
-    "municipality": "Gjøvik",
-    "county": "Oppland",
-    "quays": [
-      {
-        "name": "Brusvehagen1",
-        "shortName": null,
-        "description": null,
-        "id": "1",
-        "centroid": {
-          "location": {
-            "longitude": 10.6,
-            "latitude": 60.790505364693516
-          }
-        },
-        "allAreasWheelchairAccessible": false,
-        "quayType": null
-      },
-      {
-        "name": "Brusvehagen2",
-        "shortName": null,
-        "description": null,
-        "id": "2",
-        "centroid": {
-          "location": {
-            "longitude": 10.6,
-            "latitude": 60.790505364693516
-          }
-        },
-        "allAreasWheelchairAccessible": false,
-        "quayType": null
-      }
-    ],
-    "stopPlaceType": "railStation"
-  },
-  "active": true
-}
-
-const initialState = {
-  centerPosition: [
-    67.928595,
-    13.083002,
-  ],
-  neighbouringMarkers: [],
-  zoom: 17,
-  activeStopIsLoading: false,
-  editedStopChanged: false,
-  nearbyStopsCancelToken: null,
-  activeStopPlaceOriginal: [],
-  activeStopPlace: null,
-  multiPolylineDataSource: [],
-  enablePolylines: true,
-  isCreatingPolylines: false,
-  isCompassBearingEnabled: true,
-  polylineStartQuay: {
-    coordinates: [],
-    quayIndex: null
-  }
-}
-
+const stopPlace = JSON.parse(fs.readFileSync(__dirname + '/json/exampleStop.json', 'utf-8'))
 
 describe('edit stop reducer', () => {
 
@@ -104,7 +32,6 @@ describe('edit stop reducer', () => {
       .toEqual({ ...initialState,
         activeStopIsLoading: true
       })
-
   })
 
   it('Should stop loading when loading stop failed', () => {
@@ -355,14 +282,16 @@ describe('edit stop reducer', () => {
       type: types.STARTED_CREATING_POLYLINE,
       payLoad: {
         coordinates: coordinates,
-        quayIndex: quayIndex
+        index: quayIndex,
+        type: 'quay'
       }
     })
 
     let polyline = {
-      startQuay: {
+      startPoint: {
         coordinates: coordinates.map( (c) => Number(c)),
-        index: quayIndex
+        index: quayIndex,
+        type: 'quay'
       },
       inlinePositions: []
     }
@@ -379,14 +308,16 @@ describe('edit stop reducer', () => {
       type: types.STARTED_CREATING_POLYLINE,
       payLoad: {
         coordinates: coordinates,
-        quayIndex: quayIndex
+        index: quayIndex,
+        type: 'quay'
       }
     })
 
     let polyline = {
-      startQuay: {
+      startPoint: {
         coordinates: coordinates,
-        index: quayIndex
+        index: quayIndex,
+        type: 'quay'
       },
       inlinePositions: []
     }
@@ -402,7 +333,6 @@ describe('edit stop reducer', () => {
 
     expect(finalState.multiPolylineDataSource).toEqual([polyline])
 
-
   })
 
   it('Should add end quay to path link', () => {
@@ -414,14 +344,16 @@ describe('edit stop reducer', () => {
       type: types.STARTED_CREATING_POLYLINE,
       payLoad: {
         coordinates: coordinates,
-        quayIndex: quayIndex
+        index: quayIndex,
+        type: 'quay'
       }
     })
 
     let polyline = {
-      startQuay: {
+      startPoint: {
         coordinates: coordinates.map( (c) => Number(c)),
-        index: quayIndex
+        index: quayIndex,
+        type: 'quay'
       },
       inlinePositions: []
     }
@@ -433,16 +365,17 @@ describe('edit stop reducer', () => {
       type: types.ADDED_FINAL_COORDINATES_TO_POLYLINE,
       payLoad: {
         coordinates: coordinates2,
-        quayIndex: quayIndex2
+        index: quayIndex2,
+        type: 'quay'
       }
     })
 
-    polyline.endQuay = {
+    polyline.endPoint = {
       coordinates: coordinates2,
-      index: quayIndex2
+      index: quayIndex2,
+      type:  'quay'
     }
 
     expect(finalState.multiPolylineDataSource).toEqual([polyline])
-
   })
 })
