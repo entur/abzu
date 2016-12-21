@@ -45,7 +45,7 @@ TIAMAT_BASE_URL=http://localhost:9011/ port=9000 npm run dev
 Uses Mocha together with Nock to test reducers and actions, e.g.
 
 ```
-npm run test-reducers
+npm run test
 ```
 
 
