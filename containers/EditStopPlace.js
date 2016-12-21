@@ -7,8 +7,13 @@ import ToggleMapItemsBox from './ToggleMapItemsBox'
 import NewElementsBox from './NewElementsBox'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
+import InformationBanner from '../components/InformationBanner'
+import Information from '../config/information'
+import { injectIntl } from 'react-intl'
+import InformationManager from '../singletons/InformationManager'
 
 require('../styles/main.css')
+
 
 class EditStopPlace extends React.Component {
 
@@ -25,12 +30,30 @@ class EditStopPlace extends React.Component {
     }).bind(this))
   }
 
+  handleOnClickPathLinkInfo() {
+    new InformationManager().setShouldPathLinkBeDisplayed(false)
+  }
+
   render() {
 
-    let { isLoading } = this.props
+    let { isLoading, isCreatingPolylines } = this.props
+    const { locale } = this.props.intl
+
+    const shouldDisplayMessage  =  (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
     return (
       <div>
+        { shouldDisplayMessage
+          ?
+          <InformationBanner
+            title={Information[locale].path_links.title}
+            ingress={Information[locale].path_links.ingress}
+            body={Information[locale].path_links.body}
+            closeButtonTitle={Information[locale].path_links.closeButtonTitle}
+            handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
+          />
+          : null
+        }
         <EditStopMap/>
         { isLoading ? <Loader/> : <EditStopBox/> }
         { isLoading ? null : <ToggleMapItemsBox/> }
@@ -42,7 +65,8 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isLoading: state.editStopReducer.activeStopIsLoading
+    isLoading: state.editStopReducer.activeStopIsLoading,
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
   }
 }
 
@@ -52,7 +76,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(
+export default injectIntl(connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditStopPlace)
+)(EditStopPlace))

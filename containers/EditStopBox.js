@@ -33,12 +33,10 @@ class EditStopBox extends React.Component {
   }
 
   handleSave() {
-    const { dispatch } = this.props
-
     if (window.location.pathname.indexOf('new_stop') > 0) {
-      dispatch(AjaxActions.saveNewStop())
+      this.props.dispatch(AjaxActions.saveNewStop())
     } else {
-      dispatch(AjaxActions.saveEditingStop())
+      this.props.dispatch(AjaxActions.saveEditingStop())
     }
   }
 
@@ -100,15 +98,15 @@ class EditStopBox extends React.Component {
       </div>
     )
 
-   let captionText = formatMessage({id: 'new_stop_title'})
+    let quayItemName = null
 
-   let quayItemName = null
+    stopTypes[locale].forEach( (stopType) => {
+      if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
+        quayItemName = stopType.quayItemName
+      }
+    })
 
-   stopTypes[locale].forEach( (stopType) => {
-    if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
-      quayItemName = stopType.quayItemName
-    }
-   })
+    let captionText = formatMessage({id: 'new_stop_title'})
 
     if (activeStopPlace && activeStopPlace.markerProps.id) {
       captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
@@ -179,11 +177,11 @@ class EditStopBox extends React.Component {
       fontWeight: '0.9em'
     }
 
-    var stopPlaceType = activeStopPlace.markerProps.stopPlaceType
+    let stopPlaceType = activeStopPlace.markerProps.stopPlaceType
 
     return (
 
-      <div style={SbStyle}>
+      <div style={SbStyle} ref="c">
         <div style={stopBoxBar}>{captionText}</div>
         <div style={fixedHeader}>
           <TextField
@@ -192,11 +190,11 @@ class EditStopBox extends React.Component {
             style={{width: 350}}
             value={activeStopPlace.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
-            />
+          />
           <IconButton
             style={{float: 'right'}}
             onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
-            >
+          >
             <ModalityIcon
               type={stopPlaceType}
             />
@@ -209,7 +207,7 @@ class EditStopBox extends React.Component {
             onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
             animation={PopoverAnimationVertical}
           >
-          { stopTypes[locale].map( (type, index) =>
+            { stopTypes[locale].map( (type, index) =>
               <MenuItem
                 key={'stopType' + index}
                 value={type.value}
@@ -217,12 +215,12 @@ class EditStopBox extends React.Component {
                 primaryText={type.name}
                 onClick={() => { this.handleStopTypeChange(type.value) }}
                 secondaryText={(
-                <ModalityIcon
-                  iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
-                  type={type.value}
-                />)}
-                />
-          ) }
+                  <ModalityIcon
+                    iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
+                    type={type.value}
+                  />)}
+              />
+            ) }
           </Popover>
           <TextField
             hintText={formatMessage({id: 'description'})}
@@ -230,55 +228,55 @@ class EditStopBox extends React.Component {
             style={{width: 350}}
             value={activeStopPlace.markerProps.description}
             onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
-            />
+          />
         </div>
         <div style={{fontWeight: 600, marginTop: 10}}>
           Quays ({activeStopPlace.markerProps.quays.length})
           { quaysExpanded
-          ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
-          : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
+            ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
+            : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
           }
         </div>
         <div style={scrollable}>
           { quaysExpanded
             ? <div style={quayStyle}>
-              { activeStopPlace.markerProps.quays.map( (quay,index) =>
-                <QuayItem
-                  translations={quayItemTranslations}
-                  key={"quay-" + index}
-                  quay={quay}
-                  ref={'quay-' + index}
-                  index={index}
-                  name={quay.name}
-                  removeQuay={() => this.handleRemoveQuay(index)}
-                  />
-              )}
-            </div>
+            { activeStopPlace.markerProps.quays.map( (quay,index) =>
+              <QuayItem
+                translations={quayItemTranslations}
+                key={"quay-" + index}
+                quay={quay}
+                ref={'quay-' + index}
+                index={index}
+                name={quay.name}
+                removeQuay={() => this.handleRemoveQuay(index)}
+              />
+            )}
+          </div>
             : null
           }
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
             ? <RaisedButton
-                secondary={true}
-                label={formatMessage({id: 'undo_changes'})}
-                style={{margin: '15 5', zIndex: 999}}
-                onClick={this.handleDiscardChanges.bind(this)}
-                />
+            secondary={true}
+            label={formatMessage({id: 'undo_changes'})}
+            style={{margin: '15 5', zIndex: 999}}
+            onClick={this.handleDiscardChanges.bind(this)}
+          />
             : <RaisedButton
-                secondary={true}
-                label={formatMessage({id: 'go_back'})}
-                style={{margin: '15 5', zIndex: 999}}
-                onClick={this.handleGoBack.bind(this)}
-                />
+            secondary={true}
+            label={formatMessage({id: 'go_back'})}
+            style={{margin: '15 5', zIndex: 999}}
+            onClick={this.handleGoBack.bind(this)}
+          />
           }
-        { quaysExpanded
+          { quaysExpanded
             ?
             <RaisedButton
-                onClick={this.handleAddQuay.bind(this)}
-                style={addQuayStyle}
-                icon={<ContentAdd/>}
-                label={formatMessage({id: 'new_quay'})}
+              onClick={this.handleAddQuay.bind(this)}
+              style={addQuayStyle}
+              icon={<ContentAdd/>}
+              label={formatMessage({id: 'new_quay'})}
             />
             : null }
           <RaisedButton
@@ -286,10 +284,10 @@ class EditStopBox extends React.Component {
             label={formatMessage({id: 'save'})}
             style={{margin: '15 5', zIndex: 999}}
             onClick={this.handleSave.bind(this)}
-            />
+          />
         </div>
       </div> )
-    }
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {

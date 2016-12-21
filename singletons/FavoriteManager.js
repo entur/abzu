@@ -1,10 +1,9 @@
 let instance = null
-const key = '__favorites__'
+const key = 'rutebanken_favorites'
 
 class FavoriteManager {
 
   constructor() {
-
     if (!instance) {
       instance = this
     }

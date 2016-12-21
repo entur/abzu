@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 import { injectIntl } from 'react-intl'
-import L from 'leaflet'
-import { MapActions } from '../actions'
+ import { MapActions } from '../actions'
 import { setDecimalPrecision } from '../utils'
 
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
