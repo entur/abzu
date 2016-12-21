@@ -47,6 +47,10 @@ class CustomPopupMarker extends React.Component {
       return true
     }
 
+    if (JSON.stringify(this.props.text) !== JSON.stringify(nextProps.text)) {
+      return true
+    }
+
     return false
   }
 
