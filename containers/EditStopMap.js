@@ -42,7 +42,6 @@ class EditStopMap extends React.Component {
       xMax: bounds.getNorthEast().lng,
       yMax: bounds.getNorthEast().lat
     }
-
     this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId, leafletElement))
   }
 

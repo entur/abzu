@@ -71,21 +71,25 @@ class NewElementsBox extends React.Component {
         const draggable = new L.Draggable(ref)
 
         draggable.addEventListener('dragend', (event) => {
+          // prevent adding to map if distance is too short (i.e. a mistake)
+          if(event.distance < 30) {
+            L.DomUtil.setPosition(ref, L.point(0,0))
+            return
+          }
 
           const { activeMap } = this.props
           const { formatMessage } = this.props.intl
           const { target } = event
           const position = target._newPos
+          const widthOffset = -12
+          const heightOffset = -45
 
-          const widthOffset = -8
-          const heightOffset = -46
-
-          const xPos = position.x + target._startPoint.x - target._startPos.x + widthOffset
-          const yPos = position.y + target._startPoint.y - target._startPos.y + heightOffset
+          const xPos = target._startPoint.x + position.x - target._startPos.x + widthOffset
+          const yPos = target._startPoint.y + position.y - target._startPos.y + heightOffset
 
           const absolutePosition = new L.Point(xPos, yPos)
 
-          const { lat,lng } = activeMap.layerPointToLatLng(absolutePosition)
+          const { lat,lng } = activeMap.containerPointToLatLng(absolutePosition)
 
           const latlng = {
             lat: setDecimalPrecision(lat,6),
@@ -99,12 +103,8 @@ class NewElementsBox extends React.Component {
           if (userConfirmation) {
             this.handleAddElement(key, latlng)
           }
-
-          let startPosition = L.point(0,0)
-
-          L.DomUtil.setPosition(ref, startPosition)
+          L.DomUtil.setPosition(ref, L.point(0,0))
         })
-
         draggable.enable()
       }
     })
