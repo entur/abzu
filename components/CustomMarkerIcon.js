@@ -28,8 +28,9 @@ class CustomMarkerIcon extends React.Component {
             Q<sub style={{color: '#fff'}}>{quayShortName}</sub>
           </div>
         </div>
-          : <svg className='stop-marker-svg'>
-          <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
+          :
+          <svg styke={{fill: '#fff'}} className='stop-marker-svg'>
+            <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
         </svg>
         }
       </div>
