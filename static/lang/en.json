@@ -57,5 +57,6 @@
   "entrance" : "entrance",
   "create_path_link_here" : "Create path link here",
   "terminate_path_link_here" : "Terminate path link here",
-  "cancel_path_link" : "Cancel path link"
+  "cancel_path_link" : "Cancel path link",
+  "quay" : "quay"
 }

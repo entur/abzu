@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import QuayItem from '../components/QuayItem'
-import ContentAdd from 'material-ui/svg-icons/content/add'
 import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import TextField from 'material-ui/TextField'
@@ -22,10 +21,6 @@ class EditStopBox extends React.Component {
       quaysExpanded: true,
       stopTypeOpen: false
     }
-  }
-
-  handleAddQuay() {
-    this.props.dispatch(MapActions.addNewQuay())
   }
 
   handleRemoveQuay(index) {
@@ -156,12 +151,6 @@ class EditStopBox extends React.Component {
       zIndex: 999
     }
 
-    const addQuayStyle = {
-      marginLeft: 10,
-      float: "left",
-      margin: '15 10'
-    }
-
     const stopBoxBar = {
       float: 'right',
       paddingLeft: 10,
@@ -270,15 +259,6 @@ class EditStopBox extends React.Component {
             onClick={this.handleGoBack.bind(this)}
           />
           }
-          { quaysExpanded
-            ?
-            <RaisedButton
-              onClick={this.handleAddQuay.bind(this)}
-              style={addQuayStyle}
-              icon={<ContentAdd/>}
-              label={formatMessage({id: 'new_quay'})}
-            />
-            : null }
           <RaisedButton
             primary={true}
             label={formatMessage({id: 'save'})}

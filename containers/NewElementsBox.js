@@ -6,7 +6,7 @@ import { setDecimalPrecision } from '../utils'
 
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
-
+const quayIcon = require("../static/icons/quay-marker.png")
 
 class NewElementsBox extends React.Component {
 
@@ -23,7 +23,7 @@ class NewElementsBox extends React.Component {
       position: 'absolute',
       top: '82vh',
       margin: 20,
-      width: 250,
+      width: 'auto',
       border: '1px solid #511e12',
       zIndex: 999,
       right: 0
@@ -42,20 +42,37 @@ class NewElementsBox extends React.Component {
     const elementStyle = {
       display: 'inline-block',
       cursor: 'move',
-      margin: 10
+      margin: '10 15'
     }
+
+    const titleStyle = {
+      fontWeight: 600,
+      fontSize: '0.8em',
+      textTransform: 'capitalize',
+      marginTop: 8
+    }
+
+    const quayText = formatMessage({id: 'quay'})
+    const pathJunctionText = formatMessage({id: 'pathJunction'})
+    const entranceText = formatMessage({id: 'entrance'})
 
     return (
       <div style={boxWrapperStyle}>
           <div style={stopBoxBar}>
-            <div style={{marginLeft: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
+            <div style={{textIndent: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
           </div>
           <div style={{display: 'block', marginTop: 0, marginBottom: 0}}>
-            <div ref="entrance" id="drag1" draggable="true" style={elementStyle}>
-              <img style={{height: 40, width: 'auto'}} src={entranceIcon}/>
+            <div style={elementStyle}>
+              <img id="drag1" ref="quay" draggable="true" style={{height: 40, width: 'auto', marginLeft: quayText.length}} src={quayIcon}/>
+              <div style={titleStyle}>{quayText}</div>
             </div>
-            <div ref="pathJunction" id="drag2" draggable="true" style={elementStyle}>
-              <img style={{height: 40, width: 'auto'}} src={junctionIcon}/>
+            <div style={elementStyle}>
+              <img ref="entrance" id="drag2" draggable="true" style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={entranceIcon}/>
+              <div style={titleStyle}>{pathJunctionText}</div>
+            </div>
+            <div style={elementStyle}>
+              <img ref="pathJunction" id="drag3" draggable="true" style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={junctionIcon}/>
+              <div style={titleStyle}>{entranceText}</div>
             </div>
           </div>
       </div>

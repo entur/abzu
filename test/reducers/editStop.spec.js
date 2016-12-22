@@ -49,7 +49,11 @@ describe('edit stop reducer', () => {
     let stateWithOneStopPlaceTwoQuays = { ...initialState, activeStopPlace: payLoad}
 
     let newState = editStopReducer(stateWithOneStopPlaceTwoQuays, {
-      type: types.ADDED_NEW_QUAY
+      type: types.ADDED_JUNCTION_ELEMENT,
+      payLoad: {
+        position: [0,0],
+        type: 'quay'
+      }
     })
 
     expect(newState.activeStopPlace.markerProps.quays.length).toEqual(3)

@@ -57,5 +57,6 @@
   "entrance" : "inngang",
   "create_path_link_here" : "Opprett ganglenke her",
   "terminate_path_link_here" : "Avslutt ganglenke her",
-  "cancel_path_link" : "Avbryt ganglenke"
+  "cancel_path_link" : "Avbryt ganglenke",
+  "quay" : "quay"
 }

@@ -43,12 +43,6 @@ MapActions.changeMapCenter = (position, zoom) => {
   }
 }
 
-MapActions.addNewQuay = () => {
-  return function(dispatch) {
-    dispatch( sendData(types.ADDED_NEW_QUAY, null) )
-  }
-}
-
 MapActions.removeQuay = (index) => {
   return function(dispatch) {
     dispatch( sendData(types.REMOVED_QUAY, index) )

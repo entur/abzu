@@ -25,6 +25,23 @@ export const initialState = {
   }
 }
 
+const newQuay = {
+  name: "",
+  shortName: "",
+  description: "",
+  centroid: {
+    location: {
+      latitude: null,
+      longitude: null,
+    }
+  },
+  allAreasWheelchairAccessible: false,
+  quayType: 'other',
+  compassBearing: 0,
+  new: true
+}
+
+
 const editStopReducer = (state = initialState, action) => {
 
   switch (action.type) {
@@ -49,29 +66,6 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.ERROR_STOP:
       return Object.assign({}, state, { activeStopIsLoading: false})
-
-    case types.ADDED_NEW_QUAY:
-      let markerToExpand = Object.assign({}, state.activeStopPlace, {})
-
-      let newQuay = {
-        name: "",
-        shortName: "",
-        description: "",
-        centroid: {
-          location: {
-            latitude: setDecimalPrecision(Number(Number(markerToExpand.markerProps.position[0]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )), 6),
-            longitude: setDecimalPrecision(Number(Number(markerToExpand.markerProps.position[1]) + ( Math.floor((Math.random() * 10) + 1) / 10000 )), 6)
-          }
-        },
-        allAreasWheelchairAccessible: false,
-        quayType: 'other',
-        compassBearing: 0,
-        new: true
-      }
-
-      markerToExpand.markerProps.quays.push(newQuay)
-
-      return Object.assign({}, state, { editedStopChanged: true, activeStopPlace: markerToExpand})
 
     case types.REMOVED_QUAY:
       let markerToReduce = Object.assign({}, state.activeStopPlace, {})
@@ -293,6 +287,12 @@ const editStopReducer = (state = initialState, action) => {
       } else if (action.payLoad.type === 'entrance') {
         stopToExpand.markerProps.entrances = stopToExpand.markerProps.entrances || []
         stopToExpand.markerProps.entrances.push(newJunctionElement)
+      } else if (action.payLoad.type === 'quay') {
+        stopToExpand.markerProps.quays = stopToExpand.markerProps.quays || []
+        const newQuayToAdd = Object.assign({}, newQuay, {
+          centroid: newJunctionElement.centroid
+        })
+        stopToExpand.markerProps.quays.push(newQuayToAdd)
       } else {
         console.error(`Type of ${action.payLoad.type} is not a supported junction element`)
       }
