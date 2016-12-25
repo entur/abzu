@@ -36,7 +36,7 @@
     "image-webpack-loader": "3.1.0",
     "intl": "^1.2.5",
     "jsdom": "9.9.1",
-    "jsdom-global": "2.1.0",
+    "jsdom-global": "2.1.1",
     "keycloak-js": "2.5.0-cr.1",
     "leaflet": "1.0.2",
     "leaflet-plugins": "^3.0.0",
