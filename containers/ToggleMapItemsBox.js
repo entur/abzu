@@ -27,7 +27,8 @@ class ToggleMapItemsBox extends React.Component {
       margin: 20,
       width: 230,
       border: '1px solid #511e12',
-      zIndex: 999
+      zIndex: 999,
+      cursor: 'move'
     }
 
     const stopBoxBar = {
@@ -47,7 +48,7 @@ class ToggleMapItemsBox extends React.Component {
     }
 
     return (
-      <div style={boxWrapperStyle}>
+      <div ref='ToggleMapItemsBox' style={boxWrapperStyle}>
           <div style={stopBoxBar}>{formatMessage({id: 'aditional_map_elements'})}</div>
           <Toggle
             style={{paddingTop: 5, width: 250, textAlign: 'center'}}
@@ -65,6 +66,10 @@ class ToggleMapItemsBox extends React.Component {
           />
       </div>
     )
+  }
+
+  componentDidMount() {
+    new L.Draggable(this.refs.ToggleMapItemsBox).enable()
   }
 }
 

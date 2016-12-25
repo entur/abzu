@@ -128,16 +128,16 @@ class EditStopBox extends React.Component {
       height: 220,
       position: "relative",
       display: "block",
-      marginTop: -40
+      marginTop: -70
     }
 
     const SbStyle = {
-      top: 80,
-      border: "1px solid #511E12",
-      background: "white",
-      width: 460,
-      margin: 20,
-      position: "absolute",
+      top: 70,
+      border: '1px solid #511E12',
+      background: '#fff',
+      width: 410,
+      margin: 15,
+      position: 'absolute',
       zIndex: 999,
       padding: 10
     }
@@ -145,7 +145,7 @@ class EditStopBox extends React.Component {
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: '30vh',
+      height: '40vh',
       position: "relative",
       display: "block",
       zIndex: 999
@@ -176,7 +176,7 @@ class EditStopBox extends React.Component {
           <TextField
             hintText={formatMessage({id: 'name'})}
             floatingLabelText={formatMessage({id: 'name'})}
-            style={{width: 350}}
+            style={{width: 350, marginTop: -20}}
             value={activeStopPlace.markerProps.name}
             onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
           />
@@ -214,12 +214,12 @@ class EditStopBox extends React.Component {
           <TextField
             hintText={formatMessage({id: 'description'})}
             floatingLabelText={formatMessage({id: 'description'})}
-            style={{width: 350}}
+            style={{width: 350, marginTop: -20}}
             value={activeStopPlace.markerProps.description}
             onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
           />
         </div>
-        <div style={{fontWeight: 600, marginTop: 10}}>
+        <div style={{fontWeight: 600, marginTop: 5}}>
           Quays ({activeStopPlace.markerProps.quays.length})
           { quaysExpanded
             ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>

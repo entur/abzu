@@ -29,7 +29,7 @@ class CustomMarkerIcon extends React.Component {
           </div>
         </div>
           :
-          <svg styke={{fill: '#fff'}} className='stop-marker-svg'>
+          <svg className='stop-marker-svg'>
             <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
         </svg>
         }

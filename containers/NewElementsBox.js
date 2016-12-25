@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 import { injectIntl } from 'react-intl'
- import { MapActions } from '../actions'
+import { MapActions } from '../actions'
 import { setDecimalPrecision } from '../utils'
 
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
@@ -26,7 +26,8 @@ class NewElementsBox extends React.Component {
       width: 'auto',
       border: '1px solid #511e12',
       zIndex: 999,
-      right: 0
+      right: 0,
+      cursor: 'move'
     }
 
     const stopBoxBar = {
@@ -36,7 +37,7 @@ class NewElementsBox extends React.Component {
       textAlign: 'left',
       fontWeight: '0.9em',
       display: 'block',
-      height: 25,
+      height: 25
     }
 
     const elementStyle = {
@@ -49,7 +50,8 @@ class NewElementsBox extends React.Component {
       fontWeight: 600,
       fontSize: '0.8em',
       textTransform: 'capitalize',
-      marginTop: 8
+      marginTop: 8,
+      marginBottom: -10
     }
 
     const quayText = formatMessage({id: 'quay'})
@@ -57,7 +59,7 @@ class NewElementsBox extends React.Component {
     const entranceText = formatMessage({id: 'entrance'})
 
     return (
-      <div style={boxWrapperStyle}>
+      <div ref='newElementsContainer' style={boxWrapperStyle}>
           <div style={stopBoxBar}>
             <div style={{textIndent: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
           </div>
@@ -80,6 +82,8 @@ class NewElementsBox extends React.Component {
   }
 
   componentDidMount() {
+
+    new L.Draggable(this.refs.newElementsContainer).enable()
 
     Object.keys(this.refs).forEach( (key) => {
       const ref = this.refs[key]
