@@ -1,7 +1,7 @@
 import React from 'react'
 import MarkerList from './MarkerList'
 import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
-import { GoogleLayer } from './google-maps/'
+import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolylineList'
 
 export default class LeafLetMap extends React.Component {

@@ -1,1 +1,0 @@
-export GoogleLayer from "./Google";
