@@ -227,6 +227,11 @@ export const formatMarkers = (data) => {
       } else {
         suggestion.markerProps.isMissingPosition = true
       }
+
+      // TODO : Retrieve these data from stop object from Tiamat DTO
+      suggestion.markerProps.pathJunctions = []
+      suggestion.markerProps.entrances = []
+
       return suggestion
     })
 

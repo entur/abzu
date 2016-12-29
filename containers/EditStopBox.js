@@ -6,20 +6,18 @@ import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
 import MenuItem from 'material-ui/MenuItem'
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import { injectIntl } from 'react-intl'
 import ModalityIcon from '../components/ModalityIcon'
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import IconButton from 'material-ui/IconButton'
+import {Tabs, Tab} from 'material-ui/Tabs'
 
 class EditStopBox extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
-      quaysExpanded: true,
-      stopTypeOpen: false
+      stopTypeOpen: false,
+      slideIndex: 0
     }
   }
 
@@ -48,14 +46,6 @@ class EditStopBox extends React.Component {
     this.props.dispatch(MapActions.changeStopType(value))
   }
 
-  toggleQuayExpanded() {
-    const { quaysExpanded } = this.state
-    this.setState({
-      ...this.state,
-      quaysExpanded: !quaysExpanded
-    })
-  }
-
   handleGoBack() {
     this.props.dispatch(UserActions.navigateTo('/', ''))
   }
@@ -79,10 +69,16 @@ class EditStopBox extends React.Component {
     })
   }
 
+  handleTabChange(value) {
+    this.setState({
+      ...this.state,
+      slideIndex: value
+    })
+  }
+
   render() {
 
     const { activeStopPlace, hasContentChanged } = this.props
-    const { quaysExpanded } = this.state
     const { formatMessage, locale } = this.props.intl
 
     if (!activeStopPlace) return (
@@ -124,7 +120,7 @@ class EditStopBox extends React.Component {
       display: "block"
     }
 
-    const quayStyle = {
+    const tabContainerStyle = {
       height: 220,
       position: "relative",
       display: "block",
@@ -132,14 +128,14 @@ class EditStopBox extends React.Component {
     }
 
     const SbStyle = {
-      top: 70,
+      top: 80,
       border: '1px solid #511E12',
       background: '#fff',
       width: 410,
-      margin: 15,
+      margin: 0,
       position: 'absolute',
       zIndex: 999,
-      padding: 10
+      padding: '10 5'
     }
 
     const scrollable = {
@@ -153,17 +149,25 @@ class EditStopBox extends React.Component {
 
     const stopBoxBar = {
       float: 'right',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 10,
+      paddingLeft: 5,
+      paddingRight: 5,
+      paddingTop: 5,
       top: -10,
-      left: 10,
+      left: 5,
       position:'relative',
       color: '#fff',
       background: '#191919',
       width: '100%',
       textAlign: 'left',
+      fontSize: '0.8em',
       fontWeight: '0.9em'
+    }
+
+    const tabStyle = {
+      color: '#000',
+      fontSize: '0.7em',
+      fontWeight: 600,
+      marginTop: -10
     }
 
     let stopPlaceType = activeStopPlace.markerProps.stopPlaceType
@@ -220,16 +224,20 @@ class EditStopBox extends React.Component {
           />
         </div>
         <div style={{fontWeight: 600, marginTop: 5}}>
-          Quays ({activeStopPlace.markerProps.quays.length})
-          { quaysExpanded
-            ? <NavigationExpandLess onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
-            : <NavigationExpandMore onClick={() => this.toggleQuayExpanded()} style={{float: "right"}}/>
-          }
+
         </div>
+        <Tabs
+          onChange={this.handleTabChange.bind(this)}
+          value={this.state.slideIndex}
+          tabItemContainerStyle={{backgroundColor: '#fff', margin: -5}}
+        >
+          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${activeStopPlace.markerProps.quays.length})`} value={0} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${activeStopPlace.markerProps.pathJunctions.length})`} value={1} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${activeStopPlace.markerProps.entrances.length})`} value={2} />
+        </Tabs>
         <div style={scrollable}>
-          { quaysExpanded
-            ? <div style={quayStyle}>
-            { activeStopPlace.markerProps.quays.map( (quay,index) =>
+            <div style={tabContainerStyle}>
+            { this.state.slideIndex === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
               <QuayItem
                 translations={quayItemTranslations}
                 key={"quay-" + index}
@@ -240,9 +248,13 @@ class EditStopBox extends React.Component {
                 removeQuay={() => this.handleRemoveQuay(index)}
               />
             )}
+            { this.state.slideIndex === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
+              <div key={"pathjunction" + index}>{index}</div>
+            )}
+            { this.state.slideIndex === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
+              <div key={"entrance" + index}>{index}</div>
+            )}
           </div>
-            : null
-          }
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
