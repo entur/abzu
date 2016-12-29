@@ -25,7 +25,7 @@ export default class LeafLetMap extends React.Component {
 
   render() {
     // NB: this key is owned by rutebanken.official
-    const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLes'
+    const googleApiKey = 'AIzaSyCD4Lxgkbn3EHqB5NoV9jOWnmJY6O2qLzes'
 
     const { position, zoom, handleDragEnd, handleChangeCoordinates, handleOnClick } = this.props
     const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace, enablePolylines } = this.props

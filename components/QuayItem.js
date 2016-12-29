@@ -65,9 +65,8 @@ class QuayItem extends React.Component {
     }
 
     const removeStyle = {
-      width: '100%',
-      textAlign: 'right',
-      paddingBottom: 20
+      float: 'right',
+      paddingBottom: 0
     }
 
     const locationStyle = {
@@ -108,7 +107,7 @@ class QuayItem extends React.Component {
              hintText={translations.name}
              floatingLabelText={translations.name}
              value={quay.name || ''}
-             style={{width: "95%"}}
+             style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
              onFocus={() => this.handleSetFocus()}
            />
@@ -116,7 +115,7 @@ class QuayItem extends React.Component {
             hintText={translations.description}
             floatingLabelText={translations.description}
             value={quay.description || ''}
-            style={{width: "95%"}}
+            style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
             onFocus={() => this.handleSetFocus()}
           />
@@ -133,10 +132,6 @@ class QuayItem extends React.Component {
           >
           delete
           </IconButton>
-          <Divider
-            style={{marginBottom: 10}}
-            inset={true}
-            />
         </div>
         }
       </div>

@@ -144,7 +144,8 @@ class EditStopBox extends React.Component {
       height: '40vh',
       position: "relative",
       display: "block",
-      zIndex: 999
+      zIndex: 999,
+      marginTop: 10
     }
 
     const stopBoxBar = {
@@ -229,7 +230,7 @@ class EditStopBox extends React.Component {
         <Tabs
           onChange={this.handleTabChange.bind(this)}
           value={this.state.slideIndex}
-          tabItemContainerStyle={{backgroundColor: '#fff', margin: -5}}
+          tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
           <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${activeStopPlace.markerProps.quays.length})`} value={0} />
           <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${activeStopPlace.markerProps.pathJunctions.length})`} value={1} />
@@ -261,20 +262,20 @@ class EditStopBox extends React.Component {
             ? <RaisedButton
             secondary={true}
             label={formatMessage({id: 'undo_changes'})}
-            style={{margin: '15 5', zIndex: 999}}
+            style={{margin: '8 5', zIndex: 999}}
             onClick={this.handleDiscardChanges.bind(this)}
           />
             : <RaisedButton
             secondary={true}
             label={formatMessage({id: 'go_back'})}
-            style={{margin: '15 5', zIndex: 999}}
+            style={{margin: '8 5', zIndex: 999}}
             onClick={this.handleGoBack.bind(this)}
           />
           }
           <RaisedButton
             primary={true}
             label={formatMessage({id: 'save'})}
-            style={{margin: '15 5', zIndex: 999}}
+            style={{margin: '8 5', zIndex: 999}}
             onClick={this.handleSave.bind(this)}
           />
         </div>
