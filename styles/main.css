@@ -1,5 +1,7 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskannada.css);
 @import "messages.css";
+@import "markers.css";
+@import "tabs.css";
 
 body {
   font-family: 'Noto Sans Kannada', sans-serif;
@@ -8,68 +10,4 @@ body {
 
 p, h1,h2,h3,h4,h5, span {
   color: #191919;
-}
-
-.stop-marker-parent {
-  height: 46px;
-  width: 46px;
-  z-index: 999;
-  fill: #132E40;
-  transform: translate(-18px,-40px);
-}
-
-.quay {
-  fill: #9A332C;
-  height: 38px;
-  transform: translate(-13px,-31px);
-  width: 38px;
-}
-
-.focused {
-  stroke-width: 20px;
-  stroke: #2196f3;
-  stroke-dasharray: 8px;
-  animation: dash 5s linear forwards;
-}
-
-.neighbour-stop {
-  fill: grey;
-}
-
-.q-marker {
-  height: 200px;
-  color: #fff;
-  position: absolute;
-  top: -29px;
-  left: 0px;
-  font-size: 0.8em;
-  z-index: 9999999;
-}
-
-.stop-marker-svg {
-  height: 24px;
-  width: 24px;
-  left: -7px !important;
-  top: -38px !important;
-  fill: #fff;
-  z-index: 999;
-  position: absolute;
-}
-
-.stop-marker-shadow {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  z-index: 998;
-  top: 22px;
-  left: 8px;
-}
-
-.leaflet-popup {
-  bottom: 38px !important;
-}
-
-.leaflet-div-icon {
-  background: none;
-  border: none;
 }

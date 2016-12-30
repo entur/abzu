@@ -4,22 +4,26 @@ import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
-import Divider from 'material-ui/Divider'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 
-
 class QuayItem extends React.Component {
+
+  static PropTypes = {
+    name: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    quay: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)
-    this.state = { hidden: !props.quay.new }
+    this.state = { collapsed: !props.quay.new }
   }
 
-  toggleHidden() {
-    const { hidden } = this.state
-    this.setState({hidden : !hidden})
+  toggleCollapsed() {
+    const { collapsed } = this.state
+    this.setState({collapsed : !collapsed})
   }
 
   handleDescriptionChange = (event) => {
@@ -54,15 +58,7 @@ class QuayItem extends React.Component {
   render() {
 
     const { quay, translations, name } = this.props
-    const { hidden } = this.state
-
-    const style = {
-      color: "#2196F3",
-      cursor: "pointer",
-      marginTop: 30,
-      display: "block",
-      marginBottom: 50
-    }
+    const { collapsed } = this.state
 
     const removeStyle = {
       float: 'right',
@@ -82,26 +78,26 @@ class QuayItem extends React.Component {
     return (
 
       <div>
-        <div style={style}>
+        <div className="tabItem">
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleHidden()}>
+            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
               {quayTitlePrefix + quayTitleSuffix}
             </div>
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
-            { hidden
+            { collapsed
               ? <NavigationExpandMore
-                  onClick={() => this.toggleHidden()}
+                  onClick={() => this.toggleCollapsed()}
                   style={{float: "right"}}
                 />
               : <NavigationExpandLess
-                  onClick={() => this.toggleHidden()}
+                  onClick={() => this.toggleCollapsed()}
                   style={{float: "right"}}
                 />
              }
           </div>
         </div>
-       { hidden ? null
+       { collapsed ? null
        : <div>
            <TextField
              hintText={translations.name}

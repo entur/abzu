@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import QuayItem from '../components/QuayItem'
+import PathJunctionItem from '../components/PathJunctionItem'
+import EntranceItem from '../components/EntranceItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import TextField from 'material-ui/TextField'
@@ -69,7 +71,7 @@ class EditStopBox extends React.Component {
     })
   }
 
-  handleTabChange(value) {
+  handleSlideChange(value) {
     this.setState({
       ...this.state,
       slideIndex: value
@@ -103,7 +105,7 @@ class EditStopBox extends React.Component {
       captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
     }
 
-    let quayItemTranslations = {
+    let itemTranslation = {
       name: formatMessage({id: 'name'}),
       description: formatMessage({id: 'description'}),
       allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
@@ -112,7 +114,7 @@ class EditStopBox extends React.Component {
     }
 
     if (quayItemName !== null) {
-      quayItemTranslations.quayItemName = formatMessage({id: quayItemName || 'name'})
+      itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
     }
 
     const fixedHeader = {
@@ -228,7 +230,7 @@ class EditStopBox extends React.Component {
 
         </div>
         <Tabs
-          onChange={this.handleTabChange.bind(this)}
+          onChange={this.handleSlideChange.bind(this)}
           value={this.state.slideIndex}
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
@@ -240,7 +242,7 @@ class EditStopBox extends React.Component {
             <div style={tabContainerStyle}>
             { this.state.slideIndex === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
               <QuayItem
-                translations={quayItemTranslations}
+                translations={itemTranslation}
                 key={"quay-" + index}
                 quay={quay}
                 ref={'quay-' + index}
@@ -250,10 +252,20 @@ class EditStopBox extends React.Component {
               />
             )}
             { this.state.slideIndex === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
-              <div key={"pathjunction" + index}>{index}</div>
+              <PathJunctionItem
+                translations={itemTranslation}
+                pathJunction={pathJunction}
+                key={"pathJunction-" + index}
+                name=""
+              />
             )}
             { this.state.slideIndex === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
-              <div key={"entrance" + index}>{index}</div>
+              <EntranceItem
+                translations={itemTranslation}
+                key={"entrance-" + index}
+                entrance={entrance}
+                name=""
+              />
             )}
           </div>
         </div>

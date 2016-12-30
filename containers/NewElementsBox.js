@@ -69,11 +69,11 @@ class NewElementsBox extends React.Component {
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="entrance" id="drag2" draggable="true" style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={entranceIcon}/>
+              <img ref="pathJunction" id="drag2" draggable="true" style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={junctionIcon}/>
               <div style={titleStyle}>{pathJunctionText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="pathJunction" id="drag3" draggable="true" style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={junctionIcon}/>
+              <img ref="entrance" id="drag3" draggable="true" style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
             </div>
           </div>

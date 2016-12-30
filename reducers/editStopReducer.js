@@ -273,6 +273,8 @@ const editStopReducer = (state = initialState, action) => {
       let junctionPosition = action.payLoad.position.slice(0)
 
       let newJunctionElement = {
+        description: "",
+        name: "",
         centroid: {
           location: {
             latitude: junctionPosition[0],
