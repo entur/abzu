@@ -11,7 +11,8 @@ class PathJunctionItem extends React.Component {
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     pathJunction: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    handleRemovePathJunction: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -88,6 +89,7 @@ class PathJunctionItem extends React.Component {
           <IconButton
             iconClassName="material-icons"
             style={removeStyle}
+            onClick={this.props.handleRemovePathJunction}
           >
             delete
           </IconButton>

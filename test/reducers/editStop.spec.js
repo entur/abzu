@@ -65,8 +65,11 @@ describe('edit stop reducer', () => {
     expect(state.activeStopPlace.markerProps.quays.length).toEqual(3)
 
     let newState = editStopReducer(state, {
-      type: types.REMOVED_QUAY,
-      payLoad: 1
+      type: types.REMOVED_ELEMENT_BY_TYPE,
+      payLoad: {
+        type: 'quay',
+        index: 1
+      }
     })
 
     let quay1Name = 'Brusvehagen1'

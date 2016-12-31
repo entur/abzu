@@ -11,7 +11,8 @@ class EntranceItem extends React.Component {
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     entrance: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    handleRemoveEntrance: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -88,6 +89,7 @@ class EntranceItem extends React.Component {
           <IconButton
             iconClassName="material-icons"
             style={removeStyle}
+            onClick={this.props.handleRemoveEntrance}
           >
             delete
           </IconButton>

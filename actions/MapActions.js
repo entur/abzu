@@ -43,9 +43,12 @@ MapActions.changeMapCenter = (position, zoom) => {
   }
 }
 
-MapActions.removeQuay = (index) => {
+MapActions.removeElementByType = (index, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.REMOVED_QUAY, index) )
+    dispatch( sendData(types.REMOVED_ELEMENT_BY_TYPE, {
+      index: index,
+      type: type
+    }) )
   }
 }
 

@@ -13,7 +13,8 @@ class QuayItem extends React.Component {
   static PropTypes = {
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
-    quay: PropTypes.object.isRequired
+    quay: PropTypes.object.isRequired,
+    handleRemoveQuay: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -123,7 +124,7 @@ class QuayItem extends React.Component {
             />
           <IconButton
             iconClassName="material-icons"
-            onClick={this.props.removeQuay}
+            onClick={this.props.handleRemoveQuay}
             style={removeStyle}
           >
           delete

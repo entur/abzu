@@ -67,26 +67,34 @@ const editStopReducer = (state = initialState, action) => {
     case types.ERROR_STOP:
       return Object.assign({}, state, { activeStopIsLoading: false})
 
-    case types.REMOVED_QUAY:
+    case types.REMOVED_ELEMENT_BY_TYPE:
       let markerToReduce = Object.assign({}, state.activeStopPlace, {})
-      markerToReduce.markerProps.quays.splice(action.payLoad,1)
 
-      const multiPolylinesWithQuayRemoved = changePositionInPolyLineUponPointRemove(
+      if (action.payLoad.type === 'quay') {
+        markerToReduce.markerProps.quays.splice(action.payLoad.index, 1)
+      } else if (action.payLoad.type === 'entrance') {
+        markerToReduce.markerProps.entrances.splice(action.payLoad.index, 1)
+      } else if (action.payLoad.type === 'pathJunction') {
+        markerToReduce.markerProps.pathJunctions.splice(action.payLoad.index, 1)
+      }
+
+      const multiPolylinesWithElementRemoved = changePositionInPolyLineUponPointRemove(
           state.multiPolylineDataSource.slice(0),
-          action.payLoad,
-          'quay'
+          action.payLoad.index,
+          action.payLoad.type
       )
 
-      let newPolylineStartQuay = state.polylineStartPoint
-      if (newPolylineStartQuay == action.payLoad) {
-        newPolylineStartQuay = null
+      let newPolylineStartElement = state.polylineStartPoint
+
+      if (newPolylineStartElement == action.payLoad) {
+        newPolylineStartElement = null
       }
 
       return Object.assign({}, state, {
         editedStopChanged: true,
         activeStopPlace: markerToReduce,
-        multiPolylineDataSource: multiPolylinesWithQuayRemoved,
-        polylineStartPoint: newPolylineStartQuay
+        multiPolylineDataSource: multiPolylinesWithElementRemoved,
+        polylineStartPoint: newPolylineStartElement
       })
 
     case types.CHANGED_QUAY_NAME:

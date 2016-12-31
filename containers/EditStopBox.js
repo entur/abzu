@@ -24,7 +24,15 @@ class EditStopBox extends React.Component {
   }
 
   handleRemoveQuay(index) {
-    this.props.dispatch(MapActions.removeQuay(index))
+    this.props.dispatch(MapActions.removeElementByType(index, 'quay'))
+  }
+
+  handleRemoveEntrance(index) {
+    this.props.dispatch(MapActions.removeElementByType(index, 'entrance'))
+  }
+
+  handleRemovePathJunction(index) {
+    this.props.dispatch(MapActions.removeElementByType(index, 'pathJunction'))
   }
 
   handleSave() {
@@ -248,7 +256,7 @@ class EditStopBox extends React.Component {
                 ref={'quay-' + index}
                 index={index}
                 name={quay.name}
-                removeQuay={() => this.handleRemoveQuay(index)}
+                handleRemoveQuay={() => this.handleRemoveQuay(index)}
               />
             )}
             { this.state.slideIndex === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
@@ -257,6 +265,7 @@ class EditStopBox extends React.Component {
                 pathJunction={pathJunction}
                 key={"pathJunction-" + index}
                 name=""
+                handleRemovePathJunction={() => this.handleRemovePathJunction(index)}
               />
             )}
             { this.state.slideIndex === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
@@ -265,19 +274,22 @@ class EditStopBox extends React.Component {
                 key={"entrance-" + index}
                 entrance={entrance}
                 name=""
+                handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
               />
             )}
           </div>
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
-            ? <RaisedButton
+            ?
+          <RaisedButton
             secondary={true}
             label={formatMessage({id: 'undo_changes'})}
             style={{margin: '8 5', zIndex: 999}}
             onClick={this.handleDiscardChanges.bind(this)}
           />
-            : <RaisedButton
+            :
+          <RaisedButton
             secondary={true}
             label={formatMessage({id: 'go_back'})}
             style={{margin: '8 5', zIndex: 999}}
