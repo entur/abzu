@@ -1,6 +1,6 @@
 import * as types from './../actions/actionTypes'
 
-const initialState = {
+export const initialState = {
   path: '/',
   isCreatingNewStop: false,
   searchFilters: {
@@ -25,7 +25,8 @@ const initialState = {
   topoiSuggestions: [],
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
-  activeBaselayer: 'Rutebankens kart'
+  activeBaselayer: 'Rutebankens kart',
+  activeElementTab: 0 // active tab residing in EditstopBox
 }
 
 const userReducer = (state = initialState, action) => {
@@ -103,6 +104,13 @@ const userReducer = (state = initialState, action) => {
 
     case types.CHANGED_ACTIVE_BASELAYER:
       return Object.assign({}, state, { activeBaselayer: action.payLoad})
+
+    case types.CHANGED_ELEMENT_TYPE_TAB:
+      return Object.assign({}, state, { activeElementTab: action.payLoad })
+
+    case types.ADDED_JUNCTION_ELEMENT:
+      const elementsMap = ['quay', 'pathJunction', 'entrance']
+      return Object.assign({}, state, { activeElementTab: elementsMap.indexOf(action.payLoad.type)})
 
       break;
 

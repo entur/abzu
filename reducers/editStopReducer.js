@@ -282,6 +282,7 @@ const editStopReducer = (state = initialState, action) => {
 
       let newJunctionElement = {
         description: "",
+        new: true,
         name: "",
         centroid: {
           location: {

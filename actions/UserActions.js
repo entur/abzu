@@ -246,4 +246,11 @@ UserActions.editPolylineTimeEstimate = (index, estimate) => {
     }))
   }
 }
+
+UserActions.changeElementTypeTab = (value) => {
+  return function(dispatch) {
+    dispatch(sendData(types.CHANGED_ELEMENT_TYPE_TAB, value))
+  }
+}
+
 export default UserActions

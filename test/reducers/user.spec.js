@@ -1,38 +1,7 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import * as types from './../../actions/actionTypes'
 import expect from 'expect'
-import fs from 'fs'
 import { userReducer } from './../../reducers/'
-
-const initialState = {
-  path: '/',
-  isCreatingNewStop: false,
-  searchFilters: {
-    stopType: [],
-    topoiChips: [
-     // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
-   ],
-   text: ''
-  },
-  snackbarOptions: {
-    isOpen: false,
-    message: ''
-  },
-  localization: {
-    locale: null,
-    messages: []
-  },
-  appliedLocale: null,
-  // received data from GET:/topographic_place
-  topoiSource: [],
-  // source for TopographicalFilter autocomplete
-  topoiSuggestions: [],
-  favoriteNameDialogIsOpen: false,
-  removedFavorites: [],
-  activeBaselayer: 'Rutebankens kart'
-}
-
+import { initialState } from './../../reducers/userReducer'
 
 describe('user reducer', () => {
 

@@ -18,7 +18,7 @@ class EntranceItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { collapsed: true }
+    this.state = { collapsed: !props.entrance.new }
   }
 
   toggleCollapsed() {

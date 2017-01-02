@@ -18,7 +18,7 @@ class PathJunctionItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { collapsed: true }
+    this.state = { collapsed: !props.pathJunction.new }
   }
 
   toggleCollapsed() {
@@ -38,7 +38,6 @@ class PathJunctionItem extends React.Component {
       float: 'right',
       paddingBottom: 0
     }
-
 
     const locationStyle = {
       marginRight: 5,
