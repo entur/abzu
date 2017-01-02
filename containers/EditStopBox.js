@@ -86,6 +86,14 @@ class EditStopBox extends React.Component {
     })
   }
 
+  handleLocateOnMap(centroid) {
+    const position = {
+      lat: centroid.location.latitude,
+      lng: centroid.location.longitude
+    }
+    this.props.dispatch(MapActions.changeMapCenter(position, 7))
+  }
+
   render() {
 
     const { activeStopPlace, hasContentChanged } = this.props
@@ -257,6 +265,7 @@ class EditStopBox extends React.Component {
                 index={index}
                 name={quay.name}
                 handleRemoveQuay={() => this.handleRemoveQuay(index)}
+                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
             { this.state.slideIndex === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
@@ -266,6 +275,7 @@ class EditStopBox extends React.Component {
                 key={"pathJunction-" + index}
                 name=""
                 handleRemovePathJunction={() => this.handleRemovePathJunction(index)}
+                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
             { this.state.slideIndex === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
@@ -275,6 +285,7 @@ class EditStopBox extends React.Component {
                 entrance={entrance}
                 name=""
                 handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
+                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
           </div>

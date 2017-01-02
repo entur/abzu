@@ -14,7 +14,8 @@ class QuayItem extends React.Component {
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     quay: PropTypes.object.isRequired,
-    handleRemoveQuay: PropTypes.func.isRequired
+    handleRemoveQuay: PropTypes.func.isRequired,
+    handleLocateOnMap: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -40,20 +41,11 @@ class QuayItem extends React.Component {
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
     dispatch(MapActions.changeQuayName(index, event.target.value))
-  }
+  } 
 
   handleSetFocus = () => {
     const { dispatch, index } = this.props
     dispatch(MapActions.setQuayFocus(index))
-  }
-
-  locateOnMap = () => {
-    const { dispatch, quay } = this.props
-    const position = {
-      lat: quay.centroid.location.latitude,
-      lng: quay.centroid.location.longitude
-    }
-    dispatch(MapActions.changeMapCenter(position, 7))
   }
 
   render() {
@@ -81,7 +73,7 @@ class QuayItem extends React.Component {
       <div>
         <div className="tabItem">
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.centroid)}/>
             <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
               {quayTitlePrefix + quayTitleSuffix}
             </div>

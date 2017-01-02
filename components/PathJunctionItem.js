@@ -12,7 +12,8 @@ class PathJunctionItem extends React.Component {
     translations: PropTypes.object.isRequired,
     pathJunction: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    handleRemovePathJunction: PropTypes.func.isRequired
+    handleRemovePathJunction: PropTypes.func.isRequired,
+    handleLocateOnMap: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -23,10 +24,6 @@ class PathJunctionItem extends React.Component {
   toggleCollapsed() {
     const { collapsed } = this.state
     this.setState({collapsed : !collapsed})
-  }
-
-  locateOnMap() {
-    console.log("locate on map")
   }
 
   render() {
@@ -54,7 +51,7 @@ class PathJunctionItem extends React.Component {
       <div>
         <div className='tabItem'>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.locateOnMap()}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(pathJunction.centroid)}/>
             <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
               {name.length ? name : 'N/A'}
             </div>
