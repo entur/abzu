@@ -172,6 +172,7 @@ class MarkerList extends React.Component {
                 handleDragEnd={this.handleJunctionDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
+                name={entrance.name}
               />
             )
           })
@@ -195,6 +196,7 @@ class MarkerList extends React.Component {
                 handleDragEnd={this.handleJunctionDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
+                name={pathJunction.name}
               />
             )
           })

@@ -385,4 +385,120 @@ describe('edit stop reducer', () => {
 
     expect(finalState.multiPolylineDataSource).toEqual([polyline])
   })
+
+
+  it('Should change name of an entrance', () => {
+
+    let payLoad = { ...stopPlace}
+    let stateWithOneStopPlaceTwoQuays = { ...initialState, activeStopPlace: payLoad }
+
+    let state = editStopReducer(stateWithOneStopPlaceTwoQuays, {
+      type: types.ADDED_JUNCTION_ELEMENT,
+      payLoad: {
+        position: [0,0],
+        type: 'entrance'
+      }
+    })
+
+    const index = 0
+    const name = 'A great entrance'
+
+    // expect entrance to be added
+    expect(state.activeStopPlace.markerProps.entrances.length).toEqual(1)
+    // expect entrance to have undefined name
+    expect(state.activeStopPlace.markerProps.entrances[index].name).toBeNull
+
+    let newState = editStopReducer(state, {
+      type: types.CHANGED_ENTRANCE_NAME,
+      payLoad: {
+        index: index,
+        name: name
+      }
+    })
+    expect(newState.activeStopPlace.markerProps.entrances[index].name).toEqual(name)
+  })
+
+  it('Should change name of a pathJunction', () => {
+
+    let payLoad = { ...stopPlace}
+    let stateWithOneStopPlaceTwoQuays = { ...initialState, activeStopPlace: payLoad }
+
+    let state = editStopReducer(stateWithOneStopPlaceTwoQuays, {
+      type: types.ADDED_JUNCTION_ELEMENT,
+      payLoad: {
+        position: [0,0],
+        type: 'pathJunction'
+      }
+    })
+
+    const index = 0
+    const name = 'A great path junction'
+
+    // expect path junction to be added
+    expect(state.activeStopPlace.markerProps.entrances.length).toEqual(1)
+    // expect path junction to have undefined name
+    expect(state.activeStopPlace.markerProps.entrances[index].name).toBeNull
+
+    let newState = editStopReducer(state, {
+      type: types.CHANGED_PATH_JUNCTION_NAME,
+      payLoad: {
+        index: index,
+        name: name
+      }
+    })
+    expect(newState.activeStopPlace.markerProps.pathJunctions[index].name).toEqual(name)
+  })
+
+  it('Should change description of an entrance', () => {
+
+    let payLoad = { ...stopPlace}
+    let stateWithOneStopPlaceTwoQuays = { ...initialState, activeStopPlace: payLoad }
+
+    let state = editStopReducer(stateWithOneStopPlaceTwoQuays, {
+      type: types.ADDED_JUNCTION_ELEMENT,
+      payLoad: {
+        position: [0,0],
+        type: 'entrance'
+      }
+    })
+
+    const index = 0
+    const description = 'This is the main entrance to a hub of quays'
+
+    let newState = editStopReducer(state, {
+      type: types.CHANGED_ENTRANCE_DESCRIPTION,
+      payLoad: {
+        index: index,
+        description: description
+      }
+    })
+    expect(newState.activeStopPlace.markerProps.entrances[index].description).toEqual(description)
+  })
+
+  it('Should change description of a path junction', () => {
+
+    let payLoad = { ...stopPlace}
+    let stateWithOneStopPlaceTwoQuays = { ...initialState, activeStopPlace: payLoad }
+
+    let state = editStopReducer(stateWithOneStopPlaceTwoQuays, {
+      type: types.ADDED_JUNCTION_ELEMENT,
+      payLoad: {
+        position: [0,0],
+        type: 'pathJunction'
+      }
+    })
+
+    const index = 0
+    const description = 'This is path junction to a hub of quays'
+
+    let newState = editStopReducer(state, {
+      type: types.CHANGED_PATH_JUNCTION_DESCRIPTION,
+      payLoad: {
+        index: index,
+        description: description
+      }
+    })
+    expect(newState.activeStopPlace.markerProps.pathJunctions[index].description).toEqual(description)
+  })
+
 })

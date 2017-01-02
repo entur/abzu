@@ -284,6 +284,7 @@ class EditStopBox extends React.Component {
                 pathJunction={pathJunction}
                 key={"pathJunction-" + index}
                 name=""
+                index={index}
                 handleRemovePathJunction={() => this.handleRemovePathJunction(index)}
                 handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
@@ -297,6 +298,7 @@ class EditStopBox extends React.Component {
                 key={"entrance-" + index}
                 entrance={entrance}
                 name=""
+                index={index}
                 handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
                 handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />

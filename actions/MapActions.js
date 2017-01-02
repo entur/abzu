@@ -61,6 +61,24 @@ MapActions.changeQuayName = (index, name) => {
   }
 }
 
+MapActions.changeEntranceName = (index, name) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_ENTRANCE_NAME, {
+      name: name,
+      index: index
+    }))
+  }
+}
+
+MapActions.changePathJuctionName = (index, name) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_PATH_JUNCTION_NAME, {
+      name: name,
+      index: index
+    }))
+  }
+}
+
 MapActions.changeQuayPosition = (index, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_POSITION, {
@@ -81,6 +99,24 @@ MapActions.changeActiveStopPosition = (position) => {
 MapActions.changeQuayDescription = (index, description) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_QUAY_DESCRIPTION, {
+      index: index,
+      description: description
+    }))
+  }
+}
+
+MapActions.changeEntranceDescription = (index, description) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_ENTRANCE_DESCRIPTION, {
+      index: index,
+      description: description
+    }))
+  }
+}
+
+MapActions.changePathJunctionDescription = (index, description) => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_PATH_JUNCTION_DESCRIPTION, {
       index: index,
       description: description
     }))

@@ -50,7 +50,6 @@ class SearchBox extends React.Component {
       return
     }
     else {
-      console.log("input", input)
       this.props.dispatch(AjaxActions.getStopNames(input))
       this.props.dispatch(UserActions.setSearchText(input))
     }

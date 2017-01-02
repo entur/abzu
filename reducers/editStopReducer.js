@@ -103,11 +103,35 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQN})
 
+    case types.CHANGED_ENTRANCE_NAME:
+      let markerToChangeEntrance = Object.assign({}, state.activeStopPlace,{})
+      markerToChangeEntrance.markerProps.entrances[action.payLoad.index].name = action.payLoad.name
+
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeEntrance})
+
+    case types.CHANGED_PATH_JUNCTION_NAME:
+      let markerToChangePJ = Object.assign({}, state.activeStopPlace,{})
+      markerToChangePJ.markerProps.pathJunctions[action.payLoad.index].name = action.payLoad.name
+
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangePJ})
+
     case types.CHANGED_QUAY_DESCRIPTION:
       let markerToChangeQD = Object.assign({}, state.activeStopPlace,{})
       markerToChangeQD.markerProps.quays[action.payLoad.index].description = action.payLoad.description
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQD})
+
+    case types.CHANGED_ENTRANCE_DESCRIPTION:
+      let markerToChangeED = Object.assign({}, state.activeStopPlace,{})
+      markerToChangeED.markerProps.entrances[action.payLoad.index].description = action.payLoad.description
+
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeED})
+
+    case types.CHANGED_PATH_JUNCTION_DESCRIPTION:
+      let markerToChangePJD = Object.assign({}, state.activeStopPlace,{})
+      markerToChangePJD.markerProps.pathJunctions[action.payLoad.index].description = action.payLoad.description
+
+      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangePJD})
 
     case types.CHANGED_WHA:
       let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
@@ -340,6 +364,7 @@ const editStopReducer = (state = initialState, action) => {
         activeStopPlace: stopforNewJunctionPostion,
         multiPolylineDataSource: changedJunctionMultiPolyline,
       })
+
 
       default:
         return state

@@ -11,13 +11,14 @@ class JunctionMarker extends React.Component {
     type: PropTypes.string.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     handleUpdatePathLink: PropTypes.func.isRequired,
-    text: PropTypes.object.isRequired
+    text: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired
   }
 
   render() {
 
     const { position, index, type, handleDragEnd, handleUpdatePathLink } = this.props
-    const { text, isCreatingPolylines, polylineStartPoint } = this.props
+    const { text, isCreatingPolylines, polylineStartPoint, name } = this.props
 
     const iconURL = type === 'entrance'
       ? require("../static/icons/entrance-icon-2x.png")
@@ -46,7 +47,8 @@ class JunctionMarker extends React.Component {
       fontWeight: '600',
       textTransform: 'capitalize',
       textAlign: 'center',
-      fontSize: '1.2em'
+      fontSize: '0.9em',
+      marginBottom: 5
     }
 
     let pathLinkText = isCreatingPolylines ? text.terminatePathLinkHere : text.createPathLinkHere
@@ -64,7 +66,8 @@ class JunctionMarker extends React.Component {
       >
       <Popup>
         <div>
-          <p style={titleStyle}>{text.junctionTitle}</p>
+          <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em'}}>{name || 'N/A'}</div>
+          <div style={titleStyle}>{text.junctionTitle}</div>
           <div
             style={updatePathinkStyle}
             onClick={() => { handleUpdatePathLink(position, index, type) }}

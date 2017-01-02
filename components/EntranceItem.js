@@ -4,10 +4,12 @@ import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import TextField from 'material-ui/TextField'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 import IconButton from 'material-ui/IconButton'
+import { MapActions } from '../actions/'
+import { connect } from 'react-redux'
 
 class EntranceItem extends React.Component {
 
-  static PropTypes = {
+  static propTypes = {
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     entrance: PropTypes.object.isRequired,
@@ -24,6 +26,16 @@ class EntranceItem extends React.Component {
   toggleCollapsed() {
     const { collapsed } = this.state
     this.setState({collapsed : !collapsed})
+  }
+
+  handleNameChange = (event) => {
+    const { dispatch, index } = this.props
+    dispatch(MapActions.changeEntranceName(index, event.target.value))
+  }
+
+  handleDescriptionChange = (event) => {
+    const {dispatch, index} = this.props
+    dispatch(MapActions.changeEntranceDescription(index, event.target.value))
   }
 
   render() {
@@ -75,12 +87,14 @@ class EntranceItem extends React.Component {
             floatingLabelText={translations.name}
             value={name}
             style={{width: "95%", marginTop: -10}}
+            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
           />
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
             value={description}
             style={{width: "95%", marginTop: -10}}
+            onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
           <IconButton
             iconClassName="material-icons"
@@ -96,4 +110,14 @@ class EntranceItem extends React.Component {
   }
 }
 
-export default EntranceItem
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    dispatch: dispatch
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(EntranceItem)
+
