@@ -28,7 +28,7 @@ class JunctionMarker extends React.Component {
       iconUrl: iconURL,
       iconSize: [30, 45],
       iconAnchor: [17, 42],
-      popupAnchor: [1, -32],
+      popupAnchor: [0, 0],
       shadowAnchor: [10, 12],
       shadowSize: [36, 16]
     })
