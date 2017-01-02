@@ -41,7 +41,7 @@ class QuayItem extends React.Component {
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
     dispatch(MapActions.changeQuayName(index, event.target.value))
-  } 
+  }
 
   handleSetFocus = () => {
     const { dispatch, index } = this.props

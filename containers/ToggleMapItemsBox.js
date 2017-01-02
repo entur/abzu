@@ -24,7 +24,7 @@ class ToggleMapItemsBox extends React.Component {
       position: 'absolute',
       top: '82.5vh',
       padding: 10,
-      margin: 20,
+      margin: 10,
       width: 230,
       border: '1px solid #511e12',
       zIndex: 999,

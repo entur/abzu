@@ -150,7 +150,7 @@ class EditStopBox extends React.Component {
       border: '1px solid #511E12',
       background: '#fff',
       width: 410,
-      margin: 0,
+      margin: 10,
       position: 'absolute',
       zIndex: 999,
       padding: '10 5'
