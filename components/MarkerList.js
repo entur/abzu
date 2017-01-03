@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import CustomPopupMarker from './CustomPopupMarker'
+import StopPlaceMarker from './StopPlaceMarker'
 import NewStopMarker from './NewStopMarker'
 import { MapActions, AjaxActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
@@ -121,19 +121,18 @@ class MarkerList extends React.Component {
 
       } else {
         popupMarkers.push(
-          (<CustomPopupMarker
-            key={"custom-parent- " + stopIndex}
-            markerIndex={stopIndex + "--1"}
-            stopIndex={stopIndex}
+          (<StopPlaceMarker
+            key={"stop-place- " + stopIndex}
+            index={stopIndex}
             position={markerProps.position}
-            children={text}
+            name={text}
             formattedStopType={formattedStopType}
             handleDragEnd={handleDragEnd}
             active={!!active}
             stopType={markerProps.stopPlaceType}
             draggable={dragableMarkers}
-            changeCoordinates={changeCoordinates}
-            text={CustomPopupMarkerText}
+            handleChangeCoordinates={changeCoordinates}
+            translations={CustomPopupMarkerText}
             handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
             />
           )
