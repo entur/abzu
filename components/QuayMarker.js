@@ -47,17 +47,16 @@ class QuayMarker extends React.Component {
       pathLinkText = translations.cancelPathLink
     }
 
-    let quayIcon = divIcon({html: ReactDOM.renderToStaticMarkup(
+    const divBody = ReactDOM.renderToStaticMarkup(
       <QuayMarkerIcon
         index={index}
         name={name}
         focusedQuayIndex={this.props.focusedQuayIndex}
         compassBearing={this.props.compassBearing}
       />
-    ),
-      iconAnchor: [42, 45],
-      popupAnchor: [0, 0],}
-      )
+    )
+
+    let quayIcon = divIcon({html: divBody, iconAnchor: [42, 45], popupAnchor: [0, 0]})
 
     return (
         <Marker

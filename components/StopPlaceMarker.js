@@ -12,7 +12,7 @@ class StopPlaceMarker extends React.Component {
     handleOnClick: PropTypes.func.isRequired,
     handleChangeCoordinates: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    stopType: PropTypes.string.isRequired,
+    stopType: PropTypes.string,
     index: PropTypes.number.isRequired,
     draggable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
@@ -36,7 +36,7 @@ class StopPlaceMarker extends React.Component {
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
 
-    let icon = divIcon({html: divIconBodyMarkup})
+    let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [45,92], popupAnchor: [0,-2]})
 
     return (
 

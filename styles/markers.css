@@ -29,8 +29,8 @@
 .stop-marker-svg {
     height: 24px;
     width: 24px;
-    left: -7px !important;
-    top: -38px !important;
+    left: 32px !important;
+    top: 50px !important;
     fill: #fff;
     z-index: 999;
     position: absolute;
