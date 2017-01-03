@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
+import QuayMarker from './QuayMarker'
 
 class MarkerList extends React.Component {
 
@@ -56,9 +57,19 @@ class MarkerList extends React.Component {
     this.props.dispatch( MapActions.changeJunctionPosition(index, type, formattedPosition))
   }
 
+  handleQuayDragEnd(index, event) {
+    const position = event.target.getLatLng()
+
+    let formattedPosition = {
+      lat: setDecimalPrecision(position.lat,6),
+      lng: setDecimalPrecision(position.lng,6)
+    }
+    this.props.dispatch(MapActions.changeQuayPosition(index, formattedPosition))
+  }
+
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, isCreatingPolylines } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
@@ -131,25 +142,21 @@ class MarkerList extends React.Component {
         if (quays) {
            quays.forEach( (quay, index) => {
               popupMarkers.push(
-                <CustomPopupMarker
-                  markerIndex={index}
-                  stopIndex={stopIndex}
+                <QuayMarker
+                  index={index}
+                  parentId={stopIndex}
                   position={[quay.centroid.location.latitude,
                     quay.centroid.location.longitude
                   ]}
-                  isQuay
                   key={"quay-" + stopIndex + "-" + index}
-                  children={text}
-                  handleDragEnd={handleDragEnd}
-                  active={active}
-                  formattedStopType={formattedStopType}
-                  changeCoordinates={changeCoordinates}
-                  draggable={dragableMarkers}
-                  text={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
+                  handleQuayDragEnd={this.handleQuayDragEnd.bind(this)}
+                  translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}
-                  quayName={quay.name}
+                  name={quay.name || ''}
+                  parentStopPlaceName={text}
+                  formattedStopType={formattedStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
-                  handleOnClick={() => { this.handleQuayOnClick(quay.id) } }
+                  handleChangeCoordinates={changeCoordinates}
                 />)
             })
         }
@@ -203,6 +210,7 @@ class MarkerList extends React.Component {
         }
       }
     })
+
     return <div>{popupMarkers}</div>
   }
 }

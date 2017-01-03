@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 const stopIcon = require("../static/icons/stop-icon-2x.svg")
 
+
 class CustomMarkerIcon extends React.Component {
+
+  static propTypes = {
+    markerIndex: PropTypes.number.isRequired,
+    isQuay: PropTypes.bool,
+    stopType: PropTypes.string,
+    compassBearing: PropTypes.number,
+    isCompassBearingEnabled: PropTypes.bool,
+    shouldBeFocused: PropTypes.bool
+  }
 
   render() {
 
@@ -12,7 +22,7 @@ class CustomMarkerIcon extends React.Component {
     const quayShortName = getShortQuayName(quayName)
 
     return (
-      <div id={'stop-marker-' + markerIndex }>
+      <div key={'stop-marker-' + markerIndex}>
         { (isCompassBearingEnabled && isQuay && typeof compassBearing !== 'undefined') ?
           <svg id={'cp-' +markerIndex} style={{width: 20, height: 20, marginLeft: -4, marginTop: -52, transform: `rotate(${compassBearing}deg)`}}>
             <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_arrow-forward'} />
@@ -31,7 +41,7 @@ class CustomMarkerIcon extends React.Component {
           :
           <svg className='stop-marker-svg'>
             <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
-        </svg>
+          </svg>
         }
       </div>
     )

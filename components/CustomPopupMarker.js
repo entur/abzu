@@ -93,7 +93,7 @@ class CustomPopupMarker extends React.Component {
     let pathLinkText = isCreatingPolylines ? text.terminatePathLinkHere : text.createPathLinkHere
 
     if (isQuay && isCreatingPolylines && polylineStartPoint.type === 'quay' && polylineStartPoint.index == markerIndex) {
-      pathLinkText = text.cancelPathLink
+      pathLinkText = text.cancelPatfhLink
     }
 
     let icon = divIcon({html: divIconBodyMarkup})
@@ -153,7 +153,6 @@ class CustomPopupMarker extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
   return {
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
     polylineStartPoint: state.editStopReducer.polylineStartPoint,

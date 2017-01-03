@@ -14,24 +14,16 @@
 }
 
 .focused {
-    stroke-width: 20px;
-    stroke: #2196f3;
-    stroke-dasharray: 8px;
-    animation: dash 5s linear forwards;
+    border: 2px solid #00BCD4;
+    -webkit-transition: border 500ms ease-out;
+    -moz-transition: border 500ms ease-out;
+    -o-transition: border 500ms ease-out;
+    transition: border 500ms ease-out;
+    border-radius: 99px;
 }
 
 .neighbour-stop {
     fill: grey;
-}
-
-.q-marker {
-    height: 200px;
-    color: #fff;
-    position: absolute;
-    top: -29px;
-    left: 0px;
-    font-size: 0.8em;
-    z-index: 9999999;
 }
 
 .stop-marker-svg {
@@ -60,4 +52,25 @@
 .leaflet-div-icon {
     background: none;
     border: none;
+}
+
+.quay-marker-title {
+    font-weight: 600;
+    color: #00bcd4;
+    font-size: 1.2em;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.change-path-link {
+    fontWeight: 600;
+    margin-bottom: 10px;
+    margin-top:5px;
+    cursor: pointer;
+    color: #0068ff;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
 }
