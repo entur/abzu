@@ -123,6 +123,7 @@ class MarkerList extends React.Component {
         popupMarkers.push(
           (<StopPlaceMarker
             key={"stop-place- " + stopIndex}
+            id={markerProps.id}
             index={stopIndex}
             position={markerProps.position}
             name={text}

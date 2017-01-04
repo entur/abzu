@@ -16,13 +16,14 @@ class StopPlaceMarker extends React.Component {
     index: PropTypes.number.isRequired,
     draggable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired
+    active: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired
   }
 
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable,
-          handleChangeCoordinates, translations, active, stopType } = this.props
+          handleChangeCoordinates, translations, active, stopType, id } = this.props
 
     const name = this.props.name.length ? this.props.name : translations.untitled
 
@@ -41,13 +42,13 @@ class StopPlaceMarker extends React.Component {
     return (
 
       <Marker
-        key={"stop-place" + index}
+        key={"stop-place" + id}
         icon={icon}
         position={position}
         onDragend={(event) => { handleDragEnd(false, index, event) }}
         draggable={draggable && active}
         >
-        <Popup>
+        <Popup autoPan={false}>
           <div>
             <span style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
               marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15

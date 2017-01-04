@@ -33,24 +33,6 @@ class JunctionMarker extends React.Component {
       shadowSize: [36, 16]
     })
 
-    const updatePathinkStyle = {
-      fontWeight: 600,
-      marginBottom: 10,
-      cursor: 'pointer',
-      color: '#0068ff',
-      width: '100%',
-      display: 'inline-block',
-      textAlign: 'center'
-    }
-
-    const titleStyle = {
-      fontWeight: '600',
-      textTransform: 'capitalize',
-      textAlign: 'center',
-      fontSize: '0.9em',
-      marginBottom: 5
-    }
-
     let pathLinkText = isCreatingPolylines ? text.terminatePathLinkHere : text.createPathLinkHere
 
     if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
@@ -67,9 +49,9 @@ class JunctionMarker extends React.Component {
       <Popup>
         <div>
           <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em'}}>{name || 'N/A'}</div>
-          <div style={titleStyle}>{text.junctionTitle}</div>
+          <div className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{text.junctionTitle}</div>
           <div
-            style={updatePathinkStyle}
+            className='change-path-link'
             onClick={() => { handleUpdatePathLink(position, index, type) }}
           >{pathLinkText}</div>
         </div>

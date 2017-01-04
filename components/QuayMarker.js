@@ -65,7 +65,7 @@ class QuayMarker extends React.Component {
           draggable
           onDragend={(event) => { handleQuayDragEnd(index, event) }}
         >
-          <Popup>
+          <Popup autoPan={false}>
             <div>
                <span className="quay-marker-title">
                  { parentStopPlaceName }
