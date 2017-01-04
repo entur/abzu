@@ -39,7 +39,7 @@ class QuayMarker extends React.Component {
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates } = this.props
-    const { isCreatingPolylines, polylineStartPoint, isCompassBearingEnabled } = this.props
+    const { isCreatingPolylines, polylineStartPoint } = this.props
 
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
 
@@ -53,6 +53,7 @@ class QuayMarker extends React.Component {
         name={name}
         focusedQuayIndex={this.props.focusedQuayIndex}
         compassBearing={this.props.compassBearing}
+        isCompassBearingEnabled={this.props.isCompassBearingEnabled}
       />
     )
 
@@ -102,7 +103,7 @@ class QuayMarkerIcon extends React.Component {
 
   render() {
 
-    const { index, name, compassBearing, focusedQuayIndex } = this.props
+    const { index, name, compassBearing, focusedQuayIndex, isCompassBearingEnabled } = this.props
     const quayShortName = getShortQuayName(name)
     const shouldBeFocused = index === focusedQuayIndex
 
@@ -117,10 +118,13 @@ class QuayMarkerIcon extends React.Component {
 
     return (
       <div>
+        {isCompassBearingEnabled ?
           <img
             style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}}
             src={compassBearingIcon}
           />
+          : null
+        }
         <img src={markerIcon} style={{transform: 'scale(0.8)'}} className={ shouldBeFocused ? 'focused' : ''} />
         <div style={quayStyle}>
           <div style={{color: '#fff', display: 'flex', marginLeft: -2*(quayShortName.length), fontSize: String(quayShortName.length).length > 1 ? '1em' : '1.2em'}}>
