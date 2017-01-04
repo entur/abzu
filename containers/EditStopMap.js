@@ -98,6 +98,7 @@ class EditStopMap extends React.Component {
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         enablePolylines={this.props.enablePolylines}
+        minZoom={14}
         />
     )
   }
