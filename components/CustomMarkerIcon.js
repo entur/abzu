@@ -12,7 +12,7 @@ class CustomMarkerIcon extends React.Component {
   render() {
 
     const { markerIndex, stopType, active } = this.props
-    const iconId = getIconIdByModality(stopType)
+    const icon = getIconIdByModality(stopType)
     let imageStyle = {
       transform: 'scale(0.35)'
     }
@@ -26,9 +26,7 @@ class CustomMarkerIcon extends React.Component {
       <div key={'stop-marker-' + markerIndex}>
         <img src={StopMarkerIcon} style={imageStyle} />
         <div>
-          <svg className='stop-marker-svg'>
-            <use xlinkHref={config.endpointBase + 'static/icons/svg-sprite.svg#icon-icon_' + iconId} />
-          </svg>
+          <img className='stop-marker-svg' src={icon}/>
         </div>
       </div>
     )
@@ -37,17 +35,20 @@ class CustomMarkerIcon extends React.Component {
 
 const getIconIdByModality = (type) => {
   const modalityMap = {
-    'onstreetBus': 'bus-withoutBox',
-    'onstreetTram' : 'tram-withoutBox',
-    'railStation' : 'rail-withoutBox',
-    'metroStation' : 'subway-withoutBox',
-    'busStation': 'bus-withoutBox',
-    'ferryStop' : 'ferry-withoutBox',
-    'airport' : 'airplane-withoutBox',
-    'harbourPort' : 'ferry-withoutBox',
-    'liftStation': 'lift'
+    'onstreetBus': 'bus-without-box',
+    'onstreetTram' : 'tram-without-box',
+    'railStation' : 'rails-without-box',
+    'metroStation' : 'metro-without-box',
+    'busStation': 'bus-without-box',
+    'ferryStop' : 'ferry-without-box',
+    'airport' : 'airport-without-box',
+    'harbourPort' : 'ferry-without-box',
+    'liftStation': 'lift-without-box'
   }
-  return modalityMap[type] || 'no-information'
+
+  const stopType = modalityMap[type] || 'no-information'
+
+  return require('../static/icons/modalities/' + stopType + '.png')
 }
 
 export const getShortQuayName = (quayName) => {

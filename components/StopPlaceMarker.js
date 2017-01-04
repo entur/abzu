@@ -10,7 +10,7 @@ class StopPlaceMarker extends React.Component {
     position: PropTypes.arrayOf(Number).isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
-    handleChangeCoordinates: PropTypes.func.isRequired,
+    handleChangeCoordinates: PropTypes.func,
     name: PropTypes.string.isRequired,
     stopType: PropTypes.string,
     index: PropTypes.number.isRequired,
