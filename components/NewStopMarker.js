@@ -32,7 +32,7 @@ class NewStopMarker extends React.Component {
       shadowUrl: markerShadow,
       iconSize: [30, 45],
       iconAnchor: [17, 42],
-      popupAnchor: [1, -32],
+      popupAnchor: [0, 0],
       shadowAnchor: [12, 12],
       shadowSize: [36, 16]
     })
