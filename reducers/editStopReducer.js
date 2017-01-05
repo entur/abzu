@@ -1,5 +1,5 @@
 import * as types from './../actions/actionTypes'
-import Immutable from 'Immutable'
+import Immutable from 'immutable'
 import {
   addStartPointToPolyline,
   addPointToPolyline,
