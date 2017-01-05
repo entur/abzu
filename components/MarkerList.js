@@ -33,6 +33,14 @@ class MarkerList extends React.Component {
     this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
   }
 
+  handleFetchQuaysForNeighbourStop(id) {
+    this.props.dispatch(AjaxActions.fetchQuaysForNeighourStop(id))
+  }
+
+  handleHideQuaysForNeighbourStop(id) {
+    this.props.dispatch(UserActions.hideQuaysForNeighbourStop(id))
+  }
+
   handleUpdatePathLink(coords, index, type) {
     const { isCreatingPolylines, polylineStartPoint } = this.props
 
@@ -69,7 +77,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, isCreatingPolylines } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
@@ -80,6 +88,8 @@ class MarkerList extends React.Component {
       createPathLinkHere: formatMessage({id: 'create_path_link_here'}),
       terminatePathLinkHere: formatMessage({id: 'terminate_path_link_here'}),
       cancelPathLink: formatMessage({id: 'cancel_path_link'}),
+      showQuays: formatMessage({id: 'show_quays'}),
+      hideQuays: formatMessage({id: 'hide_quays'})
     }
 
     const newStopMarkerText = {
@@ -135,6 +145,9 @@ class MarkerList extends React.Component {
             handleChangeCoordinates={changeCoordinates}
             translations={CustomPopupMarkerText}
             handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
+            handleFetchQuaysForNeighbourStop={this.handleFetchQuaysForNeighbourStop.bind(this)}
+            neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
+            handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}
             />
           )
         )
@@ -157,6 +170,8 @@ class MarkerList extends React.Component {
                   formattedStopType={formattedStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleChangeCoordinates={changeCoordinates}
+                  draggable
+                  belongsToNeighbourStop={quay.belongsToNeighbourStop}
                 />)
             })
         }
@@ -219,7 +234,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     path: state.userReducer.path,
     polylineStartPoint: state.editStopReducer.polylineStartPoint,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
+    neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap
   }
 }
 

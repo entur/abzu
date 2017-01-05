@@ -17,13 +17,25 @@ class StopPlaceMarker extends React.Component {
     draggable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    handleHideQuaysForNeighbourStop: PropTypes.func,
+    neighbouringMarkersQuaysMap: PropTypes.object.isRequired
+  }
+
+  handleToggleQuaysForNeighbouringStop(isShowingQuays) {
+    const { id } = this.props
+
+    if (isShowingQuays) {
+      this.props.handleHideQuaysForNeighbourStop(id)
+    } else {
+      this.props.handleFetchQuaysForNeighbourStop(id)
+    }
   }
 
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable,
-          handleChangeCoordinates, translations, active, stopType, id } = this.props
+          handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
 
     const name = this.props.name.length ? this.props.name : translations.untitled
 
@@ -39,6 +51,8 @@ class StopPlaceMarker extends React.Component {
 
     let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [45,92], popupAnchor: [0,-2]})
 
+    const isShowingQuays = !!neighbouringMarkersQuaysMap.get(id) && neighbouringMarkersQuaysMap.get(id).length
+
     return (
 
       <Marker
@@ -51,7 +65,7 @@ class StopPlaceMarker extends React.Component {
         <Popup autoPan={false}>
           <div>
             <span style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
-              marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15
+              marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15, borderBottom: !active ? '1px dotted' : 'none'
             }}
             onClick={handleOnClick}
             >
@@ -67,6 +81,15 @@ class StopPlaceMarker extends React.Component {
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
                 {position[1]}
               </span>
+            </div>
+            <div style={{display: 'block', width: '100%'}}>
+              { active
+                ? null
+                : <div style={{textAlign: 'center', margin: 10, cursor: 'pointer'}}
+                       onClick={(event) => this.handleToggleQuaysForNeighbouringStop(isShowingQuays)}>
+                + { isShowingQuays ? translations.hideQuays : translations.showQuays }
+              </div>
+              }
             </div>
           </div>
         </Popup>

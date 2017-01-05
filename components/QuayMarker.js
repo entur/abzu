@@ -21,7 +21,8 @@ class QuayMarker extends React.Component {
     formattedStopType: PropTypes.string.isRequired,
     handleUpdatePathLink: PropTypes.func.isRequired,
     isCreatingPolylines: PropTypes.bool.isRequired,
-    handleChangeCoordinates: PropTypes.func.isRequired
+    handleChangeCoordinates: PropTypes.func.isRequired,
+    draggable: PropTypes.bool.isRequired
   }
 
   handleSetCompassBearing() {
@@ -38,7 +39,7 @@ class QuayMarker extends React.Component {
 
   render() {
 
-    const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates } = this.props
+    const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
     const { isCreatingPolylines, polylineStartPoint } = this.props
 
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
@@ -54,6 +55,7 @@ class QuayMarker extends React.Component {
         focusedQuayIndex={this.props.focusedQuayIndex}
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
+        belongsToNeighbourStop={belongsToNeighbourStop}
       />
     )
 
@@ -63,7 +65,7 @@ class QuayMarker extends React.Component {
         <Marker
           position={position}
           icon={quayIcon}
-          draggable
+          draggable={!belongsToNeighbourStop && this.props.draggable}
           onDragend={(event) => { handleQuayDragEnd(index, event) }}
         >
           <Popup autoPan={false}>
@@ -80,19 +82,22 @@ class QuayMarker extends React.Component {
                 </div>
                 <div
                   style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
-                  onClick={() => handleChangeCoordinates(true, index, position)}
+                  onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, index, position)}
                 >
-                  <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
+                  <span style={{display: 'inline-block', textAlign: 'center', borderBottom: !belongsToNeighbourStop ? '1px dotted black' : 'none', }}>
                       {position[0]}
                   </span>
-                  <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
+                  <span style={{display: 'inline-block', marginLeft: 3, borderBottom: !belongsToNeighbourStop ? '1px dotted black' : 'none'}}>
                     {position[1]}
                   </span>
                 </div>
-                <div onClick={this.handleSetCompassBearing.bind(this)}>
-                  <img style={{width: 20, height: 22}} src={compassIcon}/>
-                </div>
-              </div>
+              { belongsToNeighbourStop
+                ? null
+                :  <div onClick={this.handleSetCompassBearing.bind(this)}>
+                    <img style={{width: 20, height: 22}} src={compassIcon}/>
+                  </div>
+              }
+            </div>
           </Popup>
         </Marker>
       )
@@ -103,7 +108,7 @@ class QuayMarkerIcon extends React.Component {
 
   render() {
 
-    const { index, name, compassBearing, focusedQuayIndex, isCompassBearingEnabled } = this.props
+    const { index, name, compassBearing, focusedQuayIndex, isCompassBearingEnabled, belongsToNeighbourStop } = this.props
     const quayShortName = getShortQuayName(name)
     const shouldBeFocused = index === focusedQuayIndex
 
@@ -116,6 +121,15 @@ class QuayMarkerIcon extends React.Component {
       zIndex: 9999,
     }
 
+    let markerIconStyle = {
+      transform: 'scale(0.8)'
+    }
+
+    if (belongsToNeighbourStop) {
+      markerIconStyle.filter = 'grayscale(100%)'
+      markerIconStyle.opacity = '0.8'
+    }
+
     return (
       <div>
         {isCompassBearingEnabled ?
@@ -125,7 +139,7 @@ class QuayMarkerIcon extends React.Component {
           />
           : null
         }
-        <img src={markerIcon} style={{transform: 'scale(0.8)'}} className={ shouldBeFocused ? 'focused' : ''} />
+        <img src={markerIcon} style={markerIconStyle} className={ shouldBeFocused ? 'focused' : ''} />
         <div style={quayStyle}>
           <div style={{color: '#fff', display: 'flex', marginLeft: -2*(quayShortName.length), fontSize: String(quayShortName.length).length > 1 ? '1em' : '1.2em'}}>
             <div style={{paddingLeft: shouldBeFocused ? 2 : 0 }}>Q</div>

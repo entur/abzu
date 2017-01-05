@@ -1,6 +1,14 @@
 import * as types from './../actions/actionTypes'
-import { setDecimalPrecision } from '../utils'
-import { addStartPointToPolyline, addPointToPolyline, addEndPointToPolyline, changePositionInPolyLineUponPointMove, changePositionInPolyLineUponPointRemove, setDefaultCompassBearingisEnabled } from './editStopReducerUtils'
+import Immutable from 'Immutable'
+import {
+  addStartPointToPolyline,
+  addPointToPolyline,
+  addEndPointToPolyline,
+  changePositionInPolyLineUponPointMove,
+  changePositionInPolyLineUponPointRemove,
+  setDefaultCompassBearingisEnabled,
+  updateNeighbourMarkersWithQuays
+} from './editStopReducerUtils'
 
 export const initialState = {
   centerPosition: [
@@ -8,6 +16,7 @@ export const initialState = {
     13.083002,
   ],
   neighbouringMarkers: [],
+  neighbouringMarkersQuaysMap: Immutable.Map({}),
   zoom: 17,
   activeStopIsLoading: false,
   editedStopChanged: false,
@@ -45,6 +54,33 @@ const newQuay = {
 const editStopReducer = (state = initialState, action) => {
 
   switch (action.type) {
+
+    case types.RECEIVED_QUAYS_FOR_NEIGHBOURING_STOP:
+
+      let newNeighbourQuaysMap = state.neighbouringMarkersQuaysMap
+
+      if (action.payLoad.stopId && action.payLoad.quays) {
+        newNeighbourQuaysMap = state.neighbouringMarkersQuaysMap.set(action.payLoad.stopId, action.payLoad.quays)
+      }
+      return Object.assign({}, state, {
+        neighbouringMarkers: updateNeighbourMarkersWithQuays(newNeighbourQuaysMap, state.neighbouringMarkers),
+        neighbouringMarkersQuaysMap: newNeighbourQuaysMap
+      })
+
+    case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
+
+      let newNeighbourQuaysMapHid = state.neighbouringMarkersQuaysMap
+
+      if (action.payLoad) {
+        newNeighbourQuaysMapHid = state.neighbouringMarkersQuaysMap.set(action.payLoad, [])
+        console.log("newNeigbourQ", newNeighbourQuaysMapHid)
+      }
+
+      return Object.assign({}, state, {
+        neighbouringMarkers: updateNeighbourMarkersWithQuays(newNeighbourQuaysMapHid, state.neighbouringMarkers),
+        neighbouringMarkersQuaysMap: newNeighbourQuaysMapHid
+      })
+
 
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, { centerPosition: action.payLoad })
@@ -194,10 +230,9 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.RECEIVED_STOPS_EDITING_NEARBY:
-      // patch for request latency from server, seeing that state can be replaced by HTTP response sequence misorder
-      let filteredStopsNearby = action.payLoad.filter((stop) => stop.markerProps.id !== state.activeStopPlace.markerProps.id)
-
-      return Object.assign({}, state, {neighbouringMarkers: filteredStopsNearby})
+      return Object.assign({}, state, {
+        neighbouringMarkers: updateNeighbourMarkersWithQuays(state.neighbouringMarkersQuaysMap, action.payLoad),
+      })
 
     case types.CHANGED_STOP_NAME:
       let activeStopPlaceCSN = {...state.activeStopPlace}

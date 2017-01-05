@@ -86,6 +86,12 @@ UserActions.changeLocalization = (localization) => {
   }
 }
 
+UserActions.hideQuaysForNeighbourStop = (id) => {
+  return function(dispatch) {
+    dispatch( sendData(types.HID_QUAYS_FOR_NEIGHBOUR_STOP, id) )
+  }
+}
+
 UserActions.getTopographicalPlaces = (input) => {
 
   return function(dispatch, getState) {

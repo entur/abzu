@@ -178,20 +178,24 @@ const removeQuaysForStops = (markers) => {
   return markers
 }
 
+export const formatQuayLocation = (centroid) => {
+  return {
+    latitude: setDecimalPrecision(centroid.location.latitude, 6),
+    longitude: setDecimalPrecision(centroid.location.longitude, 6)
+  }
+}
+
 export const formatMarkers = (data) => {
 
   try {
 
     return data.map ( (stop, index) => {
 
-      if(stop.quays) {
+      if (stop.quays) {
         stop.quays
           .sort( (q1,q2) => q1.id > q2.id)
-          .map( (quay) => {
-            quay.centroid.location = {
-              latitude: setDecimalPrecision(quay.centroid.location.latitude, 6),
-              longitude: setDecimalPrecision(quay.centroid.location.longitude, 6)
-            }
+          .forEach( (quay) => {
+            quay.centroid.location = formatQuayLocation(quay.centroid)
         })
       }
 
@@ -376,6 +380,25 @@ AjaxActions.populateTopograhicalPlaces = () => {
     .catch(function(response) {
       console.error('Unable to populate topopgraphical places', response)
     })
+  }
+}
+
+AjaxActions.fetchQuaysForNeighourStop = (id) => {
+  return function(dispatch) {
+    const URL = window.config.tiamatBaseUrl + 'stop_place/' + id
+    return axios.get(URL)
+      .then(function(response) {
+
+        const { quays } = response.data
+
+        dispatch( sendData(types.RECEIVED_QUAYS_FOR_NEIGHBOURING_STOP, {
+          stopId: id,
+          quays: quays
+        }))
+      })
+      .catch(function(response) {
+        console.error("Unable to fetch stop with id ", id)
+      })
   }
 }
 

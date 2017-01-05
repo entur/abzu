@@ -1,3 +1,4 @@
+
 export const addStartPointToPolyline = (multiPolylineDataSource, source) => {
   try {
     let polyline = {
@@ -76,4 +77,27 @@ export const setDefaultCompassBearingisEnabled = stop => {
   }
 
   return !(stop.markerProps.quays && stop.markerProps.quays.length > 2)
+}
+
+export const updateNeighbourMarkersWithQuays = (map, neighbourMarkers) => {
+
+  let newNeighbourMarkers = neighbourMarkers.slice()
+
+  map.forEach( (quays, id) => {
+
+    neighbourMarkers.forEach( (neighbour) => {
+      if (neighbour.markerProps.id == id) {
+        let neighbourQuays = quays.map( (quay) => {
+          quay.belongsToNeighbourStop = true
+          return quay
+        })
+        neighbour.markerProps.quays = neighbourQuays
+      }
+    })
+  })
+
+  // TODO : iterate keys and add necessary quays to neighbouringmarkers
+
+  return newNeighbourMarkers
+
 }
