@@ -19,7 +19,8 @@ class StopPlaceMarker extends React.Component {
     active: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired,
     handleHideQuaysForNeighbourStop: PropTypes.func,
-    neighbouringMarkersQuaysMap: PropTypes.object.isRequired
+    neighbouringMarkersQuaysMap: PropTypes.object.isRequired,
+    isEditingStop: PropTypes.bool.isRequired
   }
 
   handleToggleQuaysForNeighbouringStop(isShowingQuays) {
@@ -83,12 +84,13 @@ class StopPlaceMarker extends React.Component {
               </span>
             </div>
             <div style={{display: 'block', width: '100%'}}>
-              { active
-                ? null
-                : <div style={{textAlign: 'center', margin: 10, cursor: 'pointer'}}
-                       onClick={(event) => this.handleToggleQuaysForNeighbouringStop(isShowingQuays)}>
-                + { isShowingQuays ? translations.hideQuays : translations.showQuays }
-              </div>
+              { !active && this.props.isEditingStop
+                ?
+                  <div style={{textAlign: 'center', margin: 10, cursor: 'pointer'}}
+                    onClick={(event) => this.handleToggleQuaysForNeighbouringStop(isShowingQuays)}>
+                    + { isShowingQuays ? translations.hideQuays : translations.showQuays }
+                  </div>
+                : null
               }
             </div>
           </div>

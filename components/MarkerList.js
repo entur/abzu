@@ -148,6 +148,7 @@ class MarkerList extends React.Component {
             handleFetchQuaysForNeighbourStop={this.handleFetchQuaysForNeighbourStop.bind(this)}
             neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
             handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}
+            isEditingStop={this.props.isEditingStop}
             />
           )
         )
@@ -231,11 +232,13 @@ class MarkerList extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const isEditingStop = state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1
   return {
     path: state.userReducer.path,
     polylineStartPoint: state.editStopReducer.polylineStartPoint,
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap
+    neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap,
+    isEditingStop: isEditingStop
   }
 }
 
