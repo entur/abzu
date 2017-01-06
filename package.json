@@ -46,7 +46,7 @@
     "nightwatch": "0.9.12",
     "nock": "9.0.2",
     "react": "15.4.1",
-    "react-dom": "15.4.1",
+    "react-dom": "15.4.2",
     "react-intl": "2.2.2",
     "react-leaflet": "1.0.2",
     "react-leaflet-google": "^2.1.0",
