@@ -47,7 +47,7 @@
     "nock": "9.0.2",
     "react": "15.4.2",
     "react-dom": "15.4.1",
-    "react-intl": "2.2.2",
+    "react-intl": "2.2.3",
     "react-leaflet": "1.1.0",
     "react-leaflet-google": "^2.1.0",
     "react-redux": "5.0.1",
