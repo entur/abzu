@@ -77,7 +77,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap, missingCoordinatesMap } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
@@ -100,8 +100,16 @@ class MarkerList extends React.Component {
 
     stops.forEach(({ text, markerProps, isNewStop, active }, stopIndex) => {
 
-      if (!markerProps || !markerProps.position) {
+      if (!markerProps) {
         return
+      }
+
+      if (!markerProps.position) {
+        if (missingCoordinatesMap[markerProps.id]) {
+          markerProps.position = missingCoordinatesMap[markerProps.id]
+        } else {
+          return
+        }
       }
 
       let formattedStopTypeId = null
@@ -238,7 +246,8 @@ const mapStateToProps = (state, ownProps) => {
     polylineStartPoint: state.editStopReducer.polylineStartPoint,
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
     neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap,
-    isEditingStop: isEditingStop
+    isEditingStop: isEditingStop,
+    missingCoordinatesMap: state.userReducer.missingCoordsMap,
   }
 }
 

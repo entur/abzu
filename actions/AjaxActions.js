@@ -179,6 +179,7 @@ const removeQuaysForStops = (markers) => {
 }
 
 export const formatQuayLocation = (centroid) => {
+  if (!centroid) return null
   return {
     latitude: setDecimalPrecision(centroid.location.latitude, 6),
     longitude: setDecimalPrecision(centroid.location.longitude, 6)
@@ -192,6 +193,9 @@ export const formatMarkers = (data) => {
     return data.map ( (stop, index) => {
 
       if (stop.quays) {
+
+        stop.quays = stop.quays.filter( q => q.centroid )
+
         stop.quays
           .sort( (q1,q2) => q1.id > q2.id)
           .forEach( (quay) => {
@@ -287,7 +291,7 @@ export const formatMarkers = (data) => {
 
 }
 
-export const prepareStopForSaving = (stop) => {
+export const prepareStopForSaving = stop => {
 
   let savableStop = {}
 
@@ -306,7 +310,7 @@ export const prepareStopForSaving = (stop) => {
   savableStop.quays = []
 
   if (stop.markerProps.quays) {
-    stop.markerProps.quays.forEach ( (quay) => {
+    stop.markerProps.quays.forEach ( quay => {
       delete quay.new
       quay.type = ''
       savableStop.quays.push(quay)
@@ -320,7 +324,7 @@ export const prepareStopForSaving = (stop) => {
 
   return function(dispatch, getState) {
 
-    var stop = { ...getState().editStopReducer.activeStopPlace }
+    let stop = { ...getState().editStopReducer.activeStopPlace }
 
     const URL = window.config.tiamatBaseUrl + 'stop_place/' + stop.markerProps.id
 

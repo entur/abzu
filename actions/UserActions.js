@@ -174,6 +174,15 @@ UserActions.setSearchText = (name) => {
   }
 }
 
+UserActions.setMissingCoordinates = (position, stopPlaceId) => {
+  return function(dispatch) {
+    dispatch(sendData(types.SET_MISSING_COORDINATES, {
+      stopPlaceId: stopPlaceId,
+      position: [position.lat, position.lng]
+    }))
+  }
+}
+
 UserActions.loadFavoriteSearch = (favorite) => {
   return function(dispatch) {
     dispatch(UserActions.setToposchips(favorite.topoiChips))

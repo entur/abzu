@@ -363,7 +363,10 @@ const editStopReducer = (state = initialState, action) => {
           centroid: newJunctionElement.centroid
         })
         stopToExpand.markerProps.quays.push(newQuayToAdd)
-      } else {
+      } else if (action.payLoad.type === 'stop_place') {
+        stopToExpand.markerProps.position = junctionPosition
+      }
+      else{
         console.error(`Type of ${action.payLoad.type} is not a supported junction element`)
       }
 

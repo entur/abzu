@@ -1,4 +1,5 @@
 .warning_message > span {
-    color: darkred;
-    display: block;
+    display: inline-block;
+    margin-left: 2px;
+    margin-top: -10px;
 }

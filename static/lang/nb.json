@@ -64,5 +64,6 @@
   "undo_changes" : "Forkast",
   "unsaved" : "Ikke lagret",
   "untitled" : "Uten navn",
-  "use" : "Bruk"
+  "use" : "Bruk",
+  "stop_place": "stoppested"
 }

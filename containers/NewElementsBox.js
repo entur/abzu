@@ -7,6 +7,7 @@ import { setDecimalPrecision } from '../utils'
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
 const quayIcon = require("../static/icons/quay-marker.png")
+const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
 
 class NewElementsBox extends React.Component {
 
@@ -17,6 +18,7 @@ class NewElementsBox extends React.Component {
   render() {
 
     const { formatMessage } = this.props.intl
+    const { activeStopPlace, missingCoordsMap } = this.props
 
     const boxWrapperStyle = {
       background: '#fff',
@@ -57,6 +59,13 @@ class NewElementsBox extends React.Component {
     const quayText = formatMessage({id: 'quay'})
     const pathJunctionText = formatMessage({id: 'pathJunction'})
     const entranceText = formatMessage({id: 'entrance'})
+    const newStopText = formatMessage({id: 'stop_place'})
+
+    let shouldShowNewStop = true
+
+    if (activeStopPlace && ( activeStopPlace.markerProps.position || missingCoordsMap[activeStopPlace.markerProps.id]) ) {
+      shouldShowNewStop = false
+    }
 
     return (
       <div ref='newElementsContainer' style={boxWrapperStyle}>
@@ -64,16 +73,24 @@ class NewElementsBox extends React.Component {
             <div style={{textIndent: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
           </div>
           <div style={{display: 'block', marginTop: 0, marginBottom: 0}}>
+            { shouldShowNewStop
+              ?
+              <div style={elementStyle}>
+                <img ref="stop_place" id="stop_place" draggable style={{height: 40, width: 'auto', marginLeft: newStopText.length*1.5}} src={newStopIcon}/>
+                <div style={titleStyle}>{newStopText}</div>
+              </div>
+              : null
+            }
             <div style={elementStyle}>
               <img id="drag1" ref="quay" draggable="true" style={{height: 40, width: 'auto', marginLeft: quayText.length}} src={quayIcon}/>
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="pathJunction" id="drag2" draggable="true" style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={junctionIcon}/>
+              <img ref="pathJunction" id="drag2" draggable style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={junctionIcon}/>
               <div style={titleStyle}>{pathJunctionText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="entrance" id="drag3" draggable="true" style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={entranceIcon}/>
+              <img ref="entrance" id="drag3" draggable style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
             </div>
           </div>
@@ -137,7 +154,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
     isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    activeMap: state.editStopReducer.activeMap
+    activeMap: state.editStopReducer.activeMap,
+    missingCoordsMap: state.userReducer.missingCoordsMap,
+    activeStopPlace: state.editStopReducer.activeStopPlace
   }
 }
 

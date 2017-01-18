@@ -64,5 +64,6 @@
   "undo_changes" : "Discard",
   "unsaved" : "Unsaved",
   "untitled" : "Untitled",
-  "use" : "Use"
+  "use" : "Use",
+  "stop_place": "stop place"
 }

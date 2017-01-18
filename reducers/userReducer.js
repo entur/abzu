@@ -3,6 +3,7 @@ import * as types from './../actions/actionTypes'
 export const initialState = {
   path: '/',
   isCreatingNewStop: false,
+  missingCoordsMap: {},
   searchFilters: {
     stopType: [],
     topoiChips: [
@@ -104,6 +105,11 @@ const userReducer = (state = initialState, action) => {
 
     case types.CHANGED_ACTIVE_BASELAYER:
       return Object.assign({}, state, { activeBaselayer: action.payLoad})
+
+    case types.SET_MISSING_COORDINATES:
+      let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap)
+      newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position
+      return Object.assign({}, state, { missingCoordsMap: newMissingCoordsMap })
 
     case types.CHANGED_ELEMENT_TYPE_TAB:
       return Object.assign({}, state, { activeElementTab: action.payLoad })
