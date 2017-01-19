@@ -3,16 +3,16 @@ import React from 'react'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import * as reducers from '../reducers'
-import { Router, Route, browserHistory } from 'react-router'
 import { routerReducer } from 'react-router-redux'
 import createDebounce from 'redux-debounced'
-
 
 const loggerMiddleware = createLogger()
 
 var enchancer = {}
 
 if (process.env.NODE_ENV === 'development') {
+
+  window.ReactPerf = require('react-addons-perf')
 
   enchancer = compose(
     applyMiddleware(createDebounce(), thunkMiddleware,loggerMiddleware),
