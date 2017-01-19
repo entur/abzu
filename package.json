@@ -64,5 +64,9 @@
     "webpack": "1.14.0",
     "webpack-dev-middleware": "1.9.0",
     "webpack-hot-middleware": "2.15.0"
+  },
+  "devDependencies": {
+    "expose-loader": "^0.7.1",
+    "react-addons-perf": "^15.4.2"
   }
 }
