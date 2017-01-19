@@ -1,13 +1,6 @@
 import React from 'react'
 
-class ModalityIcon extends React.Component {
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.type == this.props.type) {
-      return false
-    }
-    return true
-  }
+class ModalityIcon extends React.PureComponent {
 
   render() {
 
@@ -25,20 +18,17 @@ class ModalityIcon extends React.Component {
 
     const iconId = getIconIdByModality(this.props.type)
 
-    /* as of react@15.3.2 the xlinkHref tag is not optimal, and will not reload unless caching is disabled */
     return (
       <span style={iconStyle}>
-        <svg
-          style={svgStyle}
-          dangerouslySetInnerHTML={{__html: `<use xlink:href="${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}"></use>`}}
-          />
+        <svg style={svgStyle}>
+            <use xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}></use>
+        </svg>
       </span>
     )
   }
 }
 
 const getIconIdByModality = (type) => {
-
   const modalityMap = {
     'onstreetBus': 'bus-withoutBox',
     'onstreetTram' : 'tram-withoutBox',

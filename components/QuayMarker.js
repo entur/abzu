@@ -161,7 +161,7 @@ const mapStateToProps = (state, ownProps) => {
     polylineStartPoint: state.editStopReducer.polylineStartPoint,
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
     isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    focusedQuayIndex: state.editStopReducer.focusedQuayIndex
+    focusedQuayIndex: state.editStopReducer.focusedQuayIndex,
   }
 }
 

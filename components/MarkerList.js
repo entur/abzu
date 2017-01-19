@@ -42,7 +42,9 @@ class MarkerList extends React.Component {
   }
 
   handleUpdatePathLink(coords, index, type) {
-    const { isCreatingPolylines, polylineStartPoint } = this.props
+    const { isCreatingPolylines, polylineStartPoint, activeMap } = this.props
+
+    if (activeMap) activeMap.closePopup()
 
     if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
       this.props.dispatch(UserActions.removeLastPolyline())
@@ -248,6 +250,7 @@ const mapStateToProps = (state, ownProps) => {
     neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap,
     isEditingStop: isEditingStop,
     missingCoordinatesMap: state.userReducer.missingCoordsMap,
+    activeMap: state.editStopReducer.activeMap
   }
 }
 

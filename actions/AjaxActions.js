@@ -70,7 +70,7 @@ const sendData = (type, payLoad) => {
 
    thunk.meta = {
      debounce: {
-       time: 150,
+       time: 1000,
        key: 'search-for-stop'
      }
    }
@@ -109,7 +109,7 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
   thunk.meta = {
     debounce: {
-      time: 150,
+      time: 1000,
       key: 'get-stops-nearby-overall'
     }
   }
@@ -160,7 +160,7 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
    thunk.meta = {
      debounce: {
-       time: 150,
+       time: 500,
        key: 'get-stops-nearby-editing'
      }
    }
