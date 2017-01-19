@@ -68,7 +68,7 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('OpenStreetMap')} name='OpenStreetMap'>
             <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
           </BaseLayer>
