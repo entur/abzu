@@ -50,8 +50,8 @@ class SearchBox extends React.Component {
       return
     }
     else {
-      this.props.dispatch(AjaxActions.getStopNames(input))
       this.props.dispatch(UserActions.setSearchText(input))
+      this.props.dispatch(AjaxActions.getStopNames(input))
     }
   }
 
@@ -59,7 +59,7 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.getTopographicalPlaces(input))
   }
 
-  handleNewRequest(result, index) {
+  handleNewRequest(result) {
     if (typeof(result.markerProps) !== 'undefined') {
       this.props.dispatch( MapActions.setActiveMarkers(result) )
     }
@@ -67,7 +67,6 @@ class SearchBox extends React.Component {
 
   handleChangeCoordinates() {
     const { formatMessage } = this.props.intl
-    //const defaultValue = position.join(',')
     const value = prompt(formatMessage({id: 'set_coordinates_prompt'}), '')
 
     // simple validation of coordinates
@@ -133,11 +132,9 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarker, isCreatingNewStop, searchText, favorited, missingCoordinatesMap } = this.props
-    const { stopPlaceFilter, topographicalSource } = this.props
+    const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap } = this.props
+    const { stopPlaceFilter, topographicalSource, dataSource = [] } = this.props
     const { formatMessage, locale } = this.props.intl
-
-    let dataSource = this.props.dataSource || []
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -179,22 +176,21 @@ class SearchBox extends React.Component {
       value: 'ref',
     }
 
-    let dataSourceContent = []
-
-    dataSource.forEach( (r) => {
-      r.value = (
-        <MenuItem
-          style={{marginTop:5, marginLeft: -10}}
-          primaryText={r.text}
-          secondaryText={(<ModalityIcon
-              iconStyle={{float: 'left', transform: 'translateY(10px)'}}
-              type={r.markerProps.stopPlaceType}
-            />
-          )}
-        />
-      )
-      dataSourceContent.push(r)
-    })
+    const menuItems = dataSource.map( element => ({
+      ...element,
+      value: (
+          <MenuItem
+            autoWidth
+            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
+            primaryText={element.text}
+            secondaryText={(<ModalityIcon
+                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
+                type={element.markerProps.stopPlaceType}
+              />
+            )}
+          />
+      )}
+    ))
 
 
     let favoriteText = {
@@ -211,16 +207,16 @@ class SearchBox extends React.Component {
             <SearchIcon style={{verticalAlign: 'middle', marginRight: 5}}/>
             <AutoComplete
               textFieldStyle={{width: 380}}
-              openOnFocus={true}
+              openOnFocus
               hintText={formatMessage({id: "filter_by_name"})}
-              dataSource={dataSourceContent}
-              filter={() => true}
+              dataSource={menuItems}
+              filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleUpdateInput.bind(this)}
-              maxSearchResults={5}
-              searchText={searchText}
+              maxSearchResults={7}
+              searchText={this.props.searchText}
               ref="searchText"
               onNewRequest={this.handleNewRequest.bind(this)}
-              listStyle={{width: 380}}
+              listStyle={{width: 'auto'}}
             />
           </div>
           { showFilter
@@ -321,20 +317,11 @@ const mapStateToProps = (state, ownProps) => {
     stopPlaceFilter: state.userReducer.searchFilters.stopType,
     topographicalSource: state.userReducer.topoiSuggestions,
     topoiChips: state.userReducer.searchFilters.topoiChips,
-    searchText: state.userReducer.searchFilters.text,
     favorited: favorited,
-    missingCoordinatesMap: state.userReducer.missingCoordsMap
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
+    missingCoordinatesMap: state.userReducer.missingCoordsMap,
+    searchText: state.userReducer.searchText
   }
 }
 
 
-export default injectIntl(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchBox))
+export default injectIntl(connect(mapStateToProps)(SearchBox))
