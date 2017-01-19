@@ -11,10 +11,6 @@ const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
 
 class NewElementsBox extends React.Component {
 
-  handleAddElement(type, latlng) {
-    this.props.dispatch(MapActions.addJunctionElement(type, latlng))
-  }
-
   render() {
 
     const { formatMessage } = this.props.intl
@@ -139,7 +135,7 @@ class NewElementsBox extends React.Component {
           const userConfirmation = confirm(`${addEntryMessage} ${latlng.lat},${latlng.lng}?`)
 
           if (userConfirmation) {
-            this.handleAddElement(key, latlng)
+            this.props.dispatch(MapActions.addJunctionElement(key, latlng))
           }
           L.DomUtil.setPosition(ref, L.point(0,0))
         })
@@ -149,8 +145,7 @@ class NewElementsBox extends React.Component {
   }
 }
 
-
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
     isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
@@ -160,10 +155,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(NewElementsBox))
+export default injectIntl(connect(mapStateToProps)(NewElementsBox))

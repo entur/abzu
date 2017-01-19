@@ -8,7 +8,7 @@ import { MapActions } from '../actions/'
 import compassIcon from '../static/icons/compass.png'
 import compassBearingIcon from '../static/icons/compass-bearing.png'
 
-class QuayMarker extends React.Component {
+class QuayMarker extends React.PureComponent {
 
   static propTypes = {
     index: PropTypes.number.isRequired,

@@ -4,7 +4,7 @@ import L, { divIcon } from 'leaflet'
 const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
 const markerShadow = require("../static/icons/marker-shadow.png")
 
-class NewStopMarker extends React.Component {
+class NewStopMarker extends React.PureComponent {
 
   static PropTypes = {
     text: PropTypes.string.isRequired,

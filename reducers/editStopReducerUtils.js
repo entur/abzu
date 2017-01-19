@@ -96,8 +96,5 @@ export const updateNeighbourMarkersWithQuays = (map, neighbourMarkers) => {
     })
   })
 
-  // TODO : iterate keys and add necessary quays to neighbouringmarkers
-
   return newNeighbourMarkers
-
 }

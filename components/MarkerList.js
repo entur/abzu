@@ -9,7 +9,7 @@ import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 
-class MarkerList extends React.Component {
+class MarkerList extends React.PureComponent {
 
   static PropTypes = {
     stops: PropTypes.array.isRequired,
@@ -241,7 +241,7 @@ class MarkerList extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   const isEditingStop = state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1
   return {
     path: state.userReducer.path,
@@ -254,13 +254,6 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
 export default injectIntl(connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(MarkerList))
