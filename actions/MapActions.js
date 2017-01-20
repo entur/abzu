@@ -32,7 +32,12 @@ MapActions.setActiveMarkers = (activeMarker) => {
   return function(dispatch) {
     activeMarker.active = true
     dispatch( sendData(types.SET_ACTIVE_MARKER, activeMarker) )
-    dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
+
+    if (activeMarker.markerProps.position) {
+      dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
+    } else {
+      dispatch( MapActions.changeMapCenter([67.928595, 13.083002], 10))
+    }
   }
 }
 

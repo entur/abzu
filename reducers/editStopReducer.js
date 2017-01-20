@@ -73,7 +73,6 @@ const editStopReducer = (state = initialState, action) => {
 
       if (action.payLoad) {
         newNeighbourQuaysMapHid = state.neighbouringMarkersQuaysMap.set(action.payLoad, [])
-        console.log("newNeigbourQ", newNeighbourQuaysMapHid)
       }
 
       return Object.assign({}, state, {
@@ -99,6 +98,9 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.REQUESTED_STOP:
       return Object.assign({}, state, { activeStopIsLoading: true})
+
+    case types.SET_ZOOM:
+      return Object.assign({}, state, { zoom: action.payLoad})
 
     case types.ERROR_STOP:
       return Object.assign({}, state, { activeStopIsLoading: false})

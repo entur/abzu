@@ -75,8 +75,10 @@ class EditStopMap extends React.Component {
     }
   }
 
+
   render() {
-    const { position, stopPlaceMarker, neighbouringMarkers, zoom } = this.props
+
+    const { position, stopPlaceMarker, neighbouringMarkers, zoom, missingCoordsMap } = this.props
 
     let markers = []
 
@@ -88,12 +90,22 @@ class EditStopMap extends React.Component {
       markers = markers.concat(neighbouringMarkers)
     }
 
+    let minZoom = 5
+
+    // Restricts zoom level if coordinates are provided either by the user or from backend
+    if (stopPlaceMarker && stopPlaceMarker.markerProps && !stopPlaceMarker.markerProps.position) {
+      if (!missingCoordsMap[stopPlaceMarker.markerProps.id]) {
+        minZoom = 15
+      }
+    }
+
     return (
       <LeafletMap
         position={position}
         markers={markers}
         zoom={zoom}
         ref="leafletMap"
+        key="leafletmap-edit"
         handleOnClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd.bind(this)}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
@@ -102,7 +114,7 @@ class EditStopMap extends React.Component {
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         enablePolylines={this.props.enablePolylines}
-        minZoom={14}
+        minZoom={minZoom}
         />
     )
   }
@@ -122,7 +134,8 @@ const mapStateToProps = (state, ownProps) => {
     lastUpdated: state.editStopReducer.lastUpdated,
     activeBaselayer: state.userReducer.activeBaselayer,
     enablePolylines: state.editStopReducer.enablePolylines,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
+    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
+    missingCoordsMap: state.userReducer.missingCoordsMap,
   }
 }
 

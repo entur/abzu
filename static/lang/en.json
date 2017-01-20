@@ -28,6 +28,7 @@
   "help" : "Help",
   "hide_quays" : "Hide quays",
   "is_missing_coordinates" : "Missing coordinates",
+  "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",
   "language" : "Language",
   "making_stop_place_hint" : "Double click anywhere on the map to set desired location. Click the marker for more options",
   "making_stop_place_title" : "You are now making a new stop place",
@@ -55,6 +56,7 @@
   "snackbar_message_failed" : "Saving failed!",
   "snackbar_message_saved" : "Saved!",
   "something_went_wrong" : "Something went wrong!",
+  "stop_place": "stop place",
   "terminate_path_link_here" : "Terminate path link here",
   "title_for_favorite": "What do you want to remember your search as?",
   "track": "Track",
@@ -64,6 +66,5 @@
   "undo_changes" : "Discard",
   "unsaved" : "Unsaved",
   "untitled" : "Untitled",
-  "use" : "Use",
-  "stop_place": "stop place"
+  "use" : "Use"
 }

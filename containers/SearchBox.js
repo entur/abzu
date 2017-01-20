@@ -180,7 +180,6 @@ class SearchBox extends React.Component {
       ...element,
       value: (
           <MenuItem
-            autoWidth
             style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
             primaryText={element.text}
             secondaryText={(<ModalityIcon

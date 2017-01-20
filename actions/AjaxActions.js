@@ -1,5 +1,5 @@
 import * as types from './actionTypes'
-import UserActions from './UserActions'
+import { UserActions, MapActions } from './'
 import axios from 'axios'
 import { setDecimalPrecision } from '../utils'
 
@@ -55,7 +55,6 @@ const sendData = (type, payLoad) => {
     })
     .then(function(response) {
       const suggestions = formatMarkers(response.data)
-
       dispatch( sendData(types.RECEIVED_STOP_NAMES, removeQuaysForStops(suggestions)) )
     })
     .catch(function(response){
@@ -263,8 +262,12 @@ export const formatMarkers = (data) => {
         let stops = formatMarkers([response.data])
         stops[0].active = true
         dispatch( sendData(types.RECEIVED_STOP, stops[0]))
-        dispatch( sendData(types.CHANGED_MAP_CENTER, stops[0].markerProps.position) )
-        dispatch( sendData(types.SET_ZOOM, 15) )
+
+        if (stops[0].markerProps.position) {
+          dispatch( MapActions.changeMapCenter(stops[0].markerProps.position, 14))
+        } else {
+          dispatch( MapActions.changeMapCenter([67.928595, 13.083002], 5))
+        }
       })
       .catch(function(response){
         dispatch( sendData(types.ERROR_STOP, response.data) )
@@ -285,7 +288,7 @@ export const formatMarkers = (data) => {
 
       dispatch( sendData(types.RECEIVED_STOP, newStop) )
       dispatch( sendData(types.CHANGED_MAP_CENTER, newStop.markerProps.position) )
-      dispatch( sendData(types.SET_ZOOM, 15) )
+      dispatch( sendData(types.SET_ZOOM, 14) )
     }
   }
 

@@ -28,7 +28,7 @@ const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, us
                   style={{borderBottom: '1px dotted', color: 'rgb(0, 188, 212)', fontWeight: 600, marginBottom: 10, fontSize: '0.8em', cursor: 'pointer'}}
                   onClick={() => handleChangeCoordinates()}
                 >
-                  Klikk her for å sette midlertidige koordinater.
+                  <FormattedMessage className='message_warning_helper_text' id="is_missing_coordinates_help_text"/>
                 </span>
               </div>
         </div>
@@ -39,8 +39,6 @@ const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, us
         />
       <FlatButton
         onClick={() => handleEdit(markerInfo.id)}
-        disabled={!userSuppliedCoordinates && markerInfo.isMissingPosition}
-        style={{opacity: !userSuppliedCoordinates && markerInfo.isMissingPosition ? 0.5 : 1}}
         >
         <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
         <span style={{fontSize: ".8em", marginLeft: 5}}>
