@@ -264,7 +264,7 @@ export const formatMarkers = (data) => {
         dispatch( sendData(types.RECEIVED_STOP, stops[0]))
 
         if (stops[0].markerProps.position) {
-          dispatch( MapActions.changeMapCenter(stops[0].markerProps.position, 14))
+          dispatch( MapActions.changeMapCenter(stops[0].markerProps.position, 16))
         } else {
           dispatch( MapActions.changeMapCenter([67.928595, 13.083002], 5))
         }

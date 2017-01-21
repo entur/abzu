@@ -237,7 +237,7 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.CHANGED_STOP_NAME:
-      let activeStopPlaceCSN = {...state.activeStopPlace}
+      let activeStopPlaceCSN = Object.assign({}, state.activeStopPlace )
       activeStopPlaceCSN.markerProps.name = action.payLoad
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCSN})

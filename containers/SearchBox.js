@@ -19,6 +19,7 @@ import ModalityIcon from '../components/ModalityIcon'
 import SearchIcon from 'material-ui/svg-icons/action/search'
 import StarIcon from 'material-ui/svg-icons/toggle/star'
 import FavoriteManager from '../singletons/FavoriteManager'
+import CoordinatesDialog from '../components/CoordinatesDialog'
 
 class SearchBox extends React.Component {
 
@@ -26,7 +27,8 @@ class SearchBox extends React.Component {
     super(props)
     this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
     this.state = {
-      showFilter: false
+      showFilter: false,
+      coordinatesDialogOpen: false
     }
   }
 
@@ -66,22 +68,18 @@ class SearchBox extends React.Component {
   }
 
   handleChangeCoordinates() {
-    const { formatMessage } = this.props.intl
-    const value = prompt(formatMessage({id: 'set_coordinates_prompt'}), '')
+    this.setState({
+      coordinatesDialogOpen: true
+    })
+   }
 
-    // simple validation of coordinates
-    if (value && value.length && value.split(',').length == 2
-      && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
+  handleSubmitCoordinates(position) {
+    this.props.dispatch( MapActions.changeMapCenter(position, 11))
+    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.activeMarker.markerProps.id ))
 
-      const { activeMarker } = this.props
-      const position = {
-        lat: Number(value.split(',')[0]),
-        lng: Number(value.split(',')[1])
-      }
-
-      this.props.dispatch( MapActions.changeMapCenter(position, 11))
-      this.props.dispatch( UserActions.setMissingCoordinates(  position, activeMarker.markerProps.id ))
-    }
+    this.setState(({
+      coordinatesDialogOpen: false
+    }))
   }
 
   handleAddChip(result) {
@@ -132,9 +130,9 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap } = this.props
+    const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
     const { stopPlaceFilter, topographicalSource, dataSource = [] } = this.props
-    const { formatMessage, locale } = this.props.intl
+    const { formatMessage, locale } = intl
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -197,10 +195,16 @@ class SearchBox extends React.Component {
       noFavoritesFoundText: formatMessage({id: 'no_favorites_found'})
     }
 
-    let { showFilter } = this.state
+    let { showFilter, coordinatesDialogOpen } = this.state
 
     return (
       <div>
+        <CoordinatesDialog
+          open={coordinatesDialogOpen}
+          handleClose={ () => this.setState({coordinatesDialogOpen: false})}
+          handleConfirm={this.handleSubmitCoordinates.bind(this)}
+          intl={intl}
+        />
         <div style={searchBoxWrapperStyle}>
           <div key='search-name-wrapper'>
             <SearchIcon style={{verticalAlign: 'middle', marginRight: 5}}/>

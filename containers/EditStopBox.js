@@ -5,20 +5,21 @@ import PathJunctionItem from '../components/PathJunctionItem'
 import EntranceItem from '../components/EntranceItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
-import TextField from 'material-ui/TextField'
 import stopTypes from '../components/stopTypes'
-import MenuItem from 'material-ui/MenuItem'
 import { injectIntl } from 'react-intl'
-import ModalityIcon from '../components/ModalityIcon'
-import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
-import IconButton from 'material-ui/IconButton'
+import ConfirmDialog from '../components/ConfirmDialog'
+
 import { Tabs, Tab } from 'material-ui/Tabs'
 
+import EditStopBoxHeader from '../components/EditStopBoxHeader'
+
+
 class EditStopBox extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
-      stopTypeOpen: false,
+      confirmDialogOpen: false
     }
   }
 
@@ -42,44 +43,25 @@ class EditStopBox extends React.Component {
     }
   }
 
-  handleStopNameChange(event) {
-    this.props.dispatch(MapActions.changeStopName(event.target.value))
-  }
-
-  handleStopDescriptionChange(event) {
-    this.props.dispatch(MapActions.changeStopDescription(event.target.value))
-  }
-
-  handleStopTypeChange(value) {
-    this.handleCloseStopPlaceTypePopover()
-    this.props.dispatch(MapActions.changeStopType(value))
-  }
-
   handleGoBack() {
     this.props.dispatch(UserActions.navigateTo('/', ''))
   }
 
   handleDiscardChanges() {
+    this.setState({
+      confirmDialogOpen: false
+    })
     this.props.dispatch(MapActions.discardChangesForEditingStop())
-  }
-
-  handleOpenStopPlaceTypePopover(event) {
-    this.setState({
-      ...this.state,
-      stopTypeOpen: true,
-      anchorEl: event.currentTarget
-    })
-  }
-
-  handleCloseStopPlaceTypePopover() {
-    this.setState({
-      ...this.state,
-      stopTypeOpen: false
-    })
   }
 
   handleSlideChange(value) {
     this.props.dispatch(UserActions.changeElementTypeTab(value))
+  }
+
+  handleDialogClose() {
+    this.setState({
+      confirmDialogOpen: false
+    })
   }
 
   handleLocateOnMap(centroid) {
@@ -92,8 +74,8 @@ class EditStopBox extends React.Component {
 
   render() {
 
-    const { activeStopPlace, hasContentChanged, activeElementTab } = this.props
-    const { formatMessage, locale } = this.props.intl
+    const { activeStopPlace, hasContentChanged, activeElementTab, intl } = this.props
+    const { formatMessage, locale } = intl
 
     if (!activeStopPlace) return (
       <div>
@@ -129,13 +111,9 @@ class EditStopBox extends React.Component {
       entrances: formatMessage({id: 'entrances'})
     }
 
+
     if (quayItemName !== null) {
       itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
-    }
-
-    const fixedHeader = {
-      position: "relative",
-      display: "block"
     }
 
     const tabContainerStyle = {
@@ -196,65 +174,22 @@ class EditStopBox extends React.Component {
       fontSize: '0.8em'
     }
 
-    let stopPlaceType = activeStopPlace.markerProps.stopPlaceType
-
     return (
 
       <div style={SbStyle} ref="c">
+        <ConfirmDialog
+          open={this.state.confirmDialogOpen}
+          handleClose={ () => { this.handleDialogClose() }}
+          handleConfirm={ () => { this.handleDiscardChanges() }}
+          intl={intl}
+        />
         <div style={stopBoxBar}>{captionText}</div>
-        <div style={fixedHeader}>
-          <TextField
-            hintText={formatMessage({id: 'name'})}
-            floatingLabelText={formatMessage({id: 'name'})}
-            style={{width: 350, marginTop: -20}}
-            value={activeStopPlace.markerProps.name}
-            onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
-          />
-          <IconButton
-            style={{float: 'right'}}
-            onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
-          >
-            <ModalityIcon
-              type={stopPlaceType}
-            />
-          </IconButton>
-          <Popover
-            open={this.state.stopTypeOpen}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
-            animation={PopoverAnimationVertical}
-          >
-            { stopTypes[locale].map( (type, index) =>
-              <MenuItem
-                key={'stopType' + index}
-                value={type.value}
-                style={{padding: '0px 10px'}}
-                primaryText={type.name}
-                onClick={() => { this.handleStopTypeChange(type.value) }}
-                secondaryText={(
-                  <ModalityIcon
-                    iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
-                    type={type.value}
-                  />)}
-              />
-            ) }
-          </Popover>
-          <TextField
-            hintText={formatMessage({id: 'description'})}
-            floatingLabelText={formatMessage({id: 'description'})}
-            style={{width: 350, marginTop: -20}}
-            value={activeStopPlace.markerProps.description}
-            onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
-          />
-        </div>
+          <EditStopBoxHeader activeStopPlace={activeStopPlace} intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5}}>
-
         </div>
         <Tabs
           onChange={this.handleSlideChange.bind(this)}
-          value={this.props.activeElementTab}
+          value={activeElementTab}
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
           <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${activeStopPlace.markerProps.quays.length})`} value={0} />
@@ -263,7 +198,7 @@ class EditStopBox extends React.Component {
         </Tabs>
         <div style={scrollable}>
             <div style={tabContainerStyle}>
-            { this.props.activeElementTab === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
+            { activeElementTab === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
               <QuayItem
                 translations={itemTranslation}
                 key={"quay-" + index}
@@ -275,10 +210,10 @@ class EditStopBox extends React.Component {
                 handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
-            { this.props.activeElementTab === 0 && !activeStopPlace.markerProps.quays.length
+            { activeElementTab === 0 && !activeStopPlace.markerProps.quays.length
               ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
             }
-            { this.props.activeElementTab === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
+            { activeElementTab === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
               <PathJunctionItem
                 translations={itemTranslation}
                 pathJunction={pathJunction}
@@ -289,10 +224,10 @@ class EditStopBox extends React.Component {
                 handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
-              { this.props.activeElementTab === 1 && !activeStopPlace.markerProps.pathJunctions.length
+              { activeElementTab === 1 && !activeStopPlace.markerProps.pathJunctions.length
                 ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
               }
-            { this.props.activeElementTab === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
+            { activeElementTab === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
               <EntranceItem
                 translations={itemTranslation}
                 key={"entrance-" + index}
@@ -303,7 +238,7 @@ class EditStopBox extends React.Component {
                 handleLocateOnMap={this.handleLocateOnMap.bind(this)}
               />
             )}
-            { this.props.activeElementTab === 2 && !activeStopPlace.markerProps.entrances.length
+            { activeElementTab === 2 && !activeStopPlace.markerProps.entrances.length
               ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
             }
           </div>
@@ -315,7 +250,7 @@ class EditStopBox extends React.Component {
             secondary={true}
             label={formatMessage({id: 'undo_changes'})}
             style={{margin: '8 5', zIndex: 999}}
-            onClick={this.handleDiscardChanges.bind(this)}
+            onClick={ () => { this.setState({confirmDialogOpen: true })} }
           />
             :
           <RaisedButton

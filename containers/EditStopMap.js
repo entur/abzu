@@ -4,8 +4,16 @@ import LeafletMap from '../components/LeafletMap'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
+import CoordinatesDialog from '../components/CoordinatesDialog'
 
 class EditStopMap extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      coordinatesDialogOpen: false
+    }
+  }
 
   handleClick(event, map) {
     const { isCreatingPolylines, dispatch } = this.props
@@ -14,6 +22,12 @@ class EditStopMap extends React.Component {
       const coords = [event.latlng.lat, event.latlng.lng]
       dispatch(UserActions.addCoordinatesToPolylines(coords))
     }
+  }
+
+  handleDialogClose() {
+    this.setState({
+      coordinatesDialogOpen: false
+    })
   }
 
   handleDragEnd(isQuay, index, event) {
@@ -53,32 +67,38 @@ class EditStopMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value))
   }
 
-  handleChangeCoordinates(isQuay, quayIndex, position) {
-    const { formatMessage } = this.props.intl
-    const defaultValue = position.join(',')
-    const value = prompt(formatMessage({id: 'set_coordinates_prompt'}), defaultValue)
-    // simple validation of coordinates
-    if (value && value.length && value.split(',').length == 2
-        && !isNaN(value.split(',')[0]) && !isNaN(value.split(',')[1])) {
-
-      if (isQuay) {
-        this.props.dispatch( MapActions.changeQuayPosition(quayIndex, {
-          lat: Number(value.split(',')[0]),
-          lng: Number(value.split(',')[1])
-        }))
-      } else {
-        this.props.dispatch( MapActions.changeActiveStopPosition({
-          lat: Number(value.split(',')[0]),
-          lng: Number(value.split(',')[1])
-        }))
+  handleChangeCoordinates(isQuay, markerIndex, position) {
+    this.setState({
+      coordinatesDialogOpen: true,
+      coordinates: position.join(','),
+      coordinatesOwner: {
+        isQuay: isQuay,
+        markerIndex: markerIndex
       }
-    }
+    })
   }
 
+  handleSubmitChangeCoordinates(position) {
+    const { coordinatesOwner } = this.state
+    const { dispatch } = this.props
+
+    if (coordinatesOwner.isQuay) {
+      dispatch(MapActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
+    } else {
+      dispatch(MapActions.changeActiveStopPosition(position))
+    }
+
+    dispatch(MapActions.changeMapCenter(position, 14))
+
+    this.setState(({
+      coordinatesDialogOpen: false
+    }))
+  }
 
   render() {
 
     const { position, stopPlaceMarker, neighbouringMarkers, zoom, missingCoordsMap } = this.props
+    const { coordinatesDialogOpen } =  this.state
 
     let markers = []
 
@@ -100,22 +120,31 @@ class EditStopMap extends React.Component {
     }
 
     return (
-      <LeafletMap
-        position={position}
-        markers={markers}
-        zoom={zoom}
-        ref="leafletMap"
-        key="leafletmap-edit"
-        handleOnClick={this.handleClick.bind(this)}
-        handleDragEnd={this.handleDragEnd.bind(this)}
-        handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
-        handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
-        dragableMarkers={true}
-        activeBaselayer={this.props.activeBaselayer}
-        handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
-        enablePolylines={this.props.enablePolylines}
-        minZoom={minZoom}
+      <div>
+        <LeafletMap
+          position={position}
+          markers={markers}
+          zoom={zoom}
+          ref="leafletMap"
+          key="leafletmap-edit"
+          handleOnClick={this.handleClick.bind(this)}
+          handleDragEnd={this.handleDragEnd.bind(this)}
+          handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
+          handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
+          dragableMarkers={true}
+          activeBaselayer={this.props.activeBaselayer}
+          handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+          enablePolylines={this.props.enablePolylines}
+          minZoom={minZoom}
         />
+        <CoordinatesDialog
+          intl={this.props.intl}
+          open={coordinatesDialogOpen}
+          coordinates={this.state.coordinates}
+          handleClose={this.handleDialogClose.bind(this)}
+          handleConfirm={this.handleSubmitChangeCoordinates.bind(this)}
+        />
+      </div>
     )
   }
 
@@ -139,13 +168,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default injectIntl(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditStopMap))
+export default injectIntl(connect(mapStateToProps)(EditStopMap))
