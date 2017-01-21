@@ -93,14 +93,14 @@ class CoordinatesDialog extends React.Component {
       />,
       <div style={buttonWrapperStyle}>
         <FlatButton
-          label={'Avbryt'}
-          primary={true}
+          label={confirmDialogTranslation.cancel}
+          primary={false}
           keyboardFocused={true}
           onTouchTap={() => this.handleClose()}
           style={{marginRight: 5}}
         />
         <FlatButton
-          label={'Endre koordinater'}
+          label={confirmDialogTranslation.confirm}
           primary={true}
           keyboardFocused={true}
           onTouchTap={() => this.handleConfirm()}
