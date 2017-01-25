@@ -46,7 +46,6 @@ const newQuay = {
   },
   allAreasWheelchairAccessible: false,
   quayType: 'other',
-  compassBearing: 0,
   new: true
 }
 

@@ -132,7 +132,7 @@ class QuayMarkerIcon extends React.Component {
 
     return (
       <div>
-        {isCompassBearingEnabled ?
+        {isCompassBearingEnabled && compassBearing ?
           <img
             style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}}
             src={compassBearingIcon}
