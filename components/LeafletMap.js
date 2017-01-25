@@ -27,7 +27,7 @@ export default class LeafLetMap extends React.Component {
     // NB: this key is owned by rutebanken.official
     const googleApiKey = 'AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E'
 
-    const { position, zoom, handleDragEnd, handleChangeCoordinates, handleOnClick, minZoom } = this.props
+    const { position, zoom, handleDragEnd, handleChangeCoordinates, handleOnClick, minZoom, handleSetCompassBearing } = this.props
     const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace, enablePolylines } = this.props
 
     let { markers } = this.props
@@ -81,6 +81,7 @@ export default class LeafLetMap extends React.Component {
           stops={markers || []}
           handleDragEnd={handleDragEnd}
           dragableMarkers={dragableMarkers}
+          handleSetCompassBearing={handleSetCompassBearing}
           />
         { enablePolylines
             ?

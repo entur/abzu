@@ -79,7 +79,7 @@ class MarkerList extends React.PureComponent {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap, missingCoordinatesMap } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap, missingCoordinatesMap, handleSetCompassBearing } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let popupMarkers = []
@@ -183,6 +183,7 @@ class MarkerList extends React.PureComponent {
                   handleChangeCoordinates={changeCoordinates}
                   draggable
                   belongsToNeighbourStop={quay.belongsToNeighbourStop}
+                  handleSetCompassBearing={handleSetCompassBearing}
                 />)
             })
         }

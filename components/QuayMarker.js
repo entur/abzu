@@ -22,19 +22,8 @@ class QuayMarker extends React.PureComponent {
     handleUpdatePathLink: PropTypes.func.isRequired,
     isCreatingPolylines: PropTypes.bool.isRequired,
     handleChangeCoordinates: PropTypes.func.isRequired,
-    draggable: PropTypes.bool.isRequired
-  }
-
-  handleSetCompassBearing() {
-    let value = prompt('Compass bearing, 0-360', String(this.props.compassBearing))
-
-    if (value == null) return
-
-    if (value => 0 && value <= 360) {
-      this.props.dispatch(MapActions.changeQuayCompassBearing(this.props.index, value))
-    } else {
-      this.handleSetCompassBearing()
-    }
+    draggable: PropTypes.bool.isRequired,
+    handleSetCompassBearing: PropTypes.func
   }
 
   render() {
@@ -93,7 +82,7 @@ class QuayMarker extends React.PureComponent {
                 </div>
               { belongsToNeighbourStop
                 ? null
-                :  <div onClick={this.handleSetCompassBearing.bind(this)}>
+                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }}>
                     <img style={{width: 20, height: 22}} src={compassIcon}/>
                   </div>
               }

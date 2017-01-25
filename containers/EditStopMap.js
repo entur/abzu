@@ -5,13 +5,15 @@ import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
 import CoordinatesDialog from '../components/CoordinatesDialog'
+import CompassBearingDialog from '../components/CompassBearingDialog'
 
 class EditStopMap extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      coordinatesDialogOpen: false
+      coordinatesDialogOpen: false,
+      compassBearingDialogOpen: false
     }
   }
 
@@ -24,9 +26,15 @@ class EditStopMap extends React.Component {
     }
   }
 
-  handleDialogClose() {
+  handleCoordinatesDialogClose() {
     this.setState({
       coordinatesDialogOpen: false
+    })
+  }
+
+  handleCompassBearingDialogClose() {
+    this.setState({
+      compassBearingDialogOpen: false
     })
   }
 
@@ -44,6 +52,14 @@ class EditStopMap extends React.Component {
     } else {
       dispatch(MapActions.changeActiveStopPosition(formattedPosition))
     }
+  }
+
+  handleSetCompassBearing(compassBearing, index) {
+    this.setState({
+      compassBearingDialogOpen: true,
+      compassBearing: compassBearing,
+      compassBearingOwner: index
+    })
   }
 
   handleMapMoveEnd(event, {leafletElement}) {
@@ -95,10 +111,18 @@ class EditStopMap extends React.Component {
     }))
   }
 
+  handleSubmitChangeCompassBearing(compassBearing) {
+    const { compassBearingOwner } = this.state
+    this.props.dispatch(MapActions.changeQuayCompassBearing(compassBearingOwner, compassBearing))
+    this.setState(({
+      compassBearingDialogOpen: false
+    }))
+  }
+
   render() {
 
     const { position, stopPlaceMarker, neighbouringMarkers, zoom, missingCoordsMap } = this.props
-    const { coordinatesDialogOpen } =  this.state
+    const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
 
     let markers = []
 
@@ -136,13 +160,21 @@ class EditStopMap extends React.Component {
           handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
           enablePolylines={this.props.enablePolylines}
           minZoom={minZoom}
+          handleSetCompassBearing={this.handleSetCompassBearing.bind(this)}
         />
         <CoordinatesDialog
           intl={this.props.intl}
           open={coordinatesDialogOpen}
           coordinates={this.state.coordinates}
-          handleClose={this.handleDialogClose.bind(this)}
+          handleClose={this.handleCoordinatesDialogClose.bind(this)}
           handleConfirm={this.handleSubmitChangeCoordinates.bind(this)}
+        />
+        <CompassBearingDialog
+          open={compassBearingDialogOpen}
+          intl={this.props.intl}
+          compassBearing={this.state.compassBearing}
+          handleClose={this.handleCompassBearingDialogClose.bind(this)}
+          handleConfirm={this.handleSubmitChangeCompassBearing.bind(this)}
         />
       </div>
     )
