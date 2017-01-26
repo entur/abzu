@@ -41,7 +41,7 @@ class QuayMarker extends React.PureComponent {
       <QuayMarkerIcon
         index={index}
         name={name}
-        focusedQuayIndex={this.props.focusedQuayIndex}
+        focusedElement={this.props.focusedElement}
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
@@ -97,9 +97,9 @@ class QuayMarkerIcon extends React.Component {
 
   render() {
 
-    const { index, name, compassBearing, focusedQuayIndex, isCompassBearingEnabled, belongsToNeighbourStop } = this.props
+    const { index, name, compassBearing, focusedElement, isCompassBearingEnabled, belongsToNeighbourStop } = this.props
     const quayShortName = getShortQuayName(name)
-    const shouldBeFocused = index === focusedQuayIndex
+    const shouldBeFocused = (focusedElement.type === 'quay' && index === focusedElement.index)
 
     const quayStyle = {
       color: '#fff',
@@ -146,11 +146,12 @@ const getShortQuayName = (quayName) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
+
   return {
     polylineStartPoint: state.editStopReducer.polylineStartPoint,
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
     isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    focusedQuayIndex: state.editStopReducer.focusedQuayIndex,
+    focusedElement: state.editStopReducer.focusedElement,
   }
 }
 

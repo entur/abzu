@@ -46,6 +46,17 @@ class EditStopBoxTabs extends React.Component {
     })
   }
 
+  handleSetFocus = (index, type) => {
+    const { dispatch } = this.props
+    dispatch(MapActions.setElementFocus(index, type))
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { expandedItem } = nextState
+    this.handleSetFocus(expandedItem.index, expandedItem.type)
+    return true
+  }
+
   render() {
 
     const noElementsStyle = {

@@ -31,6 +31,10 @@ export const initialState = {
     coordinates: [],
     index: -1,
     type: null
+  },
+  focusedElement: {
+    type: 'quay',
+    index: -1
   }
 }
 
@@ -332,8 +336,13 @@ const editStopReducer = (state = initialState, action) => {
     case types.SET_ACTIVE_MAP:
       return Object.assign({}, state, { activeMap: action.payLoad})
 
-    case types.SET_FOCUS_ON_QUAY:
-      return Object.assign({}, state, { focusedQuayIndex: action.payLoad})
+    case types.SET_FOCUS_ON_ELEMENT:
+      return Object.assign({}, state, {
+        focusedElement: {
+          index: action.payLoad.index,
+          type: action.payLoad.type
+        }
+      })
 
     case types.ADDED_JUNCTION_ELEMENT:
 

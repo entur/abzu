@@ -146,9 +146,12 @@ MapActions.changeWHA = (index, value) => {
   }
 }
 
-MapActions.setQuayFocus = (index) => {
+MapActions.setElementFocus = (index, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.SET_FOCUS_ON_QUAY, index))
+    dispatch( sendData(types.SET_FOCUS_ON_ELEMENT, {
+      index: index,
+      type: type
+    }))
   }
 }
 

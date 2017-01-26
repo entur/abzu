@@ -36,10 +36,6 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeQuayName(index, event.target.value))
   }
 
-  handleSetFocus = () => {
-    const { dispatch, index } = this.props
-    dispatch(MapActions.setQuayFocus(index))
-  }
 
   render() {
 
@@ -90,7 +86,6 @@ class QuayItem extends React.Component {
              value={quay.name || ''}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
-             onFocus={() => this.handleSetFocus()}
            />
           <TextField
             hintText={translations.description}
@@ -98,7 +93,6 @@ class QuayItem extends React.Component {
             value={quay.description || ''}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
-            onFocus={() => this.handleSetFocus()}
           />
           <Checkbox
             defaultChecked={quay.allAreasWheelchairAccessible}
