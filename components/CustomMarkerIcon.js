@@ -51,16 +51,4 @@ const getIconIdByModality = (type) => {
   return require('../static/icons/modalities/' + stopType + '.png')
 }
 
-export const getShortQuayName = (quayName) => {
-  if (typeof quayName == 'undefined' || !quayName.length) {
-    return ''
-  }
-
-  if (!isNaN(quayName)) return quayName
-
-  if (quayName.length > 1) return quayName.substring(0,1)
-
-  return quayName
-}
-
 export default CustomMarkerIcon
