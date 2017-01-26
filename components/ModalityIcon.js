@@ -32,6 +32,7 @@ const getIconIdByModality = (type) => {
   const modalityMap = {
     'onstreetBus': 'bus-withoutBox',
     'onstreetTram' : 'tram-withoutBox',
+    'tramStation' : 'tram-withoutBox',
     'railStation' : 'rail-withoutBox',
     'metroStation' : 'subway-withoutBox',
     'busStation': 'bus-withoutBox',
