@@ -3,11 +3,11 @@ const stopTypes = {
       {
         name: "Busstopp",
         value: "onstreetBus",
-        quayItemName: 'platform'
+        quayItemName: 'plattform'
       }, {
-        name: "Trikkestop",
+        name: "Trikkestopp",
         value: "onstreetTram",
-        quayItemName: 'platform'
+        quayItemName: 'plattform'
       }, {
         name: "Trikkestasjon",
         value: "tramStation",
@@ -19,23 +19,23 @@ const stopTypes = {
       }, {
         name: "Togstopp",
         value: "railStation",
-        quayItemName: 'track'
+        quayItemName: 'spor'
       }, {
         name: "T-banestopp",
         value: "metroStation",
-        quayItemName: 'track'
+        quayItemName: 'spor'
       }, {
         name: "Bussterminal",
         value: "busStation",
-        quayItemName: 'platform'
+        quayItemName: 'plattform'
       }, {
         name: "Bilferjekai",
         value: "harbourPort",
-        quayItemName: 'port'
+        quayItemName: 'kai'
       }, {
         name: "Passasjerbåtkai",
         value: "ferryStop",
-        quayItemName: 'port'
+        quayItemName: 'kai'
       }, {
         name: "Kabelbanestopp",
         value: "liftStation",
