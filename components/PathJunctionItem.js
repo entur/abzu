@@ -10,22 +10,12 @@ import { connect } from 'react-redux'
 class PathJunctionItem extends React.Component {
 
   static propTypes = {
-    name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     pathJunction: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     handleRemovePathJunction: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = { collapsed: !props.pathJunction.new }
-  }
-
-  toggleCollapsed() {
-    const { collapsed } = this.state
-    this.setState({collapsed : !collapsed})
+    expanded: PropTypes.bool.isRequired,
   }
 
   handleNameChange = (event) => {
@@ -40,10 +30,8 @@ class PathJunctionItem extends React.Component {
 
   render() {
 
-    const { collapsed } = this.state
-    const { pathJunction, translations } = this.props
+    const { pathJunction, translations, expanded, handleToggleCollapse, index } = this.props
 
-    const name = pathJunction.name
     const description = pathJunction.description || ''
 
     const removeStyle = {
@@ -63,29 +51,29 @@ class PathJunctionItem extends React.Component {
         <div className='tabItem'>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(pathJunction.centroid)}/>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
-              {name.length ? name : 'N/A'}
+            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'pathJunction')}>
+              {pathJunction.name.length ? pathJunction.name : 'N/A'}
             </div>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
+            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'pathJunction')}>
             </div>
-            { collapsed
+            { !expanded
               ? <NavigationExpandMore
-                  onClick={() => this.toggleCollapsed()}
+                  onClick={() => handleToggleCollapse(index, 'pathJunction')}
                   style={{float: "right"}}
             />
               : <NavigationExpandLess
-                  onClick={() => this.toggleCollapsed()}
+                  onClick={() => handleToggleCollapse(index, 'pathJunction')}
                   style={{float: "right"}}
             />
             }
           </div>
         </div>
-        { collapsed ? null
+        { !expanded ? null
           : <div>
           <TextField
             hintText={translations.name}
             floatingLabelText={translations.name}
-            value={name}
+            value={pathJunction.name}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
           />

@@ -16,17 +16,10 @@ class QuayItem extends React.Component {
     quay: PropTypes.object.isRequired,
     handleRemoveQuay: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
+    handleToggleCollapse: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = { collapsed: !props.quay.new }
-  }
-
-  toggleCollapsed() {
-    const { collapsed } = this.state
-    this.setState({collapsed : !collapsed})
-  }
 
   handleDescriptionChange = (event) => {
     const {dispatch, index} = this.props
@@ -50,8 +43,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, translations, name } = this.props
-    const { collapsed } = this.state
+    const { quay, translations, name, expanded, index, handleToggleCollapse } = this.props
 
     const removeStyle = {
       float: 'right',
@@ -74,23 +66,23 @@ class QuayItem extends React.Component {
         <div className="tabItem">
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.centroid)}/>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
+            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'quay')}>
               {quayTitlePrefix + quayTitleSuffix}
             </div>
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
-            { collapsed
+            { !expanded
               ? <NavigationExpandMore
-                  onClick={() => this.toggleCollapsed()}
+                  onClick={() => handleToggleCollapse(index, 'quay')}
                   style={{float: "right"}}
                 />
               : <NavigationExpandLess
-                  onClick={() => this.toggleCollapsed()}
+                  onClick={() => handleToggleCollapse(index, 'quay')}
                   style={{float: "right"}}
                 />
              }
           </div>
         </div>
-       { collapsed ? null
+       { !expanded ? null
        : <div>
            <TextField
              hintText={translations.name}
@@ -128,13 +120,6 @@ class QuayItem extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(QuayItem)
+
+export default connect(null)(QuayItem)

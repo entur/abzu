@@ -1,13 +1,11 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import QuayItem from '../components/QuayItem'
-import PathJunctionItem from '../components/PathJunctionItem'
-import EntranceItem from '../components/EntranceItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import { MapActions,  AjaxActions, UserActions } from '../actions/'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
+import EditStopBoxTabs from './EditStopBoxTabs'
 
 import { Tabs, Tab } from 'material-ui/Tabs'
 
@@ -21,18 +19,6 @@ class EditStopBox extends React.Component {
     this.state = {
       confirmDialogOpen: false
     }
-  }
-
-  handleRemoveQuay(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'quay'))
-  }
-
-  handleRemoveEntrance(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'entrance'))
-  }
-
-  handleRemovePathJunction(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'pathJunction'))
   }
 
   handleSave() {
@@ -62,14 +48,6 @@ class EditStopBox extends React.Component {
     this.setState({
       confirmDialogOpen: false
     })
-  }
-
-  handleLocateOnMap(centroid) {
-    const position = {
-      lat: centroid.location.latitude,
-      lng: centroid.location.longitude
-    }
-    this.props.dispatch(MapActions.changeMapCenter(position, 7))
   }
 
   render() {
@@ -116,13 +94,6 @@ class EditStopBox extends React.Component {
       itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
     }
 
-    const tabContainerStyle = {
-      height: 220,
-      position: "relative",
-      display: "block",
-      marginTop: -70
-    }
-
     const SbStyle = {
       top: 80,
       border: '1px solid #511E12',
@@ -167,13 +138,6 @@ class EditStopBox extends React.Component {
       marginTop: -10
     }
 
-    const noElementsStyle = {
-      fontStyle: 'italic',
-      marginTop: 100,
-      textAlign: 'center',
-      fontSize: '0.8em'
-    }
-
     return (
 
       <div style={SbStyle} ref="c">
@@ -197,51 +161,7 @@ class EditStopBox extends React.Component {
           <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${activeStopPlace.markerProps.entrances.length})`} value={2} />
         </Tabs>
         <div style={scrollable}>
-            <div style={tabContainerStyle}>
-            { activeElementTab === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
-              <QuayItem
-                translations={itemTranslation}
-                key={"quay-" + index}
-                quay={quay}
-                ref={'quay-' + index}
-                index={index}
-                name={quay.name}
-                handleRemoveQuay={() => this.handleRemoveQuay(index)}
-                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              />
-            )}
-            { activeElementTab === 0 && !activeStopPlace.markerProps.quays.length
-              ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
-            }
-            { activeElementTab === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
-              <PathJunctionItem
-                translations={itemTranslation}
-                pathJunction={pathJunction}
-                key={"pathJunction-" + index}
-                name=""
-                index={index}
-                handleRemovePathJunction={() => this.handleRemovePathJunction(index)}
-                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              />
-            )}
-              { activeElementTab === 1 && !activeStopPlace.markerProps.pathJunctions.length
-                ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
-              }
-            { activeElementTab === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
-              <EntranceItem
-                translations={itemTranslation}
-                key={"entrance-" + index}
-                entrance={entrance}
-                name=""
-                index={index}
-                handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
-                handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              />
-            )}
-            { activeElementTab === 2 && !activeStopPlace.markerProps.entrances.length
-              ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
-            }
-          </div>
+          <EditStopBoxTabs activeStopPlace={activeStopPlace} itemTranslation={itemTranslation}/>
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
@@ -280,13 +200,5 @@ const mapStateToProps = (state, ownProps) => {
     activeElementTab: state.userReducer.activeElementTab
   }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default injectIntl(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditStopBox))
+export default injectIntl(connect(mapStateToProps)(EditStopBox))

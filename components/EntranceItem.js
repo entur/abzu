@@ -10,23 +10,14 @@ import { connect } from 'react-redux'
 class EntranceItem extends React.Component {
 
   static propTypes = {
-    name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     entrance: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     handleRemoveEntrance: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = { collapsed: !props.entrance.new }
-  }
-
-  toggleCollapsed() {
-    const { collapsed } = this.state
-    this.setState({collapsed : !collapsed})
-  }
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
@@ -40,10 +31,8 @@ class EntranceItem extends React.Component {
 
   render() {
 
-    const { collapsed } = this.state
-    const { entrance, translations } = this.props
+    const { entrance, translations, expanded, handleToggleCollapse, index } = this.props
 
-    const name = entrance.name
     const description = entrance.description || ''
 
     const removeStyle = {
@@ -63,29 +52,29 @@ class EntranceItem extends React.Component {
         <div className='tabItem'>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(entrance.centroid)}/>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
-              {name.length ? name : 'N/A'}
+            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'entrance')}>
+              {entrance.name.length ? entrance.name : 'N/A'}
             </div>
-            <div style={{display: 'inline-block'}} onClick={() => this.toggleCollapsed()}>
+            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'entrance')}>
             </div>
-            { collapsed
+            { !expanded
               ? <NavigationExpandMore
-              onClick={() => this.toggleCollapsed()}
-              style={{float: "right"}}
+                  onClick={() => handleToggleCollapse(index, 'entrance')}
+                  style={{float: "right"}}
             />
               : <NavigationExpandLess
-              onClick={() => this.toggleCollapsed()}
-              style={{float: "right"}}
+                onClick={() => handleToggleCollapse(index, 'entrance')}
+                style={{float: "right"}}
             />
             }
           </div>
         </div>
-        { collapsed ? null
+        { !expanded ? null
           : <div>
           <TextField
             hintText={translations.name}
             floatingLabelText={translations.name}
-            value={name}
+            value={entrance.name}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
           />
@@ -110,14 +99,5 @@ class EntranceItem extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(EntranceItem)
+export default connect(null)(EntranceItem)
 
