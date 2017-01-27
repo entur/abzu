@@ -94,13 +94,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default injectIntl(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FavoriteNameDialog))
+export default injectIntl(connect(mapStateToProps)(FavoriteNameDialog))

@@ -98,13 +98,4 @@ class PathJunctionItem extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(PathJunctionItem)
+export default connect(null)(PathJunctionItem)

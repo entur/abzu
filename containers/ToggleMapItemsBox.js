@@ -80,10 +80,5 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ToggleMapItemsBox))
+export default injectIntl(connect(mapStateToProps)(ToggleMapItemsBox))

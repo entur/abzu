@@ -72,16 +72,10 @@ class App extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
 const mapStateToProps = (state, ownProps) => {
   return {
     snackbarOptions: state.userReducer.snackbarOptions
   }
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(App))
+export default injectIntl(connect(mapStateToProps)(App))

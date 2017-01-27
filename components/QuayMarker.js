@@ -106,7 +106,12 @@ class QuayMarkerIcon extends React.Component {
 
     this._shouldBeFocused = (focusedElement.type === 'quay' && index === focusedElement.index)
     this._markerIcon = <img src={markerIcon} style={markerIconStyle} className={ this._shouldBeFocused ? 'focused' : ''} />
-    this._compassBearingIcon = <img style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}} src={compassBearingIcon} />
+    this._compassBearingIcon = (
+      <img
+        style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}}
+        src={compassBearingIcon}
+      />
+    )
   }
 
   render() {

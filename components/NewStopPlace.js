@@ -7,8 +7,7 @@ const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
 class NewStopPlace extends React.Component {
 
   handleOnClick() {
-    const { dispatch } = this.props
-    dispatch(UserActions.toggleIsCreatingNewStop())
+    this.props.dispatch(UserActions.toggleIsCreatingNewStop())
   }
 
   render() {
@@ -41,13 +40,5 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewStopPlace)
+export default connect(mapStateToProps)(NewStopPlace)

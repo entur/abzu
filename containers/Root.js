@@ -31,12 +31,6 @@ class Root extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
 const mapStateToProps = (state, ownProps) => {
   return {
     localization: state.userReducer.localization,
@@ -44,4 +38,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Root)
+export default connect(mapStateToProps)(Root)

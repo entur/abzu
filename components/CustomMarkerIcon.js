@@ -9,24 +9,32 @@ class CustomMarkerIcon extends React.Component {
     active: PropTypes.bool.isRequired
   }
 
-  render() {
+  componentWillMount() {
 
-    const { markerIndex, stopType, active } = this.props
-    const icon = getIconIdByModality(stopType)
-    let imageStyle = {
-      transform: 'scale(0.35)'
-    }
+    const { stopType, active } = this.props
+
+    let imageStyle = { transform: 'scale(0.35)' }
 
     if (!active) {
       imageStyle.opacity = '0.8'
       imageStyle.filter = 'grayscale(80%)'
     }
 
+    const icon = getIconIdByModality(stopType)
+
+    this._stopMarkerIcon = <img src={StopMarkerIcon} style={imageStyle} />
+    this._stopTypeIcon = <img className='stop-marker-svg' src={icon}/>
+  }
+
+  render() {
+
+    const { markerIndex } = this.props
+
     return (
       <div key={'stop-marker-' + markerIndex}>
-        <img src={StopMarkerIcon} style={imageStyle} />
+        { this._stopMarkerIcon }
         <div>
-          <img className='stop-marker-svg' src={icon}/>
+          { this._stopTypeIcon }
         </div>
       </div>
     )

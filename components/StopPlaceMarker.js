@@ -102,5 +102,4 @@ class StopPlaceMarker extends React.Component {
   }
 }
 
-
 export default StopPlaceMarker
