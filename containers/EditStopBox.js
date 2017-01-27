@@ -145,6 +145,12 @@ class EditStopBox extends React.Component {
           open={this.state.confirmDialogOpen}
           handleClose={ () => { this.handleDialogClose() }}
           handleConfirm={ () => { this.handleDiscardChanges() }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel',
+          }}
           intl={intl}
         />
         <div style={stopBoxBar}>{captionText}</div>

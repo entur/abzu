@@ -8,19 +8,20 @@ class ConfirmDialog extends React.Component {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired
+    intl: PropTypes.object.isRequired,
+    messagesById: PropTypes.object.isRequired
   }
 
   render() {
 
-    const { open, handleClose, handleConfirm, intl } = this.props
+    const { open, handleClose, handleConfirm, intl, messagesById } = this.props
     const { formatMessage } = intl
 
     const confirmDialogTranslation = {
-      title: formatMessage({id: 'discard_changes_title'}),
-      body: formatMessage({id: 'discard_changes_body'}),
-      confirm: formatMessage({id: 'discard_changes_confirm'}),
-      cancel: formatMessage({id: 'discard_changes_cancel'})
+      title: formatMessage({id: messagesById.title}),
+      body: formatMessage({id: messagesById.body}),
+      confirm: formatMessage({id: messagesById.confirm}),
+      cancel: formatMessage({id: messagesById.cancel})
     }
 
     const actions = [

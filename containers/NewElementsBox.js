@@ -3,14 +3,35 @@ import { connect }  from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { MapActions } from '../actions'
 import { setDecimalPrecision } from '../utils'
+import ConfirmDialog from '../components/ConfirmDialog'
 
 const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
 const quayIcon = require("../static/icons/quay-marker.png")
 const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
 
+
 class NewElementsBox extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      confirmDialogOpen: false
+    }
+  }
+
+  handleDialogClose() {
+    this.setState({
+      confirmDialogOpen: false,
+      owner: null
+    })
+  }
+
+  handleConfirmSubmit() {
+    const { owner } = this.state
+    this.props.dispatch(MapActions.addJunctionElement(owner.key, owner.latlng))
+    this.handleDialogClose()
+  }
   render() {
 
     const { formatMessage } = this.props.intl
@@ -65,6 +86,18 @@ class NewElementsBox extends React.Component {
 
     return (
       <div ref='newElementsContainer' style={boxWrapperStyle}>
+          <ConfirmDialog
+            open={this.state.confirmDialogOpen}
+            intl={this.props.intl}
+            messagesById={{
+              title: 'add_new_element_title',
+              body: 'add_new_element_body',
+              confirm: 'add_new_element_confirm',
+              cancel: 'add_new_element_cancel',
+            }}
+            handleClose={this.handleDialogClose.bind(this)}
+            handleConfirm={this.handleConfirmSubmit.bind(this)}
+          />
           <div style={stopBoxBar}>
             <div style={{textIndent: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
           </div>
@@ -112,7 +145,6 @@ class NewElementsBox extends React.Component {
           }
 
           const { activeMap } = this.props
-          const { formatMessage } = this.props.intl
           const { target } = event
           const position = target._newPos
           const widthOffset = -12
@@ -130,14 +162,16 @@ class NewElementsBox extends React.Component {
             lng: setDecimalPrecision(lng,6)
           }
 
-          const addEntryMessage = `${formatMessage({id: 'add_entry_message'})} ${formatMessage({id: key})} ${formatMessage({id: 'at'})} `
+          this.setState({
+            confirmDialogOpen: true,
+            owner: {
+              key: key,
+              latlng: latlng,
+            }
+          })
 
-          const userConfirmation = confirm(`${addEntryMessage} ${latlng.lat},${latlng.lng}?`)
-
-          if (userConfirmation) {
-            this.props.dispatch(MapActions.addJunctionElement(key, latlng))
-          }
           L.DomUtil.setPosition(ref, L.point(0,0))
+
         })
         draggable.enable()
       }
