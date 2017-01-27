@@ -96,7 +96,8 @@ const editStopReducer = (state = initialState, action) => {
         neighbouringMarkers: [],
         multiPolylineDataSource: [],
         focusedQuayIndex: null,
-        isCompassBearingEnabled: setDefaultCompassBearingisEnabled(action.payLoad)
+        isCompassBearingEnabled: setDefaultCompassBearingisEnabled(action.payLoad),
+        focusedElement: initialState.focusedElement
       })
 
     case types.REQUESTED_STOP:

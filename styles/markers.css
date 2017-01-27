@@ -14,12 +14,14 @@
 }
 
 .focused {
-    border: 2px solid #00BCD4;
-    -webkit-transition: border 500ms ease-out;
-    -moz-transition: border 500ms ease-out;
-    -o-transition: border 500ms ease-out;
-    transition: border 500ms ease-out;
-    border-radius: 99px;
+    -webkit-box-shadow:0 0 20px ;
+    -moz-box-shadow: 0 0 20px #2196f3;
+    box-shadow:0 0 20px #2196f3;
+    transform: translate(-13px,-29px);
+}
+
+.padded-10 {
+    padding: 10px;
 }
 
 .neighbour-stop {

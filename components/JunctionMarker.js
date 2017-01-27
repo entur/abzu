@@ -15,6 +15,15 @@ class JunctionMarker extends React.Component {
     name: PropTypes.string.isRequired
   }
 
+  componentDidUpdate() {
+    const { focusedElement, index, type } = this.props
+    const isFocused = (focusedElement.type === type && index === focusedElement.index)
+    if (isFocused) {
+      L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused')
+    }
+    L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'padded-10')
+  }
+
   render() {
 
     const { position, index, type, handleDragEnd, handleUpdatePathLink } = this.props
@@ -27,7 +36,7 @@ class JunctionMarker extends React.Component {
     const icon = L.icon({
       iconUrl: iconURL,
       iconSize: [30, 45],
-      iconAnchor: [17, 42],
+      iconAnchor: [29, 50],
       popupAnchor: [0, 0],
       shadowAnchor: [10, 12],
       shadowSize: [36, 16]
@@ -45,18 +54,18 @@ class JunctionMarker extends React.Component {
         position={position}
         icon={icon}
         onDragend={(event) => { handleDragEnd(index, type, event) }}
+        ref="marker"
       >
-      <Popup>
-        <div>
-          <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em'}}>{name || 'N/A'}</div>
-          <div className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{text.junctionTitle}</div>
-          <div
-            className='change-path-link'
-            onClick={() => { handleUpdatePathLink(position, index, type) }}
-          >{pathLinkText}</div>
-        </div>
-      </Popup>
-
+        <Popup>
+          <div>
+            <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em'}}>{name || 'N/A'}</div>
+            <div className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{text.junctionTitle}</div>
+            <div
+              className='change-path-link'
+              onClick={() => { handleUpdatePathLink(position, index, type) }}
+            >{pathLinkText}</div>
+          </div>
+        </Popup>
       </Marker>
     )
   }
@@ -65,14 +74,9 @@ class JunctionMarker extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    polylineStartPoint: state.editStopReducer.polylineStartPoint
+    polylineStartPoint: state.editStopReducer.polylineStartPoint,
+    focusedElement: state.editStopReducer.focusedElement
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(JunctionMarker)
+export default connect(mapStateToProps)(JunctionMarker)

@@ -4,7 +4,6 @@ import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
-import { MapActions } from '../actions/'
 import compassIcon from '../static/icons/compass.png'
 import compassBearingIcon from '../static/icons/compass-bearing.png'
 
@@ -95,11 +94,25 @@ class QuayMarker extends React.PureComponent {
 
 class QuayMarkerIcon extends React.Component {
 
+  componentWillMount() {
+    const { focusedElement, index, belongsToNeighbourStop, compassBearing } = this.props
+
+    let markerIconStyle = { transform: 'scale(0.8)' }
+
+    if (belongsToNeighbourStop) {
+      markerIconStyle.filter = 'grayscale(100%)'
+      markerIconStyle.opacity = '0.8'
+    }
+
+    this._shouldBeFocused = (focusedElement.type === 'quay' && index === focusedElement.index)
+    this._markerIcon = <img src={markerIcon} style={markerIconStyle} className={ this._shouldBeFocused ? 'focused' : ''} />
+    this._compassBearingIcon = <img style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}} src={compassBearingIcon} />
+  }
+
   render() {
 
-    const { index, name, compassBearing, focusedElement, isCompassBearingEnabled, belongsToNeighbourStop } = this.props
+    const { name, compassBearing, isCompassBearingEnabled } = this.props
     const quayShortName = getShortQuayName(name)
-    const shouldBeFocused = (focusedElement.type === 'quay' && index === focusedElement.index)
 
     const quayStyle = {
       color: '#fff',
@@ -110,28 +123,16 @@ class QuayMarkerIcon extends React.Component {
       zIndex: 9999,
     }
 
-    let markerIconStyle = {
-      transform: 'scale(0.8)'
-    }
-
-    if (belongsToNeighbourStop) {
-      markerIconStyle.filter = 'grayscale(100%)'
-      markerIconStyle.opacity = '0.8'
-    }
-
     return (
       <div>
         {isCompassBearingEnabled && compassBearing ?
-          <img
-            style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}}
-            src={compassBearingIcon}
-          />
+          this._compassBearingIcon
           : null
         }
-        <img src={markerIcon} style={markerIconStyle} className={ shouldBeFocused ? 'focused' : ''} />
+        { this._markerIcon }
         <div style={quayStyle}>
           <div style={{color: '#fff', display: 'flex', marginLeft: -2*(quayShortName.length), fontSize: String(quayShortName.length).length > 1 ? '1em' : '1.2em'}}>
-            <div style={{paddingLeft: shouldBeFocused ? 2 : 0 }}>Q</div>
+            <div>Q</div>
             <div style={{color: '#fff', display: 'inline-block', fontSize: '0.6em', textTransform: 'capitalize'}}>{quayShortName}</div>
           </div>
         </div>
@@ -155,11 +156,5 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuayMarker)
+export default connect(mapStateToProps)(QuayMarker)
 

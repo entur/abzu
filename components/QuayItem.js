@@ -36,7 +36,6 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeQuayName(index, event.target.value))
   }
 
-
   render() {
 
     const { quay, translations, name, expanded, index, handleToggleCollapse } = this.props

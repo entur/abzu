@@ -33,6 +33,8 @@ class StopPlaceMarker extends React.Component {
     }
   }
 
+
+
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable,
