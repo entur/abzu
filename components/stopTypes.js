@@ -9,10 +9,6 @@ const stopTypes = {
         value: "onstreetTram",
         quayItemName: 'platform'
       }, {
-        name: "Trikkestasjon",
-        value: "tramStation",
-        quayItemName: 'platform'
-      }, {
         name: "Flyplass",
         value: "airport",
         quayItemName: 'gate'
@@ -51,10 +47,6 @@ const stopTypes = {
       }, {
         name: "City tram",
         value: "onstreetTram",
-        quayItemName: 'platform'
-      }, {
-        name: "Tram station",
-        value: "tramStation",
         quayItemName: 'platform'
       }, {
         name: "Airport",

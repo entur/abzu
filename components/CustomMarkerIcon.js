@@ -47,10 +47,10 @@ const getIconIdByModality = (type) => {
     'onstreetTram' : 'tram-without-box',
     'railStation' : 'rails-without-box',
     'metroStation' : 'metro-without-box',
-    'busStation': 'bus-without-box',
+    'busStation': 'busstation-without-box',
     'ferryStop' : 'ferry-without-box',
     'airport' : 'airport-without-box',
-    'harbourPort' : 'ferry-without-box',
+    'harbourPort' : 'harbour-port-without-box',
     'liftStation': 'lift-without-box'
   }
 
