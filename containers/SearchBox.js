@@ -8,18 +8,13 @@ import { MapActions, AjaxActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
-import FilterPopover from '../components/FilterPopover'
-import FavoritePopover from '../components/FavoritePopover'
-import FavoriteNameDialog from '../components/FavoriteNameDialog'
-import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
-import TopographicalFilter from '../components/TopographicalFilter'
 import MenuItem from 'material-ui/MenuItem'
 import ModalityIcon from '../components/ModalityIcon'
 import SearchIcon from 'material-ui/svg-icons/action/search'
-import StarIcon from 'material-ui/svg-icons/toggle/star'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
+import SearchFilter from '../components/SearchFilter'
 
 class SearchBox extends React.Component {
 
@@ -57,10 +52,6 @@ class SearchBox extends React.Component {
     }
   }
 
-  handleTopoInput(input) {
-    this.props.dispatch(UserActions.getTopographicalPlaces(input))
-  }
-
   handleNewRequest(result) {
     if (typeof(result.markerProps) !== 'undefined') {
       this.props.dispatch( MapActions.setActiveMarkers(result) )
@@ -82,13 +73,6 @@ class SearchBox extends React.Component {
     }))
   }
 
-  handleAddChip(result) {
-    this.props.dispatch(UserActions.addToposChip(result))
-    this.refs.topoFilter.setState({
-      searchText: ''
-    })
-  }
-
   handleNewStop() {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop())
   }
@@ -100,39 +84,17 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.setSearchText(''))
   }
 
-  handlePopoverDismiss(filters) {
-    this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
-  }
-
-  handleToggleFavorite(favorited) {
-    if (!favorited) {
-      this.props.dispatch(UserActions.openFavoriteNameDialog())
-    } else {
-      this.props.dispatch(UserActions.removeSearchAsFavorite())
-    }
-  }
-
-  handleRetrieveFilter(item) {
-    this.props.dispatch(UserActions.loadFavoriteSearch(item))
-  }
-
-  handleShowFilter() {
+  handleToggleFilter(showFilter) {
     this.setState({
-      showFilter: true
-    })
-  }
-
-  handleHideFilter() {
-    this.setState({
-      showFilter: false
+      showFilter: showFilter
     })
   }
 
   render() {
 
     const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
-    const { stopPlaceFilter, topographicalSource, dataSource = [] } = this.props
-    const { formatMessage, locale } = intl
+    const {  dataSource = [] } = this.props
+    const { formatMessage } = intl
 
     let text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
@@ -156,24 +118,6 @@ class SearchBox extends React.Component {
       border: "1px solid rgb(81, 30, 18)"
     }
 
-    let starIconStyle = {
-      stroke: '#191919',
-      marginTop: 50,
-      marginRight: 15,
-      height: 32,
-      width: 32,
-      cursor: 'pointer',
-      fill: '#ffb504',
-      float:'right'
-    }
-
-    if (!favorited) starIconStyle.fill = '#fff'
-
-    const topoiSourceConfig = {
-      text: 'name',
-      value: 'ref',
-    }
-
     const menuItems = dataSource.map( element => ({
       ...element,
       value: (
@@ -188,12 +132,6 @@ class SearchBox extends React.Component {
           />
       )}
     ))
-
-
-    let favoriteText = {
-      title: formatMessage({id: 'favorites_title'}),
-      noFavoritesFoundText: formatMessage({id: 'no_favorites_found'})
-    }
 
     let { showFilter, coordinatesDialogOpen } = this.state
 
@@ -224,7 +162,7 @@ class SearchBox extends React.Component {
           </div>
           { showFilter
             ? null
-            : <RaisedButton onClick={() => {this.handleShowFilter()}}>{formatMessage({id: 'filters'})}</RaisedButton>
+            : <RaisedButton onClick={() => { this.handleToggleFilter(true)} }>{formatMessage({id: 'filters'})}</RaisedButton>
           }
           <div style={{float: "right", marginTop: -45}}>
             <IconButton style={{verticalAlign: 'middle'}} onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
@@ -232,48 +170,13 @@ class SearchBox extends React.Component {
             </IconButton>
           </div>
           { showFilter
-            ?  <div key='filter-wrapper' style={{marginTop: 10, width: '95%', border: '1px dotted #191919', padding: 10}}>
-              <IconButton
-                style={{float: "right"}}
-                iconClassName="material-icons"
-                onClick={() => { this.handleHideFilter()}}
-              >
-                remove
-              </IconButton>
-              <div style={{float: "left", width: "88%", marginBottom: 20}}>
-                <FavoritePopover
-                  caption={formatMessage({id: "favorites"})}
-                  items={[]}
-                  filter={stopPlaceFilter}
-                  onItemClick={this.handleRetrieveFilter.bind(this)}
-                  onDismiss={this.handlePopoverDismiss.bind(this)}
-                  text={favoriteText}
-                />
-              </div>
-              <StarIcon
-                onClick={() => { this.handleToggleFavorite(!!favorited) }}
-                style={starIconStyle}
-              />
-              <FavoriteNameDialog/>
-              <FilterPopover
-                caption={formatMessage({id: "type"})}
-                items={stopTypes[locale]}
-                filter={stopPlaceFilter}
-                onDismiss={this.handlePopoverDismiss.bind(this)}
-              />
-              <TopographicalFilter/>
-              <AutoComplete
-                hintText={formatMessage({id: "filter_by_topography"})}
-                dataSource={topographicalSource}
-                dataSourceConfig={topoiSourceConfig}
-                filter={AutoComplete.caseInsensitiveFilter}
-                onUpdateInput={this.handleTopoInput.bind(this)}
-                style={{marginBottom: 20}}
-                maxSearchResults={5}
-                ref="topoFilter"
-                onNewRequest={this.handleAddChip.bind(this)}
-              />
-            </div>
+            ? <SearchFilter
+                intl={intl}
+                favorited={favorited}
+                dispatch={this.props.dispatch}
+                topographicalSource={this.props.topographicalSource}
+                stopPlaceFilter={this.props.stopPlaceFilter}
+            />
             : null
           }
           <div key='searchbox-edit'>
@@ -325,6 +228,5 @@ const mapStateToProps = state => {
     searchText: state.user.searchText
   }
 }
-
 
 export default injectIntl(connect(mapStateToProps)(SearchBox))

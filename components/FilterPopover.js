@@ -71,7 +71,7 @@ class FilterPopover extends React.Component {
 
     render() {
 
-      const { items, filter, caption } = this.props
+      const { items, filter, caption, allLabel } = this.props
 
       const allTypesChecked = !filter.length
 
@@ -124,7 +124,7 @@ class FilterPopover extends React.Component {
               ref="checkbox-all"
               defaultChecked={allTypesChecked}
               onCheck={() => this.checkAllBoxes(this.refs)}
-              label={"All"}
+              label={allLabel}
               labelPosition="left"
               style={checkboxStyle}
               />
