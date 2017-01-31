@@ -5,6 +5,7 @@ import createLogger from 'redux-logger'
 import * as reducers from '../reducers'
 import { routerReducer } from 'react-router-redux'
 import createDebounce from 'redux-debounced'
+import ApolloClient,  { createNetworkInterface } from 'apollo-client'
 
 const loggerMiddleware = createLogger()
 
@@ -26,17 +27,25 @@ if (process.env.NODE_ENV === 'development') {
 
 const initialState = {}
 
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface({ uri: 'https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql' })
+})
+
 const combinedReducer = combineReducers({
   editingStop: reducers.editStopReducer,
   stopPlaces: reducers.stopPlacesReducer,
   user: reducers.userReducer,
-  routing: routerReducer
+  routing: routerReducer,
+  apollo: client.reducer()
 })
 
-export default function configureStore(history) {
-  return createStore(
-    combinedReducer,
-    initialState,
-    enchancer
-  )
+export default function configureStore() {
+  return {
+    self: createStore(
+      combinedReducer,
+      initialState,
+      enchancer
+    ),
+    client: client
+  }
 }

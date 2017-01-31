@@ -20,7 +20,6 @@ class SearchBox extends React.Component {
 
   constructor(props) {
     super(props)
-    this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
     this.state = {
       showFilter: false,
       coordinatesDialogOpen: false
@@ -174,8 +173,8 @@ class SearchBox extends React.Component {
                 intl={intl}
                 favorited={favorited}
                 dispatch={this.props.dispatch}
-                topographicalSource={this.props.topographicalSource}
                 stopPlaceFilter={this.props.stopPlaceFilter}
+                chipsAdded={this.props.topoiChips}
             />
             : null
           }
@@ -221,7 +220,6 @@ const mapStateToProps = state => {
     dataSource: state.stopPlaces.stopPlaceNames.places,
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopPlaceFilter: state.user.searchFilters.stopType,
-    topographicalSource: state.user.topoiSuggestions,
     topoiChips: state.user.searchFilters.topoiChips,
     favorited: favorited,
     missingCoordinatesMap: state.user.missingCoordsMap,

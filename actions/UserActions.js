@@ -92,29 +92,6 @@ UserActions.hideQuaysForNeighbourStop = (id) => {
   }
 }
 
-UserActions.getTopographicalPlaces = (input) => {
-
-  return function(dispatch, getState) {
-
-    const state = getState()
-
-    let chipsAlreadyAdded = state.user.searchFilters.topoiChips
-    let suggestions = state.user.topoiSource
-
-    suggestions = suggestions.filter( (suggestion) => {
-      for (let i = 0; i < chipsAlreadyAdded.length; i++) {
-        if (JSON.stringify(chipsAlreadyAdded[i]) === JSON.stringify(suggestion)) {
-          return false
-        }
-      }
-      return true
-    })
-
-    dispatch ( sendData(types.GET_TOPOGRAPHICAL_PLACES, suggestions) )
-  }
-}
-
-
 UserActions.clearSearchResults = () => {
   return function(dispatch) {
     dispatch( sendData(types.RECEIVED_STOP_NAMES, []) )
@@ -123,7 +100,7 @@ UserActions.clearSearchResults = () => {
 
 UserActions.addToposChip = (chip) => {
   return function(dispatch) {
-    if (typeof chip.name !== 'undefined' && typeof chip.type !== 'undefined')
+    if (typeof chip.text !== 'undefined' && typeof chip.type !== 'undefined')
       dispatch(sendData(types.ADDED_TOPOS_CHIP, chip))
   }
 }

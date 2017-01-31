@@ -34,9 +34,9 @@ const sendData = (type, payLoad) => {
 
     topoiChips.forEach( (t) => {
       if (t.type === 'county') {
-        queryParams.push(`countyReference=${t.ref}`)
+        queryParams.push(`countyReference=${t.value}`)
       } else {
-        queryParams.push(`municipalityReference=${t.ref}`)
+        queryParams.push(`municipalityReference=${t.value}`)
       }
     })
 
@@ -374,19 +374,6 @@ AjaxActions.saveNewStop = () => {
     .catch(function(response){
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
       dispatch( sendData(types.ERROR_STOP_SAVED, response) )
-    })
-  }
-}
-
-AjaxActions.populateTopograhicalPlaces = () => {
-  return function(dispatch) {
-    const URL = window.config.tiamatBaseUrl + 'topographic_place/'
-    return axios.get(URL)
-    .then(function(response) {
-      dispatch( sendData(types.RECEIVED_TOPOGRAPHICAL_PLACES, response.data))
-    })
-    .catch(function(response) {
-      console.error('Unable to populate topopgraphical places', response)
     })
   }
 }

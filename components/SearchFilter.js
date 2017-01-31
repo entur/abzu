@@ -8,6 +8,9 @@ import StarIcon from 'material-ui/svg-icons/toggle/star'
 import IconButton from 'material-ui/IconButton'
 import { UserActions } from '../actions/'
 import AutoComplete from 'material-ui/AutoComplete'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+import MenuItem from 'material-ui/MenuItem'
 
 class SearchFilter extends React.Component {
 
@@ -28,12 +31,8 @@ class SearchFilter extends React.Component {
     }
   }
 
-  handleInputChange(input) {
-    this.props.dispatch(UserActions.getTopographicalPlaces(input))
-  }
-
-  handleAddChip(result) {
-    this.props.dispatch(UserActions.addToposChip(result))
+  handleAddChip({ text, type, id }) {
+    this.props.dispatch(UserActions.addToposChip({text: text, type: type, value: id}))
     this.refs.topoFilter.setState({
       searchText: ''
     })
@@ -41,7 +40,7 @@ class SearchFilter extends React.Component {
 
   render() {
 
-    const { stopPlaceFilter, intl, topographicalSource, favorited } = this.props
+    const { data, stopPlaceFilter, intl, favorited, chipsAdded } = this.props
     const { toggleShowFilter } = this.props
 
     const { formatMessage, locale } = intl
@@ -51,10 +50,21 @@ class SearchFilter extends React.Component {
       noFavoritesFoundText: formatMessage({id: 'no_favorites_found'})
     }
 
-    const topoiSourceConfig = {
-      text: 'name',
-      value: 'ref',
-    }
+    const topographicalPlaces = !data.topographicPlace
+      ? []
+      : data.topographicPlace
+        .filter( place => chipsAdded.map( chip => chip.value ).indexOf(place.id) == -1)
+        .map( place => ({
+          text: place.name.value,
+          id: place.id,
+          value: (
+            <MenuItem
+              primaryText={place.name.value}
+              secondaryText={ formatMessage({id: place.topographicPlaceType}) }
+            />
+          ),
+          type: place.topographicPlaceType
+      }))
 
     let starIconStyle = {
       stroke: '#191919',
@@ -101,10 +111,8 @@ class SearchFilter extends React.Component {
         <TopographicalFilter/>
         <AutoComplete
           hintText={formatMessage({id: "filter_by_topography"})}
-          dataSource={topographicalSource}
-          dataSourceConfig={topoiSourceConfig}
+          dataSource={topographicalPlaces}
           filter={AutoComplete.caseInsensitiveFilter}
-          onUpdateInput={this.handleInputChange.bind(this)}
           style={{marginBottom: 20}}
           maxSearchResults={5}
           ref="topoFilter"
@@ -115,4 +123,17 @@ class SearchFilter extends React.Component {
   }
 }
 
-export default SearchFilter
+
+const TopopGraphicalPlacesForFilter = gql`
+    query TopopGraphicalPlaces {
+        topographicPlace {
+            id
+            name {
+                value
+            }
+            topographicPlaceType
+        }
+    }
+`
+
+export default graphql(TopopGraphicalPlacesForFilter)(SearchFilter)

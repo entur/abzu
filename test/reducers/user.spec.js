@@ -101,19 +101,6 @@ describe('user reducer', () => {
       })
   })
 
-  it('Should set topographical places', () => {
-
-    let topographicalPlaces = require('./json/topographicalPlaces.json')
-
-    expect(userReducer(undefined, {
-      type: types.GET_TOPOGRAPHICAL_PLACES,
-      payLoad: topographicalPlaces
-    }))
-      .toEqual({
-        ...initialState, topoiSuggestions: topographicalPlaces
-      })
-  })
-
   it('Should set active baselayer for maps', () => {
     let newBaselayer = 'OpenStreetMap'
 
