@@ -130,9 +130,9 @@ class EditStopBoxTabs extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    activeElementTab: state.userReducer.activeElementTab,
+    activeElementTab: state.user.activeElementTab,
   }
 }
 

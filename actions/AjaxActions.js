@@ -18,7 +18,7 @@ const sendData = (type, payLoad) => {
 
     let URL = window.config.tiamatBaseUrl + 'stop_place/'
     const state = getState()
-    const stopTypeFilters = state.userReducer.searchFilters.stopType
+    const stopTypeFilters = state.user.searchFilters.stopType
 
     let queryParams = []
 
@@ -27,10 +27,10 @@ const sendData = (type, payLoad) => {
     }
 
     if (stopTypeFilters && stopTypeFilters.length) {
-      Array.prototype.push.apply(queryParams, stopTypeFilters.map( (type) => `stopPlaceType=${type}`))
+      Array.prototype.push.apply(queryParams, stopTypeFilters.map( type => `stopPlaceType=${type}`))
     }
 
-    const topoiChips = state.userReducer.searchFilters.topoiChips
+    const topoiChips = state.user.searchFilters.topoiChips
 
     topoiChips.forEach( (t) => {
       if (t.type === 'county') {
@@ -77,6 +77,7 @@ const sendData = (type, payLoad) => {
    return thunk
 }
 
+
 AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
  const thunk = function(dispatch, getState) {
@@ -86,8 +87,8 @@ AjaxActions.getStopsNearbyForOverview = (boundingBox) => {
 
    let ignoreStopPlaceId = 0
 
-   if (state.stopPlacesReducer.activeMarker) {
-     ignoreStopPlaceId = state.stopPlacesReducer.activeMarker.markerProps.id
+   if (state.stopPlaces.activeMarker) {
+     ignoreStopPlaceId = state.stopPlaces.activeMarker.markerProps.id
    }
 
    let payLoad = {
@@ -277,12 +278,12 @@ export const formatMarkers = (data) => {
       const state = getState()
 
       // caused by hard-reload, return to main screen
-      if (!state.stopPlacesReducer.newStopPlace) {
+      if (!state.stopPlaces.newStopPlace) {
         dispatch( UserActions.navigateTo('/',''))
         return
       }
 
-      let newStop = Object.assign({}, state.stopPlacesReducer.newStopPlace, {})
+      let newStop = Object.assign({}, state.stopPlaces.newStopPlace, {})
       delete newStop.isNewStop
       newStop.active = true
 
@@ -327,7 +328,7 @@ export const prepareStopForSaving = stop => {
 
   return function(dispatch, getState) {
 
-    let stop = { ...getState().editStopReducer.activeStopPlace }
+    let stop = { ...getState().editingStop.activeStopPlace }
 
     const URL = window.config.tiamatBaseUrl + 'stop_place/' + stop.markerProps.id
 
@@ -353,7 +354,7 @@ AjaxActions.saveNewStop = () => {
 
   return function(dispatch, getState) {
 
-    var stop = { ...getState().stopPlacesReducer.newStopPlace }
+    var stop = { ...getState().stopPlaces.newStopPlace }
     let savableStop = prepareStopForSaving(stop)
 
     const URL = window.config.tiamatBaseUrl + 'stop_place/'
@@ -404,7 +405,7 @@ AjaxActions.fetchQuaysForNeighourStop = (id) => {
         }))
       })
       .catch(function(response) {
-        console.error("Unable to fetch stop with id ", id)
+        console.error("Unable to fetch stop with id ", id, response)
       })
   }
 }

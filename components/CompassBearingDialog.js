@@ -15,7 +15,7 @@ class CompassBearingDialog extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired,
-    compassBearing: PropTypes.number.isReuired,
+    compassBearing: PropTypes.number,
     handleConfirm: PropTypes.func.isRequired
   }
 

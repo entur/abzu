@@ -63,10 +63,10 @@ class EditStopPlace extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    isLoading: state.editStopReducer.activeStopIsLoading,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
+    isLoading: state.editingStop.activeStopIsLoading,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines
   }
 }
 

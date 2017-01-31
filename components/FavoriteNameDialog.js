@@ -90,7 +90,7 @@ class FavoriteNameDialog extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isOpen: state.userReducer.favoriteNameDialogIsOpen
+    isOpen: state.user.favoriteNameDialogIsOpen
   }
 }
 

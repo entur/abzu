@@ -113,6 +113,4 @@ class QuayItem extends React.Component {
   }
 }
 
-
-
 export default connect(null)(QuayItem)

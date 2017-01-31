@@ -243,18 +243,15 @@ class MarkerList extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const isEditingStop = state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1
   return {
-    path: state.userReducer.path,
-    polylineStartPoint: state.editStopReducer.polylineStartPoint,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap,
-    isEditingStop: isEditingStop,
-    missingCoordinatesMap: state.userReducer.missingCoordsMap,
-    activeMap: state.editStopReducer.activeMap
+    path: state.user.path,
+    polylineStartPoint: state.editingStop.polylineStartPoint,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    neighbouringMarkersQuaysMap: state.editingStop.neighbouringMarkersQuaysMap,
+    isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
+    missingCoordinatesMap: state.user.missingCoordsMap,
+    activeMap: state.editingStop.activeMap
   }
 }
 
-export default injectIntl(connect(
-  mapStateToProps
-)(MarkerList))
+export default injectIntl(connect(mapStateToProps)(MarkerList))

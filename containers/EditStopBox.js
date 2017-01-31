@@ -199,11 +199,11 @@ class EditStopBox extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeStopPlace: state.editStopReducer.activeStopPlace,
-    isLoading: state.editStopReducer.activeStopIsLoading,
-    hasContentChanged: state.editStopReducer.editedStopChanged,
-    isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
-    activeElementTab: state.userReducer.activeElementTab
+    activeStopPlace: state.editingStop.activeStopPlace,
+    isLoading: state.editingStop.activeStopIsLoading,
+    hasContentChanged: state.editingStop.editedStopChanged,
+    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+    activeElementTab: state.user.activeElementTab
   }
 }
 

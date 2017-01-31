@@ -1,13 +1,18 @@
 import * as types from './../actions/actionTypes'
+import * as elements from './../actions/elementTypes'
 import Immutable from 'immutable'
 import {
   addStartPointToPolyline,
   addPointToPolyline,
   addEndPointToPolyline,
-  changePositionInPolyLineUponPointMove,
-  changePositionInPolyLineUponPointRemove,
   setDefaultCompassBearingisEnabled,
-  updateNeighbourMarkersWithQuays
+  updateNeighbourMarkersWithQuays,
+  removeElementByType,
+  changeElementNameByType,
+  changeElementDescriptionByType,
+  addJunctionElement,
+  changeJunctionElementPosition,
+  changeQuayPosition
 } from './editStopReducerUtils'
 
 export const initialState = {
@@ -37,22 +42,6 @@ export const initialState = {
     index: -1
   }
 }
-
-const newQuay = {
-  name: "",
-  shortName: "",
-  description: "",
-  centroid: {
-    location: {
-      latitude: null,
-      longitude: null,
-    }
-  },
-  allAreasWheelchairAccessible: false,
-  quayType: 'other',
-  new: true
-}
-
 
 const editStopReducer = (state = initialState, action) => {
 
@@ -110,70 +99,25 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, { activeStopIsLoading: false})
 
     case types.REMOVED_ELEMENT_BY_TYPE:
-      let markerToReduce = Object.assign({}, state.activeStopPlace, {})
-
-      if (action.payLoad.type === 'quay') {
-        markerToReduce.markerProps.quays.splice(action.payLoad.index, 1)
-      } else if (action.payLoad.type === 'entrance') {
-        markerToReduce.markerProps.entrances.splice(action.payLoad.index, 1)
-      } else if (action.payLoad.type === 'pathJunction') {
-        markerToReduce.markerProps.pathJunctions.splice(action.payLoad.index, 1)
-      }
-
-      const multiPolylinesWithElementRemoved = changePositionInPolyLineUponPointRemove(
-          state.multiPolylineDataSource.slice(0),
-          action.payLoad.index,
-          action.payLoad.type
-      )
-
-      let newPolylineStartElement = state.polylineStartPoint
-
-      if (newPolylineStartElement == action.payLoad) {
-        newPolylineStartElement = null
-      }
-
-      return Object.assign({}, state, {
-        editedStopChanged: true,
-        activeStopPlace: markerToReduce,
-        multiPolylineDataSource: multiPolylinesWithElementRemoved,
-        polylineStartPoint: newPolylineStartElement
-      })
+      return removeElementByType(action, state)
 
     case types.CHANGED_QUAY_NAME:
-      let markerToChangeQN = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeQN.markerProps.quays[action.payLoad.index].name = action.payLoad.name
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQN})
+      return changeElementNameByType(elements.QUAY, action, state)
 
     case types.CHANGED_ENTRANCE_NAME:
-      let markerToChangeEntrance = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeEntrance.markerProps.entrances[action.payLoad.index].name = action.payLoad.name
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeEntrance})
+      return changeElementNameByType(elements.ENTRANCE, action, state)
 
     case types.CHANGED_PATH_JUNCTION_NAME:
-      let markerToChangePJ = Object.assign({}, state.activeStopPlace,{})
-      markerToChangePJ.markerProps.pathJunctions[action.payLoad.index].name = action.payLoad.name
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangePJ})
+      return changeElementNameByType(elements.PATH_JUNCTION, action, state)
 
     case types.CHANGED_QUAY_DESCRIPTION:
-      let markerToChangeQD = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeQD.markerProps.quays[action.payLoad.index].description = action.payLoad.description
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeQD})
+      return changeElementDescriptionByType(elements.QUAY, action, state)
 
     case types.CHANGED_ENTRANCE_DESCRIPTION:
-      let markerToChangeED = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeED.markerProps.entrances[action.payLoad.index].description = action.payLoad.description
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeED})
+      return changeElementDescriptionByType(elements.ENTRANCE, action, state)
 
     case types.CHANGED_PATH_JUNCTION_DESCRIPTION:
-      let markerToChangePJD = Object.assign({}, state.activeStopPlace,{})
-      markerToChangePJD.markerProps.pathJunctions[action.payLoad.index].description = action.payLoad.description
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangePJD})
+      return changeElementDescriptionByType(elements.PATH_JUNCTION, action, state)
 
     case types.CHANGED_WHA:
       let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
@@ -181,47 +125,26 @@ const editStopReducer = (state = initialState, action) => {
 
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeWHA})
 
-      case types.CHANGED_QUAY_COMPASS_BEARING:
-        let markerToChangeCompassBearing = Object.assign({}, state.activeStopPlace,{})
-        markerToChangeCompassBearing.markerProps.quays[action.payLoad.index].compassBearing = action.payLoad.compassBearing
-
-        return Object.assign({}, state, {
-          editedStopChanged: true,
-          activeStopPlace:
-          markerToChangeCompassBearing,
-          isCompassBearingEnabled: true
-        })
-
-      case types.CHANGED_QUAY_POSITION:
-
-      let quayIndex = action.payLoad.quayIndex
-
-      let activeStopPlacesQP = {...state.activeStopPlace}
-
-      activeStopPlacesQP.markerProps.quays[quayIndex].centroid.location = {
-          latitude: action.payLoad.position.lat,
-          longitude: action.payLoad.position.lng
-      }
-
-      let changedQuayMultiPolyline = changePositionInPolyLineUponPointMove(
-          state.multiPolylineDataSource.slice(0),
-          quayIndex,
-          [action.payLoad.position.lat, action.payLoad.position.lng],
-          'quay'
-      )
+    case types.CHANGED_QUAY_COMPASS_BEARING:
+      let markerToChangeCompassBearing = Object.assign({}, state.activeStopPlace,{})
+      markerToChangeCompassBearing.markerProps.quays[action.payLoad.index].compassBearing = action.payLoad.compassBearing
 
       return Object.assign({}, state, {
         editedStopChanged: true,
-        activeStopPlace: activeStopPlacesQP,
-        multiPolylineDataSource: changedQuayMultiPolyline,
+        activeStopPlace:
+        markerToChangeCompassBearing,
+        isCompassBearingEnabled: true
       })
+
+    case types.CHANGED_QUAY_POSITION:
+      return changeQuayPosition(action, state)
 
     case types.CHANGED_ACTIVE_STOP_POSITION:
       let activeStopPlacesASP = {...state.activeStopPlace}
       const { position } = action.payLoad
       activeStopPlacesASP.markerProps.position = [position.lat, position.lng]
 
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlacesASP})
+      return Object.assign({}, state, { editedStopChanged: true, activeStopPlace: activeStopPlacesASP })
 
     case types.REQUESTED_STOPS_EDITING_NEARBY:
 
@@ -259,10 +182,9 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCST})
 
     case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
-      const originalCopy = JSON.parse(JSON.stringify(state.activeStopPlaceOriginal))
       return Object.assign({}, state, {
         editedStopChanged: false,
-        activeStopPlace: originalCopy,
+        activeStopPlace: JSON.parse(JSON.stringify(state.activeStopPlaceOriginal)),
         multiPolylineDataSource: [],
       })
 
@@ -328,8 +250,8 @@ const editStopReducer = (state = initialState, action) => {
 
       if (multiPolyLineForTimeEstimateChange[action.payLoad.index] != null) {
         multiPolyLineForTimeEstimateChange[action.payLoad.index] = {
-            ...multiPolyLineForTimeEstimateChange[action.payLoad.index],
-            estimate: action.payLoad.estimate
+          ...multiPolyLineForTimeEstimateChange[action.payLoad.index],
+          estimate: action.payLoad.estimate
         }
       }
       return Object.assign({}, state, { multiPolylineDataSource: multiPolyLineForTimeEstimateChange})
@@ -346,77 +268,13 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.ADDED_JUNCTION_ELEMENT:
-
-      let stopToExpand = Object.assign({}, state.activeStopPlace, {})
-      let junctionPosition = action.payLoad.position.slice(0)
-
-      let newJunctionElement = {
-        description: "",
-        new: true,
-        name: "",
-        centroid: {
-          location: {
-            latitude: junctionPosition[0],
-            longitude: junctionPosition[1],
-          }
-        },
-      }
-
-      if (action.payLoad.type === 'pathJunction') {
-        stopToExpand.markerProps.pathJunctions = stopToExpand.markerProps.pathJunctions || []
-        stopToExpand.markerProps.pathJunctions.push(newJunctionElement)
-      } else if (action.payLoad.type === 'entrance') {
-        stopToExpand.markerProps.entrances = stopToExpand.markerProps.entrances || []
-        stopToExpand.markerProps.entrances.push(newJunctionElement)
-      } else if (action.payLoad.type === 'quay') {
-        stopToExpand.markerProps.quays = stopToExpand.markerProps.quays || []
-        const newQuayToAdd = Object.assign({}, newQuay, {
-          centroid: newJunctionElement.centroid
-        })
-        stopToExpand.markerProps.quays.push(newQuayToAdd)
-      } else if (action.payLoad.type === 'stop_place') {
-        stopToExpand.markerProps.position = junctionPosition
-      }
-      else{
-        console.error(`Type of ${action.payLoad.type} is not a supported junction element`)
-      }
-
-      return Object.assign({}, state, {
-        editedStopChanged: true,
-        activeStopPlace: stopToExpand
-      })
+      return addJunctionElement(action, state)
 
     case types.CHANGED_JUNCTION_POSITION:
-      let stopforNewJunctionPostion = Object.assign({}, state.activeStopPlace, {})
-      let newJunctionCentroidId = {
-        location: {
-          latitude: action.payLoad.position.lat,
-          longitude: action.payLoad.position.lng
-        }
-      }
+      return changeJunctionElementPosition(action, state)
 
-      if (action.payLoad.type === 'pathJunction') {
-        stopforNewJunctionPostion.markerProps.pathJunctions[action.payLoad.index].centroid = newJunctionCentroidId
-      } else if (action.payLoad.type === 'entrance') {
-        stopforNewJunctionPostion.markerProps.entrances[action.payLoad.index].centroid = newJunctionCentroidId
-      }
-
-      let changedJunctionMultiPolyline = changePositionInPolyLineUponPointMove(
-        state.multiPolylineDataSource.slice(0),
-        action.payLoad.index,
-        [action.payLoad.position.lat, action.payLoad.position.lng],
-        action.payLoad.type
-      )
-
-      return Object.assign({}, state, {
-        editStopChanged: true,
-        activeStopPlace: stopforNewJunctionPostion,
-        multiPolylineDataSource: changedJunctionMultiPolyline,
-      })
-
-
-      default:
-        return state
+    default:
+      return state
   }
 }
 

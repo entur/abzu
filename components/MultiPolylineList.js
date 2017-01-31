@@ -85,8 +85,8 @@ class MultiPolylineList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    multiPolylineDataSource: state.editStopReducer.multiPolylineDataSource,
-    lastAddedCoordinate: state.editStopReducer.lastAddedCoordinate
+    multiPolylineDataSource: state.editingStop.multiPolylineDataSource,
+    lastAddedCoordinate: state.editingStop.lastAddedCoordinate
   }
 }
 

@@ -151,13 +151,13 @@ const getShortQuayName = (quayName) => {
   return (quayName.length > 1)  ? quayName.substring(0,1): quayName
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
 
   return {
-    polylineStartPoint: state.editStopReducer.polylineStartPoint,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    focusedElement: state.editStopReducer.focusedElement,
+    polylineStartPoint: state.editingStop.polylineStartPoint,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
+    focusedElement: state.editingStop.focusedElement,
   }
 }
 

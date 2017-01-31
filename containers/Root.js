@@ -33,8 +33,8 @@ class Root extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    localization: state.userReducer.localization,
-    appliedLocale: state.userReducer.appliedLocale
+    localization: state.user.localization,
+    appliedLocale: state.user.appliedLocale
   }
 }
 

@@ -34,9 +34,9 @@ class NewStopPlace extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    isCreatingNewStop: state.userReducer.isCreatingNewStop
+    isCreatingNewStop: state.user.isCreatingNewStop
   }
 }
 

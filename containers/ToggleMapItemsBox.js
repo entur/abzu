@@ -75,8 +75,8 @@ class ToggleMapItemsBox extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
-    isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled
+    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled
   }
 }
 

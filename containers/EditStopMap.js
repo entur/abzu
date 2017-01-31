@@ -186,17 +186,17 @@ class EditStopMap extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    position: state.editStopReducer.centerPosition,
-    stopPlaceMarker: state.editStopReducer.activeStopPlace,
-    neighbouringMarkers: state.editStopReducer.neighbouringMarkers,
-    zoom: state.editStopReducer.zoom,
-    lastUpdated: state.editStopReducer.lastUpdated,
-    activeBaselayer: state.userReducer.activeBaselayer,
-    enablePolylines: state.editStopReducer.enablePolylines,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    missingCoordsMap: state.userReducer.missingCoordsMap,
+    position: state.editingStop.centerPosition,
+    stopPlaceMarker: state.editingStop.activeStopPlace,
+    neighbouringMarkers: state.editingStop.neighbouringMarkers,
+    zoom: state.editingStop.zoom,
+    lastUpdated: state.editingStop.lastUpdated,
+    activeBaselayer: state.user.activeBaselayer,
+    enablePolylines: state.editingStop.enablePolylines,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    missingCoordsMap: state.user.missingCoordsMap,
   }
 }
 

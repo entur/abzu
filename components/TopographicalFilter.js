@@ -49,9 +49,9 @@ class TopographicalFilter extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    topoiChips: state.userReducer.searchFilters.topoiChips
+    topoiChips: state.user.searchFilters.topoiChips
   }
 }
 

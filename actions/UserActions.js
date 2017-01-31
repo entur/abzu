@@ -1,5 +1,5 @@
 import * as types from './actionTypes'
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import configureLocalization from '../localization/localization'
 import FavoriteManager from '../singletons/FavoriteManager'
 
@@ -31,7 +31,7 @@ UserActions.toggleIsCreatingNewStop = () => {
   return function(dispatch, getState) {
 
     const state = getState()
-    const isCreatingNewStop = state.userReducer.isCreatingNewStop
+    const isCreatingNewStop = state.user.isCreatingNewStop
 
     if (isCreatingNewStop) {
       dispatch( sendData( types.DESTROYED_NEW_STOP, null) )
@@ -98,8 +98,8 @@ UserActions.getTopographicalPlaces = (input) => {
 
     const state = getState()
 
-    let chipsAlreadyAdded = state.userReducer.searchFilters.topoiChips
-    let suggestions = state.userReducer.topoiSource
+    let chipsAlreadyAdded = state.user.searchFilters.topoiChips
+    let suggestions = state.user.topoiSource
 
     suggestions = suggestions.filter( (suggestion) => {
       for (let i = 0; i < chipsAlreadyAdded.length; i++) {
@@ -149,7 +149,7 @@ UserActions.deleteChip = (key) => {
 UserActions.saveSearchAsFavorite = (title) => {
   return function(dispatch, getState) {
     const state = getState()
-    const searchFilters =  state.userReducer.searchFilters
+    const searchFilters =  state.user.searchFilters
     let favoriteManager = new FavoriteManager()
     let savableContent = favoriteManager.createSavableContent(title, searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.save(savableContent)
@@ -160,7 +160,7 @@ UserActions.saveSearchAsFavorite = (title) => {
 UserActions.removeSearchAsFavorite = () => {
   return function(dispatch, getState) {
     const state = getState()
-    const searchFilters =  state.userReducer.searchFilters
+    const searchFilters =  state.user.searchFilters
     let favoriteManager = new FavoriteManager()
     let savableContent = favoriteManager.createSavableContent('', searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.remove(savableContent)

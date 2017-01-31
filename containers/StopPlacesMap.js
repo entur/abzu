@@ -72,16 +72,15 @@ class StopPlacesMap extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { centerPosition, activeMarker, zoom, newStopPlace, neighbouringMarkers } = state.stopPlacesReducer
-  const { isCreatingNewStop } = state.userReducer
+const mapStateToProps = state => {
+  const { centerPosition, activeMarker, zoom, newStopPlace, neighbouringMarkers } = state.stopPlaces
   return {
     position: centerPosition,
     activeMarker: activeMarker,
     zoom: zoom,
     newStopPlace: newStopPlace,
-    isCreatingNewStop: isCreatingNewStop,
-    activeBaselayer: state.userReducer.activeBaselayer,
+    isCreatingNewStop: state.user.isCreatingNewStop,
+    activeBaselayer: state.user.activeBaselayer,
     neighbouringMarkers: neighbouringMarkers
   }
 }

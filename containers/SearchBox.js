@@ -306,23 +306,23 @@ class SearchBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
 
   var favoriteManager = new FavoriteManager()
-  const { stopType, topoiChips, text } = state.userReducer.searchFilters
+  const { stopType, topoiChips, text } = state.user.searchFilters
   var favoriteContent = favoriteManager.createSavableContent('', text, stopType, topoiChips)
   var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
-    activeMarker: state.stopPlacesReducer.activeMarker,
-    dataSource: state.stopPlacesReducer.stopPlaceNames.places,
-    isCreatingNewStop: state.userReducer.isCreatingNewStop,
-    stopPlaceFilter: state.userReducer.searchFilters.stopType,
-    topographicalSource: state.userReducer.topoiSuggestions,
-    topoiChips: state.userReducer.searchFilters.topoiChips,
+    activeMarker: state.stopPlaces.activeMarker,
+    dataSource: state.stopPlaces.stopPlaceNames.places,
+    isCreatingNewStop: state.user.isCreatingNewStop,
+    stopPlaceFilter: state.user.searchFilters.stopType,
+    topographicalSource: state.user.topoiSuggestions,
+    topoiChips: state.user.searchFilters.topoiChips,
     favorited: favorited,
-    missingCoordinatesMap: state.userReducer.missingCoordsMap,
-    searchText: state.userReducer.searchText
+    missingCoordinatesMap: state.user.missingCoordsMap,
+    searchText: state.user.searchText
   }
 }
 

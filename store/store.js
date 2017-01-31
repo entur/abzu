@@ -27,7 +27,9 @@ if (process.env.NODE_ENV === 'development') {
 const initialState = {}
 
 const combinedReducer = combineReducers({
-  ...reducers,
+  editingStop: reducers.editStopReducer,
+  stopPlaces: reducers.stopPlacesReducer,
+  user: reducers.userReducer,
   routing: routerReducer
 })
 
