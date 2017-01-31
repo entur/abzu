@@ -37,7 +37,7 @@ const getIconIdByModality = (type) => {
     'busStation': 'busstation-withoutBox',
     'ferryStop' : 'ferry-withoutBox',
     'airport' : 'airplane-withoutBox',
-    'harbourPort' : 'harbour-port-withoutBox',
+    'harbourPort' : 'ferry-withoutBox',
     'liftStation' : 'lift',
     'other' : 'no-information'
   }
