@@ -5,15 +5,17 @@ import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
 import ToggleMapItemsBox from './ToggleMapItemsBox'
 import NewElementsBox from './NewElementsBox'
-import { AjaxActions } from '../actions/'
-import cfgreader from './../config/readConfig'
 import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
+import { stopQuery } from "../actions/queries"
+import { graphql } from 'react-apollo'
+import { AjaxActions } from '../actions/'
+import cfgreader from './../config/readConfig'
+import GraphQLHelper from '../actions/graphQLHelpers'
 
 require('../styles/main.css')
-
 
 class EditStopPlace extends React.Component {
 
@@ -21,12 +23,7 @@ class EditStopPlace extends React.Component {
     const { dispatch} = this.props
     cfgreader.readConfig( (function(config) {
       window.config = config
-      var hrefId = window.location.pathname
-        .replace(config.endpointBase + 'edit','')
-        .replace('/', '')
-
-      dispatch( AjaxActions.getStop(hrefId) )
-
+      dispatch(AjaxActions.getStop(getIdFromPath()))
     }).bind(this))
   }
 
@@ -34,12 +31,17 @@ class EditStopPlace extends React.Component {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
   }
 
+  componentDidUpdate() {
+    const { dispatch, data } = this.props
+    GraphQLHelper.connectStop(dispatch)(data)
+  }
+
   render() {
 
     let { isLoading, isCreatingPolylines } = this.props
     const { locale } = this.props.intl
 
-    const shouldDisplayMessage  =  (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
+    const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
     return (
       <div>
@@ -70,4 +72,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default injectIntl(connect(mapStateToProps)(EditStopPlace))
+const getIdFromPath = () => window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
+
+const EditStopPlaceWithData = graphql(stopQuery, { options: { variables: { id: getIdFromPath() } } })(EditStopPlace)
+
+export default injectIntl(connect(mapStateToProps)(EditStopPlaceWithData))

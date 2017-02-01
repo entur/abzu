@@ -124,7 +124,7 @@ class SearchFilter extends React.Component {
 }
 
 
-const TopopGraphicalPlacesForFilter = gql`
+const TopopGraphicalPlacesQuery = gql`
     query TopopGraphicalPlaces {
         topographicPlace {
             id
@@ -136,4 +136,4 @@ const TopopGraphicalPlacesForFilter = gql`
     }
 `
 
-export default graphql(TopopGraphicalPlacesForFilter)(SearchFilter)
+export default graphql(TopopGraphicalPlacesQuery)(SearchFilter)

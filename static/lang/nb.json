@@ -21,6 +21,7 @@
   "change_compass_bearing_cancel": "Avbryt",
   "change_compass_bearing_invalid": "Ugyldig format",
   "change_compass_bearing_confirm": "Endre kompassretning",
+  "change_compass_bearing" : "Kompassretning",
   "county": "Fylke",
   "coordinates" : "Koordinater",
   "compass_bearing": "Kompassretning",
