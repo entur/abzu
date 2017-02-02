@@ -2,7 +2,7 @@ import { Map } from 'immutable'
 
 const helpers = {}
 
-helpers.mapStopToClientStop = stop => {
+helpers.mapStopToClientStop = (stop, isActive) => {
 
   let copy = JSON.parse(JSON.stringify(stop))
   const { latitude, longitude } = copy.location
@@ -13,7 +13,8 @@ helpers.mapStopToClientStop = stop => {
     location: [latitude, longitude],
     stopPlaceType: copy.stopPlaceType,
     allAreasWheelchairAccessible: copy.allAreasWheelchairAccessible,
-    topographicPlace: copy.topographicPlace.name.value
+    topographicPlace: copy.topographicPlace.name.value,
+    isActive: isActive
   }
 
   formattedStop.quays = Map()

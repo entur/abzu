@@ -36,6 +36,7 @@ const combinedReducer = combineReducers({
   stopPlaces: reducers.stopPlacesReducer,
   user: reducers.userReducer,
   routing: routerReducer,
+  stopPlace: reducers.graphQLReducer,
   apollo: client.reducer()
 })
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
@@ -13,8 +13,7 @@ import { stopQuery } from "../actions/queries"
 import { graphql } from 'react-apollo'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
-
-require('../styles/main.css')
+import '../styles/main.css'
 
 class EditStopPlace extends React.Component {
 
@@ -35,6 +34,8 @@ class EditStopPlace extends React.Component {
     let { isLoading, isCreatingPolylines } = this.props
     const { locale } = this.props.intl
 
+    if (isLoading) return <Loader/>
+
     const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
     return (
@@ -51,9 +52,9 @@ class EditStopPlace extends React.Component {
           : null
         }
         <EditStopMap/>
-        { isLoading ? <Loader/> : <EditStopBox/> }
-        { isLoading ? null : <ToggleMapItemsBox/> }
-        { isLoading ? null : <NewElementsBox/> }
+        <EditStopBox/>
+        <ToggleMapItemsBox/>
+        <NewElementsBox/>
       </div>
     )
   }

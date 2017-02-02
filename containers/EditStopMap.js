@@ -64,10 +64,11 @@ class EditStopMap extends React.Component {
 
   handleMapMoveEnd(event, {leafletElement}) {
 
-    if (this.props.stopPlaceMarker) {
+    let { ignoreStopId } = this.props
 
-      let bounds = leafletElement.getBounds()
-      let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
+    if (ignoreStopId) {
+
+      const bounds = leafletElement.getBounds()
 
       let boundingBox = {
         xMin: bounds.getSouthWest().lng,
@@ -75,7 +76,8 @@ class EditStopMap extends React.Component {
         xMax: bounds.getNorthEast().lng,
         yMax: bounds.getNorthEast().lat
       }
-      this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId, leafletElement))
+
+      //this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId, leafletElement))
     }
   }
 
@@ -121,27 +123,17 @@ class EditStopMap extends React.Component {
 
   render() {
 
-    const { position, stopPlaceMarker, neighbouringMarkers, zoom, missingCoordsMap } = this.props
+    const { position, markers, zoom, missingCoordsMap } = this.props
     const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
-
-    let markers = []
-
-    if (stopPlaceMarker) {
-      markers = markers.concat(stopPlaceMarker)
-    }
-
-    if (neighbouringMarkers && neighbouringMarkers.length) {
-      markers = markers.concat(neighbouringMarkers)
-    }
 
     let minZoom = 5
 
     // Restricts zoom level if coordinates are provided either by the user or from backend
-    if (stopPlaceMarker && stopPlaceMarker.markerProps && !stopPlaceMarker.markerProps.position) {
-      if (!missingCoordsMap[stopPlaceMarker.markerProps.id]) {
+    /*if (stopPlace && stopPlace.markerProps && !stopPlace.markerProps.position) {
+      if (!missingCoordsMap[stopPlace.markerProps.id]) {
         minZoom = 15
       }
-    }
+    } */
 
     return (
       <div>
@@ -187,16 +179,30 @@ class EditStopMap extends React.Component {
 }
 
 const mapStateToProps = state => {
+
+  const currentStopPlace = state.stopPlace.current
+  const neighbouringMarkers = state.editingStop.neighbouringMarkers
+
+  let markers = []
+
+  if (currentStopPlace) {
+    markers = markers.concat(currentStopPlace)
+  }
+
+  if (neighbouringMarkers && neighbouringMarkers.length) {
+    markers = markers.concat(neighbouringMarkers)
+  }
+
   return {
     position: state.editingStop.centerPosition,
-    stopPlaceMarker: state.editingStop.activeStopPlace,
-    neighbouringMarkers: state.editingStop.neighbouringMarkers,
     zoom: state.editingStop.zoom,
     lastUpdated: state.editingStop.lastUpdated,
     activeBaselayer: state.user.activeBaselayer,
     enablePolylines: state.editingStop.enablePolylines,
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,
+    markers: markers,
+    ignoreStopId: state.stopPlace.id
   }
 }
 
