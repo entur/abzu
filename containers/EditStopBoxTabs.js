@@ -78,7 +78,7 @@ class EditStopBoxTabs extends React.Component {
 
     return (
       <div style={tabContainerStyle}>
-        { activeElementTab === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
+        { activeElementTab === 0 && activeStopPlace.quays.map( (quay,index) =>
           <QuayItem
             translations={itemTranslation}
             key={"quay-" + index}
@@ -92,10 +92,10 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'quay' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 0 && !activeStopPlace.markerProps.quays.length
+        { activeElementTab === 0 && !activeStopPlace.quays.size
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
         }
-        { activeElementTab === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
+        { activeElementTab === 1 && activeStopPlace.pathJunctions.map( (pathJunction,index) =>
           <PathJunctionItem
             translations={itemTranslation}
             pathJunction={pathJunction}
@@ -107,10 +107,10 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'pathJunction' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 1 && !activeStopPlace.markerProps.pathJunctions.length
+        { activeElementTab === 1 && !activeStopPlace.pathJunctions.size
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
         }
-        { activeElementTab === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
+        { activeElementTab === 2 && activeStopPlace.entrances.map( (entrance,index) =>
           <EntranceItem
             translations={itemTranslation}
             key={"entrance-" + index}
@@ -122,7 +122,7 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'entrance' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 2 && !activeStopPlace.markerProps.entrances.length
+        { activeElementTab === 2 && !activeStopPlace.entrances.size
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
         }
       </div>

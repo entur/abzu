@@ -11,19 +11,9 @@ import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
 import { stopQuery } from "../actions/queries"
 import { graphql } from 'react-apollo'
-import { AjaxActions } from '../actions/'
-import cfgreader from './../config/readConfig'
 import '../styles/main.css'
 
 class EditStopPlace extends React.Component {
-
-  componentDidMount() {
-    const { dispatch} = this.props
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-      dispatch(AjaxActions.getStop(getIdFromPath()))
-    }).bind(this))
-  }
 
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
@@ -31,10 +21,12 @@ class EditStopPlace extends React.Component {
 
   render() {
 
-    let { isLoading, isCreatingPolylines } = this.props
+    let { isCreatingPolylines, data } = this.props
     const { locale } = this.props.intl
 
-    if (isLoading) return <Loader/>
+    console.log(data.loading)
+
+    if (data.loading) return <Loader/>
 
     const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
@@ -62,7 +54,6 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.editingStop.activeStopIsLoading,
     isCreatingPolylines: state.editingStop.isCreatingPolylines
   }
 }

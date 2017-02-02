@@ -80,7 +80,7 @@ class NewElementsBox extends React.Component {
 
     let shouldShowNewStop = true
 
-    if (activeStopPlace && ( activeStopPlace.markerProps.position || missingCoordsMap[activeStopPlace.markerProps.id]) ) {
+    if (activeStopPlace && ( activeStopPlace.location || missingCoordsMap[activeStopPlace.id]) ) {
       shouldShowNewStop = false
     }
 
@@ -185,7 +185,7 @@ const mapStateToProps = state => {
     isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
     activeMap: state.editingStop.activeMap,
     missingCoordsMap: state.user.missingCoordsMap,
-    activeStopPlace: state.editingStop.activeStopPlace
+    activeStopPlace: state.stopPlace.current
   }
 }
 

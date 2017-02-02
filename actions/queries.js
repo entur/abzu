@@ -31,3 +31,26 @@ export const stopQuery = gql`
         }
     },
 `
+
+export const stopPlaceBBQuery = gql`
+    query stopPlaceBBox($ignoreStopPlaceId: String, $lonMin: BigDecimal!, $lonMax: BigDecimal!, $latMin: BigDecimal!, $latMax: BigDecimal!) {
+        stopPlaceBBox(ignoreStopPlaceId: $ignoreStopPlaceId, latMin: $latMin, latMax: $latMax, lonMin: $lonMin, lonMax: $lonMax, size: 50) {
+            id
+            name {
+                value
+            }
+            location {
+                latitude
+                longitude
+            }
+            allAreasWheelchairAccessible
+            stopPlaceType
+            topographicPlace {
+                name {
+                    value
+                }
+                topographicPlaceType
+            }
+        }
+    },
+`

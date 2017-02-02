@@ -4,7 +4,7 @@ import L, { divIcon } from 'leaflet'
 import ReactDOM from 'react-dom/server'
 import CustomMarkerIcon from './CustomMarkerIcon'
 
-class StopPlaceMarker extends React.Component {
+class StopPlaceMarker extends React.PureComponent {
 
   static propTypes = {
     position: PropTypes.arrayOf(Number).isRequired,
@@ -32,7 +32,6 @@ class StopPlaceMarker extends React.Component {
       this.props.handleFetchQuaysForNeighbourStop(id)
     }
   }
-
 
 
   render() {

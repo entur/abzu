@@ -9,7 +9,7 @@ import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 
-class MarkerList extends React.PureComponent {
+class MarkerList extends React.Component {
 
   static PropTypes = {
     stops: PropTypes.array.isRequired,
@@ -101,8 +101,6 @@ class MarkerList extends React.PureComponent {
     }
 
     stops.forEach( (stop, stopIndex) => {
-
-      console.log("stop", stop)
 
       /*
       if (!markerProps.position) {

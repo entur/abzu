@@ -61,7 +61,7 @@ class EditstopBoxHeader extends React.Component {
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}
           style={{width: 350, marginTop: -20}}
-          value={activeStopPlace.markerProps.name}
+          value={activeStopPlace.name}
           onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
         />
         <IconButton
@@ -69,7 +69,7 @@ class EditstopBoxHeader extends React.Component {
           onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
         >
           <ModalityIcon
-            type={ activeStopPlace.markerProps.stopPlaceType }
+            type={ activeStopPlace.stopPlaceType }
           />
         </IconButton>
         <Popover
@@ -99,7 +99,7 @@ class EditstopBoxHeader extends React.Component {
           hintText={formatMessage({id: 'description'})}
           floatingLabelText={formatMessage({id: 'description'})}
           style={{width: 350, marginTop: -20}}
-          value={activeStopPlace.markerProps.description}
+          value={activeStopPlace.description}
           onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
         />
       </div>

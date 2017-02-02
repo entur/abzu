@@ -4,7 +4,7 @@ import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leafle
 import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolylineList'
 
-export default class LeafLetMap extends React.Component {
+export default class LeafLetMap extends React.PureComponent {
 
   getCheckedBaseLayerByValue(value) {
     return this.props.activeBaselayer === value

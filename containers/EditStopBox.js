@@ -52,29 +52,23 @@ class EditStopBox extends React.Component {
 
   render() {
 
-    const { activeStopPlace, hasContentChanged, activeElementTab, intl } = this.props
+    const { stopPlace, hasContentChanged, activeElementTab, intl } = this.props
     const { formatMessage, locale } = intl
 
-    if (!activeStopPlace) return (
-      <div>
-        <span style={{ margin: 20, color: "red"}}>
-          {formatMessage({id: 'something_went_wrong'})}
-        </span>
-      </div>
-    )
+    if (!stopPlace) return null
 
     let quayItemName = null
 
     stopTypes[locale].forEach( (stopType) => {
-      if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
+      if (stopType.value === stopPlace.stopPlaceType) {
         quayItemName = stopType.quayItemName
       }
     })
 
     let captionText = formatMessage({id: 'new_stop_title'})
 
-    if (activeStopPlace && activeStopPlace.markerProps.id) {
-      captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
+    if (stopPlace && stopPlace.id) {
+      captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name} (${stopPlace.id})`
     }
 
     let itemTranslation = {
@@ -154,7 +148,7 @@ class EditStopBox extends React.Component {
           intl={intl}
         />
         <div style={stopBoxBar}>{captionText}</div>
-          <EditStopBoxHeader activeStopPlace={activeStopPlace} intl={intl}/>
+          <EditStopBoxHeader activeStopPlace={stopPlace} intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5}}>
         </div>
         <Tabs
@@ -162,12 +156,12 @@ class EditStopBox extends React.Component {
           value={activeElementTab}
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
-          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${activeStopPlace.markerProps.quays.length})`} value={0} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${activeStopPlace.markerProps.pathJunctions.length})`} value={1} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${activeStopPlace.markerProps.entrances.length})`} value={2} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.size})`} value={0} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.size})`} value={1} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.size})`} value={2} />
         </Tabs>
         <div style={scrollable}>
-          <EditStopBoxTabs activeStopPlace={activeStopPlace} itemTranslation={itemTranslation}/>
+          <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
@@ -199,7 +193,7 @@ class EditStopBox extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    activeStopPlace: state.editingStop.activeStopPlace,
+    stopPlace: state.stopPlace.current,
     isLoading: state.editingStop.activeStopIsLoading,
     hasContentChanged: state.editingStop.editedStopChanged,
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,

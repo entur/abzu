@@ -17,14 +17,19 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     isActive: isActive
   }
 
-  formattedStop.quays = Map()
+  if (isActive) {
 
-  if (copy.quays) {
-    copy.quays.forEach( quay => {
-      console.log("quay", quay)
-      formattedStop.quays = formattedStop.quays.set(quay.id, helpers.mapQuayToClientQuay(quay))
-    })
+    formattedStop.quays = Map()
+    formattedStop.entrances = Map()
+    formattedStop.pathJunctions = Map()
+
+    if (copy.quays) {
+      copy.quays.forEach( quay => {
+        formattedStop.quays = formattedStop.quays.set(quay.id, helpers.mapQuayToClientQuay(quay))
+      })
+    }
   }
+
   return formattedStop
 }
 
@@ -38,6 +43,15 @@ helpers.mapQuayToClientQuay = quay => {
     allAreasWheelChairAccessible: copy.allAreasWheelChairAccessible,
     compassBearing: copy.compassBearing
   }
+}
+
+helpers.mapNeighbourStopsToClientStops = stops => {
+  return stops.map( stop => helpers.mapStopToClientStop(stop, false))
+}
+
+helpers.mapLocationToPosition = location => {
+  if (!location && !location.length) return [67.928595, 13.083002]
+  return [ location.latitude, location.longitude ]
 }
 
 export default helpers
