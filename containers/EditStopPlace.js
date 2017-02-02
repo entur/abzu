@@ -13,7 +13,6 @@ import { stopQuery } from "../actions/queries"
 import { graphql } from 'react-apollo'
 import { AjaxActions } from '../actions/'
 import cfgreader from './../config/readConfig'
-import GraphQLHelper from '../actions/graphQLHelpers'
 
 require('../styles/main.css')
 
@@ -29,11 +28,6 @@ class EditStopPlace extends React.Component {
 
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
-  }
-
-  componentDidUpdate() {
-    const { dispatch, data } = this.props
-    GraphQLHelper.connectStop(dispatch)(data)
   }
 
   render() {

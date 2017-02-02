@@ -11,25 +11,25 @@ const loggerMiddleware = createLogger()
 
 var enchancer = {}
 
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface({ uri: 'https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql' })
+})
+
 if (process.env.NODE_ENV === 'development') {
 
   window.ReactPerf = require('react-addons-perf')
 
   enchancer = compose(
-    applyMiddleware(createDebounce(), thunkMiddleware,loggerMiddleware),
+    applyMiddleware(client.middleware(), createDebounce(), thunkMiddleware,loggerMiddleware),
   )
 
 } else {
   enchancer = compose(
-    applyMiddleware( createDebounce(), thunkMiddleware)
+    applyMiddleware(client.middleware(), createDebounce(), thunkMiddleware)
   )
 }
 
 const initialState = {}
-
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql' })
-})
 
 const combinedReducer = combineReducers({
   editingStop: reducers.editStopReducer,
