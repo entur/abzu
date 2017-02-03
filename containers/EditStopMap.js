@@ -205,12 +205,11 @@ const mapStateToProps = state => {
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,
     markers: markers,
-    ignoreStopId: state.stopPlace.current.id
+    ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1
   }
 }
 
 const getIdFromPath = () => window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
-
 
 const EditStopMapWithData = graphql(stopPlaceBBQuery, {
   options: {

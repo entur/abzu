@@ -82,7 +82,7 @@ class SearchFilter extends React.Component {
         <IconButton
           style={{float: "right"}}
           iconClassName="material-icons"
-          onClick={() => { () => { toggleShowFilter(false) } }}
+          onClick={toggleShowFilter}
         >
           remove
         </IconButton>
@@ -127,11 +127,11 @@ class SearchFilter extends React.Component {
 const TopopGraphicalPlacesQuery = gql`
     query TopopGraphicalPlaces {
         topographicPlace {
-            id
-            name {
-                value
-            }
-            topographicPlaceType
+          id
+          name {
+              value
+          }
+          topographicPlaceType
         }
     }
 `

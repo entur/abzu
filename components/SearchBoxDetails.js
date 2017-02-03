@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import FlatButton from 'material-ui/FlatButton'
 import ModalityIcon from '../components/ModalityIcon'
@@ -14,7 +14,7 @@ const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, us
     padding: 5
   }
 
-  const markerInfo = marker.markerProps
+  const markerInfo = marker
 
   return (
     <div style={style}>

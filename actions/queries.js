@@ -54,3 +54,25 @@ export const stopPlaceBBQuery = gql`
         }
     },
 `
+
+export const findStop = gql`
+    query findStop($query: String!) {
+        stopPlace(query: $query, size: 7) {
+            id
+            name {
+                value
+            }
+            location {
+                latitude
+                longitude
+            }
+            stopPlaceType
+            topographicPlace {
+                name {
+                    value
+                }
+                topographicPlaceType
+            }
+        }
+    },
+`

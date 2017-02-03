@@ -8,6 +8,7 @@ import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
+import { browserHistory } from 'react-router'
 
 class MarkerList extends React.Component {
 
@@ -18,10 +19,9 @@ class MarkerList extends React.Component {
 
   handleStopOnClick(id) {
     const { path } = this.props
-     // Prevent loading resource already loaded and being edited
-    if (id && path !== id) {
-      this.props.dispatch(UserActions.navigateTo('/edit/', id))
-      this.props.dispatch(AjaxActions.getStop(id))
+    const isAlreadyActive = path === id
+    if (id && !isAlreadyActive) {
+      browserHistory.push('edit/' + id)
     }
   }
 
@@ -113,7 +113,7 @@ class MarkerList extends React.Component {
 
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, this.props.intl)
 
-      if (stop.isNewStop) {
+      if (!stop.id) {
         popupMarkers.push(
           <NewStopMarker
               key={"newstop-parent- " + stopIndex}
@@ -139,7 +139,7 @@ class MarkerList extends React.Component {
             draggable={dragableMarkers}
             handleChangeCoordinates={changeCoordinates}
             translations={CustomPopupMarkerText}
-            handleOnClick={() => { this.handleStopOnClick(id)} }
+            handleOnClick={() => { this.handleStopOnClick(stop.id)} }
             handleFetchQuaysForNeighbourStop={this.handleFetchQuaysForNeighbourStop.bind(this)}
             neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
             handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}

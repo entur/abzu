@@ -28,16 +28,11 @@ MapActions.changeStopType = (type) => {
   }
 }
 
-MapActions.setActiveMarkers = (activeMarker) => {
+MapActions.setMarkerOnMap = marker => {
   return function(dispatch) {
-    activeMarker.active = true
+    let activeMarker = JSON.parse(JSON.stringify(marker))
+    activeMarker.isActive = true
     dispatch( sendData(types.SET_ACTIVE_MARKER, activeMarker) )
-
-    if (activeMarker.markerProps.position) {
-      dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
-    } else {
-      dispatch( MapActions.changeMapCenter([67.928595, 13.083002], 10))
-    }
   }
 }
 
@@ -155,10 +150,9 @@ MapActions.setElementFocus = (index, type) => {
   }
 }
 
-MapActions.createNewStop = (coordinates) => {
+MapActions.createNewStop = (location) => {
   return function(dispatch) {
-    let stop = createNewStopTemplate(coordinates)
-    dispatch( sendData(types.CREATED_NEW_STOP, stop) )
+    dispatch( sendData(types.CREATED_NEW_STOP, [ Number(location.lat), Number(location.lng) ]) )
   }
 }
 
@@ -192,31 +186,5 @@ MapActions.changeJunctionPosition = (index, type, position) => {
     }))
   }
 }
-
-const createNewStopTemplate = (coordinates) => {
-
-  let newStopPlace = formatMarkers([{
-    name: "",
-    description: "",
-    municipality: "",
-    isNewStop: true,
-    county: "",
-    centroid: {
-      location: {
-        longitude: -1,
-        latitude: -1
-      }
-    },
-    allAreasWheelchairAccessible: false,
-    stopPlaceType: null,
-    quays: []
-  }])[0]
-
-  newStopPlace.markerProps.position = [coordinates.lat, coordinates.lng]
-  newStopPlace.isNewStop = true
-
-  return newStopPlace
-}
-
 
 export default MapActions

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import IconButton from 'material-ui/IconButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import { MapActions, AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
@@ -15,6 +15,8 @@ import SearchIcon from 'material-ui/svg-icons/action/search'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import SearchFilter from '../components/SearchFilter'
+import { graphql } from 'react-apollo'
+import { findStop } from "../actions/queries"
 
 class SearchBox extends React.Component {
 
@@ -47,13 +49,16 @@ class SearchBox extends React.Component {
     }
     else {
       this.props.dispatch(UserActions.setSearchText(input))
-      this.props.dispatch(AjaxActions.getStopNames(input))
+      this.props.data.refetch({
+        query: input
+      })
+      //this.props.dispatch(AjaxActions.getStopNames(input))
     }
   }
 
   handleNewRequest(result) {
-    if (typeof(result.markerProps) !== 'undefined') {
-      this.props.dispatch( MapActions.setActiveMarkers(result) )
+    if (typeof(result.element) !== 'undefined') {
+      this.props.dispatch( MapActions.setMarkerOnMap(result.element) )
     }
   }
 
@@ -118,19 +123,22 @@ class SearchBox extends React.Component {
     }
 
     const menuItems = dataSource.map( element => ({
-      ...element,
+      element: element,
+      text: element.name,
       value: (
           <MenuItem
             style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
-            primaryText={element.text}
+            innerDivStyle={{minWidth: 300}}
+            primaryText={`${element.name}, ${element.topographicPlace}`}
             secondaryText={(<ModalityIcon
                 iconStyle={{float: 'left', transform: 'translateY(10px)'}}
-                type={element.markerProps.stopPlaceType}
+                type={element.stopPlaceType}
               />
             )}
           />
       )}
     ))
+
 
     let { showFilter, coordinatesDialogOpen } = this.state
 
@@ -175,6 +183,7 @@ class SearchBox extends React.Component {
                 dispatch={this.props.dispatch}
                 stopPlaceFilter={this.props.stopPlaceFilter}
                 chipsAdded={this.props.topoiChips}
+                toggleShowFilter={() => { this.handleToggleFilter(false)}}
             />
             : null
           }
@@ -184,7 +193,7 @@ class SearchBox extends React.Component {
                    text={text}
                    handleEdit={this.handleEdit.bind(this)}
                    marker={activeMarker} handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
-                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[activeMarker.markerProps.id]}
+                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[activeMarker.id]}
               />
               :  null
             }
@@ -208,6 +217,14 @@ class SearchBox extends React.Component {
   }
 }
 
+const searchBoxWithConnectedData = graphql(findStop, {
+  options: {
+    variables: {
+      query: 'a'
+    }
+  }
+})(SearchBox)
+
 const mapStateToProps = state => {
 
   var favoriteManager = new FavoriteManager()
@@ -217,7 +234,7 @@ const mapStateToProps = state => {
 
   return {
     activeMarker: state.stopPlaces.activeMarker,
-    dataSource: state.stopPlaces.stopPlaceNames.places,
+    dataSource: state.stopPlace.searchResults,
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopPlaceFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
@@ -227,4 +244,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default injectIntl(connect(mapStateToProps)(SearchBox))
+export default injectIntl(connect(mapStateToProps)(searchBoxWithConnectedData))

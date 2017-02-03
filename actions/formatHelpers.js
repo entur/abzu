@@ -1,4 +1,5 @@
 import { Map } from 'immutable'
+import { setDecimalPrecision } from '../utils/'
 
 const helpers = {}
 
@@ -10,7 +11,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
   let formattedStop = {
     id: copy.id,
     name: copy.name.value,
-    location: [latitude, longitude],
+    location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     stopPlaceType: copy.stopPlaceType,
     allAreasWheelchairAccessible: copy.allAreasWheelchairAccessible,
     topographicPlace: copy.topographicPlace.name.value,
@@ -39,7 +40,7 @@ helpers.mapQuayToClientQuay = quay => {
 
   return {
     id: copy.id,
-    location: [latitude, longitude],
+    location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     allAreasWheelChairAccessible: copy.allAreasWheelChairAccessible,
     compassBearing: copy.compassBearing
   }
@@ -49,9 +50,37 @@ helpers.mapNeighbourStopsToClientStops = stops => {
   return stops.map( stop => helpers.mapStopToClientStop(stop, false))
 }
 
+helpers.mapSearchResultatToClientStops = stops => {
+
+  return stops.map( stop => {
+
+    const { latitude, longitude } = JSON.parse(JSON.stringify(stop.location))
+
+    return {
+      id: stop.id,
+      name: stop.name.value,
+      location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
+      stopPlaceType: stop.stopPlaceType,
+      topographicPlace: stop.topographicPlace.name.value,
+      isActive: false
+    }
+  })
+}
+
+helpers.createNewStopFromLocation = location => {
+  return ({
+    id: null,
+    name: '',
+    location: location.map ( pos => setDecimalPrecision(pos, 6)),
+    stopPlaceType: null,
+    allAreasWheelchairAccessible: false,
+    topographicPlace: ''
+  })
+}
+
 helpers.mapLocationToPosition = location => {
   if (!location && !location.length) return [67.928595, 13.083002]
-  return [ location.latitude, location.longitude ]
+  return [ setDecimalPrecision(location.latitude, 6), setDecimalPrecision(location.longitude, 6) ]
 }
 
 export default helpers

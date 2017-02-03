@@ -25,7 +25,10 @@ class StopPlacesMap extends React.Component {
   }
 
   handleMapMoveEnd(event, map) {
-    let zoom = map.leafletElement._zoom
+
+    //TODO: Replace this with GraphQL fetch
+
+    /*let zoom = map.leafletElement._zoom
 
     if (zoom > 12) {
 
@@ -41,24 +44,17 @@ class StopPlacesMap extends React.Component {
       this.props.dispatch(AjaxActions.getStopsNearbyForOverview(boundingBox))
     } else {
       this.props.dispatch(UserActions.removeStopsNearbyForOverview())
-    }
+    }*/
   }
 
   render() {
 
-    const { position, activeMarker, neighbouringMarkers, zoom, newStopPlace } = this.props
-
-    let markers = activeMarker ? [activeMarker] : []
-
-    if (neighbouringMarkers && neighbouringMarkers.length) {
-      markers = markers.concat(neighbouringMarkers)
-    }
+    const { position, markers, zoom } = this.props
 
     return (
       <LeafletMap
         position={position}
         markers={markers}
-        newStopPlace={newStopPlace}
         zoom={zoom}
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd}
@@ -73,15 +69,26 @@ class StopPlacesMap extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { centerPosition, activeMarker, zoom, newStopPlace, neighbouringMarkers } = state.stopPlaces
+  const { centerPosition, activeMarker, zoom, neighbouringMarkers } = state.stopPlaces
+  const { newStop } = state.stopPlace
+
+
+  let markers = activeMarker ? [ activeMarker ] : []
+
+  if (newStop) {
+    markers = markers.concat(newStop)
+  }
+
+  if (neighbouringMarkers && neighbouringMarkers.length) {
+    markers = markers.concat(neighbouringMarkers)
+  }
+
   return {
     position: centerPosition,
-    activeMarker: activeMarker,
+    markers: markers,
     zoom: zoom,
-    newStopPlace: newStopPlace,
     isCreatingNewStop: state.user.isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
-    neighbouringMarkers: neighbouringMarkers
   }
 }
 

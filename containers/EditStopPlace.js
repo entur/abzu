@@ -10,7 +10,7 @@ import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
 import { stopQuery } from "../actions/queries"
-import { graphql } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import '../styles/main.css'
 
 class EditStopPlace extends React.Component {
@@ -19,14 +19,26 @@ class EditStopPlace extends React.Component {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
   }
 
+  componentDidMount() {
+    const { client } = this.props
+    const idFromPath = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
+
+    if (idFromPath && idFromPath !== 'new_stop') {
+      client.query({
+        query: stopQuery,
+        variables: {
+          id: idFromPath
+        }
+      })
+    }
+  }
+
   render() {
 
-    let { isCreatingPolylines, data } = this.props
+    let { isCreatingPolylines, stopPlace } = this.props
     const { locale } = this.props.intl
 
-    console.log(data.loading)
-
-    if (data.loading) return <Loader/>
+    if (!stopPlace) return <Loader/>
 
     const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
@@ -43,10 +55,17 @@ class EditStopPlace extends React.Component {
           />
           : null
         }
-        <EditStopMap/>
-        <EditStopBox/>
-        <ToggleMapItemsBox/>
-        <NewElementsBox/>
+        {
+          stopPlace
+            ?
+            <div>
+              <EditStopMap/>
+              <EditStopBox/>
+              <ToggleMapItemsBox/>
+              <NewElementsBox/>
+            </div>
+            : null
+        }
       </div>
     )
   }
@@ -54,12 +73,11 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isCreatingPolylines: state.editingStop.isCreatingPolylines
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    stopPlace: state.stopPlace.current || state.stopPlace.newStop
   }
 }
 
-const getIdFromPath = () => window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
+const EditStopPlaceWithIntl = injectIntl(connect(mapStateToProps)(EditStopPlace))
 
-const EditStopPlaceWithData = graphql(stopQuery, { options: { variables: { id: getIdFromPath() } } })(EditStopPlace)
-
-export default injectIntl(connect(mapStateToProps)(EditStopPlaceWithData))
+export default withApollo(EditStopPlaceWithIntl)

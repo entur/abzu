@@ -7,6 +7,11 @@ var globSync = require('glob').sync
 var path = require('path')
 var fs = require('fs').readFileSync
 
+process.on('uncaughtException', err => {
+  console.error("uncaught error: " + err);
+})
+
+
 convictPromise.then( (convict) => {
 
   var ENDPOINTBASE = convict.get('endpointBase')

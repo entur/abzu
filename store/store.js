@@ -20,12 +20,12 @@ if (process.env.NODE_ENV === 'development') {
   window.ReactPerf = require('react-addons-perf')
 
   enchancer = compose(
-    applyMiddleware(client.middleware(), createDebounce(), thunkMiddleware,loggerMiddleware),
+    applyMiddleware(createDebounce(), thunkMiddleware,loggerMiddleware, client.middleware()),
   )
 
 } else {
   enchancer = compose(
-    applyMiddleware(client.middleware(), createDebounce(), thunkMiddleware)
+    applyMiddleware(createDebounce(), thunkMiddleware, client.middleware())
   )
 }
 

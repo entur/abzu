@@ -20,6 +20,11 @@ export const getStateByOperation = (state, action) => {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(action.result.data.stopPlaceBBox)
       })
 
+    case 'findStop':
+      return Object.assign({}, state, {
+        searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace)
+      })
+
     default: return state
   }
 

@@ -8,8 +8,7 @@ export const initialState = {
   stopPlaceNames: {
     isLoading: false,
     errorMessage: '',
-    places: [],
-    cancelToken: null
+    places: []
   },
   activeStopPlace: {}
 }
@@ -22,7 +21,11 @@ const stopPlacesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {centerPosition: action.payLoad})
 
     case types.SET_ACTIVE_MARKER:
-      return Object.assign({}, state, {activeMarker: action.payLoad})
+      return Object.assign({}, state, {
+        activeMarker: action.payLoad,
+        centerPosition: action.payLoad.location || [ 67.928595, 13.083002 ],
+        zoom: action.payLoad.location ? 15 : 10
+      })
 
     case types.CREATED_NEW_STOP:
       return Object.assign({}, state, { newStopPlace: action.payLoad })
@@ -35,15 +38,6 @@ const stopPlacesReducer = (state = initialState, action) => {
 
     case types.RECEIVED_DATASOURCE:
       return Object.assign({}, state, {dataSource: action.payLoad})
-
-    case types.REQUESTED_STOP_NAMES:
-
-      if (state.stopPlaceNames && state.stopPlaceNames.cancelToken) {
-        let cancelToken = state.stopPlaceNames.cancelToken
-        cancelToken('Operation canceled by new request.')
-      }
-
-      return Object.assign({}, state, { stopPlaceNames: { isLoading: true, cancelToken: action.payLoad } } )
 
     case types.RECEIVED_STOP_NAMES:
       return Object.assign({}, state, {  stopPlaceNames: { places: action.payLoad, isLoading: false } } )
