@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import StopPlaceMarker from './StopPlaceMarker'
 import NewStopMarker from './NewStopMarker'
-import { MapActions, AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
@@ -26,15 +26,16 @@ class MarkerList extends React.Component {
   }
 
   handleNewStopClick() {
+    this.props.dispatch(MapActions.useNewStopAsCurrent())
     browserHistory.push('edit/new')
   }
 
   handleDragEndNewStop(event) {
-    this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
+    this.props.dispatch(MapActions.changeLocationNewStop(event.target.getLatLng()))
   }
 
   handleFetchQuaysForNeighbourStop(id) {
-    this.props.dispatch(AjaxActions.fetchQuaysForNeighourStop(id))
+    // TODO: fetch quays from neighbour stop by id
   }
 
   handleHideQuaysForNeighbourStop(id) {
@@ -105,7 +106,7 @@ class MarkerList extends React.Component {
       /*
       if (!markerProps.position) {
         if (missingCoordinatesMap[markerProps.id]) {
-          markerProps.position = missingCoordinatesMap[markerProps.id]
+          markerProps.position = missingCoordinatesMaxp[markerProps.id]
         } else {
           return
         }
@@ -113,7 +114,7 @@ class MarkerList extends React.Component {
 
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, this.props.intl)
 
-      if (!stop.id) {
+      if (stop.isNewStop && !this.props.isEditingStop) {
         popupMarkers.push(
           <NewStopMarker
               key={"newstop-parent- " + stopIndex}
@@ -149,7 +150,7 @@ class MarkerList extends React.Component {
         )
 
         if (stop.quays) {
-           stop.quays.toArray().forEach( (quay, index) => {
+           stop.quays.forEach( (quay, index) => {
               popupMarkers.push(
                 <QuayMarker
                   index={index}

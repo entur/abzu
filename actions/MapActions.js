@@ -1,5 +1,4 @@
 import * as types from './actionTypes'
-import { formatMarkers } from './AjaxActions'
 
 var MapActions = {}
 
@@ -7,6 +6,18 @@ const sendData = (type, payLoad) => {
   return {
     type: type,
     payLoad: payLoad
+  }
+}
+
+MapActions.changeLocationNewStop = location => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]) )
+  }
+}
+
+MapActions.useNewStopAsCurrent = () => {
+  return function (dispatch) {
+    dispatch( sendData(types.USE_NEW_STOP_AS_CURENT, null) )
   }
 }
 

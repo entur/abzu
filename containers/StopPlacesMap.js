@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { AjaxActions, MapActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 
 class StopPlacesMap extends React.Component {
 
   handleClick(e, map) {
+
     const { isCreatingNewStop } = this.props
 
     if (isCreatingNewStop) {
@@ -22,6 +23,7 @@ class StopPlacesMap extends React.Component {
   }
 
   handleDragEnd(marker, index) {
+    console.log("dragEnd", marker)
   }
 
   handleMapMoveEnd(event, map) {
@@ -69,13 +71,20 @@ class StopPlacesMap extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { centerPosition, activeMarker, zoom, neighbouringMarkers } = state.stopPlaces
-  const { newStop } = state.stopPlace
 
+  const {
+    newStop,
+    centerPosition,
+    activeSearchResult,
+    zoom,
+    neighbouringMarkers
+  } = state.stopPlace
 
-  let markers = activeMarker ? [ activeMarker ] : []
+  const { isCreatingNewStop } = state.user
 
-  if (newStop) {
+  let markers = activeSearchResult ? [ activeSearchResult ] : []
+
+  if (newStop && isCreatingNewStop) {
     markers = markers.concat(newStop)
   }
 

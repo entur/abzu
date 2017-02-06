@@ -183,7 +183,7 @@ class EditStopMap extends React.Component {
 
 const mapStateToProps = state => {
 
-  const currentStopPlace = state.stopPlace.current || state.stopPlace.newStop
+  const currentStopPlace = state.stopPlace.current
   const neighbourStops = state.stopPlace.neighbourStops
 
   let markers = []

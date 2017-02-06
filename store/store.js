@@ -29,11 +29,15 @@ if (process.env.NODE_ENV === 'development') {
   )
 }
 
-const initialState = {}
+const initialState = {
+  stopPlace: {
+    centerPosition: [67.928595, 13.083002],
+    zoom: 7,
+  }
+}
 
 const combinedReducer = combineReducers({
   editingStop: reducers.editStopReducer,
-  stopPlaces: reducers.stopPlacesReducer,
   user: reducers.userReducer,
   routing: routerReducer,
   stopPlace: reducers.graphQLReducer,

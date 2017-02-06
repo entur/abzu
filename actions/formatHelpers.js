@@ -1,4 +1,3 @@
-import { Map } from 'immutable'
 import { setDecimalPrecision } from '../utils/'
 
 const helpers = {}
@@ -20,9 +19,9 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
   if (isActive) {
 
-    formattedStop.quays = Map()
-    formattedStop.entrances = Map()
-    formattedStop.pathJunctions = Map()
+    formattedStop.quays = []
+    formattedStop.entrances = []
+    formattedStop.pathJunctions = []
 
     if (copy.quays) {
       copy.quays.forEach( quay => {
@@ -75,9 +74,11 @@ helpers.createNewStopFromLocation = location => {
     stopPlaceType: null,
     allAreasWheelchairAccessible: false,
     topographicPlace: '',
-    quays: Map(),
-    entrances: Map(),
-    pathJunctions: Map(),
+    quays: [],
+    entrances: [],
+    pathJunctions: [],
+    isNewStop: true,
+    isActive: true
   })
 }
 

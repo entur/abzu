@@ -32,7 +32,7 @@ class EditStopPlace extends React.Component {
       client.query({
         query: stopQuery,
         variables: {
-          id: idFromPath
+          id: idFromPath,
         }
       })
     }

@@ -50,9 +50,10 @@ class SearchBox extends React.Component {
     else {
       this.props.dispatch(UserActions.setSearchText(input))
       this.props.data.refetch({
-        query: input
+        query: input,
+        municipalityReference: null,
+        stopPlaceType: null,
       })
-      //this.props.dispatch(AjaxActions.getStopNames(input))
     }
   }
 
@@ -220,7 +221,9 @@ class SearchBox extends React.Component {
 const searchBoxWithConnectedData = graphql(findStop, {
   options: {
     variables: {
-      query: 'a'
+      query: 'a',
+      municipalityReference: null,
+      stopPlaceType: null
     }
   }
 })(SearchBox)
@@ -233,7 +236,7 @@ const mapStateToProps = state => {
   var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
-    activeMarker: state.stopPlaces.activeMarker,
+    activeMarker: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults,
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopPlaceFilter: state.user.searchFilters.stopType,

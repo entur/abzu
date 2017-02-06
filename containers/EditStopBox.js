@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import { MapActions,  AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -22,14 +22,11 @@ class EditStopBox extends React.Component {
   }
 
   handleSave() {
-    if (window.location.pathname.indexOf('new_stop') > 0) {
-      this.props.dispatch(AjaxActions.saveNewStop())
-    } else {
-      this.props.dispatch(AjaxActions.saveEditingStop())
-    }
+    // TODO: mutation - save stop
   }
 
   handleGoBack() {
+    // use browserHistory instead?
     this.props.dispatch(UserActions.navigateTo('/', ''))
   }
 
@@ -37,6 +34,7 @@ class EditStopBox extends React.Component {
     this.setState({
       confirmDialogOpen: false
     })
+    // TODO : do we want this?
     this.props.dispatch(MapActions.discardChangesForEditingStop())
   }
 
@@ -156,9 +154,9 @@ class EditStopBox extends React.Component {
           value={activeElementTab}
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
-          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.size})`} value={0} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.size})`} value={1} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.size})`} value={2} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
         </Tabs>
         <div style={scrollable}>
           <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
