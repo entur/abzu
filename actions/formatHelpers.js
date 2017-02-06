@@ -134,6 +134,25 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
   return copy
 }
 
+helpers.updateCurrentWithoutElement = (current, payLoad) => {
+  const { type, position, index } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  switch (type) {
+    case 'quay':
+      copy.quays = removeElementByIndex(copy.quays, index)
+      break
+    case 'entrance':
+      copy.entrances = removeElementByIndex(copy.entrances, index)
+      break
+    case 'pathJunction':
+      copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index)
+      break
+    default: throw new Error('element not supported', type)
+  }
+  return copy
+}
+
 
 helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   const { index, type, position } = payLoad
@@ -171,7 +190,6 @@ helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
       break
     default: throw new Error('element not supported', type)
   }
-
   return copy
 }
 
@@ -191,10 +209,13 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
       break
     default: throw new Error('element not supported', type)
   }
-
   return copy
 }
 
-
+const removeElementByIndex = (list, index) =>
+  [
+    ...list.slice(0, index),
+    ...list.slice(index + 1)
+  ]
 
 export default helpers

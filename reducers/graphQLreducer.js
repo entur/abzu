@@ -71,6 +71,11 @@ const graphQLreducer = (state = {}, action) => {
           current: formatHelpers.updateCurrentWithElementDescriptionChange(state.current, action.payLoad)
         })
 
+      case types.REMOVED_ELEMENT_BY_TYPE:
+        return Object.assign({}, state, {
+          current: formatHelpers.updateCurrentWithoutElement(state.current, action.payLoad)
+        })
+
       default: return state
     }
 }

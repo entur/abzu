@@ -91,9 +91,6 @@ const editStopReducer = (state = initialState, action) => {
     case types.ERROR_STOP:
       return Object.assign({}, state, { activeStopIsLoading: false})
 
-    case types.REMOVED_ELEMENT_BY_TYPE:
-      return removeElementByType(action, state)
-
     case types.CHANGED_WHA:
       let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
       markerToChangeWHA.markerProps.quays[action.payLoad.index].allAreasWheelchairAccessible = action.payLoad.value
