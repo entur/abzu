@@ -20,7 +20,7 @@ class EditStopMap extends React.Component {
     }
     const mapEnd = (event, { leafletElement }) => {
 
-      let {ignoreStopId} = this.props
+      let { ignoreStopId } = this.props
 
       if (ignoreStopId) {
 
@@ -183,7 +183,7 @@ class EditStopMap extends React.Component {
 
 const mapStateToProps = state => {
 
-  const currentStopPlace = state.stopPlace.current
+  const currentStopPlace = state.stopPlace.current || state.stopPlace.newStop
   const neighbourStops = state.stopPlace.neighbourStops
 
   let markers = []
@@ -214,12 +214,12 @@ const getIdFromPath = () => window.location.pathname.substring(window.location.p
 const EditStopMapWithData = graphql(stopPlaceBBQuery, {
   options: {
     variables: {
-      ignoreStopPlaceId: getIdFromPath(),
+      ignoreStopPlaceId: (getIdFromPath() && getIdFromPath() !== 'new') ? getIdFromPath() : "-1",
       latMin: 59.24675047197561,
       latMax: 59.341943796898505,
       lonMin: 0.94066619873047,
       lonMax: 11.186141967773438
-    }
+    },
   }
 })(EditStopMap)
 

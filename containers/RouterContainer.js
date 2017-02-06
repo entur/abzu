@@ -18,7 +18,6 @@ class RouterContainer extends React.Component {
           path={path + 'edit/:stopId'}
           component={EditStopPlace}
           />
-        <Route path={ path + '*'} component={NotFoundRoute}/>
       </Route>
     )
 

@@ -12,6 +12,7 @@ import InformationManager from '../singletons/InformationManager'
 import { stopQuery } from "../actions/queries"
 import { withApollo } from 'react-apollo'
 import '../styles/main.css'
+import { browserHistory } from 'react-router'
 
 class EditStopPlace extends React.Component {
 
@@ -23,7 +24,11 @@ class EditStopPlace extends React.Component {
     const { client } = this.props
     const idFromPath = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
 
-    if (idFromPath && idFromPath !== 'new_stop') {
+    if (idFromPath === 'new' && !this.props.stopPlace) {
+      browserHistory.push('/')
+    }
+
+    if (idFromPath && idFromPath.length) {
       client.query({
         query: stopQuery,
         variables: {

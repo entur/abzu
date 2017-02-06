@@ -74,7 +74,10 @@ helpers.createNewStopFromLocation = location => {
     location: location.map ( pos => setDecimalPrecision(pos, 6)),
     stopPlaceType: null,
     allAreasWheelchairAccessible: false,
-    topographicPlace: ''
+    topographicPlace: '',
+    quays: Map(),
+    entrances: Map(),
+    pathJunctions: Map(),
   })
 }
 

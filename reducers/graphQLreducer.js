@@ -10,7 +10,9 @@ const graphQLreducer = (state = {}, action) => {
 
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {
-          newStop: formatHelpers.createNewStopFromLocation(action.payLoad)
+          newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
+          centerPosition: action.payLoad,
+          zoom: 14
         })
 
       default: return state

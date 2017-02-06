@@ -26,7 +26,7 @@ class MarkerList extends React.Component {
   }
 
   handleNewStopClick() {
-    this.props.dispatch( UserActions.navigateTo('/edit/', 'new_stop') )
+    browserHistory.push('edit/new')
   }
 
   handleDragEndNewStop(event) {
