@@ -72,7 +72,7 @@ class EditStopMap extends React.Component {
     if (isQuay) {
       dispatch(MapActions.changeQuayPosition(index, formattedPosition))
     } else {
-      dispatch(MapActions.changeActiveStopPosition(formattedPosition))
+      dispatch(MapActions.changeCurrentStopPosition(formattedPosition))
     }
   }
 
@@ -106,7 +106,7 @@ class EditStopMap extends React.Component {
     if (coordinatesOwner.isQuay) {
       dispatch(MapActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
     } else {
-      dispatch(MapActions.changeActiveStopPosition(position))
+      dispatch(MapActions.changeCurrentStopPosition(position))
     }
 
     dispatch(MapActions.changeMapCenter(position, 14))

@@ -57,25 +57,12 @@ class MarkerList extends React.Component {
     }
   }
 
-  handleJunctionDragEnd(index, type, event) {
+  handleElementDragEnd(index, type, event) {
     const position = event.target.getLatLng()
 
-    let formattedPosition = {
-      lat: setDecimalPrecision(position.lat, 6),
-      lng: setDecimalPrecision(position.lng, 6)
-    }
-
-    this.props.dispatch( MapActions.changeJunctionPosition(index, type, formattedPosition))
-  }
-
-  handleQuayDragEnd(index, event) {
-    const position = event.target.getLatLng()
-
-    let formattedPosition = {
-      lat: setDecimalPrecision(position.lat,6),
-      lng: setDecimalPrecision(position.lng,6)
-    }
-    this.props.dispatch(MapActions.changeQuayPosition(index, formattedPosition))
+    this.props.dispatch( MapActions.changElementPosition(index, type,
+      [ setDecimalPrecision(position.lat, 6), setDecimalPrecision(position.lng, 6) ]
+    ))
   }
 
   render() {
@@ -157,7 +144,7 @@ class MarkerList extends React.Component {
                   parentId={stopIndex}
                   position={quay.location}
                   key={"quay" + quay.id || index}
-                  handleQuayDragEnd={this.handleQuayDragEnd.bind(this)}
+                  handleQuayDragEnd={this.handleElementDragEnd.bind(this)}
                   translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}
                   name={quay.name || ''}
@@ -181,13 +168,11 @@ class MarkerList extends React.Component {
           stop.entrances.forEach( (entrance, index) => {
             popupMarkers.push(
               <JunctionMarker
-                position={[entrance.centroid.location.latitude,
-                  entrance.centroid.location.longitude
-                ]}
+                position={entrance.location}
                 index={index}
                 key={'entrance-'+index}
                 type="entrance"
-                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleDragEnd={this.handleElementDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
                 name={entrance.name}
@@ -205,13 +190,11 @@ class MarkerList extends React.Component {
           stop.pathJunctions.forEach( (pathJunction, index) => {
             popupMarkers.push(
               <JunctionMarker
-                position={[pathJunction.centroid.location.latitude,
-                  pathJunction.centroid.location.longitude
-                ]}
+                position={pathJunction.location}
                 key={'pathjunction-'+index}
                 index={index}
                 type="pathJunction"
-                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleDragEnd={this.handleElementDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
                 name={pathJunction.name}

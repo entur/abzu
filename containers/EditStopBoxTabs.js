@@ -92,7 +92,7 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'quay' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 0 && !activeStopPlace.quays.size
+        { activeElementTab === 0 && !activeStopPlace.quays.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
         }
         { activeElementTab === 1 && activeStopPlace.pathJunctions.map( (pathJunction,index) =>
@@ -107,7 +107,7 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'pathJunction' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 1 && !activeStopPlace.pathJunctions.size
+        { activeElementTab === 1 && !activeStopPlace.pathJunctions.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
         }
         { activeElementTab === 2 && activeStopPlace.entrances.map( (entrance,index) =>
@@ -122,7 +122,7 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'entrance' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 2 && !activeStopPlace.entrances.size
+        { activeElementTab === 2 && !activeStopPlace.entrances.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
         }
       </div>

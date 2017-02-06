@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 const initialState = {
   stopPlace: {
     centerPosition: [67.928595, 13.083002],
-    zoom: 7,
+    zoom: 4,
   }
 }
 

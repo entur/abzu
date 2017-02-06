@@ -1,5 +1,4 @@
 import * as types from './../actions/actionTypes'
-import * as elements from './../actions/elementTypes'
 import Immutable from 'immutable'
 import {
   addStartPointToPolyline,
@@ -7,12 +6,6 @@ import {
   addEndPointToPolyline,
   setDefaultCompassBearingisEnabled,
   updateNeighbourMarkersWithQuays,
-  removeElementByType,
-  changeElementNameByType,
-  changeElementDescriptionByType,
-  addJunctionElement,
-  changeJunctionElementPosition,
-  changeQuayPosition
 } from './editStopReducerUtils'
 
 export const initialState = {
@@ -101,24 +94,6 @@ const editStopReducer = (state = initialState, action) => {
     case types.REMOVED_ELEMENT_BY_TYPE:
       return removeElementByType(action, state)
 
-    case types.CHANGED_QUAY_NAME:
-      return changeElementNameByType(elements.QUAY, action, state)
-
-    case types.CHANGED_ENTRANCE_NAME:
-      return changeElementNameByType(elements.ENTRANCE, action, state)
-
-    case types.CHANGED_PATH_JUNCTION_NAME:
-      return changeElementNameByType(elements.PATH_JUNCTION, action, state)
-
-    case types.CHANGED_QUAY_DESCRIPTION:
-      return changeElementDescriptionByType(elements.QUAY, action, state)
-
-    case types.CHANGED_ENTRANCE_DESCRIPTION:
-      return changeElementDescriptionByType(elements.ENTRANCE, action, state)
-
-    case types.CHANGED_PATH_JUNCTION_DESCRIPTION:
-      return changeElementDescriptionByType(elements.PATH_JUNCTION, action, state)
-
     case types.CHANGED_WHA:
       let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
       markerToChangeWHA.markerProps.quays[action.payLoad.index].allAreasWheelchairAccessible = action.payLoad.value
@@ -136,16 +111,6 @@ const editStopReducer = (state = initialState, action) => {
         isCompassBearingEnabled: true
       })
 
-    case types.CHANGED_QUAY_POSITION:
-      return changeQuayPosition(action, state)
-
-    case types.CHANGED_ACTIVE_STOP_POSITION:
-      let activeStopPlacesASP = {...state.activeStopPlace}
-      const { position } = action.payLoad
-      activeStopPlacesASP.markerProps.position = [position.lat, position.lng]
-
-      return Object.assign({}, state, { editedStopChanged: true, activeStopPlace: activeStopPlacesASP })
-
     case types.REQUESTED_STOPS_EDITING_NEARBY:
 
       if (state.nearbyStopsCancelToken != null) {
@@ -162,24 +127,6 @@ const editStopReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         neighbouringMarkers: updateNeighbourMarkersWithQuays(state.neighbouringMarkersQuaysMap, action.payLoad),
       })
-
-    case types.CHANGED_STOP_NAME:
-      let activeStopPlaceCSN = Object.assign({}, state.activeStopPlace )
-      activeStopPlaceCSN.markerProps.name = action.payLoad
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCSN})
-
-    case types.CHANGED_STOP_DESCRIPTION:
-      let activeStopPlaceCSD = {...state.activeStopPlace}
-      activeStopPlaceCSD.markerProps.description = action.payLoad
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCSD})
-
-    case types.CHANGED_STOP_TYPE:
-      let activeStopPlaceCST = {...state.activeStopPlace}
-      activeStopPlaceCST.markerProps.stopPlaceType = action.payLoad
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: activeStopPlaceCST})
 
     case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
       return Object.assign({}, state, {
@@ -266,12 +213,6 @@ const editStopReducer = (state = initialState, action) => {
           type: action.payLoad.type
         }
       })
-
-    case types.ADDED_JUNCTION_ELEMENT:
-      return addJunctionElement(action, state)
-
-    case types.CHANGED_JUNCTION_POSITION:
-      return changeJunctionElementPosition(action, state)
 
     default:
       return state

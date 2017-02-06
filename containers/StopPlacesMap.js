@@ -23,7 +23,7 @@ class StopPlacesMap extends React.Component {
   }
 
   handleDragEnd(marker, index) {
-    console.log("dragEnd", marker)
+
   }
 
   handleMapMoveEnd(event, map) {

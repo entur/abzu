@@ -29,7 +29,7 @@ class NewElementsBox extends React.Component {
 
   handleConfirmSubmit() {
     const { owner } = this.state
-    this.props.dispatch(MapActions.addJunctionElement(owner.key, owner.latlng))
+    this.props.dispatch(MapActions.addElementToStop(owner.key, owner.latlng))
     this.handleDialogClose()
   }
   render() {

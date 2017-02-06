@@ -87,4 +87,114 @@ helpers.mapLocationToPosition = location => {
   return [ setDecimalPrecision(location.latitude, 6), setDecimalPrecision(location.longitude, 6) ]
 }
 
+helpers.updateCurrentStopWithName = (current, name) => {
+  return Object.assign({}, current, {
+    name: name
+  })
+}
+
+helpers.updateCurrentStopWithDescription = (current, description) => {
+  return Object.assign({}, current, {
+    description: description
+  })
+}
+
+helpers.updateCurrentStopWithType = (current, type) => {
+  return Object.assign({}, current, {
+    stopPlaceType: type
+  })
+}
+
+helpers.updateCurrentStopWithPosition = (current, location) => {
+  return Object.assign({}, current, {
+    location: location
+  })
+}
+
+helpers.updateCurrentWithNewElement = (current, payLoad) => {
+
+  const { type, position } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  const newElement = {
+    location: position.slice(),
+    compassBearing: null,
+    name: '',
+  }
+
+  switch (type) {
+    case 'quay':
+      copy.quays = copy.quays.concat(newElement); break;
+    case 'entrance':
+      copy.entrances = copy.entrances.concat(newElement); break;
+    case 'pathJunction':
+      copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
+    default: throw new Error('element not supported', type)
+  }
+  return copy
+}
+
+
+helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
+  const { index, type, position } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  switch (type) {
+    case 'quay':
+      copy.quays[index] = Object.assign({}, copy.quays[index], { location: position })
+      break
+    case 'entrance':
+      copy.entrances[index] = Object.assign({}, copy.entrances[index], { location: position })
+      break
+    case 'pathJunction':
+      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], { location: position })
+      break
+    default: throw new Error('element not supported', type)
+  }
+
+  return copy
+}
+
+helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
+  const { index, type, name } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  switch (type) {
+    case 'quay':
+      copy.quays[index] = Object.assign({}, copy.quays[index], { name: name })
+      break
+    case 'entrance':
+      copy.entrances[index] = Object.assign({}, copy.entrances[index], { name: name })
+      break
+    case 'pathJunction':
+      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], { name: name })
+      break
+    default: throw new Error('element not supported', type)
+  }
+
+  return copy
+}
+
+helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
+  const { index, type, description } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  switch (type) {
+    case 'quay':
+      copy.quays[index] = Object.assign({}, copy.quays[index], { description: description })
+      break
+    case 'entrance':
+      copy.entrances[index] = Object.assign({}, copy.entrances[index], { description: description })
+      break
+    case 'pathJunction':
+      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], { description: description })
+      break
+    default: throw new Error('element not supported', type)
+  }
+
+  return copy
+}
+
+
+
 export default helpers

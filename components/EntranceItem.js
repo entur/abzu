@@ -21,12 +21,12 @@ class EntranceItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changeEntranceName(index, event.target.value))
+    dispatch(MapActions.changeElementName(index, event.target.value, 'entrance'))
   }
 
   handleDescriptionChange = (event) => {
-    const {dispatch, index} = this.props
-    dispatch(MapActions.changeEntranceDescription(index, event.target.value))
+    const { dispatch, index } = this.props
+    dispatch(MapActions.changeElementDescription(index, event.target.value, 'entrance'))
   }
 
   render() {

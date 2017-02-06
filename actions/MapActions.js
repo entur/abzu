@@ -63,73 +63,31 @@ MapActions.removeElementByType = (index, type) => {
   }
 }
 
-MapActions.changeQuayName = (index, name) => {
+MapActions.changeElementName = (index, name, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_NAME, {
+    dispatch( sendData(types.CHANGE_ELEMENT_NAME, {
       name: name,
-      index: index
+      index: index,
+      type: type
     }))
   }
 }
 
-MapActions.changeEntranceName = (index, name) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_ENTRANCE_NAME, {
-      name: name,
-      index: index
-    }))
-  }
-}
-
-MapActions.changePathJuctionName = (index, name) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_PATH_JUNCTION_NAME, {
-      name: name,
-      index: index
-    }))
-  }
-}
-
-MapActions.changeQuayPosition = (index, position) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_POSITION, {
-      quayIndex: index,
-      position: position
-    }))
-  }
-}
-
-MapActions.changeActiveStopPosition = (position) => {
+MapActions.changeCurrentStopPosition = position => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
-      position: position
+      location: [ position.lat, position.lng ]
     }))
   }
 }
 
-MapActions.changeQuayDescription = (index, description) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_DESCRIPTION, {
-      index: index,
-      description: description
-    }))
-  }
-}
 
-MapActions.changeEntranceDescription = (index, description) => {
+MapActions.changeElementDescription = (index, description, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_ENTRANCE_DESCRIPTION, {
+    dispatch( sendData(types.CHANGED_ELEMENT_DESCRIPTION, {
       index: index,
-      description: description
-    }))
-  }
-}
-
-MapActions.changePathJunctionDescription = (index, description) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_PATH_JUNCTION_DESCRIPTION, {
-      index: index,
-      description: description
+      description: description,
+      type: type
     }))
   }
 }
@@ -179,7 +137,7 @@ MapActions.setActiveMap = (map) => {
   }
 }
 
-MapActions.addJunctionElement = (type, latlng) => {
+MapActions.addElementToStop = (type, latlng) => {
   return function(dispatch) {
     dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
       type: type,
@@ -188,9 +146,9 @@ MapActions.addJunctionElement = (type, latlng) => {
   }
 }
 
-MapActions.changeJunctionPosition = (index, type, position) => {
+MapActions.changElementPosition = (index, type, position) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_JUNCTION_POSITION, {
+    dispatch( sendData(types.CHANGE_ELEMENT_POSITION, {
       index: index,
       position: position,
       type: type

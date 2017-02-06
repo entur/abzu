@@ -23,7 +23,7 @@ class QuayItem extends React.Component {
 
   handleDescriptionChange = (event) => {
     const {dispatch, index} = this.props
-    dispatch(MapActions.changeQuayDescription(index, event.target.value))
+    dispatch(MapActions.changeElementDescription(index, event.target.value, 'quay'))
   }
 
   handleWHAChange = (event) => {
@@ -33,7 +33,7 @@ class QuayItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changeQuayName(index, event.target.value))
+    dispatch(MapActions.changeElementName(index, event.target.value, 'quay'))
   }
 
   render() {
