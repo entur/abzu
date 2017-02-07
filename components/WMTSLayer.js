@@ -13,7 +13,7 @@ export default class WMTSLayer extends TileLayer {
     const { baseURL, gkt } = this.props
     this.leafletElement =  new reactWMTSLayer(baseURL, {
       gkt: gkt,
-      layers: "toporaster2"
+      layers: "toporaster2",
     })
   }
 }

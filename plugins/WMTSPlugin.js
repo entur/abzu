@@ -7,21 +7,24 @@ const WMTSPlugin = L.TileLayer.extend({
     request: 'GetTile',
     version: '1.1.1',
     style: 'default',
-    tilematrixSet: '',
     format: 'image/png',
     transparent: "false",
-    tilematrixset: "default028mm",
+    tilematrixSet: "default028mm",
+    layers: "toporaster2",
   },
 
   initialize: function (url, options) {
+
     this._url = url;
     var wmtsParams = L.extend({}, this.defaultWmtsParams);
     var tileSize = options.tileSize || this.options.tileSize;
-    if (options.detectRetina && L.Browser.retina) {
+
+    if (options.detectRetina && L.Browser.retina || isRetinaDisplay) {
       wmtsParams.width = wmtsParams.height = tileSize * 2;
     } else {
       wmtsParams.width = wmtsParams.height = tileSize;
     }
+
     for (var i in options) {
       if (!this.options.hasOwnProperty(i) && i!="matrixIds") {
         wmtsParams[i] = options[i];
@@ -30,31 +33,38 @@ const WMTSPlugin = L.TileLayer.extend({
     this.wmtsParams = wmtsParams;
     this.matrixIds = options.matrixIds || this.getDefaultMatrix();
     L.setOptions(this, options);
+
   },
 
   onAdd: function (map) {
-    this._crs = this.options.crs || map.options.crs;
+    this._crs = L.CRS.EPSG3857 //this.options.crs || map.options.crs;
     L.TileLayer.prototype.onAdd.call(this, map);
+
+    console.log(this._crs)
+
   },
 
-  getTileUrl: function (tilePoint) {
-    var map = this._map;
-    var crs = L.CRS.EPSG3857;
-    var tileSize = 256;
-    var nwPoint = tilePoint.multiplyBy(tileSize);
+  getTileUrl: function (startPoint) {
+    let map = this._map;
+    let tileSize = this.options.tileSize;
+    let nwPoint = startPoint.multiplyBy(tileSize);
+
     nwPoint.x+=1;
     nwPoint.y-=1;
-    var sePoint = nwPoint.add(new L.Point(tileSize, tileSize));
-    var zoom =  (typeof map._animateToZoom == 'undefined') ? map.getZoom() : map._animateToZoom;
-    var nw = crs.project(map.unproject(nwPoint, zoom))
-    var se = crs.project(map.unproject(sePoint, zoom))
-    var tilewidth = se.x-nw.x;
-    var ident = this.matrixIds[zoom].identifier;
-    var X0 = this.matrixIds[zoom].topLeftCorner.lng;
-    var Y0 = this.matrixIds[zoom].topLeftCorner.lat;
-    var tilecol=Math.floor((nw.x-X0)/tilewidth);
-    var tilerow=-Math.floor((nw.y-Y0)/tilewidth);
-    var url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
+
+    let sePoint = nwPoint.add(new L.Point(tileSize, tileSize));
+    let zoom = this._tileZoom;
+    let nw = this._crs.project(this._map.unproject(nwPoint, zoom));
+    let se = this._crs.project(this._map.unproject(sePoint, zoom));
+    let tilewidth = se.x-nw.x;
+
+    let ident = this.matrixIds[zoom].identifier;
+    let X0 = this.matrixIds[zoom].topLeftCorner.lng;
+    let Y0 = this.matrixIds[zoom].topLeftCorner.lat;
+    let tilecol=Math.floor((nw.x-X0)/tilewidth);
+    let tilerow=-Math.floor((nw.y-Y0)/tilewidth);
+
+    let url = L.Util.template(this._url, {s: this._getSubdomain(startPoint)});
 
     let bounds = map.getBounds()
 
@@ -64,8 +74,6 @@ const WMTSPlugin = L.TileLayer.extend({
       bounds.getNorthEast().lng,
       bounds.getNorthEast().lat
     ]
-
-    let coordinates = map.unproject(tilePoint.multiplyBy(256), zoom)
 
     return url + L.Util.getParamString(this.wmtsParams, url) + "&tilematrix=" + ident + "&tilerow=" + tilerow +"&tilecol=" + tilecol + "&bbox=" + boundingBox.join(',');
   },
@@ -83,12 +91,20 @@ const WMTSPlugin = L.TileLayer.extend({
     for (var i= 0; i<22; i++) {
       matrixIds3857[i]= {
         identifier    : "" + i,
-        topLeftCorner : new L.LatLng(20037508.34, -20037508.34)
+        topLeftCorner : new L.LatLng(20037508.3428,-20037508.3428)
       };
     }
+
     return matrixIds3857;
   }
 });
+
+function isRetinaDisplay() {
+  if (window.matchMedia) {
+    var mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
+    return (mq && mq.matches || (window.devicePixelRatio > 1));
+  }
+}
 
 export default WMTSPlugin
 
