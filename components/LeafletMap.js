@@ -3,6 +3,7 @@ import MarkerList from './MarkerList'
 import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
 import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolylineList'
+import WMTSLayer from './WMTSLayer'
 
 export default class LeafLetMap extends React.Component {
 
@@ -73,6 +74,12 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')} name='Google Maps Hydrid'>
             <GoogleLayer googlekey={googleApiKey} maptype='HYBRID'/>
+          </BaseLayer>
+          <BaseLayer checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')} name='Flyfoto'>
+            <WMTSLayer
+              gkt="C8B724CB848289B85CAE0F041EA385FDE8E95C46898458778DF829231A08590AA9678AB96D6E1FC113B57E5BAA3F284CBC8633929A70B5118D018F0853CD0DA1"
+              baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_utm33_wmts_v2?service"
+            />
           </BaseLayer>
         </LayersControl>
         <ZoomControl position='bottomright' />
