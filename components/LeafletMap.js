@@ -4,8 +4,10 @@ import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leafle
 import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolylineList'
 import WMTSLayer from './WMTSLayer'
+import axios from 'axios'
 
 export default class LeafLetMap extends React.Component {
+
 
   getCheckedBaseLayerByValue(value) {
     return this.props.activeBaselayer === value
@@ -24,9 +26,14 @@ export default class LeafLetMap extends React.Component {
       : [Number(position.lat), Number(position.lng)]
   }
 
-  getGKTToken() {
-    // TODO : Query for this with /token
-    return "C8B724CB848289B8264DFE5E1FA211E0774B4AD70DB980778DF829231A08590ADB1584C7A1E10204A7002ACA2E9D21402F15CFFEDCBD29AA8D018F0853CD0DA1"
+  getLocalGKTToken() {
+
+    let localToken = JSON.parse(localStorage.getItem('GKT_TOKEN'))
+
+    if (localToken && localToken.gkt) {
+      return localToken.gkt
+    }
+    return null
   }
 
   render() {
@@ -82,7 +89,7 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')} name='Kartverket Flyfoto'>
             <WMTSLayer
-              gkt={this.getGKTToken()}
+              gkt={this.getLocalGKTToken()}
               baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
               zoom={zoom}
             />

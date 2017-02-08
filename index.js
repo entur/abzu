@@ -5,10 +5,11 @@ import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 import Root from './containers/Root'
 import configureStore from './store/store'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { browserHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import cfgreader from './config/readConfig'
 import 'intl'
+import axios from 'axios'
 
 // used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -24,9 +25,25 @@ function authWithKeyCloak(renderCallback) {
 }
 
 cfgreader.readConfig( (function(config) {
+
   window.config = config
-  renderIndex(config.endpointBase)
-}).bind(this))
+
+  let token = JSON.parse(localStorage.getItem('GKT_TOKEN'))
+
+  if (token != null && token.expires > new Date(Date.now()+(60*3*1000)).getTime()) {
+    renderIndex(config.endpointBase)
+  } else {
+    axios.get(config.endpointBase + 'token')
+      .then( response => {
+        let token = JSON.stringify(response.data)
+        localStorage.setItem('GKT_TOKEN', token)
+        renderIndex(config.endpointBase)
+      })
+      .catch( (err) => {
+        console.info('Failed to get GK token, Kartverket Flyfoto will not work', err)
+        renderIndex(config.endpointBase)
+      })
+  }}).bind(this))
 
 function renderIndex(path) {
 

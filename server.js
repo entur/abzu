@@ -6,6 +6,7 @@ var port = process.env.port || 8988
 var globSync = require('glob').sync
 var path = require('path')
 var fs = require('fs').readFileSync
+var axios = require('axios')
 
 convictPromise.then( (convict) => {
 
@@ -14,6 +15,19 @@ convictPromise.then( (convict) => {
   console.info("ENDPOINTBASE is set to", ENDPOINTBASE)
 
   app.use([ENDPOINTBASE + 'public/', ENDPOINTBASE + 'edit/public/'], express.static(__dirname + '/public'))
+
+  app.get(ENDPOINTBASE + 'token', (req, res) => {
+
+    let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+    axios.post(`http://gatekeeper1.geonorge.no/BaatGatekeeper/gktoken?ip=${ipAddress}&min=400`).
+      then(gkt => {
+      res.send({
+        gkt: gkt.data,
+        expires: new Date(Date.now()+(60*4*1000)).getTime()
+      })
+    })
+  })
 
   if (process.env.NODE_ENV !== 'production') {
 
