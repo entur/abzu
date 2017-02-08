@@ -18,13 +18,13 @@ convictPromise.then( (convict) => {
 
   app.get(ENDPOINTBASE + 'token', (req, res) => {
 
-    let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    const remoteAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
-    axios.post(`http://gatekeeper1.geonorge.no/BaatGatekeeper/gktoken?ip=${ipAddress}&min=400`).
+    axios.post(`http://gatekeeper1.geonorge.no/BaatGatekeeper/gktoken?ip=${remoteAddress}&min=400`).
       then(gkt => {
       res.send({
         gkt: gkt.data,
-        expires: new Date(Date.now()+(60*4*1000)).getTime()
+        expires: new Date(Date.now()+(60*1000*399)).getTime()
       })
     })
   })

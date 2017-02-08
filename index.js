@@ -30,7 +30,8 @@ cfgreader.readConfig( (function(config) {
 
   let token = JSON.parse(localStorage.getItem('GKT_TOKEN'))
 
-  if (token != null && token.expires > new Date(Date.now()+(60*3*1000)).getTime()) {
+  /* Renews token if it expires within 30 minutes to be on the safer side*/
+  if (token != null && token.expires > new Date(Date.now()+(60*1000*30)).getTime()) {
     renderIndex(config.endpointBase)
   } else {
     axios.get(config.endpointBase + 'token')
@@ -40,7 +41,7 @@ cfgreader.readConfig( (function(config) {
         renderIndex(config.endpointBase)
       })
       .catch( (err) => {
-        console.info('Failed to get GK token, Kartverket Flyfoto will not work', err)
+        console.warn('Failed to get GK token, Kartverket Flyfoto will not work', err)
         renderIndex(config.endpointBase)
       })
   }}).bind(this))
