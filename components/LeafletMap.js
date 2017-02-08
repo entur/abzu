@@ -24,6 +24,11 @@ export default class LeafLetMap extends React.Component {
       : [Number(position.lat), Number(position.lng)]
   }
 
+  getGKTToken() {
+    // TODO : Query for this with /token
+    return "C8B724CB848289B8264DFE5E1FA211E0774B4AD70DB980778DF829231A08590ADB1584C7A1E10204A7002ACA2E9D21402F15CFFEDCBD29AA8D018F0853CD0DA1"
+  }
+
   render() {
     // NB: this key is owned by rutebanken.official
     const googleApiKey = 'AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E'
@@ -75,10 +80,10 @@ export default class LeafLetMap extends React.Component {
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')} name='Google Maps Hydrid'>
             <GoogleLayer googlekey={googleApiKey} maptype='HYBRID'/>
           </BaseLayer>
-          <BaseLayer checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')} name='Flyfoto'>
+          <BaseLayer checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')} name='Kartverket Flyfoto'>
             <WMTSLayer
-              gkt="C8B724CB848289B85CAE0F041EA385FDE8E95C46898458778DF829231A08590AA9678AB96D6E1FC113B57E5BAA3F284CBC8633929A70B5118D018F0853CD0DA1"
-              baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_utm33_wmts_v2?service"
+              gkt={this.getGKTToken()}
+              baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
               zoom={zoom}
             />
           </BaseLayer>

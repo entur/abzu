@@ -19,11 +19,7 @@ const WMTSPlugin = L.TileLayer.extend({
     var wmtsParams = L.extend({}, this.defaultWmtsParams);
     var tileSize = options.tileSize || this.options.tileSize;
 
-    if (options.detectRetina && L.Browser.retina || isRetinaDisplay) {
-      wmtsParams.width = wmtsParams.height = tileSize * 2;
-    } else {
-      wmtsParams.width = wmtsParams.height = tileSize;
-    }
+    wmtsParams.width = wmtsParams.height = tileSize;
 
     for (var i in options) {
       if (!this.options.hasOwnProperty(i) && i!="matrixIds") {
@@ -37,11 +33,8 @@ const WMTSPlugin = L.TileLayer.extend({
   },
 
   onAdd: function (map) {
-    this._crs = L.CRS.EPSG3857 //this.options.crs || map.options.crs;
+    this._crs = this.options.crs || map.options.crs;
     L.TileLayer.prototype.onAdd.call(this, map);
-
-    console.log(this._crs)
-
   },
 
   getTileUrl: function (startPoint) {
@@ -56,9 +49,9 @@ const WMTSPlugin = L.TileLayer.extend({
     let zoom = this._tileZoom;
     let nw = this._crs.project(this._map.unproject(nwPoint, zoom));
     let se = this._crs.project(this._map.unproject(sePoint, zoom));
-    let tilewidth = se.x-nw.x;
+    let tilewidth = (se.x-nw.x);
 
-    let ident = this.matrixIds[zoom].identifier;
+    let identifier = this.matrixIds[zoom].identifier;
     let X0 = this.matrixIds[zoom].topLeftCorner.lng;
     let Y0 = this.matrixIds[zoom].topLeftCorner.lat;
     let tilecol=Math.floor((nw.x-X0)/tilewidth);
@@ -66,16 +59,7 @@ const WMTSPlugin = L.TileLayer.extend({
 
     let url = L.Util.template(this._url, {s: this._getSubdomain(startPoint)});
 
-    let bounds = map.getBounds()
-
-    let boundingBox = [
-      bounds.getSouthWest().lng,
-      bounds.getSouthWest().lat,
-      bounds.getNorthEast().lng,
-      bounds.getNorthEast().lat
-    ]
-
-    return url + L.Util.getParamString(this.wmtsParams, url) + "&tilematrix=" + ident + "&tilerow=" + tilerow +"&tilecol=" + tilecol + "&bbox=" + boundingBox.join(',');
+    return url + L.Util.getParamString(this.wmtsParams, url) + "&tilematrix=" + identifier + "&tilerow=" + tilerow +"&tilecol=" + tilecol
   },
 
   setParams: function (params, noRedraw) {
@@ -86,25 +70,18 @@ const WMTSPlugin = L.TileLayer.extend({
     return this;
   },
 
-  getDefaultMatrix : function () {
+  getDefaultMatrix : function (zoom) {
     var matrixIds3857 = new Array(22);
     for (var i= 0; i<22; i++) {
       matrixIds3857[i]= {
         identifier    : "" + i,
-        topLeftCorner : new L.LatLng(20037508.3428,-20037508.3428)
+        topLeftCorner : new L.LatLng(20037508.34, -20037508.34)
       };
     }
 
     return matrixIds3857;
   }
 });
-
-function isRetinaDisplay() {
-  if (window.matchMedia) {
-    var mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
-    return (mq && mq.matches || (window.devicePixelRatio > 1));
-  }
-}
 
 export default WMTSPlugin
 
