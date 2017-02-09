@@ -51,8 +51,7 @@ class SearchBox extends React.Component {
       this.props.dispatch(UserActions.setSearchText(input))
       this.props.data.refetch({
         query: input,
-        municipalityReference: null,
-        stopPlaceType: null,
+        stopPlaceType: undefined
       })
     }
   }
@@ -222,8 +221,7 @@ const searchBoxWithConnectedData = graphql(findStop, {
   options: {
     variables: {
       query: 'a',
-      municipalityReference: null,
-      stopPlaceType: null
+      stopPlaceType: undefined
     }
   }
 })(SearchBox)

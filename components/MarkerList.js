@@ -9,6 +9,8 @@ import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
+import { withApollo } from 'react-apollo'
+import { stopQuery } from '../actions/queries'
 
 class MarkerList extends React.Component {
 
@@ -18,10 +20,16 @@ class MarkerList extends React.Component {
   }
 
   handleStopOnClick(id) {
-    const { path } = this.props
+    const { path, dispatch, client } = this.props
     const isAlreadyActive = path === id
     if (id && !isAlreadyActive) {
-      browserHistory.push('edit/' + id)
+      dispatch(UserActions.navigateTo('/edit/', id))
+      client.query({
+        query: stopQuery,
+        variables: {
+          id: id,
+        }
+      })
     }
   }
 
@@ -115,7 +123,7 @@ class MarkerList extends React.Component {
       } else {
         popupMarkers.push(
           (<StopPlaceMarker
-            key={"stop-place" + stop.id}
+            key={"stop-place" + stop.id + 'active' + !!stop.isActive}
             id={stop.id}
             index={stopIndex}
             position={stop.location}
@@ -232,4 +240,4 @@ const getLocaleStopTypeName = (stopPlaceType, intl) => {
   return formattedStopTypeId ? formatMessage({id: formattedStopTypeId || 'name'}) : ''
 }
 
-export default injectIntl(connect(mapStateToProps)(MarkerList))
+export default withApollo(injectIntl(connect(mapStateToProps)(MarkerList)))

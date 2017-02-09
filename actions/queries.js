@@ -34,7 +34,7 @@ export const stopQuery = gql`
 
 export const stopPlaceBBQuery = gql`
     query stopPlaceBBox($ignoreStopPlaceId: String, $lonMin: BigDecimal!, $lonMax: BigDecimal!, $latMin: BigDecimal!, $latMax: BigDecimal!) {
-        stopPlaceBBox(ignoreStopPlaceId: $ignoreStopPlaceId, latMin: $latMin, latMax: $latMax, lonMin: $lonMin, lonMax: $lonMax, size: 50) {
+        stopPlaceBBox(ignoreStopPlaceId: $ignoreStopPlaceId, latMin: $latMin, latMax: $latMax, lonMin: $lonMin, lonMax: $lonMax, size: 500) {
             id
             name {
                 value
@@ -56,8 +56,8 @@ export const stopPlaceBBQuery = gql`
 `
 
 export const findStop = gql`
-    query findStop($query: String!, $municipalityReference: Int, $stopPlaceType: stopPlaceType) {
-        stopPlace(query: $query, size: 7, municipalityReference: [$municipalityReference], stopPlaceType: [$stopPlaceType]) {
+    query findStop($query: String!) {
+        stopPlace(query: $query, size: 7) {
             id
             name {
                 value
