@@ -24,9 +24,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     formattedStop.pathJunctions = []
 
     if (copy.quays) {
-      copy.quays.forEach( quay => {
-        formattedStop.quays = formattedStop.quays.set(quay.id, helpers.mapQuayToClientQuay(quay))
-      })
+      formattedStop.quays = copy.quays.map( quay => helpers.mapQuayToClientQuay(quay))
     }
   }
 
