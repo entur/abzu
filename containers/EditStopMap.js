@@ -22,7 +22,9 @@ class EditStopMap extends React.Component {
 
       let { ignoreStopId } = this.props
 
-      if (ignoreStopId) {
+      const zoom = leafletElement.getZoom()
+
+      if (ignoreStopId && zoom > 12) {
 
         const bounds = leafletElement.getBounds()
 
@@ -36,7 +38,7 @@ class EditStopMap extends React.Component {
       }
     }
 
-    this.handleMapMoveEnd = debounce(mapEnd, 1000)
+    this.handleMapMoveEnd = debounce(mapEnd, 10)
   }
 
   handleClick(event, map) {
