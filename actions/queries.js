@@ -17,6 +17,11 @@ export const stopQuery = gql`
                 name {
                     value
                 }
+                parentTopographicPlace {
+                    name {
+                        value
+                    }
+                }
                 topographicPlaceType
             }
             quays {
@@ -72,6 +77,11 @@ export const findStop = gql`
                     value
                 }
                 topographicPlaceType
+                parentTopographicPlace {
+                    name {
+                        value
+                    }
+                }
             }
         }
     },

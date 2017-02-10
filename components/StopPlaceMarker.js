@@ -38,7 +38,7 @@ class StopPlaceMarker extends React.PureComponent {
     const { position, handleOnClick, handleDragEnd, index, draggable,
           handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
 
-    const name = this.props.name.length ? this.props.name : translations.untitled
+    const name = this.props.name ? this.props.name : translations.untitled
 
     let divIconBody = (
       <CustomMarkerIcon

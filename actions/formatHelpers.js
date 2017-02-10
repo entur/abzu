@@ -14,6 +14,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     stopPlaceType: copy.stopPlaceType,
     allAreasWheelchairAccessible: copy.allAreasWheelchairAccessible,
     topographicPlace: copy.topographicPlace.name.value,
+    parentTopographicPlace: copy.topographicPlace.parentTopographicPlace.name.value,
     isActive: isActive
   }
 
@@ -48,10 +49,13 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 }
 
 helpers.mapSearchResultatToClientStops = stops => {
+  console.log("mapSearchResultatToClientStops", stops)
+
 
   return stops.map( stop => {
 
     const { latitude, longitude } = JSON.parse(JSON.stringify(stop.location))
+
 
     return {
       id: stop.id,
@@ -59,6 +63,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
       stopPlaceType: stop.stopPlaceType,
       topographicPlace: stop.topographicPlace.name.value,
+      parentTopographicPlace: stop.topographicPlace.parentTopographicPlace.name.value,
       isActive: false
     }
   })

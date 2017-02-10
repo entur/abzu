@@ -129,7 +129,7 @@ class SearchBox extends React.Component {
           <MenuItem
             style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
             innerDivStyle={{minWidth: 300}}
-            primaryText={`${element.name}, ${element.topographicPlace}`}
+            primaryText={`${element.name}, ${element.topographicPlace} (${element.parentTopographicPlace})`}
             secondaryText={(<ModalityIcon
                 iconStyle={{float: 'left', transform: 'translateY(10px)'}}
                 type={element.stopPlaceType}
@@ -138,7 +138,6 @@ class SearchBox extends React.Component {
           />
       )}
     ))
-
 
     let { showFilter, coordinatesDialogOpen } = this.state
 
@@ -220,9 +219,9 @@ class SearchBox extends React.Component {
 const searchBoxWithConnectedData = graphql(findStop, {
   options: {
     variables: {
-      query: 'a',
-      stopPlaceType: undefined
-    }
+      query: '',
+      stopPlaceType: undefined,
+    },
   }
 })(SearchBox)
 

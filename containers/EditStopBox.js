@@ -66,7 +66,7 @@ class EditStopBox extends React.Component {
     let captionText = formatMessage({id: 'new_stop_title'})
 
     if (stopPlace && stopPlace.id) {
-      captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name} (${stopPlace.id})`
+      captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
     }
 
     let itemTranslation = {
@@ -132,7 +132,7 @@ class EditStopBox extends React.Component {
 
     return (
 
-      <div style={SbStyle} ref="c">
+      <div style={SbStyle}>
         <ConfirmDialog
           open={this.state.confirmDialogOpen}
           handleClose={ () => { this.handleDialogClose() }}
@@ -189,14 +189,12 @@ class EditStopBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
+const mapStateToProps = state => ({
     stopPlace: state.stopPlace.current,
     isLoading: state.editingStop.activeStopIsLoading,
     hasContentChanged: state.editingStop.editedStopChanged,
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
     activeElementTab: state.user.activeElementTab
-  }
-}
+})
 
 export default injectIntl(connect(mapStateToProps)(EditStopBox))
