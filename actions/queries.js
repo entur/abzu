@@ -61,8 +61,8 @@ export const stopPlaceBBQuery = gql`
 `
 
 export const findStop = gql`
-    query findStop($query: String!) {
-        stopPlace(query: $query, size: 7) {
+    query findStop($query: String!, $municipalityReference: [String], $stopPlaceType: [stopPlaceType], $countyReference: [String]) {
+        stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
             name {
                 value

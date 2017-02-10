@@ -145,9 +145,9 @@ UserActions.removeSearchAsFavorite = () => {
   }
 }
 
-UserActions.setSearchText = (name) => {
+UserActions.setSearchText = text => {
   return function(dispatch) {
-    dispatch(sendData(types.SET_SEARCH_TEXT, name))
+    dispatch(sendData(types.SET_SEARCH_TEXT, text))
   }
 }
 
