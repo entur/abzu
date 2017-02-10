@@ -6,7 +6,6 @@ import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import stopTypes from './stopTypes'
 import { MapActions } from '../actions/'
-import { connect } from 'react-redux'
 
 class EditstopBoxHeader extends React.Component {
 
@@ -19,14 +18,12 @@ class EditstopBoxHeader extends React.Component {
 
   handleCloseStopPlaceTypePopover() {
     this.setState({
-      ...this.state,
       stopTypeOpen: false
     })
   }
 
   handleOpenStopPlaceTypePopover(event) {
     this.setState({
-      ...this.state,
       stopTypeOpen: true,
       anchorEl: event.currentTarget
     })
@@ -62,7 +59,7 @@ class EditstopBoxHeader extends React.Component {
           floatingLabelText={formatMessage({id: 'name'})}
           style={{width: 350, marginTop: -20}}
           value={activeStopPlace.name}
-          onChange={e => typeof e.target.value === 'string' && this.handleStopNameChange(e)}
+          onChange={e => { this.handleStopNameChange(e) }}
         />
         <IconButton
           style={{float: 'right'}}
@@ -107,4 +104,4 @@ class EditstopBoxHeader extends React.Component {
   }
 }
 
-export default connect()(EditstopBoxHeader)
+export default EditstopBoxHeader

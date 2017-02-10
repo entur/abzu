@@ -6,9 +6,7 @@ import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
-
 import { Tabs, Tab } from 'material-ui/Tabs'
-
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
 
 
@@ -146,7 +144,7 @@ class EditStopBox extends React.Component {
           intl={intl}
         />
         <div style={stopBoxBar}>{captionText}</div>
-          <EditStopBoxHeader activeStopPlace={stopPlace} intl={intl}/>
+          <EditStopBoxHeader activeStopPlace={stopPlace} intl={intl} dispatch={this.props.dispatch}/>
         <div style={{fontWeight: 600, marginTop: 5}}>
         </div>
         <Tabs

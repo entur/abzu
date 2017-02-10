@@ -17,7 +17,7 @@ class StopPlaceMarker extends React.PureComponent {
     draggable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     handleHideQuaysForNeighbourStop: PropTypes.func,
     neighbouringMarkersQuaysMap: PropTypes.object.isRequired,
     isEditingStop: PropTypes.bool.isRequired
