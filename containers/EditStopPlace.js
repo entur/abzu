@@ -28,7 +28,7 @@ class EditStopPlace extends React.Component {
       browserHistory.push('/')
     }
 
-    if (idFromPath && idFromPath.length) {
+    if (idFromPath && idFromPath.length && idFromPath && idFromPath !== 'new') {
       client.query({
         query: stopQuery,
         variables: {
