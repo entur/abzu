@@ -48,7 +48,9 @@ const graphQLreducer = (state = {}, action) => {
 
       case types.SET_ACTIVE_MARKER:
         return Object.assign({}, state, {
-          activeSearchResult: action.payLoad
+          activeSearchResult: action.payLoad,
+          centerPosition: action.payLoad.location,
+          zoom: 14,
         })
 
       case types.ADDED_JUNCTION_ELEMENT:

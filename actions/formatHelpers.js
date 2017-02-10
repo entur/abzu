@@ -49,14 +49,8 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 }
 
 helpers.mapSearchResultatToClientStops = stops => {
-  console.log("mapSearchResultatToClientStops", stops)
-
-
   return stops.map( stop => {
-
     const { latitude, longitude } = JSON.parse(JSON.stringify(stop.location))
-
-
     return {
       id: stop.id,
       name: stop.name.value,
