@@ -48,11 +48,15 @@ class SearchBox extends React.Component {
       return
     }
     else {
-      this.props.dispatch(UserActions.setSearchText(input))
       this.props.data.refetch({
         query: input,
-        stopPlaceType: undefined
+        stopPlaceType: this.props.stopTypeFilter,
+        municipalityReference: this.props.topoiChips
+          .filter( topos => topos.type === "town").map(topos => topos.value),
+      //countyReference: this.props.topoiChips
+         // .filter( topos => topos.type === "county").map(topos => topos.value)
       })
+      this.props.dispatch(UserActions.setSearchText(input))
     }
   }
 
@@ -70,7 +74,7 @@ class SearchBox extends React.Component {
 
   handleSubmitCoordinates(position) {
     this.props.dispatch( MapActions.changeMapCenter(position, 11))
-    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.activeMarker.markerProps.id ))
+    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.activeMarker.id ))
 
     this.setState(({
       coordinatesDialogOpen: false
@@ -94,10 +98,31 @@ class SearchBox extends React.Component {
     })
   }
 
+  componentWillUpdate(nextProps) {
+
+    const {  dataSource = [] } = nextProps
+
+    this._menuItems = dataSource.map( element => ({
+        element: element,
+        text: element.name,
+        value: (
+          <MenuItem
+            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
+            innerDivStyle={{minWidth: 300}}
+            primaryText={`${element.name}, ${element.topographicPlace} (${element.parentTopographicPlace})`}
+            secondaryText={(<ModalityIcon
+                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
+                type={element.stopPlaceType}
+              />
+            )}
+          />
+        )}
+    ))
+  }
+
   render() {
 
     const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
-    const {  dataSource = [] } = this.props
     const { formatMessage } = intl
 
     let text = {
@@ -122,22 +147,6 @@ class SearchBox extends React.Component {
       border: "1px solid rgb(81, 30, 18)"
     }
 
-    const menuItems = dataSource.map( element => ({
-      element: element,
-      text: element.name,
-      value: (
-          <MenuItem
-            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
-            innerDivStyle={{minWidth: 300}}
-            primaryText={`${element.name}, ${element.topographicPlace} (${element.parentTopographicPlace})`}
-            secondaryText={(<ModalityIcon
-                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
-                type={element.stopPlaceType}
-              />
-            )}
-          />
-      )}
-    ))
 
     let { showFilter, coordinatesDialogOpen } = this.state
 
@@ -156,7 +165,7 @@ class SearchBox extends React.Component {
               textFieldStyle={{width: 380}}
               openOnFocus
               hintText={formatMessage({id: "filter_by_name"})}
-              dataSource={menuItems}
+              dataSource={this._menuItems || []}
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleUpdateInput.bind(this)}
               maxSearchResults={7}
@@ -180,7 +189,7 @@ class SearchBox extends React.Component {
                 intl={intl}
                 favorited={favorited}
                 dispatch={this.props.dispatch}
-                stopPlaceFilter={this.props.stopPlaceFilter}
+                stopPlaceFilter={this.props.stopTypeFilter}
                 chipsAdded={this.props.topoiChips}
                 toggleShowFilter={() => { this.handleToggleFilter(false)}}
             />
@@ -196,7 +205,7 @@ class SearchBox extends React.Component {
               />
               :  null
             }
-            <div style={{marginTop: "30px"}}>
+            <div style={{marginTop: 30}}>
               { isCreatingNewStop
                 ? <NewStopPlace text={newStopText}/>
                 :
@@ -221,6 +230,8 @@ const searchBoxWithConnectedData = graphql(findStop, {
     variables: {
       query: '',
       stopPlaceType: undefined,
+      municipalityReference: undefined,
+      countyReference: undefined
     },
   }
 })(SearchBox)
@@ -236,11 +247,11 @@ const mapStateToProps = state => {
     activeMarker: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults,
     isCreatingNewStop: state.user.isCreatingNewStop,
-    stopPlaceFilter: state.user.searchFilters.stopType,
+    stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
     favorited: favorited,
     missingCoordinatesMap: state.user.missingCoordsMap,
-    searchText: state.user.searchText
+    searchText: state.user.searchFilters.text
   }
 }
 
