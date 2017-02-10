@@ -13,9 +13,16 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     stopPlaceType: copy.stopPlaceType,
     allAreasWheelchairAccessible: copy.allAreasWheelchairAccessible,
-    topographicPlace: copy.topographicPlace.name.value,
-    parentTopographicPlace: copy.topographicPlace.parentTopographicPlace.name.value,
     isActive: isActive
+  }
+
+  if (copy.topographicPlace) {
+    if (copy.topographicPlace.name) {
+      formattedStop.topographicPlace = copy.topographicPlace.name.value
+    }
+    if (copy.topographicPlace.parentTopographicPlace) {
+      formattedStop.parentTopographicPlace =  copy.topographicPlace.parentTopographicPlace.name.value
+    }
   }
 
   if (isActive) {
@@ -132,7 +139,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 }
 
 helpers.updateCurrentWithoutElement = (current, payLoad) => {
-  const { type, position, index } = payLoad
+  const { type, index } = payLoad
   const copy = JSON.parse(JSON.stringify(current))
 
   switch (type) {
