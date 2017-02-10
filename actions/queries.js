@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const stopQuery = gql`
     query stopPlace($id: String!) {
-        stopPlace(id: [$id]) {
+        stopPlace(id: $id) {
             id
             name {
                 value
