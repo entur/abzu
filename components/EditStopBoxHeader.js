@@ -6,6 +6,8 @@ import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import stopTypes from './stopTypes'
 import { MapActions } from '../actions/'
+import { connect } from 'react-redux'
+import debounce from 'lodash.debounce'
 
 class EditstopBoxHeader extends React.Component {
 
@@ -13,7 +15,24 @@ class EditstopBoxHeader extends React.Component {
     super(props)
     this.state = {
       stopTypeOpen: false,
+      name: props.stopPlace.name,
+      description: props.stopPlace.description,
     }
+
+    this.updateStopName = debounce( value => {
+      this.props.dispatch(MapActions.changeStopName(value))
+    }, 200)
+
+    this.updateStopDescription = debounce( value => {
+      this.props.dispatch(MapActions.changeStopDescription(value))
+    }, 200)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      description: props.stopPlace.description,
+      name: props.stopPlace.name
+    })
   }
 
   handleCloseStopPlaceTypePopover() {
@@ -29,13 +48,26 @@ class EditstopBoxHeader extends React.Component {
     })
   }
 
-  handleStopNameChange(event) {
-    this.props.dispatch(MapActions.changeStopName(event.target.value))
+ handleStopNameChange(event) {
+
+    const name = event.target.value
+    this.setState({
+      name: name
+    })
+
+    this.updateStopName(name)
   }
 
   handleStopDescriptionChange(event) {
-    this.props.dispatch(MapActions.changeStopDescription(event.target.value))
+
+    const description = event.target.value
+    this.setState({
+      description: description
+    })
+
+    this.updateStopDescription(description)
   }
+
 
   handleStopTypeChange(value) {
     this.handleCloseStopPlaceTypePopover()
@@ -49,8 +81,9 @@ class EditstopBoxHeader extends React.Component {
       display: "block"
     }
 
-    const { activeStopPlace, intl } = this.props
+    const { stopPlace, intl } = this.props
     const { formatMessage, locale } = intl
+    const { name, description } = this.state
 
     return (
       <div style={fixedHeader}>
@@ -58,15 +91,15 @@ class EditstopBoxHeader extends React.Component {
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}
           style={{width: 350, marginTop: -20}}
-          value={activeStopPlace.name}
-          onChange={e => { this.handleStopNameChange(e) }}
+          value={name}
+          onChange={this.handleStopNameChange.bind(this)}
         />
         <IconButton
           style={{float: 'right'}}
           onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
         >
           <ModalityIcon
-            type={ activeStopPlace.stopPlaceType }
+            type={ stopPlace.stopPlaceType }
           />
         </IconButton>
         <Popover
@@ -96,12 +129,18 @@ class EditstopBoxHeader extends React.Component {
           hintText={formatMessage({id: 'description'})}
           floatingLabelText={formatMessage({id: 'description'})}
           style={{width: 350, marginTop: -20}}
-          value={activeStopPlace.description}
-          onChange={e => typeof e.target.value === 'string' && this.handleStopDescriptionChange(e)}
+          value={description}
+          onChange={this.handleStopDescriptionChange.bind(this)}
         />
       </div>
     )
   }
 }
 
-export default EditstopBoxHeader
+const mapStateToProps = state => ({
+  stopPlace: state.stopPlace.current
+})
+
+
+
+export default connect(mapStateToProps)(EditstopBoxHeader)

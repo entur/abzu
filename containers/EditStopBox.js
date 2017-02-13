@@ -8,14 +8,16 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
-
+import { withApollo } from 'react-apollo'
+import mapToSchema from '../modelUtils/mapToSchema'
+import { mutateStopPlace } from '../actions/queries'
 
 class EditStopBox extends React.Component {
 
   constructor(props) {
     super(props)
 
-    const { formatMessage, locale } = props.intl
+    const { formatMessage } = props.intl
 
     this.state = {
       confirmDialogOpen: false,
@@ -35,11 +37,17 @@ class EditStopBox extends React.Component {
   }
 
   handleSave() {
-    // TODO: mutation - save stop
+    const mappedToSchema = mapToSchema.mapStopToSchema(this.props.stopPlace)
+    const { client } = this.props
+    client.mutate({ variables: mappedToSchema, mutation: mutateStopPlace}).then( result => {
+      if (result.data.mutateStopPlace[0].id) {
+        console.log("success, id=", result.data.mutateStopPlace[0].id)
+        // TODO : update state with new data
+      }
+    })
   }
 
   handleGoBack() {
-    // use browserHistory instead?
     this.props.dispatch(UserActions.navigateTo('/', ''))
   }
 
@@ -147,7 +155,7 @@ class EditStopBox extends React.Component {
           intl={intl}
         />
         <div style={stopBoxBar}>{captionText}</div>
-          <EditStopBoxHeader activeStopPlace={stopPlace} intl={intl} dispatch={this.props.dispatch}/>
+          <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5}}>
         </div>
         <Tabs
@@ -198,4 +206,4 @@ const mapStateToProps = state => ({
     activeElementTab: state.user.activeElementTab
 })
 
-export default injectIntl(connect(mapStateToProps)(EditStopBox))
+export default withApollo(injectIntl(connect(mapStateToProps)(EditStopBox)))

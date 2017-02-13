@@ -7,6 +7,9 @@ export const stopQuery = gql`
             name {
                 value
             }
+            description {
+                value
+            }
             location {
                 latitude
                 longitude
@@ -61,7 +64,7 @@ export const stopPlaceBBQuery = gql`
 `
 
 export const findStop = gql`
-    query findStop($query: String!, $municipalityReference: [String], $stopPlaceType: [stopPlaceType], $countyReference: [String]) {
+    query findStop($query: String!, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
             name {
@@ -86,3 +89,22 @@ export const findStop = gql`
         }
     },
 `
+
+
+export const mutateStopPlace = gql`
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $latitude: Float!, $longitude: Float!, $stopPlaceType: StopPlaceType) {
+        mutateStopPlace(StopPlace: {
+        id: $id
+        name: { value: $name, lang: "no" }
+        description: { value: $description, lang: "no" }
+        location: {
+        latitude: $latitude
+        longitude:$longitude
+        }
+        stopPlaceType: $stopPlaceType
+        }) {
+            id 
+        }
+    }
+`
+

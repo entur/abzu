@@ -53,8 +53,8 @@ class SearchBox extends React.Component {
         stopPlaceType: this.props.stopTypeFilter,
         municipalityReference: this.props.topoiChips
           .filter( topos => topos.type === "town").map(topos => topos.value),
-      //countyReference: this.props.topoiChips
-         // .filter( topos => topos.type === "county").map(topos => topos.value)
+        countyReference: this.props.topoiChips
+          .filter( topos => topos.type === "county").map(topos => topos.value)
       })
       this.props.dispatch(UserActions.setSearchText(input))
     }

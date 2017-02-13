@@ -4,38 +4,47 @@ const helpers = {}
 
 helpers.mapStopToClientStop = (stop, isActive) => {
 
-  const { latitude, longitude } = stop.location
+  try {
+    const { latitude, longitude } = stop.location
 
-  let formattedStop = {
-    id: stop.id,
-    name: stop.name.value,
-    location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
-    stopPlaceType: stop.stopPlaceType,
-    allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
-    isActive: isActive
+    let formattedStop = {
+      id: stop.id,
+      name: stop.name.value,
+      location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
+      stopPlaceType: stop.stopPlaceType,
+      allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
+      isActive: isActive
+    }
+
+    if (stop.topographicPlace) {
+      if (stop.topographicPlace.name) {
+        formattedStop.topographicPlace = stop.topographicPlace.name.value
+      }
+      if (stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) {
+        formattedStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
+      }
+    }
+
+    if (stop.description) {
+      formattedStop.description = stop.description.value
+    }
+
+    if (isActive) {
+
+      formattedStop.quays = []
+      formattedStop.entrances = []
+      formattedStop.pathJunctions = []
+
+      if (stop.quays) {
+        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay))
+      }
+    }
+
+    return formattedStop
+  } catch (e) {
+    console.log("error", e)
   }
 
-  if (stop.topographicPlace) {
-    if (stop.topographicPlace.name) {
-      formattedStop.topographicPlace = stop.topographicPlace.name.value
-    }
-    if (stop.topographicPlace.parentTopographicPlace) {
-      formattedStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
-    }
-  }
-
-  if (isActive) {
-
-    formattedStop.quays = []
-    formattedStop.entrances = []
-    formattedStop.pathJunctions = []
-
-    if (stop.quays) {
-      formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay))
-    }
-  }
-
-  return formattedStop
 }
 
 helpers.mapQuayToClientQuay = quay => {
@@ -61,8 +70,8 @@ helpers.mapSearchResultatToClientStops = stops => {
       name: stop.name.value,
       location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
       stopPlaceType: stop.stopPlaceType,
-      topographicPlace: stop.topographicPlace.name.value,
-      parentTopographicPlace: stop.topographicPlace.parentTopographicPlace.name.value,
+      topographicPlace: (stop.topographicPlace && stop.topographicPlace.name) ? stop.topographicPlace.name.value : '',
+      parentTopographicPlace: (stop.topographicPlace && stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) ?  stop.topographicPlace.parentTopographicPlace.name.value : '',
       isActive: false
     }
   })
@@ -72,6 +81,7 @@ helpers.createNewStopFromLocation = location => {
   return ({
     id: null,
     name: '',
+    description: '',
     location: location.map ( pos => setDecimalPrecision(pos, 6)),
     stopPlaceType: null,
     allAreasWheelchairAccessible: false,
@@ -89,17 +99,6 @@ helpers.mapLocationToPosition = location => {
   return [ setDecimalPrecision(location.latitude, 6), setDecimalPrecision(location.longitude, 6) ]
 }
 
-helpers.updateCurrentStopWithName = (current, name) => {
-  return Object.assign({}, current, {
-    name: name
-  })
-}
-
-helpers.updateCurrentStopWithDescription = (current, description) => {
-  return Object.assign({}, current, {
-    description: description
-  })
-}
 
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {

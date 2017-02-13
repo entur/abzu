@@ -19,15 +19,14 @@ const graphQLreducer = (state = {}, action) => {
         })
 
       case types.CHANGED_STOP_NAME:
-        return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentStopWithName(state.current, action.payLoad)
-        })
+        return {...state, current: {
+          ...state.current, name: action.payLoad
+        }}
 
       case types.CHANGED_STOP_DESCRIPTION:
-        return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentStopWithDescription(state.current, action.payLoad)
-        })
-
+        return {...state, current: {
+          ...state.current, description: action.payLoad
+        }}
 
       case types.CHANGED_STOP_TYPE:
         return Object.assign({}, state, {
