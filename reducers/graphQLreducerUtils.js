@@ -1,4 +1,4 @@
-import formatHelpers from '../actions/formatHelpers'
+import formatHelpers from '../modelUtils/mapToClient'
 
 export const getStateByOperation = (state, action) => {
 

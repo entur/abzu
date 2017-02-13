@@ -4,24 +4,23 @@ const helpers = {}
 
 helpers.mapStopToClientStop = (stop, isActive) => {
 
-  let copy = JSON.parse(JSON.stringify(stop))
-  const { latitude, longitude } = copy.location
+  const { latitude, longitude } = stop.location
 
   let formattedStop = {
-    id: copy.id,
-    name: copy.name.value,
+    id: stop.id,
+    name: stop.name.value,
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
-    stopPlaceType: copy.stopPlaceType,
-    allAreasWheelchairAccessible: copy.allAreasWheelchairAccessible,
+    stopPlaceType: stop.stopPlaceType,
+    allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
     isActive: isActive
   }
 
-  if (copy.topographicPlace) {
-    if (copy.topographicPlace.name) {
-      formattedStop.topographicPlace = copy.topographicPlace.name.value
+  if (stop.topographicPlace) {
+    if (stop.topographicPlace.name) {
+      formattedStop.topographicPlace = stop.topographicPlace.name.value
     }
-    if (copy.topographicPlace.parentTopographicPlace) {
-      formattedStop.parentTopographicPlace =  copy.topographicPlace.parentTopographicPlace.name.value
+    if (stop.topographicPlace.parentTopographicPlace) {
+      formattedStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
     }
   }
 
@@ -31,8 +30,8 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     formattedStop.entrances = []
     formattedStop.pathJunctions = []
 
-    if (copy.quays) {
-      formattedStop.quays = copy.quays.map( quay => helpers.mapQuayToClientQuay(quay))
+    if (stop.quays) {
+      formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay))
     }
   }
 
@@ -40,14 +39,13 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 }
 
 helpers.mapQuayToClientQuay = quay => {
-  let copy = JSON.parse(JSON.stringify(quay))
-  const { latitude, longitude } = copy.location
+  const { latitude, longitude } = quay.location
 
   return {
-    id: copy.id,
+    id: quay.id,
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
-    allAreasWheelChairAccessible: copy.allAreasWheelChairAccessible,
-    compassBearing: copy.compassBearing
+    allAreasWheelChairAccessible: quay.allAreasWheelChairAccessible,
+    compassBearing: quay.compassBearing
   }
 }
 

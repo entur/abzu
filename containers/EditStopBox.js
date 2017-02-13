@@ -14,8 +14,23 @@ class EditStopBox extends React.Component {
 
   constructor(props) {
     super(props)
+
+    const { formatMessage, locale } = props.intl
+
     this.state = {
-      confirmDialogOpen: false
+      confirmDialogOpen: false,
+      itemTranslation:  {
+        name: formatMessage({id: 'name'}),
+        description: formatMessage({id: 'description'}),
+        allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
+        unsaved: formatMessage({id: 'unsaved'}),
+        undefined: formatMessage({id: 'undefined'}),
+        none: formatMessage({id: 'none_no'}),
+        quays: formatMessage({id: 'quays'}),
+        pathJunctions: formatMessage({id: 'pathJunctions'}),
+        entrances: formatMessage({id: 'entrances'})
+      }
+
     }
   }
 
@@ -49,39 +64,27 @@ class EditStopBox extends React.Component {
   render() {
 
     const { stopPlace, hasContentChanged, activeElementTab, intl } = this.props
+    const { itemTranslation } = this.state
     const { formatMessage, locale } = intl
 
     if (!stopPlace) return null
 
     let quayItemName = null
 
-    stopTypes[locale].forEach( (stopType) => {
+    stopTypes[locale].forEach(  stopType => {
       if (stopType.value === stopPlace.stopPlaceType) {
         quayItemName = stopType.quayItemName
       }
     })
 
+    if (quayItemName !== null) {
+      itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
+    }
+
     let captionText = formatMessage({id: 'new_stop_title'})
 
     if (stopPlace && stopPlace.id) {
       captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-    }
-
-    let itemTranslation = {
-      name: formatMessage({id: 'name'}),
-      description: formatMessage({id: 'description'}),
-      allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
-      unsaved: formatMessage({id: 'unsaved'}),
-      undefined: formatMessage({id: 'undefined'}),
-      none: formatMessage({id: 'none_no'}),
-      quays: formatMessage({id: 'quays'}),
-      pathJunctions: formatMessage({id: 'pathJunctions'}),
-      entrances: formatMessage({id: 'entrances'})
-    }
-
-
-    if (quayItemName !== null) {
-      itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
     }
 
     const SbStyle = {
