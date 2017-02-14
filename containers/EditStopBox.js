@@ -10,7 +10,8 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
 import { withApollo } from 'react-apollo'
 import mapToSchema from '../modelUtils/mapToSchema'
-import { mutateStopPlace } from '../actions/queries'
+import { mutateStopPlace } from '../actions/Queries'
+import * as types from '../actions/actionTypes'
 
 class EditStopBox extends React.Component {
 
@@ -38,11 +39,11 @@ class EditStopBox extends React.Component {
 
   handleSave() {
     const mappedToSchema = mapToSchema.mapStopToSchema(this.props.stopPlace)
-    const { client } = this.props
+    const { client, dispatch } = this.props
     client.mutate({ variables: mappedToSchema, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
-        console.log("success, id=", result.data.mutateStopPlace[0].id)
-        // TODO : update state with new data
+        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
+        dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
       }
     })
   }
@@ -200,8 +201,7 @@ class EditStopBox extends React.Component {
 
 const mapStateToProps = state => ({
     stopPlace: state.stopPlace.current,
-    isLoading: state.editingStop.activeStopIsLoading,
-    hasContentChanged: state.editingStop.editedStopChanged,
+    hasContentChanged: state.editingStop.editedStopChanged, // TODO: Should this functionality be kept?
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
     activeElementTab: state.user.activeElementTab
 })

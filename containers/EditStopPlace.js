@@ -9,7 +9,7 @@ import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
-import { stopQuery } from "../actions/queries"
+import { stopQuery } from "../actions/Queries"
 import { withApollo } from 'react-apollo'
 import '../styles/main.css'
 import { browserHistory } from 'react-router'

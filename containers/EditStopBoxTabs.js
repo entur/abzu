@@ -46,6 +46,18 @@ class EditStopBoxTabs extends React.Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.activeStopPlace.id !== nextProps.activeStopPlace.id) {
+      this.state = {
+        expandedItem: {
+          index: -1,
+          type: 'quay',
+        }
+      }
+    }
+  }
+
+
   /*handleSetFocus = (index, type) => {
     const { dispatch } = this.props
     dispatch(MapActions.setElementFocus(index, type))

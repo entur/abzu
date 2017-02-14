@@ -16,7 +16,7 @@ import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import SearchFilter from '../components/SearchFilter'
 import { graphql } from 'react-apollo'
-import { findStop } from "../actions/queries"
+import { findStop } from "../actions/Queries"
 
 class SearchBox extends React.Component {
 

@@ -10,7 +10,7 @@ import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
-import { stopQuery } from '../actions/queries'
+import { stopQuery } from '../actions/Queries'
 
 class MarkerList extends React.Component {
 
