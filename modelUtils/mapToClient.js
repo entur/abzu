@@ -5,6 +5,7 @@ const helpers = {}
 helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {
+
     const { latitude, longitude } = stop.location
 
     let formattedStop = {
@@ -194,6 +195,15 @@ helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
     default: throw new Error('element not supported', type)
   }
   return copy
+}
+
+helpers.updateCompassBearing = (current, payLoad) => {
+  const { compassBearing, index } = payLoad
+  const quaysCopy = current.quays.slice()
+  quaysCopy[index].compassBearing = compassBearing
+  return {
+    ...current, quays: quaysCopy
+  }
 }
 
 helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {

@@ -27,12 +27,16 @@ describe('Model: map format from server to expected client model', () => {
         { id: 'NSR:Quay:1694',
           location: [ 59.176073, 11.726214 ],
           allAreasWheelChairAccessible: undefined,
-          compassBearing: 344
+          compassBearing: 344,
+          description: '',
+          name: '',
         },
         { id: 'NSR:Quay:1695',
           location: [ 59.17583, 11.724514 ],
           allAreasWheelChairAccessible: undefined,
-          compassBearing: 164
+          compassBearing: 164,
+          description: '',
+          name: '',
         }
       ],
       entrances: [],
