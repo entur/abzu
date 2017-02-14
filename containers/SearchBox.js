@@ -74,7 +74,7 @@ class SearchBox extends React.Component {
 
   handleSubmitCoordinates(position) {
     this.props.dispatch( MapActions.changeMapCenter(position, 11))
-    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.activeMarker.id ))
+    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.chosenResult.id ))
 
     this.setState(({
       coordinatesDialogOpen: false
@@ -122,17 +122,18 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
+    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
+    const { showFilter, coordinatesDialogOpen } = this.state
     const { formatMessage } = intl
 
-    let text = {
-      emptyDescription: formatMessage({id: 'empty_description'}),
-      edit: formatMessage({id: 'edit'})
-    }
-
-    let newStopText = {
+    const newStopText = {
       headerText: formatMessage({id: 'making_stop_place_title'}),
       bodyText: formatMessage({id: 'making_stop_place_hint'})
+    }
+
+    const text = {
+      emptyDescription: formatMessage({id: 'empty_description'}),
+      edit: formatMessage({id: 'edit'})
     }
 
     const searchBoxWrapperStyle = {
@@ -146,9 +147,6 @@ class SearchBox extends React.Component {
       padding: 10,
       border: "1px solid rgb(81, 30, 18)"
     }
-
-
-    let { showFilter, coordinatesDialogOpen } = this.state
 
     return (
       <div>
@@ -196,12 +194,13 @@ class SearchBox extends React.Component {
             : null
           }
           <div key='searchbox-edit'>
-            {activeMarker
+            {chosenResult
               ?  <SearchBoxDetails
-                   text={text}
                    handleEdit={this.handleEdit.bind(this)}
-                   marker={activeMarker} handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
-                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[activeMarker.id]}
+                   result={chosenResult}
+                   handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
+                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]}
+                   text={text}
               />
               :  null
             }
@@ -244,7 +243,7 @@ const mapStateToProps = state => {
   var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
-    activeMarker: state.stopPlace.activeSearchResult,
+    chosenResult: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults,
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopTypeFilter: state.user.searchFilters.stopType,

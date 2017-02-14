@@ -11,7 +11,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     let formattedStop = {
       id: stop.id,
       name: stop.name.value,
-      location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
+      location: stop.location ? [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ] : null,
       stopPlaceType: stop.stopPlaceType,
       allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
       isActive: isActive
@@ -67,11 +67,11 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 
 helpers.mapSearchResultatToClientStops = stops => {
   return stops.map( stop => {
-    const { latitude, longitude } = JSON.parse(JSON.stringify(stop.location))
     return {
       id: stop.id,
       name: stop.name.value,
-      location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
+      location: stop.location ? [ setDecimalPrecision(stop.location.latitude, 6), setDecimalPrecision(stop.location.longitude, 6) ] : null,
+      isMissingLocation: !stop.location,
       stopPlaceType: stop.stopPlaceType,
       topographicPlace: (stop.topographicPlace && stop.topographicPlace.name) ? stop.topographicPlace.name.value : '',
       parentTopographicPlace: (stop.topographicPlace && stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) ?  stop.topographicPlace.parentTopographicPlace.name.value : '',

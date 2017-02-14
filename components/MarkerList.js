@@ -98,14 +98,6 @@ class MarkerList extends React.Component {
 
     stops.forEach( (stop, stopIndex) => {
 
-      /*
-      if (!markerProps.position) {
-        if (missingCoordinatesMap[markerProps.id]) {
-          markerProps.position = missingCoordinatesMaxp[markerProps.id]
-        } else {
-          return
-        }
-      } */
 
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, this.props.intl)
 
@@ -140,6 +132,7 @@ class MarkerList extends React.Component {
             neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
             handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}
             isEditingStop={this.props.isEditingStop}
+            missingCoordinatesMap={missingCoordinatesMap}
             />
           )
         )

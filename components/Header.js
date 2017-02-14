@@ -5,12 +5,11 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import ActionHome from 'material-ui/svg-icons/action/home'
-import { Link, browserHistory } from 'react-router'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 
 const Header = ({handleNavigateToMain, text, setLanguage}) =>{
 
-  const { signOut, help, title, language, norwegian, english } = text
+  const { title, language, norwegian, english } = text
 
   return (
 

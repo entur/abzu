@@ -7,7 +7,7 @@ import CustomMarkerIcon from './CustomMarkerIcon'
 class StopPlaceMarker extends React.PureComponent {
 
   static propTypes = {
-    position: PropTypes.arrayOf(Number).isRequired,
+    position: PropTypes.arrayOf(Number),
     handleDragEnd: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
     handleChangeCoordinates: PropTypes.func,
@@ -35,8 +35,12 @@ class StopPlaceMarker extends React.PureComponent {
 
   render() {
 
-    const { position, handleOnClick, handleDragEnd, index, draggable,
+    const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
           handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
+
+    const correctLocation = position || missingCoordinatesMap[id]
+
+    if (!correctLocation) return null
 
     const name = this.props.name ? this.props.name : translations.untitled
 
@@ -59,7 +63,7 @@ class StopPlaceMarker extends React.PureComponent {
       <Marker
         key={"stop-place" + id}
         icon={icon}
-        position={position}
+        position={correctLocation}
         onDragend={(event) => { handleDragEnd(false, index, event) }}
         draggable={draggable && active}
         >
@@ -74,13 +78,13 @@ class StopPlaceMarker extends React.PureComponent {
             </span>
             <div
               style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
-              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, position)}
+              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, correctLocation)}
               >
               <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
-                {position[0]}
+                {correctLocation[0]}
               </span>
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
-                {position[1]}
+                {correctLocation[1]}
               </span>
             </div>
             <div style={{display: 'block', width: '100%'}}>

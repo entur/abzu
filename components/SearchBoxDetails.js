@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import Warning from 'material-ui/svg-icons/alert/warning'
 
 
-const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, userSuppliedCoordinates}) => {
+const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, userSuppliedCoordinates}) => {
 
   const style = {
     color: "#191919",
@@ -14,12 +14,10 @@ const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, us
     padding: 5
   }
 
-  const markerInfo = marker
-
   return (
     <div style={style}>
-      <h2>{markerInfo.name}</h2>
-      { !userSuppliedCoordinates && markerInfo.isMissingPosition
+      <h2>{result.name}</h2>
+      { !userSuppliedCoordinates && result.isMissingLocation
           ? <div className="warning_message">
               <Warning style={{verticalAlign: 'sub', fill: 'rgb(214, 134, 4)'}}/>
               <FormattedMessage className='message_warning' id="is_missing_coordinates"/>
@@ -35,10 +33,10 @@ const SearchBoxDetails = ({marker, handleEdit, text, handleChangeCoordinates, us
         : null}
       <ModalityIcon
         iconStyle={{float: 'right', transform: 'translateY(-55px)'}}
-        type={markerInfo.stopPlaceType}
+        type={result.stopPlaceType}
         />
       <FlatButton
-        onClick={() => handleEdit(markerInfo.id)}
+        onClick={() => handleEdit(result.id)}
         >
         <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
         <span style={{fontSize: ".8em", marginLeft: 5}}>
