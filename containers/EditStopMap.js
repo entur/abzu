@@ -24,7 +24,7 @@ class EditStopMap extends React.Component {
 
       const zoom = leafletElement.getZoom()
 
-      if (ignoreStopId && zoom > 12) {
+      if (zoom > 12) {
 
         const bounds = leafletElement.getBounds()
 
@@ -216,7 +216,7 @@ const getIdFromPath = () => window.location.pathname.substring(window.location.p
 const EditStopMapWithData = graphql(stopPlaceBBQuery, {
   options: {
     variables: {
-      ignoreStopPlaceId: (getIdFromPath() && getIdFromPath() !== 'new') ? getIdFromPath() : "-1",
+      ignoreStopPlaceId: (getIdFromPath() && getIdFromPath() !== 'new') ? getIdFromPath() : null,
       latMin: 59.24675047197561,
       latMax: 59.341943796898505,
       lonMin: 0.94066619873047,
