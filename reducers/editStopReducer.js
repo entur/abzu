@@ -69,68 +69,10 @@ const editStopReducer = (state = initialState, action) => {
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, { centerPosition: action.payLoad })
 
-    case types.RECEIVED_STOP:
-      return Object.assign({}, state, {
-        activeStopPlaceOriginal: JSON.parse(JSON.stringify(action.payLoad)),
-        editedStopChanged: false,
-        activeStopIsLoading: false,
-        activeStopPlace: action.payLoad,
-        neighbouringMarkers: [],
-        multiPolylineDataSource: [],
-        focusedQuayIndex: null,
-        isCompassBearingEnabled: setDefaultCompassBearingisEnabled(action.payLoad),
-        focusedElement: initialState.focusedElement
-      })
-
-    case types.REQUESTED_STOP:
-      return Object.assign({}, state, { activeStopIsLoading: true})
 
     case types.SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payLoad})
 
-    case types.ERROR_STOP:
-      return Object.assign({}, state, { activeStopIsLoading: false})
-
-    case types.CHANGED_WHA:
-      let markerToChangeWHA = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeWHA.markerProps.quays[action.payLoad.index].allAreasWheelchairAccessible = action.payLoad.value
-
-      return Object.assign({}, state, {editedStopChanged: true, activeStopPlace: markerToChangeWHA})
-
-    case types.CHANGED_QUAY_COMPASS_BEARING:
-      let markerToChangeCompassBearing = Object.assign({}, state.activeStopPlace,{})
-      markerToChangeCompassBearing.markerProps.quays[action.payLoad.index].compassBearing = action.payLoad.compassBearing
-
-      return Object.assign({}, state, {
-        editedStopChanged: true,
-        activeStopPlace:
-        markerToChangeCompassBearing,
-        isCompassBearingEnabled: true
-      })
-
-    case types.REQUESTED_STOPS_EDITING_NEARBY:
-
-      if (state.nearbyStopsCancelToken != null) {
-        let cancelToken = state.nearbyStopsCancelToken
-        cancelToken('Operation canceled by new request.')
-      }
-
-      return Object.assign({}, state, {
-        nearbyStopsCancelToken: action.payLoad.cancel,
-        activeMap: action.payLoad.map
-      })
-
-    case types.RECEIVED_STOPS_EDITING_NEARBY:
-      return Object.assign({}, state, {
-        neighbouringMarkers: updateNeighbourMarkersWithQuays(state.neighbouringMarkersQuaysMap, action.payLoad),
-      })
-
-    case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
-      return Object.assign({}, state, {
-        editedStopChanged: false,
-        activeStopPlace: JSON.parse(JSON.stringify(state.activeStopPlaceOriginal)),
-        multiPolylineDataSource: [],
-      })
 
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad })

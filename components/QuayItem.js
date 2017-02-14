@@ -97,7 +97,7 @@ class QuayItem extends React.Component {
             defaultChecked={quay.allAreasWheelchairAccessible}
             label={translations.allAreasWheelchairAccessible}
             onCheck={this.handleWHAChange}
-            style={{marginBottom: "10px", width: "95%", marginTop: "10px"}}
+            style={{marginBottom: "10px", width: "95%", marginTop: 10}}
             />
           <IconButton
             iconClassName="material-icons"

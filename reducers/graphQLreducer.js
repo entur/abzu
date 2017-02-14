@@ -16,6 +16,11 @@ const graphQLreducer = (state = {}, action) => {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
         })
 
+      case types.CHANGED_QUAY_COMPASS_BEARING:
+        return Object.assign({}, state, {
+          current: formatHelpers.updateCompassBearing(state.current, action.payLoad),
+        })
+
       case types.CHANGED_LOCATION_NEW_STOP:
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad)
