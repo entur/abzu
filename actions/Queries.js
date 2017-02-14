@@ -62,15 +62,16 @@ export const findStop = gql`
 
 
 export const mutateStopPlace = gql`
-    mutation mutateStopPlace($id: String, $name: String, $description: String, $latitude: Float!, $longitude: Float!, $stopPlaceType: StopPlaceType) {
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $latitude: Float!, $longitude: Float!, $stopPlaceType: StopPlaceType, $quays: [QuayInput]) {
         mutateStopPlace(StopPlace: {
         id: $id
         name: { value: $name, lang: "no" }
         description: { value: $description, lang: "no" }
         location: {
-        latitude: $latitude
-        longitude:$longitude
+          latitude: $latitude
+          longitude:$longitude
         }
+        quays: $quays
         stopPlaceType: $stopPlaceType}) {
            ...VerboseStopPlace
         }

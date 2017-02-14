@@ -54,7 +54,9 @@ helpers.mapQuayToClientQuay = quay => {
     id: quay.id,
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     allAreasWheelChairAccessible: quay.allAreasWheelChairAccessible,
-    compassBearing: quay.compassBearing
+    compassBearing: quay.compassBearing,
+    name: quay.name ? quay.name.value : '',
+    description: quay.description ? quay.description.value : ''
   }
 }
 

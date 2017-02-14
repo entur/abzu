@@ -82,14 +82,14 @@ class QuayItem extends React.Component {
            <TextField
              hintText={translations.name}
              floatingLabelText={translations.name}
-             value={quay.name || ''}
+             value={quay.name}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
            />
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
-            value={quay.description || ''}
+            value={quay.description}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />

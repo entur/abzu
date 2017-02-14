@@ -9,7 +9,15 @@ helpers.mapQuayToSchema = quay => ({
     longitude: quay.location[1]
   },
   allAreasWheelChairAccessible: quay.allAreasWheelChairAccessible,
-  compassBearing: quay.compassBearing
+  compassBearing: quay.compassBearing,
+  name: {
+    value: quay.name,
+    lang: 'no'
+  },
+  description: {
+    value: quay.description,
+    lang: 'no'
+  }
 })
 
 helpers.mapStopToSchema = stop =>  ({
@@ -18,7 +26,8 @@ helpers.mapStopToSchema = stop =>  ({
   description: stop.description || null,
   latitude: stop.location[0],
   longitude: stop.location[1],
-  stopPlaceType: stop.stopPlaceType
+  stopPlaceType: stop.stopPlaceType,
+  quays: stop.quays.map( quay => helpers.mapQuayToSchema(quay))
 })
 
 

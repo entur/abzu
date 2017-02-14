@@ -12,6 +12,12 @@ Fragments.quay = {
           }
           allAreasWheelchairAccessible
           compassBearing
+          name {
+              value 
+          }
+          description {
+              value
+          }
       }
   `
 }
