@@ -34,7 +34,6 @@ const Header = ({handleNavigateToMain, text, setLanguage}) =>{
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           >
-            <MenuItem primaryText={help} />
             <MenuItem
               primaryText={language}
               rightIcon={<ArrowDropRight />}
@@ -43,7 +42,6 @@ const Header = ({handleNavigateToMain, text, setLanguage}) =>{
                 <MenuItem onClick={() => setLanguage('en')} primaryText={english} />,
               ]}
              />
-            <MenuItem primaryText={signOut} />
           </IconMenu>
         }
       />
