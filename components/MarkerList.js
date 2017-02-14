@@ -87,7 +87,7 @@ class MarkerList extends React.Component {
       terminatePathLinkHere: formatMessage({id: 'terminate_path_link_here'}),
       cancelPathLink: formatMessage({id: 'cancel_path_link'}),
       showQuays: formatMessage({id: 'show_quays'}),
-      hideQuays: formatMessage({id: 'hide_quays'})
+      hideQuays: formatMessage({id: 'hide_quays'}),
     }
 
     const newStopMarkerText = {
@@ -151,7 +151,7 @@ class MarkerList extends React.Component {
                   index={index}
                   parentId={stopIndex}
                   position={quay.location}
-                  key={"quay" + quay.id || index}
+                  key={"quay" + (quay.id || index) }
                   handleQuayDragEnd={this.handleElementDragEnd.bind(this)}
                   translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}

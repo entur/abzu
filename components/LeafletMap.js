@@ -85,7 +85,7 @@ export default class LeafLetMap extends React.PureComponent {
           />
         { enablePolylines
             ?
-            <MultiPolylineList map={this.refs.map}/>
+            <MultiPolylineList/>
             : null
         }
       </Lmap>)

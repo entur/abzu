@@ -1,4 +1,3 @@
-import { setDecimalPrecision } from '../utils/'
 
 const helpers = {}
 
@@ -27,7 +26,7 @@ helpers.mapStopToSchema = stop =>  ({
   latitude: stop.location[0],
   longitude: stop.location[1],
   stopPlaceType: stop.stopPlaceType,
-  quays: stop.quays.map( quay => helpers.mapQuayToSchema(quay))
+  quays: stop.quays.map(quay => helpers.mapQuayToSchema(quay))
 })
 
 

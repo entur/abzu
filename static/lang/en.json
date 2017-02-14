@@ -22,6 +22,11 @@
   "change_compass_bearing_cancel": "Cancel",
   "change_compass_bearing_invalid": "Invalid format",
   "change_compass_bearing_confirm": "Change compass bearing",
+  "change_walking_distance_estimate": "Change estimated walking distance",
+  "change_walking_distance_help_text": "Set the estimate walking distance in minutes",
+  "change_walking_distance_cancel": "Cancel",
+  "change_walking_distance_confirm": "Change estimate",
+  "change_walking_distance_invalid": "Invalid format. Must be a number",
   "county" : "County",
   "coordinates": "Coordinates",
   "compass_bearing": "Compass bearing",
@@ -38,6 +43,8 @@
   "english": "English",
   "entrance": "entrance",
   "entrances": "entrances",
+  "estimated_path_length": "How many minutes is your estimate of this path link by walking?",
+  "estimated_time": "{estimate} {minuteCount, plural, one {minute} other {minutes}}",
   "favorites": "Favorites",
   "favorites_title": "Your saved searches",
   "field_is_required": "Field is required",
@@ -51,6 +58,8 @@
   "is_missing_coordinates": "Missing coordinates",
   "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",
   "language": "Language",
+  "minute": "minute",
+  "minutes": "minutes",
   "making_stop_place_hint": "Double click anywhere on the map to set desired location. Click the marker for more options",
   "making_stop_place_title": "You are now making a new stop place",
   "name": "Name",
@@ -87,5 +96,6 @@
   "undo_changes": "Discard",
   "unsaved": "Unsaved",
   "untitled": "Untitled",
-  "use": "Use"
+  "use": "Use",
+  "walking_estimate": "Walking distance"
 }

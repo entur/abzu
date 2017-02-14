@@ -61,7 +61,7 @@ class QuayMarker extends React.PureComponent {
                <span className="quay-marker-title">
                  { parentStopPlaceName }
                 </span>
-                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || 'N/A')}</span>
+                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
                 <div
                   className='change-path-link'
                   onClick={() => { handleUpdatePathLink(position, index, 'quay') }}
@@ -81,7 +81,7 @@ class QuayMarker extends React.PureComponent {
                 </div>
               { belongsToNeighbourStop
                 ? null
-                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }}>
+                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }} style={{textAlign: 'center', marginTop: 10}}>
                     <img style={{width: 20, height: 22}} src={compassIcon}/>
                   </div>
               }
@@ -152,7 +152,6 @@ const getShortQuayName = (quayName) => {
 }
 
 const mapStateToProps = state => {
-
   return {
     polylineStartPoint: state.editingStop.polylineStartPoint,
     isCreatingPolylines: state.editingStop.isCreatingPolylines,

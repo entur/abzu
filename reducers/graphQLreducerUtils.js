@@ -21,8 +21,6 @@ export const getStateByOperation = (state, action) => {
 
       const mutatedStopPlace = action.result.data.mutateStopPlace[0]
 
-      console.log("mutatedStoPlace", mutatedStopPlace)
-
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
         zoom: mutatedStopPlace.location ? 14 : 5,

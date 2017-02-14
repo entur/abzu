@@ -22,6 +22,11 @@
   "change_compass_bearing_invalid": "Ugyldig format",
   "change_compass_bearing_confirm": "Endre kompassretning",
   "change_compass_bearing" : "Kompassretning",
+  "change_walking_distance_estimate": "Oppgi gangavstand",
+  "change_walking_distance_help_text": "Oppgi estimert tid denne ganglenken tar i minutter",
+  "change_walking_distance_cancel": "Avbryt",
+  "change_walking_distance_confirm": "Endre estimat",
+  "change_walking_distance_invalid": "Ugyldig format. Må være et tall",
   "county": "Fylke",
   "coordinates" : "Koordinater",
   "compass_bearing": "Kompassretning",
@@ -34,6 +39,8 @@
   "discard_changes_cancel" : "Avbryt",
   "edit": "Rediger",
   "editing": "Redigerer",
+  "estimated_path_length": "How many minutes is your estimate of this path link by walking?",
+  "estimated_time": "{estimate} {minuteCount, plural, one {minute} other {minutes}}",
   "empty_description": "Dette stoppestedet mangler en beskrivelse ...",
   "english" : "Engelsk",
   "entrance" : "inngang",
@@ -53,6 +60,8 @@
   "language" : "Språk",
   "making_stop_place_hint": "Dobbelklikk på kartet for å sette lokasjon. Klikk deretter på markøren for flere valg.",
   "making_stop_place_title": "Du lager nå et nytt stoppested",
+  "minute": "minutt",
+  "minutes": "minutter",
   "name" : "Navn",
   "new_elements" : "Nye elementer",
   "new_quay" : "Ny quay",
@@ -87,5 +96,6 @@
   "undo_changes" : "Forkast",
   "unsaved" : "Ikke lagret",
   "untitled" : "Uten navn",
-  "use" : "Bruk"
+  "use" : "Bruk",
+  "walking_estimate": "Gangavstand"
 }
