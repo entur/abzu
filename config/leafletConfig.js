@@ -2,7 +2,7 @@ const leafletConfig = {
   layers : {
     "local_map": {
       "name": "Rutebankens kart",
-      "url": "https://test.rutebanken.org/apiman-gateway/rutebanken/map/1.0/{z}/{x}/{y}.png",
+      "url": "https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png",
       "type": "xyz"
     },
     "google_hybrid": {
