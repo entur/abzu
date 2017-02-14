@@ -15,6 +15,18 @@ export const getStateByOperation = (state, action) => {
         centerPosition: formatHelpers.mapLocationToPosition(stopPlace.location)
       })
 
+    case 'mutateStopPlace':
+
+      if (!action.result.data.mutateStopPlace) return state
+
+      const mutatedStopPlace = action.result.data.mutateStopPlace[0]
+
+      return Object.assign({}, state, {
+        current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
+        zoom: mutatedStopPlace.location ? 14 : 5,
+        centerPosition: formatHelpers.mapLocationToPosition(mutatedStopPlace.location)
+      })
+
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(action.result.data.stopPlaceBBox)
