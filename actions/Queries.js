@@ -1,43 +1,13 @@
 import gql from 'graphql-tag'
+import Fragments from './Fragments'
 
 export const stopQuery = gql`
     query stopPlace($id: String!) {
         stopPlace(id: $id) {
-            id
-            name {
-                value
-            }
-            description {
-                value
-            }
-            location {
-                latitude
-                longitude
-            }
-            allAreasWheelchairAccessible
-            stopPlaceType
-            topographicPlace {
-                name {
-                    value
-                }
-                parentTopographicPlace {
-                    name {
-                        value
-                    }
-                }
-                topographicPlaceType
-            }
-            quays {
-                id
-                location {
-                    latitude
-                    longitude
-                }
-                allAreasWheelchairAccessible
-                compassBearing
-            }
+            ...VerboseStopPlace
         }
     },
+    ${Fragments.stopPlace.verbose}
 `
 
 export const stopPlaceBBQuery = gql`
@@ -101,10 +71,12 @@ export const mutateStopPlace = gql`
         latitude: $latitude
         longitude:$longitude
         }
-        stopPlaceType: $stopPlaceType
-        }) {
-            id 
+        stopPlaceType: $stopPlaceType}) {
+           ...VerboseStopPlace
         }
     }
+
+    ${Fragments.stopPlace.verbose}
+
 `
 
