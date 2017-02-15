@@ -157,10 +157,7 @@ class NewElementsBox extends React.Component {
 
           const { lat,lng } = activeMap.containerPointToLatLng(absolutePosition)
 
-          const latlng = {
-            lat: setDecimalPrecision(lat,6),
-            lng: setDecimalPrecision(lng,6)
-          }
+          const latlng = [setDecimalPrecision(lat,6), setDecimalPrecision(lng,6)]
 
           this.setState({
             confirmDialogOpen: true,

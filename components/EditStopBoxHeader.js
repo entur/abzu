@@ -15,8 +15,8 @@ class EditstopBoxHeader extends React.Component {
     super(props)
     this.state = {
       stopTypeOpen: false,
-      name: props.stopPlace.name,
-      description: props.stopPlace.description,
+      name: props.stopPlace.name || '',
+      description: props.stopPlace.description || '',
     }
 
     this.updateStopName = debounce( value => {

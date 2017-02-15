@@ -9,14 +9,9 @@ import {
 } from './editStopReducerUtils'
 
 export const initialState = {
-  centerPosition: [
-    67.928595,
-    13.083002,
-  ],
   neighbouringMarkers: [],
   neighbouringMarkersQuaysMap: Immutable.Map({}),
   zoom: 17,
-  activeStopIsLoading: false,
   editedStopChanged: false,
   nearbyStopsCancelToken: null,
   activeStopPlaceOriginal: [],

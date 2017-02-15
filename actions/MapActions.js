@@ -137,12 +137,21 @@ MapActions.setActiveMap = (map) => {
   }
 }
 
-MapActions.addElementToStop = (type, latlng) => {
+MapActions.addElementToStop = (type, position) => {
   return function(dispatch) {
-    dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
-      type: type,
-      position: [latlng.lat, latlng.lng]
-    }))
+
+    if (type === 'stop_place') {
+
+      dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
+        location: position
+      }))
+
+    } else {
+      dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
+        type: type,
+        position: position
+      }))
+    }
   }
 }
 

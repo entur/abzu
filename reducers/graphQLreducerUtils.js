@@ -24,7 +24,6 @@ export const getStateByOperation = (state, action) => {
 
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
-        zoom: getProperZoomLevel(mutatedStopPlace.location),
         minZoom: mutatedStopPlace.location ? 15 : 5,
         centerPosition: formatHelpers.mapLocationToPosition(mutatedStopPlace.location) || state.centerPosition
       })

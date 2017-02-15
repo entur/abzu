@@ -131,6 +131,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.entrances = copy.entrances.concat(newElement); break;
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
+
     default: throw new Error('element not supported', type)
   }
   return copy

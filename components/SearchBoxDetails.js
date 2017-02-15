@@ -31,6 +31,23 @@ const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, us
               </div>
         </div>
         : null}
+
+      {
+        userSuppliedCoordinates && result.isMissingLocation
+          ? <div className="warning_message">
+            <FormattedMessage className='message_warning' id="you_are_using_temporary_coordinates"/>
+            <div style={{marginTop: 5, marginBottom: 10}}>
+                <span
+                  style={{borderBottom: '1px dotted', color: 'rgb(0, 188, 212)', fontWeight: 600, marginBottom: 10, fontSize: '0.8em', cursor: 'pointer'}}
+                  onClick={() => handleChangeCoordinates()}
+                >
+                  <FormattedMessage className='message_warning_helper_text' id="change_coordinates"/>
+                </span>
+            </div>
+          </div>
+          : null
+      }
+
       <ModalityIcon
         iconStyle={{float: 'right', transform: 'translateY(-55px)'}}
         type={result.stopPlaceType}

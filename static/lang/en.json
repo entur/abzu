@@ -97,5 +97,6 @@
   "unsaved": "Unsaved",
   "untitled": "Untitled",
   "use": "Use",
+  "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted.",
   "walking_estimate": "Walking distance"
 }
