@@ -12,7 +12,7 @@ const loggerMiddleware = createLogger()
 var enchancer = {}
 
 const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql' })
+  networkInterface: createNetworkInterface({ uri: window.config.tiamatBaseUrl })
 })
 
 if (process.env.NODE_ENV === 'development') {

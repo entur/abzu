@@ -17,9 +17,9 @@ module.exports = new Promise(function(resolve, reject){
       env: "CONFIG_URL"
     },
     tiamatBaseUrl: {
-      doc: "Base URL for for timat including slash",
+      doc: "Base URL for for tiamat graphql endpoint",
       format: "url",
-      default: "http://localhost:1888/jersey/",
+      default: "https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql",
       env: "TIAMAT_BASE_URL"
     },
     endpointBase: {
@@ -27,6 +27,12 @@ module.exports = new Promise(function(resolve, reject){
       format: String,
       default: "/",
       env: "ENDPOINTBASE"
+    },
+    OSMUrl: {
+      doc: "URL for OSM map",
+      format: String,
+      default: "https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png",
+      env: "OSM_URL"
     }
 
   });

@@ -75,7 +75,7 @@ export default class LeafLetMap extends React.PureComponent {
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Rutebankens kart')} name='Rutebankens kart'>
             <TileLayer
               attribution='&copy; <a href="http://test.rutebanken.org">Rutebankens kart'
-              url='https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png'
+              url={window.config.OSMUrl}
             />
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('OpenStreetMap')} name='OpenStreetMap'>

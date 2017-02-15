@@ -1,5 +1,5 @@
 var webpack = require('webpack')
-var convictPromise = require('./config/convict-promise.js')
+var convictPromise = require('./config/convict.js')
 var express = require('express')
 var app = new express()
 var port = process.env.port || 8988
@@ -7,11 +7,6 @@ var globSync = require('glob').sync
 var path = require('path')
 var fs = require('fs').readFileSync
 var axios = require('axios')
-
-process.on('uncaughtException', err => {
-  console.error("uncaught error: " + err);
-})
-
 
 convictPromise.then( (convict) => {
 
@@ -62,7 +57,8 @@ convictPromise.then( (convict) => {
   app.get([ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'], function(req, res) {
     var cfg = {
       tiamatBaseUrl: convict.get('tiamatBaseUrl'),
-      endpointBase: convict.get('endpointBase')
+      endpointBase: convict.get('endpointBase'),
+      OSMUrl: convict.get('OSMUrl')
     }
     res.send(cfg)
   })

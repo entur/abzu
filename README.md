@@ -12,7 +12,7 @@ npm run build && npm run prod
 
 ### Configuration
 
-We use node-convict for config: `config/convict-promise.js`
+We use node-convict for config: `config/convict.js`
 
 * `TIAMAT_BASE_URL` : Where to find tiamat
 * `ENDPOINTBASE` : Where th application resides, in development defaulting
@@ -34,15 +34,22 @@ Note: This will launch the application with hot reload enabled.
 Default port is _8988_. This can be overrided by setting the environment
 variable `port` (notice lower case).
 
-To override timatBaseURL, set `TIAMAT_BASE_URL` as environment variables, e.g.
+To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
 
 ```
-TIAMAT_BASE_URL=http://localhost:9011/ port=9000 npm run dev
+TIAMAT_BASE_URL=https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql port=9000 npm run dev
 ```
+
+To override OpenStreetMap URL, set `OSM_URL` as environment variables, e.g.
+
+```
+OSM_URL=https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png port=9000 npm run dev
+```
+
 
 ### Testing
 
-Uses Mocha together with Nock to test reducers and actions, e.g.
+Uses Mocha to test unit testing and reducers
 
 ```
 npm run test

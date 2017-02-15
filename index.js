@@ -3,7 +3,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import Keycloak from 'keycloak-js'
 import Root from './containers/Root'
-import configureStore from './store/store'
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import cfgreader from './config/readConfig'
@@ -48,6 +47,7 @@ cfgreader.readConfig( (function(config) {
 
 function renderIndex(path) {
 
+  const configureStore  = require('./store/store').default
   const store = configureStore()
   const history = syncHistoryWithStore(browserHistory, store.self)
 

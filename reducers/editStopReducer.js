@@ -35,6 +35,20 @@ const editStopReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
+    case types.NAVIGATE_TO:
+      return Object.assign({}, state, {
+        multiPolylineDataSource: [],
+        polylineStartPoint: {
+          coordinates: [],
+          index: -1,
+          type: null
+        },
+        focusedElement: {
+          type: 'quay',
+          index: -1
+        }
+      })
+
     case types.RECEIVED_QUAYS_FOR_NEIGHBOURING_STOP:
 
       let newNeighbourQuaysMap = state.neighbouringMarkersQuaysMap
