@@ -22,7 +22,7 @@ class QuayItem extends React.Component {
 
 
   handleDescriptionChange = (event) => {
-    const {dispatch, index} = this.props
+    const { dispatch, index } = this.props
     dispatch(MapActions.changeElementDescription(index, event.target.value, 'quay'))
   }
 
@@ -60,7 +60,7 @@ class QuayItem extends React.Component {
       <div>
         <div className="tabItem">
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.centroid)}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'quay')}>
               {quayTitlePrefix + quayTitleSuffix}
             </div>

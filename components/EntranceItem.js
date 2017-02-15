@@ -51,7 +51,7 @@ class EntranceItem extends React.Component {
       <div>
         <div className='tabItem'>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(entrance.centroid)}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(entrance.location)}/>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'entrance')}>
               {entrance.name.length ? entrance.name : 'N/A'}
             </div>
