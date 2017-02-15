@@ -17,11 +17,7 @@ class EditStopBoxTabs extends React.Component {
     }
   }
 
-  handleLocateOnMap(centroid) {
-    const position = {
-      lat: centroid.location.latitude,
-      lng: centroid.location.longitude
-    }
+  handleLocateOnMap(position) {
     this.props.dispatch(MapActions.changeMapCenter(position, 17))
   }
 

@@ -38,9 +38,9 @@ class StopPlaceMarker extends React.PureComponent {
     const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
           handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
 
-    const correctLocation = position || missingCoordinatesMap[id]
+    const markerLocation = position || missingCoordinatesMap[id]
 
-    if (!correctLocation) return null
+    if (!markerLocation) return null
 
     const name = this.props.name ? this.props.name : translations.untitled
 
@@ -63,7 +63,7 @@ class StopPlaceMarker extends React.PureComponent {
       <Marker
         key={"stop-place" + id}
         icon={icon}
-        position={correctLocation}
+        position={markerLocation}
         onDragend={(event) => { handleDragEnd(false, index, event) }}
         draggable={draggable && active}
         >
@@ -78,13 +78,13 @@ class StopPlaceMarker extends React.PureComponent {
             </span>
             <div
               style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
-              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, correctLocation)}
+              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, markerLocation)}
               >
               <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
-                {correctLocation[0]}
+                {markerLocation[0]}
               </span>
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
-                {correctLocation[1]}
+                {markerLocation[1]}
               </span>
             </div>
             <div style={{display: 'block', width: '100%'}}>

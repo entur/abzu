@@ -128,10 +128,8 @@ class EditStopMap extends React.Component {
 
   render() {
 
-    const { position, markers, zoom, missingCoordsMap } = this.props
+    const { position, markers, zoom, minZoom, missingCoordsMap } = this.props
     const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
-
-    let minZoom = 5
 
     // Restricts zoom level if coordinates are provided either by the user or from backend
     /*if (stopPlace && stopPlace.markerProps && !stopPlace.markerProps.position) {
@@ -207,7 +205,8 @@ const mapStateToProps = state => {
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,
     markers: markers,
-    ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1
+    ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,
+    minZoom: state.stopPlace.minZoom
   }
 }
 

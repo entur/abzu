@@ -56,8 +56,14 @@ const graphQLreducer = (state = {}, action) => {
       case types.SET_ACTIVE_MARKER:
         return Object.assign({}, state, {
           activeSearchResult: action.payLoad,
-          centerPosition: action.payLoad.location,
-          zoom: 14,
+          centerPosition: getProperCenterLocation(action.payLoad.location),
+          zoom: getProperZoomLevel(action.payLoad.location),
+        })
+
+      case types.SET_MISSING_COORDINATES:
+        return Object.assign({}, state, {
+          centerPosition: getProperCenterLocation(action.payLoad.location),
+          zoom: getProperZoomLevel(action.payLoad.location)
         })
 
       case types.ADDED_JUNCTION_ELEMENT:
@@ -85,8 +91,21 @@ const graphQLreducer = (state = {}, action) => {
           current: formatHelpers.updateCurrentWithoutElement(state.current, action.payLoad)
         })
 
+      case types.CHANGED_MAP_CENTER:
+        return Object.assign({}, state, {
+          centerPosition: action.payLoad
+        })
+
       default: return state
     }
+}
+
+const getProperCenterLocation = location => {
+  return location || [62.928595, 12.083002]
+}
+
+const getProperZoomLevel = location => {
+  return location ? 15 : 5
 }
 
 export default graphQLreducer

@@ -98,7 +98,6 @@ class MarkerList extends React.Component {
 
     stops.forEach( (stop, stopIndex) => {
 
-
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, this.props.intl)
 
       if (stop.isNewStop && !this.props.isEditingStop) {

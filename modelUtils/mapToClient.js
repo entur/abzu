@@ -6,12 +6,10 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {
 
-    const { latitude, longitude } = stop.location
-
     let formattedStop = {
       id: stop.id,
       name: stop.name.value,
-      location: stop.location ? [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ] : null,
+      location: stop.location ? [ setDecimalPrecision(stop.location.latitude, 6), setDecimalPrecision(stop.location.longitude, 6) ] : null,
       stopPlaceType: stop.stopPlaceType,
       allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
       isActive: isActive
@@ -98,7 +96,7 @@ helpers.createNewStopFromLocation = location => {
 }
 
 helpers.mapLocationToPosition = location => {
-  if (!location && !location.length) return [67.928595, 13.083002]
+  if (!location) return null
   return [ setDecimalPrecision(location.latitude, 6), setDecimalPrecision(location.longitude, 6) ]
 }
 

@@ -11,8 +11,9 @@ export const getStateByOperation = (state, action) => {
 
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(stopPlace, true),
-        zoom: stopPlace.location ? 14 : 5,
-        centerPosition: formatHelpers.mapLocationToPosition(stopPlace.location)
+        zoom: getProperZoomLevel(stopPlace.location),
+        minZoom: stopPlace.location ? 15 : 5,
+        centerPosition: formatHelpers.mapLocationToPosition(stopPlace.location) || state.centerPosition
       })
 
     case 'mutateStopPlace':
@@ -23,8 +24,9 @@ export const getStateByOperation = (state, action) => {
 
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
-        zoom: mutatedStopPlace.location ? 14 : 5,
-        centerPosition: formatHelpers.mapLocationToPosition(mutatedStopPlace.location)
+        zoom: getProperZoomLevel(mutatedStopPlace.location),
+        minZoom: mutatedStopPlace.location ? 15 : 5,
+        centerPosition: formatHelpers.mapLocationToPosition(mutatedStopPlace.location) || state.centerPosition
       })
 
     case 'stopPlaceBBox':
@@ -33,11 +35,16 @@ export const getStateByOperation = (state, action) => {
       })
 
     case 'findStop':
+      const foundStop = action.result.data.stopPlace
       return Object.assign({}, state, {
-        searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace)
+        searchResults: formatHelpers.mapSearchResultatToClientStops(foundStop),
       })
 
     default: return state
   }
 
+}
+
+const getProperZoomLevel = location => {
+  return location ? 15 : 8
 }

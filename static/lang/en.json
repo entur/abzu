@@ -13,7 +13,7 @@
   "cancel": "Cancel",
   "cancel_path_link": "Cancel path link",
   "change_coordinates": "Change coordinates",
-  "change_coordinates_help_text": "You can manually set the coordinates of the marker here. In the format: lat, lng. E.g.: 51.0000, 12.0000",
+  "change_coordinates_help_text": "You can manually set the coordinates of the marker here. In the format: lat, lng. E.g.: 59.9, 10.7",
   "change_coordinates_cancel": "Cancel",
   "change_coordinates_confirm": "Change coordinates",
   "change_coordinates_invalid": "Invalid format",
