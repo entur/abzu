@@ -33,7 +33,7 @@ const initialState = {
   stopPlace: {
     centerPosition: [ 61.670029, 6.442342 ],
     zoom: 6,
-    minZoom: 15
+    minZoom: 14
   }
 }
 

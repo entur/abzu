@@ -20,15 +20,18 @@ class MarkerList extends React.Component {
   }
 
   handleStopOnClick(id) {
-    const { path, dispatch, client } = this.props
-    const isAlreadyActive = path === id
-    if (id && !isAlreadyActive) {
-      dispatch(UserActions.navigateTo('/edit/', id))
+    const { dispatch, client, path } = this.props
+
+    const isAlreadyActive = id == path
+
+    if (!isAlreadyActive) {
       client.query({
         query: stopQuery,
         variables: {
           id: id,
         }
+      }).then( result => {
+        dispatch(UserActions.navigateTo('/edit/', id))
       })
     }
   }

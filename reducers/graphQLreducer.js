@@ -1,4 +1,4 @@
-import { getStateByOperation } from './graphQLreducerUtils'
+import { getStateByOperation, getObjectFromCache } from './graphQLreducerUtils'
 import * as types from '../actions/actionTypes'
 import formatHelpers from '../modelUtils/mapToClient'
 
@@ -10,6 +10,9 @@ const graphQLreducer = (state = {}, action) => {
 
       case "APOLLO_MUTATION_RESULT":
         return getStateByOperation(state, action)
+
+      case "APOLLO_QUERY_RESULT_CLIENT":
+        return getObjectFromCache(state, action)
 
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {

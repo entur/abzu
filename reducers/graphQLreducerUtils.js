@@ -12,7 +12,7 @@ export const getStateByOperation = (state, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(stopPlace, true),
         zoom: getProperZoomLevel(stopPlace.location),
-        minZoom: stopPlace.location ? 15 : 5,
+        minZoom: stopPlace.location ? 14 : 7,
         centerPosition: formatHelpers.mapLocationToPosition(stopPlace.location) || state.centerPosition
       })
 
@@ -24,7 +24,7 @@ export const getStateByOperation = (state, action) => {
 
       return Object.assign({}, state, {
         current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
-        minZoom: mutatedStopPlace.location ? 15 : 5,
+        minZoom: mutatedStopPlace.location ? 14 : 5,
         centerPosition: formatHelpers.mapLocationToPosition(mutatedStopPlace.location) || state.centerPosition
       })
 
@@ -45,5 +45,20 @@ export const getStateByOperation = (state, action) => {
 }
 
 const getProperZoomLevel = location => {
-  return location ? 15 : 8
+  return location ? 15 : 5
+}
+
+export const getObjectFromCache = (state, action) => {
+
+  if (!action.result.data.stopPlace) return state
+
+  const stopPlace = action.result.data.stopPlace[0]
+
+  return Object.assign({}, state, {
+    current: formatHelpers.mapStopToClientStop(stopPlace, true),
+    zoom: getProperZoomLevel(stopPlace.location),
+    minZoom: stopPlace.location ? 14 : 7,
+    centerPosition: formatHelpers.mapLocationToPosition(stopPlace.location) || state.centerPosition
+  })
+
 }
