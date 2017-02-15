@@ -3,7 +3,7 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
 
-class CompassBearingDialog extends React.Component {
+class WalkingDistanceDialog extends React.Component {
 
   constructor(props) {
     super(props)
@@ -15,19 +15,20 @@ class CompassBearingDialog extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired,
-    compassBearing: PropTypes.number,
-    handleConfirm: PropTypes.func.isRequired
+    estimate: PropTypes.number,
+    handleConfirm: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired
   }
 
   handleInputChange(event, newValue) {
     this.setState({
-      compassBearing: newValue
+      estimate: newValue
     })
   }
 
   handleClose() {
     this.setState({
-      compassBearing: null,
+      estimate: null,
       errorText: ''
     })
     this.props.handleClose()
@@ -35,17 +36,17 @@ class CompassBearingDialog extends React.Component {
 
   handleConfirm() {
 
-    const compassBearing = this.state ? this.state.compassBearing : this.props.compassBearing
+    const { estimate } = this.state
+    const { index } = this.props
 
-    if (typeof compassBearing === 'undefined') return
+    if (typeof estimate === 'undefined') return
 
+    if (!isNaN(estimate)) {
 
-    if (!isNaN(compassBearing)) {
-
-      this.props.handleConfirm(Number(compassBearing))
+      this.props.handleConfirm(index, Number(estimate))
 
       this.setState({
-        compassBearing: null,
+        estimate: 0,
         errorText: ''
       })
 
@@ -56,18 +57,25 @@ class CompassBearingDialog extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      estimate: nextProps.estimate,
+      errorText: ''
+    })
+  }
+
 
   render() {
 
     const { open, intl } = this.props
     const { formatMessage } = intl
-    const compassBearing = this.state.compassBearing || this.props.compassBearing
+    const { estimate } = this.state
 
-    const compassBearingTranslation = {
-      title: formatMessage({id: 'change_compass_bearing'}),
-      body: formatMessage({id: 'change_compass_bearing_help_text'}),
-      confirm: formatMessage({id: 'change_compass_bearing_confirm'}),
-      cancel: formatMessage({id: 'change_compass_bearing_cancel'})
+    const translation = {
+      title: formatMessage({id: 'change_walking_distance_estimate'}),
+      body: formatMessage({id: 'change_walking_distance_help_text'}),
+      confirm: formatMessage({id: 'change_walking_distance_confirm'}),
+      cancel: formatMessage({id: 'change_walking_distance_cancel'})
     }
 
     const buttonWrapperStyle = {
@@ -79,23 +87,23 @@ class CompassBearingDialog extends React.Component {
 
     const actions = [
       <TextField
-        hintText="lat,lng"
-        floatingLabelText={formatMessage({id: 'compass_bearing'})}
+        hintText={formatMessage({id: 'minutes'})}
+        floatingLabelText={formatMessage({id: 'walking_estimate'})}
         style={{display: 'block', margin: 'auto', width: '90%'}}
-        value={compassBearing}
+        value={estimate}
         onChange={this.handleInputChange.bind(this)}
         errorText={this.state.errorText}
       />,
       <div style={buttonWrapperStyle}>
         <FlatButton
-          label={compassBearingTranslation.cancel}
+          label={translation.cancel}
           primary={false}
           keyboardFocused={true}
           onTouchTap={() => this.handleClose()}
           style={{marginRight: 5}}
         />
         <FlatButton
-          label={compassBearingTranslation.confirm}
+          label={translation.confirm}
           primary={true}
           keyboardFocused={true}
           onTouchTap={() => this.handleConfirm()}
@@ -106,17 +114,17 @@ class CompassBearingDialog extends React.Component {
     return (
       <div>
         <Dialog
-          title={compassBearingTranslation.title}
+          title={translation.title}
           actions={actions}
           modal={false}
           open={open}
           contentStyle={{width: '45vw'}}
         >
-          { compassBearingTranslation.body }
+          { translation.body }
         </Dialog>
       </div>
     )
   }
 }
 
-export default CompassBearingDialog
+export default WalkingDistanceDialog

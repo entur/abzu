@@ -1,5 +1,4 @@
 import * as types from './actionTypes'
-import { formatMarkers } from './AjaxActions'
 
 var MapActions = {}
 
@@ -7,6 +6,18 @@ const sendData = (type, payLoad) => {
   return {
     type: type,
     payLoad: payLoad
+  }
+}
+
+MapActions.changeLocationNewStop = location => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]) )
+  }
+}
+
+MapActions.useNewStopAsCurrent = () => {
+  return function (dispatch) {
+    dispatch( sendData(types.USE_NEW_STOP_AS_CURENT, null) )
   }
 }
 
@@ -28,16 +39,11 @@ MapActions.changeStopType = (type) => {
   }
 }
 
-MapActions.setActiveMarkers = (activeMarker) => {
+MapActions.setMarkerOnMap = marker => {
   return function(dispatch) {
-    activeMarker.active = true
+    let activeMarker = JSON.parse(JSON.stringify(marker))
+    activeMarker.isActive = true
     dispatch( sendData(types.SET_ACTIVE_MARKER, activeMarker) )
-
-    if (activeMarker.markerProps.position) {
-      dispatch( MapActions.changeMapCenter(activeMarker.markerProps.position, 15))
-    } else {
-      dispatch( MapActions.changeMapCenter([67.928595, 13.083002], 10))
-    }
   }
 }
 
@@ -57,73 +63,31 @@ MapActions.removeElementByType = (index, type) => {
   }
 }
 
-MapActions.changeQuayName = (index, name) => {
+MapActions.changeElementName = (index, name, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_NAME, {
+    dispatch( sendData(types.CHANGE_ELEMENT_NAME, {
       name: name,
-      index: index
+      index: index,
+      type: type
     }))
   }
 }
 
-MapActions.changeEntranceName = (index, name) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_ENTRANCE_NAME, {
-      name: name,
-      index: index
-    }))
-  }
-}
-
-MapActions.changePathJuctionName = (index, name) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_PATH_JUNCTION_NAME, {
-      name: name,
-      index: index
-    }))
-  }
-}
-
-MapActions.changeQuayPosition = (index, position) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_POSITION, {
-      quayIndex: index,
-      position: position
-    }))
-  }
-}
-
-MapActions.changeActiveStopPosition = (position) => {
+MapActions.changeCurrentStopPosition = position => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
-      position: position
+      location: [ position.lat, position.lng ]
     }))
   }
 }
 
-MapActions.changeQuayDescription = (index, description) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_QUAY_DESCRIPTION, {
-      index: index,
-      description: description
-    }))
-  }
-}
 
-MapActions.changeEntranceDescription = (index, description) => {
+MapActions.changeElementDescription = (index, description, type) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_ENTRANCE_DESCRIPTION, {
+    dispatch( sendData(types.CHANGED_ELEMENT_DESCRIPTION, {
       index: index,
-      description: description
-    }))
-  }
-}
-
-MapActions.changePathJunctionDescription = (index, description) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_PATH_JUNCTION_DESCRIPTION, {
-      index: index,
-      description: description
+      description: description,
+      type: type
     }))
   }
 }
@@ -155,10 +119,9 @@ MapActions.setElementFocus = (index, type) => {
   }
 }
 
-MapActions.createNewStop = (coordinates) => {
+MapActions.createNewStop = (location) => {
   return function(dispatch) {
-    let stop = createNewStopTemplate(coordinates)
-    dispatch( sendData(types.CREATED_NEW_STOP, stop) )
+    dispatch( sendData(types.CREATED_NEW_STOP, [ Number(location.lat), Number(location.lng) ]) )
   }
 }
 
@@ -174,49 +137,32 @@ MapActions.setActiveMap = (map) => {
   }
 }
 
-MapActions.addJunctionElement = (type, latlng) => {
+MapActions.addElementToStop = (type, position) => {
   return function(dispatch) {
-    dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
-      type: type,
-      position: [latlng.lat, latlng.lng]
-    }))
+
+    if (type === 'stop_place') {
+
+      dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
+        location: position
+      }))
+
+    } else {
+      dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
+        type: type,
+        position: position
+      }))
+    }
   }
 }
 
-MapActions.changeJunctionPosition = (index, type, position) => {
+MapActions.changElementPosition = (index, type, position) => {
   return function(dispatch) {
-    dispatch( sendData(types.CHANGED_JUNCTION_POSITION, {
+    dispatch( sendData(types.CHANGE_ELEMENT_POSITION, {
       index: index,
       position: position,
       type: type
     }))
   }
 }
-
-const createNewStopTemplate = (coordinates) => {
-
-  let newStopPlace = formatMarkers([{
-    name: "",
-    description: "",
-    municipality: "",
-    isNewStop: true,
-    county: "",
-    centroid: {
-      location: {
-        longitude: -1,
-        latitude: -1
-      }
-    },
-    allAreasWheelchairAccessible: false,
-    stopPlaceType: null,
-    quays: []
-  }])[0]
-
-  newStopPlace.markerProps.position = [coordinates.lat, coordinates.lng]
-  newStopPlace.isNewStop = true
-
-  return newStopPlace
-}
-
 
 export default MapActions

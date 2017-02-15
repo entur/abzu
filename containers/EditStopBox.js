@@ -1,32 +1,51 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import { MapActions,  AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
-
 import { Tabs, Tab } from 'material-ui/Tabs'
-
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
-
+import { withApollo } from 'react-apollo'
+import mapToSchema from '../modelUtils/mapToSchema'
+import { mutateStopPlace } from '../actions/Queries'
+import * as types from '../actions/actionTypes'
 
 class EditStopBox extends React.Component {
 
   constructor(props) {
     super(props)
+
+    const { formatMessage } = props.intl
+
     this.state = {
-      confirmDialogOpen: false
+      confirmDialogOpen: false,
+      itemTranslation:  {
+        name: formatMessage({id: 'name'}),
+        description: formatMessage({id: 'description'}),
+        allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
+        unsaved: formatMessage({id: 'unsaved'}),
+        undefined: formatMessage({id: 'undefined'}),
+        none: formatMessage({id: 'none_no'}),
+        quays: formatMessage({id: 'quays'}),
+        pathJunctions: formatMessage({id: 'pathJunctions'}),
+        entrances: formatMessage({id: 'entrances'})
+      }
+
     }
   }
 
   handleSave() {
-    if (window.location.pathname.indexOf('new_stop') > 0) {
-      this.props.dispatch(AjaxActions.saveNewStop())
-    } else {
-      this.props.dispatch(AjaxActions.saveEditingStop())
-    }
+    const mappedToSchema = mapToSchema.mapStopToSchema(this.props.stopPlace)
+    const { client, dispatch } = this.props
+    client.mutate({ variables: mappedToSchema, mutation: mutateStopPlace}).then( result => {
+      if (result.data.mutateStopPlace[0].id) {
+        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
+        dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
+      }
+    })
   }
 
   handleGoBack() {
@@ -37,6 +56,7 @@ class EditStopBox extends React.Component {
     this.setState({
       confirmDialogOpen: false
     })
+    // TODO : do we want this?
     this.props.dispatch(MapActions.discardChangesForEditingStop())
   }
 
@@ -52,46 +72,28 @@ class EditStopBox extends React.Component {
 
   render() {
 
-    const { activeStopPlace, hasContentChanged, activeElementTab, intl } = this.props
+    const { stopPlace, hasContentChanged, activeElementTab, intl } = this.props
+    const { itemTranslation } = this.state
     const { formatMessage, locale } = intl
 
-    if (!activeStopPlace) return (
-      <div>
-        <span style={{ margin: 20, color: "red"}}>
-          {formatMessage({id: 'something_went_wrong'})}
-        </span>
-      </div>
-    )
+    if (!stopPlace) return null
 
     let quayItemName = null
 
-    stopTypes[locale].forEach( (stopType) => {
-      if (stopType.value === activeStopPlace.markerProps.stopPlaceType) {
+    stopTypes[locale].forEach(  stopType => {
+      if (stopType.value === stopPlace.stopPlaceType) {
         quayItemName = stopType.quayItemName
       }
     })
 
-    let captionText = formatMessage({id: 'new_stop_title'})
-
-    if (activeStopPlace && activeStopPlace.markerProps.id) {
-      captionText = `${formatMessage({id: 'editing'})} ${activeStopPlace.markerProps.name} (${activeStopPlace.markerProps.id})`
-    }
-
-    let itemTranslation = {
-      name: formatMessage({id: 'name'}),
-      description: formatMessage({id: 'description'}),
-      allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
-      unsaved: formatMessage({id: 'unsaved'}),
-      undefined: formatMessage({id: 'undefined'}),
-      none: formatMessage({id: 'none_no'}),
-      quays: formatMessage({id: 'quays'}),
-      pathJunctions: formatMessage({id: 'pathJunctions'}),
-      entrances: formatMessage({id: 'entrances'})
-    }
-
-
     if (quayItemName !== null) {
       itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
+    }
+
+    let captionText = formatMessage({id: 'new_stop_title'})
+
+    if (stopPlace && stopPlace.id) {
+      captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
     }
 
     const SbStyle = {
@@ -140,7 +142,7 @@ class EditStopBox extends React.Component {
 
     return (
 
-      <div style={SbStyle} ref="c">
+      <div style={SbStyle}>
         <ConfirmDialog
           open={this.state.confirmDialogOpen}
           handleClose={ () => { this.handleDialogClose() }}
@@ -154,7 +156,7 @@ class EditStopBox extends React.Component {
           intl={intl}
         />
         <div style={stopBoxBar}>{captionText}</div>
-          <EditStopBoxHeader activeStopPlace={activeStopPlace} intl={intl}/>
+          <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5}}>
         </div>
         <Tabs
@@ -162,12 +164,12 @@ class EditStopBox extends React.Component {
           value={activeElementTab}
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
-          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${activeStopPlace.markerProps.quays.length})`} value={0} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${activeStopPlace.markerProps.pathJunctions.length})`} value={1} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${activeStopPlace.markerProps.entrances.length})`} value={2} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
+          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
         </Tabs>
         <div style={scrollable}>
-          <EditStopBoxTabs activeStopPlace={activeStopPlace} itemTranslation={itemTranslation}/>
+          <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
           { hasContentChanged
@@ -197,14 +199,11 @@ class EditStopBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    activeStopPlace: state.editStopReducer.activeStopPlace,
-    isLoading: state.editStopReducer.activeStopIsLoading,
-    hasContentChanged: state.editStopReducer.editedStopChanged,
-    isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
-    activeElementTab: state.userReducer.activeElementTab
-  }
-}
+const mapStateToProps = state => ({
+    stopPlace: state.stopPlace.current,
+    hasContentChanged: state.editingStop.editedStopChanged, // TODO: Should this functionality be kept?
+    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+    activeElementTab: state.user.activeElementTab
+})
 
-export default injectIntl(connect(mapStateToProps)(EditStopBox))
+export default withApollo(injectIntl(connect(mapStateToProps)(EditStopBox)))

@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { AjaxActions, MapActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 
 class StopPlacesMap extends React.Component {
 
   handleClick(e, map) {
+
     const { isCreatingNewStop } = this.props
 
     if (isCreatingNewStop) {
@@ -22,10 +23,14 @@ class StopPlacesMap extends React.Component {
   }
 
   handleDragEnd(marker, index) {
+
   }
 
   handleMapMoveEnd(event, map) {
-    let zoom = map.leafletElement._zoom
+
+    //TODO: Replace this with GraphQL fetch
+
+    /*let zoom = map.leafletElement._zoom
 
     if (zoom > 12) {
 
@@ -41,24 +46,17 @@ class StopPlacesMap extends React.Component {
       this.props.dispatch(AjaxActions.getStopsNearbyForOverview(boundingBox))
     } else {
       this.props.dispatch(UserActions.removeStopsNearbyForOverview())
-    }
+    }*/
   }
 
   render() {
 
-    const { position, activeMarker, neighbouringMarkers, zoom, newStopPlace } = this.props
-
-    let markers = activeMarker ? [activeMarker] : []
-
-    if (neighbouringMarkers && neighbouringMarkers.length) {
-      markers = markers.concat(neighbouringMarkers)
-    }
+    const { position, markers, zoom } = this.props
 
     return (
       <LeafletMap
         position={position}
         markers={markers}
-        newStopPlace={newStopPlace}
         zoom={zoom}
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={this.handleDragEnd}
@@ -72,17 +70,34 @@ class StopPlacesMap extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { centerPosition, activeMarker, zoom, newStopPlace, neighbouringMarkers } = state.stopPlacesReducer
-  const { isCreatingNewStop } = state.userReducer
+const mapStateToProps = state => {
+
+  const {
+    newStop,
+    centerPosition,
+    activeSearchResult,
+    zoom,
+    neighbouringMarkers
+  } = state.stopPlace
+
+  const { isCreatingNewStop } = state.user
+
+  let markers = activeSearchResult ? [ activeSearchResult ] : []
+
+  if (newStop && isCreatingNewStop) {
+    markers = markers.concat(newStop)
+  }
+
+  if (neighbouringMarkers && neighbouringMarkers.length) {
+    markers = markers.concat(neighbouringMarkers)
+  }
+
   return {
     position: centerPosition,
-    activeMarker: activeMarker,
+    markers: markers,
     zoom: zoom,
-    newStopPlace: newStopPlace,
-    isCreatingNewStop: isCreatingNewStop,
-    activeBaselayer: state.userReducer.activeBaselayer,
-    neighbouringMarkers: neighbouringMarkers
+    isCreatingNewStop: state.user.isCreatingNewStop,
+    activeBaselayer: state.user.activeBaselayer,
   }
 }
 

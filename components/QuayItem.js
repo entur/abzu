@@ -22,8 +22,8 @@ class QuayItem extends React.Component {
 
 
   handleDescriptionChange = (event) => {
-    const {dispatch, index} = this.props
-    dispatch(MapActions.changeQuayDescription(index, event.target.value))
+    const { dispatch, index } = this.props
+    dispatch(MapActions.changeElementDescription(index, event.target.value, 'quay'))
   }
 
   handleWHAChange = (event) => {
@@ -33,7 +33,7 @@ class QuayItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changeQuayName(index, event.target.value))
+    dispatch(MapActions.changeElementName(index, event.target.value, 'quay'))
   }
 
   render() {
@@ -60,7 +60,7 @@ class QuayItem extends React.Component {
       <div>
         <div className="tabItem">
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.centroid)}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'quay')}>
               {quayTitlePrefix + quayTitleSuffix}
             </div>
@@ -82,14 +82,14 @@ class QuayItem extends React.Component {
            <TextField
              hintText={translations.name}
              floatingLabelText={translations.name}
-             value={quay.name || ''}
+             value={quay.name}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
            />
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
-            value={quay.description || ''}
+            value={quay.description}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
@@ -97,7 +97,7 @@ class QuayItem extends React.Component {
             defaultChecked={quay.allAreasWheelchairAccessible}
             label={translations.allAreasWheelchairAccessible}
             onCheck={this.handleWHAChange}
-            style={{marginBottom: "10px", width: "95%", marginTop: "10px"}}
+            style={{marginBottom: 10, width: "95%", marginTop: 10}}
             />
           <IconButton
             iconClassName="material-icons"
@@ -112,7 +112,5 @@ class QuayItem extends React.Component {
     )
   }
 }
-
-
 
 export default connect(null)(QuayItem)

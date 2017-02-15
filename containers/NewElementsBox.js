@@ -29,7 +29,7 @@ class NewElementsBox extends React.Component {
 
   handleConfirmSubmit() {
     const { owner } = this.state
-    this.props.dispatch(MapActions.addJunctionElement(owner.key, owner.latlng))
+    this.props.dispatch(MapActions.addElementToStop(owner.key, owner.latlng))
     this.handleDialogClose()
   }
   render() {
@@ -80,7 +80,7 @@ class NewElementsBox extends React.Component {
 
     let shouldShowNewStop = true
 
-    if (activeStopPlace && ( activeStopPlace.markerProps.position || missingCoordsMap[activeStopPlace.markerProps.id]) ) {
+    if (activeStopPlace && ( activeStopPlace.location || missingCoordsMap[activeStopPlace.id]) ) {
       shouldShowNewStop = false
     }
 
@@ -157,10 +157,7 @@ class NewElementsBox extends React.Component {
 
           const { lat,lng } = activeMap.containerPointToLatLng(absolutePosition)
 
-          const latlng = {
-            lat: setDecimalPrecision(lat,6),
-            lng: setDecimalPrecision(lng,6)
-          }
+          const latlng = [setDecimalPrecision(lat,6), setDecimalPrecision(lng,6)]
 
           this.setState({
             confirmDialogOpen: true,
@@ -181,11 +178,11 @@ class NewElementsBox extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isMultiPolylinesEnabled: state.editStopReducer.enablePolylines,
-    isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    activeMap: state.editStopReducer.activeMap,
-    missingCoordsMap: state.userReducer.missingCoordsMap,
-    activeStopPlace: state.editStopReducer.activeStopPlace
+    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
+    activeMap: state.editingStop.activeMap,
+    missingCoordsMap: state.user.missingCoordsMap,
+    activeStopPlace: state.stopPlace.current
   }
 }
 

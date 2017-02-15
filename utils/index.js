@@ -1,11 +1,12 @@
 export const setDecimalPrecision = (number, n) => {
 
-    if (isNaN(number) || isNaN(n)) {
-      throw new Error('setDecimalPrecision, one of the arguments is not a number', number, n)
-    }
+  if (isNaN(number) || isNaN(n)) {
+    return number
+    //throw new Error('setDecimalPrecision, one of the arguments is not a number', number, n)
+  }
 
-    let splittedNumbers = String(number).split('.')
-    let paddedLength = splittedNumbers[0].length
+  let splittedNumbers = String(number).split('.')
+  let paddedLength = splittedNumbers[0].length
 
-    return Number(number.toPrecision(paddedLength+n))
+  return Number(number.toPrecision(paddedLength+n))
 }

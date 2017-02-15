@@ -1,15 +1,18 @@
 import React, { PropTypes } from 'react'
 import StopPlaceMarker from './StopPlaceMarker'
 import NewStopMarker from './NewStopMarker'
-import { MapActions, AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
+import { browserHistory } from 'react-router'
+import { withApollo } from 'react-apollo'
+import { stopQuery } from '../actions/Queries'
 
-class MarkerList extends React.PureComponent {
+class MarkerList extends React.Component {
 
   static PropTypes = {
     stops: PropTypes.array.isRequired,
@@ -17,24 +20,30 @@ class MarkerList extends React.PureComponent {
   }
 
   handleStopOnClick(id) {
-    const { path } = this.props
-     // Prevent loading resource already loaded and being edited
-    if (id && path !== id) {
-      this.props.dispatch(UserActions.navigateTo('/edit/', id))
-      this.props.dispatch(AjaxActions.getStop(id))
+    const { path, dispatch, client } = this.props
+    const isAlreadyActive = path === id
+    if (id && !isAlreadyActive) {
+      dispatch(UserActions.navigateTo('/edit/', id))
+      client.query({
+        query: stopQuery,
+        variables: {
+          id: id,
+        }
+      })
     }
   }
 
   handleNewStopClick() {
-    this.props.dispatch( UserActions.navigateTo('/edit/', 'new_stop') )
+    this.props.dispatch(MapActions.useNewStopAsCurrent())
+    browserHistory.push('edit/new')
   }
 
   handleDragEndNewStop(event) {
-    this.props.dispatch(MapActions.createNewStop(event.target.getLatLng()))
+    this.props.dispatch(MapActions.changeLocationNewStop(event.target.getLatLng()))
   }
 
   handleFetchQuaysForNeighbourStop(id) {
-    this.props.dispatch(AjaxActions.fetchQuaysForNeighourStop(id))
+    // TODO: fetch quays from neighbour stop by id
   }
 
   handleHideQuaysForNeighbourStop(id) {
@@ -56,31 +65,18 @@ class MarkerList extends React.PureComponent {
     }
   }
 
-  handleJunctionDragEnd(index, type, event) {
+  handleElementDragEnd(index, type, event) {
     const position = event.target.getLatLng()
 
-    let formattedPosition = {
-      lat: setDecimalPrecision(position.lat, 6),
-      lng: setDecimalPrecision(position.lng, 6)
-    }
-
-    this.props.dispatch( MapActions.changeJunctionPosition(index, type, formattedPosition))
-  }
-
-  handleQuayDragEnd(index, event) {
-    const position = event.target.getLatLng()
-
-    let formattedPosition = {
-      lat: setDecimalPrecision(position.lat,6),
-      lng: setDecimalPrecision(position.lng,6)
-    }
-    this.props.dispatch(MapActions.changeQuayPosition(index, formattedPosition))
+    this.props.dispatch( MapActions.changElementPosition(index, type,
+      [ setDecimalPrecision(position.lat, 6), setDecimalPrecision(position.lng, 6) ]
+    ))
   }
 
   render() {
 
     const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap, missingCoordinatesMap, handleSetCompassBearing } = this.props
-    const { formatMessage, locale } = this.props.intl
+    const { formatMessage } = this.props.intl
 
     let popupMarkers = []
 
@@ -91,7 +87,7 @@ class MarkerList extends React.PureComponent {
       terminatePathLinkHere: formatMessage({id: 'terminate_path_link_here'}),
       cancelPathLink: formatMessage({id: 'cancel_path_link'}),
       showQuays: formatMessage({id: 'show_quays'}),
-      hideQuays: formatMessage({id: 'hide_quays'})
+      hideQuays: formatMessage({id: 'hide_quays'}),
     }
 
     const newStopMarkerText = {
@@ -100,110 +96,83 @@ class MarkerList extends React.PureComponent {
       createNow: formatMessage({id: 'create_now'})
     }
 
-    stops.forEach(({ text, markerProps, isNewStop, active }, stopIndex) => {
+    stops.forEach( (stop, stopIndex) => {
 
-      if (!markerProps) {
-        return
-      }
+      const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, this.props.intl)
 
-      if (!markerProps.position) {
-        if (missingCoordinatesMap[markerProps.id]) {
-          markerProps.position = missingCoordinatesMap[markerProps.id]
-        } else {
-          return
-        }
-      }
-
-      let formattedStopTypeId = null
-      let formattedStopType = null
-
-      stopTypes[locale].forEach( (stopType) => {
-       if (stopType.value === markerProps.stopPlaceType) {
-         formattedStopTypeId = stopType.quayItemName
-       }
-      })
-
-      formattedStopType = formattedStopTypeId ? formatMessage({id: formattedStopTypeId || 'name'}) : ''
-
-      const { quays, pathJunctions, entrances } = markerProps
-
-      if (isNewStop) {
+      if (stop.isNewStop && !this.props.isEditingStop) {
         popupMarkers.push(
-          (<NewStopMarker
+          <NewStopMarker
               key={"newstop-parent- " + stopIndex}
-              position={markerProps.position}
+              position={stop.location}
               handleDragEnd={this.handleDragEndNewStop.bind(this)}
               text={newStopMarkerText}
-              handleOnClick={() => { this.handleNewStopClick(markerProps.position)}}
+              handleOnClick={() => { this.handleNewStopClick(stop.location)}}
             />
-          )
         )
 
       } else {
         popupMarkers.push(
           (<StopPlaceMarker
-            key={"stop-place- " + stopIndex}
-            id={markerProps.id}
+            key={"stop-place" + stop.id + 'active' + !!stop.isActive}
+            id={stop.id}
             index={stopIndex}
-            position={markerProps.position}
-            name={text}
-            formattedStopType={formattedStopType}
+            position={stop.location}
+            name={stop.name}
+            formattedStopType={localeStopType}
             handleDragEnd={handleDragEnd}
-            active={!!active}
-            stopType={markerProps.stopPlaceType}
+            active={!!stop.isActive}
+            stopType={stop.stopPlaceType}
             draggable={dragableMarkers}
             handleChangeCoordinates={changeCoordinates}
             translations={CustomPopupMarkerText}
-            handleOnClick={() => { this.handleStopOnClick(markerProps.id)} }
+            handleOnClick={() => { this.handleStopOnClick(stop.id)} }
             handleFetchQuaysForNeighbourStop={this.handleFetchQuaysForNeighbourStop.bind(this)}
             neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
             handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}
             isEditingStop={this.props.isEditingStop}
+            missingCoordinatesMap={missingCoordinatesMap}
             />
           )
         )
 
-        if (quays) {
-           quays.forEach( (quay, index) => {
+        if (stop.quays) {
+           stop.quays.forEach( (quay, index) => {
               popupMarkers.push(
                 <QuayMarker
                   index={index}
                   parentId={stopIndex}
-                  position={[quay.centroid.location.latitude,
-                    quay.centroid.location.longitude
-                  ]}
-                  key={"quay-" + stopIndex + "-" + index}
-                  handleQuayDragEnd={this.handleQuayDragEnd.bind(this)}
+                  position={quay.location}
+                  key={"quay" + (quay.id || index) }
+                  handleQuayDragEnd={this.handleElementDragEnd.bind(this)}
                   translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}
                   name={quay.name || ''}
-                  parentStopPlaceName={text}
-                  formattedStopType={formattedStopType}
+                  parentStopPlaceName={stop.name}
+                  formattedStopType={localeStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleChangeCoordinates={changeCoordinates}
                   draggable
-                  belongsToNeighbourStop={quay.belongsToNeighbourStop}
+                  belongsToNeighbourStop={!stop.isActive}
                   handleSetCompassBearing={handleSetCompassBearing}
                 />)
             })
         }
 
-        if (entrances) {
+        if (stop.entrances) {
 
           const junctionMarkerText = {
             junctionTitle: formatMessage({id: 'entrance'})
           }
 
-          entrances.forEach( (entrance, index) => {
+          stop.entrances.forEach( (entrance, index) => {
             popupMarkers.push(
               <JunctionMarker
-                position={[entrance.centroid.location.latitude,
-                  entrance.centroid.location.longitude
-                ]}
+                position={entrance.location}
                 index={index}
                 key={'entrance-'+index}
                 type="entrance"
-                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleDragEnd={this.handleElementDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
                 name={entrance.name}
@@ -212,22 +181,20 @@ class MarkerList extends React.PureComponent {
           })
         }
 
-        if (pathJunctions) {
+        if (stop.pathJunctions) {
 
           const junctionMarkerText = {
             junctionTitle: formatMessage({id: 'pathJunction'})
           }
 
-          pathJunctions.forEach( (pathJunction, index) => {
+          stop.pathJunctions.forEach( (pathJunction, index) => {
             popupMarkers.push(
               <JunctionMarker
-                position={[pathJunction.centroid.location.latitude,
-                  pathJunction.centroid.location.longitude
-                ]}
+                position={pathJunction.location}
                 key={'pathjunction-'+index}
                 index={index}
                 type="pathJunction"
-                handleDragEnd={this.handleJunctionDragEnd.bind(this)}
+                handleDragEnd={this.handleElementDragEnd.bind(this)}
                 handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                 text={Object.assign({}, junctionMarkerText, CustomPopupMarkerText)}
                 name={pathJunction.name}
@@ -243,18 +210,26 @@ class MarkerList extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const isEditingStop = state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1
   return {
-    path: state.userReducer.path,
-    polylineStartPoint: state.editStopReducer.polylineStartPoint,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    neighbouringMarkersQuaysMap: state.editStopReducer.neighbouringMarkersQuaysMap,
-    isEditingStop: isEditingStop,
-    missingCoordinatesMap: state.userReducer.missingCoordsMap,
-    activeMap: state.editStopReducer.activeMap
+    path: state.user.path,
+    polylineStartPoint: state.editingStop.polylineStartPoint,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    neighbouringMarkersQuaysMap: state.editingStop.neighbouringMarkersQuaysMap,
+    isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
+    missingCoordinatesMap: state.user.missingCoordsMap,
+    activeMap: state.editingStop.activeMap
   }
 }
 
-export default injectIntl(connect(
-  mapStateToProps
-)(MarkerList))
+const getLocaleStopTypeName = (stopPlaceType, intl) => {
+  const { formatMessage, locale } = intl
+  let formattedStopTypeId = null
+  stopTypes[locale].forEach( (stopType) => {
+    if (stopType.value === stopPlaceType) {
+      formattedStopTypeId = stopType.quayItemName
+    }
+  })
+  return formattedStopTypeId ? formatMessage({id: formattedStopTypeId || 'name'}) : ''
+}
+
+export default withApollo(injectIntl(connect(mapStateToProps)(MarkerList)))

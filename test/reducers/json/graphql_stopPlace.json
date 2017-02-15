@@ -1,0 +1,60 @@
+{
+  "data": {
+    "stopPlace": [
+      {
+        "id": "NSR:StopPlace:933",
+        "name": {
+          "value": "Aspestrand",
+          "__typename": "EmbeddableMultilingualStringType"
+        },
+        "location": {
+          "latitude": 59.1759515,
+          "longitude": 11.725363999999999,
+          "__typename": "Location"
+        },
+        "allAreasWheelchairAccessible": null,
+        "stopPlaceType": "onstreetBus",
+        "topographicPlace": {
+          "name": {
+            "value": "Aremark",
+            "__typename": "EmbeddableMultilingualStringType"
+          },
+          "parentTopographicPlace": {
+            "name": {
+              "value": "Østfold",
+              "__typename": "EmbeddableMultilingualStringType"
+            },
+            "__typename": "TopographicPlaceType"
+          },
+          "topographicPlaceType": "town",
+          "__typename": "TopographicPlaceType"
+        },
+        "quays": [
+          {
+            "id": "NSR:Quay:1694",
+            "location": {
+              "latitude": 59.176073,
+              "longitude": 11.726214,
+              "__typename": "Location"
+            },
+            "allAreasWheelchairAccessible": null,
+            "compassBearing": 344,
+            "__typename": "quay"
+          },
+          {
+            "id": "NSR:Quay:1695",
+            "location": {
+              "latitude": 59.17583,
+              "longitude": 11.724514,
+              "__typename": "Location"
+            },
+            "allAreasWheelchairAccessible": null,
+            "compassBearing": 164,
+            "__typename": "quay"
+          }
+        ],
+        "__typename": "StopPlaceType"
+      }
+    ]
+  }
+}

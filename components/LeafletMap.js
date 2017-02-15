@@ -6,7 +6,7 @@ import MultiPolylineList from './MultiPolylineList'
 import WMTSLayer from './WMTSLayer'
 import axios from 'axios'
 
-export default class LeafLetMap extends React.Component {
+export default class LeafLetMap extends React.PureComponent {
 
 
   getCheckedBaseLayerByValue(value) {
@@ -105,8 +105,9 @@ export default class LeafLetMap extends React.Component {
           />
         { enablePolylines
             ?
-            <MultiPolylineList map={this.refs.map}/>
-            : null }
+            <MultiPolylineList/>
+            : null
+        }
       </Lmap>)
   }
 }

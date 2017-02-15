@@ -72,9 +72,9 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    snackbarOptions: state.userReducer.snackbarOptions
+    snackbarOptions: state.user.snackbarOptions
   }
 }
 

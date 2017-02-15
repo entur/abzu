@@ -1,31 +1,27 @@
 import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 import IconButton from 'material-ui/IconButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import { MapActions, AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
-import FilterPopover from '../components/FilterPopover'
-import FavoritePopover from '../components/FavoritePopover'
-import FavoriteNameDialog from '../components/FavoriteNameDialog'
-import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
-import TopographicalFilter from '../components/TopographicalFilter'
 import MenuItem from 'material-ui/MenuItem'
 import ModalityIcon from '../components/ModalityIcon'
 import SearchIcon from 'material-ui/svg-icons/action/search'
-import StarIcon from 'material-ui/svg-icons/toggle/star'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
+import SearchFilter from '../components/SearchFilter'
+import { graphql } from 'react-apollo'
+import { findStop } from "../actions/Queries"
 
 class SearchBox extends React.Component {
 
   constructor(props) {
     super(props)
-    this.props.dispatch(AjaxActions.populateTopograhicalPlaces())
     this.state = {
       showFilter: false,
       coordinatesDialogOpen: false
@@ -52,18 +48,21 @@ class SearchBox extends React.Component {
       return
     }
     else {
+      this.props.data.refetch({
+        query: input,
+        stopPlaceType: this.props.stopTypeFilter,
+        municipalityReference: this.props.topoiChips
+          .filter( topos => topos.type === "town").map(topos => topos.value),
+        countyReference: this.props.topoiChips
+          .filter( topos => topos.type === "county").map(topos => topos.value)
+      })
       this.props.dispatch(UserActions.setSearchText(input))
-      this.props.dispatch(AjaxActions.getStopNames(input))
     }
   }
 
-  handleTopoInput(input) {
-    this.props.dispatch(UserActions.getTopographicalPlaces(input))
-  }
-
   handleNewRequest(result) {
-    if (typeof(result.markerProps) !== 'undefined') {
-      this.props.dispatch( MapActions.setActiveMarkers(result) )
+    if (typeof(result.element) !== 'undefined') {
+      this.props.dispatch( MapActions.setMarkerOnMap(result.element) )
     }
   }
 
@@ -75,18 +74,11 @@ class SearchBox extends React.Component {
 
   handleSubmitCoordinates(position) {
     this.props.dispatch( MapActions.changeMapCenter(position, 11))
-    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.activeMarker.markerProps.id ))
+    this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.chosenResult.id ))
 
     this.setState(({
       coordinatesDialogOpen: false
     }))
-  }
-
-  handleAddChip(result) {
-    this.props.dispatch(UserActions.addToposChip(result))
-    this.refs.topoFilter.setState({
-      searchText: ''
-    })
   }
 
   handleNewStop() {
@@ -100,48 +92,48 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.setSearchText(''))
   }
 
-  handlePopoverDismiss(filters) {
-    this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
-  }
-
-  handleToggleFavorite(favorited) {
-    if (!favorited) {
-      this.props.dispatch(UserActions.openFavoriteNameDialog())
-    } else {
-      this.props.dispatch(UserActions.removeSearchAsFavorite())
-    }
-  }
-
-  handleRetrieveFilter(item) {
-    this.props.dispatch(UserActions.loadFavoriteSearch(item))
-  }
-
-  handleShowFilter() {
+  handleToggleFilter(showFilter) {
     this.setState({
-      showFilter: true
+      showFilter: showFilter
     })
   }
 
-  handleHideFilter() {
-    this.setState({
-      showFilter: false
-    })
+  componentWillUpdate(nextProps) {
+
+    const {  dataSource = [] } = nextProps
+
+    this._menuItems = dataSource.map( element => ({
+        element: element,
+        text: element.name,
+        value: (
+          <MenuItem
+            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
+            innerDivStyle={{minWidth: 300}}
+            primaryText={`${element.name}, ${element.topographicPlace} (${element.parentTopographicPlace})`}
+            secondaryText={(<ModalityIcon
+                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
+                type={element.stopPlaceType}
+              />
+            )}
+          />
+        )}
+    ))
   }
 
   render() {
 
-    const { activeMarker, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
-    const { stopPlaceFilter, topographicalSource, dataSource = [] } = this.props
-    const { formatMessage, locale } = intl
+    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl } = this.props
+    const { showFilter, coordinatesDialogOpen } = this.state
+    const { formatMessage } = intl
 
-    let text = {
-      emptyDescription: formatMessage({id: 'empty_description'}),
-      edit: formatMessage({id: 'edit'})
-    }
-
-    let newStopText = {
+    const newStopText = {
       headerText: formatMessage({id: 'making_stop_place_title'}),
       bodyText: formatMessage({id: 'making_stop_place_hint'})
+    }
+
+    const text = {
+      emptyDescription: formatMessage({id: 'empty_description'}),
+      edit: formatMessage({id: 'edit'})
     }
 
     const searchBoxWrapperStyle = {
@@ -155,47 +147,6 @@ class SearchBox extends React.Component {
       padding: 10,
       border: "1px solid rgb(81, 30, 18)"
     }
-
-    let starIconStyle = {
-      stroke: '#191919',
-      marginTop: 50,
-      marginRight: 15,
-      height: 32,
-      width: 32,
-      cursor: 'pointer',
-      fill: '#ffb504',
-      float:'right'
-    }
-
-    if (!favorited) starIconStyle.fill = '#fff'
-
-    const topoiSourceConfig = {
-      text: 'name',
-      value: 'ref',
-    }
-
-    const menuItems = dataSource.map( element => ({
-      ...element,
-      value: (
-          <MenuItem
-            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
-            primaryText={element.text}
-            secondaryText={(<ModalityIcon
-                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
-                type={element.markerProps.stopPlaceType}
-              />
-            )}
-          />
-      )}
-    ))
-
-
-    let favoriteText = {
-      title: formatMessage({id: 'favorites_title'}),
-      noFavoritesFoundText: formatMessage({id: 'no_favorites_found'})
-    }
-
-    let { showFilter, coordinatesDialogOpen } = this.state
 
     return (
       <div>
@@ -212,7 +163,7 @@ class SearchBox extends React.Component {
               textFieldStyle={{width: 380}}
               openOnFocus
               hintText={formatMessage({id: "filter_by_name"})}
-              dataSource={menuItems}
+              dataSource={this._menuItems || []}
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleUpdateInput.bind(this)}
               maxSearchResults={7}
@@ -224,7 +175,7 @@ class SearchBox extends React.Component {
           </div>
           { showFilter
             ? null
-            : <RaisedButton onClick={() => {this.handleShowFilter()}}>{formatMessage({id: 'filters'})}</RaisedButton>
+            : <RaisedButton onClick={() => { this.handleToggleFilter(true)} }>{formatMessage({id: 'filters'})}</RaisedButton>
           }
           <div style={{float: "right", marginTop: -45}}>
             <IconButton style={{verticalAlign: 'middle'}} onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
@@ -232,61 +183,28 @@ class SearchBox extends React.Component {
             </IconButton>
           </div>
           { showFilter
-            ?  <div key='filter-wrapper' style={{marginTop: 10, width: '95%', border: '1px dotted #191919', padding: 10}}>
-              <IconButton
-                style={{float: "right"}}
-                iconClassName="material-icons"
-                onClick={() => { this.handleHideFilter()}}
-              >
-                remove
-              </IconButton>
-              <div style={{float: "left", width: "88%", marginBottom: 20}}>
-                <FavoritePopover
-                  caption={formatMessage({id: "favorites"})}
-                  items={[]}
-                  filter={stopPlaceFilter}
-                  onItemClick={this.handleRetrieveFilter.bind(this)}
-                  onDismiss={this.handlePopoverDismiss.bind(this)}
-                  text={favoriteText}
-                />
-              </div>
-              <StarIcon
-                onClick={() => { this.handleToggleFavorite(!!favorited) }}
-                style={starIconStyle}
-              />
-              <FavoriteNameDialog/>
-              <FilterPopover
-                caption={formatMessage({id: "type"})}
-                items={stopTypes[locale]}
-                filter={stopPlaceFilter}
-                onDismiss={this.handlePopoverDismiss.bind(this)}
-              />
-              <TopographicalFilter/>
-              <AutoComplete
-                hintText={formatMessage({id: "filter_by_topography"})}
-                dataSource={topographicalSource}
-                dataSourceConfig={topoiSourceConfig}
-                filter={AutoComplete.caseInsensitiveFilter}
-                onUpdateInput={this.handleTopoInput.bind(this)}
-                style={{marginBottom: 20}}
-                maxSearchResults={5}
-                ref="topoFilter"
-                onNewRequest={this.handleAddChip.bind(this)}
-              />
-            </div>
+            ? <SearchFilter
+                intl={intl}
+                favorited={favorited}
+                dispatch={this.props.dispatch}
+                stopPlaceFilter={this.props.stopTypeFilter}
+                chipsAdded={this.props.topoiChips}
+                toggleShowFilter={() => { this.handleToggleFilter(false)}}
+            />
             : null
           }
           <div key='searchbox-edit'>
-            {activeMarker
+            {chosenResult
               ?  <SearchBoxDetails
-                   text={text}
                    handleEdit={this.handleEdit.bind(this)}
-                   marker={activeMarker} handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
-                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[activeMarker.markerProps.id]}
+                   result={chosenResult}
+                   handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
+                   userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]}
+                   text={text}
               />
               :  null
             }
-            <div style={{marginTop: "30px"}}>
+            <div style={{marginTop: 30}}>
               { isCreatingNewStop
                 ? <NewStopPlace text={newStopText}/>
                 :
@@ -306,25 +224,34 @@ class SearchBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const searchBoxWithConnectedData = graphql(findStop, {
+  options: {
+    variables: {
+      query: '',
+      stopPlaceType: undefined,
+      municipalityReference: undefined,
+      countyReference: undefined
+    },
+  }
+})(SearchBox)
+
+const mapStateToProps = state => {
 
   var favoriteManager = new FavoriteManager()
-  const { stopType, topoiChips, text } = state.userReducer.searchFilters
+  const { stopType, topoiChips, text } = state.user.searchFilters
   var favoriteContent = favoriteManager.createSavableContent('', text, stopType, topoiChips)
   var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
-    activeMarker: state.stopPlacesReducer.activeMarker,
-    dataSource: state.stopPlacesReducer.stopPlaceNames.places,
-    isCreatingNewStop: state.userReducer.isCreatingNewStop,
-    stopPlaceFilter: state.userReducer.searchFilters.stopType,
-    topographicalSource: state.userReducer.topoiSuggestions,
-    topoiChips: state.userReducer.searchFilters.topoiChips,
+    chosenResult: state.stopPlace.activeSearchResult,
+    dataSource: state.stopPlace.searchResults,
+    isCreatingNewStop: state.user.isCreatingNewStop,
+    stopTypeFilter: state.user.searchFilters.stopType,
+    topoiChips: state.user.searchFilters.topoiChips,
     favorited: favorited,
-    missingCoordinatesMap: state.userReducer.missingCoordsMap,
-    searchText: state.userReducer.searchText
+    missingCoordinatesMap: state.user.missingCoordsMap,
+    searchText: state.user.searchFilters.text
   }
 }
 
-
-export default injectIntl(connect(mapStateToProps)(SearchBox))
+export default injectIntl(connect(mapStateToProps)(searchBoxWithConnectedData))

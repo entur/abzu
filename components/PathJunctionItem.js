@@ -20,12 +20,12 @@ class PathJunctionItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changePathJuctionName(index, event.target.value))
+    dispatch(MapActions.changeElementName(index, event.target.value, 'pathJunction'))
   }
 
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changePathJunctionDescription(index, event.target.value))
+    dispatch(MapActions.changeElementDescription(index, event.target.value, 'pathJunction'))
   }
 
   render() {
@@ -50,7 +50,7 @@ class PathJunctionItem extends React.Component {
       <div>
         <div className='tabItem'>
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(pathJunction.centroid)}/>
+            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(pathJunction.location)}/>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'pathJunction')}>
               {pathJunction.name.length ? pathJunction.name : 'N/A'}
             </div>

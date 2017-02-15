@@ -54,14 +54,14 @@ class QuayMarker extends React.PureComponent {
           position={position}
           icon={quayIcon}
           draggable={!belongsToNeighbourStop && this.props.draggable}
-          onDragend={(event) => { handleQuayDragEnd(index, event) }}
+          onDragend={(event) => { handleQuayDragEnd(index, 'quay', event) }}
         >
           <Popup autoPan={false}>
             <div>
                <span className="quay-marker-title">
                  { parentStopPlaceName }
                 </span>
-                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || 'N/A')}</span>
+                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
                 <div
                   className='change-path-link'
                   onClick={() => { handleUpdatePathLink(position, index, 'quay') }}
@@ -81,7 +81,7 @@ class QuayMarker extends React.PureComponent {
                 </div>
               { belongsToNeighbourStop
                 ? null
-                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }}>
+                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }} style={{textAlign: 'center', marginTop: 10}}>
                     <img style={{width: 20, height: 22}} src={compassIcon}/>
                   </div>
               }
@@ -151,13 +151,12 @@ const getShortQuayName = (quayName) => {
   return (quayName.length > 1)  ? quayName.substring(0,1): quayName
 }
 
-const mapStateToProps = (state, ownProps) => {
-
+const mapStateToProps = state => {
   return {
-    polylineStartPoint: state.editStopReducer.polylineStartPoint,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    isCompassBearingEnabled: state.editStopReducer.isCompassBearingEnabled,
-    focusedElement: state.editStopReducer.focusedElement,
+    polylineStartPoint: state.editingStop.polylineStartPoint,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
+    focusedElement: state.editingStop.focusedElement,
   }
 }
 

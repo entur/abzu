@@ -1,5 +1,5 @@
 import * as types from './actionTypes'
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import configureLocalization from '../localization/localization'
 import FavoriteManager from '../singletons/FavoriteManager'
 
@@ -31,7 +31,7 @@ UserActions.toggleIsCreatingNewStop = () => {
   return function(dispatch, getState) {
 
     const state = getState()
-    const isCreatingNewStop = state.userReducer.isCreatingNewStop
+    const isCreatingNewStop = state.user.isCreatingNewStop
 
     if (isCreatingNewStop) {
       dispatch( sendData( types.DESTROYED_NEW_STOP, null) )
@@ -92,29 +92,6 @@ UserActions.hideQuaysForNeighbourStop = (id) => {
   }
 }
 
-UserActions.getTopographicalPlaces = (input) => {
-
-  return function(dispatch, getState) {
-
-    const state = getState()
-
-    let chipsAlreadyAdded = state.userReducer.searchFilters.topoiChips
-    let suggestions = state.userReducer.topoiSource
-
-    suggestions = suggestions.filter( (suggestion) => {
-      for (let i = 0; i < chipsAlreadyAdded.length; i++) {
-        if (JSON.stringify(chipsAlreadyAdded[i]) === JSON.stringify(suggestion)) {
-          return false
-        }
-      }
-      return true
-    })
-
-    dispatch ( sendData(types.GET_TOPOGRAPHICAL_PLACES, suggestions) )
-  }
-}
-
-
 UserActions.clearSearchResults = () => {
   return function(dispatch) {
     dispatch( sendData(types.RECEIVED_STOP_NAMES, []) )
@@ -123,7 +100,7 @@ UserActions.clearSearchResults = () => {
 
 UserActions.addToposChip = (chip) => {
   return function(dispatch) {
-    if (typeof chip.name !== 'undefined' && typeof chip.type !== 'undefined')
+    if (typeof chip.text !== 'undefined' && typeof chip.type !== 'undefined')
       dispatch(sendData(types.ADDED_TOPOS_CHIP, chip))
   }
 }
@@ -149,7 +126,7 @@ UserActions.deleteChip = (key) => {
 UserActions.saveSearchAsFavorite = (title) => {
   return function(dispatch, getState) {
     const state = getState()
-    const searchFilters =  state.userReducer.searchFilters
+    const searchFilters =  state.user.searchFilters
     let favoriteManager = new FavoriteManager()
     let savableContent = favoriteManager.createSavableContent(title, searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.save(savableContent)
@@ -160,7 +137,7 @@ UserActions.saveSearchAsFavorite = (title) => {
 UserActions.removeSearchAsFavorite = () => {
   return function(dispatch, getState) {
     const state = getState()
-    const searchFilters =  state.userReducer.searchFilters
+    const searchFilters =  state.user.searchFilters
     let favoriteManager = new FavoriteManager()
     let savableContent = favoriteManager.createSavableContent('', searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
     favoriteManager.remove(savableContent)
@@ -168,9 +145,9 @@ UserActions.removeSearchAsFavorite = () => {
   }
 }
 
-UserActions.setSearchText = (name) => {
+UserActions.setSearchText = text => {
   return function(dispatch) {
-    dispatch(sendData(types.SET_SEARCH_TEXT, name))
+    dispatch(sendData(types.SET_SEARCH_TEXT, text))
   }
 }
 

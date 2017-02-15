@@ -1,45 +1,51 @@
 import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopBox from './EditStopBox'
 import ToggleMapItemsBox from './ToggleMapItemsBox'
 import NewElementsBox from './NewElementsBox'
-import { AjaxActions } from '../actions/'
-import cfgreader from './../config/readConfig'
 import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
-
-require('../styles/main.css')
-
+import { stopQuery } from "../actions/Queries"
+import { withApollo } from 'react-apollo'
+import '../styles/main.css'
+import { browserHistory } from 'react-router'
 
 class EditStopPlace extends React.Component {
-
-  componentDidMount() {
-    const { dispatch} = this.props
-    cfgreader.readConfig( (function(config) {
-      window.config = config
-      var hrefId = window.location.pathname
-        .replace(config.endpointBase + 'edit','')
-        .replace('/', '')
-
-      dispatch( AjaxActions.getStop(hrefId) )
-
-    }).bind(this))
-  }
 
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
   }
 
+  componentDidMount() {
+    const { client } = this.props
+    const idFromPath = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
+
+    if (idFromPath === 'new' && !this.props.stopPlace) {
+      browserHistory.push('/')
+    }
+
+    if (idFromPath && idFromPath.length && idFromPath && idFromPath !== 'new') {
+      client.query({
+        query: stopQuery,
+        variables: {
+          id: idFromPath,
+        }
+      })
+    }
+  }
+
   render() {
 
-    let { isLoading, isCreatingPolylines } = this.props
+    let { isCreatingPolylines, stopPlace } = this.props
     const { locale } = this.props.intl
 
-    const shouldDisplayMessage  =  (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
+    if (!stopPlace) return <Loader/>
+
+    const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
     return (
       <div>
@@ -54,20 +60,29 @@ class EditStopPlace extends React.Component {
           />
           : null
         }
-        <EditStopMap/>
-        { isLoading ? <Loader/> : <EditStopBox/> }
-        { isLoading ? null : <ToggleMapItemsBox/> }
-        { isLoading ? null : <NewElementsBox/> }
+        {
+          stopPlace
+            ?
+            <div>
+              <EditStopMap/>
+              <EditStopBox/>
+              <ToggleMapItemsBox/>
+              <NewElementsBox/>
+            </div>
+            : null
+        }
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    isLoading: state.editStopReducer.activeStopIsLoading,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    stopPlace: state.stopPlace.current || state.stopPlace.newStop
   }
 }
 
-export default injectIntl(connect(mapStateToProps)(EditStopPlace))
+const EditStopPlaceWithIntl = injectIntl(connect(mapStateToProps)(EditStopPlace))
+
+export default withApollo(EditStopPlaceWithIntl)

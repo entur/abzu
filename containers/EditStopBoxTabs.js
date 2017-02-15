@@ -17,11 +17,7 @@ class EditStopBoxTabs extends React.Component {
     }
   }
 
-  handleLocateOnMap(centroid) {
-    const position = {
-      lat: centroid.location.latitude,
-      lng: centroid.location.longitude
-    }
+  handleLocateOnMap(position) {
     this.props.dispatch(MapActions.changeMapCenter(position, 17))
   }
 
@@ -45,6 +41,18 @@ class EditStopBoxTabs extends React.Component {
       }
     })
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.activeStopPlace.id !== nextProps.activeStopPlace.id) {
+      this.state = {
+        expandedItem: {
+          index: -1,
+          type: 'quay',
+        }
+      }
+    }
+  }
+
 
   handleSetFocus = (index, type) => {
     const { dispatch } = this.props
@@ -78,7 +86,7 @@ class EditStopBoxTabs extends React.Component {
 
     return (
       <div style={tabContainerStyle}>
-        { activeElementTab === 0 && activeStopPlace.markerProps.quays.map( (quay,index) =>
+        { activeElementTab === 0 && activeStopPlace.quays.map( (quay,index) =>
           <QuayItem
             translations={itemTranslation}
             key={"quay-" + index}
@@ -92,10 +100,10 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'quay' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 0 && !activeStopPlace.markerProps.quays.length
+        { activeElementTab === 0 && !activeStopPlace.quays.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
         }
-        { activeElementTab === 1 && activeStopPlace.markerProps.pathJunctions.map( (pathJunction,index) =>
+        { activeElementTab === 1 && activeStopPlace.pathJunctions.map( (pathJunction,index) =>
           <PathJunctionItem
             translations={itemTranslation}
             pathJunction={pathJunction}
@@ -107,10 +115,10 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'pathJunction' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 1 && !activeStopPlace.markerProps.pathJunctions.length
+        { activeElementTab === 1 && !activeStopPlace.pathJunctions.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
         }
-        { activeElementTab === 2 && activeStopPlace.markerProps.entrances.map( (entrance,index) =>
+        { activeElementTab === 2 && activeStopPlace.entrances.map( (entrance,index) =>
           <EntranceItem
             translations={itemTranslation}
             key={"entrance-" + index}
@@ -122,7 +130,7 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'entrance' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 2 && !activeStopPlace.markerProps.entrances.length
+        { activeElementTab === 2 && !activeStopPlace.entrances.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
         }
       </div>
@@ -130,9 +138,9 @@ class EditStopBoxTabs extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    activeElementTab: state.userReducer.activeElementTab,
+    activeElementTab: state.user.activeElementTab,
   }
 }
 

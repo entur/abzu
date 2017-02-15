@@ -4,10 +4,10 @@ import L, { divIcon } from 'leaflet'
 import ReactDOM from 'react-dom/server'
 import CustomMarkerIcon from './CustomMarkerIcon'
 
-class StopPlaceMarker extends React.Component {
+class StopPlaceMarker extends React.PureComponent {
 
   static propTypes = {
-    position: PropTypes.arrayOf(Number).isRequired,
+    position: PropTypes.arrayOf(Number),
     handleDragEnd: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
     handleChangeCoordinates: PropTypes.func,
@@ -17,7 +17,7 @@ class StopPlaceMarker extends React.Component {
     draggable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     handleHideQuaysForNeighbourStop: PropTypes.func,
     neighbouringMarkersQuaysMap: PropTypes.object.isRequired,
     isEditingStop: PropTypes.bool.isRequired
@@ -33,14 +33,16 @@ class StopPlaceMarker extends React.Component {
     }
   }
 
-
-
   render() {
 
-    const { position, handleOnClick, handleDragEnd, index, draggable,
+    const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
           handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
 
-    const name = this.props.name.length ? this.props.name : translations.untitled
+    const markerLocation = position || missingCoordinatesMap[id]
+
+    if (!markerLocation) return null
+
+    const name = this.props.name ? this.props.name : translations.untitled
 
     let divIconBody = (
       <CustomMarkerIcon
@@ -61,7 +63,7 @@ class StopPlaceMarker extends React.Component {
       <Marker
         key={"stop-place" + id}
         icon={icon}
-        position={position}
+        position={markerLocation}
         onDragend={(event) => { handleDragEnd(false, index, event) }}
         draggable={draggable && active}
         >
@@ -76,13 +78,13 @@ class StopPlaceMarker extends React.Component {
             </span>
             <div
               style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
-              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, position)}
+              onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, markerLocation)}
               >
               <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
-                {position[0]}
+                {markerLocation[0]}
               </span>
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
-                {position[1]}
+                {markerLocation[1]}
               </span>
             </div>
             <div style={{display: 'block', width: '100%'}}>

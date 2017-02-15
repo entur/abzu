@@ -7,7 +7,7 @@ export const initialState = {
   searchFilters: {
     stopType: [],
     topoiChips: [
-     // e.g. {key: 0, label: 'Nordland', type: 'county', ref: 2},
+     // e.g. {key: 0, text: 'Nordland', type: 'county', value: 2},
    ],
    text: ''
   },
@@ -20,10 +20,6 @@ export const initialState = {
     messages: []
   },
   appliedLocale: null,
-  // received data from GET:/topographic_place
-  topoiSource: [],
-  // source for TopographicalFilter autocomplete
-  topoiSuggestions: [],
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
   activeBaselayer: 'Rutebankens kart',
@@ -54,12 +50,6 @@ const userReducer = (state = initialState, action) => {
 
     case types.APPLIED_LOCALE:
       return Object.assign({}, state, { appliedLocale: action.payLoad })
-
-    case types.RECEIVED_TOPOGRAPHICAL_PLACES:
-      return Object.assign({}, state, { topoiSource: action.payLoad })
-
-    case types.GET_TOPOGRAPHICAL_PLACES:
-      return Object.assign({}, state, { topoiSuggestions: action.payLoad })
 
     case types.ADDED_TOPOS_CHIP:
       let newChipList = state.searchFilters.topoiChips.splice(0)

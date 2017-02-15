@@ -8,6 +8,11 @@ var path = require('path')
 var fs = require('fs').readFileSync
 var axios = require('axios')
 
+process.on('uncaughtException', err => {
+  console.error("uncaught error: " + err);
+})
+
+
 convictPromise.then( (convict) => {
 
   var ENDPOINTBASE = convict.get('endpointBase')

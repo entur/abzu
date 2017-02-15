@@ -13,7 +13,7 @@ class TopographicalFilter extends React.Component {
 
     const isCounty = data.type === 'county'
     const typeColor = isCounty ? '#73919b' : '#cde7eb'
-    const typeTextColor = isCounty ? '#fff' : "#000"
+    const typeTextColor = isCounty ? '#fff' : '#000'
 
     const chipStyle = {
       margin: 4,
@@ -26,14 +26,14 @@ class TopographicalFilter extends React.Component {
         onRequestDelete={() => this.handleRequestDelete(data.key)}
         style={chipStyle}
       >
-        <span style={{color: typeTextColor}}>{data.name}</span>
+        <span style={{color: typeTextColor}}>{data.text}</span>
       </Chip>
     )
   }
 
   render() {
 
-    const wrapperStyle = {
+    const style = {
       display: 'flex',
       flexWrap: 'wrap',
       marginTop: 20,
@@ -42,16 +42,16 @@ class TopographicalFilter extends React.Component {
     }
 
     return (
-      <div style={wrapperStyle}>
-       {this.props.topoiChips.map(this.renderChip, this)}
+      <div style={style}>
+       { this.props.topoiChips.map(this.renderChip, this) }
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
-    topoiChips: state.userReducer.searchFilters.topoiChips
+    topoiChips: state.user.searchFilters.topoiChips
   }
 }
 

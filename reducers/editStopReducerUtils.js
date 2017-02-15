@@ -1,3 +1,4 @@
+import { LatLng } from 'leaflet'
 
 export const addStartPointToPolyline = (multiPolylineDataSource, source) => {
   try {
@@ -30,6 +31,7 @@ export const addPointToPolyline = (multiPolyline, coords) => {
 
 export const addEndPointToPolyline = (multiPolyline, source) => {
   try {
+
     let polylineIndex = multiPolyline.length-1
 
     if (multiPolyline[polylineIndex]) {
@@ -38,34 +40,26 @@ export const addEndPointToPolyline = (multiPolyline, source) => {
         index: source.index,
         type: source.type
       }
+
+      let coordsArray = arrayOfPolylinesFromPolyline(multiPolyline[polylineIndex])
+      let latlngDistances = coordsArray.map ( (position) => new LatLng(position[0], position[1]))
+      let totalDistance = 0
+
+      for (let i = 0; i < latlngDistances.length; i++) {
+        if (latlngDistances[i+1] == null) break
+        totalDistance += latlngDistances[i].distanceTo(latlngDistances[i+1])
+      }
+      const walkingSpeed = 1.34112  // i.e. 3 mph / 3.6
+      multiPolyline[polylineIndex].distance = totalDistance
+      multiPolyline[polylineIndex].estimate = Math.max(Math.floor(totalDistance / ( walkingSpeed*60 )), 1)
     }
+
     return multiPolyline
   } catch(e) {
     console.error('addEndPointToPolyline', e)
   }
 }
 
-export const changePositionInPolyLineUponPointMove = (multiPolyline, index, coordinates, type) => {
-  multiPolyline.map( (polyline) => {
-
-    if (polyline.startPoint && polyline.startPoint.index == index && polyline.startPoint.type === type) {
-      polyline.startPoint.coordinates = coordinates.map( (coordinate) => Number(coordinate))
-    }
-
-    if (polyline.endPoint && polyline.endPoint.index == index && polyline.endPoint.type === type) {
-      polyline.endPoint.coordinates = coordinates.map( (coordinate) => Number(coordinate))
-    }
-    return polyline
-  })
-  return multiPolyline
-}
-
-export const changePositionInPolyLineUponPointRemove =  (multiPolyline, index, type) => {
-  return multiPolyline.filter( (polyline) => {
-    return ((polyline.startPoint.index !== index) &&
-    (polyline.endPoint.index !== index) && (polyline.endPoint.type !== type))
-  })
-}
 
 export const setDefaultCompassBearingisEnabled = stop => {
   if (!stop || !stop.markerProps) return false
@@ -79,15 +73,16 @@ export const setDefaultCompassBearingisEnabled = stop => {
   return !(stop.markerProps.quays && stop.markerProps.quays.length > 2)
 }
 
+
 export const updateNeighbourMarkersWithQuays = (map, neighbourMarkers) => {
 
   let newNeighbourMarkers = neighbourMarkers.slice()
 
-  map.forEach( (quays, id) => {
+  map.forEach((quays, id) => {
 
-    neighbourMarkers.forEach( (neighbour) => {
+    neighbourMarkers.forEach((neighbour) => {
       if (neighbour.markerProps.id == id) {
-        let neighbourQuays = quays.map( (quay) => {
+        let neighbourQuays = quays.map((quay) => {
           quay.belongsToNeighbourStop = true
           return quay
         })
@@ -95,6 +90,28 @@ export const updateNeighbourMarkersWithQuays = (map, neighbourMarkers) => {
       }
     })
   })
-
-  return newNeighbourMarkers
+    return newNeighbourMarkers
 }
+
+
+const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
+
+  let arrayOfPolylines = []
+
+  if (dataSourceItem.startPoint) {
+    arrayOfPolylines.push(dataSourceItem.startPoint.coordinates)
+  }
+
+  if (dataSourceItem.inlinePositions.length) {
+    dataSourceItem.inlinePositions.forEach((inlinePosition) => {
+      arrayOfPolylines.push(inlinePosition)
+    })
+  }
+
+  if (dataSourceItem.endPoint) {
+    arrayOfPolylines.push(dataSourceItem.endPoint.coordinates)
+  }
+
+  return arrayOfPolylines
+}
+

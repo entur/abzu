@@ -1,7 +1,6 @@
 import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
 import Keycloak from 'keycloak-js'
 import Root from './containers/Root'
 import configureStore from './store/store'
@@ -9,6 +8,7 @@ import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import cfgreader from './config/readConfig'
 import 'intl'
+import { ApolloProvider } from 'react-apollo'
 import axios from 'axios'
 
 // used by material-ui, will be removed once the official React version of MI is relased
@@ -49,12 +49,12 @@ cfgreader.readConfig( (function(config) {
 function renderIndex(path) {
 
   const store = configureStore()
-  const history = syncHistoryWithStore(browserHistory, store)
+  const history = syncHistoryWithStore(browserHistory, store.self)
 
   render (
-    <Provider store={store}>
+    <ApolloProvider store={store.self} client={store.client}>
       <Root path={path} history={history}/>
-    </Provider>,
+    </ApolloProvider>,
     document.getElementById('root')
   )
 

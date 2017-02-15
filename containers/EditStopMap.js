@@ -1,11 +1,14 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { MapActions,  AjaxActions, UserActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import CompassBearingDialog from '../components/CompassBearingDialog'
+import { stopPlaceBBQuery } from "../actions/Queries"
+import { graphql } from 'react-apollo'
+import debounce from 'lodash.debounce'
 
 class EditStopMap extends React.Component {
 
@@ -15,6 +18,27 @@ class EditStopMap extends React.Component {
       coordinatesDialogOpen: false,
       compassBearingDialogOpen: false
     }
+    const mapEnd = (event, { leafletElement }) => {
+
+      let { ignoreStopId } = this.props
+
+      const zoom = leafletElement.getZoom()
+
+      if (zoom > 12) {
+
+        const bounds = leafletElement.getBounds()
+
+        this.props.data.refetch({
+          ignoreStopPlaceId: ignoreStopId,
+          latMin: bounds.getSouthWest().lat,
+          latMax: bounds.getNorthEast().lat,
+          lonMin: bounds.getSouthWest().lng,
+          lonMax: bounds.getNorthEast().lng
+        })
+      }
+    }
+
+    this.handleMapMoveEnd = debounce(mapEnd, 10)
   }
 
   handleClick(event, map) {
@@ -50,7 +74,7 @@ class EditStopMap extends React.Component {
     if (isQuay) {
       dispatch(MapActions.changeQuayPosition(index, formattedPosition))
     } else {
-      dispatch(MapActions.changeActiveStopPosition(formattedPosition))
+      dispatch(MapActions.changeCurrentStopPosition(formattedPosition))
     }
   }
 
@@ -60,23 +84,6 @@ class EditStopMap extends React.Component {
       compassBearing: compassBearing,
       compassBearingOwner: index
     })
-  }
-
-  handleMapMoveEnd(event, {leafletElement}) {
-
-    if (this.props.stopPlaceMarker) {
-
-      let bounds = leafletElement.getBounds()
-      let ignoreStopPlaceId = this.props.stopPlaceMarker.markerProps.id
-
-      let boundingBox = {
-        xMin: bounds.getSouthWest().lng,
-        yMin: bounds.getSouthWest().lat,
-        xMax: bounds.getNorthEast().lng,
-        yMax: bounds.getNorthEast().lat
-      }
-      this.props.dispatch(AjaxActions.getStopsNearbyForEditingStop(boundingBox, ignoreStopPlaceId, leafletElement))
-    }
   }
 
   handleBaselayerChanged(value) {
@@ -101,7 +108,7 @@ class EditStopMap extends React.Component {
     if (coordinatesOwner.isQuay) {
       dispatch(MapActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
     } else {
-      dispatch(MapActions.changeActiveStopPosition(position))
+      dispatch(MapActions.changeCurrentStopPosition(position))
     }
 
     dispatch(MapActions.changeMapCenter(position, 14))
@@ -121,27 +128,15 @@ class EditStopMap extends React.Component {
 
   render() {
 
-    const { position, stopPlaceMarker, neighbouringMarkers, zoom, missingCoordsMap } = this.props
+    const { position, markers, zoom, minZoom, missingCoordsMap } = this.props
     const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
 
-    let markers = []
-
-    if (stopPlaceMarker) {
-      markers = markers.concat(stopPlaceMarker)
-    }
-
-    if (neighbouringMarkers && neighbouringMarkers.length) {
-      markers = markers.concat(neighbouringMarkers)
-    }
-
-    let minZoom = 5
-
     // Restricts zoom level if coordinates are provided either by the user or from backend
-    if (stopPlaceMarker && stopPlaceMarker.markerProps && !stopPlaceMarker.markerProps.position) {
-      if (!missingCoordsMap[stopPlaceMarker.markerProps.id]) {
+    /*if (stopPlace && stopPlace.markerProps && !stopPlace.markerProps.position) {
+      if (!missingCoordsMap[stopPlace.markerProps.id]) {
         minZoom = 15
       }
-    }
+    } */
 
     return (
       <div>
@@ -186,18 +181,50 @@ class EditStopMap extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
+
+  const currentStopPlace = state.stopPlace.current
+  const neighbourStops = state.stopPlace.neighbourStops
+
+  let markers = []
+
+  if (currentStopPlace) {
+    markers = markers.concat(currentStopPlace)
+  }
+
+  if (neighbourStops && neighbourStops.length) {
+    markers = markers.concat(neighbourStops)
+  }
+
   return {
-    position: state.editStopReducer.centerPosition,
-    stopPlaceMarker: state.editStopReducer.activeStopPlace,
-    neighbouringMarkers: state.editStopReducer.neighbouringMarkers,
-    zoom: state.editStopReducer.zoom,
-    lastUpdated: state.editStopReducer.lastUpdated,
-    activeBaselayer: state.userReducer.activeBaselayer,
-    enablePolylines: state.editStopReducer.enablePolylines,
-    isCreatingPolylines: state.editStopReducer.isCreatingPolylines,
-    missingCoordsMap: state.userReducer.missingCoordsMap,
+    position: state.stopPlace.centerPosition,
+    zoom: state.stopPlace.zoom,
+    lastUpdated: state.editingStop.lastUpdated,
+    activeBaselayer: state.user.activeBaselayer,
+    enablePolylines: state.editingStop.enablePolylines,
+    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    missingCoordsMap: state.user.missingCoordsMap,
+    markers: markers,
+    ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,
+    minZoom: state.stopPlace.minZoom
   }
 }
 
-export default injectIntl(connect(mapStateToProps)(EditStopMap))
+const getIdFromPath = () => window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
+
+const EditStopMapWithData = graphql(stopPlaceBBQuery, {
+  options: {
+    variables: {
+      ignoreStopPlaceId: (getIdFromPath() && getIdFromPath() !== 'new') ? getIdFromPath() : null,
+      latMin: 59.24675047197561,
+      latMax: 59.341943796898505,
+      lonMin: 0.94066619873047,
+      lonMax: 11.186141967773438
+    },
+  }
+})(EditStopMap)
+
+
+export default injectIntl(connect(mapStateToProps)(EditStopMapWithData))
+
+

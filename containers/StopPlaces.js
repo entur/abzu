@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import SearchBox from './SearchBox'
 import StopPlacesMap from './StopPlacesMap'
-require('../styles/main.css')
+import '../styles/main.css'
 
-export default class StopPlaces extends React.Component {
-
-  render() {
+const StopPlaces = props => {
     return (
       <div>
         <SearchBox/>
         <StopPlacesMap/>
       </div>
     )
-  }
 }
+
+export default StopPlaces
