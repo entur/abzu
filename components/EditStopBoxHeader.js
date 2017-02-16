@@ -30,8 +30,8 @@ class EditstopBoxHeader extends React.Component {
 
   componentWillReceiveProps(props) {
     this.setState({
-      description: props.stopPlace.description,
-      name: props.stopPlace.name
+      description: props.stopPlace.description || '',
+      name: props.stopPlace.name || ''
     })
   }
 

@@ -93,7 +93,7 @@ class EditStopBoxTabs extends React.Component {
             quay={quay}
             ref={'quay-' + index}
             index={index}
-            name={quay.name}
+            name={quay.plateCode}
             handleRemoveQuay={() => this.handleRemoveQuay(index)}
             handleLocateOnMap={this.handleLocateOnMap.bind(this)}
             handleToggleCollapse={this.handleToggleCollapse.bind(this)}

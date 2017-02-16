@@ -12,9 +12,7 @@ Fragments.quay = {
           }
           allAreasWheelchairAccessible
           compassBearing
-          name {
-              value 
-          }
+          plateCode
           description {
               value
           }

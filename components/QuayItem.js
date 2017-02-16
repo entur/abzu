@@ -11,7 +11,7 @@ import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 class QuayItem extends React.Component {
 
   static PropTypes = {
-    name: PropTypes.string.isRequired,
+    plateCode: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     quay: PropTypes.object.isRequired,
     handleRemoveQuay: PropTypes.func.isRequired,
@@ -38,7 +38,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, translations, name, expanded, index, handleToggleCollapse } = this.props
+    const { quay, translations, plateCode, expanded, index, handleToggleCollapse } = this.props
 
     const removeStyle = {
       float: 'right',
@@ -53,7 +53,7 @@ class QuayItem extends React.Component {
     }
 
     const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
-    const quayTitleSuffix = `${(name && name.length) ? name : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
+    const quayTitleSuffix = `${(plateCode && plateCode.length) ? plateCode : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
 
     return (
 
@@ -80,16 +80,16 @@ class QuayItem extends React.Component {
        { !expanded ? null
        : <div>
            <TextField
-             hintText={translations.name}
-             floatingLabelText={translations.name}
-             value={quay.name}
+             hintText={translations.plateCode}
+             floatingLabelText={translations.plateCode}
+             defaultValue={quay.plateCode}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
            />
           <TextField
             hintText={translations.description}
             floatingLabelText={translations.description}
-            value={quay.description}
+            defaultValue={quay.description}
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />

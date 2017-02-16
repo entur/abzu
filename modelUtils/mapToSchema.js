@@ -9,10 +9,7 @@ helpers.mapQuayToSchema = quay => ({
   },
   allAreasWheelChairAccessible: quay.allAreasWheelChairAccessible,
   compassBearing: quay.compassBearing,
-  name: {
-    value: quay.name,
-    lang: 'no'
-  },
+  plateCode: quay.plateCode,
   description: {
     value: quay.description,
     lang: 'no'
