@@ -11,7 +11,6 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       name: stop.name.value,
       location: stop.location ? [ setDecimalPrecision(stop.location.latitude, 6), setDecimalPrecision(stop.location.longitude, 6) ] : null,
       stopPlaceType: stop.stopPlaceType,
-      allAreasWheelchairAccessible: stop.allAreasWheelchairAccessible,
       isActive: isActive
     }
 
@@ -52,7 +51,6 @@ helpers.mapQuayToClientQuay = quay => {
   return {
     id: quay.id,
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
-    allAreasWheelChairAccessible: quay.allAreasWheelChairAccessible,
     compassBearing: quay.compassBearing,
     plateCode: quay.plateCode,
     description: quay.description ? quay.description.value : ''
@@ -85,7 +83,6 @@ helpers.createNewStopFromLocation = location => {
     description: '',
     location: location.map ( pos => setDecimalPrecision(pos, 6)),
     stopPlaceType: null,
-    allAreasWheelchairAccessible: false,
     topographicPlace: '',
     quays: [],
     entrances: [],

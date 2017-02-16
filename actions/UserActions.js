@@ -92,11 +92,6 @@ UserActions.hideQuaysForNeighbourStop = (id) => {
   }
 }
 
-UserActions.clearSearchResults = () => {
-  return function(dispatch) {
-    dispatch( sendData(types.RECEIVED_STOP_NAMES, []) )
-  }
-}
 
 UserActions.addToposChip = (chip) => {
   return function(dispatch) {

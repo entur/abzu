@@ -21,7 +21,6 @@ export const stopPlaceBBQuery = gql`
                 latitude
                 longitude
             }
-            allAreasWheelchairAccessible
             stopPlaceType
             topographicPlace {
                 name {

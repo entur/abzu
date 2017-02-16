@@ -101,14 +101,6 @@ MapActions.changeQuayCompassBearing = (index, compassBearing) => {
   }
 }
 
-MapActions.changeWHA = (index, value) => {
-  return function(dispatch) {
-    dispatch( sendData(types.CHANGED_WHA, {
-      index: index,
-      value: value
-    }))
-  }
-}
 
 MapActions.setElementFocus = (index, type) => {
   return function(dispatch) {

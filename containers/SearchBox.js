@@ -40,7 +40,6 @@ class SearchBox extends React.Component {
 
   handleUpdateInput(input) {
     if (!input || !input.length) {
-      this.props.dispatch(UserActions.clearSearchResults())
       /* This is a work-around to solve bug in Material-UI causing handleUpdateInput to
        be fired upon handleNewRequest
        */

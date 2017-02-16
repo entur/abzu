@@ -93,12 +93,6 @@ class QuayItem extends React.Component {
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
-          <Checkbox
-            defaultChecked={quay.allAreasWheelchairAccessible}
-            label={translations.allAreasWheelchairAccessible}
-            onCheck={this.handleWHAChange}
-            style={{marginBottom: 10, width: "95%", marginTop: 10}}
-            />
           <IconButton
             iconClassName="material-icons"
             onClick={this.props.handleRemoveQuay}

@@ -26,7 +26,6 @@ class EditStopBox extends React.Component {
         name: formatMessage({id: 'name'}),
         plateCode: formatMessage({id: 'plateCode'}),
         description: formatMessage({id: 'description'}),
-        allAreasWheelchairAccessible: formatMessage({id: 'all_areas_wheelchair_accessible'}),
         unsaved: formatMessage({id: 'unsaved'}),
         undefined: formatMessage({id: 'undefined'}),
         none: formatMessage({id: 'none_no'}),

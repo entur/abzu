@@ -10,7 +10,6 @@ Fragments.quay = {
               latitude
               longitude
           }
-          allAreasWheelchairAccessible
           compassBearing
           plateCode
           description {
@@ -37,7 +36,6 @@ Fragments.stopPlace = {
         quays {
             ...VerboseQuay
         }
-        allAreasWheelchairAccessible
         stopPlaceType
         topographicPlace {
             name {

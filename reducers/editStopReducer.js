@@ -49,32 +49,6 @@ const editStopReducer = (state = initialState, action) => {
         }
       })
 
-    case types.RECEIVED_QUAYS_FOR_NEIGHBOURING_STOP:
-
-      let newNeighbourQuaysMap = state.neighbouringMarkersQuaysMap
-
-      if (action.payLoad.stopId && action.payLoad.quays) {
-        newNeighbourQuaysMap = state.neighbouringMarkersQuaysMap.set(action.payLoad.stopId, action.payLoad.quays)
-      }
-      return Object.assign({}, state, {
-        neighbouringMarkers: updateNeighbourMarkersWithQuays(newNeighbourQuaysMap, state.neighbouringMarkers),
-        neighbouringMarkersQuaysMap: newNeighbourQuaysMap
-      })
-
-    case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
-
-      let newNeighbourQuaysMapHid = state.neighbouringMarkersQuaysMap
-
-      if (action.payLoad) {
-        newNeighbourQuaysMapHid = state.neighbouringMarkersQuaysMap.set(action.payLoad, [])
-      }
-
-      return Object.assign({}, state, {
-        neighbouringMarkers: updateNeighbourMarkersWithQuays(newNeighbourQuaysMapHid, state.neighbouringMarkers),
-        neighbouringMarkersQuaysMap: newNeighbourQuaysMapHid
-      })
-
-
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, { centerPosition: action.payLoad })
 

@@ -12,7 +12,6 @@
           "longitude": 11.725363999999999,
           "__typename": "Location"
         },
-        "allAreasWheelchairAccessible": null,
         "stopPlaceType": "onstreetBus",
         "topographicPlace": {
           "name": {
@@ -38,7 +37,6 @@
               "__typename": "Location"
             },
             "plateCode": "1",
-            "allAreasWheelchairAccessible": null,
             "compassBearing": 344,
             "__typename": "quay"
           },
@@ -50,7 +48,6 @@
               "__typename": "Location"
             },
             "plateCode": "2",
-            "allAreasWheelchairAccessible": null,
             "compassBearing": 164,
             "__typename": "quay"
           }
