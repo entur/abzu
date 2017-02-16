@@ -52,7 +52,7 @@ helpers.mapQuayToClientQuay = quay => {
     id: quay.id,
     location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     compassBearing: quay.compassBearing,
-    plateCode: quay.plateCode,
+    publicCode: quay.publicCode,
     description: quay.description ? quay.description.value : ''
   }
 }
@@ -180,7 +180,7 @@ helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
 
   switch (type) {
     case 'quay':
-      copy.quays[index] = Object.assign({}, copy.quays[index], { plateCode: name })
+      copy.quays[index] = Object.assign({}, copy.quays[index], { publicCode: name })
       break
     case 'entrance':
       copy.entrances[index] = Object.assign({}, copy.entrances[index], { name: name })

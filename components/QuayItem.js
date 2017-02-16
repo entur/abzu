@@ -11,7 +11,7 @@ import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 class QuayItem extends React.Component {
 
   static PropTypes = {
-    plateCode: PropTypes.string.isRequired,
+    publicCode: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     quay: PropTypes.object.isRequired,
     handleRemoveQuay: PropTypes.func.isRequired,
@@ -38,7 +38,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, translations, plateCode, expanded, index, handleToggleCollapse } = this.props
+    const { quay, translations, publicCode, expanded, index, handleToggleCollapse } = this.props
 
     const removeStyle = {
       float: 'right',
@@ -53,7 +53,7 @@ class QuayItem extends React.Component {
     }
 
     const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
-    const quayTitleSuffix = `${(plateCode && plateCode.length) ? plateCode : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
+    const quayTitleSuffix = `${(publicCode && publicCode.length) ? publicCode : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
 
     return (
 
@@ -80,9 +80,9 @@ class QuayItem extends React.Component {
        { !expanded ? null
        : <div>
            <TextField
-             hintText={translations.plateCode}
-             floatingLabelText={translations.plateCode}
-             defaultValue={quay.plateCode}
+             hintText={translations.publicCode}
+             floatingLabelText={translations.publicCode}
+             defaultValue={quay.publicCode}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
            />

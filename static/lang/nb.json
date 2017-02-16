@@ -74,7 +74,7 @@
   "pathJunction" : "korsvei",
   "pathJunctions" : "korsveier",
   "platform" : "Plattform",
-  "plateCode": "Skiltkode",
+  "publicCode": "Publikumskode",
   "port" : "Havn",
   "quay" : "quay",
   "quays" : "quayer",

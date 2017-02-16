@@ -36,7 +36,7 @@
               "longitude": 11.726214,
               "__typename": "Location"
             },
-            "plateCode": "1",
+            "publicCode": "1",
             "compassBearing": 344,
             "__typename": "quay"
           },
@@ -47,7 +47,7 @@
               "longitude": 11.724514,
               "__typename": "Location"
             },
-            "plateCode": "2",
+            "publicCode": "2",
             "compassBearing": 164,
             "__typename": "quay"
           }

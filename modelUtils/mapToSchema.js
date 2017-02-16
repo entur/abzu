@@ -8,7 +8,7 @@ helpers.mapQuayToSchema = quay => ({
     longitude: quay.location[1]
   },
   compassBearing: quay.compassBearing,
-  plateCode: quay.plateCode,
+  publicCode: quay.publicCode,
   description: {
     value: quay.description,
     lang: 'no'

@@ -11,7 +11,7 @@ Fragments.quay = {
               longitude
           }
           compassBearing
-          plateCode
+          publicCode
           description {
               value
           }

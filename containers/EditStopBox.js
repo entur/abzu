@@ -24,7 +24,7 @@ class EditStopBox extends React.Component {
       confirmDialogOpen: false,
       itemTranslation:  {
         name: formatMessage({id: 'name'}),
-        plateCode: formatMessage({id: 'plateCode'}),
+        publicCode: formatMessage({id: 'publicCode'}),
         description: formatMessage({id: 'description'}),
         unsaved: formatMessage({id: 'unsaved'}),
         undefined: formatMessage({id: 'undefined'}),
