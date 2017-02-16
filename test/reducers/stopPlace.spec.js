@@ -1,7 +1,7 @@
 import * as types from './../../actions/actionTypes'
 import expect from 'expect'
 import { graphQLReducer } from './../../reducers/'
-import stopPlaceData from './json/graphql_stopPlace.json'
+import stopPlaceData from './json/stopPlace.json'
 
 describe('stop place reducer', () => {
 
