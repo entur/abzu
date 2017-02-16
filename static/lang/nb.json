@@ -44,6 +44,7 @@
   "english" : "Engelsk",
   "entrance" : "inngang",
   "entrances" : "innganger",
+  "error_unable_to_load_stop": "Det har inntruffet en feil på serveren. Prøv igjen senere.",
   "favorites" : "Favoritter",
   "favorites_title" : "Dine lagrede søk",
   "field_is_required" : "Feltet er påkrevd",

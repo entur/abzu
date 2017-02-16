@@ -17,6 +17,7 @@ import CoordinatesDialog from '../components/CoordinatesDialog'
 import SearchFilter from '../components/SearchFilter'
 import { graphql } from 'react-apollo'
 import { findStop } from "../actions/Queries"
+import { withApollo } from 'react-apollo'
 
 class SearchBox extends React.Component {
 
@@ -47,14 +48,19 @@ class SearchBox extends React.Component {
       return
     }
     else {
-      this.props.data.refetch({
-        query: input,
-        stopPlaceType: this.props.stopTypeFilter,
-        municipalityReference: this.props.topoiChips
-          .filter( topos => topos.type === "town").map(topos => topos.value),
-        countyReference: this.props.topoiChips
-          .filter( topos => topos.type === "county").map(topos => topos.value)
+
+      this.props.client.query({
+        query: findStop,
+        variables: {
+          query: input,
+          stopPlaceType: this.props.stopTypeFilter,
+          municipalityReference: this.props.topoiChips
+            .filter( topos => topos.type === "town").map(topos => topos.value),
+          countyReference: this.props.topoiChips
+            .filter( topos => topos.type === "county").map(topos => topos.value)
+        }
       })
+
       this.props.dispatch(UserActions.setSearchText(input))
     }
   }
@@ -223,17 +229,6 @@ class SearchBox extends React.Component {
   }
 }
 
-const searchBoxWithConnectedData = graphql(findStop, {
-  options: {
-    variables: {
-      query: '',
-      stopPlaceType: undefined,
-      municipalityReference: undefined,
-      countyReference: undefined
-    },
-  }
-})(SearchBox)
-
 const mapStateToProps = state => {
 
   var favoriteManager = new FavoriteManager()
@@ -253,4 +248,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default injectIntl(connect(mapStateToProps)(searchBoxWithConnectedData))
+export default withApollo(injectIntl(connect(mapStateToProps)(SearchBox)))

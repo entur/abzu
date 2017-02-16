@@ -45,6 +45,9 @@ class EditStopBox extends React.Component {
         dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
         dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
       }
+    }).catch( err => {
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
+      console.log(err)
     })
   }
 

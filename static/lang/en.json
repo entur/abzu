@@ -42,6 +42,7 @@
   "english": "English",
   "entrance": "entrance",
   "entrances": "entrances",
+  "error_unable_to_load_stop": "An error has occured on the server. Please try again later.",
   "estimated_path_length": "How many minutes is your estimate of this path link by walking?",
   "estimated_time": "{estimate} {minuteCount, plural, one {minute} other {minutes}}",
   "favorites": "Favorites",

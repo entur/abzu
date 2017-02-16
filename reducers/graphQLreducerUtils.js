@@ -24,9 +24,8 @@ export const getStateByOperation = (state, action) => {
       })
 
     case 'findStop':
-      const foundStop = action.result.data.stopPlace
       return Object.assign({}, state, {
-        searchResults: formatHelpers.mapSearchResultatToClientStops(foundStop),
+        searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace),
       })
 
     default: return state
