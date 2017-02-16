@@ -47,22 +47,25 @@ class QuayItem extends React.Component {
 
     const locationStyle = {
       marginRight: 5,
-      verticalAlign: 'text-top',
       height: 16,
       width: 16
     }
 
     const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
-    const quayTitleSuffix = `${(publicCode && publicCode.length) ? publicCode : ` - ${translations.undefined}`}, (ID: ${quay.id||'?'})`
+    const quayTitleSuffix = `${publicCode || ''}`
+    const idTitle = `ID: ${quay.id||'?'}`
 
     return (
 
       <div>
         <div className="tabItem">
-          <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
+          <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
-            <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'quay')}>
-              {quayTitlePrefix + quayTitleSuffix}
+            <div style={{display: 'inline-block', verticalAlign: 'middle'}} onClick={() => handleToggleCollapse(index, 'quay')}>
+              <span style={{color: '#2196F3'}}>
+                { quayTitlePrefix + quayTitleSuffix }
+              </span>
+              <span style={{fontSize: '0.8em', marginLeft: 5, fontWeight: 600, color: '#464545'}}> { idTitle } </span>
             </div>
             { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
             { !expanded

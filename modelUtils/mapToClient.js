@@ -34,7 +34,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       formattedStop.pathJunctions = []
 
       if (stop.quays) {
-        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay))
+        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
       }
     }
 
