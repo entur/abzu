@@ -7,6 +7,10 @@ import IconButton from 'material-ui/IconButton'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
+import WheelChairOff from 'material-ui/svg-icons/action/accessibility'
+import WheelChair from 'material-ui/svg-icons/action/accessible'
+import Stairs from '../static/icons/accessibility/stairs'
+import StepFree from '../static/icons/accessibility/stepFree'
 
 class QuayItem extends React.Component {
 
@@ -24,11 +28,6 @@ class QuayItem extends React.Component {
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props
     dispatch(MapActions.changeElementDescription(index, event.target.value, 'quay'))
-  }
-
-  handleWHAChange = (event) => {
-    const { dispatch, index } = this.props
-    dispatch(MapActions.changeWHA(index, event.target.checked))
   }
 
   handleNameChange = (event) => {
@@ -105,6 +104,24 @@ class QuayItem extends React.Component {
              </IconButton>
             : null // hide this for now, not used
            }
+
+           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-around'}}>
+             <Checkbox
+               checkedIcon={<WheelChair />}
+               uncheckedIcon={<WheelChairOff />}
+               label={translations.wheelchairAccess}
+               labelStyle={{fontSize: '0.8em'}}
+               style={{width: '40%'}}
+             />
+             <Checkbox
+               checkedIcon={<StepFree />}
+               uncheckedIcon={<Stairs />}
+               label={translations.stepFreeAccess}
+               labelStyle={{fontSize: '0.8em'}}
+               style={{width: '40%'}}
+             />
+           </div>
+
         </div>
         }
       </div>

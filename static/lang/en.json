@@ -87,6 +87,7 @@
   "snackbar_message_failed": "Saving failed!",
   "snackbar_message_saved": "Saved!",
   "something_went_wrong": "Something went wrong!",
+  "step_free_access": "Step free access",
   "stop_place": "stop place",
   "terminate_path_link_here": "Terminate path link here",
   "title_for_favorite": "What do you want to remember your search as?",
@@ -99,5 +100,6 @@
   "untitled": "Untitled",
   "use": "Use",
   "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted.",
-  "walking_estimate": "Walking distance"
+  "walking_estimate": "Walking distance",
+  "wheelchairAccess": "Wheelchair friendly"
 }

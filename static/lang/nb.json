@@ -84,6 +84,7 @@
   "show_path_links" : "Vis ganglenker",
   "show_quays" : "Vis quayer",
   "sign_out" : "Logg ut",
+  "step_free_access": "Trinnfri adgang",
   "stop_place": "stoppested",
   "snackbar_message_failed" : "Lagring feilet",
   "snackbar_message_saved" : "Lagret!",
@@ -99,5 +100,6 @@
   "untitled" : "Uten navn",
   "use" : "Bruk",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
-  "walking_estimate": "Gangavstand"
+  "walking_estimate": "Gangavstand",
+  "wheelchairAccess": "Rullestolvennlig"
 }
