@@ -11,6 +11,9 @@ import WheelChairOff from 'material-ui/svg-icons/action/accessibility'
 import WheelChair from 'material-ui/svg-icons/action/accessible'
 import Stairs from '../static/icons/accessibility/stairs'
 import StepFree from '../static/icons/accessibility/stepFree'
+import TicketMachine from '../static/icons/facilities/TicketMachine'
+import NoTicketMachine from '../static/icons/facilities/NoTicketMachine'
+
 
 class QuayItem extends React.Component {
 
@@ -105,23 +108,31 @@ class QuayItem extends React.Component {
             : null // hide this for now, not used
            }
 
-           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-around'}}>
+           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<WheelChair />}
                uncheckedIcon={<WheelChairOff />}
                label={translations.wheelchairAccess}
                labelStyle={{fontSize: '0.8em'}}
-               style={{width: '40%'}}
+               style={{width: '45%'}}
              />
              <Checkbox
                checkedIcon={<StepFree />}
                uncheckedIcon={<Stairs />}
                label={translations.stepFreeAccess}
                labelStyle={{fontSize: '0.8em'}}
-               style={{width: '40%'}}
+               style={{width: '45%'}}
              />
            </div>
-
+           <div style={{marginTop: 10, marginBottom: 10, display: 'flex'}}>
+             <Checkbox
+               checkedIcon={<TicketMachine />}
+               uncheckedIcon={<NoTicketMachine />}
+               label={translations.ticketMachine}
+               labelStyle={{fontSize: '0.8em'}}
+               style={{width: '45%'}}
+             />
+           </div>
         </div>
         }
       </div>

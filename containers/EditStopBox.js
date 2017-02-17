@@ -33,7 +33,8 @@ class EditStopBox extends React.Component {
         pathJunctions: formatMessage({id: 'pathJunctions'}),
         entrances: formatMessage({id: 'entrances'}),
         stepFreeAccess: formatMessage({id: 'step_free_access'}),
-        wheelchairAccess: formatMessage({id: 'wheelchairAccess'})
+        wheelchairAccess: formatMessage({id: 'wheelchairAccess'}),
+        ticketMachine: formatMessage({id: 'ticketMachine'})
       }
 
     }
