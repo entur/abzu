@@ -72,7 +72,13 @@ class EditStopPlace extends React.Component {
 
     return (
       <div>
-
+        <Dialog
+          modal={false}
+          actions={actions}
+          open={this.state.showErrorDialog}
+          onRequestClose={() => { this.setState({showErrorDialog: false})}}
+        > { formatMessage({id: 'error_unable_to_load_stop'})}
+        </Dialog>
         { shouldDisplayMessage
           ?
           <InformationBanner
@@ -93,16 +99,7 @@ class EditStopPlace extends React.Component {
               <ToggleMapItemsBox/>
               <NewElementsBox/>
             </div>
-            : <div>
-                <Loader/>
-                <Dialog
-                  modal={false}
-                  actions={actions}
-                  open={this.state.showErrorDialog}
-                  onRequestClose={() => { this.setState({showErrorDialog: false})}}
-                > { formatMessage({id: 'error_unable_to_load_stop'})}
-                </Dialog>
-            </div>
+            : <Loader/>
         }
       </div>
     )

@@ -96,13 +96,15 @@ class QuayItem extends React.Component {
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
-          <IconButton
-            iconClassName="material-icons"
-            onClick={this.props.handleRemoveQuay}
-            style={removeStyle}
-          >
-          delete
-          </IconButton>
+           { false ? <IconButton
+             iconClassName="material-icons"
+             onClick={this.props.handleRemoveQuay}
+             style={removeStyle}
+             >
+             delete
+             </IconButton>
+            : null // hide this for now, not used
+           }
         </div>
         }
       </div>

@@ -78,7 +78,6 @@ class EditStopBoxTabs extends React.Component {
       height: 220,
       position: "relative",
       display: "block",
-      marginTop: -70
     }
 
     const { activeElementTab, itemTranslation, activeStopPlace } = this.props
