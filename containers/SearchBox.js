@@ -112,10 +112,18 @@ class SearchBox extends React.Component {
         text: element.name,
         value: (
           <MenuItem
-            style={{marginTop:5, paddingRight: 25, marginLeft: -10}}
-            innerDivStyle={{minWidth: 300}}
-            primaryText={`${element.name}, ${element.topographicPlace} (${element.parentTopographicPlace})`}
-            secondaryText={(<ModalityIcon
+            style={{marginTop:5, paddingRight: 5, width: 'auto'}}
+            innerDivStyle={{minWidth: 300, padding: '0px 16px 0px 10px' }}
+            primaryText={(
+              <div>{element.name}</div>
+            )}
+            secondaryText={(
+              <div style={{color: 'grey', fontSize: '0.8em', transform: 'translateY(15px)'}}>
+                {`${element.topographicPlace}, ${element.parentTopographicPlace}`}
+                </div>
+            )}
+            leftIcon={(
+              <ModalityIcon
                 iconStyle={{float: 'left', transform: 'translateY(10px)'}}
                 type={element.stopPlaceType}
               />
