@@ -7,8 +7,8 @@ import { setDecimalPrecision } from '../utils'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import CompassBearingDialog from '../components/CompassBearingDialog'
 import { stopPlaceBBQuery } from "../actions/Queries"
-import { graphql } from 'react-apollo'
 import debounce from 'lodash.debounce'
+import { withApollo } from 'react-apollo'
 
 class EditStopMap extends React.Component {
 
@@ -28,12 +28,15 @@ class EditStopMap extends React.Component {
 
         const bounds = leafletElement.getBounds()
 
-        this.props.data.refetch({
-          ignoreStopPlaceId: ignoreStopId,
-          latMin: bounds.getSouthWest().lat,
-          latMax: bounds.getNorthEast().lat,
-          lonMin: bounds.getSouthWest().lng,
-          lonMax: bounds.getNorthEast().lng
+        this.props.client.query({
+          query: stopPlaceBBQuery,
+          variables: {
+            ignoreStopPlaceId: ignoreStopId,
+            latMin: bounds.getSouthWest().lat,
+            latMax: bounds.getNorthEast().lat,
+            lonMin: bounds.getSouthWest().lng,
+            lonMax: bounds.getNorthEast().lng
+          }
         })
       }
     }
@@ -203,21 +206,6 @@ const mapStateToProps = state => {
   }
 }
 
-const getIdFromPath = () => window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
-
-const EditStopMapWithData = graphql(stopPlaceBBQuery, {
-  options: {
-    variables: {
-      ignoreStopPlaceId: (getIdFromPath() && getIdFromPath() !== 'new') ? getIdFromPath() : null,
-      latMin: 59.24675047197561,
-      latMax: 59.341943796898505,
-      lonMin: 0.94066619873047,
-      lonMax: 11.186141967773438
-    },
-  }
-})(EditStopMap)
-
-
-export default injectIntl(connect(mapStateToProps)(EditStopMapWithData))
+export default withApollo(injectIntl(connect(mapStateToProps)(EditStopMap)))
 
 

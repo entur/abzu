@@ -2,7 +2,10 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import React from 'react'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
-import * as reducers from '../reducers'
+import editStopReducer from '../reducers/editStopReducer'
+import graphQLReducer from '../reducers/graphQLreducer'
+import userReducer from '../reducers/userReducer'
+
 import { routerReducer } from 'react-router-redux'
 import ApolloClient,  { createNetworkInterface } from 'apollo-client'
 
@@ -40,10 +43,10 @@ const initialState = {
 }
 
 const combinedReducer = combineReducers({
-  editingStop: reducers.editStopReducer,
-  user: reducers.userReducer,
+  editingStop: editStopReducer,
+  user: userReducer,
   routing: routerReducer,
-  stopPlace: reducers.graphQLReducer,
+  stopPlace: graphQLReducer,
   apollo: client.reducer()
 })
 
