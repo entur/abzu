@@ -14,6 +14,11 @@ const graphQLreducer = (state = {}, action) => {
       case "APOLLO_QUERY_RESULT_CLIENT":
         return getObjectFromCache(state, action)
 
+      case types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW:
+        return Object.assign({}, state, {
+          neighbourStops: []
+        })
+
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),

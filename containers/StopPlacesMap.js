@@ -2,6 +2,8 @@ import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
 import { MapActions, UserActions } from '../actions/'
+import { withApollo } from 'react-apollo'
+import { stopPlaceBBQuery } from '../actions/Queries'
 
 class StopPlacesMap extends React.Component {
 
@@ -28,28 +30,26 @@ class StopPlacesMap extends React.Component {
 
   handleMapMoveEnd(event, { leafletElement }) {
 
-    const center = leafletElement.getCenter()
+    const zoom = leafletElement.getZoom()
 
+    if (zoom > 14) {
 
-    //TODO: Replace this with GraphQL fetch
+      const bounds = leafletElement.getBounds()
 
-    /*let zoom = map.leafletElement._zoom
+      this.props.client.query({
+        query: stopPlaceBBQuery,
+        variables: {
+          latMin: bounds.getSouthWest().lat,
+          latMax: bounds.getNorthEast().lat,
+          lonMin: bounds.getSouthWest().lng,
+          lonMax: bounds.getNorthEast().lng
+        }
+      })
 
-    if (zoom > 12) {
-
-      let bounds = map.leafletElement.getBounds()
-
-      let boundingBox = {
-        xMin: bounds.getSouthWest().lng,
-        yMin: bounds.getSouthWest().lat,
-        xMax: bounds.getNorthEast().lng,
-        yMax: bounds.getNorthEast().lat
-      }
-
-      this.props.dispatch(AjaxActions.getStopsNearbyForOverview(boundingBox))
     } else {
       this.props.dispatch(UserActions.removeStopsNearbyForOverview())
-    }*/
+    }
+
   }
 
   render() {
@@ -80,7 +80,7 @@ const mapStateToProps = state => {
     centerPosition,
     activeSearchResult,
     zoom,
-    neighbouringMarkers
+    neighbourStops
   } = state.stopPlace
 
   const { isCreatingNewStop } = state.user
@@ -91,8 +91,8 @@ const mapStateToProps = state => {
     markers = markers.concat(newStop)
   }
 
-  if (neighbouringMarkers && neighbouringMarkers.length) {
-    markers = markers.concat(neighbouringMarkers)
+  if (neighbourStops && neighbourStops.length) {
+    markers = markers.concat(neighbourStops)
   }
 
   return {
@@ -104,4 +104,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(StopPlacesMap)
+export default withApollo(connect(mapStateToProps)(StopPlacesMap))
