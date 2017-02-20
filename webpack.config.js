@@ -42,9 +42,23 @@ module.exports = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?{optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}, mozjpeg: {quality: 65}}'
+          'image-webpack?' + JSON.stringify(imageLoaderQuery)
         ]
       }
     ]
   }
+}
+
+var imageLoaderQuery = {
+  mozjpeg: {
+    progressive: true,
+      quality: '55'
+  },
+  optipng: {
+    optimizationLevel: 7,
+  },
+  pngquant: {
+    quality: '55-80',
+      speed: 10,
+  },
 }
