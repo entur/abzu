@@ -51,6 +51,7 @@ class SearchBox extends React.Component {
 
       this.props.client.query({
         query: findStop,
+        forceFetch: true,
         variables: {
           query: input,
           stopPlaceType: this.props.stopTypeFilter,
@@ -115,10 +116,10 @@ class SearchBox extends React.Component {
             style={{marginTop:5, paddingRight: 5, width: 'auto'}}
             innerDivStyle={{minWidth: 300, padding: '0px 16px 0px 10px' }}
             primaryText={(
-              <div>{element.name}</div>
+              <div style={{fontSize: '0.9em'}}>{element.name}</div>
             )}
             secondaryText={(
-              <div style={{color: 'grey', fontSize: '0.8em', transform: 'translateY(15px)'}}>
+              <div style={{color: 'grey', fontSize: '0.7em', transform: 'translateY(-10px)'}}>
                 {`${element.topographicPlace}, ${element.parentTopographicPlace}`}
                 </div>
             )}

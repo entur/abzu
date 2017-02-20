@@ -44,7 +44,9 @@ const getProperZoomLevel = location => {
 
 const getStopFromResult = (state, action) => {
 
-  if (!action.result.data.stopPlace) return state
+  if (!action.result.data.stopPlace) {
+    return state
+  }
 
   const stopPlace = action.result.data.stopPlace[0]
 
