@@ -1,6 +1,7 @@
 {
   "_empty": " ",
   "_title": "Stop Place Register",
+  "accessibility": "Fremkommelighet",
   "add_entry_message": "Do you want to add",
   "add_new_element_title" : "Add new element",
   "add_new_element_body" : "You are about to add a new element to the map",
@@ -46,6 +47,7 @@
   "error_unable_to_load_stop": "An error has occured on the server. Please try again later.",
   "estimated_path_length": "How many minutes is your estimate of this path link by walking?",
   "estimated_time": "{estimate} {minuteCount, plural, one {minute} other {minutes}}",
+  "facilities": "Facilities",
   "favorites": "Favorites",
   "favorites_title": "Your saved searches",
   "field_is_required": "Field is required",

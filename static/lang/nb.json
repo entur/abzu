@@ -1,6 +1,7 @@
 {
   "_empty": " ",
   "_title": "Stoppestedregister",
+  "accessibility": "Fremkommelighet",
   "add_entry_message": "Vil du legge til",
   "add_new_element_title" : "Legg til nytt element",
   "add_new_element_body" : "Du er i ferd med å legge til et nytt element til kartet",
@@ -46,6 +47,7 @@
   "entrance" : "inngang",
   "entrances" : "innganger",
   "error_unable_to_load_stop": "Det har inntruffet en feil på serveren. Prøv igjen senere.",
+  "facilities": "Fasiliteter",
   "favorites" : "Favoritter",
   "favorites_title" : "Dine lagrede søk",
   "field_is_required" : "Feltet er påkrevd",

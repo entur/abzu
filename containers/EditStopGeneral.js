@@ -13,7 +13,7 @@ import mapToSchema from '../modelUtils/mapToSchema'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
 
-class EditStopBox extends React.Component {
+class EditStopGeneral extends React.Component {
 
   constructor(props) {
     super(props)
@@ -99,7 +99,7 @@ class EditStopBox extends React.Component {
       captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
     }
 
-    const SbStyle = {
+    const style = {
       top: 80,
       border: '1px solid #511E12',
       background: '#fff',
@@ -145,7 +145,7 @@ class EditStopBox extends React.Component {
 
     return (
 
-      <div style={SbStyle}>
+      <div style={style}>
         <ConfirmDialog
           open={this.state.confirmDialogOpen}
           handleClose={ () => { this.handleDialogClose() }}
@@ -209,4 +209,4 @@ const mapStateToProps = state => ({
     activeElementTab: state.user.activeElementTab
 })
 
-export default withApollo(injectIntl(connect(mapStateToProps)(EditStopBox)))
+export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))

@@ -111,6 +111,16 @@ const userReducer = (state = initialState, action) => {
       const elementsMap = ['quay', 'pathJunction', 'entrance']
       return Object.assign({}, state, { activeElementTab: elementsMap.indexOf(action.payLoad.type)})
 
+    case types.SHOW_EDIT_STOP_ADDITIONAL:
+      return Object.assign({}, state, {
+        showEditStopAdditional: true
+      })
+
+    case types.HID_EDIT_STOP_ADDITIONAL:
+      return Object.assign({}, state, {
+        showEditStopAdditional: false
+      })
+
       break;
 
     default:

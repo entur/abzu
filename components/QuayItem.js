@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import TextField from 'material-ui/TextField'
-import { MapActions } from '../actions/'
+import { MapActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
@@ -15,9 +15,11 @@ import TicketMachine from '../static/icons/facilities/TicketMachine'
 import NoTicketMachine from '../static/icons/facilities/NoTicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import NoBusShelter from '../static/icons/facilities/NoBusShelter'
+import MdMore from 'material-ui/svg-icons/navigation/more-horiz'
 import { injectIntl } from 'react-intl'
+import FlatButton from 'material-ui/FlatButton'
 import stopTypes from './stopTypes'
-
+import Divider from 'material-ui/Divider'
 
 class QuayItem extends React.Component {
 
@@ -40,6 +42,10 @@ class QuayItem extends React.Component {
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
     dispatch(MapActions.changeElementName(index, event.target.value, 'quay'))
+  }
+
+  showMoreOptions = () => {
+    this.props.dispatch(UserActions.showEditStopAdditional())
   }
 
   render() {
@@ -139,7 +145,7 @@ class QuayItem extends React.Component {
             : null // hide this for now, not used
            }
 
-           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-between'}}>
+           <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<WheelChair />}
                uncheckedIcon={<WheelChairOff />}
@@ -171,8 +177,12 @@ class QuayItem extends React.Component {
                style={{width: '45%'}}
              />
            </div>
+           <div>
+             <FlatButton icon={<MdMore/>} onClick={this.showMoreOptions.bind(this)} />
+           </div>
         </div>
         }
+        <Divider style={{marginTop: 2}}/>
       </div>
     )
   }

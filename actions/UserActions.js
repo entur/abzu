@@ -27,6 +27,19 @@ UserActions.navigateTo = (path, id) => {
   }
 }
 
+UserActions.hideEditStopAdditional = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.HID_EDIT_STOP_ADDITIONAL, null))
+  }
+}
+
+UserActions.showEditStopAdditional = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.SHOW_EDIT_STOP_ADDITIONAL, null))
+  }
+}
+
+
 UserActions.toggleIsCreatingNewStop = () => {
   return function(dispatch, getState) {
 

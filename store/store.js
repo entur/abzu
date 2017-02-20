@@ -34,6 +34,9 @@ const initialState = {
     centerPosition: [ 64.349421, 16.809082 ],
     zoom: 6,
     minZoom: 14
+  },
+  use: {
+    showEditStopAdditional: false
   }
 }
 

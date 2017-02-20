@@ -2,7 +2,8 @@ import { connect } from 'react-redux'
 import React, { PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
-import EditStopBox from './EditStopBox'
+import EditStopGeneral from './EditStopGeneral'
+import EditStopAdditional from './EditStopAdditional'
 import ToggleMapItemsBox from './ToggleMapItemsBox'
 import NewElementsBox from './NewElementsBox'
 import InformationBanner from '../components/InformationBanner'
@@ -95,7 +96,8 @@ class EditStopPlace extends React.Component {
             ?
             <div>
               <EditStopMap/>
-              <EditStopBox/>
+              <EditStopGeneral/>
+              <EditStopAdditional/>
               <ToggleMapItemsBox/>
               <NewElementsBox/>
             </div>
