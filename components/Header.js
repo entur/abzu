@@ -6,8 +6,9 @@ import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import ActionHome from 'material-ui/svg-icons/action/home'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
+import MdChecked from 'material-ui/svg-icons/navigation/check'
 
-const Header = ({handleNavigateToMain, text, setLanguage}) =>{
+const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
 
   const { title, language, norwegian, english } = text
 
@@ -37,13 +38,18 @@ const Header = ({handleNavigateToMain, text, setLanguage}) =>{
               primaryText={language}
               rightIcon={<ArrowDropRight />}
               menuItems={[
-                <MenuItem onClick={() => setLanguage('nb')} primaryText={norwegian} />,
-                <MenuItem onClick={() => setLanguage('en')} primaryText={english} />,
+                <MenuItem onClick={() => setLanguage('nb')} insetChildren primaryText={norwegian} leftIcon={getLeftIcon(locale, 'nb')} />,
+                <MenuItem onClick={() => setLanguage('en')} insetChildren primaryText={english} leftIcon={getLeftIcon(locale, 'en')}/>,
               ]}
              />
           </IconMenu>
         }
       />
 )}
+
+const getLeftIcon =(locale, value) => {
+  if (locale === value) return <MdChecked color="green" />
+  return null
+}
 
 export default Header

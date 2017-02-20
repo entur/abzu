@@ -36,7 +36,7 @@ class App extends React.Component {
   render() {
 
     const { children, snackbarOptions } = this.props
-    const { formatMessage } = this.props.intl
+    const { formatMessage, locale } = this.props.intl
 
     let { message, isOpen } = snackbarOptions
     let headerText = {
@@ -57,6 +57,7 @@ class App extends React.Component {
             text={headerText}
             handleNavigateToMain={this.handleNavigateToMain.bind(this)}
             setLanguage={this.handleSetLanguage.bind(this)}
+            locale={locale}
             />
           {children}
           <Snackbar
