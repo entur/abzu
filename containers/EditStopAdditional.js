@@ -69,7 +69,7 @@ class EditStopAdditional extends React.Component {
       textAlign: 'left',
       fontSize: '0.8em',
       fontWeight: '0.9em',
-      heigth: 19
+      height: 19
     }
 
     const { activeTabIndex } = this.state

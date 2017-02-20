@@ -14,16 +14,16 @@ const NoTicketMachine = (props) => (
       id="path6"
     />
     <text
-      style={{fontSize: 62.5, lineHeight: '125%'}}
+      style={{fontSize: 80.5, lineHeight: '125%'}}
       x="1.0593219"
       y="84.216103"
       id="text3652"
     >
       <tspan
         id="tspan3654"
-        x="1.0593219"
-        y="84.216103"
-        style={{fontSize: 60, fill: '#ff0000'}}
+        x="-15.0593219"
+        y="98.216103"
+        style={{fontSize: 120, fill: '#a30000', opacity: 0.5}}
       >
         X
       </tspan>

@@ -36,7 +36,7 @@ c0 -456 -6 -830 -13 -830 -7 0 -66 19 -130 43 l-117 42 0 788 0 787 130 0 130
        id="tspan3568"
        x="43.855927"
        y="192.58475"
-       style={{fontSize: 200, fill: '#ff0000'}}>
+       style={{fontSize: 200, fill: '#a30000', opacity: 0.8}}>
         X
       </tspan>
     </text>
