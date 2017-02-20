@@ -15,6 +15,9 @@ import TicketMachine from '../static/icons/facilities/TicketMachine'
 import NoTicketMachine from '../static/icons/facilities/NoTicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import NoBusShelter from '../static/icons/facilities/NoBusShelter'
+import { injectIntl } from 'react-intl'
+import stopTypes from './stopTypes'
+
 
 class QuayItem extends React.Component {
 
@@ -41,7 +44,34 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, translations, publicCode, expanded, index, handleToggleCollapse } = this.props
+    const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
+    const { formatMessage, locale } = intl
+
+    let quayItemName = null
+
+    stopTypes[locale].forEach(  stopType => {
+      if (stopType.value === stopPlaceType) {
+        quayItemName = stopType.quayItemName
+      }
+    })
+
+    const translations = {
+      name: formatMessage({id: 'name'}),
+      publicCode: formatMessage({id: 'publicCode'}),
+      description: formatMessage({id: 'description'}),
+      unsaved: formatMessage({id: 'unsaved'}),
+      undefined: formatMessage({id: 'undefined'}),
+      none: formatMessage({id: 'none_no'}),
+      quays: formatMessage({id: 'quays'}),
+      pathJunctions: formatMessage({id: 'pathJunctions'}),
+      entrances: formatMessage({id: 'entrances'}),
+      stepFreeAccess: formatMessage({id: 'step_free_access'}),
+      wheelchairAccess: formatMessage({id: 'wheelchairAccess'}),
+      ticketMachine: formatMessage({id: 'ticketMachine'}),
+      busShelter: formatMessage({id: 'busShelter'}),
+      quayItemName: formatMessage({id: quayItemName || 'name'})
+    }
+
 
     const removeStyle = {
       float: 'right',
@@ -148,4 +178,4 @@ class QuayItem extends React.Component {
   }
 }
 
-export default connect(null)(QuayItem)
+export default injectIntl(connect(null)(QuayItem))

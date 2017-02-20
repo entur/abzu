@@ -87,7 +87,6 @@ class EditStopBoxTabs extends React.Component {
       <div style={tabContainerStyle}>
         { activeElementTab === 0 && activeStopPlace.quays.map( (quay,index) =>
           <QuayItem
-            translations={itemTranslation}
             key={"quay-" + index}
             quay={quay}
             ref={'quay-' + index}
@@ -96,6 +95,7 @@ class EditStopBoxTabs extends React.Component {
             handleRemoveQuay={() => this.handleRemoveQuay(index)}
             handleLocateOnMap={this.handleLocateOnMap.bind(this)}
             handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+            stopPlaceType={activeStopPlace.stopPlaceType}
             expanded={expandedItem.type === 'quay' && index === expandedItem.index}
           />
         )}

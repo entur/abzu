@@ -15,7 +15,7 @@ class NewStopPlace extends React.Component {
     const { headerText, bodyText } = this.props.text
 
     return (
-      <div style={{background: "#f7f7f7", border: "1px dotted #191919", padding: "5px"}}>
+      <div style={{background: "#fefefe", border: "1px dotted #191919", padding: "5px"}}>
         <IconButton
           style={{float: "right"}}
           onClick={this.handleOnClick.bind(this)}

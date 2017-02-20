@@ -26,7 +26,10 @@ class StopPlacesMap extends React.Component {
 
   }
 
-  handleMapMoveEnd(event, map) {
+  handleMapMoveEnd(event, { leafletElement }) {
+
+    const center = leafletElement.getCenter()
+
 
     //TODO: Replace this with GraphQL fetch
 

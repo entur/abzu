@@ -9,7 +9,7 @@ import Warning from 'material-ui/svg-icons/alert/warning'
 const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, userSuppliedCoordinates}) => {
 
   const style = {
-    color: "#191919",
+    color: "#fefefe",
     border: "1px dotted #add8e6",
     padding: 5
   }

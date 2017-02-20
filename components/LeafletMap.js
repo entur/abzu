@@ -19,7 +19,7 @@ export default class LeafLetMap extends React.PureComponent {
 
   getCenterPosition(position) {
     if (!position) {
-      return [61.670029, 6.442342]
+      return [64.349421, 16.809082]
     }
     return Array.isArray(position)
       ? position.map( (pos) => Number(pos))
