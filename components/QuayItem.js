@@ -9,11 +9,12 @@ import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 import WheelChairOff from 'material-ui/svg-icons/action/accessibility'
 import WheelChair from 'material-ui/svg-icons/action/accessible'
-import Stairs from '../static/icons/accessibility/stairs'
-import StepFree from '../static/icons/accessibility/stepFree'
+import Stairs from '../static/icons/accessibility/Stairs'
+import StepFree from '../static/icons/accessibility/StepFree'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import NoTicketMachine from '../static/icons/facilities/NoTicketMachine'
-
+import BusShelter from '../static/icons/facilities/BusShelter'
+import NoBusShelter from '../static/icons/facilities/NoBusShelter'
 
 class QuayItem extends React.Component {
 
@@ -124,11 +125,18 @@ class QuayItem extends React.Component {
                style={{width: '45%'}}
              />
            </div>
-           <div style={{marginTop: 10, marginBottom: 10, display: 'flex'}}>
+           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<TicketMachine />}
                uncheckedIcon={<NoTicketMachine />}
                label={translations.ticketMachine}
+               labelStyle={{fontSize: '0.8em'}}
+               style={{width: '45%'}}
+             />
+             <Checkbox
+               checkedIcon={<BusShelter />}
+               uncheckedIcon={<NoBusShelter />}
+               label={translations.busShelter}
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
              />
