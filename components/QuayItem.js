@@ -182,7 +182,7 @@ class QuayItem extends React.Component {
            </div>
         </div>
         }
-        <Divider style={{marginTop: 2}}/>
+        <Divider inset={true} style={{marginTop: 2}}/>
       </div>
     )
   }

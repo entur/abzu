@@ -95,8 +95,8 @@ class EditStopPlace extends React.Component {
           stopPlace
             ?
             <div>
-              <EditStopMap/>
               <EditStopGeneral/>
+              <EditStopMap/>
               <EditStopAdditional/>
               <ToggleMapItemsBox/>
               <NewElementsBox/>

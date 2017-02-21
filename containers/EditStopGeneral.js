@@ -100,20 +100,20 @@ class EditStopGeneral extends React.Component {
     }
 
     const style = {
-      top: 80,
       border: '1px solid #511E12',
       background: '#fff',
       width: 410,
-      margin: 10,
+      marginTop: 2,
       position: 'absolute',
       zIndex: 999,
-      padding: '10 5'
+      padding: '10 5',
+      height: '93vh'
     }
 
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: '40vh',
+      height: '75vh',
       position: "relative",
       display: "block",
       zIndex: 999,
@@ -160,7 +160,31 @@ class EditStopGeneral extends React.Component {
         />
         <div style={stopBoxBar}>{captionText}</div>
           <EditStopBoxHeader intl={intl}/>
-        <div style={{fontWeight: 600, marginTop: 5}}>
+        <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
+          <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex'}}>
+            { hasContentChanged
+              ?
+              <RaisedButton
+                secondary={true}
+                label={formatMessage({id: 'undo_changes'})}
+                style={{margin: '8 5', zIndex: 999}}
+                onClick={ () => { this.setState({confirmDialogOpen: true })} }
+              />
+              :
+              <RaisedButton
+                secondary={true}
+                label={formatMessage({id: 'go_back'})}
+                style={{margin: '8 5', zIndex: 999}}
+                onClick={this.handleGoBack.bind(this)}
+              />
+            }
+            <RaisedButton
+              primary={true}
+              label={formatMessage({id: 'save'})}
+              style={{margin: '8 5', zIndex: 999}}
+              onClick={this.handleSave.bind(this)}
+            />
+          </div>
         </div>
         <Tabs
           onChange={this.handleSlideChange.bind(this)}
@@ -173,30 +197,6 @@ class EditStopGeneral extends React.Component {
         </Tabs>
         <div style={scrollable}>
           <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
-        </div>
-        <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%'}}>
-          { hasContentChanged
-            ?
-          <RaisedButton
-            secondary={true}
-            label={formatMessage({id: 'undo_changes'})}
-            style={{margin: '8 5', zIndex: 999}}
-            onClick={ () => { this.setState({confirmDialogOpen: true })} }
-          />
-            :
-          <RaisedButton
-            secondary={true}
-            label={formatMessage({id: 'go_back'})}
-            style={{margin: '8 5', zIndex: 999}}
-            onClick={this.handleGoBack.bind(this)}
-          />
-          }
-          <RaisedButton
-            primary={true}
-            label={formatMessage({id: 'save'})}
-            style={{margin: '8 5', zIndex: 999}}
-            onClick={this.handleSave.bind(this)}
-          />
         </div>
       </div> )
   }
