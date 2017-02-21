@@ -12,28 +12,14 @@ import { withApollo } from 'react-apollo'
 import mapToSchema from '../modelUtils/mapToSchema'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
+import EditStopAdditional from './EditStopAdditional'
 
 class EditStopGeneral extends React.Component {
 
   constructor(props) {
     super(props)
-
-    const { formatMessage } = props.intl
-
     this.state = {
       confirmDialogOpen: false,
-      itemTranslation:  {
-        name: formatMessage({id: 'name'}),
-        publicCode: formatMessage({id: 'publicCode'}),
-        description: formatMessage({id: 'description'}),
-        unsaved: formatMessage({id: 'unsaved'}),
-        undefined: formatMessage({id: 'undefined'}),
-        none: formatMessage({id: 'none_no'}),
-        quays: formatMessage({id: 'quays'}),
-        pathJunctions: formatMessage({id: 'pathJunctions'}),
-        entrances: formatMessage({id: 'entrances'}),
-      }
-
     }
   }
 
@@ -75,9 +61,20 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, hasContentChanged, activeElementTab, intl } = this.props
-    const { itemTranslation } = this.state
+    const { stopPlace, hasContentChanged, activeElementTab, intl, showEditStopAdditional } = this.props
     const { formatMessage, locale } = intl
+
+    const itemTranslation = {
+      name: formatMessage({id: 'name'}),
+        publicCode: formatMessage({id: 'publicCode'}),
+        description: formatMessage({id: 'description'}),
+        unsaved: formatMessage({id: 'unsaved'}),
+        undefined: formatMessage({id: 'undefined'}),
+        none: formatMessage({id: 'none_no'}),
+        quays: formatMessage({id: 'quays'}),
+        pathJunctions: formatMessage({id: 'pathJunctions'}),
+        entrances: formatMessage({id: 'entrances'}),
+    }
 
     if (!stopPlace) return null
 
@@ -186,18 +183,25 @@ class EditStopGeneral extends React.Component {
             />
           </div>
         </div>
-        <Tabs
-          onChange={this.handleSlideChange.bind(this)}
-          value={activeElementTab}
-          tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
-        >
-          <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
-          <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
-        </Tabs>
-        <div style={scrollable}>
-          <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
-        </div>
+        { showEditStopAdditional
+          ? <div>
+              <EditStopAdditional/>
+          </div>
+          : <div>
+              <Tabs
+                onChange={this.handleSlideChange.bind(this)}
+                value={activeElementTab}
+                tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
+              >
+                <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
+                <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
+                <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
+              </Tabs>
+              <div style={scrollable}>
+                <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
+              </div>
+          </div>
+        }
       </div> )
   }
 }
@@ -206,7 +210,8 @@ const mapStateToProps = state => ({
     stopPlace: state.stopPlace.current,
     hasContentChanged: state.editingStop.editedStopChanged, // TODO: Should this functionality be kept?
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
-    activeElementTab: state.user.activeElementTab
+    activeElementTab: state.user.activeElementTab,
+    showEditStopAdditional: state.user.showEditStopAdditional
 })
 
 export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))

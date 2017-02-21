@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopGeneral from './EditStopGeneral'
-import EditStopAdditional from './EditStopAdditional'
 import ToggleMapItemsBox from './ToggleMapItemsBox'
 import NewElementsBox from './NewElementsBox'
 import InformationBanner from '../components/InformationBanner'
@@ -97,7 +96,6 @@ class EditStopPlace extends React.Component {
             <div>
               <EditStopGeneral/>
               <EditStopMap/>
-              <EditStopAdditional/>
               <ToggleMapItemsBox/>
               <NewElementsBox/>
             </div>

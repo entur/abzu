@@ -30,22 +30,13 @@ class EditStopAdditional extends React.Component {
 
   render() {
 
-    const { showEditStopAdditional, intl } = this.props
+    const { showEditStopAdditional, intl, stopPlace, focusedElement } = this.props
     const { formatMessage } = intl
 
     if (!showEditStopAdditional) return null
 
     const style = {
-      top: 80,
-      border: '1px solid #511E12',
       background: '#fff',
-      width: 410,
-      margin: 10,
-      height: 754,
-      position: 'absolute',
-      zIndex: 1000,
-      left: 440,
-      padding: '10 5'
     }
 
     const tabStyle = {
@@ -56,19 +47,8 @@ class EditStopAdditional extends React.Component {
     }
 
     const stopBoxBar = {
-      float: 'right',
-      paddingLeft: 5,
-      paddingRight: 5,
-      paddingTop: 5,
-      top: -10,
-      left: 5,
-      position:'relative',
-      color: '#fff',
-      background: '#191919',
-      width: '100%',
-      textAlign: 'left',
+      color: '#000',
       fontSize: '0.8em',
-      fontWeight: '0.9em',
       height: 19
     }
 
@@ -77,7 +57,11 @@ class EditStopAdditional extends React.Component {
     return (
       <div style={style} id="additional">
         <div style={stopBoxBar}>
-          <MdLess style={{height: 15, width: 15, float: 'right', color: '#fff'}} onClick={this.handleOnClose.bind(this)} />
+          <span style={{fontWeight: 600}}>{ getElementTitle(stopPlace, focusedElement) }</span>
+          <MdLess
+            style={{height: 15, width: 15, float: 'right', color: '#000', cursor: 'pointer', marginBottom: 20}}
+            onClick={this.handleOnClose.bind(this)}
+          />
         </div>
         <Tabs
           onChange={this.handleTabOnChange.bind(this)}
@@ -96,8 +80,23 @@ class EditStopAdditional extends React.Component {
   }
 }
 
+const getElementTitle = (stop, focusedElement) => {
+
+  console.log(stop, focusedElement)
+
+  if (!stop || !focusedElement) return 'N/A'
+
+  if (focusedElement.type == 'quay') {
+    return stop.quays[focusedElement.index].id || '?'
+  }
+
+  return 'N/A'
+}
+
 const mapStateToProps = state => ({
   showEditStopAdditional: state.user.showEditStopAdditional,
+  focusedElement: state.editingStop.focusedElement,
+  stopPlace: state.stopPlace.current
 })
 
 
