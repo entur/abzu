@@ -12,10 +12,11 @@ import { withApollo } from 'react-apollo'
 import mapToSchema from '../modelUtils/mapToSchema'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
-import EditStopAdditional from './EditStopAdditional'
+import EditQuayAdditional from './EditQuayAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
+import MdMore from 'material-ui/svg-icons/navigation/more-horiz'
 
 class EditStopGeneral extends React.Component {
 
@@ -160,7 +161,7 @@ class EditStopGeneral extends React.Component {
         <div style={stopBoxBar}>{captionText}</div>
           <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
-          <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex'}}>
+          <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
             { stopHasBeenModified
               ?
               <FlatButton
@@ -186,11 +187,15 @@ class EditStopGeneral extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               onClick={this.handleSave.bind(this)}
             />
+            <FlatButton
+              icon={<MdMore/>}
+              style={{margin: '8 5', zIndex: 999}}
+            />
           </div>
         </div>
         { showEditStopAdditional
           ? <div>
-              <EditStopAdditional/>
+              <EditQuayAdditional/>
           </div>
           : <div>
               <Tabs
