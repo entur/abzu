@@ -105,6 +105,8 @@
   "untitled" : "Uten navn",
   "use" : "Bruk",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
+  "waiting_room": "Venterom",
   "walking_estimate": "Gangavstand",
+  "wc": "Toaletter",
   "wheelchairAccess": "Rullestolvennlig"
 }

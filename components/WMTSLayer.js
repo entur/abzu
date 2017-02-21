@@ -14,7 +14,7 @@ export default class WMTSLayer extends TileLayer {
 
     if (!gkt) return null
 
-    this.leafletElement =  new reactWMTSLayer(baseURL, {
+    this.leafletElement = new reactWMTSLayer(baseURL, {
       gkt: gkt,
       layers: "toporaster2",
     })

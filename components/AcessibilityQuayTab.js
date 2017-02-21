@@ -7,7 +7,7 @@ import StepFree from '../static/icons/accessibility/StepFree'
 import MdHelp from 'material-ui/svg-icons/action/help'
 import Divider from 'material-ui/Divider'
 
-class AcessibilityTab extends React.Component {
+class AcessibilityQuayTab extends React.Component {
 
   render() {
 
@@ -46,4 +46,4 @@ class AcessibilityTab extends React.Component {
   }
 }
 
-export default AcessibilityTab
+export default AcessibilityQuayTab

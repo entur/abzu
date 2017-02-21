@@ -1,7 +1,7 @@
 {
   "_empty": " ",
   "_title": "Stop Place Register",
-  "accessibility": "Fremkommelighet",
+  "accessibility": "Accessibility",
   "add_entry_message": "Do you want to add",
   "add_new_element_title" : "Add new element",
   "add_new_element_body" : "You are about to add a new element to the map",
@@ -105,6 +105,8 @@
   "untitled": "Untitled",
   "use": "Use",
   "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted.",
+  "waiting_room": "Waiting room",
   "walking_estimate": "Walking distance",
+  "wc": "WC",
   "wheelchairAccess": "Wheelchair friendly"
 }

@@ -39,6 +39,18 @@ UserActions.showEditStopAdditional = () => {
   }
 }
 
+UserActions.hideEditQuayAdditional = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.HID_EDIT_QUAY_ADDITIONAL, null))
+  }
+}
+
+UserActions.showEditQuayAdditional = () => {
+  return function(dispatch) {
+    dispatch(sendData(types.SHOW_EDIT_QUAY_ADDITIONAL, null))
+  }
+}
+
 
 UserActions.toggleIsCreatingNewStop = () => {
   return function(dispatch, getState) {

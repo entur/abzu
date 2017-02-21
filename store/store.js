@@ -38,6 +38,7 @@ const initialState = {
     minZoom: 14
   },
   use: {
+    showEditQuayAdditional: false,
     showEditStopAdditional: false
   }
 }

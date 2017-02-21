@@ -13,10 +13,12 @@ import mapToSchema from '../modelUtils/mapToSchema'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
 import EditQuayAdditional from './EditQuayAdditional'
+import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
-import MdMore from 'material-ui/svg-icons/navigation/more-horiz'
+import MdMore from 'material-ui/svg-icons/navigation/expand-more'
+import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 
 class EditStopGeneral extends React.Component {
 
@@ -56,6 +58,14 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.changeElementTypeTab(value))
   }
 
+  showMoreStopPlace() {
+    this.props.dispatch(UserActions.showEditStopAdditional())
+  }
+
+  showLessStopPlace = () => {
+    this.props.dispatch(UserActions.hideEditStopAdditional())
+  }
+
   handleDialogClose() {
     this.setState({
       confirmDialogOpen: false
@@ -64,7 +74,7 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, showEditQuayAdditional } = this.props
     const { formatMessage, locale } = intl
 
     const itemTranslation = {
@@ -187,15 +197,27 @@ class EditStopGeneral extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               onClick={this.handleSave.bind(this)}
             />
-            <FlatButton
+            { showEditStopAdditional
+              ? <FlatButton
+                icon={<MdLess/>}
+                style={{margin: '8 5', zIndex: 999}}
+                onClick={this.showLessStopPlace.bind(this)}
+              />
+             :
+              <FlatButton
               icon={<MdMore/>}
               style={{margin: '8 5', zIndex: 999}}
-            />
+              onClick={this.showMoreStopPlace.bind(this)}
+              />
+            }
           </div>
         </div>
-        { showEditStopAdditional
+        { (showEditQuayAdditional || showEditStopAdditional)
           ? <div>
-              <EditQuayAdditional/>
+            { showEditStopAdditional
+              ? <EditStopAdditional/>
+              : <EditQuayAdditional/>
+            }
           </div>
           : <div>
               <Tabs
@@ -221,6 +243,7 @@ const mapStateToProps = state => ({
     stopHasBeenModified: state.stopPlace.stopHasBeenModified,
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
     activeElementTab: state.user.activeElementTab,
+    showEditQuayAdditional: state.user.showEditQuayAdditional,
     showEditStopAdditional: state.user.showEditStopAdditional
 })
 

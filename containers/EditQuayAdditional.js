@@ -1,15 +1,13 @@
 import React from 'react'
 import MdLess from 'material-ui/svg-icons/navigation/close'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import FlatButton from 'material-ui/FlatButton'
 import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
-import FacilitiesTab from '../components/FacilitiesTab'
-import AccessiblityTab from '../components/AcessibilityTab'
+import FacilitiesQuayTab from '../components/FacilitiesQuayTab'
+import AccessiblityQuayTab from '../components/AcessibilityQuayTab'
 import { injectIntl } from 'react-intl'
 
-
-class EditStopAdditional extends React.Component {
+class EditQuayAdditional extends React.Component {
 
   constructor(props) {
     super(props)
@@ -24,16 +22,14 @@ class EditStopAdditional extends React.Component {
     })
   }
 
-  handleOnClose = () => {
-    this.props.dispatch(UserActions.hideEditStopAdditional())
+  handleAdditionalQuayOnClose = () => {
+    this.props.dispatch(UserActions.hideEditQuayAdditional())
   }
 
   render() {
 
-    const { showEditStopAdditional, intl, stopPlace, focusedElement } = this.props
+    const { intl, stopPlace, focusedElement } = this.props
     const { formatMessage } = intl
-
-    if (!showEditStopAdditional) return null
 
     const style = {
       background: '#fff',
@@ -60,7 +56,7 @@ class EditStopAdditional extends React.Component {
           <span style={{fontWeight: 600}}>{ getElementTitle(stopPlace, focusedElement) }</span>
           <MdLess
             style={{height: 15, width: 15, float: 'right', color: '#000', cursor: 'pointer', marginBottom: 20}}
-            onClick={this.handleOnClose.bind(this)}
+            onClick={this.handleAdditionalQuayOnClose.bind(this)}
           />
         </div>
         <Tabs
@@ -69,10 +65,10 @@ class EditStopAdditional extends React.Component {
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
           <Tab style={tabStyle} label={formatMessage({id: 'accessibility'})} value={0}>
-            <AccessiblityTab intl={intl} />
+            <AccessiblityQuayTab intl={intl} />
           </Tab>
           <Tab style={tabStyle} label={formatMessage({id: 'facilities'})} value={1}>
-            <FacilitiesTab intl={intl}/>
+            <FacilitiesQuayTab intl={intl}/>
           </Tab>
         </Tabs>
       </div>
@@ -82,22 +78,18 @@ class EditStopAdditional extends React.Component {
 
 const getElementTitle = (stop, focusedElement) => {
 
-  console.log(stop, focusedElement)
-
   if (!stop || !focusedElement) return 'N/A'
 
-  if (focusedElement.type == 'quay') {
+  if (focusedElement.type == 'quay' && focusedElement.index > -1) {
     return stop.quays[focusedElement.index].id || '?'
   }
-
   return 'N/A'
 }
 
 const mapStateToProps = state => ({
-  showEditStopAdditional: state.user.showEditStopAdditional,
   focusedElement: state.editingStop.focusedElement,
   stopPlace: state.stopPlace.current
 })
 
 
-export default injectIntl(connect(mapStateToProps)(EditStopAdditional))
+export default injectIntl(connect(mapStateToProps)(EditQuayAdditional))

@@ -23,7 +23,9 @@ export const initialState = {
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
   activeBaselayer: 'Rutebankens kart',
-  activeElementTab: 0 // active tab residing in EditstopBox
+  activeElementTab: 0,
+  showEditQuayAdditional: false,
+  showEditStopAdditional: false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -33,7 +35,9 @@ const userReducer = (state = initialState, action) => {
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         path: action.payLoad,
-        missingCoordsMap: {}
+        missingCoordsMap: {},
+        showEditQuayAdditional: false,
+        showEditStopAdditional: false
       })
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
@@ -110,6 +114,16 @@ const userReducer = (state = initialState, action) => {
     case types.ADDED_JUNCTION_ELEMENT:
       const elementsMap = ['quay', 'pathJunction', 'entrance']
       return Object.assign({}, state, { activeElementTab: elementsMap.indexOf(action.payLoad.type)})
+
+    case types.SHOW_EDIT_QUAY_ADDITIONAL:
+      return Object.assign({}, state, {
+        showEditQuayAdditional: true
+      })
+
+    case types.HID_EDIT_QUAY_ADDITIONAL:
+      return Object.assign({}, state, {
+        showEditQuayAdditional: false
+      })
 
     case types.SHOW_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
