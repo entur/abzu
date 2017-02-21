@@ -28,6 +28,7 @@ const graphQLreducer = (state = {}, action) => {
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
+          originalCurrent: formatHelpers.createNewStopFromLocation(action.payLoad),
           stopHasBeenModified: false
         })
 
