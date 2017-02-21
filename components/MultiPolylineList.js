@@ -68,7 +68,9 @@ class MultiPolylineList extends React.Component {
           />
           <Popup key={'pl'+index}>
             <div>
-              <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>Ganglenke {index+1}</div>
+              <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>
+                { formatMessage({id: 'pathLink'}) } {index+1}
+                </div>
               <div>
                 { polyline.distance
                   ?
@@ -82,18 +84,16 @@ class MultiPolylineList extends React.Component {
                   onClick={() => this.setState({openDialog: true})}
                 >
 
-                  { formatMessage({id: 'estimated_time'}, {
-                      estimate: polyline.estimate,
-                      minuteCount: Number(polyline.estimate),
-                      minute: formatMessage({id: 'minute'}),
-                      minutes: formatMessage({id: 'minutes'})
-                  }) }
+                  { polyline.estimate } { (Number(polyline.estimate) === 1)
+                    ? formatMessage({id: 'minute'})
+                    : formatMessage({id: 'minutes'})
+                  }
 
                 </span>
                 <span
                   onClick={() => this.handleRemovePolyline(index)}
                   style={polylinePopupStyle}
-                >Remove</span>
+                > { formatMessage({id: 'remove'}) } </span>
               </div>
             </div>
           </Popup>
