@@ -46,7 +46,8 @@ class NewElementsBox extends React.Component {
       border: '1px solid #511e12',
       zIndex: 999,
       right: 0,
-      cursor: 'move'
+      cursor: 'move',
+      fontSize: '0.8em',
     }
 
     const stopBoxBar = {
@@ -56,7 +57,6 @@ class NewElementsBox extends React.Component {
       textAlign: 'left',
       fontWeight: '0.9em',
       display: 'block',
-      height: 25
     }
 
     const elementStyle = {
@@ -67,7 +67,6 @@ class NewElementsBox extends React.Component {
 
     const titleStyle = {
       fontWeight: 600,
-      fontSize: '0.8em',
       textTransform: 'capitalize',
       marginTop: 8,
       marginBottom: -10
