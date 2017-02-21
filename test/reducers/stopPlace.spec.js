@@ -82,5 +82,37 @@ describe('stop place reducer', () => {
     expect(stateAfter.current.location).toEqual(newDehli)
   })
 
+
+  it('should restore stop upon discarding changes', () => {
+
+    const action = {
+      type: "APOLLO_QUERY_RESULT",
+      result: stopPlaceData,
+      operationName: 'stopPlace'
+    }
+    const stateBefore = graphQLReducer({}, action)
+
+    expect(stateBefore.originalCurrent).toEqual(stateBefore.current)
+
+    const changeNameAction = {
+      type: types.CHANGED_STOP_DESCRIPTION,
+      payLoad: 'awesome description'
+    }
+    const stateAfter = graphQLReducer(stateBefore, changeNameAction)
+
+    expect(stateAfter.originalCurrent).toNotEqual(stateAfter.current)
+    expect(stateAfter.stopHasBeenModified).toEqual(true)
+
+    const restoreAction = {
+      type: types.RESTORED_TO_ORIGINAL_STOP_PLACE,
+      payLoad: null
+    }
+
+    const finalState = graphQLReducer(stateAfter, restoreAction)
+
+    expect(finalState.originalCurrent).toEqual(finalState.current)
+
+  })
+
 })
 

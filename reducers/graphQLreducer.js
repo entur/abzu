@@ -14,6 +14,12 @@ const graphQLreducer = (state = {}, action) => {
       case "APOLLO_QUERY_RESULT_CLIENT":
         return getObjectFromCache(state, action)
 
+      case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
+        return Object.assign({}, state, {
+          stopHasBeenModified: false,
+          current: JSON.parse(JSON.stringify(state.originalCurrent))
+        })
+
       case types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW:
         return Object.assign({}, state, {
           neighbourStops: []
@@ -22,36 +28,41 @@ const graphQLreducer = (state = {}, action) => {
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
+          stopHasBeenModified: false
         })
 
       case types.CHANGED_QUAY_COMPASS_BEARING:
         return Object.assign({}, state, {
           current: formatHelpers.updateCompassBearing(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGED_LOCATION_NEW_STOP:
         return Object.assign({}, state, {
-          newStop: formatHelpers.createNewStopFromLocation(action.payLoad)
+          newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGED_STOP_NAME:
         return {...state, current: {
-          ...state.current, name: action.payLoad
-        }}
+          ...state.current, name: action.payLoad,
+        }, stopHasBeenModified: true }
 
       case types.CHANGED_STOP_DESCRIPTION:
         return {...state, current: {
-          ...state.current, description: action.payLoad
-        }}
+          ...state.current, description: action.payLoad,
+        }, stopHasBeenModified: true }
 
       case types.CHANGED_STOP_TYPE:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentStopWithType(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentStopWithType(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGED_ACTIVE_STOP_POSITION:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentStopWithPosition(state.current, action.payLoad.location)
+          current: formatHelpers.updateCurrentStopWithPosition(state.current, action.payLoad.location),
+          stopHasBeenModified: true
         })
 
       case types.USE_NEW_STOP_AS_CURENT:
@@ -59,6 +70,7 @@ const graphQLreducer = (state = {}, action) => {
           current: JSON.parse(JSON.stringify(state.newStop)),
           centerPosition: state.newStop.location,
           zoom: 14,
+          stopHasBeenModified: false
         })
 
       case types.SET_ACTIVE_MARKER:
@@ -76,27 +88,32 @@ const graphQLreducer = (state = {}, action) => {
 
       case types.ADDED_JUNCTION_ELEMENT:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithNewElement(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentWithNewElement(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGE_ELEMENT_POSITION:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithElementPositionChange(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentWithElementPositionChange(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGE_ELEMENT_NAME:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithElementNameChange(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentWithElementNameChange(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGED_ELEMENT_DESCRIPTION:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithElementDescriptionChange(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentWithElementDescriptionChange(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.REMOVED_ELEMENT_BY_TYPE:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithoutElement(state.current, action.payLoad)
+          current: formatHelpers.updateCurrentWithoutElement(state.current, action.payLoad),
+          stopHasBeenModified: true
         })
 
       case types.CHANGED_MAP_CENTER:

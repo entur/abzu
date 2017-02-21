@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
-import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
 import { MapActions, UserActions } from '../actions/'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
@@ -13,6 +13,9 @@ import mapToSchema from '../modelUtils/mapToSchema'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
 import EditStopAdditional from './EditStopAdditional'
+import MdUndo from 'material-ui/svg-icons/content/undo'
+import MdSave from 'material-ui/svg-icons/content/save'
+import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
 
 class EditStopGeneral extends React.Component {
 
@@ -45,7 +48,6 @@ class EditStopGeneral extends React.Component {
     this.setState({
       confirmDialogOpen: false
     })
-    // TODO : do we want this?
     this.props.dispatch(MapActions.discardChangesForEditingStop())
   }
 
@@ -61,7 +63,7 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, hasContentChanged, activeElementTab, intl, showEditStopAdditional } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional } = this.props
     const { formatMessage, locale } = intl
 
     const itemTranslation = {
@@ -159,26 +161,29 @@ class EditStopGeneral extends React.Component {
           <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
           <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex'}}>
-            { hasContentChanged
+            { stopHasBeenModified
               ?
-              <RaisedButton
-                secondary={true}
+              <FlatButton
+                icon={<MdUndo/>}
                 label={formatMessage({id: 'undo_changes'})}
                 style={{margin: '8 5', zIndex: 999}}
+                labelStyle={{fontSize: '0.8em'}}
                 onClick={ () => { this.setState({confirmDialogOpen: true })} }
               />
               :
-              <RaisedButton
-                secondary={true}
+              <FlatButton
+                icon={<MdBack/>}
                 label={formatMessage({id: 'go_back'})}
                 style={{margin: '8 5', zIndex: 999}}
+                labelStyle={{fontSize: '0.8em'}}
                 onClick={this.handleGoBack.bind(this)}
               />
             }
-            <RaisedButton
-              primary={true}
+            <FlatButton
+              icon={<MdSave/>}
               label={formatMessage({id: 'save'})}
               style={{margin: '8 5', zIndex: 999}}
+              labelStyle={{fontSize: '0.8em'}}
               onClick={this.handleSave.bind(this)}
             />
           </div>
@@ -208,7 +213,7 @@ class EditStopGeneral extends React.Component {
 
 const mapStateToProps = state => ({
     stopPlace: state.stopPlace.current,
-    hasContentChanged: state.editingStop.editedStopChanged, // TODO: Should this functionality be kept?
+    stopHasBeenModified: state.stopPlace.stopHasBeenModified,
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
     activeElementTab: state.user.activeElementTab,
     showEditStopAdditional: state.user.showEditStopAdditional
