@@ -22,48 +22,49 @@ class ToggleMapItemsBox extends React.Component {
     const boxWrapperStyle = {
       background: '#fff',
       position: 'absolute',
-      top: '82.5vh',
-      padding: 10,
-      margin: 10,
-      width: 230,
+      top: '62.5vh',
+      right: '2vw',
+      margin: 5,
+      width: 220,
       border: '1px solid #511e12',
       zIndex: 999,
-      cursor: 'move'
+      cursor: 'move',
+      fontSize: '0.8em',
     }
 
     const stopBoxBar = {
-      float: 'right',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 6,
-      top: -10,
-      left: 10,
-      position:'relative',
       color: '#fff',
       background: '#191919',
-      width: '100%',
       textAlign: 'left',
       fontWeight: '0.9em',
-      fontSize: '0.8em'
+      fontSize: '0.8em',
+      position: 'relative',
+      paddingTop: 3,
+      paddingLeft: 2
     }
 
     return (
       <div ref='ToggleMapItemsBox' style={boxWrapperStyle}>
           <div style={stopBoxBar}>{formatMessage({id: 'aditional_map_elements'})}</div>
+        <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
           <Toggle
-            style={{paddingTop: 5, width: 250, textAlign: 'center'}}
+            style={{paddingTop: 5, textAlign: 'center'}}
             label={formatMessage({id: 'show_path_links'})}
             toggled={isMultiPolylinesEnabled}
             onToggle={this.handleToggleMultiPolylines.bind(this)}
             labelStyle={{width: 'initial'}}
+            labelPosition="right"
           />
           <Toggle
-            style={{paddingTop: 5, width: 250, textAlign: 'center'}}
+            style={{paddingTop: 5, textAlign: 'center'}}
             label={formatMessage({id: 'show_compass_bearing'})}
             toggled={isCompassBearingEnabled}
             onToggle={this.handleToggleCompassBearing.bind(this)}
             labelStyle={{width: 'initial'}}
+            labelPosition="right"
           />
+        </div>
+
       </div>
     )
   }
@@ -73,7 +74,7 @@ class ToggleMapItemsBox extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     isMultiPolylinesEnabled: state.editingStop.enablePolylines,
     isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled
