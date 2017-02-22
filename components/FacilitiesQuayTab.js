@@ -2,8 +2,8 @@ import React from 'react'
 import Checkbox from 'material-ui/Checkbox'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
-import MdHelp from 'material-ui/svg-icons/action/help'
 import Divider from 'material-ui/Divider'
+import ToolTipIcon from './ToolTipIcon'
 
 class FacilitiesQuayTab extends React.Component {
 
@@ -22,7 +22,7 @@ class FacilitiesQuayTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'ticketMachine_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
@@ -36,7 +36,7 @@ class FacilitiesQuayTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'busShelter_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>

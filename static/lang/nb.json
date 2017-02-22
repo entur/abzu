@@ -11,6 +11,8 @@
   "all": "Alle",
   "at": "ved",
   "busShelter": "Busskur",
+  "busShelter_stop_hint": "Har alle quayene for dette stoppestedet er busskur?",
+  "busShelter_quay_hint": "Har denne quayen et busskur?",
   "cancel" : "Avbryt",
   "cancel_path_link" : "Avbryt ganglenke",
   "change_coordinates" : "Endre koordinater",
@@ -90,6 +92,8 @@
   "show_quays" : "Vis quayer",
   "sign_out" : "Logg ut",
   "step_free_access": "Trinnfri adgang",
+  "step_free_access_hint": "Har alle quayene for dette stoppestedet trinnfri adgang?",
+  "step_free_access_quay_hint": "Har denne quayen trinnfri adgang?",
   "stop_place": "stoppested",
   "snackbar_message_failed" : "Lagring feilet",
   "snackbar_message_saved" : "Lagret!",
@@ -97,6 +101,8 @@
   "terminate_path_link_here" : "Avslutt ganglenke her",
   "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
   "ticketMachine": "Billettautomat",
+  "ticketMachine_stop_hint": "Er en billettautomat tilgjengelig for alle quayene til dette stoppet?",
+  "ticketMachine_quay_hint": "Er en billettautomat tilgjengelig for denne quayen?",
   "town": "Kommune",
   "track": "Spor",
   "type": "Type",
@@ -109,5 +115,9 @@
   "waiting_room": "Venterom",
   "walking_estimate": "Gangavstand",
   "wc": "Toaletter",
-  "wheelchairAccess": "Rullestolvennlig"
+  "wc_stop_hint": "Har dette stoppestedet toaletter?",
+  "waitingroom_stop_hint": "Har dette stoppestedet et venterom?",
+  "wheelchairAccess": "Rullestolvennlig",
+  "wheelchair_stop_hint": "Er alle quayene for dette stoppestedet rullestolvennlige?",
+  "wheelChair_quay_hint": "Er denne quayen rullestolvennlig?"
 }

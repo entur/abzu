@@ -6,6 +6,8 @@ import MdHelp from 'material-ui/svg-icons/action/help'
 import Divider from 'material-ui/Divider'
 import MdWc from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
+import ToolTipIcon from './ToolTipIcon'
+
 
 class FacilitiesStopTab extends React.Component {
 
@@ -24,7 +26,7 @@ class FacilitiesStopTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'ticketMachine_stop_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
@@ -37,7 +39,7 @@ class FacilitiesStopTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'busShelter_stop_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
@@ -50,7 +52,7 @@ class FacilitiesStopTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
@@ -63,7 +65,7 @@ class FacilitiesStopTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'waitingroom_stop_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>

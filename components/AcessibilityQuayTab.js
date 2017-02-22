@@ -4,7 +4,7 @@ import WheelChairOff from 'material-ui/svg-icons/action/accessibility'
 import WheelChair from 'material-ui/svg-icons/action/accessible'
 import Stairs from '../static/icons/accessibility/Stairs'
 import StepFree from '../static/icons/accessibility/StepFree'
-import MdHelp from 'material-ui/svg-icons/action/help'
+import ToolTipIcon from './ToolTipIcon'
 import Divider from 'material-ui/Divider'
 
 class AcessibilityQuayTab extends React.Component {
@@ -24,7 +24,7 @@ class AcessibilityQuayTab extends React.Component {
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '45%'}}
             />
-            <MdHelp color="orange"/>
+            <ToolTipIcon title={formatMessage({id: 'wheelChair_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
@@ -37,7 +37,7 @@ class AcessibilityQuayTab extends React.Component {
              labelStyle={{fontSize: '0.8em'}}
              style={{width: '45%'}}
            />
-           <MdHelp color="orange"/>
+           <ToolTipIcon title={formatMessage({id: 'step_free_access_quay_hint'})}/>
          </div>
          <Divider style={{marginTop: 10, marginBottom: 10}}/>
        </div>

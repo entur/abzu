@@ -23,20 +23,10 @@ class StopPlaceMarker extends React.PureComponent {
     isEditingStop: PropTypes.bool.isRequired
   }
 
-  handleToggleQuaysForNeighbouringStop(isShowingQuays) {
-    const { id } = this.props
-
-    if (isShowingQuays) {
-      this.props.handleHideQuaysForNeighbourStop(id)
-    } else {
-      this.props.handleFetchQuaysForNeighbourStop(id)
-    }
-  }
-
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
-          handleChangeCoordinates, translations, active, stopType, id, neighbouringMarkersQuaysMap } = this.props
+          handleChangeCoordinates, translations, active, stopType, id } = this.props
 
     const markerLocation = position || missingCoordinatesMap[id]
 
@@ -55,8 +45,6 @@ class StopPlaceMarker extends React.PureComponent {
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
 
     let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [45,92], popupAnchor: [0,-2]})
-
-    const isShowingQuays = !!neighbouringMarkersQuaysMap.get(id) && neighbouringMarkersQuaysMap.get(id).length
 
     return (
 
@@ -86,16 +74,6 @@ class StopPlaceMarker extends React.PureComponent {
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
                 {markerLocation[1]}
               </span>
-            </div>
-            <div style={{display: 'block', width: '100%'}}>
-              { !active && this.props.isEditingStop
-                ?
-                  <div style={{textAlign: 'center', margin: 10, cursor: 'pointer'}}
-                    onClick={(event) => this.handleToggleQuaysForNeighbouringStop(isShowingQuays)}>
-                    + { isShowingQuays ? translations.hideQuays : translations.showQuays }
-                  </div>
-                : null
-              }
             </div>
           </div>
         </Popup>
