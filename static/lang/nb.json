@@ -81,6 +81,7 @@
   "port" : "Havn",
   "quay" : "quay",
   "quays" : "quayer",
+  "quay_is_missing_location": "Denne quayen mangler posisjon",
   "remove": "Fjern",
   "save" : "Lagre",
   "set_coordinates_prompt" : "Sett koordinater for stopp",

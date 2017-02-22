@@ -6,9 +6,8 @@ Fragments.quay = {
   verbose: gql`
       fragment VerboseQuay on Quay {
           id
-          location {
-              latitude
-              longitude
+          geometry {
+              coordinates
           }
           compassBearing
           publicCode
@@ -29,9 +28,8 @@ Fragments.stopPlace = {
         description {
             value
         }
-        location {
-            latitude
-            longitude
+        geometry {
+            coordinates
         }
         quays {
             ...VerboseQuay

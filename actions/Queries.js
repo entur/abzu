@@ -17,9 +17,8 @@ export const stopPlaceBBQuery = gql`
             name {
                 value
             }
-            location {
-                latitude
-                longitude
+            geometry {
+                coordinates
             }
             stopPlaceType
             topographicPlace {
@@ -39,9 +38,8 @@ export const findStop = gql`
             name {
                 value
             }
-            location {
-                latitude
-                longitude
+            geometry {
+                coordinates
             }
             stopPlaceType
             topographicPlace {
@@ -61,14 +59,14 @@ export const findStop = gql`
 
 
 export const mutateStopPlace = gql`
-    mutation mutateStopPlace($id: String, $name: String, $description: String, $latitude: Float!, $longitude: Float!, $stopPlaceType: StopPlaceType, $quays: [QuayInput]) {
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput]) {
         mutateStopPlace(StopPlace: {
         id: $id
         name: { value: $name, lang: "no" }
         description: { value: $description, lang: "no" }
-        location: {
-          latitude: $latitude
-          longitude:$longitude
+        geometry: {
+            type: "Point"
+            coordinates: $coordinates
         }
         quays: $quays
         stopPlaceType: $stopPlaceType}) {

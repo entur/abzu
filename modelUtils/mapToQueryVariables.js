@@ -1,31 +1,49 @@
 
 const helpers = {}
 
-helpers.mapQuayToSchema = quay => ({
-  id: quay.id,
-  geometry: {
-    coordinates: [
-      [ quay.location[1], quay.location[0] ]
-    ]
-  },
-  compassBearing: quay.compassBearing,
-  publicCode: quay.publicCode,
-  description: {
-    value: quay.description,
-    lang: 'no'
-  }
-})
+helpers.mapQuayToVariables = quay => {
 
-helpers.mapStopToSchema = stop => ({
-  id: stop.id,
-  name: stop.name,
-  description: stop.description || null,
-  coordinates: [
-    [ stop.location[1], stop.location[0] ]
-  ],
-  stopPlaceType: stop.stopPlaceType,
-  quays: stop.quays.map(quay => helpers.mapQuayToSchema(quay))
-})
+  let newQuay = {
+    id: quay.id,
+    geometry: null,
+    compassBearing: quay.compassBearing,
+    publicCode: quay.publicCode,
+    description: {
+      value: quay.description,
+      lang: 'no'
+    }
+  }
+
+  if (quay.location) {
+    newQuay.geometry = {
+      coordinates: [
+        [ quay.location[1], quay.location[0] ]
+      ],
+        type: "Point"
+    }
+  }
+
+  return newQuay
+}
+
+helpers.mapStopToVariables = stop => {
+
+  let newStop =  {
+    id: stop.id,
+    name: stop.name,
+    description: stop.description || null,
+    stopPlaceType: stop.stopPlaceType,
+    quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay))
+  }
+
+  if (stop.location) {
+    newStop.coordinates = [
+      [ stop.location[1], stop.location[0] ]
+    ]
+  }
+
+  return newStop
+}
 
 
 export default helpers

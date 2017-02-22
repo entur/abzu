@@ -81,6 +81,7 @@
   "port": "Port",
   "quay": "quay",
   "quays": "quays",
+  "quay_is_missing_location": "Quay is missing location",
   "remove": "Remove",
   "save": "Save",
   "set_coordinates_prompt": "Set coordinates for stop",

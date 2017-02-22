@@ -2,13 +2,14 @@ import expect from 'expect'
 import { graphQLReducer } from './../../reducers/'
 import stopPlaceMock from './json/stopPlace.json'
 import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json'
-import schemaMap from '../../modelUtils/mapToSchema'
+import clientStop from './json/clientStop.json'
+import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables'
 import { describe, before, it } from 'mocha'
 
 describe('Model: map format from server to expected client model', () => {
 
 
-  it('should map stop to model correctly', () => {
+  it('should server response stop to client model correctly', () => {
 
     const action = {
       type: "APOLLO_QUERY_RESULT",
@@ -20,7 +21,10 @@ describe('Model: map format from server to expected client model', () => {
     const formattedStop = {
       id: 'NSR:StopPlace:933',
       name: 'Aspestrand',
-      location: [59.175951, 11.725364],
+      location: [
+        60.260427,
+        5.435734
+      ],
       stopPlaceType: 'onstreetBus',
       isActive: true,
       topographicPlace: 'Aremark',
@@ -28,14 +32,20 @@ describe('Model: map format from server to expected client model', () => {
       quays: [
         {
           id: 'NSR:Quay:1694',
-          location: [59.176073, 11.726214],
+          location: [
+            60.260427,
+            5.435734
+          ],
           compassBearing: 344,
           description: '',
           publicCode: '1',
         },
         {
           id: 'NSR:Quay:1695',
-          location: [59.17583, 11.724514],
+          location: [
+            60.260427,
+            5.435734
+          ],
           compassBearing: 164,
           description: '',
           publicCode: '2',
@@ -47,6 +57,60 @@ describe('Model: map format from server to expected client model', () => {
 
     expect(state.current).toEqual(formattedStop)
   })
+
+  it('should map client stop to schema correctly', () => {
+
+
+     const schemaValidStop = QueryVariablesMapper.mapStopToVariables(clientStop)
+     const expectedStop = {
+       "id": "NSR:StopPlace:19744",
+       "name": "Aspelundsveien",
+       "stopPlaceType": "onstreetBus",
+       "description": "Beskrivelse",
+       "coordinates": [ [
+           11.170963,
+           59.587427
+         ] ],
+       "quays": [
+         {
+           "id": "NSR:Quay:30025",
+           "compassBearing": 212,
+           "publicCode": null,
+           "description": {
+             value: "",
+             lang: "no"
+            },
+           "geometry": {
+             coordinates: [ [
+               11.17094,
+               59.587486
+             ] ],
+             type: "Point"
+           }
+         },
+         {
+           "id": "NSR:Quay:30026",
+           "compassBearing": 38,
+           "publicCode": null,
+           "description": {
+             value: "",
+             lang: "no"
+           },
+           "geometry": {
+             coordinates: [ [
+               11.170986,
+               59.587368
+             ] ],
+             type: "Point"
+           }
+         }
+       ],
+     }
+
+    expect(schemaValidStop).toEqual(expectedStop)
+
+  })
+
 })
 
 describe('Changes correct properties', () => {
@@ -83,7 +147,7 @@ describe('Changes correct properties', () => {
 
       expect(state.current.quays[quayIndex].publicCode).toEqual(newPublicCode)
 
-      const stopValidWithSchema = schemaMap.mapStopToSchema(state.current)
+      const stopValidWithSchema = QueryVariablesMapper.mapStopToVariables(state.current)
 
       expect(state.current.quays[quayIndex].id).toEqual(stopValidWithSchema.quays[quayIndex].id)
 

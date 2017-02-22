@@ -9,7 +9,7 @@ import EditStopBoxTabs from './EditStopBoxTabs'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
 import { withApollo } from 'react-apollo'
-import mapToSchema from '../modelUtils/mapToSchema'
+import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
 import { mutateStopPlace } from '../actions/Queries'
 import * as types from '../actions/actionTypes'
 import EditQuayAdditional from './EditQuayAdditional'
@@ -30,9 +30,12 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSave() {
-    const mappedToSchema = mapToSchema.mapStopToSchema(this.props.stopPlace)
+    const variables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
+
+    console.log("variables", variables)
+
     const { client, dispatch } = this.props
-    client.mutate({ variables: mappedToSchema, mutation: mutateStopPlace}).then( result => {
+    client.mutate({ variables: variables, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
         dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
         dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))

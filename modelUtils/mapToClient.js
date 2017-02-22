@@ -9,7 +9,6 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     let formattedStop = {
       id: stop.id,
       name: stop.name.value,
-      location: stop.location ? [ setDecimalPrecision(stop.location.latitude, 6), setDecimalPrecision(stop.location.longitude, 6) ] : null,
       stopPlaceType: stop.stopPlaceType,
       isActive: isActive
     }
@@ -25,6 +24,13 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
     if (stop.description) {
       formattedStop.description = stop.description.value
+    }
+
+
+    if (stop.geometry && stop.geometry.coordinates) {
+      let coordinates = stop.geometry.coordinates[0].slice()
+      // Leaflet uses latLng, GeoJSON [long,lat]
+      formattedStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
     }
 
     if (isActive) {
@@ -46,15 +52,22 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 }
 
 helpers.mapQuayToClientQuay = quay => {
-  const { latitude, longitude } = quay.location
 
-  return {
+  const clientQuay = {
     id: quay.id,
-    location: [ setDecimalPrecision(latitude, 6), setDecimalPrecision(longitude, 6) ],
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
     description: quay.description ? quay.description.value : ''
   }
+
+  if (quay.geometry && quay.geometry.coordinates) {
+
+    let coordinates = quay.geometry.coordinates[0].slice()
+
+    clientQuay.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+  }
+
+  return clientQuay
 }
 
 helpers.mapNeighbourStopsToClientStops = stops => {
@@ -63,16 +76,25 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 
 helpers.mapSearchResultatToClientStops = stops => {
   return stops.map( stop => {
-    return {
+    const clientStop = {
       id: stop.id,
       name: stop.name.value,
-      location: stop.location ? [ setDecimalPrecision(stop.location.latitude, 6), setDecimalPrecision(stop.location.longitude, 6) ] : null,
-      isMissingLocation: !stop.location,
+      isMissingLocation: !stop.geometry,
       stopPlaceType: stop.stopPlaceType,
       topographicPlace: (stop.topographicPlace && stop.topographicPlace.name) ? stop.topographicPlace.name.value : '',
       parentTopographicPlace: (stop.topographicPlace && stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) ?  stop.topographicPlace.parentTopographicPlace.name.value : '',
       isActive: false
     }
+
+    if (stop.geometry && stop.geometry.coordinates) {
+
+      let coordinates = stop.geometry.coordinates[0].slice()
+
+      clientStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+
+    }
+
+    return clientStop
   })
 }
 
@@ -92,9 +114,9 @@ helpers.createNewStopFromLocation = location => {
   })
 }
 
-helpers.mapLocationToPosition = location => {
-  if (!location) return null
-  return [ setDecimalPrecision(location.latitude, 6), setDecimalPrecision(location.longitude, 6) ]
+helpers.getCenterPosition = geometry => {
+  if (!geometry) return null
+  return [ setDecimalPrecision(geometry.coordinates[0][1], 6), setDecimalPrecision(geometry.coordinates[0][0], 6) ]
 }
 
 
