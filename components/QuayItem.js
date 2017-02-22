@@ -101,7 +101,8 @@ class QuayItem extends React.Component {
           <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 20, padding: 5}}>
             {  quay.location
                ? <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
-              :  <div title={translations.quayMissingLocation} style={{display: 'inline-block'}}>
+              :  <div className="tooltip" style={{display: 'inline-block'}}>
+                   <span className="tooltipText"> { translations.quayMissingLocation }</span>
                    <MdError style={{ ...locationStyle, color: '#bb271c'}}/>
                  </div>
             }

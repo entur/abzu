@@ -2,6 +2,7 @@
 @import "messages.css";
 @import "markers.css";
 @import "tabs.css";
+@import "tooltip.css";
 
 body {
   font-family: 'Noto Sans Kannada', sans-serif;
