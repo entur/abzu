@@ -3,9 +3,10 @@ const helpers = {}
 
 helpers.mapQuayToSchema = quay => ({
   id: quay.id,
-  location: {
-    latitude: quay.location[0],
-    longitude: quay.location[1]
+  geometry: {
+    coordinates: [
+      [ quay.location[1], quay.location[0] ]
+    ]
   },
   compassBearing: quay.compassBearing,
   publicCode: quay.publicCode,
@@ -15,12 +16,13 @@ helpers.mapQuayToSchema = quay => ({
   }
 })
 
-helpers.mapStopToSchema = stop =>  ({
+helpers.mapStopToSchema = stop => ({
   id: stop.id,
   name: stop.name,
   description: stop.description || null,
-  latitude: stop.location[0],
-  longitude: stop.location[1],
+  coordinates: [
+    [ stop.location[1], stop.location[0] ]
+  ],
   stopPlaceType: stop.stopPlaceType,
   quays: stop.quays.map(quay => helpers.mapQuayToSchema(quay))
 })

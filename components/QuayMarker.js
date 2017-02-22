@@ -30,6 +30,8 @@ class QuayMarker extends React.PureComponent {
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
     const { isCreatingPolylines, polylineStartPoint } = this.props
 
+    if (!position) return null
+
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
 
     if (isCreatingPolylines && polylineStartPoint.type === 'quay' && polylineStartPoint.index == index) {

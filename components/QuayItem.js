@@ -18,6 +18,7 @@ import { injectIntl } from 'react-intl'
 import FlatButton from 'material-ui/FlatButton'
 import stopTypes from './stopTypes'
 import Divider from 'material-ui/Divider'
+import MdError from 'material-ui/svg-icons/alert/error'
 
 class QuayItem extends React.Component {
 
@@ -73,7 +74,8 @@ class QuayItem extends React.Component {
       wheelchairAccess: formatMessage({id: 'wheelchairAccess'}),
       ticketMachine: formatMessage({id: 'ticketMachine'}),
       busShelter: formatMessage({id: 'busShelter'}),
-      quayItemName: formatMessage({id: quayItemName || 'name'})
+      quayItemName: formatMessage({id: quayItemName || 'name'}),
+      quayMissingLocation: formatMessage({id: 'quay_is_missing_location'})
     }
 
 
@@ -85,7 +87,7 @@ class QuayItem extends React.Component {
     const locationStyle = {
       marginRight: 5,
       height: 16,
-      width: 16
+      width: 16,
     }
 
     const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
@@ -97,7 +99,12 @@ class QuayItem extends React.Component {
       <div>
         <div className="tabItem">
           <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 20, padding: 5}}>
-            <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
+            {  quay.location
+               ? <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
+              :  <div title={translations.quayMissingLocation} style={{display: 'inline-block'}}>
+                   <MdError style={{ ...locationStyle, color: '#bb271c'}}/>
+                 </div>
+            }
             <div style={{display: 'inline-block', verticalAlign: 'middle'}} onClick={() => handleToggleCollapse(index, 'quay')}>
               <span style={{color: '#2196F3'}}>
                 { quayTitlePrefix + quayTitleSuffix }
