@@ -32,8 +32,6 @@ class EditStopGeneral extends React.Component {
   handleSave() {
     const variables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
 
-    console.log("variables", variables)
-
     const { client, dispatch } = this.props
     client.mutate({ variables: variables, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
@@ -42,7 +40,6 @@ class EditStopGeneral extends React.Component {
       }
     }).catch( err => {
       dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
-      console.log(err)
     })
   }
 
@@ -96,7 +93,7 @@ class EditStopGeneral extends React.Component {
 
     let quayItemName = null
 
-    stopTypes[locale].forEach(  stopType => {
+    stopTypes[locale].forEach(stopType => {
       if (stopType.value === stopPlace.stopPlaceType) {
         quayItemName = stopType.quayItemName
       }
@@ -106,27 +103,25 @@ class EditStopGeneral extends React.Component {
       itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
     }
 
-    let captionText = formatMessage({id: 'new_stop_title'})
-
-    if (stopPlace && stopPlace.id) {
-      captionText = `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-    }
+    const captionText = (stopPlace && stopPlace.id)
+      ? `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
+      : formatMessage({id: 'new_stop_title'})
 
     const style = {
       border: '1px solid #511E12',
       background: '#fff',
-      width: 410,
+      width: 400,
       marginTop: 2,
       position: 'absolute',
       zIndex: 999,
       padding: '10 5',
-      height: '93vh'
+      height: 'calc(100% - 120px)'
     }
 
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: '75vh',
+      height: '50vh',
       position: "relative",
       display: "block",
       zIndex: 999,
@@ -159,18 +154,7 @@ class EditStopGeneral extends React.Component {
     return (
 
       <div style={style}>
-        <ConfirmDialog
-          open={this.state.confirmDialogOpen}
-          handleClose={ () => { this.handleDialogClose() }}
-          handleConfirm={ () => { this.handleDiscardChanges() }}
-          messagesById={{
-            title: 'discard_changes_title',
-            body: 'discard_changes_body',
-            confirm: 'discard_changes_confirm',
-            cancel: 'discard_changes_cancel',
-          }}
-          intl={intl}
-        />
+
         <div style={stopBoxBar}>{captionText}</div>
           <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
@@ -237,6 +221,18 @@ class EditStopGeneral extends React.Component {
               </div>
           </div>
         }
+        <ConfirmDialog
+          open={this.state.confirmDialogOpen}
+          handleClose={ () => { this.handleDialogClose() }}
+          handleConfirm={ () => { this.handleDiscardChanges() }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel',
+          }}
+          intl={intl}
+        />
       </div> )
   }
 }

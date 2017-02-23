@@ -51,8 +51,7 @@ export default class LeafLetMap extends React.PureComponent {
     }
 
     const lmapStyle = {
-      height: "95%",
-      width: "100%",
+      height: "calc(100% - 68px)",
       border: "2px solid #eee"
     }
 

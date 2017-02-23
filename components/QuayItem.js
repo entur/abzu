@@ -98,7 +98,7 @@ class QuayItem extends React.Component {
 
       <div>
         <div className="tabItem">
-          <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 20, padding: 5}}>
+          <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 10, padding: 5}}>
             {  quay.location
                ? <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
               :  <div className="tooltip" style={{display: 'inline-block'}}>

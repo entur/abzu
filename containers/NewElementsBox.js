@@ -41,22 +41,19 @@ class NewElementsBox extends React.Component {
       background: '#fff',
       position: 'absolute',
       top: '82vh',
-      margin: 20,
       width: 'auto',
       border: '1px solid #511e12',
       zIndex: 999,
       right: 0,
       cursor: 'move',
-      fontSize: '0.8em',
+      fontSize: 10,
     }
 
     const stopBoxBar = {
       color: '#fff',
       background: '#191919',
       width: '100%',
-      textAlign: 'left',
-      fontWeight: '0.9em',
-      display: 'block',
+      textAlign: 'center',
     }
 
     const elementStyle = {
@@ -66,10 +63,8 @@ class NewElementsBox extends React.Component {
     }
 
     const titleStyle = {
-      fontWeight: 600,
       textTransform: 'capitalize',
       marginTop: 8,
-      marginBottom: -10
     }
 
     const quayText = formatMessage({id: 'quay'})
@@ -98,7 +93,7 @@ class NewElementsBox extends React.Component {
             handleConfirm={this.handleConfirmSubmit.bind(this)}
           />
           <div style={stopBoxBar}>
-            <div style={{textIndent: 5, paddingTop: 4, fontSize: '0.8em'}}>{formatMessage({id: 'new_elements'})}</div>
+            <div style={{textIndent: 5, paddingTop: 2, fontSize: 10}}>{formatMessage({id: 'new_elements'})}</div>
           </div>
           <div style={{display: 'block', marginTop: 0, marginBottom: 0}}>
             { shouldShowNewStop

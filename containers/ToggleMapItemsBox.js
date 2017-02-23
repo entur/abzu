@@ -22,14 +22,14 @@ class ToggleMapItemsBox extends React.Component {
     const boxWrapperStyle = {
       background: '#fff',
       position: 'absolute',
-      top: '76.5vh',
+      top: '65vh',
       right: '1vw',
-      margin: 5,
       width: 220,
       border: '1px solid #511e12',
       zIndex: 999,
       cursor: 'move',
-      fontSize: '0.8em',
+      width: 'auto',
+      fontSize: 10,
     }
 
     const stopBoxBar = {
@@ -37,10 +37,10 @@ class ToggleMapItemsBox extends React.Component {
       background: '#191919',
       textAlign: 'left',
       fontWeight: '0.9em',
-      fontSize: '0.8em',
       position: 'relative',
       paddingTop: 3,
-      paddingLeft: 2
+      paddingLeft: 2,
+      textAlign: 'center'
     }
 
     return (

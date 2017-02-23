@@ -37,9 +37,22 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
             <MenuItem
               primaryText={language}
               rightIcon={<ArrowDropRight />}
+              style={{fontSize: 12, padding: 0}}
               menuItems={[
-                <MenuItem onClick={() => setLanguage('nb')} insetChildren primaryText={norwegian} leftIcon={getLeftIcon(locale, 'nb')} />,
-                <MenuItem onClick={() => setLanguage('en')} insetChildren primaryText={english} leftIcon={getLeftIcon(locale, 'en')}/>,
+                <MenuItem
+                  style={{fontSize: 12, padding: 0}}
+                  onClick={() => setLanguage('nb')}
+                  insetChildren
+                  primaryText={norwegian}
+                  leftIcon={getLeftIcon(locale, 'nb')}
+                />,
+                <MenuItem
+                  style={{fontSize: 12, padding: 0}}
+                  onClick={() => setLanguage('en')}
+                  insetChildren
+                  primaryText={english}
+                  leftIcon={getLeftIcon(locale, 'en')}
+                />,
               ]}
              />
           </IconMenu>
@@ -48,7 +61,9 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
 )}
 
 const getLeftIcon =(locale, value) => {
-  if (locale === value) return <MdChecked color="green" />
+  if (locale === value) {
+    return <MdChecked color="green" />
+  }
   return null
 }
 
