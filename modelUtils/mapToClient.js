@@ -2,6 +2,35 @@ import { setDecimalPrecision } from '../utils/'
 
 const helpers = {}
 
+
+helpers.mapPathLinkToClient = pathLink => {
+
+  if (!pathLink) return []
+
+  return pathLink.map( link => {
+
+    let newLink = JSON.parse(JSON.stringify(link))
+
+    if (newLink.from.quay && newLink.from.quay.geometry.coordinates && newLink.from.quay.geometry.coordinates.length) {
+      newLink.from.quay.geometry.coordinates[0].reverse()
+    }
+
+    if (newLink.geometry && newLink.geometry.coordinates && newLink.geometry.coordinates.length) {
+      newLink.inBetween = newLink.geometry.coordinates.map( lngLat => lngLat.reverse())
+    }
+
+    if (newLink.to.quay && newLink.to.quay.geometry.coordinates && newLink.to.quay.geometry.coordinates) {
+      newLink.to.quay.geometry.coordinates[0].reverse()
+    }
+
+    newLink.estimate = 0
+    newLink.distance = 0
+
+    return newLink
+  })
+
+}
+
 helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {

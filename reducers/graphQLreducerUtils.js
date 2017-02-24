@@ -5,7 +5,7 @@ export const getStateByOperation = (state, action) => {
   switch (action.operationName) {
     case 'stopPlace':
     case 'stopPlaceAndPathLink':
-      return getStopFromResult(state, action)
+      return getDataFromResult(state, action)
 
     case 'mutateStopPlace':
 
@@ -35,26 +35,40 @@ export const getStateByOperation = (state, action) => {
 }
 
 export const getObjectFromCache = (state, action) => {
-  return getStopFromResult(state, action)
+  return getDataFromResult(state, action)
 }
 
-const getProperZoomLevel = location => {
-  return location ? 15 : 5
+const getProperZoomLevel = data => {
+  if (!data || data.location) return 5
+  return 15
 }
 
-const getStopFromResult = (state, action) => {
+const getDataFromResult = (state, action) => {
 
-  if (!action.result.data.stopPlace) {
+  if (!action.result.data) {
     return state
   }
 
-  const stopPlace = action.result.data.stopPlace[0]
+  if (action.result.data.stopPlaceBBox) {
+    return Object.assign({}, state, {
+      neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(action.result.data.stopPlaceBBox)
+    })
+  }
+
+  const stopPlace = ( action.result.data.stopPlace && action.result.data.stopPlace.length)
+    ? action.result.data.stopPlace[0]
+    : null
+
+  const pathLink = action.result.data.pathLink
+    ? action.result.data.pathLink
+    : []
 
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
     originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
-    zoom: getProperZoomLevel(stopPlace.geometry),
-    minZoom: stopPlace.geometry ? 14 : 7,
-    centerPosition: formatHelpers.getCenterPosition(stopPlace.geometry) || state.centerPosition
+    zoom: getProperZoomLevel(stopPlace),
+    minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
+    pathLink: formatHelpers.mapPathLinkToClient(pathLink),
+    centerPosition: (!stopPlace || !stopPlace.geometry) ? state.centerPosition : formatHelpers.getCenterPosition(stopPlace.geometry)
   })
 }

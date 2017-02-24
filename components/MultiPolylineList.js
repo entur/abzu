@@ -35,7 +35,7 @@ class MultiPolylineList extends React.Component {
 
   render() {
 
-    const { multiPolylineDataSource, intl } = this.props
+    const { pathLink, intl } = this.props
     const { openDialog } = this.state
     const { formatMessage } = intl
 
@@ -49,11 +49,11 @@ class MultiPolylineList extends React.Component {
       fontWeight: 600
     }
 
-    let lines = multiPolylineDataSource.map( (polyline, index) => {
+    let lines = pathLink.map( (polyline, index) => {
 
       let color = GenerateColor(index)
 
-      let isCompleted = polyline.endQuay
+      let isCompleted = polyline.to
 
       let position = arrayOfPolylinesFromPolyline(polyline)
 
@@ -70,7 +70,7 @@ class MultiPolylineList extends React.Component {
             <div>
               <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>
                 { formatMessage({id: 'pathLink'}) } {index+1}
-                </div>
+              </div>
               <div>
                 { polyline.distance
                   ?
@@ -85,9 +85,9 @@ class MultiPolylineList extends React.Component {
                 >
 
                   { polyline.estimate } { (Number(polyline.estimate) === 1)
-                    ? formatMessage({id: 'minute'})
-                    : formatMessage({id: 'minutes'})
-                  }
+                  ? formatMessage({id: 'minute'})
+                  : formatMessage({id: 'minutes'})
+                }
 
                 </span>
                 <span
@@ -101,6 +101,7 @@ class MultiPolylineList extends React.Component {
       )
     })
 
+
     return (
       <FeatureGroup>
         {lines}
@@ -109,23 +110,32 @@ class MultiPolylineList extends React.Component {
   }
 }
 
-const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
+const arrayOfPolylinesFromPolyline = line => {
 
   let arrayOfPolylines = []
 
-  if (dataSourceItem.startPoint) {
-    arrayOfPolylines.push(dataSourceItem.startPoint.coordinates)
+  if (line.from) {
+    if (line.from.quay) {
+      arrayOfPolylines.push(line.from.quay.geometry.coordinates[0])
+    }
+
   }
 
-  if (dataSourceItem.inlinePositions.length) {
-    dataSourceItem.inlinePositions.forEach((inlinePosition) => {
-      arrayOfPolylines.push(inlinePosition)
-    })
+  if (line.inBetween) {
+      line.inBetween.forEach( lngLat => {
+        arrayOfPolylines.push(lngLat)
+      })
   }
 
-  if (dataSourceItem.endPoint) {
-    arrayOfPolylines.push(dataSourceItem.endPoint.coordinates)
+
+  if (line.to) {
+    if (line.to.quay) {
+      arrayOfPolylines.push(line.to.quay.geometry.coordinates[0])
+    }
+
   }
+
+  console.log("arrayOf", arrayOfPolylines)
 
   return arrayOfPolylines
 }
@@ -133,7 +143,7 @@ const arrayOfPolylinesFromPolyline = (dataSourceItem) => {
 
 
 const mapStateToProps = state => ({
-  multiPolylineDataSource: state.editingStop.multiPolylineDataSource,
+  pathLink: state.stopPlace.pathLink || [],
   lastAddedCoordinate: state.editingStop.lastAddedCoordinate
 })
 

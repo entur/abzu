@@ -102,11 +102,7 @@ export default class LeafLetMap extends React.PureComponent {
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
           />
-        { enablePolylines
-            ?
-            <MultiPolylineList/>
-            : null
-        }
+          <MultiPolylineList/>
       </Lmap>)
   }
 }
