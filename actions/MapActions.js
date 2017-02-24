@@ -1,4 +1,4 @@
-import * as types from './actionTypes'
+import * as types from './Types'
 
 var MapActions = {}
 
@@ -47,10 +47,9 @@ MapActions.setMarkerOnMap = marker => {
   }
 }
 
-MapActions.changeMapCenter = (position, zoom) => {
+MapActions.changeMapCenter = (position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_MAP_CENTER, position) )
-    dispatch( sendData(types.SET_ZOOM, zoom) )
   }
 }
 

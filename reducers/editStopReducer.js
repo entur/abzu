@@ -1,4 +1,4 @@
-import * as types from './../actions/actionTypes'
+import * as types from '../actions/Types'
 import Immutable from 'immutable'
 import {
   addStartPointToPolyline,
@@ -49,19 +49,19 @@ const editStopReducer = (state = initialState, action) => {
         }
       })
 
+
+    // TODO: Refactor and remove this
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, { centerPosition: action.payLoad })
 
-
-    case types.SET_ZOOM:
-      return Object.assign({}, state, { zoom: action.payLoad})
-
-
+    // TODO: Refactor and move this to userReducer
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad })
 
+    // TODO: Refactor and move this to userReducer
     case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
       return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
+
 
     case types.STARTED_CREATING_POLYLINE:
       const multiPolylinesWithNewStarted = addStartPointToPolyline(state.multiPolylineDataSource, action.payLoad)

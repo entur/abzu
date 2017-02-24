@@ -1,4 +1,4 @@
-import * as types from './actionTypes'
+import * as types from './Types'
 import { browserHistory } from 'react-router'
 import configureLocalization from '../localization/localization'
 import FavoriteManager from '../singletons/FavoriteManager'

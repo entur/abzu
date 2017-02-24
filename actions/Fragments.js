@@ -18,6 +18,7 @@ Fragments.quay = {
   `
 }
 
+
 Fragments.stopPlace = {
   verbose: gql `
     fragment VerboseStopPlace on StopPlace {
@@ -52,7 +53,35 @@ Fragments.stopPlace = {
   `
 }
 
-
+Fragments.pathLink = {
+  verbose: gql `
+      fragment VerbosePathLink on PathLink {
+          id
+          geometry {
+              type
+              coordinates
+          }
+          from {
+              id
+              quay{
+                  id
+                  geometry {
+                      coordinates
+                  }
+              }
+          }
+          to {
+              id
+              quay {
+                  id
+                  geometry {
+                      coordinates
+                  }
+              }
+          }
+      }
+  `
+}
 
 
 export default Fragments

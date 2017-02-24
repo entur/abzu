@@ -9,7 +9,7 @@ import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
-import { stopQuery } from "../actions/Queries"
+import { stopQuery, pathLinkQuery, stopPlaceAndPathLink } from "../actions/Queries"
 import { withApollo } from 'react-apollo'
 import '../styles/main.css'
 import Dialog from 'material-ui/Dialog'
@@ -38,8 +38,9 @@ class EditStopPlace extends React.Component {
     }
 
     if (idFromPath && idFromPath.length && idFromPath && idFromPath !== 'new') {
+
       client.query({
-        query: stopQuery,
+        query: stopPlaceAndPathLink,
         variables: {
           id: idFromPath,
         }

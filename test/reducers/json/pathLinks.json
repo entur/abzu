@@ -1,0 +1,170 @@
+[
+  {
+    "id": "NSR:PathLink:2",
+    "from": {
+      "quay": {
+        "id": "NSR:Quay:75502",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.580904,
+              61.238599
+            ]
+          ]
+        }
+      }
+    },
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ]
+      ]
+    },
+    "to": {
+      "quay": {
+        "id": "NSR:Quay:75503",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.579273,
+              61.238273
+            ]
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "NSR:PathLink:3",
+    "from": {
+      "quay": {
+        "id": "NSR:Quay:75502",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.580904,
+              61.238599
+            ]
+          ]
+        }
+      }
+    },
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ]
+      ]
+    },
+    "to": {
+      "quay": {
+        "id": "NSR:Quay:75503",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.579273,
+              61.238273
+            ]
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "NSR:PathLink:4",
+    "from": {
+      "quay": {
+        "id": "NSR:Quay:75502",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.580904,
+              61.238599
+            ]
+          ]
+        }
+      }
+    },
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ],
+        [
+          10.3,
+          59.9
+        ]
+      ]
+    },
+    "to": {
+      "quay": {
+        "id": "NSR:Quay:75503",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            [
+              9.579273,
+              61.238273
+            ]
+          ]
+        }
+      }
+    }
+  }
+]

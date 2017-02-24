@@ -1,5 +1,5 @@
 import { getStateByOperation, getObjectFromCache } from './graphQLreducerUtils'
-import * as types from '../actions/actionTypes'
+import * as types from '../actions/Types'
 import formatHelpers from '../modelUtils/mapToClient'
 
 const graphQLreducer = (state = {}, action) => {

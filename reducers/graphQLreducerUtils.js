@@ -4,6 +4,7 @@ export const getStateByOperation = (state, action) => {
 
   switch (action.operationName) {
     case 'stopPlace':
+    case 'stopPlaceAndPathLink':
       return getStopFromResult(state, action)
 
     case 'mutateStopPlace':

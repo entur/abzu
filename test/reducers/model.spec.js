@@ -3,6 +3,7 @@ import { graphQLReducer } from './../../reducers/'
 import stopPlaceMock from './json/stopPlace.json'
 import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json'
 import clientStop from './json/clientStop.json'
+import pathLinks from './json/pathLinks.json'
 import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables'
 import { describe, before, it } from 'mocha'
 

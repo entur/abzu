@@ -1,4 +1,4 @@
-import * as types from './../../actions/actionTypes'
+import * as types from '../../actions/Types'
 import expect from 'expect'
 import { userReducer } from './../../reducers/'
 import { initialState } from './../../reducers/userReducer'

@@ -15,7 +15,6 @@ import SearchIcon from 'material-ui/svg-icons/action/search'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import SearchFilter from '../components/SearchFilter'
-import { graphql } from 'react-apollo'
 import { findStop } from "../actions/Queries"
 import { withApollo } from 'react-apollo'
 
