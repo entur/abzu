@@ -45,5 +45,32 @@ helpers.mapStopToVariables = stop => {
   return newStop
 }
 
+helpers.mapPathLinkToVariables = pathLink => {
+
+  return pathLink
+    .map( source => {
+
+      let pathLink = JSON.parse(JSON.stringify(source))
+
+      if (pathLink.from && pathLink.from.quay) {
+        delete pathLink.from.quay.geometry
+      }
+
+      delete pathLink.estimate
+      delete pathLink.duration
+
+      pathLink.transferDuration = {
+        defaultDuration: source.estimate
+      }
+
+      if (pathLink.to && pathLink.to.quay) {
+        delete pathLink.to.quay.geometry
+      }
+
+      return pathLink
+    })
+
+}
+
 
 export default helpers

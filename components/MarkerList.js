@@ -53,18 +53,18 @@ class MarkerList extends React.Component {
     this.props.dispatch(UserActions.hideQuaysForNeighbourStop(id))
   }
 
-  handleUpdatePathLink(coords, index, type) {
+  handleUpdatePathLink(coords, id, type) {
     const { isCreatingPolylines, polylineStartPoint, activeMap } = this.props
 
     if (activeMap) activeMap.closePopup()
 
-    if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
+    /*if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
       this.props.dispatch(UserActions.removeLastPolyline())
-    }
-    else if (isCreatingPolylines) {
-      this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, index, type))
+    }*/
+    if (isCreatingPolylines) {
+      this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, id, type))
     } else {
-      this.props.dispatch(UserActions.startCreatingPolyline(coords, index, type))
+      this.props.dispatch(UserActions.startCreatingPolyline(coords, id, type))
     }
   }
 
@@ -145,6 +145,7 @@ class MarkerList extends React.Component {
                 <QuayMarker
                   index={index}
                   parentId={stopIndex}
+                  id={quay.id}
                   position={quay.location}
                   key={"quay" + (quay.id || index) }
                   handleQuayDragEnd={this.handleElementDragEnd.bind(this)}

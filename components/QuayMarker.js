@@ -11,6 +11,7 @@ class QuayMarker extends React.PureComponent {
 
   static propTypes = {
     index: PropTypes.number.isRequired,
+    id: PropTypes.string,
     parentId: PropTypes.number.isRequired,
     parentStopPlaceName: PropTypes.string.isRequired,
     position: PropTypes.arrayOf(Number).isRequired,
@@ -28,7 +29,7 @@ class QuayMarker extends React.PureComponent {
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
-    const { isCreatingPolylines, polylineStartPoint } = this.props
+    const { isCreatingPolylines, polylineStartPoint, id } = this.props
 
     if (!position) return null
 
@@ -66,13 +67,13 @@ class QuayMarker extends React.PureComponent {
                 <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
                 <div
                   className='change-path-link'
-                  onClick={() => { handleUpdatePathLink(position, index, 'quay') }}
+                  onClick={() => { handleUpdatePathLink(position, id, 'quay') }}
                 >
                   { pathLinkText }
                 </div>
                 <div
                   style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
-                  onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, index, position)}
+                  onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, id, position)}
                 >
                   <span style={{display: 'inline-block', textAlign: 'center', borderBottom: !belongsToNeighbourStop ? '1px dotted black' : 'none', }}>
                       {position[0]}

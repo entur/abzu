@@ -212,11 +212,11 @@ UserActions.removeStopsNearbyForOverview = () => {
   }
 }
 
-UserActions.startCreatingPolyline = (initialCoords, index, type) => {
+UserActions.startCreatingPolyline = (coordinates, id, type) => {
   return function(dispatch) {
     dispatch(sendData(types.STARTED_CREATING_POLYLINE, {
-      coordinates: initialCoords,
-      index: index,
+      coordinates: coordinates,
+      id: id,
       type: type
     }))
   }
@@ -228,11 +228,11 @@ UserActions.addCoordinatesToPolylines = (coords) => {
   }
 }
 
-UserActions.addFinalCoordinesToPolylines = (coords, index, type) => {
+UserActions.addFinalCoordinesToPolylines = (coords, id, type) => {
   return function(dispatch) {
     dispatch(sendData(types.ADDED_FINAL_COORDINATES_TO_POLYLINE, {
       coordinates: coords,
-      index: index,
+      id: id,
       type: type
     }))
   }

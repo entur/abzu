@@ -57,6 +57,9 @@ Fragments.pathLink = {
   verbose: gql `
       fragment VerbosePathLink on PathLink {
           id
+          transferDuration {
+              defaultDuration
+          }
           geometry {
               type
               coordinates

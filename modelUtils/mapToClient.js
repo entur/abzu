@@ -1,8 +1,24 @@
 import { setDecimalPrecision } from '../utils/'
 import { LatLng } from 'leaflet'
+import * as types from "../actions/Types";
 
 const helpers = {}
 
+const calculateDistance = coords => {
+  let latlngDistances = coords.map ( (position) => new LatLng(position[0], position[1]))
+  let totalDistance = 0
+  for (let i = 0; i < latlngDistances.length; i++) {
+    if (latlngDistances[i+1] == null) break
+    totalDistance += latlngDistances[i].distanceTo(latlngDistances[i+1])
+  }
+
+  return totalDistance
+}
+
+const calculateEstimate = distance => {
+  const walkingSpeed = 1.34112  // i.e. 3 mph / 3.6
+  return Math.max(Math.floor(distance / ( walkingSpeed*60 )), 1)
+}
 
 helpers.mapPathLinkToClient = pathLink => {
 
@@ -32,27 +48,49 @@ helpers.mapPathLinkToClient = pathLink => {
     }
 
     newLink.distance = calculateDistance(latlngCoordinates)
-    newLink.estimate = calculateEstimate(newLink.distance)
+
+    if (link.transferDuration && link.transferDuration.defaultDuration) {
+      newLink.estimate = link.transferDuration.defaultDuration
+    } else {
+      newLink.estimate = calculateEstimate(newLink.distance)
+    }
 
     return newLink
   })
 
 }
 
-const calculateDistance = coords => {
-  let latlngDistances = coords.map ( (position) => new LatLng(position[0], position[1]))
-  let totalDistance = 0
-  for (let i = 0; i < latlngDistances.length; i++) {
-    if (latlngDistances[i+1] == null) break
-    totalDistance += latlngDistances[i].distanceTo(latlngDistances[i+1])
+helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
+
+  if (action.type === types.STARTED_CREATING_POLYLINE) {
+
+    let newPathLink = {
+      from: {
+        quay: {
+          id: action.payLoad.id,
+          geometry: {
+            type: 'Point',
+            coordinates: [ action.payLoad.coordinates ]
+          }
+        }
+      }
+     }
+     return pathLink.concat(newPathLink)
+  } else if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
+
+    let lastPathLink = JSON.parse(JSON.stringify(pathLink[pathLink.length-1]))
+    lastPathLink.to = {
+      quay: {
+        id: action.payLoad.id,
+        geometry: {
+          type: 'Point',
+          coordinates: [ action.payLoad.coordinates ]
+        }
+      }
+    }
+    return pathLink.slice(0, pathLink.length-1).concat(lastPathLink)
   }
 
-  return totalDistance
-}
-
-const calculateEstimate = distance => {
-  const walkingSpeed = 1.34112  // i.e. 3 mph / 3.6
-  return Math.max(Math.floor(distance / ( walkingSpeed*60 )), 1)
 }
 
 helpers.mapStopToClientStop = (stop, isActive) => {

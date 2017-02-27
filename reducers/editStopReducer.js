@@ -64,12 +64,8 @@ const editStopReducer = (state = initialState, action) => {
 
 
     case types.STARTED_CREATING_POLYLINE:
-      const multiPolylinesWithNewStarted = addStartPointToPolyline(state.multiPolylineDataSource, action.payLoad)
-
       return Object.assign({}, state, {
-        multiPolylineDataSource: multiPolylinesWithNewStarted,
         isCreatingPolylines: true,
-        editedStopChanged: true,
         polylineStartPoint: action.payLoad,
         enablePolylines: true
       })
@@ -84,9 +80,7 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
-      const multiPolylinesWithFinalCoordsAdded = addEndPointToPolyline(state.multiPolylineDataSource.slice(0), action.payLoad)
       return Object.assign({}, state, {
-        multiPolylineDataSource: multiPolylinesWithFinalCoordsAdded,
         isCreatingPolylines: false,
         enablePolylines: true
       })

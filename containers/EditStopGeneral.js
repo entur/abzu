@@ -10,7 +10,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import EditStopBoxHeader from '../components/EditStopBoxHeader'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
-import { mutateStopPlace } from '../actions/Mutations'
+import { mutateStopPlace, mutatePathLink } from '../actions/Mutations'
 import * as types from '../actions/Types'
 import EditQuayAdditional from './EditQuayAdditional'
 import EditStopAdditional from './EditStopAdditional'
@@ -30,16 +30,25 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSave() {
-    const variables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
+
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
+    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
 
     const { client, dispatch } = this.props
-    client.mutate({ variables: variables, mutation: mutateStopPlace}).then( result => {
+    client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
-        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
         dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
       }
-    }).catch( err => {
-      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
+    }).then( result => {
+
+      if (pathLinkVariables && pathLinkVariables.length) {
+
+        client.mutate({ variables: { "PathLink": pathLinkVariables[0] }, mutation: mutatePathLink}).then( result => {
+          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
+        }).catch( err => {
+          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
+        })
+      }
     })
   }
 
@@ -238,12 +247,13 @@ class EditStopGeneral extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    stopPlace: state.stopPlace.current,
-    stopHasBeenModified: state.stopPlace.stopHasBeenModified,
-    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
-    activeElementTab: state.user.activeElementTab,
-    showEditQuayAdditional: state.user.showEditQuayAdditional,
-    showEditStopAdditional: state.user.showEditStopAdditional
+  stopPlace: state.stopPlace.current,
+  pathLink: state.stopPlace.pathLink,
+  stopHasBeenModified: state.stopPlace.stopHasBeenModified,
+  isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+  activeElementTab: state.user.activeElementTab,
+  showEditQuayAdditional: state.user.showEditQuayAdditional,
+  showEditStopAdditional: state.user.showEditStopAdditional
 })
 
 export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))

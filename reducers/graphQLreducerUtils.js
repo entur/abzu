@@ -25,6 +25,11 @@ export const getStateByOperation = (state, action) => {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(action.result.data.stopPlaceBBox)
       })
 
+    case 'mutatePathLink':
+      return Object.assign({}, state, {
+        pathLink: formatHelpers.mapPathLinkToClient(action.result.data.mutatePathlink)
+      })
+
     case 'findStop':
       return Object.assign({}, state, {
         searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace),

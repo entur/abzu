@@ -122,6 +122,13 @@ const graphQLreducer = (state = {}, action) => {
           centerPosition: action.payLoad
         })
 
+      case types.STARTED_CREATING_POLYLINE:
+      case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
+        return Object.assign({}, state, {
+          pathLink: formatHelpers.updatePathLinkWithNewEntry(action, state.pathLink),
+          stopHasBeenModified: true
+        })
+
       default: return state
     }
 }
