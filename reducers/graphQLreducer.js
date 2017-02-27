@@ -129,6 +129,12 @@ const graphQLreducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
+
+      case types.REMOVED_LAST_POLYLINE:
+        return Object.assign({}, state, {
+          pathLink: state.pathLink.slice(0, state.pathLink.length-1),
+        })
+
       default: return state
     }
 }

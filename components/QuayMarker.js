@@ -29,14 +29,19 @@ class QuayMarker extends React.PureComponent {
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
-    const { isCreatingPolylines, polylineStartPoint, id } = this.props
+    const { isCreatingPolylines, id, pathLink } = this.props
 
     if (!position) return null
 
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
 
-    if (isCreatingPolylines && polylineStartPoint.type === 'quay' && polylineStartPoint.index == index) {
-      pathLinkText = translations.cancelPathLink
+    if (isCreatingPolylines && pathLink && pathLink.length) {
+
+      let lastPathLink = pathLink[pathLink.length-1]
+
+      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id) {
+        pathLinkText = translations.cancelPathLink
+      }
     }
 
     const divBody = ReactDOM.renderToStaticMarkup(
@@ -156,10 +161,10 @@ const getShortQuayName = (quayName) => {
 
 const mapStateToProps = state => {
   return {
-    polylineStartPoint: state.editingStop.polylineStartPoint,
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
     isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
     focusedElement: state.editingStop.focusedElement,
+    pathLink: state.stopPlace.pathLink
   }
 }
 

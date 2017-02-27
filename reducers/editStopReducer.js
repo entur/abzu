@@ -97,14 +97,7 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.REMOVED_LAST_POLYLINE:
-      let multiPolyLineLastPolylineRemoved = state.multiPolylineDataSource.slice(0)
-
-      if (multiPolyLineLastPolylineRemoved.length) {
-        multiPolyLineLastPolylineRemoved.pop()
-      }
-
       return Object.assign({}, state, {
-        multiPolylineDataSource: multiPolyLineLastPolylineRemoved,
         isCreatingPolylines: false
       })
 

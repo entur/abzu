@@ -54,13 +54,20 @@ class MarkerList extends React.Component {
   }
 
   handleUpdatePathLink(coords, id, type) {
-    const { isCreatingPolylines, polylineStartPoint, activeMap } = this.props
+    const { isCreatingPolylines, activeMap, pathLink } = this.props
 
     if (activeMap) activeMap.closePopup()
 
-    /*if (isCreatingPolylines && polylineStartPoint.type === type && polylineStartPoint.index == index) {
-      this.props.dispatch(UserActions.removeLastPolyline())
-    }*/
+    if (pathLink && pathLink.length) {
+
+      let lastPathLink = pathLink[pathLink.length-1]
+
+      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id) {
+        this.props.dispatch(UserActions.removeLastPolyline())
+        return
+      }
+    }
+
     if (isCreatingPolylines) {
       this.props.dispatch(UserActions.addFinalCoordinesToPolylines(coords, id, type))
     } else {
@@ -216,12 +223,12 @@ class MarkerList extends React.Component {
 const mapStateToProps = state => {
   return {
     path: state.user.path,
-    polylineStartPoint: state.editingStop.polylineStartPoint,
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
     neighbouringMarkersQuaysMap: state.editingStop.neighbouringMarkersQuaysMap,
     isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
     missingCoordinatesMap: state.user.missingCoordsMap,
-    activeMap: state.editingStop.activeMap
+    activeMap: state.editingStop.activeMap,
+    pathLink: state.stopPlace.pathLink
   }
 }
 
