@@ -85,8 +85,8 @@ class MultiPolylineList extends React.Component {
                 >
 
                   { polyline.estimate } { (Number(polyline.estimate) === 1)
-                  ? formatMessage({id: 'minute'})
-                  : formatMessage({id: 'minutes'})
+                  ? formatMessage({id: 'second'})
+                  : formatMessage({id: 'seconds'})
                 }
 
                 </span>

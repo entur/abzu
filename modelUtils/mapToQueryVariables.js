@@ -56,9 +56,6 @@ helpers.mapPathLinkToVariables = pathLink => {
         delete pathLink.from.quay.geometry
       }
 
-      delete pathLink.estimate
-      delete pathLink.duration
-
       pathLink.transferDuration = {
         defaultDuration: source.estimate
       }
@@ -66,6 +63,9 @@ helpers.mapPathLinkToVariables = pathLink => {
       if (pathLink.to && pathLink.to.quay) {
         delete pathLink.to.quay.geometry
       }
+
+      delete pathLink.estimate
+      delete pathLink.duration
 
       return pathLink
     })

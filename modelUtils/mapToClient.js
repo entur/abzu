@@ -17,7 +17,7 @@ const calculateDistance = coords => {
 
 const calculateEstimate = distance => {
   const walkingSpeed = 1.34112  // i.e. 3 mph / 3.6
-  return Math.max(Math.floor(distance / ( walkingSpeed*60 )), 1)
+  return Math.max(Math.floor(distance / ( walkingSpeed)), 1)
 }
 
 helpers.mapPathLinkToClient = pathLink => {
@@ -79,6 +79,13 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
   } else if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
 
     let lastPathLink = JSON.parse(JSON.stringify(pathLink[pathLink.length-1]))
+
+    let latlngCoordinates = []
+
+    if (lastPathLink.from && lastPathLink.from.quay) {
+      latlngCoordinates.push(lastPathLink.from.quay.geometry.coordinates[0])
+    }
+
     lastPathLink.to = {
       quay: {
         id: action.payLoad.id,
@@ -88,6 +95,12 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
         }
       }
     }
+
+    latlngCoordinates.push(action.payLoad.coordinates)
+
+    lastPathLink.distance = calculateDistance(latlngCoordinates)
+    lastPathLink.estimate = calculateEstimate(lastPathLink.distance)
+
     return pathLink.slice(0, pathLink.length-1).concat(lastPathLink)
   }
 

@@ -43,6 +43,8 @@ class EditStopGeneral extends React.Component {
 
       if (pathLinkVariables && pathLinkVariables.length) {
 
+        console.log("PathLink", pathLinkVariables[0])
+
         client.mutate({ variables: { "PathLink": pathLinkVariables[0] }, mutation: mutatePathLink}).then( result => {
           dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
         }).catch( err => {
