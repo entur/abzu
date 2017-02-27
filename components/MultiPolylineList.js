@@ -135,8 +135,6 @@ const arrayOfPolylinesFromPolyline = line => {
 
   }
 
-  console.log("arrayOf", arrayOfPolylines)
-
   return arrayOfPolylines
 }
 

@@ -1,4 +1,5 @@
 import { setDecimalPrecision } from '../utils/'
+import { LatLng } from 'leaflet'
 
 const helpers = {}
 
@@ -10,25 +11,48 @@ helpers.mapPathLinkToClient = pathLink => {
   return pathLink.map( link => {
 
     let newLink = JSON.parse(JSON.stringify(link))
+    let latlngCoordinates = []
 
     if (newLink.from.quay && newLink.from.quay.geometry.coordinates && newLink.from.quay.geometry.coordinates.length) {
+
       newLink.from.quay.geometry.coordinates[0].reverse()
+      latlngCoordinates.push(newLink.from.quay.geometry.coordinates[0])
     }
 
     if (newLink.geometry && newLink.geometry.coordinates && newLink.geometry.coordinates.length) {
       newLink.inBetween = newLink.geometry.coordinates.map( lngLat => lngLat.reverse())
+      newLink.inBetween.forEach( coords => {
+        latlngCoordinates.push(coords)
+      })
     }
 
     if (newLink.to.quay && newLink.to.quay.geometry.coordinates && newLink.to.quay.geometry.coordinates) {
       newLink.to.quay.geometry.coordinates[0].reverse()
+      latlngCoordinates.push(newLink.to.quay.geometry.coordinates[0])
     }
 
-    newLink.estimate = 0
-    newLink.distance = 0
+    newLink.distance = calculateDistance(latlngCoordinates)
+    newLink.estimate = calculateEstimate(newLink.distance)
 
     return newLink
   })
 
+}
+
+const calculateDistance = coords => {
+  let latlngDistances = coords.map ( (position) => new LatLng(position[0], position[1]))
+  let totalDistance = 0
+  for (let i = 0; i < latlngDistances.length; i++) {
+    if (latlngDistances[i+1] == null) break
+    totalDistance += latlngDistances[i].distanceTo(latlngDistances[i+1])
+  }
+
+  return totalDistance
+}
+
+const calculateEstimate = distance => {
+  const walkingSpeed = 1.34112  // i.e. 3 mph / 3.6
+  return Math.max(Math.floor(distance / ( walkingSpeed*60 )), 1)
 }
 
 helpers.mapStopToClientStop = (stop, isActive) => {
