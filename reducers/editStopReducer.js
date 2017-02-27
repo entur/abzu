@@ -101,17 +101,6 @@ const editStopReducer = (state = initialState, action) => {
         isCreatingPolylines: false
       })
 
-    case types.EDITED_TIME_ESTIMATE_FOR_POLYLINE:
-      let multiPolyLineForTimeEstimateChange = state.multiPolylineDataSource.slice(0)
-
-      if (multiPolyLineForTimeEstimateChange[action.payLoad.index] != null) {
-        multiPolyLineForTimeEstimateChange[action.payLoad.index] = {
-          ...multiPolyLineForTimeEstimateChange[action.payLoad.index],
-          estimate: action.payLoad.estimate
-        }
-      }
-      return Object.assign({}, state, { multiPolylineDataSource: multiPolyLineForTimeEstimateChange})
-
     case types.SET_ACTIVE_MAP:
       return Object.assign({}, state, { activeMap: action.payLoad})
 

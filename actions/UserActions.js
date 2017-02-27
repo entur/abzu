@@ -250,11 +250,11 @@ UserActions.removeLastPolyline = () => {
   }
 }
 
-UserActions.editPolylineTimeEstimate = (index, estimate) => {
+UserActions.editPolylineTimeEstimate = (index, seconds) => {
   return function(dispatch) {
     dispatch(sendData(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {
       index: index,
-      estimate: estimate
+      estimate: seconds
     }))
   }
 }

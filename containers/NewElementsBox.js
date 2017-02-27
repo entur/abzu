@@ -99,7 +99,7 @@ class NewElementsBox extends React.Component {
             { shouldShowNewStop
               ?
               <div style={elementStyle}>
-                <img ref="stop_place" id="stop_place" draggable style={{height: 40, width: 'auto', marginLeft: newStopText.length*1.5}} src={newStopIcon}/>
+                <img ref="stop_place" id="stop_place" draggable style={{height: 40, width: 'auto', marginLeft: newStopText.length}} src={newStopIcon}/>
                 <div style={titleStyle}>{newStopText}</div>
               </div>
               : null
@@ -109,11 +109,11 @@ class NewElementsBox extends React.Component {
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="pathJunction" id="drag2" draggable style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length*2}} src={junctionIcon}/>
+              <img ref="pathJunction" id="drag2" draggable style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length}} src={junctionIcon}/>
               <div style={titleStyle}>{pathJunctionText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="entrance" id="drag3" draggable style={{height: 40, width: 'auto', marginLeft: entranceText.length*1.5}} src={entranceIcon}/>
+              <img ref="entrance" id="drag3" draggable style={{height: 40, width: 'auto', marginLeft: entranceText.length}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
             </div>
           </div>

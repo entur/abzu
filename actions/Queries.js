@@ -72,6 +72,9 @@ export const stopPlaceAndPathLink = gql`
                     }
                 }
             }
+            transferDuration {
+                defaultDuration
+            }
             geometry {
                 type
                 coordinates

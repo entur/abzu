@@ -135,6 +135,11 @@ const graphQLreducer = (state = {}, action) => {
           pathLink: state.pathLink.slice(0, state.pathLink.length-1),
         })
 
+      case types.EDITED_TIME_ESTIMATE_FOR_POLYLINE:
+        return Object.assign({}, state, {
+          pathLink: formatHelpers.updateEstimateForPathLink(action, state.pathLink)
+        })
+
       default: return state
     }
 }

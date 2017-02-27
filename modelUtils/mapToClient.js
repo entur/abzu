@@ -60,6 +60,13 @@ helpers.mapPathLinkToClient = pathLink => {
 
 }
 
+helpers.updateEstimateForPathLink = (action, pathLink) => {
+  const { index, estimate } = action.payLoad
+  let updatedPathLink = JSON.parse(JSON.stringify(pathLink))
+  updatedPathLink[index].estimate = estimate
+  return updatedPathLink
+}
+
 helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
   if (action.type === types.STARTED_CREATING_POLYLINE) {
@@ -76,7 +83,9 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
       }
      }
      return pathLink.concat(newPathLink)
-  } else if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
+  }
+
+  if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
 
     let lastPathLink = JSON.parse(JSON.stringify(pathLink[pathLink.length-1]))
 

@@ -22,7 +22,7 @@ export const mutateStopPlace = gql`
 `
 
 export const mutatePathLink = gql`
-    mutation mutatePathLink($PathLink: PathLinkInput!) {
+    mutation mutatePathLink($PathLink: [PathLinkInput]!) {
       mutatePathlink(PathLink: $PathLink) {
           ...VerbosePathLink
       }
