@@ -2,7 +2,7 @@ import React from 'react'
 import MarkerList from './MarkerList'
 import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
 import { GoogleLayer } from 'react-leaflet-google'
-import MultiPolylineList from './MultiPolylineList'
+import MultiPolylineList from './MultiPolyline'
 import WMTSLayer from './WMTSLayer'
 import axios from 'axios'
 

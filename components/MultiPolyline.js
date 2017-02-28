@@ -6,7 +6,7 @@ import { UserActions } from '../actions'
 import { injectIntl } from 'react-intl'
 import WalkingDistanceDialog from './WalkingDistanceDialog'
 
-class MultiPolylineList extends React.Component {
+class MultiPolyline extends React.Component {
 
   constructor(props) {
     super(props)
@@ -16,7 +16,7 @@ class MultiPolylineList extends React.Component {
   }
 
   handleRemovePolyline(index) {
-    this.props.dispatch(UserActions.removePolylineFromIndex(index))
+    // NB: This is not supported yet, awaiting versioning
   }
 
   handleEditTimeEstimate(index, estimate) {
@@ -90,10 +90,10 @@ class MultiPolylineList extends React.Component {
                 }
 
                 </span>
-                <span
+                { /* <span
                   onClick={() => this.handleRemovePolyline(index)}
                   style={polylinePopupStyle}
-                > { formatMessage({id: 'remove'}) } </span>
+                > { formatMessage({id: 'remove'}) } </span> */ }
               </div>
             </div>
           </Popup>
@@ -145,4 +145,4 @@ const mapStateToProps = state => ({
   lastAddedCoordinate: state.editingStop.lastAddedCoordinate
 })
 
-export default injectIntl(connect(mapStateToProps)(MultiPolylineList))
+export default injectIntl(connect(mapStateToProps)(MultiPolyline))
