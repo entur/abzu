@@ -58,7 +58,7 @@ class MultiPolyline extends React.Component {
       let position = arrayOfPolylinesFromPolyline(polyline)
 
       return (
-        <Polyline weight={6} key={'pl'+index} color={color} positions={position} opacity={isCompleted ? 0.8 : 1.0} dashArray="8,14" lineJoin='round'>
+        <Polyline weight={6} key={'pl'+index} color={color} positions={position} opacity={isCompleted ? 0.8 : 1.0} dashArray="8,14">
           <WalkingDistanceDialog
             open={openDialog} intl={intl}
             handleConfirm={this.handleEditTimeEstimate.bind(this)}

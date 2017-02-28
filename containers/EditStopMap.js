@@ -65,6 +65,17 @@ class EditStopMap extends React.Component {
     })
   }
 
+  shouldComponentUpdate(nextProps) {
+
+    if (nextProps.isCreatingPolylines) {
+      document.querySelector(".leaflet-container").style.cursor = 'crosshair'
+    } else {
+      document.querySelector(".leaflet-container").style.cursor = ''
+    }
+
+    return true
+  }
+
   handleDragEnd(isQuay, index, event) {
     const { dispatch } = this.props
     const position = event.target.getLatLng()
