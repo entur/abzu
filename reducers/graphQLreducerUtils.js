@@ -27,7 +27,8 @@ export const getStateByOperation = (state, action) => {
 
     case 'mutatePathLink':
       return Object.assign({}, state, {
-        pathLink: formatHelpers.mapPathLinkToClient(action.result.data.mutatePathlink)
+        pathLink: formatHelpers.mapPathLinkToClient(action.result.data.mutatePathlink),
+        originalPathLink: formatHelpers.mapPathLinkToClient(action.result.data.mutatePathlink)
       })
 
     case 'findStop':
@@ -71,6 +72,7 @@ const getDataFromResult = (state, action) => {
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
     originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
+    originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
     zoom: getProperZoomLevel(stopPlace),
     minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),

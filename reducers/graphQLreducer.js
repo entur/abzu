@@ -17,7 +17,8 @@ const graphQLreducer = (state = {}, action) => {
       case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
         return Object.assign({}, state, {
           stopHasBeenModified: false,
-          current: JSON.parse(JSON.stringify(state.originalCurrent))
+          current: JSON.parse(JSON.stringify(state.originalCurrent)),
+          pathLink: JSON.parse(JSON.stringify(state.originalPathLink))
         })
 
       case types.NAVIGATE_TO:
@@ -40,6 +41,7 @@ const graphQLreducer = (state = {}, action) => {
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
           originalCurrent: formatHelpers.createNewStopFromLocation(action.payLoad),
+          pathLink: [],
           stopHasBeenModified: false
         })
 
