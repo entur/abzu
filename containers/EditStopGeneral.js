@@ -26,11 +26,47 @@ class EditStopGeneral extends React.Component {
     super(props)
     this.state = {
       confirmDialogOpen: false,
+      allowPathLinkAdjustmentsDialog: false,
     }
   }
 
   handleSave() {
 
+    const { pathLink, stopPlace, stopHasBeenModified } = this.props
+
+    let shouldShowDialog = false
+
+    if (!stopHasBeenModified) {
+      this.handleSaveStopAndPathLink()
+    }
+
+    pathLink.forEach( p => {
+      if (p.from) {
+        if (p.from.quay.geometry.coordinates) {
+          const quay = stopPlace.quays.filter( q => q.id == p.from.quay.id)
+          if (quay.length && JSON.parse(JSON.stringify(quay[0].location)) !== JSON.parse(JSON.stringify(p.from.quay.geometry.coordinates))) {
+            shouldShowDialog = true
+          }
+        }
+        if (p.to.quay.geometry.coordinates) {
+          const quay = stopPlace.quays.filter( q => q.id == p.to.quay.id)
+          if (quay.length && JSON.parse(JSON.stringify(quay[0].location)) !== JSON.parse(JSON.stringify(p.to.quay.geometry.coordinates))) {
+            shouldShowDialog = true
+          }
+        }
+      }
+    })
+
+    if (shouldShowDialog) {
+      this.setState({
+        allowPathLinkAdjustmentsDialog: true
+      })
+    } else {
+      this.handleSaveStopAndPathLink()
+    }
+  }
+
+  handleSaveStopAndPathLink() {
     const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
 
@@ -79,7 +115,8 @@ class EditStopGeneral extends React.Component {
 
   handleDialogClose() {
     this.setState({
-      confirmDialogOpen: false
+      confirmDialogOpen: false,
+      allowPathLinkAdjustmentsDialog: false
     })
   }
 
@@ -241,6 +278,18 @@ class EditStopGeneral extends React.Component {
             body: 'discard_changes_body',
             confirm: 'discard_changes_confirm',
             cancel: 'discard_changes_cancel',
+          }}
+          intl={intl}
+        />
+        <ConfirmDialog
+          open={this.state.allowPathLinkAdjustmentsDialog}
+          handleClose={ () => { this.handleDialogClose() }}
+          handleConfirm={ () => { this.handleSaveStopAndPathLink() }}
+          messagesById={{
+            title: 'quay_adjustments_title',
+            body: 'quay_adjustments_body',
+            confirm: 'quay_adjustments_confirm',
+            cancel: 'quay_adjustments_cancel',
           }}
           intl={intl}
         />
