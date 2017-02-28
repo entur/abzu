@@ -87,6 +87,7 @@
   "quay_is_missing_location": "Denne quayen mangler posisjon",
   "remove": "Fjern",
   "save" : "Lagre",
+  "save_first_path_link": "Dette er en ny quay. Du må lagre dine endringer før du kan ta i bruk denne quayen som del av en ganglenke.",
   "set_coordinates_prompt" : "Sett koordinater for stopp",
   "show_compass_bearing" : "Vis kompassretninger",
   "show_path_links" : "Vis ganglenker",

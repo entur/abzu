@@ -75,7 +75,7 @@ class QuayItem extends React.Component {
       ticketMachine: formatMessage({id: 'ticketMachine'}),
       busShelter: formatMessage({id: 'busShelter'}),
       quayItemName: formatMessage({id: quayItemName || 'name'}),
-      quayMissingLocation: formatMessage({id: 'quay_is_missing_location'})
+      quayMissingLocation: formatMessage({id: 'quay_is_missing_location'}),
     }
 
 

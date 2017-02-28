@@ -87,6 +87,7 @@
   "quay_is_missing_location": "Quay is missing location",
   "remove": "Remove",
   "save": "Save",
+  "save_first_path_link": "This is a new quay. You need to save your changes before this quay can be a part of a path link",
   "set_coordinates_prompt": "Set coordinates for stop",
   "show_compass_bearing": "Show compass bearing",
   "show_path_links": "Show path links",
