@@ -105,7 +105,7 @@ class NewElementsBox extends React.Component {
               : null
             }
             <div style={elementStyle}>
-              <img id="drag1" ref="quay" draggable="true" style={{height: 40, width: 'auto', marginLeft: quayText.length}} src={quayIcon}/>
+              <img id="drag1" ref="quay" draggable="true" style={{height: 40, width: 'auto', marginLeft: 0}} src={quayIcon}/>
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
