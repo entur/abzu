@@ -31,6 +31,8 @@ class QuayMarker extends React.PureComponent {
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
     const { isCreatingPolylines, id, pathLink } = this.props
 
+    let isIncomplete = false
+
     if (!position) return null
 
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
@@ -41,6 +43,11 @@ class QuayMarker extends React.PureComponent {
 
       if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id) {
         pathLinkText = translations.cancelPathLink
+      } else {
+        // LineString should either have 0 or >= 2 [long,lat] according to GeoJSON spec
+        if (lastPathLink.inBetween && lastPathLink.inBetween.length == 1) {
+          isIncomplete = true
+        }
       }
     }
 
@@ -71,10 +78,11 @@ class QuayMarker extends React.PureComponent {
                 </span>
                 <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
                 <div
-                  className='change-path-link'
+                  className={`change-path-link ${isIncomplete ? 'incomplete' : ''}`}
                   onClick={() => { handleUpdatePathLink(position, id, 'quay') }}
                 >
                   { pathLinkText }
+                  { isIncomplete ? <div style={{color: '#000', fontWeight: 600}}> { translations.inComplete } </div> : null }
                 </div>
                 <div
                   style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}

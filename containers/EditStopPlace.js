@@ -40,6 +40,7 @@ class EditStopPlace extends React.Component {
     if (idFromPath && idFromPath.length && idFromPath && idFromPath !== 'new') {
 
       client.query({
+        forceFetch: true,
         query: stopPlaceAndPathLink,
         variables: {
           id: idFromPath,

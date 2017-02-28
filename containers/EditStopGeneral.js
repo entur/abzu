@@ -48,6 +48,8 @@ class EditStopGeneral extends React.Component {
         }).catch( err => {
           dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
         })
+      } else {
+        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
       }
     })
   }

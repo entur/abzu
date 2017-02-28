@@ -78,6 +78,7 @@
   "pathJunction": "path junction",
   "pathJunctions": "path junctions",
   "pathLink": "Path link",
+  "path_link_incomplete": "Incomplete path link: zero or minimum two points are required between the connectors",
   "platform": "Platform",
   "publicCode": "Public code",
   "port": "Port",

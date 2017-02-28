@@ -78,6 +78,7 @@
   "pathJunction" : "korsvei",
   "pathJunctions" : "korsveier",
   "pathLink": "Ganglenke",
+  "path_link_incomplete": "Ufullstendig ganglenke: Krever ingen eller minimum to punkter mellom koblingene",
   "platform" : "Plattform",
   "publicCode": "Publikumskode",
   "port" : "Havn",

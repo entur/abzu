@@ -10,7 +10,7 @@ import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
-import { stopQuery } from '../actions/Queries'
+import { stopPlaceAndPathLink } from '../actions/Queries'
 
 class MarkerList extends React.Component {
 
@@ -26,7 +26,8 @@ class MarkerList extends React.Component {
 
     if (!isAlreadyActive) {
       client.query({
-        query: stopQuery,
+        forceFetch: true,
+        query: stopPlaceAndPathLink,
         variables: {
           id: id,
         }
@@ -98,6 +99,7 @@ class MarkerList extends React.Component {
       cancelPathLink: formatMessage({id: 'cancel_path_link'}),
       showQuays: formatMessage({id: 'show_quays'}),
       hideQuays: formatMessage({id: 'hide_quays'}),
+      inComplete: formatMessage({id: 'path_link_incomplete'})
     }
 
     const newStopMarkerText = {

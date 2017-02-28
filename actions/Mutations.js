@@ -8,7 +8,7 @@ export const mutateStopPlace = gql`
             name: { value: $name, lang: "no" }
             description: { value: $description, lang: "no" }
             geometry: {
-                type: "Point"
+                type: Point
                 coordinates: $coordinates
             }
             quays: $quays
