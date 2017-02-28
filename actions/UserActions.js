@@ -200,7 +200,7 @@ UserActions.closeFavoriteNameDialog = () => {
   }
 }
 
-UserActions.changeActiveBaselayer = (name) => {
+UserActions.changeActiveBaselayer = name => {
   return function(dispatch) {
     dispatch(sendData(types.CHANGED_ACTIVE_BASELAYER, name))
   }
@@ -222,7 +222,7 @@ UserActions.startCreatingPolyline = (coordinates, id, type) => {
   }
 }
 
-UserActions.addCoordinatesToPolylines = (coords) => {
+UserActions.addCoordinatesToPolylines = coords => {
   return function(dispatch) {
     dispatch(sendData(types.ADDED_COORDINATES_TO_POLYLINE, coords))
   }

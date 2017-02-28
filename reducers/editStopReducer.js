@@ -37,7 +37,6 @@ const editStopReducer = (state = initialState, action) => {
 
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
-        multiPolylineDataSource: [],
         polylineStartPoint: {
           coordinates: [],
           index: -1,
@@ -71,12 +70,8 @@ const editStopReducer = (state = initialState, action) => {
       })
 
     case types.ADDED_COORDINATES_TO_POLYLINE:
-      const multiPolylinesWithCoordsAdded = addPointToPolyline(state.multiPolylineDataSource, action.payLoad)
-
       return Object.assign({}, state, {
-        multiPolylineDataSource: multiPolylinesWithCoordsAdded,
         lastAddedCoordinate: action.payLoad,
-        enablePolylines: true
       })
 
     case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:

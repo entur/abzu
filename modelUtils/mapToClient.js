@@ -54,7 +54,6 @@ helpers.mapPathLinkToClient = pathLink => {
     } else {
       newLink.estimate = calculateEstimate(newLink.distance)
     }
-
     return newLink
   })
 
@@ -64,6 +63,21 @@ helpers.updateEstimateForPathLink = (action, pathLink) => {
   const { index, estimate } = action.payLoad
   let updatedPathLink = JSON.parse(JSON.stringify(pathLink))
   updatedPathLink[index].estimate = estimate
+  return updatedPathLink
+}
+
+helpers.addNewPointToPathlink = (action, pathLink) => {
+  const coordinates = action.payLoad
+  let updatedPathLink = JSON.parse(JSON.stringify(pathLink))
+
+  let lastPathLink = updatedPathLink[updatedPathLink.length-1]
+
+  if (!lastPathLink.inBetween) {
+    lastPathLink.inBetween = []
+  }
+
+  lastPathLink.inBetween.push(coordinates)
+
   return updatedPathLink
 }
 
@@ -81,8 +95,8 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
           }
         }
       }
-     }
-     return pathLink.concat(newPathLink)
+    }
+    return pathLink.concat(newPathLink)
   }
 
   if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {

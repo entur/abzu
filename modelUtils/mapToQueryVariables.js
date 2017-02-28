@@ -60,12 +60,21 @@ helpers.mapPathLinkToVariables = pathLink => {
         defaultDuration: source.estimate
       }
 
+      if (pathLink.inBetween && pathLink.inBetween.length) {
+        pathLink.geometry = {
+          type: "LineString",
+          coordinates: pathLink.inBetween.map( latlng => latlng.reverse())
+        }
+      }
+
+
       if (pathLink.to && pathLink.to.quay) {
         delete pathLink.to.quay.geometry
       }
 
       delete pathLink.estimate
       delete pathLink.duration
+      delete pathLink.inBetween
 
       return pathLink
     })

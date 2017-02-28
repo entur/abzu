@@ -62,7 +62,7 @@ class MarkerList extends React.Component {
 
       let lastPathLink = pathLink[pathLink.length-1]
 
-      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id) {
+      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id && !lastPathLink.to) {
         this.props.dispatch(UserActions.removeLastPolyline())
         return
       }

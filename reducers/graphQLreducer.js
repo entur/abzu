@@ -20,6 +20,17 @@ const graphQLreducer = (state = {}, action) => {
           current: JSON.parse(JSON.stringify(state.originalCurrent))
         })
 
+      case types.NAVIGATE_TO:
+
+        if (action.payLoad === "") {
+          return Object.assign({}, state, {
+            pathLink: [],
+            current: null
+          })
+        } else {
+          return state
+        }
+
       case types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW:
         return Object.assign({}, state, {
           neighbourStops: []
@@ -129,6 +140,10 @@ const graphQLreducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
+      case types.ADDED_COORDINATES_TO_POLYLINE:
+        return Object.assign({}, state, {
+          pathLink: formatHelpers.addNewPointToPathlink(action, state.pathLink)
+        })
 
       case types.REMOVED_LAST_POLYLINE:
         return Object.assign({}, state, {
