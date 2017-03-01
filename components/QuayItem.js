@@ -32,6 +32,16 @@ class QuayItem extends React.Component {
     expanded: PropTypes.bool.isRequired,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      wheelChairFriendly: false,
+      stepFreeAccess: false,
+      ticketMachine: false,
+      busShelter: false
+    }
+  }
+
 
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props
@@ -51,6 +61,7 @@ class QuayItem extends React.Component {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
     const { formatMessage, locale } = intl
+    const { wheelChairFriendly, stepFreeAccess, ticketMachine, busShelter } = this.state
 
     let quayItemName = null
 
@@ -71,9 +82,13 @@ class QuayItem extends React.Component {
       pathJunctions: formatMessage({id: 'pathJunctions'}),
       entrances: formatMessage({id: 'entrances'}),
       stepFreeAccess: formatMessage({id: 'step_free_access'}),
+      noStepFreeAccess: formatMessage({id: 'step_free_access_no'}),
       wheelchairAccess: formatMessage({id: 'wheelchairAccess'}),
+      noWheelchairAccess: formatMessage({id: 'wheelchairAccess_no'}),
       ticketMachine: formatMessage({id: 'ticketMachine'}),
+      noTicketMachine: formatMessage({id: 'ticketMachine_no'}),
       busShelter: formatMessage({id: 'busShelter'}),
+      noBusShelter: formatMessage({id: 'busShelter_no'}),
       quayItemName: formatMessage({id: quayItemName || 'name'}),
       quayMissingLocation: formatMessage({id: 'quay_is_missing_location'}),
     }
@@ -154,33 +169,41 @@ class QuayItem extends React.Component {
            <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<WheelChair />}
-               uncheckedIcon={<WheelChairOff />}
-               label={translations.wheelchairAccess}
+               uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+               label={wheelChairFriendly ? translations.wheelchairAccess : translations.noWheelchairAccess }
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
+               checked={wheelChairFriendly}
+               onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
              />
              <Checkbox
-               checkedIcon={<StepFree />}
-               uncheckedIcon={<Stairs />}
-               label={translations.stepFreeAccess}
+               checkedIcon={<Stairs />}
+               uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+               label={ stepFreeAccess ? translations.stepFreeAccess : translations.noStepFreeAccess }
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
+               checked={stepFreeAccess}
+               onCheck={(e,v) => this.setState({stepFreeAccess: v})}
              />
            </div>
            <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<TicketMachine />}
-               uncheckedIcon={<TicketMachine />}
-               label={translations.ticketMachine}
+               uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+               label={ ticketMachine ? translations.ticketMachine : translations.noTicketMachine }
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
+               checked={ticketMachine}
+               onCheck={(e,v) => this.setState({ticketMachine: v})}
              />
              <Checkbox
                checkedIcon={<BusShelter />}
-               uncheckedIcon={<BusShelter />}
-               label={translations.busShelter}
+               uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+               label={ busShelter ? translations.busShelter : translations.noBusShelter }
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
+               checked={busShelter}
+               onCheck={(e,v) => this.setState({busShelter: v})}
              />
            </div>
            <div>
