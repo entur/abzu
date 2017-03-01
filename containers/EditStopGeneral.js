@@ -38,19 +38,20 @@ class EditStopGeneral extends React.Component {
 
     if (!stopHasBeenModified) {
       this.handleSaveStopAndPathLink()
+      return
     }
 
     pathLink.forEach( p => {
       if (p.from) {
         if (p.from.quay.geometry.coordinates) {
           const quay = stopPlace.quays.filter( q => q.id == p.from.quay.id)
-          if (quay.length && JSON.parse(JSON.stringify(quay[0].location)) !== JSON.parse(JSON.stringify(p.from.quay.geometry.coordinates))) {
+          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(p.from.quay.geometry.coordinates[0])) {
             shouldShowDialog = true
           }
         }
         if (p.to.quay.geometry.coordinates) {
           const quay = stopPlace.quays.filter( q => q.id == p.to.quay.id)
-          if (quay.length && JSON.parse(JSON.stringify(quay[0].location)) !== JSON.parse(JSON.stringify(p.to.quay.geometry.coordinates))) {
+          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(p.to.quay.geometry.coordinates[0])) {
             shouldShowDialog = true
           }
         }
@@ -69,6 +70,10 @@ class EditStopGeneral extends React.Component {
   handleSaveStopAndPathLink() {
     const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
+
+    this.setState({
+      allowPathLinkAdjustmentsDialog: false
+    })
 
     const { client, dispatch } = this.props
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
@@ -202,7 +207,6 @@ class EditStopGeneral extends React.Component {
     return (
 
       <div style={style}>
-
         <div style={stopBoxBar}>{captionText}</div>
           <EditStopBoxHeader intl={intl}/>
         <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
