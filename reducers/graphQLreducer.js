@@ -14,6 +14,12 @@ const graphQLreducer = (state = {}, action) => {
       case "APOLLO_QUERY_RESULT_CLIENT":
         return getObjectFromCache(state, action)
 
+      case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
+        const id = action.payLoad
+        return Object.assign({}, state, {
+          neighbourStopQuays: { ...state.neighbourStopQuays, [id]: null }
+        })
+
       case types.RESTORED_TO_ORIGINAL_STOP_PLACE:
         return Object.assign({}, state, {
           stopHasBeenModified: false,

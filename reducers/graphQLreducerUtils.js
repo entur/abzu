@@ -36,6 +36,11 @@ export const getStateByOperation = (state, action) => {
         searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace),
       })
 
+    case 'neighbourStopPlaceQuays':
+      return Object.assign({}, state, {
+        neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(state.neighbourStopQuays, action.result.data.stopPlace)
+      })
+
     default: return state
   }
 }
@@ -76,6 +81,7 @@ const getDataFromResult = (state, action) => {
     zoom: getProperZoomLevel(stopPlace),
     minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),
+    neighbourStopQuays: {},
     centerPosition: (!stopPlace || !stopPlace.geometry) ? state.centerPosition : formatHelpers.getCenterPosition(stopPlace.geometry)
   })
 }

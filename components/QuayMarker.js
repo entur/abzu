@@ -68,7 +68,7 @@ class QuayMarker extends React.PureComponent {
         <Marker
           position={position}
           icon={quayIcon}
-          draggable={!belongsToNeighbourStop && this.props.draggable}
+          draggable={this.props.draggable}
           onDragend={(event) => { handleQuayDragEnd(index, 'quay', event) }}
         >
           <Popup autoPan={false}>

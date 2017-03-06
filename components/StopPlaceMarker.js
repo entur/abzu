@@ -19,14 +19,14 @@ class StopPlaceMarker extends React.PureComponent {
     active: PropTypes.bool.isRequired,
     id: PropTypes.string,
     handleHideQuaysForNeighbourStop: PropTypes.func,
-    neighbouringMarkersQuaysMap: PropTypes.object.isRequired,
+    isShowingQuays: PropTypes.bool.isRequired,
     isEditingStop: PropTypes.bool.isRequired
   }
 
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
-          handleChangeCoordinates, translations, active, stopType, id } = this.props
+          handleChangeCoordinates, translations, active, stopType, id, handleFetchQuaysForNeighbourStop, handleHideQuaysForNeighbourStop, isShowingQuays } = this.props
 
     const markerLocation = position || missingCoordinatesMap[id]
 
@@ -75,6 +75,22 @@ class StopPlaceMarker extends React.PureComponent {
                 {markerLocation[1]}
               </span>
             </div>
+            { active
+              ? null
+              : isShowingQuays ?
+                <div
+                  style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
+                  onClick={() => handleHideQuaysForNeighbourStop(id)}
+                >
+                  <span style={{borderBottom: '1px dotted black'}}>- Hide quays</span>
+               </div>
+              : <div
+                  style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
+                  onClick={() => handleFetchQuaysForNeighbourStop(id)}
+                >
+                  <span style={{borderBottom: '1px dotted black'}}>+ Show quays</span>
+                </div>
+            }
           </div>
         </Popup>
       </Marker>

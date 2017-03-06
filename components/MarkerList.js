@@ -10,7 +10,7 @@ import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
-import { stopPlaceAndPathLink } from '../actions/Queries'
+import { stopPlaceAndPathLink, neighbourStopPlaceQuays } from '../actions/Queries'
 
 class MarkerList extends React.Component {
 
@@ -47,7 +47,13 @@ class MarkerList extends React.Component {
   }
 
   handleFetchQuaysForNeighbourStop(id) {
-    // TODO: fetch quays from neighbour stop by id
+    this.props.client.query({
+      forceFetch: true,
+      query: neighbourStopPlaceQuays,
+      variables: {
+        id: id
+      }
+    })
   }
 
   handleHideQuaysForNeighbourStop(id) {
@@ -86,7 +92,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbouringMarkersQuaysMap, missingCoordinatesMap, handleSetCompassBearing } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbourStopQuays, missingCoordinatesMap, handleSetCompassBearing } = this.props
     const { formatMessage } = this.props.intl
 
     let popupMarkers = []
@@ -135,19 +141,44 @@ class MarkerList extends React.Component {
             formattedStopType={localeStopType}
             handleDragEnd={handleDragEnd}
             active={!!stop.isActive}
+            isShowingQuays={stop.isActive || !!neighbourStopQuays[stop.id]}
             stopType={stop.stopPlaceType}
             draggable={dragableMarkers}
             handleChangeCoordinates={changeCoordinates}
             translations={CustomPopupMarkerText}
             handleOnClick={() => { this.handleStopOnClick(stop.id)} }
             handleFetchQuaysForNeighbourStop={this.handleFetchQuaysForNeighbourStop.bind(this)}
-            neighbouringMarkersQuaysMap={neighbouringMarkersQuaysMap}
             handleHideQuaysForNeighbourStop={this.handleHideQuaysForNeighbourStop.bind(this)}
             isEditingStop={this.props.isEditingStop}
             missingCoordinatesMap={missingCoordinatesMap}
             />
           )
         )
+
+
+        if (!stop.isActive && neighbourStopQuays && neighbourStopQuays[stop.id]) {
+          neighbourStopQuays[stop.id].forEach( (quay, index) => {
+            popupMarkers.push(
+              <QuayMarker
+                index={index}
+                parentId={stopIndex}
+                id={quay.id}
+                position={quay.location}
+                key={"quay-neighbour" + quay.id }
+                handleQuayDragEnd={() => {}}
+                translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
+                compassBearing={quay.compassBearing}
+                name={`${stop.name} - ${quay.id}`}
+                parentStopPlaceName={stop.name}
+                formattedStopType={localeStopType}
+                handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
+                handleChangeCoordinates={() => {}}
+                draggable={false}
+                belongsToNeighbourStop={true}
+                handleSetCompassBearing={() => {}}
+              />)
+          })
+        }
 
         if (stop.quays) {
            stop.quays.forEach( (quay, index) => {
@@ -227,7 +258,7 @@ const mapStateToProps = state => {
   return {
     path: state.user.path,
     isCreatingPolylines: state.editingStop.isCreatingPolylines,
-    neighbouringMarkersQuaysMap: state.editingStop.neighbouringMarkersQuaysMap,
+    neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
     isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
     missingCoordinatesMap: state.user.missingCoordsMap,
     activeMap: state.editingStop.activeMap,

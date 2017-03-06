@@ -370,6 +370,33 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   return copy
 }
 
+helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
+
+  let neighbourQuaysMap = { ... original } || {}
+
+  if (!payLoad || !payLoad.length) return neighbourQuaysMap
+
+  const stopPlace = payLoad[0]
+
+  neighbourQuaysMap[stopPlace.id] = stopPlace.quays.map( quay => {
+
+    let clientQuay = {}
+
+    clientQuay.id = quay.id
+
+    if (quay.geometry && quay.geometry.coordinates) {
+      let coordinates = quay.geometry.coordinates[0].slice()
+      clientQuay.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+    }
+
+    clientQuay.compassBearing =  quay.compassBearing
+
+    return clientQuay
+  })
+
+  return neighbourQuaysMap
+}
+
 const removeElementByIndex = (list, index) =>
   [
     ...list.slice(0, index),

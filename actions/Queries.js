@@ -28,6 +28,7 @@ export const pathLinkQuery = gql`
           }
           to {
               quay {
+                  importedId
                   id
                   geometry {
                       type
@@ -37,6 +38,21 @@ export const pathLinkQuery = gql`
           }
       }
   },
+`
+
+export const neighbourStopPlaceQuays = gql`
+  query neighbourStopPlaceQuays($id: String!) {
+      stopPlace(id: $id) {
+          id 
+          quays {
+              id 
+              geometry {
+                  coordinates
+              }
+              compassBearing
+          }
+      }
+  }
 `
 
 export const stopPlaceBBQuery = gql`
