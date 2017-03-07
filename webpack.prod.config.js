@@ -3,8 +3,8 @@ const webpack = require('webpack')
 
 module.exports = {
   entry: {
-      app: './index',
-      react: ['react', 'react-redux', 'react-router', 'react-router-redux']
+    app: ['babel-polyfill', './index'],
+    react: ['babel-polyfill', 'react', 'react-redux', 'react-router', 'react-router-redux']
   },
   output: {
     path: __dirname + '/public/',

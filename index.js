@@ -10,6 +10,7 @@ import 'intl'
 import { ApolloProvider } from 'react-apollo'
 import axios from 'axios'
 import Promise from 'promise-polyfill'
+import "babel-polyfill"
 
 if (!window.Promise) {
   window.Promise = Promise
