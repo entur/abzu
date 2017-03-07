@@ -9,6 +9,11 @@ import cfgreader from './config/readConfig'
 import 'intl'
 import { ApolloProvider } from 'react-apollo'
 import axios from 'axios'
+import Promise from 'promise-polyfill'
+
+if (!window.Promise) {
+  window.Promise = Promise
+}
 
 // used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
