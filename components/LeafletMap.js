@@ -4,9 +4,8 @@ import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leafle
 import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolyline'
 import WMTSLayer from './WMTSLayer'
-import axios from 'axios'
 
-export default class LeafLetMap extends React.PureComponent {
+export default class LeafLetMap extends React.Component {
 
 
   getCheckedBaseLayerByValue(value) {
@@ -51,7 +50,6 @@ export default class LeafLetMap extends React.PureComponent {
     }
 
     const lmapStyle = {
-      height: "calc(100% - 68px)",
       border: "2px solid #eee"
     }
 
@@ -61,6 +59,7 @@ export default class LeafLetMap extends React.PureComponent {
       <Lmap ref='map'
         style={lmapStyle}
         center={centerPosition}
+        className="leaflet-map"
         zoom={zoom}
         zoomControl={false}
         maxZoom={18}

@@ -1,0 +1,4 @@
+.leaflet-map {
+   height: calc(100% - 68px);
+   height: -moz-calc(98vh - 68px);
+}

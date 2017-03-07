@@ -3,6 +3,7 @@
 @import "markers.css";
 @import "tabs.css";
 @import "tooltip.css";
+@import "map.css";
 
 body {
   font-family: 'Noto Sans Kannada', sans-serif;
