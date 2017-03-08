@@ -53,7 +53,8 @@ describe('Model: map format from server to expected client model', () => {
         }
       ],
       entrances: [],
-      pathJunctions: []
+      pathJunctions: [],
+      parking: []
     }
 
     expect(state.current).toEqual(formattedStop)
