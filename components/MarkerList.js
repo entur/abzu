@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
 import JunctionMarker from './JunctionMarker'
+import ParkingMarker from './ParkingMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
@@ -178,6 +179,20 @@ class MarkerList extends React.Component {
                 handleSetCompassBearing={() => {}}
               />)
           })
+        }
+
+        if (stop.parking) {
+          stop.parking.forEach( (parking, index) => {
+            popupMarkers.push(
+              <ParkingMarker
+                position={parking.location}
+                index={index}
+                key={'parking ' + index}
+                title={formatMessage({id: 'parking'})}
+                handleDragEnd={() => { console.log("parking dragend") } }/>
+            )
+          })
+
         }
 
         if (stop.quays) {

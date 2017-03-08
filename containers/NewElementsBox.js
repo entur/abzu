@@ -9,7 +9,7 @@ const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
 const quayIcon = require("../static/icons/quay-marker.png")
 const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
-
+const parkingIcon = require("../static/icons/parking-icon.png")
 
 class NewElementsBox extends React.Component {
 
@@ -71,6 +71,8 @@ class NewElementsBox extends React.Component {
     const pathJunctionText = formatMessage({id: 'pathJunction'})
     const entranceText = formatMessage({id: 'entrance'})
     const newStopText = formatMessage({id: 'stop_place'})
+    const parkingText = formatMessage({id: 'parking'})
+    const PRText = formatMessage({id: 'park_ride'})
 
     let shouldShowNewStop = true
 
@@ -115,6 +117,10 @@ class NewElementsBox extends React.Component {
             <div style={elementStyle}>
               <img ref="entrance" id="drag3" draggable style={{height: 40, width: 'auto', marginLeft: entranceText.length}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
+            </div>
+            <div style={elementStyle}>
+              <img ref="parking" id="drag4" draggable style={{height: 40, width: 'auto', marginLeft: 0}} src={parkingIcon}/>
+              <div style={titleStyle}>{PRText}</div>
             </div>
           </div>
       </div>

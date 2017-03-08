@@ -165,6 +165,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       formattedStop.quays = []
       formattedStop.entrances = []
       formattedStop.pathJunctions = []
+      formattedStop.parking = []
 
       if (stop.quays) {
         formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
@@ -236,6 +237,7 @@ helpers.createNewStopFromLocation = location => {
     quays: [],
     entrances: [],
     pathJunctions: [],
+    parking: [],
     isNewStop: true,
     isActive: true
   })
@@ -277,6 +279,8 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.entrances = copy.entrances.concat(newElement); break;
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
+    case 'parking':
+      copy.parking = copy.parking.concat(newElement); break;
 
     default: throw new Error('element not supported', type)
   }

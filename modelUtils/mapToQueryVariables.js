@@ -3,7 +3,7 @@ const helpers = {}
 
 helpers.mapQuayToVariables = quay => {
 
-  let newQuay = {
+  let quayVariables = {
     id: quay.id,
     geometry: null,
     compassBearing: quay.compassBearing,
@@ -15,7 +15,7 @@ helpers.mapQuayToVariables = quay => {
   }
 
   if (quay.location) {
-    newQuay.geometry = {
+    quayVariables.geometry = {
       coordinates: [
         [ quay.location[1], quay.location[0] ]
       ],
@@ -23,12 +23,12 @@ helpers.mapQuayToVariables = quay => {
     }
   }
 
-  return newQuay
+  return quayVariables
 }
 
 helpers.mapStopToVariables = stop => {
 
-  let newStop =  {
+  let stopVariables =  {
     id: stop.id,
     name: stop.name,
     description: stop.description || null,
@@ -37,12 +37,12 @@ helpers.mapStopToVariables = stop => {
   }
 
   if (stop.location) {
-    newStop.coordinates = [
+    stopVariables.coordinates = [
       [ stop.location[1], stop.location[0] ]
     ]
   }
 
-  return newStop
+  return stopVariables
 }
 
 helpers.mapPathLinkToVariables = pathLink => {
