@@ -82,13 +82,13 @@ class StopPlaceMarker extends React.PureComponent {
                   style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
                   onClick={() => handleHideQuaysForNeighbourStop(id)}
                 >
-                  <span style={{borderBottom: '1px dotted black'}}>- Hide quays</span>
+                  <span style={{borderBottom: '1px dotted black'}}> { translations.hideQuays } </span>
                </div>
               : <div
                   style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
                   onClick={() => handleFetchQuaysForNeighbourStop(id)}
                 >
-                  <span style={{borderBottom: '1px dotted black'}}>+ Show quays</span>
+                  <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
                 </div>
             }
           </div>

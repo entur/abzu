@@ -107,7 +107,9 @@ class MarkerList extends React.Component {
       showQuays: formatMessage({id: 'show_quays'}),
       hideQuays: formatMessage({id: 'hide_quays'}),
       inComplete: formatMessage({id: 'path_link_incomplete'}),
-      saveFirstPathLink: formatMessage({id: 'save_first_path_link'})
+      saveFirstPathLink: formatMessage({id: 'save_first_path_link'}),
+      hideQuays: formatMessage({id: 'hide_quays'}),
+      showQuays: formatMessage({id: 'show_quays'}),
     }
 
     const newStopMarkerText = {
