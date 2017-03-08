@@ -57,13 +57,12 @@ class StopPlaceMarker extends React.PureComponent {
         >
         <Popup autoPan={false}>
           <div>
-            <span style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
-              marginBottom: 10, display: 'inline-block', width: '100%', textAlign: 'center', marginBottom: 15, borderBottom: !active ? '1px dotted' : 'none'
-            }}
-            onClick={handleOnClick}
+            <div style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
+              marginBottom: 10, display: 'inline-block', width: '100%', marginBottom: 15, textAlign: 'center'}}
+              onClick={handleOnClick}
             >
-              { name }
-            </span>
+              <div style={{borderBottom: !active ? '1px dotted' : 'none', display: 'inline-block'}}>{ name }</div>
+            </div>
             <div
               style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
               onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, markerLocation)}
@@ -78,18 +77,20 @@ class StopPlaceMarker extends React.PureComponent {
             { active
               ? null
               : isShowingQuays ?
-                <div
-                  style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
-                  onClick={() => handleHideQuaysForNeighbourStop(id)}
-                >
-                  <span style={{borderBottom: '1px dotted black'}}> { translations.hideQuays } </span>
-               </div>
-              : <div
-                  style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
-                  onClick={() => handleFetchQuaysForNeighbourStop(id)}
-                >
-                  <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
-                </div>
+                ( <div
+                    style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
+                    onClick={() => handleHideQuaysForNeighbourStop(id)}
+                  >
+                    <span style={{borderBottom: '1px dotted black'}}> { translations.hideQuays } </span>
+                  </div>
+                )
+              : ( <div
+                   style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
+                   onClick={() => handleFetchQuaysForNeighbourStop(id)}
+                  >
+                    <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
+                  </div>
+                )
             }
           </div>
         </Popup>
