@@ -165,47 +165,35 @@ class QuayItem extends React.Component {
              </IconButton>
             : null // hide this for now, not used
            }
-           <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between'}}>
+           <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
              <Checkbox
                checkedIcon={<WheelChair />}
                uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               label={wheelChairFriendly ? translations.wheelchairAccess : translations.noWheelchairAccess }
-               labelStyle={{fontSize: '0.8em'}}
-               style={{width: '45%'}}
+               style={{width: 'auto'}}
                checked={wheelChairFriendly}
                onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
              />
              <Checkbox
                checkedIcon={<Stairs />}
                uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               label={ !stepFreeAccess ? translations.stepFreeAccess : translations.noStepFreeAccess }
-               labelStyle={{fontSize: '0.8em'}}
-               style={{width: '45%'}}
+               style={{width: 'auto'}}
                checked={stepFreeAccess}
                onCheck={(e,v) => this.setState({stepFreeAccess: v})}
              />
-           </div>
-           <div style={{marginTop: 10, marginBottom: 10, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<TicketMachine />}
                uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               label={ ticketMachine ? translations.ticketMachine : translations.noTicketMachine }
-               labelStyle={{fontSize: '0.8em'}}
-               style={{width: '45%'}}
+               style={{width: 'auto'}}
                checked={ticketMachine}
                onCheck={(e,v) => this.setState({ticketMachine: v})}
              />
              <Checkbox
                checkedIcon={<BusShelter />}
                uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               label={ busShelter ? translations.busShelter : translations.noBusShelter }
-               labelStyle={{fontSize: '0.8em'}}
-               style={{width: '45%'}}
+               style={{width: 'auto'}}
                checked={busShelter}
                onCheck={(e,v) => this.setState({busShelter: v})}
              />
-           </div>
-           <div>
              <FlatButton icon={<MdMore/>} onClick={this.showMoreOptionsForQuay.bind(this)} />
            </div>
         </div>

@@ -9,6 +9,9 @@ import stopTypes from './stopTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
+import MdMore from 'material-ui/svg-icons/navigation/expand-more'
+import MdLess from 'material-ui/svg-icons/navigation/expand-less'
+import FlatButton from 'material-ui/FlatButton'
 
 class EditstopBoxHeader extends React.Component {
 
@@ -82,7 +85,7 @@ class EditstopBoxHeader extends React.Component {
       display: "block"
     }
 
-    const { stopPlace, intl } = this.props
+    const { stopPlace, intl, expanded, showLessStopPlace, showMoreStopPlace } = this.props
     const { formatMessage, locale } = intl
     const { name, description } = this.state
 
@@ -92,12 +95,12 @@ class EditstopBoxHeader extends React.Component {
         <TextField
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}
-          style={{width: 350, marginTop: -20}}
+          style={{width: 295}}
           value={name}
           onChange={this.handleStopNameChange.bind(this)}
         />
         <IconButton
-          style={{float: 'right'}}
+          style={{marginLeft: 30, borderBottom: '1px dotted grey'}}
           onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
         >
           <ModalityIcon
@@ -130,10 +133,25 @@ class EditstopBoxHeader extends React.Component {
         <TextField
           hintText={formatMessage({id: 'description'})}
           floatingLabelText={formatMessage({id: 'description'})}
-          style={{width: 350, marginTop: -20}}
+          style={{width: 295, marginTop: -10}}
           value={description}
           onChange={this.handleStopDescriptionChange.bind(this)}
         />
+        <div style={{float: 'right', marginTop: 5}}>
+          { expanded
+            ? <FlatButton
+              icon={<MdLess/>}
+              style={{margin: '8 5', zIndex: 999}}
+              onClick={() => showLessStopPlace()}
+            />
+            :
+            <FlatButton
+              icon={<MdMore/>}
+              style={{margin: '8 5', zIndex: 999}}
+              onClick={() => showMoreStopPlace()}
+            />
+          }
+        </div>
       </div>
     )
   }

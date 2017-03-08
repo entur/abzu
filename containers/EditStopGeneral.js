@@ -17,8 +17,6 @@ import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
-import MdMore from 'material-ui/svg-icons/navigation/expand-more'
-import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 
 class EditStopGeneral extends React.Component {
 
@@ -163,102 +161,56 @@ class EditStopGeneral extends React.Component {
     const style = {
       border: '1px solid #511E12',
       background: '#fff',
-      width: 400,
+      width: 405,
       marginTop: 2,
       position: 'absolute',
       zIndex: 999,
-      padding: '10 5',
-      height: 'calc(100% - 120px)'
     }
 
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: '50vh',
+      height: '55vh',
       position: "relative",
       display: "block",
       zIndex: 999,
-      marginTop: 10
+      marginTop: 2
     }
 
     const stopBoxBar = {
-      float: 'right',
-      paddingLeft: 5,
-      paddingRight: 5,
-      paddingTop: 5,
-      top: -10,
-      left: 5,
-      position:'relative',
       color: '#fff',
-      background: '#191919',
-      width: '100%',
-      textAlign: 'left',
-      fontSize: '0.8em',
-      fontWeight: '0.9em'
+      background: '#2c2c2c',
+      fontSize: 12,
+      padding: 2
     }
 
     const tabStyle = {
       color: '#000',
       fontSize: '0.7em',
       fontWeight: 600,
-      marginTop: -10
     }
 
     return (
 
       <div style={style}>
-        <div style={stopBoxBar}>{captionText}</div>
-          <EditStopBoxHeader intl={intl}/>
-        <div style={{fontWeight: 600, marginTop: 5, marginBottom: 10}}>
-          <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
-            { stopHasBeenModified
-              ?
-              <FlatButton
-                icon={<MdUndo/>}
-                label={formatMessage({id: 'undo_changes'})}
-                style={{margin: '8 5', zIndex: 999}}
-                labelStyle={{fontSize: '0.8em'}}
-                onClick={ () => { this.setState({confirmDialogOpen: true })} }
-              />
-              :
-              <FlatButton
-                icon={<MdBack/>}
-                label={formatMessage({id: 'go_back'})}
-                style={{margin: '8 5', zIndex: 999}}
-                labelStyle={{fontSize: '0.8em'}}
-                onClick={this.handleGoBack.bind(this)}
-              />
-            }
-            <FlatButton
-              icon={<MdSave/>}
-              label={formatMessage({id: 'save'})}
-              style={{margin: '8 5', zIndex: 999}}
-              labelStyle={{fontSize: '0.8em'}}
-              onClick={this.handleSave.bind(this)}
-            />
-            { showEditStopAdditional
-              ? <FlatButton
-                icon={<MdLess/>}
-                style={{margin: '8 5', zIndex: 999}}
-                onClick={this.showLessStopPlace.bind(this)}
-              />
-             :
-              <FlatButton
-              icon={<MdMore/>}
-              style={{margin: '8 5', zIndex: 999}}
-              onClick={this.showMoreStopPlace.bind(this)}
-              />
-            }
-          </div>
+        <div style={stopBoxBar}>
+          { captionText }
         </div>
-        { (showEditQuayAdditional || showEditStopAdditional)
-          ? <div>
-            { showEditStopAdditional
-              ? <EditStopAdditional/>
-              : <EditQuayAdditional/>
-            }
-          </div>
-          : <div>
+        <div style={{padding: '10 5'}}>
+          <EditStopBoxHeader
+            intl={intl}
+            expanded={showEditStopAdditional}
+            showLessStopPlace={this.showLessStopPlace.bind(this)}
+            showMoreStopPlace={this.showMoreStopPlace.bind(this)}
+          />
+          { (showEditQuayAdditional || showEditStopAdditional)
+            ? <div>
+              { showEditStopAdditional
+                ? <EditStopAdditional/>
+                : <EditQuayAdditional/>
+              }
+            </div>
+            : <div>
               <Tabs
                 onChange={this.handleSlideChange.bind(this)}
                 value={activeElementTab}
@@ -271,32 +223,60 @@ class EditStopGeneral extends React.Component {
               <div style={scrollable}>
                 <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
               </div>
-          </div>
-        }
-        <ConfirmDialog
-          open={this.state.confirmDialogOpen}
-          handleClose={ () => { this.handleDialogClose() }}
-          handleConfirm={ () => { this.handleDiscardChanges() }}
-          messagesById={{
-            title: 'discard_changes_title',
-            body: 'discard_changes_body',
-            confirm: 'discard_changes_confirm',
-            cancel: 'discard_changes_cancel',
-          }}
-          intl={intl}
-        />
-        <ConfirmDialog
-          open={this.state.allowPathLinkAdjustmentsDialog}
-          handleClose={ () => { this.handleDialogClose() }}
-          handleConfirm={ () => { this.handleSaveStopAndPathLink() }}
-          messagesById={{
-            title: 'quay_adjustments_title',
-            body: 'quay_adjustments_body',
-            confirm: 'quay_adjustments_confirm',
-            cancel: 'quay_adjustments_cancel',
-          }}
-          intl={intl}
-        />
+            </div>
+          }
+          <ConfirmDialog
+            open={this.state.confirmDialogOpen}
+            handleClose={ () => { this.handleDialogClose() }}
+            handleConfirm={ () => { this.handleDiscardChanges() }}
+            messagesById={{
+              title: 'discard_changes_title',
+              body: 'discard_changes_body',
+              confirm: 'discard_changes_confirm',
+              cancel: 'discard_changes_cancel',
+            }}
+            intl={intl}
+          />
+          <ConfirmDialog
+            open={this.state.allowPathLinkAdjustmentsDialog}
+            handleClose={ () => { this.handleDialogClose() }}
+            handleConfirm={ () => { this.handleSaveStopAndPathLink() }}
+            messagesById={{
+              title: 'quay_adjustments_title',
+              body: 'quay_adjustments_body',
+              confirm: 'quay_adjustments_confirm',
+              cancel: 'quay_adjustments_cancel',
+            }}
+            intl={intl}
+          />
+            <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+              { stopHasBeenModified
+                ?
+                <FlatButton
+                  icon={<MdUndo/>}
+                  label={formatMessage({id: 'undo_changes'})}
+                  style={{margin: '8 5', zIndex: 999}}
+                  labelStyle={{fontSize: '0.8em'}}
+                  onClick={ () => { this.setState({confirmDialogOpen: true })} }
+                />
+                :
+                <FlatButton
+                  icon={<MdBack/>}
+                  label={formatMessage({id: 'go_back'})}
+                  style={{margin: '8 5', zIndex: 999}}
+                  labelStyle={{fontSize: '0.8em'}}
+                  onClick={this.handleGoBack.bind(this)}
+                />
+              }
+              <FlatButton
+                icon={<MdSave/>}
+                label={formatMessage({id: 'save'})}
+                style={{margin: '8 5', zIndex: 999}}
+                labelStyle={{fontSize: '0.8em'}}
+                onClick={this.handleSave.bind(this)}
+              />
+            </div>
+        </div>
       </div> )
   }
 }
