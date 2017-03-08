@@ -6,6 +6,7 @@ import Divider from 'material-ui/Divider'
 import MdWc from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import ToolTipIcon from './ToolTipIcon'
+import BikeParking from '../static/icons/facilities/BikeParking'
 
 
 class FacilitiesStopTab extends React.Component {
@@ -16,14 +17,15 @@ class FacilitiesStopTab extends React.Component {
       ticketMachine: false,
       busShelter: false,
       WC: false,
-      waitingRoom: false
+      waitingRoom: false,
+      bikeParking: false,
     }
   }
 
   render() {
 
     const { formatMessage } = this.props.intl
-    const { ticketMachine, busShelter, WC, waitingRoom } = this.state
+    const { ticketMachine, busShelter, WC, waitingRoom, bikeParking } = this.state
 
     return (
       <div style={{padding: 10}}>
@@ -84,6 +86,21 @@ class FacilitiesStopTab extends React.Component {
               onCheck={(e,v) => this.setState({waitingRoom: v})}
             />
             <ToolTipIcon title={formatMessage({id: 'waitingroom_stop_hint'})}/>
+          </div>
+          <Divider style={{marginTop: 10, marginBottom: 10}}/>
+        </div>
+        <div style={{marginTop: 10}}>
+          <div style={{display: 'flex',justifyContent: 'space-between'}}>
+            <Checkbox
+              checked={bikeParking}
+              checkedIcon={<BikeParking />}
+              uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              label={ bikeParking ? formatMessage({id: 'bike_parking'}) : formatMessage({id: 'bike_parking_no'}) }
+              labelStyle={{fontSize: '0.8em'}}
+              style={{width: '80%'}}
+              onCheck={(e,v) => this.setState({bikeParking: v})}
+            />
+            <ToolTipIcon title={formatMessage({id: 'bike_parking_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
