@@ -142,6 +142,7 @@ class QuayItem extends React.Component {
         </div>
        { !expanded ? null
        : <div>
+           <div style={{fontSize: 10, fontWeight: 600, fontColor: '#191919'}}>{ quay.importedId.join(', ') }</div>
            <TextField
              hintText={translations.publicCode}
              floatingLabelText={translations.publicCode}
@@ -165,7 +166,6 @@ class QuayItem extends React.Component {
              </IconButton>
             : null // hide this for now, not used
            }
-
            <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between'}}>
              <Checkbox
                checkedIcon={<WheelChair />}

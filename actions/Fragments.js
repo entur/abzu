@@ -14,6 +14,7 @@ Fragments.quay = {
           description {
               value
           }
+          importedId
       }
   `
 }
@@ -35,6 +36,7 @@ Fragments.stopPlace = {
         quays {
             ...VerboseQuay
         }
+        importedId
         stopPlaceType
         topographicPlace {
             name {

@@ -87,6 +87,7 @@ class EditstopBoxHeader extends React.Component {
 
     return (
       <div style={fixedHeader}>
+        <div style={{fontSize: 10, fontWeight: 600, marginBottom: 10}}>{ stopPlace.importedId.join(', ') }</div>
         <TextField
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}

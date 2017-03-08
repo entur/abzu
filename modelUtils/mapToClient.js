@@ -160,6 +160,10 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       formattedStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
     }
 
+    if (stop.importedId) {
+      formattedStop.importedId = stop.importedId
+    }
+
     if (isActive) {
 
       formattedStop.quays = []
@@ -186,6 +190,10 @@ helpers.mapQuayToClientQuay = quay => {
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
     description: quay.description ? quay.description.value : ''
+  }
+
+  if (quay.importedId) {
+    clientQuay.importedId = quay.importedId
   }
 
   if (quay.geometry && quay.geometry.coordinates) {
