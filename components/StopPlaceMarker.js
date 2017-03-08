@@ -52,7 +52,7 @@ class StopPlaceMarker extends React.PureComponent {
         key={"stop-place" + id}
         icon={icon}
         position={markerLocation}
-        onDragend={(event) => { handleDragEnd(false, index, event) }}
+        onDragend={ event => { handleDragEnd(false, index, event) }}
         draggable={draggable && active}
         >
         <Popup autoPan={false}>

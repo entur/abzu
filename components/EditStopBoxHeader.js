@@ -4,6 +4,7 @@ import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
+import ImportedId from '../components/ImportedId'
 import stopTypes from './stopTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
@@ -87,7 +88,7 @@ class EditstopBoxHeader extends React.Component {
 
     return (
       <div style={fixedHeader}>
-        <div style={{fontSize: 10, fontWeight: 600, marginBottom: 10}}>{ stopPlace.importedId.join(', ') }</div>
+        <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
         <TextField
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}

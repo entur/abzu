@@ -7,10 +7,8 @@ import IconButton from 'material-ui/IconButton'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
-import WheelChairOff from 'material-ui/svg-icons/action/accessibility'
 import WheelChair from 'material-ui/svg-icons/action/accessible'
 import Stairs from '../static/icons/accessibility/Stairs'
-import StepFree from '../static/icons/accessibility/StepFree'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import MdMore from 'material-ui/svg-icons/navigation/more-horiz'
@@ -19,6 +17,7 @@ import FlatButton from 'material-ui/FlatButton'
 import stopTypes from './stopTypes'
 import Divider from 'material-ui/Divider'
 import MdError from 'material-ui/svg-icons/alert/error'
+import ImportedId from './ImportedId'
 
 class QuayItem extends React.Component {
 
@@ -36,7 +35,7 @@ class QuayItem extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: false,
+      stepFreeAccess: true,
       ticketMachine: false,
       busShelter: false
     }
@@ -91,6 +90,7 @@ class QuayItem extends React.Component {
       noBusShelter: formatMessage({id: 'busShelter_no'}),
       quayItemName: formatMessage({id: quayItemName || 'name'}),
       quayMissingLocation: formatMessage({id: 'quay_is_missing_location'}),
+      localReference: formatMessage({id: 'local_reference'})
     }
 
 
@@ -127,7 +127,6 @@ class QuayItem extends React.Component {
               </span>
               <span style={{fontSize: '0.8em', marginLeft: 5, fontWeight: 600, color: '#464545'}}> { idTitle } </span>
             </div>
-            { quay.new ? <span style={{color: 'red', marginLeft: '20px'}}>{" - " + translations.unsaved}</span> : null}
             { !expanded
               ? <NavigationExpandMore
                   onClick={() => handleToggleCollapse(index, 'quay')}
@@ -142,7 +141,7 @@ class QuayItem extends React.Component {
         </div>
        { !expanded ? null
        : <div>
-           <div style={{fontSize: 10, fontWeight: 600, fontColor: '#191919'}}>{ quay.importedId.join(', ') }</div>
+           <ImportedId text={translations.localReference} id={quay.importedId} />
            <TextField
              hintText={translations.publicCode}
              floatingLabelText={translations.publicCode}
@@ -179,7 +178,7 @@ class QuayItem extends React.Component {
              <Checkbox
                checkedIcon={<Stairs />}
                uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               label={ stepFreeAccess ? translations.stepFreeAccess : translations.noStepFreeAccess }
+               label={ !stepFreeAccess ? translations.stepFreeAccess : translations.noStepFreeAccess }
                labelStyle={{fontSize: '0.8em'}}
                style={{width: '45%'}}
                checked={stepFreeAccess}

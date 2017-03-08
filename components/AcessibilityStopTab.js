@@ -11,7 +11,7 @@ class AcessibilityStopTab extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: false
+      stepFreeAccess: true
     }
   }
 

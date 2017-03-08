@@ -11,7 +11,7 @@ class AcessibilityQuayTab extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: false
+      stepFreeAccess: true
     }
   }
 
@@ -42,7 +42,7 @@ class AcessibilityQuayTab extends React.Component {
            <Checkbox
              checkedIcon={<Stairs />}
              uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-             label={ stepFreeAccess ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
+             label={ !stepFreeAccess ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
              labelStyle={{fontSize: '0.8em'}}
              style={{width: '80%'}}
              checked={stepFreeAccess}
