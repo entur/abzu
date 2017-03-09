@@ -5,15 +5,20 @@ import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import ImportedId from '../components/ImportedId'
-import stopTypes from './stopTypes'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
+import WheelChair from 'material-ui/svg-icons/action/accessible'
+import Stairs from '../static/icons/accessibility/Stairs'
+import TicketMachine from '../static/icons/facilities/TicketMachine'
+import BusShelter from '../static/icons/facilities/BusShelter'
 import debounce from 'lodash.debounce'
-import MdMore from 'material-ui/svg-icons/navigation/expand-more'
-import MdLess from 'material-ui/svg-icons/navigation/expand-less'
-import FlatButton from 'material-ui/FlatButton'
+import Checkbox from 'material-ui/Checkbox'
+import stopTypes from './stopTypes'
+import MdWC from 'material-ui/svg-icons/notification/wc'
+import WaitingRoom from '../static/icons/facilities/WaitingRoom'
+import BikeParking from '../static/icons/facilities/BikeParking'
 
-class EditstopBoxHeader extends React.Component {
+class StopPlaceDetails extends React.Component {
 
   constructor(props) {
     super(props)
@@ -21,6 +26,13 @@ class EditstopBoxHeader extends React.Component {
       stopTypeOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
+      wheelChairFriendly: false,
+      stepFreeAccess: false,
+      ticketMachine: false,
+      busShelter: false,
+      bikeParking: false,
+      waitingRoom: false,
+      WC: false
     }
 
     this.updateStopName = debounce( value => {
@@ -85,9 +97,9 @@ class EditstopBoxHeader extends React.Component {
       display: "block"
     }
 
-    const { stopPlace, intl, expanded, showLessStopPlace, showMoreStopPlace } = this.props
+    const { stopPlace, intl, expanded } = this.props
     const { formatMessage, locale } = intl
-    const { name, description } = this.state
+    const { name, description, wheelChairFriendly, busShelter, ticketMachine, stepFreeAccess, bikeParking, waitingRoom, WC } = this.state
 
     return (
       <div style={fixedHeader}>
@@ -95,7 +107,7 @@ class EditstopBoxHeader extends React.Component {
         <TextField
           hintText={formatMessage({id: 'name'})}
           floatingLabelText={formatMessage({id: 'name'})}
-          style={{width: 295}}
+          style={{width: 295, marginTop: -10}}
           value={name}
           onChange={this.handleStopNameChange.bind(this)}
         />
@@ -137,21 +149,59 @@ class EditstopBoxHeader extends React.Component {
           value={description}
           onChange={this.handleStopDescriptionChange.bind(this)}
         />
-        <div style={{float: 'right', marginTop: 5}}>
-          { expanded
-            ? <FlatButton
-              icon={<MdLess/>}
-              style={{margin: '8 5', zIndex: 999}}
-              onClick={() => showLessStopPlace()}
+        { expanded
+          ? null
+          : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+              <Checkbox
+                checkedIcon={<WheelChair/>}
+                uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={wheelChairFriendly}
+                onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
+              />
+              <Checkbox
+                checkedIcon={<Stairs />}
+                uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={stepFreeAccess}
+                onCheck={(e,v) => this.setState({stepFreeAccess: v})}
+              />
+              <Checkbox
+                checkedIcon={<TicketMachine />}
+                uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={ticketMachine}
+                onCheck={(e,v) => this.setState({ticketMachine: v})}
+              />
+              <Checkbox
+                checkedIcon={<BusShelter />}
+                uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={busShelter}
+                onCheck={(e,v) => this.setState({busShelter: v})}
+              />
+              <Checkbox
+                checkedIcon={<MdWC />}
+                uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={WC}
+                onCheck={(e,v) => this.setState({WC: v})}
+              /><Checkbox
+              checkedIcon={<WaitingRoom />}
+              uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              style={{width: 'auto'}}
+              checked={waitingRoom}
+              onCheck={(e,v) => this.setState({waitingRoom: v})}
             />
-            :
-            <FlatButton
-              icon={<MdMore/>}
-              style={{margin: '8 5', zIndex: 999}}
-              onClick={() => showMoreStopPlace()}
-            />
-          }
-        </div>
+              <Checkbox
+                checkedIcon={<BikeParking />}
+                uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={bikeParking}
+                onCheck={(e,v) => this.setState({bikeParking: v})}
+              />
+          </div>
+        }
       </div>
     )
   }
@@ -163,4 +213,4 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps)(EditstopBoxHeader)
+export default connect(mapStateToProps)(StopPlaceDetails)

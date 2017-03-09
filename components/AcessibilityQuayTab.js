@@ -11,7 +11,7 @@ class AcessibilityQuayTab extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: true
+      stepFreeAccess: false
     }
   }
 

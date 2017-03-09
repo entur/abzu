@@ -11,7 +11,7 @@ class AcessibilityStopTab extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: true
+      stepFreeAccess: false
     }
   }
 
@@ -50,7 +50,6 @@ class AcessibilityStopTab extends React.Component {
            />
            <ToolTipIcon title={formatMessage({id: 'step_free_access_hint'})} />
          </div>
-         <Divider style={{marginTop: 10, marginBottom: 10}}/>
        </div>
       </div>
     )

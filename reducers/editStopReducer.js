@@ -107,6 +107,14 @@ const editStopReducer = (state = initialState, action) => {
         }
       })
 
+    case types.SHOW_EDIT_STOP_ADDITIONAL:
+      return Object.assign({}, state, {
+        focusedElement: {
+          index: -1,
+          type: 'quay'
+        }
+      })
+
     default:
       return state
   }

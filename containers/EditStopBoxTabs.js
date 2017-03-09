@@ -7,16 +7,6 @@ import { MapActions } from '../actions/'
 
 class EditStopBoxTabs extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      expandedItem: {
-        index: -1,
-        type: 'quay',
-      }
-    }
-  }
-
   handleLocateOnMap(position) {
     this.props.dispatch(MapActions.changeMapCenter(position, 17))
   }
@@ -34,35 +24,9 @@ class EditStopBoxTabs extends React.Component {
   }
 
   handleToggleCollapse(index, type) {
-    this.setState({
-      expandedItem: {
-        index: this.state.expandedItem.index === index ? -1 : index,
-        type: type,
-      }
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.activeStopPlace.id !== nextProps.activeStopPlace.id) {
-      this.state = {
-        expandedItem: {
-          index: -1,
-          type: 'quay',
-        }
-      }
-    }
-  }
-
-
-  handleSetFocus = (index, type) => {
-    const { dispatch } = this.props
-    dispatch(MapActions.setElementFocus(index, type))
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const { expandedItem } = nextState
-    this.handleSetFocus(expandedItem.index, expandedItem.type)
-    return true
+    const { dispatch, expandedItem } = this.props
+    const isExpanded = expandedItem.type === type && expandedItem.index == index
+    dispatch(MapActions.setElementFocus(isExpanded ? -1 : index, type))
   }
 
   render() {
@@ -80,8 +44,7 @@ class EditStopBoxTabs extends React.Component {
       display: "block",
     }
 
-    const { activeElementTab, itemTranslation, activeStopPlace } = this.props
-    const { expandedItem } = this.state
+    const { activeElementTab, itemTranslation, activeStopPlace, expandedItem } = this.props
 
     return (
       <div style={tabContainerStyle}>
@@ -140,6 +103,7 @@ class EditStopBoxTabs extends React.Component {
 const mapStateToProps = state => {
   return {
     activeElementTab: state.user.activeElementTab,
+    expandedItem: state.editingStop.focusedElement
   }
 }
 

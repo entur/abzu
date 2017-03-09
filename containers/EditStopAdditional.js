@@ -33,7 +33,6 @@ class EditStopAdditional extends React.Component {
       color: '#000',
       fontSize: '0.7em',
       fontWeight: 600,
-      marginTop: -10
     }
 
     const { activeTabIndex } = this.state

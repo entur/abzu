@@ -62,7 +62,6 @@ export default class LeafLetMap extends React.Component {
         className="leaflet-map"
         zoom={zoom}
         zoomControl={false}
-        maxZoom={18}
         minZoom={minZoom || null}
         onDblclick={ e => onDoubleClick && onDoubleClick(e, this.refs.map) }
         onMoveEnd={(event)=> { handleMapMoveEnd(event, this.refs.map)}}
@@ -74,12 +73,14 @@ export default class LeafLetMap extends React.Component {
             <TileLayer
               attribution='&copy; <a href="http://test.rutebanken.org">Rutebankens kart'
               url={window.config.OSMUrl}
+              maxZoom={20}
             />
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('OpenStreetMap')} name='OpenStreetMap'>
             <TileLayer
               attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              maxZoom={20}
             />
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')} name='Google Maps Hydrid'>
@@ -90,6 +91,7 @@ export default class LeafLetMap extends React.Component {
               gkt={this.getLocalGKTToken()}
               baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
               zoom={zoom}
+              maxZoom={19}
             />
           </BaseLayer>
         </LayersControl>

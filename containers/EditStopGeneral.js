@@ -7,16 +7,19 @@ import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import EditStopBoxHeader from '../components/EditStopBoxHeader'
+import StopPlaceDetails from '../components/StopPlaceDetails'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
 import { mutateStopPlace, mutatePathLink } from '../actions/Mutations'
 import * as types from '../actions/Types'
-import EditQuayAdditional from './EditQuayAdditional'
 import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
+import MdMore from 'material-ui/svg-icons/navigation/more-vert'
+import MdLess from 'material-ui/svg-icons/navigation/expand-less'
+import Divider from 'material-ui/Divider'
+
 
 class EditStopGeneral extends React.Component {
 
@@ -123,40 +126,42 @@ class EditStopGeneral extends React.Component {
     })
   }
 
+  getTitleText = (stopPlace, formatMessage) => {
+    return (stopPlace && stopPlace.id)
+      ? `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
+      : formatMessage({id: 'new_stop_title'})
+  }
+
+  getQuayItemName = (locale, stopPlace) => {
+    stopTypes[locale].forEach(stopType => {
+      if (stopType.value === stopPlace.stopPlaceType) {
+        return stopType.quayItemName
+      }
+    })
+  }
+
+
   render() {
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, showEditQuayAdditional } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional } = this.props
     const { formatMessage, locale } = intl
-
-    const itemTranslation = {
-      name: formatMessage({id: 'name'}),
-        publicCode: formatMessage({id: 'publicCode'}),
-        description: formatMessage({id: 'description'}),
-        unsaved: formatMessage({id: 'unsaved'}),
-        undefined: formatMessage({id: 'undefined'}),
-        none: formatMessage({id: 'none_no'}),
-        quays: formatMessage({id: 'quays'}),
-        pathJunctions: formatMessage({id: 'pathJunctions'}),
-        entrances: formatMessage({id: 'entrances'}),
-    }
 
     if (!stopPlace) return null
 
-    let quayItemName = null
-
-    stopTypes[locale].forEach(stopType => {
-      if (stopType.value === stopPlace.stopPlaceType) {
-        quayItemName = stopType.quayItemName
-      }
-    })
-
-    if (quayItemName !== null) {
-      itemTranslation.quayItemName = formatMessage({id: quayItemName || 'name'})
+    const translations = {
+      name: formatMessage({id: 'name'}),
+      publicCode: formatMessage({id: 'publicCode'}),
+      description: formatMessage({id: 'description'}),
+      unsaved: formatMessage({id: 'unsaved'}),
+      undefined: formatMessage({id: 'undefined'}),
+      none: formatMessage({id: 'none_no'}),
+      quays: formatMessage({id: 'quays'}),
+      pathJunctions: formatMessage({id: 'pathJunctions'}),
+      entrances: formatMessage({id: 'entrances'}),
+      quayItemName: this.getQuayItemName(locale, stopPlace)
     }
 
-    const captionText = (stopPlace && stopPlace.id)
-      ? `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-      : formatMessage({id: 'new_stop_title'})
+    const captionText = this.getTitleText(stopPlace, formatMessage)
 
     const style = {
       border: '1px solid #511E12',
@@ -170,25 +175,15 @@ class EditStopGeneral extends React.Component {
     const scrollable = {
       overflowY: "auto",
       width: "100%",
-      height: '55vh',
+      height: showEditStopAdditional ? '32.5vh' : '42vh',
       position: "relative",
       display: "block",
       zIndex: 999,
       marginTop: 2
     }
 
-    const stopBoxBar = {
-      color: '#fff',
-      background: '#2c2c2c',
-      fontSize: 12,
-      padding: 2
-    }
-
-    const tabStyle = {
-      color: '#000',
-      fontSize: '0.7em',
-      fontWeight: 600,
-    }
+    const stopBoxBar = { color: '#fff', background: '#2c2c2c', fontSize: 12, padding: 2}
+    const tabStyle = { color: '#000', fontSize: '0.7em', fontWeight: 600 }
 
     return (
 
@@ -197,34 +192,42 @@ class EditStopGeneral extends React.Component {
           { captionText }
         </div>
         <div style={{padding: '10 5'}}>
-          <EditStopBoxHeader
+          <StopPlaceDetails
             intl={intl}
             expanded={showEditStopAdditional}
             showLessStopPlace={this.showLessStopPlace.bind(this)}
             showMoreStopPlace={this.showMoreStopPlace.bind(this)}
           />
-          { (showEditQuayAdditional || showEditStopAdditional)
-            ? <div>
-              { showEditStopAdditional
-                ? <EditStopAdditional/>
-                : <EditQuayAdditional/>
-              }
-            </div>
-            : <div>
-              <Tabs
-                onChange={this.handleSlideChange.bind(this)}
-                value={activeElementTab}
-                tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
-              >
-                <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
-                <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
-                <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
-              </Tabs>
-              <div style={scrollable}>
-                <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={itemTranslation}/>
-              </div>
-            </div>
+          { showEditStopAdditional
+            ? <EditStopAdditional/>
+            : null
           }
+          <div style={{textAlign: 'center', marginBottom: 5}}>
+            { showEditStopAdditional
+              ? <FlatButton
+                icon={<MdLess/>}
+                onClick={() => this.showLessStopPlace()}
+              />
+              :
+              <FlatButton
+                icon={<MdMore/>}
+                onClick={() => this.showMoreStopPlace()}
+              />
+            }
+          </div>
+          <Divider inset={true}/>
+            <Tabs
+              onChange={this.handleSlideChange.bind(this)}
+              value={activeElementTab}
+              tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
+            >
+              <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
+              <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
+              <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
+            </Tabs>
+            <div style={scrollable}>
+              <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={translations}/>
+            </div>
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
             handleClose={ () => { this.handleDialogClose() }}
@@ -249,7 +252,7 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-            <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
               { stopHasBeenModified
                 ?
                 <FlatButton

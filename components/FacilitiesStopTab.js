@@ -102,7 +102,7 @@ class FacilitiesStopTab extends React.Component {
             />
             <ToolTipIcon title={formatMessage({id: 'bike_parking_hint'})}/>
           </div>
-          <Divider style={{marginTop: 10, marginBottom: 10}}/>
+          <Divider style={{marginTop: 10, marginBottom: 0}}/>
         </div>
       </div>
     )

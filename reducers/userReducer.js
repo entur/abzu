@@ -130,6 +130,15 @@ const userReducer = (state = initialState, action) => {
         showEditStopAdditional: true
       })
 
+    case types.SET_FOCUS_ON_ELEMENT:
+      if (action.payLoad.index > -1) {
+        return Object.assign({}, state, {
+          showEditStopAdditional: false
+        })
+      }
+
+      return state
+
     case types.HID_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
         showEditStopAdditional: false

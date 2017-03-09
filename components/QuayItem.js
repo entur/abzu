@@ -11,13 +11,15 @@ import WheelChair from 'material-ui/svg-icons/action/accessible'
 import Stairs from '../static/icons/accessibility/Stairs'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
-import MdMore from 'material-ui/svg-icons/navigation/more-horiz'
+import MdMore from 'material-ui/svg-icons/navigation/more-vert'
 import { injectIntl } from 'react-intl'
 import FlatButton from 'material-ui/FlatButton'
 import stopTypes from './stopTypes'
 import Divider from 'material-ui/Divider'
 import MdError from 'material-ui/svg-icons/alert/error'
 import ImportedId from './ImportedId'
+import MdLess from 'material-ui/svg-icons/navigation/expand-less'
+import EditQuayAdditional from '../containers/EditQuayAdditional'
 
 class QuayItem extends React.Component {
 
@@ -35,9 +37,10 @@ class QuayItem extends React.Component {
     super(props)
     this.state = {
       wheelChairFriendly: false,
-      stepFreeAccess: true,
+      tepFreeAccess: false,
       ticketMachine: false,
-      busShelter: false
+      busShelter: false,
+      additionalExpanded: false
     }
   }
 
@@ -52,15 +55,16 @@ class QuayItem extends React.Component {
     dispatch(MapActions.changeElementName(index, event.target.value, 'quay'))
   }
 
-  showMoreOptionsForQuay = () => {
-    this.props.dispatch(UserActions.showEditQuayAdditional())
+  showMoreOptionsForQuay = expanded => {
+    //this.props.dispatch(UserActions.showEditQuayAdditional())
+    this.setState({additionalExpanded: expanded})
   }
 
   render() {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
     const { formatMessage, locale } = intl
-    const { wheelChairFriendly, stepFreeAccess, ticketMachine, busShelter } = this.state
+    const { wheelChairFriendly, stepFreeAccess, ticketMachine, busShelter, additionalExpanded } = this.state
 
     let quayItemName = null
 
@@ -165,7 +169,7 @@ class QuayItem extends React.Component {
              </IconButton>
             : null // hide this for now, not used
            }
-           <div style={{marginTop: 10, marginBottom: 15, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+           <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
              <Checkbox
                checkedIcon={<WheelChair />}
                uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
@@ -194,7 +198,16 @@ class QuayItem extends React.Component {
                checked={busShelter}
                onCheck={(e,v) => this.setState({busShelter: v})}
              />
-             <FlatButton icon={<MdMore/>} onClick={this.showMoreOptionsForQuay.bind(this)} />
+           </div>
+           <div style={{textAlign: 'center', width: '100%'}}>
+             { additionalExpanded
+               ? <FlatButton icon={<MdLess/>} onClick={() => this.showMoreOptionsForQuay(false)} />
+               : <FlatButton icon={<MdMore/>} onClick={() => this.showMoreOptionsForQuay(true)} />
+             }
+             { additionalExpanded
+               ? <EditQuayAdditional/>
+               : null
+             }
            </div>
         </div>
         }

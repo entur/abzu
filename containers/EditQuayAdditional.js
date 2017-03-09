@@ -22,17 +22,14 @@ class EditQuayAdditional extends React.Component {
     })
   }
 
-  handleAdditionalQuayOnClose = () => {
-    this.props.dispatch(UserActions.hideEditQuayAdditional())
-  }
-
   render() {
 
-    const { intl, stopPlace, focusedElement } = this.props
+    const { intl } = this.props
     const { formatMessage } = intl
 
     const style = {
       background: '#fff',
+      overflowX: 'hidden'
     }
 
     const tabStyle = {
@@ -42,23 +39,11 @@ class EditQuayAdditional extends React.Component {
       marginTop: -10
     }
 
-    const stopBoxBar = {
-      color: '#000',
-      fontSize: '0.8em',
-      height: 19
-    }
 
     const { activeTabIndex } = this.state
 
     return (
       <div style={style} id="additional">
-        <div style={stopBoxBar}>
-          <span style={{fontWeight: 600}}>{ getElementTitle(stopPlace, focusedElement) }</span>
-          <MdLess
-            style={{height: 15, width: 15, float: 'right', color: '#000', cursor: 'pointer', marginBottom: 20}}
-            onClick={this.handleAdditionalQuayOnClose.bind(this)}
-          />
-        </div>
         <Tabs
           onChange={this.handleTabOnChange.bind(this)}
           value={activeTabIndex}
@@ -74,16 +59,6 @@ class EditQuayAdditional extends React.Component {
       </div>
     )
   }
-}
-
-const getElementTitle = (stop, focusedElement) => {
-
-  if (!stop || !focusedElement) return 'N/A'
-
-  if (focusedElement.type == 'quay' && focusedElement.index > -1) {
-    return stop.quays[focusedElement.index].id || '?'
-  }
-  return 'N/A'
 }
 
 const mapStateToProps = state => ({
