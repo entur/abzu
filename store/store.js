@@ -3,7 +3,7 @@ import React from 'react'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import editStopReducer from '../reducers/editStopReducer'
-import graphQLReducer from '../reducers/graphQLreducer'
+import stopPlaceReducer from '../reducers/stopPlaceReducer'
 import userReducer from '../reducers/userReducer'
 
 import { routerReducer } from 'react-router-redux'
@@ -43,7 +43,7 @@ const combinedReducer = combineReducers({
   editingStop: editStopReducer,
   user: userReducer,
   routing: routerReducer,
-  stopPlace: graphQLReducer,
+  stopPlace: stopPlaceReducer,
   apollo: client.reducer()
 })
 

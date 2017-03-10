@@ -1,5 +1,5 @@
 import expect from 'expect'
-import { graphQLReducer } from './../../reducers/'
+import { stopPlaceReducer } from './../../reducers/'
 import stopPlaceMock from './json/stopPlace.json'
 import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json'
 import clientStop from './json/clientStop.json'
@@ -16,7 +16,7 @@ describe('Model: map format from server to expected client model', () => {
       result: stopPlaceMock,
       operationName: 'stopPlace'
     }
-    const state = graphQLReducer({}, action)
+    const state = stopPlaceReducer({}, action)
 
     const formattedStop = {
       id: 'NSR:StopPlace:933',
@@ -124,7 +124,7 @@ describe('Changes correct properties', () => {
       result: stopPlaceMock10Quays,
       operationName: 'stopPlace'
     }
-    state = graphQLReducer({}, action)
+    state = stopPlaceReducer({}, action)
     expect(state.current.quays.length).toEqual(10)
     done()
   })
@@ -144,7 +144,7 @@ describe('Changes correct properties', () => {
         }
       }
 
-      state = graphQLReducer(state, changePublicCode)
+      state = stopPlaceReducer(state, changePublicCode)
 
       expect(state.current.quays[quayIndex].publicCode).toEqual(newPublicCode)
 

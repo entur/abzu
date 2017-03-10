@@ -1,4 +1,4 @@
-import { getStateByOperation, getObjectFromCache } from './graphQLreducerUtils'
+import { getStateByOperation, getObjectFromCache } from './stopPlaceReducerUtils'
 import * as types from '../actions/Types'
 import formatHelpers from '../modelUtils/mapToClient'
 

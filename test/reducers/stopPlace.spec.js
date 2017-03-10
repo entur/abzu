@@ -1,6 +1,6 @@
 import * as types from '../../actions/Types'
 import expect from 'expect'
-import { graphQLReducer } from './../../reducers/'
+import { stopPlaceReducer } from './../../reducers/'
 import stopPlaceData from './json/stopPlace.json'
 
 describe('stop place reducer', () => {
@@ -14,7 +14,7 @@ describe('stop place reducer', () => {
       payLoad: location
     }
 
-    const state = graphQLReducer({}, action)
+    const state = stopPlaceReducer({}, action)
     expect(state.newStop.location).toEqual(location)
   })
 
@@ -26,13 +26,13 @@ describe('stop place reducer', () => {
       result: stopPlaceData,
       operationName: 'stopPlace'
     }
-    const stateBefore = graphQLReducer({}, action)
+    const stateBefore = stopPlaceReducer({}, action)
 
     const changeNameAction = {
       type: types.CHANGED_STOP_NAME,
       payLoad: 'new stop name'
     }
-    const stateAfter = graphQLReducer(stateBefore, changeNameAction)
+    const stateAfter = stopPlaceReducer(stateBefore, changeNameAction)
 
     expect(stateAfter).toNotEqual(stateBefore)
     expect(stateAfter.current).toNotEqual(stateBefore.current)
@@ -46,13 +46,13 @@ describe('stop place reducer', () => {
       result: stopPlaceData,
       operationName: 'stopPlace'
     }
-    const stateBefore = graphQLReducer({}, action)
+    const stateBefore = stopPlaceReducer({}, action)
 
     const changeNameAction = {
       type: types.CHANGED_STOP_DESCRIPTION,
       payLoad: 'new description'
     }
-    const stateAfter = graphQLReducer(stateBefore, changeNameAction)
+    const stateAfter = stopPlaceReducer(stateBefore, changeNameAction)
 
     expect(stateAfter).toNotEqual(stateBefore)
     expect(stateAfter.current).toNotEqual(stateBefore.current)
@@ -69,13 +69,13 @@ describe('stop place reducer', () => {
 
     const newDehli = [28.644800, 77.216721]
 
-    const stateBefore = graphQLReducer({}, action)
+    const stateBefore = stopPlaceReducer({}, action)
 
     const changeNameAction = {
       type: types.CHANGED_ACTIVE_STOP_POSITION,
       payLoad: { location: newDehli }
     }
-    const stateAfter = graphQLReducer(stateBefore, changeNameAction)
+    const stateAfter = stopPlaceReducer(stateBefore, changeNameAction)
 
     expect(stateAfter).toNotEqual(stateBefore)
     expect(stateAfter.current).toNotEqual(stateBefore.current)
@@ -90,7 +90,7 @@ describe('stop place reducer', () => {
       result: stopPlaceData,
       operationName: 'stopPlace'
     }
-    const stateBefore = graphQLReducer({}, action)
+    const stateBefore = stopPlaceReducer({}, action)
 
     expect(stateBefore.originalCurrent).toEqual(stateBefore.current)
 
@@ -98,7 +98,7 @@ describe('stop place reducer', () => {
       type: types.CHANGED_STOP_DESCRIPTION,
       payLoad: 'awesome description'
     }
-    const stateAfter = graphQLReducer(stateBefore, changeNameAction)
+    const stateAfter = stopPlaceReducer(stateBefore, changeNameAction)
 
     expect(stateAfter.originalCurrent).toNotEqual(stateAfter.current)
     expect(stateAfter.stopHasBeenModified).toEqual(true)
@@ -108,7 +108,7 @@ describe('stop place reducer', () => {
       payLoad: null
     }
 
-    const finalState = graphQLReducer(stateAfter, restoreAction)
+    const finalState = stopPlaceReducer(stateAfter, restoreAction)
 
     expect(finalState.originalCurrent).toEqual(finalState.current)
 

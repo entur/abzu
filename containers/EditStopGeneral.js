@@ -173,11 +173,12 @@ class EditStopGeneral extends React.Component {
     }
 
     const scrollable = {
-      overflowY: "auto",
-      width: "100%",
-      height: showEditStopAdditional ? '32.5vh' : '42vh',
-      position: "relative",
-      display: "block",
+      overflowY: 'scroll',
+      overflowX: 'hidden',
+      width: '100%',
+      height: '78vh',
+      position: 'relative',
+      display: 'block',
       zIndex: 999,
       marginTop: 2
     }
@@ -188,34 +189,33 @@ class EditStopGeneral extends React.Component {
     return (
 
       <div style={style}>
-        <div style={stopBoxBar}>
-          { captionText }
-        </div>
-        <div style={{padding: '10 5'}}>
-          <StopPlaceDetails
-            intl={intl}
-            expanded={showEditStopAdditional}
-            showLessStopPlace={this.showLessStopPlace.bind(this)}
-            showMoreStopPlace={this.showMoreStopPlace.bind(this)}
-          />
-          { showEditStopAdditional
-            ? <EditStopAdditional/>
-            : null
-          }
-          <div style={{textAlign: 'center', marginBottom: 5}}>
+        <div style={stopBoxBar}>{ captionText }</div>
+        <div style={scrollable}>
+          <div style={{padding: '10 5'}}>
+            <StopPlaceDetails
+              intl={intl}
+              expanded={showEditStopAdditional}
+              showLessStopPlace={this.showLessStopPlace.bind(this)}
+              showMoreStopPlace={this.showMoreStopPlace.bind(this)}
+            />
             { showEditStopAdditional
-              ? <FlatButton
-                icon={<MdLess/>}
-                onClick={() => this.showLessStopPlace()}
-              />
-              :
-              <FlatButton
-                icon={<MdMore/>}
-                onClick={() => this.showMoreStopPlace()}
-              />
+              ? <EditStopAdditional/>
+              : null
             }
-          </div>
-          <Divider inset={true}/>
+            <div style={{textAlign: 'center', marginBottom: 5}}>
+              { showEditStopAdditional
+                ? <FlatButton
+                  icon={<MdLess/>}
+                  onClick={() => this.showLessStopPlace()}
+                />
+                :
+                <FlatButton
+                  icon={<MdMore/>}
+                  onClick={() => this.showMoreStopPlace()}
+                />
+              }
+            </div>
+            <Divider inset={true}/>
             <Tabs
               onChange={this.handleSlideChange.bind(this)}
               value={activeElementTab}
@@ -225,9 +225,8 @@ class EditStopGeneral extends React.Component {
               <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
               <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
             </Tabs>
-            <div style={scrollable}>
-              <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={translations}/>
-            </div>
+            <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={translations}/>
+          </div>
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
             handleClose={ () => { this.handleDialogClose() }}
@@ -252,33 +251,33 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-            <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
-              { stopHasBeenModified
-                ?
-                <FlatButton
-                  icon={<MdUndo/>}
-                  label={formatMessage({id: 'undo_changes'})}
-                  style={{margin: '8 5', zIndex: 999}}
-                  labelStyle={{fontSize: '0.8em'}}
-                  onClick={ () => { this.setState({confirmDialogOpen: true })} }
-                />
-                :
-                <FlatButton
-                  icon={<MdBack/>}
-                  label={formatMessage({id: 'go_back'})}
-                  style={{margin: '8 5', zIndex: 999}}
-                  labelStyle={{fontSize: '0.8em'}}
-                  onClick={this.handleGoBack.bind(this)}
-                />
-              }
-              <FlatButton
-                icon={<MdSave/>}
-                label={formatMessage({id: 'save'})}
-                style={{margin: '8 5', zIndex: 999}}
-                labelStyle={{fontSize: '0.8em'}}
-                onClick={this.handleSave.bind(this)}
-              />
-            </div>
+        </div>
+        <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+          { stopHasBeenModified
+            ?
+            <FlatButton
+              icon={<MdUndo/>}
+              label={formatMessage({id: 'undo_changes'})}
+              style={{margin: '8 5', zIndex: 999}}
+              labelStyle={{fontSize: '0.8em'}}
+              onClick={ () => { this.setState({confirmDialogOpen: true })} }
+            />
+            :
+            <FlatButton
+              icon={<MdBack/>}
+              label={formatMessage({id: 'go_back'})}
+              style={{margin: '8 5', zIndex: 999}}
+              labelStyle={{fontSize: '0.8em'}}
+              onClick={this.handleGoBack.bind(this)}
+            />
+          }
+          <FlatButton
+            icon={<MdSave/>}
+            label={formatMessage({id: 'save'})}
+            style={{margin: '8 5', zIndex: 999}}
+            labelStyle={{fontSize: '0.8em'}}
+            onClick={this.handleSave.bind(this)}
+          />
         </div>
       </div> )
   }
