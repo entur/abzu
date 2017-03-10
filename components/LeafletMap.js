@@ -73,25 +73,24 @@ export default class LeafLetMap extends React.Component {
             <TileLayer
               attribution='&copy; <a href="http://test.rutebanken.org">Rutebankens kart'
               url={window.config.OSMUrl}
-              maxZoom={20}
+              maxZoom="19"
             />
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('OpenStreetMap')} name='OpenStreetMap'>
             <TileLayer
               attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-              maxZoom={20}
+              maxZoom="19"
             />
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')} name='Google Maps Hydrid'>
-            <GoogleLayer googlekey={googleApiKey} maptype='HYBRID'/>
+            <GoogleLayer maxZoom="19" googlekey={googleApiKey} maptype='HYBRID'/>
           </BaseLayer>
           <BaseLayer checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')} name='Kartverket Flyfoto'>
             <WMTSLayer
               gkt={this.getLocalGKTToken()}
-              baseURL="http://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
+              baseURL="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
               zoom={zoom}
-              maxZoom={19}
             />
           </BaseLayer>
         </LayersControl>

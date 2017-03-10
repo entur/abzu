@@ -28,6 +28,7 @@ const WMTSPlugin = L.TileLayer.extend({
     }
     this.wmtsParams = wmtsParams;
     this.matrixIds = options.matrixIds || this.getDefaultMatrix();
+    options.maxZoom = 19;
     L.setOptions(this, options);
 
   },
