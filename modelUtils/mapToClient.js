@@ -7,11 +7,11 @@ const helpers = {}
 const calculateDistance = coords => {
   let latlngDistances = coords.map ( (position) => new LatLng(position[0], position[1]))
   let totalDistance = 0
+
   for (let i = 0; i < latlngDistances.length; i++) {
     if (latlngDistances[i+1] == null) break
     totalDistance += latlngDistances[i].distanceTo(latlngDistances[i+1])
   }
-
   return totalDistance
 }
 
@@ -107,6 +107,10 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     if (lastPathLink.from && lastPathLink.from.quay) {
       latlngCoordinates.push(lastPathLink.from.quay.geometry.coordinates[0])
+    }
+
+    if (lastPathLink.inBetween) {
+      lastPathLink.inBetween.forEach( coords => latlngCoordinates.push(coords) )
     }
 
     lastPathLink.to = {
