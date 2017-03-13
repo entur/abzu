@@ -313,6 +313,9 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index)
       break
+    case 'parking':
+      copy.parking = removeElementByIndex(copy.parking, index)
+      break
     default: throw new Error('element not supported', type)
   }
   return copy

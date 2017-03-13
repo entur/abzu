@@ -158,7 +158,9 @@ class EditStopGeneral extends React.Component {
       quays: formatMessage({id: 'quays'}),
       pathJunctions: formatMessage({id: 'pathJunctions'}),
       entrances: formatMessage({id: 'entrances'}),
-      quayItemName: this.getQuayItemName(locale, stopPlace)
+      quayItemName: this.getQuayItemName(locale, stopPlace),
+      capacity: formatMessage({id: 'capacity'}),
+      parking: formatMessage({id: 'parking'})
     }
 
     const captionText = this.getTitleText(stopPlace, formatMessage)
@@ -184,7 +186,7 @@ class EditStopGeneral extends React.Component {
     }
 
     const stopBoxBar = { color: '#fff', background: '#2c2c2c', fontSize: 12, padding: 2}
-    const tabStyle = { color: '#000', fontSize: '0.7em', fontWeight: 600 }
+    const tabStyle = { color: '#000', fontSize: '0.6em', fontWeight: 600 }
 
     return (
 
@@ -223,7 +225,8 @@ class EditStopGeneral extends React.Component {
             >
               <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
               <Tab style={tabStyle} label={`${formatMessage({id: 'pathJunctions'})} (${stopPlace.pathJunctions.length})`} value={1} />
-              <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />
+              { /* <Tab style={tabStyle} label={`${formatMessage({id: 'entrances'})} (${stopPlace.entrances.length})`} value={2} />  */}
+              <Tab style={tabStyle} label={`${formatMessage({id: 'parking'})} (${stopPlace.parking.length})`} value={3} />
             </Tabs>
             <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={translations}/>
           </div>

@@ -20,6 +20,7 @@
   "busShelter_quay_hint": "Har denne quayen et busskur?",
   "cancel" : "Avbryt",
   "cancel_path_link" : "Avbryt ganglenke",
+  "capacity": "Kapasitet",
   "change_coordinates" : "Endre koordinater",
   "change_coordinates_help_text": "Du kan selv sette koordinater her. Formatet er: lat, lng. F.eks.: 59.9, 10.7",
   "change_coordinates_cancel": "Avbryt",

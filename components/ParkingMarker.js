@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import ParkingIcon from '../static/icons/parking-icon.png'
+import { connect } from 'react-redux'
 
 class ParkingMarker extends React.Component {
 
@@ -10,6 +11,15 @@ class ParkingMarker extends React.Component {
     index: PropTypes.number.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired
+  }
+
+  componentDidUpdate() {
+    const { focusedElement, index, type } = this.props
+    const isFocused = (focusedElement.type === type && index === focusedElement.index)
+    if (isFocused) {
+      L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused')
+    }
+    L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'padded-10')
   }
 
   render() {
@@ -31,6 +41,7 @@ class ParkingMarker extends React.Component {
         position={position}
         icon={icon}
         onDragend={(event) => { handleDragEnd(index, 'parking', event) }}
+        ref="marker"
       >
         <Popup>
           <div>
@@ -43,4 +54,11 @@ class ParkingMarker extends React.Component {
   }
 }
 
-export default ParkingMarker
+const mapStateToProps = state => {
+  return {
+    focusedElement: state.editingStop.focusedElement
+  }
+}
+
+export default connect(mapStateToProps)(ParkingMarker)
+

@@ -2,6 +2,7 @@ import React from 'react'
 import QuayItem from '../components/QuayItem'
 import PathJunctionItem from '../components/PathJunctionItem'
 import EntranceItem from '../components/EntranceItem'
+import ParkingItem from '../components/ParkingItem'
 import { connect } from 'react-redux'
 import { MapActions } from '../actions/'
 
@@ -27,6 +28,10 @@ class EditStopBoxTabs extends React.Component {
     const { dispatch, expandedItem } = this.props
     const isExpanded = expandedItem.type === type && expandedItem.index == index
     dispatch(MapActions.setElementFocus(isExpanded ? -1 : index, type))
+  }
+
+  handleRemoveParking(index) {
+    this.props.dispatch(MapActions.removeElementByType(index, 'parking'))
   }
 
   render() {
@@ -95,6 +100,18 @@ class EditStopBoxTabs extends React.Component {
         { activeElementTab === 2 && !activeStopPlace.entrances.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
         }
+        { activeElementTab === 3 && activeStopPlace.parking.map( (parking,index) =>
+          <ParkingItem
+            translations={itemTranslation}
+            key={"parking-" + index}
+            index={index}
+            parking={parking}
+            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+            handleRemoveParking={() => this.handleRemoveParking(index)}
+            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+            expanded={expandedItem.type === 'parking' && index === expandedItem.index}
+          />
+        )}
       </div>
     )
   }

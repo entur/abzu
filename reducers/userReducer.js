@@ -112,7 +112,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, { activeElementTab: action.payLoad })
 
     case types.ADDED_JUNCTION_ELEMENT:
-      const elementsMap = ['quay', 'pathJunction', 'entrance']
+      const elementsMap = ['quay', 'pathJunction', 'entrance', 'parking']
       return Object.assign({}, state, { activeElementTab: elementsMap.indexOf(action.payLoad.type)})
 
     case types.SHOW_EDIT_QUAY_ADDITIONAL:

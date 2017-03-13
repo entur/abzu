@@ -188,6 +188,7 @@ class MarkerList extends React.Component {
             popupMarkers.push(
               <ParkingMarker
                 position={parking.location}
+                type="parking"
                 index={index}
                 key={'parking ' + index}
                 title={formatMessage({id: 'parking'})}

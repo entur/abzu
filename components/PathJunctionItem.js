@@ -69,28 +69,29 @@ class PathJunctionItem extends React.Component {
           </div>
         </div>
         { !expanded ? null
-          : <div>
-          <TextField
-            hintText={translations.name}
-            floatingLabelText={translations.name}
-            value={pathJunction.name}
-            style={{width: "95%", marginTop: -10}}
-            onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
-          />
-          <TextField
-            hintText={translations.description}
-            floatingLabelText={translations.description}
-            value={description}
-            style={{width: "95%", marginTop: -10}}
-            onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
-          />
-          <IconButton
-            iconClassName="material-icons"
-            style={removeStyle}
-            onClick={this.props.handleRemovePathJunction}
-          >
-            delete
-          </IconButton>
+          :
+          <div>
+            <TextField
+              hintText={translations.name}
+              floatingLabelText={translations.name}
+              value={pathJunction.name}
+              style={{width: "95%", marginTop: -10}}
+              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
+            />
+            <TextField
+              hintText={translations.description}
+              floatingLabelText={translations.description}
+              value={description}
+              style={{width: "95%", marginTop: -10}}
+              onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
+            />
+            <IconButton
+              iconClassName="material-icons"
+              style={removeStyle}
+              onClick={this.props.handleRemovePathJunction}
+            >
+              delete
+            </IconButton>
         </div>
         }
       </div>

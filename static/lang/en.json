@@ -20,6 +20,7 @@
   "busShelter_quay_hint": "Is a bus shelter available for this quay?",
   "cancel": "Cancel",
   "cancel_path_link": "Cancel path link",
+  "capacity": "Capacity",
   "change_coordinates": "Change coordinates",
   "change_coordinates_help_text": "You can manually set the coordinates of the marker here. In the format: lat, lng. E.g.: 59.9, 10.7",
   "change_coordinates_cancel": "Cancel",
