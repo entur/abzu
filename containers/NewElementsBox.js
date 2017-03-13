@@ -39,21 +39,10 @@ class NewElementsBox extends React.Component {
 
     const boxWrapperStyle = {
       background: '#fff',
-      position: 'absolute',
-      top: '82vh',
       width: 'auto',
-      border: '1px solid #511e12',
       zIndex: 999,
-      right: 0,
-      cursor: 'move',
       fontSize: 10,
-    }
-
-    const stopBoxBar = {
-      color: '#fff',
-      background: '#191919',
-      width: '100%',
-      textAlign: 'center',
+      textAlign: 'center'
     }
 
     const elementStyle = {
@@ -71,8 +60,8 @@ class NewElementsBox extends React.Component {
     const pathJunctionText = formatMessage({id: 'pathJunction'})
     const entranceText = formatMessage({id: 'entrance'})
     const newStopText = formatMessage({id: 'stop_place'})
-    const parkingText = formatMessage({id: 'parking'})
     const PRText = formatMessage({id: 'park_ride'})
+    const helpText = formatMessage({id: 'new_element_help_text'})
 
     let shouldShowNewStop = true
 
@@ -81,7 +70,7 @@ class NewElementsBox extends React.Component {
     }
 
     return (
-      <div ref='newElementsContainer' style={boxWrapperStyle}>
+      <div style={boxWrapperStyle}>
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
             intl={this.props.intl}
@@ -94,9 +83,9 @@ class NewElementsBox extends React.Component {
             handleClose={this.handleDialogClose.bind(this)}
             handleConfirm={this.handleConfirmSubmit.bind(this)}
           />
-          <div style={stopBoxBar}>
-            <div style={{textIndent: 5, paddingTop: 2, fontSize: 10}}>{formatMessage({id: 'new_elements'})}</div>
-          </div>
+        <div style={{padding: 10, background: 'hsla(60, 100%, 50%, 0.39)'}}>
+          { helpText }
+        </div>
           <div style={{display: 'block', marginTop: 0, marginBottom: 0}}>
             { shouldShowNewStop
               ?
@@ -129,8 +118,6 @@ class NewElementsBox extends React.Component {
 
   componentDidMount() {
 
-    new L.Draggable(this.refs.newElementsContainer).enable()
-
     Object.keys(this.refs).forEach( (key) => {
       const ref = this.refs[key]
 
@@ -139,7 +126,7 @@ class NewElementsBox extends React.Component {
 
         draggable.addEventListener('dragend', (event) => {
           // prevent adding to map if distance is too short (i.e. a mistake)
-          if(event.distance < 30) {
+          if(event.distance < 50) {
             L.DomUtil.setPosition(ref, L.point(0,0))
             return
           }

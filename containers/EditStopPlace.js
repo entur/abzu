@@ -3,8 +3,6 @@ import React, { PropTypes } from 'react'
 import Loader from '../components/Loader'
 import EditStopMap from './EditStopMap'
 import EditStopGeneral from './EditStopGeneral'
-import ToggleMapItemsBox from './ToggleMapItemsBox'
-import NewElementsBox from './NewElementsBox'
 import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
@@ -15,6 +13,7 @@ import '../styles/main.css'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import { UserActions } from '../actions/'
+import EditStopSideBar from './EditStopSideBar'
 
 class EditStopPlace extends React.Component {
 
@@ -98,6 +97,7 @@ class EditStopPlace extends React.Component {
             <div>
               <EditStopGeneral/>
               <EditStopMap/>
+              <EditStopSideBar/>
             </div>
             : <Loader/>
         }

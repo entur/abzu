@@ -35,9 +35,11 @@ class MultiPolyline extends React.Component {
 
   render() {
 
-    const { pathLink, intl } = this.props
+    const { pathLink, intl, isEnabled } = this.props
     const { openDialog } = this.state
     const { formatMessage } = intl
+
+    if (!isEnabled) return null
 
     const polylinePopupStyle = {
       cursor: 'pointer',
@@ -142,7 +144,8 @@ const arrayOfPolylinesFromPolyline = line => {
 
 const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink || [],
-  lastAddedCoordinate: state.editingStop.lastAddedCoordinate
+  lastAddedCoordinate: state.editingStop.lastAddedCoordinate,
+  isEnabled: state.editingStop.enablePolylines
 })
 
 export default injectIntl(connect(mapStateToProps)(MultiPolyline))
