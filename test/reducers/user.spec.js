@@ -46,12 +46,16 @@ describe('user reducer', () => {
 
     const snackbarOptions = {
       isOpen: true,
-      message: 'This is some feedback to the user'
+      message: 'This is some feedback to the user',
+      status: 'SUCCESS'
     }
 
     expect(userReducer(undefined, {
       type: types.OPENED_SNACKBAR,
-      payLoad: snackbarOptions.message
+      payLoad: {
+        message: snackbarOptions.message,
+        status:  snackbarOptions.status
+      }
     }))
       .toEqual({
         ...initialState, snackbarOptions: snackbarOptions
