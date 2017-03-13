@@ -56,3 +56,5 @@ export const HID_EDIT_STOP_ADDITIONAL = 'HID_EDIT_STOP_ADDITIONAL'
 //Snackbar types
 export const SNACKBAR_MESSAGE_SAVED = 'snackbar_message_saved'
 export const SNACKBAR_MESSAGE_FAILED = 'snackbar_message_failed'
+export const SUCCESS = 'SUCCESS'
+export const ERROR = 'ERROR'

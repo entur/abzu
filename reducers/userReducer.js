@@ -47,10 +47,10 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, { searchFilters: { ...state.searchFilters, stopType: action.payLoad}})
 
     case types.OPENED_SNACKBAR:
-      return Object.assign({}, state, {snackbarOptions: { isOpen: true, message: action.payLoad}})
+      return Object.assign({}, state, { snackbarOptions: { isOpen: true, message: action.payLoad.message, status: action.payLoad.status }})
 
     case types.DISMISSED_SNACKBAR:
-      return Object.assign({}, state, {snackbarOptions: { isOpen: false }})
+      return Object.assign({}, state, { snackbarOptions: { isOpen: false }})
 
     case types.CHANGED_LOCALIZATION:
       return Object.assign({}, state, {localization: action.payLoad})

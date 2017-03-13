@@ -66,27 +66,27 @@ UserActions.toggleIsCreatingNewStop = () => {
   }
 }
 
-UserActions.toggleMultiPolylinesEnabled = (value) => {
+UserActions.toggleMultiPolylinesEnabled = value => {
   return function(dispatch) {
     dispatch( sendData( types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value))
   }
 }
 
-UserActions.toggleCompassBearingEnabled = (value) => {
+UserActions.toggleCompassBearingEnabled = value => {
   return function(dispatch) {
     dispatch( sendData( types.TOGGLED_IS_COMPASS_BEARING_ENABLED, value))
   }
 }
 
-UserActions.applyStopTypeSearchFilter = (filters) => {
+UserActions.applyStopTypeSearchFilter = filters => {
   return function(dispatch) {
     dispatch( sendData (types.APPLIED_STOPTYPE_SEARCH_FILTER, filters))
   }
 }
 
-UserActions.openSnackbar = (message) => {
+UserActions.openSnackbar = (message, status) => {
   return function(dispatch) {
-    dispatch( sendData(types.OPENED_SNACKBAR, message) )
+    dispatch( sendData(types.OPENED_SNACKBAR, { message, status }) )
   }
 }
 
@@ -96,7 +96,7 @@ UserActions.dismissSnackbar = () => {
   }
 }
 
-UserActions.applyLocale = (locale) => {
+UserActions.applyLocale = locale => {
   return function(dispatch) {
     dispatch ( sendData(types.APPLIED_LOCALE, locale) )
     configureLocalization(locale).then( (localization) => {
@@ -105,45 +105,45 @@ UserActions.applyLocale = (locale) => {
   }
 }
 
-UserActions.changeLocalization = (localization) => {
+UserActions.changeLocalization = localization => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_LOCALIZATION, localization) )
   }
 }
 
-UserActions.hideQuaysForNeighbourStop = (id) => {
+UserActions.hideQuaysForNeighbourStop = id => {
   return function(dispatch) {
     dispatch( sendData(types.HID_QUAYS_FOR_NEIGHBOUR_STOP, id) )
   }
 }
 
 
-UserActions.addToposChip = (chip) => {
+UserActions.addToposChip = chip => {
   return function(dispatch) {
     if (typeof chip.text !== 'undefined' && typeof chip.type !== 'undefined')
       dispatch(sendData(types.ADDED_TOPOS_CHIP, chip))
   }
 }
 
-UserActions.setToposchips = (chips) => {
+UserActions.setToposchips = chips => {
   return function(dispatch) {
     dispatch(sendData(types.SET_TOPOS_CHIPS, chips))
   }
 }
 
-UserActions.setStopPlaceTypes = (stopPlaces) => {
+UserActions.setStopPlaceTypes = stopPlaces => {
   return function(dispatch) {
     dispatch(sendData(types.SET_STOP_PLACE_TYPES, stopPlaces))
   }
 }
 
-UserActions.deleteChip = (key) => {
+UserActions.deleteChip = key => {
   return function(dispatch) {
     dispatch(sendData(types.DELETED_TOPOS_CHIP, key))
   }
 }
 
-UserActions.saveSearchAsFavorite = (title) => {
+UserActions.saveSearchAsFavorite = title => {
   return function(dispatch, getState) {
     const state = getState()
     const searchFilters =  state.user.searchFilters

@@ -6,6 +6,9 @@ import { connect } from 'react-redux'
 import { UserActions } from '../actions/'
 import Snackbar from 'material-ui/Snackbar'
 import { injectIntl } from 'react-intl'
+import * as types from '../actions/Types'
+import MdCheck from 'material-ui/svg-icons/navigation/check'
+import MdError from 'material-ui/svg-icons/alert/error'
 
 class App extends React.Component {
 
@@ -33,12 +36,23 @@ class App extends React.Component {
     dispatch ( UserActions.applyLocale(locale) )
   }
 
+  getAlertIcon(status) {
+    if (status === types.SUCCESS) {
+      return <MdCheck style={{fill: '#088f17', color: '#fff', marginRight: 10}} />
+    } else if (status == types.ERROR) {
+      return <MdError style={{fill: '#cc0000', color: '#fff', marginRight: 10}} />
+    } else  {
+      console.warn("Unsupported code", status)
+      return null
+    }
+  }
+
   render() {
 
     const { children, snackbarOptions } = this.props
     const { formatMessage, locale } = this.props.intl
 
-    let { message, isOpen } = snackbarOptions
+    let { message, isOpen, status } = snackbarOptions
     let headerText = {
       signOut: formatMessage({id: 'sign_out'}),
       help: formatMessage({id: 'help'}),
@@ -62,9 +76,13 @@ class App extends React.Component {
           {children}
           <Snackbar
             open={isOpen}
-            message={snackBarMessage}
-            bodyStyle={{background: '#fff'}}
-            autoHideDuration={4000}
+            message={
+              <div style={{color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                { this.getAlertIcon(status) }  { snackBarMessage }
+                </div>
+            }
+            bodyStyle={{background: '#000', opacity: '0.8'}}
+            autoHideDuration={3000}
             onRequestClose={this.handleRequestClose.bind(this)}
             />
         </div>

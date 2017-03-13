@@ -86,12 +86,12 @@ class EditStopGeneral extends React.Component {
       if (pathLinkVariables && pathLinkVariables.length) {
 
         client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then( result => {
-          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
+          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
         }).catch( err => {
-          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED))
+          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
         })
       } else {
-        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED))
+        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
       }
     })
   }
