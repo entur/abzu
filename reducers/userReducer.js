@@ -112,8 +112,21 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, { activeElementTab: action.payLoad })
 
     case types.ADDED_JUNCTION_ELEMENT:
-      const elementsMap = ['quay', 'pathJunction', 'entrance', 'parking']
-      return Object.assign({}, state, { activeElementTab: elementsMap.indexOf(action.payLoad.type)})
+
+      let activeElementTabIndex = -1
+
+      if (action.payLoad.type === 'quay') {
+        activeElementTabIndex = 0
+      } else if (action.payLoad.type === 'pathJunction' || action.payLoad.type === 'entrance') {
+        activeElementTabIndex = 1
+      } else if (action.payLoad.type === 'parking') {
+        activeElementTabIndex = 2
+      } else {
+        console.warn('type is not supported', action.payLoad.type)
+        activeElementTabIndex = -1
+      }
+
+      return Object.assign({}, state, { activeElementTab: activeElementTabIndex })
 
     case types.SHOW_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {

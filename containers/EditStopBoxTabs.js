@@ -70,6 +70,7 @@ class EditStopBoxTabs extends React.Component {
         { activeElementTab === 0 && !activeStopPlace.quays.length
           ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div> : null
         }
+        <span>Pathjunction elements:</span>
         { activeElementTab === 1 && activeStopPlace.pathJunctions.map( (pathJunction,index) =>
           <PathJunctionItem
             translations={itemTranslation}
@@ -82,10 +83,8 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'pathJunction' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 1 && !activeStopPlace.pathJunctions.length
-          ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.pathJunctions}</div> : null
-        }
-        { activeElementTab === 2 && activeStopPlace.entrances.map( (entrance,index) =>
+        <span>Entrance elements:</span>
+        { activeElementTab === 1 && activeStopPlace.entrances.map( (entrance,index) =>
           <EntranceItem
             translations={itemTranslation}
             key={"entrance-" + index}
@@ -97,10 +96,13 @@ class EditStopBoxTabs extends React.Component {
             expanded={expandedItem.type === 'entrance' && index === expandedItem.index}
           />
         )}
-        { activeElementTab === 2 && !activeStopPlace.entrances.length
-          ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.entrances}</div> : null
+        { activeElementTab === 1 && ( !activeStopPlace.entrances.length && !activeStopPlace.pathJunctions.length )
+          ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.elements}</div> : null
         }
-        { activeElementTab === 3 && activeStopPlace.parking.map( (parking,index) =>
+        { activeElementTab === 2 && !activeStopPlace.parking.length
+          ? <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.parking}</div> : null
+        }
+        { activeElementTab === 2 && activeStopPlace.parking.map( (parking,index) =>
           <ParkingItem
             translations={itemTranslation}
             key={"parking-" + index}
