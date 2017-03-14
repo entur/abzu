@@ -138,7 +138,7 @@ convictPromise.then( (convict) => {
     `<html>
       <head>
         <title>Stop places</title>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0/leaflet.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
       </head>
