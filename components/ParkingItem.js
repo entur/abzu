@@ -23,11 +23,6 @@ class ParkingItem extends React.Component {
     const name = ''
     const capacity = 0
 
-    const removeStyle = {
-      float: 'right',
-      paddingBottom: 0
-    }
-
     const locationStyle = {
       marginRight: 5,
       verticalAlign: 'text-top',
@@ -72,13 +67,14 @@ class ParkingItem extends React.Component {
             type="number"
             style={{width: "95%", marginTop: -10}}
           />
-          <IconButton
-            iconClassName="material-icons"
-            style={removeStyle}
-            onClick={this.props.handleRemoveParking}
-          >
-            delete
-          </IconButton>
+          <div style={{width: '100%', textAlign: 'right'}}>
+            <IconButton
+              iconClassName="material-icons"
+              onClick={this.props.handleRemoveParking}
+            >
+              delete
+            </IconButton>
+          </div>
         </div>
         }
       </div>

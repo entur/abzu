@@ -222,7 +222,7 @@ class EditStopGeneral extends React.Component {
             <Tabs
               onChange={this.handleSlideChange.bind(this)}
               value={activeElementTab}
-              tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
+              tabItemContainerStyle={{backgroundColor: '#fff'}}
             >
               <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
               <Tab style={tabStyle} label={`${formatMessage({id: 'navigation'})} (${stopPlace.pathJunctions.length + stopPlace.entrances.length})`} value={1} />

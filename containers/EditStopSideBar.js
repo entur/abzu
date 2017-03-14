@@ -58,7 +58,7 @@ class EditStopSideBar extends React.Component {
           { sliderIndex === 1 ? <NewElementsBox/> : null }
           { sliderIndex === 2
             ?
-              <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
+              <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                 <Toggle
                   style={{paddingTop: 5, textAlign: 'center'}}
                   label={formatMessage({id: 'show_path_links'})}

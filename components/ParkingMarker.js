@@ -19,7 +19,6 @@ class ParkingMarker extends React.Component {
     if (isFocused) {
       L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused')
     }
-    L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'padded-10')
   }
 
   render() {
@@ -28,7 +27,7 @@ class ParkingMarker extends React.Component {
 
     const icon = L.icon({
       iconUrl: ParkingIcon,
-      iconSize: [25, 36],
+      iconSize: ['auto', 50],
       iconAnchor: [-3, 40],
       popupAnchor: [15, 0],
       shadowAnchor: [10, 12],

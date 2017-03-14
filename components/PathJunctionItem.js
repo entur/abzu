@@ -34,11 +34,6 @@ class PathJunctionItem extends React.Component {
 
     const description = pathJunction.description || ''
 
-    const removeStyle = {
-      float: 'right',
-      paddingBottom: 0
-    }
-
     const locationStyle = {
       marginRight: 5,
       verticalAlign: 'text-top',
@@ -85,13 +80,14 @@ class PathJunctionItem extends React.Component {
               style={{width: "95%", marginTop: -10}}
               onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
             />
-            <IconButton
-              iconClassName="material-icons"
-              style={removeStyle}
-              onClick={this.props.handleRemovePathJunction}
-            >
-              delete
-            </IconButton>
+            <div style={{width: '100%', textAlign: 'right'}}>
+              <IconButton
+                iconClassName="material-icons"
+                onClick={this.props.handleRemovePathJunction}
+              >
+                delete
+              </IconButton>
+            </div>
         </div>
         }
       </div>
