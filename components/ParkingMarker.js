@@ -27,11 +27,11 @@ class ParkingMarker extends React.Component {
 
     const icon = L.icon({
       iconUrl: ParkingIcon,
-      iconSize: ['auto', 50],
-      iconAnchor: [-3, 40],
-      popupAnchor: [15, 0],
-      shadowAnchor: [10, 12],
-      shadowSize: [36, 16]
+      iconUrl: ParkingIcon,
+      iconSize: [30, 45],
+      iconAnchor: [17, 42],
+      popupAnchor: [0, 0],
+      shadowAnchor: [12, 12],
     })
 
     return (
@@ -39,6 +39,7 @@ class ParkingMarker extends React.Component {
         draggable={true}
         position={position}
         icon={icon}
+        key={"parking-marker" +index}
         onDragend={(event) => { handleDragEnd(index, 'parking', event) }}
         ref="marker"
       >
