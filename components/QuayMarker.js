@@ -117,7 +117,7 @@ class QuayMarkerIcon extends React.Component {
   componentWillMount() {
     const { focusedElement, index, belongsToNeighbourStop, compassBearing } = this.props
 
-    let markerIconStyle = { transform: 'scale(0.8)' }
+    let markerIconStyle = { transform: 'scale(0.8)', marginLeft: 24  }
 
     if (belongsToNeighbourStop) {
       markerIconStyle.filter = 'grayscale(100%)'

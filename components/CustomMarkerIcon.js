@@ -13,7 +13,7 @@ class CustomMarkerIcon extends React.Component {
 
     const { stopType, active } = this.props
 
-    let imageStyle = { transform: 'scale(0.35)' }
+    let imageStyle = { }
 
     if (!active) {
       imageStyle.opacity = '0.8'
@@ -23,7 +23,7 @@ class CustomMarkerIcon extends React.Component {
     const icon = getIconIdByModality(stopType)
 
     this._stopMarkerIcon = <img src={StopMarkerIcon} style={imageStyle} />
-    this._stopTypeIcon = <img className='stop-marker-svg' src={icon}/>
+    this._stopTypeIcon = <img className='stop-marker-svg' src={icon} style={{marginTop: -44, marginLeft: -29}}/>
   }
 
   render() {

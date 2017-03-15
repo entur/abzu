@@ -44,7 +44,7 @@ class StopPlaceMarker extends React.PureComponent {
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
 
-    let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [45,92], popupAnchor: [0,-2]})
+    let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [17,42], iconSize: [30,45], popupAnchor: [0,0]})
 
     return (
 
