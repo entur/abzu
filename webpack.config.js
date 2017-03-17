@@ -1,10 +1,15 @@
 var path = require('path')
 var webpack = require('webpack')
+var CleanWebpackPlugin = require('clean-webpack-plugin')
 
 /* DeprecationWarning: loaderUtils.parseQuery() received ..., see https://github.com/webpack/loader-utils/issues/56
   This is caused by image-webpack-loader (cf. https://github.com/tcoopman/image-webpack-loader/issues/82), and will hopefully be fixed
   in a coming release. This version will however will NOT work with WebPack 1.x
  */
+
+const absolutePath = path.resolve('./')
+
+console.log("absoluteBuildPath", absolutePath)
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -23,6 +28,11 @@ module.exports = {
         'NODE_ENV': JSON.stringify('development'),
         'BABEL_ENV': JSON.stringify('development')
       }
+    }),
+    new CleanWebpackPlugin(['public'], {
+      root: absolutePath,
+      verbose: true,
+      dry: false,
     })
   ],
   module: {
