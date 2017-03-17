@@ -173,9 +173,9 @@ const getShortQuayName = (quayName) => {
 
 const mapStateToProps = state => {
   return {
-    isCreatingPolylines: state.editingStop.isCreatingPolylines,
-    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
-    focusedElement: state.editingStop.focusedElement,
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+    focusedElement: state.mapUtils.focusedElement,
     pathLink: state.stopPlace.pathLink
   }
 }

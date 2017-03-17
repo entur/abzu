@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import React from 'react'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
-import editStopReducer from '../reducers/editStopReducer'
+import mapReducer from '../reducers/mapReducer'
 import stopPlaceReducer from '../reducers/stopPlaceReducer'
 import userReducer from '../reducers/userReducer'
 
@@ -35,12 +35,15 @@ const initialState = {
   stopPlace: {
     centerPosition: [ 64.349421, 16.809082 ],
     zoom: 6,
-    minZoom: 14
+    minZoom: 14,
+    isCompassBearingEnabled: true,
+    isCreatingPolylines: false,
+    enablePolylines: true,
   }
 }
 
 const combinedReducer = combineReducers({
-  editingStop: editStopReducer,
+  mapUtils: mapReducer,
   user: userReducer,
   routing: routerReducer,
   stopPlace: stopPlaceReducer,

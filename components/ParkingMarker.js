@@ -54,11 +54,9 @@ class ParkingMarker extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    focusedElement: state.editingStop.focusedElement
-  }
-}
+const mapStateToProps = state => ({
+  focusedElement: state.mapUtils.focusedElement
+})
 
 export default connect(mapStateToProps)(ParkingMarker)
 

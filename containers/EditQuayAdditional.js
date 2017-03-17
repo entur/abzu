@@ -62,7 +62,7 @@ class EditQuayAdditional extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  focusedElement: state.editingStop.focusedElement,
+  focusedElement: state.mapUtils.focusedElement,
   stopPlace: state.stopPlace.current
 })
 

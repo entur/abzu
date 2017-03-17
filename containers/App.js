@@ -42,7 +42,6 @@ class App extends React.Component {
     } else if (status == types.ERROR) {
       return <MdError style={{fill: '#cc0000', color: '#fff', marginRight: 10}} />
     } else  {
-      console.warn("Unsupported code", status)
       return null
     }
   }
@@ -91,10 +90,8 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    snackbarOptions: state.user.snackbarOptions
-  }
-}
+const mapStateToProps = state => ({
+  snackbarOptions: state.user.snackbarOptions
+})
 
 export default injectIntl(connect(mapStateToProps)(App))

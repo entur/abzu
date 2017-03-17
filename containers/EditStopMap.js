@@ -206,10 +206,9 @@ const mapStateToProps = state => {
   return {
     position: state.stopPlace.centerPosition,
     zoom: state.stopPlace.zoom,
-    lastUpdated: state.editingStop.lastUpdated,
     activeBaselayer: state.user.activeBaselayer,
-    enablePolylines: state.editingStop.enablePolylines,
-    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    enablePolylines: state.stopPlace.enablePolylines,
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,
     markers: markers,
     ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,

@@ -275,11 +275,11 @@ class MarkerList extends React.Component {
 const mapStateToProps = state => {
   return {
     path: state.user.path,
-    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
     neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
     isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
     missingCoordinatesMap: state.user.missingCoordsMap,
-    activeMap: state.editingStop.activeMap,
+    activeMap: state.mapUtils.activeMap,
     pathLink: state.stopPlace.pathLink
   }
 }

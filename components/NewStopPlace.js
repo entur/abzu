@@ -34,11 +34,8 @@ class NewStopPlace extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     isCreatingNewStop: state.user.isCreatingNewStop
-  }
-}
-
+  })
 
 export default connect(mapStateToProps)(NewStopPlace)

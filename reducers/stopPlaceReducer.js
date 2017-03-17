@@ -142,26 +142,42 @@ const graphQLreducer = (state = {}, action) => {
         })
 
       case types.STARTED_CREATING_POLYLINE:
+        return Object.assign({}, state, {
+          pathLink: formatHelpers.updatePathLinkWithNewEntry(action, state.pathLink),
+          stopHasBeenModified: true,
+          isCreatingPolylines: true,
+          enablePolylines: true
+        })
+
       case types.ADDED_FINAL_COORDINATES_TO_POLYLINE:
         return Object.assign({}, state, {
           pathLink: formatHelpers.updatePathLinkWithNewEntry(action, state.pathLink),
-          stopHasBeenModified: true
+          stopHasBeenModified: true,
+          isCreatingPolylines: false,
         })
 
       case types.ADDED_COORDINATES_TO_POLYLINE:
         return Object.assign({}, state, {
-          pathLink: formatHelpers.addNewPointToPathlink(action, state.pathLink)
+          pathLink: formatHelpers.addNewPointToPathlink(action, state.pathLink),
+          enablePolylines: true
         })
 
       case types.REMOVED_LAST_POLYLINE:
         return Object.assign({}, state, {
           pathLink: state.pathLink.slice(0, state.pathLink.length-1),
+          isCreatingPolylines: false
         })
 
       case types.EDITED_TIME_ESTIMATE_FOR_POLYLINE:
         return Object.assign({}, state, {
           pathLink: formatHelpers.updateEstimateForPathLink(action, state.pathLink)
         })
+
+      case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
+        return Object.assign({}, state, { enablePolylines: action.payLoad })
+
+      case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
+        return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
 
       default: return state
     }

@@ -91,8 +91,8 @@ class EditStopSideBar extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
-    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled
+    isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
+    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled
   }
 }
 

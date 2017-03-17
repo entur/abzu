@@ -144,8 +144,7 @@ const arrayOfPolylinesFromPolyline = line => {
 
 const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink || [],
-  lastAddedCoordinate: state.editingStop.lastAddedCoordinate,
-  isEnabled: state.editingStop.enablePolylines
+  isEnabled: state.stopPlace.enablePolylines
 })
 
 export default injectIntl(connect(mapStateToProps)(MultiPolyline))

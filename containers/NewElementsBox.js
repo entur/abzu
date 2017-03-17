@@ -165,9 +165,9 @@ class NewElementsBox extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isMultiPolylinesEnabled: state.editingStop.enablePolylines,
-    isCompassBearingEnabled: state.editingStop.isCompassBearingEnabled,
-    activeMap: state.editingStop.activeMap,
+    isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
+    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+    activeMap: state.mapUtils.activeMap,
     missingCoordsMap: state.user.missingCoordsMap,
     activeStopPlace: state.stopPlace.current
   }

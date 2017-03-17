@@ -108,7 +108,7 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isCreatingPolylines: state.editingStop.isCreatingPolylines,
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
     stopPlace: state.stopPlace.current || state.stopPlace.newStop
   }
 }

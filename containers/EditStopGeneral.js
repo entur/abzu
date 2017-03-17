@@ -290,7 +290,7 @@ const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
   pathLink: state.stopPlace.pathLink,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
-  isMultiPolylinesEnabled: state.editingStop.enablePolylines,
+  isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   activeElementTab: state.user.activeElementTab,
   showEditQuayAdditional: state.user.showEditQuayAdditional,
   showEditStopAdditional: state.user.showEditStopAdditional

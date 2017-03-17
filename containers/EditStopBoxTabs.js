@@ -152,7 +152,7 @@ class EditStopBoxTabs extends React.Component {
 const mapStateToProps = state => {
   return {
     activeElementTab: state.user.activeElementTab,
-    expandedItem: state.editingStop.focusedElement
+    expandedItem: state.mapUtils.focusedElement
   }
 }
 

@@ -73,9 +73,9 @@ class JunctionMarker extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isCreatingPolylines: state.editingStop.isCreatingPolylines,
-    polylineStartPoint: state.editingStop.polylineStartPoint,
-    focusedElement: state.editingStop.focusedElement
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+    polylineStartPoint: state.stopPlace.polylineStartPoint,
+    focusedElement: state.mapUtils.focusedElement
   }
 }
 
