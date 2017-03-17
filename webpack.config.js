@@ -1,6 +1,11 @@
 var path = require('path')
 var webpack = require('webpack')
 
+/* DeprecationWarning: loaderUtils.parseQuery() received ..., see https://github.com/webpack/loader-utils/issues/56
+  This is caused by image-webpack-loader (cf. https://github.com/tcoopman/image-webpack-loader/issues/82), and will hopefully be fixed
+  in a coming release. This version will however will NOT work with WebPack 1.x
+ */
+
 module.exports = {
   devtool: 'inline-source-map',
   entry: [
@@ -12,7 +17,6 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -27,7 +31,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: __dirname,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015', 'stage-1', 'react']
         }
@@ -36,13 +40,13 @@ module.exports = {
         test: /\.css$/,
         exclude: /node_modules/,
         include: __dirname,
-        loaders: ['style', 'css']
+        loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?' + JSON.stringify(imageLoaderQuery)
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack-loader?' + JSON.stringify(imageLoaderQuery)
         ]
       }
     ]

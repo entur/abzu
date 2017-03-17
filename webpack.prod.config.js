@@ -13,8 +13,7 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin("react", "react.bundle.js"),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.CommonsChunkPlugin({ name: "react", filename: "react.bundle.js" }),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       beautify: false,
@@ -37,7 +36,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: __dirname,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015', 'stage-1', 'react']
         }
@@ -46,14 +45,14 @@ module.exports = {
         test: /\.css$/,
         exclude: /node_modules/,
         include: __dirname,
-        loaders: ['style', 'css']
+        loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         exclude: /node_modules/,
         loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?' + JSON.stringify(imageLoaderQuery)
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack-loader?' + JSON.stringify(imageLoaderQuery)
         ]
       }
     ]
