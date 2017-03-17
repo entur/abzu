@@ -1,16 +1,7 @@
 import * as types from '../actions/Types'
-import Immutable from 'immutable'
-import {
-  addStartPointToPolyline,
-  addPointToPolyline,
-  addEndPointToPolyline,
-  setDefaultCompassBearingisEnabled,
-  updateNeighbourMarkersWithQuays,
-} from './editStopReducerUtils'
 
 export const initialState = {
   neighbouringMarkers: [],
-  neighbouringMarkersQuaysMap: Immutable.Map({}),
   zoom: 17,
   editedStopChanged: false,
   nearbyStopsCancelToken: null,
@@ -47,7 +38,6 @@ const editStopReducer = (state = initialState, action) => {
           index: -1
         }
       })
-
 
     // TODO: Refactor and remove this
     case types.CHANGED_MAP_CENTER:

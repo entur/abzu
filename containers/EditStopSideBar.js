@@ -1,5 +1,5 @@
 import React from 'react'
-const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
+import newStopIcon from '../static/icons/new-stop-icon-2x.png'
 import RaisedButton from 'material-ui/RaisedButton'
 import MdSettings from 'material-ui/svg-icons/action/settings'
 import Toggle from 'material-ui/Toggle'
@@ -8,6 +8,7 @@ import { UserActions } from '../actions/'
 import NewElementsBox from './NewElementsBox'
 import FlatButton from 'material-ui/FlatButton'
 import { injectIntl } from 'react-intl'
+import '../styles/editStopSideBar.css'
 
 class EditStopSideBar extends React.Component {
 
@@ -28,14 +29,12 @@ class EditStopSideBar extends React.Component {
 
   render() {
 
-    const styles = { "position":"absolute","border": "1px solid #777","top": 95,"zIndex":"9999","left": 416,"background":"#fff" }
-
     const { sliderIndex } = this.state
     const { isMultiPolylinesEnabled, isCompassBearingEnabled, intl } = this.props
     const { formatMessage } = intl
 
     return (
-      <div style={styles}>
+      <div className="editStopSideBar">
         <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
           <RaisedButton
             backgroundColor="#a4c639"
@@ -43,6 +42,7 @@ class EditStopSideBar extends React.Component {
             label={`+ ${formatMessage({id: 'add'})}`}
             buttonStyle={{background: sliderIndex === 1 ? '#f4f4f4' : '#fff', textAlign: 'left'}}
             style={{width: '100%'}}
+            labelStyle={{fontSize: 13}}
             onClick={() => this.setState({sliderIndex: 1})}
           />
           <RaisedButton
@@ -51,6 +51,7 @@ class EditStopSideBar extends React.Component {
             label={formatMessage({id: 'settings'})}
             buttonStyle={{background: sliderIndex === 2 ? '#f4f4f4' : '#fff', textAlign: 'left'}}
             style={{width: '100%'}}
+            labelStyle={{fontSize: 13}}
             onClick={() => this.setState({sliderIndex: 2})}
           />
         </div>
