@@ -7,10 +7,6 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
   in a coming release. This version will however will NOT work with WebPack 1.x
  */
 
-const absolutePath = path.resolve('./')
-
-console.log("absoluteBuildPath", absolutePath)
-
 module.exports = {
   devtool: 'inline-source-map',
   entry: [
@@ -30,7 +26,7 @@ module.exports = {
       }
     }),
     new CleanWebpackPlugin(['public'], {
-      root: absolutePath,
+      root: path.resolve('./'),
       verbose: true,
       dry: false,
     })
