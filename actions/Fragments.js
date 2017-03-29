@@ -16,6 +16,16 @@ Fragments.quay = {
               value
           }
           importedId
+          accessibilityAssessment {
+              limitations {
+                  wheelchairAccess
+                  stepFreeAccess
+                  escalatorFreeAccess
+                  liftFreeAccess
+                  audibleSignalsAvailable
+              }
+              mobilityImpairedAccess
+          }                   
       }
   `
 }
@@ -50,7 +60,16 @@ Fragments.stopPlace = {
             }
             topographicPlaceType
         }
-        
+        accessibilityAssessment {
+            limitations {
+                wheelchairAccess
+                stepFreeAccess
+                escalatorFreeAccess
+                liftFreeAccess
+                audibleSignalsAvailable
+            }
+            mobilityImpairedAccess
+        }
     }
     ${Fragments.quay.verbose}
   `

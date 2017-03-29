@@ -166,6 +166,8 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       }
     }
 
+    formattedStop.accessibilityAssessment = stop.accessibilityAssessment
+
     if (stop.description) {
       formattedStop.description = stop.description.value
     }
@@ -208,6 +210,8 @@ helpers.mapQuayToClientQuay = quay => {
     publicCode: quay.publicCode,
     description: quay.description ? quay.description.value : ''
   }
+
+  clientQuay.accessibilityAssessment = quay.accessibilityAssessment
 
   if (quay.importedId) {
     clientQuay.importedId = quay.importedId
