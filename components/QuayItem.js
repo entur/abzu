@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import TextField from 'material-ui/TextField'
-import { MapActions, UserActions } from '../actions/'
+import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
@@ -20,6 +20,8 @@ import MdError from 'material-ui/svg-icons/alert/error'
 import ImportedId from './ImportedId'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import EditQuayAdditional from '../containers/EditQuayAdditional'
+import WheelChairPopover from './WheelChairPopover'
+
 
 class QuayItem extends React.Component {
 
@@ -36,7 +38,6 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      wheelChairFriendly: false,
       tepFreeAccess: false,
       ticketMachine: false,
       busShelter: false,
@@ -64,7 +65,7 @@ class QuayItem extends React.Component {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
     const { formatMessage, locale } = intl
-    const { wheelChairFriendly, stepFreeAccess, ticketMachine, busShelter, additionalExpanded } = this.state
+    const { stepFreeAccess, ticketMachine, busShelter, additionalExpanded } = this.state
 
     let quayItemName = null
 
@@ -170,13 +171,7 @@ class QuayItem extends React.Component {
             : null // hide this for now, not used
            }
            <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-             <Checkbox
-               checkedIcon={<WheelChair />}
-               uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-               style={{width: 'auto'}}
-               checked={wheelChairFriendly}
-               onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
-             />
+             <WheelChairPopover intl={intl}/>
              <Checkbox
                checkedIcon={<Stairs />}
                uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}

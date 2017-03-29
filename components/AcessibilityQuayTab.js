@@ -1,6 +1,6 @@
 import React from 'react'
 import Checkbox from 'material-ui/Checkbox'
-import WheelChair from 'material-ui/svg-icons/action/accessible'
+import WheelChairPopover from './WheelChairPopover'
 import Stairs from '../static/icons/accessibility/Stairs'
 import ToolTipIcon from './ToolTipIcon'
 import Divider from 'material-ui/Divider'
@@ -10,7 +10,6 @@ class AcessibilityQuayTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      wheelChairFriendly: false,
       stepFreeAccess: false
     }
   }
@@ -18,21 +17,13 @@ class AcessibilityQuayTab extends React.Component {
   render() {
 
     const { formatMessage } = this.props.intl
-    const { wheelChairFriendly, stepFreeAccess } = this.state
+    const { stepFreeAccess } = this.state
 
     return (
       <div style={{padding: 10}}>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <Checkbox
-              checkedIcon={<WheelChair />}
-              uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}} />}
-              label={ wheelChairFriendly ? formatMessage({id: 'wheelchairAccess'}) : formatMessage({id: 'wheelchairAccess_no'}) }
-              labelStyle={{fontSize: '0.8em'}}
-              style={{width: '80%'}}
-              checked={wheelChairFriendly}
-              onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
-            />
+            <WheelChairPopover displayLabel={true} intl={this.props.intl}/>
             <ToolTipIcon title={formatMessage({id: 'wheelChair_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>

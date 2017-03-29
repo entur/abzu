@@ -7,8 +7,6 @@ import MenuItem from 'material-ui/MenuItem'
 import ImportedId from '../components/ImportedId'
 import { MapActions } from '../actions/'
 import { connect } from 'react-redux'
-import WheelChair from 'material-ui/svg-icons/action/accessible'
-import Stairs from '../static/icons/accessibility/Stairs'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import debounce from 'lodash.debounce'
@@ -17,6 +15,7 @@ import stopTypes from './stopTypes'
 import MdWC from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
+import WheelChairPopover from './WheelChairPopover'
 
 class StopPlaceDetails extends React.Component {
 
@@ -26,7 +25,6 @@ class StopPlaceDetails extends React.Component {
       stopTypeOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
-      wheelChairFriendly: false,
       stepFreeAccess: false,
       ticketMachine: false,
       busShelter: false,
@@ -60,7 +58,8 @@ class StopPlaceDetails extends React.Component {
   handleOpenStopPlaceTypePopover(event) {
     this.setState({
       stopTypeOpen: true,
-      anchorEl: event.currentTarget
+      wheelChairOpen: false,
+      stopTypeAnchorEl: event.currentTarget
     })
   }
 
@@ -99,7 +98,7 @@ class StopPlaceDetails extends React.Component {
 
     const { stopPlace, intl, expanded } = this.props
     const { formatMessage, locale } = intl
-    const { name, description, wheelChairFriendly, busShelter, ticketMachine, stepFreeAccess, bikeParking, waitingRoom, WC } = this.state
+    const { name, description, busShelter, ticketMachine, bikeParking, waitingRoom, WC } = this.state
 
     return (
       <div style={fixedHeader}>
@@ -121,7 +120,7 @@ class StopPlaceDetails extends React.Component {
         </IconButton>
         <Popover
           open={this.state.stopTypeOpen}
-          anchorEl={this.state.anchorEl}
+          anchorEl={this.state.stopTypeAnchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
@@ -152,20 +151,7 @@ class StopPlaceDetails extends React.Component {
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-              <Checkbox
-                checkedIcon={<WheelChair/>}
-                uncheckedIcon={<WheelChair style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={wheelChairFriendly}
-                onCheck={(e,v) => this.setState({wheelChairFriendly: v})}
-              />
-              <Checkbox
-                checkedIcon={<Stairs />}
-                uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={stepFreeAccess}
-                onCheck={(e,v) => this.setState({stepFreeAccess: v})}
-              />
+              <WheelChairPopover intl={intl}/>
               <Checkbox
                 checkedIcon={<TicketMachine />}
                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
