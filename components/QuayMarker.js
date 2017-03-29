@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
 import compassIcon from '../static/icons/compass.png'
 import compassBearingIcon from '../static/icons/compass-bearing.png'
+import { getIn } from '../utils/'
 
 class QuayMarker extends React.PureComponent {
 
@@ -40,8 +41,9 @@ class QuayMarker extends React.PureComponent {
     if (isCreatingPolylines && pathLink && pathLink.length) {
 
       let lastPathLink = pathLink[pathLink.length-1]
+      let fromId = getIn(lastPathLink, ['from', 'placeRef', 'addressablePlace', 'id'], null)
 
-      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id) {
+      if (fromId === id) {
         pathLinkText = translations.cancelPathLink
       } else {
         // LineString should either have 0 or >= 2 [long,lat] according to GeoJSON spec

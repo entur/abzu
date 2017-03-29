@@ -1,4 +1,4 @@
-import { setDecimalPrecision } from '../utils/'
+import { setDecimalPrecision, getIn } from '../utils/'
 import { LatLng } from 'leaflet'
 import * as types from "../actions/Types";
 
@@ -20,41 +20,44 @@ const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / ( walkingSpeed)), 1)
 }
 
-helpers.mapPathLinkToClient = pathLink => {
+helpers.mapPathLinkToClient = pathLinks => {
 
-  if (!pathLink) return []
+  if (!pathLinks) return []
 
-  return pathLink.map( link => {
+  return pathLinks.map( pathLink => {
 
-    let newLink = JSON.parse(JSON.stringify(link))
+    let clientPathLink = JSON.parse(JSON.stringify(pathLink))
+
     let latlngCoordinates = []
 
-    if (newLink.from.quay && newLink.from.quay.geometry.coordinates && newLink.from.quay.geometry.coordinates.length) {
+    let startCoordinates = getIn(clientPathLink, ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'], null)
+    let inBetweenCoordinates = getIn(clientPathLink, ['geometry', 'coordinates'])
+    let endCoordinates = getIn(clientPathLink, ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'], null)
 
-      newLink.from.quay.geometry.coordinates[0].reverse()
-      latlngCoordinates.push(newLink.from.quay.geometry.coordinates[0])
+    if (startCoordinates) {
+      startCoordinates[0].reverse()
+      latlngCoordinates.push(startCoordinates[0])
     }
 
-    if (newLink.geometry && newLink.geometry.coordinates && newLink.geometry.coordinates.length) {
-      newLink.inBetween = newLink.geometry.coordinates.map( lngLat => lngLat.reverse())
-      newLink.inBetween.forEach( coords => {
-        latlngCoordinates.push(coords)
-      })
+    if (inBetweenCoordinates) {
+      inBetweenCoordinates.map( lngLat => lngLat.reverse())
+      clientPathLink.inBetween = inBetweenCoordinates
+      latlngCoordinates.push.apply(latlngCoordinates, clientPathLink.inBetween)
     }
 
-    if (newLink.to.quay && newLink.to.quay.geometry.coordinates && newLink.to.quay.geometry.coordinates) {
-      newLink.to.quay.geometry.coordinates[0].reverse()
-      latlngCoordinates.push(newLink.to.quay.geometry.coordinates[0])
+    if (endCoordinates) {
+      endCoordinates[0].reverse()
+      latlngCoordinates.push(endCoordinates[0])
     }
 
-    newLink.distance = calculateDistance(latlngCoordinates)
+    clientPathLink.distance = calculateDistance(latlngCoordinates)
 
-    if (link.transferDuration && link.transferDuration.defaultDuration) {
-      newLink.estimate = link.transferDuration.defaultDuration
+    if (pathLink.transferDuration && pathLink.transferDuration.defaultDuration) {
+      clientPathLink.estimate = pathLink.transferDuration.defaultDuration
     } else {
-      newLink.estimate = calculateEstimate(newLink.distance)
+      clientPathLink.estimate = calculateEstimate(clientPathLink.distance)
     }
-    return newLink
+    return clientPathLink
   })
 
 }
@@ -87,11 +90,15 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     let newPathLink = {
       from: {
-        quay: {
-          id: action.payLoad.id,
-          geometry: {
-            type: 'Point',
-            coordinates: [ action.payLoad.coordinates ]
+        placeRef: {
+          ref: action.payLoad.id,
+          addressablePlace: {
+            id: action.payLoad.id,
+            version: 'any',
+            geometry: {
+              type: 'Point',
+              coordinates: [ action.payLoad.coordinates ]
+            }
           }
         }
       }
@@ -105,20 +112,26 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     let latlngCoordinates = []
 
-    if (lastPathLink.from && lastPathLink.from.quay) {
-      latlngCoordinates.push(lastPathLink.from.quay.geometry.coordinates[0])
+    let endCoordinates = getIn(lastPathLink, ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'], null)
+
+    if (endCoordinates) {
+      latlngCoordinates.push(endCoordinates[0])
     }
 
     if (lastPathLink.inBetween) {
-      lastPathLink.inBetween.forEach( coords => latlngCoordinates.push(coords) )
+      latlngCoordinates.push.apply(latlngCoordinates, lastPathLink.inBetween)
     }
 
     lastPathLink.to = {
-      quay: {
-        id: action.payLoad.id,
-        geometry: {
-          type: 'Point',
-          coordinates: [ action.payLoad.coordinates ]
+      placeRef: {
+        ref: action.payLoad.id,
+        version: 'any',
+        addressablePlace: {
+          id: action.payLoad.id,
+          geometry: {
+            type: 'Point',
+            coordinates: [ action.payLoad.coordinates ]
+          }
         }
       }
     }
@@ -216,22 +229,23 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 
 helpers.mapSearchResultatToClientStops = stops => {
   return stops.map( stop => {
+
+    let parentTopographicPlace = getIn(stop, ['topographicPlace', 'parentTopographicPlace', 'name', 'value'], '')
+    let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '')
+
     const clientStop = {
       id: stop.id,
       name: stop.name.value,
       isMissingLocation: !stop.geometry,
       stopPlaceType: stop.stopPlaceType,
-      topographicPlace: (stop.topographicPlace && stop.topographicPlace.name) ? stop.topographicPlace.name.value : '',
-      parentTopographicPlace: (stop.topographicPlace && stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) ?  stop.topographicPlace.parentTopographicPlace.name.value : '',
+      topographicPlace: topographicPlace,
+      parentTopographicPlace: parentTopographicPlace,
       isActive: false
     }
 
     if (stop.geometry && stop.geometry.coordinates) {
-
       let coordinates = stop.geometry.coordinates[0].slice()
-
       clientStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
-
     }
 
     return clientStop

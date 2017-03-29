@@ -10,3 +10,9 @@ export const setDecimalPrecision = (number, n) => {
 
   return Number(number.toPrecision(paddedLength+n))
 }
+
+export const getIn = (object, keys, defaultValue) => {
+  return keys.reduce(function (o, k) {
+    return o && typeof o === 'object' && k in o ? o[k] : defaultValue;
+  }, object);
+}

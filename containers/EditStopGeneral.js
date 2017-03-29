@@ -8,6 +8,7 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import StopPlaceDetails from '../components/StopPlaceDetails'
+import { getIn } from '../utils/'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
 import { mutateStopPlace, mutatePathLink } from '../actions/Mutations'
@@ -43,16 +44,22 @@ class EditStopGeneral extends React.Component {
     }
 
     pathLink.forEach( p => {
-      if (p.from) {
-        if (p.from.quay.geometry.coordinates) {
-          const quay = stopPlace.quays.filter( q => q.id == p.from.quay.id)
-          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(p.from.quay.geometry.coordinates[0])) {
+
+      let pathLinkFrom = getIn(p, ['from', 'placeRef', 'addressablePlace'], null)
+      let pathLinkTo = getIn(p, ['to', 'placeRef', 'addressablePlace'], null)
+
+      if (pathLinkFrom) {
+        if (pathLinkFrom.geometry.coordinates) {
+          // TODO: Support PathJunction, Entrance and StopPlace
+          const quay = stopPlace.quays.filter( q => q.id == pathLinkFrom.id)
+          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(pathLinkFrom.geometry.coordinates[0])) {
             shouldShowDialog = true
           }
         }
-        if (p.to.quay.geometry.coordinates) {
-          const quay = stopPlace.quays.filter( q => q.id == p.to.quay.id)
-          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(p.to.quay.geometry.coordinates[0])) {
+        if (pathLinkTo.geometry.coordinates) {
+          // TODO: Support PathJunction, Entrance and StopPlace
+          const quay = stopPlace.quays.filter( q => q.id == pathLinkTo.id)
+          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(pathLinkTo.geometry.coordinates[0])) {
             shouldShowDialog = true
           }
         }

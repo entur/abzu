@@ -5,6 +5,7 @@ import GenerateColor from './Colors'
 import { UserActions } from '../actions'
 import { injectIntl } from 'react-intl'
 import WalkingDistanceDialog from './WalkingDistanceDialog'
+import { getIn } from '../utils'
 
 class MultiPolyline extends React.Component {
 
@@ -116,30 +117,23 @@ const arrayOfPolylinesFromPolyline = line => {
 
   let arrayOfPolylines = []
 
-  if (line.from) {
-    if (line.from.quay) {
-      arrayOfPolylines.push(line.from.quay.geometry.coordinates[0])
-    }
+  let startPosition = getIn(line, ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'])
+  let endPosition = getIn(line, ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'])
 
+  if (startPosition) {
+    arrayOfPolylines.push(startPosition[0])
   }
 
   if (line.inBetween) {
-      line.inBetween.forEach( lngLat => {
-        arrayOfPolylines.push(lngLat)
-      })
+    arrayOfPolylines.push.apply(arrayOfPolylines, line.inBetween)
   }
 
-
-  if (line.to) {
-    if (line.to.quay) {
-      arrayOfPolylines.push(line.to.quay.geometry.coordinates[0])
-    }
-
+  if (endPosition) {
+    arrayOfPolylines.push(endPosition[0])
   }
 
   return arrayOfPolylines
 }
-
 
 
 const mapStateToProps = state => ({

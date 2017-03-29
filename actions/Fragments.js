@@ -9,6 +9,7 @@ Fragments.quay = {
           geometry {
               coordinates
           }
+          version
           compassBearing
           publicCode
           description {
@@ -67,20 +68,28 @@ Fragments.pathLink = {
               coordinates
           }
           from {
-              id
-              quay{
-                  id
-                  geometry {
-                      coordinates
+              placeRef {
+                  version
+                  ref
+                  addressablePlace {
+                      id
+                      geometry {
+                          coordinates
+                          type
+                      }
                   }
               }
           }
           to {
-              id
-              quay {
-                  id
-                  geometry {
-                      coordinates
+              placeRef {
+                  version
+                  ref
+                  addressablePlace {
+                      id
+                      geometry {
+                          coordinates
+                          type
+                      }
                   }
               }
           }

@@ -1,44 +1,6 @@
 import gql from 'graphql-tag'
 import Fragments from './Fragments'
 
-export const stopQuery = gql`
-    query stopPlace($id: String!) {
-        stopPlace(id: $id) {
-            ...VerboseStopPlace
-        }
-    },
-    ${Fragments.stopPlace.verbose}
-`
-
-export const pathLinkQuery = gql`
-  query pathLink($stopPlaceId: String!) {
-      pathLink(stopPlaceId: $stopPlaceId) {
-          id
-          from {
-              quay {
-                  id
-                  geometry {
-                      type coordinates
-                  }
-              }
-          }
-          geometry {
-              type
-              coordinates
-          }
-          to {
-              quay {
-                  importedId
-                  id
-                  geometry {
-                      type
-                      coordinates
-                  }
-              }
-          }
-      }
-  },
-`
 
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
@@ -46,6 +8,7 @@ export const neighbourStopPlaceQuays = gql`
           id 
           quays {
               id 
+              version
               geometry {
                   coordinates
               }
@@ -81,10 +44,14 @@ export const stopPlaceAndPathLink = gql`
         pathLink(stopPlaceId: $id) {
             id
             from {
-                quay {
-                    id
-                    geometry {
-                        type coordinates
+                placeRef {
+                    version
+                    ref
+                    addressablePlace {
+                        id
+                        geometry {
+                            coordinates
+                        }
                     }
                 }
             }
@@ -92,15 +59,18 @@ export const stopPlaceAndPathLink = gql`
                 defaultDuration
             }
             geometry {
-                type
                 coordinates
             }
             to {
-                quay {
-                    id
-                    geometry {
-                        type
-                        coordinates
+                placeRef {
+                    version
+                    ref
+                    addressablePlace {
+                        id
+                        geometry {
+                            coordinates
+                            type 
+                        }
                     }
                 }
             }

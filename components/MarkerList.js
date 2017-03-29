@@ -12,6 +12,7 @@ import QuayMarker from './QuayMarker'
 import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
 import { stopPlaceAndPathLink, neighbourStopPlaceQuays } from '../actions/Queries'
+import { getIn } from '../utils/'
 
 class MarkerList extends React.Component {
 
@@ -70,7 +71,9 @@ class MarkerList extends React.Component {
 
       let lastPathLink = pathLink[pathLink.length-1]
 
-      if (lastPathLink.from && lastPathLink.from.quay && lastPathLink.from.quay.id === id && !lastPathLink.to) {
+      const lastPathLinkFromId = getIn(lastPathLink, ['from', 'placeRef', 'addressablePlace', 'id'], null)
+
+      if (lastPathLinkFromId === id && !lastPathLink.to) {
         this.props.dispatch(UserActions.removeLastPolyline())
         return
       }
@@ -192,7 +195,7 @@ class MarkerList extends React.Component {
                 index={index}
                 key={'parking ' + index}
                 title={formatMessage({id: 'parking'})}
-                handleDragEnd={() => { console.log("parking dragend") } }/>
+                handleDragEnd={() => {  } }/>
             )
           })
 
