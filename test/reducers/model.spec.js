@@ -31,11 +31,11 @@ describe('Model: map format from server to expected client model', () => {
       parentTopographicPlace: 'Østfold',
       accessibilityAssessment: {
         limitations: {
-          wheelchairAccess: "PARTIAL",
-          stepFreeAccess: "PARTIAL",
-          escalatorFreeAccess: "PARTIAL",
-          liftFreeAccess: "PARTIAL",
-          audibleSignalsAvailable: "PARTIAL"
+          wheelchairAccess: "UNKNOWN",
+          stepFreeAccess: "UNKNOWN",
+          escalatorFreeAccess: "UNKNOWN",
+          liftFreeAccess: "UNKNOWN",
+          audibleSignalsAvailable: "UNKNOWN"
         }
       },
       quays: [
@@ -50,11 +50,11 @@ describe('Model: map format from server to expected client model', () => {
           publicCode: '1',
           accessibilityAssessment: {
             limitations: {
-              wheelchairAccess: "PARTIAL",
-              stepFreeAccess: "PARTIAL",
-              escalatorFreeAccess: "PARTIAL",
-              liftFreeAccess: "PARTIAL",
-              audibleSignalsAvailable: "PARTIAL"
+              wheelchairAccess: "UNKNOWN",
+              stepFreeAccess: "UNKNOWN",
+              escalatorFreeAccess: "UNKNOWN",
+              liftFreeAccess: "UNKNOWN",
+              audibleSignalsAvailable: "UNKNOWN"
             }
           },
         },
@@ -69,11 +69,11 @@ describe('Model: map format from server to expected client model', () => {
           publicCode: '2',
           accessibilityAssessment: {
             limitations: {
-              wheelchairAccess: "PARTIAL",
-              stepFreeAccess: "PARTIAL",
-              escalatorFreeAccess: "PARTIAL",
-              liftFreeAccess: "PARTIAL",
-              audibleSignalsAvailable: "PARTIAL"
+              wheelchairAccess: "UNKNOWN",
+              stepFreeAccess: "UNKNOWN",
+              escalatorFreeAccess: "UNKNOWN",
+              liftFreeAccess: "UNKNOWN",
+              audibleSignalsAvailable: "UNKNOWN"
             }
           },
         }
@@ -101,11 +101,11 @@ describe('Model: map format from server to expected client model', () => {
          ] ],
        accessibilityAssessment: {
          limitations: {
-           wheelchairAccess: "PARTIAL",
-           stepFreeAccess: "PARTIAL",
-           escalatorFreeAccess: "PARTIAL",
-           liftFreeAccess: "PARTIAL",
-           audibleSignalsAvailable: "PARTIAL"
+           wheelchairAccess: "UNKNOWN",
+           stepFreeAccess: "UNKNOWN",
+           escalatorFreeAccess: "UNKNOWN",
+           liftFreeAccess: "UNKNOWN",
+           audibleSignalsAvailable: "UNKNOWN"
          }
        },
        "quays": [

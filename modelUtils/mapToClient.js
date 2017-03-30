@@ -1,7 +1,6 @@
 import { setDecimalPrecision, getIn } from '../utils/'
 import { LatLng } from 'leaflet'
 import * as types from "../actions/Types";
-import * as Limitations from '../actions/Limitations'
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers'
 
 const helpers = {}
@@ -170,6 +169,8 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
     formattedStop.accessibilityAssessment = stop.accessibilityAssessment
       ? stop.accessibilityAssessment : getAssessmentSetBasedOnQuays(stop.quays)
+
+    console.log("formattedStop", getAssessmentSetBasedOnQuays(stop.quays))
 
     if (stop.description) {
       formattedStop.description = stop.description.value

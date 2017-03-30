@@ -12,11 +12,11 @@
   ],
   "accessibilityAssessment": {
     "limitations": {
-      "wheelchairAccess": "PARTIAL",
-      "stepFreeAccess": "PARTIAL",
-      "escalatorFreeAccess": "PARTIAL",
-      "liftFreeAccess": "PARTIAL",
-      "audibleSignalsAvailable": "PARTIAL"
+      "wheelchairAccess": "UNKNOWN",
+      "stepFreeAccess": "UNKNOWN",
+      "escalatorFreeAccess": "UNKNOWN",
+      "liftFreeAccess": "UNKNOWN",
+      "audibleSignalsAvailable": "UNKNOWN"
     }
   },
   "quays": [

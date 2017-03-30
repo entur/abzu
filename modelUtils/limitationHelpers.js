@@ -68,17 +68,15 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
 
     if (limitation === Limitations.availableTypes.UNKNOWN) {
       isUnknown = true
-    } else if (limitation === Limitations.availableTypes.PARTIAL) {
+    } else if (limitation == Limitations.availableTypes.PARTIAL) {
       isPartial = true
     } else if (limitation == Limitations.availableTypes.TRUE) {
       trueCount += 1
     } else if (limitation == Limitations.availableTypes.FALSE) {
       falseCount += 1
-    } else {
-      console.error('Unknown limitation', limitation)
     }
-
   })
+
 
   if (isUnknown) return Limitations.availableTypes.UNKNOWN
 
@@ -88,8 +86,9 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
 
   if (falseCount == quays.length) return Limitations.availableTypes.FALSE
 
-  return Limitations.availableTypes.PARTIAL
+  if (trueCount > 0 && falseCount > 0) return Limitations.availableTypes.PARTIAL
 
+  return Limitations.availableTypes.UNKNOWN
 }
 
 export default LimitationHelpers
