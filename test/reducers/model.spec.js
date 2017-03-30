@@ -29,6 +29,15 @@ describe('Model: map format from server to expected client model', () => {
       isActive: true,
       topographicPlace: 'Aremark',
       parentTopographicPlace: 'Østfold',
+      accessibilityAssessment: {
+        limitations: {
+          wheelchairAccess: "PARTIAL",
+          stepFreeAccess: "PARTIAL",
+          escalatorFreeAccess: "PARTIAL",
+          liftFreeAccess: "PARTIAL",
+          audibleSignalsAvailable: "PARTIAL"
+        }
+      },
       quays: [
         {
           id: 'NSR:Quay:1694',
@@ -39,6 +48,15 @@ describe('Model: map format from server to expected client model', () => {
           compassBearing: 344,
           description: '',
           publicCode: '1',
+          accessibilityAssessment: {
+            limitations: {
+              wheelchairAccess: "PARTIAL",
+              stepFreeAccess: "PARTIAL",
+              escalatorFreeAccess: "PARTIAL",
+              liftFreeAccess: "PARTIAL",
+              audibleSignalsAvailable: "PARTIAL"
+            }
+          },
         },
         {
           id: 'NSR:Quay:1695',
@@ -49,6 +67,15 @@ describe('Model: map format from server to expected client model', () => {
           compassBearing: 164,
           description: '',
           publicCode: '2',
+          accessibilityAssessment: {
+            limitations: {
+              wheelchairAccess: "PARTIAL",
+              stepFreeAccess: "PARTIAL",
+              escalatorFreeAccess: "PARTIAL",
+              liftFreeAccess: "PARTIAL",
+              audibleSignalsAvailable: "PARTIAL"
+            }
+          },
         }
       ],
       entrances: [],
@@ -72,6 +99,15 @@ describe('Model: map format from server to expected client model', () => {
            11.170963,
            59.587427
          ] ],
+       accessibilityAssessment: {
+         limitations: {
+           wheelchairAccess: "PARTIAL",
+           stepFreeAccess: "PARTIAL",
+           escalatorFreeAccess: "PARTIAL",
+           liftFreeAccess: "PARTIAL",
+           audibleSignalsAvailable: "PARTIAL"
+         }
+       },
        "quays": [
          {
            "id": "NSR:Quay:30025",
@@ -87,10 +123,12 @@ describe('Model: map format from server to expected client model', () => {
                59.587486
              ] ],
              type: "Point"
-           }
+           },
+           "accessibilityAssessment": undefined,
          },
          {
            "id": "NSR:Quay:30026",
+           "accessibilityAssessment": undefined,
            "compassBearing": 38,
            "publicCode": null,
            "description": {
@@ -102,7 +140,7 @@ describe('Model: map format from server to expected client model', () => {
                11.170986,
                59.587368
              ] ],
-             type: "Point"
+             type: "Point",
            }
          }
        ],

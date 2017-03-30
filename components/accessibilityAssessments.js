@@ -1,15 +1,18 @@
 const accessibilityAssements = {
     wheelchairAccess: {
+      options: ["TRUE", "FALSE", "UNKNOWN"],
       values: {
         nb: {
           "UNKNOWN": "Ukjent",
           "TRUE": "Rullestolvennlig",
           "FALSE": "Ikke rullestolvennlig",
+          "PARTIAL": "Delvis rullestolvennlig",
         },
         en: {
           "UNKNOWN": "Unknown",
           "TRUE": "Wheelchair friendly",
           "FALSE": "Not wheelchair friendly",
+          "PARTIAL": "Partial wheelchair friendly",
         }
       },
       images: {

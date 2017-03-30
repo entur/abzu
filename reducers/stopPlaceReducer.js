@@ -1,6 +1,7 @@
 import { getStateByOperation, getObjectFromCache } from './stopPlaceReducerUtils'
 import * as types from '../actions/Types'
 import formatHelpers from '../modelUtils/mapToClient'
+import limitationHelpers from '../modelUtils/limitationHelpers'
 
 const graphQLreducer = (state = {}, action) => {
 
@@ -178,6 +179,18 @@ const graphQLreducer = (state = {}, action) => {
 
       case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
         return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
+
+      case types.CHANGED_STOP_WHEELCHAIR_ACCESS:
+        return Object.assign({}, state, {
+          current: limitationHelpers.updateCurrentWithLimitations(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_QUAY_WHEELCHAIR_ACCESS:
+        return Object.assign({}, state, {
+          current: limitationHelpers.updateCurrentWithQuayLimitations(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
 
       default: return state
     }

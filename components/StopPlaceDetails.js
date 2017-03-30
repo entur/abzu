@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import ImportedId from '../components/ImportedId'
-import { MapActions } from '../actions/'
+import { MapActions, AssessmentActions } from '../actions/'
 import { connect } from 'react-redux'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
@@ -16,6 +16,7 @@ import MdWC from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
+import { getIn } from '../utils'
 
 class StopPlaceDetails extends React.Component {
 
@@ -83,6 +84,10 @@ class StopPlaceDetails extends React.Component {
     this.updateStopDescription(description)
   }
 
+  handleHandleWheelChair(value) {
+    this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
+  }
+
 
   handleStopTypeChange(value) {
     this.handleCloseStopPlaceTypePopover()
@@ -99,6 +104,8 @@ class StopPlaceDetails extends React.Component {
     const { stopPlace, intl, expanded } = this.props
     const { formatMessage, locale } = intl
     const { name, description, busShelter, ticketMachine, bikeParking, waitingRoom, WC } = this.state
+
+    const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
 
     return (
       <div style={fixedHeader}>
@@ -151,7 +158,7 @@ class StopPlaceDetails extends React.Component {
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-              <WheelChairPopover intl={intl}/>
+              <WheelChairPopover intl={intl} handleChange={this.handleHandleWheelChair.bind(this)} wheelchairAccess={wheelchairAccess} />
               <Checkbox
                 checkedIcon={<TicketMachine />}
                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}

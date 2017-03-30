@@ -24,7 +24,6 @@ Fragments.quay = {
                   liftFreeAccess
                   audibleSignalsAvailable
               }
-              mobilityImpairedAccess
           }                   
       }
   `
@@ -68,7 +67,6 @@ Fragments.stopPlace = {
                 liftFreeAccess
                 audibleSignalsAvailable
             }
-            mobilityImpairedAccess
         }
     }
     ${Fragments.quay.verbose}

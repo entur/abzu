@@ -10,6 +10,15 @@
     59.587427,
     11.170963
   ],
+  "accessibilityAssessment": {
+    "limitations": {
+      "wheelchairAccess": "PARTIAL",
+      "stepFreeAccess": "PARTIAL",
+      "escalatorFreeAccess": "PARTIAL",
+      "liftFreeAccess": "PARTIAL",
+      "audibleSignalsAvailable": "PARTIAL"
+    }
+  },
   "quays": [
     {
       "id": "NSR:Quay:30025",

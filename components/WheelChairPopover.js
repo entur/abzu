@@ -13,15 +13,14 @@ class WheelChairPopover extends React.Component {
     this.state = {
       open: false,
       anchorEl: null,
-      wheelChairFriendly: 'UNKNOWN',
     }
   }
 
   handleChange(value) {
     this.setState({
-      wheelChairFriendly: value,
       open: false
     })
+    this.props.handleChange(value)
   }
 
   handleOpenPopover(event) {
@@ -39,9 +38,9 @@ class WheelChairPopover extends React.Component {
 
   render() {
 
-    const { intl, displayLabel } = this.props
+    const { intl, displayLabel, wheelchairAccess } = this.props
     const { locale } = intl
-    const { open, anchorEl, wheelChairFriendly } = this.state
+    const { open, anchorEl } = this.state
 
     return (
       <div>
@@ -50,10 +49,10 @@ class WheelChairPopover extends React.Component {
             style={{borderBottom: '1px dotted grey'}}
             onClick={(e) => { this.handleOpenPopover(e) }}
           >
-            <WheelChair color={accessibilityAssessments.colors[wheelChairFriendly]}/>
+            <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]}/>
           </IconButton>
           { displayLabel ? <div style={{maginLeft: 5}}>
-              { accessibilityAssessments.wheelchairAccess.values[locale][wheelChairFriendly] }
+              { accessibilityAssessments.wheelchairAccess.values[locale][wheelchairAccess] }
             </div> : ''}
         </div>
         <Popover
@@ -64,16 +63,16 @@ class WheelChairPopover extends React.Component {
           onRequestClose={this.handleClosePopover.bind(this)}
           animation={PopoverAnimationVertical}
         >
-          { Object.entries(accessibilityAssessments.wheelchairAccess.values[locale]).map( (entry, index) =>
+          { accessibilityAssessments.wheelchairAccess.options.map( (option, index) =>
             <MenuItem
               key={'wheelChairItem' + index}
-              value={entry[0]}
+              value={option}
               style={{padding: '0px 10px'}}
-              onClick={() => { this.handleChange(entry[0]) }}
-              primaryText={entry[1]}
+              onClick={() => { this.handleChange(option) }}
+              primaryText={accessibilityAssessments.wheelchairAccess.values[locale][option]}
               secondaryText={(
                 <WheelChair
-                  style={{float: 'left', marginLeft: -18, marginTop: 9, marginRight: 5, color: accessibilityAssessments.colors[entry[0]]}}
+                  style={{float: 'left', marginLeft: -18, marginTop: 9, marginRight: 5, color: accessibilityAssessments.colors[option]}}
                 />)}
             />
           ) }

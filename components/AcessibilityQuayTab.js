@@ -4,6 +4,10 @@ import WheelChairPopover from './WheelChairPopover'
 import Stairs from '../static/icons/accessibility/Stairs'
 import ToolTipIcon from './ToolTipIcon'
 import Divider from 'material-ui/Divider'
+import { getIn } from '../utils/'
+import { connect } from 'react-redux'
+import { AssessmentActions } from '../actions/'
+
 
 class AcessibilityQuayTab extends React.Component {
 
@@ -14,16 +18,23 @@ class AcessibilityQuayTab extends React.Component {
     }
   }
 
+  handleHandleWheelChair(value) {
+    this.props.dispatch(AssessmentActions.setQuayWheelchairAccess(value, this.props.index))
+  }
+
   render() {
 
-    const { formatMessage } = this.props.intl
+    const { intl, quay } = this.props
+    const { formatMessage } = intl
     const { stepFreeAccess } = this.state
+
+    const wheelchairAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
 
     return (
       <div style={{padding: 10}}>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <WheelChairPopover displayLabel={true} intl={this.props.intl}/>
+            <WheelChairPopover displayLabel={true} intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleHandleWheelChair.bind(this)}/>
             <ToolTipIcon title={formatMessage({id: 'wheelChair_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
@@ -48,4 +59,5 @@ class AcessibilityQuayTab extends React.Component {
   }
 }
 
-export default AcessibilityQuayTab
+
+export default connect(null)(AcessibilityQuayTab)

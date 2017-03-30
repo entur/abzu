@@ -7,6 +7,7 @@ helpers.mapQuayToVariables = quay => {
     geometry: null,
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
+    accessibilityAssessment: quay.accessibilityAssessment,
     description: {
       value: quay.description,
       lang: 'no'
@@ -32,7 +33,8 @@ helpers.mapStopToVariables = stop => {
     name: stop.name,
     description: stop.description || null,
     stopPlaceType: stop.stopPlaceType,
-    quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay))
+    quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
+    accessibilityAssessment: stop.accessibilityAssessment
   }
 
   if (stop.location) {

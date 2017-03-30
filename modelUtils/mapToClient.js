@@ -1,6 +1,8 @@
 import { setDecimalPrecision, getIn } from '../utils/'
 import { LatLng } from 'leaflet'
 import * as types from "../actions/Types";
+import * as Limitations from '../actions/Limitations'
+import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers'
 
 const helpers = {}
 
@@ -167,6 +169,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     }
 
     formattedStop.accessibilityAssessment = stop.accessibilityAssessment
+      ? stop.accessibilityAssessment : getAssessmentSetBasedOnQuays(stop.quays)
 
     if (stop.description) {
       formattedStop.description = stop.description.value
@@ -191,7 +194,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       formattedStop.parking = []
 
       if (stop.quays) {
-        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
+        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay, formattedStop.accessibilityAssessment)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
       }
     }
 
@@ -202,7 +205,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
 }
 
-helpers.mapQuayToClientQuay = quay => {
+helpers.mapQuayToClientQuay = (quay, accessibilityAssessment)  => {
 
   const clientQuay = {
     id: quay.id,
@@ -211,7 +214,7 @@ helpers.mapQuayToClientQuay = quay => {
     description: quay.description ? quay.description.value : ''
   }
 
-  clientQuay.accessibilityAssessment = quay.accessibilityAssessment
+  clientQuay.accessibilityAssessment = quay.accessibilityAssessment || accessibilityAssessment
 
   if (quay.importedId) {
     clientQuay.importedId = quay.importedId

@@ -58,3 +58,8 @@ export const SNACKBAR_MESSAGE_SAVED = 'snackbar_message_saved'
 export const SNACKBAR_MESSAGE_FAILED = 'snackbar_message_failed'
 export const SUCCESS = 'SUCCESS'
 export const ERROR = 'ERROR'
+
+// AssessmentActions
+
+export const CHANGED_STOP_WHEELCHAIR_ACCESS = 'CHANGED_STOP_WHEELCHAIR_ACCESS'
+export const CHANGED_QUAY_WHEELCHAIR_ACCESS = 'CHANGED_QUAY_WHEELCHAIR_ACCESS'
