@@ -180,13 +180,13 @@ const graphQLreducer = (state = {}, action) => {
       case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
         return Object.assign({}, state, { isCompassBearingEnabled: action.payLoad })
 
-      case types.CHANGED_STOP_WHEELCHAIR_ACCESS:
+      case types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT:
         return Object.assign({}, state, {
           current: limitationHelpers.updateCurrentWithLimitations(state.current, action.payLoad),
           stopHasBeenModified: true
         })
 
-      case types.CHANGED_QUAY_WHEELCHAIR_ACCESS:
+      case types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT:
         return Object.assign({}, state, {
           current: limitationHelpers.updateCurrentWithQuayLimitations(state.current, action.payLoad),
           stopHasBeenModified: true

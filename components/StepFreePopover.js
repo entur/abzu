@@ -2,10 +2,11 @@ import React from 'react'
 import MenuItem from 'material-ui/MenuItem'
 import accessibilityAssessments from './accessibilityAssessments'
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
-import WheelChair from 'material-ui/svg-icons/action/accessible'
+import StairsIcon from '../static/icons/accessibility/Stairs'
 import IconButton from 'material-ui/IconButton'
 
-class WheelChairPopover extends React.Component {
+
+class StepFreePopover extends React.Component {
 
   constructor(props) {
     super(props)
@@ -16,6 +17,7 @@ class WheelChairPopover extends React.Component {
   }
 
   handleChange(value) {
+    console.log("value", value)
     this.setState({
       open: false
     })
@@ -37,7 +39,7 @@ class WheelChairPopover extends React.Component {
 
   render() {
 
-    const { intl, displayLabel, wheelchairAccess } = this.props
+    const { intl, displayLabel, stepFreeAccess } = this.props
     const { locale } = intl
     const { open, anchorEl } = this.state
 
@@ -48,10 +50,10 @@ class WheelChairPopover extends React.Component {
             style={{borderBottom: '1px dotted grey'}}
             onClick={(e) => { this.handleOpenPopover(e) }}
           >
-            <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]}/>
+            <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]}/>
           </IconButton>
           { displayLabel ? <div style={{maginLeft: 5}}>
-              { accessibilityAssessments.wheelchairAccess.values[locale][wheelchairAccess] }
+              { accessibilityAssessments.stepFreeAccess.values[locale][stepFreeAccess] }
             </div> : ''}
         </div>
         <Popover
@@ -62,15 +64,15 @@ class WheelChairPopover extends React.Component {
           onRequestClose={this.handleClosePopover.bind(this)}
           animation={PopoverAnimationVertical}
         >
-          { accessibilityAssessments.wheelchairAccess.options.map( (option, index) =>
+          { accessibilityAssessments.stepFreeAccess.options.map( (option, index) =>
             <MenuItem
               key={'wheelChairItem' + index}
               value={option}
               style={{padding: '0px 10px'}}
               onClick={() => { this.handleChange(option) }}
-              primaryText={accessibilityAssessments.wheelchairAccess.values[locale][option]}
+              primaryText={accessibilityAssessments.stepFreeAccess.values[locale][option]}
               secondaryText={(
-                <WheelChair
+                <StairsIcon
                   style={{float: 'left', marginLeft: -18, marginTop: 9, marginRight: 5, color: accessibilityAssessments.colors[option]}}
                 />)}
             />
@@ -81,4 +83,4 @@ class WheelChairPopover extends React.Component {
   }
 }
 
-export default WheelChairPopover
+export default StepFreePopover

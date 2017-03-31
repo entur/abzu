@@ -7,7 +7,6 @@ import IconButton from 'material-ui/IconButton'
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more'
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
-import Stairs from '../static/icons/accessibility/Stairs'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import MdMore from 'material-ui/svg-icons/navigation/more-vert'
@@ -20,6 +19,7 @@ import ImportedId from './ImportedId'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import EditQuayAdditional from '../containers/EditQuayAdditional'
 import WheelChairPopover from './WheelChairPopover'
+import StepFreePopover from './StepFreePopover'
 import { getIn } from '../utils/'
 
 class QuayItem extends React.Component {
@@ -37,7 +37,6 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tepFreeAccess: false,
       ticketMachine: false,
       busShelter: false,
       additionalExpanded: false
@@ -60,18 +59,24 @@ class QuayItem extends React.Component {
     this.setState({additionalExpanded: expanded})
   }
 
-  handleHandleWheelChair(value) {
+  handleWheelChairChange(value) {
     const { index } = this.props
     this.props.dispatch(AssessmentActions.setQuayWheelchairAccess(value, index))
+  }
+
+  handleStepFreeChange(value) {
+    const { index } = this.props
+    this.props.dispatch(AssessmentActions.setQuayStepFreeAccess(value, index))
   }
 
   render() {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
     const { formatMessage, locale } = intl
-    const { stepFreeAccess, ticketMachine, busShelter, additionalExpanded } = this.state
+    const { ticketMachine, busShelter, additionalExpanded } = this.state
 
     const wheelchairAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
+    const stepFreeAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'stepFreeAccess'], 'UNKNOWN')
 
     let quayItemName = null
 
@@ -178,14 +183,8 @@ class QuayItem extends React.Component {
            }
            { !additionalExpanded ?
              <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-               <WheelChairPopover intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleHandleWheelChair.bind(this)}/>
-               <Checkbox
-                 checkedIcon={<Stairs />}
-                 uncheckedIcon={<Stairs style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                 style={{width: 'auto'}}
-                 checked={stepFreeAccess}
-                 onCheck={(e,v) => this.setState({stepFreeAccess: v})}
-               />
+               <WheelChairPopover intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
+               <StepFreePopover intl={intl} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
                <Checkbox
                  checkedIcon={<TicketMachine />}
                  uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}

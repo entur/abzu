@@ -170,8 +170,6 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     formattedStop.accessibilityAssessment = stop.accessibilityAssessment
       ? stop.accessibilityAssessment : getAssessmentSetBasedOnQuays(stop.quays)
 
-    console.log("formattedStop", getAssessmentSetBasedOnQuays(stop.quays))
-
     if (stop.description) {
       formattedStop.description = stop.description.value
     }
