@@ -19,7 +19,6 @@ AssessmentActions.setStopWheelchairAccess = value => {
   }
 }
 
-
 AssessmentActions.setStopStepFreeAccess = value => {
   return function(dispatch) {
     dispatch(sendData(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {

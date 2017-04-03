@@ -133,6 +133,8 @@
   "untitled" : "Uten navn",
   "use" : "Bruk",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
+  "valid_between": "Gyldig i perioden",
+  "versions": "Versjoner",
   "waiting_room": "Venterom",
   "waiting_room_no": "Ingen venterom",
   "walking_estimate": "Gangavstand",

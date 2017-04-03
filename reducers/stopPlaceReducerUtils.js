@@ -70,12 +70,17 @@ const getDataFromResult = (state, action) => {
     ? action.result.data.stopPlace[0]
     : null
 
+  const versions = ( ( action.result.data.versions && action.result.data.versions.length)
+    ? action.result.data.versions
+    : null)
+
   const pathLink = action.result.data.pathLink
     ? action.result.data.pathLink
     : []
 
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
+    versions: formatHelpers.mapVersionToClientVersion(versions),
     originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
     originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
     zoom: getProperZoomLevel(stopPlace),

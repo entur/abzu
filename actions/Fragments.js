@@ -46,6 +46,7 @@ Fragments.stopPlace = {
         quays {
             ...VerboseQuay
         }
+        version
         importedId
         stopPlaceType
         topographicPlace {

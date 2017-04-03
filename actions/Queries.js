@@ -77,7 +77,20 @@ export const stopPlaceAndPathLink = gql`
         stopPlace(id: $id) {
             ...VerboseStopPlace
         }
-    },
+        versions: 
+            stopPlace(id: $id, allVersions: true) {
+                id
+                validBetweens {
+                    fromDate
+                    toDate
+                }
+                name {
+                    value
+                    lang
+                }
+                version
+            }
+        },
     ${Fragments.stopPlace.verbose}
 `
 

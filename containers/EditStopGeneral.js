@@ -20,6 +20,9 @@ import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
 import MdMore from 'material-ui/svg-icons/navigation/more-vert'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import Divider from 'material-ui/Divider'
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
+import Menu from 'material-ui/Menu'
+import MenuItem from 'material-ui/MenuItem'
 
 
 class EditStopGeneral extends React.Component {
@@ -29,6 +32,7 @@ class EditStopGeneral extends React.Component {
     this.state = {
       confirmDialogOpen: false,
       allowPathLinkAdjustmentsDialog: false,
+      versionsOpen: false
     }
   }
 
@@ -133,6 +137,21 @@ class EditStopGeneral extends React.Component {
     })
   }
 
+  handleTouchTapVersions = event => {
+    event.preventDefault()
+
+    this.setState({
+      versionsOpen: true,
+      anchorEl: event.currentTarget,
+    })
+  }
+
+  handleVersionOnTap = id => {
+    this.setState({
+      versionsOpen: false
+    })
+  }
+
   getTitleText = (stopPlace, formatMessage) => {
     return (stopPlace && stopPlace.id)
       ? `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
@@ -150,7 +169,7 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions } = this.props
     const { formatMessage, locale } = intl
 
     if (!stopPlace) return null
@@ -168,7 +187,9 @@ class EditStopGeneral extends React.Component {
       quayItemName: this.getQuayItemName(locale, stopPlace),
       capacity: formatMessage({id: 'capacity'}),
       parking: formatMessage({id: 'parking'}),
-      elements: formatMessage({id: 'elements'})
+      elements: formatMessage({id: 'elements'}),
+      versions: formatMessage({id: 'versions'}),
+      validBetween: formatMessage({id: 'valid_between'}),
     }
 
     const captionText = this.getTitleText(stopPlace, formatMessage)
@@ -193,13 +214,39 @@ class EditStopGeneral extends React.Component {
       marginTop: 2
     }
 
-    const stopBoxBar = { color: '#fff', background: '#2c2c2c', fontSize: 12, padding: 2}
+    const stopBoxBar = { color: '#fff', background: '#2c2c2c', fontSize: 12, padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}
+
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 }
 
     return (
 
       <div style={style}>
-        <div style={stopBoxBar}>{ captionText }</div>
+        <div style={stopBoxBar}>
+          <div>{ captionText }</div>
+          <FlatButton
+            label={translations.versions}
+            labelStyle={{color: '#fff', fontSize: 10, borderBottom: '1px dotted #fff', color: '#fff', padding: 0}}
+            style={{margin: 0, zIndex: 999}}
+            onTouchTap={this.handleTouchTapVersions}
+          />
+          <Popover
+            open={this.state.versionsOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={() => this.setState({versionsOpen: false})}
+            animation={PopoverAnimationVertical}
+          >
+            <Menu>
+              { versions.map( (version, i) => (
+                <MenuItem
+                  key={'version'+i}
+                  primaryText={`${version.name} - ${translations.validBetween}: ${version.fromDate} - ${version.toDate || '-'}`}
+                  onTouchTap={() => this.handleVersionOnTap(version.id)}
+                /> )) }
+            </Menu>
+          </Popover>
+        </div>
         <div style={scrollable}>
           <div style={{padding: '10 5'}}>
             <StopPlaceDetails
@@ -300,7 +347,8 @@ const mapStateToProps = state => ({
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   activeElementTab: state.user.activeElementTab,
   showEditQuayAdditional: state.user.showEditQuayAdditional,
-  showEditStopAdditional: state.user.showEditStopAdditional
+  showEditStopAdditional: state.user.showEditStopAdditional,
+  versions: state.stopPlace.versions
 })
 
 export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))

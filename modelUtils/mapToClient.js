@@ -147,6 +147,21 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
 }
 
+helpers.mapVersionToClientVersion = source => {
+  if (source) {
+    return source.map( s => {
+      let version = {
+        version: s.version,
+        name: getIn(s, ['name', 'value'], ''),
+        fromDate: getIn(s.validBetweens[0], ['fromDate'], ''),
+        toDate: getIn(s.validBetweens[0], ['toDate'], ''),
+      }
+      return version
+    })
+  }
+  return []
+}
+
 helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {
