@@ -16,7 +16,6 @@ if (!window.Promise) {
   window.Promise = Promise
 }
 
-// used by material-ui, will be removed once the official React version of MI is relased
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
@@ -64,6 +63,7 @@ function authWithKeyCloak(path) {
     if (authenticated) {
       setInterval(() => {
         kc.updateToken(10).error(() => kc.logout());
+        localStorage.setItem('jwt_tiamat', kc.token)
       }, 10000)
 
       renderIndex(path, kc)

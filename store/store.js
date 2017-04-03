@@ -15,8 +15,22 @@ export default function configureStore(kc) {
 
   var enchancer = {}
 
+  const networkInterface = createNetworkInterface({ uri: window.config.tiamatBaseUrl })
+
+  networkInterface.use([{
+    applyMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {}
+      }
+
+      const token = localStorage.getItem('jwt_tiamat')
+      //req.options.headers.authorization = token ? `Bearer ${token}` : null
+      next()
+    }
+  }])
+
   const client = new ApolloClient({
-    networkInterface: createNetworkInterface({ uri: window.config.tiamatBaseUrl })
+    networkInterface: networkInterface
   })
 
   if (process.env.NODE_ENV === 'development') {

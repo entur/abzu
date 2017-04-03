@@ -54,7 +54,7 @@ class App extends React.Component {
 
   render() {
 
-    const { children, snackbarOptions } = this.props
+    const { children, snackbarOptions, kc } = this.props
     const { formatMessage, locale } = this.props.intl
 
     let { message, isOpen, status } = snackbarOptions
@@ -79,6 +79,7 @@ class App extends React.Component {
             setLanguage={this.handleSetLanguage.bind(this)}
             handleLogOut={this.handleLogOut.bind(this)}
             locale={locale}
+            username={kc.tokenParsed.preferred_username}
             />
           {children}
           <Snackbar

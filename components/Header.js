@@ -10,7 +10,7 @@ import MdChecked from 'material-ui/svg-icons/navigation/check'
 import MdAccount from 'material-ui/svg-icons/action/account-circle'
 import MdLanguage from 'material-ui/svg-icons/action/language'
 
-const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut}) =>{
+const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut, username}) =>{
 
   const { title, language, norwegian, english, logOut } = text
 
@@ -60,7 +60,7 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut})
              />
             <MenuItem
               leftIcon={<MdAccount/>}
-              primaryText={logOut}
+              primaryText={`${logOut} ${username}`}
               onClick={() => handleLogOut()}
               style={{fontSize: 12, padding: 0}}
             />
