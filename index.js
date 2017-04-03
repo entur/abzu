@@ -20,13 +20,16 @@ if (!window.Promise) {
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
-/* use authWithKeyCloak(renderIndex) for keycloak authentification */
-function authWithKeyCloak(renderCallback) {
-  let keycloakAuth = new Keycloak('config/keycloak.json')
-
-  keycloakAuth.init({ onLoad: 'login-required' }).success(function () {
-      renderCallback()
-  })
+function renderIndex(path, kc) {
+  const configureStore  = require('./store/store').default
+  const store = configureStore(kc)
+  const history = syncHistoryWithStore(browserHistory, store.self)
+  render (
+    <ApolloProvider store={store.self} client={store.client}>
+      <Root path={path} history={history}/>
+    </ApolloProvider>,
+    document.getElementById('root')
+  )
 }
 
 cfgreader.readConfig( (function(config) {
@@ -37,31 +40,36 @@ cfgreader.readConfig( (function(config) {
 
   /* Renews token if it expires within 30 minutes to be on the safer side*/
   if (token != null && token.expires > new Date(Date.now()+(60*1000*30)).getTime()) {
-    renderIndex(config.endpointBase)
+    authWithKeyCloak(config.endpointBase)
   } else {
     axios.get(config.endpointBase + 'token')
       .then( response => {
         let token = JSON.stringify(response.data)
         localStorage.setItem('GKT_TOKEN', token)
-        renderIndex(config.endpointBase)
+        authWithKeyCloak(config.endpointBase)
       })
       .catch( (err) => {
         console.warn('Failed to get GK token, Kartverket Flyfoto will not work', err)
-        renderIndex(config.endpointBase)
+        authWithKeyCloak(config.endpointBase)
       })
   }}).bind(this))
 
-function renderIndex(path) {
 
-  const configureStore  = require('./store/store').default
-  const store = configureStore()
-  const history = syncHistoryWithStore(browserHistory, store.self)
+function authWithKeyCloak(path) {
 
-  render (
-    <ApolloProvider store={store.self} client={store.client}>
-      <Root path={path} history={history}/>
-    </ApolloProvider>,
-    document.getElementById('root')
-  )
+  let kc = new Keycloak('/config/keycloak.json')
 
+  kc.init({ onLoad: 'login-required' }).success( authenticated => {
+
+    if (authenticated) {
+      setInterval(() => {
+        kc.updateToken(10).error(() => kc.logout());
+      }, 10000)
+
+      renderIndex(path, kc)
+
+    } else {
+      kc.login()
+    }
+  })
 }

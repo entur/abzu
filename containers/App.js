@@ -36,6 +36,12 @@ class App extends React.Component {
     dispatch ( UserActions.applyLocale(locale) )
   }
 
+  handleLogOut() {
+    if (this.props.kc) {
+      this.props.kc.logout()
+    }
+  }
+
   getAlertIcon(status) {
     if (status === types.SUCCESS) {
       return <MdCheck style={{fill: '#088f17', color: '#fff', marginRight: 10}} />
@@ -59,6 +65,7 @@ class App extends React.Component {
       language: formatMessage({id: 'language'}),
       english: formatMessage({id: 'english'}),
       norwegian: formatMessage({id: 'norwegian'}),
+      logOut: formatMessage({id: 'log_out'}),
     }
 
     let snackBarMessage = formatMessage({id: (message || '_empty')})
@@ -70,6 +77,7 @@ class App extends React.Component {
             text={headerText}
             handleNavigateToMain={this.handleNavigateToMain.bind(this)}
             setLanguage={this.handleSetLanguage.bind(this)}
+            handleLogOut={this.handleLogOut.bind(this)}
             locale={locale}
             />
           {children}
@@ -91,7 +99,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  snackbarOptions: state.user.snackbarOptions
+  snackbarOptions: state.user.snackbarOptions,
+  kc: state.user.kc
 })
 
 export default injectIntl(connect(mapStateToProps)(App))

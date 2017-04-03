@@ -70,6 +70,7 @@
   "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",
   "language": "Language",
   "local_reference": "Local reference:",
+  "log_out": "Log out",
   "second": "second",
   "seconds": "seconds",
   "making_stop_place_hint": "Double click anywhere on the map to set desired location. Click the marker for more options",
