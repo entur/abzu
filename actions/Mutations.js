@@ -16,9 +16,7 @@ export const mutateStopPlace = gql`
             ...VerboseStopPlace
         }
     }
-
     ${Fragments.stopPlace.verbose}
-
 `
 
 export const mutatePathLink = gql`

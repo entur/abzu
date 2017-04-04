@@ -151,6 +151,7 @@ helpers.mapVersionToClientVersion = source => {
   if (source) {
     return source.map( s => {
       let version = {
+        id: s.id,
         version: s.version,
         name: getIn(s, ['name', 'value'], ''),
         fromDate: getIn(s.validBetweens[0], ['fromDate'], ''),

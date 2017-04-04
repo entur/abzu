@@ -12,6 +12,7 @@ import { getIn } from '../utils/'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
 import { mutateStopPlace, mutatePathLink } from '../actions/Mutations'
+import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions } from '../actions/Queries'
 import * as types from '../actions/Types'
 import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
@@ -146,9 +147,28 @@ class EditStopGeneral extends React.Component {
     })
   }
 
-  handleVersionOnTap = id => {
+  handleVersionOnTap = ({id, version}) => {
     this.setState({
       versionsOpen: false
+    })
+
+    const { client } = this.props
+
+    client.query({
+      forceFetch: true,
+      query: stopPlaceAndPathLinkByVersion,
+      variables: {
+        id: id,
+        version: version
+      }
+    }).then ( response => {
+      client.query({
+        forceFetch: true,
+        query: stopPlaceAllVersions,
+        variables: {
+          id: id
+        }
+      })
     })
   }
 
@@ -241,8 +261,8 @@ class EditStopGeneral extends React.Component {
               { versions.map( (version, i) => (
                 <MenuItem
                   key={'version'+i}
-                  primaryText={`${version.name} - ${translations.validBetween}: ${version.fromDate} - ${version.toDate || '-'}`}
-                  onTouchTap={() => this.handleVersionOnTap(version.id)}
+                  primaryText={`${version.version} - ${translations.validBetween}: ${version.fromDate} - ${version.toDate || '-'}`}
+                  onTouchTap={() => this.handleVersionOnTap(version)}
                 /> )) }
             </Menu>
           </Popover>

@@ -41,38 +41,7 @@ export const stopPlaceBBQuery = gql`
 export const stopPlaceAndPathLink = gql`
     query stopPlaceAndPathLink($id: String!) {
         pathLink(stopPlaceId: $id) {
-            id
-            from {
-                placeRef {
-                    version
-                    ref
-                    addressablePlace {
-                        id
-                        geometry {
-                            coordinates
-                        }
-                    }
-                }
-            }
-            transferDuration {
-                defaultDuration
-            }
-            geometry {
-                coordinates
-            }
-            to {
-                placeRef {
-                    version
-                    ref
-                    addressablePlace {
-                        id
-                        geometry {
-                            coordinates
-                            type 
-                        }
-                    }
-                }
-            }
+            ...VerbosePathLink
         },
         stopPlace(id: $id) {
             ...VerboseStopPlace
@@ -91,7 +60,8 @@ export const stopPlaceAndPathLink = gql`
                 version
             }
         },
-    ${Fragments.stopPlace.verbose}
+    ${Fragments.stopPlace.verbose},
+    ${Fragments.pathLink.verbose},
 `
 
 export const findStop = gql`
@@ -118,4 +88,48 @@ export const findStop = gql`
             }
         }
     },
+`
+
+export const stopPlaceAllVersions = gql`
+    query stopPlaceAllVersions($id: String!) {
+        versions:
+        stopPlace(id: $id, allVersions: true) {
+            id
+            validBetweens {
+                fromDate
+                toDate
+            }
+            name {
+                value
+                lang
+            }
+            version
+        }
+    },
+`
+
+export const stopPlaceAndPathLinkByVersion = gql`
+    query stopPlaceAndPathLink($id: String!, $version: Int) {
+        pathLink(stopPlaceId: $id) {
+            ...VerbosePathLink
+        },
+        stopPlace(id: $id, version: $version) {
+            ...VerboseStopPlace
+        }
+        versions:
+        stopPlace(id: $id, allVersions: true) {
+            id
+            validBetweens {
+                fromDate
+                toDate
+            }
+            name {
+                value
+                lang
+            }
+            version
+        }
+    },
+    ${Fragments.stopPlace.verbose},
+    ${Fragments.pathLink.verbose},
 `
