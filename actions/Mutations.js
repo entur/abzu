@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import Fragments from './Fragments'
 
 export const mutateStopPlace = gql`
-    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput]) {
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetweens: [ValidBetweenInput]) {
         mutateStopPlace(StopPlace: {
             id: $id
             name: { value: $name, lang: "no" }
@@ -12,6 +12,7 @@ export const mutateStopPlace = gql`
                 coordinates: $coordinates
             }
             quays: $quays
+            validBetweens: $validBetweens
             stopPlaceType: $stopPlaceType}) {
             ...VerboseStopPlace
         }
