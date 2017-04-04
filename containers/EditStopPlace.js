@@ -106,12 +106,10 @@ class EditStopPlace extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-    stopPlace: state.stopPlace.current || state.stopPlace.newStop
-  }
-}
+const mapStateToProps = state => ({
+  isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  stopPlace: state.stopPlace.current || state.stopPlace.newStop
+})
 
 const EditStopPlaceWithIntl = injectIntl(connect(mapStateToProps)(EditStopPlace))
 

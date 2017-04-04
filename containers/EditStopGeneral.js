@@ -8,7 +8,6 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import EditStopBoxTabs from './EditStopBoxTabs'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import StopPlaceDetails from '../components/StopPlaceDetails'
-import { getIn } from '../utils/'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
 import { mutateStopPlace, mutatePathLink } from '../actions/Mutations'
@@ -24,6 +23,7 @@ import Divider from 'material-ui/Divider'
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+import SaveDialog from '../components/SaveDialog'
 
 
 class EditStopGeneral extends React.Component {
@@ -32,61 +32,28 @@ class EditStopGeneral extends React.Component {
     super(props)
     this.state = {
       confirmDialogOpen: false,
-      allowPathLinkAdjustmentsDialog: false,
+      saveDialogOpen: false,
       versionsOpen: false
     }
   }
 
   handleSave() {
-
-    const { pathLink, stopPlace, stopHasBeenModified } = this.props
-
-    let shouldShowDialog = false
-
-    if (!stopHasBeenModified) {
-      this.handleSaveStopAndPathLink()
-      return
-    }
-
-    pathLink.forEach( p => {
-
-      let pathLinkFrom = getIn(p, ['from', 'placeRef', 'addressablePlace'], null)
-      let pathLinkTo = getIn(p, ['to', 'placeRef', 'addressablePlace'], null)
-
-      if (pathLinkFrom) {
-        if (pathLinkFrom.geometry.coordinates) {
-          // TODO: Support PathJunction, Entrance and StopPlace
-          const quay = stopPlace.quays.filter( q => q.id == pathLinkFrom.id)
-          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(pathLinkFrom.geometry.coordinates[0])) {
-            shouldShowDialog = true
-          }
-        }
-        if (pathLinkTo.geometry.coordinates) {
-          // TODO: Support PathJunction, Entrance and StopPlace
-          const quay = stopPlace.quays.filter( q => q.id == pathLinkTo.id)
-          if (quay.length && JSON.stringify(quay[0].location) !== JSON.stringify(pathLinkTo.geometry.coordinates[0])) {
-            shouldShowDialog = true
-          }
-        }
-      }
+    this.setState({
+      saveDialogOpen: true
     })
-
-    if (shouldShowDialog) {
-      this.setState({
-        allowPathLinkAdjustmentsDialog: true
-      })
-    } else {
-      this.handleSaveStopAndPathLink()
-    }
   }
 
-  handleSaveStopAndPathLink() {
-    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace)
-    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
-
+  handleSuccess(dispatch) {
     this.setState({
-      allowPathLinkAdjustmentsDialog: false
+      saveDialogOpen: false
     })
+    dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+  }
+
+  handleSaveStopAndPathLink(date, time) {
+
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, date, time)
+    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
 
     const { client, dispatch } = this.props
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
@@ -98,12 +65,12 @@ class EditStopGeneral extends React.Component {
       if (pathLinkVariables && pathLinkVariables.length) {
 
         client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then( result => {
-          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+         this.handleSuccess(dispatch)
         }).catch( err => {
           dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
         })
       } else {
-        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+        this.handleSuccess(dispatch)
       }
     })
   }
@@ -134,7 +101,8 @@ class EditStopGeneral extends React.Component {
   handleDialogClose() {
     this.setState({
       confirmDialogOpen: false,
-      allowPathLinkAdjustmentsDialog: false
+      allowPathLinkAdjustmentsDialog: false,
+      saveDialogOpen: false
     })
   }
 
@@ -316,16 +284,10 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-          <ConfirmDialog
-            open={this.state.allowPathLinkAdjustmentsDialog}
+          <SaveDialog
+            open={this.state.saveDialogOpen}
             handleClose={ () => { this.handleDialogClose() }}
-            handleConfirm={ () => { this.handleSaveStopAndPathLink() }}
-            messagesById={{
-              title: 'quay_adjustments_title',
-              body: 'quay_adjustments_body',
-              confirm: 'quay_adjustments_confirm',
-              cancel: 'quay_adjustments_cancel',
-            }}
+            handleConfirm={this.handleSaveStopAndPathLink.bind(this)}
             intl={intl}
           />
         </div>

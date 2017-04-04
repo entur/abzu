@@ -1,4 +1,7 @@
+import moment from 'moment'
+
 const helpers = {}
+
 
 helpers.mapQuayToVariables = quay => {
 
@@ -26,7 +29,7 @@ helpers.mapQuayToVariables = quay => {
   return quayVariables
 }
 
-helpers.mapStopToVariables = stop => {
+helpers.mapStopToVariables = (stop, date, time) => {
 
   let stopVariables = {
     id: stop.id,
@@ -35,6 +38,19 @@ helpers.mapStopToVariables = stop => {
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: stop.accessibilityAssessment
+  }
+
+  if (date && time) {
+    const dateString = moment(date).format('YYYY-MM-DD').toString()
+    const timeString = moment(time).format('HH:mm:ss').toString()
+
+    const fromDateString = moment(`${dateString} ${timeString}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+
+    stopVariables.validBetweens = [
+      {
+        fromDate: fromDateString
+      }
+    ]
   }
 
   if (stop.location) {

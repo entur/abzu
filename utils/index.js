@@ -13,6 +13,11 @@ export const setDecimalPrecision = (number, n) => {
 
 export const getIn = (object, keys, defaultValue) => {
   return keys.reduce(function (o, k) {
-    return o && typeof o === 'object' && k in o ? o[k] : defaultValue;
-  }, object);
+    return o && typeof o === 'object' && k in o ? o[k] : defaultValue
+  }, object)
+}
+
+export const getInTransform = (object, keys, defaultValue, transformater) => {
+  let value = getIn(object, keys, null)
+  return value != null ? transformater(value) : defaultValue
 }

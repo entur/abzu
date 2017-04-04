@@ -1,7 +1,8 @@
-import { setDecimalPrecision, getIn } from '../utils/'
+import { setDecimalPrecision, getIn, getInTransform } from '../utils/'
 import { LatLng } from 'leaflet'
-import * as types from "../actions/Types";
+import * as types from "../actions/Types"
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers'
+import moment from 'moment'
 
 const helpers = {}
 
@@ -149,13 +150,16 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
 helpers.mapVersionToClientVersion = source => {
   if (source) {
-    return source.map( s => {
+
+    const transformer = value => moment(value).format('YYYY-DD-MM HH:mm')
+
+    return source.sort( (a, b) => Number(b.version) - Number(a.version)).map( s => {
       let version = {
         id: s.id,
         version: s.version,
         name: getIn(s, ['name', 'value'], ''),
-        fromDate: getIn(s.validBetweens[0], ['fromDate'], ''),
-        toDate: getIn(s.validBetweens[0], ['toDate'], ''),
+        fromDate: getInTransform(s.validBetweens[0], ['fromDate'], '', transformer),
+        toDate: getInTransform(s.validBetweens[0], ['toDate'], '', transformer),
       }
       return version
     })
