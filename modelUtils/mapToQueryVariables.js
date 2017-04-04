@@ -29,7 +29,7 @@ helpers.mapQuayToVariables = quay => {
   return quayVariables
 }
 
-helpers.mapStopToVariables = (stop, date, time) => {
+helpers.mapStopToVariables = (stop, validBetween) => {
 
   let stopVariables = {
     id: stop.id,
@@ -40,15 +40,22 @@ helpers.mapStopToVariables = (stop, date, time) => {
     accessibilityAssessment: stop.accessibilityAssessment
   }
 
-  if (date && time) {
-    const dateString = moment(date).format('YYYY-MM-DD').toString()
-    const timeString = moment(time).format('HH:mm:ss').toString()
+  if (validBetween) {
 
-    const fromDateString = moment(`${dateString} ${timeString}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+    const { timeFrom, timeTo, dateFrom, dateTo } = validBetween
+
+    const dateStringFrom = moment(dateFrom).format('YYYY-MM-DD').toString()
+    const dateStringTo = moment(dateTo).format('YYYY-MM-DD').toString()
+    const timeStringFrom = moment(timeFrom).format('HH:mm:ss').toString()
+    const timeStringTo = moment(timeTo).format('HH:mm:ss').toString()
+
+    const fromDateString = moment(`${dateStringFrom} ${timeStringFrom}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+    const toDateString = moment(`${dateStringTo} ${timeStringTo}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
 
     stopVariables.validBetweens = [
       {
-        fromDate: fromDateString
+        fromDate: fromDateString,
+        toDate: toDateString
       }
     ]
   }

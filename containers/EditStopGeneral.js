@@ -50,9 +50,9 @@ class EditStopGeneral extends React.Component {
     dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
   }
 
-  handleSaveStopAndPathLink(date, time) {
+  handleSaveStopAndPathLink(validBetween) {
 
-    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, date, time)
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, validBetween)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
 
     const { client, dispatch } = this.props
@@ -225,11 +225,24 @@ class EditStopGeneral extends React.Component {
             onRequestClose={() => this.setState({versionsOpen: false})}
             animation={PopoverAnimationVertical}
           >
-            <Menu>
+            <Menu
+              menuItemStyle={{fontSize: 12}}
+              autoWidth={true}
+            >
               { versions.map( (version, i) => (
                 <MenuItem
                   key={'version'+i}
-                  primaryText={`${version.version} - ${translations.validBetween}: ${version.fromDate} - ${version.toDate || '-'}`}
+                  primaryText={
+                    <div style={{display: 'flex'}}>
+                      <div style={{marginRight: 8, fontWeight: 600}}>{version.version}</div>
+                      <div>{version.name}</div>
+                    </div>
+                  }
+                  secondaryText={
+                    <div
+                      style={{transform: 'translateY(-14px)'}}
+                    >{`${version.fromDate || 'N/A'} - ${version.toDate || 'N/A'}`}</div>
+                  }
                   onTouchTap={() => this.handleVersionOnTap(version)}
                 /> )) }
             </Menu>
@@ -284,12 +297,15 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-          <SaveDialog
-            open={this.state.saveDialogOpen}
-            handleClose={ () => { this.handleDialogClose() }}
-            handleConfirm={this.handleSaveStopAndPathLink.bind(this)}
-            intl={intl}
-          />
+          { this.state.saveDialogOpen ?
+            <SaveDialog
+              open={this.state.saveDialogOpen}
+              handleClose={ () => { this.handleDialogClose() }}
+              handleConfirm={this.handleSaveStopAndPathLink.bind(this)}
+              intl={intl}
+            />
+            : null
+          }
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
           { stopHasBeenModified
