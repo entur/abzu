@@ -58,7 +58,7 @@ function authWithKeyCloak(path) {
 
   let kc = new Keycloak('/config/keycloak.json')
 
-  kc.init({ onLoad: 'login-required' }).success( authenticated => {
+  kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success( authenticated => {
 
     if (authenticated) {
       setInterval(() => {
