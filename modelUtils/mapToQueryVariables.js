@@ -49,8 +49,8 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     const timeStringFrom = moment(timeFrom).format('HH:mm:ss').toString()
     const timeStringTo = moment(timeTo).format('HH:mm:ss').toString()
 
-    const fromDateString = moment(`${dateStringFrom} ${timeStringFrom}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
-    const toDateString = moment(`${dateStringTo} ${timeStringTo}`).utc().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+    const fromDateString = moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
+    const toDateString = moment(`${dateStringTo} ${timeStringTo}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
 
     stopVariables.validBetweens = [
       {

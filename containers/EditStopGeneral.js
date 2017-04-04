@@ -43,10 +43,24 @@ class EditStopGeneral extends React.Component {
     })
   }
 
-  handleSuccess(dispatch) {
+  handleSuccess(dispatch, id) {
     this.setState({
       saveDialogOpen: false
     })
+
+    const { client } = this.props
+
+    if (id) {
+
+      client.query({
+        forceFetch: true,
+        query: stopPlaceAllVersions,
+        variables: {
+          id: id
+        }
+      })
+    }
+
     dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
   }
 
@@ -54,10 +68,12 @@ class EditStopGeneral extends React.Component {
 
     const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, validBetween)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
+    let id = null
 
     const { client, dispatch } = this.props
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
+        id = result.data.mutateStopPlace[0].id
         dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
       }
     }).then( result => {
@@ -65,12 +81,12 @@ class EditStopGeneral extends React.Component {
       if (pathLinkVariables && pathLinkVariables.length) {
 
         client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then( result => {
-         this.handleSuccess(dispatch)
+         this.handleSuccess(dispatch, id)
         }).catch( err => {
           dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
         })
       } else {
-        this.handleSuccess(dispatch)
+        this.handleSuccess(dispatch, id)
       }
     })
   }
@@ -129,14 +145,6 @@ class EditStopGeneral extends React.Component {
         id: id,
         version: version
       }
-    }).then ( response => {
-      client.query({
-        forceFetch: true,
-        query: stopPlaceAllVersions,
-        variables: {
-          id: id
-        }
-      })
     })
   }
 
@@ -213,6 +221,7 @@ class EditStopGeneral extends React.Component {
           <div>{ captionText }</div>
           <FlatButton
             label={translations.versions}
+            disabled={!versions.length}
             labelStyle={{color: '#fff', fontSize: 10, borderBottom: '1px dotted #fff', color: '#fff', padding: 0}}
             style={{margin: 0, zIndex: 999}}
             onTouchTap={this.handleTouchTapVersions}

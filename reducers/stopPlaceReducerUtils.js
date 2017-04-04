@@ -3,9 +3,15 @@ import formatHelpers from '../modelUtils/mapToClient'
 export const getStateByOperation = (state, action) => {
 
   switch (action.operationName) {
+
     case 'stopPlace':
     case 'stopPlaceAndPathLink':
       return getDataFromResult(state, action)
+
+    case 'stopPlaceAllVersions':
+      return Object.assign({}, state, {
+        versions: getAllVersionFromResult(state, action)
+      })
 
     case 'mutateStopPlace':
 
@@ -70,17 +76,13 @@ const getDataFromResult = (state, action) => {
     ? action.result.data.stopPlace[0]
     : null
 
-  const versions = ( ( action.result.data.versions && action.result.data.versions.length)
-    ? action.result.data.versions
-    : null)
-
   const pathLink = action.result.data.pathLink
     ? action.result.data.pathLink
     : []
 
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
-    versions: formatHelpers.mapVersionToClientVersion(versions),
+    versions: getAllVersionFromResult(state, action),
     originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
     originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
     zoom: getProperZoomLevel(stopPlace),
@@ -89,4 +91,11 @@ const getDataFromResult = (state, action) => {
     neighbourStopQuays: {},
     centerPosition: (!stopPlace || !stopPlace.geometry) ? state.centerPosition : formatHelpers.getCenterPosition(stopPlace.geometry)
   })
+}
+
+const getAllVersionFromResult = (state, action) => {
+  const data = ( ( action.result.data.versions && action.result.data.versions.length)
+    ? action.result.data.versions
+    : null)
+  return formatHelpers.mapVersionToClientVersion(data)
 }
