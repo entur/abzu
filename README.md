@@ -37,7 +37,7 @@ variable `port` (notice lower case).
 To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
 
 ```
-TIAMAT_BASE_URL=https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql port=9000 npm run dev
+TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 npm run dev
 ```
 
 To override OpenStreetMap URL, set `OSM_URL` as environment variables, e.g.
