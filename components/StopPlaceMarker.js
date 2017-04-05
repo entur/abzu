@@ -57,7 +57,7 @@ class StopPlaceMarker extends React.PureComponent {
         >
         <Popup autoPan={false}>
           <div>
-            <div style={{fontWeight: 600, color: '#00bcd4', fontSize: '1.2em', cursor: 'pointer',
+            <div style={{fontWeight: 600, color: '#41c0c4', fontSize: '1.2em', cursor: 'pointer',
               marginBottom: 10, display: 'inline-block', width: '100%', marginBottom: 15, textAlign: 'center'}}
               onClick={handleOnClick}
             >

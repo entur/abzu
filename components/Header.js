@@ -4,9 +4,9 @@ import IconButton from 'material-ui/IconButton'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import ActionHome from 'material-ui/svg-icons/action/home'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import MdChecked from 'material-ui/svg-icons/navigation/check'
+import Logo from '../static/logo/logo_entur.png'
 
 const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
 
@@ -19,11 +19,7 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
         showMenuIconButton={true}
         style={{background: "#2F2F2F", color: "#fff"}}
         iconElementLeft={
-          <IconButton
-            onTouchTap={() => handleNavigateToMain()}
-            >
-            <ActionHome />
-          </IconButton>
+            <img src={Logo} style={{width: 40, height: 'auto', cursor: 'pointer'}} onClick={() => handleNavigateToMain()}/>
         }
 
         iconElementRight={

@@ -1,5 +1,6 @@
 import React from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Header from '../components/Header'
 import cfgreader from '../config/readConfig'
 import { connect } from 'react-redux'
@@ -9,6 +10,7 @@ import { injectIntl } from 'react-intl'
 import * as types from '../actions/Types'
 import MdCheck from 'material-ui/svg-icons/navigation/check'
 import MdError from 'material-ui/svg-icons/alert/error'
+import enturTheme from '../config/enturTheme'
 
 class App extends React.Component {
 
@@ -63,8 +65,11 @@ class App extends React.Component {
 
     let snackBarMessage = formatMessage({id: (message || '_empty')})
 
+
+    const muiTheme = getMuiTheme(enturTheme)
+
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <Header
             text={headerText}
