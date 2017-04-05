@@ -24,7 +24,7 @@ export default function configureStore(kc) {
       }
 
       const token = localStorage.getItem('jwt_tiamat')
-      //req.options.headers.authorization = token ? `Bearer ${token}` : null
+      req.options.headers.authorization = token ? `Bearer ${token}` : null
       next()
     }
   }])
