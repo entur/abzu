@@ -105,6 +105,7 @@
   "quay_is_missing_location": "Quay is missing location",
   "remove": "Remove",
   "save": "Save",
+  "save_new_version": "Save new version",
   "save_dialog_title": "You are making a new version of this stop place",
   "save_dialog_message_from": "When is the new version of your stop valid from?",
   "save_dialog_message_to": "When does the new version expire?",

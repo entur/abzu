@@ -105,6 +105,7 @@
   "quay_is_missing_location": "Denne quayen mangler posisjon",
   "remove": "Fjern",
   "save" : "Lagre",
+  "save_new_version": "Lagre ny versjon",
   "save_dialog_title": "Du lager en ny versjon av dette stoppestedet",
   "save_dialog_message_from": "Når er denne versjonen av stoppestedet gyldig fra?",
   "save_dialog_message_to": "Når utløper denne versjonen av stoppestedet?",
