@@ -17,7 +17,6 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
       <AppBar
         title={title}
         showMenuIconButton={true}
-        style={{background: "#2F2F2F", color: "#fff"}}
         iconElementLeft={
             <img src={Logo} style={{width: 40, height: 'auto', cursor: 'pointer'}} onClick={() => handleNavigateToMain()}/>
         }

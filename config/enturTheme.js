@@ -1,6 +1,7 @@
 import {fade} from 'material-ui/utils/colorManipulator'
 
 export const enturPrimary = '#41c0c4'
+export const enturDark = 'rgb(39, 58, 70)'
 const cyan700 = '#0097a7'
 const grey100 = '#f5f5f5'
 const grey300 = '#e0e0e0'
@@ -31,5 +32,8 @@ export default {
   datePicker: {
     selectColor: enturPrimary,
     selectTextColor: white,
+  },
+  appBar: {
+    color: enturDark,
   },
 }

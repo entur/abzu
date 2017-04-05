@@ -210,7 +210,7 @@ class EditStopGeneral extends React.Component {
       marginTop: 2
     }
 
-    const stopBoxBar = { color: '#fff', background: '#2c2c2c', fontSize: 12, padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}
+    const stopBoxBar = { color: '#fff', background: 'rgb(39, 58, 70)', fontSize: 12, padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}
 
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 }
 
