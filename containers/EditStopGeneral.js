@@ -53,7 +53,7 @@ class EditStopGeneral extends React.Component {
     if (id) {
 
       client.query({
-        forceFetch: true,
+        fetchPolicy: 'network-only',
         query: stopPlaceAllVersions,
         variables: {
           id: id
@@ -139,7 +139,7 @@ class EditStopGeneral extends React.Component {
     const { client } = this.props
 
     client.query({
-      forceFetch: true,
+      fetchPolicy: 'network-only',
       query: stopPlaceAndPathLinkByVersion,
       variables: {
         id: id,
