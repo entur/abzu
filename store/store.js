@@ -9,48 +9,90 @@ import userReducer from '../reducers/userReducer'
 import { routerReducer } from 'react-router-redux'
 import ApolloClient,  { createNetworkInterface } from 'apollo-client'
 
-const loggerMiddleware = createLogger()
+export default function configureStore(kc) {
 
-var enchancer = {}
+  const loggerMiddleware = createLogger()
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: window.config.tiamatBaseUrl })
-})
+  var enchancer = {}
 
-if (process.env.NODE_ENV === 'development') {
+  const networkInterface = createNetworkInterface({ uri: window.config.tiamatBaseUrl })
 
-  window.ReactPerf = require('react-addons-perf')
+  networkInterface.use([{
+    applyMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {}
+      }
 
-  enchancer = compose(
-    applyMiddleware(thunkMiddleware,loggerMiddleware, client.middleware()),
-  )
+      const token = localStorage.getItem('jwt_tiamat')
+      req.options.headers.authorization = token ? `Bearer ${token}` : null
+      next()
+    }
+  }])
 
-} else {
-  enchancer = compose(
-    applyMiddleware(thunkMiddleware, client.middleware())
-  )
-}
+  const client = new ApolloClient({
+    networkInterface: networkInterface
+  })
 
-const initialState = {
-  stopPlace: {
-    centerPosition: [ 64.349421, 16.809082 ],
-    zoom: 6,
-    minZoom: 14,
-    isCompassBearingEnabled: true,
-    isCreatingPolylines: false,
-    enablePolylines: true,
+  if (process.env.NODE_ENV === 'development') {
+
+    window.ReactPerf = require('react-addons-perf')
+
+    enchancer = compose(
+      applyMiddleware(thunkMiddleware,loggerMiddleware, client.middleware()),
+    )
+
+  } else {
+    enchancer = compose(
+      applyMiddleware(thunkMiddleware, client.middleware())
+    )
   }
-}
 
-const combinedReducer = combineReducers({
-  mapUtils: mapReducer,
-  user: userReducer,
-  routing: routerReducer,
-  stopPlace: stopPlaceReducer,
-  apollo: client.reducer()
-})
+  const initialState = {
+    stopPlace: {
+      centerPosition: [ 64.349421, 16.809082 ],
+      zoom: 6,
+      minZoom: 14,
+      isCompassBearingEnabled: true,
+      isCreatingPolylines: false,
+      enablePolylines: true,
+      kc: kc
+    },
+    user: {
+      path: '/',
+      isCreatingNewStop: false,
+      missingCoordsMap: {},
+      searchFilters: {
+        stopType: [],
+        topoiChips: [],
+        text: ''
+      },
+      snackbarOptions: {
+        isOpen: false,
+        message: ''
+      },
+      localization: {
+        locale: null,
+        messages: []
+      },
+      appliedLocale: null,
+      favoriteNameDialogIsOpen: false,
+      removedFavorites: [],
+      activeBaselayer: 'Rutebankens kart',
+      activeElementTab: 0,
+      showEditQuayAdditional: false,
+      showEditStopAdditional: false,
+      kc: kc
+    }
+  }
 
-export default function configureStore() {
+  const combinedReducer = combineReducers({
+    mapUtils: mapReducer,
+    user: userReducer,
+    routing: routerReducer,
+    stopPlace: stopPlaceReducer,
+    apollo: client.reducer(),
+  })
+
   return {
     self: createStore(
       combinedReducer,

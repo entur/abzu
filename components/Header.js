@@ -7,10 +7,12 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import MdChecked from 'material-ui/svg-icons/navigation/check'
 import Logo from '../static/logo/logo_entur.png'
+import MdAccount from 'material-ui/svg-icons/action/account-circle'
+import MdLanguage from 'material-ui/svg-icons/action/language'
 
-const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
+const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut, username}) =>{
 
-  const { title, language, norwegian, english } = text
+  const { title, language, norwegian, english, logOut } = text
 
   return (
 
@@ -32,6 +34,7 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
             <MenuItem
               primaryText={language}
               rightIcon={<ArrowDropRight />}
+              leftIcon={<MdLanguage/>}
               style={{fontSize: 12, padding: 0}}
               menuItems={[
                 <MenuItem
@@ -50,6 +53,12 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale}) =>{
                 />,
               ]}
              />
+            <MenuItem
+              leftIcon={<MdAccount/>}
+              primaryText={`${logOut} ${username}`}
+              onClick={() => handleLogOut()}
+              style={{fontSize: 12, padding: 0}}
+            />
           </IconMenu>
         }
       />

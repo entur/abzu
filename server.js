@@ -5,7 +5,7 @@ var app = new express()
 var port = process.env.port || 8988
 var globSync = require('glob').sync
 var path = require('path')
-var fs = require('fs').readFileSync
+var fs = require('fs')
 var axios = require('axios')
 
 convictPromise.then( (convict) => {
@@ -58,8 +58,11 @@ convictPromise.then( (convict) => {
     var cfg = {
       tiamatBaseUrl: convict.get('tiamatBaseUrl'),
       endpointBase: convict.get('endpointBase'),
-      OSMUrl: convict.get('OSMUrl')
+      OSMUrl: convict.get('OSMUrl'),
     }
+
+    createKeyCloakConfig(convict.get('authServerUrl'))
+
     res.send(cfg)
   })
 
@@ -100,6 +103,17 @@ convictPromise.then( (convict) => {
     }
   })
 
+  const createKeyCloakConfig = authServerUrl => {
+    let config = {
+      "realm": "rutebanken",
+      "tokens-not-before": 1490857383,
+      "public-client" : true,
+      "auth-server-url": authServerUrl,
+      "resource": "neti-frontend"
+    }
+    fs.writeFileSync('./config/keycloak.json', JSON.stringify(config), 'utf8')
+  }
+
   const getTranslations = (req) => {
 
     const supportedLanguages = ['en', 'nb']
@@ -107,7 +121,7 @@ convictPromise.then( (convict) => {
     const translations = globSync(__dirname + '/static/lang/*.json')
       .map((filename) => [
           path.basename(filename, '.json'),
-          fs(filename, 'utf8'),
+          fs.readFileSync(filename, 'utf8'),
       ]).reduce((messages, [namespace, collection]) => {
           messages[namespace] = collection
           return messages

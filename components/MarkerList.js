@@ -28,7 +28,7 @@ class MarkerList extends React.Component {
 
     if (!isAlreadyActive) {
       client.query({
-        forceFetch: true,
+        fetchPolicy: 'network-only',
         query: stopPlaceAndPathLink,
         variables: {
           id: id,
@@ -50,7 +50,7 @@ class MarkerList extends React.Component {
 
   handleFetchQuaysForNeighbourStop(id) {
     this.props.client.query({
-      forceFetch: true,
+      fetchPolicy: 'network-only',
       query: neighbourStopPlaceQuays,
       variables: {
         id: id

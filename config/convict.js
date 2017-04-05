@@ -33,14 +33,18 @@ module.exports = new Promise(function(resolve, reject){
       format: String,
       default: "https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png",
       env: "OSM_URL"
+    },
+    authServerUrl: {
+      doc: "URL to keycloak auth server",
+      format: String,
+      default: "https://test.rutebanken.org/auth",
+      env: "AUTH_SERVER_URL"
     }
 
   });
 
   // If configuration URL exists, read it and update the configuration object
   var configUrl = conf.get('configUrl');
-
-  console.log("configUrl", configUrl);
 
   if ( configUrl.indexOf("do_not_read") == -1 ) {
     // Read contents from configUrl if it is given

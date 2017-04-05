@@ -28,7 +28,7 @@ export const initialState = {
   showEditStopAdditional: false
 }
 
-const userReducer = (state = initialState, action) => {
+const userReducer = (state = {}, action) => {
 
   switch (action.type) {
 

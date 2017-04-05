@@ -50,7 +50,7 @@ class SearchBox extends React.Component {
 
       this.props.client.query({
         query: findStop,
-        forceFetch: true,
+        fetchPolicy: 'network-only',
         variables: {
           query: input,
           stopPlaceType: this.props.stopTypeFilter,
