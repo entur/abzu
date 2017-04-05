@@ -56,7 +56,7 @@ cfgreader.readConfig( (function(config) {
 
 function authWithKeyCloak(path) {
 
-  let kc = new Keycloak('/config/keycloak.json')
+  let kc = new Keycloak(config.endpointBase + 'config/keycloak.json')
 
   kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success( authenticated => {
 
