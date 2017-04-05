@@ -30,7 +30,7 @@ class QuayMarker extends React.PureComponent {
 
   getOSMURL() {
     const { position } = this.props
-    return  `https://www.openstreetmap.org/edit#map=16/${position[0]}/${position[1]}`
+    return  `https://www.openstreetmap.org/edit#map=18/${position[0]}/${position[1]}`
   }
 
 
