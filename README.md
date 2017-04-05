@@ -55,6 +55,14 @@ Uses Mocha to test unit testing and reducers
 npm run test
 ```
 
+### Authentication
+
+Uses Keycloak to authenticate user and read JWT, set `auth-server-url`:
+
+```
+AUTH_SERVER_URL=https://test.rutebanken.org/auth TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 npm run dev
+```
+
 
 ## Webpack
 
