@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
 import compassIcon from '../static/icons/compass.png'
 import compassBearingIcon from '../static/icons/compass-bearing.png'
+import OSMIcon from '../static/icons/osm_logo.png'
 import { getIn } from '../utils/'
 
 class QuayMarker extends React.PureComponent {
@@ -26,6 +27,12 @@ class QuayMarker extends React.PureComponent {
     draggable: PropTypes.bool.isRequired,
     handleSetCompassBearing: PropTypes.func
   }
+
+  getOSMURL() {
+    const { position } = this.props
+    return  `https://www.openstreetmap.org/edit#map=16/${position[0]}/${position[1]}`
+  }
+
 
   render() {
 
@@ -65,6 +72,7 @@ class QuayMarker extends React.PureComponent {
     )
 
     let quayIcon = divIcon({html: divBody, iconAnchor: [42, 45], popupAnchor: [0, 0]})
+    const osmURL = this.getOSMURL()
 
     return (
         <Marker
@@ -101,12 +109,19 @@ class QuayMarker extends React.PureComponent {
                     {position[1]}
                   </span>
                 </div>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
               { belongsToNeighbourStop
                 ? null
-                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }} style={{textAlign: 'center', marginTop: 10}}>
-                    <img style={{width: 20, height: 22}} src={compassIcon}/>
+                :  <div onClick={() => { this.props.handleSetCompassBearing(this.props.compassBearing, index) }}>
+                    <img style={{width: 20, height: 22, cursor: 'pointer'}} src={compassIcon}/>
                   </div>
               }
+              <div style={{marginLeft: 10, cursor: 'pointer'}}>
+                <a href={osmURL} target="_blank">
+                  <img style={{width: 20, height: 22, border: '1px solid grey', borderRadius: 50}} src={OSMIcon}/>
+                </a>
+              </div>
+              </div>
             </div>
           </Popup>
         </Marker>

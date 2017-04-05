@@ -55,7 +55,6 @@ class QuayItem extends React.Component {
   }
 
   showMoreOptionsForQuay = expanded => {
-    //this.props.dispatch(UserActions.showEditQuayAdditional())
     this.setState({additionalExpanded: expanded})
   }
 
@@ -111,8 +110,9 @@ class QuayItem extends React.Component {
 
 
     const removeStyle = {
-      float: 'right',
-      paddingBottom: 0
+      textAlign: 'right',
+      width: '100%',
+      paddingBottom: 0,
     }
 
     const locationStyle = {
@@ -172,15 +172,6 @@ class QuayItem extends React.Component {
             style={{width: "95%", marginTop: -10}}
             onChange={e => typeof e.target.value === 'string' && this.handleDescriptionChange(e)}
           />
-           { false ? <IconButton
-             iconClassName="material-icons"
-             onClick={this.props.handleRemoveQuay}
-             style={removeStyle}
-             >
-             delete
-             </IconButton>
-            : null // hide this for now, not used
-           }
            { !additionalExpanded ?
              <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
                <WheelChairPopover intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
@@ -211,6 +202,14 @@ class QuayItem extends React.Component {
                ? <EditQuayAdditional quay={quay} index={index}/>
                : null
              }
+           </div>
+           <div style={removeStyle}>
+             <IconButton
+               iconClassName="material-icons"
+               onClick={this.props.handleRemoveQuay}
+             >
+               delete
+             </IconButton>
            </div>
         </div>
         }
