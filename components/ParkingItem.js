@@ -18,7 +18,7 @@ class ParkingItem extends React.Component {
 
   render() {
 
-    const { parking, translations, expanded, handleToggleCollapse, index } = this.props
+    const { parking, translations, expanded, handleToggleCollapse, index, disabled } = this.props
 
     const name = ''
     const capacity = 0
@@ -56,12 +56,14 @@ class ParkingItem extends React.Component {
           : <div>
           <TextField
             hintText={translations.name}
+            disabled={disabled}
             floatingLabelText={translations.name}
             defaultValue={name}
             style={{width: "95%", marginTop: -10}}
           />
           <TextField
             hintText={translations.capacity}
+            disabled={disabled}
             floatingLabelText={translations.capacity}
             defaultValue={capacity}
             type="number"
@@ -69,6 +71,7 @@ class ParkingItem extends React.Component {
           />
           <div style={{width: '100%', textAlign: 'right'}}>
             <IconButton
+              disabled={disabled}
               iconClassName="material-icons"
               onClick={this.props.handleRemoveParking}
             >

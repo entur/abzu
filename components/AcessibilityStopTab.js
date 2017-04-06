@@ -19,7 +19,7 @@ class AcessibilityStopTab extends React.Component {
 
   render() {
 
-    const { stopPlace, intl } = this.props
+    const { stopPlace, intl, disabled } = this.props
     const { formatMessage } = intl
 
     const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
@@ -29,14 +29,14 @@ class AcessibilityStopTab extends React.Component {
       <div style={{padding: 10}}>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <WheelChairPopover displayLabel={true} intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
+            <WheelChairPopover disabled={disabled} displayLabel={true} intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
             <ToolTipIcon title={formatMessage({id: 'wheelchair_stop_hint'})} />
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
        <div style={{marginTop: 10}}>
          <div style={{display: 'flex', justifyContent: 'space-between'}}>
-           <StepFreePopover displayLabel={true} intl={intl} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
+           <StepFreePopover disabled={disabled} displayLabel={true} intl={intl} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
            <ToolTipIcon title={formatMessage({id: 'step_free_access_hint'})} />
          </div>
        </div>

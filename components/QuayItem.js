@@ -70,7 +70,7 @@ class QuayItem extends React.Component {
 
   render() {
 
-    const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType } = this.props
+    const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType, disabled } = this.props
     const { formatMessage, locale } = intl
     const { ticketMachine, busShelter, additionalExpanded } = this.state
 
@@ -161,12 +161,14 @@ class QuayItem extends React.Component {
            <TextField
              hintText={translations.publicCode}
              floatingLabelText={translations.publicCode}
+             disabled={disabled}
              defaultValue={quay.publicCode}
              style={{width: "95%", marginTop: -10}}
              onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
            />
           <TextField
             hintText={translations.description}
+            disabled={disabled}
             floatingLabelText={translations.description}
             defaultValue={quay.description}
             style={{width: "95%", marginTop: -10}}
@@ -174,10 +176,13 @@ class QuayItem extends React.Component {
           />
            { !additionalExpanded ?
              <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-               <WheelChairPopover intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
-               <StepFreePopover intl={intl} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
+               <WheelChairPopover
+                 disabled={disabled}
+                 intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
+               <StepFreePopover intl={intl} disabled={disabled} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
                <Checkbox
                  checkedIcon={<TicketMachine />}
+                 disabled={disabled}
                  uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                  style={{width: 'auto'}}
                  checked={ticketMachine}
@@ -185,6 +190,7 @@ class QuayItem extends React.Component {
                />
                <Checkbox
                  checkedIcon={<BusShelter />}
+                 disabled={disabled}
                  uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                  style={{width: 'auto'}}
                  checked={busShelter}
@@ -205,6 +211,7 @@ class QuayItem extends React.Component {
            </div>
            <div style={removeStyle}>
              <IconButton
+               disabled={disabled}
                iconClassName="material-icons"
                onClick={this.props.handleRemoveQuay}
              >

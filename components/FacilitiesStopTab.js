@@ -24,7 +24,8 @@ class FacilitiesStopTab extends React.Component {
 
   render() {
 
-    const { formatMessage } = this.props.intl
+    const { disabled, intl } = this.props
+    const { formatMessage } = intl
     const { ticketMachine, busShelter, WC, waitingRoom, bikeParking } = this.state
 
     return (
@@ -33,6 +34,7 @@ class FacilitiesStopTab extends React.Component {
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox
               checked={ticketMachine}
+              disabled={disabled}
               checkedIcon={<TicketMachine />}
               uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               label={ ticketMachine ? formatMessage({id: 'ticketMachine'}) : formatMessage({id: 'ticketMachine_no'}) }
@@ -48,6 +50,7 @@ class FacilitiesStopTab extends React.Component {
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <Checkbox
               checked={busShelter}
+              disabled={disabled}
               checkedIcon={<BusShelter />}
               uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               label={ busShelter ? formatMessage({id: 'busShelter'}) : formatMessage({id: 'busShelter_no'}) }
@@ -63,6 +66,7 @@ class FacilitiesStopTab extends React.Component {
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox
               checked={WC}
+              disabled={disabled}
               checkedIcon={<MdWc />}
               uncheckedIcon={<MdWc style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               label={ WC ? formatMessage({id: 'wc'}) : formatMessage({id: 'wc_no'}) }
@@ -78,6 +82,7 @@ class FacilitiesStopTab extends React.Component {
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox
               checked={waitingRoom}
+              disabled={disabled}
               checkedIcon={<WaitingRoom />}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               label={ waitingRoom ? formatMessage({id: 'waiting_room'}) : formatMessage({id: 'waiting_room_no'}) }
@@ -93,6 +98,7 @@ class FacilitiesStopTab extends React.Component {
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox
               checked={bikeParking}
+              disabled={disabled}
               checkedIcon={<BikeParking />}
               uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               label={ bikeParking ? formatMessage({id: 'bike_parking'}) : formatMessage({id: 'bike_parking_no'}) }

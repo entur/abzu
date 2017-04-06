@@ -142,7 +142,7 @@ class EditStopMap extends React.Component {
 
   render() {
 
-    const { position, markers, zoom, minZoom } = this.props
+    const { position, markers, zoom, minZoom, disabled } = this.props
     const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
 
     return (
@@ -155,9 +155,9 @@ class EditStopMap extends React.Component {
           key="leafletmap-edit"
           handleOnClick={this.handleClick.bind(this)}
           handleDragEnd={this.handleDragEnd.bind(this)}
-          handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
+          handleMapMoveEnd={() => {}}
           handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
-          dragableMarkers={true}
+          dragableMarkers={!disabled}
           activeBaselayer={this.props.activeBaselayer}
           handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
           enablePolylines={this.props.enablePolylines}

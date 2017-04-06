@@ -25,7 +25,6 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import SaveDialog from '../components/SaveDialog'
 
-
 class EditStopGeneral extends React.Component {
 
   constructor(props) {
@@ -165,7 +164,7 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions, disabled } = this.props
     const { formatMessage, locale } = intl
 
     if (!stopPlace) return null
@@ -260,13 +259,16 @@ class EditStopGeneral extends React.Component {
         <div style={scrollable}>
           <div style={{padding: '10 5'}}>
             <StopPlaceDetails
+              disabled={disabled}
               intl={intl}
               expanded={showEditStopAdditional}
               showLessStopPlace={this.showLessStopPlace.bind(this)}
               showMoreStopPlace={this.showMoreStopPlace.bind(this)}
             />
             { showEditStopAdditional
-              ? <EditStopAdditional/>
+              ? <EditStopAdditional
+                  disabled={disabled}
+                />
               : null
             }
             <div style={{textAlign: 'center', marginBottom: 5}}>
@@ -292,7 +294,11 @@ class EditStopGeneral extends React.Component {
               <Tab style={tabStyle} label={`${formatMessage({id: 'navigation'})} (${stopPlace.pathJunctions.length + stopPlace.entrances.length})`} value={1} />
               <Tab style={tabStyle} label={`${formatMessage({id: 'parking'})} (${stopPlace.parking.length})`} value={2} />
             </Tabs>
-            <EditStopBoxTabs activeStopPlace={stopPlace} itemTranslation={translations}/>
+            <EditStopBoxTabs
+              disabled={disabled}
+              activeStopPlace={stopPlace}
+              itemTranslation={translations}
+            />
           </div>
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
@@ -306,7 +312,7 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-          { this.state.saveDialogOpen ?
+          { (this.state.saveDialogOpen && !disabled) ?
             <SaveDialog
               open={this.state.saveDialogOpen}
               handleClose={ () => { this.handleDialogClose() }}
@@ -317,7 +323,7 @@ class EditStopGeneral extends React.Component {
           }
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
-          { stopHasBeenModified
+          { (stopHasBeenModified && !disabled)
             ?
             <FlatButton
               icon={<MdUndo/>}
@@ -337,7 +343,7 @@ class EditStopGeneral extends React.Component {
           }
           <FlatButton
             icon={<MdSave/>}
-            disabled={!stopHasBeenModified}
+            disabled={disabled || !stopHasBeenModified}
             label={formatMessage({id: 'save_new_version'})}
             style={{margin: '8 5', zIndex: 999}}
             labelStyle={{fontSize: '0.8em'}}
@@ -356,7 +362,7 @@ const mapStateToProps = state => ({
   activeElementTab: state.user.activeElementTab,
   showEditQuayAdditional: state.user.showEditQuayAdditional,
   showEditStopAdditional: state.user.showEditStopAdditional,
-  versions: state.stopPlace.versions
+  versions: state.stopPlace.versions,
 })
 
 export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))

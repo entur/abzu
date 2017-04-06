@@ -39,7 +39,7 @@ class StepFreePopover extends React.Component {
 
   render() {
 
-    const { intl, displayLabel, stepFreeAccess } = this.props
+    const { intl, displayLabel, stepFreeAccess, disabled } = this.props
     const { locale } = intl
     const { open, anchorEl } = this.state
 
@@ -49,6 +49,7 @@ class StepFreePopover extends React.Component {
           <IconButton
             style={{borderBottom: '1px dotted grey'}}
             onClick={(e) => { this.handleOpenPopover(e) }}
+            disabled={disabled}
           >
             <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]}/>
           </IconButton>

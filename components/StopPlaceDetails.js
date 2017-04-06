@@ -101,7 +101,7 @@ class StopPlaceDetails extends React.Component {
       display: "block"
     }
 
-    const { stopPlace, intl, expanded } = this.props
+    const { stopPlace, intl, expanded, disabled } = this.props
     const { formatMessage, locale } = intl
     const { name, description, busShelter, ticketMachine, bikeParking, waitingRoom, WC } = this.state
 
@@ -115,9 +115,11 @@ class StopPlaceDetails extends React.Component {
           floatingLabelText={formatMessage({id: 'name'})}
           style={{width: 295, marginTop: -10}}
           value={name}
+          disabled={disabled}
           onChange={this.handleStopNameChange.bind(this)}
         />
         <IconButton
+          disabled={disabled}
           style={{marginLeft: 30, borderBottom: '1px dotted grey'}}
           onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
         >
@@ -152,15 +154,22 @@ class StopPlaceDetails extends React.Component {
           hintText={formatMessage({id: 'description'})}
           floatingLabelText={formatMessage({id: 'description'})}
           style={{width: 295, marginTop: -10}}
+          disabled={disabled}
           value={description}
           onChange={this.handleStopDescriptionChange.bind(this)}
         />
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-              <WheelChairPopover intl={intl} handleChange={this.handleHandleWheelChair.bind(this)} wheelchairAccess={wheelchairAccess} />
+              <WheelChairPopover
+                disabled={disabled}
+                intl={intl}
+                handleChange={this.handleHandleWheelChair.bind(this)}
+                wheelchairAccess={wheelchairAccess}
+              />
               <Checkbox
                 checkedIcon={<TicketMachine />}
+                disabled={disabled}
                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
                 checked={ticketMachine}
@@ -170,6 +179,7 @@ class StopPlaceDetails extends React.Component {
                 checkedIcon={<BusShelter />}
                 uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
+                disabled={disabled}
                 checked={busShelter}
                 onCheck={(e,v) => this.setState({busShelter: v})}
               />
@@ -177,10 +187,13 @@ class StopPlaceDetails extends React.Component {
                 checkedIcon={<MdWC />}
                 uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
+                disabled={disabled}
                 checked={WC}
                 onCheck={(e,v) => this.setState({WC: v})}
-              /><Checkbox
+              />
+            <Checkbox
               checkedIcon={<WaitingRoom />}
+              disabled={disabled}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               style={{width: 'auto'}}
               checked={waitingRoom}
@@ -190,6 +203,7 @@ class StopPlaceDetails extends React.Component {
                 checkedIcon={<BikeParking />}
                 uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
+                disabled={disabled}
                 checked={bikeParking}
                 onCheck={(e,v) => this.setState({bikeParking: v})}
               />

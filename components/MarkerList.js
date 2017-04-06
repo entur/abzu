@@ -13,6 +13,7 @@ import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
 import { stopPlaceAndPathLink, neighbourStopPlaceQuays } from '../actions/Queries'
 import { getIn } from '../utils/'
+import rolesParser from '../roles/rolesParser'
 
 class MarkerList extends React.Component {
 
@@ -96,7 +97,7 @@ class MarkerList extends React.Component {
 
   render() {
 
-    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbourStopQuays, missingCoordinatesMap, handleSetCompassBearing } = this.props
+    const { stops, handleDragEnd, changeCoordinates, dragableMarkers, neighbourStopQuays, missingCoordinatesMap, handleSetCompassBearing, kc } = this.props
     const { formatMessage } = this.props.intl
 
     let popupMarkers = []
@@ -120,6 +121,8 @@ class MarkerList extends React.Component {
       newStopQuestion: formatMessage({id: 'new_stop_question'}),
       createNow: formatMessage({id: 'create_now'})
     }
+
+    const disabled = !rolesParser.isEditingAllowed(kc.tokenParsed)
 
     stops.forEach( (stop, stopIndex) => {
 
@@ -218,7 +221,7 @@ class MarkerList extends React.Component {
                   formattedStopType={localeStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                   handleChangeCoordinates={changeCoordinates}
-                  draggable
+                  draggable={!disabled}
                   belongsToNeighbourStop={!stop.isActive}
                   handleSetCompassBearing={handleSetCompassBearing}
                 />)
@@ -283,7 +286,8 @@ const mapStateToProps = state => {
     isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
     missingCoordinatesMap: state.user.missingCoordsMap,
     activeMap: state.mapUtils.activeMap,
-    pathLink: state.stopPlace.pathLink
+    pathLink: state.stopPlace.pathLink,
+    kc: state.user.kc
   }
 }
 

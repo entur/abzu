@@ -30,7 +30,7 @@ class PathJunctionItem extends React.Component {
 
   render() {
 
-    const { pathJunction, translations, expanded, handleToggleCollapse, index } = this.props
+    const { pathJunction, translations, expanded, handleToggleCollapse, index, disabled } = this.props
 
     const description = pathJunction.description || ''
 
@@ -68,12 +68,14 @@ class PathJunctionItem extends React.Component {
           <div>
             <TextField
               hintText={translations.name}
+              disabled={disabled}
               floatingLabelText={translations.name}
               value={pathJunction.name}
               style={{width: "95%", marginTop: -10}}
               onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
             />
             <TextField
+              disabled={disabled}
               hintText={translations.description}
               floatingLabelText={translations.description}
               value={description}
@@ -83,6 +85,7 @@ class PathJunctionItem extends React.Component {
             <div style={{width: '100%', textAlign: 'right'}}>
               <IconButton
                 iconClassName="material-icons"
+                disabled={disabled}
                 onClick={this.props.handleRemovePathJunction}
               >
                 delete

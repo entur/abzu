@@ -37,7 +37,7 @@ class WheelChairPopover extends React.Component {
 
   render() {
 
-    const { intl, displayLabel, wheelchairAccess } = this.props
+    const { intl, displayLabel, wheelchairAccess, disabled } = this.props
     const { locale } = intl
     const { open, anchorEl } = this.state
 
@@ -47,6 +47,7 @@ class WheelChairPopover extends React.Component {
           <IconButton
             style={{borderBottom: '1px dotted grey'}}
             onClick={(e) => { this.handleOpenPopover(e) }}
+            disabled={disabled}
           >
             <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]}/>
           </IconButton>

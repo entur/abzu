@@ -14,6 +14,7 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import { UserActions } from '../actions/'
 import EditStopSideBar from './EditStopSideBar'
+import rolesParser from '../roles/rolesParser'
 
 class EditStopPlace extends React.Component {
 
@@ -59,7 +60,7 @@ class EditStopPlace extends React.Component {
 
   render() {
 
-    let { isCreatingPolylines, stopPlace } = this.props
+    let { isCreatingPolylines, stopPlace, kc } = this.props
     const { locale, formatMessage } = this.props.intl
 
     const actions = [
@@ -70,6 +71,8 @@ class EditStopPlace extends React.Component {
     ]
 
     const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
+
+    const disabled = !rolesParser.isEditingAllowed(kc.tokenParsed)
 
     return (
       <div>
@@ -95,9 +98,9 @@ class EditStopPlace extends React.Component {
           stopPlace
             ?
             <div>
-              <EditStopGeneral/>
-              <EditStopMap/>
-              <EditStopSideBar/>
+              <EditStopGeneral disabled={disabled}/>
+              <EditStopMap disabled={disabled}/>
+              <EditStopSideBar disabled={disabled}/>
             </div>
             : <Loader/>
         }
@@ -108,7 +111,8 @@ class EditStopPlace extends React.Component {
 
 const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-  stopPlace: state.stopPlace.current || state.stopPlace.newStop
+  stopPlace: state.stopPlace.current || state.stopPlace.newStop,
+  kc: state.user.kc
 })
 
 const EditStopPlaceWithIntl = injectIntl(connect(mapStateToProps)(EditStopPlace))

@@ -30,7 +30,7 @@ class EditStopSideBar extends React.Component {
   render() {
 
     const { sliderIndex } = this.state
-    const { isMultiPolylinesEnabled, isCompassBearingEnabled, intl } = this.props
+    const { isMultiPolylinesEnabled, isCompassBearingEnabled, intl, disabled } = this.props
     const { formatMessage } = intl
 
     return (
@@ -43,6 +43,7 @@ class EditStopSideBar extends React.Component {
             buttonStyle={{background: sliderIndex === 1 ? '#f4f4f4' : '#fff', textAlign: 'left'}}
             style={{width: '100%'}}
             labelStyle={{fontSize: 13}}
+            disabled={disabled}
             onClick={() => this.setState({sliderIndex: 1})}
           />
           <RaisedButton

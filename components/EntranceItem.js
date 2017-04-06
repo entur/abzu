@@ -31,7 +31,7 @@ class EntranceItem extends React.Component {
 
   render() {
 
-    const { entrance, translations, expanded, handleToggleCollapse, index } = this.props
+    const { entrance, translations, expanded, handleToggleCollapse, index, disabled } = this.props
 
     const description = entrance.description || ''
 
@@ -68,6 +68,7 @@ class EntranceItem extends React.Component {
           : <div>
           <TextField
             hintText={translations.name}
+            disabled={disabled}
             floatingLabelText={translations.name}
             value={entrance.name}
             style={{width: "95%", marginTop: -10}}
@@ -75,6 +76,7 @@ class EntranceItem extends React.Component {
           />
           <TextField
             hintText={translations.description}
+            disabled={disabled}
             floatingLabelText={translations.description}
             value={description}
             style={{width: "95%", marginTop: -10}}
@@ -83,6 +85,7 @@ class EntranceItem extends React.Component {
           <div style={{width: '100%', textAlign: 'right'}}>
             <IconButton
               iconClassName="material-icons"
+              disabled={disabled}
               onClick={this.props.handleRemoveEntrance}
             >
               delete

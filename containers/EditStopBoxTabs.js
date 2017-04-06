@@ -34,11 +34,12 @@ class EditStopBoxTabs extends React.Component {
     this.props.dispatch(MapActions.removeElementByType(index, 'parking'))
   }
 
-  getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) {
+  getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) {
     return  activeStopPlace.quays.length ? activeStopPlace.quays.map( (quay,index) =>
       <QuayItem
         key={"quay-" + index}
         quay={quay}
+        disabled={disabled}
         ref={'quay-' + index}
         index={index}
         publicCode={quay.publicCode}
@@ -51,7 +52,7 @@ class EditStopBoxTabs extends React.Component {
     ) : <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.quays}</div>
   }
 
-  getNavigationItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) {
+  getNavigationItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) {
 
     const elementsHeaderStyle = {
       fontWeight: 600,
@@ -74,6 +75,7 @@ class EditStopBoxTabs extends React.Component {
             <PathJunctionItem
               translations={itemTranslation}
               pathJunction={pathJunction}
+              disabled={disabled}
               key={"pathJunction-" + index}
               index={index}
               handleRemovePathJunction={() => this.handleRemovePathJunction(index)}
@@ -90,6 +92,7 @@ class EditStopBoxTabs extends React.Component {
             <EntranceItem
               translations={itemTranslation}
               key={"entrance-" + index}
+              disabled={disabled}
               entrance={entrance}
               index={index}
               handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
@@ -103,7 +106,7 @@ class EditStopBoxTabs extends React.Component {
       : <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.elements}</div>
   }
 
-  getParkingElements(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) {
+  getParkingElements(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) {
 
     return activeStopPlace.parking.length
 
@@ -111,6 +114,7 @@ class EditStopBoxTabs extends React.Component {
         <ParkingItem
           translations={itemTranslation}
           key={"parking-" + index}
+          disabled={disabled}
           index={index}
           parking={parking}
           handleLocateOnMap={this.handleLocateOnMap.bind(this)}
@@ -136,14 +140,14 @@ class EditStopBoxTabs extends React.Component {
       display: "block",
     }
 
-    const { activeElementTab, itemTranslation, activeStopPlace, expandedItem } = this.props
+    const { activeElementTab, itemTranslation, activeStopPlace, expandedItem, disabled } = this.props
 
 
     return (
       <div style={tabContainerStyle}>
-        { activeElementTab === 0 ? this.getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) : null }
-        { activeElementTab === 1 ? this.getNavigationItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) : null }
-        { activeElementTab === 2 ? this.getParkingElements(activeStopPlace, expandedItem, itemTranslation, noElementsStyle) : null }
+        { activeElementTab === 0 ? this.getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) : null }
+        { activeElementTab === 1 ? this.getNavigationItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) : null }
+        { activeElementTab === 2 ? this.getParkingElements(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) : null }
       </div>
     )
   }

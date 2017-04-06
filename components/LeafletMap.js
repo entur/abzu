@@ -40,7 +40,7 @@ export default class LeafLetMap extends React.Component {
     const googleApiKey = 'AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E'
 
     const { position, zoom, handleDragEnd, handleChangeCoordinates, handleOnClick, minZoom, handleSetCompassBearing } = this.props
-    const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace, enablePolylines } = this.props
+    const { dragableMarkers, handleMapMoveEnd, onDoubleClick, newStopPlace } = this.props
 
     let { markers } = this.props
     const { BaseLayer } = LayersControl
