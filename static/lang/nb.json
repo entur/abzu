@@ -44,6 +44,7 @@
   "create_path_link_here" : "Opprett ganglenke her",
   "description" : "Beskrivelse",
   "date": "Dato",
+  "do_you_want_to_specify_expirary": "Ønsker du å angi utløpsdato for denne versjonen?",
   "discard_changes_title" : "Er du sikker på at du vil forkaste dine endringer?",
   "discard_changes_body" : "Du har gjort endringer på dette stoppet som ikke er lagret.",
   "discard_changes_confirm": "Forkast endringer",

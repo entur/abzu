@@ -44,19 +44,24 @@ helpers.mapStopToVariables = (stop, validBetween) => {
 
     const { timeFrom, timeTo, dateFrom, dateTo } = validBetween
 
-    const dateStringFrom = moment(dateFrom).format('YYYY-MM-DD').toString()
-    const dateStringTo = moment(dateTo).format('YYYY-MM-DD').toString()
-    const timeStringFrom = moment(timeFrom).format('HH:mm:ss').toString()
-    const timeStringTo = moment(timeTo).format('HH:mm:ss').toString()
+    let validPeriod = {}
 
-    const fromDateString = moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
-    const toDateString = moment(`${dateStringTo} ${timeStringTo}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
+    if (timeFrom && dateFrom) {
+      const timeStringFrom = moment(timeFrom).format('HH:mm:ss').toString()
+      const dateStringFrom = moment(dateFrom).format('YYYY-MM-DD').toString()
+      const dateTimeStringFrom = moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
+      validPeriod.fromDate = dateTimeStringFrom
+    }
+
+    if (dateTo && timeTo) {
+      const dateStringTo = moment(dateTo).format('YYYY-MM-DD').toString()
+      const timeStringTo = moment(timeTo).format('HH:mm:ss').toString()
+      const dateTimeStringTo = moment(`${dateStringTo} ${timeStringTo}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
+      validPeriod.toDate = dateTimeStringTo
+    }
 
     stopVariables.validBetweens = [
-      {
-        fromDate: fromDateString,
-        toDate: toDateString
-      }
+      validPeriod
     ]
   }
 

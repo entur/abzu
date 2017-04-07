@@ -10,7 +10,8 @@ export const getStateByOperation = (state, action) => {
 
     case 'stopPlaceAllVersions':
       return Object.assign({}, state, {
-        versions: getAllVersionFromResult(state, action)
+        versions: getAllVersionFromResult(state, action),
+        stopHasBeenModified: false
       })
 
     case 'mutateStopPlace':
@@ -89,7 +90,8 @@ const getDataFromResult = (state, action) => {
     minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),
     neighbourStopQuays: {},
-    centerPosition: (!stopPlace || !stopPlace.geometry) ? state.centerPosition : formatHelpers.getCenterPosition(stopPlace.geometry)
+    centerPosition: (!stopPlace || !stopPlace.geometry) ? state.centerPosition : formatHelpers.getCenterPosition(stopPlace.geometry),
+    stopHasBeenModified: false
   })
 }
 

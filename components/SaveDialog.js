@@ -3,26 +3,18 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TimePicker from 'material-ui/TimePicker'
 import DatePicker from 'material-ui/DatePicker'
+import Checkbox from 'material-ui/Checkbox'
+
 
 class SaveDialog extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      timeFrom: null,
-      timeTo: null,
-      dateFrom: null,
-      dateTo: null,
-    }
+    this.state = this.getInitialState()
   }
 
   componentWillUnmount() {
-    this.setState({
-      timeFrom: null,
-      timeTo: null,
-      dateFrom: null,
-      dateTo: null,
-    })
+    this.setState(this.getInitialState)
   }
 
   static propTypes = {
@@ -32,17 +24,36 @@ class SaveDialog extends React.Component {
     intl: PropTypes.object.isRequired,
   }
 
+  getInitialState() {
+    const now = new Date()
+    return {
+      timeFrom: now,
+      timeTo: null,
+      dateFrom: now,
+      dateTo: null,
+      expiraryExpanded: false
+    }
+  }
 
-  isInvalid() {
-    const { timeFrom, timeTo, dateTo, dateFrom } = this.state
-    return (!!timeFrom && !!timeTo && !!dateTo && !!dateFrom)
+  handleSave() {
+    const { handleConfirm } = this.props
+    const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo } = this.state
+    let validBetween = {
+      dateFrom: dateFrom,
+      timeFrom: timeFrom
+    }
+    if (expiraryExpanded) {
+      validBetween.dateTo = dateTo
+      validBetween.timeTo = timeTo
+    }
+    handleConfirm(JSON.parse(JSON.stringify(validBetween)))
   }
 
   render() {
 
-    const { open, intl, handleConfirm, handleClose } = this.props
+    const { open, intl, handleClose } = this.props
     const { formatMessage } = intl
-    const { timeFrom, timeTo, dateFrom, dateTo } = this.state
+    const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded } = this.state
 
     const now = new Date()
 
@@ -56,13 +67,12 @@ class SaveDialog extends React.Component {
       message_from: formatMessage({id: 'save_dialog_message_from'}),
       message_to: formatMessage({id: 'save_dialog_message_to'}),
       note: formatMessage({id: 'save_dialog_note'}),
-      error: formatMessage({id: 'save_dialog_to_is_before_from'})
+      error: formatMessage({id: 'save_dialog_to_is_before_from'}),
+      do_you_want_to_specify_expirary: formatMessage({id: 'do_you_want_to_specify_expirary'})
     }
 
-    const toDateIsBeforeFromDate = (dateTo != null && dateFrom != null)
+    const toDateIsBeforeFromDate = (dateTo != null && dateFrom != null && expiraryExpanded)
       ? new Date(dateTo) < new Date(dateFrom) : false
-
-    const isInvalid = this.isInvalid() && !toDateIsBeforeFromDate
 
     const actions = [
       <FlatButton
@@ -74,8 +84,8 @@ class SaveDialog extends React.Component {
         label={translations.confirm}
         primary={true}
         keyboardFocused={true}
-        disabled={!isInvalid}
-        onTouchTap={() => handleConfirm(this.state)}
+        disabled={toDateIsBeforeFromDate}
+        onTouchTap={() => this.handleSave()}
       />,
     ]
 
@@ -113,30 +123,41 @@ class SaveDialog extends React.Component {
           />
         </div>
         <div style={{fontSize: 12, textAlign: 'center', marginTop: 10}}>{ translations.note }</div>
-        <div style={{marginTop: 20}}>{ translations.message_to }</div>
-        <div style={{marginTop: 15, textAlign: 'center'}}>
-          <DatePicker
-            hintText={translations.date}
-            cancelLabel={translations.cancel}
-            okLabel={translations.use}
-            autoOk
-            mode="landscape"
-            minDate={dateFrom ? new Date(dateFrom) : now}
-            value={dateTo}
-            textFieldStyle={{width: '80%', border: toDateIsBeforeFromDate ? '1px solid #ff0d0d' : 'none'}}
-            onChange={(event, value) => { this.setState({dateTo: value})}}
-          />
-          <div style={{fontSize: 10, color: 'rgb(244, 67, 54)'}}>{ toDateIsBeforeFromDate ? translations.error : '' }</div>
-          <TimePicker
-            format="24hr"
-            cancelLabel={translations.cancel}
-            hintText={translations.time}
-            value={timeTo}
-            okLabel={translations.use}
-            textFieldStyle={{width: '80%'}}
-            onChange={(event, value) => { this.setState({timeTo: new Date(new Date(value).setSeconds(0))}) }}
-          />
-        </div>
+        <Checkbox
+          checked={expiraryExpanded}
+          label={translations.do_you_want_to_specify_expirary}
+          onCheck={(event, checked) => { this.setState({expiraryExpanded: checked})}}
+          style={{marginTop: 10}}
+        />
+        { expiraryExpanded ?
+          <div>
+            <div style={{marginTop: 20}}>{ translations.message_to }</div>
+            <div style={{marginTop: 15, textAlign: 'center'}}>
+              <DatePicker
+                hintText={translations.date}
+                cancelLabel={translations.cancel}
+                okLabel={translations.use}
+                autoOk
+                mode="landscape"
+                minDate={dateFrom ? new Date(dateFrom) : now}
+                value={dateTo}
+                textFieldStyle={{width: '80%', border: toDateIsBeforeFromDate ? '1px solid #ff0d0d' : 'none'}}
+                onChange={(event, value) => { this.setState({dateTo: value})}}
+              />
+              <div style={{fontSize: 10, color: 'rgb(244, 67, 54)'}}>{ toDateIsBeforeFromDate ? translations.error : '' }</div>
+              <TimePicker
+                format="24hr"
+                cancelLabel={translations.cancel}
+                hintText={translations.time}
+                value={timeTo}
+                okLabel={translations.use}
+                textFieldStyle={{width: '80%'}}
+                onChange={(event, value) => { this.setState({timeTo: new Date(new Date(value).setSeconds(0))}) }}
+              />
+            </div>
+          </div>
+          : null
+        }
       </Dialog>
     )
   }
