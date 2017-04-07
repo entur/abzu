@@ -3,7 +3,7 @@ import expect from 'expect'
 import { userReducer } from './../../reducers/'
 import { initialState } from './../../reducers/userReducer'
 
-/*describe('user reducer', () => {
+describe('user reducer', () => {
 
   it('Should return the initial state', () => {
     expect(userReducer(undefined, {}))
@@ -117,4 +117,4 @@ import { initialState } from './../../reducers/userReducer'
       })
   })
 
-}) */
+})
