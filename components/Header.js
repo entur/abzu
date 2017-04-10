@@ -34,7 +34,7 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut, 
             <MenuItem
               primaryText={language}
               rightIcon={<ArrowDropRight />}
-              leftIcon={<MdLanguage/>}
+              leftIcon={<MdLanguage color="#41c0c4"/>}
               style={{fontSize: 12, padding: 0}}
               menuItems={[
                 <MenuItem
@@ -54,7 +54,7 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut, 
               ]}
              />
             <MenuItem
-              leftIcon={<MdAccount/>}
+              leftIcon={<MdAccount color="#41c0c4"/>}
               primaryText={`${logOut} ${username}`}
               onClick={() => handleLogOut()}
               style={{fontSize: 12, padding: 0}}
