@@ -163,14 +163,12 @@ class NewElementsBox extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
-    activeMap: state.mapUtils.activeMap,
-    missingCoordsMap: state.user.missingCoordsMap,
-    activeStopPlace: state.stopPlace.current
-  }
-}
+const mapStateToProps = state => ({
+  isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
+  isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+  activeMap: state.mapUtils.activeMap,
+  missingCoordsMap: state.user.missingCoordsMap,
+  activeStopPlace: state.stopPlace.current
+})
 
 export default injectIntl(connect(mapStateToProps)(NewElementsBox))

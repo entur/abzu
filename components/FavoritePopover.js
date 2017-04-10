@@ -39,17 +39,13 @@ class FilterPopover extends React.Component {
         overflowY: "hidden"
       }
 
-      const buttonStyle = {
-        marginBottom: 5
-      }
-
       return (
         <div>
           <RaisedButton
             onTouchTap={this.handleTouchTap.bind(this)}
             icon={<StarIcon/>}
             label={caption}
-            style={buttonStyle}
+            style={{marginBottom: 5}}
             />
           <Popover
             open={this.state.open}

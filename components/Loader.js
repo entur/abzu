@@ -4,13 +4,13 @@ import RefreshIndicator from 'material-ui/RefreshIndicator'
 const Loader = () => {
 
   const loadingStyle = {
-    top: "200px",
-    height: "auto",
-    width: "380px",
-    margin: "20px",
-    position: "absolute",
-    zIndex: "2",
-    padding: "10px"
+    top: 200,
+    height: 'auto',
+    width: 380,
+    margin: 20,
+    position: 'absolute',
+    zIndex: 2,
+    padding: 10
   }
 
   return (

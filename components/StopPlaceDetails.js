@@ -218,6 +218,4 @@ const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current
 })
 
-
-
 export default connect(mapStateToProps)(StopPlaceDetails)

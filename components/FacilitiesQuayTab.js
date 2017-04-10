@@ -38,7 +38,6 @@ class FacilitiesQuayTab extends React.Component {
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
         <div style={{marginTop: 10}}>
-
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <Checkbox
               checkedIcon={<BusShelter />}

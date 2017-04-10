@@ -194,14 +194,12 @@ const getShortQuayName = (quayName) => {
   return (quayName.length > 1)  ? quayName.substring(0,1): quayName
 }
 
-const mapStateToProps = state => {
-  return {
-    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
-    focusedElement: state.mapUtils.focusedElement,
-    pathLink: state.stopPlace.pathLink
-  }
-}
+const mapStateToProps = state => ({
+  isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+  focusedElement: state.mapUtils.focusedElement,
+  pathLink: state.stopPlace.pathLink
+})
 
 export default connect(mapStateToProps)(QuayMarker)
 

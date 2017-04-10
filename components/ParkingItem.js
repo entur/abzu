@@ -15,7 +15,6 @@ class ParkingItem extends React.Component {
     parking: PropTypes.object.isRequired
   }
 
-
   render() {
 
     const { parking, translations, expanded, handleToggleCollapse, index, disabled } = this.props

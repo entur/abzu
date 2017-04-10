@@ -88,10 +88,8 @@ class FavoriteNameDialog extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    isOpen: state.user.favoriteNameDialogIsOpen
-  }
-}
+const mapStateToProps = state => ({
+  isOpen: state.user.favoriteNameDialogIsOpen
+})
 
 export default injectIntl(connect(mapStateToProps)(FavoriteNameDialog))

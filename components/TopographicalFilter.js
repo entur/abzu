@@ -49,10 +49,8 @@ class TopographicalFilter extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    topoiChips: state.user.searchFilters.topoiChips
-  }
-}
+const mapStateToProps = state => ({
+  topoiChips: state.user.searchFilters.topoiChips
+})
 
 export default connect(mapStateToProps)(TopographicalFilter)

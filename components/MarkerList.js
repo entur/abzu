@@ -278,18 +278,16 @@ class MarkerList extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    path: state.user.path,
-    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-    neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
-    isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
-    missingCoordinatesMap: state.user.missingCoordsMap,
-    activeMap: state.mapUtils.activeMap,
-    pathLink: state.stopPlace.pathLink,
-    kc: state.user.kc
-  }
-}
+const mapStateToProps = state => ({
+  path: state.user.path,
+  isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
+  isEditingStop: state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
+  missingCoordinatesMap: state.user.missingCoordsMap,
+  activeMap: state.mapUtils.activeMap,
+  pathLink: state.stopPlace.pathLink,
+  kc: state.user.kc
+})
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {
   const { formatMessage, locale } = intl

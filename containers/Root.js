@@ -31,11 +31,9 @@ class Root extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    localization: state.user.localization,
-    appliedLocale: state.user.appliedLocale
-  }
-}
+const mapStateToProps = state => ({
+  localization: state.user.localization,
+  appliedLocale: state.user.appliedLocale
+})
 
 export default connect(mapStateToProps)(Root)

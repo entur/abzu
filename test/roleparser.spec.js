@@ -1,7 +1,7 @@
 import expect from 'expect'
 import roleParser from '../roles/rolesParser'
 import tokenCanEdit from './mock/tokenParsedEdit'
-import tokenOnlyRead from './mock/tokenParsedOnlyRead'
+import tokenOnlyRead from './mock/tokenParsedReadOnly'
 
 describe('role parser', () => {
 
@@ -12,7 +12,6 @@ describe('role parser', () => {
 
     const canOnlyRead = roleParser.canEdit(tokenOnlyRead)
     expect(canOnlyRead).toEqual(false)
-
   })
 
 })

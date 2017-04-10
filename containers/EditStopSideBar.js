@@ -90,12 +90,10 @@ class EditStopSideBar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-    isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled
-  }
-}
+const mapStateToProps = state => ({
+  isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
+  isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled
+})
 
 
 export default injectIntl(connect(mapStateToProps)(EditStopSideBar))

@@ -153,12 +153,10 @@ class EditStopBoxTabs extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    activeElementTab: state.user.activeElementTab,
-    expandedItem: state.mapUtils.focusedElement
-  }
-}
+const mapStateToProps = state => ({
+  activeElementTab: state.user.activeElementTab,
+  expandedItem: state.mapUtils.focusedElement
+})
 
 export default connect(mapStateToProps)(EditStopBoxTabs)
 
