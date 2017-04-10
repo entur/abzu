@@ -23,7 +23,7 @@ export default function configureStore(kc) {
         req.options.headers = {}
       }
 
-      const token = localStorage.getItem('jwt_tiamat')
+      const token = localStorage.getItem('ABZU:jwt')
       req.options.headers.authorization = token ? `Bearer ${token}` : null
       next()
     }

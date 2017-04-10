@@ -61,9 +61,12 @@ function authWithKeyCloak(path) {
   kc.init({ onLoad: 'login-required', checkLoginIframe: false }).success( authenticated => {
 
     if (authenticated) {
+
+      localStorage.setItem('ABZU::jwt', kc.token)
+
       setInterval(() => {
         kc.updateToken(10).error(() => kc.logout());
-        localStorage.setItem('jwt_tiamat', kc.token)
+        localStorage.setItem('ABZU::jwt', kc.token)
       }, 10000)
 
       renderIndex(path, kc)
