@@ -122,7 +122,7 @@ class MarkerList extends React.Component {
       createNow: formatMessage({id: 'create_now'})
     }
 
-    const disabled = !rolesParser.isEditingAllowed(kc.tokenParsed)
+    const disabled = !rolesParser.canEdit(kc.tokenParsed)
 
     stops.forEach( (stop, stopIndex) => {
 

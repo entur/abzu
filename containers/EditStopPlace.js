@@ -72,7 +72,7 @@ class EditStopPlace extends React.Component {
 
     const shouldDisplayMessage  = (isCreatingPolylines && new InformationManager().getShouldPathLinkBeDisplayed())
 
-    const disabled = !rolesParser.isEditingAllowed(kc.tokenParsed)
+    const disabled = !rolesParser.canEdit(kc.tokenParsed)
 
     return (
       <div>

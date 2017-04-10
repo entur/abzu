@@ -1,6 +1,6 @@
 const rolesParser  = {}
 
-rolesParser.isEditingAllowed = tokenParsed => {
+rolesParser.canEdit = tokenParsed => {
 
   if (!tokenParsed || !tokenParsed.roles) return false
 
