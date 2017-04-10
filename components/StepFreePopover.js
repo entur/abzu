@@ -47,9 +47,8 @@ class StepFreePopover extends React.Component {
       <div>
         <div style={{display: 'flex', alignItems: 'center', fontSize: '0.8em'}}>
           <IconButton
-            style={{borderBottom: '1px dotted grey'}}
-            onClick={(e) => { this.handleOpenPopover(e) }}
-            disabled={disabled}
+            style={{borderBottom: disabled ? 'none' : '1px dotted grey'}}
+            onClick={(e) => { if (!disabled) this.handleOpenPopover(e) }}
           >
             <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]}/>
           </IconButton>
