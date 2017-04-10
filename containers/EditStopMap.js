@@ -155,7 +155,7 @@ class EditStopMap extends React.Component {
           key="leafletmap-edit"
           handleOnClick={this.handleClick.bind(this)}
           handleDragEnd={this.handleDragEnd.bind(this)}
-          handleMapMoveEnd={() => {}}
+          handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
           handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
           dragableMarkers={!disabled}
           activeBaselayer={this.props.activeBaselayer}
