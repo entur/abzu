@@ -21,7 +21,8 @@ class EditStopPlace extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showErrorDialog: false
+      showErrorDialog: false,
+      resourceNotFound: false
     }
   }
 
@@ -45,9 +46,20 @@ class EditStopPlace extends React.Component {
         variables: {
           id: idFromPath,
         }
-      }).catch( err => {
-        this.setState({
-          showErrorDialog: true
+      })
+        .then( response => {
+          if (!response.data.stopPlace.length) {
+            this.setState({
+              showErrorDialog: true,
+              resourceNotFound: true
+            })
+          }
+        })
+
+        .catch( err => {
+         this.setState({
+          showErrorDialog: true,
+          resourceNotFound: false
         })
       })
     }
@@ -60,8 +72,11 @@ class EditStopPlace extends React.Component {
 
   render() {
 
-    let { isCreatingPolylines, stopPlace, kc } = this.props
+    const { isCreatingPolylines, stopPlace, kc } = this.props
+    const { resourceNotFound, showErrorDialog } = this.state
     const { locale, formatMessage } = this.props.intl
+
+    const idFromPath = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).replace('/', '')
 
     const actions = [
       <FlatButton
@@ -79,9 +94,9 @@ class EditStopPlace extends React.Component {
         <Dialog
           modal={false}
           actions={actions}
-          open={this.state.showErrorDialog}
+          open={showErrorDialog}
           onRequestClose={() => { this.setState({showErrorDialog: false})}}
-        > { formatMessage({id: 'error_unable_to_load_stop'})}
+        > { resourceNotFound ? formatMessage({id: 'error_stopPlace_404'}) + idFromPath : formatMessage({id: 'error_unable_to_load_stop'})}
         </Dialog>
         { shouldDisplayMessage
           ?

@@ -56,6 +56,7 @@
   "english": "English",
   "entrance": "entrance",
   "entrances": "entrances",
+  "error_stopPlace_404": "Unable to find the stop place you were looking for with id: ",
   "error_unable_to_load_stop": "An error has occured on the server. Please try again later.",
   "estimated_path_length": "How many seconds is your estimate of this path link by walking?",
   "facilities": "Facilities",

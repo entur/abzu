@@ -3,7 +3,6 @@ import { Router, Route, IndexRoute } from 'react-router'
 import App from './App'
 import StopPlaces from './StopPlaces'
 import EditStopPlace from './EditStopPlace'
-import NotFoundRoute from './NotFoundRoute'
 
 class RouterContainer extends React.Component {
 
