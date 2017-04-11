@@ -194,6 +194,9 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       formattedStop.description = stop.description.value
     }
 
+    if (stop.placeEquipments) {
+      formattedStop.placeEquipments = stop.placeEquipments
+    }
 
     if (stop.geometry && stop.geometry.coordinates) {
       let coordinates = stop.geometry.coordinates[0].slice()

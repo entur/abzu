@@ -17,6 +17,7 @@ import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
+import equiptmentHelpers from '../modelUtils/equipmentHelpers'
 
 class StopPlaceDetails extends React.Component {
 
@@ -26,12 +27,11 @@ class StopPlaceDetails extends React.Component {
       stopTypeOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
-      stepFreeAccess: false,
-      ticketMachine: false,
-      busShelter: false,
-      bikeParking: false,
-      waitingRoom: false,
-      WC: false
+      ticketMachine: equiptmentHelpers.getTicketMachineState(props.stopPlace),
+      busShelter: equiptmentHelpers.getShelterEquipmentState(props.stopPlace),
+      bikeParking: equiptmentHelpers.getCycleStorageEquipment(props.stopPlace),
+      waitingRoom: equiptmentHelpers.getWaitingRoomState(props.stopPlace),
+      WC: equiptmentHelpers.getSanitaryEquiptmentState(props.stopPlace)
     }
 
     this.updateStopName = debounce( value => {
@@ -46,7 +46,12 @@ class StopPlaceDetails extends React.Component {
   componentWillReceiveProps(props) {
     this.setState({
       description: props.stopPlace.description || '',
-      name: props.stopPlace.name || ''
+      name: props.stopPlace.name || '',
+      ticketMachine: equiptmentHelpers.getTicketMachineState(props.stopPlace),
+      busShelter: equiptmentHelpers.getShelterEquipmentState(props.stopPlace),
+      WC: equiptmentHelpers.getSanitaryEquiptmentState(props.stopPlace),
+      waitingRoom: equiptmentHelpers.getWaitingRoomState(props.stopPlace),
+      bikeParking: equiptmentHelpers.getCycleStorageEquipment(props.stopPlace),
     })
   }
 

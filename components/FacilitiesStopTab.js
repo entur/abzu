@@ -14,19 +14,31 @@ import FlatButton from 'material-ui/FlatButton'
 import StairsIcon from '../static/icons/accessibility/Stairs'
 import EnclosedIcon from '../static/icons/facilities/Enclosed'
 import Heated from '../static/icons/facilities/Heated'
+import equipmentHelpers from '../modelUtils/equipmentHelpers'
+
 
 class FacilitiesStopTab extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      ticketMachine: false,
-      busShelter: false,
-      WC: false,
-      waitingRoom: false,
-      bikeParking: false,
+      ticketMachine: equipmentHelpers.getTicketMachineState(props.stopPlace),
+      busShelter: equipmentHelpers.getShelterEquipmentState(props.stopPlace),
+      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.stopPlace),
+      waitingRoom: equipmentHelpers.getWaitingRoomState(props.stopPlace),
+      WC: equipmentHelpers.getSanitaryEquiptmentState(props.stopPlace),
       expandedIndex: -1
     }
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      ticketMachine: equipmentHelpers.getTicketMachineState(props.stopPlace),
+      busShelter: equipmentHelpers.getShelterEquipmentState(props.stopPlace),
+      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.stopPlace),
+      waitingRoom: equipmentHelpers.getWaitingRoomState(props.stopPlace),
+      WC: equipmentHelpers.getSanitaryEquiptmentState(props.stopPlace),
+    })
   }
 
   handleExpandIndex(value) {

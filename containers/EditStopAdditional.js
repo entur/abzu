@@ -22,7 +22,7 @@ class EditStopAdditional extends React.Component {
 
   render() {
 
-    const { intl, disabled } = this.props
+    const { intl, disabled, stopPlace } = this.props
     const { formatMessage } = intl
 
     const style = {
@@ -48,7 +48,7 @@ class EditStopAdditional extends React.Component {
             <AcessibilityStopTab intl={intl} disabled={disabled} />
           </Tab>
           <Tab style={tabStyle} label={formatMessage({id: 'facilities'})} value={1}>
-            <FacilitiesStopTab intl={intl} disabled={disabled} />
+            <FacilitiesStopTab stopPlace={stopPlace} intl={intl} disabled={disabled} />
           </Tab>
         </Tabs>
       </div>

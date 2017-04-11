@@ -24,7 +24,31 @@ Fragments.quay = {
                   liftFreeAccess
                   audibleSignalsAvailable
               }
-          }                   
+          }
+          placeEquipments {
+              waitingRoomEquipment {
+                  seats
+                  heated
+                  stepFree
+              }
+              sanitaryEquipment {
+                  numberOfToilets
+                  gender
+              }
+              ticketingEquipment {
+                  ticketOffice
+                  ticketMachines
+                  numberOfMachines
+              }
+              cycleStorageEquipment {
+                  numberOfSpaces
+                  cycleStorageType
+              }
+              shelterEquipment {
+                  seats
+                  stepFree
+              }
+          }
       }
   `
 }
@@ -67,6 +91,30 @@ Fragments.stopPlace = {
                 escalatorFreeAccess
                 liftFreeAccess
                 audibleSignalsAvailable
+            }
+        }
+        placeEquipments {
+            waitingRoomEquipment {
+                seats
+                heated
+                stepFree
+            }
+            sanitaryEquipment {
+                numberOfToilets
+                gender
+            }
+            ticketingEquipment {
+                ticketOffice
+                ticketMachines
+                numberOfMachines
+            }
+            cycleStorageEquipment {
+                numberOfSpaces
+                cycleStorageType
+            }
+            shelterEquipment {
+                seats
+                stepFree
             }
         }
     }
