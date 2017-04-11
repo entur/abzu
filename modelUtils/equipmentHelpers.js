@@ -2,27 +2,27 @@ import { getIn } from '../utils'
 
 const EquipmentHelpers = {}
 
-EquipmentHelpers.getTicketMachineState = stopPlace => {
-  return  getIn(stopPlace, ['placeEquipments', 'ticketingEquipment', 'ticketMachines'], false)
+EquipmentHelpers.getTicketMachineState = entity => {
+  return  getIn(entity, ['placeEquipments', 'ticketingEquipment', 'ticketMachines'], false)
 }
 
-EquipmentHelpers.getShelterEquipmentState = stopPlace => {
-  const numberOfSeats = getIn(stopPlace, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
+EquipmentHelpers.getShelterEquipmentState = entity => {
+  const numberOfSeats = getIn(entity, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
   return numberOfSeats > 0
 }
 
-EquipmentHelpers.getSanitaryEquiptmentState = stopPlace => {
-  const numberOfToilets = getIn(stopPlace, ['placeEquipments', 'sanitaryEquipment', 'numberOfToilets'], 0)
+EquipmentHelpers.getSanitaryEquiptmentState = entity => {
+  const numberOfToilets = getIn(entity, ['placeEquipments', 'sanitaryEquipment', 'numberOfToilets'], 0)
   return numberOfToilets > 0
 }
 
-EquipmentHelpers.getWaitingRoomState = stopPlace => {
-  const numberOfSeats = getIn(stopPlace, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0)
+EquipmentHelpers.getWaitingRoomState = entity => {
+  const numberOfSeats = getIn(entity, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0)
   return numberOfSeats > 0
 }
 
-EquipmentHelpers.getCycleStorageEquipment = stopPlace => {
-  const numberOfSpaces = getIn(stopPlace, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
+EquipmentHelpers.getCycleStorageEquipment = entity => {
+  const numberOfSpaces = getIn(entity, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
   return numberOfSpaces > 0
 }
 

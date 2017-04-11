@@ -21,6 +21,8 @@ import EditQuayAdditional from '../containers/EditQuayAdditional'
 import WheelChairPopover from './WheelChairPopover'
 import StepFreePopover from './StepFreePopover'
 import { getIn } from '../utils/'
+import equipmentHelpers from '../modelUtils/equipmentHelpers'
+
 
 class QuayItem extends React.Component {
 
@@ -37,8 +39,11 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ticketMachine: false,
-      busShelter: false,
+      ticketMachine: equipmentHelpers.getTicketMachineState(props.quay),
+      busShelter: equipmentHelpers.getShelterEquipmentState(props.quay),
+      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.quay),
+      waitingRoom: equipmentHelpers.getWaitingRoomState(props.quay),
+      WC: equipmentHelpers.getSanitaryEquiptmentState(props.quay),
       additionalExpanded: false
     }
   }
@@ -205,7 +210,7 @@ class QuayItem extends React.Component {
                : <FlatButton icon={<MdMore/>} onClick={() => this.showMoreOptionsForQuay(true)} />
              }
              { additionalExpanded
-               ? <EditQuayAdditional quay={quay} index={index}/>
+               ? <EditQuayAdditional quay={quay} index={index} disabled={disabled}/>
                : null
              }
            </div>

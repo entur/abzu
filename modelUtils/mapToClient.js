@@ -171,7 +171,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {
 
-    let formattedStop = {
+    let clientStop = {
       id: stop.id,
       name: stop.name.value,
       stopPlaceType: stop.stopPlaceType,
@@ -180,51 +180,49 @@ helpers.mapStopToClientStop = (stop, isActive) => {
 
     if (stop.topographicPlace) {
       if (stop.topographicPlace.name) {
-        formattedStop.topographicPlace = stop.topographicPlace.name.value
+        clientStop.topographicPlace = stop.topographicPlace.name.value
       }
       if (stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) {
-        formattedStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
+        clientStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
       }
     }
 
-    formattedStop.accessibilityAssessment = stop.accessibilityAssessment
+    clientStop.accessibilityAssessment = stop.accessibilityAssessment
       ? stop.accessibilityAssessment : getAssessmentSetBasedOnQuays(stop.quays)
 
     if (stop.description) {
-      formattedStop.description = stop.description.value
+      clientStop.description = stop.description.value
     }
 
     if (stop.placeEquipments) {
-      formattedStop.placeEquipments = stop.placeEquipments
+      clientStop.placeEquipments = stop.placeEquipments
     }
 
     if (stop.geometry && stop.geometry.coordinates) {
       let coordinates = stop.geometry.coordinates[0].slice()
       // Leaflet uses latLng, GeoJSON [long,lat]
-      formattedStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+      clientStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
     }
 
     if (stop.importedId) {
-      formattedStop.importedId = stop.importedId
+      clientStop.importedId = stop.importedId
     }
 
     if (isActive) {
 
-      formattedStop.quays = []
-      formattedStop.entrances = []
-      formattedStop.pathJunctions = []
-      formattedStop.parking = []
+      clientStop.quays = []
+      clientStop.entrances = []
+      clientStop.pathJunctions = []
+      clientStop.parking = []
 
       if (stop.quays) {
-        formattedStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay, formattedStop.accessibilityAssessment)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
+        clientStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay, clientStop.accessibilityAssessment)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
       }
     }
-
-    return formattedStop
+    return clientStop
   } catch (e) {
     console.log("error", e)
   }
-
 }
 
 helpers.mapQuayToClientQuay = (quay, accessibilityAssessment)  => {
@@ -247,6 +245,10 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment)  => {
     let coordinates = quay.geometry.coordinates[0].slice()
 
     clientQuay.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+  }
+
+  if (quay.placeEquipments) {
+    clientQuay.placeEquipments = quay.placeEquipments
   }
 
   return clientQuay
