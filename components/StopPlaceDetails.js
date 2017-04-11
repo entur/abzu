@@ -85,7 +85,8 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleHandleWheelChair(value) {
-    this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
+    if (!this.props.disabled)
+      this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
   }
 
 
@@ -162,50 +163,44 @@ class StopPlaceDetails extends React.Component {
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
               <WheelChairPopover
-                disabled={disabled}
                 intl={intl}
                 handleChange={this.handleHandleWheelChair.bind(this)}
                 wheelchairAccess={wheelchairAccess}
               />
               <Checkbox
                 checkedIcon={<TicketMachine />}
-                disabled={disabled}
                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
                 checked={ticketMachine}
-                onCheck={(e,v) => this.setState({ticketMachine: v})}
+                onCheck={(e,v) => { if(!disabled) this.setState({ticketMachine: v})} }
               />
               <Checkbox
                 checkedIcon={<BusShelter />}
                 uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={busShelter}
-                onCheck={(e,v) => this.setState({busShelter: v})}
+                onCheck={(e,v) => { if (!disabled) this.setState({busShelter: v})}}
               />
               <Checkbox
                 checkedIcon={<MdWC />}
                 uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={WC}
-                onCheck={(e,v) => this.setState({WC: v})}
+                onCheck={(e,v) => { if (!disabled) this.setState({WC: v})}}
               />
             <Checkbox
               checkedIcon={<WaitingRoom />}
-              disabled={disabled}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               style={{width: 'auto'}}
               checked={waitingRoom}
-              onCheck={(e,v) => this.setState({waitingRoom: v})}
+              onCheck={(e,v) => { if(!disabled) this.setState({waitingRoom: v})} }
             />
               <Checkbox
                 checkedIcon={<BikeParking />}
                 uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={bikeParking}
-                onCheck={(e,v) => this.setState({bikeParking: v})}
+                onCheck={(e,v) => { if (!disabled) this.setState({bikeParking: v})} }
               />
           </div>
         }
