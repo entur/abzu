@@ -15,6 +15,7 @@ import StairsIcon from '../static/icons/accessibility/Stairs'
 import EnclosedIcon from '../static/icons/facilities/Enclosed'
 import Heated from '../static/icons/facilities/Heated'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
+import { getIn } from '../utils/'
 
 
 class FacilitiesStopTab extends React.Component {
@@ -55,9 +56,18 @@ class FacilitiesStopTab extends React.Component {
 
   render() {
 
-    const { disabled, intl } = this.props
+    const { disabled, intl, stopPlace } = this.props
     const { formatMessage } = intl
     const { ticketMachine, busShelter, WC, waitingRoom, bikeParking, expandedIndex } = this.state
+
+    const ticketMachineNumber = getIn(stopPlace, ['placeEquipments', 'ticketingEquipment', 'numberOfMachines'], 0)
+    const shelterSeats = getIn(stopPlace, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
+    const shelterStepFree = getIn(stopPlace, ['placeEquipments', 'shelterEquipment', 'stepFree'], false)
+    const shelterEnclosed = getIn(stopPlace, ['placeEquipments', 'shelterEquipment', 'enclosed'], false)
+    const waitingRoomSeats = getIn(stopPlace, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0)
+    const waitingRoomHeated = getIn(stopPlace, ['placeEquipments', 'waitingRoomEquipment', 'heated'], false)
+    const waitingRoomStepFree = getIn(stopPlace, ['placeEquipments', 'waitingRoomEquipment', 'stepFree'], false)
+    const bikeParkingSpaces = getIn(stopPlace, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
 
     return (
       <div style={{padding: 10}}>
@@ -80,6 +90,7 @@ class FacilitiesStopTab extends React.Component {
                 <TextField
                   hintText={formatMessage({id: 'number_of_ticket_machines'})}
                   type="number"
+                  defaultValue={ticketMachineNumber}
                   disabled={disabled}
                   onChange={(event, value) => { console.log(value)}}
                   min="0"
@@ -124,6 +135,7 @@ class FacilitiesStopTab extends React.Component {
             <div>
               <TextField
                 hintText={formatMessage({id: 'number_of_seats'})}
+                defaultValue={shelterSeats}
                 type="number"
                 onChange={(event, value) => { console.log(value)}}
                 min="0"
@@ -133,7 +145,7 @@ class FacilitiesStopTab extends React.Component {
               <div style={{display: 'block'}}>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                   <Checkbox
-                    defaultChecked={false}
+                    defaultChecked={shelterStepFree}
                     checkedIcon={<StairsIcon />}
                     style={{width: 'auto'}}
                     label={ busShelter ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
@@ -141,7 +153,7 @@ class FacilitiesStopTab extends React.Component {
                     labelStyle={{fontSize: '0.8em'}}
                   />
                   <Checkbox
-                    defaultChecked={false}
+                    defaultChecked={shelterEnclosed}
                     checkedIcon={<EnclosedIcon />}
                     uncheckedIcon={<EnclosedIcon style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     label={ busShelter ? formatMessage({id: 'enclosed'}) : formatMessage({id: 'enclosed_no'}) }
@@ -183,21 +195,6 @@ class FacilitiesStopTab extends React.Component {
             />
             <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
           </div>
-          <div style={{textAlign: 'center', marginBottom: 5}}>
-            { expandedIndex === 2
-              ? <FlatButton
-                style={{height: 20, minWidth: 20, width: 20}}
-                icon={<MdLess style={{height: 16, width: 16}}/>}
-                onClick={() => this.handleCollapseIndex(2)}
-              />
-              :
-              <FlatButton
-                style={{height: 20, minWidth: 20, width: 20}}
-                icon={<MdMore style={{height: 16, width: 16}}/>}
-                onClick={() => this.handleExpandIndex(2)}
-              />
-            }
-          </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
         <div style={{marginTop: 10}}>
@@ -228,7 +225,7 @@ class FacilitiesStopTab extends React.Component {
               <div style={{display: 'block'}}>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                   <Checkbox
-                    defaultChecked={false}
+                    defaultChecked={waitingRoomStepFree}
                     checkedIcon={<StairsIcon />}
                     style={{width: 'auto'}}
                     label={ busShelter ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
@@ -236,7 +233,7 @@ class FacilitiesStopTab extends React.Component {
                     labelStyle={{fontSize: '0.8em'}}
                   />
                   <Checkbox
-                    defaultChecked={false}
+                    defaultChecked={waitingRoomHeated}
                     checkedIcon={<Heated/>}
                     uncheckedIcon={<Heated style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     label={ busShelter ? formatMessage({id: 'heating'}) : formatMessage({id: 'heating_no'}) }
@@ -284,6 +281,7 @@ class FacilitiesStopTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_seats'})}
                 type="number"
+                defaultValue={bikeParkingSpaces}
                 disabled={disabled}
                 onChange={(event, value) => { console.log(value)}}
                 min="0"
