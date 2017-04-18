@@ -216,6 +216,7 @@ class FacilitiesStopTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_seats'})}
                 type="number"
+                defaultValue={waitingRoomSeats}
                 disabled={disabled}
                 onChange={(event, value) => { console.log(value)}}
                 min="0"

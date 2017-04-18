@@ -2,6 +2,7 @@ import { getStateByOperation, getObjectFromCache } from './stopPlaceReducerUtils
 import * as types from '../actions/Types'
 import formatHelpers from '../modelUtils/mapToClient'
 import limitationHelpers from '../modelUtils/limitationHelpers'
+import equipmentHelpers from '../modelUtils/equipmentHelpers'
 
 const graphQLreducer = (state = {}, action) => {
 
@@ -190,6 +191,36 @@ const graphQLreducer = (state = {}, action) => {
       case types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT:
         return Object.assign({}, state, {
           current: limitationHelpers.updateCurrentWithQuayLimitations(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_TICKET_MACHINE_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.updateTicketMachineState(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_SHELTER_EQUIPMENT_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.updateShelterEquipmentState(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_SANITARY_EQUIPMENT_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.updateSanitaryEquipmentState(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_WAITING_ROOM_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.updateWaitingRoomState(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGED_CYCLE_STORAGE_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.updateCycleStorageEquipmentState(state.current, action.payLoad),
           stopHasBeenModified: true
         })
 
