@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
@@ -15,6 +16,7 @@ import StairsIcon from '../static/icons/accessibility/Stairs'
 import EnclosedIcon from '../static/icons/facilities/Enclosed'
 import Heated from '../static/icons/facilities/Heated'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
+import { EquipmentActions } from '../actions/'
 import { getIn } from '../utils/'
 
 class FacilitiesQuayTab extends React.Component {
@@ -22,23 +24,8 @@ class FacilitiesQuayTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ticketMachine: equipmentHelpers.getTicketMachineState(props.quay),
-      busShelter: equipmentHelpers.getShelterEquipmentState(props.quay),
-      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.quay),
-      waitingRoom: equipmentHelpers.getWaitingRoomState(props.quay),
-      WC: equipmentHelpers.getSanitaryEquiptmentState(props.quay),
       expandedIndex: -1
     }
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      ticketMachine: equipmentHelpers.getTicketMachineState(props.quay),
-      busShelter: equipmentHelpers.getShelterEquipmentState(props.quay),
-      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.quay),
-      waitingRoom: equipmentHelpers.getWaitingRoomState(props.quay),
-      WC: equipmentHelpers.getSanitaryEquiptmentState(props.quay),
-    })
   }
 
 
@@ -54,11 +41,96 @@ class FacilitiesQuayTab extends React.Component {
     })
   }
 
+  handleTicketMachineChange(value) {
+    const { index, disabled, dispatch } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateTicketMachineState(value, 'quay', index))
+    }
+  }
+
+  handleValueForTicketMachineChange(newValue) {
+    const { quay } = this.props
+    const oldValuesSet = {
+      seats: getIn(quay, ['placeEquipments', 'shelterEquipment', 'seats'], 0),
+      ticketMachines: newValue.numberOfMachines ? newValue.numberOfMachines > 0 : false,
+      ticketOffice: newValue.numberOfMachines ? newValue.numberOfMachines > 0 : false
+    }
+    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
+    this.handleTicketMachineChange(newValuesSet)
+  }
+
+  handleBusShelterChange(value) {
+    const { index, disabled, dispatch } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateShelterEquipmentState(value, 'quay', index))
+    }
+  }
+
+  handleValueForBusShelterChange(newValue) {
+    const { quay } = this.props
+    const oldValuesSet = {
+      seats: getIn(quay, ['placeEquipments', 'shelterEquipment', 'seats'], 0),
+      stepFree: getIn(quay, ['placeEquipments', 'shelterEquipment', 'stepFree'], false),
+      enclosed: getIn(quay, ['placeEquipments', 'shelterEquipment', 'enclosed'], false)
+    }
+    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
+    this.handleBusShelterChange(newValuesSet)
+  }
+
+  handleWCChange(value) {
+    const { index, disabled, dispatch } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateWCState(value, 'quay', index))
+    }
+  }
+
+  handleWaitingRoomChange(value) {
+    const { index, disabled, dispatch } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateWaitingRoomState(value, 'quay', index))
+    }
+  }
+
+  handleValueForWaitingRoomChange(newValue) {
+    const { quay } = this.props
+    const oldValuesSet = {
+      seats: getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0),
+      heated: getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'heated'], false),
+      stepFree: getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'stepFree'], false)
+    }
+    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
+    this.handleWaitingRoomChange(newValuesSet)
+  }
+
+  handleValuesForCycleStorage(newValue) {
+    const { quay } = this.props
+    const oldValuesSet = {
+      numberOfSpaces: getIn(quay, ['placeEquipments', 'CycleStorageEquipment', 'numberOfSpaces'], 0),
+      cycleStorageType: getIn(quay, ['placeEquipments', 'CycleStorageEquipment', 'cycleStorageType'], 'racks'),
+    }
+    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
+    this.handleCycleStorageChange(newValuesSet)
+  }
+
+  handleCycleStorageChange(value) {
+    const { index, disabled, dispatch } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateCycleStorageState(value, 'quay', index))
+    }
+  }
+
+
   render() {
 
     const { intl, disabled, quay } = this.props
     const { formatMessage } = intl
-    const { ticketMachine, busShelter, WC, waitingRoom, bikeParking, expandedIndex } = this.state
+    const { expandedIndex } = this.state
+
+    const ticketMachine = equipmentHelpers.getTicketMachineState(quay)
+    const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
+    const bikeParking = equipmentHelpers.getCycleStorageEquipment(quay)
+    const waitingRoom = equipmentHelpers.getWaitingRoomState(quay)
+    const WC = equipmentHelpers.getSanitaryEquiptmentState(quay)
 
     const ticketMachineNumber = getIn(quay, ['placeEquipments', 'ticketingEquipment', 'numberOfMachines'], 0)
     const shelterSeats = getIn(quay, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
@@ -80,7 +152,7 @@ class FacilitiesQuayTab extends React.Component {
               label={ ticketMachine ? formatMessage({id: 'ticketMachine'}) : formatMessage({id: 'ticketMachine_no'}) }
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '80%'}}
-              onCheck={(e,v) => { if (!disabled) this.setState({ticketMachine: v})}}
+              onCheck={(e,v) => { this.handleTicketMachineChange(v) }}
             />
             <ToolTipIcon title={formatMessage({id: 'ticketMachine_stop_hint'})}/>
           </div>
@@ -90,12 +162,12 @@ class FacilitiesQuayTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_ticket_machines'})}
                 type="number"
-                defaultValue={ticketMachineNumber}
+                value={ticketMachineNumber}
                 disabled={disabled}
-                onChange={(event, value) => { console.log(value)}}
                 min="0"
                 fullWidth={true}
                 floatingLabelText={formatMessage({id: 'number_of_ticket_machines'})}
+                onChange={(event, value) => { this.handleValueForTicketMachineChange({numberOfMachines: value})}}
               />
             </div>
             : null
@@ -126,7 +198,7 @@ class FacilitiesQuayTab extends React.Component {
               label={ busShelter ? formatMessage({id: 'busShelter'}) : formatMessage({id: 'busShelter_no'}) }
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '80%'}}
-              onCheck={(e,v) => { if (!disabled) this.setState({busShelter: v})} }
+              onCheck={(e,v) => { this.handleBusShelterChange(v) }}
             />
             <ToolTipIcon title={formatMessage({id: 'busShelter_stop_hint'})}/>
           </div>
@@ -136,8 +208,8 @@ class FacilitiesQuayTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_seats'})}
                 type="number"
-                defaultValue={shelterSeats}
-                onChange={(event, value) => { console.log(value)}}
+                value={shelterSeats}
+                onChange={(event, value) => { this.handleValueForBusShelterChange({seats: value})}}
                 min="0"
                 fullWidth={true}
                 floatingLabelText={formatMessage({id: 'number_of_seats'})}
@@ -145,20 +217,22 @@ class FacilitiesQuayTab extends React.Component {
               <div style={{display: 'block'}}>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                   <Checkbox
-                    defaultChecked={shelterStepFree}
+                    checked={shelterStepFree}
                     checkedIcon={<StairsIcon />}
                     style={{width: 'auto'}}
-                    label={ busShelter ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
+                    label={ shelterStepFree ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
                     uncheckedIcon={<StairsIcon style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     labelStyle={{fontSize: '0.8em'}}
+                    onCheck={(e,v) => { this.handleValueForBusShelterChange({stepFree: v}) }}
                   />
                   <Checkbox
-                    defaultChecked={shelterEnclosed}
+                    checked={shelterEnclosed}
                     checkedIcon={<EnclosedIcon />}
                     uncheckedIcon={<EnclosedIcon style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                    label={ busShelter ? formatMessage({id: 'enclosed'}) : formatMessage({id: 'enclosed_no'}) }
+                    label={ shelterEnclosed ? formatMessage({id: 'enclosed'}) : formatMessage({id: 'enclosed_no'}) }
                     labelStyle={{fontSize: '0.8em'}}
                     style={{width: 'auto'}}
+                    onCheck={(e,v) => { this.handleValueForBusShelterChange({enclosed: v}) }}
                   />
                 </div>
               </div>
@@ -191,7 +265,7 @@ class FacilitiesQuayTab extends React.Component {
               label={ WC ? formatMessage({id: 'wc'}) : formatMessage({id: 'wc_no'}) }
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '80%'}}
-              onCheck={(e,v) => { if (!disabled) this.setState({WC: v})} }
+              onCheck={(e,v) => { this.handleWCChange(v) }}
             />
             <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
           </div>
@@ -206,7 +280,7 @@ class FacilitiesQuayTab extends React.Component {
               label={ waitingRoom ? formatMessage({id: 'waiting_room'}) : formatMessage({id: 'waiting_room_no'}) }
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '80%'}}
-              onCheck={(e,v) => { if (!disabled) this.setState({waitingRoom: v})} }
+              onCheck={(e,v) => { this.handleWaitingRoomChange(v) }}
             />
             <ToolTipIcon title={formatMessage({id: 'waitingroom_stop_hint'})}/>
           </div>
@@ -216,9 +290,9 @@ class FacilitiesQuayTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_seats'})}
                 type="number"
-                defaultValue={waitingRoomSeats}
+                value={waitingRoomSeats}
                 disabled={disabled}
-                onChange={(event, value) => { console.log(value)}}
+                onChange={(event, value) => { this.handleValueForWaitingRoomChange({seats: value})}}
                 min="0"
                 fullWidth={true}
                 floatingLabelText={formatMessage({id: 'number_of_seats'})}
@@ -226,20 +300,22 @@ class FacilitiesQuayTab extends React.Component {
               <div style={{display: 'block'}}>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                   <Checkbox
-                    defaultChecked={waitingRoomStepFree}
+                    checked={waitingRoomStepFree}
                     checkedIcon={<StairsIcon />}
                     style={{width: 'auto'}}
                     label={ busShelter ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
                     uncheckedIcon={<StairsIcon style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     labelStyle={{fontSize: '0.8em'}}
+                    onCheck={(e,v) => { this.handleValueForWaitingRoomChange({stepFree: v}) }}
                   />
                   <Checkbox
-                    defaultChecked={waitingRoomHeated}
+                    checked={waitingRoomHeated}
                     checkedIcon={<Heated/>}
                     uncheckedIcon={<Heated style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     label={ busShelter ? formatMessage({id: 'heating'}) : formatMessage({id: 'heating_no'}) }
                     labelStyle={{fontSize: '0.8em'}}
                     style={{width: 'auto'}}
+                    onCheck={(e,v) => { this.handleValueForWaitingRoomChange({heated: v}) }}
                   />
                 </div>
               </div>
@@ -272,7 +348,7 @@ class FacilitiesQuayTab extends React.Component {
               label={ bikeParking ? formatMessage({id: 'bike_parking'}) : formatMessage({id: 'bike_parking_no'}) }
               labelStyle={{fontSize: '0.8em'}}
               style={{width: '80%'}}
-              onCheck={(e,v) => { if (!disabled) this.setState({bikeParking: v})} }
+              onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
             />
             <ToolTipIcon title={formatMessage({id: 'bike_parking_hint'})}/>
           </div>
@@ -282,9 +358,9 @@ class FacilitiesQuayTab extends React.Component {
               <TextField
                 hintText={formatMessage({id: 'number_of_spaces'})}
                 type="number"
-                defaultValue={bikeParkingSpaces}
+                value={bikeParkingSpaces}
                 disabled={disabled}
-                onChange={(event, value) => { console.log(value)}}
+                onChange={(event, value) => { this.handleValuesForCycleStorage({numberOfSpaces: value})}}
                 min="0"
                 fullWidth={true}
                 floatingLabelText={formatMessage({id: 'number_of_spaces'})}
@@ -314,4 +390,4 @@ class FacilitiesQuayTab extends React.Component {
   }
 }
 
-export default FacilitiesQuayTab
+export default connect(null)(FacilitiesQuayTab)

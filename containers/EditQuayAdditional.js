@@ -52,7 +52,7 @@ class EditQuayAdditional extends React.Component {
             <AccessiblityQuayTab intl={intl} quay={quay} index={index} disabled={disabled} />
           </Tab>
           <Tab style={tabStyle} label={formatMessage({id: 'facilities'})} value={1}>
-            <FacilitiesQuayTab intl={intl} quay={quay} disabled={disabled}/>
+            <FacilitiesQuayTab intl={intl} quay={quay} index={index}  disabled={disabled}/>
           </Tab>
         </Tabs>
       </div>

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import TextField from 'material-ui/TextField'
-import { MapActions, AssessmentActions } from '../actions/'
+import { MapActions, AssessmentActions, EquipmentActions } from '../actions/'
 import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
@@ -23,9 +23,7 @@ import StepFreePopover from './StepFreePopover'
 import { getIn } from '../utils/'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 
-
 class QuayItem extends React.Component {
-
   static PropTypes = {
     publicCode: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
@@ -39,15 +37,9 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ticketMachine: equipmentHelpers.getTicketMachineState(props.quay),
-      busShelter: equipmentHelpers.getShelterEquipmentState(props.quay),
-      bikeParking: equipmentHelpers.getCycleStorageEquipment(props.quay),
-      waitingRoom: equipmentHelpers.getWaitingRoomState(props.quay),
-      WC: equipmentHelpers.getSanitaryEquiptmentState(props.quay),
       additionalExpanded: false
     }
   }
-
 
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props
@@ -64,23 +56,39 @@ class QuayItem extends React.Component {
   }
 
   handleWheelChairChange(value) {
-    const { index } = this.props
-    this.props.dispatch(AssessmentActions.setQuayWheelchairAccess(value, index))
+    const { index, dispatch } = this.props
+    dispatch(AssessmentActions.setQuayWheelchairAccess(value, index))
   }
 
   handleStepFreeChange(value) {
-    const { index } = this.props
-    this.props.dispatch(AssessmentActions.setQuayStepFreeAccess(value, index))
+    const { index, dispatch } = this.props
+    dispatch(AssessmentActions.setQuayStepFreeAccess(value, index))
+  }
+
+  handleTicketMachineChange(value) {
+    const { dispatch, disabled, index } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateTicketMachineState(value, 'quay', index))
+    }
+  }
+
+  handleBusShelterChange(value) {
+    const { dispatch, disabled, index } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.updateShelterEquipmentState(value, 'quay', index))
+    }
   }
 
   render() {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { ticketMachine, busShelter, additionalExpanded } = this.state
+    const { additionalExpanded } = this.state
 
     const wheelchairAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
     const stepFreeAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'stepFreeAccess'], 'UNKNOWN')
+    const ticketMachine = equipmentHelpers.getTicketMachineState(quay)
+    const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
 
     let quayItemName = null
 
@@ -191,7 +199,7 @@ class QuayItem extends React.Component {
                  uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                  style={{width: 'auto'}}
                  checked={ticketMachine}
-                 onCheck={(e,v) => this.setState({ticketMachine: v})}
+                 onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
                />
                <Checkbox
                  checkedIcon={<BusShelter />}
@@ -199,7 +207,7 @@ class QuayItem extends React.Component {
                  uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                  style={{width: 'auto'}}
                  checked={busShelter}
-                 onCheck={(e,v) => this.setState({busShelter: v})}
+                 onCheck={(e,v) => { this.handleBusShelterChange(v) } }
                />
            </div>
              : null

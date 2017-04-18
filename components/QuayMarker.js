@@ -16,7 +16,7 @@ class QuayMarker extends React.PureComponent {
     id: PropTypes.string,
     parentId: PropTypes.number.isRequired,
     parentStopPlaceName: PropTypes.string.isRequired,
-    position: PropTypes.arrayOf(Number).isRequired,
+    position: PropTypes.arrayOf(Number),
     name: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     handleQuayDragEnd: PropTypes.func.isRequired,

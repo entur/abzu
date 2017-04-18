@@ -80,17 +80,6 @@ class FacilitiesStopTab extends React.Component {
     }
   }
 
-  handleValuesForCycleStorage(newValue) {
-    const { stopPlace } = this.props
-    const oldValuesSet = {
-      numberOfSpaces: getIn(stopPlace, ['placeEquipments', 'CycleStorageEquipment', 'numberOfSpaces'], 0),
-      cycleStorageType: getIn(stopPlace, ['placeEquipments', 'CycleStorageEquipment', 'cycleStorageType'], 'racks'),
-    }
-    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
-    this.handleCycleStorageChange(newValuesSet)
-  }
-
-
   handleWaitingRoomChange(value) {
     if (!this.props.disabled) {
       this.props.dispatch(EquipmentActions.updateWaitingRoomState(value, 'stopPlace', this.props.stopPlace.id))
@@ -108,11 +97,22 @@ class FacilitiesStopTab extends React.Component {
     this.handleWaitingRoomChange(newValuesSet)
   }
 
+  handleValuesForCycleStorage(newValue) {
+    const { stopPlace } = this.props
+    const oldValuesSet = {
+      numberOfSpaces: getIn(stopPlace, ['placeEquipments', 'CycleStorageEquipment', 'numberOfSpaces'], 0),
+      cycleStorageType: getIn(stopPlace, ['placeEquipments', 'CycleStorageEquipment', 'cycleStorageType'], 'racks'),
+    }
+    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
+    this.handleCycleStorageChange(newValuesSet)
+  }
+
   handleCycleStorageChange(value) {
     if (!this.props.disabled) {
       this.props.dispatch(EquipmentActions.updateCycleStorageState(value, 'stopPlace', this.props.stopPlace.id))
     }
   }
+
 
   render() {
 
