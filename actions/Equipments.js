@@ -15,10 +15,12 @@ export const defaultEquipments = {
     isChecked: {
       seats: 1,
       stepFree: false,
+      enclosed: false,
     },
     isUnChecked: {
       seats: 0,
-      stepFree: false
+      stepFree: false,
+      enclosed: false
     }
   },
   sanitaryEquipment: {

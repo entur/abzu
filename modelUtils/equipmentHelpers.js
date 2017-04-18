@@ -57,13 +57,13 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
 
   let stateFromCheckbox = typeof state === 'boolean'
 
-  let newState = null
+  let overrideState = null
 
   if (stateFromCheckbox) {
     if (state) {
-      newState = defaultEquipments[typeOfEquipment].isChecked
+      overrideState = defaultEquipments[typeOfEquipment].isChecked
     } else {
-      newState = defaultEquipments[typeOfEquipment].isUnChecked
+      overrideState = defaultEquipments[typeOfEquipment].isUnChecked
     }
   }
 
@@ -72,7 +72,8 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
     if (!stopPlace.placeEquipments) {
       stopPlace.placeEquipments = {}
     }
-    stopPlace.placeEquipments[typeOfEquipment] = newState
+
+    stopPlace.placeEquipments[typeOfEquipment] = overrideState || state
 
   } else if (type === 'quay') {
 
@@ -81,7 +82,7 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
       if (!stopPlace.quays[id].placeEquipments) {
         stopPlace.quays[id].placeEquipments = {}
       }
-      stopPlace.quays[id].placeEquipments[typeOfEquipment] = newState
+      stopPlace.quays[id].placeEquipments[typeOfEquipment] = overrideState || state
     }
   }
   return stopPlace

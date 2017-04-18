@@ -60,7 +60,6 @@ class StopPlaceDetails extends React.Component {
   }
 
  handleStopNameChange(event) {
-
     const name = event.target.value
     this.setState({
       name: name
@@ -70,7 +69,6 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleStopDescriptionChange(event) {
-
     const description = event.target.value
     this.setState({
       description: description
@@ -83,7 +81,6 @@ class StopPlaceDetails extends React.Component {
     if (!this.props.disabled)
       this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
   }
-
 
   handleStopTypeChange(value) {
     this.handleCloseStopPlaceTypePopover()

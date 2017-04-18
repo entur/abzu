@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import { connect } from 'react-redux'
 import FacilitiesStopTab from '../components/FacilitiesStopTab'
 import AcessibilityStopTab from '../components/AcessibilityStopTab'
 import { injectIntl } from 'react-intl'
@@ -22,7 +21,7 @@ class EditStopAdditional extends React.Component {
 
   render() {
 
-    const { intl, disabled, stopPlace } = this.props
+    const { intl, disabled } = this.props
     const { formatMessage } = intl
 
     const style = {
@@ -48,7 +47,7 @@ class EditStopAdditional extends React.Component {
             <AcessibilityStopTab intl={intl} disabled={disabled} />
           </Tab>
           <Tab style={tabStyle} label={formatMessage({id: 'facilities'})} value={1}>
-            <FacilitiesStopTab stopPlace={stopPlace} intl={intl} disabled={disabled} />
+            <FacilitiesStopTab intl={intl} disabled={disabled} />
           </Tab>
         </Tabs>
       </div>
@@ -56,9 +55,5 @@ class EditStopAdditional extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  stopPlace: state.stopPlace.current
-})
 
-
-export default injectIntl(connect(mapStateToProps)(EditStopAdditional))
+export default injectIntl(EditStopAdditional)

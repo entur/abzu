@@ -17,7 +17,6 @@ class StepFreePopover extends React.Component {
   }
 
   handleChange(value) {
-    console.log("value", value)
     this.setState({
       open: false
     })
