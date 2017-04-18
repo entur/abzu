@@ -11,6 +11,7 @@ helpers.mapQuayToVariables = quay => {
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
     accessibilityAssessment: quay.accessibilityAssessment,
+    placeEquipments: quay.placeEquipments,
     description: {
       value: quay.description,
       lang: 'no'
@@ -37,7 +38,8 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     description: stop.description || null,
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
-    accessibilityAssessment: stop.accessibilityAssessment
+    accessibilityAssessment: stop.accessibilityAssessment,
+    placeEquipments: stop.placeEquipments
   }
 
   if (validBetween) {
@@ -70,7 +72,6 @@ helpers.mapStopToVariables = (stop, validBetween) => {
       [stop.location[1], stop.location[0]]
     ]
   }
-
   return stopVariables
 }
 

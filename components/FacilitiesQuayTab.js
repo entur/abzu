@@ -28,7 +28,6 @@ class FacilitiesQuayTab extends React.Component {
     }
   }
 
-
   handleExpandIndex(value) {
     this.setState({
       expandedIndex: value

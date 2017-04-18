@@ -47,6 +47,7 @@ Fragments.quay = {
               shelterEquipment {
                   seats
                   stepFree
+                  enclosed
               }
           }
       }
