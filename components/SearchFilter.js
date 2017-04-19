@@ -9,8 +9,8 @@ import IconButton from 'material-ui/IconButton'
 import { UserActions } from '../actions/'
 import AutoComplete from 'material-ui/AutoComplete'
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 import MenuItem from 'material-ui/MenuItem'
+import { topopGraphicalPlacesQuery } from '../actions/Queries'
 
 class SearchFilter extends React.Component {
 
@@ -123,17 +123,4 @@ class SearchFilter extends React.Component {
   }
 }
 
-
-const TopopGraphicalPlacesQuery = gql`
-    query TopopGraphicalPlaces {
-        topographicPlace {
-          id
-          name {
-              value
-          }
-          topographicPlaceType
-        }
-    }
-`
-
-export default graphql(TopopGraphicalPlacesQuery)(SearchFilter)
+export default graphql(topopGraphicalPlacesQuery)(SearchFilter)

@@ -48,11 +48,14 @@ class SearchBox extends React.Component {
     }
     else {
 
+      const isImportedId = !isNaN(input) || input.indexOf(':StopArea:') > -1
+
       this.props.client.query({
         query: findStop,
         fetchPolicy: 'network-only',
         variables: {
           query: input,
+          importedId: isImportedId ? input : null,
           stopPlaceType: this.props.stopTypeFilter,
           municipalityReference: this.props.topoiChips
             .filter( topos => topos.type === "town").map(topos => topos.value),
@@ -60,7 +63,6 @@ class SearchBox extends React.Component {
             .filter( topos => topos.type === "county").map(topos => topos.value)
         }
       })
-
       this.props.dispatch(UserActions.setSearchText(input))
     }
   }
@@ -106,31 +108,48 @@ class SearchBox extends React.Component {
   componentWillUpdate(nextProps) {
 
     const {  dataSource = [] } = nextProps
+    const { formatMessage } = nextProps.intl
 
-    this._menuItems = dataSource.map( element => ({
-        element: element,
-        text: element.name,
-        value: (
-          <MenuItem
-            style={{marginTop:5, paddingRight: 5, width: 'auto'}}
-            innerDivStyle={{minWidth: 300, padding: '0px 16px 0px 10px' }}
-            primaryText={(
-              <div style={{fontSize: '0.9em'}}>{element.name}</div>
-            )}
-            secondaryText={(
-              <div style={{color: 'grey', fontSize: '0.7em', transform: 'translateY(-10px)'}}>
-                {`${element.topographicPlace}, ${element.parentTopographicPlace}`}
+    if (dataSource.length) {
+      this._menuItems = dataSource.map( element => ({
+          element: element,
+          text: element.name,
+          value: (
+            <MenuItem
+              style={{marginTop:5, paddingRight: 5, width: 'auto'}}
+              innerDivStyle={{minWidth: 300, padding: '0px 16px 0px 10px'}}
+              primaryText={(
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <div style={{fontSize: '0.9em'}}>{element.name}</div>
+                  <div style={{display: 'flex', flexDirection: 'column', color: 'grey', fontSize: '0.7em', justifyContent: 'space-between'}}>
+                    <div style={{marginBottom: 0}}>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+                    <div style={{marginTop: -30}}>{element.id}</div>
+                  </div>
                 </div>
-            )}
-            leftIcon={(
-              <ModalityIcon
-                iconStyle={{float: 'left', transform: 'translateY(10px)'}}
-                type={element.stopPlaceType}
-              />
-            )}
-          />
-        )}
-    ))
+              )}
+              leftIcon={(
+                <ModalityIcon
+                  iconStyle={{float: 'left', transform: 'translateY(10px)'}}
+                  type={element.stopPlaceType}
+                />
+              )}
+            />
+          )}
+      ))
+    } else {
+       this._menuItems = [{
+         text: '',
+         value:
+           (<MenuItem
+             style={{paddingRight: 10, width: 'auto'}}
+             primaryText={(
+               <div style={{fontWeight: 600, fontSize: '0.8em'}}>
+                 { formatMessage({id: 'no_results_found'}) }
+               </div>
+             )}
+         />)
+       }]
+    }
   }
 
   render() {
@@ -174,6 +193,7 @@ class SearchBox extends React.Component {
             <SearchIcon style={{verticalAlign: 'middle', marginRight: 5}}/>
             <AutoComplete
               textFieldStyle={{width: 380}}
+              animated={true}
               openOnFocus
               hintText={formatMessage({id: "filter_by_name"})}
               dataSource={this._menuItems || []}

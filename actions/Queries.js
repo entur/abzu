@@ -65,8 +65,8 @@ export const stopPlaceAndPathLink = gql`
 `
 
 export const findStop = gql`
-    query findStop($query: String!, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
-        stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
+    query findStop($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
+        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
             name {
                 value
@@ -132,4 +132,16 @@ export const stopPlaceAndPathLinkByVersion = gql`
     },
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
+`
+
+export const topopGraphicalPlacesQuery = gql`
+    query TopopGraphicalPlaces {
+        topographicPlace {
+            id
+            name {
+                value
+            }
+            topographicPlaceType
+        }
+    }
 `

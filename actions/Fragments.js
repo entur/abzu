@@ -86,7 +86,7 @@ Fragments.pathLink = {
               coordinates
           }
           from {
-              placeRef {
+              placeRef {    
                   version
                   ref
                   addressablePlace {
