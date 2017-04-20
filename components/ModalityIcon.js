@@ -1,30 +1,47 @@
 import React from 'react'
+import SvgIcon from 'material-ui/SvgIcon'
 
-class ModalityIcon extends React.PureComponent {
+
+class ModalityIcon extends React.Component {
+
+  componentWillMount() {
+    this.loadIcons(this.props)
+  }
+
+  loadIcons(nextProps) {
+    let svgStyle = nextProps.svgStyle || {
+        width: 25,
+        height: 25,
+        display: 'inline-block',
+        marginRight: 5,
+      }
+
+    const iconStyle = nextProps.iconStyle || {
+        float: 'left',
+        transform: 'translateY(2px)',
+      }
+
+    const iconId = getIconIdByModality(nextProps.type)
+
+    let style = {
+      ...nextProps.style || {},
+    }
+
+    this._icon = (<span style={iconStyle}>
+        <SvgIcon style={{ ...style, ...svgStyle}}>
+            <use xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}></use>
+        </SvgIcon>
+      </span>)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isStatic) {
+      this.loadIcons(nextProps)
+    }
+  }
 
   render() {
-
-    const svgStyle = this.props.svgStyle || {
-      width: 25,
-      height: 25,
-      display: 'inline-block',
-      marginRight: 5
-    }
-
-    const iconStyle = this.props.iconStyle || {
-      float: 'left',
-      transform: 'translateY(2px)'
-    }
-
-    const iconId = getIconIdByModality(this.props.type)
-
-    return (
-      <span style={iconStyle}>
-        <svg style={svgStyle}>
-            <use xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}></use>
-        </svg>
-      </span>
-    )
+    return this._icon
   }
 }
 

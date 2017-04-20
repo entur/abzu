@@ -5,7 +5,6 @@ import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import StairsIcon from '../static/icons/accessibility/Stairs'
 import IconButton from 'material-ui/IconButton'
 
-
 class StepFreePopover extends React.Component {
 
   constructor(props) {
@@ -17,7 +16,6 @@ class StepFreePopover extends React.Component {
   }
 
   handleChange(value) {
-    console.log("value", value)
     this.setState({
       open: false
     })

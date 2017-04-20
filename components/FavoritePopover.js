@@ -1,9 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Popover from 'material-ui/Popover'
 import MenuItem from 'material-ui/MenuItem'
-import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
 import FavoriteManager from '../singletons/FavoriteManager'
 import StarIcon from 'material-ui/svg-icons/toggle/star'
+import MdDelete from 'material-ui/svg-icons/action/delete'
+import { UserActions } from '../actions/'
+
 
 class FilterPopover extends React.Component {
 
@@ -28,6 +32,13 @@ class FilterPopover extends React.Component {
       })
     }
 
+  handleDeleteFavorite(item) {
+    this.props.dispatch(UserActions.removeSearchAsFavorite(item))
+    this.setState({
+      open: false
+    })
+  }
+
     render() {
 
       const { caption, onItemClick, text } = this.props
@@ -41,11 +52,11 @@ class FilterPopover extends React.Component {
 
       return (
         <div>
-          <RaisedButton
+          <FlatButton
             onTouchTap={this.handleTouchTap.bind(this)}
-            icon={<StarIcon/>}
+            icon={<StarIcon style={{height: 20, width: 20}}/>}
             label={caption}
-            style={{marginBottom: 5}}
+            labelStyle={{fontSize: 12}}
             />
           <Popover
             open={this.state.open}
@@ -56,7 +67,7 @@ class FilterPopover extends React.Component {
             style={popoverstyle}
            >
 
-           <div style={{fontWeight: 600, minWidth: 300, width: 'auto',fontSize: '1.2em', padding: 15}}>
+           <div style={{fontWeight: 600, minWidth: 300, width: 'auto',fontSize: '1em', padding: 15}}>
              {text.title}
           </div>
 
@@ -65,6 +76,11 @@ class FilterPopover extends React.Component {
               ? favorites.map( (item, index) =>  {
                return (
                  <MenuItem
+                   rightIcon={
+                     <MdDelete
+                      onClick={ e => { e.stopPropagation(); this.handleDeleteFavorite(item) }}
+                   />
+                   }
                    key={'favorite' + index}
                    style={{
                      cursor: 'pointer',
@@ -77,7 +93,7 @@ class FilterPopover extends React.Component {
                 )
              })
              : <div
-                style={{padding: 15, margin: 'auto', lineHeight: 1.5, width: 300}}
+                style={{padding: 10, margin: 'auto', lineHeight: 1.5, width: 300, fontSize: 14}}
                 >
                 {text.noFavoritesFoundText}
               </div>
@@ -88,4 +104,4 @@ class FilterPopover extends React.Component {
     }
 }
 
-export default FilterPopover
+export default connect(null)(FilterPopover)

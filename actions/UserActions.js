@@ -154,14 +154,13 @@ UserActions.saveSearchAsFavorite = title => {
   }
 }
 
-UserActions.removeSearchAsFavorite = () => {
+UserActions.removeSearchAsFavorite = item => {
   return function(dispatch, getState) {
     const state = getState()
     const searchFilters =  state.user.searchFilters
     let favoriteManager = new FavoriteManager()
-    let savableContent = favoriteManager.createSavableContent('', searchFilters.text, searchFilters.stopType, searchFilters.topoiChips)
-    favoriteManager.remove(savableContent)
-    dispatch(sendData(types.REMOVE_SEARCH_AS_FAVORITE, savableContent))
+    favoriteManager.remove(item)
+    dispatch(sendData(types.REMOVE_SEARCH_AS_FAVORITE, item))
   }
 }
 

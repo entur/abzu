@@ -36,7 +36,7 @@ class TopographicalFilter extends React.Component {
     const style = {
       display: 'flex',
       flexWrap: 'wrap',
-      marginTop: 20,
+      marginTop: 10,
       marginBottom: 10,
       width: '100%'
     }
