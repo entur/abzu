@@ -108,6 +108,7 @@ describe('Model: map format from server to expected client model', () => {
            audibleSignalsAvailable: "UNKNOWN"
          }
        },
+       placeEquipments: undefined,
        "quays": [
          {
            "id": "NSR:Quay:30025",
@@ -125,10 +126,12 @@ describe('Model: map format from server to expected client model', () => {
              type: "Point"
            },
            "accessibilityAssessment": undefined,
+           placeEquipments: undefined
          },
          {
            "id": "NSR:Quay:30026",
            "accessibilityAssessment": undefined,
+           placeEquipments: undefined,
            "compassBearing": 38,
            "publicCode": null,
            "description": {
