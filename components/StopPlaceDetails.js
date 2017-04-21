@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import ImportedId from '../components/ImportedId'
-import { MapActions, AssessmentActions } from '../actions/'
+import { MapActions, AssessmentActions, EquipmentActions } from '../actions/'
 import { connect } from 'react-redux'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
@@ -17,6 +17,7 @@ import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
+import equiptmentHelpers from '../modelUtils/equipmentHelpers'
 
 class StopPlaceDetails extends React.Component {
 
@@ -26,12 +27,6 @@ class StopPlaceDetails extends React.Component {
       stopTypeOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
-      stepFreeAccess: false,
-      ticketMachine: false,
-      busShelter: false,
-      bikeParking: false,
-      waitingRoom: false,
-      WC: false
     }
 
     this.updateStopName = debounce( value => {
@@ -46,7 +41,7 @@ class StopPlaceDetails extends React.Component {
   componentWillReceiveProps(props) {
     this.setState({
       description: props.stopPlace.description || '',
-      name: props.stopPlace.name || ''
+      name: props.stopPlace.name || '',
     })
   }
 
@@ -65,7 +60,6 @@ class StopPlaceDetails extends React.Component {
   }
 
  handleStopNameChange(event) {
-
     const name = event.target.value
     this.setState({
       name: name
@@ -75,7 +69,6 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleStopDescriptionChange(event) {
-
     const description = event.target.value
     this.setState({
       description: description
@@ -85,14 +78,45 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleHandleWheelChair(value) {
-    this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
+    if (!this.props.disabled)
+      this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value))
   }
-
 
   handleStopTypeChange(value) {
     this.handleCloseStopPlaceTypePopover()
     this.props.dispatch(MapActions.changeStopType(value))
   }
+
+  handleTicketMachineChange(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.updateTicketMachineState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
+  handleBusShelterChange(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.updateShelterEquipmentState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
+  handleWCChange(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.updateWCState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
+  handleWaitingRoomChange(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.updateWaitingRoomState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
+  handleCycleStorageChange(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.updateCycleStorageState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
 
   render() {
 
@@ -103,9 +127,15 @@ class StopPlaceDetails extends React.Component {
 
     const { stopPlace, intl, expanded, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { name, description, busShelter, ticketMachine, bikeParking, waitingRoom, WC } = this.state
+    const { name, description } = this.state
 
     const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
+
+    const ticketMachine = equiptmentHelpers.getTicketMachineState(stopPlace)
+    const busShelter = equiptmentHelpers.getShelterEquipmentState(stopPlace)
+    const bikeParking = equiptmentHelpers.getCycleStorageEquipment(stopPlace)
+    const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace)
+    const WC = equiptmentHelpers.getSanitaryEquiptmentState(stopPlace)
 
     return (
       <div style={fixedHeader}>
@@ -162,50 +192,44 @@ class StopPlaceDetails extends React.Component {
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
               <WheelChairPopover
-                disabled={disabled}
                 intl={intl}
                 handleChange={this.handleHandleWheelChair.bind(this)}
                 wheelchairAccess={wheelchairAccess}
               />
               <Checkbox
                 checkedIcon={<TicketMachine />}
-                disabled={disabled}
                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
                 checked={ticketMachine}
-                onCheck={(e,v) => this.setState({ticketMachine: v})}
+                onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
               />
               <Checkbox
                 checkedIcon={<BusShelter />}
                 uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={busShelter}
-                onCheck={(e,v) => this.setState({busShelter: v})}
+                onCheck={(e,v) => { this.handleBusShelterChange(v) } }
               />
               <Checkbox
                 checkedIcon={<MdWC />}
                 uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={WC}
-                onCheck={(e,v) => this.setState({WC: v})}
+                onCheck={(e,v) => { this.handleWCChange(v) } }
               />
             <Checkbox
               checkedIcon={<WaitingRoom />}
-              disabled={disabled}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               style={{width: 'auto'}}
               checked={waitingRoom}
-              onCheck={(e,v) => this.setState({waitingRoom: v})}
+              onCheck={(e,v) => { this.handleWaitingRoomChange(v) } }
             />
               <Checkbox
                 checkedIcon={<BikeParking />}
                 uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                 style={{width: 'auto'}}
-                disabled={disabled}
                 checked={bikeParking}
-                onCheck={(e,v) => this.setState({bikeParking: v})}
+                onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
               />
           </div>
         }

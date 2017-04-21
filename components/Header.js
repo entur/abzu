@@ -22,7 +22,6 @@ const Header = ({handleNavigateToMain, text, setLanguage, locale, handleLogOut, 
         iconElementLeft={
             <img src={Logo} style={{width: 40, height: 'auto', cursor: 'pointer'}} onClick={() => handleNavigateToMain()}/>
         }
-
         iconElementRight={
           <IconMenu
             iconButtonElement={

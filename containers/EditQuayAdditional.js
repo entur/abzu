@@ -24,7 +24,7 @@ class EditQuayAdditional extends React.Component {
 
   render() {
 
-    const { intl, quay, index } = this.props
+    const { intl, quay, index, disabled } = this.props
     const { formatMessage } = intl
 
     const style = {
@@ -39,7 +39,6 @@ class EditQuayAdditional extends React.Component {
       marginTop: -10
     }
 
-
     const { activeTabIndex } = this.state
 
     return (
@@ -50,10 +49,10 @@ class EditQuayAdditional extends React.Component {
           tabItemContainerStyle={{backgroundColor: '#fff', marginTop: -5}}
         >
           <Tab style={tabStyle} label={formatMessage({id: 'accessibility'})} value={0}>
-            <AccessiblityQuayTab intl={intl} quay={quay} index={index} />
+            <AccessiblityQuayTab intl={intl} quay={quay} index={index} disabled={disabled} />
           </Tab>
           <Tab style={tabStyle} label={formatMessage({id: 'facilities'})} value={1}>
-            <FacilitiesQuayTab intl={intl}/>
+            <FacilitiesQuayTab intl={intl} quay={quay} index={index}  disabled={disabled}/>
           </Tab>
         </Tabs>
       </div>

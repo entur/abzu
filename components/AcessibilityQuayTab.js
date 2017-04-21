@@ -28,7 +28,7 @@ class AcessibilityQuayTab extends React.Component {
 
   render() {
 
-    const { intl, quay } = this.props
+    const { intl, quay, disabled } = this.props
     const { formatMessage } = intl
 
     const wheelchairAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
@@ -38,14 +38,26 @@ class AcessibilityQuayTab extends React.Component {
       <div style={{padding: 10}}>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <WheelChairPopover displayLabel={true} intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
+            <WheelChairPopover
+              disabled={disabled}
+              displayLabel={true}
+              intl={intl}
+              wheelchairAccess={wheelchairAccess}
+              handleChange={this.handleWheelChairChange.bind(this)}
+            />
             <ToolTipIcon title={formatMessage({id: 'wheelChair_quay_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>
        <div style={{marginTop: 10}}>
          <div style={{display: 'flex',justifyContent: 'space-between'}}>
-           <StepFreePopover displayLabel={true} intl={intl} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
+           <StepFreePopover
+             disabled={disabled}
+             displayLabel={true}
+             intl={intl}
+             stepFreeAccess={stepFreeAccess}
+             handleChange={this.handleStepFreeChange.bind(this)}
+           />
            <ToolTipIcon title={formatMessage({id: 'step_free_access_quay_hint'})}/>
          </div>
          <Divider style={{marginTop: 10, marginBottom: 10}}/>
