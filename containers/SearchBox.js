@@ -252,7 +252,15 @@ class SearchBox extends React.Component {
         <FavoriteNameDialog/>
         <div style={searchBoxWrapperStyle}>
           <div key='search-name-wrapper'>
-            <SearchIcon style={{verticalAlign: 'middle', marginRight: 5}}/>
+            <FavoritePopover
+              caption={formatMessage({id: "favorites"})}
+              items={[]}
+              filter={stopTypeFilter}
+              onItemClick={this.handleRetrieveFilter.bind(this)}
+              onDismiss={this.handlePopoverDismiss.bind(this)}
+              text={favoriteText}
+            />
+            <SearchIcon style={{verticalAlign: 'middle', marginRight: 5, height: 22, width: 22}}/>
             <AutoComplete
               textFieldStyle={{width: 380}}
               animated={true}
@@ -268,24 +276,17 @@ class SearchBox extends React.Component {
               listStyle={{width: 'auto'}}
             />
             <div style={{float: "right"}}>
-              <IconButton style={{verticalAlign: 'middle'}} onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
+              <IconButton style={{verticalAlign: 'middle'}}  iconStyle={{fontSize: 22}} onClick={this.handleClearSearch.bind(this)}  iconClassName="material-icons">
                 clear
               </IconButton>
             </div>
             <Divider/>
           </div>
-          <div style={{marginBottom: 20, display: 'flex', alignItems: 'center'}}>
-            <FavoritePopover
-              caption={formatMessage({id: "favorites"})}
-              items={[]}
-              filter={stopTypeFilter}
-              onItemClick={this.handleRetrieveFilter.bind(this)}
-              onDismiss={this.handlePopoverDismiss.bind(this)}
-              text={favoriteText}
-            />
+          <div style={{marginBottom: 15, textAlign: 'right', marginRight: 10}}>
             <FlatButton
               style={{marginLeft: 10, fontSize: 12}}
               disabled={!!favorited}
+              secondary={true}
               onClick={() => { this.handleSaveAsFavorite(!!favorited) }}
             >
               {formatMessage({id: 'filter_save_favorite'})}
@@ -301,16 +302,17 @@ class SearchBox extends React.Component {
                     onClick={() => this.handleToggleFilter(false)}
                   />
                 </div>
-                <TopographicalFilter/>
                 <AutoComplete
                   hintText={formatMessage({id: "filter_by_topography"})}
                   dataSource={topographicalPlaces}
                   filter={AutoComplete.caseInsensitiveFilter}
-                  style={{marginBottom: 10, marginLeft: 18}}
+                  style={{margin: 'auto', width: '100%', textAlign: 'center'}}
                   maxSearchResults={5}
+                  fullWidth={true}
                   ref="topoFilter"
                   onNewRequest={this.handleAddChip.bind(this)}
                 />
+                <TopographicalFilter/>
               </div>
               :  <div style={{width: '100%', textAlign: 'center'}}>
                 <FlatButton
@@ -321,7 +323,7 @@ class SearchBox extends React.Component {
             }
           </div>
           <div key='searchbox-edit'>
-            {chosenResult
+            { chosenResult
               ?  <SearchBoxDetails
                    handleEdit={this.handleEdit.bind(this)}
                    result={chosenResult}

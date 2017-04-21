@@ -54,7 +54,7 @@ class FilterPopover extends React.Component {
         <div>
           <FlatButton
             onTouchTap={this.handleTouchTap.bind(this)}
-            icon={<StarIcon style={{height: 20, width: 20}}/>}
+            icon={<StarIcon style={{height: 20, width: 20, marginLeft: -1}}/>}
             label={caption}
             labelStyle={{fontSize: 12}}
             />
@@ -70,9 +70,7 @@ class FilterPopover extends React.Component {
            <div style={{fontWeight: 600, minWidth: 300, width: 'auto',fontSize: '1em', padding: 15}}>
              {text.title}
           </div>
-
            { favorites.length
-
               ? favorites.map( (item, index) =>  {
                return (
                  <MenuItem
