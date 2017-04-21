@@ -292,7 +292,7 @@ class SearchBox extends React.Component {
               {formatMessage({id: 'filter_save_favorite'})}
             </FlatButton>
           </div>
-          <div style={{width: '90%', margin: 'auto', border: '1px solid hsla(182, 53%, 51%, 0.1)'}}>
+          <div style={{width: '100%', margin: 'auto', border: '1px solid hsla(182, 53%, 51%, 0.1)'}}>
             <ModalityFilter locale={locale}/>
             { showMoreFilterOptions ?
               <div>
