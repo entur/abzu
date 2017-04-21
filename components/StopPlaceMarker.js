@@ -4,7 +4,7 @@ import L, { divIcon } from 'leaflet'
 import ReactDOM from 'react-dom/server'
 import CustomMarkerIcon from './CustomMarkerIcon'
 
-class StopPlaceMarker extends React.PureComponent {
+class StopPlaceMarker extends React.Component {
 
   static propTypes = {
     position: PropTypes.arrayOf(Number),
@@ -23,10 +23,78 @@ class StopPlaceMarker extends React.PureComponent {
     isEditingStop: PropTypes.bool.isRequired
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+
+    if (this.props.position !== nextProps.position) {
+      return true
+    }
+
+    if (this.props.index !== nextProps.index) {
+      return true
+    }
+
+    if (this.props.draggable !== nextProps.draggable) {
+      return true
+    }
+
+    if (this.props.active !== nextProps.active) {
+      return true
+    }
+
+    if (this.props.stopType !== nextProps.stopType) {
+      return true
+    }
+
+    if (this.props.id !== nextProps.id) {
+      return true
+    }
+
+    if (this.props.isShowingQuays !== nextProps.isShowingQuays) {
+      return true
+    }
+
+    if (this.props.name !== nextProps.name) {
+      return true
+    }
+    return false
+  }
+
+  componentWillMount() {
+    const { index, stopType, active} = this.props
+    this.createIcon(index, stopType, active)
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { index, stopType, active} = nextProps
+    this.createIcon(index, stopType, active)
+  }
+
+  createIcon(index, stopType, active) {
+
+    let divIconBody = (
+      <CustomMarkerIcon
+        markerIndex={index}
+        stopType={stopType}
+        active={active}
+      />
+    )
+
+    let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
+
+    this._icon = divIcon(
+      {
+        html: divIconBodyMarkup,
+        iconAnchor: [17,42],
+        iconSize: [34,42],
+        popupAnchor: [0,0]
+      }
+    )
+  }
+
   render() {
 
     const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
-          handleChangeCoordinates, translations, active, stopType, id, handleFetchQuaysForNeighbourStop, handleHideQuaysForNeighbourStop, isShowingQuays } = this.props
+          handleChangeCoordinates, translations, active, id, handleFetchQuaysForNeighbourStop, handleHideQuaysForNeighbourStop, isShowingQuays } = this.props
 
     const markerLocation = position || missingCoordinatesMap[id]
 
@@ -34,17 +102,7 @@ class StopPlaceMarker extends React.PureComponent {
 
     const name = this.props.name ? this.props.name : translations.untitled
 
-    let divIconBody = (
-      <CustomMarkerIcon
-        markerIndex={index}
-        stopType={stopType}
-        active={active}
-        />
-    )
-
-    let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(divIconBody)
-
-    let icon = divIcon({html: divIconBodyMarkup, iconAnchor: [17,42], iconSize: [30,45], popupAnchor: [0,0]})
+    const icon = this._icon
 
     return (
 

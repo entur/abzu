@@ -30,18 +30,61 @@ class QuayMarker extends React.PureComponent {
 
   getOSMURL() {
     const { position } = this.props
-    return  `https://www.openstreetmap.org/edit#map=18/${position[0]}/${position[1]}`
+    return `https://www.openstreetmap.org/edit#map=18/${position[0]}/${position[1]}`
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.position !== nextProps.position) {
+      return true
+    }
+
+    if (this.props.name !== nextProps.name) {
+      return true
+    }
+
+    if (this.props.index !== nextProps.index) {
+      return true
+    }
+
+    if (this.props.focusedElement !== nextProps.focusedElement) {
+      return true
+    }
+
+    if (this.props.belongsToNeighbourStop !== nextProps.belongsToNeighbourStop) {
+      return true
+    }
+
+    if (this.props.compassBearing !== nextProps.compassBearing) {
+      return true
+    }
+
+    if (this.props.formattedStopType !== nextProps.formattedStopType) {
+      return true
+    }
+
+    if (this.props.isCreatingPolylines !== nextProps.isCreatingPolylines) {
+      return true
+    }
+
+    if (this.props.id !== nextProps.id) {
+      return true
+    }
+
+    if (this.props.pathLink !== nextProps.pathLink) {
+      return true
+    }
+
+    return false
+  }
 
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
     const { isCreatingPolylines, id, pathLink } = this.props
 
-    let isIncomplete = false
-
     if (!position) return null
+
+    let isIncomplete = false
 
     let pathLinkText = isCreatingPolylines ? translations.terminatePathLinkHere : translations.createPathLinkHere
 
@@ -71,7 +114,15 @@ class QuayMarker extends React.PureComponent {
       />
     )
 
-    let quayIcon = divIcon({html: divBody, iconAnchor: [42, 45], popupAnchor: [0, 0]})
+    let quayIcon = divIcon(
+      {
+        html: divBody,
+        iconSize: [21,45],
+        iconAnchor: [42, 45],
+        popupAnchor: [0, 0]
+      }
+    )
+
     const osmURL = this.getOSMURL()
 
     return (
@@ -135,7 +186,7 @@ class QuayMarker extends React.PureComponent {
   }
 }
 
-class QuayMarkerIcon extends React.Component {
+class QuayMarkerIcon extends React.PureComponent {
 
   componentWillMount() {
     const { focusedElement, index, belongsToNeighbourStop, compassBearing } = this.props

@@ -255,7 +255,7 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment)  => {
 }
 
 helpers.mapNeighbourStopsToClientStops = stops => {
-  return stops.map( stop => helpers.mapStopToClientStop(stop, false))
+    return stops.map( stop => helpers.mapStopToClientStop(stop, false))
 }
 
 helpers.mapSearchResultatToClientStops = stops => {

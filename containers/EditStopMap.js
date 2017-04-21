@@ -41,7 +41,7 @@ class EditStopMap extends React.Component {
       }
     }
 
-    this.handleMapMoveEnd = debounce(mapEnd, 10)
+    this.handleMapMoveEnd = debounce(mapEnd, 300)
   }
 
   handleClick(event, map) {
