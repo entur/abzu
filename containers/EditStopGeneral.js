@@ -70,6 +70,7 @@ class EditStopGeneral extends React.Component {
     let id = null
 
     const { client, dispatch } = this.props
+
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
       if (result.data.mutateStopPlace[0].id) {
         id = result.data.mutateStopPlace[0].id

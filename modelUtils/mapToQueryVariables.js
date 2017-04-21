@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { defaultLimitations } from '../actions/Limitations'
 
 const helpers = {}
 
@@ -10,7 +11,7 @@ helpers.mapQuayToVariables = quay => {
     geometry: null,
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
-    accessibilityAssessment: quay.accessibilityAssessment,
+    accessibilityAssessment: formatAccessibilityAssements(quay.accessibilityAssessment),
     placeEquipments: quay.placeEquipments,
     description: {
       value: quay.description,
@@ -26,7 +27,6 @@ helpers.mapQuayToVariables = quay => {
       type: "Point"
     }
   }
-
   return quayVariables
 }
 
@@ -38,7 +38,7 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     description: stop.description || null,
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
-    accessibilityAssessment: stop.accessibilityAssessment,
+    accessibilityAssessment: formatAccessibilityAssements(stop.accessibilityAssessment),
     placeEquipments: stop.placeEquipments
   }
 
@@ -125,5 +125,15 @@ const stripRedundantFields = pathLink => {
   return pathLink
 }
 
+const formatAccessibilityAssements = assements => {
+  if (assements && assements.limitations) {
+    Object.keys(defaultLimitations).map( key => {
+      if (!assements.limitations[key]) {
+        assements.limitations[key] = "UNKNOWN"
+      }
+    })
+  }
+  return assements
+}
 
 export default helpers

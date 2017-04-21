@@ -65,6 +65,8 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
     } else {
       overrideState = defaultEquipments[typeOfEquipment].isUnChecked
     }
+  } else {
+    overrideState = state
   }
 
   if (type === 'stopPlace') {
@@ -73,7 +75,7 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
       stopPlace.placeEquipments = {}
     }
 
-    stopPlace.placeEquipments[typeOfEquipment] = overrideState || state
+    stopPlace.placeEquipments[typeOfEquipment] = overrideState
 
   } else if (type === 'quay') {
 
@@ -82,7 +84,7 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
       if (!stopPlace.quays[id].placeEquipments) {
         stopPlace.quays[id].placeEquipments = {}
       }
-      stopPlace.quays[id].placeEquipments[typeOfEquipment] = overrideState || state
+      stopPlace.quays[id].placeEquipments[typeOfEquipment] = overrideState
     }
   }
   return stopPlace

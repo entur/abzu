@@ -15,20 +15,22 @@ class NewStopPlace extends React.Component {
     const { headerText, bodyText } = this.props.text
 
     return (
-      <div style={{background: "#fefefe", border: "1px dotted #191919", padding: "5px"}}>
-        <IconButton
-          style={{float: "right"}}
-          onClick={this.handleOnClick.bind(this)}
-          iconClassName="material-icons">
-          remove
-        </IconButton>
-        <h3>
-          <img style={{height: 30, width: 'auto', marginRight: 10, verticalAlign: 'middle'}} src={newStopIcon}/>
-          {headerText}
-        </h3>
-        <span style={{fontSize: ".9em"}}>
+      <div style={{background: "#fefefe", border: "1px dotted #191919", padding: 5}}>
+        <div style={{marginLeft: 10}}>
+          <IconButton
+            style={{float: "right"}}
+            onClick={this.handleOnClick.bind(this)}
+            iconClassName="material-icons">
+            remove
+          </IconButton>
+          <h4>
+            <img style={{height: 25, width: 'auto', marginRight: 10, verticalAlign: 'middle'}} src={newStopIcon}/>
+            {headerText}
+          </h4>
+          <span style={{fontSize: "0.9em"}}>
           {bodyText}
         </span>
+        </div>
       </div>
     )
   }

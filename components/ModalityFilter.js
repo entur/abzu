@@ -53,7 +53,7 @@ class ModalityFilter extends React.Component {
           const checked = ( stopTypeFilter.indexOf(item.value) > -1 || !stopTypeFilter.length )
 
           return (
-            <div>
+            <div key={'item-' + item.value}>
               <Checkbox
                 checkedIcon={<ModalityIcon svgStyle={{height: 20, width: 20}} type={item.value} />}
                 uncheckedIcon={<ModalityIcon svgStyle={{height: 20, width: 20}} style={{fill: '#8c8c8c', opacity: '0.8'}} type={item.value}/>}

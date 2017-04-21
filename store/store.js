@@ -17,7 +17,7 @@ export default function configureStore(kc) {
 
   const networkInterface = createNetworkInterface({ uri: window.config.tiamatBaseUrl })
 
- /* networkInterface.use([{
+ networkInterface.use([{
     applyMiddleware(req, next) {
       if (!req.options.headers) {
         req.options.headers = {}
@@ -27,7 +27,7 @@ export default function configureStore(kc) {
       req.options.headers.authorization = token ? `Bearer ${token}` : null
       next()
     }
-  }]) */
+  }])
 
   const client = new ApolloClient({
     networkInterface: networkInterface
