@@ -80,7 +80,7 @@ class QuayMarker extends React.PureComponent {
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
-    const { isCreatingPolylines, id, pathLink } = this.props
+    const { isCreatingPolylines, id, pathLink, showPathLink } = this.props
 
     if (!position) return null
 
@@ -139,7 +139,7 @@ class QuayMarker extends React.PureComponent {
                 </span>
                 <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
               {
-                this.props.draggable ?
+                showPathLink ?
                   <div>
                     { id ?  <div
                         className={`change-path-link ${isIncomplete ? 'incomplete' : ''}`}

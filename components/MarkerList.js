@@ -185,6 +185,7 @@ class MarkerList extends React.Component {
                 draggable={false}
                 belongsToNeighbourStop={true}
                 handleSetCompassBearing={() => {}}
+                showPathLink={!disabled}
               />)
           })
         }
@@ -224,6 +225,7 @@ class MarkerList extends React.Component {
                   draggable={!disabled}
                   belongsToNeighbourStop={!stop.isActive}
                   handleSetCompassBearing={handleSetCompassBearing}
+                  showPathLink={!disabled}
                 />)
             })
         }
