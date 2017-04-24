@@ -4,6 +4,7 @@
 @import "tabs.css";
 @import "tooltip.css";
 @import "map.css";
+@import "version.css";
 
 body {
   font-family: 'Noto Sans Kannada', sans-serif;

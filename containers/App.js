@@ -78,6 +78,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
+          <div className="version">v{process.env.VERSION}</div>
           <Header
             text={headerText}
             handleNavigateToMain={this.handleNavigateToMain.bind(this)}
