@@ -135,13 +135,18 @@ export const stopPlaceAndPathLinkByVersion = gql`
 `
 
 export const topopGraphicalPlacesQuery = gql`
-    query TopopGraphicalPlaces {
-        topographicPlace {
+    query TopopGraphicalPlaces($query: String!) {
+        topographicPlace(query: $query) {
             id
             name {
                 value
             }
             topographicPlaceType
+            parentTopographicPlace {
+                name {
+                    value
+                }
+            }
         }
     }
 `

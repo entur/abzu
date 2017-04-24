@@ -48,6 +48,11 @@ export const getStateByOperation = (state, action) => {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(state.neighbourStopQuays, action.result.data.stopPlace)
       })
 
+    case 'TopopGraphicalPlaces':
+      return Object.assign({}, state, {
+        topographicalPlaces: action.result.data.topographicPlace
+      })
+
     default: return state
   }
 }

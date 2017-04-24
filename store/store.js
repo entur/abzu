@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import React from 'react'
 import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import mapReducer from '../reducers/mapReducer'
 import stopPlaceReducer from '../reducers/stopPlaceReducer'
 import userReducer from '../reducers/userReducer'

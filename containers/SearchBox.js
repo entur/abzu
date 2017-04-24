@@ -16,7 +16,7 @@ import ModalityIcon from '../components/ModalityIcon'
 import SearchIcon from 'material-ui/svg-icons/action/search'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
-import { findStop } from "../actions/Queries"
+import { findStop, topopGraphicalPlacesQuery } from "../actions/Queries"
 import { withApollo } from 'react-apollo'
 import FavoritePopover from '../components/FavoritePopover'
 import ModalityFilter from '../components/ModalityFilter'
@@ -53,7 +53,7 @@ class SearchBox extends React.Component {
 
   handleRetrieveFilter(filter) {
     this.props.dispatch(UserActions.loadFavoriteSearch(filter))
-    this.handleUpdateInput(filter.searchText, null, null, filter)
+    this.handleSearchUpdate(filter.searchText, null, null, filter)
 
     this.refs.searchText.setState({
       open: true,
@@ -65,7 +65,7 @@ class SearchBox extends React.Component {
     this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
   }
 
-  handleUpdateInput(searchText, dataSource, params, filter) {
+  handleSearchUpdate(searchText, dataSource, params, filter) {
 
     if (!searchText || !searchText.length) {
       /* This is a work-around to solve bug in Material-UI causing handleUpdateInput to
@@ -96,6 +96,16 @@ class SearchBox extends React.Component {
       })
       this.props.dispatch(UserActions.setSearchText(searchText))
     }
+  }
+
+  handleTopographicalPlaceInput(searchText) {
+    this.props.client.query({
+      query: topopGraphicalPlacesQuery,
+      fetchPolicy: 'network-only',
+      variables: {
+        query: searchText
+      }
+    })
   }
 
   handleNewRequest(result) {
@@ -140,6 +150,15 @@ class SearchBox extends React.Component {
     this.setState({
       showMoreFilterOptions: value
     })
+  }
+
+  getTopographicalNames(topographicalPlace) {
+    let name = topographicalPlace.name.value
+
+    if (topographicalPlace.topographicPlaceType === 'town' && topographicalPlace.parentTopographicPlace) {
+      name += `, ${topographicalPlace.parentTopographicPlace.name.value}`
+    }
+    return name
   }
 
   componentWillUpdate(nextProps) {
@@ -193,26 +212,27 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl, stopTypeFilter, topoiChips } = this.props
+    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl, stopTypeFilter, topoiChips, topographicalPlaces } = this.props
     const { coordinatesDialogOpen, showMoreFilterOptions } = this.state
     const { formatMessage, locale } = intl
 
-    const data = [] // TODO : replace this by data from Tiamat
-    const topographicalPlaces = !data.topographicPlace
-      ? []
-      : data.topographicPlace
-        .filter( place => topoiChips.map( chip => chip.value ).indexOf(place.id) == -1)
-        .map( place => ({
-          text: place.name.value,
-          id: place.id,
-          value: (
-            <MenuItem
-              primaryText={place.name.value}
-              secondaryText={ formatMessage({id: place.topographicPlaceType}) }
-            />
-          ),
-          type: place.topographicPlaceType
-        }))
+    const topographicalPlacesDataSource = topographicalPlaces
+      .filter( place => place.topographicPlaceType === "county" || place.topographicPlaceType === "town")
+      .filter( place => topoiChips.map( chip => chip.value ).indexOf(place.id) == -1)
+        .map( place => {
+          let name = this.getTopographicalNames(place)
+          return {
+            text: name,
+            id: place.id,
+            value: (
+              <MenuItem
+                primaryText={name}
+                secondaryText={ formatMessage({id: place.topographicPlaceType}) }
+              />
+            ),
+            type: place.topographicPlaceType
+          }
+        })
 
     const newStopText = {
       headerText: formatMessage({id: 'making_stop_place_title'}),
@@ -268,7 +288,7 @@ class SearchBox extends React.Component {
               hintText={formatMessage({id: "filter_by_name"})}
               dataSource={this._menuItems || []}
               filter={(searchText, key) => searchText !== ''}
-              onUpdateInput={this.handleUpdateInput.bind(this)}
+              onUpdateInput={this.handleSearchUpdate.bind(this)}
               maxSearchResults={7}
               searchText={this.props.searchText}
               ref="searchText"
@@ -304,7 +324,8 @@ class SearchBox extends React.Component {
                 </div>
                 <AutoComplete
                   hintText={formatMessage({id: "filter_by_topography"})}
-                  dataSource={topographicalPlaces}
+                  dataSource={topographicalPlacesDataSource}
+                  onUpdateInput={this.handleTopographicalPlaceInput.bind(this)}
                   filter={AutoComplete.caseInsensitiveFilter}
                   style={{margin: 'auto', width: '100%', textAlign: 'center'}}
                   maxSearchResults={5}
@@ -368,7 +389,8 @@ const mapStateToProps = state => {
     topoiChips: state.user.searchFilters.topoiChips,
     favorited: favorited,
     missingCoordinatesMap: state.user.missingCoordsMap,
-    searchText: state.user.searchFilters.text
+    searchText: state.user.searchFilters.text,
+    topographicalPlaces: state.stopPlace.topographicalPlaces || []
   }
 }
 
