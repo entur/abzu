@@ -4,7 +4,7 @@ const webpack = require('webpack')
 module.exports = {
   entry: {
     app: ['babel-polyfill', './index'],
-    react: ['babel-polyfill', 'react', 'react-redux', 'react-router', 'react-router-redux']
+    vendor: ['babel-polyfill', 'react', 'react-redux', 'react-router', 'react-router-redux', 'moment', 'leaflet']
   },
   output: {
     path: __dirname + '/public/',
@@ -13,20 +13,24 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({ name: "react", filename: "react.bundle.js" }),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      beautify: false,
-      comments: false,
-      compress: {
-        warnings: false
-      }
-    }),
+    new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.bundle.js" }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
         'BABEL_ENV': JSON.stringify('production'),
         'VERSION': JSON.stringify(require('./package.json').version),
+      }
+    }),
+    new webpack.optimize.AggressiveMergingPlugin({ minSizeReduce: 1.2 }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      beautify: false,
+      comments: false,
+      compress: {
+        warnings: false,
+        screw_ie8: true,
+        negate_iife: false,
+        drop_console: true
       }
     })
   ],

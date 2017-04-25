@@ -26,6 +26,7 @@ module.exports = {
         'VERSION': JSON.stringify(require('./package.json').version),
       }
     }),
+    new webpack.NoEmitOnErrorsPlugin(),
     new CleanWebpackPlugin(['public'], {
       root: path.resolve('./'),
       verbose: true,

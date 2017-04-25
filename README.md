@@ -66,6 +66,6 @@ AUTH_SERVER_URL=https://test.rutebanken.org/auth TIAMAT_BASE_URL=https://test.ru
 
 ## Webpack
 
-Webpack uses `webpack.config.js` for development and `webpack.prod.config.js` for production code. Correct config is chosen based on NODE_ENV.
+Webpack uses `webpack.dev.config.js` for development and `webpack.prod.config.js` for production code. Correct config is chosen based on NODE_ENV.
 
 Webpack produces `public/bundle` which is the entire application rendered by the server. In development this file is emitted from webpack through [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) over a connect server. No file is written to disk. These facilities hot-reload.

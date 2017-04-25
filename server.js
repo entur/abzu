@@ -31,7 +31,7 @@ convictPromise.then( (convict) => {
 
   if (process.env.NODE_ENV !== 'production') {
 
-    let config = require('./webpack.config')
+    let config = require('./webpack.dev.config')
 
     config.output.publicPath = ENDPOINTBASE + 'public/'
 
@@ -166,7 +166,7 @@ convictPromise.then( (convict) => {
   const getBundles = () => {
     if (process.env.NODE_ENV === 'production') {
       return (`
-        <script src="${ENDPOINTBASE}public/react.bundle.js"></script>
+        <script src="${ENDPOINTBASE}public/vendor.bundle.js"></script>
         <script src="${ENDPOINTBASE}public/bundle.js"></script>
       `)
     }
