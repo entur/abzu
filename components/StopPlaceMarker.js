@@ -25,11 +25,7 @@ class StopPlaceMarker extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
 
-    if (this.props.position !== nextProps.position) {
-      return true
-    }
-
-    if (this.props.index !== nextProps.index) {
+    if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
       return true
     }
 
@@ -56,6 +52,7 @@ class StopPlaceMarker extends React.Component {
     if (this.props.name !== nextProps.name) {
       return true
     }
+
     return false
   }
 
@@ -84,17 +81,16 @@ class StopPlaceMarker extends React.Component {
     this._icon = divIcon(
       {
         html: divIconBodyMarkup,
-        iconAnchor: [17,42],
-        iconSize: [34,42],
-        popupAnchor: [0,0]
+        iconAnchor: [10,20],
+        iconSize: [20,20],
+        popupAnchor: [0,17],
       }
     )
   }
 
   render() {
 
-    const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap,
-          handleChangeCoordinates, translations, active, id, handleFetchQuaysForNeighbourStop, handleHideQuaysForNeighbourStop, isShowingQuays } = this.props
+    const { position, handleOnClick, handleDragEnd, index, draggable, missingCoordinatesMap, handleChangeCoordinates, translations, id } = this.props
 
     const markerLocation = position || missingCoordinatesMap[id]
 
@@ -108,10 +104,11 @@ class StopPlaceMarker extends React.Component {
 
       <Marker
         key={"stop-place" + id}
+        keyboard={false}
         icon={icon}
         position={markerLocation}
         onDragend={ event => { handleDragEnd(false, index, event) }}
-        draggable={draggable && active}
+        draggable={draggable}
         >
         <Popup autoPan={false}>
           <div>
@@ -119,37 +116,19 @@ class StopPlaceMarker extends React.Component {
               marginBottom: 10, display: 'inline-block', width: '100%', marginBottom: 15, textAlign: 'center'}}
               onClick={handleOnClick}
             >
-              <div style={{borderBottom: !active ? '1px dotted' : 'none', display: 'inline-block'}}>{ name }</div>
+              <div style={{display: 'inline-block'}}>{ name }</div>
             </div>
             <div
               style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
               onClick={() => handleChangeCoordinates && handleChangeCoordinates(false, index, markerLocation)}
               >
-              <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black', }}>
+              <span style={{display: 'inline-block', textAlign: 'center', borderBottom: '1px dotted black'}}>
                 {markerLocation[0]}
               </span>
               <span style={{display: 'inline-block', marginLeft: 3, borderBottom: '1px dotted black'}}>
                 {markerLocation[1]}
               </span>
             </div>
-            { active
-              ? null
-              : isShowingQuays ?
-                ( <div
-                    style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
-                    onClick={() => handleHideQuaysForNeighbourStop(id)}
-                  >
-                    <span style={{borderBottom: '1px dotted black'}}> { translations.hideQuays } </span>
-                  </div>
-                )
-              : ( <div
-                   style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}}
-                   onClick={() => handleFetchQuaysForNeighbourStop(id)}
-                  >
-                    <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
-                  </div>
-                )
-            }
           </div>
         </Popup>
       </Marker>

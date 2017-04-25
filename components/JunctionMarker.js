@@ -24,23 +24,28 @@ class JunctionMarker extends React.Component {
     L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'padded-10')
   }
 
-  render() {
+  componentWillMount() {
+    this.createIcon(this.props)
+  }
 
-    const { position, index, type, handleDragEnd, handleUpdatePathLink } = this.props
-    const { text, isCreatingPolylines, polylineStartPoint, name } = this.props
-
+  createIcon(props) {
+    const { type } = props
     const iconURL = type === 'entrance'
       ? require("../static/icons/entrance-icon-2x.png")
       : require("../static/icons/junction-icon-2x.png")
 
-    const icon = L.icon({
+    this._icon = L.icon({
       iconUrl: iconURL,
       iconSize: [30, 45],
-      iconAnchor: [29, 50],
+      iconAnchor: [14, 45],
       popupAnchor: [0, 0],
-      shadowAnchor: [10, 12],
-      shadowSize: [36, 16]
     })
+  }
+
+  render() {
+
+    const { position, index, type, handleDragEnd, handleUpdatePathLink } = this.props
+    const { text, isCreatingPolylines, polylineStartPoint, name } = this.props
 
     let pathLinkText = isCreatingPolylines ? text.terminatePathLinkHere : text.createPathLinkHere
 
@@ -52,9 +57,10 @@ class JunctionMarker extends React.Component {
       <Marker
         draggable={true}
         position={position}
-        icon={icon}
+        icon={this._icon}
         onDragend={(event) => { handleDragEnd(index, type, event) }}
         ref="marker"
+        keyboard={false}
       >
         <Popup>
           <div>

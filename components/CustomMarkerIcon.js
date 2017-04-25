@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-const StopMarkerIcon = require('../static/icons/stop-marker-background.png')
 
 class CustomMarkerIcon extends React.Component {
 
@@ -13,7 +12,11 @@ class CustomMarkerIcon extends React.Component {
 
     const { stopType, active } = this.props
 
-    let imageStyle = { }
+    let imageStyle = {
+      padding: 3,
+      background: '#0060b9',
+      borderRadius: '50%'
+    }
 
     if (!active) {
       imageStyle.opacity = '0.8'
@@ -22,20 +25,14 @@ class CustomMarkerIcon extends React.Component {
 
     const icon = getIconIdByModality(stopType)
 
-    this._stopMarkerIcon = <img src={StopMarkerIcon} style={imageStyle} />
-    this._stopTypeIcon = <img className='stop-marker-svg' src={icon} style={{marginTop: -44, marginLeft: -29}}/>
+    this._stopTypeIcon = <img style={{width: 20, height: 20, ...imageStyle}} src={icon} />
   }
 
   render() {
 
-    const { markerIndex } = this.props
-
     return (
-      <div key={'stop-marker-' + markerIndex}>
-        { this._stopMarkerIcon }
-        <div>
+      <div>
           { this._stopTypeIcon }
-        </div>
       </div>
     )
   }

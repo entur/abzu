@@ -131,6 +131,7 @@ class QuayMarker extends React.PureComponent {
           icon={quayIcon}
           draggable={this.props.draggable}
           onDragend={(event) => { handleQuayDragEnd(index, 'quay', event) }}
+          keyboard={false}
         >
           <Popup autoPan={false}>
             <div>
@@ -191,7 +192,7 @@ class QuayMarkerIcon extends React.PureComponent {
   componentWillMount() {
     const { focusedElement, index, belongsToNeighbourStop, compassBearing } = this.props
 
-    let markerIconStyle = { transform: 'scale(0.8)', marginLeft: 24  }
+    let markerIconStyle = { transform: 'scale(0.7)', marginLeft: 24  }
 
     if (belongsToNeighbourStop) {
       markerIconStyle.filter = 'grayscale(100%)'
@@ -202,7 +203,7 @@ class QuayMarkerIcon extends React.PureComponent {
     this._markerIcon = <img src={markerIcon} style={markerIconStyle} className={ this._shouldBeFocused ? 'focused' : ''} />
     this._compassBearingIcon = (
       <img
-        style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg)`}}
+        style={{width: 20, height: 20, marginLeft: 32, marginTop: -20, transform: `rotate(${compassBearing}deg) scale(0.7)`}}
         src={compassBearingIcon}
       />
     )
@@ -224,7 +225,7 @@ class QuayMarkerIcon extends React.PureComponent {
 
     return (
       <div>
-        {isCompassBearingEnabled && compassBearing ?
+        { isCompassBearingEnabled && compassBearing ?
           this._compassBearingIcon
           : null
         }

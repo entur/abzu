@@ -25,9 +25,7 @@ class EditStopMap extends React.Component {
       const zoom = leafletElement.getZoom()
 
       if (zoom > 12) {
-
         const bounds = leafletElement.getBounds()
-
         this.props.client.query({
           query: stopPlaceBBQuery,
           variables: {
@@ -41,7 +39,7 @@ class EditStopMap extends React.Component {
       }
     }
 
-    this.handleMapMoveEnd = debounce(mapEnd, 300)
+    this.handleMapMoveEnd = debounce(mapEnd, 500)
   }
 
   handleClick(event, map) {
@@ -151,6 +149,7 @@ class EditStopMap extends React.Component {
           position={position}
           markers={markers}
           zoom={zoom}
+          boundsOptions={{padding: [50, 50]}}
           ref="leafletMap"
           key="leafletmap-edit"
           handleOnClick={this.handleClick.bind(this)}
