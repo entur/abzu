@@ -27,9 +27,7 @@ module.exports = {
       comments: false,
       compress: {
         warnings: false,
-        screw_ie8: true,
-        negate_iife: false,
-        drop_console: true
+        screw_ie8: true
       }
     })
   ],
