@@ -138,6 +138,27 @@ class EditStopMap extends React.Component {
     }))
   }
 
+  componentDidMount() {
+    const { leafletElement } = this.refs.leafletMap.refs.map
+    const { dispatch, client, ignoreStopId } = this.props
+    dispatch(MapActions.setActiveMap(leafletElement))
+
+    const bounds = leafletElement.getBounds()
+
+    client.query({
+       fetchPolicy: 'network-only',
+       query: stopPlaceBBQuery,
+       variables: {
+       ignoreStopPlaceId: ignoreStopId,
+       latMin: bounds.getSouthWest().lat,
+       latMax: bounds.getNorthEast().lat,
+       lonMin: bounds.getSouthWest().lng,
+       lonMax: bounds.getNorthEast().lng,
+       }
+     })
+  }
+
+
   render() {
 
     const { position, markers, zoom, minZoom, disabled } = this.props
@@ -179,11 +200,6 @@ class EditStopMap extends React.Component {
         />
       </div>
     )
-  }
-
-  componentDidMount() {
-    const { leafletElement } = this.refs.leafletMap.refs.map
-    this.props.dispatch(MapActions.setActiveMap(leafletElement))
   }
 }
 

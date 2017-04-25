@@ -4,6 +4,7 @@ import LeafletMap from '../components/LeafletMap'
 import { MapActions, UserActions } from '../actions/'
 import { withApollo } from 'react-apollo'
 import { stopPlaceBBQuery } from '../actions/Queries'
+import { getIn } from '../utils/'
 
 class StopPlacesMap extends React.Component {
 
@@ -36,13 +37,16 @@ class StopPlacesMap extends React.Component {
 
       const bounds = leafletElement.getBounds()
 
+      const { ignoreStopId } = this.props
+
       this.props.client.query({
         query: stopPlaceBBQuery,
         variables: {
           latMin: bounds.getSouthWest().lat,
           latMax: bounds.getNorthEast().lat,
           lonMin: bounds.getSouthWest().lng,
-          lonMax: bounds.getNorthEast().lng
+          lonMax: bounds.getNorthEast().lng,
+          ignoreStopPlaceId: ignoreStopId
         }
       })
 
@@ -101,6 +105,7 @@ const mapStateToProps = state => {
     zoom: zoom,
     isCreatingNewStop: state.user.isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
+    ignoreStopId: getIn(state.stopPlace, ['activeSearchResult', 'id'], undefined)
   }
 }
 

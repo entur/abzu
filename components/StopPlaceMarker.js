@@ -18,8 +18,6 @@ class StopPlaceMarker extends React.Component {
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
     id: PropTypes.string,
-    handleHideQuaysForNeighbourStop: PropTypes.func,
-    isShowingQuays: PropTypes.bool.isRequired,
     isEditingStop: PropTypes.bool.isRequired
   }
 
