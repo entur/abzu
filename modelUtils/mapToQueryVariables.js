@@ -30,8 +30,13 @@ helpers.mapQuayToVariables = quay => {
   return quayVariables
 }
 
-helpers.mapStopToVariables = (stop, validBetween) => {
+helpers.getFullUTCString = (time, date) => {
+  const timeStringFrom = moment(time).utc().format('HH:mm:ss').toString()
+  const dateStringFrom = moment(date).utc().format('YYYY-MM-DD').toString()
+  return moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
+}
 
+helpers.mapStopToVariables = (stop, validBetween) => {
   let stopVariables = {
     id: stop.id,
     name: stop.name,
@@ -49,17 +54,11 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     let validPeriod = {}
 
     if (timeFrom && dateFrom) {
-      const timeStringFrom = moment(timeFrom).format('HH:mm:ss').toString()
-      const dateStringFrom = moment(dateFrom).format('YYYY-MM-DD').toString()
-      const dateTimeStringFrom = moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
-      validPeriod.fromDate = dateTimeStringFrom
+      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom)
     }
 
-    if (dateTo && timeTo) {
-      const dateStringTo = moment(dateTo).format('YYYY-MM-DD').toString()
-      const timeStringTo = moment(timeTo).format('HH:mm:ss').toString()
-      const dateTimeStringTo = moment(`${dateStringTo} ${timeStringTo}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
-      validPeriod.toDate = dateTimeStringTo
+    if (timeTo && dateTo) {
+      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo)
     }
 
     stopVariables.validBetweens = [
