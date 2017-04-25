@@ -11,7 +11,6 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: './public/'
   },
-
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.bundle.js" }),
     new webpack.DefinePlugin({

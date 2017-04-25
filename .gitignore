@@ -5,3 +5,4 @@ tmp
 npm-debug.log
 test-results.xml
 public
+stats.json
