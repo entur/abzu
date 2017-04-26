@@ -50,8 +50,9 @@ class MarkerList extends React.Component {
   }
 
   handleNewStopClick() {
-    this.props.dispatch(MapActions.useNewStopAsCurrent())
-    browserHistory.push('edit/new')
+    const { dispatch } = this.props
+    dispatch(MapActions.useNewStopAsCurrent())
+    dispatch(UserActions.navigateTo('/edit/', 'new'))
   }
 
   handleDragEndNewStop(event) {
