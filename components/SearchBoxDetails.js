@@ -4,9 +4,10 @@ import FlatButton from 'material-ui/FlatButton'
 import ModalityIcon from '../components/ModalityIcon'
 import { FormattedMessage } from 'react-intl'
 import Warning from 'material-ui/svg-icons/alert/warning'
+import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 
 
-const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, userSuppliedCoordinates}) => {
+const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, userSuppliedCoordinates, canEdit}) => {
 
   const style = {
     color: "#fefefe",
@@ -55,9 +56,12 @@ const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, us
       <FlatButton
         onClick={() => handleEdit(result.id)}
         >
-        <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
+        { canEdit ?
+          <Edit style={{width: 16, verticalAlign: "middle", height: 16}}/>
+          : <MapsMyLocation style={{width: 16, verticalAlign: "middle", height: 16}}/>
+        }
         <span style={{fontSize: ".8em", marginLeft: 5}}>
-          { text.edit }
+          { canEdit ? text.edit : text.view }
         </span>
       </FlatButton>
     </div>

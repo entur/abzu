@@ -25,6 +25,7 @@ import TopographicalFilter from '../components/TopographicalFilter'
 import Divider from 'material-ui/Divider'
 import MdMore from 'material-ui/svg-icons/navigation/more-vert'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
+import roleParser from '../roles/rolesParser'
 
 class SearchBox extends React.Component {
 
@@ -212,7 +213,7 @@ class SearchBox extends React.Component {
 
   render() {
 
-    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl, stopTypeFilter, topoiChips, topographicalPlaces } = this.props
+    const { chosenResult, isCreatingNewStop, favorited, missingCoordinatesMap, intl, stopTypeFilter, topoiChips, topographicalPlaces, canEdit } = this.props
     const { coordinatesDialogOpen, showMoreFilterOptions } = this.state
     const { formatMessage, locale } = intl
 
@@ -246,7 +247,8 @@ class SearchBox extends React.Component {
 
     const text = {
       emptyDescription: formatMessage({id: 'empty_description'}),
-      edit: formatMessage({id: 'edit'})
+      edit: formatMessage({id: 'edit'}),
+      view: formatMessage({id: 'view'})
     }
 
     const searchBoxWrapperStyle = {
@@ -351,6 +353,7 @@ class SearchBox extends React.Component {
                    handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
                    userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]}
                    text={text}
+                   canEdit={canEdit}
               />
               :  null
             }
@@ -376,10 +379,10 @@ class SearchBox extends React.Component {
 
 const mapStateToProps = state => {
 
-  var favoriteManager = new FavoriteManager()
+  const favoriteManager = new FavoriteManager()
   const { stopType, topoiChips, text } = state.user.searchFilters
-  var favoriteContent = favoriteManager.createSavableContent('', text, stopType, topoiChips)
-  var favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
+  const favoriteContent = favoriteManager.createSavableContent('', text, stopType, topoiChips)
+  const favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent)
 
   return {
     chosenResult: state.stopPlace.activeSearchResult,
@@ -390,7 +393,8 @@ const mapStateToProps = state => {
     favorited: favorited,
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
-    topographicalPlaces: state.stopPlace.topographicalPlaces || []
+    topographicalPlaces: state.stopPlace.topographicalPlaces || [],
+    canEdit: roleParser.canEdit(state.user.kc.tokenParsed)
   }
 }
 
