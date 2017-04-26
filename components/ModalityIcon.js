@@ -10,7 +10,7 @@ class ModalityIcon extends React.Component {
 
   loadIcons(nextProps) {
     let svgStyle = nextProps.svgStyle || {
-        width: 25,
+        width: 30,
         height: 25,
         display: 'inline-block',
         marginRight: 5,
@@ -27,7 +27,8 @@ class ModalityIcon extends React.Component {
       ...nextProps.style || {},
     }
 
-    this._icon = (<span style={iconStyle}>
+    this._icon = (
+      <span style={iconStyle}>
         <SvgIcon style={{ ...style, ...svgStyle}}>
             <use xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}></use>
         </SvgIcon>
@@ -54,7 +55,7 @@ const getIconIdByModality = (type) => {
     'busStation': 'busstation-withoutBox',
     'ferryStop' : 'ferry-withoutBox',
     'airport' : 'airplane-withoutBox',
-    'harbourPort' : 'ferry-withoutBox',
+    'harbourPort' : 'harbour_port',
     'liftStation' : 'lift',
     'other' : 'no-information'
   }
