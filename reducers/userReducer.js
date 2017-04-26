@@ -37,7 +37,8 @@ const userReducer = (state = initialState, action) => {
         path: action.payLoad,
         missingCoordsMap: {},
         showEditQuayAdditional: false,
-        showEditStopAdditional: false
+        showEditStopAdditional: false,
+        isCreatingNewStop: false
       })
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:

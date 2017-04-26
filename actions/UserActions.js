@@ -61,7 +61,6 @@ UserActions.toggleIsCreatingNewStop = () => {
     if (isCreatingNewStop) {
       dispatch( sendData( types.DESTROYED_NEW_STOP, null) )
     }
-
     dispatch( sendData (types.TOGGLED_IS_CREATING_NEW_STOP, null) )
   }
 }
