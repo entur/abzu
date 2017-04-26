@@ -68,10 +68,9 @@ class SearchBox extends React.Component {
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
 
-    if (!searchText || !searchText.length) {
-      /* This is a work-around to solve bug in Material-UI causing handleUpdateInput to
-       be fired upon handleNewRequest
-       */
+    if (!searchText || !searchText.length || searchText.length < 2) {
+      this.props.dispatch(UserActions.clearSearchResults())
+
     } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
       return
     }
@@ -174,6 +173,7 @@ class SearchBox extends React.Component {
           value: (
             <MenuItem
               style={{marginTop:5, paddingRight: 5, width: 'auto'}}
+              key={element.id}
               innerDivStyle={{minWidth: 300, padding: '0px 16px 0px 0px'}}
               primaryText={(
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -187,7 +187,7 @@ class SearchBox extends React.Component {
               leftIcon={(
                 <ModalityIcon
                   svgStyle={{marginRight: 10}}
-                  isStatic={true}
+                  isStatic={false}
                   style={{display: 'inline-block', position: 'relative'}}
                   type={element.stopPlaceType}
                 />
@@ -195,6 +195,9 @@ class SearchBox extends React.Component {
             />
           )}
       ))
+    }
+    else if (this.props.searchText && this.props.searchText.length > 2) {
+      this._menuItems = []
     } else {
        this._menuItems = [{
          text: '',
@@ -285,7 +288,7 @@ class SearchBox extends React.Component {
             <SearchIcon style={{verticalAlign: 'middle', marginRight: 5, height: 22, width: 22}}/>
             <AutoComplete
               textFieldStyle={{width: 380}}
-              animated={true}
+              animated={false}
               openOnFocus
               hintText={formatMessage({id: "filter_by_name"})}
               dataSource={this._menuItems || []}

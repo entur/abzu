@@ -4,45 +4,37 @@ import SvgIcon from 'material-ui/SvgIcon'
 
 class ModalityIcon extends React.Component {
 
-  componentWillMount() {
-    this.loadIcons(this.props)
+  componentWillUpdate(nextProps) {
+    return (this.props.type == nextProps.type)
   }
 
-  loadIcons(nextProps) {
-    let svgStyle = nextProps.svgStyle || {
+  render() {
+
+    let svgStyle = this.props.svgStyle || {
         width: 30,
         height: 25,
         display: 'inline-block',
         marginRight: 5,
       }
 
-    const iconStyle = nextProps.iconStyle || {
+    const iconStyle = this.props.iconStyle || {
         float: 'left',
         transform: 'translateY(2px)',
       }
 
-    const iconId = getIconIdByModality(nextProps.type)
+    const iconId = getIconIdByModality(this.props.type)
 
     let style = {
-      ...nextProps.style || {},
+      ...this.props.style || {},
     }
 
-    this._icon = (
+    return (
+
       <span style={iconStyle}>
         <SvgIcon style={{ ...style, ...svgStyle}}>
             <use xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}></use>
         </SvgIcon>
       </span>)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.isStatic) {
-      this.loadIcons(nextProps)
-    }
-  }
-
-  render() {
-    return this._icon
   }
 }
 

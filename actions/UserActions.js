@@ -27,6 +27,12 @@ UserActions.navigateTo = (path, id) => {
   }
 }
 
+UserActions.clearSearchResults = () => {
+  return function (dispatch) {
+    dispatch(sendData(types.CLEAR_SEARCH_RESULTS, null))
+  }
+}
+
 UserActions.hideEditStopAdditional = () => {
   return function(dispatch) {
     dispatch(sendData(types.HID_EDIT_STOP_ADDITIONAL, null))

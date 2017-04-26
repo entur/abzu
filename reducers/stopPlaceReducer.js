@@ -16,6 +16,11 @@ const graphQLreducer = (state = {}, action) => {
       case "APOLLO_QUERY_RESULT_CLIENT":
         return getObjectFromCache(state, action)
 
+      case types.CLEAR_SEARCH_RESULTS:
+        return Object.assign({}, state, {
+          searchResults: []
+        })
+
       case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
         const id = action.payLoad
         return Object.assign({}, state, {
