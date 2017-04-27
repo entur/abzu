@@ -81,15 +81,11 @@ class SearchBox extends React.Component {
       const chips = filter ? filter.topoiChips : this.props.topoiChips
       const stopPlaceTypes = filter ? filter.stopType : this.props.stopTypeFilter
 
-      // Remove this when lowecase '[a-z]' is optimized on backend
-      const queryString = (isNaN(searchText) && searchText.length < 2)
-        ? searchText.toUpperCase() : searchText
-
       this.props.client.query({
         query: findStop,
         fetchPolicy: 'network-only',
         variables: {
-          query: queryString,
+          query: searchText,
           importedId: isImportedId ? searchText : null,
           stopPlaceType: stopPlaceTypes,
           municipalityReference: chips
