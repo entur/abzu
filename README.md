@@ -37,13 +37,13 @@ variable `port` (notice lower case).
 To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
 
 ```
-TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 npm run dev
+TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 port=9000 NODE_ENV=development node server.js
 ```
 
 To override OpenStreetMap URL, set `OSM_URL` as environment variables, e.g.
 
 ```
-OSM_URL=https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png port=9000 npm run dev
+OSM_URL=https://test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png port=9000 port=9000 NODE_ENV=development node server.js
 ```
 
 
@@ -60,7 +60,7 @@ npm run test
 Uses Keycloak to authenticate user and read JWT, set `auth-server-url`:
 
 ```
-AUTH_SERVER_URL=https://test.rutebanken.org/auth TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 npm run dev
+AUTH_SERVER_URL=https://test.rutebanken.org/auth TIAMAT_BASE_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql port=9000 NODE_ENV=development node server.js
 ```
 
 
