@@ -68,7 +68,7 @@ class SearchBox extends React.Component {
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
 
-    if (!searchText || !searchText.length || searchText.length < 2) {
+    if (!searchText || !searchText.length ) {
       this.props.dispatch(UserActions.clearSearchResults())
 
     } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
@@ -81,11 +81,15 @@ class SearchBox extends React.Component {
       const chips = filter ? filter.topoiChips : this.props.topoiChips
       const stopPlaceTypes = filter ? filter.stopType : this.props.stopTypeFilter
 
+      // Remove this when lowecase '[a-z]' is optimized on backend
+      const queryString = (isNaN(searchText) && searchText.length < 2)
+        ? searchText.toUpperCase() : searchText
+
       this.props.client.query({
         query: findStop,
         fetchPolicy: 'network-only',
         variables: {
-          query: searchText,
+          query: queryString,
           importedId: isImportedId ? searchText : null,
           stopPlaceType: stopPlaceTypes,
           municipalityReference: chips
@@ -166,6 +170,11 @@ class SearchBox extends React.Component {
     const {  dataSource = [] } = nextProps
     const { formatMessage } = nextProps.intl
 
+    // do not map menuItems if source is the same
+    if (JSON.stringify(this.props.dataSource) === JSON.stringify(nextProps.dataSource)) {
+      return
+    }
+
     if (dataSource.length) {
       this._menuItems = dataSource.map( element => ({
           element: element,
@@ -196,9 +205,7 @@ class SearchBox extends React.Component {
           )}
       ))
     }
-    else if (this.props.searchText && this.props.searchText.length > 2) {
-      this._menuItems = []
-    } else {
+     else {
        this._menuItems = [{
          text: '',
          value:
