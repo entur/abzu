@@ -288,6 +288,41 @@ class SearchBox extends React.Component {
               onDismiss={this.handlePopoverDismiss.bind(this)}
               text={favoriteText}
             />
+            <div style={{width: '100%', margin: 'auto', border: '1px solid hsla(182, 53%, 51%, 0.1)'}}>
+              <ModalityFilter locale={locale}/>
+              { showMoreFilterOptions ?
+                <div>
+                  <div style={{width: '100%', textAlign: 'center'}}>
+                    <FlatButton
+                      onClick={() => this.handleToggleFilter(false)}
+                      style={{fontSize: 12}}
+                    >
+                      { formatMessage({id: 'filters_less'}) }
+                    </FlatButton>
+                  </div>
+                  <AutoComplete
+                    hintText={formatMessage({id: "filter_by_topography"})}
+                    dataSource={topographicalPlacesDataSource}
+                    onUpdateInput={this.handleTopographicalPlaceInput.bind(this)}
+                    filter={AutoComplete.caseInsensitiveFilter}
+                    style={{margin: 'auto', width: '100%', textAlign: 'center', marginTop: -10}}
+                    maxSearchResults={5}
+                    fullWidth={true}
+                    ref="topoFilter"
+                    onNewRequest={this.handleAddChip.bind(this)}
+                  />
+                  <TopographicalFilter/>
+                </div>
+                :  <div style={{width: '100%', textAlign: 'center'}}>
+                  <FlatButton
+                    style={{fontSize: 12}}
+                    onClick={() => this.handleToggleFilter(true)}
+                  >
+                    { formatMessage({id: 'filters_more'}) }
+                  </FlatButton>
+                </div>
+              }
+            </div>
             <SearchIcon style={{verticalAlign: 'middle', marginRight: 5, height: 22, width: 22}}/>
             <AutoComplete
               textFieldStyle={{width: 380}}
@@ -319,37 +354,6 @@ class SearchBox extends React.Component {
             >
               {formatMessage({id: 'filter_save_favorite'})}
             </FlatButton>
-          </div>
-          <div style={{width: '100%', margin: 'auto', border: '1px solid hsla(182, 53%, 51%, 0.1)'}}>
-            <ModalityFilter locale={locale}/>
-            { showMoreFilterOptions ?
-              <div>
-                <div style={{width: '100%', textAlign: 'center'}}>
-                  <FlatButton
-                    icon={<MdLess style={{height: 18, width: 18}}/>}
-                    onClick={() => this.handleToggleFilter(false)}
-                  />
-                </div>
-                <AutoComplete
-                  hintText={formatMessage({id: "filter_by_topography"})}
-                  dataSource={topographicalPlacesDataSource}
-                  onUpdateInput={this.handleTopographicalPlaceInput.bind(this)}
-                  filter={AutoComplete.caseInsensitiveFilter}
-                  style={{margin: 'auto', width: '100%', textAlign: 'center'}}
-                  maxSearchResults={5}
-                  fullWidth={true}
-                  ref="topoFilter"
-                  onNewRequest={this.handleAddChip.bind(this)}
-                />
-                <TopographicalFilter/>
-              </div>
-              :  <div style={{width: '100%', textAlign: 'center'}}>
-                <FlatButton
-                  icon={<MdMore style={{height: 20, width: 20}}/>}
-                  onClick={() => this.handleToggleFilter(true)}
-                />
-              </div>
-            }
           </div>
           <div key='searchbox-edit'>
             { chosenResult
