@@ -48,7 +48,7 @@ class AltNamesDialog extends React.Component {
 
   render() {
 
-    const { open, intl, altNames = [], handleClose } = this.props
+    const { open, intl, altNames = [], handleClose, disabled } = this.props
     const { formatMessage, locale } = intl
     const { lang, value, type } = this.state
 
@@ -83,80 +83,88 @@ class AltNamesDialog extends React.Component {
     return (
       <div style={style}>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5}}>
-          <div style={{marginTop: 8, fontWeight: 60, marginLeft: 15, fontWeight: 600}}>{ translations.alternativeNames } </div>
+          <div style={{marginTop: 8, fontWeight: 60, marginLeft: 10, fontWeight: 600}}>{ translations.alternativeNames } </div>
           <IconButton style={{marginRight: 5}} onTouchTap={() => { handleClose() }}>
             <MdClose/>
           </IconButton>
         </div>
-        <div style={{width: '90%', margin: 'auto', fontSize: 12}}>
-          { altNames.map( (an,i) => (
-            <div key={"altName-" + i} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', lineHeight: 2}}>
-              <div style={itemStyle}>{altNameConfig.allNameTypes[an.nameType][locale]}</div>
-              <div style={itemStyle}>{an.name.value}</div>
-              <div style={itemStyle}>{altNameConfig.languages[an.name.lang][locale]}</div>
-              <div>
-                <IconButton width="10" onTouchTap={() => { this.handleRemoveName(i) }}>
-                  <MdDelete/>
-                </IconButton>
+          <div style={{width: '100%', fontSize: 12, overflowY: 'overlay', maxHeight: 400, marginLeft: 5}}>
+            { altNames.map( (an,i) => (
+              <div key={"altName-" + i} style={{display: 'flex', alignItems: 'center', padding: 10, justifyContent: 'space-between', lineHeight: 2}}>
+                <div style={itemStyle}>{altNameConfig.allNameTypes[an.nameType][locale]}</div>
+                <div style={itemStyle}>{an.name.value}</div>
+                <div style={itemStyle}>{altNameConfig.languages[an.name.lang][locale]}</div>
+                { !disabled
+                  ? <div>
+                    <IconButton width="10" onTouchTap={() => { this.handleRemoveName(i) }}>
+                      <MdDelete/>
+                    </IconButton>
+                  </div>
+                  : null
+                }
               </div>
+            ))}
+            { !altNames.length
+              ? <div style={{width: '100%', textAlign: 'center'}}> { translations.noAlternativeNames } </div>
+              : null
+            }
+          </div>
+        { !disabled ?
+          <div style={{background: 'rgba(33, 150, 243, 0)', border: '1px dotted', padding: 20, marginTop: 10}}>
+            <div style={{fontWeight: 600, fontSize: 12, textAlign: 'center', width: '100%'}}>
+              { translations.addAltName }
             </div>
-          ))}
-          { !altNames.length
-            ? <div style={{width: '100%', textAlign: 'center'}}> { translations.noAlternativeNames } </div>
-            : null
-          }
-        </div>
-        <div style={{background: 'rgba(33, 150, 243, 0)', border: '1px dotted', padding: 20, marginTop: 10}}>
-          <div style={{fontWeight: 600, fontSize: 12, textAlign: 'center', width: '100%'}}>Legg til nytt navn</div>
-          <SelectField
-            style={{marginTop: -10}}
-            fullWidth={true}
-            floatingLabelText={translations.nameType}
-            value={type}
-            onChange={ (e, value) => { this.setState({type: value}) }}
-          >
-            {
-              altNameConfig.supportedNameTypes.map( (type, index) => (
-                <MenuItem
-                  key={"type-" + type.value}
-                  value={index}
-                  primaryText={type.name[locale]}
-                />
-              ))
-            }
-          </SelectField>
-          <SelectField
-            style={{marginTop: -10}}
-            fullWidth={true}
-            floatingLabelText={translations.language}
-            value={lang}
-            onChange={ (e, value) => { this.setState({lang: value}) }}
-          >
-            {
-              Object.keys(altNameConfig.languages).map( (key,index) =>  (
-                <MenuItem
-                  key={"lang-" + index}
-                  value={index}
-                  primaryText={altNameConfig.languages[key][locale]}
-                />
-              ))
-            }
-          </SelectField>
-          <TextField
-            fullWidth={true}
-            hintText={translations.value}
-            value={value}
-            onChange={ (event, value) => { this.setState({value: value}) }}
-          />
-          <FlatButton
-            style={{marginTop: 10, width: '100%', textAlign: 'center'}}
-            disabled={!value}
-            primary={true}
-            onTouchTap={this.handleAddAltName.bind(this)}
-          >
-            { translations.addAltName }
-          </FlatButton>
-        </div>
+            <SelectField
+              style={{marginTop: -10}}
+              fullWidth={true}
+              floatingLabelText={translations.nameType}
+              value={type}
+              onChange={ (e, value) => { this.setState({type: value}) }}
+            >
+              {
+                altNameConfig.supportedNameTypes.map( (type, index) => (
+                  <MenuItem
+                    key={"type-" + type.value}
+                    value={index}
+                    primaryText={type.name[locale]}
+                  />
+                ))
+              }
+            </SelectField>
+            <SelectField
+              style={{marginTop: -10}}
+              fullWidth={true}
+              floatingLabelText={translations.language}
+              value={lang}
+              onChange={ (e, value) => { this.setState({lang: value}) }}
+            >
+              {
+                Object.keys(altNameConfig.languages).map( (key,index) =>  (
+                  <MenuItem
+                    key={"lang-" + index}
+                    value={index}
+                    primaryText={altNameConfig.languages[key][locale]}
+                  />
+                ))
+              }
+            </SelectField>
+            <TextField
+              fullWidth={true}
+              hintText={translations.value}
+              value={value}
+              onChange={ (event, value) => { this.setState({value: value}) }}
+            />
+            <FlatButton
+              style={{marginTop: 10, width: '100%', textAlign: 'center'}}
+              disabled={!value}
+              primary={true}
+              onTouchTap={this.handleAddAltName.bind(this)}
+            >
+              { translations.add }
+            </FlatButton>
+          </div>
+          : null
+        }
       </div>
     )
   }

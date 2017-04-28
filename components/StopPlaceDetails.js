@@ -193,7 +193,7 @@ class StopPlaceDetails extends React.Component {
           />
           <div style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
             <IconButton
-              onClick={ () => { if (!disabled) this.setState({altNamesDialogOpen: true}) }}
+              onClick={ () => { this.setState({altNamesDialogOpen: true}) }}
             >
               <MdLanguage color={hasAltNames ? enturPrimary : '#000'}/>
             </IconButton>
@@ -256,6 +256,7 @@ class StopPlaceDetails extends React.Component {
           open={altNamesDialogOpen}
           altNames={stopPlace.alternativeNames}
           intl={intl}
+          disabled={disabled}
           handleClose={ () => { this.setState({altNamesDialogOpen: false}) }}
         />
       </div>
