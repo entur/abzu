@@ -29,6 +29,7 @@ describe('Model: map format from server to expected client model', () => {
       isActive: true,
       topographicPlace: 'Aremark',
       parentTopographicPlace: 'Østfold',
+      alternativeNames: [],
       accessibilityAssessment: {
         limitations: {
           wheelchairAccess: "UNKNOWN",
@@ -88,11 +89,11 @@ describe('Model: map format from server to expected client model', () => {
 
   it('should map client stop to schema correctly', () => {
 
-
      const schemaValidStop = QueryVariablesMapper.mapStopToVariables(clientStop)
      const expectedStop = {
        "id": "NSR:StopPlace:19744",
        "name": "Aspelundsveien",
+       alternativeNames: [],
        "stopPlaceType": "onstreetBus",
        "description": "Beskrivelse",
        "coordinates": [ [

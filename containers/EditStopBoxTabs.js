@@ -4,34 +4,34 @@ import PathJunctionItem from '../components/PathJunctionItem'
 import EntranceItem from '../components/EntranceItem'
 import ParkingItem from '../components/ParkingItem'
 import { connect } from 'react-redux'
-import { MapActions } from '../actions/'
+import { StopPlaceActions } from '../actions/'
 
 class EditStopBoxTabs extends React.Component {
 
   handleLocateOnMap(position) {
-    this.props.dispatch(MapActions.changeMapCenter(position, 17))
+    this.props.dispatch(StopPlaceActions.changeMapCenter(position, 17))
   }
 
   handleRemoveQuay(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'quay'))
+    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'quay'))
   }
 
   handleRemoveEntrance(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'entrance'))
+    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'entrance'))
   }
 
   handleRemovePathJunction(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'pathJunction'))
+    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'pathJunction'))
   }
 
   handleToggleCollapse(index, type) {
     const { dispatch, expandedItem } = this.props
     const isExpanded = expandedItem.type === type && expandedItem.index == index
-    dispatch(MapActions.setElementFocus(isExpanded ? -1 : index, type))
+    dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type))
   }
 
   handleRemoveParking(index) {
-    this.props.dispatch(MapActions.removeElementByType(index, 'parking'))
+    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'parking'))
   }
 
   getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { MapActions, UserActions } from '../actions/'
+import { StopPlaceActions, UserActions } from '../actions/'
 import { withApollo } from 'react-apollo'
 import { stopPlaceBBQuery } from '../actions/Queries'
 import { getIn } from '../utils/'
@@ -14,7 +14,7 @@ class StopPlacesMap extends React.Component {
 
     if (isCreatingNewStop) {
       map.leafletElement.doubleClickZoom.disable()
-      this.props.dispatch( MapActions.createNewStop(e.latlng) )
+      this.props.dispatch( StopPlaceActions.createNewStop(e.latlng) )
     } else {
       map.leafletElement.doubleClickZoom.enable()
     }

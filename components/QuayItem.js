@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import TextField from 'material-ui/TextField'
-import { MapActions, AssessmentActions, EquipmentActions } from '../actions/'
+import { StopPlaceActions, AssessmentActions, EquipmentActions } from '../actions/'
 import { connect } from 'react-redux'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
@@ -43,12 +43,12 @@ class QuayItem extends React.Component {
 
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changeElementDescription(index, event.target.value, 'quay'))
+    dispatch(StopPlaceActions.changeElementDescription(index, event.target.value, 'quay'))
   }
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(MapActions.changeElementName(index, event.target.value, 'quay'))
+    dispatch(StopPlaceActions.changeElementName(index, event.target.value, 'quay'))
   }
 
   showMoreOptionsForQuay = expanded => {

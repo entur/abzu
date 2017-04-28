@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import { MapActions, UserActions } from '../actions/'
+import { StopPlaceActions, UserActions } from '../actions/'
 import SearchBoxDetails from '../components/SearchBoxDetails'
 import cfgreader from '../config/readConfig'
 import NewStopPlace from '../components/NewStopPlace'
@@ -110,7 +110,7 @@ class SearchBox extends React.Component {
 
   handleNewRequest(result) {
     if (typeof(result.element) !== 'undefined') {
-      this.props.dispatch( MapActions.setMarkerOnMap(result.element) )
+      this.props.dispatch( StopPlaceActions.setMarkerOnMap(result.element) )
     }
   }
 
@@ -121,7 +121,7 @@ class SearchBox extends React.Component {
    }
 
   handleSubmitCoordinates(position) {
-    this.props.dispatch( MapActions.changeMapCenter(position, 11))
+    this.props.dispatch( StopPlaceActions.changeMapCenter(position, 11))
     this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.chosenResult.id ))
 
     this.setState(({

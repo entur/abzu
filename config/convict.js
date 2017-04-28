@@ -40,7 +40,6 @@ module.exports = new Promise(function(resolve, reject){
       default: "https://www-test.rutebanken.org/auth/",
       env: "AUTH_SERVER_URL"
     }
-
   });
 
   // If configuration URL exists, read it and update the configuration object

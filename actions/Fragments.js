@@ -62,6 +62,13 @@ Fragments.stopPlace = {
         name {
             value
         }
+        alternativeNames {
+            nameType
+            name {
+                value
+                lang
+            }
+        }
         description {
             value
         }

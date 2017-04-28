@@ -1,6 +1,6 @@
 import * as types from './Types'
 
-var MapActions = {}
+var StopPlaceActions = {}
 
 const sendData = (type, payLoad) => {
   return {
@@ -9,37 +9,37 @@ const sendData = (type, payLoad) => {
   }
 }
 
-MapActions.changeLocationNewStop = location => {
+StopPlaceActions.changeLocationNewStop = location => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]) )
   }
 }
 
-MapActions.useNewStopAsCurrent = () => {
+StopPlaceActions.useNewStopAsCurrent = () => {
   return function (dispatch) {
     dispatch( sendData(types.USE_NEW_STOP_AS_CURENT, null) )
   }
 }
 
-MapActions.changeStopName = (name) => {
+StopPlaceActions.changeStopName = (name) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_STOP_NAME, name) )
   }
 }
 
-MapActions.changeStopDescription = (description) => {
+StopPlaceActions.changeStopDescription = description => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_STOP_DESCRIPTION, description) )
   }
 }
 
-MapActions.changeStopType = (type) => {
+StopPlaceActions.changeStopType = type => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_STOP_TYPE, type) )
   }
 }
 
-MapActions.setMarkerOnMap = marker => {
+StopPlaceActions.setMarkerOnMap = marker => {
   return function(dispatch) {
     let activeMarker = JSON.parse(JSON.stringify(marker))
     activeMarker.isActive = true
@@ -47,13 +47,25 @@ MapActions.setMarkerOnMap = marker => {
   }
 }
 
-MapActions.changeMapCenter = (position) => {
+StopPlaceActions.changeMapCenter = position => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_MAP_CENTER, position) )
   }
 }
 
-MapActions.removeElementByType = (index, type) => {
+StopPlaceActions.addAltName = payLoad => {
+  return function(dispatch) {
+    dispatch( sendData(types.ADDED_ALT_NAME, payLoad) )
+  }
+}
+
+StopPlaceActions.removeAltName = index => {
+  return function(dispatch) {
+    dispatch( sendData(types.REMOVED_ALT_NAME, index) )
+  }
+}
+
+StopPlaceActions.removeElementByType = (index, type) => {
   return function(dispatch) {
     dispatch( sendData(types.REMOVED_ELEMENT_BY_TYPE, {
       index: index,
@@ -62,7 +74,7 @@ MapActions.removeElementByType = (index, type) => {
   }
 }
 
-MapActions.changeElementName = (index, name, type) => {
+StopPlaceActions.changeElementName = (index, name, type) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGE_ELEMENT_NAME, {
       name: name,
@@ -72,7 +84,7 @@ MapActions.changeElementName = (index, name, type) => {
   }
 }
 
-MapActions.changeCurrentStopPosition = position => {
+StopPlaceActions.changeCurrentStopPosition = position => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
       location: [ position.lat, position.lng ]
@@ -81,7 +93,7 @@ MapActions.changeCurrentStopPosition = position => {
 }
 
 
-MapActions.changeElementDescription = (index, description, type) => {
+StopPlaceActions.changeElementDescription = (index, description, type) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ELEMENT_DESCRIPTION, {
       index: index,
@@ -91,7 +103,7 @@ MapActions.changeElementDescription = (index, description, type) => {
   }
 }
 
-MapActions.changeQuayCompassBearing = (index, compassBearing) => {
+StopPlaceActions.changeQuayCompassBearing = (index, compassBearing) => {
   return function(dispatch) {
     dispatch( (sendData(types.CHANGED_QUAY_COMPASS_BEARING, {
       index: index,
@@ -101,7 +113,7 @@ MapActions.changeQuayCompassBearing = (index, compassBearing) => {
 }
 
 
-MapActions.setElementFocus = (index, type) => {
+StopPlaceActions.setElementFocus = (index, type) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_FOCUS_ON_ELEMENT, {
       index: index,
@@ -110,25 +122,25 @@ MapActions.setElementFocus = (index, type) => {
   }
 }
 
-MapActions.createNewStop = (location) => {
+StopPlaceActions.createNewStop = (location) => {
   return function(dispatch) {
     dispatch( sendData(types.CREATED_NEW_STOP, [ Number(location.lat), Number(location.lng) ]) )
   }
 }
 
-MapActions.discardChangesForEditingStop = () => {
+StopPlaceActions.discardChangesForEditingStop = () => {
   return function(dispatch) {
     dispatch( sendData(types.RESTORED_TO_ORIGINAL_STOP_PLACE, null) )
   }
 }
 
-MapActions.setActiveMap = (map) => {
+StopPlaceActions.setActiveMap = (map) => {
   return function(dispatch) {
     dispatch( sendData(types.SET_ACTIVE_MAP, map) )
   }
 }
 
-MapActions.addElementToStop = (type, position) => {
+StopPlaceActions.addElementToStop = (type, position) => {
   return function(dispatch) {
 
     if (type === 'stop_place') {
@@ -146,7 +158,7 @@ MapActions.addElementToStop = (type, position) => {
   }
 }
 
-MapActions.changElementPosition = (index, type, position) => {
+StopPlaceActions.changElementPosition = (index, type, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGE_ELEMENT_POSITION, {
       index: index,
@@ -156,4 +168,4 @@ MapActions.changElementPosition = (index, type, position) => {
   }
 }
 
-export default MapActions
+export default StopPlaceActions

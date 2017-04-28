@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import ImportedId from '../components/ImportedId'
-import { MapActions, AssessmentActions, EquipmentActions } from '../actions/'
+import { StopPlaceActions, AssessmentActions, EquipmentActions } from '../actions/'
 import { connect } from 'react-redux'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
@@ -18,6 +18,9 @@ import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
 import equiptmentHelpers from '../modelUtils/equipmentHelpers'
+import MdLanguage from 'material-ui/svg-icons/action/language'
+import { enturPrimary } from '../config/enturTheme'
+import AltNamesDialog from './AltNamesDialog'
 
 class StopPlaceDetails extends React.Component {
 
@@ -27,14 +30,15 @@ class StopPlaceDetails extends React.Component {
       stopTypeOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
+      altNamesDialogOpen: false
     }
 
     this.updateStopName = debounce( value => {
-      this.props.dispatch(MapActions.changeStopName(value))
+      this.props.dispatch(StopPlaceActions.changeStopName(value))
     }, 200)
 
     this.updateStopDescription = debounce( value => {
-      this.props.dispatch(MapActions.changeStopDescription(value))
+      this.props.dispatch(StopPlaceActions.changeStopDescription(value))
     }, 200)
   }
 
@@ -84,7 +88,7 @@ class StopPlaceDetails extends React.Component {
 
   handleStopTypeChange(value) {
     this.handleCloseStopPlaceTypePopover()
-    this.props.dispatch(MapActions.changeStopType(value))
+    this.props.dispatch(StopPlaceActions.changeStopType(value))
   }
 
   handleTicketMachineChange(value) {
@@ -127,7 +131,7 @@ class StopPlaceDetails extends React.Component {
 
     const { stopPlace, intl, expanded, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { name, description } = this.state
+    const { name, description, altNamesDialogOpen } = this.state
 
     const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
 
@@ -137,53 +141,68 @@ class StopPlaceDetails extends React.Component {
     const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace)
     const WC = equiptmentHelpers.getSanitaryEquiptmentState(stopPlace)
 
+    const hasAltNames = !!(stopPlace.alternativeNames && stopPlace.alternativeNames.length)
+
     return (
       <div style={fixedHeader}>
-        <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
-        <TextField
-          hintText={formatMessage({id: 'name'})}
-          floatingLabelText={formatMessage({id: 'name'})}
-          style={{width: 295, marginTop: -10}}
-          value={name}
-          disabled={disabled}
-          onChange={this.handleStopNameChange.bind(this)}
-        />
-        <IconButton
-          disabled={disabled}
-          style={{marginLeft: 30, borderBottom: '1px dotted grey'}}
-          onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
-        >
-          <ModalityIcon
-            type={ stopPlace.stopPlaceType }
-          />
-        </IconButton>
-        <Popover
-          open={this.state.stopTypeOpen}
-          anchorEl={this.state.stopTypeAnchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
-          animation={PopoverAnimationVertical}
-        >
-          { stopTypes[locale].map( (type, index) =>
-            <MenuItem
-              key={'stopType' + index}
-              value={type.value}
-              style={{padding: '0px 10px'}}
-              primaryText={type.name}
-              onClick={() => { this.handleStopTypeChange(type.value) }}
-              secondaryText={(
-                <ModalityIcon
-                  iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
-                  type={type.value}
-                />)}
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <div style={{flex: 1}}>
+            <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
+          </div>
+          <IconButton
+            disabled={disabled}
+            style={{borderBottom: '1px dotted grey'}}
+            onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
+          >
+            <ModalityIcon
+              type={ stopPlace.stopPlaceType }
             />
-          ) }
-        </Popover>
+          </IconButton>
+          <Popover
+            open={this.state.stopTypeOpen}
+            anchorEl={this.state.stopTypeAnchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
+            animation={PopoverAnimationVertical}
+          >
+            { stopTypes[locale].map( (type, index) =>
+              <MenuItem
+                key={'stopType' + index}
+                value={type.value}
+                style={{padding: '0px 10px'}}
+                primaryText={type.name}
+                onClick={() => { this.handleStopTypeChange(type.value) }}
+                secondaryText={(
+                  <ModalityIcon
+                    iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
+                    type={type.value}
+                  />)}
+              />
+            ) }
+          </Popover>
+        </div>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <TextField
+            hintText={formatMessage({id: 'name'})}
+            floatingLabelText={formatMessage({id: 'name'})}
+            style={{marginTop: -10, width: 340}}
+            value={name}
+            disabled={disabled}
+            onChange={this.handleStopNameChange.bind(this)}
+          />
+          <div style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
+            <IconButton
+              onClick={ () => { if (!disabled) this.setState({altNamesDialogOpen: true}) }}
+            >
+              <MdLanguage color={hasAltNames ? enturPrimary : '#000'}/>
+            </IconButton>
+          </div>
+        </div>
         <TextField
           hintText={formatMessage({id: 'description'})}
           floatingLabelText={formatMessage({id: 'description'})}
-          style={{width: 295, marginTop: -10}}
+          style={{width: 340, marginTop: -10}}
           disabled={disabled}
           value={description}
           onChange={this.handleStopDescriptionChange.bind(this)}
@@ -233,6 +252,12 @@ class StopPlaceDetails extends React.Component {
               />
           </div>
         }
+        <AltNamesDialog
+          open={altNamesDialogOpen}
+          altNames={stopPlace.alternativeNames}
+          intl={intl}
+          handleClose={ () => { this.setState({altNamesDialogOpen: false}) }}
+        />
       </div>
     )
   }

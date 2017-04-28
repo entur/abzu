@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import LeafletMap from '../components/LeafletMap'
-import { MapActions, UserActions } from '../actions/'
+import { StopPlaceActions, UserActions } from '../actions/'
 import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
 import CoordinatesDialog from '../components/CoordinatesDialog'
@@ -84,9 +84,9 @@ class EditStopMap extends React.Component {
     }
 
     if (isQuay) {
-      dispatch(MapActions.changeQuayPosition(index, formattedPosition))
+      dispatch(StopPlaceActions.changeQuayPosition(index, formattedPosition))
     } else {
-      dispatch(MapActions.changeCurrentStopPosition(formattedPosition))
+      dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition))
     }
   }
 
@@ -118,12 +118,12 @@ class EditStopMap extends React.Component {
     const { dispatch } = this.props
 
     if (coordinatesOwner.isQuay) {
-      dispatch(MapActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
+      dispatch(StopPlaceActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
     } else {
-      dispatch(MapActions.changeCurrentStopPosition(position))
+      dispatch(StopPlaceActions.changeCurrentStopPosition(position))
     }
 
-    dispatch(MapActions.changeMapCenter(position, 14))
+    dispatch(StopPlaceActions.changeMapCenter(position, 14))
 
     this.setState(({
       coordinatesDialogOpen: false
@@ -132,7 +132,7 @@ class EditStopMap extends React.Component {
 
   handleSubmitChangeCompassBearing(compassBearing) {
     const { compassBearingOwner } = this.state
-    this.props.dispatch(MapActions.changeQuayCompassBearing(compassBearingOwner, compassBearing))
+    this.props.dispatch(StopPlaceActions.changeQuayCompassBearing(compassBearingOwner, compassBearing))
     this.setState(({
       compassBearingDialogOpen: false
     }))
@@ -141,7 +141,7 @@ class EditStopMap extends React.Component {
   componentDidMount() {
     const { leafletElement } = this.refs.leafletMap.refs.map
     const { dispatch, client, ignoreStopId } = this.props
-    dispatch(MapActions.setActiveMap(leafletElement))
+    dispatch(StopPlaceActions.setActiveMap(leafletElement))
 
     const bounds = leafletElement.getBounds()
 

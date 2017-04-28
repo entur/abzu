@@ -44,7 +44,8 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(stop.accessibilityAssessment),
-    placeEquipments: stop.placeEquipments
+    placeEquipments: stop.placeEquipments,
+    alternativeNames: stop.alternativeNames
   }
 
   if (validBetween) {

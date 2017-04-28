@@ -174,6 +174,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     let clientStop = {
       id: stop.id,
       name: stop.name.value,
+      alternativeNames: stop.alternativeNames,
       stopPlaceType: stop.stopPlaceType,
       isActive: isActive
     }
@@ -459,6 +460,35 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
   })
 
   return neighbourQuaysMap
+}
+
+helpers.addAltName = (original, payLoad) => {
+  const { nameType, lang, value } = payLoad
+  const copy = JSON.parse(JSON.stringify(original))
+
+  if (!copy.alternativeNames) {
+    copy.alternativeNames = []
+  }
+
+  copy.alternativeNames.push({
+    nameType: nameType,
+    name: {
+      lang: lang,
+      value: value
+    }
+  })
+  return copy
+}
+
+helpers.removeAltName = (original, index) => {
+  const copy = JSON.parse(JSON.stringify(original))
+
+  if (!copy.alternativeNames) {
+    return original
+  }
+  copy.alternativeNames = removeElementByIndex(copy.alternativeNames, index)
+
+  return copy
 }
 
 const removeElementByIndex = (list, index) =>

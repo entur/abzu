@@ -1,6 +1,7 @@
 {
   "id": "NSR:StopPlace:19744",
   "name": "Aspelundsveien",
+  "alternativeNames": [],
   "stopPlaceType": "onstreetBus",
   "isActive": true,
   "topographicPlace": "Askim",

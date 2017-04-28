@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import StopPlaceMarker from './StopPlaceMarker'
 import NewStopMarker from './NewStopMarker'
-import { MapActions, UserActions } from '../actions/'
+import { StopPlaceActions, UserActions } from '../actions/'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import stopTypes from './stopTypes'
@@ -51,12 +51,12 @@ class MarkerList extends React.Component {
 
   handleNewStopClick() {
     const { dispatch } = this.props
-    dispatch(MapActions.useNewStopAsCurrent())
+    dispatch(StopPlaceActions.useNewStopAsCurrent())
     dispatch(UserActions.navigateTo('/edit/', 'new'))
   }
 
   handleDragEndNewStop(event) {
-    this.props.dispatch(MapActions.changeLocationNewStop(event.target.getLatLng()))
+    this.props.dispatch(StopPlaceActions.changeLocationNewStop(event.target.getLatLng()))
   }
 
   handleShowQuays(id) {
@@ -100,7 +100,7 @@ class MarkerList extends React.Component {
   handleElementDragEnd(index, type, event) {
     const position = event.target.getLatLng()
 
-    this.props.dispatch( MapActions.changElementPosition(index, type,
+    this.props.dispatch( StopPlaceActions.changElementPosition(index, type,
       [ setDecimalPrecision(position.lat, 6), setDecimalPrecision(position.lng, 6) ]
     ))
   }

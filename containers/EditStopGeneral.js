@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component, PropTypes } from 'react'
 import FlatButton from 'material-ui/FlatButton'
-import { MapActions, UserActions } from '../actions/'
+import { StopPlaceActions, UserActions } from '../actions/'
 import stopTypes from '../components/stopTypes'
 import { injectIntl } from 'react-intl'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -99,7 +99,7 @@ class EditStopGeneral extends React.Component {
     this.setState({
       confirmDialogOpen: false
     })
-    this.props.dispatch(MapActions.discardChangesForEditingStop())
+    this.props.dispatch(StopPlaceActions.discardChangesForEditingStop())
   }
 
   handleSlideChange(value) {
@@ -206,7 +206,6 @@ class EditStopGeneral extends React.Component {
       height: '78vh',
       position: 'relative',
       display: 'block',
-      zIndex: 999,
       marginTop: 2
     }
 

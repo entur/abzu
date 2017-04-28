@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect }  from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { MapActions } from '../actions'
+import { StopPlaceActions } from '../actions'
 import { setDecimalPrecision } from '../utils'
 import ConfirmDialog from '../components/ConfirmDialog'
 
@@ -29,7 +29,7 @@ class NewElementsBox extends React.Component {
 
   handleConfirmSubmit() {
     const { owner } = this.state
-    this.props.dispatch(MapActions.addElementToStop(owner.key, owner.latlng))
+    this.props.dispatch(StopPlaceActions.addElementToStop(owner.key, owner.latlng))
     this.handleDialogClose()
   }
   render() {

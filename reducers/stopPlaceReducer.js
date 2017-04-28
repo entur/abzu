@@ -229,6 +229,18 @@ const graphQLreducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
+      case types.ADDED_ALT_NAME:
+        return Object.assign({}, state, {
+          current: formatHelpers.addAltName(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.REMOVED_ALT_NAME:
+        return Object.assign({}, state, {
+          current: formatHelpers.removeAltName(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
       default: return state
     }
 }
