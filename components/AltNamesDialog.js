@@ -52,6 +52,16 @@ class AltNamesDialog extends React.Component {
     const { formatMessage, locale } = intl
     const { lang, value, type } = this.state
 
+    const translations = {
+      alternativeNames: formatMessage({id: 'alternative_names'}),
+      noAlternativeNames: formatMessage({id: 'alternative_names_no'}),
+      addAltName: formatMessage({id: 'alternative_names_add'}),
+      nameType: formatMessage({id: 'name_type'}),
+      language: formatMessage({id: 'language'}),
+      value: formatMessage({id: 'value'}),
+      add: formatMessage({id: 'add'})
+    }
+
     if (!open) return null
 
     const style = {
@@ -73,7 +83,7 @@ class AltNamesDialog extends React.Component {
     return (
       <div style={style}>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5}}>
-          <div style={{marginTop: 8, fontWeight: 60, marginLeft: 15, fontWeight: 600}}>Alternative names</div>
+          <div style={{marginTop: 8, fontWeight: 60, marginLeft: 15, fontWeight: 600}}>{ translations.alternativeNames } </div>
           <IconButton style={{marginRight: 5}} onTouchTap={() => { handleClose() }}>
             <MdClose/>
           </IconButton>
@@ -92,7 +102,7 @@ class AltNamesDialog extends React.Component {
             </div>
           ))}
           { !altNames.length
-            ? <div style={{width: '100%', textAlign: 'center'}}>Ingen alternative navn</div>
+            ? <div style={{width: '100%', textAlign: 'center'}}> { translations.noAlternativeNames } </div>
             : null
           }
         </div>
@@ -101,7 +111,7 @@ class AltNamesDialog extends React.Component {
           <SelectField
             style={{marginTop: -10}}
             fullWidth={true}
-            floatingLabelText="Type"
+            floatingLabelText={translations.nameType}
             value={type}
             onChange={ (e, value) => { this.setState({type: value}) }}
           >
@@ -118,7 +128,7 @@ class AltNamesDialog extends React.Component {
           <SelectField
             style={{marginTop: -10}}
             fullWidth={true}
-            floatingLabelText="Språk"
+            floatingLabelText={translations.language}
             value={lang}
             onChange={ (e, value) => { this.setState({lang: value}) }}
           >
@@ -134,7 +144,7 @@ class AltNamesDialog extends React.Component {
           </SelectField>
           <TextField
             fullWidth={true}
-            hintText="verdi"
+            hintText={translations.value}
             value={value}
             onChange={ (event, value) => { this.setState({value: value}) }}
           />
@@ -144,7 +154,7 @@ class AltNamesDialog extends React.Component {
             primary={true}
             onTouchTap={this.handleAddAltName.bind(this)}
           >
-            Legg til
+            { translations.addAltName }
           </FlatButton>
         </div>
       </div>
