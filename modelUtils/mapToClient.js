@@ -272,7 +272,10 @@ helpers.mapSearchResultatToClientStops = stops => {
       stopPlaceType: stop.stopPlaceType,
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
-      isActive: false
+      isActive: false,
+      quays: stop.quays,
+      importedId: stop.importedId,
+      accessibilityAssessment: stop.accessibilityAssessment
     }
 
     if (stop.geometry && stop.geometry.coordinates) {

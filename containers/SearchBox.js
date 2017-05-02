@@ -364,6 +364,7 @@ class SearchBox extends React.Component {
                    userSuppliedCoordinates={missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]}
                    text={text}
                    canEdit={canEdit}
+                   formatMessage={formatMessage}
               />
               :  null
             }

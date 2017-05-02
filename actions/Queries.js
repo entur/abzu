@@ -68,6 +68,7 @@ export const findStop = gql`
     query findStop($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
+            importedId
             name {
                 value
             }
@@ -75,6 +76,14 @@ export const findStop = gql`
                 coordinates
             }
             stopPlaceType
+            quays {
+                id
+            }
+            accessibilityAssessment {
+                limitations {
+                    wheelchairAccess
+                }
+            }
             topographicPlace {
                 name {
                     value
