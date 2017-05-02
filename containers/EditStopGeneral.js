@@ -150,7 +150,7 @@ class EditStopGeneral extends React.Component {
 
   getTitleText = (stopPlace, formatMessage) => {
     return (stopPlace && stopPlace.id)
-      ? `${formatMessage({id: 'editing'})} ${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
+      ? `${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
       : formatMessage({id: 'new_stop_title'})
   }
 
@@ -217,7 +217,14 @@ class EditStopGeneral extends React.Component {
 
       <div style={style}>
         <div style={stopBoxBar}>
-          <div>{ captionText }</div>
+          <div style={{display: 'flex', alignItems: 'center', color: '#fff'}}>
+            <MdBack
+              color="#fff"
+              style={{cursor: 'pointer', marginRight: 2, transform: 'scale(0.8)'}}
+              onClick={this.handleGoBack.bind(this)}
+            />
+            <div>{ captionText }</div>
+            </div>
           <FlatButton
             label={translations.versions}
             disabled={!versions.length}
@@ -323,24 +330,14 @@ class EditStopGeneral extends React.Component {
           }
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
-          { (stopHasBeenModified && !disabled)
-            ?
-            <FlatButton
-              icon={<MdUndo/>}
-              label={formatMessage({id: 'undo_changes'})}
-              style={{margin: '8 5', zIndex: 999}}
-              labelStyle={{fontSize: '0.8em'}}
-              onClick={ () => { this.setState({confirmDialogOpen: true })} }
-            />
-            :
-            <FlatButton
-              icon={<MdBack/>}
-              label={formatMessage({id: 'go_back'})}
-              style={{margin: '8 5', zIndex: 999}}
-              labelStyle={{fontSize: '0.8em'}}
-              onClick={this.handleGoBack.bind(this)}
-            />
-          }
+          <FlatButton
+            icon={<MdUndo/>}
+            disabled={!stopHasBeenModified}
+            label={formatMessage({id: 'undo_changes'})}
+            style={{margin: '8 5', zIndex: 999}}
+            labelStyle={{fontSize: '0.8em'}}
+            onClick={ () => { this.setState({confirmDialogOpen: true })} }
+          />
           <FlatButton
             icon={<MdSave/>}
             disabled={disabled || !stopHasBeenModified}
