@@ -35,25 +35,29 @@ class NewElementsBox extends React.Component {
   render() {
 
     const { formatMessage } = this.props.intl
-    const { activeStopPlace, missingCoordsMap } = this.props
+    const { activeStopPlace, missingCoordsMap, disabled } = this.props
 
     const boxWrapperStyle = {
-      background: '#fff',
       width: 'auto',
       zIndex: 999,
       fontSize: 10,
-      textAlign: 'center'
+      textAlign: 'center',
+      position: 'fixed',
+      width: 'auto',
+      marginLeft: '41%',
+      top: 10,
+      color: '#fff'
     }
 
     const elementStyle = {
       display: 'inline-block',
-      cursor: 'move',
+      cursor: disabled ? 'not-allowed' : 'move',
       margin: '10 15'
     }
 
     const titleStyle = {
       textTransform: 'capitalize',
-      marginTop: 8,
+      marginTop: 5,
     }
 
     const quayText = formatMessage({id: 'quay'})
@@ -61,7 +65,6 @@ class NewElementsBox extends React.Component {
     const entranceText = formatMessage({id: 'entrance'})
     const newStopText = formatMessage({id: 'stop_place'})
     const PRText = formatMessage({id: 'park_ride'})
-    const helpText = formatMessage({id: 'new_element_help_text'})
 
     let shouldShowNewStop = true
 
@@ -83,32 +86,30 @@ class NewElementsBox extends React.Component {
             handleClose={this.handleDialogClose.bind(this)}
             handleConfirm={this.handleConfirmSubmit.bind(this)}
           />
-        <div style={{padding: 10, background: 'hsla(60, 100%, 50%, 0.39)'}}>
-          { helpText }
-        </div>
-          <div style={{display: 'block', marginTop: 0, marginBottom: 0}}>
+
+          <div style={{marginTop: 0, marginBottom: 0}}>
             { shouldShowNewStop
               ?
               <div style={elementStyle}>
-                <img ref="stop_place" id="stop_place" draggable style={{height: 40, width: 'auto', marginLeft: newStopText.length}} src={newStopIcon}/>
+                <img ref="stop_place" id="stop_place" draggable style={{height: 25, width: 'auto', marginLeft: newStopText.length}} src={newStopIcon}/>
                 <div style={titleStyle}>{newStopText}</div>
               </div>
               : null
             }
             <div style={elementStyle}>
-              <img id="drag1" ref="quay" draggable="true" style={{height: 40, width: 'auto', marginLeft: 0}} src={quayIcon}/>
+              <img id="drag1" ref="quay" draggable="true" style={{height: 25, width: 'auto', marginLeft: 0}} src={quayIcon}/>
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="pathJunction" id="drag2" draggable style={{height: 40, width: 'auto', marginLeft: pathJunctionText.length}} src={junctionIcon}/>
+              <img ref="pathJunction" id="drag2" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={junctionIcon}/>
               <div style={titleStyle}>{pathJunctionText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="entrance" id="drag3" draggable style={{height: 40, width: 'auto', marginLeft: entranceText.length}} src={entranceIcon}/>
+              <img ref="entrance" id="drag3" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="parking" id="drag4" draggable style={{height: 40, width: 'auto', marginLeft: 0}} src={parkingIcon}/>
+              <img ref="parking" id="drag4" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={parkingIcon}/>
               <div style={titleStyle}>{PRText}</div>
             </div>
           </div>
@@ -117,49 +118,50 @@ class NewElementsBox extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.props.disabled) {
+      Object.keys(this.refs).forEach( (key) => {
+        const ref = this.refs[key]
 
-    Object.keys(this.refs).forEach( (key) => {
-      const ref = this.refs[key]
+        if (ref.draggable) {
+          const draggable = new L.Draggable(ref)
 
-      if (ref.draggable) {
-        const draggable = new L.Draggable(ref)
-
-        draggable.addEventListener('dragend', (event) => {
-          // prevent adding to map if distance is too short (i.e. a mistake)
-          if(event.distance < 50) {
-            L.DomUtil.setPosition(ref, L.point(0,0))
-            return
-          }
-
-          const { activeMap } = this.props
-          const { target } = event
-          const position = target._newPos
-          const widthOffset = -12
-          const heightOffset = -45
-
-          const xPos = target._startPoint.x + position.x - target._startPos.x + widthOffset
-          const yPos = target._startPoint.y + position.y - target._startPos.y + heightOffset
-
-          const absolutePosition = new L.Point(xPos, yPos)
-
-          const { lat,lng } = activeMap.containerPointToLatLng(absolutePosition)
-
-          const latlng = [setDecimalPrecision(lat,6), setDecimalPrecision(lng,6)]
-
-          this.setState({
-            confirmDialogOpen: true,
-            owner: {
-              key: key,
-              latlng: latlng,
+          draggable.addEventListener('dragend', (event) => {
+            // prevent adding to map if distance is too short (i.e. a mistake)
+            if(event.distance < 50) {
+              L.DomUtil.setPosition(ref, L.point(0,0))
+              return
             }
+
+            const { activeMap } = this.props
+            const { target } = event
+            const position = target._newPos
+            const widthOffset = -12
+            const heightOffset = -45
+
+            const xPos = target._startPoint.x + position.x - target._startPos.x + widthOffset
+            const yPos = target._startPoint.y + position.y - target._startPos.y + heightOffset
+
+            const absolutePosition = new L.Point(xPos, yPos)
+
+            const { lat,lng } = activeMap.containerPointToLatLng(absolutePosition)
+
+            const latlng = [setDecimalPrecision(lat,6), setDecimalPrecision(lng,6)]
+
+            this.setState({
+              confirmDialogOpen: true,
+              owner: {
+                key: key,
+                latlng: latlng,
+              }
+            })
+
+            L.DomUtil.setPosition(ref, L.point(0,0))
+
           })
-
-          L.DomUtil.setPosition(ref, L.point(0,0))
-
-        })
-        draggable.enable()
-      }
-    })
+          draggable.enable()
+        }
+      })
+    }
   }
 }
 

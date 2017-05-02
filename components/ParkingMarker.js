@@ -18,7 +18,21 @@ class ParkingMarker extends React.Component {
     const isFocused = (focusedElement.type === type && index === focusedElement.index)
     if (isFocused) {
       L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused')
+    } else {
+      L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused')
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)) {
+      return true
+    }
+
+    if (JSON.stringify(this.props.focusedElement) !== JSON.stringify(nextProps.focusedElement)) {
+      return true
+    }
+
+    return false
   }
 
   render() {
@@ -27,11 +41,9 @@ class ParkingMarker extends React.Component {
 
     const icon = L.icon({
       iconUrl: ParkingIcon,
-      iconUrl: ParkingIcon,
-      iconSize: [30, 45],
-      iconAnchor: [17, 42],
-      popupAnchor: [0, 0],
-      shadowAnchor: [12, 12],
+      iconSize: [20, 30],
+      iconAnchor: [10, 30],
+      popupAnchor: [0, 15],
     })
 
     return (

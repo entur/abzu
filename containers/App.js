@@ -23,26 +23,11 @@ class App extends React.Component {
     }).bind(this))
   }
 
-  handleNavigateToMain() {
-    const { dispatch } = this.props
-    dispatch ( UserActions.navigateTo('/', '') )
-  }
-
   handleRequestClose() {
     const { dispatch } = this.props
     dispatch ( UserActions.dismissSnackbar() )
   }
 
-  handleSetLanguage(locale) {
-    const { dispatch } = this.props
-    dispatch ( UserActions.applyLocale(locale) )
-  }
-
-  handleLogOut() {
-    if (this.props.kc) {
-      this.props.kc.logout()
-    }
-  }
 
   getAlertIcon(status) {
     if (status === types.SUCCESS) {
@@ -56,22 +41,11 @@ class App extends React.Component {
 
   render() {
 
-    const { children, snackbarOptions, kc } = this.props
-    const { formatMessage, locale } = this.props.intl
+    const { children, snackbarOptions, intl } = this.props
+    const { formatMessage } = intl
 
     let { message, isOpen, status } = snackbarOptions
-    let headerText = {
-      signOut: formatMessage({id: 'sign_out'}),
-      help: formatMessage({id: 'help'}),
-      title: formatMessage({id: '_title'}),
-      language: formatMessage({id: 'language'}),
-      english: formatMessage({id: 'english'}),
-      norwegian: formatMessage({id: 'norwegian'}),
-      logOut: formatMessage({id: 'log_out'}),
-    }
-
     let snackBarMessage = formatMessage({id: (message || '_empty')})
-
 
     const muiTheme = getMuiTheme(enturTheme)
 
@@ -80,12 +54,7 @@ class App extends React.Component {
         <div>
           <div className="version">v{process.env.VERSION}</div>
           <Header
-            text={headerText}
-            handleNavigateToMain={this.handleNavigateToMain.bind(this)}
-            setLanguage={this.handleSetLanguage.bind(this)}
-            handleLogOut={this.handleLogOut.bind(this)}
-            locale={locale}
-            username={kc.tokenParsed.preferred_username}
+            intl={intl}
             />
           {children}
           <Snackbar
@@ -107,7 +76,6 @@ class App extends React.Component {
 
 const mapStateToProps = state => ({
   snackbarOptions: state.user.snackbarOptions,
-  kc: state.user.kc
 })
 
 export default injectIntl(connect(mapStateToProps)(App))

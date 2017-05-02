@@ -20,8 +20,9 @@ class JunctionMarker extends React.Component {
     const isFocused = (focusedElement.type === type && index === focusedElement.index)
     if (isFocused) {
       L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused')
+    } else {
+      L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused')
     }
-    L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'padded-10')
   }
 
   componentWillMount() {
@@ -36,9 +37,9 @@ class JunctionMarker extends React.Component {
 
     this._icon = L.icon({
       iconUrl: iconURL,
-      iconSize: [30, 45],
-      iconAnchor: [14, 45],
-      popupAnchor: [0, 0],
+      iconSize: [20, 30],
+      iconAnchor: [10, 30],
+      popupAnchor: [0, 15],
     })
   }
 

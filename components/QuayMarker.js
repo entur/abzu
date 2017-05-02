@@ -23,7 +23,7 @@ class QuayMarker extends React.PureComponent {
     formattedStopType: PropTypes.string.isRequired,
     handleUpdatePathLink: PropTypes.func.isRequired,
     isCreatingPolylines: PropTypes.bool.isRequired,
-    handleChangeCoordinates: PropTypes.func.isRequired,
+    handleChangeCoordinates: PropTypes.func,
     draggable: PropTypes.bool.isRequired,
     handleSetCompassBearing: PropTypes.func
   }
@@ -55,6 +55,10 @@ class QuayMarker extends React.PureComponent {
     }
 
     if (this.props.compassBearing !== nextProps.compassBearing) {
+      return true
+    }
+
+    if (this.props.isCompassBearingEnabled !== nextProps.isCompassBearingEnabled) {
       return true
     }
 

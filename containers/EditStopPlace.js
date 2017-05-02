@@ -13,8 +13,8 @@ import '../styles/main.css'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import { UserActions } from '../actions/'
-import EditStopSideBar from './EditStopSideBar'
 import rolesParser from '../roles/rolesParser'
+import NewElementsBox from './NewElementsBox'
 
 class EditStopPlace extends React.Component {
 
@@ -113,9 +113,9 @@ class EditStopPlace extends React.Component {
           stopPlace
             ?
             <div>
+              <NewElementsBox disabled={disabled}/>
               <EditStopGeneral disabled={disabled}/>
               <EditStopMap disabled={disabled}/>
-              <EditStopSideBar disabled={disabled}/>
             </div>
             : <Loader/>
         }
