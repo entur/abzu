@@ -24,6 +24,12 @@ class SaveDialog extends React.Component {
     intl: PropTypes.object.isRequired,
   }
 
+  handleSave() {
+    this.setState({
+      isSaving: true
+    })
+  }
+
   getInitialState() {
     const now = new Date()
     return {
@@ -31,13 +37,14 @@ class SaveDialog extends React.Component {
       timeTo: null,
       dateFrom: now,
       dateTo: null,
-      expiraryExpanded: false
+      expiraryExpanded: false,
+      isSaving: false
     }
   }
 
   handleSave() {
     const { handleConfirm } = this.props
-    const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo } = this.state
+    const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo, isSaving } = this.state
     let validBetween = {
       dateFrom: dateFrom,
       timeFrom: timeFrom
@@ -46,6 +53,11 @@ class SaveDialog extends React.Component {
       validBetween.dateTo = dateTo
       validBetween.timeTo = timeTo
     }
+
+    this.setState({
+      isSaving: true
+    })
+
     handleConfirm(JSON.parse(JSON.stringify(validBetween)))
   }
 
@@ -53,7 +65,7 @@ class SaveDialog extends React.Component {
 
     const { open, intl, handleClose } = this.props
     const { formatMessage } = intl
-    const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded } = this.state
+    const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded, isSaving } = this.state
 
     const now = new Date()
 
@@ -84,7 +96,7 @@ class SaveDialog extends React.Component {
         label={translations.confirm}
         primary={true}
         keyboardFocused={true}
-        disabled={toDateIsBeforeFromDate}
+        disabled={toDateIsBeforeFromDate || isSaving}
         onTouchTap={() => this.handleSave()}
       />,
     ]
