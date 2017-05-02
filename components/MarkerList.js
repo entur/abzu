@@ -208,6 +208,7 @@ class MarkerList extends React.Component {
                   belongsToNeighbourStop={!stop.isActive}
                   handleSetCompassBearing={handleSetCompassBearing}
                   showPathLink={!disabled}
+                  isEditingStop={isEditingStop}
                 />)
             })
           }
@@ -295,6 +296,7 @@ class MarkerList extends React.Component {
                   belongsToNeighbourStop={true}
                   handleSetCompassBearing={() => {}}
                   showPathLink={!disabled}
+                  isEditingStop={isEditingStop}
                 />)
             })
           }

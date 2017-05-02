@@ -83,7 +83,7 @@ class QuayMarker extends React.PureComponent {
 
   render() {
 
-    const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop } = this.props
+    const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop, isEditingStop } = this.props
     const { isCreatingPolylines, id, pathLink, showPathLink } = this.props
 
     if (!position) return null
@@ -109,6 +109,7 @@ class QuayMarker extends React.PureComponent {
 
     const divBody = ReactDOM.renderToStaticMarkup(
       <QuayMarkerIcon
+        isEditingStop={isEditingStop}
         index={index}
         name={name}
         focusedElement={this.props.focusedElement}
@@ -118,8 +119,7 @@ class QuayMarker extends React.PureComponent {
       />
     )
 
-    let quayIcon = divIcon(
-      {
+    let quayIcon = divIcon({
         html: divBody,
         iconSize: [21,45],
         iconAnchor: [42, 45],
@@ -143,25 +143,8 @@ class QuayMarker extends React.PureComponent {
                  { parentStopPlaceName }
                 </span>
                 <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
-              {
-                showPathLink ?
-                  <div>
-                    { id ?  <div
-                        className={`change-path-link ${isIncomplete ? 'incomplete' : ''}`}
-                        onClick={() => { handleUpdatePathLink(position, id, 'quay') }}
-                      >
-                        { pathLinkText }
-                        { isIncomplete ? <div style={{color: '#000', fontWeight: 600}}> { translations.inComplete } </div> : null }
-                      </div>
-                      : <div style={{textAlign: 'center', marginBottom: 10, padding: 10, border: '1px solid #9E9E9E'}}>
-                        { translations.saveFirstPathLink }
-                      </div>
-                    }
-                  </div>
-                  : null
-              }
                 <div
-                  style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center'}}
+                  style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center', fontSize: 10}}
                   onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, id, position)}
                 >
                   <span style={{display: 'inline-block', textAlign: 'center', borderBottom: !belongsToNeighbourStop ? '1px dotted black' : 'none', }}>
@@ -183,6 +166,24 @@ class QuayMarker extends React.PureComponent {
                   <img style={{width: 20, height: 22, border: '1px solid grey', borderRadius: 50}} src={OSMIcon}/>
                 </a>
               </div>
+              </div>
+              <div style={{marginTop: 10}}>
+                { (showPathLink && isEditingStop)?
+                    <div>
+                      { id ?  <div
+                          className={`change-path-link ${isIncomplete ? 'incomplete' : ''}`}
+                          onClick={() => { handleUpdatePathLink(position, id, 'quay') }}
+                        >
+                          { pathLinkText }
+                          { isIncomplete ? <div style={{color: '#000', fontWeight: 600}}> { translations.inComplete } </div> : null }
+                        </div>
+                        : <div style={{textAlign: 'center', padding: 10, border: '1px solid #9E9E9E'}}>
+                          { translations.saveFirstPathLink }
+                        </div>
+                      }
+                    </div>
+                    : null
+                }
               </div>
             </div>
           </Popup>
