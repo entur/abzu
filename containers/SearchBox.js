@@ -67,7 +67,6 @@ class SearchBox extends React.Component {
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
-
     if (!searchText || !searchText.length ) {
       this.props.dispatch(UserActions.clearSearchResults())
 
