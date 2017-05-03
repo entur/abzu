@@ -11,7 +11,6 @@ class NewStopPlace extends React.Component {
   }
 
   render() {
-
     const { headerText, bodyText } = this.props.text
 
     return (

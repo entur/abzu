@@ -50,9 +50,10 @@ class MarkerList extends React.Component {
   }
 
   handleNewStopClick() {
-    const { dispatch } = this.props
+    const { dispatch, intl } = this.props
     dispatch(StopPlaceActions.useNewStopAsCurrent())
     dispatch(UserActions.navigateTo('/edit/', 'new'))
+    document.title = intl.formatMessage({id: '_title_new_stop'})
   }
 
   handleDragEndNewStop(event) {

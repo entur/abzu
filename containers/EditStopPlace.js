@@ -26,6 +26,27 @@ class EditStopPlace extends React.Component {
     }
   }
 
+  componentWillUpdate(nextProps) {
+    const { stopPlace, intl } = nextProps
+    const { formatMessage } = intl
+
+    let title = ''
+
+    if (stopPlace) {
+      if (stopPlace.isNewStop) {
+        title = formatMessage({id: '_title_new_stop'})
+      } else {
+        if (stopPlace.name) {
+          title = stopPlace.name
+        }
+        if (stopPlace.topographicPlace) {
+          title += ', ' + stopPlace.topographicPlace
+        }
+      }
+    }
+    document.title = title
+  }
+
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false)
   }

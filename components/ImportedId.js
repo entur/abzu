@@ -1,9 +1,6 @@
 import React from 'react'
 
-const ImportedId = ({ text, id }) => {
-
-  if (!id) return null
-
+const ImportedId = ({ text, id = [] }) => {
   return (
     <div
       style={{fontSize: 10}}>

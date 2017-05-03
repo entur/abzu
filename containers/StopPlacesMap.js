@@ -1,15 +1,27 @@
 import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import LeafletMap from '../components/LeafletMap'
 import { StopPlaceActions, UserActions } from '../actions/'
 import { withApollo } from 'react-apollo'
 import { stopPlaceBBQuery } from '../actions/Queries'
 import { getIn } from '../utils/'
+import { injectIntl } from 'react-intl'
 
 class StopPlacesMap extends React.Component {
 
-  handleClick(e, map) {
+  componentDidMount() {
+    const { formatMessage } = this.props.intl
+    document.title = formatMessage({id: '_title'})
+  }
 
+  componentWillUpdate(nextProps) {
+    if (this.props.intl.locale !== nextProps.intl.locale) {
+      const { formatMessage } =  nextProps.intl
+      document.title = formatMessage({id: '_title'})
+    }
+  }
+
+  handleClick(e, map) {
     const { isCreatingNewStop } = this.props
 
     if (isCreatingNewStop) {
@@ -18,25 +30,18 @@ class StopPlacesMap extends React.Component {
     } else {
       map.leafletElement.doubleClickZoom.enable()
     }
-
   }
 
   handleBaselayerChanged(value) {
     this.props.dispatch(UserActions.changeActiveBaselayer(value))
   }
 
-  handleDragEnd(marker, index) {
-
-  }
-
   handleMapMoveEnd(event, { leafletElement }) {
-
     const zoom = leafletElement.getZoom()
 
     if (zoom > 14) {
 
       const bounds = leafletElement.getBounds()
-
       const { ignoreStopId } = this.props
 
       this.props.client.query({
@@ -53,7 +58,6 @@ class StopPlacesMap extends React.Component {
     } else {
       this.props.dispatch(UserActions.removeStopsNearbyForOverview())
     }
-
   }
 
   render() {
@@ -66,7 +70,7 @@ class StopPlacesMap extends React.Component {
         markers={markers}
         zoom={zoom}
         onDoubleClick={this.handleClick.bind(this)}
-        handleDragEnd={this.handleDragEnd}
+        handleDragEnd={() => {}}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         dragableMarkers={false}
         activeBaselayer={this.props.activeBaselayer}
@@ -78,7 +82,6 @@ class StopPlacesMap extends React.Component {
 }
 
 const mapStateToProps = state => {
-
   const {
     newStop,
     centerPosition,
@@ -109,4 +112,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withApollo(connect(mapStateToProps)(StopPlacesMap))
+export default withApollo(injectIntl(connect(mapStateToProps)(StopPlacesMap)))
