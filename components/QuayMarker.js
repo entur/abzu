@@ -142,7 +142,9 @@ class QuayMarker extends React.PureComponent {
                <span className="quay-marker-title">
                  { parentStopPlaceName }
                 </span>
-                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{formattedStopType + " " + (name || translations.untitled)}</span>
+                <span className="quay-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>
+                  {formattedStopType + " " + (name || translations.untitled)}
+                  </span>
                 <div
                   style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center', fontSize: 10}}
                   onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, id, position)}
@@ -161,7 +163,7 @@ class QuayMarker extends React.PureComponent {
                     <img style={{width: 20, height: 22, cursor: 'pointer'}} src={compassIcon}/>
                   </div>
               }
-              <div style={{marginLeft: 10, cursor: 'pointer'}}>
+              <div style={{marginLeft: belongsToNeighbourStop ? 0: 10, cursor: 'pointer'}}>
                 <a href={osmURL} target="_blank">
                   <img style={{width: 20, height: 22, border: '1px solid grey', borderRadius: 50}} src={OSMIcon}/>
                 </a>

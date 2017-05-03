@@ -457,6 +457,7 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
       clientQuay.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
     }
 
+    clientQuay.publicCode = quay.publicCode
     clientQuay.compassBearing =  quay.compassBearing
 
     return clientQuay

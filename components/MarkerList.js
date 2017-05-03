@@ -287,7 +287,7 @@ class MarkerList extends React.Component {
                   handleQuayDragEnd={() => {}}
                   translations={Object.assign({}, newStopMarkerText, CustomPopupMarkerText)}
                   compassBearing={quay.compassBearing}
-                  name={`${stop.name} - ${quay.id}`}
+                  name={quay.publicCode || ''}
                   parentStopPlaceName={stop.name}
                   formattedStopType={localeStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
