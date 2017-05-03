@@ -215,7 +215,7 @@ class QuayItem extends React.Component {
            <div style={{textAlign: 'center', width: '100%'}}>
              { additionalExpanded
                ? <FlatButton icon={<MdLess/>} onClick={() => this.showMoreOptionsForQuay(false)} />
-               : <FlatButton icon={<MdMore/>} onClick={() => this.showMoreOptionsForQuay(true)} />
+               : <FlatButton label={formatMessage({id: 'more'})} onClick={() => this.showMoreOptionsForQuay(true)} />
              }
              { additionalExpanded
                ? <EditQuayAdditional quay={quay} index={index} disabled={disabled}/>

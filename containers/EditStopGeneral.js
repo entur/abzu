@@ -286,7 +286,8 @@ class EditStopGeneral extends React.Component {
                 />
                 :
                 <FlatButton
-                  icon={<MdMore/>}
+                  label={formatMessage({id: 'more'})}
+                  labelStyle={{fontSize: 12}}
                   onClick={() => this.showMoreStopPlace()}
                 />
               }

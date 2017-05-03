@@ -9,7 +9,7 @@ import MdWc from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
 import TextField from 'material-ui/TextField'
-import MdMore from 'material-ui/svg-icons/navigation/more-vert'
+import MdMore from 'material-ui/svg-icons/navigation/expand-more'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import FlatButton from 'material-ui/FlatButton'
 import StairsIcon from '../static/icons/accessibility/Stairs'
@@ -302,7 +302,7 @@ class FacilitiesQuayTab extends React.Component {
                     checked={waitingRoomStepFree}
                     checkedIcon={<StairsIcon />}
                     style={{width: 'auto'}}
-                    label={ busShelter ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
+                    label={ waitingRoomStepFree ? formatMessage({id: 'step_free_access'}) : formatMessage({id: 'step_free_access_no'}) }
                     uncheckedIcon={<StairsIcon style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
                     labelStyle={{fontSize: '0.8em'}}
                     onCheck={(e,v) => { this.handleValueForWaitingRoomChange({stepFree: v}) }}
@@ -311,7 +311,7 @@ class FacilitiesQuayTab extends React.Component {
                     checked={waitingRoomHeated}
                     checkedIcon={<Heated/>}
                     uncheckedIcon={<Heated style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                    label={ busShelter ? formatMessage({id: 'heating'}) : formatMessage({id: 'heating_no'}) }
+                    label={ waitingRoomHeated ? formatMessage({id: 'heating'}) : formatMessage({id: 'heating_no'}) }
                     labelStyle={{fontSize: '0.8em'}}
                     style={{width: 'auto'}}
                     onCheck={(e,v) => { this.handleValueForWaitingRoomChange({heated: v}) }}
