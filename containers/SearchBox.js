@@ -23,9 +23,9 @@ import ModalityFilter from '../components/ModalityFilter'
 import FavoriteNameDialog from '../components/FavoriteNameDialog'
 import TopographicalFilter from '../components/TopographicalFilter'
 import Divider from 'material-ui/Divider'
-import MdMore from 'material-ui/svg-icons/navigation/more-vert'
-import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import roleParser from '../roles/rolesParser'
+import debounce from 'lodash.debounce'
+
 
 class SearchBox extends React.Component {
 
@@ -35,6 +35,37 @@ class SearchBox extends React.Component {
       showMoreFilterOptions: false,
       coordinatesDialogOpen: false
     }
+
+    const searchStop = (searchText, dataSource, params, filter) => {
+
+      if (!searchText || !searchText.length ) {
+        this.props.dispatch(UserActions.clearSearchResults())
+
+      } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
+        return
+      }
+      else {
+        const isImportedId = !isNaN(searchText) || searchText.indexOf(':StopArea:') > -1
+        const chips = filter ? filter.topoiChips : this.props.topoiChips
+        const stopPlaceTypes = filter ? filter.stopType : this.props.stopTypeFilter
+
+        this.props.client.query({
+          query: findStop,
+          fetchPolicy: 'network-only',
+          variables: {
+            query: searchText,
+            importedId: isImportedId ? searchText : null,
+            stopPlaceType: stopPlaceTypes,
+            municipalityReference: chips
+              .filter( topos => topos.type === "town").map(topos => topos.value),
+            countyReference: this.props.topoiChips
+              .filter( topos => topos.type === "county").map(topos => topos.value)
+          }
+        })
+        this.props.dispatch(UserActions.setSearchText(searchText))
+      }
+    }
+    this.handleSearchUpdate = debounce(searchStop, 200)
   }
 
   componentDidMount() {
@@ -64,37 +95,6 @@ class SearchBox extends React.Component {
 
   handlePopoverDismiss(filters) {
     this.props.dispatch( UserActions.applyStopTypeSearchFilter(filters) )
-  }
-
-  handleSearchUpdate(searchText, dataSource, params, filter) {
-    if (!searchText || !searchText.length ) {
-      this.props.dispatch(UserActions.clearSearchResults())
-
-    } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
-      return
-    }
-    else {
-
-      const isImportedId = !isNaN(searchText) || searchText.indexOf(':StopArea:') > -1
-
-      const chips = filter ? filter.topoiChips : this.props.topoiChips
-      const stopPlaceTypes = filter ? filter.stopType : this.props.stopTypeFilter
-
-      this.props.client.query({
-        query: findStop,
-        fetchPolicy: 'network-only',
-        variables: {
-          query: searchText,
-          importedId: isImportedId ? searchText : null,
-          stopPlaceType: stopPlaceTypes,
-          municipalityReference: chips
-            .filter( topos => topos.type === "town").map(topos => topos.value),
-          countyReference: this.props.topoiChips
-            .filter( topos => topos.type === "county").map(topos => topos.value)
-        }
-      })
-      this.props.dispatch(UserActions.setSearchText(searchText))
-    }
   }
 
   handleTopographicalPlaceInput(searchText) {

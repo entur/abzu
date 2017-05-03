@@ -38,11 +38,10 @@ class EditStopMap extends React.Component {
         })
       }
     }
-
     this.handleMapMoveEnd = debounce(mapEnd, 500)
   }
 
-  handleClick(event, map) {
+  handleMapOnClick(event, map) {
     const { isCreatingPolylines, dispatch } = this.props
 
     if (isCreatingPolylines) {
@@ -173,7 +172,7 @@ class EditStopMap extends React.Component {
           boundsOptions={{padding: [50, 50]}}
           ref="leafletMap"
           key="leafletmap-edit"
-          handleOnClick={this.handleClick.bind(this)}
+          handleOnClick={this.handleMapOnClick.bind(this)}
           handleDragEnd={this.handleDragEnd.bind(this)}
           handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
           handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
