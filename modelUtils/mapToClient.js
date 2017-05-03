@@ -167,6 +167,11 @@ helpers.mapVersionToClientVersion = source => {
   return []
 }
 
+const extractAlternativeNames = alternativeNames => {
+  if (!alternativeNames) return []
+  return alternativeNames.filter( alt => ( alt.name && alt.name.value && alt.nameType ))
+}
+
 helpers.mapStopToClientStop = (stop, isActive) => {
 
   try {
@@ -174,7 +179,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
     let clientStop = {
       id: stop.id,
       name: stop.name.value,
-      alternativeNames: stop.alternativeNames,
+      alternativeNames: extractAlternativeNames(stop.alternativeNames),
       stopPlaceType: stop.stopPlaceType,
       isActive: isActive
     }

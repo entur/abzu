@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField'
 import MdClose from 'material-ui/svg-icons/navigation/close'
 import IconButton from 'material-ui/IconButton'
 import { StopPlaceActions } from '../actions/'
+import ConfirmDialog from './ConfirmDialog'
 
 class AltNamesDialog extends React.Component {
 
@@ -17,15 +18,46 @@ class AltNamesDialog extends React.Component {
     this.state = {
       lang: 0,
       value: '',
-      type: 0
+      type: 0,
+      confirmDialogOpen: false
     }
+  }
+
+  handleAddPendingAltName() {
+    const { pendingPayLoad, pendingRemoveAltNameIndex } = this.state
+    const { dispatch } = this.props
+
+    dispatch(StopPlaceActions.addAltName(pendingPayLoad))
+    dispatch(StopPlaceActions.removeAltName(pendingRemoveAltNameIndex))
+
+    this.setState({
+      lang: 0,
+      value: '',
+      type: 0,
+      confirmDialogOpen: false,
+      pendingRemoveAltNameIndex: -1,
+      pendingPayLoad: null
+    })
   }
 
   handleAddAltName() {
     const { lang, value, type } = this.state
+    const { dispatch, altNames } = this.props
 
     const languageString = Object.keys(altNameConfig.languages)[lang]
     const nameTypeString = Object.keys(altNameConfig.allNameTypes)[type]
+
+    let alreadyInSet = false
+    let conflictFoundIndex = -1
+
+    for (let i = 0; i < altNames.length; i++) {
+      let altName = altNames[i]
+      if (altName.name && altName.name.lang === languageString && altName.nameType === nameTypeString) {
+        alreadyInSet = true
+        conflictFoundIndex = i
+        break
+      }
+    }
 
     const payLoad = {
       nameType: nameTypeString,
@@ -33,13 +65,22 @@ class AltNamesDialog extends React.Component {
       value: value
     }
 
-    this.props.dispatch(StopPlaceActions.addAltName(payLoad))
+    if (alreadyInSet) {
+      this.setState({
+        confirmDialogOpen: true,
+        pendingPayLoad: payLoad,
+        pendingRemoveAltNameIndex: conflictFoundIndex
+      })
+    } else {
+      dispatch(StopPlaceActions.addAltName(payLoad))
 
-    this.setState({
-      lang: 0,
-      value: '',
-      type: 0
-    })
+      this.setState({
+        lang: 0,
+        value: '',
+        type: 0,
+        confirmDialogOpen: false
+      })
+    }
   }
 
   handleRemoveName(index) {
@@ -50,7 +91,7 @@ class AltNamesDialog extends React.Component {
 
     const { open, intl, altNames = [], handleClose, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { lang, value, type } = this.state
+    const { lang, value, type, confirmDialogOpen } = this.state
 
     const translations = {
       alternativeNames: formatMessage({id: 'alternative_names'}),
@@ -58,7 +99,7 @@ class AltNamesDialog extends React.Component {
       addAltName: formatMessage({id: 'alternative_names_add'}),
       nameType: formatMessage({id: 'name_type'}),
       language: formatMessage({id: 'language'}),
-      value: formatMessage({id: 'value'}),
+      value: formatMessage({id: 'name'}),
       add: formatMessage({id: 'add'})
     }
 
@@ -80,8 +121,22 @@ class AltNamesDialog extends React.Component {
       marginRight: 5
     }
 
+    const confirmDialogCaptions = {
+      title: 'overwrite_alt_name_title',
+      body: 'overwrite_alt_name_body',
+      confirm: 'overwrite_alt_name_confirm',
+      cancel:  'overwrite_alt_name_cancel'
+    }
+
     return (
       <div style={style}>
+        <ConfirmDialog
+          open={confirmDialogOpen}
+          handleClose={() => { this.setState({confirmDialogOpen: false}) }}
+          handleConfirm={this.handleAddPendingAltName.bind(this)}
+          intl={intl}
+          messagesById={confirmDialogCaptions}
+        />
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5}}>
           <div style={{marginTop: 8, fontWeight: 60, marginLeft: 10, fontWeight: 600}}>{ translations.alternativeNames } </div>
           <IconButton style={{marginRight: 5}} onTouchTap={() => { handleClose() }}>
