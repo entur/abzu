@@ -7,7 +7,7 @@ import InformationBanner from '../components/InformationBanner'
 import Information from '../config/information'
 import { injectIntl } from 'react-intl'
 import InformationManager from '../singletons/InformationManager'
-import { stopPlaceAndPathLink } from "../actions/Queries"
+import { stopPlaceAndPathLink } from "../graphql/Queries"
 import { withApollo } from 'react-apollo'
 import '../styles/main.css'
 import Dialog from 'material-ui/Dialog'

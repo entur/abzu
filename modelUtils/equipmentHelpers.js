@@ -1,5 +1,5 @@
 import { getIn } from '../utils'
-import { defaultEquipments, types } from '../actions/Equipments'
+import { defaultEquipments, types } from '../models/Equipments'
 
 const EquipmentHelpers = {}
 

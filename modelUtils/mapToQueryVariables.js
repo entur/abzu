@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { defaultLimitations } from '../actions/Limitations'
+import { defaultLimitations } from '../models/Limitations'
 
 const helpers = {}
 

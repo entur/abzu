@@ -76,7 +76,7 @@ class FacilitiesStopTab extends React.Component {
 
   handleWCChange(value) {
     if (!this.props.disabled) {
-      this.props.dispatch(EquipmentActions.updateWCState(value, 'stopPlace', this.props.stopPlace.id))
+      this.props.dispatch(EquipmentActions.updateSanitaryState(value, 'stopPlace', this.props.stopPlace.id))
     }
   }
 

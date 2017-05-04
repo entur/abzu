@@ -1,4 +1,4 @@
-import * as Limitations from '../actions/Limitations'
+import * as Limitations from '../models/Limitations'
 import { getIn } from '../utils'
 
 const LimitationHelpers = {}

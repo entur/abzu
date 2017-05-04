@@ -1,6 +1,6 @@
 import React from 'react'
 import MenuItem from 'material-ui/MenuItem'
-import accessibilityAssessments from './accessibilityAssessments'
+import accessibilityAssessments from '../models/accessibilityAssessments'
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover'
 import StairsIcon from '../static/icons/accessibility/Stairs'
 import IconButton from 'material-ui/IconButton'

@@ -6,7 +6,7 @@ import { injectIntl } from 'react-intl'
 import { setDecimalPrecision } from '../utils'
 import CoordinatesDialog from '../components/CoordinatesDialog'
 import CompassBearingDialog from '../components/CompassBearingDialog'
-import { stopPlaceBBQuery } from "../actions/Queries"
+import { stopPlaceBBQuery } from "../graphql/Queries"
 import debounce from 'lodash.debounce'
 import { withApollo } from 'react-apollo'
 

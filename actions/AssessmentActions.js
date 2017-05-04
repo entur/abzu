@@ -1,5 +1,5 @@
 import * as types from './Types'
-import * as limitations from './Limitations'
+import * as limitations from '../models/Limitations'
 
 var AssessmentActions = {}
 

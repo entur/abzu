@@ -11,7 +11,7 @@ import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import debounce from 'lodash.debounce'
 import Checkbox from 'material-ui/Checkbox'
-import stopTypes from './stopTypes'
+import stopTypes from '../models/stopTypes'
 import MdWC from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
@@ -105,7 +105,7 @@ class StopPlaceDetails extends React.Component {
 
   handleWCChange(value) {
     if (!this.props.disabled) {
-      this.props.dispatch(EquipmentActions.updateWCState(value, 'stopPlace', this.props.stopPlace.id))
+      this.props.dispatch(EquipmentActions.updateSanitaryState(value, 'stopPlace', this.props.stopPlace.id))
     }
   }
 

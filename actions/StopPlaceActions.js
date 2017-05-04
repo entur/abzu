@@ -142,13 +142,10 @@ StopPlaceActions.setActiveMap = (map) => {
 
 StopPlaceActions.addElementToStop = (type, position) => {
   return function(dispatch) {
-
     if (type === 'stop_place') {
-
       dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
         location: position
       }))
-
     } else {
       dispatch( sendData(types.ADDED_JUNCTION_ELEMENT, {
         type: type,

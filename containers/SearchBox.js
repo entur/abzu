@@ -16,7 +16,7 @@ import ModalityIcon from '../components/ModalityIcon'
 import SearchIcon from 'material-ui/svg-icons/action/search'
 import FavoriteManager from '../singletons/FavoriteManager'
 import CoordinatesDialog from '../components/CoordinatesDialog'
-import { findStop, topopGraphicalPlacesQuery } from "../actions/Queries"
+import { findStop, topopGraphicalPlacesQuery } from "../graphql/Queries"
 import { withApollo } from 'react-apollo'
 import FavoritePopover from '../components/FavoritePopover'
 import ModalityFilter from '../components/ModalityFilter'

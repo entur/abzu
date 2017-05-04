@@ -3,7 +3,7 @@ import React from 'react'
 import LeafletMap from '../components/LeafletMap'
 import { StopPlaceActions, UserActions } from '../actions/'
 import { withApollo } from 'react-apollo'
-import { stopPlaceBBQuery } from '../actions/Queries'
+import { stopPlaceBBQuery } from '../graphql/Queries'
 import { getIn } from '../utils/'
 import { injectIntl } from 'react-intl'
 

@@ -79,7 +79,7 @@ class FacilitiesQuayTab extends React.Component {
   handleWCChange(value) {
     const { index, disabled, dispatch } = this.props
     if (!disabled) {
-      dispatch(EquipmentActions.updateWCState(value, 'quay', index))
+      dispatch(EquipmentActions.updateSanitaryState(value, 'quay', index))
     }
   }
 

@@ -30,7 +30,7 @@ EqupmentActions.updateShelterEquipmentState = (state, entityType, id) => {
   }
 }
 
-EqupmentActions.updateWCState = (state, entityType, id) => {
+EqupmentActions.updateSanitaryState = (state, entityType, id) => {
   return function (dispatch) {
     dispatch(sendData(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
       state: state,
@@ -59,7 +59,6 @@ EqupmentActions.updateCycleStorageState = (state, entityType, id) => {
     }))
   }
 }
-
 
 
 export default EqupmentActions
