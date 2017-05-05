@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton'
 import TimePicker from 'material-ui/TimePicker'
 import DatePicker from 'material-ui/DatePicker'
 import Checkbox from 'material-ui/Checkbox'
-
+import TextField from 'material-ui/TextField'
 
 class SaveDialog extends React.Component {
 
@@ -38,34 +38,36 @@ class SaveDialog extends React.Component {
       dateFrom: now,
       dateTo: null,
       expiraryExpanded: false,
-      isSaving: false
+      isSaving: false,
+      comment: '',
     }
   }
 
   handleSave() {
     const { handleConfirm } = this.props
-    const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo, isSaving } = this.state
-    let validBetween = {
+    const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo, comment } = this.state
+    let userInput = {
       dateFrom: dateFrom,
-      timeFrom: timeFrom
+      timeFrom: timeFrom,
+      comment: comment
     }
     if (expiraryExpanded) {
-      validBetween.dateTo = dateTo
-      validBetween.timeTo = timeTo
+      userInput.dateTo = dateTo
+      userInput.timeTo = timeTo
     }
 
     this.setState({
       isSaving: true
     })
 
-    handleConfirm(JSON.parse(JSON.stringify(validBetween)))
+    handleConfirm(JSON.parse(JSON.stringify(userInput)))
   }
 
   render() {
 
     const { open, intl, handleClose } = this.props
     const { formatMessage } = intl
-    const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded, isSaving } = this.state
+    const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded, isSaving, comment } = this.state
 
     const now = new Date()
 
@@ -80,7 +82,8 @@ class SaveDialog extends React.Component {
       message_to: formatMessage({id: 'save_dialog_message_to'}),
       note: formatMessage({id: 'save_dialog_note'}),
       error: formatMessage({id: 'save_dialog_to_is_before_from'}),
-      do_you_want_to_specify_expirary: formatMessage({id: 'do_you_want_to_specify_expirary'})
+      do_you_want_to_specify_expirary: formatMessage({id: 'do_you_want_to_specify_expirary'}),
+      comment: formatMessage({id: 'comment'})
     }
 
     const toDateIsBeforeFromDate = (dateTo != null && dateFrom != null && expiraryExpanded)
@@ -110,7 +113,7 @@ class SaveDialog extends React.Component {
         onRequestClose={() => { handleClose() }}
         contentStyle={{width: '40%', minWidth: '40%', margin: 'auto'}}
       >
-        <div>{ translations.message_from }</div>
+        <div style={{marginLeft: 30}}>{ translations.message_from }</div>
         <div style={{marginTop: 15, textAlign: 'center'}}>
           <DatePicker
             hintText={translations.date}
@@ -139,11 +142,11 @@ class SaveDialog extends React.Component {
           checked={expiraryExpanded}
           label={translations.do_you_want_to_specify_expirary}
           onCheck={(event, checked) => { this.setState({expiraryExpanded: checked})}}
-          style={{marginTop: 10}}
+          style={{marginTop: 10, fontSize: 12}}
         />
         { expiraryExpanded ?
           <div>
-            <div style={{marginTop: 20}}>{ translations.message_to }</div>
+            <div style={{marginTop: 20, marginLeft: 30}}>{ translations.message_to }</div>
             <div style={{marginTop: 15, textAlign: 'center'}}>
               <DatePicker
                 hintText={translations.date}
@@ -170,6 +173,16 @@ class SaveDialog extends React.Component {
           </div>
           : null
         }
+        <div style={{width: '90%', margin: 'auto', marginBottom: 20}}>
+          <TextField
+            floatingLabelText={translations.comment}
+            fullWidth={true}
+            multiLine={true}
+            value={comment}
+            onChange={ (e, value) => this.setState({comment: value})}
+            rowsMax={4}
+          />
+        </div>
       </Dialog>
     )
   }

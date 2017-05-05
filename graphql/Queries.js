@@ -59,6 +59,7 @@ export const stopPlaceAndPathLink = gql`
                     lang
                 }
                 version
+                versionComment
             }
         },
     ${Fragments.stopPlace.verbose},
@@ -114,6 +115,7 @@ export const stopPlaceAllVersions = gql`
                 lang
             }
             version
+            versionComment
         }
     },
 `
@@ -138,6 +140,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
                 lang
             }
             version
+            versionComment
         }
     },
     ${Fragments.stopPlace.verbose},

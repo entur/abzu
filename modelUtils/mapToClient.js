@@ -153,13 +153,14 @@ helpers.mapVersionToClientVersion = source => {
 
     const transformer = value => moment(value).format('YYYY-DD-MM HH:mm')
 
-    return source.sort( (a, b) => Number(b.version) - Number(a.version)).map( s => {
+    return source.sort( (a, b) => Number(b.version) - Number(a.version)).map( data => {
       let version = {
-        id: s.id,
-        version: s.version,
-        name: getIn(s, ['name', 'value'], ''),
-        fromDate: getInTransform(s.validBetweens[0], ['fromDate'], '', transformer),
-        toDate: getInTransform(s.validBetweens[0], ['toDate'], '', transformer),
+        id: data.id,
+        version: data.version,
+        name: getIn(data, ['name', 'value'], ''),
+        fromDate: getInTransform(data.validBetweens[0], ['fromDate'], '', transformer),
+        toDate: getInTransform(data.validBetweens[0], ['toDate'], '', transformer),
+        versionComment: data.versionComment
       }
       return version
     })

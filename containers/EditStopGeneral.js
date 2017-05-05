@@ -63,9 +63,9 @@ class EditStopGeneral extends React.Component {
     dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
   }
 
-  handleSaveStopAndPathLink(validBetween) {
+  handleSaveStopAndPathLink(userInput) {
 
-    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, validBetween)
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, userInput)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
     let id = null
 
@@ -248,9 +248,12 @@ class EditStopGeneral extends React.Component {
                 <MenuItem
                   key={'version'+i}
                   primaryText={
-                    <div style={{display: 'flex'}}>
-                      <div style={{marginRight: 8, fontWeight: 600}}>{version.version}</div>
-                      <div>{version.name}</div>
+                    <div style={{display: 'flex', flexDirection: 'column'}}>
+                      <div style={{display: 'flex'}}>
+                        <div style={{marginRight: 8, fontWeight: 600}}>{version.version}</div>
+                        <div>{version.name}</div>
+                      </div>
+                      <div style={{marginTop: -10}}>{version.versionComment || ''}</div>
                     </div>
                   }
                   secondaryText={

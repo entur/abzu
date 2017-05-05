@@ -36,7 +36,7 @@ helpers.getFullUTCString = (time, date) => {
   return moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
 }
 
-helpers.mapStopToVariables = (stop, validBetween) => {
+helpers.mapStopToVariables = (stop, userInput) => {
   let stopVariables = {
     id: stop.id,
     name: stop.name,
@@ -48,9 +48,9 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     alternativeNames: stop.alternativeNames
   }
 
-  if (validBetween) {
+  if (userInput) {
 
-    const { timeFrom, timeTo, dateFrom, dateTo } = validBetween
+    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput
 
     let validPeriod = {}
 
@@ -65,6 +65,8 @@ helpers.mapStopToVariables = (stop, validBetween) => {
     stopVariables.validBetweens = [
       validPeriod
     ]
+
+    stopVariables.versionComment = comment
   }
 
   if (stop.location) {
