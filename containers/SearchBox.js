@@ -119,6 +119,10 @@ class SearchBox extends React.Component {
     })
    }
 
+   handleApplyFilters(filters) {
+     this.props.dispatch(UserActions.applyStopTypeSearchFilter(filters))
+   }
+
   handleSubmitCoordinates(position) {
     this.props.dispatch( StopPlaceActions.changeMapCenter(position, 11))
     this.props.dispatch( UserActions.setMissingCoordinates(  position, this.props.chosenResult.id ))
@@ -288,7 +292,11 @@ class SearchBox extends React.Component {
               text={favoriteText}
             />
             <div style={{width: '100%', margin: 'auto', border: '1px solid hsla(182, 53%, 51%, 0.1)'}}>
-              <ModalityFilter locale={locale}/>
+              <ModalityFilter
+                locale={locale}
+                stopTypeFilter={stopTypeFilter}
+                handleApplyFilters={this.handleApplyFilters.bind(this)}
+              />
               { showMoreFilterOptions ?
                 <div>
                   <div style={{width: '100%', textAlign: 'center'}}>
@@ -310,7 +318,10 @@ class SearchBox extends React.Component {
                     ref="topoFilter"
                     onNewRequest={this.handleAddChip.bind(this)}
                   />
-                  <TopographicalFilter/>
+                  <TopographicalFilter
+                    topoiChips={topoiChips}
+                    handleDeleteChip={ chip => this.props.dispatch(UserActions.deleteChip(chip)) }
+                    />
                 </div>
                 :  <div style={{width: '100%', textAlign: 'center'}}>
                   <FlatButton
@@ -404,7 +415,7 @@ const mapStateToProps = state => {
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: roleParser.canEdit(state.user.kc.tokenParsed)
+    canEdit: roleParser.canEdit(state.user.kc.tokenParsed),
   }
 }
 

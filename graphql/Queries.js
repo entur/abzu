@@ -101,6 +101,41 @@ export const findStop = gql`
     },
 `
 
+export const findStopForReport = gql`
+    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
+        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 100) {
+            id
+            importedId
+            name {
+                value
+            }
+            geometry {
+                coordinates
+            }
+            stopPlaceType
+            quays {
+                id
+            }
+            accessibilityAssessment {
+                limitations {
+                    wheelchairAccess
+                }
+            }
+            topographicPlace {
+                name {
+                    value
+                }
+                topographicPlaceType
+                parentTopographicPlace {
+                    name {
+                        value
+                    }
+                }
+            }
+        }
+    },
+`
+
 export const stopPlaceAllVersions = gql`
     query stopPlaceAllVersions($id: String!) {
         versions:
@@ -149,6 +184,23 @@ export const stopPlaceAndPathLinkByVersion = gql`
 
 export const topopGraphicalPlacesQuery = gql`
     query TopopGraphicalPlaces($query: String!) {
+        topographicPlace(query: $query) {
+            id
+            name {
+                value
+            }
+            topographicPlaceType
+            parentTopographicPlace {
+                name {
+                    value
+                }
+            }
+        }
+    }
+`
+
+export const topopGraphicalPlacesReportQuery = gql`
+    query TopopGraphicalPlacesForReport($query: String!) {
         topographicPlace(query: $query) {
             id
             name {

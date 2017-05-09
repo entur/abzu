@@ -45,7 +45,7 @@ class NewElementsBox extends React.Component {
       position: 'fixed',
       width: 'auto',
       marginLeft: '41%',
-      top: 10,
+      top: 5,
       color: '#fff'
     }
 

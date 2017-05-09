@@ -1,11 +1,8 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import ModalityIcon from './ModalityIcon'
 import stopTypes from '../models/stopTypes'
 import Checkbox from 'material-ui/Checkbox'
 import {UserActions} from '../actions/'
-import BusShelter from '../static/icons/facilities/BusShelter'
-
 
 class ModalityFilter extends React.Component {
 
@@ -33,7 +30,7 @@ class ModalityFilter extends React.Component {
         }
       }
     }
-    dispatch(UserActions.applyStopTypeSearchFilter(newFilters))
+    this.props.handleApplyFilters(newFilters)
   }
 
   render() {
@@ -73,8 +70,4 @@ class ModalityFilter extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  stopTypeFilter: state.user.searchFilters.stopType
-})
-
-export default  connect(mapStateToProps)(ModalityFilter)
+export default ModalityFilter

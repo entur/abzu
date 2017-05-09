@@ -70,6 +70,10 @@ convictPromise.then( (convict) => {
     res.send(getPage())
   })
 
+  app.get(ENDPOINTBASE + 'reports', function(req, res) {
+    res.send(getPage())
+  })
+
   app.get(ENDPOINTBASE + '_health', function(req, res) {
     res.sendStatus(200)
   })

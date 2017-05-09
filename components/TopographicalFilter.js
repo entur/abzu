@@ -1,13 +1,7 @@
 import React from 'react'
 import Chip from 'material-ui/Chip'
-import { connect } from 'react-redux'
-import { UserActions } from '../actions/'
 
 class TopographicalFilter extends React.Component {
-
-  handleRequestDelete(key) {
-    this.props.dispatch(UserActions.deleteChip(key))
-  }
 
   renderChip(data) {
 
@@ -22,8 +16,8 @@ class TopographicalFilter extends React.Component {
 
     return (
       <Chip
-        key={data.key}
-        onRequestDelete={() => this.handleRequestDelete(data.key)}
+        key={data.id}
+        onRequestDelete={() => this.props.handleDeleteChip(data.id)}
         style={chipStyle}
       >
         <span style={{color: typeTextColor}}>{data.text}</span>
@@ -49,8 +43,4 @@ class TopographicalFilter extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  topoiChips: state.user.searchFilters.topoiChips
-})
-
-export default connect(mapStateToProps)(TopographicalFilter)
+export default TopographicalFilter

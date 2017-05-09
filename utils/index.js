@@ -21,3 +21,12 @@ export const getInTransform = (object, keys, defaultValue, transformater) => {
   let value = getIn(object, keys, null)
   return value != null ? transformater(value) : defaultValue
 }
+
+export const jsonArrayToCSV = (jsonArray, header, delimiter = ';') => {
+  const replacer = (key, value) => value || ''
+  let csv = jsonArray.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(delimiter))
+  csv.unshift(header.join(delimiter))
+  csv = csv.join('\r\n')
+
+  return csv
+}

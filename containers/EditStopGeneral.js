@@ -194,9 +194,10 @@ class EditStopGeneral extends React.Component {
       border: '1px solid #511E12',
       background: '#fff',
       width: 405,
-      marginTop: 2,
+      marginTop: 1,
       position: 'absolute',
       zIndex: 999,
+      marginLeft: 1
     }
 
     const scrollable = {
