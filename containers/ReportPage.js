@@ -116,7 +116,7 @@ class ReportPage extends React.Component {
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <div style={{display: 'flex'}}>
             <ReportFilterBox style={{width: '50%'}}>
-              <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5}}>
+              <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
                 Filtrer på modalitet
               </div>
               <ModalityFilter
@@ -124,7 +124,7 @@ class ReportPage extends React.Component {
                 stopTypeFilter={stopTypeFilter}
                 handleApplyFilters={ filters => this.setState({stopTypeFilter: filters})}
               />
-              <div style={{padding: 5}}>
+              <div style={{padding: 5, marginLeft: 5}}>
                 <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12}}>
                   Filtrer på fylker og kommuner
                 </div>
@@ -133,7 +133,7 @@ class ReportPage extends React.Component {
                   dataSource={topographicalPlacesDataSource}
                   onUpdateInput={this.handleTopographicalPlaceSearch.bind(this)}
                   filter={AutoComplete.caseInsensitiveFilter}
-                  style={{margin: 'auto', width: '100%', textAlign: 'center', marginTop: -10}}
+                  style={{margin: 'auto', width: '50%', textAlign: 'center', marginTop: -10}}
                   maxSearchResults={5}
                   fullWidth={true}
                   ref="topoFilter"
@@ -146,10 +146,13 @@ class ReportPage extends React.Component {
               </div>
             </ReportFilterBox>
             <ReportFilterBox style={{width: '50%'}}>
+              <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
+                Øvrige filtre
+              </div>
               <div style={{display: 'flex', alignItems: 'center', padding: 5}}>
-                <div style={{marginLeft: 5, marginRight: 5}}>Quays</div>
+                <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>Quays</div>
                 <input value={quayMin} min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
-                <div style={{marginLeft: 5, marginRight: 5}}>to</div>
+                <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>to</div>
                 <input value={quayMax}  min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
               </div>
               <div style={{marginLeft: 10}}>
@@ -168,7 +171,7 @@ class ReportPage extends React.Component {
             </ReportFilterBox>
           </div>
         </div>
-          <ReportResultView activePageIndex={activePageIndex} results={results}/>
+        <ReportResultView activePageIndex={activePageIndex} results={results}/>
         <ReportPageFooter
           results={results}
           handleSelectPage={this.handleSelectPage.bind(this)}

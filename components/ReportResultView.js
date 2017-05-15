@@ -1,5 +1,6 @@
 import React from 'react'
 import ModalityIcon from './ModalityIcon'
+import StopPLaceLink from '../components/StopPlaceLink'
 
 
 class ReportResultView extends React.Component {
@@ -8,13 +9,6 @@ class ReportResultView extends React.Component {
     const iconColor = (!stopPlaceType || stopPlaceType === 'other')
       ? 'red' : '#000'
     return <ModalityIcon svgStyle={{color: iconColor}} type={stopPlaceType} />
-  }
-
-  renderStopPlaceLink(id) {
-    const url = window.location.origin + window.config.endpointBase + 'edit/' + id
-    return (
-      <a target="_blank" href={url}>{id}</a>
-    )
   }
 
   render() {
@@ -36,12 +30,11 @@ class ReportResultView extends React.Component {
     }
 
     return (
-      <div style={{height: '80%'}}>
+      <div>
         <div style={{marginLeft: 5, fontWeight: 600, fontSize: 12, textAlign: 'center', marginBottom: 10, marginTop: 10}}>
           Showing 20 of { results.length } results 
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', lineHeight: 2}}>
-
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', lineHeight: '1.5'}}>
           <div key={'column-header'} style={{display: 'flex', fontWeight: 600, marginLeft: 10}}>
             <div style={iconColumStyle}></div>
             <div style={columnStyle}>Name</div>
@@ -59,7 +52,9 @@ class ReportResultView extends React.Component {
               <div key={item.id} style={{display: 'flex', background: background, padding: '0px 10px'}}>
                 <div style={iconColumStyle}>{this.renderStopPlaceType(item.stopPlaceType)}</div>
                 <div style={columnStyle}>{item.name}</div>
-                <div style={columnStyle}>{this.renderStopPlaceLink(item.id)}</div>
+                <div style={columnStyle}>
+                  <StopPLaceLink id={item.id}/>
+                </div>
                 <div style={columnStyle}>{item.parentTopographicPlace}</div>
                 <div style={columnStyle}>{item.topographicPlace}</div>
                 <div style={columnStyle}>{item.quays.length}</div>

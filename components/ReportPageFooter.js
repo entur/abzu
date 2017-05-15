@@ -22,11 +22,13 @@ class ReportPageFooter extends React.Component {
     const totalCount = results.length
 
     const style = {
-      height: 100,
       width: '100%',
-      position: 'fixed',
+      display: 'flex',
       bottom: 0,
+      padding: '10px 0px',
       background: '#213a46',
+      justifyContent: 'space-between',
+      position: 'absolute',
     }
 
     const pageWrapperStyle = {
@@ -34,8 +36,7 @@ class ReportPageFooter extends React.Component {
       fontSize: 16,
       display: 'flex',
       alignItems: 'center',
-      padding: 10,
-      width: '80%'
+      padding: 10
     }
 
     const pageItemStyle = {
@@ -75,7 +76,7 @@ class ReportPageFooter extends React.Component {
             </div>
           ))}
         </div>
-        <div style={{float: 'right', marginRight: 20}}>
+        <div style={{marginRight: 20}}>
           <RaisedButton
             disabled={!totalCount}
             onClick={this.handleGetCSV.bind(this)}
