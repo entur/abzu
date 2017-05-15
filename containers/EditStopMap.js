@@ -73,17 +73,17 @@ class EditStopMap extends React.Component {
     return true
   }
 
-  handleDragEnd(isQuay, index, event) {
+  handleMapDragEnd(isQuay, index, event) {
     const { dispatch } = this.props
     const position = event.target.getLatLng()
 
-    let formattedPosition = {
-      lat: setDecimalPrecision(position.lat,6),
-      lng: setDecimalPrecision(position.lng,6)
-    }
+    let formattedPosition = [
+      setDecimalPrecision(position.lat,6),
+      setDecimalPrecision(position.lng,6)
+    ]
 
     if (isQuay) {
-      dispatch(StopPlaceActions.changeQuayPosition(index, formattedPosition))
+      dispatch(StopPlaceActions.changeElementPosition(index, 'quay', formattedPosition))
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition))
     }
@@ -117,7 +117,7 @@ class EditStopMap extends React.Component {
     const { dispatch } = this.props
 
     if (coordinatesOwner.isQuay) {
-      dispatch(StopPlaceActions.changeQuayPosition(coordinatesOwner.markerIndex, position))
+      dispatch(StopPlaceActions.changeElementPosition(coordinatesOwner.markerIndex, 'quay', position))
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position))
     }
@@ -173,7 +173,7 @@ class EditStopMap extends React.Component {
           ref="leafletMap"
           key="leafletmap-edit"
           handleOnClick={this.handleMapOnClick.bind(this)}
-          handleDragEnd={this.handleDragEnd.bind(this)}
+          handleDragEnd={this.handleMapDragEnd.bind(this)}
           handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
           handleChangeCoordinates={this.handleChangeCoordinates.bind(this)}
           dragableMarkers={!disabled}

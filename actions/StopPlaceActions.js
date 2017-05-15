@@ -87,7 +87,7 @@ StopPlaceActions.changeElementName = (index, name, type) => {
 StopPlaceActions.changeCurrentStopPosition = position => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGED_ACTIVE_STOP_POSITION, {
-      location: [ position.lat, position.lng ]
+      location: position
     }))
   }
 }
@@ -155,7 +155,7 @@ StopPlaceActions.addElementToStop = (type, position) => {
   }
 }
 
-StopPlaceActions.changElementPosition = (index, type, position) => {
+StopPlaceActions.changeElementPosition = (index, type, position) => {
   return function(dispatch) {
     dispatch( sendData(types.CHANGE_ELEMENT_POSITION, {
       index: index,

@@ -147,7 +147,7 @@ class QuayMarker extends React.PureComponent {
                   </span>
                 <div
                   style={{display: 'block', cursor: 'pointer', width: 'auto', textAlign: 'center', fontSize: 10}}
-                  onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, id, position)}
+                  onClick={() => !belongsToNeighbourStop && handleChangeCoordinates(true, index, position)}
                 >
                   <span style={{display: 'inline-block', textAlign: 'center', borderBottom: !belongsToNeighbourStop ? '1px dotted black' : 'none', }}>
                       {position[0]}

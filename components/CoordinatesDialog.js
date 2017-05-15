@@ -43,10 +43,11 @@ class CoordinatesDialog extends React.Component {
 
     if (position && position.length == 2 && !isNaN(position[0]) && !isNaN(position[1])) {
 
-      const latLng = {
-        lat: Number(position[0]),
-        lng: Number(position[1])
-      }
+      const latLng = [
+        Number(position[0].trim()),
+        Number(position[1].trim())
+      ]
+
       this.props.handleConfirm(latLng)
 
       this.setState({

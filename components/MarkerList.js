@@ -99,9 +99,10 @@ class MarkerList extends React.Component {
   }
 
   handleElementDragEnd(index, type, event) {
+    const { dispatch } = this.props
     const position = event.target.getLatLng()
 
-    this.props.dispatch( StopPlaceActions.changElementPosition(index, type,
+    dispatch( StopPlaceActions.changeElementPosition(index, type,
       [ setDecimalPrecision(position.lat, 6), setDecimalPrecision(position.lng, 6) ]
     ))
   }
