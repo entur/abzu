@@ -4,22 +4,25 @@ import formatHelpers from '../modelUtils/mapToClient'
 import limitationHelpers from '../modelUtils/limitationHelpers'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 
-const graphQLreducer = (state = {}, action) => {
+const stopPlaceReducer = (state = {}, action) => {
 
     switch (action.type) {
-      case "APOLLO_QUERY_RESULT":
+
+      /* These actions are dispatched by Apollo-Client */
+      case types.APOLLO_QUERY_RESULT:
         return getStateByOperation(state, action)
 
-      case "APOLLO_MUTATION_RESULT":
+      case types.APOLLO_MUTATION_RESULT:
         return getStateByOperation(state, action)
 
-      case "APOLLO_QUERY_RESULT_CLIENT":
+      case types.APOLLO_QUERY_RESULT_CLIENT:
         return getObjectFromCache(state, action)
 
       case types.CLEAR_SEARCH_RESULTS:
         return Object.assign({}, state, {
           searchResults: []
         })
+      /* end */
 
       case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
         const id = action.payLoad
@@ -251,6 +254,7 @@ const graphQLreducer = (state = {}, action) => {
     }
 }
 
+
 const getProperCenterLocation = location => {
   return location || [62.928595, 12.083002]
 }
@@ -259,4 +263,4 @@ const getProperZoomLevel = location => {
   return location ? 15 : 5
 }
 
-export default graphQLreducer
+export default stopPlaceReducer
