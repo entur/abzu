@@ -21,6 +21,7 @@ describe('Model: map format from server to expected client model', () => {
     const formattedStop = {
       id: 'NSR:StopPlace:933',
       name: 'Aspestrand',
+      weighting: null,
       location: [
         60.260427,
         5.435734
@@ -94,6 +95,7 @@ describe('Model: map format from server to expected client model', () => {
        "id": "NSR:StopPlace:19744",
        "name": "Aspelundsveien",
        alternativeNames: [],
+       "weighting": null,
        "stopPlaceType": "onstreetBus",
        "description": "Beskrivelse",
        "coordinates": [ [

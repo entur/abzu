@@ -50,6 +50,12 @@ const graphQLreducer = (state = {}, action) => {
           neighbourStops: []
         })
 
+      case types.CHANGED_WEIGHTING_STOP_PLACE:
+        return Object.assign({}, state, {
+          current: formatHelpers.updateCurrentStopWithWeighting(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
       case types.CREATED_NEW_STOP:
         return Object.assign({}, state, {
           newStop: formatHelpers.createNewStopFromLocation(action.payLoad),

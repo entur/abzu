@@ -45,7 +45,8 @@ helpers.mapStopToVariables = (stop, userInput) => {
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(stop.accessibilityAssessment),
     placeEquipments: stop.placeEquipments,
-    alternativeNames: stop.alternativeNames
+    alternativeNames: stop.alternativeNames,
+    weighting: stop.weighting
   }
 
   if (userInput) {

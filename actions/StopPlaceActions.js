@@ -92,6 +92,11 @@ StopPlaceActions.changeCurrentStopPosition = position => {
   }
 }
 
+StopPlaceActions.changeWeightingForStop = value => {
+  return function(dispatch) {
+    dispatch( sendData(types.CHANGED_WEIGHTING_STOP_PLACE, value) )
+  }
+}
 
 StopPlaceActions.changeElementDescription = (index, description, type) => {
   return function(dispatch) {

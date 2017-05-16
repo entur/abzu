@@ -69,6 +69,7 @@ Fragments.stopPlace = {
                 lang
             }
         }
+        weighting
         description {
             value
         }

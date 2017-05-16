@@ -17,7 +17,6 @@ import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
-import MdMore from 'material-ui/svg-icons/navigation/more-vert'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
 import Divider from 'material-ui/Divider'
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
@@ -124,7 +123,6 @@ class EditStopGeneral extends React.Component {
 
   handleTouchTapVersions = event => {
     event.preventDefault()
-
     this.setState({
       versionsOpen: true,
       anchorEl: event.currentTarget,

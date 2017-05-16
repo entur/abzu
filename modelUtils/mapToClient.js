@@ -182,7 +182,8 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       name: stop.name.value,
       alternativeNames: extractAlternativeNames(stop.alternativeNames),
       stopPlaceType: stop.stopPlaceType,
-      isActive: isActive
+      isActive: isActive,
+      weighting: stop.weighting
     }
 
     if (stop.topographicPlace) {
@@ -487,6 +488,12 @@ helpers.addAltName = (original, payLoad) => {
       value: value
     }
   })
+  return copy
+}
+
+helpers.updateCurrentStopWithWeighting = (stopPlace, payLoad) => {
+  const copy = JSON.parse(JSON.stringify(stopPlace))
+  copy.weighting = payLoad
   return copy
 }
 

@@ -21,6 +21,10 @@ import equiptmentHelpers from '../modelUtils/equipmentHelpers'
 import MdLanguage from 'material-ui/svg-icons/action/language'
 import { enturPrimary } from '../config/enturTheme'
 import AltNamesDialog from './AltNamesDialog'
+import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
+import WeightingPopover from './WeightingPopover'
+import { weightColors } from '../models/weightTypes'
+
 
 class StopPlaceDetails extends React.Component {
 
@@ -28,6 +32,7 @@ class StopPlaceDetails extends React.Component {
     super(props)
     this.state = {
       stopTypeOpen: false,
+      weightingOpen: false,
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
       altNamesDialogOpen: false
@@ -59,7 +64,24 @@ class StopPlaceDetails extends React.Component {
     this.setState({
       stopTypeOpen: true,
       wheelChairOpen: false,
-      stopTypeAnchorEl: event.currentTarget
+      stopTypeAnchorEl: event.currentTarget,
+      altNamesDialogOpen: false,
+      weightingOpen: false
+    })
+  }
+
+  getWeightingStateColor(stopPlace) {
+    const weightingValue = stopPlace.weighting
+    return weightColors[weightingValue] || 'grey'
+  }
+
+  handleOpenWeightPopover(event) {
+    this.setState({
+      weightingOpen: true,
+      weightingAnchorEl: event.currentTarget,
+      wheelChairOpen: false,
+      stopTypeOpen: false,
+      altNamesDialogOpen: false
     })
   }
 
@@ -121,6 +143,14 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
+  handleWeightChange(value) {
+    const { dispatch } = this.props
+    dispatch(StopPlaceActions.changeWeightingForStop(value))
+    this.setState({
+      weightingOpen: false
+    })
+  }
+
 
   render() {
 
@@ -131,7 +161,7 @@ class StopPlaceDetails extends React.Component {
 
     const { stopPlace, intl, expanded, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { name, description, altNamesDialogOpen } = this.state
+    const { name, description, altNamesDialogOpen, weightingOpen, weightingAnchorEl } = this.state
 
     const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
 
@@ -199,14 +229,30 @@ class StopPlaceDetails extends React.Component {
             </IconButton>
           </div>
         </div>
-        <TextField
-          hintText={formatMessage({id: 'description'})}
-          floatingLabelText={formatMessage({id: 'description'})}
-          style={{width: 340, marginTop: -10}}
-          disabled={disabled}
-          value={description}
-          onChange={this.handleStopDescriptionChange.bind(this)}
-        />
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <TextField
+            hintText={formatMessage({id: 'description'})}
+            floatingLabelText={formatMessage({id: 'description'})}
+            style={{width: 340, marginTop: -10}}
+            disabled={disabled}
+            value={description}
+            onChange={this.handleStopDescriptionChange.bind(this)}
+          />
+          <div style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
+            <IconButton
+              onClick={ e => {  this.handleOpenWeightPopover(e)}}
+            >
+              <MdTransfer color={this.getWeightingStateColor(stopPlace)} />
+            </IconButton>
+            <WeightingPopover
+              open={!disabled && weightingOpen}
+              anchorEl={weightingAnchorEl}
+              handleChange={ v => this.handleWeightChange(v) }
+              locale={locale}
+              handleClose={ () => { this.setState({ weightingOpen: false }) }}
+            />
+          </div>
+        </div>
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>

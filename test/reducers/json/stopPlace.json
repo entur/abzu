@@ -3,6 +3,7 @@
     "stopPlace": [
       {
         "id": "NSR:StopPlace:933",
+        "weighting": null,
         "name": {
           "value": "Aspestrand",
           "__typename": "EmbeddableMultilingualStringType"
