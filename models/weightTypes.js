@@ -3,15 +3,16 @@ const weightTypes = {
     {
       name: "Foretrukket overgang",
       value: "preferredInterchange",
-      color: "green",
     }, {
       name: "Anbefalt overgang",
       value: "recommendedInterchange",
-      color: "orange",
     }, {
+      name: "Overgang tillatt",
+      value: "interchangeAllowed",
+    },
+    {
       name: "Ingen overgang",
       value: "noInterchange",
-      color: "red"
     },
   ],
 
@@ -19,23 +20,24 @@ const weightTypes = {
     {
       name: "Preferred interchange",
       value: "preferredInterchange",
-      color: "green",
     }, {
       name: "Recommended interchange",
       value: "recommendedInterchange",
-      color: "orange",
     }, {
+      name: "Interchange allowed",
+      value: "interchangeAllowed",
+    },{
       name: "No interchange",
       value: "noInterchange",
-      color: "red",
     }
   ]
 }
 
 export const weightColors = {
-  preferredInterchange: "green",
-  recommendedInterchange: "orange",
-  noInterchange: "red"
+  preferredInterchange: "#3572b0",
+  recommendedInterchange: "#1e6f4c",
+  interchangeAllowed: "#2b9e43",
+  noInterchange: "#d04437"
 }
 
 export default weightTypes
