@@ -5,7 +5,7 @@ Reading config json as served out of the node application.
 */
 
 var configreader = {}
-var config
+var config = null
 
 configreader.readConfig = (callback) => {
 

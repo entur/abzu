@@ -1,7 +1,7 @@
 import React from 'react'
 import { Polyline, Popup, FeatureGroup } from 'react-leaflet'
 import { connect } from 'react-redux'
-import GenerateColor from './Colors'
+import GenerateColor from '../models/Colors'
 import { UserActions } from '../actions'
 import { injectIntl } from 'react-intl'
 import WalkingDistanceDialog from './WalkingDistanceDialog'

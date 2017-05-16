@@ -195,6 +195,7 @@ class StopPlaceDetails extends React.Component {
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
             animation={PopoverAnimationVertical}
+            animated={true}
           >
             { stopTypes[locale].map( (type, index) =>
               <MenuItem
@@ -203,9 +204,10 @@ class StopPlaceDetails extends React.Component {
                 style={{padding: '0px 10px'}}
                 primaryText={type.name}
                 onClick={() => { this.handleStopTypeChange(type.value) }}
-                secondaryText={(
+                insetChildren={true}
+                leftIcon={(
                   <ModalityIcon
-                    iconStyle={{float: 'left', marginLeft: -18, marginTop: 9}}
+                    iconStyle={{float: 'left'}}
                     type={type.value}
                   />)}
               />

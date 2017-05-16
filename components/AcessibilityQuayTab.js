@@ -7,7 +7,6 @@ import { getIn } from '../utils/'
 import { connect } from 'react-redux'
 import { AssessmentActions } from '../actions/'
 
-
 class AcessibilityQuayTab extends React.Component {
 
   constructor(props) {
@@ -24,7 +23,6 @@ class AcessibilityQuayTab extends React.Component {
   handleStepFreeChange(value) {
     this.props.dispatch(AssessmentActions.setQuayStepFreeAccess(value, this.props.index))
   }
-
 
   render() {
 
@@ -66,6 +64,5 @@ class AcessibilityQuayTab extends React.Component {
     )
   }
 }
-
 
 export default connect(null)(AcessibilityQuayTab)
