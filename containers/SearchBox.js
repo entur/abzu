@@ -45,7 +45,6 @@ class SearchBox extends React.Component {
         return
       }
       else {
-        const isImportedId = !isNaN(searchText) || searchText.indexOf(':StopArea:') > -1
         const chips = filter ? filter.topoiChips : this.props.topoiChips
         const stopPlaceTypes = filter ? filter.stopType : this.props.stopTypeFilter
 
@@ -54,7 +53,6 @@ class SearchBox extends React.Component {
           fetchPolicy: 'network-only',
           variables: {
             query: searchText,
-            importedId: isImportedId ? searchText : null,
             stopPlaceType: stopPlaceTypes,
             municipalityReference: chips
               .filter( topos => topos.type === "town").map(topos => topos.value),
