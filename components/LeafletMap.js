@@ -1,6 +1,6 @@
 import React from 'react'
 import MarkerList from './MarkerList'
-import { Map as Lmap, TileLayer, ZoomControl, LayersControl } from 'react-leaflet'
+import { Map as Lmap, TileLayer, ZoomControl, LayersControl, ScaleControl } from 'react-leaflet'
 import { GoogleLayer } from 'react-leaflet-google'
 import MultiPolylineList from './MultiPolyline'
 import WMTSLayer from './WMTSLayer'
@@ -94,6 +94,7 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
         </LayersControl>
+        <ScaleControl imperial={false} position='bottomright'/>
         <ZoomControl position='bottomright' />
         <MarkerList
           changeCoordinates={handleChangeCoordinates} 
