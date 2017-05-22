@@ -33,3 +33,12 @@ export const mutatePathLink = gql`
   }
   ${Fragments.pathLink.verbose}
 `
+
+export const mutateParking = gql`
+  mutation mutateParking($Parking: ParkingInput!) {
+      mutateParking(Parking: $Parking) {
+          ...VerboseParking
+      }
+  }
+  ${Fragments.parking.verbose}
+`

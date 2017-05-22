@@ -172,5 +172,17 @@ Fragments.pathLink = {
   `
 }
 
+Fragments.parking = {
+    verbose: gql`
+      fragment VerboseParking on Parking {
+          id
+          totalCapacity
+          name {
+              value
+          }   
+      }
+    `
+}
+
 
 export default Fragments

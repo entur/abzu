@@ -10,7 +10,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import StopPlaceDetails from '../components/StopPlaceDetails'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
-import { mutateStopPlace, mutatePathLink } from '../graphql/Mutations'
+import { mutateStopPlace, mutatePathLink, mutateParking } from '../graphql/Mutations'
 import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions } from '../graphql/Queries'
 import * as types from '../actions/Types'
 import EditStopAdditional from './EditStopAdditional'
@@ -62,10 +62,12 @@ class EditStopGeneral extends React.Component {
     dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
   }
 
-  handleSaveStopAndPathLink(userInput) {
+  handleSaveAllEntities(userInput) {
 
     const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, userInput)
+    const parkingVariables = mapToMutationVariables.mapParkingToVariables(this.props.stopPlace.parking)
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
+
     let id = null
 
     const { client, dispatch } = this.props
@@ -79,8 +81,18 @@ class EditStopGeneral extends React.Component {
 
       if (pathLinkVariables && pathLinkVariables.length) {
 
-        client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then( result => {
-         this.handleSuccess(dispatch, id)
+        client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).catch( err => {
+          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
+        })
+      }
+    }).then ( result => {
+
+      if (parkingVariables && parkingVariables.length) {
+        client.mutate({
+          variables: { "Parking": parkingVariables },
+          mutation: mutateParking
+        }).then ( result => {
+          this.handleSuccess(dispatch, id)
         }).catch( err => {
           dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
         })
@@ -179,7 +191,7 @@ class EditStopGeneral extends React.Component {
       pathJunctions: formatMessage({id: 'pathJunctions'}),
       entrances: formatMessage({id: 'entrances'}),
       quayItemName: this.getQuayItemName(locale, stopPlace),
-      capacity: formatMessage({id: 'capacity'}),
+      capacity: formatMessage({id: 'total_capacity'}),
       parking: formatMessage({id: 'parking'}),
       elements: formatMessage({id: 'elements'}),
       versions: formatMessage({id: 'versions'}),
@@ -326,7 +338,7 @@ class EditStopGeneral extends React.Component {
             <SaveDialog
               open={this.state.saveDialogOpen}
               handleClose={ () => { this.handleDialogClose() }}
-              handleConfirm={this.handleSaveStopAndPathLink.bind(this)}
+              handleConfirm={this.handleSaveAllEntities.bind(this)}
               intl={intl}
             />
             : null

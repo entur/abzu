@@ -339,7 +339,6 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 
   const newElement = {
     location: position.slice(),
-    compassBearing: null,
     name: '',
   }
 
@@ -351,7 +350,9 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
     case 'parking':
-      copy.parking = copy.parking.concat(newElement); break;
+      copy.parking = copy.parking.concat({
+        ...newElement, totalCapacity: 0
+      }); break;
 
     default: throw new Error('element not supported', type)
   }
@@ -491,6 +492,20 @@ helpers.addAltName = (original, payLoad) => {
       value: value
     }
   })
+  return copy
+}
+
+helpers.changeParkingName = (original, payLoad) => {
+  const { index, name } = payLoad
+  const copy = JSON.parse(JSON.stringify(original))
+  copy.parking[index].name = name
+  return copy
+}
+
+helpers.changeParkingTotalCapacity = (original, payLoad) => {
+  const { index, totalCapacity } = payLoad
+  const copy = JSON.parse(JSON.stringify(original))
+  copy.parking[index].totalCapacity = Number(totalCapacity)
   return copy
 }
 

@@ -88,6 +88,40 @@ describe('Model: map format from server to expected client model', () => {
     expect(state.current).toEqual(formattedStop)
   })
 
+
+  it('should map parking to schema validated query variables', () => {
+
+    const parking = [
+      {
+        name: "park&ride example",
+        location: [63.207698, 11.088595],
+        totalCapacity: "100"
+      }
+    ]
+
+    const expectedOutput = [
+      {
+        name: {
+          lang: "nb",
+          value: "park&ride example"
+        },
+        totalCapacity: 100,
+        geometry: {
+          type: "LineString",
+          coordinates: [
+            [
+              11.088595, 63.207698
+            ]
+          ]
+        }
+      }
+    ]
+
+    let result = QueryVariablesMapper.mapParkingToVariables(parking)
+
+    expect(result).toEqual(expectedOutput)
+  })
+
   it('should map client stop to schema correctly', () => {
 
      const schemaValidStop = QueryVariablesMapper.mapStopToVariables(clientStop)
