@@ -5,6 +5,9 @@ import TimePicker from 'material-ui/TimePicker'
 import DatePicker from 'material-ui/DatePicker'
 import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
+import MdSave from 'material-ui/svg-icons/content/save'
+import MdCancel from 'material-ui/svg-icons/navigation/cancel'
+import MdSpinner from '../static/icons/spinner'
 
 class SaveDialog extends React.Component {
 
@@ -92,13 +95,14 @@ class SaveDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        primary={true}
         onTouchTap={handleClose}
+        icon={<MdCancel/>}
       />,
       <FlatButton
         label={translations.confirm}
         primary={true}
         keyboardFocused={true}
+        icon={isSaving ? <MdSpinner/> : <MdSave/>}
         disabled={toDateIsBeforeFromDate || isSaving}
         onTouchTap={() => this.handleSave()}
       />,
