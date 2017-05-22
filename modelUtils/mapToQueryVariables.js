@@ -84,6 +84,7 @@ helpers.mapPathLinkToVariables = pathLinks => {
 
     let pathLink = JSON.parse(JSON.stringify(source))
 
+    // TODO : Move these to stripRedundantFields, write test for this
 
     if (pathLink.from && pathLink.from.placeRef) {
       if (pathLink.from.placeRef.addressablePlace) {

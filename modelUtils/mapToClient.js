@@ -114,10 +114,13 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     let latlngCoordinates = []
 
-    let endCoordinates = getIn(lastPathLink, ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'], null)
+    let startCoordinates = getIn(
+      lastPathLink, ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
+      null
+    )
 
-    if (endCoordinates) {
-      latlngCoordinates.push(endCoordinates[0])
+    if (startCoordinates) {
+      latlngCoordinates.push(startCoordinates[0])
     }
 
     if (lastPathLink.inBetween) {

@@ -88,7 +88,8 @@ class WalkingDistanceDialog extends React.Component {
     const actions = [
       <TextField
         hintText={formatMessage({id: 'seconds'})}
-        floatingLabelText={formatMessage({id: 'walking_estimate'})}
+        floatingLabelText={formatMessage({id: 'seconds'})}
+        floatingLabelStyle={{textTransform: 'capitalize'}}
         style={{display: 'block', margin: 'auto', width: '90%'}}
         value={estimate}
         onChange={this.handleInputChange.bind(this)}
