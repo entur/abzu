@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 import IconButton from 'material-ui/IconButton'
 import { connect } from 'react-redux'
+import { StopPlaceActions } from '../actions/'
 
 class ParkingItem extends React.Component {
 
@@ -15,12 +16,19 @@ class ParkingItem extends React.Component {
     parking: PropTypes.object.isRequired
   }
 
+  handleSetTotalCapacity(value) {
+    const { dispatch, index } = this.props
+    dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value))
+  }
+
+  handleSetName(value) {
+    const { dispatch, index } = this.props
+    dispatch(StopPlaceActions.changeParkingName(index, value))
+  }
+
   render() {
 
     const { parking, translations, expanded, handleToggleCollapse, index, disabled } = this.props
-
-    const name = ''
-    const capacity = 0
 
     const locationStyle = {
       marginRight: 5,
@@ -57,14 +65,16 @@ class ParkingItem extends React.Component {
             hintText={translations.name}
             disabled={disabled}
             floatingLabelText={translations.name}
-            defaultValue={name}
+            onChange={ (e, v) => { this.handleSetName(v) }}
+            value={parking.name}
             style={{width: "95%", marginTop: -10}}
           />
           <TextField
             hintText={translations.capacity}
             disabled={disabled}
             floatingLabelText={translations.capacity}
-            defaultValue={capacity}
+            onChange={ (e, v) => { this.handleSetTotalCapacity(v) }}
+            value={parking.totalCapacity}
             type="number"
             style={{width: "95%", marginTop: -10}}
           />

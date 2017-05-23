@@ -128,11 +128,27 @@ StopPlaceActions.addElementToStop = (type, position) => dispatch => {
 }
 
 StopPlaceActions.changeElementPosition = (index, type, position) => dispatch => {
-  dispatch( sendData(types.CHANGE_ELEMENT_POSITION, {
+  dispatch(sendData(types.CHANGE_ELEMENT_POSITION, {
     index: index,
     position: position,
     type: type
   }))
+}
+
+StopPlaceActions.changeParkingTotalCapacity = (index, totalCapacity) => dispatch => {
+  dispatch(sendData(types.CHANGED_PARKING_TOTAL_CAPACITY, {
+    index: index,
+    totalCapacity: totalCapacity
+    })
+  )
+}
+
+StopPlaceActions.changeParkingName = (index, name) => dispatch => {
+  dispatch(sendData(types.CHANGED_PARKING_NAME, {
+      index: index,
+      name: name
+    })
+  )
 }
 
 export default StopPlaceActions

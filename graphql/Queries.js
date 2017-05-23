@@ -47,6 +47,12 @@ export const stopPlaceAndPathLink = gql`
         stopPlace(id: $id) {
             ...VerboseStopPlace
         }
+        parking: parking(stopPlaceId: $id) {
+            name {
+                value
+            }
+            totalCapacity  
+        },
         versions: 
             stopPlace(id: $id, allVersions: true) {
                 id

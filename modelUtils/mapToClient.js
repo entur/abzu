@@ -22,6 +22,21 @@ const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / ( walkingSpeed)), 1)
 }
 
+helpers.mapParkingToClient = parkingObjs => {
+  if (!parkingObjs) return []
+  return parkingObjs.map( parking => {
+    let clientParking = {
+      name: getIn(parking, ['name', 'value'], '')
+    }
+    let coordinates = getIn(parking, ['geometry', 'coordinates'], null)
+
+    if (coordinates && coordinates.length) {
+      clientParking.coordinates = coordinates[0].reverse()
+    }
+    return clientParking
+  })
+}
+
 helpers.mapPathLinkToClient = pathLinks => {
 
   if (!pathLinks) return []
@@ -176,7 +191,7 @@ const extractAlternativeNames = alternativeNames => {
   return alternativeNames.filter( alt => ( alt.name && alt.name.value && alt.nameType ))
 }
 
-helpers.mapStopToClientStop = (stop, isActive) => {
+helpers.mapStopToClientStop = (stop, isActive, parking) => {
 
   try {
 
@@ -224,7 +239,7 @@ helpers.mapStopToClientStop = (stop, isActive) => {
       clientStop.quays = []
       clientStop.entrances = []
       clientStop.pathJunctions = []
-      clientStop.parking = []
+      clientStop.parking = parking || []
 
       if (stop.quays) {
         clientStop.quays = stop.quays.map( quay => helpers.mapQuayToClientQuay(quay, clientStop.accessibilityAssessment)).sort( (a,b) => (a.publicCode || '') - b.publicCode || '')
@@ -343,7 +358,6 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 
   const newElement = {
     location: position.slice(),
-    compassBearing: null,
     name: '',
   }
 
@@ -355,7 +369,9 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
     case 'parking':
-      copy.parking = copy.parking.concat(newElement); break;
+      copy.parking = copy.parking.concat({
+        ...newElement, totalCapacity: 0
+      }); break;
 
     default: throw new Error('element not supported', type)
   }
@@ -508,6 +524,20 @@ helpers.addAltName = (original, payLoad) => {
       value: value
     }
   })
+  return copy
+}
+
+helpers.changeParkingName = (original, payLoad) => {
+  const { index, name } = payLoad
+  const copy = JSON.parse(JSON.stringify(original))
+  copy.parking[index].name = name
+  return copy
+}
+
+helpers.changeParkingTotalCapacity = (original, payLoad) => {
+  const { index, totalCapacity } = payLoad
+  const copy = JSON.parse(JSON.stringify(original))
+  copy.parking[index].totalCapacity = Number(totalCapacity)
   return copy
 }
 

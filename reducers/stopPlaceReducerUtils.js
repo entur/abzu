@@ -86,10 +86,14 @@ const getDataFromResult = (state, action) => {
     ? action.result.data.pathLink
     : []
 
+  const parking = action.result.data.parking
+    ? action.result.data.parking
+    : []
+
   return Object.assign({}, state, {
-    current: formatHelpers.mapStopToClientStop(stopPlace, true),
+    current: formatHelpers.mapStopToClientStop(stopPlace, true, formatHelpers.mapParkingToClient(parking)),
     versions: getAllVersionFromResult(state, action),
-    originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
+    originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true, formatHelpers.mapParkingToClient(parking)),
     originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
     zoom: getProperZoomLevel(stopPlace),
     minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,

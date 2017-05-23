@@ -42,7 +42,10 @@ helpers.getFullUTCString = (time, date) => {
   return moment(`${dateStringFrom} ${timeStringFrom}`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z'
 }
 
-helpers.mapStopToVariables = (stop, userInput) => {
+helpers.mapStopToVariables = (original, userInput) => {
+
+  const stop = JSON.parse(JSON.stringify(original))
+
   let stopVariables = {
     id: stop.id,
     name: stop.name,
@@ -115,6 +118,31 @@ helpers.mapPathLinkToVariables = pathLinks => {
       }
     }
     return stripRedundantFields(pathLink)
+  })
+}
+
+helpers.mapParkingToVariables = parkingArr => {
+
+  return parkingArr.map( source => {
+
+    let parking = {
+      totalCapacity: Number(source.totalCapacity),
+    }
+
+    if (source.id) {
+      parking.id = source.id
+    }
+
+    parking.name = {
+      value: source.name,
+      lang: 'nb'
+    }
+    parking.geometry = {
+      type: 'LineString',
+      coordinates: [ source.location.reverse() ]
+    }
+
+    return parking
   })
 }
 
