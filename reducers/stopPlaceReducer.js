@@ -238,6 +238,12 @@ const stopPlaceReducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
+      case types.CHANGED_512_SIGN_STATE:
+        return Object.assign({}, state, {
+          current: equipmentHelpers.update512SignEquipment(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
       case types.ADDED_ALT_NAME:
         return Object.assign({}, state, {
           current: formatHelpers.addAltName(state.current, action.payLoad),

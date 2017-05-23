@@ -21,6 +21,17 @@ export default {
     "shelterEquipment": {
       "seats": 4,
       "stepFree": true
-    }
+    },
+    "generalSign": [
+      { "privateCode": {
+          value: 512
+      },
+        "signContentType": "TransportModePoint"
+      },
+      {
+        "privateCode": 404,
+        "signContentType": "emergencyExit"
+      }
+    ]
   }
 }

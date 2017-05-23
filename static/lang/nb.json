@@ -160,6 +160,8 @@
   "time": "Tidspunkt",
   "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
   "town": "Kommune",
+  "transport_sign": "Har transportskilt",
+  "transport_sign_no": "Mangler transportskilt",
   "track": "Spor",
   "type": "Type",
   "undefined" : "Uten navn",

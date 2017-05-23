@@ -18,6 +18,8 @@ import Heated from '../static/icons/facilities/Heated'
 import { getIn } from '../utils/'
 import equiptmentHelpers from '../modelUtils/equipmentHelpers'
 import { EquipmentActions } from '../actions/'
+import Sign512 from '../static/icons/512Sign'
+
 
 class FacilitiesStopTab extends React.Component {
 
@@ -86,6 +88,12 @@ class FacilitiesStopTab extends React.Component {
     }
   }
 
+  handle512Sign(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.update512SignState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
+
   handleValueForWaitingRoomChange(newValue) {
     const { stopPlace } = this.props
     const oldValuesSet = {
@@ -124,7 +132,8 @@ class FacilitiesStopTab extends React.Component {
     const busShelter = equiptmentHelpers.getShelterEquipmentState(stopPlace)
     const bikeParking = equiptmentHelpers.getCycleStorageEquipment(stopPlace)
     const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace)
-    const WC = equiptmentHelpers.getSanitaryEquiptmentState(stopPlace)
+    const WC = equiptmentHelpers.getSanitaryEquipmentState(stopPlace)
+    const sign512 = equiptmentHelpers.get512SignEquipment(stopPlace)
 
     const ticketMachineNumber = getIn(stopPlace, ['placeEquipments', 'ticketingEquipment', 'numberOfMachines'], 0)
     const shelterSeats = getIn(stopPlace, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
@@ -137,6 +146,25 @@ class FacilitiesStopTab extends React.Component {
 
     return (
       <div style={{padding: 10}}>
+        <div style={{marginTop: 10}}>
+          <div style={{display: 'flex',justifyContent: 'space-between'}}>
+            <Checkbox
+              checked={sign512}
+              checkedIcon={
+                <Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>
+              }
+              uncheckedIcon={
+                <Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />
+              }
+              label={ sign512 ? formatMessage({id: 'transport_sign'}) : formatMessage({id: 'transport_sign_no'}) }
+              labelStyle={{fontSize: '0.8em'}}
+              style={{width: '80%'}}
+              onCheck={(e,v) => { this.handle512Sign(v) } }
+            />
+            <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
+          </div>
+          <Divider style={{marginTop: 10, marginBottom: 10}}/>
+        </div>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox

@@ -26,6 +26,13 @@ Fragments.quay = {
               }
           }
           placeEquipments {
+              generalSign {
+                  id
+                  signContentType
+                  privateCode {
+                      value
+                  }
+              }
               waitingRoomEquipment {
                   seats
                   heated
@@ -103,6 +110,13 @@ Fragments.stopPlace = {
             }
         }
         placeEquipments {
+            generalSign {
+                id
+                signContentType
+                privateCode {
+                    value
+                }
+            }
             waitingRoomEquipment {
                 seats
                 heated

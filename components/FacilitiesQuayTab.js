@@ -18,6 +18,7 @@ import Heated from '../static/icons/facilities/Heated'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import { EquipmentActions } from '../actions/'
 import { getIn } from '../utils/'
+import Sign512 from '../static/icons/512Sign'
 
 class FacilitiesQuayTab extends React.Component {
 
@@ -118,6 +119,11 @@ class FacilitiesQuayTab extends React.Component {
     }
   }
 
+  handle512Sign(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.update512SignState(value, 'quay', this.props.index))
+    }
+  }
 
   render() {
 
@@ -129,7 +135,7 @@ class FacilitiesQuayTab extends React.Component {
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
     const bikeParking = equipmentHelpers.getCycleStorageEquipment(quay)
     const waitingRoom = equipmentHelpers.getWaitingRoomState(quay)
-    const WC = equipmentHelpers.getSanitaryEquiptmentState(quay)
+    const WC = equipmentHelpers.getSanitaryEquipmentState(quay)
 
     const ticketMachineNumber = getIn(quay, ['placeEquipments', 'ticketingEquipment', 'numberOfMachines'], 0)
     const shelterSeats = getIn(quay, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
@@ -139,9 +145,26 @@ class FacilitiesQuayTab extends React.Component {
     const waitingRoomHeated = getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'heated'], false)
     const waitingRoomStepFree = getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'stepFree'], false)
     const bikeParkingSpaces = getIn(quay, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
+    const sign512 = equipmentHelpers.get512SignEquipment(quay)
 
     return (
       <div style={{padding: 10}}>
+        <div style={{marginTop: 10}}>
+          <div style={{display: 'flex',justifyContent: 'space-between'}}>
+            <Checkbox
+              checked={sign512}
+              checkedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>}
+              disabled={disabled}
+              uncheckedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />}
+              label={ sign512 ? formatMessage({id: 'transport_sign'}) : formatMessage({id: 'transport_sign_no'}) }
+              labelStyle={{fontSize: '0.8em'}}
+              style={{width: '80%'}}
+              onCheck={(e,v) => { this.handle512Sign(v) } }
+            />
+            <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
+          </div>
+          <Divider style={{marginTop: 10, marginBottom: 10}}/>
+        </div>
         <div style={{marginTop: 10}}>
           <div style={{display: 'flex',justifyContent: 'space-between'}}>
             <Checkbox

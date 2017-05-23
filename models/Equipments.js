@@ -44,5 +44,6 @@ export const types = {
   shelterEquipment: 'shelterEquipment',
   sanitaryEquipment: 'sanitaryEquipment',
   waitingRoomEquipment: 'waitingRoomEquipment',
-  cycleStorageEquipment: 'cycleStorageEquipment'
+  cycleStorageEquipment: 'cycleStorageEquipment',
+  generalSign: 'generalSign',
 }

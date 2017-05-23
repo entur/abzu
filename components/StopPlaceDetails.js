@@ -17,13 +17,14 @@ import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
-import equiptmentHelpers from '../modelUtils/equipmentHelpers'
+import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import MdLanguage from 'material-ui/svg-icons/action/language'
 import { enturPrimary } from '../config/enturTheme'
 import AltNamesDialog from './AltNamesDialog'
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
 import WeightingPopover from './WeightingPopover'
 import { weightColors } from '../models/weightTypes'
+import Sign512 from '../static/icons/512Sign'
 
 
 class StopPlaceDetails extends React.Component {
@@ -151,6 +152,11 @@ class StopPlaceDetails extends React.Component {
     })
   }
 
+  handleChangeSign512(value) {
+    if (!this.props.disabled) {
+      this.props.dispatch(EquipmentActions.update512SignState(value, 'stopPlace', this.props.stopPlace.id))
+    }
+  }
 
   render() {
 
@@ -165,11 +171,12 @@ class StopPlaceDetails extends React.Component {
 
     const wheelchairAccess = getIn(stopPlace, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
 
-    const ticketMachine = equiptmentHelpers.getTicketMachineState(stopPlace)
-    const busShelter = equiptmentHelpers.getShelterEquipmentState(stopPlace)
-    const bikeParking = equiptmentHelpers.getCycleStorageEquipment(stopPlace)
-    const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace)
-    const WC = equiptmentHelpers.getSanitaryEquiptmentState(stopPlace)
+    const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace)
+    const busShelter = equipmentHelpers.getShelterEquipmentState(stopPlace)
+    const bikeParking = equipmentHelpers.getCycleStorageEquipment(stopPlace)
+    const waitingRoom = equipmentHelpers.getWaitingRoomState(stopPlace)
+    const WC = equipmentHelpers.getSanitaryEquipmentState(stopPlace)
+    const sign512 = equipmentHelpers.get512SignEquipment(stopPlace)
 
     const hasAltNames = !!(stopPlace.alternativeNames && stopPlace.alternativeNames.length)
 
@@ -291,13 +298,24 @@ class StopPlaceDetails extends React.Component {
               checked={waitingRoom}
               onCheck={(e,v) => { this.handleWaitingRoomChange(v) } }
             />
-              <Checkbox
-                checkedIcon={<BikeParking />}
-                uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={bikeParking}
-                onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
-              />
+            <Checkbox
+              checkedIcon={<BikeParking />}
+              uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              style={{width: 'auto'}}
+              checked={bikeParking}
+              onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
+            />
+            <Checkbox
+              checkedIcon={
+                <Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>
+              }
+              uncheckedIcon={
+                <Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />
+              }
+              style={{width: 'auto'}}
+              checked={sign512}
+              onCheck={(e,v) => { this.handleChangeSign512(v) } }
+            />
           </div>
         }
         <AltNamesDialog

@@ -48,4 +48,12 @@ EqupmentActions.updateCycleStorageState = (state, entityType, id) => dispatch =>
     }))
 }
 
+EqupmentActions.update512SignState = (state, entityType, id) => dispatch => {
+  dispatch(sendData(types.CHANGED_512_SIGN_STATE, {
+    state: state,
+    type: entityType,
+    id: id
+  }))
+}
+
 export default EqupmentActions

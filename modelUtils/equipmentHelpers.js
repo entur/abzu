@@ -12,9 +12,31 @@ EquipmentHelpers.getShelterEquipmentState = entity => {
   return numberOfSeats > 0
 }
 
-EquipmentHelpers.getSanitaryEquiptmentState = entity => {
+EquipmentHelpers.getSanitaryEquipmentState = entity => {
   const numberOfToilets = getIn(entity, ['placeEquipments', 'sanitaryEquipment', 'numberOfToilets'], 0)
   return numberOfToilets > 0
+}
+
+EquipmentHelpers.get512SignEquipment = entity => {
+  const generalSign = getIn(entity, ['placeEquipments', 'generalSign', ], null)
+
+  if (generalSign) {
+    for (let i = 0; i < generalSign.length; i++) {
+      let sign = generalSign[i]
+      if (sign.privateCode && sign.privateCode.value == "512" && sign.signContentType === "TransportModePoint") {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+EquipmentHelpers.update512SignEquipment = (entity, payLoad) => {
+  // this maps to signContentType, privateCode = 512 && signContentType = 'TransportModePoint'
+  const props = { privateCode: { value: 512 }, signContentType: 'TransportModePoint' }
+  const copyOfEntity = JSON.parse(JSON.stringify(entity))
+
+  return updateEquipmentArray(copyOfEntity, payLoad, types.generalSign, props)
 }
 
 EquipmentHelpers.getWaitingRoomState = entity => {
@@ -29,30 +51,64 @@ EquipmentHelpers.getCycleStorageEquipment = entity => {
 
 EquipmentHelpers.updateTicketMachineState = (stopPlace, payLoad) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace))
-  return updateEquipmentForStopPlace(updatedStop, payLoad, types.ticketMachine)
+  return updateEquipmentForEntitity(updatedStop, payLoad, types.ticketMachine)
 }
 
 EquipmentHelpers.updateShelterEquipmentState  = (stopPlace, payLoad) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace))
-  return updateEquipmentForStopPlace(updatedStop, payLoad, types.shelterEquipment)
+  return updateEquipmentForEntitity(updatedStop, payLoad, types.shelterEquipment)
 }
 
 EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payLoad) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace))
-  return updateEquipmentForStopPlace(updatedStop, payLoad, types.sanitaryEquipment)
+  return updateEquipmentForEntitity(updatedStop, payLoad, types.sanitaryEquipment)
 }
 
 EquipmentHelpers.updateWaitingRoomState = (stopPlace, payLoad) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace))
-  return updateEquipmentForStopPlace(updatedStop, payLoad, types.waitingRoomEquipment)
+  return updateEquipmentForEntitity(updatedStop, payLoad, types.waitingRoomEquipment)
 }
 
 EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payLoad) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace))
-  return updateEquipmentForStopPlace(updatedStop, payLoad, types.cycleStorageEquipment)
+  return updateEquipmentForEntitity(updatedStop, payLoad, types.cycleStorageEquipment)
 }
 
-const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
+
+const updateEquipmentArray = (entity, payLoad, typeOfEquipment, props) => {
+  const { state, type, id } = payLoad
+
+  if (type === 'stopPlace') {
+    return  updateEquipmentForEntityArray(entity, state, typeOfEquipment, props)
+  } else if (type === 'quay') {
+    entity.quays[id] = updateEquipmentForEntityArray(entity.quays[id], state, typeOfEquipment, props)
+  }
+  return entity
+}
+
+const updateEquipmentForEntityArray = (entity, state, typeOfEquipment, props) => {
+  if (!entity.placeEquipments) {
+    entity.placeEquipments = {}
+  }
+
+  let equipmentToModify = entity.placeEquipments[typeOfEquipment]
+  if (equipmentToModify) {
+    if (state && props) {
+      entity.placeEquipments[typeOfEquipment] = [...entity.placeEquipments[typeOfEquipment], props]
+    } else {
+      entity.placeEquipments[typeOfEquipment] = entity.placeEquipments[typeOfEquipment]
+        .filter( sign => (sign.privateCode && sign.privateCode.value != props.privateCode && (sign.signContentType != props.signContentType)))
+    }
+
+  } else {
+    if (props) {
+      entity.placeEquipments[typeOfEquipment] = [props]
+    }
+  }
+  return entity
+}
+
+const updateEquipmentForEntitity = (entity, payLoad, typeOfEquipment) => {
   const { state, type, id } = payLoad
 
   let stateFromCheckbox = typeof state === 'boolean'
@@ -71,23 +127,23 @@ const updateEquipmentForStopPlace = (stopPlace, payLoad, typeOfEquipment) => {
 
   if (type === 'stopPlace') {
 
-    if (!stopPlace.placeEquipments) {
-      stopPlace.placeEquipments = {}
+    if (!entity.placeEquipments) {
+      entity.placeEquipments = {}
     }
 
-    stopPlace.placeEquipments[typeOfEquipment] = overrideState
+    entity.placeEquipments[typeOfEquipment] = overrideState
 
   } else if (type === 'quay') {
 
-    if (stopPlace.quays && stopPlace.quays[id]) {
+    if (entity.quays && entity.quays[id]) {
 
-      if (!stopPlace.quays[id].placeEquipments) {
-        stopPlace.quays[id].placeEquipments = {}
+      if (!entity.quays[id].placeEquipments) {
+        entity.quays[id].placeEquipments = {}
       }
-      stopPlace.quays[id].placeEquipments[typeOfEquipment] = overrideState
+      entity.quays[id].placeEquipments[typeOfEquipment] = overrideState
     }
   }
-  return stopPlace
+  return entity
 }
 
 export default EquipmentHelpers

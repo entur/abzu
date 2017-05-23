@@ -9,7 +9,6 @@ import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less'
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location'
 import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
-import MdMore from 'material-ui/svg-icons/navigation/more-vert'
 import { injectIntl } from 'react-intl'
 import FlatButton from 'material-ui/FlatButton'
 import stopTypes from '../models/stopTypes'
@@ -22,6 +21,7 @@ import WheelChairPopover from './WheelChairPopover'
 import StepFreePopover from './StepFreePopover'
 import { getIn } from '../utils/'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
+import Sign512 from '../static/icons/512Sign'
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -79,6 +79,13 @@ class QuayItem extends React.Component {
     }
   }
 
+  handleChange512Sign(value) {
+    const { dispatch, disabled, index } = this.props
+    if (!disabled) {
+      dispatch(EquipmentActions.update512SignState(value, 'quay', index))
+    }
+  }
+
   render() {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType, disabled } = this.props
@@ -89,6 +96,7 @@ class QuayItem extends React.Component {
     const stepFreeAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'stepFreeAccess'], 'UNKNOWN')
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay)
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
+    const sign512 = equipmentHelpers.get512SignEquipment(quay)
 
     let quayItemName = null
 
@@ -208,6 +216,14 @@ class QuayItem extends React.Component {
                  style={{width: 'auto'}}
                  checked={busShelter}
                  onCheck={(e,v) => { this.handleBusShelterChange(v) } }
+               />
+               <Checkbox
+                 checkedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>}
+                 disabled={disabled}
+                 uncheckedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />}
+                 style={{width: 'auto'}}
+                 checked={sign512}
+                 onCheck={(e,v) => { this.handleChange512Sign(v) } }
                />
            </div>
              : null

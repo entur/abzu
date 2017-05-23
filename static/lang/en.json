@@ -160,6 +160,8 @@
   "time": "Hour",
   "title_for_favorite": "What do you want to remember your search as?",
   "town": "Municipality",
+  "transport_sign": "Has transport sign",
+  "transport_sign_no": "No transport sign",
   "track": "Track",
   "type": "Type",
   "undefined": "Not defined",
