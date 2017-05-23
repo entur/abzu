@@ -7,7 +7,7 @@ const weightTypes = {
       name: "Anbefalt overgang",
       value: "recommendedInterchange",
     }, {
-      name: "Overgang tillatt",
+      name: "Normal overgang",
       value: "interchangeAllowed",
     },
     {

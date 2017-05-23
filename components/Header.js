@@ -12,6 +12,7 @@ import MdLanguage from 'material-ui/svg-icons/action/language'
 import MdSettings from 'material-ui/svg-icons/action/settings'
 import { UserActions } from '../actions/'
 import { getIn } from '../utils'
+import MdReport from 'material-ui/svg-icons/content/report'
 
 class Header extends React.Component {
 
@@ -31,6 +32,10 @@ class Header extends React.Component {
     }
   }
 
+  handleReports() {
+    this.props.dispatch(UserActions.navigateTo('reports', ''))
+  }
+
   handleToggleMultiPolylines(value) {
     this.props.dispatch(UserActions.toggleMultiPolylinesEnabled(value))
   }
@@ -41,11 +46,12 @@ class Header extends React.Component {
 
   render() {
 
-    const { intl, kc, isMultiPolylinesEnabled, isCompassBearingEnabled } = this.props
+    const { intl, kc, isMultiPolylinesEnabled, isCompassBearingEnabled, isDisplayingReports } = this.props
     const { formatMessage, locale } = intl
 
     const help = formatMessage({id: 'help'})
-    const title = formatMessage({id: '_title'})
+    const betaFunctionality = formatMessage({id: 'beta_functionality'})
+    const title = formatMessage({id: '_title'}) + ( isDisplayingReports ? betaFunctionality : '' )
     const language = formatMessage({id: 'language'})
     const english = formatMessage({id: 'english'})
     const norwegian = formatMessage({id: 'norwegian'})
@@ -53,6 +59,8 @@ class Header extends React.Component {
     const mapSettings = formatMessage({id: 'map_settings'})
     const showPathLinks = formatMessage({id: 'show_path_links'})
     const showCompassBearing = formatMessage({id: 'show_compass_bearing'})
+    const reportSite = formatMessage({id: 'report_site'})
+
 
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '')
 
@@ -73,6 +81,12 @@ class Header extends React.Component {
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           >
+            <MenuItem
+              leftIcon={<MdReport color="#41c0c4"/>}
+              primaryText={reportSite}
+              onClick={() => this.handleReports()}
+              style={{fontSize: 12, padding: 0}}
+            />
             <MenuItem
               primaryText={mapSettings}
               rightIcon={<ArrowDropRight />}
@@ -139,7 +153,8 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   kc: state.user.kc,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-  isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled
+  isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports'
 })
 
 

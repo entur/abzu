@@ -27,6 +27,7 @@ const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, us
           type={result.stopPlaceType}
         />
       </div>
+      <span>{result.id}</span>
       <div style={{display: 'block', fontSize: 10}}>
         <span style={{fontWeight: 600}}>{formatMessage({id: 'local_reference'})} : </span>
         { result.importedId ? result.importedId.join(', ') : '' }

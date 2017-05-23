@@ -62,7 +62,7 @@ class ReportPageFooter extends React.Component {
     return (
       <div style={style}>
         <div style={pageWrapperStyle}>
-          <div style={{marginRight: 10}}>Pages:</div>
+          <div style={{marginRight: 10}}>Side:</div>
           { pages.map( page => (
             <div
               onClick={() => handleSelectPage(page)}

@@ -150,7 +150,7 @@ class QuayItem extends React.Component {
 
     const quayTitlePrefix = `${translations.quayItemName ? translations.quayItemName : ''} `
     const quayTitleSuffix = `${publicCode || ''}`
-    const idTitle = `ID: ${quay.id||'?'}`
+    const idTitle = `${quay.id||'?'}`
 
     return (
 
@@ -165,7 +165,7 @@ class QuayItem extends React.Component {
                  </div>
             }
             <div style={{display: 'inline-block', verticalAlign: 'middle'}} onClick={() => handleToggleCollapse(index, 'quay')}>
-              <span style={{color: '#2196F3'}}>
+              <span style={{color: '#2196F3', textTransform: 'capitalize'}}>
                 { quayTitlePrefix + quayTitleSuffix }
               </span>
               <span style={{fontSize: '0.8em', marginLeft: 5, fontWeight: 600, color: '#464545'}}> { idTitle } </span>
