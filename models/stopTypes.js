@@ -23,19 +23,19 @@ const stopTypes = {
       }, {
         name: "Bussterminal",
         value: "busStation",
-        quayItemName: 'plattform'
+        quayItemName: 'platform'
       }, {
         name: "Bilferjekai",
         value: "harbourPort",
-        quayItemName: 'kai'
+        quayItemName: 'port'
       }, {
         name: "Passasjerbåtkai",
         value: "ferryStop",
-        quayItemName: 'kai'
+        quayItemName: 'port'
       }, {
         name: "Kabelbanestopp",
         value: "liftStation",
-        quayItemName: 'plattform'
+        quayItemName: 'platform'
       }
     ],
 
