@@ -21,7 +21,7 @@ class EntranceItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(StopPlaceActions.changeElementName(index, event.target.value, 'entrance'))
+    dispatch(StopPlaceActions.changePublicCodeName(index, event.target.value, 'entrance'))
   }
 
   handleDescriptionChange = (event) => {

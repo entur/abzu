@@ -120,6 +120,7 @@
   "platform": "Platform",
   "port": "Port",
   "publicCode": "Public code",
+  "privateCode": "private code",
   "quay": "quay",
   "quay_adjustments_body": "You have done adjustments to one or more quays connected to a path link. This will have an impact to the path link",
   "quay_adjustments_cancel": "Cancel",

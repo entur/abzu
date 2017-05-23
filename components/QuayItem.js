@@ -46,9 +46,14 @@ class QuayItem extends React.Component {
     dispatch(StopPlaceActions.changeElementDescription(index, event.target.value, 'quay'))
   }
 
-  handleNameChange = (event) => {
+  handlePublicCodeChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(StopPlaceActions.changeElementName(index, event.target.value, 'quay'))
+    dispatch(StopPlaceActions.changePublicCodeName(index, event.target.value, 'quay'))
+  }
+
+  handlePrivateCodeChange = (event) => {
+    const { dispatch, index } = this.props
+    dispatch(StopPlaceActions.changePrivateCodeName(index, event.target.value, 'quay'))
   }
 
   showMoreOptionsForQuay = expanded => {
@@ -126,7 +131,8 @@ class QuayItem extends React.Component {
       noBusShelter: formatMessage({id: 'busShelter_no'}),
       quayItemName: formatMessage({id: quayItemName || 'name'}),
       quayMissingLocation: formatMessage({id: 'quay_is_missing_location'}),
-      localReference: formatMessage({id: 'local_reference'})
+      localReference: formatMessage({id: 'local_reference'}),
+      privateCode: formatMessage({id: 'privateCode'})
     }
 
 
@@ -185,7 +191,15 @@ class QuayItem extends React.Component {
              disabled={disabled}
              defaultValue={quay.publicCode}
              style={{width: "95%", marginTop: -10}}
-             onChange={e => typeof e.target.value === 'string' && this.handleNameChange(e)}
+             onChange={e => typeof e.target.value === 'string' && this.handlePublicCodeChange(e)}
+           />
+           <TextField
+             hintText={translations.privateCode}
+             floatingLabelText={translations.privateCode}
+             disabled={disabled}
+             defaultValue={quay.privateCode}
+             style={{width: "95%", marginTop: -10}}
+             onChange={e => typeof e.target.value === 'string' && this.handlePrivateCodeChange(e)}
            />
           <TextField
             hintText={translations.description}

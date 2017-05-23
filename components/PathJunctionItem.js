@@ -20,7 +20,7 @@ class PathJunctionItem extends React.Component {
 
   handleNameChange = (event) => {
     const { dispatch, index } = this.props
-    dispatch(StopPlaceActions.changeElementName(index, event.target.value, 'pathJunction'))
+    dispatch(StopPlaceActions.changePublicCodeName(index, event.target.value, 'pathJunction'))
   }
 
   handleDescriptionChange = (event) => {

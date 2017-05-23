@@ -120,6 +120,7 @@
   "platform" : "Plattform",
   "port" : "Havn",
   "publicCode": "Publikumskode",
+  "privateCode": "Internkode",
   "quay" : "quay",
   "quay_adjustments_body": "Du har gjort endringer av posisjonen til én eller flere quayer tilknyttet en ganglenke. Dette vil påvirke ganglenken",
   "quay_adjustments_cancel": "Avbryt",

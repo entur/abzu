@@ -12,6 +12,9 @@ Fragments.quay = {
           version
           compassBearing
           publicCode
+          privateCode {
+              value
+          }
           description {
               value
           }

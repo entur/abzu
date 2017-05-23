@@ -251,6 +251,10 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment)  => {
     clientQuay.importedId = quay.importedId
   }
 
+  if (quay.privateCode && quay.privateCode.value) {
+    clientQuay.privateCode = quay.privateCode.value
+  }
+
   if (quay.geometry && quay.geometry.coordinates) {
 
     let coordinates = quay.geometry.coordinates[0].slice()
@@ -401,7 +405,7 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   return copy
 }
 
-helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
+helpers.updateCurrentWithPublicCode = (current, payLoad) => {
   const { index, type, name } = payLoad
   const copy = JSON.parse(JSON.stringify(current))
 
@@ -415,6 +419,19 @@ helpers.updateCurrentWithElementNameChange = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], { name: name })
       break
+    default: throw new Error('element not supported', type)
+  }
+  return copy
+}
+
+helpers.updateCurrentWithPrivateCode = (current, payLoad) => {
+  const { index, type, name } = payLoad
+  const copy = JSON.parse(JSON.stringify(current))
+
+  switch (type) {
+    case 'quay':
+      copy.quays[index] = Object.assign({}, copy.quays[index], { privateCode: name })
+      break;
     default: throw new Error('element not supported', type)
   }
   return copy

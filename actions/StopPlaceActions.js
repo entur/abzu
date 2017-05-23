@@ -54,8 +54,16 @@ StopPlaceActions.removeElementByType = (index, type) => dispatch => {
   }) )
 }
 
-StopPlaceActions.changeElementName = (index, name, type) => dispatch => {
-  dispatch( sendData(types.CHANGE_ELEMENT_NAME, {
+StopPlaceActions.changePublicCodeName = (index, name, type) => dispatch => {
+  dispatch( sendData(types.CHANGE_PUBLIC_CODE_NAME, {
+    name: name,
+    index: index,
+    type: type
+  }))
+}
+
+StopPlaceActions.changePrivateCodeName = (index, name, type) => dispatch => {
+  dispatch( sendData(types.CHANGE_PRIVATE_CODE_NAME, {
     name: name,
     index: index,
     type: type

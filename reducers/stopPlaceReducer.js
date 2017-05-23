@@ -135,9 +135,15 @@ const stopPlaceReducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
-      case types.CHANGE_ELEMENT_NAME:
+      case types.CHANGE_PUBLIC_CODE_NAME:
         return Object.assign({}, state, {
-          current: formatHelpers.updateCurrentWithElementNameChange(state.current, action.payLoad),
+          current: formatHelpers.updateCurrentWithPublicCode(state.current, action.payLoad),
+          stopHasBeenModified: true
+        })
+
+      case types.CHANGE_PRIVATE_CODE_NAME:
+        return Object.assign({}, state, {
+          current: formatHelpers.updateCurrentWithPrivateCode(state.current, action.payLoad),
           stopHasBeenModified: true
         })
 

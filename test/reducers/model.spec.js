@@ -180,7 +180,7 @@ describe('Changes correct properties', () => {
       const newPublicCode = `new public code ${quayIndex}`
 
       const changePublicCode = {
-        type: 'CHANGE_ELEMENT_NAME',
+        type: 'CHANGE_PUBLIC_CODE_NAME',
         payLoad: {
           type: 'quay',
           name: newPublicCode,
