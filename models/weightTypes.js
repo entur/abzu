@@ -40,4 +40,9 @@ export const weightColors = {
   noInterchange: "#d04437"
 }
 
+export const noValue = {
+  "nb": "Ingen overgang",
+  "en": "No interchange"
+}
+
 export default weightTypes

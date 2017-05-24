@@ -24,7 +24,7 @@ import AltNamesDialog from './AltNamesDialog'
 import TariffZonesDialog from './TariffZonesDialog'
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
 import WeightingPopover from './WeightingPopover'
-import weightTypes, { weightColors } from '../models/weightTypes'
+import weightTypes, { weightColors, noValue } from '../models/weightTypes'
 import Sign512 from '../static/icons/512Sign'
 
 
@@ -89,7 +89,7 @@ class StopPlaceDetails extends React.Component {
         return types[i].name
       }
     }
-    return weightTypes[locale][3].name
+    return noValue[locale]
   }
 
   handleOpenWeightPopover(event) {
@@ -255,7 +255,10 @@ class StopPlaceDetails extends React.Component {
               onClick={ () => { this.setState({tariffZoneOpen: true, altNamesDialogOpen: false, weightingOpen: false}) }}
               style={{borderBottom: '1px dotted', marginTop: 16, marginLeft: 8, cursor: 'pointer'}}
             >
-              <span style={{fontSize: 18, marginTop: -5}}>Tz</span>
+              <span
+                style={{fontSize: 18, marginTop: -5, color: stopPlace.tariffZones.length ? enturPrimary : '#000'}}
+              >Tz
+              </span>
             </div>
             <div style={{borderBottom: '1px dotted', marginLeft: 8, marginTop: -3}}>
               <IconButton
