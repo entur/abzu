@@ -92,6 +92,11 @@ Fragments.stopPlace = {
         version
         importedId
         stopPlaceType
+        tariffZones {
+            name {
+                value
+            }
+        }
         topographicPlace {
             name {
                 value

@@ -214,6 +214,18 @@ helpers.mapStopToClientStop = (stop, isActive, parking) => {
       }
     }
 
+    if (stop.tariffZones && stop.tariffZones.length) {
+      clientStop.tariffZones = stop.tariffZones.map( zone => {
+        if (zone.name && zone.name.value) {
+          return ({
+            name: zone.name.value
+          })
+        }
+      })
+    } else {
+      clientStop.tariffZones = []
+    }
+
     clientStop.accessibilityAssessment = stop.accessibilityAssessment
       ? stop.accessibilityAssessment : getAssessmentSetBasedOnQuays(stop.quays)
 

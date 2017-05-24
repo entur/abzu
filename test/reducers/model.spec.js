@@ -9,7 +9,7 @@ import { describe, before, it } from 'mocha'
 describe('Model: map format from server to expected client model', () => {
 
 
-  it('should server response stop to client model correctly', () => {
+  it('should let server response stop map to client model correctly', () => {
 
     const action = {
       type: "APOLLO_QUERY_RESULT",
@@ -26,6 +26,7 @@ describe('Model: map format from server to expected client model', () => {
         60.260427,
         5.435734
       ],
+      tariffZones: [],
       stopPlaceType: 'onstreetBus',
       isActive: true,
       topographicPlace: 'Aremark',
