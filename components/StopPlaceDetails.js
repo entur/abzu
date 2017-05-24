@@ -23,7 +23,7 @@ import { enturPrimary } from '../config/enturTheme'
 import AltNamesDialog from './AltNamesDialog'
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
 import WeightingPopover from './WeightingPopover'
-import { weightColors } from '../models/weightTypes'
+import weightTypes, { weightColors } from '../models/weightTypes'
 import Sign512 from '../static/icons/512Sign'
 
 
@@ -62,18 +62,32 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleOpenStopPlaceTypePopover(event) {
-    this.setState({
-      stopTypeOpen: true,
-      wheelChairOpen: false,
-      stopTypeAnchorEl: event.currentTarget,
-      altNamesDialogOpen: false,
-      weightingOpen: false
-    })
+    if (!this.props.disabled) {
+      this.setState({
+        stopTypeOpen: true,
+        wheelChairOpen: false,
+        stopTypeAnchorEl: event.currentTarget,
+        altNamesDialogOpen: false,
+        weightingOpen: false
+      })
+    }
   }
 
   getWeightingStateColor(stopPlace) {
     const weightingValue = stopPlace.weighting
     return weightColors[weightingValue] || 'grey'
+  }
+
+  getNameForWeightingState(stopPlace, locale) {
+    const weightingValue = stopPlace.weighting
+    const types = weightTypes[locale]
+
+    for (let i = 0; i < types.length; i++) {
+      if (types[i].value === weightingValue) {
+        return types[i].name
+      }
+    }
+    return weightTypes[locale][3].name
   }
 
   handleOpenWeightPopover(event) {
@@ -180,21 +194,25 @@ class StopPlaceDetails extends React.Component {
 
     const hasAltNames = !!(stopPlace.alternativeNames && stopPlace.alternativeNames.length)
 
+    const stopTypeTranslation = stopTypes[locale].filter( type => type.value === stopPlace.stopPlaceType)[0].name
+    const weightingStateTranslation = this.getNameForWeightingState(stopPlace, locale)
+
     return (
       <div style={fixedHeader}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <div style={{flex: 1}}>
             <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
           </div>
-          <IconButton
-            disabled={disabled}
-            style={{borderBottom: '1px dotted grey'}}
-            onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
-          >
+          <div title={stopTypeTranslation} >
+            <IconButton
+              style={{borderBottom: disabled ? 'none' : '1px dotted grey'}}
+              onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
+              >
             <ModalityIcon
               type={ stopPlace.stopPlaceType }
             />
           </IconButton>
+          </div>
           <Popover
             open={this.state.stopTypeOpen}
             anchorEl={this.state.stopTypeAnchorEl}
@@ -247,7 +265,7 @@ class StopPlaceDetails extends React.Component {
             value={description}
             onChange={this.handleStopDescriptionChange.bind(this)}
           />
-          <div style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
+          <div title={weightingStateTranslation} style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
             <IconButton
               onClick={ e => {  this.handleOpenWeightPopover(e)}}
             >

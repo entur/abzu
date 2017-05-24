@@ -38,7 +38,7 @@ class ModalityIcon extends React.Component {
   }
 }
 
-const getIconIdByModality = (type) => {
+const getIconIdByModality = type => {
   const modalityMap = {
     'onstreetBus': 'bus-withoutBox',
     'onstreetTram' : 'tram-withoutBox',
