@@ -25,13 +25,14 @@ const calculateEstimate = distance => {
 helpers.mapParkingToClient = parkingObjs => {
   if (!parkingObjs) return []
   return parkingObjs.map( parking => {
+
     let clientParking = {
       name: getIn(parking, ['name', 'value'], '')
     }
     let coordinates = getIn(parking, ['geometry', 'coordinates'], null)
 
     if (coordinates && coordinates.length) {
-      clientParking.coordinates = coordinates[0].reverse()
+      clientParking.location = [ coordinates[0][1], coordinates[0][0] ]
     }
     return clientParking
   })

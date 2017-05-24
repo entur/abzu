@@ -64,9 +64,10 @@ class EditStopGeneral extends React.Component {
 
   handleSaveAllEntities(userInput) {
 
-    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(this.props.stopPlace, userInput)
-    const parkingVariables = mapToMutationVariables.mapParkingToVariables(this.props.stopPlace.parking)
-    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(this.props.pathLink)
+    const { stopPlace, pathLink  } = this.props
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(stopPlace, userInput)
+    const parking = stopPlace.parking ? stopPlace.parking.slice() : []
+    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(pathLink)
 
     let id = null
 
@@ -86,6 +87,8 @@ class EditStopGeneral extends React.Component {
         })
       }
     }).then ( result => {
+
+      const parkingVariables = mapToMutationVariables.mapParkingToVariables(parking, stopPlace.id || id)
 
       if (parkingVariables && parkingVariables.length) {
         client.mutate({

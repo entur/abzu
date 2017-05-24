@@ -196,7 +196,10 @@ Fragments.parking = {
           totalCapacity
           name {
               value
-          }   
+          } 
+          geometry {
+              coordinates
+          }
       }
     `
 }

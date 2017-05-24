@@ -35,7 +35,7 @@ export const mutatePathLink = gql`
 `
 
 export const mutateParking = gql`
-  mutation mutateParking($Parking: ParkingInput!) {
+  mutation mutateParking($Parking: [ParkingInput]!) {
       mutateParking(Parking: $Parking) {
           ...VerboseParking
       }

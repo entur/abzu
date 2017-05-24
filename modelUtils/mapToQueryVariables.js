@@ -121,12 +121,13 @@ helpers.mapPathLinkToVariables = pathLinks => {
   })
 }
 
-helpers.mapParkingToVariables = parkingArr => {
+helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
   return parkingArr.map( source => {
 
     let parking = {
-      totalCapacity: Number(source.totalCapacity),
+      totalCapacity: Number(source.totalCapacity) || 0,
+      parentSiteRef: parentRef
     }
 
     if (source.id) {
@@ -137,9 +138,22 @@ helpers.mapParkingToVariables = parkingArr => {
       value: source.name,
       lang: 'nb'
     }
-    parking.geometry = {
-      type: 'LineString',
-      coordinates: [ source.location.reverse() ]
+
+    if (source.location) {
+
+      let coordinates = source.location.map( c => {
+        if (!isFloat(c)) {
+          return parseFloat(c + ".0000001")
+        }
+        return c
+      }).reverse()
+
+      parking.geometry = {
+        type: 'Point',
+        coordinates: [ coordinates ]
+      }
+    } else {
+      parking.geometry = null
     }
 
     return parking
@@ -173,5 +187,7 @@ const formatAccessibilityAssements = assements => {
   }
   return assements
 }
+
+const isFloat = n =>  Number(n) === n && n % 1 !== 0
 
 export default helpers

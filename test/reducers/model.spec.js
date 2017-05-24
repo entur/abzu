@@ -105,9 +105,10 @@ describe('Model: map format from server to expected client model', () => {
           lang: "nb",
           value: "park&ride example"
         },
+        parentSiteRef: "NSR:StopPlace:1",
         totalCapacity: 100,
         geometry: {
-          type: "LineString",
+          type: "Point",
           coordinates: [
             [
               11.088595, 63.207698
@@ -117,7 +118,7 @@ describe('Model: map format from server to expected client model', () => {
       }
     ]
 
-    let result = QueryVariablesMapper.mapParkingToVariables(parking)
+    let result = QueryVariablesMapper.mapParkingToVariables(parking, "NSR:StopPlace:1")
 
     expect(result).toEqual(expectedOutput)
   })

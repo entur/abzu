@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 class ParkingMarker extends React.Component {
 
   static propTypes = {
-    position: PropTypes.arrayOf(PropTypes.number).isRequired,
+    position: PropTypes.arrayOf(PropTypes.number),
     index: PropTypes.number.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired
@@ -38,6 +38,8 @@ class ParkingMarker extends React.Component {
   render() {
 
     const { position, index, handleDragEnd, title } = this.props
+
+    if (!position) return null
 
     const icon = L.icon({
       iconUrl: ParkingIcon,
