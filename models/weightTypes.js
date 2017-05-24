@@ -41,8 +41,8 @@ export const weightColors = {
 }
 
 export const noValue = {
-  "nb": "Ingen overgang",
-  "en": "No interchange"
+  "nb": "Overgang ikke satt",
+  "en": "No interchange set"
 }
 
 export default weightTypes
