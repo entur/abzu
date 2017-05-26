@@ -26,7 +26,7 @@ export default {
       { "privateCode": {
           value: 512
       },
-        "signContentType": "TransportModePoint"
+        "signContentType": "transportMode"
       },
       {
         "privateCode": 404,

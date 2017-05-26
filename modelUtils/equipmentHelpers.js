@@ -8,22 +8,22 @@ EquipmentHelpers.getTicketMachineState = entity => {
 }
 
 EquipmentHelpers.getShelterEquipmentState = entity => {
-  const numberOfSeats = getIn(entity, ['placeEquipments', 'shelterEquipment', 'seats'], 0)
-  return numberOfSeats > 0
+  const equipmentState = getIn(entity, ['placeEquipments', 'shelterEquipment'], null)
+  return equipmentState !== null
 }
 
 EquipmentHelpers.getSanitaryEquipmentState = entity => {
-  const numberOfToilets = getIn(entity, ['placeEquipments', 'sanitaryEquipment', 'numberOfToilets'], 0)
-  return numberOfToilets > 0
+  const sanitaryState = getIn(entity, ['placeEquipments', 'sanitaryEquipment'], null)
+  return sanitaryState !== null
 }
 
 EquipmentHelpers.get512SignEquipment = entity => {
-  const generalSign = getIn(entity, ['placeEquipments', 'generalSign', ], null)
+  const generalSign = getIn(entity, ['placeEquipments', 'generalSign'], null)
 
   if (generalSign) {
     for (let i = 0; i < generalSign.length; i++) {
       let sign = generalSign[i]
-      if (sign.privateCode && sign.privateCode.value == "512" && sign.signContentType === "TransportModePoint") {
+      if (sign.privateCode && sign.privateCode.value == "512" && sign.signContentType === "transportMode") {
         return true
       }
     }
@@ -33,20 +33,20 @@ EquipmentHelpers.get512SignEquipment = entity => {
 
 EquipmentHelpers.update512SignEquipment = (entity, payLoad) => {
   // this maps to signContentType, privateCode = 512 && signContentType = 'TransportModePoint'
-  const props = { privateCode: { value: 512 }, signContentType: 'TransportModePoint' }
+  const props = { privateCode: { value: 512 }, signContentType: 'transportMode' }
   const copyOfEntity = JSON.parse(JSON.stringify(entity))
 
   return updateEquipmentArray(copyOfEntity, payLoad, types.generalSign, props)
 }
 
 EquipmentHelpers.getWaitingRoomState = entity => {
-  const numberOfSeats = getIn(entity, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0)
-  return numberOfSeats > 0
+  const waitingRoomState = getIn(entity, ['placeEquipments', 'waitingRoomEquipment'], null)
+  return waitingRoomState !== null
 }
 
 EquipmentHelpers.getCycleStorageEquipment = entity => {
-  const numberOfSpaces = getIn(entity, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
-  return numberOfSpaces > 0
+  const cycleStorageState = getIn(entity, ['placeEquipments', 'cycleStorageEquipment'], null)
+  return cycleStorageState !== null
 }
 
 EquipmentHelpers.updateTicketMachineState = (stopPlace, payLoad) => {
