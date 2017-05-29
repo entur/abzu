@@ -37,6 +37,12 @@ class TariffZonesDialog extends React.Component {
       zIndex: 999
     }
 
+    const itemStyle = {
+      flexBasis: '100%',
+      textAlign: 'left',
+      marginRight: 5
+    }
+
     return (
       <div style={style}>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5}}>
@@ -45,18 +51,17 @@ class TariffZonesDialog extends React.Component {
             <MdClose/>
           </IconButton>
         </div>
-          <div style={{width: '100%', fontSize: 14, overflowY: 'overlay', maxHeight: 400, marginLeft: 15, marginBottom: 5}}>
+          <div style={{width: '100%', fontSize: 14, maxHeight: 400, marginLeft: 15, marginBottom: 5}}>
             { !tariffZones.length
               ? <div style={{width: '100%', textAlign: 'center', marginBottom: 10, fontSize: 14}}> { translations.noTariffZones } </div>
               : (
-                <div>
-                  <div style={{fontWeight: 600}}>{translations.value}</div>
-                  { tariffZones.map( (zone, i) => {
-                    return (
-                      <div key={"zone-" + i}>{zone.name}</div>
-                    )
-                  })
-                  }
+                <div style={{width: '100%', fontSize: 12, overflowY: 'overlay', maxHeight: 400, marginLeft: 5}}>
+                  { tariffZones.map( (tz,i) => (
+                    <div key={"tariffZone-" + i} style={{display: 'flex', alignItems: 'center', padding: 10, justifyContent: 'space-between', lineHeight: 2}}>
+                      <div style={itemStyle}>{tz.id}</div>
+                      <div style={itemStyle}>{tz.name}</div>
+                    </div>
+                  ))}
                 </div>
               )
             }
@@ -65,5 +70,6 @@ class TariffZonesDialog extends React.Component {
     )
   }
 }
+
 
 export default connect(null)(TariffZonesDialog)

@@ -220,7 +220,8 @@ helpers.mapStopToClientStop = (stop, isActive, parking) => {
       clientStop.tariffZones = stop.tariffZones.map( zone => {
         if (zone.name && zone.name.value) {
           return ({
-            name: zone.name.value
+            name: zone.name.value,
+            id: zone.id
           })
         }
       })

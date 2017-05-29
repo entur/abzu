@@ -96,6 +96,7 @@ Fragments.stopPlace = {
             name {
                 value
             }
+            id 
         }
         topographicPlace {
             name {
