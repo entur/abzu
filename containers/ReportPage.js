@@ -11,6 +11,8 @@ import { topopGraphicalPlacesReportQuery, findStopForReport } from '../graphql/Q
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
+import MdSpinner from '../static/icons/spinner'
+import MdSearch from 'material-ui/svg-icons/action/search'
 
 import { injectIntl } from 'react-intl'
 
@@ -24,7 +26,8 @@ class ReportPage extends React.Component {
       quayMax: 10,
       topoiChips: [],
       activePageIndex: 0,
-      searchQuery: ''
+      searchQuery: '',
+      isLoading: false
     }
   }
 
@@ -37,6 +40,10 @@ class ReportPage extends React.Component {
   handleSearch() {
     const { searchQuery, topoiChips, stopTypeFilter } = this.state
 
+    this.setState({
+      isLoading: true
+    })
+
     this.props.client.query({
       query: findStopForReport,
       fetchPolicy: 'network-only',
@@ -48,6 +55,14 @@ class ReportPage extends React.Component {
         countyReference: topoiChips
           .filter( topos => topos.type === "county").map(topos => topos.id)
       }
+    }).then( response => {
+      this.setState({
+        isLoading: false
+      })
+    }).catch( err => {
+      this.setState({
+        isLoading: false
+      })
     })
   }
 
@@ -89,7 +104,7 @@ class ReportPage extends React.Component {
 
   render() {
 
-    const { stopTypeFilter, quayMin, quayMax, topoiChips, activePageIndex } = this.state
+    const { stopTypeFilter, quayMin, quayMax, topoiChips, activePageIndex, isLoading } = this.state
     const { intl, topographicalPlaces, results } = this.props
     const { locale, formatMessage } = intl
 
@@ -155,15 +170,18 @@ class ReportPage extends React.Component {
                 <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>to</div>
                 <input value={quayMax}  min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
               </div>
-              <div style={{marginLeft: 10}}>
+              <div style={{marginLeft: 10, display: 'flex', alignItems: 'center'}}>
                 <TextField
                   floatingLabelText={"Optional search string"}
                   value={this.state.searchQuery}
                   onChange={(e, v) => this.setState({searchQuery: v})}
                 />
                 <RaisedButton
-                  style={{marginLeft: 5}}
-                  primary={true}
+                  style={{marginTop: 10, marginLeft: 5}}
+                  disabled={isLoading}
+                  icon={isLoading ?
+                    <MdSpinner style={{marginTop: -5, marginLeft: -5}}/>
+                    : <MdSearch/>}
                   label={"Search"}
                   onClick={ () => this.handleSearch() }
                 />
