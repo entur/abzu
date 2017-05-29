@@ -43,6 +43,16 @@ export const getStateByOperation = (state, action) => {
         searchResults: formatHelpers.mapSearchResultatToClientStops(action.result.data.stopPlace),
       })
 
+    case 'mutateParking':
+
+      let stopPlaceWithParking = Object.assign({}, state.current, {
+        parking: formatHelpers.mapParkingToClient(action.result.data.mutateParking)
+      })
+
+      return Object.assign({}, state, {
+        current: stopPlaceWithParking
+      })
+
     case 'neighbourStopPlaceQuays':
       return Object.assign({}, state, {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(state.neighbourStopQuays, action.result.data.stopPlace)

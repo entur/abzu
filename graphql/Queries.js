@@ -54,7 +54,7 @@ export const stopPlaceAndPathLink = gql`
             geometry {
                 coordinates
             }
-            totalCapacity  
+            totalCapacity
         },
         versions: 
             stopPlace(id: $id, allVersions: true) {

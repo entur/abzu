@@ -27,13 +27,15 @@ helpers.mapParkingToClient = parkingObjs => {
   return parkingObjs.map( parking => {
 
     let clientParking = {
-      name: getIn(parking, ['name', 'value'], '')
+      name: getIn(parking, ['name', 'value'], ''),
+      totalCapacity: parking.totalCapacity
     }
     let coordinates = getIn(parking, ['geometry', 'coordinates'], null)
 
     if (coordinates && coordinates.length) {
       clientParking.location = [ coordinates[0][1], coordinates[0][0] ]
     }
+
     return clientParking
   })
 }
