@@ -48,13 +48,7 @@ export const stopPlaceAndPathLink = gql`
             ...VerboseStopPlace
         }
         parking: parking(stopPlaceId: $id) {
-            name {
-                value
-            }
-            geometry {
-                coordinates
-            }
-            totalCapacity
+            ...VerboseParking
         },
         versions: 
             stopPlace(id: $id, allVersions: true) {
@@ -73,6 +67,7 @@ export const stopPlaceAndPathLink = gql`
         },
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
+    ${Fragments.parking.verbose},
 `
 
 export const findStop = gql`

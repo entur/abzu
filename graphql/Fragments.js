@@ -206,6 +206,7 @@ Fragments.parking = {
           geometry {
               coordinates
           }
+          parkingVehicleTypes
       }
     `
 }

@@ -80,5 +80,10 @@ const stopTypes = {
     ]
   }
 
+  export const unknownStopPlaceType = {
+    "nb": "Modalitet ikke satt",
+    "en": "Modality not defined"
+  }
+
 
   export default stopTypes

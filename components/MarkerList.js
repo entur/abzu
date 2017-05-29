@@ -176,17 +176,17 @@ class MarkerList extends React.Component {
 
           if (stop.parking) {
             stop.parking.forEach( (parking, index) => {
-              popupMarkers.push(
-                <ParkingMarker
-                  position={parking.location}
-                  type="parking"
-                  index={index}
-                  key={'parking-' + index}
-                  title={formatMessage({id: 'parking'})}
-                  handleDragEnd={() => {  } }/>
-              )
+                popupMarkers.push(
+                  <ParkingMarker
+                    position={parking.location}
+                    type="parking"
+                    parkingVehicleTypes={parking.parkingVehicleTypes}
+                    index={index}
+                    key={'parking-' + index}
+                    title={formatMessage({id: 'parking'})}
+                    handleDragEnd={() => {  } }/>
+                )
             })
-
           }
 
           if (stop.quays) {

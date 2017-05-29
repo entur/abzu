@@ -11,7 +11,7 @@ import TicketMachine from '../static/icons/facilities/TicketMachine'
 import BusShelter from '../static/icons/facilities/BusShelter'
 import debounce from 'lodash.debounce'
 import Checkbox from 'material-ui/Checkbox'
-import stopTypes from '../models/stopTypes'
+import stopTypes, { unknownStopPlaceType } from '../models/stopTypes'
 import MdWC from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
 import BikeParking from '../static/icons/facilities/BikeParking'
@@ -174,6 +174,13 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
+  getStopTypeTranslation(locale, stopPlaceType) {
+    let translations = stopTypes[locale].filter( type => type.value === stopPlaceType)
+    if (translations && translations.length) return translations[0].name
+
+    return unknownStopPlaceType[locale]
+  }
+
   render() {
 
     const fixedHeader = {
@@ -196,7 +203,7 @@ class StopPlaceDetails extends React.Component {
 
     const hasAltNames = !!(stopPlace.alternativeNames && stopPlace.alternativeNames.length)
 
-    const stopTypeTranslation = stopTypes[locale].filter( type => type.value === stopPlace.stopPlaceType)[0].name
+    const stopTypeTranslation = this.getStopTypeTranslation(locale, stopPlace.stopPlaceType)
     const weightingStateTranslation = this.getNameForWeightingState(stopPlace, locale)
 
     return (
@@ -256,7 +263,7 @@ class StopPlaceDetails extends React.Component {
               style={{borderBottom: '1px dotted', marginTop: 16, marginLeft: 8, cursor: 'pointer'}}
             >
               <span
-                style={{fontSize: 18, marginTop: -5, color: stopPlace.tariffZones.length ? enturPrimary : '#000'}}
+                style={{fontSize: 18, marginTop: -5, color: (stopPlace.tariffZones || []) .length ? enturPrimary : '#000'}}
               >Tz
               </span>
             </div>

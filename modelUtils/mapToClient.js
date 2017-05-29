@@ -28,7 +28,8 @@ helpers.mapParkingToClient = parkingObjs => {
 
     let clientParking = {
       name: getIn(parking, ['name', 'value'], ''),
-      totalCapacity: parking.totalCapacity
+      totalCapacity: parking.totalCapacity,
+      parkingVehicleTypes: parking.parkingVehicleTypes
     }
     let coordinates = getIn(parking, ['geometry', 'coordinates'], null)
 
@@ -37,7 +38,8 @@ helpers.mapParkingToClient = parkingObjs => {
     }
 
     return clientParking
-  })
+    // TODO : This is a temporary hack to filter non-car parking
+  }).filter( parking => parking.parkingVehicleTypes.indexOf('car') > -1)
 }
 
 helpers.mapPathLinkToClient = pathLinks => {

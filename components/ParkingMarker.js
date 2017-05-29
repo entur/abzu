@@ -37,7 +37,7 @@ class ParkingMarker extends React.Component {
 
   render() {
 
-    const { position, index, handleDragEnd, title } = this.props
+    const { position, index, handleDragEnd, title, parkingVehicleTypes } = this.props
 
     if (!position) return null
 
