@@ -35,7 +35,6 @@ const userReducer = (state = initialState, action) => {
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         path: action.payLoad,
-        missingCoordsMap: {},
         showEditQuayAdditional: false,
         showEditStopAdditional: false,
         isCreatingNewStop: false

@@ -16,7 +16,8 @@ class CoordinatesDialog extends React.Component {
     open: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired,
     coordinates: PropTypes.string,
-    handleConfirm: PropTypes.func.isRequired
+    handleConfirm: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired
   }
 
   handleInputChange(event, newValue) {

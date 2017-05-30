@@ -119,8 +119,12 @@ const stopPlaceReducer = (state = {}, action) => {
 
       case types.SET_MISSING_COORDINATES:
         return Object.assign({}, state, {
-          centerPosition: getProperCenterLocation(action.payLoad.location),
-          zoom: getProperZoomLevel(action.payLoad.location)
+          centerPosition: getProperCenterLocation(action.payLoad.position),
+          zoom: getProperZoomLevel(action.payLoad.position),
+          userDefinedCoordinates: action.payLoad,
+          activeSearchResult: Object.assign({}, state.activeSearchResult, {
+            location: action.payLoad.position
+          })
         })
 
       case types.ADDED_JUNCTION_ELEMENT:

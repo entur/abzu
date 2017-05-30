@@ -196,7 +196,7 @@ const extractAlternativeNames = alternativeNames => {
   return alternativeNames.filter( alt => ( alt.name && alt.name.value && alt.nameType ))
 }
 
-helpers.mapStopToClientStop = (stop, isActive, parking) => {
+helpers.mapStopToClientStop = (stop, isActive, parking, userDefinedCoordinates = {}) => {
 
   try {
 
@@ -246,6 +246,10 @@ helpers.mapStopToClientStop = (stop, isActive, parking) => {
       let coordinates = stop.geometry.coordinates[0].slice()
       // Leaflet uses latLng, GeoJSON [long,lat]
       clientStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+    } else {
+      if (stop.id === userDefinedCoordinates.stopPlaceId) {
+        clientStop.location = userDefinedCoordinates.position.slice()
+      }
     }
 
     if (stop.importedId) {

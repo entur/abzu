@@ -124,7 +124,7 @@ UserActions.setSearchText = text => dispatch => {
 UserActions.setMissingCoordinates = (position, stopPlaceId) => dispatch => {
   dispatch(sendData(types.SET_MISSING_COORDINATES, {
     stopPlaceId: stopPlaceId,
-    position: [position.lat, position.lng]
+    position: position
   }))
 }
 

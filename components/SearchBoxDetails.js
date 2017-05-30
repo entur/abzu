@@ -61,7 +61,7 @@ const SearchBoxDetails = ({text, result, handleEdit, handleChangeCoordinates, us
         : null}
       {
         userSuppliedCoordinates && result.isMissingLocation
-          ? <div className="warning_message">
+          ? <div className="warning_message" style={{marginTop: 10}}>
             <FormattedMessage className='message_warning' id="you_are_using_temporary_coordinates"/>
             <div style={{marginTop: 5, marginBottom: 10}}>
                 <span

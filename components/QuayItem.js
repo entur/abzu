@@ -22,6 +22,7 @@ import StepFreePopover from './StepFreePopover'
 import { getIn } from '../utils/'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import Sign512 from '../static/icons/512Sign'
+import CoordinatesDialog from './CoordinatesDialog'
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -37,7 +38,8 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      additionalExpanded: false
+      additionalExpanded: false,
+      coordinatesDialogOpen: false
     }
   }
 
@@ -91,11 +93,21 @@ class QuayItem extends React.Component {
     }
   }
 
+  handleChangeCoordinates(position) {
+    const { dispatch, index, handleLocateOnMap } = this.props
+    this.setState({
+      coordinatesDialogOpen: false
+    })
+    dispatch(StopPlaceActions.changeElementPosition(index, 'quay', position))
+    handleLocateOnMap(position)
+  }
+
+
   render() {
 
     const { quay, publicCode, expanded, index, handleToggleCollapse, intl, stopPlaceType, disabled } = this.props
     const { formatMessage, locale } = intl
-    const { additionalExpanded } = this.state
+    const { additionalExpanded, coordinatesDialogOpen } = this.state
 
     const wheelchairAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'wheelchairAccess'], 'UNKNOWN')
     const stepFreeAccess = getIn(quay, ['accessibilityAssessment', 'limitations', 'stepFreeAccess'], 'UNKNOWN')
@@ -159,9 +171,12 @@ class QuayItem extends React.Component {
           <div style={{float: "flex", alignItems: 'center', width: "95%", marginTop: 10, padding: 5}}>
             {  quay.location
                ? <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(quay.location)}/>
-              :  <div className="tooltip" style={{display: 'inline-block'}}>
-                   <span className="tooltipText"> { translations.quayMissingLocation }</span>
-                   <MdError style={{ ...locationStyle, color: '#bb271c'}}/>
+              :  <div className="tooltip" style={{display: 'inline-block'}} title={translations.quayMissingLocation}>
+                   <span className="tooltipText"> </span>
+                   <MdError
+                     style={{ ...locationStyle, color: '#bb271c'}}
+                     onClick={() => { this.setState({coordinatesDialogOpen: true}) }}
+                   />
                  </div>
             }
             <div style={{display: 'inline-block', verticalAlign: 'middle'}} onClick={() => handleToggleCollapse(index, 'quay')}>
@@ -264,6 +279,12 @@ class QuayItem extends React.Component {
         </div>
         }
         <Divider inset={true} style={{marginTop: 2}}/>
+        <CoordinatesDialog
+          open={coordinatesDialogOpen}
+          intl={intl}
+          handleConfirm={this.handleChangeCoordinates.bind(this)}
+          handleClose={() => { this.setState({coordinatesDialogOpen: false})}}
+        />
       </div>
     )
   }

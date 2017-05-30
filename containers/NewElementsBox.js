@@ -93,7 +93,7 @@ class NewElementsBox extends React.Component {
             { shouldShowNewStop
               ?
               <div style={elementStyle}>
-                <img ref="stop_place" id="stop_place" draggable style={{height: 25, width: 'auto', marginLeft: newStopText.length}} src={newStopIcon}/>
+                <img ref="stop_place" id="stop_place" data-type="stop_place" draggable style={{height: 25, width: 'auto', marginLeft: newStopText.length}} src={newStopIcon}/>
                 <div style={titleStyle}>{newStopText}</div>
               </div>
               : null
