@@ -19,7 +19,7 @@ module.exports = new Promise(function(resolve, reject){
     tiamatBaseUrl: {
       doc: "Base URL for for tiamat graphql endpoint",
       format: "url",
-      default: "https://www-test.rutebanken.org/api/tiamat/1.0/graphql",
+      default: "https://www-test.entur.org/api/tiamat/1.0/graphql",
       env: "TIAMAT_BASE_URL"
     },
     endpointBase: {
@@ -31,13 +31,13 @@ module.exports = new Promise(function(resolve, reject){
     OSMUrl: {
       doc: "URL for OSM map",
       format: String,
-      default: "https://www-test.rutebanken.org/api/map/1.0/{z}/{x}/{y}.png",
+      default: "https://www-test.entur.org/api/map/1.0/{z}/{x}/{y}.png",
       env: "OSM_URL"
     },
     authServerUrl: {
       doc: "URL to keycloak auth server",
       format: String,
-      default: "https://www-test.rutebanken.org/auth/",
+      default: "https://www-test.entur.org/auth/",
       env: "AUTH_SERVER_URL"
     }
   });
