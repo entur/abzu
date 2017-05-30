@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import React from 'react'
 import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
 import mapReducer from '../reducers/mapReducer'
 import stopPlaceReducer from '../reducers/stopPlaceReducer'
 import userReducer from '../reducers/userReducer'
@@ -11,8 +10,6 @@ import { routerReducer } from 'react-router-redux'
 import ApolloClient,  { createNetworkInterface } from 'apollo-client'
 
 export default function configureStore(kc) {
-
-  const loggerMiddleware = createLogger()
 
   var enchancer = {}
 
@@ -38,8 +35,13 @@ export default function configureStore(kc) {
 
     window.ReactPerf = require('react-addons-perf')
 
-    enchancer = compose(
-      applyMiddleware(thunkMiddleware,loggerMiddleware, client.middleware()),
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+    enchancer = composeEnhancers(
+      applyMiddleware(
+        thunkMiddleware,
+        client.middleware(),
+      )
     )
 
   } else {
