@@ -49,7 +49,7 @@ class ParkingAndRideMarker extends React.Component {
 
   render() {
 
-    const { position, index, handleDragEnd, translations, name, totalCapacity } = this.props
+    const { position, index, handleDragEnd, translations, name, totalCapacity, draggable } = this.props
 
     if (!position) return null
 
@@ -62,7 +62,7 @@ class ParkingAndRideMarker extends React.Component {
 
     return (
       <Marker
-        draggable={true}
+        draggable={draggable}
         position={position}
         icon={icon}
         key={"parking-marker" +index}

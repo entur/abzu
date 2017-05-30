@@ -186,6 +186,8 @@ class MarkerList extends React.Component {
                       position={parking.location}
                       index={index}
                       name={parking.name || ''}
+                      draggable={!disabled}
+                      type="parking"
                       key={'parking-' + index}
                       totalCapacity={parking.totalCapacity}
                       translations={{
@@ -202,6 +204,8 @@ class MarkerList extends React.Component {
                       name={parking.name || ''}
                       totalCapacity={parking.totalCapacity}
                       key={'parking-' + index}
+                      draggable={!disabled}
+                      type="parking"
                       translations={{
                         title: formatMessage({id: 'parking_bike'}),
                         totalCapacity: formatMessage({id: 'total_capacity'})

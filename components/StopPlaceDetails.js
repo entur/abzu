@@ -14,7 +14,6 @@ import Checkbox from 'material-ui/Checkbox'
 import stopTypes, { unknownStopPlaceType } from '../models/stopTypes'
 import MdWC from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
-import BikeParking from '../static/icons/facilities/BikeParking'
 import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
@@ -26,7 +25,6 @@ import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
 import WeightingPopover from './WeightingPopover'
 import weightTypes, { weightColors, noValue } from '../models/weightTypes'
 import Sign512 from '../static/icons/512Sign'
-
 
 class StopPlaceDetails extends React.Component {
 
@@ -154,12 +152,6 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
-  handleCycleStorageChange(value) {
-    if (!this.props.disabled) {
-      this.props.dispatch(EquipmentActions.updateCycleStorageState(value, 'stopPlace', this.props.stopPlace.id))
-    }
-  }
-
   handleWeightChange(value) {
     const { dispatch } = this.props
     dispatch(StopPlaceActions.changeWeightingForStop(value))
@@ -196,7 +188,6 @@ class StopPlaceDetails extends React.Component {
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace)
     const busShelter = equipmentHelpers.getShelterEquipmentState(stopPlace)
-    const bikeParking = equipmentHelpers.getCycleStorageEquipment(stopPlace)
     const waitingRoom = equipmentHelpers.getWaitingRoomState(stopPlace)
     const WC = equipmentHelpers.getSanitaryEquipmentState(stopPlace)
     const sign512 = equipmentHelpers.get512SignEquipment(stopPlace)
@@ -229,6 +220,7 @@ class StopPlaceDetails extends React.Component {
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
             animation={PopoverAnimationVertical}
+            style={{overflowY: 'none'}}
             animated={true}
           >
             { stopTypes[locale].map( (type, index) =>
@@ -335,13 +327,6 @@ class StopPlaceDetails extends React.Component {
               style={{width: 'auto'}}
               checked={waitingRoom}
               onCheck={(e,v) => { this.handleWaitingRoomChange(v) } }
-            />
-            <Checkbox
-              checkedIcon={<BikeParking />}
-              uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-              style={{width: 'auto'}}
-              checked={bikeParking}
-              onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
             />
             <Checkbox
               checkedIcon={

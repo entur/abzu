@@ -127,7 +127,8 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     let parking = {
       totalCapacity: Number(source.totalCapacity) || 0,
-      parentSiteRef: parentRef
+      parentSiteRef: parentRef,
+      parkingVehicleTypes: source.parkingVehicleTypes
     }
 
     if (source.id) {

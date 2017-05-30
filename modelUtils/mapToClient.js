@@ -27,6 +27,7 @@ helpers.mapParkingToClient = parkingObjs => {
   return parkingObjs.map( parking => {
 
     let clientParking = {
+      id: parking.id,
       name: getIn(parking, ['name', 'value'], ''),
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes

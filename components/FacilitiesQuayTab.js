@@ -7,7 +7,6 @@ import Divider from 'material-ui/Divider'
 import ToolTipIcon from './ToolTipIcon'
 import MdWc from 'material-ui/svg-icons/notification/wc'
 import WaitingRoom from '../static/icons/facilities/WaitingRoom'
-import BikeParking from '../static/icons/facilities/BikeParking'
 import TextField from 'material-ui/TextField'
 import MdMore from 'material-ui/svg-icons/navigation/expand-more'
 import MdLess from 'material-ui/svg-icons/navigation/expand-less'
@@ -102,23 +101,6 @@ class FacilitiesQuayTab extends React.Component {
     this.handleWaitingRoomChange(newValuesSet)
   }
 
-  handleValuesForCycleStorage(newValue) {
-    const { quay } = this.props
-    const oldValuesSet = {
-      numberOfSpaces: getIn(quay, ['placeEquipments', 'CycleStorageEquipment', 'numberOfSpaces'], 0),
-      cycleStorageType: getIn(quay, ['placeEquipments', 'CycleStorageEquipment', 'cycleStorageType'], 'racks'),
-    }
-    const newValuesSet = Object.assign({}, oldValuesSet, newValue)
-    this.handleCycleStorageChange(newValuesSet)
-  }
-
-  handleCycleStorageChange(value) {
-    const { index, disabled, dispatch } = this.props
-    if (!disabled) {
-      dispatch(EquipmentActions.updateCycleStorageState(value, 'quay', index))
-    }
-  }
-
   handle512Sign(value) {
     if (!this.props.disabled) {
       this.props.dispatch(EquipmentActions.update512SignState(value, 'quay', this.props.index))
@@ -133,7 +115,6 @@ class FacilitiesQuayTab extends React.Component {
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay)
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
-    const bikeParking = equipmentHelpers.getCycleStorageEquipment(quay)
     const waitingRoom = equipmentHelpers.getWaitingRoomState(quay)
     const WC = equipmentHelpers.getSanitaryEquipmentState(quay)
 
@@ -144,7 +125,6 @@ class FacilitiesQuayTab extends React.Component {
     const waitingRoomSeats = getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'seats'], 0)
     const waitingRoomHeated = getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'heated'], false)
     const waitingRoomStepFree = getIn(quay, ['placeEquipments', 'waitingRoomEquipment', 'stepFree'], false)
-    const bikeParkingSpaces = getIn(quay, ['placeEquipments', 'cycleStorageEquipment', 'numberOfSpaces'], 0)
     const sign512 = equipmentHelpers.get512SignEquipment(quay)
 
     return (
@@ -360,52 +340,6 @@ class FacilitiesQuayTab extends React.Component {
             }
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
-        </div>
-        <div style={{marginTop: 10}}>
-          <div style={{display: 'flex',justifyContent: 'space-between'}}>
-            <Checkbox
-              checked={bikeParking}
-              checkedIcon={<BikeParking />}
-              uncheckedIcon={<BikeParking style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-              label={ bikeParking ? formatMessage({id: 'bike_parking'}) : formatMessage({id: 'bike_parking_no'}) }
-              labelStyle={{fontSize: '0.8em'}}
-              style={{width: '80%'}}
-              onCheck={(e,v) => { this.handleCycleStorageChange(v) } }
-            />
-            <ToolTipIcon title={formatMessage({id: 'bike_parking_hint'})}/>
-          </div>
-          { expandedIndex === 4
-            ?
-            <div>
-              <TextField
-                hintText={formatMessage({id: 'number_of_spaces'})}
-                type="number"
-                value={bikeParkingSpaces}
-                disabled={disabled}
-                onChange={(event, value) => { this.handleValuesForCycleStorage({numberOfSpaces: value})}}
-                min="0"
-                fullWidth={true}
-                floatingLabelText={formatMessage({id: 'number_of_spaces'})}
-              />
-            </div>
-            : null
-          }
-          <div style={{textAlign: 'center', marginBottom: 5}}>
-            { expandedIndex === 4
-              ? <FlatButton
-                style={{height: 20, minWidth: 20, width: 20}}
-                icon={<MdLess style={{height: 16, width: 16}}/>}
-                onClick={() => this.handleCollapseIndex(4)}
-              />
-              :
-              <FlatButton
-                style={{height: 20, minWidth: 20, width: 20}}
-                icon={<MdMore style={{height: 16, width: 16}}/>}
-                onClick={() => this.handleExpandIndex(4)}
-              />
-            }
-          </div>
-          <Divider style={{marginTop: 10, marginBottom: 0}}/>
         </div>
       </div>
     )

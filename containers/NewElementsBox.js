@@ -111,20 +111,16 @@ class NewElementsBox extends React.Component {
               <div style={titleStyle}>{entranceText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="parkAndRide" data-type="parkAndRide" id="drag4" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={parkAndRideIcon}/>
+              <img ref="parkAndRide" data-type="" id="drag4" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={parkAndRideIcon}/>
               <div style={titleStyle}>{parkAndRideText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="bikeParking" data-type="bikeParking" id="drag5" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={bikeParkingIcon}/>
+              <img ref="bikeParking" data-type="parkAndRide" id="drag5" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={bikeParkingIcon}/>
               <div style={titleStyle}>{bikeParkingText}</div>
             </div>
           </div>
       </div>
     )
-  }
-
-  componentWillUnmount() {
-    // TODO: remove event listeners
   }
 
   componentDidMount() {
