@@ -3,14 +3,18 @@ import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import ParkingIcon from '../static/icons/parking-icon.png'
 import { connect } from 'react-redux'
+import { enturPrimary } from '../config/enturTheme'
 
-class ParkingMarker extends React.Component {
+class ParkingAndRideMarker extends React.Component {
 
   static propTypes = {
     position: PropTypes.arrayOf(PropTypes.number),
     index: PropTypes.number.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
+    translations: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      totalCapacity: PropTypes.string.isRequired
+    }).isRequired
   }
 
   componentDidUpdate() {
@@ -32,12 +36,20 @@ class ParkingMarker extends React.Component {
       return true
     }
 
+    if (this.props.name !== nextProps.name) {
+      return true
+    }
+
+    if (this.props.totalCapacity !== nextProps.totalCapacity) {
+      return true
+    }
+
     return false
   }
 
   render() {
 
-    const { position, index, handleDragEnd, title, parkingVehicleTypes } = this.props
+    const { position, index, handleDragEnd, translations, name, totalCapacity } = this.props
 
     if (!position) return null
 
@@ -59,8 +71,11 @@ class ParkingMarker extends React.Component {
       >
         <Popup>
           <div>
-            <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em'}}>P+R</div>
-            <div className="parking-marker-title" style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>{title}</div>
+            <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em', color: enturPrimary}}>{ name }</div>
+            <div style={{marginTop: -2, textAlign: 'center', marginBottom: 5, fontWeight: 600, fontSize: '1em'}}>{ translations.title } </div>
+            <div style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>
+              {translations.totalCapacity}: { totalCapacity || 0 }
+            </div>
           </div>
         </Popup>
       </Marker>
@@ -72,5 +87,5 @@ const mapStateToProps = state => ({
   focusedElement: state.mapUtils.focusedElement
 })
 
-export default connect(mapStateToProps)(ParkingMarker)
+export default connect(mapStateToProps)(ParkingAndRideMarker)
 

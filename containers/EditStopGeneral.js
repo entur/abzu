@@ -195,7 +195,9 @@ class EditStopGeneral extends React.Component {
       entrances: formatMessage({id: 'entrances'}),
       quayItemName: this.getQuayItemName(locale, stopPlace),
       capacity: formatMessage({id: 'total_capacity'}),
-      parking: formatMessage({id: 'parking'}),
+      parkAndRide: formatMessage({id: 'parking'}),
+      bikeParking: formatMessage({id: 'bike_parking'}),
+      unknown: formatMessage({id: 'uknown_parking_type'}),
       elements: formatMessage({id: 'elements'}),
       versions: formatMessage({id: 'versions'}),
       validBetween: formatMessage({id: 'valid_between'}),
@@ -317,7 +319,7 @@ class EditStopGeneral extends React.Component {
             >
               <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
               <Tab style={tabStyle} label={`${formatMessage({id: 'navigation'})} (${stopPlace.pathJunctions.length + stopPlace.entrances.length})`} value={1} />
-              <Tab style={tabStyle} label={`${formatMessage({id: 'parking'})} (${stopPlace.parking.length})`} value={2} />
+              <Tab style={tabStyle} label={`${formatMessage({id: 'parking_general'})} (${stopPlace.parking.length})`} value={2} />
             </Tabs>
             <EditStopBoxTabs
               disabled={disabled}

@@ -28,7 +28,7 @@ class ParkingItem extends React.Component {
 
   render() {
 
-    const { parking, translations, expanded, handleToggleCollapse, index, disabled } = this.props
+    const { parking, translations, expanded, handleToggleCollapse, index, disabled, parkingType } = this.props
 
     const locationStyle = {
       marginRight: 5,
@@ -43,7 +43,7 @@ class ParkingItem extends React.Component {
           <div style={{float: "left", width: "95%", marginTop: 20, padding: 5}}>
             <MapsMyLocation style={locationStyle} onClick={() => this.props.handleLocateOnMap(parking.location)}/>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'parking')}>
-              { translations.parking } { (index+1) }
+              { translations[parkingType] }
             </div>
             <div style={{display: 'inline-block'}} onClick={() => handleToggleCollapse(index, 'parking')}>
             </div>

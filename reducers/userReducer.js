@@ -120,7 +120,7 @@ const userReducer = (state = initialState, action) => {
         activeElementTabIndex = 0
       } else if (action.payLoad.type === 'pathJunction' || action.payLoad.type === 'entrance') {
         activeElementTabIndex = 1
-      } else if (action.payLoad.type === 'parking') {
+      } else if (action.payLoad.type === 'parkAndRide' || action.payLoad.type === 'bikeParking') {
         activeElementTabIndex = 2
       } else {
         console.warn('type is not supported', action.payLoad.type)

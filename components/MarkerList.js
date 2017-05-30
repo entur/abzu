@@ -7,10 +7,10 @@ import { injectIntl } from 'react-intl'
 import stopTypes from '../models/stopTypes'
 import JunctionMarker from './JunctionMarker'
 import NeighbourMarker from './NeighbourMarker'
-import ParkingMarker from './ParkingMarker'
+import ParkAndRideMarker from './ParkAndRideMarker'
+import CycleParkingMarker from './CycleParkingMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
-import { browserHistory } from 'react-router'
 import { withApollo } from 'react-apollo'
 import { stopPlaceAndPathLink, neighbourStopPlaceQuays } from '../graphql/Queries'
 import { getIn } from '../utils/'
@@ -176,16 +176,40 @@ class MarkerList extends React.Component {
 
           if (stop.parking) {
             stop.parking.forEach( (parking, index) => {
-                popupMarkers.push(
-                  <ParkingMarker
-                    position={parking.location}
-                    type="parking"
-                    parkingVehicleTypes={parking.parkingVehicleTypes}
-                    index={index}
-                    key={'parking-' + index}
-                    title={formatMessage({id: 'parking'})}
-                    handleDragEnd={() => {  } }/>
-                )
+
+                let isParkAndRide = (parking.parkingVehicleTypes && parking.parkingVehicleTypes.indexOf('car') > -1)
+                let isCycleParking = (parking.parkingVehicleTypes && parking.parkingVehicleTypes.indexOf('pedalCycle') > -1)
+
+                if (isParkAndRide) {
+                  popupMarkers.push(
+                    <ParkAndRideMarker
+                      position={parking.location}
+                      index={index}
+                      name={parking.name || ''}
+                      key={'parking-' + index}
+                      totalCapacity={parking.totalCapacity}
+                      translations={{
+                        title: formatMessage({id: 'parking'}),
+                        totalCapacity: formatMessage({id: 'total_capacity'})
+                      }}
+                      handleDragEnd={this.handleElementDragEnd.bind(this)}/>
+                  )
+                } else if (isCycleParking) {
+                  popupMarkers.push(
+                    <CycleParkingMarker
+                      position={parking.location}
+                      index={index}
+                      name={parking.name || ''}
+                      totalCapacity={parking.totalCapacity}
+                      key={'parking-' + index}
+                      translations={{
+                        title: formatMessage({id: 'parking_bike'}),
+                        totalCapacity: formatMessage({id: 'total_capacity'})
+                      }}
+                      handleDragEnd={this.handleElementDragEnd.bind(this)}/>
+                  )
+                }
+
             })
           }
 

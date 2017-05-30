@@ -8,7 +8,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
  */
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'inline-eval-cheap-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './index'

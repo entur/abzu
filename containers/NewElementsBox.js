@@ -9,7 +9,8 @@ const entranceIcon = require("../static/icons/entrance-icon-2x.png")
 const junctionIcon = require("../static/icons/junction-icon-2x.png")
 const quayIcon = require("../static/icons/quay-marker.png")
 const newStopIcon = require("../static/icons/new-stop-icon-2x.png")
-const parkingIcon = require("../static/icons/parking-icon.png")
+const parkAndRideIcon = require("../static/icons/parking-icon.png")
+const bikeParkingIcon = require("../static/icons/cycle-parking-icon.png")
 
 class NewElementsBox extends React.Component {
 
@@ -64,7 +65,8 @@ class NewElementsBox extends React.Component {
     const pathJunctionText = formatMessage({id: 'pathJunction'})
     const entranceText = formatMessage({id: 'entrance'})
     const newStopText = formatMessage({id: 'stop_place'})
-    const PRText = formatMessage({id: 'park_ride'})
+    const parkAndRideText = formatMessage({id: 'park_ride'})
+    const bikeParkingText = formatMessage({id: 'parking_bike'})
 
     let shouldShowNewStop = true
 
@@ -97,30 +99,40 @@ class NewElementsBox extends React.Component {
               : null
             }
             <div style={elementStyle}>
-              <img id="drag1" ref="quay" draggable="true" style={{height: 25, width: 'auto', marginLeft: 0}} src={quayIcon}/>
+              <img id="drag1" data-type="quay" ref="quay" draggable="true" style={{height: 25, width: 'auto', marginLeft: 0}} src={quayIcon}/>
               <div style={titleStyle}>{quayText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="pathJunction" id="drag2" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={junctionIcon}/>
+              <img ref="pathJunction" data-type="pathJunction" id="drag2" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={junctionIcon}/>
               <div style={titleStyle}>{pathJunctionText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="entrance" id="drag3" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={entranceIcon}/>
+              <img ref="entrance" data-type="entrance" id="drag3" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={entranceIcon}/>
               <div style={titleStyle}>{entranceText}</div>
             </div>
             <div style={elementStyle}>
-              <img ref="parking" id="drag4" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={parkingIcon}/>
-              <div style={titleStyle}>{PRText}</div>
+              <img ref="parkAndRide" data-type="parkAndRide" id="drag4" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={parkAndRideIcon}/>
+              <div style={titleStyle}>{parkAndRideText}</div>
+            </div>
+            <div style={elementStyle}>
+              <img ref="bikeParking" data-type="bikeParking" id="drag5" draggable style={{height: 25, width: 'auto', marginLeft: 0}} src={bikeParkingIcon}/>
+              <div style={titleStyle}>{bikeParkingText}</div>
             </div>
           </div>
       </div>
     )
   }
 
+  componentWillUnmount() {
+    // TODO: remove event listeners
+  }
+
   componentDidMount() {
     if (!this.props.disabled) {
       Object.keys(this.refs).forEach( (key) => {
+
         const ref = this.refs[key]
+        const type = ref.getAttribute('data-type')
 
         if (ref.draggable) {
           const draggable = new L.Draggable(ref)
@@ -150,7 +162,7 @@ class NewElementsBox extends React.Component {
             this.setState({
               confirmDialogOpen: true,
               owner: {
-                key: key,
+                key: type,
                 latlng: latlng,
               }
             })

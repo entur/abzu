@@ -34,6 +34,12 @@ class EditStopBoxTabs extends React.Component {
     this.props.dispatch(StopPlaceActions.removeElementByType(index, 'parking'))
   }
 
+  getParkingType(parking) {
+    if (parking.parkingVehicleTypes.indexOf('car') > -1) return "parkAndRide"
+    if (parking.parkingVehicleTypes.indexOf('pedalCycle') > -1) return "bikeParking"
+    return "unknown"
+  }
+
   getQuayItems(activeStopPlace, expandedItem, itemTranslation, noElementsStyle, disabled) {
     return  activeStopPlace.quays.length ? activeStopPlace.quays.map( (quay,index) =>
       <QuayItem
@@ -110,18 +116,23 @@ class EditStopBoxTabs extends React.Component {
 
     return activeStopPlace.parking.length
 
-      ? activeStopPlace.parking.map( (parking,index) =>
-        <ParkingItem
-          translations={itemTranslation}
-          key={"parking-" + index}
-          disabled={disabled}
-          index={index}
-          parking={parking}
-          handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-          handleRemoveParking={() => this.handleRemoveParking(index)}
-          handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-          expanded={expandedItem.type === 'parking' && index === expandedItem.index}
-        />
+      ? activeStopPlace.parking.map( (parking,index) => {
+          const parkingType = this.getParkingType(parking)
+          return (
+            <ParkingItem
+              translations={itemTranslation}
+              key={"parking-" + index}
+              disabled={disabled}
+              index={index}
+              parking={parking}
+              parkingType={parkingType}
+              handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+              handleRemoveParking={() => this.handleRemoveParking(index)}
+              handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+              expanded={expandedItem.type === 'parking' && index === expandedItem.index}
+            />
+          )
+        }
       ) : <div style={noElementsStyle}>{itemTranslation.none} {itemTranslation.parking}</div>
   }
 

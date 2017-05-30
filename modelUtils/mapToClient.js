@@ -38,8 +38,7 @@ helpers.mapParkingToClient = parkingObjs => {
     }
 
     return clientParking
-    // TODO : This is a temporary hack to filter non-car parking
-  }).filter( parking => parking.parkingVehicleTypes.indexOf('car') > -1)
+  })
 }
 
 helpers.mapPathLinkToClient = pathLinks => {
@@ -386,9 +385,13 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.entrances = copy.entrances.concat(newElement); break;
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
-    case 'parking':
+    case 'parkAndRide':
       copy.parking = copy.parking.concat({
-        ...newElement, totalCapacity: 0
+        ...newElement, totalCapacity: 0, parkingVehicleTypes: ["car"]
+      }); break;
+    case 'bikeParking':
+      copy.parking = copy.parking.concat({
+        ...newElement, totalCapacity: 0, parkingVehicleTypes: ["pedalCycle"]
       }); break;
 
     default: throw new Error('element not supported', type)
@@ -433,7 +436,10 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], { location: position })
       break
-    default: throw new Error('element not supported', type)
+    case 'parking':
+      copy.parking[index] = Object.assign({}, copy.parking[index], { location: position })
+      break
+    default: console.log('element not supported', type)
   }
 
   return copy
