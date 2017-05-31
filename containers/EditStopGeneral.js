@@ -50,7 +50,6 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSuccess(id) {
-
     this.setState({
       saveDialogOpen: false
     })

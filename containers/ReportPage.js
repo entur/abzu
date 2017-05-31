@@ -37,6 +37,11 @@ class ReportPage extends React.Component {
     })
   }
 
+  componentDidMount() {
+    const { formatMessage } = this.props.intl
+    document.title = formatMessage({id: '_report_page'})
+  }
+
   handleSearch() {
     const { searchQuery, topoiChips, stopTypeFilter } = this.state
 

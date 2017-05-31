@@ -56,6 +56,7 @@ class NeighbourMarker extends React.Component {
       id,
       handleShowQuays,
       handleHideQuays,
+      isEditingStop,
       isShowingQuays,
       disabled,
       handleMergeStopPlace
@@ -103,7 +104,7 @@ class NeighbourMarker extends React.Component {
                   <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
                 </div>
               ) }
-            { !disabled && (
+            { !disabled  && isEditingStop && (
               <div style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}} onClick={()=> handleMergeStopPlace(id, name)} >
                 <span style={{borderBottom: '1px dotted black'}}> { translations.mergeStopPlace } </span>
               </div>
