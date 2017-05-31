@@ -149,6 +149,11 @@ Fragments.stopPlace = {
                 stepFree
             }
         }
+        validBetweens {
+            fromDate
+            toDate
+        }
+        version
     }
     ${Fragments.quay.verbose}
   `

@@ -25,6 +25,9 @@ import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
 import WeightingPopover from './WeightingPopover'
 import weightTypes, { weightColors, noValue } from '../models/weightTypes'
 import Sign512 from '../static/icons/512Sign'
+import { hasExpired } from '../modelUtils/validBetweens'
+import MdWarning from 'material-ui/svg-icons/alert/warning'
+
 
 class StopPlaceDetails extends React.Component {
 
@@ -196,11 +199,23 @@ class StopPlaceDetails extends React.Component {
 
     const stopTypeTranslation = this.getStopTypeTranslation(locale, stopPlace.stopPlaceType)
     const weightingStateTranslation = this.getNameForWeightingState(stopPlace, locale)
+    const expirationText = formatMessage({id: 'stop_has_expired'})
+    const versionLabel = formatMessage({id: 'version'})
+    const stopIsInvalid = hasExpired(stopPlace.validBetweens)
 
     return (
       <div style={fixedHeader}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <div style={{flex: 1}}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <span style={{fontWeight: 600}}>{ versionLabel } { stopPlace.version }</span>
+              { !stopIsInvalid &&
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <MdWarning color="orange" style={{marginTop: -5, marginLeft: 10}}/>
+                  <span style={{color: '#bb271c', marginLeft: 5}}> { expirationText }</span>
+                </div>
+              }
+            </div>
             <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
           </div>
           <div title={stopTypeTranslation} >

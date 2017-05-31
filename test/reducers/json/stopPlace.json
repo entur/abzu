@@ -8,6 +8,7 @@
           "value": "Aspestrand",
           "__typename": "EmbeddableMultilingualStringType"
         },
+        "version": 1,
         "alternativeNames": [],
         "geometry": {
           "coordinates": [ [5.435734, 60.260427] ]

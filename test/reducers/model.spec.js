@@ -5,6 +5,7 @@ import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json'
 import clientStop from './json/clientStop.json'
 import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables'
 import { describe, before, it } from 'mocha'
+import { hasExpired } from '../../modelUtils/validBetweens'
 
 describe('Model: map format from server to expected client model', () => {
 
@@ -26,6 +27,7 @@ describe('Model: map format from server to expected client model', () => {
         60.260427,
         5.435734
       ],
+      version: 1,
       tariffZones: [],
       stopPlaceType: 'onstreetBus',
       isActive: true,
@@ -237,5 +239,32 @@ describe('Changes correct properties', () => {
     }
 
   })
+
+  describe('Should correctly determine if a stop has expired or not based on validBetweens', () => {
+
+    const expiredDate = [
+      {
+        "fromDate": "2017-05-31T11:03:01.770+0200",
+        "toDate": "2017-05-31T11:03:01.842+0200"
+      }
+    ]
+
+    const hasStopExpired = hasExpired(expiredDate)
+
+    expect(hasStopExpired).toEqual(false)
+
+    const validDate = [
+      {
+        "fromDate": "2017-05-31T11:03:01.770+0200",
+        "toDate": null
+      }
+    ]
+
+    const hasStopExpired2 = hasExpired(validDate)
+
+    expect(hasStopExpired2).toEqual(true)
+
+  })
+
 })
 

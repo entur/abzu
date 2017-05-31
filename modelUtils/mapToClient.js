@@ -206,7 +206,8 @@ helpers.mapStopToClientStop = (stop, isActive, parking, userDefinedCoordinates =
       alternativeNames: extractAlternativeNames(stop.alternativeNames),
       stopPlaceType: stop.stopPlaceType,
       isActive: isActive,
-      weighting: stop.weighting
+      weighting: stop.weighting,
+      version: stop.version
     }
 
     if (stop.topographicPlace) {
@@ -216,6 +217,10 @@ helpers.mapStopToClientStop = (stop, isActive, parking, userDefinedCoordinates =
       if (stop.topographicPlace.parentTopographicPlace && stop.topographicPlace.parentTopographicPlace.name) {
         clientStop.parentTopographicPlace =  stop.topographicPlace.parentTopographicPlace.name.value
       }
+    }
+
+    if (stop.validBetweens) {
+      clientStop.validBetweens = stop.validBetweens
     }
 
     if (stop.tariffZones && stop.tariffZones.length) {
