@@ -278,6 +278,21 @@ const stopPlaceReducer = (state = {}, action) => {
           stopHasBeenModified: true
         })
 
+      case types.OPENED_MERGE_STOP_DIALOG:
+        return Object.assign({}, state, {
+          mergeStopDialog: {
+            isOpen: true,
+            ...action.payLoad
+          }
+        })
+
+      case types.CLOSED_MERGE_STOP_DIALOG:
+        return Object.assign({}, state, {
+          mergeStopDialog: {
+            isOpen: false
+          }
+        })
+
       default: return state
     }
 }

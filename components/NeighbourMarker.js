@@ -46,7 +46,20 @@ class NeighbourMarker extends React.Component {
 
   render() {
 
-    const { position, handleOnClick, index, name, stopType, translations, id, handleShowQuays, handleHideQuays, isShowingQuays } = this.props
+    const {
+      position,
+      handleOnClick,
+      index,
+      name,
+      stopType,
+      translations,
+      id,
+      handleShowQuays,
+      handleHideQuays,
+      isShowingQuays,
+      disabled,
+      handleMergeStopPlace
+    } = this.props
 
     if (!position) return null
 
@@ -90,6 +103,12 @@ class NeighbourMarker extends React.Component {
                   <span style={{borderBottom: '1px dotted black'}}> { translations.showQuays }</span>
                 </div>
               ) }
+            { !disabled && (
+              <div style={{marginTop: 10, cursor: 'pointer', textAlign: 'center'}} onClick={()=> handleMergeStopPlace(id, name)} >
+                <span style={{borderBottom: '1px dotted black'}}> { translations.mergeStopPlace } </span>
+              </div>
+              )
+            }
           </div>
         </Popup>
       </Marker>

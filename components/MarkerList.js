@@ -12,7 +12,7 @@ import CycleParkingMarker from './CycleParkingMarker'
 import { setDecimalPrecision } from '../utils'
 import QuayMarker from './QuayMarker'
 import { withApollo } from 'react-apollo'
-import { stopPlaceAndPathLink, neighbourStopPlaceQuays } from '../graphql/Queries'
+import { stopPlaceFullSet, neighbourStopPlaceQuays } from '../graphql/Queries'
 import { getIn } from '../utils/'
 import rolesParser from '../roles/rolesParser'
 
@@ -39,7 +39,7 @@ class MarkerList extends React.Component {
     if (!isAlreadyActive) {
       client.query({
         fetchPolicy: 'network-only',
-        query: stopPlaceAndPathLink,
+        query: stopPlaceFullSet,
         variables: {
           id: id,
         }
@@ -68,6 +68,10 @@ class MarkerList extends React.Component {
         id: id
       }
     })
+  }
+
+  handleMergeStopPlace(id, name) {
+    this.props.dispatch(UserActions.showMergeStopDialog(id, name))
   }
 
   handleHideQuays(id) {
@@ -124,8 +128,7 @@ class MarkerList extends React.Component {
       hideQuays: formatMessage({id: 'hide_quays'}),
       inComplete: formatMessage({id: 'path_link_incomplete'}),
       saveFirstPathLink: formatMessage({id: 'save_first_path_link'}),
-      hideQuays: formatMessage({id: 'hide_quays'}),
-      showQuays: formatMessage({id: 'show_quays'}),
+      mergeStopPlace: formatMessage({id: 'merge_stop_here'})
     }
 
     const newStopMarkerText = {
@@ -298,8 +301,9 @@ class MarkerList extends React.Component {
               translations={CustomPopupMarkerText}
               isShowingQuays={!!neighbourStopQuays[stop.id]}
               isEditingStop={isEditingStop}
-              draggable={false}
+              disabled={disabled}
               stopType={stop.stopPlaceType}
+              handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
               handleShowQuays={this.handleShowQuays.bind(this)}
               handleHideQuays={this.handleHideQuays.bind(this)}
             />

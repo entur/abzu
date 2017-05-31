@@ -42,3 +42,12 @@ export const mutateParking = gql`
   }
   ${Fragments.parking.verbose}
 `
+
+export const mutateMergeStopPlaces = gql`
+  mutation mergeStopPlaces($fromStopPlaceId: String!, $toStopPlaceId: String!) {
+      mergeStopPlaces(fromStopPlaceId: $fromStopPlaceId, toStopPlaceId: $toStopPlaceId) {
+          ...VerboseStopPlace
+      }
+  }
+  ${Fragments.stopPlace.verbose}
+`

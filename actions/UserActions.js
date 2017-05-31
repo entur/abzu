@@ -189,4 +189,15 @@ UserActions.changeElementTypeTab = value => dispatch => {
   dispatch(sendData(types.CHANGED_ELEMENT_TYPE_TAB, value))
 }
 
+UserActions.showMergeStopDialog = (id, name) => dispatch => {
+  dispatch(sendData(types.OPENED_MERGE_STOP_DIALOG, {
+    id: id,
+    name: name
+  }))
+}
+
+UserActions.hideMergeStopDialog = () => dispatch => {
+  dispatch(sendData(types.CLOSED_MERGE_STOP_DIALOG, null))
+}
+
 export default UserActions

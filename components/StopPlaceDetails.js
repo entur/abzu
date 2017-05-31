@@ -103,7 +103,7 @@ class StopPlaceDetails extends React.Component {
     })
   }
 
- handleStopNameChange(event) {
+  handleStopNameChange(event) {
     const name = event.target.value
     this.setState({
       name: name
@@ -207,26 +207,28 @@ class StopPlaceDetails extends React.Component {
       <div style={fixedHeader}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <div style={{flex: 1}}>
+            { !stopPlace.isNewStop &&
             <div style={{display: 'flex', alignItems: 'center'}}>
               <span style={{fontWeight: 600}}>{ versionLabel } { stopPlace.version }</span>
               { !stopIsInvalid &&
-                <div style={{display: 'flex', alignItems: 'center'}}>
-                  <MdWarning color="orange" style={{marginTop: -5, marginLeft: 10}}/>
-                  <span style={{color: '#bb271c', marginLeft: 5}}> { expirationText }</span>
-                </div>
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <MdWarning color="orange" style={{marginTop: -5, marginLeft: 10}}/>
+                <span style={{color: '#bb271c', marginLeft: 5}}> { expirationText }</span>
+              </div>
               }
             </div>
+            }
             <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
           </div>
           <div title={stopTypeTranslation} >
             <IconButton
               style={{borderBottom: disabled ? 'none' : '1px dotted grey'}}
               onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
-              >
-            <ModalityIcon
-              type={ stopPlace.stopPlaceType }
-            />
-          </IconButton>
+            >
+              <ModalityIcon
+                type={ stopPlace.stopPlaceType }
+              />
+            </IconButton>
           </div>
           <Popover
             open={this.state.stopTypeOpen}
@@ -310,32 +312,32 @@ class StopPlaceDetails extends React.Component {
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-              <WheelChairPopover
-                intl={intl}
-                handleChange={this.handleHandleWheelChair.bind(this)}
-                wheelchairAccess={wheelchairAccess}
-              />
-              <Checkbox
-                checkedIcon={<TicketMachine />}
-                uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={ticketMachine}
-                onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
-              />
-              <Checkbox
-                checkedIcon={<BusShelter />}
-                uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={busShelter}
-                onCheck={(e,v) => { this.handleBusShelterChange(v) } }
-              />
-              <Checkbox
-                checkedIcon={<MdWC />}
-                uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                style={{width: 'auto'}}
-                checked={WC}
-                onCheck={(e,v) => { this.handleWCChange(v) } }
-              />
+            <WheelChairPopover
+              intl={intl}
+              handleChange={this.handleHandleWheelChair.bind(this)}
+              wheelchairAccess={wheelchairAccess}
+            />
+            <Checkbox
+              checkedIcon={<TicketMachine />}
+              uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              style={{width: 'auto'}}
+              checked={ticketMachine}
+              onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
+            />
+            <Checkbox
+              checkedIcon={<BusShelter />}
+              uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              style={{width: 'auto'}}
+              checked={busShelter}
+              onCheck={(e,v) => { this.handleBusShelterChange(v) } }
+            />
+            <Checkbox
+              checkedIcon={<MdWC />}
+              uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+              style={{width: 'auto'}}
+              checked={WC}
+              onCheck={(e,v) => { this.handleWCChange(v) } }
+            />
             <Checkbox
               checkedIcon={<WaitingRoom />}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}

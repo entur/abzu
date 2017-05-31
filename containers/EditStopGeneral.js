@@ -10,8 +10,8 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import StopPlaceDetails from '../components/StopPlaceDetails'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
-import { mutateStopPlace, mutatePathLink, mutateParking } from '../graphql/Mutations'
-import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions } from '../graphql/Queries'
+import { mutateStopPlace, mutatePathLink, mutateParking, mutateMergeStopPlaces } from '../graphql/Mutations'
+import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions, stopPlaceFullSet } from '../graphql/Queries'
 import * as types from '../actions/Types'
 import EditStopAdditional from './EditStopAdditional'
 import MdUndo from 'material-ui/svg-icons/content/undo'
@@ -23,6 +23,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import SaveDialog from '../components/SaveDialog'
+import MergeStopDialog from '../components/MergeStopDialog'
 import { MutationErrorCodes } from '../models/ErrorCodes'
 
 class EditStopGeneral extends React.Component {
@@ -44,13 +45,17 @@ class EditStopGeneral extends React.Component {
     })
   }
 
-  handleSuccess(dispatch, id) {
+  handleCloseMergeStopDialog() {
+    this.props.dispatch(UserActions.hideMergeStopDialog())
+  }
+
+  handleSuccess(id) {
 
     this.setState({
       saveDialogOpen: false
     })
 
-    const { client } = this.props
+    const { client, dispatch } = this.props
 
     if (id) {
       client.query({
@@ -74,6 +79,37 @@ class EditStopGeneral extends React.Component {
     })
   }
 
+  handleMergeStop() {
+    const { stopPlace, mergeSource, client, dispatch } = this.props
+    const mergeStopVariables = {
+      fromStopPlaceId: mergeSource.id,
+      toStopPlaceId: stopPlace.id
+    }
+
+    if (mergeStopVariables.fromStopPlaceId && mergeStopVariables.toStopPlaceId) {
+      client.mutate({ variables: mergeStopVariables, mutation: mutateMergeStopPlaces}).then( result => {
+
+        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+
+        const { data } = result
+
+        if (data.mergeStopPlaces) {
+          const { id } = data.mergeStopPlaces
+          client.query({query: stopPlaceFullSet, variables: { id: id }}).then( () => {
+            client.query({
+              fetchPolicy: 'network-only',
+              query: stopPlaceAllVersions,
+              variables: {
+                id: id
+              }
+            })
+          })
+        }
+      })
+      this.handleCloseMergeStopDialog()
+    }
+  }
+
   handleSaveAllEntities(userInput) {
 
     const { stopPlace, pathLink  } = this.props
@@ -85,7 +121,7 @@ class EditStopGeneral extends React.Component {
 
     let id = null
 
-    const { client, dispatch } = this.props
+    const { client } = this.props
 
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
 
@@ -95,7 +131,7 @@ class EditStopGeneral extends React.Component {
     }).then( () => {
 
       if (!shouldMutateParking && !shouldMutatePathLinks) {
-        this.handleSuccess(dispatch, id)
+        this.handleSuccess(id)
       } else {
         const parkingVariables = mapToMutationVariables.mapParkingToVariables(parking, stopPlace.id || id)
 
@@ -107,12 +143,12 @@ class EditStopGeneral extends React.Component {
                 variables: { "Parking": parkingVariables },
                 mutation: mutateParking
               }).then ( result => {
-                this.handleSuccess(dispatch, id)
+                this.handleSuccess(id)
               }).catch( err => {
                 this.handleError(MutationErrorCodes.ERROR_PARKING)
               })
             } else {
-              this.handleSuccess(dispatch, id)
+              this.handleSuccess(id)
             }
           }).catch( err => {
             this.handleError(MutationErrorCodes.ERROR_PATH_LINKS)
@@ -122,7 +158,7 @@ class EditStopGeneral extends React.Component {
             variables: { "Parking": parkingVariables },
             mutation: mutateParking
           }).then ( result => {
-            this.handleSuccess(dispatch, id)
+            this.handleSuccess(id)
           }).catch( err => {
             this.handleError(MutationErrorCodes.ERROR_PARKING)
           })
@@ -172,7 +208,7 @@ class EditStopGeneral extends React.Component {
     })
   }
 
-  handleVersionOnTap = ({id, version}) => {
+  handleLoadVersion = ({id, version}) => {
     this.setState({
       versionsOpen: false
     })
@@ -206,7 +242,7 @@ class EditStopGeneral extends React.Component {
 
   render() {
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions, disabled } = this.props
+    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions, disabled, mergeStopDialogOpen } = this.props
     const { formatMessage, locale } = intl
 
     if (!stopPlace) return null
@@ -305,7 +341,7 @@ class EditStopGeneral extends React.Component {
                       style={{transform: 'translateY(-14px)'}}
                     >{`${version.fromDate || 'N/A'} - ${version.toDate || 'N/A'}`}</div>
                   }
-                  onTouchTap={() => this.handleVersionOnTap(version)}
+                  onTouchTap={() => this.handleLoadVersion(version)}
                 /> )) }
             </Menu>
           </Popover>
@@ -377,6 +413,17 @@ class EditStopGeneral extends React.Component {
             />
             : null
           }
+          <MergeStopDialog
+            open={mergeStopDialogOpen}
+            handleClose={this.handleCloseMergeStopDialog.bind(this)}
+            handleConfirm={this.handleMergeStop.bind(this)}
+            intl={intl}
+            sourceElement={this.props.mergeSource}
+            targetElement={{
+              id: stopPlace.id,
+              name: stopPlace.name
+            }}
+          />
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
           <FlatButton
@@ -402,6 +449,8 @@ class EditStopGeneral extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
+  mergeStopDialogOpen: state.stopPlace.mergeStopDialog ? state.stopPlace.mergeStopDialog.isOpen : false,
+  mergeSource: state.stopPlace.mergeStopDialog,
   pathLink: state.stopPlace.pathLink,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
