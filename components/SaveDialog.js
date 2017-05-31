@@ -8,6 +8,8 @@ import TextField from 'material-ui/TextField'
 import MdSave from 'material-ui/svg-icons/content/save'
 import MdCancel from 'material-ui/svg-icons/navigation/cancel'
 import MdSpinner from '../static/icons/spinner'
+import { HumanReadableErrorCodes } from '../models/ErrorCodes'
+
 
 class SaveDialog extends React.Component {
 
@@ -46,6 +48,15 @@ class SaveDialog extends React.Component {
     }
   }
 
+  getErrorMessage() {
+    const { errorMessage, intl } = this.props
+    const { locale } = intl
+    if (errorMessage) {
+      return HumanReadableErrorCodes[locale][errorMessage]
+    }
+    return ""
+  }
+
   handleSave() {
     const { handleConfirm } = this.props
     const { expiraryExpanded, timeFrom, timeTo, dateFrom, dateTo, comment } = this.state
@@ -68,9 +79,11 @@ class SaveDialog extends React.Component {
 
   render() {
 
-    const { open, intl, handleClose } = this.props
+    const { open, intl, handleClose, errorMessage } = this.props
     const { formatMessage } = intl
     const { timeFrom, timeTo, dateFrom, dateTo, expiraryExpanded, isSaving, comment } = this.state
+
+    const errorMessageLabel = this.getErrorMessage()
 
     const now = new Date()
 
@@ -102,7 +115,7 @@ class SaveDialog extends React.Component {
         label={translations.confirm}
         primary={true}
         keyboardFocused={true}
-        icon={isSaving ? <MdSpinner/> : <MdSave/>}
+        icon={(isSaving && !errorMessage.length) ? <MdSpinner/> : <MdSave/>}
         disabled={toDateIsBeforeFromDate || isSaving}
         onTouchTap={() => this.handleSave()}
       />,
@@ -112,7 +125,7 @@ class SaveDialog extends React.Component {
       <Dialog
         title={translations.title}
         actions={actions}
-        modal={false}
+        modal={true}
         open={open}
         onRequestClose={() => { handleClose() }}
         contentStyle={{width: '40%', minWidth: '40%', margin: 'auto'}}
@@ -187,6 +200,7 @@ class SaveDialog extends React.Component {
             rowsMax={4}
           />
         </div>
+        <div style={{color: '#bb271c'}}>{ errorMessageLabel }</div>
       </Dialog>
     )
   }

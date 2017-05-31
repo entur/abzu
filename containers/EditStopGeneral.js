@@ -23,6 +23,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import SaveDialog from '../components/SaveDialog'
+import { MutationErrorCodes } from '../models/ErrorCodes'
 
 class EditStopGeneral extends React.Component {
 
@@ -31,17 +32,20 @@ class EditStopGeneral extends React.Component {
     this.state = {
       confirmDialogOpen: false,
       saveDialogOpen: false,
+      errorMessage: '',
       versionsOpen: false
     }
   }
 
   handleSave() {
     this.setState({
-      saveDialogOpen: true
+      saveDialogOpen: true,
+      errorMessage: ''
     })
   }
 
   handleSuccess(dispatch, id) {
+
     this.setState({
       saveDialogOpen: false
     })
@@ -49,17 +53,25 @@ class EditStopGeneral extends React.Component {
     const { client } = this.props
 
     if (id) {
-
       client.query({
         fetchPolicy: 'network-only',
         query: stopPlaceAllVersions,
         variables: {
           id: id
         }
+      }).then( () => {
+        dispatch( UserActions.navigateTo('/edit/', id))
       })
     }
-
     dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+  }
+
+  handleError(errorCode) {
+    const { dispatch } = this.props
+    dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
+    this.setState({
+      errorMessage: errorCode
+    })
   }
 
   handleSaveAllEntities(userInput) {
@@ -68,40 +80,56 @@ class EditStopGeneral extends React.Component {
     const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(stopPlace, userInput)
     const parking = stopPlace.parking ? stopPlace.parking.slice() : []
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(pathLink)
+    const shouldMutatePathLinks = !!(pathLinkVariables && pathLinkVariables.length)
+    const shouldMutateParking = parking.length > 0
 
     let id = null
 
     const { client, dispatch } = this.props
 
     client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
+
       if (result.data.mutateStopPlace[0].id) {
         id = result.data.mutateStopPlace[0].id
-        dispatch( UserActions.navigateTo('/edit/', result.data.mutateStopPlace[0].id))
       }
-    }).then( result => {
+    }).then( () => {
 
-      if (pathLinkVariables && pathLinkVariables.length) {
-
-        client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).catch( err => {
-          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
-        })
-      }
-    }).then ( result => {
-
-      const parkingVariables = mapToMutationVariables.mapParkingToVariables(parking, stopPlace.id || id)
-
-      if (parkingVariables && parkingVariables.length) {
-        client.mutate({
-          variables: { "Parking": parkingVariables },
-          mutation: mutateParking
-        }).then ( result => {
-          this.handleSuccess(dispatch, id)
-        }).catch( err => {
-          dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
-        })
-      } else {
+      if (!shouldMutateParking && !shouldMutatePathLinks) {
         this.handleSuccess(dispatch, id)
+      } else {
+        const parkingVariables = mapToMutationVariables.mapParkingToVariables(parking, stopPlace.id || id)
+
+        if (shouldMutatePathLinks) {
+          client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then ( () => {
+
+            if (shouldMutateParking) {
+              client.mutate({
+                variables: { "Parking": parkingVariables },
+                mutation: mutateParking
+              }).then ( result => {
+                this.handleSuccess(dispatch, id)
+              }).catch( err => {
+                this.handleError(MutationErrorCodes.ERROR_PARKING)
+              })
+            } else {
+              this.handleSuccess(dispatch, id)
+            }
+          }).catch( err => {
+            this.handleError(MutationErrorCodes.ERROR_PATH_LINKS)
+          })
+        } else if (shouldMutateParking) {
+          client.mutate({
+            variables: { "Parking": parkingVariables },
+            mutation: mutateParking
+          }).then ( result => {
+            this.handleSuccess(dispatch, id)
+          }).catch( err => {
+            this.handleError(MutationErrorCodes.ERROR_PARKING)
+          })
+        }
       }
+    }).catch( err => {
+      this.handleError(MutationErrorCodes.ERROR_STOP_PLACE)
     })
   }
 
@@ -344,6 +372,7 @@ class EditStopGeneral extends React.Component {
               open={this.state.saveDialogOpen}
               handleClose={ () => { this.handleDialogClose() }}
               handleConfirm={this.handleSaveAllEntities.bind(this)}
+              errorMessage={this.state.errorMessage}
               intl={intl}
             />
             : null
