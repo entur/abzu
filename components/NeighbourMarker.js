@@ -85,7 +85,7 @@ class NeighbourMarker extends React.Component {
         <Popup autoPan={false}>
           <div>
             <div style={{fontWeight: 600, color: '#41c0c4', fontSize: '1.2em', cursor: 'pointer', marginBottom: 10, display: 'inline-block', width: '100%', marginBottom: 15, textAlign: 'center'}} onClick={handleOnClick}>
-              <div style={{borderBottom: '1px dotted', display: 'inline-block'}}>{ name }</div>
+              <div style={{borderBottom: '1px dotted', display: 'inline-block'}}>{ name || id }</div>
             </div>
             <div style={{display: 'block', width: 'auto', textAlign: 'center'}}>
                 <span style={{display: 'inline-block', textAlign: 'center'}}>
