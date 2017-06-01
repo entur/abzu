@@ -180,6 +180,7 @@
   "time": "Tidspunkt",
   "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
   "total_capacity": "Kapasitet",
+  "total_capacity_unknown" : "Ikke satt",
   "town": "Kommune",
   "transport_sign": "Har transportskilt",
   "transport_sign_no": "Mangler transportskilt",

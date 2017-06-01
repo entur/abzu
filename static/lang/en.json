@@ -180,6 +180,7 @@
   "time": "Hour",
   "title_for_favorite": "What do you want to remember your search as?",
   "total_capacity": "Total capacity",
+  "total_capacity_unknown" : "Not set",
   "town": "Municipality",
   "transport_sign": "Has transport sign",
   "transport_sign_no": "No transport sign",

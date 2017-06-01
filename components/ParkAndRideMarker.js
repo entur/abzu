@@ -13,7 +13,8 @@ class ParkingAndRideMarker extends React.Component {
     handleDragEnd: PropTypes.func.isRequired,
     translations: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      totalCapacity: PropTypes.string.isRequired
+      totalCapacity: PropTypes.string.isRequired,
+      totalCapacityUnknown: PropTypes.string.isRequired,
     }).isRequired
   }
 
@@ -74,7 +75,12 @@ class ParkingAndRideMarker extends React.Component {
             <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em', color: enturPrimary}}>{ name }</div>
             <div style={{marginTop: -2, textAlign: 'center', marginBottom: 5, fontWeight: 600, fontSize: '1em'}}>{ translations.title } </div>
             <div style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>
-              {translations.totalCapacity}: { totalCapacity || 0 }
+              {translations.totalCapacity}:
+              <span
+                style={{fontStyle: (typeof totalCapacity === "number") ? 'normal' : 'italic', marginLeft: 1}}
+              >
+                { typeof totalCapacity === "number" ? totalCapacity : translations.totalCapacityUnknown }
+              </span>
             </div>
           </div>
         </Popup>

@@ -397,11 +397,11 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.pathJunctions = copy.pathJunctions.concat(newElement); break;
     case 'parkAndRide':
       copy.parking = copy.parking.concat({
-        ...newElement, totalCapacity: 0, parkingVehicleTypes: ["car"]
+        ...newElement, totalCapacity: null, parkingVehicleTypes: ["car"]
       }); break;
     case 'bikeParking':
       copy.parking = copy.parking.concat({
-        ...newElement, totalCapacity: 0, parkingVehicleTypes: ["pedalCycle"]
+        ...newElement, totalCapacity: null, parkingVehicleTypes: ["pedalCycle"]
       }); break;
 
     default: throw new Error('element not supported', type)

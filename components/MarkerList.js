@@ -198,7 +198,8 @@ class MarkerList extends React.Component {
                       totalCapacity={parking.totalCapacity}
                       translations={{
                         title: formatMessage({id: 'parking'}),
-                        totalCapacity: formatMessage({id: 'total_capacity'})
+                        totalCapacity: formatMessage({id: 'total_capacity'}),
+                        totalCapacityUnknown: formatMessage({id: 'total_capacity_unknown'})
                       }}
                       handleDragEnd={this.handleElementDragEnd.bind(this)}/>
                   )
@@ -214,7 +215,8 @@ class MarkerList extends React.Component {
                       type="parking"
                       translations={{
                         title: formatMessage({id: 'parking_bike'}),
-                        totalCapacity: formatMessage({id: 'total_capacity'})
+                        totalCapacity: formatMessage({id: 'total_capacity'}),
+                        totalCapacityUnknown: formatMessage({id: 'total_capacity_unknown'})
                       }}
                       handleDragEnd={this.handleElementDragEnd.bind(this)}/>
                   )
