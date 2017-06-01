@@ -3,13 +3,13 @@ const accessibilityAssements = {
     options: ["TRUE", "FALSE", "UNKNOWN"],
     values: {
       nb: {
-        "UNKNOWN": "Ukjent",
+        "UNKNOWN": "Ukjent rullestolvennlighet",
         "TRUE": "Rullestolvennlig",
         "FALSE": "Ikke rullestolvennlig",
         "PARTIAL": "Delvis rullestolvennlig",
       },
       en: {
-        "UNKNOWN": "Unknown",
+        "UNKNOWN": "Unknown wheelchair accessibility",
         "TRUE": "Wheelchair friendly",
         "FALSE": "Not wheelchair friendly",
         "PARTIAL": "Partial wheelchair friendly",
@@ -20,13 +20,13 @@ const accessibilityAssements = {
     options: ["TRUE", "FALSE", "UNKNOWN"],
     values: {
       nb: {
-        "UNKNOWN": "Ukjent",
+        "UNKNOWN": "Ukjent trinnadgang",
         "TRUE": "Trinnfri adgang",
         "FALSE": "Adgang med trinn",
         "PARTIAL": "Delvis trinnfri adgang",
       },
       en: {
-        "UNKNOWN": "Unknown",
+        "UNKNOWN": "Unknown step access",
         "TRUE": "Step free access",
         "FALSE": "Accessable by steps",
         "PARTIAL": "Partial Step free access",

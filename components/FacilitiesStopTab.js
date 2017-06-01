@@ -141,7 +141,7 @@ class FacilitiesStopTab extends React.Component {
               style={{width: '80%'}}
               onCheck={(e,v) => { this.handle512Sign(v) } }
             />
-            <ToolTipIcon title={formatMessage({id: 'wc_stop_hint'})}/>
+            <ToolTipIcon title={formatMessage({id: 'transport_sign_hint'})}/>
           </div>
           <Divider style={{marginTop: 10, marginBottom: 10}}/>
         </div>

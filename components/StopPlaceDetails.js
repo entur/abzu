@@ -27,7 +27,8 @@ import weightTypes, { weightColors, noValue } from '../models/weightTypes'
 import Sign512 from '../static/icons/512Sign'
 import { hasExpired } from '../modelUtils/validBetweens'
 import MdWarning from 'material-ui/svg-icons/alert/warning'
-
+import ToolTippable from './ToolTippable'
+import accessibilityAssessments from '../models/accessibilityAssessments'
 
 class StopPlaceDetails extends React.Component {
 
@@ -197,11 +198,20 @@ class StopPlaceDetails extends React.Component {
 
     const hasAltNames = !!(stopPlace.alternativeNames && stopPlace.alternativeNames.length)
 
-    const stopTypeTranslation = this.getStopTypeTranslation(locale, stopPlace.stopPlaceType)
-    const weightingStateTranslation = this.getNameForWeightingState(stopPlace, locale)
+    const stopTypeHint = this.getStopTypeTranslation(locale, stopPlace.stopPlaceType)
+    const weightingStateHint = this.getNameForWeightingState(stopPlace, locale)
     const expirationText = formatMessage({id: 'stop_has_expired'})
     const versionLabel = formatMessage({id: 'version'})
     const stopIsInvalid = hasExpired(stopPlace.validBetweens)
+
+    const wheelChairHint = accessibilityAssessments.wheelchairAccess.values[locale][wheelchairAccess]
+    const ticketMachineHint = ticketMachine ? formatMessage({id: 'ticketMachine'}) : formatMessage({id: 'ticketMachine_no'})
+    const busShelterHint = busShelter ? formatMessage({id: 'busShelter'}) : formatMessage({id: 'busShelter_no'})
+    const WCHint = WC ? formatMessage({id: 'wc'}) : formatMessage({id: 'wc_no'})
+    const waitingRoomHint = waitingRoom ? formatMessage({id: 'waiting_room'}) : formatMessage({id: 'waiting_room_no'})
+    const transportSignHint = sign512 ? formatMessage({id: 'transport_sign'}) : formatMessage({id: 'transport_sign_no'})
+    const tariffZonesHint = formatMessage({id: 'tariffZones'})
+    const altNamesHint = formatMessage({id: 'alternative_names'})
 
     return (
       <div style={fixedHeader}>
@@ -220,7 +230,7 @@ class StopPlaceDetails extends React.Component {
             }
             <ImportedId id={stopPlace.importedId} text={formatMessage({id: 'local_reference'})}/>
           </div>
-          <div title={stopTypeTranslation} >
+          <ToolTippable toolTipText={stopTypeHint} >
             <IconButton
               style={{borderBottom: disabled ? 'none' : '1px dotted grey'}}
               onClick={(e) => { this.handleOpenStopPlaceTypePopover(e) }}
@@ -229,7 +239,7 @@ class StopPlaceDetails extends React.Component {
                 type={ stopPlace.stopPlaceType }
               />
             </IconButton>
-          </div>
+          </ToolTippable>
           <Popover
             open={this.state.stopTypeOpen}
             anchorEl={this.state.stopTypeAnchorEl}
@@ -267,21 +277,25 @@ class StopPlaceDetails extends React.Component {
             onChange={this.handleStopNameChange.bind(this)}
           />
           <div style={{display: 'flex', alignItems: 'center'}}>
-            <div
-              onClick={ () => { this.setState({tariffZoneOpen: true, altNamesDialogOpen: false, weightingOpen: false}) }}
-              style={{borderBottom: '1px dotted', marginTop: 16, marginLeft: 8, cursor: 'pointer'}}
-            >
+            <ToolTippable toolTipText={tariffZonesHint}>
+              <div
+                onClick={ () => { this.setState({tariffZoneOpen: true, altNamesDialogOpen: false, weightingOpen: false}) }}
+                style={{borderBottom: '1px dotted', marginTop: 16, marginLeft: 8, cursor: 'pointer'}}
+              >
               <span
                 style={{fontSize: 18, marginTop: -5, color: (stopPlace.tariffZones || []) .length ? enturPrimary : '#000'}}
               >Tz
               </span>
-            </div>
+              </div>
+            </ToolTippable>
             <div style={{borderBottom: '1px dotted', marginLeft: 8, marginTop: -3}}>
-              <IconButton
-                onClick={ () => { this.setState({altNamesDialogOpen: true, weightingOpen: false, tariffZoneOpen: false}) }}
-              >
-                <MdLanguage color={hasAltNames ? enturPrimary : '#000'}/>
-              </IconButton>
+              <ToolTippable toolTipText={altNamesHint}>
+                <IconButton
+                  onClick={ () => { this.setState({altNamesDialogOpen: true, weightingOpen: false, tariffZoneOpen: false}) }}
+                >
+                  <MdLanguage color={hasAltNames ? enturPrimary : '#000'}/>
+                </IconButton>
+              </ToolTippable>
             </div>
           </div>
         </div>
@@ -294,7 +308,7 @@ class StopPlaceDetails extends React.Component {
             value={description}
             onChange={this.handleStopDescriptionChange.bind(this)}
           />
-          <div title={weightingStateTranslation} style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
+          <ToolTippable toolTipText={weightingStateHint} style={{marginLeft: 6, borderBottom: '1px dotted', marginTop: -3}}>
             <IconButton
               onClick={ e => {  this.handleOpenWeightPopover(e)}}
             >
@@ -307,30 +321,37 @@ class StopPlaceDetails extends React.Component {
               locale={locale}
               handleClose={ () => { this.setState({ weightingOpen: false }) }}
             />
-          </div>
+          </ToolTippable>
         </div>
         { expanded
           ? null
           : <div style={{marginTop: 10, marginBottom: 10, height: 15, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-            <WheelChairPopover
-              intl={intl}
-              handleChange={this.handleHandleWheelChair.bind(this)}
-              wheelchairAccess={wheelchairAccess}
-            />
+            <ToolTippable toolTipText={wheelChairHint}>
+              <WheelChairPopover
+                intl={intl}
+                handleChange={this.handleHandleWheelChair.bind(this)}
+                wheelchairAccess={wheelchairAccess}
+              />
+            </ToolTippable>
+            <ToolTippable toolTipText={ticketMachineHint}>
+              <Checkbox
+                checkedIcon={<TicketMachine />}
+                uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                style={{width: 'auto'}}
+                checked={ticketMachine}
+                onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
+              />
+            </ToolTippable>
+            <ToolTippable toolTipText={busShelterHint}>
             <Checkbox
-              checkedIcon={<TicketMachine />}
-              uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-              style={{width: 'auto'}}
-              checked={ticketMachine}
-              onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
-            />
-            <Checkbox
-              checkedIcon={<BusShelter />}
+              checkedIcon={<BusShelter/>}
               uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
               style={{width: 'auto'}}
               checked={busShelter}
               onCheck={(e,v) => { this.handleBusShelterChange(v) } }
             />
+            </ToolTippable>
+            <ToolTippable toolTipText={WCHint}>
             <Checkbox
               checkedIcon={<MdWC />}
               uncheckedIcon={<MdWC style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
@@ -338,6 +359,8 @@ class StopPlaceDetails extends React.Component {
               checked={WC}
               onCheck={(e,v) => { this.handleWCChange(v) } }
             />
+            </ToolTippable>
+            <ToolTippable toolTipText={waitingRoomHint}>
             <Checkbox
               checkedIcon={<WaitingRoom />}
               uncheckedIcon={<WaitingRoom style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
@@ -345,6 +368,8 @@ class StopPlaceDetails extends React.Component {
               checked={waitingRoom}
               onCheck={(e,v) => { this.handleWaitingRoomChange(v) } }
             />
+            </ToolTippable>
+            <ToolTippable toolTipText={transportSignHint}>
             <Checkbox
               checkedIcon={
                 <Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>
@@ -356,6 +381,7 @@ class StopPlaceDetails extends React.Component {
               checked={sign512}
               onCheck={(e,v) => { this.handleChangeSign512(v) } }
             />
+            </ToolTippable>
           </div>
         }
         <AltNamesDialog

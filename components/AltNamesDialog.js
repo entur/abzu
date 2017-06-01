@@ -160,7 +160,7 @@ class AltNamesDialog extends React.Component {
               </div>
             ))}
             { !altNames.length
-              ? <div style={{width: '100%', textAlign: 'center'}}> { translations.noAlternativeNames } </div>
+              ? <div style={{width: '100%', textAlign: 'center', marginBottom: 10}}> { translations.noAlternativeNames } </div>
               : null
             }
           </div>

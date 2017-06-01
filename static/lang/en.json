@@ -183,7 +183,9 @@
   "total_capacity_unknown" : "Not set",
   "town": "Municipality",
   "transport_sign": "Has transport sign",
+  "transport_sign_hint": "Does this stop have a transport sign, such as a 512 sign?",
   "transport_sign_no": "No transport sign",
+  "transport_sign_quay_hint": "Does this quay have a transport sign, such as a 512 sign?",
   "track": "Track",
   "type": "Type",
   "undefined": "Not defined",
@@ -208,5 +210,6 @@
   "wheelchair_stop_hint": "Are all quays for this stop place wheelchair friendly?",
   "wheelchairAccess": "Wheelchair friendly",
   "wheelchairAccess_no": "Not wheelchair friendly",
+  "wheelchairAccess_hint": "Wheelchair accessibility",
   "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted."
 }

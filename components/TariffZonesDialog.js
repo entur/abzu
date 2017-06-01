@@ -53,7 +53,7 @@ class TariffZonesDialog extends React.Component {
         </div>
           <div style={{width: '100%', fontSize: 14, maxHeight: 400, marginLeft: 15, marginBottom: 5}}>
             { !tariffZones.length
-              ? <div style={{width: '100%', textAlign: 'center', marginBottom: 10, fontSize: 14}}> { translations.noTariffZones } </div>
+              ? <div style={{width: '100%', textAlign: 'center', marginBottom: 10, fontSize: 12}}> { translations.noTariffZones } </div>
               : (
                 <div style={{width: '100%', fontSize: 12, overflowY: 'overlay', maxHeight: 400, marginLeft: 5}}>
                   { tariffZones.map( (tz,i) => (

@@ -183,7 +183,9 @@
   "total_capacity_unknown" : "Ikke satt",
   "town": "Kommune",
   "transport_sign": "Har transportskilt",
+  "transport_sign_hint": "Har dette stoppet et transportskilt, som f.eks. 512-skilt?",
   "transport_sign_no": "Mangler transportskilt",
+  "transport_sign_quay_hint": "Har denne quayen et transportskilt, som f.eks. 512-skilt?",
   "track": "Spor",
   "type": "Type",
   "undefined" : "Uten navn",
@@ -208,5 +210,6 @@
   "wheelchair_stop_hint": "Er alle quayene for dette stoppestedet rullestolvennlige?",
   "wheelchairAccess": "Rullestolvennlig",
   "wheelchairAccess_no": "Ikke rullestolvennlig",
+  "wheelchairAccess_hint": "Rullestolvennlighet",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer."
 }

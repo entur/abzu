@@ -23,6 +23,9 @@ import { getIn } from '../utils/'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import Sign512 from '../static/icons/512Sign'
 import CoordinatesDialog from './CoordinatesDialog'
+import ToolTippable from './ToolTippable'
+import accessibilityAssessments from '../models/accessibilityAssessments'
+
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -114,6 +117,12 @@ class QuayItem extends React.Component {
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay)
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay)
     const sign512 = equipmentHelpers.get512SignEquipment(quay)
+
+    const wheelChairHint = accessibilityAssessments.wheelchairAccess.values[locale][wheelchairAccess]
+    const ticketMachineHint = ticketMachine ? formatMessage({id: 'ticketMachine'}) : formatMessage({id: 'ticketMachine_no'})
+    const busShelterHint = busShelter ? formatMessage({id: 'busShelter'}) : formatMessage({id: 'busShelter_no'})
+    const transportSignHint = sign512 ? formatMessage({id: 'transport_sign'}) : formatMessage({id: 'transport_sign_no'})
+    const stepFreeHint = accessibilityAssessments.stepFreeAccess.values[locale][stepFreeAccess]
 
     let quayItemName = null
 
@@ -226,35 +235,45 @@ class QuayItem extends React.Component {
           />
            { !additionalExpanded ?
              <div style={{marginTop: 10, marginBottom: 5, display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-               <WheelChairPopover
-                 disabled={disabled}
-                 intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
-               <StepFreePopover intl={intl} disabled={disabled} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
-               <Checkbox
-                 checkedIcon={<TicketMachine />}
-                 disabled={disabled}
-                 uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                 style={{width: 'auto'}}
-                 checked={ticketMachine}
-                 onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
-               />
-               <Checkbox
-                 checkedIcon={<BusShelter />}
-                 disabled={disabled}
-                 uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
-                 style={{width: 'auto'}}
-                 checked={busShelter}
-                 onCheck={(e,v) => { this.handleBusShelterChange(v) } }
-               />
-               <Checkbox
-                 checkedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>}
-                 disabled={disabled}
-                 uncheckedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />}
-                 style={{width: 'auto'}}
-                 checked={sign512}
-                 onCheck={(e,v) => { this.handleChange512Sign(v) } }
-               />
-           </div>
+               <ToolTippable toolTipText={wheelChairHint}>
+                 <WheelChairPopover
+                   disabled={disabled}
+                   intl={intl} wheelchairAccess={wheelchairAccess} handleChange={this.handleWheelChairChange.bind(this)}/>
+               </ToolTippable>
+               <ToolTippable toolTipText={stepFreeHint}>
+                 <StepFreePopover intl={intl} disabled={disabled} stepFreeAccess={stepFreeAccess} handleChange={this.handleStepFreeChange.bind(this)}/>
+               </ToolTippable>
+               <ToolTippable toolTipText={ticketMachineHint}>
+                 <Checkbox
+                   checkedIcon={<TicketMachine />}
+                   disabled={disabled}
+                   uncheckedIcon={<TicketMachine style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                   style={{width: 'auto'}}
+                   checked={ticketMachine}
+                   onCheck={(e,v) => { this.handleTicketMachineChange(v) } }
+                 />
+               </ToolTippable>
+               <ToolTippable toolTipText={busShelterHint}>
+                 <Checkbox
+                   checkedIcon={<BusShelter />}
+                   disabled={disabled}
+                   uncheckedIcon={<BusShelter style={{fill: '#8c8c8c', opacity: '0.8'}}  />}
+                   style={{width: 'auto'}}
+                   checked={busShelter}
+                   onCheck={(e,v) => { this.handleBusShelterChange(v) } }
+                 />
+               </ToolTippable>
+               <ToolTippable toolTipText={transportSignHint}>
+                 <Checkbox
+                   checkedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)'}}/>}
+                   disabled={disabled}
+                   uncheckedIcon={<Sign512 style={{transform: 'scale(1) translateY(-12px) translateX(-12px)', fill: '#8c8c8c', opacity: '0.8'}}  />}
+                   style={{width: 'auto'}}
+                   checked={sign512}
+                   onCheck={(e,v) => { this.handleChange512Sign(v) } }
+                 />
+               </ToolTippable>
+             </div>
              : null
            }
            <div style={{textAlign: 'center', width: '100%'}}>
