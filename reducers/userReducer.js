@@ -25,7 +25,7 @@ export const initialState = {
   activeBaselayer: 'Rutebankens kart',
   activeElementTab: 0,
   showEditQuayAdditional: false,
-  showEditStopAdditional: false
+  showEditStopAdditional: false,
 }
 
 const userReducer = (state = initialState, action) => {

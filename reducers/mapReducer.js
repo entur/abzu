@@ -4,7 +4,13 @@ export const initialState = {
   focusedElement: {
     type: 'quay',
     index: -1
-  }
+  },
+  mergingQuay: {
+    isMerging: false,
+    fromQuay: null,
+    toQuay: null
+  },
+  mergingQuayDialogOpen: false
 }
 
 const mapReducer = (state = initialState, action) => {
@@ -36,6 +42,34 @@ const mapReducer = (state = initialState, action) => {
           index: -1,
           type: 'quay'
         }
+      })
+
+    case types.STARTED_MERGING_QUAY_FROM:
+      return Object.assign({}, state, { mergingQuay: {
+        isMerging: true,
+        fromQuayId: action.payLoad,
+        toQuay: null
+      }})
+
+    case types.ENDED_MERGING_QUAY_TO:
+      return Object.assign({}, state, {
+        mergingQuayDialogOpen: true,
+        mergingQuay: {
+          isMerging: false,
+          fromQuayId: state.mergingQuay.fromQuayId,
+          toQuayId: action.payLoad
+      }})
+
+    case types.CANCELLED_MERGING_QUAY_FROM:
+      return Object.assign({}, state, { mergingQuay: {
+        isMerging: false,
+        fromQuay: null,
+        toQuay: null
+      }})
+
+    case types.CLOSED_MERGE_QUAYS_DIALOG:
+      return Object.assign({}, state, {
+        mergingQuayDialogOpen: false
       })
 
     default:

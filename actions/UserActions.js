@@ -200,4 +200,20 @@ UserActions.hideMergeStopDialog = () => dispatch => {
   dispatch(sendData(types.CLOSED_MERGE_STOP_DIALOG, null))
 }
 
+UserActions.hideMergeQuaysDialog = () => dispatch => {
+  dispatch(sendData(types.CLOSED_MERGE_QUAYS_DIALOG, null))
+}
+
+UserActions.startMergingQuayFrom = id => dispatch => {
+  dispatch(sendData(types.STARTED_MERGING_QUAY_FROM, id))
+}
+
+UserActions.endMergingQuayTo = id => dispatch => {
+  dispatch(sendData(types.ENDED_MERGING_QUAY_TO, id))
+}
+
+UserActions.cancelMergingQuayFrom = () => dispatch => {
+  dispatch(sendData(types.CANCELLED_MERGING_QUAY_FROM, null))
+}
+
 export default UserActions

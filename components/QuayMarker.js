@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/server'
 import { connect } from 'react-redux'
 import compassIcon from '../static/icons/compass.png'
 import compassBearingIcon from '../static/icons/compass-bearing.png'
+import { UserActions } from '../actions/'
 import OSMIcon from '../static/icons/osm_logo.png'
 import { getIn } from '../utils/'
 
@@ -31,6 +32,20 @@ class QuayMarker extends React.PureComponent {
   getOSMURL() {
     const { position } = this.props
     return `https://www.openstreetmap.org/edit#map=18/${position[0]}/${position[1]}`
+  }
+
+  handleMergeFrom() {
+    const { id, dispatch } = this.props
+    dispatch(UserActions.startMergingQuayFrom(id))
+  }
+
+  handleMergeTo() {
+    const { id, dispatch } = this.props
+    dispatch(UserActions.endMergingQuayTo(id))
+  }
+
+  handleCancelMerge() {
+    this.props.dispatch(UserActions.cancelMergingQuayFrom())
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -78,13 +93,17 @@ class QuayMarker extends React.PureComponent {
       return true
     }
 
+    if (this.props.mergingQuay !== nextProps.mergingQuay) {
+      return true
+    }
+
     return false
   }
 
   render() {
 
     const { position, name, index, handleQuayDragEnd, parentStopPlaceName, formattedStopType, handleUpdatePathLink, translations, handleChangeCoordinates, belongsToNeighbourStop, isEditingStop } = this.props
-    const { isCreatingPolylines, id, pathLink, showPathLink } = this.props
+    const { isCreatingPolylines, id, pathLink, showPathLink, disabled, mergingQuay } = this.props
 
     if (!position) return null
 
@@ -128,6 +147,8 @@ class QuayMarker extends React.PureComponent {
     )
 
     const osmURL = this.getOSMURL()
+    const shouldShowMergeQuay = (isEditingStop && !disabled && !belongsToNeighbourStop && !!id)
+    const isMergingFromThis = (id && mergingQuay.fromQuayId && id === mergingQuay.fromQuayId)
 
     return (
         <Marker
@@ -185,6 +206,27 @@ class QuayMarker extends React.PureComponent {
                       }
                     </div>
                     : null
+                }
+              </div>
+              <div style={{marginTop: 10}}>
+                {  shouldShowMergeQuay &&
+                  <div style={{textAlign: 'center'}}>
+                    {
+                      mergingQuay.isMerging ?
+                        <div>
+                          { isMergingFromThis
+                            ?
+                            <span className="change-path-link" onClick={() => this.handleCancelMerge()}> { translations.mergeQuayCancel }</span>
+                            :
+                            <span className="change-path-link" onClick={() => this.handleMergeTo()}> { translations.mergeQuayTo } </span>
+                          }
+                        </div>
+                        :
+                        <div>
+                          <span className="change-path-link" onClick={() => this.handleMergeFrom()}>{ translations.mergeQuayFrom } </span>
+                        </div>
+                    }
+                  </div>
                 }
               </div>
             </div>
@@ -257,6 +299,7 @@ const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   focusedElement: state.mapUtils.focusedElement,
+  mergingQuay: state.mapUtils.mergingQuay,
   pathLink: state.stopPlace.pathLink
 })
 

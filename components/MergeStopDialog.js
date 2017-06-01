@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import MdCancel from 'material-ui/svg-icons/navigation/cancel'
-import MdSpinner from '../static/icons/spinner'
 import MdMerge from 'material-ui/svg-icons/editor/merge-type'
 import MdWarning from 'material-ui/svg-icons/alert/warning'
 

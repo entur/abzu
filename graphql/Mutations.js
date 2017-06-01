@@ -51,3 +51,12 @@ export const mutateMergeStopPlaces = gql`
   }
   ${Fragments.stopPlace.verbose}
 `
+
+export const mutateMergeQuays = gql`
+    mutation mergeQuays($stopPlaceId: String!, $fromQuayId: String!, $toQuayId: String!) {
+        mergeQuays(stopPlaceId: $stopPlaceId, fromQuayId: $fromQuayId, toQuayId: $toQuayId) {
+            ...VerboseStopPlace
+        }
+    }
+    ${Fragments.stopPlace.verbose}
+`

@@ -10,7 +10,7 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import StopPlaceDetails from '../components/StopPlaceDetails'
 import { withApollo } from 'react-apollo'
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
-import { mutateStopPlace, mutatePathLink, mutateParking, mutateMergeStopPlaces } from '../graphql/Mutations'
+import { mutateStopPlace, mutatePathLink, mutateParking, mutateMergeStopPlaces, mutateMergeQuays } from '../graphql/Mutations'
 import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions, stopPlaceFullSet } from '../graphql/Queries'
 import * as types from '../actions/Types'
 import EditStopAdditional from './EditStopAdditional'
@@ -24,6 +24,7 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import SaveDialog from '../components/SaveDialog'
 import MergeStopDialog from '../components/MergeStopDialog'
+import MergeQuaysDialog from '../components/MergeQuaysDialog'
 import { MutationErrorCodes } from '../models/ErrorCodes'
 
 class EditStopGeneral extends React.Component {
@@ -47,6 +48,10 @@ class EditStopGeneral extends React.Component {
 
   handleCloseMergeStopDialog() {
     this.props.dispatch(UserActions.hideMergeStopDialog())
+  }
+
+  handleCloseMergeQuaysDialog() {
+    this.props.dispatch(UserActions.hideMergeQuaysDialog())
   }
 
   handleSuccess(id) {
@@ -107,6 +112,29 @@ class EditStopGeneral extends React.Component {
       })
       this.handleCloseMergeStopDialog()
     }
+  }
+
+  handleMergeQuays() {
+    const { mergingQuay, client, stopPlace, dispatch } = this.props
+    client.mutate({ variables: {
+      stopPlaceId: stopPlace.id,
+      fromQuayId: mergingQuay.fromQuayId,
+      toQuayId: mergingQuay.toQuayId
+    }, mutation: mutateMergeQuays}).then( result => {
+
+      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+      this.handleCloseMergeQuaysDialog()
+
+      client.query({query: stopPlaceFullSet, variables: { id: stopPlace.id }}).then( () => {
+        client.query({
+          fetchPolicy: 'network-only',
+          query: stopPlaceAllVersions,
+          variables: {
+            id: stopPlace.id
+          }
+        })
+      })
+    })
   }
 
   handleSaveAllEntities(userInput) {
@@ -423,6 +451,13 @@ class EditStopGeneral extends React.Component {
               name: stopPlace.name
             }}
           />
+          <MergeQuaysDialog
+            open={this.props.mergingQuayDialogOpen}
+            handleClose={this.handleCloseMergeQuaysDialog.bind(this)}
+            handleConfirm={this.handleMergeQuays.bind(this)}
+            intl={intl}
+            mergingQuays={this.props.mergingQuay}
+          />
         </div>
         <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
           <FlatButton
@@ -456,6 +491,8 @@ const mapStateToProps = state => ({
   activeElementTab: state.user.activeElementTab,
   showEditQuayAdditional: state.user.showEditQuayAdditional,
   showEditStopAdditional: state.user.showEditStopAdditional,
+  mergingQuay: state.mapUtils.mergingQuay,
+  mergingQuayDialogOpen: state.mapUtils.mergingQuayDialogOpen,
   versions: state.stopPlace.versions,
 })
 

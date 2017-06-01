@@ -128,7 +128,10 @@ class MarkerList extends React.Component {
       hideQuays: formatMessage({id: 'hide_quays'}),
       inComplete: formatMessage({id: 'path_link_incomplete'}),
       saveFirstPathLink: formatMessage({id: 'save_first_path_link'}),
-      mergeStopPlace: formatMessage({id: 'merge_stop_here'})
+      mergeStopPlace: formatMessage({id: 'merge_stop_here'}),
+      mergeQuayFrom: formatMessage({id: 'merge_quay_from'}),
+      mergeQuayTo: formatMessage({id: 'merge_quay_to'}),
+      mergeQuayCancel: formatMessage({id: 'merge_quay_cancel'})
     }
 
     const newStopMarkerText = {
@@ -331,6 +334,7 @@ class MarkerList extends React.Component {
                   handleSetCompassBearing={() => {}}
                   showPathLink={!disabled}
                   isEditingStop={isEditingStop}
+                  disabled={disabled}
                 />)
             })
           }
