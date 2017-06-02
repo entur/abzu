@@ -107,6 +107,7 @@ export const findStop = gql`
 
 export const findStopForReport = gql`
     query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
+        
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 100) {
             id
             importedId
@@ -219,3 +220,27 @@ export const topopGraphicalPlacesReportQuery = gql`
         }
     }
 `
+
+export const getParkingForMultipleStopPlaces = stopPlaceIds => {
+
+  const stopPlaces = stopPlaceIds.map( id => ({
+    id,
+    alias: id.replace("NSR:StopPlace:", "StopPlace")
+  }))
+
+  let queryContent = ""
+
+  stopPlaces.forEach( stopPlace => {
+    queryContent += `
+        ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
+            id
+        }
+    `
+  })
+
+  return gql`
+    query {
+        ${queryContent}
+    }
+  `
+}

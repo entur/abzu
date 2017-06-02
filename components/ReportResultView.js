@@ -15,14 +15,16 @@ class ReportResultView extends React.Component {
     const columnStyle = {
       flexBasis: '100%',
       textAlign: 'left',
-      marginLeft: 4,
-      marginTop: 2,
-      marginBottom: 2
+      marginLeft: 5,
+      marginBottom: 1,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
     }
 
     const columnStyleHeader = {
       ...columnStyle,
-      marginLeft: 0,
+      marginLeft: 0
     }
 
     const columns = columnOptions.filter( c => c.checked).map( c => c.id )
@@ -31,10 +33,9 @@ class ReportResultView extends React.Component {
       .replace('$size', pageSize)
       .replace('$total', results.length)
 
-
     return (
       <div>
-        <div style={{marginLeft: 5, fontWeight: 600, fontSize: 12, textAlign: 'center', marginBottom: 10, marginTop: 10}}>
+        <div style={{marginLeft: 5, fontWeight: 600, fontSize: 12, textAlign: 'center', marginBottom: 10, marginTop: -15}}>
           { showingResultLabel }  
         </div>
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', lineHeight: '1.5'}}>
@@ -62,9 +63,6 @@ class ReportResultView extends React.Component {
     )
   }
 }
-
-// Navn, modalitet, ID, Imported ID, Fylke, Kommune, Lat, long
-
 
 const getResultsPaginationMap = results => {
   if (!results || !results.length) return []

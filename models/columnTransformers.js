@@ -16,7 +16,8 @@ export const ColumnTransformersJSX = {
   county: stop => stop.parentTopographicPlace,
   importedId: stop => stop.importedId.length,
   position: stop => stop.location.join(','),
-  quays: stop => stop.quays.length
+  quays: stop => stop.quays.length,
+  parking: stop => stop.parking ? stop.parking.length : 0
 }
 
 export const ColumnTranformers = {
@@ -24,7 +25,8 @@ export const ColumnTranformers = {
   id: stop => stop.id,
   modality: stop => stop.stopPlaceType,
   importedId: stop => stop.importedId.join(','),
-  quays: stop => stop.quays.map( quay => quay.id).join(',')
+  quays: stop => stop.quays.map( quay => quay.id).join(','),
+  parking: stop => stop.parking.map( parking => parking.id).join(',')
 }
 
 export const ColumnTranslations = {
@@ -37,6 +39,7 @@ export const ColumnTranslations = {
     importedId: "OriginalID",
     position: "Plassering",
     quays: "Quayer",
+    parking: "Parkering",
   },
   "en": {
     id: "Id",
@@ -47,5 +50,6 @@ export const ColumnTranslations = {
     importedId: "ImportedId",
     position: "Position",
     quays: "Quays",
+    parking: "Parking",
   }
 }

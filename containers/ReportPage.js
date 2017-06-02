@@ -14,6 +14,8 @@ import TextField from 'material-ui/TextField'
 import MdSpinner from '../static/icons/spinner'
 import MdSearch from 'material-ui/svg-icons/action/search'
 import ColumnFilterPopover from '../components/ColumnFilterPopover'
+import { getParkingForMultipleStopPlaces } from '../graphql/Queries'
+import { reportReducer } from '../reducers/'
 
 import { injectIntl } from 'react-intl'
 
@@ -62,6 +64,10 @@ class ReportPage extends React.Component {
           id: "quays",
           checked: false,
         },
+        {
+          id: "parking",
+          checked: false,
+        },
       ]
     }
   }
@@ -97,12 +103,13 @@ class ReportPage extends React.Component {
 
   handleSearch() {
     const { searchQuery, topoiChips, stopTypeFilter } = this.state
+    const { client } = this.props
 
     this.setState({
       isLoading: true
     })
 
-    this.props.client.query({
+    client.query({
       query: findStopForReport,
       fetchPolicy: 'network-only',
       variables: {
@@ -114,9 +121,20 @@ class ReportPage extends React.Component {
           .filter( topos => topos.type === "county").map(topos => topos.id)
       }
     }).then( response => {
-      this.setState({
-        isLoading: false
+
+      const stopPlaces = response.data.stopPlace
+      const stopPlaceIds = stopPlaces.map( stopPlace => stopPlace.id )
+
+      client.query({
+        query: getParkingForMultipleStopPlaces(stopPlaceIds),
+        reducer: reportReducer,
+        fetchPolicy: 'network-only',
+      }).then( response => {
+        this.setState({
+          isLoading: false
+        })
       })
+
     }).catch( err => {
       this.setState({
         isLoading: false

@@ -343,6 +343,32 @@ helpers.mapSearchResultatToClientStops = stops => {
   })
 }
 
+helpers.mapReportSearchResultsToClientStop = stops => {
+  return stops.map( stop => {
+
+    let parentTopographicPlace = getIn(stop, ['topographicPlace', 'parentTopographicPlace', 'name', 'value'], '')
+    let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '')
+
+    const clientStop = {
+      id: stop.id,
+      name: stop.name.value,
+      stopPlaceType: stop.stopPlaceType,
+      topographicPlace: topographicPlace,
+      parentTopographicPlace: parentTopographicPlace,
+      quays: stop.quays,
+      importedId: stop.importedId,
+      accessibilityAssessment: stop.accessibilityAssessment
+    }
+
+    if (stop.geometry && stop.geometry.coordinates) {
+      let coordinates = stop.geometry.coordinates[0].slice()
+      clientStop.location = [ setDecimalPrecision(coordinates[1], 6), setDecimalPrecision(coordinates[0], 6) ]
+    }
+
+    return clientStop
+  })
+}
+
 helpers.createNewStopFromLocation = location => {
   return ({
     id: null,
