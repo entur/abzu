@@ -17,7 +17,7 @@ import Heated from '../static/icons/facilities/Heated'
 import { getIn } from '../utils/'
 import equiptmentHelpers from '../modelUtils/equipmentHelpers'
 import { EquipmentActions } from '../actions/'
-import Sign512 from '../static/icons/512Sign'
+import Sign512 from '../static/icons/TransportSign'
 
 class FacilitiesStopTab extends React.Component {
 

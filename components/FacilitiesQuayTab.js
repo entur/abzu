@@ -17,7 +17,7 @@ import Heated from '../static/icons/facilities/Heated'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import { EquipmentActions } from '../actions/'
 import { getIn } from '../utils/'
-import Sign512 from '../static/icons/512Sign'
+import Sign512 from '../static/icons/TransportSign'
 
 class FacilitiesQuayTab extends React.Component {
 
