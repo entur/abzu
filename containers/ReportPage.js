@@ -13,6 +13,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import MdSpinner from '../static/icons/spinner'
 import MdSearch from 'material-ui/svg-icons/action/search'
+import ColumnFilterPopover from '../components/ColumnFilterPopover'
 
 import { injectIntl } from 'react-intl'
 
@@ -27,13 +28,65 @@ class ReportPage extends React.Component {
       topoiChips: [],
       activePageIndex: 0,
       searchQuery: '',
-      isLoading: false
+      isLoading: false,
+      columnOptions: [
+        {
+          id: "id",
+          checked: true,
+        },
+        {
+          id: "name",
+          checked: true,
+        },
+        {
+          id: "modality",
+          checked: true,
+        },
+        {
+          id: "county",
+          checked: true,
+        },
+        {
+          id: "muncipality",
+          checked: true,
+        },
+        {
+          id: "importedId",
+          checked: true,
+        },
+        {
+          id: "position",
+          checked: true,
+        },
+        {
+          id: "quays",
+          checked: false,
+        },
+      ]
     }
   }
 
   handleSelectPage(pageIndex) {
     this.setState({
       activePageIndex: pageIndex
+    })
+  }
+
+  handleColumnCheck(id, checked) {
+
+    const columnOptions = this.state.columnOptions.slice()
+
+    for (let i = 0; columnOptions.length > i; i++) {
+      let option = columnOptions[i]
+      if (option.id === id) {
+        option.checked = checked
+        columnOptions[i] = option
+        break
+      }
+    }
+
+    this.setState({
+      columnOptions: columnOptions
     })
   }
 
@@ -194,9 +247,19 @@ class ReportPage extends React.Component {
             </ReportFilterBox>
           </div>
         </div>
-        <ReportResultView activePageIndex={activePageIndex} results={results}/>
+        <ColumnFilterPopover
+          style={{marginLeft: 5, marginTop: 5}}
+          columnOptions={this.state.columnOptions}
+          handleColumnCheck={this.handleColumnCheck.bind(this)}
+        />
+        <ReportResultView
+          activePageIndex={activePageIndex}
+          results={results}
+          columnOptions={this.state.columnOptions}
+        />
         <ReportPageFooter
           results={results}
+          columnOptions={this.state.columnOptions}
           handleSelectPage={this.handleSelectPage.bind(this)}
           activePageIndex={activePageIndex}
         />

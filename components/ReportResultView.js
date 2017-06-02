@@ -1,33 +1,31 @@
 import React from 'react'
-import ModalityIcon from './ModalityIcon'
-import StopPLaceLink from '../components/StopPlaceLink'
-
+import { ColumnTransformersJSX } from '../models/columnTransformers'
 
 class ReportResultView extends React.Component {
 
-  renderStopPlaceType(stopPlaceType) {
-    const iconColor = (!stopPlaceType || stopPlaceType === 'other')
-      ? 'red' : '#000'
-    return <ModalityIcon svgStyle={{color: iconColor}} type={stopPlaceType} />
-  }
 
   render() {
 
-    const { results, activePageIndex } = this.props
+    const { results, activePageIndex, columnOptions } = this.props
 
     const paginatedResults = getResultsPaginationMap(results)
     const resultItems = paginatedResults[activePageIndex] || []
 
     const columnStyle = {
       flexBasis: '100%',
-      textAlign: 'center',
-      marginRight: 5
+      textAlign: 'left',
+      marginLeft: 4,
+      marginTop: 2,
+      marginBottom: 2
     }
 
-    const iconColumStyle = {
-      textAlign: 'center',
-      marginRight: 10
+    const columnStyleHeader = {
+      ...columnStyle,
+      marginLeft: 0,
     }
+
+    const columns = columnOptions.filter( c => c.checked).map( c => c.id )
+
 
     return (
       <div>
@@ -35,13 +33,11 @@ class ReportResultView extends React.Component {
           Showing 20 of { results.length } results 
         </div>
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', lineHeight: '1.5'}}>
-          <div key={'column-header'} style={{display: 'flex', fontWeight: 600, marginLeft: 10}}>
-            <div style={iconColumStyle}></div>
-            <div style={columnStyle}>Name</div>
-            <div style={columnStyle}>Id</div>
-            <div style={columnStyle}>County</div>
-            <div style={columnStyle}>Municipality</div>
-            <div style={columnStyle}>Quays</div>
+          <div key={'column-header'} style={{display: 'flex', fontWeight: 600, paddingLeft: 10}}>
+            { columns.map( column => (
+              <div key={"column-" + column} style={columnStyleHeader}>{ column }</div>
+            ))
+            }
           </div>
 
           { resultItems.map( (item, index) => {
@@ -50,14 +46,9 @@ class ReportResultView extends React.Component {
 
             return (
               <div key={item.id} style={{display: 'flex', background: background, padding: '0px 10px'}}>
-                <div style={iconColumStyle}>{this.renderStopPlaceType(item.stopPlaceType)}</div>
-                <div style={columnStyle}>{item.name}</div>
-                <div style={columnStyle}>
-                  <StopPLaceLink id={item.id}/>
-                </div>
-                <div style={columnStyle}>{item.parentTopographicPlace}</div>
-                <div style={columnStyle}>{item.topographicPlace}</div>
-                <div style={columnStyle}>{item.quays.length}</div>
+                { columns.map( column => (
+                  <div key={"column-item-" + column} style={columnStyle}>{ ColumnTransformersJSX[column](item) }</div>
+                ))}
               </div>
             )
           })}
@@ -66,6 +57,9 @@ class ReportResultView extends React.Component {
     )
   }
 }
+
+// Navn, modalitet, ID, Imported ID, Fylke, Kommune, Lat, long
+
 
 const getResultsPaginationMap = results => {
   if (!results || !results.length) return []

@@ -1,12 +1,12 @@
 import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import { jsonArrayToCSV } from '../utils'
+import { jsonArrayToCSV } from '../utils/CSVHelper'
 
 class ReportPageFooter extends React.Component {
 
   handleGetCSV() {
-    const { results } = this.props
-    let csv = jsonArrayToCSV(results, ['name', 'id', 'stopPlaceType', 'parentTopographicPlace', 'topographicPlace'])
+    const { results, columnOptions } = this.props
+    let csv = jsonArrayToCSV(results, columnOptions)
     var element = document.createElement('a')
     var blob = new Blob([csv],{type: 'text/csv;charset=utf-8;'})
     var url = URL.createObjectURL(blob)
