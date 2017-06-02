@@ -18,7 +18,7 @@ import WheelChairPopover from './WheelChairPopover'
 import { getIn } from '../utils'
 import equipmentHelpers from '../modelUtils/equipmentHelpers'
 import MdLanguage from 'material-ui/svg-icons/action/language'
-import { enturPrimary } from '../config/enturTheme'
+import { enturPrimaryDarker } from '../config/enturTheme'
 import AltNamesDialog from './AltNamesDialog'
 import TariffZonesDialog from './TariffZonesDialog'
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station'
@@ -280,10 +280,10 @@ class StopPlaceDetails extends React.Component {
             <ToolTippable toolTipText={tariffZonesHint}>
               <div
                 onClick={ () => { this.setState({tariffZoneOpen: true, altNamesDialogOpen: false, weightingOpen: false}) }}
-                style={{borderBottom: '1px dotted', marginTop: 16, marginLeft: 8, cursor: 'pointer'}}
+                style={{borderBottom: '1px dotted', marginTop: 13, paddingBottom: 4, marginLeft: 8, cursor: 'pointer'}}
               >
               <span
-                style={{fontSize: 18, marginTop: -5, color: (stopPlace.tariffZones || []) .length ? enturPrimary : '#000'}}
+                style={{fontSize: 18, color: (stopPlace.tariffZones || []) .length ? enturPrimaryDarker : '#000'}}
               >Tz
               </span>
               </div>
@@ -293,7 +293,9 @@ class StopPlaceDetails extends React.Component {
                 <IconButton
                   onClick={ () => { this.setState({altNamesDialogOpen: true, weightingOpen: false, tariffZoneOpen: false}) }}
                 >
-                  <MdLanguage color={hasAltNames ? enturPrimary : '#000'}/>
+                  <MdLanguage
+                    color={hasAltNames ? enturPrimaryDarker : '#000'}
+                  />
                 </IconButton>
               </ToolTippable>
             </div>

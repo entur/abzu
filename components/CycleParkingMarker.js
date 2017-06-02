@@ -3,7 +3,7 @@ import { Marker, Popup } from 'react-leaflet'
 import L, { divIcon } from 'leaflet'
 import CycleParkingIcon from '../static/icons/cycle-parking-icon.png'
 import { connect } from 'react-redux'
-import { enturPrimary } from '../config/enturTheme'
+import { enturPrimaryDarker } from '../config/enturTheme'
 
 class CycleParkingMarker extends React.Component {
 
@@ -72,7 +72,7 @@ class CycleParkingMarker extends React.Component {
       >
         <Popup>
           <div>
-            <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em', color: enturPrimary}}>{ name }</div>
+            <div style={{fontWeight: 600, textAlign: 'center', margin: '5 0', fontSize: '1.1em', color: enturPrimaryDarker}}>{ name }</div>
             <div style={{marginTop: -2, textAlign: 'center', marginBottom: 5, fontWeight: 600, fontSize: '1em'}}>{ translations.title } </div>
             <div style={{marginTop: -2, marginBottom: 5, fontSize: '1em', color: '#191919'}}>
               {translations.totalCapacity}:

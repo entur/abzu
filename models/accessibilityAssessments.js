@@ -35,7 +35,7 @@ const accessibilityAssements = {
   },
   colors: {
     "UNKNOWN": "#bfbfbf",
-    "TRUE": "rgb(65, 192, 196)",
+    "TRUE": '#37abaf',
     "FALSE": "#F44336",
     "PARTIAL": "#FF9800",
   }
