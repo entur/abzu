@@ -17,7 +17,8 @@ class ReportPageFooter extends React.Component {
 
   render() {
 
-    const { results, activePageIndex, handleSelectPage } = this.props
+    const { results, activePageIndex, handleSelectPage, intl } = this.props
+    const { formatMessage } = intl
 
     const totalCount = results.length
 
@@ -62,7 +63,7 @@ class ReportPageFooter extends React.Component {
     return (
       <div style={style}>
         <div style={pageWrapperStyle}>
-          <div style={{marginRight: 10}}>Side:</div>
+          <div style={{marginRight: 10}}>{ formatMessage({id: 'page'}) }:</div>
           { pages.map( page => (
             <div
               onClick={() => handleSelectPage(page)}
@@ -81,7 +82,7 @@ class ReportPageFooter extends React.Component {
             disabled={!totalCount}
             onClick={this.handleGetCSV.bind(this)}
             primary={true}
-            label={"Export to CSV"}
+            label={formatMessage({id: 'export_to_csv'})}
           />
         </div>
       </div>

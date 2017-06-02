@@ -26,3 +26,26 @@ export const ColumnTranformers = {
   importedId: stop => stop.importedId.join(','),
   quays: stop => stop.quays.map( quay => quay.id).join(',')
 }
+
+export const ColumnTranslations = {
+  "nb": {
+    id: "Id",
+    name: "Navn",
+    modality: "Modalitet",
+    muncipality: "Kommune",
+    county: "Fylke",
+    importedId: "OriginalID",
+    position: "Plassering",
+    quays: "Quayer",
+  },
+  "en": {
+    id: "Id",
+    name: "Name",
+    modality: "Modality",
+    muncipality: "Muncipality",
+    county: "County",
+    importedId: "ImportedId",
+    position: "Position",
+    quays: "Quays",
+  }
+}

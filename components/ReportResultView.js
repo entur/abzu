@@ -1,12 +1,13 @@
 import React from 'react'
-import { ColumnTransformersJSX } from '../models/columnTransformers'
+import { ColumnTransformersJSX, ColumnTranslations } from '../models/columnTransformers'
 
 class ReportResultView extends React.Component {
 
 
   render() {
 
-    const { results, activePageIndex, columnOptions } = this.props
+    const { results, activePageIndex, columnOptions, intl } = this.props
+    const { locale, formatMessage } = intl
 
     const paginatedResults = getResultsPaginationMap(results)
     const resultItems = paginatedResults[activePageIndex] || []
@@ -25,17 +26,21 @@ class ReportResultView extends React.Component {
     }
 
     const columns = columnOptions.filter( c => c.checked).map( c => c.id )
+    const pageSize = results.length <= 20 ? results.length : 20
+    const showingResultLabel = formatMessage({id: 'showing_results'})
+      .replace('$size', pageSize)
+      .replace('$total', results.length)
 
 
     return (
       <div>
         <div style={{marginLeft: 5, fontWeight: 600, fontSize: 12, textAlign: 'center', marginBottom: 10, marginTop: 10}}>
-          Showing 20 of { results.length } results 
+          { showingResultLabel }  
         </div>
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', lineHeight: '1.5'}}>
           <div key={'column-header'} style={{display: 'flex', fontWeight: 600, paddingLeft: 10}}>
             { columns.map( column => (
-              <div key={"column-" + column} style={columnStyleHeader}>{ column }</div>
+              <div key={"column-" + column} style={columnStyleHeader}>{ ColumnTranslations[locale][column] }</div>
             ))
             }
           </div>

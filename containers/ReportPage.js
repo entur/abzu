@@ -190,7 +190,7 @@ class ReportPage extends React.Component {
           <div style={{display: 'flex'}}>
             <ReportFilterBox style={{width: '50%'}}>
               <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
-                Filtrer på modalitet
+                { formatMessage({id: 'filter_report_by_modality'}) }
               </div>
               <ModalityFilter
                 locale={locale}
@@ -199,7 +199,7 @@ class ReportPage extends React.Component {
               />
               <div style={{padding: 5, marginLeft: 5}}>
                 <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12}}>
-                  Filtrer på fylker og kommuner
+                  { formatMessage({id: 'filter_report_by_topography'}) }
                 </div>
                 <AutoComplete
                   hintText={formatMessage({id: "filter_by_topography"})}
@@ -219,18 +219,18 @@ class ReportPage extends React.Component {
               </div>
             </ReportFilterBox>
             <ReportFilterBox style={{width: '50%'}}>
-              <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
+              {/*<div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
                 Øvrige filtre
-              </div>
-              <div style={{display: 'flex', alignItems: 'center', padding: 5}}>
+              </div> */}
+              {/*<div style={{display: 'flex', alignItems: 'center', padding: 5}}>
                 <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>Quays</div>
                 <input value={quayMin} min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
                 <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>to</div>
                 <input value={quayMax}  min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
-              </div>
+              </div> */}
               <div style={{marginLeft: 10, display: 'flex', alignItems: 'center'}}>
                 <TextField
-                  floatingLabelText={"Optional search string"}
+                  floatingLabelText={formatMessage({id: 'optional_search_string'})}
                   value={this.state.searchQuery}
                   onChange={(e, v) => this.setState({searchQuery: v})}
                 />
@@ -240,7 +240,7 @@ class ReportPage extends React.Component {
                   icon={isLoading ?
                     <MdSpinner style={{marginTop: -5, marginLeft: -5}}/>
                     : <MdSearch/>}
-                  label={"Search"}
+                  label={formatMessage({id: 'search'})}
                   onClick={ () => this.handleSearch() }
                 />
               </div>
@@ -251,14 +251,18 @@ class ReportPage extends React.Component {
           style={{marginLeft: 5, marginTop: 5}}
           columnOptions={this.state.columnOptions}
           handleColumnCheck={this.handleColumnCheck.bind(this)}
+          label={formatMessage({id: 'column_filter_label'})}
+          locale={locale}
         />
         <ReportResultView
           activePageIndex={activePageIndex}
+          intl={intl}
           results={results}
           columnOptions={this.state.columnOptions}
         />
         <ReportPageFooter
           results={results}
+          intl={intl}
           columnOptions={this.state.columnOptions}
           handleSelectPage={this.handleSelectPage.bind(this)}
           activePageIndex={activePageIndex}
