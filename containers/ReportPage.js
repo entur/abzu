@@ -1,28 +1,30 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import ReportPageFooter from '../components/ReportPageFooter'
-import ReportResultView from '../components/ReportResultView'
-import ReportFilterBox from '../components/ReportFilterBox'
-import ModalityFilter from '../components/ModalityFilter'
-import TopographicalFilter from '../components/TopographicalFilter'
-import AutoComplete from 'material-ui/AutoComplete'
-import { withApollo } from 'react-apollo'
-import { topopGraphicalPlacesReportQuery, findStopForReport } from '../graphql/Queries'
-import MenuItem from 'material-ui/MenuItem'
-import RaisedButton from 'material-ui/RaisedButton'
-import TextField from 'material-ui/TextField'
-import MdSpinner from '../static/icons/spinner'
-import MdSearch from 'material-ui/svg-icons/action/search'
-import ColumnFilterPopover from '../components/ColumnFilterPopover'
-import { getParkingForMultipleStopPlaces } from '../graphql/Queries'
-import { reportReducer } from '../reducers/'
+import React from 'react';
+import { connect } from 'react-redux';
+import ReportPageFooter from '../components/ReportPageFooter';
+import ReportResultView from '../components/ReportResultView';
+import ReportFilterBox from '../components/ReportFilterBox';
+import ModalityFilter from '../components/ModalityFilter';
+import TopographicalFilter from '../components/TopographicalFilter';
+import AutoComplete from 'material-ui/AutoComplete';
+import { withApollo } from 'react-apollo';
+import {
+  topopGraphicalPlacesReportQuery,
+  findStopForReport,
+} from '../graphql/Queries';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import MdSpinner from '../static/icons/spinner';
+import MdSearch from 'material-ui/svg-icons/action/search';
+import ColumnFilterPopover from '../components/ColumnFilterPopover';
+import { getParkingForMultipleStopPlaces } from '../graphql/Queries';
+import { reportReducer } from '../reducers/';
 
-import { injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl';
 
 class ReportPage extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       stopTypeFilter: [],
       quayMin: 0,
@@ -33,129 +35,128 @@ class ReportPage extends React.Component {
       isLoading: false,
       columnOptions: [
         {
-          id: "id",
+          id: 'id',
           checked: true,
         },
         {
-          id: "name",
+          id: 'name',
           checked: true,
         },
         {
-          id: "modality",
+          id: 'modality',
           checked: true,
         },
         {
-          id: "county",
+          id: 'county',
           checked: true,
         },
         {
-          id: "muncipality",
+          id: 'muncipality',
           checked: true,
         },
         {
-          id: "importedId",
+          id: 'importedId',
           checked: true,
         },
         {
-          id: "position",
+          id: 'position',
           checked: true,
         },
         {
-          id: "quays",
+          id: 'parking',
           checked: false,
         },
-        {
-          id: "parking",
-          checked: false,
-        },
-      ]
-    }
+      ],
+    };
   }
 
   handleSelectPage(pageIndex) {
     this.setState({
-      activePageIndex: pageIndex
-    })
+      activePageIndex: pageIndex,
+    });
   }
 
   handleColumnCheck(id, checked) {
-
-    const columnOptions = this.state.columnOptions.slice()
+    const columnOptions = this.state.columnOptions.slice();
 
     for (let i = 0; columnOptions.length > i; i++) {
-      let option = columnOptions[i]
+      let option = columnOptions[i];
       if (option.id === id) {
-        option.checked = checked
-        columnOptions[i] = option
-        break
+        option.checked = checked;
+        columnOptions[i] = option;
+        break;
       }
     }
 
     this.setState({
-      columnOptions: columnOptions
-    })
+      columnOptions: columnOptions,
+    });
   }
 
   componentDidMount() {
-    const { formatMessage } = this.props.intl
-    document.title = formatMessage({id: '_report_page'})
+    const { formatMessage } = this.props.intl;
+    document.title = formatMessage({ id: '_report_page' });
   }
 
   handleSearch() {
-    const { searchQuery, topoiChips, stopTypeFilter } = this.state
-    const { client } = this.props
+    const { searchQuery, topoiChips, stopTypeFilter } = this.state;
+    const { client } = this.props;
 
     this.setState({
-      isLoading: true
-    })
+      isLoading: true,
+    });
 
-    client.query({
-      query: findStopForReport,
-      fetchPolicy: 'network-only',
-      variables: {
-        query: searchQuery,
-        stopPlaceType: stopTypeFilter,
-        municipalityReference: topoiChips
-          .filter( topos => topos.type === "town").map(topos => topos.id),
-        countyReference: topoiChips
-          .filter( topos => topos.type === "county").map(topos => topos.id)
-      }
-    }).then( response => {
-
-      const stopPlaces = response.data.stopPlace
-      const stopPlaceIds = stopPlaces.map( stopPlace => stopPlace.id )
-
-      client.query({
-        query: getParkingForMultipleStopPlaces(stopPlaceIds),
-        reducer: reportReducer,
+    client
+      .query({
+        query: findStopForReport,
         fetchPolicy: 'network-only',
-      }).then( response => {
-        this.setState({
-          isLoading: false
-        })
+        variables: {
+          query: searchQuery,
+          stopPlaceType: stopTypeFilter,
+          municipalityReference: topoiChips
+            .filter(topos => topos.type === 'town')
+            .map(topos => topos.id),
+          countyReference: topoiChips
+            .filter(topos => topos.type === 'county')
+            .map(topos => topos.id),
+        },
       })
+      .then(response => {
+        const stopPlaces = response.data.stopPlace;
+        const stopPlaceIds = stopPlaces.map(stopPlace => stopPlace.id);
 
-    }).catch( err => {
-      this.setState({
-        isLoading: false
+        client
+          .query({
+            query: getParkingForMultipleStopPlaces(stopPlaceIds),
+            reducer: reportReducer,
+            fetchPolicy: 'network-only',
+          })
+          .then(response => {
+            this.setState({
+              isLoading: false,
+            });
+          });
       })
-    })
+      .catch(err => {
+        this.setState({
+          isLoading: false,
+        });
+      });
   }
 
   handleDeleteChipById(chipId) {
     this.setState({
-      topoiChips: this.state.topoiChips.filter( tc => tc.id  !== chipId)
-    })
+      topoiChips: this.state.topoiChips.filter(tc => tc.id !== chipId),
+    });
   }
 
   handleAddChip(chip) {
-
-    let addedChipsIds = this.state.topoiChips.map( tc => tc.id )
+    let addedChipsIds = this.state.topoiChips.map(tc => tc.id);
 
     if (addedChipsIds.indexOf(chip.id) === -1) {
       this.setState({
-        topoiChips: this.state.topoiChips.concat(chip)
-      })
+        topoiChips: this.state.topoiChips.concat(chip),
+      });
     }
   }
 
@@ -164,67 +165,96 @@ class ReportPage extends React.Component {
       query: topopGraphicalPlacesReportQuery,
       fetchPolicy: 'network-only',
       variables: {
-        query: searchText
-      }
-    })
+        query: searchText,
+      },
+    });
   }
 
   getTopographicalNames(topographicalPlace) {
-    let name = topographicalPlace.name.value
+    let name = topographicalPlace.name.value;
 
-    if (topographicalPlace.topographicPlaceType === 'town' && topographicalPlace.parentTopographicPlace) {
-      name += `, ${topographicalPlace.parentTopographicPlace.name.value}`
+    if (
+      topographicalPlace.topographicPlaceType === 'town' &&
+      topographicalPlace.parentTopographicPlace
+    ) {
+      name += `, ${topographicalPlace.parentTopographicPlace.name.value}`;
     }
-    return name
+    return name;
   }
 
   render() {
-
-    const { stopTypeFilter, quayMin, quayMax, topoiChips, activePageIndex, isLoading } = this.state
-    const { intl, topographicalPlaces, results } = this.props
-    const { locale, formatMessage } = intl
+    const {
+      stopTypeFilter,
+      quayMin,
+      quayMax,
+      topoiChips,
+      activePageIndex,
+      isLoading,
+    } = this.state;
+    const { intl, topographicalPlaces, results } = this.props;
+    const { locale, formatMessage } = intl;
 
     const topographicalPlacesDataSource = topographicalPlaces
-      .filter( place => place.topographicPlaceType === "county" || place.topographicPlaceType === "town")
-      .filter( place => topoiChips.map( chip => chip.value ).indexOf(place.id) == -1)
-      .map( place => {
-        let name = this.getTopographicalNames(place)
+      .filter(
+        place =>
+          place.topographicPlaceType === 'county' ||
+          place.topographicPlaceType === 'town',
+      )
+      .filter(
+        place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1,
+      )
+      .map(place => {
+        let name = this.getTopographicalNames(place);
         return {
           text: name,
           id: place.id,
           value: (
             <MenuItem
               primaryText={name}
-              secondaryText={ formatMessage({id: place.topographicPlaceType}) }
+              secondaryText={formatMessage({ id: place.topographicPlaceType })}
             />
           ),
-          type: place.topographicPlaceType
-        }
-      })
+          type: place.topographicPlaceType,
+        };
+      });
 
     return (
       <div>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div style={{display: 'flex'}}>
-            <ReportFilterBox style={{width: '50%'}}>
-              <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
-                { formatMessage({id: 'filter_report_by_modality'}) }
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex' }}>
+            <ReportFilterBox style={{ width: '50%' }}>
+              <div
+                style={{
+                  fontWeight: 600,
+                  marginBottom: 5,
+                  fontSize: 12,
+                  padding: 5,
+                  marginLeft: 5,
+                }}
+              >
+                {formatMessage({ id: 'filter_report_by_modality' })}
               </div>
               <ModalityFilter
                 locale={locale}
                 stopTypeFilter={stopTypeFilter}
-                handleApplyFilters={ filters => this.setState({stopTypeFilter: filters})}
+                handleApplyFilters={filters =>
+                  this.setState({ stopTypeFilter: filters })}
               />
-              <div style={{padding: 5, marginLeft: 5}}>
-                <div style={{fontWeight: 600, marginBottom: 5, fontSize: 12}}>
-                  { formatMessage({id: 'filter_report_by_topography'}) }
+              <div style={{ padding: 5, marginLeft: 5 }}>
+                <div style={{ fontWeight: 600, marginBottom: 5, fontSize: 12 }}>
+                  {formatMessage({ id: 'filter_report_by_topography' })}
                 </div>
                 <AutoComplete
-                  hintText={formatMessage({id: "filter_by_topography"})}
+                  hintText={formatMessage({ id: 'filter_by_topography' })}
                   dataSource={topographicalPlacesDataSource}
                   onUpdateInput={this.handleTopographicalPlaceSearch.bind(this)}
                   filter={AutoComplete.caseInsensitiveFilter}
-                  style={{margin: 'auto', width: '50%', textAlign: 'center', marginTop: -10}}
+                  style={{
+                    margin: 'auto',
+                    width: '50%',
+                    textAlign: 'center',
+                    marginTop: -10,
+                  }}
                   maxSearchResults={5}
                   fullWidth={true}
                   ref="topoFilter"
@@ -232,11 +262,11 @@ class ReportPage extends React.Component {
                 />
                 <TopographicalFilter
                   topoiChips={topoiChips}
-                  handleDeleteChip={ chip => this.handleDeleteChipById(chip) }
+                  handleDeleteChip={chip => this.handleDeleteChipById(chip)}
                 />
               </div>
             </ReportFilterBox>
-            <ReportFilterBox style={{width: '50%'}}>
+            <ReportFilterBox style={{ width: '50%' }}>
               {/*<div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
                 Øvrige filtre
               </div> */}
@@ -246,30 +276,40 @@ class ReportPage extends React.Component {
                 <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>to</div>
                 <input value={quayMax}  min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
               </div> */}
-              <div style={{marginLeft: 10, display: 'flex', alignItems: 'center'}}>
+              <div
+                style={{
+                  marginLeft: 10,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
                 <TextField
-                  floatingLabelText={formatMessage({id: 'optional_search_string'})}
+                  floatingLabelText={formatMessage({
+                    id: 'optional_search_string',
+                  })}
                   value={this.state.searchQuery}
-                  onChange={(e, v) => this.setState({searchQuery: v})}
+                  onChange={(e, v) => this.setState({ searchQuery: v })}
                 />
                 <RaisedButton
-                  style={{marginTop: 10, marginLeft: 5}}
+                  style={{ marginTop: 10, marginLeft: 5 }}
                   disabled={isLoading}
-                  icon={isLoading ?
-                    <MdSpinner style={{marginTop: -5, marginLeft: -5}}/>
-                    : <MdSearch/>}
-                  label={formatMessage({id: 'search'})}
-                  onClick={ () => this.handleSearch() }
+                  icon={
+                    isLoading
+                      ? <MdSpinner style={{ marginTop: -5, marginLeft: -5 }} />
+                      : <MdSearch />
+                  }
+                  label={formatMessage({ id: 'search' })}
+                  onClick={() => this.handleSearch()}
                 />
               </div>
             </ReportFilterBox>
           </div>
         </div>
         <ColumnFilterPopover
-          style={{marginLeft: 5, marginTop: 5}}
+          style={{ marginLeft: 5, marginTop: 5 }}
           columnOptions={this.state.columnOptions}
           handleColumnCheck={this.handleColumnCheck.bind(this)}
-          label={formatMessage({id: 'column_filter_label'})}
+          label={formatMessage({ id: 'column_filter_label' })}
           locale={locale}
         />
         <ReportResultView
@@ -286,14 +326,13 @@ class ReportPage extends React.Component {
           activePageIndex={activePageIndex}
         />
       </div>
-    )
+    );
   }
 }
 
-
 const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
-  results: state.report.results
-})
+  results: state.report.results,
+});
 
-export default withApollo(connect(mapStateToProps)((injectIntl(ReportPage))))
+export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));

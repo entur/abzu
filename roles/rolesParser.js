@@ -1,18 +1,17 @@
-const rolesParser  = {}
+const rolesParser = {};
 
 rolesParser.canEdit = tokenParsed => {
+  if (!tokenParsed || !tokenParsed.roles) return false;
 
-  if (!tokenParsed || !tokenParsed.roles) return false
+  let isEditingAllowed = false;
 
-  let isEditingAllowed = false
-
-  tokenParsed.roles.forEach( roleString => {
-    let roleJSON = JSON.parse(roleString)
+  tokenParsed.roles.forEach(roleString => {
+    let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === 'editStops') {
-      isEditingAllowed = true
+      isEditingAllowed = true;
     }
-  })
-  return isEditingAllowed
-}
+  });
+  return isEditingAllowed;
+};
 
-export default rolesParser
+export default rolesParser;

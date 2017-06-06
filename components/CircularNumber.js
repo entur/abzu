@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-export default ({number, color}) => {
-
+export default ({ number, color }) => {
   let numberCircleStyle = {
     display: 'block',
     height: 20,
@@ -12,11 +11,11 @@ export default ({number, color}) => {
     color: '#fff',
     textAlign: 'center',
     fontSize: 12,
-  }
+  };
 
   return (
     <div style={numberCircleStyle}>
       {number}
     </div>
-  )
-}
+  );
+};

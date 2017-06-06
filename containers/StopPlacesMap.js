@@ -1,48 +1,46 @@
-import { connect } from 'react-redux'
-import React from 'react'
-import LeafletMap from '../components/LeafletMap'
-import { StopPlaceActions, UserActions } from '../actions/'
-import { withApollo } from 'react-apollo'
-import { stopPlaceBBQuery } from '../graphql/Queries'
-import { getIn } from '../utils/'
-import { injectIntl } from 'react-intl'
+import { connect } from 'react-redux';
+import React from 'react';
+import LeafletMap from '../components/LeafletMap';
+import { StopPlaceActions, UserActions } from '../actions/';
+import { withApollo } from 'react-apollo';
+import { stopPlaceBBQuery } from '../graphql/Queries';
+import { getIn } from '../utils/';
+import { injectIntl } from 'react-intl';
 
 class StopPlacesMap extends React.Component {
-
   componentDidMount() {
-    const { formatMessage } = this.props.intl
-    document.title = formatMessage({id: '_title'})
+    const { formatMessage } = this.props.intl;
+    document.title = formatMessage({ id: '_title' });
   }
 
   componentWillUpdate(nextProps) {
     if (this.props.intl.locale !== nextProps.intl.locale) {
-      const { formatMessage } =  nextProps.intl
-      document.title = formatMessage({id: '_title'})
+      const { formatMessage } = nextProps.intl;
+      document.title = formatMessage({ id: '_title' });
     }
   }
 
   handleClick(e, map) {
-    const { isCreatingNewStop } = this.props
+    const { isCreatingNewStop } = this.props;
 
     if (isCreatingNewStop) {
-      map.leafletElement.doubleClickZoom.disable()
-      this.props.dispatch( StopPlaceActions.createNewStop(e.latlng) )
+      map.leafletElement.doubleClickZoom.disable();
+      this.props.dispatch(StopPlaceActions.createNewStop(e.latlng));
     } else {
-      map.leafletElement.doubleClickZoom.enable()
+      map.leafletElement.doubleClickZoom.enable();
     }
   }
 
   handleBaselayerChanged(value) {
-    this.props.dispatch(UserActions.changeActiveBaselayer(value))
+    this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
   handleMapMoveEnd(event, { leafletElement }) {
-    const zoom = leafletElement.getZoom()
+    const zoom = leafletElement.getZoom();
 
     if (zoom > 14) {
-
-      const bounds = leafletElement.getBounds()
-      const { ignoreStopId } = this.props
+      const bounds = leafletElement.getBounds();
+      const { ignoreStopId } = this.props;
 
       this.props.client.query({
         query: stopPlaceBBQuery,
@@ -51,18 +49,16 @@ class StopPlacesMap extends React.Component {
           latMax: bounds.getNorthEast().lat,
           lonMin: bounds.getSouthWest().lng,
           lonMax: bounds.getNorthEast().lng,
-          ignoreStopPlaceId: ignoreStopId
-        }
-      })
-
+          ignoreStopPlaceId: ignoreStopId,
+        },
+      });
     } else {
-      this.props.dispatch(UserActions.removeStopsNearbyForOverview())
+      this.props.dispatch(UserActions.removeStopsNearbyForOverview());
     }
   }
 
   render() {
-
-    const { position, markers, zoom } = this.props
+    const { position, markers, zoom } = this.props;
 
     return (
       <LeafletMap
@@ -76,8 +72,8 @@ class StopPlacesMap extends React.Component {
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         enablePolylines={false}
-        />
-    )
+      />
+    );
   }
 }
 
@@ -87,19 +83,19 @@ const mapStateToProps = state => {
     centerPosition,
     activeSearchResult,
     zoom,
-    neighbourStops
-  } = state.stopPlace
+    neighbourStops,
+  } = state.stopPlace;
 
-  const { isCreatingNewStop } = state.user
+  const { isCreatingNewStop } = state.user;
 
-  let markers = activeSearchResult ? [ activeSearchResult ] : []
+  let markers = activeSearchResult ? [activeSearchResult] : [];
 
   if (newStop && isCreatingNewStop) {
-    markers = markers.concat(newStop)
+    markers = markers.concat(newStop);
   }
 
   if (neighbourStops && neighbourStops.length) {
-    markers = markers.concat(neighbourStops)
+    markers = markers.concat(neighbourStops);
   }
 
   return {
@@ -108,8 +104,12 @@ const mapStateToProps = state => {
     zoom: zoom,
     isCreatingNewStop: state.user.isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
-    ignoreStopId: getIn(state.stopPlace, ['activeSearchResult', 'id'], undefined)
-  }
-}
+    ignoreStopId: getIn(
+      state.stopPlace,
+      ['activeSearchResult', 'id'],
+      undefined,
+    ),
+  };
+};
 
-export default withApollo(injectIntl(connect(mapStateToProps)(StopPlacesMap)))
+export default withApollo(injectIntl(connect(mapStateToProps)(StopPlacesMap)));

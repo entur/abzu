@@ -1,71 +1,72 @@
 // Used for altNamesDialog
 
 export const supportedNameTypes = [
-  { value: "alias",
+  {
+    value: 'alias',
     name: {
-      "en": "Alias",
-      "nb": "Alias"
-    }
+      en: 'Alias',
+      nb: 'Alias',
+    },
   },
-  { value: "translation",
+  {
+    value: 'translation',
     name: {
-      "en": "Translation",
-      "nb": "Oversettelse"
-    }
-  }
-]
+      en: 'Translation',
+      nb: 'Oversettelse',
+    },
+  },
+];
 
 export const allNameTypes = {
-  "alias": {
-    "en": "Alias",
-    "nb": "Alias"
+  alias: {
+    en: 'Alias',
+    nb: 'Alias',
   },
-  "translation": {
-    "en": "Translation",
-    "nb": "Oversettelse"
+  translation: {
+    en: 'Translation',
+    nb: 'Oversettelse',
   },
-  "label": {
-    "en": "Label",
-    "nb": "Merkelapp"
+  label: {
+    en: 'Label',
+    nb: 'Merkelapp',
   },
-  "copy": {
-    "en": "Copy",
-    "nb": "Kopi"
+  copy: {
+    en: 'Copy',
+    nb: 'Kopi',
   },
-  "other": {
-    "en": "Other",
-    "nb": "Annet"
-  }
-}
-
+  other: {
+    en: 'Other',
+    nb: 'Annet',
+  },
+};
 
 export const languages = {
-  "no": {
-    "en": "Norwegian",
-    "nb": "Norsk"
+  no: {
+    en: 'Norwegian',
+    nb: 'Norsk',
   },
-  "nb": {
-    "en": "Norwegian (bokmål)",
-    "nb": "Norsk (bokmål)"
+  nb: {
+    en: 'Norwegian (bokmål)',
+    nb: 'Norsk (bokmål)',
   },
-  "nn": {
-    "en": "Norwegian (nynorsk)",
-    "nb": "Norsk (nynorsk)"
+  nn: {
+    en: 'Norwegian (nynorsk)',
+    nb: 'Norsk (nynorsk)',
   },
-  "en": {
-    "en": "English",
-    "nb": "Engelsk"
+  en: {
+    en: 'English',
+    nb: 'Engelsk',
   },
-  "et": {
-    "en": "Estonian",
-    "nb": "Estisk"
+  et: {
+    en: 'Estonian',
+    nb: 'Estisk',
   },
-  "ru": {
-    "en": "Russian",
-    "nb": "Russian"
+  ru: {
+    en: 'Russian',
+    nb: 'Russian',
   },
-  "fi": {
-    "en": "Kven language",
-    "nb": "Kvensk"
-  }
-}
+  fi: {
+    en: 'Kven language',
+    nb: 'Kvensk',
+  },
+};

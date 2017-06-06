@@ -1,31 +1,29 @@
-import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
-import LeafletMap from '../components/LeafletMap'
-import { StopPlaceActions, UserActions } from '../actions/'
-import { injectIntl } from 'react-intl'
-import { setDecimalPrecision } from '../utils'
-import CoordinatesDialog from '../components/CoordinatesDialog'
-import CompassBearingDialog from '../components/CompassBearingDialog'
-import { stopPlaceBBQuery } from "../graphql/Queries"
-import debounce from 'lodash.debounce'
-import { withApollo } from 'react-apollo'
+import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import LeafletMap from '../components/LeafletMap';
+import { StopPlaceActions, UserActions } from '../actions/';
+import { injectIntl } from 'react-intl';
+import { setDecimalPrecision } from '../utils';
+import CoordinatesDialog from '../components/CoordinatesDialog';
+import CompassBearingDialog from '../components/CompassBearingDialog';
+import { stopPlaceBBQuery } from '../graphql/Queries';
+import debounce from 'lodash.debounce';
+import { withApollo } from 'react-apollo';
 
 class EditStopMap extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       coordinatesDialogOpen: false,
-      compassBearingDialogOpen: false
-    }
+      compassBearingDialogOpen: false,
+    };
     const mapEnd = (event, { leafletElement }) => {
+      let { ignoreStopId } = this.props;
 
-      let { ignoreStopId } = this.props
-
-      const zoom = leafletElement.getZoom()
+      const zoom = leafletElement.getZoom();
 
       if (zoom > 12) {
-        const bounds = leafletElement.getBounds()
+        const bounds = leafletElement.getBounds();
         this.props.client.query({
           query: stopPlaceBBQuery,
           variables: {
@@ -33,59 +31,64 @@ class EditStopMap extends React.Component {
             latMin: bounds.getSouthWest().lat,
             latMax: bounds.getNorthEast().lat,
             lonMin: bounds.getSouthWest().lng,
-            lonMax: bounds.getNorthEast().lng
-          }
-        })
+            lonMax: bounds.getNorthEast().lng,
+          },
+        });
       }
-    }
-    this.handleMapMoveEnd = debounce(mapEnd, 500)
+    };
+    this.handleMapMoveEnd = debounce(mapEnd, 500);
   }
 
   handleMapOnClick(event, map) {
-    const { isCreatingPolylines, dispatch } = this.props
+    const { isCreatingPolylines, dispatch } = this.props;
 
     if (isCreatingPolylines) {
-      const coords = [event.latlng.lat, event.latlng.lng]
-      dispatch(UserActions.addCoordinatesToPolylines(coords))
+      const coords = [event.latlng.lat, event.latlng.lng];
+      dispatch(UserActions.addCoordinatesToPolylines(coords));
     }
   }
 
   handleCoordinatesDialogClose() {
     this.setState({
-      coordinatesDialogOpen: false
-    })
+      coordinatesDialogOpen: false,
+    });
   }
 
   handleCompassBearingDialogClose() {
     this.setState({
-      compassBearingDialogOpen: false
-    })
+      compassBearingDialogOpen: false,
+    });
   }
 
   shouldComponentUpdate(nextProps) {
-
     if (nextProps.isCreatingPolylines) {
-      document.querySelector(".leaflet-container").style.cursor = 'crosshair'
+      document.querySelector('.leaflet-container').style.cursor = 'crosshair';
     } else {
-      document.querySelector(".leaflet-container").style.cursor = ''
+      document.querySelector('.leaflet-container').style.cursor = '';
     }
 
-    return true
+    return true;
   }
 
   handleMapDragEnd(isQuay, index, event) {
-    const { dispatch } = this.props
-    const position = event.target.getLatLng()
+    const { dispatch } = this.props;
+    const position = event.target.getLatLng();
 
     let formattedPosition = [
-      setDecimalPrecision(position.lat,6),
-      setDecimalPrecision(position.lng,6)
-    ]
+      setDecimalPrecision(position.lat, 6),
+      setDecimalPrecision(position.lng, 6),
+    ];
 
     if (isQuay) {
-      dispatch(StopPlaceActions.changeElementPosition(index, 'quay', formattedPosition))
+      dispatch(
+        StopPlaceActions.changeElementPosition(
+          index,
+          'quay',
+          formattedPosition,
+        ),
+      );
     } else {
-      dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition))
+      dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition));
     }
   }
 
@@ -93,12 +96,12 @@ class EditStopMap extends React.Component {
     this.setState({
       compassBearingDialogOpen: true,
       compassBearing: compassBearing,
-      compassBearingOwner: index
-    })
+      compassBearingOwner: index,
+    });
   }
 
   handleBaselayerChanged(value) {
-    this.props.dispatch(UserActions.changeActiveBaselayer(value))
+    this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
   handleChangeCoordinates(isQuay, markerIndex, position) {
@@ -107,61 +110,70 @@ class EditStopMap extends React.Component {
       coordinates: position.join(','),
       coordinatesOwner: {
         isQuay: isQuay,
-        markerIndex: markerIndex
-      }
-    })
+        markerIndex: markerIndex,
+      },
+    });
   }
 
   handleSubmitChangeCoordinates(position) {
-    const { coordinatesOwner } = this.state
-    const { dispatch } = this.props
+    const { coordinatesOwner } = this.state;
+    const { dispatch } = this.props;
 
     if (coordinatesOwner.isQuay) {
-      dispatch(StopPlaceActions.changeElementPosition(coordinatesOwner.markerIndex, 'quay', position))
+      dispatch(
+        StopPlaceActions.changeElementPosition(
+          coordinatesOwner.markerIndex,
+          'quay',
+          position,
+        ),
+      );
     } else {
-      dispatch(StopPlaceActions.changeCurrentStopPosition(position))
+      dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     }
 
-    dispatch(StopPlaceActions.changeMapCenter(position, 14))
+    dispatch(StopPlaceActions.changeMapCenter(position, 14));
 
-    this.setState(({
-      coordinatesDialogOpen: false
-    }))
+    this.setState({
+      coordinatesDialogOpen: false,
+    });
   }
 
   handleSubmitChangeCompassBearing(compassBearing) {
-    const { compassBearingOwner } = this.state
-    this.props.dispatch(StopPlaceActions.changeQuayCompassBearing(compassBearingOwner, compassBearing))
-    this.setState(({
-      compassBearingDialogOpen: false
-    }))
+    const { compassBearingOwner } = this.state;
+    this.props.dispatch(
+      StopPlaceActions.changeQuayCompassBearing(
+        compassBearingOwner,
+        compassBearing,
+      ),
+    );
+    this.setState({
+      compassBearingDialogOpen: false,
+    });
   }
 
   componentDidMount() {
-    const { leafletElement } = this.refs.leafletMap.refs.map
-    const { dispatch, client, ignoreStopId } = this.props
-    dispatch(StopPlaceActions.setActiveMap(leafletElement))
+    const { leafletElement } = this.refs.leafletMap.refs.map;
+    const { dispatch, client, ignoreStopId } = this.props;
+    dispatch(StopPlaceActions.setActiveMap(leafletElement));
 
-    const bounds = leafletElement.getBounds()
+    const bounds = leafletElement.getBounds();
 
     client.query({
-       fetchPolicy: 'network-only',
-       query: stopPlaceBBQuery,
-       variables: {
-       ignoreStopPlaceId: ignoreStopId,
-       latMin: bounds.getSouthWest().lat,
-       latMax: bounds.getNorthEast().lat,
-       lonMin: bounds.getSouthWest().lng,
-       lonMax: bounds.getNorthEast().lng,
-       }
-     })
+      fetchPolicy: 'network-only',
+      query: stopPlaceBBQuery,
+      variables: {
+        ignoreStopPlaceId: ignoreStopId,
+        latMin: bounds.getSouthWest().lat,
+        latMax: bounds.getNorthEast().lat,
+        lonMin: bounds.getSouthWest().lng,
+        lonMax: bounds.getNorthEast().lng,
+      },
+    });
   }
 
-
   render() {
-
-    const { position, markers, zoom, minZoom, disabled } = this.props
-    const { coordinatesDialogOpen, compassBearingDialogOpen } =  this.state
+    const { position, markers, zoom, minZoom, disabled } = this.props;
+    const { coordinatesDialogOpen, compassBearingDialogOpen } = this.state;
 
     return (
       <div>
@@ -169,7 +181,7 @@ class EditStopMap extends React.Component {
           position={position}
           markers={markers}
           zoom={zoom}
-          boundsOptions={{padding: [50, 50]}}
+          boundsOptions={{ padding: [50, 50] }}
           ref="leafletMap"
           key="leafletmap-edit"
           handleOnClick={this.handleMapOnClick.bind(this)}
@@ -198,23 +210,22 @@ class EditStopMap extends React.Component {
           handleConfirm={this.handleSubmitChangeCompassBearing.bind(this)}
         />
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
+  const currentStopPlace = state.stopPlace.current;
+  const neighbourStops = state.stopPlace.neighbourStops;
 
-  const currentStopPlace = state.stopPlace.current
-  const neighbourStops = state.stopPlace.neighbourStops
-
-  let markers = []
+  let markers = [];
 
   if (currentStopPlace) {
-    markers = markers.concat(currentStopPlace)
+    markers = markers.concat(currentStopPlace);
   }
 
   if (neighbourStops && neighbourStops.length) {
-    markers = markers.concat(neighbourStops)
+    markers = markers.concat(neighbourStops);
   }
 
   return {
@@ -226,10 +237,8 @@ const mapStateToProps = state => {
     missingCoordsMap: state.user.missingCoordsMap,
     markers: markers,
     ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,
-    minZoom: state.stopPlace.minZoom
-  }
-}
+    minZoom: state.stopPlace.minZoom,
+  };
+};
 
-export default withApollo(injectIntl(connect(mapStateToProps)(EditStopMap)))
-
-
+export default withApollo(injectIntl(connect(mapStateToProps)(EditStopMap)));

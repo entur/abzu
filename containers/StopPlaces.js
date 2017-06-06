@@ -1,15 +1,15 @@
-import React from 'react'
-import SearchBox from './SearchBox'
-import StopPlacesMap from './StopPlacesMap'
-import '../styles/main.css'
+import React from 'react';
+import SearchBox from './SearchBox';
+import StopPlacesMap from './StopPlacesMap';
+import '../styles/main.css';
 
 const StopPlaces = props => {
-    return (
-      <div>
-        <SearchBox/>
-        <StopPlacesMap/>
-      </div>
-    )
-}
+  return (
+    <div>
+      <SearchBox />
+      <StopPlacesMap />
+    </div>
+  );
+};
 
-export default StopPlaces
+export default StopPlaces;

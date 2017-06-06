@@ -1,33 +1,31 @@
-import React from 'react'
-import Popover, {PopoverAnimationVertical} from 'material-ui/Popover'
-import RaisedButton from 'material-ui/RaisedButton'
-import Menu from 'material-ui/Menu'
-import Checkbox from 'material-ui/Checkbox'
-import { ColumnTranslations } from '../models/columnTransformers'
+import React from 'react';
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import RaisedButton from 'material-ui/RaisedButton';
+import Menu from 'material-ui/Menu';
+import Checkbox from 'material-ui/Checkbox';
+import { ColumnTranslations } from '../models/columnTransformers';
 
 class ColumnFilterPopover extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      open: false
-    }
+      open: false,
+    };
   }
 
   handleTouchTap(event) {
-    event.preventDefault()
+    event.preventDefault();
     this.setState({
       anchorEl: event.currentTarget,
-      open: true
-    })
+      open: true,
+    });
   }
 
   render() {
-
-    const { columnOptions, label, locale } = this.props
+    const { columnOptions, label, locale } = this.props;
     const optionStyle = {
-      padding: 5
-    }
+      padding: 5,
+    };
 
     return (
       <div style={this.props.style}>
@@ -38,28 +36,30 @@ class ColumnFilterPopover extends React.Component {
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={() => { this.setState({open: false})} }
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onRequestClose={() => {
+            this.setState({ open: false });
+          }}
           animation={PopoverAnimationVertical}
         >
           <Menu>
-            { columnOptions.map( option => (
-              <div
-                style={optionStyle}
-                key={"option-" + option.id}
-              >
+            {columnOptions.map(option =>
+              <div style={optionStyle} key={'option-' + option.id}>
                 <Checkbox
-                  label={ColumnTranslations[locale][option.id]} checked={option.checked}
-                  onCheck={ (e, checked) => { this.props.handleColumnCheck(option.id, checked)}}
+                  label={ColumnTranslations[locale][option.id]}
+                  checked={option.checked}
+                  onCheck={(e, checked) => {
+                    this.props.handleColumnCheck(option.id, checked);
+                  }}
                 />
-              </div>
-            ))}
+              </div>,
+            )}
           </Menu>
         </Popover>
       </div>
-    )
+    );
   }
 }
 
-export default ColumnFilterPopover
+export default ColumnFilterPopover;

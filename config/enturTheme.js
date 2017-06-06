@@ -1,16 +1,16 @@
-import {fade} from 'material-ui/utils/colorManipulator'
+import { fade } from 'material-ui/utils/colorManipulator';
 
-export const enturPrimary = '#41c0c4'
-export const enturPrimaryDarker = '#37abaf'
-export const enturDark = 'rgb(39, 58, 70)'
-const cyan700 = '#0097a7'
-const grey100 = '#f5f5f5'
-const grey300 = '#e0e0e0'
-const grey400 = '#bdbdbd'
-const grey500 = '#9e9e9e'
-const white = '#ffffff'
-const darkBlack = 'rgba(0, 0, 0, 0.87)'
-const fullBlack = 'rgba(0, 0, 0, 1)'
+export const enturPrimary = '#41c0c4';
+export const enturPrimaryDarker = '#37abaf';
+export const enturDark = 'rgb(39, 58, 70)';
+const cyan700 = '#0097a7';
+const grey100 = '#f5f5f5';
+const grey300 = '#e0e0e0';
+const grey400 = '#bdbdbd';
+const grey500 = '#9e9e9e';
+const white = '#ffffff';
+const darkBlack = 'rgba(0, 0, 0, 0.87)';
+const fullBlack = 'rgba(0, 0, 0, 1)';
 
 export default {
   fontFamily: 'Roboto, sans-serif',
@@ -35,9 +35,9 @@ export default {
     selectTextColor: white,
   },
   checkbox: {
-    checkedColor: enturPrimaryDarker
+    checkedColor: enturPrimaryDarker,
   },
   appBar: {
     color: enturDark,
   },
-}
+};

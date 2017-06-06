@@ -3,9 +3,9 @@ export const defaultEquipments = {
     isChecked: {
       ticketOffice: true,
       ticketMachines: true,
-      numberOfMachines: 1
+      numberOfMachines: 1,
     },
-    isUnChecked: null
+    isUnChecked: null,
   },
   shelterEquipment: {
     isChecked: {
@@ -13,14 +13,14 @@ export const defaultEquipments = {
       stepFree: false,
       enclosed: false,
     },
-    isUnChecked: null
+    isUnChecked: null,
   },
   sanitaryEquipment: {
     isChecked: {
       gender: 'both',
-      numberOfToilets: 1
+      numberOfToilets: 1,
     },
-    isUnChecked: null
+    isUnChecked: null,
   },
   waitingRoomEquipment: {
     isChecked: {
@@ -28,16 +28,16 @@ export const defaultEquipments = {
       seats: 1,
       stepFree: false,
     },
-    isUnChecked: null
+    isUnChecked: null,
   },
   cycleStorageEquipment: {
     isChecked: {
-      cycleStorageType: "racks",
-      numberOfSpaces: 1
+      cycleStorageType: 'racks',
+      numberOfSpaces: 1,
     },
-    isUnChecked: null
-  }
-}
+    isUnChecked: null,
+  },
+};
 
 export const types = {
   ticketMachine: 'ticketingEquipment',
@@ -46,4 +46,4 @@ export const types = {
   waitingRoomEquipment: 'waitingRoomEquipment',
   cycleStorageEquipment: 'cycleStorageEquipment',
   generalSign: 'generalSign',
-}
+};

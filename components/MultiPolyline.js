@@ -1,19 +1,18 @@
-import React from 'react'
-import { Polyline, Popup, FeatureGroup } from 'react-leaflet'
-import { connect } from 'react-redux'
-import GenerateColor from '../models/Colors'
-import { UserActions } from '../actions'
-import { injectIntl } from 'react-intl'
-import WalkingDistanceDialog from './WalkingDistanceDialog'
-import { getIn } from '../utils'
+import React from 'react';
+import { Polyline, Popup, FeatureGroup } from 'react-leaflet';
+import { connect } from 'react-redux';
+import GenerateColor from '../models/Colors';
+import { UserActions } from '../actions';
+import { injectIntl } from 'react-intl';
+import WalkingDistanceDialog from './WalkingDistanceDialog';
+import { getIn } from '../utils';
 
 class MultiPolyline extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      openDialog: false
-    }
+      openDialog: false,
+    };
   }
 
   handleRemovePolyline(index) {
@@ -22,25 +21,26 @@ class MultiPolyline extends React.Component {
 
   handleEditTimeEstimate(index, estimate) {
     if (estimate && !isNaN(estimate)) {
-      this.props.dispatch(UserActions.editPolylineTimeEstimate(index, parseInt(estimate)))
+      this.props.dispatch(
+        UserActions.editPolylineTimeEstimate(index, parseInt(estimate)),
+      );
     }
 
-    this.handleCloseDialog()
+    this.handleCloseDialog();
   }
 
   handleCloseDialog() {
     this.setState({
-      openDialog: false
-    })
+      openDialog: false,
+    });
   }
 
   render() {
+    const { pathLink, intl, isEnabled } = this.props;
+    const { openDialog } = this.state;
+    const { formatMessage } = intl;
 
-    const { pathLink, intl, isEnabled } = this.props
-    const { openDialog } = this.state
-    const { formatMessage } = intl
-
-    if (!isEnabled) return null
+    if (!isEnabled) return null;
 
     const polylinePopupStyle = {
       cursor: 'pointer',
@@ -49,96 +49,127 @@ class MultiPolyline extends React.Component {
       marginTop: 10,
       textAlign: 'center',
       textDecoration: 'underline',
-      fontWeight: 600
-    }
+      fontWeight: 600,
+    };
 
-    let lines = pathLink.map( (polyline, index) => {
+    let lines = pathLink.map((polyline, index) => {
+      let color = GenerateColor(index);
 
-      let color = GenerateColor(index)
+      let isCompleted = polyline.to;
 
-      let isCompleted = polyline.to
-
-      let position = arrayOfPolylinesFromPolyline(polyline)
+      let position = arrayOfPolylinesFromPolyline(polyline);
 
       return (
-        <Polyline weight={6} key={'pl'+index} color={color} positions={position} opacity={isCompleted ? 0.8 : 1.0} dashArray="8,14">
+        <Polyline
+          weight={6}
+          key={'pl' + index}
+          color={color}
+          positions={position}
+          opacity={isCompleted ? 0.8 : 1.0}
+          dashArray="8,14"
+        >
           <WalkingDistanceDialog
-            open={openDialog} intl={intl}
+            open={openDialog}
+            intl={intl}
             handleConfirm={this.handleEditTimeEstimate.bind(this)}
             handleClose={this.handleCloseDialog.bind(this)}
             estimate={polyline.estimate}
             index={index}
           />
-          <Popup key={'pl'+index}>
+          <Popup key={'pl' + index}>
             <div>
-              <div style={{fontWeight:600, width: '100%', textAlign: 'center', margin: 0, color: color, display: 'inline-block'}}>
-                { formatMessage({id: 'pathLink'}) } {index+1}
+              <div
+                style={{
+                  fontWeight: 600,
+                  width: '100%',
+                  textAlign: 'center',
+                  margin: 0,
+                  color: color,
+                  display: 'inline-block',
+                }}
+              >
+                {formatMessage({ id: 'pathLink' })} {index + 1}
               </div>
               <div>
-                { polyline.distance
-                  ?
-                  <span
-                    style={{width: '100%', textAlign: 'center', marginTop: 10, fontWeight: 600, display: 'inline-block'}}
-                  > { parseFloat(polyline.distance.toFixed(2)) } m</span>
-                  : null
-                }
+                {polyline.distance
+                  ? <span
+                      style={{
+                        width: '100%',
+                        textAlign: 'center',
+                        marginTop: 10,
+                        fontWeight: 600,
+                        display: 'inline-block',
+                      }}
+                    >
+                      {' '}{parseFloat(polyline.distance.toFixed(2))} m
+                    </span>
+                  : null}
                 <span
                   style={polylinePopupStyle}
-                  onClick={() => this.setState({openDialog: true})}
+                  onClick={() => this.setState({ openDialog: true })}
                 >
 
-                  { polyline.estimate } { (Number(polyline.estimate) === 1)
-                  ? formatMessage({id: 'second'})
-                  : formatMessage({id: 'seconds'})
-                }
+                  {polyline.estimate}
+                  {' '}{Number(polyline.estimate) === 1
+                    ? formatMessage({ id: 'second' })
+                    : formatMessage({ id: 'seconds' })}
 
                 </span>
-                { /* <span
+                {/* <span
                   onClick={() => this.handleRemovePolyline(index)}
                   style={polylinePopupStyle}
-                > { formatMessage({id: 'remove'}) } </span> */ }
+                > { formatMessage({id: 'remove'}) } </span> */}
               </div>
             </div>
           </Popup>
         </Polyline>
-      )
-    })
-
+      );
+    });
 
     return (
       <FeatureGroup>
         {lines}
       </FeatureGroup>
-    )
+    );
   }
 }
 
 const arrayOfPolylinesFromPolyline = line => {
+  let arrayOfPolylines = [];
 
-  let arrayOfPolylines = []
-
-  let startPosition = getIn(line, ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'])
-  let endPosition = getIn(line, ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'])
+  let startPosition = getIn(line, [
+    'from',
+    'placeRef',
+    'addressablePlace',
+    'geometry',
+    'coordinates',
+  ]);
+  let endPosition = getIn(line, [
+    'to',
+    'placeRef',
+    'addressablePlace',
+    'geometry',
+    'coordinates',
+  ]);
 
   if (startPosition) {
-    arrayOfPolylines.push(startPosition[0])
+    arrayOfPolylines.push(startPosition[0]);
   }
 
   if (line.inBetween) {
-    arrayOfPolylines.push.apply(arrayOfPolylines, line.inBetween)
+    arrayOfPolylines.push.apply(arrayOfPolylines, line.inBetween);
   }
 
   if (endPosition) {
-    arrayOfPolylines.push(endPosition[0])
+    arrayOfPolylines.push(endPosition[0]);
   }
 
-  return arrayOfPolylines
-}
-
+  return arrayOfPolylines;
+};
 
 const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink || [],
-  isEnabled: state.stopPlace.enablePolylines
-})
+  isEnabled: state.stopPlace.enablePolylines,
+});
 
-export default injectIntl(connect(mapStateToProps)(MultiPolyline))
+export default injectIntl(connect(mapStateToProps)(MultiPolyline));

@@ -1,300 +1,366 @@
-import { connect } from 'react-redux'
-import React, { Component, PropTypes } from 'react'
-import FlatButton from 'material-ui/FlatButton'
-import { StopPlaceActions, UserActions } from '../actions/'
-import stopTypes from '../models/stopTypes'
-import { injectIntl } from 'react-intl'
-import ConfirmDialog from '../components/ConfirmDialog'
-import EditStopBoxTabs from './EditStopBoxTabs'
-import { Tabs, Tab } from 'material-ui/Tabs'
-import StopPlaceDetails from '../components/StopPlaceDetails'
-import { withApollo } from 'react-apollo'
-import mapToMutationVariables from '../modelUtils/mapToQueryVariables'
-import { mutateStopPlace, mutatePathLink, mutateParking, mutateMergeStopPlaces, mutateMergeQuays } from '../graphql/Mutations'
-import { stopPlaceAndPathLinkByVersion, stopPlaceAllVersions, stopPlaceFullSet } from '../graphql/Queries'
-import * as types from '../actions/Types'
-import EditStopAdditional from './EditStopAdditional'
-import MdUndo from 'material-ui/svg-icons/content/undo'
-import MdSave from 'material-ui/svg-icons/content/save'
-import MdBack from 'material-ui/svg-icons/navigation/arrow-back'
-import MdLess from 'material-ui/svg-icons/navigation/expand-less'
-import Divider from 'material-ui/Divider'
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover'
-import Menu from 'material-ui/Menu'
-import MenuItem from 'material-ui/MenuItem'
-import SaveDialog from '../components/SaveDialog'
-import MergeStopDialog from '../components/MergeStopDialog'
-import MergeQuaysDialog from '../components/MergeQuaysDialog'
-import { MutationErrorCodes } from '../models/ErrorCodes'
+import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import FlatButton from 'material-ui/FlatButton';
+import { StopPlaceActions, UserActions } from '../actions/';
+import stopTypes from '../models/stopTypes';
+import { injectIntl } from 'react-intl';
+import ConfirmDialog from '../components/ConfirmDialog';
+import EditStopBoxTabs from './EditStopBoxTabs';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import StopPlaceDetails from '../components/StopPlaceDetails';
+import { withApollo } from 'react-apollo';
+import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
+import {
+  mutateStopPlace,
+  mutatePathLink,
+  mutateParking,
+  mutateMergeStopPlaces,
+  mutateMergeQuays,
+} from '../graphql/Mutations';
+import {
+  stopPlaceAndPathLinkByVersion,
+  stopPlaceAllVersions,
+  stopPlaceFullSet,
+} from '../graphql/Queries';
+import * as types from '../actions/Types';
+import EditStopAdditional from './EditStopAdditional';
+import MdUndo from 'material-ui/svg-icons/content/undo';
+import MdSave from 'material-ui/svg-icons/content/save';
+import MdBack from 'material-ui/svg-icons/navigation/arrow-back';
+import MdLess from 'material-ui/svg-icons/navigation/expand-less';
+import Divider from 'material-ui/Divider';
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import SaveDialog from '../components/SaveDialog';
+import MergeStopDialog from '../components/MergeStopDialog';
+import MergeQuaysDialog from '../components/MergeQuaysDialog';
+import { MutationErrorCodes } from '../models/ErrorCodes';
 
 class EditStopGeneral extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       confirmDialogOpen: false,
       saveDialogOpen: false,
       errorMessage: '',
-      versionsOpen: false
-    }
+      versionsOpen: false,
+    };
   }
 
   handleSave() {
     this.setState({
       saveDialogOpen: true,
-      errorMessage: ''
-    })
+      errorMessage: '',
+    });
   }
 
   handleCloseMergeStopDialog() {
-    this.props.dispatch(UserActions.hideMergeStopDialog())
+    this.props.dispatch(UserActions.hideMergeStopDialog());
   }
 
   handleCloseMergeQuaysDialog() {
-    this.props.dispatch(UserActions.hideMergeQuaysDialog())
+    this.props.dispatch(UserActions.hideMergeQuaysDialog());
   }
 
   handleSuccess(id) {
     this.setState({
-      saveDialogOpen: false
-    })
+      saveDialogOpen: false,
+    });
 
-    const { client, dispatch } = this.props
+    const { client, dispatch } = this.props;
 
     if (id) {
-      client.query({
-        fetchPolicy: 'network-only',
-        query: stopPlaceAllVersions,
-        variables: {
-          id: id
-        }
-      }).then( () => {
-        dispatch( UserActions.navigateTo('/edit/', id))
-      })
+      client
+        .query({
+          fetchPolicy: 'network-only',
+          query: stopPlaceAllVersions,
+          variables: {
+            id: id,
+          },
+        })
+        .then(() => {
+          dispatch(UserActions.navigateTo('/edit/', id));
+        });
     }
-    dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+    dispatch(
+      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS),
+    );
   }
 
   handleError(errorCode) {
-    const { dispatch } = this.props
-    dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR) )
+    const { dispatch } = this.props;
+    dispatch(
+      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR),
+    );
     this.setState({
-      errorMessage: errorCode
-    })
+      errorMessage: errorCode,
+    });
   }
 
   handleMergeStop() {
-    const { stopPlace, mergeSource, client, dispatch } = this.props
+    const { stopPlace, mergeSource, client, dispatch } = this.props;
     const mergeStopVariables = {
       fromStopPlaceId: mergeSource.id,
-      toStopPlaceId: stopPlace.id
-    }
+      toStopPlaceId: stopPlace.id,
+    };
 
-    if (mergeStopVariables.fromStopPlaceId && mergeStopVariables.toStopPlaceId) {
-      client.mutate({ variables: mergeStopVariables, mutation: mutateMergeStopPlaces}).then( result => {
+    if (
+      mergeStopVariables.fromStopPlaceId &&
+      mergeStopVariables.toStopPlaceId
+    ) {
+      client
+        .mutate({
+          variables: mergeStopVariables,
+          mutation: mutateMergeStopPlaces,
+        })
+        .then(result => {
+          dispatch(
+            UserActions.openSnackbar(
+              types.SNACKBAR_MESSAGE_SAVED,
+              types.SUCCESS,
+            ),
+          );
 
-        dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
+          const { data } = result;
 
-        const { data } = result
-
-        if (data.mergeStopPlaces) {
-          const { id } = data.mergeStopPlaces
-          client.query({query: stopPlaceFullSet, variables: { id: id }}).then( () => {
-            client.query({
-              fetchPolicy: 'network-only',
-              query: stopPlaceAllVersions,
-              variables: {
-                id: id
-              }
-            })
-          })
-        }
-      })
-      this.handleCloseMergeStopDialog()
+          if (data.mergeStopPlaces) {
+            const { id } = data.mergeStopPlaces;
+            client
+              .query({ query: stopPlaceFullSet, variables: { id: id } })
+              .then(() => {
+                client.query({
+                  fetchPolicy: 'network-only',
+                  query: stopPlaceAllVersions,
+                  variables: {
+                    id: id,
+                  },
+                });
+              });
+          }
+        });
+      this.handleCloseMergeStopDialog();
     }
   }
 
   handleMergeQuays() {
-    const { mergingQuay, client, stopPlace, dispatch } = this.props
-    client.mutate({ variables: {
-      stopPlaceId: stopPlace.id,
-      fromQuayId: mergingQuay.fromQuayId,
-      toQuayId: mergingQuay.toQuayId
-    }, mutation: mutateMergeQuays}).then( result => {
-
-      dispatch( UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS) )
-      this.handleCloseMergeQuaysDialog()
-
-      client.query({query: stopPlaceFullSet, variables: { id: stopPlace.id }}).then( () => {
-        client.query({
-          fetchPolicy: 'network-only',
-          query: stopPlaceAllVersions,
-          variables: {
-            id: stopPlace.id
-          }
-        })
+    const { mergingQuay, client, stopPlace, dispatch } = this.props;
+    client
+      .mutate({
+        variables: {
+          stopPlaceId: stopPlace.id,
+          fromQuayId: mergingQuay.fromQuayId,
+          toQuayId: mergingQuay.toQuayId,
+        },
+        mutation: mutateMergeQuays,
       })
-    })
+      .then(result => {
+        dispatch(
+          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS),
+        );
+        this.handleCloseMergeQuaysDialog();
+
+        client
+          .query({ query: stopPlaceFullSet, variables: { id: stopPlace.id } })
+          .then(() => {
+            client.query({
+              fetchPolicy: 'network-only',
+              query: stopPlaceAllVersions,
+              variables: {
+                id: stopPlace.id,
+              },
+            });
+          });
+      });
   }
 
   handleSaveAllEntities(userInput) {
+    const { stopPlace, pathLink } = this.props;
+    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(
+      stopPlace,
+      userInput,
+    );
+    const parking = stopPlace.parking ? stopPlace.parking.slice() : [];
+    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
+      pathLink,
+    );
+    const shouldMutatePathLinks = !!(
+      pathLinkVariables && pathLinkVariables.length
+    );
+    const shouldMutateParking = parking.length > 0;
 
-    const { stopPlace, pathLink  } = this.props
-    const stopPlaceVariables = mapToMutationVariables.mapStopToVariables(stopPlace, userInput)
-    const parking = stopPlace.parking ? stopPlace.parking.slice() : []
-    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(pathLink)
-    const shouldMutatePathLinks = !!(pathLinkVariables && pathLinkVariables.length)
-    const shouldMutateParking = parking.length > 0
+    let id = null;
 
-    let id = null
+    const { client } = this.props;
 
-    const { client } = this.props
-
-    client.mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace}).then( result => {
-
-      if (result.data.mutateStopPlace[0].id) {
-        id = result.data.mutateStopPlace[0].id
-      }
-    }).then( () => {
-
-      if (!shouldMutateParking && !shouldMutatePathLinks) {
-        this.handleSuccess(id)
-      } else {
-        const parkingVariables = mapToMutationVariables.mapParkingToVariables(parking, stopPlace.id || id)
-
-        if (shouldMutatePathLinks) {
-          client.mutate({ variables: { "PathLink": pathLinkVariables }, mutation: mutatePathLink}).then ( () => {
-
-            if (shouldMutateParking) {
-              client.mutate({
-                variables: { "Parking": parkingVariables },
-                mutation: mutateParking
-              }).then ( result => {
-                this.handleSuccess(id)
-              }).catch( err => {
-                this.handleError(MutationErrorCodes.ERROR_PARKING)
-              })
-            } else {
-              this.handleSuccess(id)
-            }
-          }).catch( err => {
-            this.handleError(MutationErrorCodes.ERROR_PATH_LINKS)
-          })
-        } else if (shouldMutateParking) {
-          client.mutate({
-            variables: { "Parking": parkingVariables },
-            mutation: mutateParking
-          }).then ( result => {
-            this.handleSuccess(id)
-          }).catch( err => {
-            this.handleError(MutationErrorCodes.ERROR_PARKING)
-          })
+    client
+      .mutate({ variables: stopPlaceVariables, mutation: mutateStopPlace })
+      .then(result => {
+        if (result.data.mutateStopPlace[0].id) {
+          id = result.data.mutateStopPlace[0].id;
         }
-      }
-    }).catch( err => {
-      this.handleError(MutationErrorCodes.ERROR_STOP_PLACE)
-    })
+      })
+      .then(() => {
+        if (!shouldMutateParking && !shouldMutatePathLinks) {
+          this.handleSuccess(id);
+        } else {
+          const parkingVariables = mapToMutationVariables.mapParkingToVariables(
+            parking,
+            stopPlace.id || id,
+          );
+
+          if (shouldMutatePathLinks) {
+            client
+              .mutate({
+                variables: { PathLink: pathLinkVariables },
+                mutation: mutatePathLink,
+              })
+              .then(() => {
+                if (shouldMutateParking) {
+                  client
+                    .mutate({
+                      variables: { Parking: parkingVariables },
+                      mutation: mutateParking,
+                    })
+                    .then(result => {
+                      this.handleSuccess(id);
+                    })
+                    .catch(err => {
+                      this.handleError(MutationErrorCodes.ERROR_PARKING);
+                    });
+                } else {
+                  this.handleSuccess(id);
+                }
+              })
+              .catch(err => {
+                this.handleError(MutationErrorCodes.ERROR_PATH_LINKS);
+              });
+          } else if (shouldMutateParking) {
+            client
+              .mutate({
+                variables: { Parking: parkingVariables },
+                mutation: mutateParking,
+              })
+              .then(result => {
+                this.handleSuccess(id);
+              })
+              .catch(err => {
+                this.handleError(MutationErrorCodes.ERROR_PARKING);
+              });
+          }
+        }
+      })
+      .catch(err => {
+        this.handleError(MutationErrorCodes.ERROR_STOP_PLACE);
+      });
   }
 
   handleGoBack() {
-    this.props.dispatch(UserActions.navigateTo('/', ''))
+    this.props.dispatch(UserActions.navigateTo('/', ''));
   }
 
   handleDiscardChanges() {
     this.setState({
-      confirmDialogOpen: false
-    })
-    this.props.dispatch(StopPlaceActions.discardChangesForEditingStop())
+      confirmDialogOpen: false,
+    });
+    this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
   }
 
   handleSlideChange(value) {
-    this.props.dispatch(UserActions.changeElementTypeTab(value))
+    this.props.dispatch(UserActions.changeElementTypeTab(value));
   }
 
   showMoreStopPlace() {
-    this.props.dispatch(UserActions.showEditStopAdditional())
+    this.props.dispatch(UserActions.showEditStopAdditional());
   }
 
   showLessStopPlace = () => {
-    this.props.dispatch(UserActions.hideEditStopAdditional())
-  }
+    this.props.dispatch(UserActions.hideEditStopAdditional());
+  };
 
   handleDialogClose() {
     this.setState({
       confirmDialogOpen: false,
       allowPathLinkAdjustmentsDialog: false,
-      saveDialogOpen: false
-    })
+      saveDialogOpen: false,
+    });
   }
 
   handleTouchTapVersions = event => {
-    event.preventDefault()
+    event.preventDefault();
     this.setState({
       versionsOpen: true,
       anchorEl: event.currentTarget,
-    })
-  }
+    });
+  };
 
-  handleLoadVersion = ({id, version}) => {
+  handleLoadVersion = ({ id, version }) => {
     this.setState({
-      versionsOpen: false
-    })
+      versionsOpen: false,
+    });
 
-    const { client } = this.props
+    const { client } = this.props;
 
     client.query({
       fetchPolicy: 'network-only',
       query: stopPlaceAndPathLinkByVersion,
       variables: {
         id: id,
-        version: version
-      }
-    })
-  }
+        version: version,
+      },
+    });
+  };
 
   getTitleText = (stopPlace, formatMessage) => {
-    return (stopPlace && stopPlace.id)
+    return stopPlace && stopPlace.id
       ? `${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-      : formatMessage({id: 'new_stop_title'})
-  }
+      : formatMessage({ id: 'new_stop_title' });
+  };
 
   getQuayItemName = (locale, stopPlace) => {
     stopTypes[locale].forEach(stopType => {
       if (stopType.value === stopPlace.stopPlaceType) {
-        return stopType.quayItemName
+        return stopType.quayItemName;
       }
-    })
-  }
-
+    });
+  };
 
   render() {
+    const {
+      stopPlace,
+      stopHasBeenModified,
+      activeElementTab,
+      intl,
+      showEditStopAdditional,
+      versions,
+      disabled,
+      mergeStopDialogOpen,
+    } = this.props;
+    const { formatMessage, locale } = intl;
 
-    const { stopPlace, stopHasBeenModified, activeElementTab, intl, showEditStopAdditional, versions, disabled, mergeStopDialogOpen } = this.props
-    const { formatMessage, locale } = intl
-
-    if (!stopPlace) return null
+    if (!stopPlace) return null;
 
     const translations = {
-      name: formatMessage({id: 'name'}),
-      publicCode: formatMessage({id: 'publicCode'}),
-      description: formatMessage({id: 'description'}),
-      unsaved: formatMessage({id: 'unsaved'}),
-      undefined: formatMessage({id: 'undefined'}),
-      none: formatMessage({id: 'none_no'}),
-      quays: formatMessage({id: 'quays'}),
-      pathJunctions: formatMessage({id: 'pathJunctions'}),
-      entrances: formatMessage({id: 'entrances'}),
+      name: formatMessage({ id: 'name' }),
+      publicCode: formatMessage({ id: 'publicCode' }),
+      description: formatMessage({ id: 'description' }),
+      unsaved: formatMessage({ id: 'unsaved' }),
+      undefined: formatMessage({ id: 'undefined' }),
+      none: formatMessage({ id: 'none_no' }),
+      quays: formatMessage({ id: 'quays' }),
+      pathJunctions: formatMessage({ id: 'pathJunctions' }),
+      entrances: formatMessage({ id: 'entrances' }),
       quayItemName: this.getQuayItemName(locale, stopPlace),
-      capacity: formatMessage({id: 'total_capacity'}),
-      parkAndRide: formatMessage({id: 'parking'}),
-      bikeParking: formatMessage({id: 'bike_parking'}),
-      unknown: formatMessage({id: 'uknown_parking_type'}),
-      elements: formatMessage({id: 'elements'}),
-      versions: formatMessage({id: 'versions'}),
-      validBetween: formatMessage({id: 'valid_between'}),
-    }
+      capacity: formatMessage({ id: 'total_capacity' }),
+      parkAndRide: formatMessage({ id: 'parking' }),
+      bikeParking: formatMessage({ id: 'bike_parking' }),
+      unknown: formatMessage({ id: 'uknown_parking_type' }),
+      elements: formatMessage({ id: 'elements' }),
+      versions: formatMessage({ id: 'versions' }),
+      validBetween: formatMessage({ id: 'valid_between' }),
+    };
 
-    const captionText = this.getTitleText(stopPlace, formatMessage)
+    const captionText = this.getTitleText(stopPlace, formatMessage);
 
     const style = {
       border: '1px solid #511E12',
@@ -303,8 +369,8 @@ class EditStopGeneral extends React.Component {
       marginTop: 1,
       position: 'absolute',
       zIndex: 999,
-      marginLeft: 2
-    }
+      marginLeft: 2,
+    };
 
     const scrollable = {
       overflowY: 'scroll',
@@ -313,68 +379,88 @@ class EditStopGeneral extends React.Component {
       height: '78vh',
       position: 'relative',
       display: 'block',
-      marginTop: 2
-    }
+      marginTop: 2,
+    };
 
-    const stopBoxBar = { color: '#fff', background: 'rgb(39, 58, 70)', fontSize: 12, padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}
+    const stopBoxBar = {
+      color: '#fff',
+      background: 'rgb(39, 58, 70)',
+      fontSize: 12,
+      padding: 2,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    };
 
-    const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 }
+    const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 };
 
     return (
-
       <div style={style}>
         <div style={stopBoxBar}>
-          <div style={{display: 'flex', alignItems: 'center', color: '#fff'}}>
+          <div style={{ display: 'flex', alignItems: 'center', color: '#fff' }}>
             <MdBack
               color="#fff"
-              style={{cursor: 'pointer', marginRight: 2, transform: 'scale(0.8)'}}
+              style={{
+                cursor: 'pointer',
+                marginRight: 2,
+                transform: 'scale(0.8)',
+              }}
               onClick={this.handleGoBack.bind(this)}
             />
-            <div>{ captionText }</div>
-            </div>
+            <div>{captionText}</div>
+          </div>
           <FlatButton
             label={translations.versions}
             disabled={!versions.length}
-            labelStyle={{color: '#fff', fontSize: 10, borderBottom: '1px dotted #fff', color: '#fff', padding: 0}}
-            style={{margin: 0, zIndex: 999}}
+            labelStyle={{
+              color: '#fff',
+              fontSize: 10,
+              borderBottom: '1px dotted #fff',
+              color: '#fff',
+              padding: 0,
+            }}
+            style={{ margin: 0, zIndex: 999 }}
             onTouchTap={this.handleTouchTapVersions}
           />
           <Popover
             open={this.state.versionsOpen}
             anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={() => this.setState({versionsOpen: false})}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={() => this.setState({ versionsOpen: false })}
             animation={PopoverAnimationVertical}
           >
-            <Menu
-              menuItemStyle={{fontSize: 12}}
-              autoWidth={true}
-            >
-              { versions.map( (version, i) => (
+            <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
+              {versions.map((version, i) =>
                 <MenuItem
-                  key={'version'+i}
+                  key={'version' + i}
                   primaryText={
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                      <div style={{display: 'flex'}}>
-                        <div style={{marginRight: 8, fontWeight: 600}}>{version.version}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex' }}>
+                        <div style={{ marginRight: 8, fontWeight: 600 }}>
+                          {version.version}
+                        </div>
                         <div>{version.name}</div>
                       </div>
-                      <div style={{marginTop: -10}}>{version.versionComment || ''}</div>
+                      <div style={{ marginTop: -10 }}>
+                        {version.versionComment || ''}
+                      </div>
                     </div>
                   }
                   secondaryText={
                     <div
-                      style={{transform: 'translateY(-14px)'}}
-                    >{`${version.fromDate || 'N/A'} - ${version.toDate || 'N/A'}`}</div>
+                      style={{ transform: 'translateY(-14px)' }}
+                    >{`${version.fromDate || 'N/A'} - ${version.toDate ||
+                      'N/A'}`}</div>
                   }
                   onTouchTap={() => this.handleLoadVersion(version)}
-                /> )) }
+                />,
+              )}
             </Menu>
           </Popover>
         </div>
         <div style={scrollable}>
-          <div style={{padding: '10 5'}}>
+          <div style={{ padding: '10 5' }}>
             <StopPlaceDetails
               disabled={disabled}
               intl={intl}
@@ -382,35 +468,45 @@ class EditStopGeneral extends React.Component {
               showLessStopPlace={this.showLessStopPlace.bind(this)}
               showMoreStopPlace={this.showMoreStopPlace.bind(this)}
             />
-            { showEditStopAdditional
-              ? <EditStopAdditional
-                  disabled={disabled}
-                />
-              : null
-            }
-            <div style={{textAlign: 'center', marginBottom: 5}}>
-              { showEditStopAdditional
+            {showEditStopAdditional
+              ? <EditStopAdditional disabled={disabled} />
+              : null}
+            <div style={{ textAlign: 'center', marginBottom: 5 }}>
+              {showEditStopAdditional
                 ? <FlatButton
-                  icon={<MdLess/>}
-                  onClick={() => this.showLessStopPlace()}
-                />
-                :
-                <FlatButton
-                  label={formatMessage({id: 'more'})}
-                  labelStyle={{fontSize: 12}}
-                  onClick={() => this.showMoreStopPlace()}
-                />
-              }
+                    icon={<MdLess />}
+                    onClick={() => this.showLessStopPlace()}
+                  />
+                : <FlatButton
+                    label={formatMessage({ id: 'more' })}
+                    labelStyle={{ fontSize: 12 }}
+                    onClick={() => this.showMoreStopPlace()}
+                  />}
             </div>
-            <Divider inset={true}/>
+            <Divider inset={true} />
             <Tabs
               onChange={this.handleSlideChange.bind(this)}
               value={activeElementTab}
-              tabItemContainerStyle={{backgroundColor: '#fff'}}
+              tabItemContainerStyle={{ backgroundColor: '#fff' }}
             >
-              <Tab style={tabStyle} label={`${formatMessage({id: 'quays'})} (${stopPlace.quays.length})`} value={0} />
-              <Tab style={tabStyle} label={`${formatMessage({id: 'navigation'})} (${stopPlace.pathJunctions.length + stopPlace.entrances.length})`} value={1} />
-              <Tab style={tabStyle} label={`${formatMessage({id: 'parking_general'})} (${stopPlace.parking.length})`} value={2} />
+              <Tab
+                style={tabStyle}
+                label={`${formatMessage({ id: 'quays' })} (${stopPlace.quays
+                  .length})`}
+                value={0}
+              />
+              <Tab
+                style={tabStyle}
+                label={`${formatMessage({ id: 'navigation' })} (${stopPlace
+                  .pathJunctions.length + stopPlace.entrances.length})`}
+                value={1}
+              />
+              <Tab
+                style={tabStyle}
+                label={`${formatMessage({ id: 'parking_general' })} (${stopPlace
+                  .parking.length})`}
+                value={2}
+              />
             </Tabs>
             <EditStopBoxTabs
               disabled={disabled}
@@ -420,8 +516,12 @@ class EditStopGeneral extends React.Component {
           </div>
           <ConfirmDialog
             open={this.state.confirmDialogOpen}
-            handleClose={ () => { this.handleDialogClose() }}
-            handleConfirm={ () => { this.handleDiscardChanges() }}
+            handleClose={() => {
+              this.handleDialogClose();
+            }}
+            handleConfirm={() => {
+              this.handleDiscardChanges();
+            }}
             messagesById={{
               title: 'discard_changes_title',
               body: 'discard_changes_body',
@@ -430,16 +530,17 @@ class EditStopGeneral extends React.Component {
             }}
             intl={intl}
           />
-          { (this.state.saveDialogOpen && !disabled) ?
-            <SaveDialog
-              open={this.state.saveDialogOpen}
-              handleClose={ () => { this.handleDialogClose() }}
-              handleConfirm={this.handleSaveAllEntities.bind(this)}
-              errorMessage={this.state.errorMessage}
-              intl={intl}
-            />
-            : null
-          }
+          {this.state.saveDialogOpen && !disabled
+            ? <SaveDialog
+                open={this.state.saveDialogOpen}
+                handleClose={() => {
+                  this.handleDialogClose();
+                }}
+                handleConfirm={this.handleSaveAllEntities.bind(this)}
+                errorMessage={this.state.errorMessage}
+                intl={intl}
+              />
+            : null}
           <MergeStopDialog
             open={mergeStopDialogOpen}
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
@@ -448,7 +549,7 @@ class EditStopGeneral extends React.Component {
             sourceElement={this.props.mergeSource}
             targetElement={{
               id: stopPlace.id,
-              name: stopPlace.name
+              name: stopPlace.name,
             }}
           />
           <MergeQuaysDialog
@@ -459,31 +560,44 @@ class EditStopGeneral extends React.Component {
             mergingQuays={this.props.mergingQuay}
           />
         </div>
-        <div style={{border: "1px solid #efeeef", textAlign: 'right', width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+        <div
+          style={{
+            border: '1px solid #efeeef',
+            textAlign: 'right',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-around',
+          }}
+        >
           <FlatButton
-            icon={<MdUndo/>}
+            icon={<MdUndo />}
             disabled={!stopHasBeenModified}
-            label={formatMessage({id: 'undo_changes'})}
-            style={{margin: '8 5', zIndex: 999}}
-            labelStyle={{fontSize: '0.8em'}}
-            onClick={ () => { this.setState({confirmDialogOpen: true })} }
+            label={formatMessage({ id: 'undo_changes' })}
+            style={{ margin: '8 5', zIndex: 999 }}
+            labelStyle={{ fontSize: '0.8em' }}
+            onClick={() => {
+              this.setState({ confirmDialogOpen: true });
+            }}
           />
           <FlatButton
-            icon={<MdSave/>}
+            icon={<MdSave />}
             disabled={disabled || !stopHasBeenModified}
-            label={formatMessage({id: 'save_new_version'})}
-            style={{margin: '8 5', zIndex: 999}}
-            labelStyle={{fontSize: '0.8em'}}
+            label={formatMessage({ id: 'save_new_version' })}
+            style={{ margin: '8 5', zIndex: 999 }}
+            labelStyle={{ fontSize: '0.8em' }}
             onClick={this.handleSave.bind(this)}
           />
         </div>
-      </div> )
+      </div>
+    );
   }
 }
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
-  mergeStopDialogOpen: state.stopPlace.mergeStopDialog ? state.stopPlace.mergeStopDialog.isOpen : false,
+  mergeStopDialogOpen: state.stopPlace.mergeStopDialog
+    ? state.stopPlace.mergeStopDialog.isOpen
+    : false,
   mergeSource: state.stopPlace.mergeStopDialog,
   pathLink: state.stopPlace.pathLink,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
@@ -494,6 +608,8 @@ const mapStateToProps = state => ({
   mergingQuay: state.mapUtils.mergingQuay,
   mergingQuayDialogOpen: state.mapUtils.mergingQuayDialogOpen,
   versions: state.stopPlace.versions,
-})
+});
 
-export default withApollo(injectIntl(connect(mapStateToProps)(EditStopGeneral)))
+export default withApollo(
+  injectIntl(connect(mapStateToProps)(EditStopGeneral)),
+);

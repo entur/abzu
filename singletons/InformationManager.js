@@ -1,37 +1,37 @@
-let instance = null
-const key = 'rutebanken_pathlinks'
+let instance = null;
+const key = 'rutebanken_pathlinks';
 
 class InformationManager {
-
   constructor() {
     if (!instance) {
-      instance = this
+      instance = this;
     }
-    return instance
+    return instance;
   }
 
   getShouldPathLinkBeDisplayed() {
     try {
       if (localStorage.getItem(key) !== null) {
-        return JSON.parse(localStorage.getItem(key)).shouldBeDisplayed
+        return JSON.parse(localStorage.getItem(key)).shouldBeDisplayed;
       }
-      return true
+      return true;
     } catch (e) {
-      console.error('Unable to fetch information from localStorage', e)
+      console.error('Unable to fetch information from localStorage', e);
     }
   }
 
   setShouldPathLinkBeDisplayed(shouldBeDisplayed) {
     try {
-      localStorage.setItem(key, JSON.stringify({
-        shouldBeDisplayed: shouldBeDisplayed
-      }))
-
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          shouldBeDisplayed: shouldBeDisplayed,
+        }),
+      );
     } catch (e) {
-      console.error('Unable to update information to localStorage', e)
+      console.error('Unable to update information to localStorage', e);
     }
   }
 }
 
-export default InformationManager
-
+export default InformationManager;

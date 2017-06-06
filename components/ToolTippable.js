@@ -1,39 +1,38 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 
 class ToolTippable extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      showToolTip: false
-    }
+      showToolTip: false,
+    };
   }
 
   static PropTypes = {
     toolTipText: PropTypes.string.isRequired,
-  }
+  };
 
   handleShowToolTip() {
-    const { showToolTip } = this.state
+    const { showToolTip } = this.state;
     if (!showToolTip) {
       this.setState({
-        showToolTip: true
-      })
+        showToolTip: true,
+      });
     }
   }
 
   handleHideToolTip() {
-    const { showToolTip } = this.state
+    const { showToolTip } = this.state;
     if (showToolTip) {
       this.setState({
-        showToolTip: false
-      })
+        showToolTip: false,
+      });
     }
   }
 
   render() {
-    const { children, toolTipText, toolTipStyle } = this.props
-    const { showToolTip } = this.state
+    const { children, toolTipText, toolTipStyle } = this.props;
+    const { showToolTip } = this.state;
 
     const defaultStyle = {
       background: '#595959',
@@ -42,21 +41,21 @@ class ToolTippable extends React.Component {
       padding: 5,
       fontSize: 12,
       zIndex: 99999,
-      color: '#fff'
-    }
+      color: '#fff',
+    };
 
-    const appliedStyle = { ...defaultStyle, ...toolTipStyle }
+    const appliedStyle = { ...defaultStyle, ...toolTipStyle };
 
     return (
       <div
         onMouseOver={this.handleShowToolTip.bind(this)}
         onMouseOut={this.handleHideToolTip.bind(this)}
       >
-        { children }
-        { showToolTip && <span style={appliedStyle}>{ toolTipText }</span> }
+        {children}
+        {showToolTip && <span style={appliedStyle}>{toolTipText}</span>}
       </div>
-    )
+    );
   }
 }
 
-export default ToolTippable
+export default ToolTippable;

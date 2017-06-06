@@ -1,59 +1,86 @@
+import * as types from './Types';
 
-import * as types from './Types'
-
-var EqupmentActions = {}
+var EqupmentActions = {};
 
 const sendData = (type, payLoad) => ({
-    type: type,
-    payLoad: payLoad
-})
+  type: type,
+  payLoad: payLoad,
+});
 
-EqupmentActions.updateTicketMachineState = (state, entityType, id) => dispatch => {
-    dispatch(sendData(types.CHANGED_TICKET_MACHINE_STATE, {
+EqupmentActions.updateTicketMachineState = (
+  state,
+  entityType,
+  id,
+) => dispatch => {
+  dispatch(
+    sendData(types.CHANGED_TICKET_MACHINE_STATE, {
       state: state,
       type: entityType,
-      id: id
-    }))
-}
+      id: id,
+    }),
+  );
+};
 
-EqupmentActions.updateShelterEquipmentState = (state, entityType, id) => dispatch => {
-    dispatch(sendData(types.CHANGED_SHELTER_EQUIPMENT_STATE, {
+EqupmentActions.updateShelterEquipmentState = (
+  state,
+  entityType,
+  id,
+) => dispatch => {
+  dispatch(
+    sendData(types.CHANGED_SHELTER_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
-      id: id
-    }))
-}
+      id: id,
+    }),
+  );
+};
 
 EqupmentActions.updateSanitaryState = (state, entityType, id) => dispatch => {
-    dispatch(sendData(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
+  dispatch(
+    sendData(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
-      id: id
-    }))
-}
+      id: id,
+    }),
+  );
+};
 
-EqupmentActions.updateWaitingRoomState = (state, entityType, id) => dispatch => {
-    dispatch(sendData(types.CHANGED_WAITING_ROOM_STATE, {
+EqupmentActions.updateWaitingRoomState = (
+  state,
+  entityType,
+  id,
+) => dispatch => {
+  dispatch(
+    sendData(types.CHANGED_WAITING_ROOM_STATE, {
       state: state,
       type: entityType,
-      id: id
-    }))
-}
+      id: id,
+    }),
+  );
+};
 
-EqupmentActions.updateCycleStorageState = (state, entityType, id) => dispatch => {
-    dispatch(sendData(types.CHANGED_CYCLE_STORAGE_STATE, {
+EqupmentActions.updateCycleStorageState = (
+  state,
+  entityType,
+  id,
+) => dispatch => {
+  dispatch(
+    sendData(types.CHANGED_CYCLE_STORAGE_STATE, {
       state: state,
       type: entityType,
-      id: id
-    }))
-}
+      id: id,
+    }),
+  );
+};
 
 EqupmentActions.update512SignState = (state, entityType, id) => dispatch => {
-  dispatch(sendData(types.CHANGED_512_SIGN_STATE, {
-    state: state,
-    type: entityType,
-    id: id
-  }))
-}
+  dispatch(
+    sendData(types.CHANGED_512_SIGN_STATE, {
+      state: state,
+      type: entityType,
+      id: id,
+    }),
+  );
+};
 
-export default EqupmentActions
+export default EqupmentActions;

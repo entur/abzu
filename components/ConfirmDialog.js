@@ -1,28 +1,26 @@
-import React, { PropTypes } from 'react'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
+import React, { PropTypes } from 'react';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class ConfirmDialog extends React.Component {
-
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    messagesById: PropTypes.object.isRequired
-  }
+    messagesById: PropTypes.object.isRequired,
+  };
 
   render() {
-
-    const { open, handleClose, handleConfirm, intl, messagesById } = this.props
-    const { formatMessage } = intl
+    const { open, handleClose, handleConfirm, intl, messagesById } = this.props;
+    const { formatMessage } = intl;
 
     const confirmDialogTranslation = {
-      title: formatMessage({id: messagesById.title}),
-      body: formatMessage({id: messagesById.body}),
-      confirm: formatMessage({id: messagesById.confirm}),
-      cancel: formatMessage({id: messagesById.cancel})
-    }
+      title: formatMessage({ id: messagesById.title }),
+      body: formatMessage({ id: messagesById.body }),
+      confirm: formatMessage({ id: messagesById.confirm }),
+      cancel: formatMessage({ id: messagesById.cancel }),
+    };
 
     const actions = [
       <FlatButton
@@ -36,7 +34,7 @@ class ConfirmDialog extends React.Component {
         keyboardFocused={true}
         onTouchTap={handleConfirm}
       />,
-    ]
+    ];
 
     return (
       <div>
@@ -45,13 +43,15 @@ class ConfirmDialog extends React.Component {
           actions={actions}
           modal={false}
           open={open}
-          onRequestClose={() => { handleClose() }}
+          onRequestClose={() => {
+            handleClose();
+          }}
         >
-          { confirmDialogTranslation.body }
+          {confirmDialogTranslation.body}
         </Dialog>
       </div>
-    )
+    );
   }
 }
 
-export default ConfirmDialog
+export default ConfirmDialog;
