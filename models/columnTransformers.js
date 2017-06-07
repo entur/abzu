@@ -184,6 +184,7 @@ export const ColumnTransformerQuaysJsx = {
 export const ColumnTransformersQuays = {
   ...ColumnTransformerQuaysJsx,
   stopPlaceId: quay => quay.stopPlaceId,
+  stopPlaceName: quay => quay.stopPlaceName,
   importedId: quay => quay.importedId.join(','),
   wheelchairAccess: quay => ColumnTransformersStopPlace.wheelchairAccess(quay),
   sanitaryEquipment: quay => ColumnTransformersStopPlace.sanitaryEquipment(quay),

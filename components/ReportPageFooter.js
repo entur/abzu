@@ -52,22 +52,28 @@ class ReportPageFooter extends React.Component {
   handleGetCSVQuays() {
     const { results, quaysColumnOptions } = this.props;
     let items = [];
-    const columnOptions = quaysColumnOptions.concat({
-      id: 'stopPlaceId',
-      checked: true
-    });
+    let finalColumns = quaysColumnOptions.slice()
+    let prependedColumns = ['stopPlaceId', 'stopPlaceName'];
+
+    prependedColumns.forEach( pc => {
+      finalColumns.unshift({
+        id: pc,
+        checked: true
+      })
+    })
 
     results.forEach(result => {
       const quays = result.quays.map(quay => ({
         ...quay,
-        stopPlaceId: result.id
+        stopPlaceId: result.id,
+        stopPlaceName: result.name
       }));
       items = items.concat.apply(items, quays);
     });
 
     this.downloadCSV(
       items,
-      columnOptions,
+      finalColumns,
       'results-quays',
       ColumnTransformersQuays
     );
