@@ -135,6 +135,18 @@ export const findStopForReport = gql`
             accessibilityAssessment {
                 limitations {
                     wheelchairAccess
+                    stepFreeAccess
+                }
+            }
+            placeEquipments {
+                shelterEquipment {
+                    id
+                }
+                waitingRoomEquipment {
+                    id
+                }
+                sanitaryEquipment {
+                    id 
                 }
             }
             topographicPlace {

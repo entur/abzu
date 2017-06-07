@@ -62,5 +62,21 @@ export const columnOptionsStopPlace = [
   {
     id: 'wheelchairAccess',
     checked: false
+  },
+  {
+    id: 'stepFreeAccess',
+    checked: false
+  },
+  {
+    id: 'shelterEquipment',
+    checked: false
+  },
+  {
+    id: 'waitingRoomEquipment',
+    checked: false
+  },
+  {
+    id: 'sanitaryEquipment',
+    checked: false
   }
 ];

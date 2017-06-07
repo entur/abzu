@@ -418,6 +418,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
       quays: stop.quays.map(quay => helpers.mapQuayToClientQuay(quay)),
       importedId: stop.importedId,
       accessibilityAssessment: stop.accessibilityAssessment,
+      placeEquipments: stop.placeEquipments,
     };
 
     if (stop.geometry && stop.geometry.coordinates) {

@@ -78,6 +78,7 @@ class ReportResultView extends React.Component {
                   display: 'flex',
                   background: background,
                   padding: '0px 10px',
+                  alignItems: 'center'
                 }}
               >
                 {columns.map(column =>

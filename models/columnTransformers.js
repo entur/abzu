@@ -3,9 +3,12 @@ import StopPlaceLink from '../components/StopPlaceLink';
 import ModalityIcon from './../components/ModalityIcon';
 import CarParkingIcon from '../static/icons/ParkingIcon';
 import BikeParkingIcon from '../static/icons/facilities/BikeParking';
-import { getIn } from '../utils/';
+import { getIn, getInTransform } from '../utils/';
 import accessibilityAssessments from '../models/accessibilityAssessments';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
+import MdCheck from 'material-ui/svg-icons/action/check-circle';
+import MdNotChecked from 'material-ui/svg-icons/action/highlight-off';
+import StairsIcon from '../static/icons/accessibility/Stairs';
 
 const getParkingElements = (parking = []) => {
   if (!parking.length) {
@@ -16,6 +19,15 @@ const getParkingElements = (parking = []) => {
       {getParkingType(p)}
     </div>
   );
+};
+
+const isEquipted = (stop, path) => {
+  return getInTransform(
+    stop,
+    path,
+    false,
+    result => !!result.length
+  )
 };
 
 const getParkingType = parking => {
@@ -68,8 +80,53 @@ export const ColumnTransformerStopPlaceJsx = {
     return (
       <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
     );
-  }
+  },
+  stepFreeAccess: stop => {
+    const stepFreeAccess = getIn(
+      stop,
+      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
+      'UNKNOWN'
+    );
+    return (
+      <StairsIcon
+        color={accessibilityAssessments.colors[stepFreeAccess]}
+      />
+    )
+  },
+  shelterEquipment: stop => {
+    return isEquipted(stop, ['placeEquipments', 'shelterEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
+  },
+  waitingRoomEquipment: stop =>{
+    return isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
+  },
+  sanitaryEquipment: stop => {
+    return isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
+  },
 };
+
+export const ColumnTransformersStopPlace = {
+  ...ColumnTransformerStopPlaceJsx,
+  id: stop => stop.id,
+  modality: stop => stop.stopPlaceType,
+  importedId: stop => stop.importedId.join(','),
+  quays: stop => stop.quays.map(quay => quay.id).join(','),
+  parking: stop => stop.parking.map(parking => parking.id).join(','),
+  wheelchairAccess: stop =>
+    getIn(
+      stop,
+      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
+      'UKNOWN'
+    ),
+  sanitaryEquipment: stop => isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']),
+  waitingRoomEquipment: stop => isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']),
+  shelterEquipment: stop => isEquipted(stop, ['placeEquipments', 'shelterEquipment']),
+  stepFreeAccess: stop => getIn(
+    stop,
+    ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
+    'UNKNOWN'
+  ),
+};
+
 
 export const ColumnTransformerQuaysJsx = {
   id: quay => quay.id,
@@ -87,21 +144,6 @@ export const ColumnTransformerQuaysJsx = {
       <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
     );
   }
-};
-
-export const ColumnTransformersStopPlace = {
-  ...ColumnTransformerStopPlaceJsx,
-  id: stop => stop.id,
-  modality: stop => stop.stopPlaceType,
-  importedId: stop => stop.importedId.join(','),
-  quays: stop => stop.quays.map(quay => quay.id).join(','),
-  parking: stop => stop.parking.map(parking => parking.id).join(','),
-  wheelchairAccess: stop =>
-    getIn(
-      stop,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UKNOWN'
-    )
 };
 
 export const ColumnTransformersQuays = {
@@ -128,7 +170,11 @@ export const ColumnTranslations = {
     parking: 'Parkering',
     privateCode: 'Internkode',
     publicCode: 'Publikumskode',
-    wheelchairAccess: 'Rullestolvennlighet'
+    wheelchairAccess: 'Rullestolvennlighet',
+    stepFreeAccess: "Adgang med trapper",
+    shelterEquipment: "Leskur",
+    waitingRoomEquipment: "Venterom",
+    sanitaryEquipment: "WC",
   },
   en: {
     id: 'Id',
@@ -142,6 +188,11 @@ export const ColumnTranslations = {
     parking: 'Parking',
     privateCode: 'Private code',
     publicCode: 'Public code',
-    wheelchairAccess: 'Wheelchair access'
+    wheelchairAccess: 'Wheelchair access',
+    stepFreeAccess: "Step free access",
+    shelterEquipment: "Shelter equipment",
+    waitingRoomEquipment: "Waiting room",
+    sanitaryEquipment: "WC",
   }
 };
+
