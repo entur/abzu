@@ -23,6 +23,26 @@ export const columnOptionsQuays = [
   {
     id: 'wheelchairAccess',
     checked: false
+  },
+  {
+    id: 'stepFreeAccess',
+    checked: false
+  },
+  {
+    id: 'shelterEquipment',
+    checked: false
+  },
+  {
+    id: 'waitingRoomEquipment',
+    checked: false
+  },
+  {
+    id: 'sanitaryEquipment',
+    checked: false
+  },
+  {
+    id: 'generalSign',
+    checked: false
   }
 ];
 
@@ -77,6 +97,10 @@ export const columnOptionsStopPlace = [
   },
   {
     id: 'sanitaryEquipment',
+    checked: false
+  },
+  {
+    id: 'generalSign',
     checked: false
   }
 ];

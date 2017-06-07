@@ -127,6 +127,23 @@ export const findStopForReport = gql`
                 geometry {
                     coordinates
                 }
+                placeEquipments {
+                    shelterEquipment {
+                        id
+                    }
+                    waitingRoomEquipment {
+                        id
+                    }
+                    sanitaryEquipment {
+                        id
+                    }
+                    generalSign {
+                        signContentType
+                        privateCode {
+                            value
+                        }
+                    }
+                }
                 privateCode {
                     value
                 }
@@ -147,6 +164,12 @@ export const findStopForReport = gql`
                 }
                 sanitaryEquipment {
                     id 
+                }
+                generalSign {
+                    signContentType
+                    privateCode {
+                        value
+                    }
                 }
             }
             topographicPlace {

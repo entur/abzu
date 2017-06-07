@@ -53,6 +53,24 @@ class ReportPage extends React.Component {
     }
   }
 
+  handleCheckAllColumnQuays() {
+    this.setState({
+      columnOptionsQuays: columnOptionsQuays.map(option => ({
+        ...option,
+        checked: true
+      }))
+    });
+  }
+
+  handleCheckAllColumnStops() {
+    this.setState({
+      columnOptionsStopPlace: columnOptionsStopPlace.map(option => ({
+        ...option,
+        checked: true
+      }))
+    });
+  }
+
   handleColumnStopPlaceCheck(id, checked) {
     const columnOptions = this.state.columnOptionsStopPlace.slice();
 
@@ -310,6 +328,8 @@ class ReportPage extends React.Component {
             })}
             captionLabel={formatMessage({ id: 'stop_place' })}
             locale={locale}
+            handleCheckAll={this.handleCheckAllColumnStops.bind(this)}
+            selectAllLabel={formatMessage({id: 'all'})}
           />
           <ColumnFilterPopover
             style={{ marginLeft: 5, marginTop: 5 }}
@@ -318,6 +338,8 @@ class ReportPage extends React.Component {
             buttonLabel={formatMessage({ id: 'column_filter_label_quays' })}
             captionLabel={formatMessage({ id: 'quays' })}
             locale={locale}
+            handleCheckAll={this.handleCheckAllColumnQuays.bind(this)}
+            selectAllLabel={formatMessage({id: 'all'})}
           />
         </div>
         <ReportResultView

@@ -44,6 +44,9 @@ class ReportPageFooter extends React.Component {
       'results-stop-places',
       ColumnTransformersStopPlace
     );
+    this.setState({
+      open: false
+    });
   }
 
   handleGetCSVQuays() {
@@ -68,6 +71,9 @@ class ReportPageFooter extends React.Component {
       'results-quays',
       ColumnTransformersQuays
     );
+    this.setState({
+      open: false
+    });
   }
 
   render() {

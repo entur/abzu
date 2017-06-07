@@ -100,7 +100,29 @@ export const ColumnTransformerStopPlaceJsx = {
     return isEquipted(stop, ['placeEquipments', 'sanitaryEquipment'])
       ? <MdCheck color="#1B5E20" />
       : <MdNotChecked color="#B71C1C" />;
-  }
+  },
+  generalSign: stop => {
+    let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
+    if (signs && signs.length) {
+      let transportModeSigns = [];
+      signs.forEach( (sign, i) => {
+        const { signContentType } = sign
+        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null)
+        if (signContentType === "transportMode" && privateCodeValue) {
+          transportModeSigns.push(
+            <div
+              key={"sign-" + stop.id + "-" + i}
+            >
+              <span style={{borderRadius: '50%', padding: 5, position: 'absolute', fontWeight: 600, marginTop: -5, border: '1px solid black'}}
+              >{ privateCodeValue }</span> 
+            </div>
+          )
+        }
+      });
+      return transportModeSigns;
+    }
+    return <MdNotChecked color="#B71C1C" />;
+  },
 };
 
 export const ColumnTransformersStopPlace = {
@@ -127,7 +149,22 @@ export const ColumnTransformersStopPlace = {
       stop,
       ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
       'UNKNOWN'
-    )
+    ),
+  generalSign: stop => {
+    let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
+    if (signs && signs.length) {
+      let signString = '';
+      signs.forEach( sign => {
+        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null)
+        if (sign.signContentType === "transportMode" && privateCodeValue) {
+          signString += privateCodeValue + ";"
+        }
+      });
+
+      return signString.length ? signString.substring(0, signString.length-1) : signString;
+    }
+    return '';
+  }
 };
 
 export const ColumnTransformerQuaysJsx = {
@@ -136,27 +173,24 @@ export const ColumnTransformerQuaysJsx = {
   position: quay => quay.location.join(','),
   publicCode: quay => quay.publicCode,
   privateCode: quay => quay.privateCode,
-  wheelchairAccess: quay => {
-    const wheelchairAccess = getIn(
-      quay,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UNKNOWN'
-    );
-    return (
-      <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
-    );
-  }
+  wheelchairAccess: quay => ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
+  sanitaryEquipment: quay => ColumnTransformerStopPlaceJsx.sanitaryEquipment(quay),
+  shelterEquipment: quay => ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
+  stepFreeAccess: quay => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
+  generalSign: quay => ColumnTransformerStopPlaceJsx.generalSign(quay),
+  waitingRoomEquipment: quay => ColumnTransformerStopPlaceJsx.waitingRoomEquipment(quay),
 };
 
 export const ColumnTransformersQuays = {
   ...ColumnTransformerQuaysJsx,
   stopPlaceId: quay => quay.stopPlaceId,
-  wheelchairAccess: quay =>
-    getIn(
-      quay,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UKNOWN'
-    )
+  importedId: quay => quay.importedId.join(','),
+  wheelchairAccess: quay => ColumnTransformersStopPlace.wheelchairAccess(quay),
+  sanitaryEquipment: quay => ColumnTransformersStopPlace.sanitaryEquipment(quay),
+  shelterEquipment: quay => ColumnTransformersStopPlace.shelterEquipment(quay),
+  stepFreeAccess: quay => ColumnTransformersStopPlace.stepFreeAccess(quay),
+  generalSign: quay => ColumnTransformersStopPlace.generalSign(quay),
+  waitingRoomEquipment: quay => ColumnTransformersStopPlace.waitingRoomEquipment(quay),
 };
 
 export const ColumnTranslations = {
@@ -176,7 +210,8 @@ export const ColumnTranslations = {
     stepFreeAccess: 'Adgang med trapper',
     shelterEquipment: 'Leskur',
     waitingRoomEquipment: 'Venterom',
-    sanitaryEquipment: 'WC'
+    sanitaryEquipment: 'WC',
+    generalSign: 'Transportskilt',
   },
   en: {
     id: 'Id',
@@ -194,6 +229,7 @@ export const ColumnTranslations = {
     stepFreeAccess: 'Step free access',
     shelterEquipment: 'Shelter equipment',
     waitingRoomEquipment: 'Waiting room',
-    sanitaryEquipment: 'WC'
+    sanitaryEquipment: 'WC',
+    generalSign: 'Transport sign',
   }
 };

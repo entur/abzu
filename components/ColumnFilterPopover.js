@@ -22,10 +22,12 @@ class ColumnFilterPopover extends React.Component {
   }
 
   render() {
-    const { columnOptions, buttonLabel, captionLabel, locale } = this.props;
+    const { columnOptions, buttonLabel, captionLabel, selectAllLabel, locale } = this.props;
     const optionStyle = {
       padding: 5,
     };
+
+    const allIsChecked = columnOptions.filter( opt => opt.checked ).length === columnOptions.length
 
     return (
       <div style={this.props.style}>
@@ -59,6 +61,15 @@ class ColumnFilterPopover extends React.Component {
                 />
               </div>,
             )}
+            <div style={{...optionStyle, borderTop: '1px solid black'}} key={'option-all'}>
+              <Checkbox
+                label={selectAllLabel}
+                checked={allIsChecked}
+                onCheck={(e, checked) => {
+                  this.props.handleCheckAll();
+                }}
+              />
+            </div>
           </Menu>
         </Popover>
       </div>
