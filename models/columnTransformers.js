@@ -12,7 +12,7 @@ import StairsIcon from '../static/icons/accessibility/Stairs';
 
 const getParkingElements = (parking = []) => {
   if (!parking.length) {
-    return <span style={{ fontWeight: 600, fontSize: 12 }}>N/A</span>;
+    return <MdNotChecked color="#B71C1C" />;
   }
   return parking.map(p =>
     <div style={{ display: 'inline-block', marginLeft: 5 }}>
