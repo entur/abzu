@@ -22,12 +22,7 @@ const getParkingElements = (parking = []) => {
 };
 
 const isEquipted = (stop, path) => {
-  return getInTransform(
-    stop,
-    path,
-    false,
-    result => !!result.length
-  )
+  return getInTransform(stop, path, false, result => !!result.length);
 };
 
 const getParkingType = parking => {
@@ -88,20 +83,24 @@ export const ColumnTransformerStopPlaceJsx = {
       'UNKNOWN'
     );
     return (
-      <StairsIcon
-        color={accessibilityAssessments.colors[stepFreeAccess]}
-      />
-    )
+      <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]} />
+    );
   },
   shelterEquipment: stop => {
-    return isEquipted(stop, ['placeEquipments', 'shelterEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
+    return isEquipted(stop, ['placeEquipments', 'shelterEquipment'])
+      ? <MdCheck color="#1B5E20" />
+      : <MdNotChecked color="#B71C1C" />;
   },
-  waitingRoomEquipment: stop =>{
-    return isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
+  waitingRoomEquipment: stop => {
+    return isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment'])
+      ? <MdCheck color="#1B5E20" />
+      : <MdNotChecked color="#B71C1C" />;
   },
   sanitaryEquipment: stop => {
-    return isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']) ? <MdCheck color="#1B5E20"/> : <MdNotChecked color="#B71C1C"/>
-  },
+    return isEquipted(stop, ['placeEquipments', 'sanitaryEquipment'])
+      ? <MdCheck color="#1B5E20" />
+      : <MdNotChecked color="#B71C1C" />;
+  }
 };
 
 export const ColumnTransformersStopPlace = {
@@ -117,16 +116,19 @@ export const ColumnTransformersStopPlace = {
       ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
       'UKNOWN'
     ),
-  sanitaryEquipment: stop => isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']),
-  waitingRoomEquipment: stop => isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']),
-  shelterEquipment: stop => isEquipted(stop, ['placeEquipments', 'shelterEquipment']),
-  stepFreeAccess: stop => getIn(
-    stop,
-    ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
-    'UNKNOWN'
-  ),
+  sanitaryEquipment: stop =>
+    isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']),
+  waitingRoomEquipment: stop =>
+    isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']),
+  shelterEquipment: stop =>
+    isEquipted(stop, ['placeEquipments', 'shelterEquipment']),
+  stepFreeAccess: stop =>
+    getIn(
+      stop,
+      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
+      'UNKNOWN'
+    )
 };
-
 
 export const ColumnTransformerQuaysJsx = {
   id: quay => quay.id,
@@ -171,10 +173,10 @@ export const ColumnTranslations = {
     privateCode: 'Internkode',
     publicCode: 'Publikumskode',
     wheelchairAccess: 'Rullestolvennlighet',
-    stepFreeAccess: "Adgang med trapper",
-    shelterEquipment: "Leskur",
-    waitingRoomEquipment: "Venterom",
-    sanitaryEquipment: "WC",
+    stepFreeAccess: 'Adgang med trapper',
+    shelterEquipment: 'Leskur',
+    waitingRoomEquipment: 'Venterom',
+    sanitaryEquipment: 'WC'
   },
   en: {
     id: 'Id',
@@ -189,10 +191,9 @@ export const ColumnTranslations = {
     privateCode: 'Private code',
     publicCode: 'Public code',
     wheelchairAccess: 'Wheelchair access',
-    stepFreeAccess: "Step free access",
-    shelterEquipment: "Shelter equipment",
-    waitingRoomEquipment: "Waiting room",
-    sanitaryEquipment: "WC",
+    stepFreeAccess: 'Step free access',
+    shelterEquipment: 'Shelter equipment',
+    waitingRoomEquipment: 'Waiting room',
+    sanitaryEquipment: 'WC'
   }
 };
-

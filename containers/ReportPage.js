@@ -9,7 +9,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
 import {
   topopGraphicalPlacesReportQuery,
-  findStopForReport,
+  findStopForReport
 } from '../graphql/Queries';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -20,7 +20,10 @@ import ColumnFilterPopover from '../components/ColumnFilterPopover';
 import { getParkingForMultipleStopPlaces } from '../graphql/Queries';
 import { reportReducer } from '../reducers/';
 import { injectIntl } from 'react-intl';
-import { columnOptionsQuays, columnOptionsStopPlace } from '../config/columnOptions'
+import {
+  columnOptionsQuays,
+  columnOptionsStopPlace
+} from '../config/columnOptions';
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -40,8 +43,14 @@ class ReportPage extends React.Component {
 
   handleSelectPage(pageIndex) {
     this.setState({
-      activePageIndex: pageIndex,
+      activePageIndex: pageIndex
     });
+  }
+
+  handleOnKeyDown(event) {
+    if (event.key === 'Enter') {
+      this.handleSearch();
+    }
   }
 
   handleColumnStopPlaceCheck(id, checked) {
@@ -57,7 +66,7 @@ class ReportPage extends React.Component {
     }
 
     this.setState({
-      columnOptionsStopPlace: columnOptions,
+      columnOptionsStopPlace: columnOptions
     });
   }
 
@@ -74,7 +83,7 @@ class ReportPage extends React.Component {
     }
 
     this.setState({
-      columnOptionsQuays: columnOptions,
+      columnOptionsQuays: columnOptions
     });
   }
 
@@ -88,7 +97,7 @@ class ReportPage extends React.Component {
     const { client } = this.props;
 
     this.setState({
-      isLoading: true,
+      isLoading: true
     });
 
     client
@@ -103,8 +112,8 @@ class ReportPage extends React.Component {
             .map(topos => topos.id),
           countyReference: topoiChips
             .filter(topos => topos.type === 'county')
-            .map(topos => topos.id),
-        },
+            .map(topos => topos.id)
+        }
       })
       .then(response => {
         const stopPlaces = response.data.stopPlace;
@@ -114,24 +123,24 @@ class ReportPage extends React.Component {
           .query({
             query: getParkingForMultipleStopPlaces(stopPlaceIds),
             reducer: reportReducer,
-            fetchPolicy: 'network-only',
+            fetchPolicy: 'network-only'
           })
           .then(response => {
             this.setState({
-              isLoading: false,
+              isLoading: false
             });
           });
       })
       .catch(err => {
         this.setState({
-          isLoading: false,
+          isLoading: false
         });
       });
   }
 
   handleDeleteChipById(chipId) {
     this.setState({
-      topoiChips: this.state.topoiChips.filter(tc => tc.id !== chipId),
+      topoiChips: this.state.topoiChips.filter(tc => tc.id !== chipId)
     });
   }
 
@@ -140,7 +149,7 @@ class ReportPage extends React.Component {
 
     if (addedChipsIds.indexOf(chip.id) === -1) {
       this.setState({
-        topoiChips: this.state.topoiChips.concat(chip),
+        topoiChips: this.state.topoiChips.concat(chip)
       });
     }
   }
@@ -150,8 +159,8 @@ class ReportPage extends React.Component {
       query: topopGraphicalPlacesReportQuery,
       fetchPolicy: 'network-only',
       variables: {
-        query: searchText,
-      },
+        query: searchText
+      }
     });
   }
 
@@ -174,7 +183,7 @@ class ReportPage extends React.Component {
       quayMax,
       topoiChips,
       activePageIndex,
-      isLoading,
+      isLoading
     } = this.state;
     const { intl, topographicalPlaces, results } = this.props;
     const { locale, formatMessage } = intl;
@@ -183,10 +192,10 @@ class ReportPage extends React.Component {
       .filter(
         place =>
           place.topographicPlaceType === 'county' ||
-          place.topographicPlaceType === 'town',
+          place.topographicPlaceType === 'town'
       )
       .filter(
-        place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1,
+        place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
       )
       .map(place => {
         let name = this.getTopographicalNames(place);
@@ -199,7 +208,7 @@ class ReportPage extends React.Component {
               secondaryText={formatMessage({ id: place.topographicPlaceType })}
             />
           ),
-          type: place.topographicPlaceType,
+          type: place.topographicPlaceType
         };
       });
 
@@ -214,7 +223,7 @@ class ReportPage extends React.Component {
                   marginBottom: 5,
                   fontSize: 12,
                   padding: 5,
-                  marginLeft: 5,
+                  marginLeft: 5
                 }}
               >
                 {formatMessage({ id: 'filter_report_by_modality' })}
@@ -238,7 +247,7 @@ class ReportPage extends React.Component {
                     margin: 'auto',
                     width: '50%',
                     textAlign: 'center',
-                    marginTop: -10,
+                    marginTop: -10
                   }}
                   maxSearchResults={5}
                   fullWidth={true}
@@ -265,14 +274,15 @@ class ReportPage extends React.Component {
                 style={{
                   marginLeft: 10,
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}
               >
                 <TextField
                   floatingLabelText={formatMessage({
-                    id: 'optional_search_string',
+                    id: 'optional_search_string'
                   })}
                   value={this.state.searchQuery}
+                  onKeyDown={this.handleOnKeyDown.bind(this)}
                   onChange={(e, v) => this.setState({ searchQuery: v })}
                 />
                 <RaisedButton
@@ -290,13 +300,15 @@ class ReportPage extends React.Component {
             </ReportFilterBox>
           </div>
         </div>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <ColumnFilterPopover
             style={{ marginLeft: 5, marginTop: 5 }}
             columnOptions={this.state.columnOptionsStopPlace}
             handleColumnCheck={this.handleColumnStopPlaceCheck.bind(this)}
-            buttonLabel={formatMessage({ id: 'column_filter_label_stop_place' })}
-            captionLabel={formatMessage({id: 'stop_place'})}
+            buttonLabel={formatMessage({
+              id: 'column_filter_label_stop_place'
+            })}
+            captionLabel={formatMessage({ id: 'stop_place' })}
             locale={locale}
           />
           <ColumnFilterPopover
@@ -304,7 +316,7 @@ class ReportPage extends React.Component {
             columnOptions={this.state.columnOptionsQuays}
             handleColumnCheck={this.handleColumnQuaysCheck.bind(this)}
             buttonLabel={formatMessage({ id: 'column_filter_label_quays' })}
-            captionLabel={formatMessage({id: 'quays'})}
+            captionLabel={formatMessage({ id: 'quays' })}
             locale={locale}
           />
         </div>
@@ -330,7 +342,7 @@ class ReportPage extends React.Component {
 
 const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
-  results: state.report.results,
+  results: state.report.results
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));
