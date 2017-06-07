@@ -9,7 +9,9 @@ import equipmentHelpers from '../modelUtils/equipmentHelpers';
 
 const stopPlaceReducer = (state = {}, action) => {
   switch (action.type) {
+
     /* These actions are dispatched by Apollo-Client */
+    // TODO: These helper functions need a cleanup
     case types.APOLLO_QUERY_RESULT:
       return getStateByOperation(state, action);
 
@@ -18,12 +20,12 @@ const stopPlaceReducer = (state = {}, action) => {
 
     case types.APOLLO_QUERY_RESULT_CLIENT:
       return getObjectFromCache(state, action);
+    /* end */
 
     case types.CLEAR_SEARCH_RESULTS:
       return Object.assign({}, state, {
         searchResults: [],
       });
-    /* end */
 
     case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
       const id = action.payLoad;

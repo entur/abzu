@@ -19,7 +19,7 @@ import {
 } from '../graphql/Mutations';
 import {
   stopPlaceAndPathLinkByVersion,
-  stopPlaceAllVersions,
+  allVersionsOfStopPlace,
   stopPlaceFullSet,
 } from '../graphql/Queries';
 import * as types from '../actions/Types';
@@ -36,6 +36,8 @@ import SaveDialog from '../components/SaveDialog';
 import MergeStopDialog from '../components/MergeStopDialog';
 import MergeQuaysDialog from '../components/MergeQuaysDialog';
 import { MutationErrorCodes } from '../models/ErrorCodes';
+import DeleteQuayDialog from '../components/DeleteQuayDialog';
+import { deleteQuay, getStopPlaceVersions } from '../graphql/Actions'
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -63,29 +65,24 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.hideMergeQuaysDialog());
   }
 
-  handleSuccess(id) {
-    this.setState({
-      saveDialogOpen: false,
-    });
+  handleCloseDeleteQuay() {
+    this.props.dispatch(UserActions.hideDeleteQuayDialog())
+  }
 
+  handleSaveSuccess(stopPlaceId) {
     const { client, dispatch } = this.props;
 
-    if (id) {
-      client
-        .query({
-          fetchPolicy: 'network-only',
-          query: stopPlaceAllVersions,
-          variables: {
-            id: id,
-          },
-        })
-        .then(() => {
-          dispatch(UserActions.navigateTo('/edit/', id));
-        });
-    }
-    dispatch(
-      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS),
-    );
+    this.setState({
+      saveDialogOpen: false,
+
+    });
+
+    getStopPlaceVersions(client, stopPlaceId).then( () => {
+      dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+      );
+    });
   }
 
   handleError(errorCode) {
@@ -131,7 +128,7 @@ class EditStopGeneral extends React.Component {
               .then(() => {
                 client.query({
                   fetchPolicy: 'network-only',
-                  query: stopPlaceAllVersions,
+                  query: allVersionsOfStopPlace,
                   variables: {
                     id: id,
                   },
@@ -165,13 +162,25 @@ class EditStopGeneral extends React.Component {
           .then(() => {
             client.query({
               fetchPolicy: 'network-only',
-              query: stopPlaceAllVersions,
+              query: allVersionsOfStopPlace,
               variables: {
                 id: stopPlace.id,
               },
             });
           });
       });
+  }
+
+  handleDeleteQuay() {
+    const { client, deletingQuay, dispatch, stopPlace } = this.props;
+    deleteQuay(client, deletingQuay).then( response => {
+        dispatch(UserActions.hideDeleteQuayDialog());
+        getStopPlaceVersions(client, stopPlace.id).then( response => {
+          dispatch(
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          );
+        });
+    });
   }
 
   handleSaveAllEntities(userInput) {
@@ -202,7 +211,7 @@ class EditStopGeneral extends React.Component {
       })
       .then(() => {
         if (!shouldMutateParking && !shouldMutatePathLinks) {
-          this.handleSuccess(id);
+          this.handleSaveSuccess(id);
         } else {
           const parkingVariables = mapToMutationVariables.mapParkingToVariables(
             parking,
@@ -223,13 +232,13 @@ class EditStopGeneral extends React.Component {
                       mutation: mutateParking,
                     })
                     .then(result => {
-                      this.handleSuccess(id);
+                      this.handleSaveSuccess(id);
                     })
                     .catch(err => {
                       this.handleError(MutationErrorCodes.ERROR_PARKING);
                     });
                 } else {
-                  this.handleSuccess(id);
+                  this.handleSaveSuccess(id);
                 }
               })
               .catch(err => {
@@ -242,7 +251,7 @@ class EditStopGeneral extends React.Component {
                 mutation: mutateParking,
               })
               .then(result => {
-                this.handleSuccess(id);
+                this.handleSaveSuccess(id);
               })
               .catch(err => {
                 this.handleError(MutationErrorCodes.ERROR_PARKING);
@@ -559,6 +568,13 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             mergingQuays={this.props.mergingQuay}
           />
+          <DeleteQuayDialog
+            open={this.props.deleteQuayDialogOpen}
+            handleClose={this.handleCloseDeleteQuay.bind(this)}
+            handleConfirm={this.handleDeleteQuay.bind(this)}
+            intl={intl}
+          >
+          </DeleteQuayDialog>
         </div>
         <div
           style={{
@@ -607,6 +623,8 @@ const mapStateToProps = state => ({
   showEditStopAdditional: state.user.showEditStopAdditional,
   mergingQuay: state.mapUtils.mergingQuay,
   mergingQuayDialogOpen: state.mapUtils.mergingQuayDialogOpen,
+  deleteQuayDialogOpen: state.mapUtils.deleteQuayDialogOpen,
+  deletingQuay: state.mapUtils.deletingQuay,
   versions: state.stopPlace.versions,
 });
 

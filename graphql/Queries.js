@@ -51,7 +51,7 @@ export const stopPlaceFullSet = gql`
             ...VerboseParking
         },
         versions: 
-            stopPlace(id: $id, allVersions: true) {
+            stopPlace(id: $id, allVersions: true, size: 100) {
                 id
                 validBetweens {
                     fromDate
@@ -187,10 +187,10 @@ export const findStopForReport = gql`
     },
 `
 
-export const stopPlaceAllVersions = gql`
+export const allVersionsOfStopPlace = gql`
     query stopPlaceAllVersions($id: String!) {
         versions:
-        stopPlace(id: $id, allVersions: true) {
+        stopPlace(id: $id, allVersions: true, size: 100) {
             id
             validBetweens {
                 fromDate
@@ -214,8 +214,11 @@ export const stopPlaceAndPathLinkByVersion = gql`
         stopPlace(id: $id, version: $version) {
             ...VerboseStopPlace
         }
+        parking: parking(stopPlaceId: $id) {
+            ...VerboseParking
+        }
         versions:
-        stopPlace(id: $id, allVersions: true) {
+        stopPlace(id: $id, allVersions: true, size: 100) {
             id
             validBetweens {
                 fromDate
@@ -231,6 +234,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
     },
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
+    ${Fragments.parking.verbose}
 `
 
 export const topopGraphicalPlacesQuery = gql`

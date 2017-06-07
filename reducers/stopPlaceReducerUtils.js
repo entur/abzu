@@ -9,10 +9,29 @@ export const getStateByOperation = (state, action) => {
     case 'stopPlaceAllVersions':
       return Object.assign({}, state, {
         versions: getAllVersionFromResult(state, action),
-        stopHasBeenModified: false,
+        stopHasBeenModified: false
       });
 
-    case 'mutateStopPlace':
+    case 'mutateDeleteQuay':
+      if (!action.result.data.deleteQuay) return state;
+
+      return Object.assign({}, state, {
+        current: formatHelpers.mapStopToClientStop(
+          action.result.data.deleteQuay,
+          true
+        ),
+        originalCurrent: formatHelpers.mapStopToClientStop(
+          action.result.data.deleteQuay,
+          true
+        ),
+        minZoom: action.result.data.deleteQuay.geometry ? 14 : 5,
+        centerPosition:
+          formatHelpers.getCenterPosition(
+            action.result.data.deleteQuay.geometry
+          ) || state.centerPosition
+      });
+
+    case  'mutateStopPlace':
       if (!action.result.data.mutateStopPlace) return state;
 
       const mutatedStopPlace = action.result.data.mutateStopPlace[0];
@@ -21,60 +40,60 @@ export const getStateByOperation = (state, action) => {
         current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
         originalCurrent: formatHelpers.mapStopToClientStop(
           mutatedStopPlace,
-          true,
+          true
         ),
         minZoom: mutatedStopPlace.geometry ? 14 : 5,
         centerPosition:
           formatHelpers.getCenterPosition(mutatedStopPlace.geometry) ||
-            state.centerPosition,
+            state.centerPosition
       });
 
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
-          action.result.data.stopPlaceBBox,
-        ),
+          action.result.data.stopPlaceBBox
+        )
       });
 
     case 'mutatePathLink':
       return Object.assign({}, state, {
         pathLink: formatHelpers.mapPathLinkToClient(
-          action.result.data.mutatePathlink,
+          action.result.data.mutatePathlink
         ),
         originalPathLink: formatHelpers.mapPathLinkToClient(
-          action.result.data.mutatePathlink,
-        ),
+          action.result.data.mutatePathlink
+        )
       });
 
     case 'findStop':
       return Object.assign({}, state, {
         searchResults: formatHelpers.mapSearchResultatToClientStops(
-          action.result.data.stopPlace,
-        ),
+          action.result.data.stopPlace
+        )
       });
 
     case 'mutateParking':
       let stopPlaceWithParking = Object.assign({}, state.current, {
         parking: formatHelpers.mapParkingToClient(
-          action.result.data.mutateParking,
-        ),
+          action.result.data.mutateParking
+        )
       });
 
       return Object.assign({}, state, {
-        current: stopPlaceWithParking,
+        current: stopPlaceWithParking
       });
 
     case 'neighbourStopPlaceQuays':
       return Object.assign({}, state, {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(
           state.neighbourStopQuays,
-          action.result.data.stopPlace,
-        ),
+          action.result.data.stopPlace
+        )
       });
 
     case 'TopopGraphicalPlaces':
       return Object.assign({}, state, {
-        topographicalPlaces: action.result.data.topographicPlace,
+        topographicalPlaces: action.result.data.topographicPlace
       });
 
     default:
@@ -99,8 +118,8 @@ const getDataFromResult = (state, action) => {
   if (action.result.data.stopPlaceBBox) {
     return Object.assign({}, state, {
       neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
-        action.result.data.stopPlaceBBox,
-      ),
+        action.result.data.stopPlaceBBox
+      )
     });
   }
 
@@ -119,7 +138,7 @@ const getDataFromResult = (state, action) => {
     stopPlace,
     true,
     formatHelpers.mapParkingToClient(parking),
-    state.userDefinedCoordinates,
+    state.userDefinedCoordinates
   );
   const originalCurrentStop = JSON.parse(JSON.stringify(currentStop));
 
@@ -135,7 +154,7 @@ const getDataFromResult = (state, action) => {
     centerPosition: !stopPlace || !stopPlace.geometry
       ? state.centerPosition
       : formatHelpers.getCenterPosition(stopPlace.geometry),
-    stopHasBeenModified: false,
+    stopHasBeenModified: false
   });
 };
 

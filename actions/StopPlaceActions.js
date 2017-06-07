@@ -152,8 +152,8 @@ StopPlaceActions.addElementToStop = (type, position) => dispatch => {
   } else {
     dispatch(
       sendData(types.ADDED_JUNCTION_ELEMENT, {
-        type: type,
-        position: position,
+        type,
+        position,
       }),
     );
   }
@@ -166,9 +166,9 @@ StopPlaceActions.changeElementPosition = (
 ) => dispatch => {
   dispatch(
     sendData(types.CHANGE_ELEMENT_POSITION, {
-      index: index,
-      position: position,
-      type: type,
+      index,
+      position,
+      type,
     }),
   );
 };
@@ -179,8 +179,8 @@ StopPlaceActions.changeParkingTotalCapacity = (
 ) => dispatch => {
   dispatch(
     sendData(types.CHANGED_PARKING_TOTAL_CAPACITY, {
-      index: index,
-      totalCapacity: totalCapacity,
+      index,
+      totalCapacity,
     }),
   );
 };
@@ -188,10 +188,11 @@ StopPlaceActions.changeParkingTotalCapacity = (
 StopPlaceActions.changeParkingName = (index, name) => dispatch => {
   dispatch(
     sendData(types.CHANGED_PARKING_NAME, {
-      index: index,
-      name: name,
+      index,
+      name,
     }),
   );
 };
+
 
 export default StopPlaceActions;

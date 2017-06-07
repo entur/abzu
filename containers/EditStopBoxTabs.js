@@ -4,15 +4,20 @@ import PathJunctionItem from '../components/PathJunctionItem';
 import EntranceItem from '../components/EntranceItem';
 import ParkingItem from '../components/ParkingItem';
 import { connect } from 'react-redux';
-import { StopPlaceActions } from '../actions/';
+import { StopPlaceActions, UserActions } from '../actions/';
 
 class EditStopBoxTabs extends React.Component {
   handleLocateOnMap(position) {
     this.props.dispatch(StopPlaceActions.changeMapCenter(position, 17));
   }
 
-  handleRemoveQuay(index) {
-    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
+  handleRemoveQuay(index, quayId) {
+    const { dispatch, activeStopPlace } = this.props
+    if (!quayId) {
+      dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
+    } else {
+      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId))
+    }
   }
 
   handleRemoveEntrance(index) {
@@ -61,7 +66,7 @@ class EditStopBoxTabs extends React.Component {
             ref={'quay-' + index}
             index={index}
             publicCode={quay.publicCode}
-            handleRemoveQuay={() => this.handleRemoveQuay(index)}
+            handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
             handleLocateOnMap={this.handleLocateOnMap.bind(this)}
             handleToggleCollapse={this.handleToggleCollapse.bind(this)}
             stopPlaceType={activeStopPlace.stopPlaceType}

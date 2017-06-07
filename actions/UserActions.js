@@ -231,4 +231,17 @@ UserActions.cancelMergingQuayFrom = () => dispatch => {
   dispatch(sendData(types.CANCELLED_MERGING_QUAY_FROM, null));
 };
 
+UserActions.hideDeleteQuayDialog = () => dispatch => {
+  dispatch(sendData(types.CANCELLED_DELETE_QUAY_DIALOG, null));
+};
+
+UserActions.requestDeleteQuay = (stopPlaceId, quayId) => dispatch => {
+  dispatch(
+    sendData(types.REQUESTED_DELETE_QUAY, {
+      stopPlaceId,
+      quayId
+    })
+  )
+};
+
 export default UserActions;

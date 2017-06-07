@@ -50,7 +50,7 @@ class EditStopPlace extends React.Component {
     new InformationManager().setShouldPathLinkBeDisplayed(false);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { client, dispatch } = this.props;
     const idFromPath = window.location.pathname
       .substring(window.location.pathname.lastIndexOf('/'))
