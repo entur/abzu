@@ -22,7 +22,7 @@ class ColumnFilterPopover extends React.Component {
   }
 
   render() {
-    const { columnOptions, label, locale } = this.props;
+    const { columnOptions, buttonLabel, captionLabel, locale } = this.props;
     const optionStyle = {
       padding: 5,
     };
@@ -30,7 +30,8 @@ class ColumnFilterPopover extends React.Component {
     return (
       <div style={this.props.style}>
         <RaisedButton
-          label={label}
+          label={buttonLabel}
+          labelStyle={{fontSize: 12}}
           onTouchTap={this.handleTouchTap.bind(this)}
         />
         <Popover
@@ -44,6 +45,9 @@ class ColumnFilterPopover extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <Menu>
+            <div style={{width: '100%', fontSize: 12, padding: 5, background: '#000', marginTop: -8}}>
+              <span style={{color: '#fff', textTransform: 'capitalize'}}>{ captionLabel }</span>
+            </div>
             {columnOptions.map(option =>
               <div style={optionStyle} key={'option-' + option.id}>
                 <Checkbox

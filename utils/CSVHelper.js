@@ -1,12 +1,10 @@
-import { ColumnTranformers } from '../models/columnTransformers';
-
-export const jsonArrayToCSV = (jsonArray, headerOptions, delimiter = ';') => {
+export const jsonArrayToCSV = (jsonArray, headerOptions, delimiter = ';', transformer) => {
   const replacer = (key, value) => value || '';
   const header = headerOptions.filter(ho => ho.checked);
   let csv = jsonArray.map(row =>
     header
       .map(fieldName =>
-        JSON.stringify(ColumnTranformers[fieldName.id](row), replacer),
+        JSON.stringify(transformer[fieldName.id](row), replacer),
       )
       .join(delimiter),
   );

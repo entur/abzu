@@ -19,8 +19,8 @@ import MdSearch from 'material-ui/svg-icons/action/search';
 import ColumnFilterPopover from '../components/ColumnFilterPopover';
 import { getParkingForMultipleStopPlaces } from '../graphql/Queries';
 import { reportReducer } from '../reducers/';
-
 import { injectIntl } from 'react-intl';
+import { columnOptionsQuays, columnOptionsStopPlace } from '../config/columnOptions'
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -33,40 +33,8 @@ class ReportPage extends React.Component {
       activePageIndex: 0,
       searchQuery: '',
       isLoading: false,
-      columnOptions: [
-        {
-          id: 'id',
-          checked: true,
-        },
-        {
-          id: 'name',
-          checked: true,
-        },
-        {
-          id: 'modality',
-          checked: true,
-        },
-        {
-          id: 'county',
-          checked: true,
-        },
-        {
-          id: 'muncipality',
-          checked: true,
-        },
-        {
-          id: 'importedId',
-          checked: true,
-        },
-        {
-          id: 'position',
-          checked: true,
-        },
-        {
-          id: 'parking',
-          checked: false,
-        },
-      ],
+      columnOptionsQuays: columnOptionsQuays,
+      columnOptionsStopPlace: columnOptionsStopPlace
     };
   }
 
@@ -76,8 +44,8 @@ class ReportPage extends React.Component {
     });
   }
 
-  handleColumnCheck(id, checked) {
-    const columnOptions = this.state.columnOptions.slice();
+  handleColumnStopPlaceCheck(id, checked) {
+    const columnOptions = this.state.columnOptionsStopPlace.slice();
 
     for (let i = 0; columnOptions.length > i; i++) {
       let option = columnOptions[i];
@@ -89,7 +57,24 @@ class ReportPage extends React.Component {
     }
 
     this.setState({
-      columnOptions: columnOptions,
+      columnOptionsStopPlace: columnOptions,
+    });
+  }
+
+  handleColumnQuaysCheck(id, checked) {
+    const columnOptions = this.state.columnOptionsQuays.slice();
+
+    for (let i = 0; columnOptions.length > i; i++) {
+      let option = columnOptions[i];
+      if (option.id === id) {
+        option.checked = checked;
+        columnOptions[i] = option;
+        break;
+      }
+    }
+
+    this.setState({
+      columnOptionsQuays: columnOptions,
     });
   }
 
@@ -305,23 +290,36 @@ class ReportPage extends React.Component {
             </ReportFilterBox>
           </div>
         </div>
-        <ColumnFilterPopover
-          style={{ marginLeft: 5, marginTop: 5 }}
-          columnOptions={this.state.columnOptions}
-          handleColumnCheck={this.handleColumnCheck.bind(this)}
-          label={formatMessage({ id: 'column_filter_label' })}
-          locale={locale}
-        />
+        <div style={{display: 'flex'}}>
+          <ColumnFilterPopover
+            style={{ marginLeft: 5, marginTop: 5 }}
+            columnOptions={this.state.columnOptionsStopPlace}
+            handleColumnCheck={this.handleColumnStopPlaceCheck.bind(this)}
+            buttonLabel={formatMessage({ id: 'column_filter_label_stop_place' })}
+            captionLabel={formatMessage({id: 'stop_place'})}
+            locale={locale}
+          />
+          <ColumnFilterPopover
+            style={{ marginLeft: 5, marginTop: 5 }}
+            columnOptions={this.state.columnOptionsQuays}
+            handleColumnCheck={this.handleColumnQuaysCheck.bind(this)}
+            buttonLabel={formatMessage({ id: 'column_filter_label_quays' })}
+            captionLabel={formatMessage({id: 'quays'})}
+            locale={locale}
+          />
+        </div>
         <ReportResultView
           activePageIndex={activePageIndex}
           intl={intl}
           results={results}
-          columnOptions={this.state.columnOptions}
+          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+          quaysColumnOptions={this.state.columnOptionsQuays}
         />
         <ReportPageFooter
           results={results}
           intl={intl}
-          columnOptions={this.state.columnOptions}
+          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+          quaysColumnOptions={this.state.columnOptionsQuays}
           handleSelectPage={this.handleSelectPage.bind(this)}
           activePageIndex={activePageIndex}
         />

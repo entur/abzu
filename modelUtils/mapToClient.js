@@ -415,7 +415,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
       stopPlaceType: stop.stopPlaceType,
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
-      quays: stop.quays,
+      quays: stop.quays.map(quay => helpers.mapQuayToClientQuay(quay)),
       importedId: stop.importedId,
       accessibilityAssessment: stop.accessibilityAssessment,
     };

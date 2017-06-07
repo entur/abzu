@@ -120,6 +120,17 @@ export const findStopForReport = gql`
             stopPlaceType
             quays {
                 id
+                importedId
+                name {
+                    value
+                }
+                geometry {
+                    coordinates
+                }
+                privateCode {
+                    value
+                }
+                publicCode
             }
             accessibilityAssessment {
                 limitations {
@@ -234,6 +245,7 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
     queryContent += `
         ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
             id
+            parkingVehicleTypes
         }
     `
   })

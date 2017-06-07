@@ -1,18 +1,73 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { jsonArrayToCSV } from '../utils/CSVHelper';
+import {
+  ColumnTransformersStopPlace,
+  ColumnTransformersQuays
+} from '../models/columnTransformers';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 class ReportPageFooter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+  }
+
+  handleExportOpen(event) {
+    event.preventDefault();
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget
+    });
+  }
+
   // TODO : This only works correctly in Chrome, fix for FF and Safari needed
-  handleGetCSV() {
-    const { results, columnOptions } = this.props;
-    let csv = jsonArrayToCSV(results, columnOptions);
+  downloadCSV(items, columns, filename, transformer) {
+    let csv = jsonArrayToCSV(items, columns, ';', transformer);
     var element = document.createElement('a');
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     var url = URL.createObjectURL(blob);
     element.href = url;
-    element.setAttribute('download', 'results.csv');
+    element.setAttribute('download', filename);
     element.click();
+  }
+
+  handleGetCSVStopPlace() {
+    const { results, stopPlaceColumnOptions } = this.props;
+    this.downloadCSV(
+      results,
+      stopPlaceColumnOptions,
+      'results-stop-places',
+      ColumnTransformersStopPlace
+    );
+  }
+
+  handleGetCSVQuays() {
+    const { results, quaysColumnOptions } = this.props;
+    let items = [];
+    const columnOptions = quaysColumnOptions.concat({
+      id: 'stopPlaceId',
+      checked: true
+    });
+
+    results.forEach(result => {
+      const quays = result.quays.map(quay => ({
+        ...quay,
+        stopPlaceId: result.id
+      }));
+      items = items.concat.apply(items, quays);
+    });
+
+    this.downloadCSV(
+      items,
+      columnOptions,
+      'results-quays',
+      ColumnTransformersQuays
+    );
   }
 
   render() {
@@ -30,26 +85,27 @@ class ReportPageFooter extends React.Component {
       justifyContent: 'space-between',
       position: 'fixed',
       height: 35,
-  };
+      zIndex: 100
+    };
 
     const pageWrapperStyle = {
       color: '#fff',
       fontSize: 16,
       display: 'flex',
       alignItems: 'center',
-      padding: 10,
+      padding: 10
     };
 
     const pageItemStyle = {
       fontSize: 14,
       cursor: 'pointer',
       paddingLeft: 5,
-      paddingRight: 5,
+      paddingRight: 5
     };
 
     const activePageStyle = {
       fontWeight: 600,
-      borderBottom: '1px solid #41c0c4',
+      borderBottom: '1px solid #41c0c4'
     };
 
     let pages = [];
@@ -77,16 +133,36 @@ class ReportPageFooter extends React.Component {
               key={'page-' + page}
             >
               {page + 1}
-            </div>,
+            </div>
           )}
         </div>
-        <div style={{ marginRight: 20 }}>
+        <div style={{ marginRight: 20, display: 'flex' }}>
           <RaisedButton
-            disabled={!totalCount}
-            onClick={this.handleGetCSV.bind(this)}
-            primary={true}
+            onTouchTap={this.handleExportOpen.bind(this)}
             label={formatMessage({ id: 'export_to_csv' })}
+            disabled={!totalCount}
+            primary={true}
           />
+          <Popover
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            onRequestClose={() => {
+              this.setState({ open: false });
+            }}
+          >
+            <Menu>
+              <MenuItem
+                onClick={this.handleGetCSVStopPlace.bind(this)}
+                primaryText={formatMessage({ id: 'export_to_csv_stop_places' })}
+              />
+              <MenuItem
+                onClick={this.handleGetCSVQuays.bind(this)}
+                primaryText={formatMessage({ id: 'export_to_csv_quays' })}
+              />
+            </Menu>
+          </Popover>
         </div>
       </div>
     );

@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-  ColumnTransformersJSX,
+  ColumnTransformerStopPlaceJsx,
   ColumnTranslations,
 } from '../models/columnTransformers';
+import MakeExpandable from './MakeExpandable';
+import ReportQuayRows from './ReportQuayRows';
 
 class ReportResultView extends React.Component {
   render() {
-    const { results, activePageIndex, columnOptions, intl } = this.props;
+    const { results, activePageIndex, stopPlaceColumnOptions, quaysColumnOptions, intl } = this.props;
     const { locale, formatMessage } = intl;
 
     const paginatedResults = getResultsPaginationMap(results);
@@ -15,18 +17,14 @@ class ReportResultView extends React.Component {
     const columnStyle = {
       flexBasis: '100%',
       textAlign: 'left',
-      marginLeft: 5,
       marginBottom: 5,
+      marginTop: 5,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      fontSize: 12
     };
 
-    const columnStyleHeader = {
-      ...columnStyle,
-      marginLeft: 0,
-    };
-
-    const columns = columnOptions.filter(c => c.checked).map(c => c.id);
+    const columns = stopPlaceColumnOptions.filter(c => c.checked).map(c => c.id);
     const pageSize = results.length <= 20 ? results.length : 20;
     const showingResultLabel = formatMessage({ id: 'showing_results' })
       .replace('$size', pageSize)
@@ -36,7 +34,6 @@ class ReportResultView extends React.Component {
       <div style={{paddingBottom: 50}}>
         <div
           style={{
-            marginLeft: 5,
             fontWeight: 600,
             fontSize: 12,
             textAlign: 'center',
@@ -51,25 +48,31 @@ class ReportResultView extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            lineHeight: '1.5',
+            lineHeight: '1.4',
           }}
         >
           <div
-            key={'column-header'}
             style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}
           >
-            {columns.map(column =>
-              <div key={'column-' + column} style={columnStyleHeader}>
+            {columns.map( (column, i) =>
+              <div key={'column-' + column} style={columnStyle}>
                 {ColumnTranslations[locale][column]}
-              </div>,
+              </div>
             )}
+            <div key={'column-expand'} style={columnStyle}></div>
           </div>
 
           {resultItems.map((item, index) => {
             const background = index % 2 ? 'rgba(213, 228, 236, 0.37)' : '#fff';
 
             return (
-              <div
+              <MakeExpandable
+                expandedContent={
+                  <ReportQuayRows
+                    quays={item.quays}
+                    columnOptions={quaysColumnOptions}
+                  />
+                }
                 key={item.id}
                 style={{
                   display: 'flex',
@@ -79,10 +82,10 @@ class ReportResultView extends React.Component {
               >
                 {columns.map(column =>
                   <div key={'column-item-' + column} style={columnStyle}>
-                    {ColumnTransformersJSX[column](item)}
+                    {ColumnTransformerStopPlaceJsx[column](item)}
                   </div>,
                 )}
-              </div>
+              </MakeExpandable>
             );
           })}
         </div>
