@@ -22,7 +22,6 @@ class DeleteStopPlaceDialog extends React.Component {
       cancel: formatMessage({ id: 'cancel' }),
       title: formatMessage({ id: 'delete_stop_title' }),
       info: formatMessage({ id: 'delete_stop_info' }),
-      warning: formatMessage({ id: 'delete_stop_warning' }),
     };
 
     const actions = [
@@ -52,15 +51,14 @@ class DeleteStopPlaceDialog extends React.Component {
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         <div>
-          <div style={{ marginBottom: 20, color: '#000' }}>
+          <div style={{ marginBottom: 10, color: '#000' }}>
             <span style={{fontWeight: 600}}>{ `${stopPlace.name} (${stopPlace.id})` }</span>
           </div>
-          <div style={{ marginLeft: 0 }}>{translations.info}</div>
-          <div style={{ marginTop: 10, display: 'flex', alignItems: 'center' }}>
-            <MdWarning color="orange" />
-            <span style={{ fontWeight: 600, marginLeft: 5 }}>
-              {translations.warning}
-            </span>
+          <div style={{ marginLeft: 0, display: 'flex'}} >
+            <div style={{marginTop: 0, marginRight: 5}}>
+              <MdWarning color="orange"/>
+            </div>
+            <span>{translations.info}</span>
           </div>
         </div>
       </Dialog>

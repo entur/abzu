@@ -58,7 +58,6 @@
   "delete_quay_warning": "All your unsaved changes will be discarded!",
   "delete_stop_title": "You are about delete this stop place",
   "delete_stop_info": "This will irreverisibly delete this stop place. Use with caution.",
-  "delete_stop_warning": "All your unsaved changes will be discarded!",
   "discard_changes_body": "You have done modifications to this stop place that are unsaved.",
   "discard_changes_cancel": "Cancel",
   "discard_changes_confirm": "Discard changes",
