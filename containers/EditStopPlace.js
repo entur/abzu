@@ -7,7 +7,7 @@ import InformationBanner from '../components/InformationBanner';
 import Information from '../config/information';
 import { injectIntl } from 'react-intl';
 import InformationManager from '../singletons/InformationManager';
-import { stopPlaceFullSet } from '../graphql/Queries';
+import { stopPlaceWithEverythingElse } from '../graphql/Queries';
 import { withApollo } from 'react-apollo';
 import '../styles/main.css';
 import Dialog from 'material-ui/Dialog';
@@ -64,7 +64,7 @@ class EditStopPlace extends React.Component {
       client
         .query({
           fetchPolicy: 'network-only',
-          query: stopPlaceFullSet,
+          query: stopPlaceWithEverythingElse,
           variables: {
             id: idFromPath,
           },

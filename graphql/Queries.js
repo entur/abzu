@@ -39,7 +39,7 @@ export const stopPlaceBBQuery = gql`
     },
 `
 
-export const stopPlaceFullSet = gql`
+export const stopPlaceWithEverythingElse = gql`
     query stopPlaceAndPathLink($id: String!) {
         pathLink(stopPlaceId: $id) {
             ...VerbosePathLink

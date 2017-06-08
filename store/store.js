@@ -18,7 +18,7 @@ export default function configureStore(kc) {
     uri: window.config.tiamatBaseUrl,
   });
 
-  /*networkInterface.use([
+  networkInterface.use([
     {
       applyMiddleware(req, next) {
         if (!req.options.headers) {
@@ -29,8 +29,8 @@ export default function configureStore(kc) {
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
         next();
       },
-    },
-  ]);*/
+    } ,
+  ]);
 
   const client = new ApolloClient({
     networkInterface: networkInterface,
