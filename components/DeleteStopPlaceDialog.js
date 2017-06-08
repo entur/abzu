@@ -5,7 +5,7 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 
-class DeleteQuayDialog extends React.Component {
+class DeleteStopPlaceDialog extends React.Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -14,15 +14,15 @@ class DeleteQuayDialog extends React.Component {
   };
 
   render() {
-    const { open, intl, handleClose, deletingQuay, handleConfirm } = this.props;
+    const { open, intl, handleClose, handleConfirm, stopPlace } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
       confirm: formatMessage({ id: 'confirm' }),
       cancel: formatMessage({ id: 'cancel' }),
-      title: formatMessage({ id: 'delete_quay_title' }),
-      info: formatMessage({ id: 'delete_quay_info' }),
-      warning: formatMessage({ id: 'delete_quay_warning' }),
+      title: formatMessage({ id: 'delete_stop_title' }),
+      info: formatMessage({ id: 'delete_stop_info' }),
+      warning: formatMessage({ id: 'delete_stop_warning' }),
     };
 
     const actions = [
@@ -53,7 +53,7 @@ class DeleteQuayDialog extends React.Component {
       >
         <div>
           <div style={{ marginBottom: 20, color: '#000' }}>
-            <span style={{fontWeight: 600}}>{ deletingQuay ? deletingQuay.quayId : null }</span>
+            <span style={{fontWeight: 600}}>{ `${stopPlace.name} (${stopPlace.id})` }</span>
           </div>
           <div style={{ marginLeft: 0 }}>{translations.info}</div>
           <div style={{ marginTop: 10, display: 'flex', alignItems: 'center' }}>
@@ -68,4 +68,4 @@ class DeleteQuayDialog extends React.Component {
   }
 }
 
-export default DeleteQuayDialog;
+export default DeleteStopPlaceDialog;

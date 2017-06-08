@@ -37,7 +37,10 @@ import MergeStopDialog from '../components/MergeStopDialog';
 import MergeQuaysDialog from '../components/MergeQuaysDialog';
 import { MutationErrorCodes } from '../models/ErrorCodes';
 import DeleteQuayDialog from '../components/DeleteQuayDialog';
-import { deleteQuay, getStopPlaceVersions } from '../graphql/Actions'
+import { deleteQuay, getStopPlaceVersions, deleteStopPlace } from '../graphql/Actions';
+import IconButton from 'material-ui/IconButton';
+import MdDelete from 'material-ui/svg-icons/action/delete-forever';
+import DeleteStopPlaceDialog from '../components/DeleteStopPlaceDialog';
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -69,12 +72,15 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.hideDeleteQuayDialog())
   }
 
+  handleCloseDeleteStop() {
+    this.props.dispatch(UserActions.hideDeleteStopDialog())
+  }
+
   handleSaveSuccess(stopPlaceId) {
     const { client, dispatch } = this.props;
 
     this.setState({
       saveDialogOpen: false,
-
     });
 
     getStopPlaceVersions(client, stopPlaceId).then( () => {
@@ -85,7 +91,7 @@ class EditStopGeneral extends React.Component {
     });
   }
 
-  handleError(errorCode) {
+  handleSaveError(errorCode) {
     const { dispatch } = this.props;
     dispatch(
       UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR),
@@ -181,6 +187,22 @@ class EditStopGeneral extends React.Component {
           );
         });
     });
+  };
+
+  handleDeleteStop() {
+    const { client, stopPlace, dispatch } = this.props;
+    deleteStopPlace(client, stopPlace.id).then( response => {
+      dispatch(UserActions.hideDeleteStopDialog());
+      if (response.data.deleteStopPlace) {
+        dispatch(UserActions.navigateToMainAfterDelete());
+      } else {
+        console.error("Failed to delete StopPlace", response);
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
+      }
+    }).catch( err => {
+      dispatch(UserActions.hideDeleteStopDialog());
+      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
+    })
   }
 
   handleSaveAllEntities(userInput) {
@@ -235,14 +257,14 @@ class EditStopGeneral extends React.Component {
                       this.handleSaveSuccess(id);
                     })
                     .catch(err => {
-                      this.handleError(MutationErrorCodes.ERROR_PARKING);
+                      this.handleSaveError(MutationErrorCodes.ERROR_PARKING);
                     });
                 } else {
                   this.handleSaveSuccess(id);
                 }
               })
               .catch(err => {
-                this.handleError(MutationErrorCodes.ERROR_PATH_LINKS);
+                this.handleSaveError(MutationErrorCodes.ERROR_PATH_LINKS);
               });
           } else if (shouldMutateParking) {
             client
@@ -254,13 +276,13 @@ class EditStopGeneral extends React.Component {
                 this.handleSaveSuccess(id);
               })
               .catch(err => {
-                this.handleError(MutationErrorCodes.ERROR_PARKING);
+                this.handleSaveError(MutationErrorCodes.ERROR_PARKING);
               });
           }
         }
       })
       .catch(err => {
-        this.handleError(MutationErrorCodes.ERROR_STOP_PLACE);
+        this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
       });
   }
 
@@ -573,8 +595,17 @@ class EditStopGeneral extends React.Component {
             handleClose={this.handleCloseDeleteQuay.bind(this)}
             handleConfirm={this.handleDeleteQuay.bind(this)}
             intl={intl}
+            deletingQuay={this.props.deletingQuay}
           >
           </DeleteQuayDialog>
+          <DeleteStopPlaceDialog
+            open={this.props.deleteStopDialogOpen}
+            handleClose={this.handleCloseDeleteStop.bind(this)}
+            handleConfirm={this.handleDeleteStop.bind(this)}
+            intl={intl}
+            stopPlace={stopPlace}
+          >
+          </DeleteStopPlaceDialog>
         </div>
         <div
           style={{
@@ -595,6 +626,14 @@ class EditStopGeneral extends React.Component {
               this.setState({ confirmDialogOpen: true });
             }}
           />
+          <IconButton
+            disabled={disabled || stopPlace.isNewStop}
+            onClick={() => {
+              this.props.dispatch(UserActions.requestDeleteStopPlace())
+            }}
+          >
+            <MdDelete/>
+          </IconButton>
           <FlatButton
             icon={<MdSave />}
             disabled={disabled || !stopHasBeenModified}
@@ -624,6 +663,7 @@ const mapStateToProps = state => ({
   mergingQuay: state.mapUtils.mergingQuay,
   mergingQuayDialogOpen: state.mapUtils.mergingQuayDialogOpen,
   deleteQuayDialogOpen: state.mapUtils.deleteQuayDialogOpen,
+  deleteStopDialogOpen: state.mapUtils.deleteStopDialogOpen,
   deletingQuay: state.mapUtils.deletingQuay,
   versions: state.stopPlace.versions,
 });

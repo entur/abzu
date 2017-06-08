@@ -1,4 +1,4 @@
-import { mutateDeleteQuay } from './Mutations';
+import { mutateDeleteQuay, mutateDeleteStopPlace } from './Mutations';
 import {
   stopPlaceAndPathLinkByVersion,
   allVersionsOfStopPlace,
@@ -10,6 +10,15 @@ export const deleteQuay = (client, variables) => (
     mutation: mutateDeleteQuay,
     variables,
     fetchPolicy: 'network-only',
+  })
+);
+
+export const deleteStopPlace = (client, stopPlaceId) => (
+  client.mutate({
+    mutation: mutateDeleteStopPlace,
+    variables: {
+      stopPlaceId
+    }
   })
 );
 

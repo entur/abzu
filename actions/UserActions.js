@@ -7,17 +7,25 @@ var UserActions = {};
 
 const sendData = (type, payLoad) => ({
   type: type,
-  payLoad: payLoad,
+  payLoad: payLoad
 });
 
-UserActions.navigateTo = (path, id) => dispatch => {
-  dispatch(sendData(types.NAVIGATE_TO, id));
-
+const goToRoute = (path, id) => {
   const basePath = window.config.endpointBase;
   if (path.length && path[0] === '/') {
     path = path.slice(1);
   }
   browserHistory.push(basePath + path + id);
+}
+
+UserActions.navigateTo = (path, id) => dispatch => {
+  dispatch(sendData(types.NAVIGATE_TO, id));
+  goToRoute(path, id);
+};
+
+UserActions.navigateToMainAfterDelete = () => dispatch => {
+  dispatch(sendData(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
+  goToRoute('/','');
 };
 
 UserActions.clearSearchResults = () => dispatch => {
@@ -110,7 +118,7 @@ UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
     title,
     searchFilters.text,
     searchFilters.stopType,
-    searchFilters.topoiChips,
+    searchFilters.topoiChips
   );
   favoriteManager.save(savableContent);
   dispatch(UserActions.closeFavoriteNameDialog());
@@ -130,8 +138,8 @@ UserActions.setMissingCoordinates = (position, stopPlaceId) => dispatch => {
   dispatch(
     sendData(types.SET_MISSING_COORDINATES, {
       stopPlaceId: stopPlaceId,
-      position: position,
-    }),
+      position: position
+    })
   );
 };
 
@@ -162,8 +170,8 @@ UserActions.startCreatingPolyline = (coordinates, id, type) => dispatch => {
     sendData(types.STARTED_CREATING_POLYLINE, {
       coordinates: coordinates,
       id: id,
-      type: type,
-    }),
+      type: type
+    })
   );
 };
 
@@ -176,8 +184,8 @@ UserActions.addFinalCoordinesToPolylines = (coords, id, type) => dispatch => {
     sendData(types.ADDED_FINAL_COORDINATES_TO_POLYLINE, {
       coordinates: coords,
       id: id,
-      type: type,
-    }),
+      type: type
+    })
   );
 };
 
@@ -193,8 +201,8 @@ UserActions.editPolylineTimeEstimate = (index, seconds) => dispatch => {
   dispatch(
     sendData(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {
       index: index,
-      estimate: seconds,
-    }),
+      estimate: seconds
+    })
   );
 };
 
@@ -206,8 +214,8 @@ UserActions.showMergeStopDialog = (id, name) => dispatch => {
   dispatch(
     sendData(types.OPENED_MERGE_STOP_DIALOG, {
       id: id,
-      name: name,
-    }),
+      name: name
+    })
   );
 };
 
@@ -235,13 +243,21 @@ UserActions.hideDeleteQuayDialog = () => dispatch => {
   dispatch(sendData(types.CANCELLED_DELETE_QUAY_DIALOG, null));
 };
 
+UserActions.hideDeleteStopDialog = () => dispatch => {
+  dispatch(sendData(types.CANCELLED_DELETE_STOP_DIALOG, null));
+};
+
 UserActions.requestDeleteQuay = (stopPlaceId, quayId) => dispatch => {
   dispatch(
     sendData(types.REQUESTED_DELETE_QUAY, {
       stopPlaceId,
       quayId
     })
-  )
+  );
+};
+
+UserActions.requestDeleteStopPlace = () => dispatch => {
+  dispatch(sendData(types.REQUESTED_DELETE_STOP_DIALOG, null));
 };
 
 export default UserActions;

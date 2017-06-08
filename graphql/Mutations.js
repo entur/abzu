@@ -61,6 +61,12 @@ export const mutateDeleteQuay = gql`
   ${Fragments.stopPlace.verbose}
 `
 
+export const mutateDeleteStopPlace = gql`
+    mutation mutateDeleteStopPlace($stopPlaceId: String!) {
+        deleteStopPlace(stopPlaceId: $stopPlaceId)
+    }
+`
+
 export const mutateMergeQuays = gql`
     mutation mergeQuays($stopPlaceId: String!, $fromQuayId: String!, $toQuayId: String!) {
         mergeQuays(stopPlaceId: $stopPlaceId, fromQuayId: $fromQuayId, toQuayId: $toQuayId) {

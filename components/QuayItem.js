@@ -29,6 +29,7 @@ import Sign512 from '../static/icons/TransportSign';
 import CoordinatesDialog from './CoordinatesDialog';
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
+import MdDelete from 'material-ui/svg-icons/action/delete-forever'
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -420,10 +421,9 @@ class QuayItem extends React.Component {
               <div style={removeStyle}>
                 <IconButton
                   disabled={disabled}
-                  iconClassName="material-icons"
                   onClick={this.props.handleRemoveQuay}
                 >
-                  delete
+                  <MdDelete/>
                 </IconButton>
               </div>
             </div>}

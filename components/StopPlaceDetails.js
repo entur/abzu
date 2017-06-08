@@ -294,8 +294,10 @@ class StopPlaceDetails extends React.Component {
                     <span style={{ color: '#bb271c', marginLeft: 5 }}>
                       {' '}{expirationText}
                     </span>
-                  </div>}
-              </div>}
+                  </div>
+                }
+              </div>
+            }
             <ImportedId
               id={stopPlace.importedId}
               text={formatMessage({ id: 'local_reference' })}

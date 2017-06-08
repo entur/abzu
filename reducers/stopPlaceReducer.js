@@ -27,6 +27,17 @@ const stopPlaceReducer = (state = {}, action) => {
         searchResults: [],
       });
 
+    case types.NAVIGATE_TO_MAIN_AFTER_DELETE:
+      return Object.assign({}, state, {
+        searchResults: [],
+        pathLink: [],
+        current: null,
+        stopHasBeenModified: false,
+        activeSearchResult: null,
+        versions: [],
+        originalCurrent: null,
+      });
+
     case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
       const id = action.payLoad;
       return Object.assign({}, state, {
