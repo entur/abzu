@@ -194,13 +194,13 @@ helpers.mapVersionToClientVersion = source => {
           version: data.version,
           name: getIn(data, ['name', 'value'], ''),
           fromDate: getInTransform(
-            data.validBetweens[0],
+            data.validBetween,
             ['fromDate'],
             '',
             transformer,
           ),
           toDate: getInTransform(
-            data.validBetweens[0],
+            data.validBetween,
             ['toDate'],
             '',
             transformer,
@@ -250,8 +250,8 @@ helpers.mapStopToClientStop = (
       }
     }
 
-    if (stop.validBetweens) {
-      clientStop.validBetweens = stop.validBetweens;
+    if (stop.validBetween) {
+      clientStop.validBetween = stop.validBetween;
     }
 
     if (stop.tariffZones && stop.tariffZones.length) {
@@ -292,8 +292,8 @@ helpers.mapStopToClientStop = (
       }
     }
 
-    if (stop.importedId) {
-      clientStop.importedId = stop.importedId;
+    if (stop.keyValues) {
+      clientStop.importedId = helpers.getImportedId(stop.keyValues);
     }
 
     if (isActive) {
@@ -330,8 +330,8 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
   clientQuay.accessibilityAssessment =
     quay.accessibilityAssessment || accessibilityAssessment;
 
-  if (quay.importedId) {
-    clientQuay.importedId = quay.importedId;
+  if (quay.keyValues) {
+    clientQuay.importedId = helpers.getImportedId(quay.keyValues);
   }
 
   if (quay.privateCode && quay.privateCode.value) {
@@ -380,7 +380,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       parentTopographicPlace: parentTopographicPlace,
       isActive: false,
       quays: stop.quays,
-      importedId: stop.importedId,
+      importedId: helpers.getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
     };
 
@@ -416,7 +416,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
       quays: stop.quays.map(quay => helpers.mapQuayToClientQuay(quay)),
-      importedId: stop.importedId,
+      importedId: helpers.getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
       placeEquipments: stop.placeEquipments,
     };
@@ -725,5 +725,14 @@ const removeElementByIndex = (list, index) => [
   ...list.slice(0, index),
   ...list.slice(index + 1),
 ];
+
+helpers.getImportedId = keyValues => {
+  for (let i = 0; i < keyValues.length; i++) {
+    if (keyValues[i].key === "imported-id") {
+      return keyValues[i].values;
+    }
+  }
+  return [];
+}
 
 export default helpers;

@@ -53,7 +53,7 @@ export const stopPlaceFullSet = gql`
         versions: 
             stopPlace(id: $id, allVersions: true, size: 100) {
                 id
-                validBetweens {
+                validBetween {
                     fromDate
                     toDate
                 }
@@ -74,7 +74,10 @@ export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
-            importedId
+            keyValues {
+                key
+                values
+            }
             name {
                 value
             }
@@ -110,7 +113,10 @@ export const findStopForReport = gql`
         
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 100) {
             id
-            importedId
+            keyValues {
+                key
+                values
+            }
             name {
                 value
             }
@@ -120,7 +126,10 @@ export const findStopForReport = gql`
             stopPlaceType
             quays {
                 id
-                importedId
+                keyValues {
+                    key
+                    values
+                }
                 name {
                     value
                 }
@@ -192,7 +201,7 @@ export const allVersionsOfStopPlace = gql`
         versions:
         stopPlace(id: $id, allVersions: true, size: 100) {
             id
-            validBetweens {
+            validBetween {
                 fromDate
                 toDate
             }
@@ -220,7 +229,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
         versions:
         stopPlace(id: $id, allVersions: true, size: 100) {
             id
-            validBetweens {
+            validBetween {
                 fromDate
                 toDate
             }
