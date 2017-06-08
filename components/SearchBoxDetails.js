@@ -16,19 +16,19 @@ const SearchBoxDetails = ({
   handleChangeCoordinates,
   userSuppliedCoordinates,
   canEdit,
-  formatMessage,
+  formatMessage
 }) => {
   const style = {
     background: '#fefefe',
     border: '1px dotted #add8e6',
-    padding: 5,
+    padding: 5
   };
 
   const hasWheelchairAccess =
     getIn(
       result,
       ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      null,
+      null
     ) === 'TRUE';
 
   return (
@@ -37,12 +37,19 @@ const SearchBoxDetails = ({
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: 0,
+          marginBottom: 0
         }}
       >
         <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
         <ModalityIcon type={result.stopPlaceType} />
       </div>
+      {!result.isValid &&
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Warning color="orange" style={{ marginTop: -5 }} />
+          <span style={{ color: '#bb271c', marginLeft: 2 }}>
+           { formatMessage({ id: 'stop_has_expired_last_version' }) }
+          </span>
+        </div>}
       <span>{result.id}</span>
       <div style={{ display: 'block', fontSize: 10 }}>
         <span style={{ fontWeight: 600 }}>
@@ -65,7 +72,7 @@ const SearchBoxDetails = ({
               display: 'flex',
               marginLeft: 5,
               alignItems: 'center',
-              fontSize: 12,
+              fontSize: 12
             }}
           >
             <WheelChair color="#0097a7" />
@@ -91,7 +98,7 @@ const SearchBoxDetails = ({
                   fontWeight: 600,
                   marginBottom: 10,
                   fontSize: '0.8em',
-                  cursor: 'pointer',
+                  cursor: 'pointer'
                 }}
                 onClick={() => handleChangeCoordinates()}
               >
@@ -117,7 +124,7 @@ const SearchBoxDetails = ({
                   fontWeight: 600,
                   marginBottom: 10,
                   fontSize: '0.8em',
-                  cursor: 'pointer',
+                  cursor: 'pointer'
                 }}
                 onClick={() => handleChangeCoordinates()}
               >

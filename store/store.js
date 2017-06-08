@@ -6,7 +6,6 @@ import mapReducer from '../reducers/mapReducer';
 import stopPlaceReducer from '../reducers/stopPlaceReducer';
 import userReducer from '../reducers/userReducer';
 import reportReducer from '../reducers/reportReducer';
-
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 
@@ -19,7 +18,7 @@ export default function configureStore(kc) {
     uri: window.config.tiamatBaseUrl,
   });
 
-  networkInterface.use([
+  /*networkInterface.use([
     {
       applyMiddleware(req, next) {
         if (!req.options.headers) {
@@ -31,15 +30,13 @@ export default function configureStore(kc) {
         next();
       },
     },
-  ]);
+  ]);*/
 
   const client = new ApolloClient({
     networkInterface: networkInterface,
   });
 
   if (process.env.NODE_ENV === 'development') {
-    window.ReactPerf = require('react-addons-perf');
-
     enchancer = compose(
       applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware()),
     );

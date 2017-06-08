@@ -3,6 +3,7 @@ import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import moment from 'moment';
+import { hasExpired } from '../modelUtils/validBetween';
 
 const helpers = {};
 
@@ -382,6 +383,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       quays: stop.quays,
       importedId: helpers.getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
+      isValid: hasExpired(stop.validBetween),
     };
 
     if (stop.geometry && stop.geometry.coordinates) {

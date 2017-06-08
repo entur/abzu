@@ -186,6 +186,7 @@
   "step_free_access_quay_hint": "Har denne quayen trinnfri adgang?",
   "stop_place": "stoppested",
   "stop_has_expired": "Denne versjonen har utløpt!",
+  "stop_has_expired_last_version": "Dette stoppestedet har utløpt!",
   "showing_results": "Viser $size av $total",
   "tariffZones": "Tariffsoner",
   "terminate_path_link_here" : "Avslutt ganglenke her",

@@ -88,6 +88,10 @@ export const findStop = gql`
             quays {
                 id
             }
+            validBetween {
+                fromDate
+                toDate
+            }
             accessibilityAssessment {
                 limitations {
                     wheelchairAccess

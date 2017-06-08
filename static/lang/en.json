@@ -186,6 +186,7 @@
   "step_free_access_quay_hint": "Is this quay accessible without steps?",
   "stop_place": "stop place",
   "stop_has_expired": "Current version has expired!",
+  "stop_has_expired_last_version": "This stop has expired!",
   "showing_results": "Showing $size of $total",
   "tariffZones": "Tariff zones",
   "terminate_path_link_here": "Terminate path link here",
