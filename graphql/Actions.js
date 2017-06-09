@@ -1,7 +1,8 @@
 import {
   mutateDeleteQuay,
   mutateDeleteStopPlace,
-  mutateMergeQuays
+  mutateMergeQuays,
+  mutateMergeStopPlaces
 } from './Mutations';
 import {
   stopPlaceAndPathLinkByVersion,
@@ -21,7 +22,8 @@ export const deleteStopPlace = (client, stopPlaceId) =>
     mutation: mutateDeleteStopPlace,
     variables: {
       stopPlaceId
-    }
+    },
+    fetchPolicy: 'network-only'
   });
 
 export const getStopPlaceVersions = (client, stopPlaceId) =>
@@ -40,14 +42,27 @@ export const mergeQuays = (client, stopPlaceId, fromQuayId, toQuayId) =>
       stopPlaceId,
       fromQuayId,
       toQuayId
-    }
+    },
+    fetchPolicy: 'network-only'
   });
 
-export const getStopPlaceWithAll = (client, stopPlaceId) => (
+export const getStopPlaceWithAll = (client, id) => (
   client.query({
     query: stopPlaceWithEverythingElse,
     variables: {
-      stopPlaceId
-    }
+      id
+    },
+    fetchPolicy: 'network-only'
   })
 );
+
+export const mergeQuaysFromStop = (client, fromStopPlaceId, toStopPlaceId) => (
+  client.mutate({
+    mutation: mutateMergeStopPlaces,
+    variables: {
+      fromStopPlaceId,
+      toStopPlaceId
+    },
+    fetchPolicy: 'network-only'
+  })
+)

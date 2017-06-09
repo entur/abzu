@@ -13,14 +13,9 @@ import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 import {
   mutateStopPlace,
   mutatePathLink,
-  mutateParking,
-  mutateMergeStopPlaces,
+  mutateParking
 } from '../graphql/Mutations';
-import {
-  stopPlaceAndPathLinkByVersion,
-  allVersionsOfStopPlace,
-  stopPlaceWithEverythingElse
-} from '../graphql/Queries';
+import { stopPlaceAndPathLinkByVersion } from '../graphql/Queries';
 import * as types from '../actions/Types';
 import EditStopAdditional from './EditStopAdditional';
 import MdUndo from 'material-ui/svg-icons/content/undo';
@@ -41,7 +36,8 @@ import {
   getStopPlaceVersions,
   deleteStopPlace,
   mergeQuays,
-  getStopPlaceWithAll
+  getStopPlaceWithAll,
+  mergeQuaysFromStop
 } from '../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
@@ -97,8 +93,7 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSaveError(errorCode) {
-    const { dispatch } = this.props;
-    dispatch(
+    this.props.dispatch(
       UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR)
     );
     this.setState({
@@ -106,49 +101,16 @@ class EditStopGeneral extends React.Component {
     });
   }
 
-  handleMergeStop() {
+  handleMergeQuaysFromStop() {
     const { stopPlace, mergeSource, client, dispatch } = this.props;
-    const mergeStopVariables = {
-      fromStopPlaceId: mergeSource.id,
-      toStopPlaceId: stopPlace.id
-    };
 
-    if (
-      mergeStopVariables.fromStopPlaceId &&
-      mergeStopVariables.toStopPlaceId
-    ) {
-      client
-        .mutate({
-          variables: mergeStopVariables,
-          mutation: mutateMergeStopPlaces
-        })
-        .then(result => {
-          dispatch(
-            UserActions.openSnackbar(
-              types.SNACKBAR_MESSAGE_SAVED,
-              types.SUCCESS
-            )
-          );
-
-          const { data } = result;
-
-          if (data.mergeStopPlaces) {
-            const { id } = data.mergeStopPlaces;
-            client
-              .query({ query: stopPlaceWithEverythingElse, variables: { id: id } })
-              .then(() => {
-                client.query({
-                  fetchPolicy: 'network-only',
-                  query: allVersionsOfStopPlace,
-                  variables: {
-                    id: id
-                  }
-                });
-              });
-          }
-        });
-      this.handleCloseMergeStopDialog();
-    }
+    mergeQuaysFromStop(client, mergeSource.id, stopPlace.id).then(result => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+      );
+      getStopPlaceWithAll(client, stopPlace.id);
+    });
+    this.handleCloseMergeStopDialog();
   }
 
   handleMergeQuays() {
@@ -188,7 +150,6 @@ class EditStopGeneral extends React.Component {
         if (response.data.deleteStopPlace) {
           dispatch(UserActions.navigateToMainAfterDelete());
         } else {
-          console.error('Failed to delete StopPlace', response);
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
         }
       })
@@ -204,15 +165,17 @@ class EditStopGeneral extends React.Component {
       stopPlace,
       userInput
     );
-    const parking = stopPlace.parking ? stopPlace.parking.slice() : [];
+    const shouldMutateParking = !!(
+      stopPlace.parking && stopPlace.parking.length
+    );
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
       pathLink
     );
-    const shouldMutatePathLinks = !!(
-      pathLinkVariables && pathLinkVariables.length && JSON.stringify(pathLink) !== JSON.stringify(originalPathLink)
-    );
 
-    const shouldMutateParking = parking.length > 0;
+    const shouldMutatePathLinks = !!(
+      pathLinkVariables.length &&
+      JSON.stringify(pathLink) !== JSON.stringify(originalPathLink)
+    );
 
     let id = null;
 
@@ -230,7 +193,7 @@ class EditStopGeneral extends React.Component {
           this.handleSaveSuccess(id);
         } else {
           const parkingVariables = mapToMutationVariables.mapParkingToVariables(
-            parking,
+            stopPlace.parking,
             stopPlace.id || id
           );
 
@@ -569,7 +532,7 @@ class EditStopGeneral extends React.Component {
           <MergeStopDialog
             open={mergeStopDialogOpen}
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
-            handleConfirm={this.handleMergeStop.bind(this)}
+            handleConfirm={this.handleMergeQuaysFromStop.bind(this)}
             intl={intl}
             sourceElement={this.props.mergeSource}
             targetElement={{
