@@ -6,6 +6,14 @@ import moment from 'moment';
 
 const helpers = {};
 
+const getUniqListBy = (a, key) => {
+  var seen = {};
+  return a.filter(function(item) {
+    let k = key(item);
+    return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+  })
+};
+
 const calculateDistance = coords => {
   let latlngDistances = coords.map(
     position => new LatLng(position[0], position[1]),
@@ -46,7 +54,10 @@ helpers.mapParkingToClient = parkingObjs => {
 helpers.mapPathLinkToClient = pathLinks => {
   if (!pathLinks) return [];
 
-  return pathLinks.map(pathLink => {
+  // NRP-1675, this is a temporary solution until pathLinks(stopPLaceId: $id) returns a unique list
+  let uniquePathLinks = getUniqListBy(pathLinks, pathLink => pathLink.id);
+
+  return uniquePathLinks.map(pathLink => {
     let clientPathLink = JSON.parse(JSON.stringify(pathLink));
 
     let latlngCoordinates = [];
