@@ -348,7 +348,7 @@ class EditStopGeneral extends React.Component {
       validBetween: formatMessage({ id: 'valid_between' })
     };
 
-    const captionText = this.getTitleText(stopPlace, formatMessage);
+    const stopPlaceLabel = this.getTitleText(stopPlace, formatMessage);
 
     const style = {
       border: '1px solid #511E12',
@@ -395,7 +395,7 @@ class EditStopGeneral extends React.Component {
               }}
               onClick={this.handleGoBack.bind(this)}
             />
-            <div>{captionText}</div>
+            <div>{stopPlaceLabel}</div>
           </div>
           <FlatButton
             label={translations.versions}

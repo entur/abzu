@@ -295,6 +295,7 @@ helpers.mapStopToClientStop = (
 
     if (stop.keyValues) {
       clientStop.importedId = helpers.getImportedId(stop.keyValues);
+      clientStop.keyValues = stop.keyValues;
     }
 
     if (isActive) {
@@ -333,6 +334,7 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
 
   if (quay.keyValues) {
     clientQuay.importedId = helpers.getImportedId(quay.keyValues);
+    clientQuay.keyValues = quay.keyValues;
   }
 
   if (quay.privateCode && quay.privateCode.value) {
@@ -483,7 +485,10 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 
   switch (type) {
     case 'quay':
-      copy.quays = copy.quays.concat(newElement);
+      copy.quays = copy.quays.concat({
+        ...newElement,
+        keyValues: []
+      });
       break;
     case 'entrance':
       copy.entrances = copy.entrances.concat(newElement);

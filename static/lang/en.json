@@ -98,6 +98,8 @@
   "hide_quays": "Hide quays",
   "is_missing_coordinates": "Missing coordinates",
   "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",
+  "key_values_hint": "Key-value pairs",
+  "key_values_no": "No key-value pairs",
   "language": "Language",
   "local_reference": "Local reference:",
   "log_out": "Log out",

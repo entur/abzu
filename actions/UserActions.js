@@ -260,4 +260,12 @@ UserActions.requestDeleteStopPlace = () => dispatch => {
   dispatch(sendData(types.REQUESTED_DELETE_STOP_DIALOG, null));
 };
 
+UserActions.openKeyValuesDialog = keyValues => dispatch => {
+  dispatch(sendData(types.OPENED_KEY_VALUES_DIALOG, keyValues));
+};
+
+UserActions.closeKeyValuesDialog = () => dispatch => {
+  dispatch(sendData(types.CLOSED_KEY_VALUES_DIALOG, null));
+};
+
 export default UserActions;

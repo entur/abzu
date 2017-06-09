@@ -9,6 +9,7 @@ import {
   StopPlaceActions,
   AssessmentActions,
   EquipmentActions,
+  UserActions,
 } from '../actions/';
 import { connect } from 'react-redux';
 import TicketMachine from '../static/icons/facilities/TicketMachine';
@@ -33,6 +34,8 @@ import { hasExpired } from '../modelUtils/validBetween';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
+import MdKey from 'material-ui/svg-icons/communication/vpn-key';
+import KeyValuesDialog from '../components/KeyValuesDialog';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -66,6 +69,14 @@ class StopPlaceDetails extends React.Component {
     this.setState({
       stopTypeOpen: false,
     });
+  }
+
+  handleOpenKeyValues() {
+    this.setState({
+      tariffZoneOpen: false,
+      altNamesDialogOpen: false
+    });
+    this.props.dispatch(UserActions.openKeyValuesDialog(this.props.stopPlace.keyValues));
   }
 
   handleOpenStopPlaceTypePopover(event) {
@@ -253,6 +264,7 @@ class StopPlaceDetails extends React.Component {
     const expirationText = formatMessage({ id: 'stop_has_expired' });
     const versionLabel = formatMessage({ id: 'version' });
     const stopIsInvalid = hasExpired(stopPlace.validBetween);
+    const keyValuesHint = formatMessage({id: 'key_values_hint'});
 
     const wheelChairHint =
       accessibilityAssessments.wheelchairAccess.values[locale][
@@ -303,9 +315,17 @@ class StopPlaceDetails extends React.Component {
               text={formatMessage({ id: 'local_reference' })}
             />
           </div>
-          <ToolTippable toolTipText={stopTypeHint}>
+          <ToolTippable toolTipText={keyValuesHint}>
             <IconButton
               style={{ borderBottom: disabled ? 'none' : '1px dotted grey' }}
+              onClick={this.handleOpenKeyValues.bind(this)}
+            >
+              <MdKey color={ (stopPlace.keyValues || []).length ? enturPrimaryDarker : "#000"}/>
+            </IconButton>
+          </ToolTippable>
+          <ToolTippable toolTipText={stopTypeHint}>
+            <IconButton
+              style={{ borderBottom: disabled ? 'none' : '1px dotted grey', marginLeft: 5}}
               onClick={e => {
                 this.handleOpenStopPlaceTypePopover(e);
               }}
@@ -385,7 +405,7 @@ class StopPlaceDetails extends React.Component {
             <div
               style={{
                 borderBottom: '1px dotted',
-                marginLeft: 8,
+                marginLeft: 15,
                 marginTop: -3,
               }}
             >
@@ -557,6 +577,16 @@ class StopPlaceDetails extends React.Component {
             this.setState({ tariffZoneOpen: false });
           }}
         />
+        <KeyValuesDialog
+          open={this.props.keyValuesDialogOpen}
+          keyValues={this.props.keyValuesDialogSource}
+          intl={intl}
+          disabled={disabled}
+          handleClose={() => {
+            this.props.dispatch(UserActions.closeKeyValuesDialog())
+          }}
+        >
+        </KeyValuesDialog>
       </div>
     );
   }
@@ -564,6 +594,8 @@ class StopPlaceDetails extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
+  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
+  keyValuesDialogSource: state.user.keyValuesDialogSource,
 });
 
 export default connect(mapStateToProps)(StopPlaceDetails);
