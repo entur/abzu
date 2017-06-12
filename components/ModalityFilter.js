@@ -2,7 +2,6 @@ import React from 'react';
 import ModalityIcon from './ModalityIcon';
 import stopTypes from '../models/stopTypes';
 import Checkbox from 'material-ui/Checkbox';
-import { UserActions } from '../actions/';
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {

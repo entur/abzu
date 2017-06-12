@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
 const newStopIcon = require('../static/icons/new-stop-icon-2x.png');

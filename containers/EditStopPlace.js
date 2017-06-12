@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Loader from '../components/Loader';
 import EditStopMap from './EditStopMap';
 import EditStopGeneral from './EditStopGeneral';

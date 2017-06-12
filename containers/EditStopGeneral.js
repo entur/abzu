@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import { StopPlaceActions, UserActions } from '../actions/';
 import stopTypes from '../models/stopTypes';
