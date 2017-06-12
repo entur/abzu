@@ -348,67 +348,75 @@ class StopPlaceDetails extends React.Component {
                     </span>
                   </div>}
               </div>}
-            <ImportedId
-              id={stopPlace.importedId}
-              text={formatMessage({ id: 'local_reference' })}
-            />
+            <div style={{ display: 'flex'}}>
+              <ImportedId
+                id={stopPlace.importedId}
+                text={formatMessage({ id: 'local_reference' })}
+              />
+              <div style={{display: 'flex', marginLeft: 'auto'}}>
+                <ToolTippable toolTipText={keyValuesHint}>
+                  <IconButton
+                    style={{
+                      borderBottom: disabled ? 'none' : '1px dotted grey'
+                    }}
+                    onClick={this.handleOpenKeyValues.bind(this)}
+                  >
+                    <MdKey
+                      color={
+                        (stopPlace.keyValues || []).length
+                          ? enturPrimaryDarker
+                          : '#000'
+                      }
+                    />
+                  </IconButton>
+                </ToolTippable>
+                <ToolTippable toolTipText={stopTypeHint}>
+                  <IconButton
+                    style={{
+                      borderBottom: disabled ? 'none' : '1px dotted grey',
+                      marginLeft: 5
+                    }}
+                    onClick={e => {
+                      this.handleOpenStopPlaceTypePopover(e);
+                    }}
+                  >
+                    <ModalityIcon type={stopPlace.stopPlaceType} />
+                  </IconButton>
+                </ToolTippable>
+                <Popover
+                  open={this.state.stopTypeOpen}
+                  anchorEl={this.state.stopTypeAnchorEl}
+                  anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                  targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                  onRequestClose={this.handleCloseStopPlaceTypePopover.bind(
+                    this
+                  )}
+                  animation={PopoverAnimationVertical}
+                  style={{ overflowY: 'none' }}
+                  animated={true}
+                >
+                  {stopTypes[locale].map((type, index) =>
+                    <MenuItem
+                      key={'stopType' + index}
+                      value={type.value}
+                      style={{ padding: '0px 10px' }}
+                      primaryText={type.name}
+                      onClick={() => {
+                        this.handleStopTypeChange(type.value);
+                      }}
+                      insetChildren={true}
+                      leftIcon={
+                        <ModalityIcon
+                          iconStyle={{ float: 'left' }}
+                          type={type.value}
+                        />
+                      }
+                    />
+                  )}
+                </Popover>
+              </div>
+            </div>
           </div>
-          <ToolTippable toolTipText={keyValuesHint}>
-            <IconButton
-              style={{ borderBottom: disabled ? 'none' : '1px dotted grey' }}
-              onClick={this.handleOpenKeyValues.bind(this)}
-            >
-              <MdKey
-                color={
-                  (stopPlace.keyValues || []).length
-                    ? enturPrimaryDarker
-                    : '#000'
-                }
-              />
-            </IconButton>
-          </ToolTippable>
-          <ToolTippable toolTipText={stopTypeHint}>
-            <IconButton
-              style={{
-                borderBottom: disabled ? 'none' : '1px dotted grey',
-                marginLeft: 5
-              }}
-              onClick={e => {
-                this.handleOpenStopPlaceTypePopover(e);
-              }}
-            >
-              <ModalityIcon type={stopPlace.stopPlaceType} />
-            </IconButton>
-          </ToolTippable>
-          <Popover
-            open={this.state.stopTypeOpen}
-            anchorEl={this.state.stopTypeAnchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
-            animation={PopoverAnimationVertical}
-            style={{ overflowY: 'none' }}
-            animated={true}
-          >
-            {stopTypes[locale].map((type, index) =>
-              <MenuItem
-                key={'stopType' + index}
-                value={type.value}
-                style={{ padding: '0px 10px' }}
-                primaryText={type.name}
-                onClick={() => {
-                  this.handleStopTypeChange(type.value);
-                }}
-                insetChildren={true}
-                leftIcon={
-                  <ModalityIcon
-                    iconStyle={{ float: 'left' }}
-                    type={type.value}
-                  />
-                }
-              />
-            )}
-          </Popover>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
@@ -446,7 +454,7 @@ class StopPlaceDetails extends React.Component {
             <div
               style={{
                 borderBottom: '1px dotted',
-                marginLeft: 15,
+                marginLeft: 19,
                 marginTop: -3
               }}
             >
