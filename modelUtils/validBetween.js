@@ -1,16 +1,12 @@
 // determines whether a stopPlace has expired based on validBetweens
 export const hasExpired = validBetween => {
-  try {
-    if (!validBetween) return false;
 
-    if (validBetween.toDate === null) return true;
+  if (!validBetween) return true;
 
-    let toDate = new Date(validBetween.toDate);
-    let nowDate = new Date();
+  if (validBetween.toDate === null) return false;
 
-    return toDate >= nowDate;
-  } catch (e) {
-    console.error('invalid date format', validBetween.toDate);
-    return false;
-  }
+  let toDate = new Date(validBetween.toDate);
+  let nowDate = new Date();
+
+  return toDate <= nowDate;
 };

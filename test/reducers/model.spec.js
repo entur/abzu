@@ -25,6 +25,11 @@ describe('Model: map format from server to expected client model', () => {
       tariffZones: [],
       stopPlaceType: 'onstreetBus',
       isActive: true,
+      hasExpired: false,
+      validBetween: {
+        fromDate: "2017-05-26T14:52:10.096+0200",
+        toDate: null
+      },
       topographicPlace: 'Aremark',
       parentTopographicPlace: 'Østfold',
       alternativeNames: [],
@@ -220,7 +225,7 @@ describe('Changes correct properties', () => {
 
     const hasStopExpired = hasExpired(expiredDate);
 
-    expect(hasStopExpired).toEqual(false);
+    expect(hasStopExpired).toEqual(true);
 
     const validDate = {
       fromDate: '2017-05-31T11:03:01.770+0200',
@@ -229,6 +234,6 @@ describe('Changes correct properties', () => {
 
     const hasStopExpired2 = hasExpired(validDate);
 
-    expect(hasStopExpired2).toEqual(true);
+    expect(hasStopExpired2).toEqual(false);
   });
 });

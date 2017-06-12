@@ -28,6 +28,10 @@ export const stopPlaceBBQuery = gql`
             geometry {
                 coordinates
             }
+            validBetween {
+                fromDate
+                toDate
+            }
             stopPlaceType
             topographicPlace {
                 name {

@@ -153,6 +153,7 @@ class MarkerList extends React.Component {
       mergeQuayFrom: formatMessage({ id: 'merge_quay_from' }),
       mergeQuayTo: formatMessage({ id: 'merge_quay_to' }),
       mergeQuayCancel: formatMessage({ id: 'merge_quay_cancel' }),
+      expired: formatMessage({ id: 'has_expired'}),
     };
 
     const newStopMarkerText = {
@@ -354,6 +355,7 @@ class MarkerList extends React.Component {
               handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
               handleShowQuays={this.handleShowQuays.bind(this)}
               handleHideQuays={this.handleHideQuays.bind(this)}
+              hasExpired={stop.hasExpired}
             />,
           );
 

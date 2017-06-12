@@ -43,7 +43,7 @@ const SearchBoxDetails = ({
         <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
         <ModalityIcon type={result.stopPlaceType} />
       </div>
-      {!result.isValid &&
+      {result.hasExpired &&
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Warning color="orange" style={{ marginTop: -5 }} />
           <span style={{ color: '#bb271c', marginLeft: 2 }}>

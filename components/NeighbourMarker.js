@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
+import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
 
@@ -40,6 +40,11 @@ class NeighbourMarker extends React.Component {
     if (this.props.name !== nextProps.name) {
       return true;
     }
+
+    if (this.props.hasExpired !== nextProps.hasExpired) {
+      return true;
+    }
+
     return false;
   }
 
@@ -58,6 +63,7 @@ class NeighbourMarker extends React.Component {
       isShowingQuays,
       disabled,
       handleMergeStopPlace,
+      hasExpired
     } = this.props;
 
     if (!position) return null;
@@ -66,6 +72,7 @@ class NeighbourMarker extends React.Component {
       <CustomMarkerIcon
         markerIndex={index}
         stopType={stopType}
+        hasExpired={hasExpired}
         active={false}
       />,
     );
@@ -76,6 +83,14 @@ class NeighbourMarker extends React.Component {
       iconSize: [20, 20],
       popupAnchor: [5, 17],
     });
+
+    let titleStyle = {
+      fontWeight: 600,
+      color: '#41c0c4',
+      fontSize: '1.2em',
+      borderBottom: '1px dotted',
+      cursor: 'pointer',
+    };
 
     return (
       <Marker
@@ -89,10 +104,6 @@ class NeighbourMarker extends React.Component {
           <div>
             <div
               style={{
-                fontWeight: 600,
-                color: '#41c0c4',
-                fontSize: '1.2em',
-                cursor: 'pointer',
                 marginBottom: 10,
                 display: 'inline-block',
                 width: '100%',
@@ -102,9 +113,15 @@ class NeighbourMarker extends React.Component {
               onClick={handleOnClick}
             >
               <div
-                style={{ borderBottom: '1px dotted', display: 'inline-block' }}
+                style={{display: 'inline-block' }}
               >
-                {name || id}
+                <div>
+                  <span style={titleStyle}>{name || id}</span>
+                  { hasExpired && <div style={{marginTop: 4, fontWeight: 600, color:'#fff', background: 'rgb(187, 39, 28)'}}>
+                    { translations.expired }
+                  </div>
+                  }
+                </div>
               </div>
             </div>
             <div

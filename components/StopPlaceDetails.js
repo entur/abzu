@@ -30,7 +30,6 @@ import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
 import WeightingPopover from './WeightingPopover';
 import weightTypes, { weightColors, noValue } from '../models/weightTypes';
 import Sign512 from '../static/icons/TransportSign';
-import { hasExpired } from '../modelUtils/validBetween';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
@@ -303,7 +302,6 @@ class StopPlaceDetails extends React.Component {
     const weightingStateHint = this.getNameForWeightingState(stopPlace, locale);
     const expirationText = formatMessage({ id: 'stop_has_expired' });
     const versionLabel = formatMessage({ id: 'version' });
-    const stopIsInvalid = hasExpired(stopPlace.validBetween);
     const keyValuesHint = formatMessage({ id: 'key_values_hint' });
 
     const wheelChairHint =
@@ -337,7 +335,7 @@ class StopPlaceDetails extends React.Component {
                 <span style={{ fontWeight: 600 }}>
                   {versionLabel} {stopPlace.version}
                 </span>
-                {!stopIsInvalid &&
+                {stopPlace.hasExpired &&
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <MdWarning
                       color="orange"

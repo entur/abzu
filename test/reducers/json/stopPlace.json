@@ -13,6 +13,10 @@
         "geometry": {
           "coordinates": [ [5.435734, 60.260427] ]
         },
+        "validBetween": {
+          "fromDate": "2017-05-26T14:52:10.096+0200",
+          "toDate": null
+        },
         "stopPlaceType": "onstreetBus",
         "topographicPlace": {
           "name": {

@@ -5,10 +5,11 @@ class CustomMarkerIcon extends React.Component {
     markerIndex: PropTypes.number.isRequired,
     stopType: PropTypes.string,
     active: PropTypes.bool.isRequired,
+    hasExpired: PropTypes.bool.isRequired,
   };
 
   componentWillMount() {
-    const { stopType, active } = this.props;
+    const { stopType, active, hasExpired } = this.props;
 
     let imageStyle = {
       padding: 3,
@@ -17,7 +18,7 @@ class CustomMarkerIcon extends React.Component {
     };
 
     if (!active) {
-      imageStyle.opacity = '0.8';
+      imageStyle.opacity = hasExpired ? '0.5' : '1.0';
       imageStyle.filter = 'grayscale(80%)';
     }
 

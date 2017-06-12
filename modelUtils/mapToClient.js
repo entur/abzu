@@ -236,6 +236,7 @@ helpers.mapStopToClientStop = (
       isActive: isActive,
       weighting: stop.weighting,
       version: stop.version,
+      hasExpired: hasExpired(stop.validBetween),
     };
 
     if (stop.topographicPlace) {
@@ -385,7 +386,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       quays: stop.quays,
       importedId: helpers.getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
-      isValid: hasExpired(stop.validBetween),
+      hasExpired: hasExpired(stop.validBetween),
     };
 
     if (stop.geometry && stop.geometry.coordinates) {
