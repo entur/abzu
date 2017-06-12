@@ -1,5 +1,5 @@
 let instance = null;
-const key = 'rutebanken_favorites';
+const key = 'ABZU::favorites';
 
 class FavoriteManager {
   constructor() {

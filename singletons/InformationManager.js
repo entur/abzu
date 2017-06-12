@@ -1,5 +1,5 @@
 let instance = null;
-const key = 'rutebanken_pathlinks';
+const key = 'ABZU::displayPathLinksHelp';
 
 class InformationManager {
   constructor() {

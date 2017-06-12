@@ -22,7 +22,6 @@ export const initialState = {
   appliedLocale: null,
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
-  activeBaselayer: 'Rutebankens kart',
   activeElementTab: 0,
   showEditQuayAdditional: false,
   showEditStopAdditional: false,

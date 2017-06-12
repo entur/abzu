@@ -36,7 +36,7 @@ class Header extends React.Component {
   }
 
   handleToggleMultiPolylines(value) {
-    this.props.dispatch(UserActions.toggleMultiPolylinesEnabled(value));
+    this.props.dispatch(UserActions.togglePathLinksEnabled(value));
   }
 
   handleToggleCompassBearing(value) {

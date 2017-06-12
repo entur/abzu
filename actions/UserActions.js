@@ -2,8 +2,12 @@ import * as types from './Types';
 import { browserHistory } from 'react-router';
 import configureLocalization from '../localization/localization';
 import FavoriteManager from '../singletons/FavoriteManager';
+import SettingsManager from '../singletons/SettingsManager';
+
 
 var UserActions = {};
+
+let Settings = new SettingsManager();
 
 const sendData = (type, payLoad) => ({
   type: type,
@@ -58,15 +62,18 @@ UserActions.toggleIsCreatingNewStop = () => (dispatch, getState) => {
   dispatch(sendData(types.TOGGLED_IS_CREATING_NEW_STOP, null));
 };
 
-UserActions.toggleMultiPolylinesEnabled = value => dispatch => {
+UserActions.togglePathLinksEnabled = value => dispatch => {
+  Settings.setShowPathLinks(value);
   dispatch(sendData(types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value));
 };
 
 UserActions.toggleCompassBearingEnabled = value => dispatch => {
+  Settings.setShowCompassBearing(value);
   dispatch(sendData(types.TOGGLED_IS_COMPASS_BEARING_ENABLED, value));
 };
 
 UserActions.toggleExpiredShowExpiredStops = value => dispatch => {
+  Settings.setShowExpiredStops(value);
   dispatch(sendData(types.TOGGLED_IS_SHOW_EXPIRED_STOPS, value));
 };
 
@@ -161,8 +168,9 @@ UserActions.closeFavoriteNameDialog = () => dispatch => {
   dispatch(sendData(types.CLOSED_FAVORITE_NAME_DIALOG, null));
 };
 
-UserActions.changeActiveBaselayer = name => dispatch => {
-  dispatch(sendData(types.CHANGED_ACTIVE_BASELAYER, name));
+UserActions.changeActiveBaselayer = layer => dispatch => {
+  Settings.setMapLayer(layer);
+  dispatch(sendData(types.CHANGED_ACTIVE_BASELAYER, layer));
 };
 
 UserActions.removeStopsNearbyForOverview = () => dispatch => {

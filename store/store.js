@@ -8,6 +8,7 @@ import userReducer from '../reducers/userReducer';
 import reportReducer from '../reducers/reportReducer';
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import SettingsManager from '../singletons/SettingsManager';
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -44,15 +45,17 @@ export default function configureStore(kc) {
     enchancer = compose(applyMiddleware(thunkMiddleware, client.middleware()));
   }
 
+  const Settings = new SettingsManager();
+
   const initialState = {
     stopPlace: {
       centerPosition: [64.349421, 16.809082],
       zoom: 6,
       minZoom: 14,
-      isCompassBearingEnabled: true,
+      isCompassBearingEnabled: Settings.getShowCompassBearing(),
       isCreatingPolylines: false,
-      enablePolylines: true,
-      showExpiredStops: false,
+      enablePolylines: Settings.getShowPathLinks(),
+      showExpiredStops: Settings.getShowExpiredStops(),
       kc: kc,
     },
     user: {
@@ -75,8 +78,8 @@ export default function configureStore(kc) {
       appliedLocale: null,
       favoriteNameDialogIsOpen: false,
       removedFavorites: [],
-      activeBaselayer: 'Rutebankens kart',
       activeElementTab: 0,
+      activeBaselayer: Settings.getMapLayer(),
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
       kc: kc,

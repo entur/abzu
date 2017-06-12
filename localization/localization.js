@@ -2,10 +2,10 @@ import { addLocaleData } from 'react-intl';
 import axios from 'axios';
 
 const localization = locale => {
-  const localStorageKey = '__stop_place__';
+  const localStorageKey = 'ABZU::settings::locale';
 
   return new Promise((resolve, reject) => {
-    let preferredLocale = locale || localStorage.getItem(localStorageKey);
+    let preferredLocale = localStorage.getItem(localStorageKey) || locale;
 
     let queryParams = '';
 
