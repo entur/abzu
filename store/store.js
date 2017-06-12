@@ -52,6 +52,7 @@ export default function configureStore(kc) {
       isCompassBearingEnabled: true,
       isCreatingPolylines: false,
       enablePolylines: true,
+      showExpiredStops: false,
       kc: kc,
     },
     user: {

@@ -15,7 +15,7 @@ class NeighbourMarker extends React.Component {
     id: PropTypes.string,
     handleHideQuaysForNeighbourStop: PropTypes.func,
     isShowingQuays: PropTypes.bool.isRequired,
-    isEditingStop: PropTypes.bool.isRequired,
+    isEditingStop: PropTypes.bool.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
@@ -74,14 +74,14 @@ class NeighbourMarker extends React.Component {
         stopType={stopType}
         hasExpired={hasExpired}
         active={false}
-      />,
+      />
     );
 
     let icon = divIcon({
       html: divIconBodyMarkup,
       iconAnchor: [10, 20],
       iconSize: [20, 20],
-      popupAnchor: [5, 17],
+      popupAnchor: [5, 17]
     });
 
     let titleStyle = {
@@ -89,7 +89,7 @@ class NeighbourMarker extends React.Component {
       color: '#41c0c4',
       fontSize: '1.2em',
       borderBottom: '1px dotted',
-      cursor: 'pointer',
+      cursor: 'pointer'
     };
 
     return (
@@ -108,19 +108,25 @@ class NeighbourMarker extends React.Component {
                 display: 'inline-block',
                 width: '100%',
                 marginBottom: 15,
-                textAlign: 'center',
+                textAlign: 'center'
               }}
               onClick={handleOnClick}
             >
-              <div
-                style={{display: 'inline-block' }}
-              >
+              <div style={{ display: 'inline-block' }}>
                 <div>
                   <span style={titleStyle}>{name || id}</span>
-                  { hasExpired && <div style={{marginTop: 4, fontWeight: 600, color:'#fff', background: 'rgb(187, 39, 28)'}}>
-                    { translations.expired }
-                  </div>
-                  }
+                  {hasExpired &&
+                    <div
+                      style={{
+                        marginTop: 4,
+                        fontWeight: 600,
+                        padding: '0px 5px',
+                        color: '#fff',
+                        background: 'rgb(187, 39, 28)'
+                      }}
+                    >
+                      {translations.expired}
+                    </div>}
                 </div>
               </div>
             </div>
@@ -139,7 +145,7 @@ class NeighbourMarker extends React.Component {
                   style={{
                     marginTop: 10,
                     cursor: 'pointer',
-                    textAlign: 'center',
+                    textAlign: 'center'
                   }}
                   onClick={() => handleHideQuays(id)}
                 >
@@ -151,7 +157,7 @@ class NeighbourMarker extends React.Component {
                   style={{
                     marginTop: 10,
                     cursor: 'pointer',
-                    textAlign: 'center',
+                    textAlign: 'center'
                   }}
                   onClick={() => handleShowQuays(id)}
                 >
@@ -165,7 +171,7 @@ class NeighbourMarker extends React.Component {
                 style={{
                   marginTop: 10,
                   cursor: 'pointer',
-                  textAlign: 'center',
+                  textAlign: 'center'
                 }}
                 onClick={() => handleMergeStopPlace(id, name)}
               >

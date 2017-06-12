@@ -43,6 +43,10 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleCompassBearingEnabled(value));
   }
 
+  handleToggleShowExpiredStops(value) {
+    this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
+  }
+
   render() {
     const {
       intl,
@@ -50,6 +54,7 @@ class Header extends React.Component {
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
       isDisplayingReports,
+      showExpiredStops,
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -66,6 +71,7 @@ class Header extends React.Component {
     const showPathLinks = formatMessage({ id: 'show_path_links' });
     const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
     const reportSite = formatMessage({ id: 'report_site' });
+    const expiredStopLabel = formatMessage({id: 'show_expired_stops'});
 
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
 
@@ -121,6 +127,16 @@ class Header extends React.Component {
                   checked={isCompassBearingEnabled}
                   primaryText={showCompassBearing}
                 />,
+                <MenuItem
+                  style={{ fontSize: 12, padding: 0 }}
+                  onClick={() =>
+                    this.handleToggleShowExpiredStops(!showExpiredStops)}
+                  insetChildren
+                  desktop={true}
+                  multiple
+                  checked={showExpiredStops}
+                  primaryText={expiredStopLabel}
+                />
               ]}
             />
             <MenuItem
@@ -162,6 +178,7 @@ const mapStateToProps = state => ({
   kc: state.user.kc,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+  showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports:
     state.routing.locationBeforeTransitions.pathname == '/reports',
 });

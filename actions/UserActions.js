@@ -66,6 +66,10 @@ UserActions.toggleCompassBearingEnabled = value => dispatch => {
   dispatch(sendData(types.TOGGLED_IS_COMPASS_BEARING_ENABLED, value));
 };
 
+UserActions.toggleExpiredShowExpiredStops = value => dispatch => {
+  dispatch(sendData(types.TOGGLED_IS_SHOW_EXPIRED_STOPS, value));
+};
+
 UserActions.applyStopTypeSearchFilter = filters => dispatch => {
   dispatch(sendData(types.APPLIED_STOPTYPE_SEARCH_FILTER, filters));
 };

@@ -386,6 +386,11 @@ const stopPlaceReducer = (state = {}, action) => {
         },
       });
 
+    case types.TOGGLED_IS_SHOW_EXPIRED_STOPS:
+      return Object.assign({}, state, {
+        showExpiredStops: action.payLoad
+      });
+
     default:
       return state;
   }

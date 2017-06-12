@@ -178,6 +178,7 @@
   "settings": "Settings",
   "show_compass_bearing": "Show compass bearing",
   "show_path_links": "Show path links",
+  "show_expired_stops": "Show expired stop places",
   "show_quays": "Show quays",
   "sign_out": "Sign out",
   "snackbar_message_failed": "Saving failed!",

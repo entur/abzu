@@ -133,6 +133,7 @@ class MarkerList extends React.Component {
       handleSetCompassBearing,
       kc,
       intl,
+      showExpiredStops,
       isEditingStop,
     } = props;
     const { formatMessage } = intl;
@@ -337,59 +338,63 @@ class MarkerList extends React.Component {
             });
           }
         } else {
-          popupMarkers.push(
-            <NeighbourMarker
-              key={'neighbourStop-' + stop.id}
-              id={stop.id}
-              position={stop.location}
-              name={stop.name}
-              handleOnClick={() => {
-                this.handleStopOnClick(stop.id);
-              }}
-              index={stopIndex}
-              translations={CustomPopupMarkerText}
-              isShowingQuays={!!neighbourStopQuays[stop.id]}
-              isEditingStop={isEditingStop}
-              disabled={disabled}
-              stopType={stop.stopPlaceType}
-              handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
-              handleShowQuays={this.handleShowQuays.bind(this)}
-              handleHideQuays={this.handleHideQuays.bind(this)}
-              hasExpired={stop.hasExpired}
-            />,
-          );
 
-          if (neighbourStopQuays && neighbourStopQuays[stop.id]) {
-            neighbourStopQuays[stop.id].forEach((quay, index) => {
-              popupMarkers.push(
-                <QuayMarker
-                  index={index}
-                  parentId={stopIndex}
-                  id={quay.id}
-                  position={quay.location}
-                  key={'quay-neighbour' + quay.id}
-                  handleQuayDragEnd={() => {}}
-                  translations={Object.assign(
-                    {},
-                    newStopMarkerText,
-                    CustomPopupMarkerText,
-                  )}
-                  compassBearing={quay.compassBearing}
-                  name={quay.publicCode || ''}
-                  parentStopPlaceName={stop.name}
-                  formattedStopType={localeStopType}
-                  handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
-                  handleChangeCoordinates={() => {}}
-                  draggable={false}
-                  belongsToNeighbourStop={true}
-                  handleSetCompassBearing={() => {}}
-                  showPathLink={!disabled}
-                  isEditingStop={isEditingStop}
-                  disabled={disabled}
-                />,
-              );
-            });
+          if ((showExpiredStops && stop.hasExpired) || !stop.hasExpired) {
+            popupMarkers.push(
+              <NeighbourMarker
+                key={'neighbourStop-' + stop.id}
+                id={stop.id}
+                position={stop.location}
+                name={stop.name}
+                handleOnClick={() => {
+                  this.handleStopOnClick(stop.id);
+                }}
+                index={stopIndex}
+                translations={CustomPopupMarkerText}
+                isShowingQuays={!!neighbourStopQuays[stop.id]}
+                isEditingStop={isEditingStop}
+                disabled={disabled}
+                stopType={stop.stopPlaceType}
+                handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
+                handleShowQuays={this.handleShowQuays.bind(this)}
+                handleHideQuays={this.handleHideQuays.bind(this)}
+                hasExpired={stop.hasExpired}
+              />,
+            );
+
+            if (neighbourStopQuays && neighbourStopQuays[stop.id]) {
+              neighbourStopQuays[stop.id].forEach((quay, index) => {
+                popupMarkers.push(
+                  <QuayMarker
+                    index={index}
+                    parentId={stopIndex}
+                    id={quay.id}
+                    position={quay.location}
+                    key={'quay-neighbour' + quay.id}
+                    handleQuayDragEnd={() => {}}
+                    translations={Object.assign(
+                      {},
+                      newStopMarkerText,
+                      CustomPopupMarkerText,
+                    )}
+                    compassBearing={quay.compassBearing}
+                    name={quay.publicCode || ''}
+                    parentStopPlaceName={stop.name}
+                    formattedStopType={localeStopType}
+                    handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
+                    handleChangeCoordinates={() => {}}
+                    draggable={false}
+                    belongsToNeighbourStop={true}
+                    handleSetCompassBearing={() => {}}
+                    showPathLink={!disabled}
+                    isEditingStop={isEditingStop}
+                    disabled={disabled}
+                  />,
+                );
+              });
+            }
           }
+
         }
       }
     });
@@ -410,6 +415,7 @@ const mapStateToProps = state => ({
   missingCoordinatesMap: state.user.missingCoordsMap,
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
+  showExpiredStops: state.stopPlace.showExpiredStops,
   kc: state.user.kc,
 });
 
