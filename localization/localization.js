@@ -5,7 +5,7 @@ const localization = locale => {
   const localStorageKey = 'ABZU::settings::locale';
 
   return new Promise((resolve, reject) => {
-    let preferredLocale = localStorage.getItem(localStorageKey) || locale;
+    let preferredLocale = locale || localStorage.getItem(localStorageKey);
 
     let queryParams = '';
 
@@ -24,7 +24,7 @@ const localization = locale => {
 
         localStorage.setItem(localStorageKey, locale);
 
-        resolve({ locale: locale, messages: messages });
+        resolve({ locale, messages });
       })
       .catch(response => {
         reject(response);
