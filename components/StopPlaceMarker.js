@@ -111,6 +111,7 @@ class StopPlaceMarker extends React.Component {
         keyboard={false}
         icon={icon}
         position={markerLocation}
+        zIndexOffset={100}
         onDragend={event => {
           handleDragEnd(false, index, event);
         }}
