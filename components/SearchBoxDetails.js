@@ -50,8 +50,11 @@ const SearchBoxDetails = ({
            { formatMessage({ id: 'stop_has_expired_last_version' }) }
           </span>
         </div>}
-      <span>{result.id}</span>
-      <div style={{ display: 'block', fontSize: 10 }}>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{fontSize: 18}}>{ `${result.topographicPlace || '?' }, ${result.parentTopographicPlace || '?' }` }</div>
+        <div style={{fontSize: 14}}>{result.id}</div>
+      </div>
+        <div style={{ display: 'block', fontSize: 10 }}>
         <span style={{ fontWeight: 600 }}>
           {formatMessage({ id: 'local_reference' })} :
           {' '}
@@ -82,7 +85,7 @@ const SearchBoxDetails = ({
           </div>
         : null}
       {!userSuppliedCoordinates && result.isMissingLocation
-        ? <div className="warning_message">
+        ? <div className="warning_message" style={{marginTop: 10}}>
             <Warning
               style={{ verticalAlign: 'sub', fill: 'rgb(214, 134, 4)' }}
             />
@@ -111,7 +114,7 @@ const SearchBoxDetails = ({
           </div>
         : null}
       {userSuppliedCoordinates && result.isMissingLocation
-        ? <div className="warning_message" style={{ marginTop: 10 }}>
+        ? <div style={{ marginTop: 10 }}>
             <FormattedMessage
               className="message_warning"
               id="you_are_using_temporary_coordinates"
