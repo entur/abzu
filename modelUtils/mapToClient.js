@@ -682,6 +682,10 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
       ];
     }
 
+    if (quay.privateCode && quay.privateCode.value) {
+      clientQuay.privateCode = quay.privateCode.value;
+    }
+
     clientQuay.publicCode = quay.publicCode;
     clientQuay.compassBearing = quay.compassBearing;
 

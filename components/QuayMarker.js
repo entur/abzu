@@ -10,6 +10,7 @@ import compassBearingIcon from '../static/icons/compass-bearing.png';
 import { UserActions } from '../actions/';
 import OSMIcon from '../static/icons/osm_logo.png';
 import { getIn } from '../utils/';
+import ToolTippable from './ToolTippable';
 
 class QuayMarker extends React.PureComponent {
   static propTypes = {
@@ -18,7 +19,8 @@ class QuayMarker extends React.PureComponent {
     parentId: PropTypes.number.isRequired,
     parentStopPlaceName: PropTypes.string.isRequired,
     position: PropTypes.arrayOf(Number),
-    name: PropTypes.string.isRequired,
+    publicCode: PropTypes.string.isRequired,
+    privateCode: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     handleQuayDragEnd: PropTypes.func.isRequired,
     formattedStopType: PropTypes.string.isRequired,
@@ -53,7 +55,11 @@ class QuayMarker extends React.PureComponent {
       return true;
     }
 
-    if (this.props.name !== nextProps.name) {
+    if (this.props.publicCode !== nextProps.publicCode) {
+      return true;
+    }
+
+    if (this.props.privateCode !== nextProps.privateCode) {
       return true;
     }
 
@@ -107,7 +113,8 @@ class QuayMarker extends React.PureComponent {
   render() {
     const {
       position,
-      name,
+      privateCode,
+      publicCode,
       index,
       handleQuayDragEnd,
       parentStopPlaceName,
@@ -157,7 +164,8 @@ class QuayMarker extends React.PureComponent {
       <QuayMarkerIcon
         isEditingStop={isEditingStop}
         index={index}
-        name={name}
+        publicCode={publicCode}
+        privateCode={privateCode}
         focusedElement={this.props.focusedElement}
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
@@ -193,17 +201,53 @@ class QuayMarker extends React.PureComponent {
             <span className="quay-marker-title">
               {parentStopPlaceName}
             </span>
-            <span
+            <div
               className="quay-marker-title"
               style={{
                 marginTop: -2,
                 marginBottom: 5,
                 fontSize: '1em',
                 color: '#191919',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
-              {formattedStopType + ' ' + (name || translations.untitled)}
-            </span>
+              <div>{formattedStopType}</div>
+              <ToolTippable
+                toolTipText={translations.publicCode}
+              >
+                <div style={{
+                  marginLeft: 5,
+                  background: '#f5e527',
+                  minWidth: 15,
+                  textAlign: 'center',
+                  borderRadius: '50%',
+                  color: '#000',
+                  padding: 4,
+                  fontSize: 10,
+                  cursor: 'pointer'
+                }}>
+                  { (publicCode || 'N/A') }
+                </div>
+              </ToolTippable>
+              <ToolTippable
+                toolTipText={translations.privateCode}
+              >
+                <div style={{
+                  marginLeft: 5,
+                  background: '#777',
+                  color: '#fff',
+                  padding: 4,
+                  fontSize: 10,
+                  borderRadius: '50%',
+                  minWidth: 15,
+                  textAlign: 'center',
+                }}>
+                  { (privateCode || 'N/A') }
+                </div>
+              </ToolTippable>
+            </div>
             <div
               style={{
                 display: 'block',
@@ -391,8 +435,8 @@ class QuayMarkerIcon extends React.PureComponent {
   }
 
   render() {
-    const { name, compassBearing, isCompassBearingEnabled } = this.props;
-    const quayShortName = getShortQuayName(name);
+    const { publicCode, privateCode, compassBearing, isCompassBearingEnabled } = this.props;
+    const quayShortName = getShortQuayName(publicCode);
 
     const quayStyle = {
       color: '#fff',

@@ -156,6 +156,8 @@ class MarkerList extends React.Component {
       mergeQuayTo: formatMessage({ id: 'merge_quay_to' }),
       mergeQuayCancel: formatMessage({ id: 'merge_quay_cancel' }),
       expired: formatMessage({ id: 'has_expired'}),
+      publicCode: formatMessage({id: 'publicCode'}),
+      privateCode: formatMessage({id: 'privateCode'})
     };
 
     const newStopMarkerText = {
@@ -274,7 +276,8 @@ class MarkerList extends React.Component {
                     CustomPopupMarkerText,
                   )}
                   compassBearing={quay.compassBearing}
-                  name={quay.publicCode || ''}
+                  publicCode={quay.publicCode || ''}
+                  privateCode={quay.privateCode || ''}
                   parentStopPlaceName={stop.name}
                   formattedStopType={localeStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
@@ -379,7 +382,8 @@ class MarkerList extends React.Component {
                       CustomPopupMarkerText,
                     )}
                     compassBearing={quay.compassBearing}
-                    name={quay.publicCode || ''}
+                    publicCode={quay.publicCode || ''}
+                    privateCode={quay.privateCode || ''}
                     parentStopPlaceName={stop.name}
                     formattedStopType={localeStopType}
                     handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}

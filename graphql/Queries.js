@@ -13,6 +13,9 @@ export const neighbourStopPlaceQuays = gql`
               }
               compassBearing
               publicCode
+              privateCode {
+                  value
+              }
           }
       }
   }
