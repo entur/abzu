@@ -75,3 +75,12 @@ export const mutateMergeQuays = gql`
     }
     ${Fragments.stopPlace.verbose}
 `
+
+export const mutateMoveQuaysToStop = gql`
+  mutation mutateMoveQuay($toStopPlaceId: String!, $quayId: String!) {
+      moveQuaysToStop(toStopPlaceId: $toStopPlaceId, quayIds: [$quayId]) {
+          ...VerboseStopPlace
+      }
+  }
+  ${Fragments.stopPlace.verbose}
+`

@@ -136,6 +136,7 @@ class MarkerList extends React.Component {
       intl,
       showExpiredStops,
       isEditingStop,
+      currentIsNewStop
     } = props;
     const { formatMessage } = intl;
 
@@ -157,7 +158,8 @@ class MarkerList extends React.Component {
       mergeQuayCancel: formatMessage({ id: 'merge_quay_cancel' }),
       expired: formatMessage({ id: 'has_expired'}),
       publicCode: formatMessage({id: 'publicCode'}),
-      privateCode: formatMessage({id: 'privateCode'})
+      privateCode: formatMessage({id: 'privateCode'}),
+      moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'})
     };
 
     const newStopMarkerText = {
@@ -287,6 +289,7 @@ class MarkerList extends React.Component {
                   handleSetCompassBearing={handleSetCompassBearing}
                   showPathLink={!disabled}
                   isEditingStop={isEditingStop}
+                  currentIsNewStop={currentIsNewStop}
                 />,
               );
             });
@@ -394,6 +397,7 @@ class MarkerList extends React.Component {
                     showPathLink={!disabled}
                     isEditingStop={isEditingStop}
                     disabled={disabled}
+                    currentIsNewStop={currentIsNewStop}
                   />,
                 );
               });
@@ -414,6 +418,7 @@ class MarkerList extends React.Component {
 const mapStateToProps = state => ({
   path: state.user.path,
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  currentIsNewStop: getIn(state.stopPlace, ['current', 'isNewStop'], false),
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
   isEditingStop:
     state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,

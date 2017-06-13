@@ -28,7 +28,7 @@ class QuayMarker extends React.PureComponent {
     isCreatingPolylines: PropTypes.bool.isRequired,
     handleChangeCoordinates: PropTypes.func,
     draggable: PropTypes.bool.isRequired,
-    handleSetCompassBearing: PropTypes.func,
+    handleSetCompassBearing: PropTypes.func
   };
 
   getOSMURL() {
@@ -48,6 +48,10 @@ class QuayMarker extends React.PureComponent {
 
   handleCancelMerge() {
     this.props.dispatch(UserActions.cancelMergingQuayFrom());
+  }
+
+  handleMoveQuay() {
+    this.props.dispatch(UserActions.moveQuay(this.props.id));
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -124,14 +128,13 @@ class QuayMarker extends React.PureComponent {
       handleChangeCoordinates,
       belongsToNeighbourStop,
       isEditingStop,
-    } = this.props;
-    const {
+      currentIsNewStop,
       isCreatingPolylines,
       id,
       pathLink,
       showPathLink,
       disabled,
-      mergingQuay,
+      mergingQuay
     } = this.props;
 
     if (!position) return null;
@@ -147,7 +150,7 @@ class QuayMarker extends React.PureComponent {
       let fromId = getIn(
         lastPathLink,
         ['from', 'placeRef', 'addressablePlace', 'id'],
-        null,
+        null
       );
 
       if (fromId === id) {
@@ -170,21 +173,23 @@ class QuayMarker extends React.PureComponent {
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
-      />,
+      />
     );
 
     let quayIcon = divIcon({
       html: divBody,
       iconSize: [21, 45],
       iconAnchor: [42, 45],
-      popupAnchor: [0, 0],
+      popupAnchor: [0, 0]
     });
 
     const osmURL = this.getOSMURL();
     const shouldShowMergeQuay =
-      isEditingStop && !disabled && !belongsToNeighbourStop && !!id;
+      isEditingStop && !disabled && !belongsToNeighbourStop && !!id && !currentIsNewStop;
     const isMergingFromThis =
       id && mergingQuay.fromQuayId && id === mergingQuay.fromQuayId;
+    const shouldShowMoveQuay =
+      isEditingStop && !disabled && belongsToNeighbourStop && !!id && !currentIsNewStop;
 
     return (
       <Marker
@@ -214,37 +219,37 @@ class QuayMarker extends React.PureComponent {
               }}
             >
               <div>{formattedStopType}</div>
-              <ToolTippable
-                toolTipText={translations.publicCode}
-              >
-                <div style={{
-                  marginLeft: 5,
-                  background: '#f5e527',
-                  minWidth: 15,
-                  textAlign: 'center',
-                  borderRadius: '50%',
-                  color: '#000',
-                  padding: 4,
-                  fontSize: 10,
-                  cursor: 'pointer'
-                }}>
-                  { (publicCode || 'N/A') }
+              <ToolTippable toolTipText={translations.publicCode}>
+                <div
+                  style={{
+                    marginLeft: 5,
+                    background: '#f5e527',
+                    minWidth: 15,
+                    textAlign: 'center',
+                    borderRadius: '50%',
+                    color: '#000',
+                    padding: 4,
+                    fontSize: 10,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {publicCode || 'N/A'}
                 </div>
               </ToolTippable>
-              <ToolTippable
-                toolTipText={translations.privateCode}
-              >
-                <div style={{
-                  marginLeft: 5,
-                  background: '#777',
-                  color: '#fff',
-                  padding: 4,
-                  fontSize: 10,
-                  borderRadius: '50%',
-                  minWidth: 15,
-                  textAlign: 'center',
-                }}>
-                  { (privateCode || 'N/A') }
+              <ToolTippable toolTipText={translations.privateCode}>
+                <div
+                  style={{
+                    marginLeft: 5,
+                    background: '#777',
+                    color: '#fff',
+                    padding: 4,
+                    fontSize: 10,
+                    borderRadius: '50%',
+                    minWidth: 15,
+                    textAlign: 'center'
+                  }}
+                >
+                  {privateCode || 'N/A'}
                 </div>
               </ToolTippable>
             </div>
@@ -254,7 +259,7 @@ class QuayMarker extends React.PureComponent {
                 cursor: 'pointer',
                 width: 'auto',
                 textAlign: 'center',
-                fontSize: 10,
+                fontSize: 10
               }}
               onClick={() =>
                 !belongsToNeighbourStop &&
@@ -266,7 +271,7 @@ class QuayMarker extends React.PureComponent {
                   textAlign: 'center',
                   borderBottom: !belongsToNeighbourStop
                     ? '1px dotted black'
-                    : 'none',
+                    : 'none'
                 }}
               >
                 {position[0]}
@@ -277,7 +282,7 @@ class QuayMarker extends React.PureComponent {
                   marginLeft: 3,
                   borderBottom: !belongsToNeighbourStop
                     ? '1px dotted black'
-                    : 'none',
+                    : 'none'
                 }}
               >
                 {position[1]}
@@ -288,7 +293,7 @@ class QuayMarker extends React.PureComponent {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: 10,
+                marginTop: 10
               }}
             >
               {belongsToNeighbourStop || !this.props.draggable
@@ -297,7 +302,7 @@ class QuayMarker extends React.PureComponent {
                     onClick={() => {
                       this.props.handleSetCompassBearing(
                         this.props.compassBearing,
-                        index,
+                        index
                       );
                     }}
                   >
@@ -309,7 +314,7 @@ class QuayMarker extends React.PureComponent {
               <div
                 style={{
                   marginLeft: belongsToNeighbourStop ? 0 : 10,
-                  cursor: 'pointer',
+                  cursor: 'pointer'
                 }}
               >
                 <a href={osmURL} target="_blank">
@@ -318,7 +323,7 @@ class QuayMarker extends React.PureComponent {
                       width: 20,
                       height: 22,
                       border: '1px solid grey',
-                      borderRadius: 50,
+                      borderRadius: 50
                     }}
                     src={OSMIcon}
                   />
@@ -326,7 +331,7 @@ class QuayMarker extends React.PureComponent {
               </div>
             </div>
             <div style={{ marginTop: 10 }}>
-              {showPathLink && isEditingStop
+              {showPathLink && isEditingStop && !currentIsNewStop
                 ? <div>
                     {id
                       ? <div
@@ -349,7 +354,7 @@ class QuayMarker extends React.PureComponent {
                           style={{
                             textAlign: 'center',
                             padding: 10,
-                            border: '1px solid #9E9E9E',
+                            border: '1px solid #9E9E9E'
                           }}
                         >
                           {translations.saveFirstPathLink}
@@ -358,6 +363,16 @@ class QuayMarker extends React.PureComponent {
                 : null}
             </div>
             <div style={{ marginTop: 10 }}>
+              {shouldShowMoveQuay &&
+                <div style={{ textAlign: 'center' }}>
+                  <span
+                    className="marker-popup-button"
+                    onClick={() => this.handleMoveQuay()}
+                  >
+                    {translations.moveQuayToCurrent}
+                  </span>
+                </div>}
+
               {shouldShowMergeQuay &&
                 <div style={{ textAlign: 'center' }}>
                   {mergingQuay.isMerging
@@ -401,7 +416,7 @@ class QuayMarkerIcon extends React.PureComponent {
       focusedElement,
       index,
       belongsToNeighbourStop,
-      compassBearing,
+      compassBearing
     } = this.props;
 
     let markerIconStyle = { transform: 'scale(0.7)', marginLeft: 24 };
@@ -427,7 +442,7 @@ class QuayMarkerIcon extends React.PureComponent {
           height: 20,
           marginLeft: 32,
           marginTop: -20,
-          transform: `rotate(${compassBearing}deg) scale(0.7)`,
+          transform: `rotate(${compassBearing}deg) scale(0.7)`
         }}
         src={compassBearingIcon}
       />
@@ -444,7 +459,7 @@ class QuayMarkerIcon extends React.PureComponent {
       top: 10,
       left: 36,
       fontSize: '0.8em',
-      zIndex: 9999,
+      zIndex: 9999
     };
 
     return (
@@ -461,7 +476,7 @@ class QuayMarkerIcon extends React.PureComponent {
               marginLeft: -2 * quayShortName.length,
               fontSize: String(quayShortName.length).length > 1
                 ? '1em'
-                : '1.2em',
+                : '1.2em'
             }}
           >
             <div>Q</div>
@@ -470,7 +485,7 @@ class QuayMarkerIcon extends React.PureComponent {
                 color: '#fff',
                 display: 'inline-block',
                 fontSize: '0.6em',
-                textTransform: 'capitalize',
+                textTransform: 'capitalize'
               }}
             >
               {quayShortName}
@@ -492,7 +507,7 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,
-  pathLink: state.stopPlace.pathLink,
+  pathLink: state.stopPlace.pathLink
 });
 
 export default connect(mapStateToProps)(QuayMarker);

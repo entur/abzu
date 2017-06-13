@@ -37,11 +37,13 @@ import {
   deleteStopPlace,
   mergeQuays,
   getStopPlaceWithAll,
-  mergeQuaysFromStop
+  mergeQuaysFromStop,
+  moveQuaysToStop
 } from '../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import DeleteStopPlaceDialog from '../components/DeleteStopPlaceDialog';
+import MoveQuayDialog from '../components/MoveQuayDialog';
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -75,6 +77,10 @@ class EditStopGeneral extends React.Component {
 
   handleCloseDeleteStop() {
     this.props.dispatch(UserActions.hideDeleteStopDialog());
+  }
+
+  handleCloseMoveQuay() {
+    this.props.dispatch(UserActions.cancelMoveQuay());
   }
 
   handleSaveSuccess(stopPlaceId) {
@@ -134,13 +140,21 @@ class EditStopGeneral extends React.Component {
     const { client, deletingQuay, dispatch, stopPlace } = this.props;
     deleteQuay(client, deletingQuay).then(response => {
       dispatch(UserActions.hideDeleteQuayDialog());
-      getStopPlaceVersions(client, stopPlace.id).then(response => {
+      getStopPlaceWithAll(client, stopPlace.id).then(response => {
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
         );
       });
     });
   }
+
+  handleMoveQuay() {
+    const { client, movingQuay, dispatch, stopPlace } = this.props;
+    moveQuaysToStop(client, stopPlace.id, movingQuay).then(response => {
+      dispatch(UserActions.cancelMoveQuay());
+      getStopPlaceWithAll(client, stopPlace.id);
+    });
+  };
 
   handleDeleteStop() {
     const { client, stopPlace, dispatch } = this.props;
@@ -561,6 +575,14 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             stopPlace={stopPlace}
           />
+          <MoveQuayDialog
+            open={this.props.moveQuayDialogOpen}
+            handleClose={this.handleCloseMoveQuay.bind(this)}
+            handleConfirm={this.handleMoveQuay.bind(this)}
+            intl={intl}
+            stopPlaceId={stopPlace.id}
+            quayId={this.props.movingQuay}
+          />
         </div>
         <div
           style={{
@@ -621,7 +643,9 @@ const mapStateToProps = state => ({
   deleteStopDialogOpen: state.mapUtils.deleteStopDialogOpen,
   deletingQuay: state.mapUtils.deletingQuay,
   versions: state.stopPlace.versions,
-  originalPathLink: state.stopPlace.originalPathLink
+  originalPathLink: state.stopPlace.originalPathLink,
+  moveQuayDialogOpen: state.mapUtils.moveQuayDialogOpen,
+  movingQuay: state.mapUtils.movingQuay
 });
 
 export default withApollo(

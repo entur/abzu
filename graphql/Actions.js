@@ -2,10 +2,10 @@ import {
   mutateDeleteQuay,
   mutateDeleteStopPlace,
   mutateMergeQuays,
-  mutateMergeStopPlaces
+  mutateMergeStopPlaces,
+  mutateMoveQuaysToStop
 } from './Mutations';
 import {
-  stopPlaceAndPathLinkByVersion,
   allVersionsOfStopPlace,
   stopPlaceWithEverythingElse
 } from '../graphql/Queries';
@@ -65,4 +65,15 @@ export const mergeQuaysFromStop = (client, fromStopPlaceId, toStopPlaceId) => (
     },
     fetchPolicy: 'network-only'
   })
-)
+);
+
+export const moveQuaysToStop = (client, toStopPlaceId, quayId) => (
+  client.mutate({
+    mutation: mutateMoveQuaysToStop,
+    variables: {
+      toStopPlaceId,
+      quayId
+    },
+    fetchPolicy: 'network-only'
+  })
+);
