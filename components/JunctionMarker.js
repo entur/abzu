@@ -10,13 +10,15 @@ class JunctionMarker extends React.Component {
     index: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
-    handleUpdatePathLink: PropTypes.func.isRequired,
     text: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
   };
 
   componentDidUpdate() {
     const { focusedElement, index, type } = this.props;
+
+    if (!this.refs.marker) return;
+
     const isFocused =
       focusedElement.type === type && index === focusedElement.index;
     if (isFocused) {
@@ -50,21 +52,8 @@ class JunctionMarker extends React.Component {
       index,
       type,
       handleDragEnd,
-      handleUpdatePathLink,
     } = this.props;
-    const { text, isCreatingPolylines, polylineStartPoint, name } = this.props;
-
-    let pathLinkText = isCreatingPolylines
-      ? text.terminatePathLinkHere
-      : text.createPathLinkHere;
-
-    if (
-      isCreatingPolylines &&
-      polylineStartPoint.type === type &&
-      polylineStartPoint.index == index
-    ) {
-      pathLinkText = text.cancelPathLink;
-    }
+    const { text, name } = this.props;
 
     return (
       <Marker
@@ -100,14 +89,6 @@ class JunctionMarker extends React.Component {
             >
               {text.junctionTitle}
             </div>
-            <div
-              className="marker-popup-button"
-              onClick={() => {
-                handleUpdatePathLink(position, index, type);
-              }}
-            >
-              {pathLinkText}
-            </div>
           </div>
         </Popup>
       </Marker>
@@ -116,8 +97,6 @@ class JunctionMarker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-  polylineStartPoint: state.stopPlace.polylineStartPoint,
   focusedElement: state.mapUtils.focusedElement,
 });
 

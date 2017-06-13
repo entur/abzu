@@ -330,7 +330,7 @@ class QuayMarker extends React.PureComponent {
                 ? <div>
                     {id
                       ? <div
-                          className={`change-path-link ${isIncomplete
+                          className={`marker-popup-button ${isIncomplete
                             ? 'incomplete'
                             : ''}`}
                           onClick={() => {
@@ -435,7 +435,7 @@ class QuayMarkerIcon extends React.PureComponent {
   }
 
   render() {
-    const { publicCode, privateCode, compassBearing, isCompassBearingEnabled } = this.props;
+    const { publicCode, compassBearing, isCompassBearingEnabled } = this.props;
     const quayShortName = getShortQuayName(publicCode);
 
     const quayStyle = {
