@@ -108,7 +108,7 @@ class QuayItem extends React.Component {
     }
   }
 
-  handleChange512Sign(value) {
+  handleTransportSignChange(value) {
     const { dispatch, disabled, index } = this.props;
     if (!disabled) {
       dispatch(EquipmentActions.update512SignState(value, 'quay', index));
@@ -233,7 +233,7 @@ class QuayItem extends React.Component {
             {quay.location
               ? <MapsMyLocation
                   style={locationStyle}
-                  onClick={() => this.props.handleLocateOnMap(quay.location)}
+                  onClick={() => this.props.handleLocateOnMap(quay.location, index, 'quay')}
                 />
               : <div
                   className="tooltip"
@@ -397,7 +397,7 @@ class QuayItem extends React.Component {
                         style={{ width: 'auto' }}
                         checked={sign512}
                         onCheck={(e, v) => {
-                          this.handleChange512Sign(v);
+                          this.handleTransportSignChange(v);
                         }}
                       />
                     </ToolTippable>

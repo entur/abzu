@@ -68,7 +68,7 @@ class PathJunctionItem extends React.Component {
             <MapsMyLocation
               style={locationStyle}
               onClick={() =>
-                this.props.handleLocateOnMap(pathJunction.location)}
+                this.props.handleLocateOnMap(pathJunction.location, index, 'pathJunction')}
             />
             <div
               style={{ display: 'inline-block' }}

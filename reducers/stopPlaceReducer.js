@@ -220,7 +220,8 @@ const stopPlaceReducer = (state = {}, action) => {
 
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, {
-        centerPosition: action.payLoad,
+        centerPosition: action.payLoad.position,
+        zoom: action.payLoad.zoom
       });
 
     case types.STARTED_CREATING_POLYLINE:
@@ -389,6 +390,11 @@ const stopPlaceReducer = (state = {}, action) => {
     case types.TOGGLED_IS_SHOW_EXPIRED_STOPS:
       return Object.assign({}, state, {
         showExpiredStops: action.payLoad
+      });
+
+    case types.SET_ZOOM_LEVEL:
+      return Object.assign({}, state, {
+        zoom: action.payLoad
       });
 
     default:

@@ -52,7 +52,7 @@ class ParkingItem extends React.Component {
           >
             <MapsMyLocation
               style={locationStyle}
-              onClick={() => this.props.handleLocateOnMap(parking.location)}
+              onClick={() => this.props.handleLocateOnMap(parking.location, index, 'parking')}
             />
             <div
               style={{ display: 'inline-block' }}

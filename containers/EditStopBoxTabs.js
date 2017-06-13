@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { StopPlaceActions, UserActions } from '../actions/';
 
 class EditStopBoxTabs extends React.Component {
-  handleLocateOnMap(position) {
+  handleLocateOnMap(position, index, type) {
     this.props.dispatch(StopPlaceActions.changeMapCenter(position, 17));
+    this.props.dispatch(StopPlaceActions.setElementFocus(index, type));
   }
 
   handleRemoveQuay(index, quayId) {

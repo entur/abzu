@@ -6,9 +6,9 @@ import { injectIntl } from 'react-intl';
 import { setDecimalPrecision } from '../utils';
 import CoordinatesDialog from '../components/CoordinatesDialog';
 import CompassBearingDialog from '../components/CompassBearingDialog';
-import { stopPlaceBBQuery } from '../graphql/Queries';
 import debounce from 'lodash.debounce';
 import { withApollo } from 'react-apollo';
+import { getNeighbourStops } from '../graphql/Actions'
 
 class EditStopMap extends React.Component {
   constructor(props) {
@@ -18,22 +18,13 @@ class EditStopMap extends React.Component {
       compassBearingDialogOpen: false,
     };
     const mapEnd = (event, { leafletElement }) => {
-      let { ignoreStopId } = this.props;
+      let { ignoreStopId, client } = this.props;
 
       const zoom = leafletElement.getZoom();
 
       if (zoom > 12) {
         const bounds = leafletElement.getBounds();
-        this.props.client.query({
-          query: stopPlaceBBQuery,
-          variables: {
-            ignoreStopPlaceId: ignoreStopId,
-            latMin: bounds.getSouthWest().lat,
-            latMax: bounds.getNorthEast().lat,
-            lonMin: bounds.getSouthWest().lng,
-            lonMax: bounds.getNorthEast().lng,
-          },
-        });
+        getNeighbourStops(client, ignoreStopId, bounds);
       }
     };
     this.handleMapMoveEnd = debounce(mapEnd, 500);
@@ -100,6 +91,10 @@ class EditStopMap extends React.Component {
     });
   }
 
+  handleZoomEnd(event) {
+    this.props.dispatch(UserActions.setZoomLevel(event.target.getZoom()));
+  }
+
   handleBaselayerChanged(value) {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
@@ -155,20 +150,8 @@ class EditStopMap extends React.Component {
     const { leafletElement } = this.refs.leafletMap.refs.map;
     const { dispatch, client, ignoreStopId } = this.props;
     dispatch(StopPlaceActions.setActiveMap(leafletElement));
-
     const bounds = leafletElement.getBounds();
-
-    client.query({
-      fetchPolicy: 'network-only',
-      query: stopPlaceBBQuery,
-      variables: {
-        ignoreStopPlaceId: ignoreStopId,
-        latMin: bounds.getSouthWest().lat,
-        latMax: bounds.getNorthEast().lat,
-        lonMin: bounds.getSouthWest().lng,
-        lonMax: bounds.getNorthEast().lng,
-      },
-    });
+    getNeighbourStops(client, ignoreStopId, bounds);
   }
 
   render() {
@@ -193,6 +176,7 @@ class EditStopMap extends React.Component {
           handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
           enablePolylines={this.props.enablePolylines}
           minZoom={minZoom}
+          handleZoomEnd={this.handleZoomEnd.bind(this)}
           handleSetCompassBearing={this.handleSetCompassBearing.bind(this)}
         />
         <CoordinatesDialog

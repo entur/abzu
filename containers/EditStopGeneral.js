@@ -38,7 +38,8 @@ import {
   mergeQuays,
   getStopPlaceWithAll,
   mergeQuaysFromStop,
-  moveQuaysToStop
+  moveQuaysToStop,
+  getNeighbourStops,
 } from '../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
@@ -108,13 +109,17 @@ class EditStopGeneral extends React.Component {
   }
 
   handleMergeQuaysFromStop() {
-    const { stopPlace, mergeSource, client, dispatch } = this.props;
+    const { stopPlace, mergeSource, client, dispatch, activeMap } = this.props;
 
     mergeQuaysFromStop(client, mergeSource.id, stopPlace.id).then(result => {
       dispatch(
         UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
       );
-      getStopPlaceWithAll(client, stopPlace.id);
+      getStopPlaceWithAll(client, stopPlace.id).then( () => {
+        if (activeMap) {
+          getNeighbourStops(client, stopPlace.id, activeMap.getBounds());
+        }
+      });
     });
     this.handleCloseMergeStopDialog();
   }
@@ -645,7 +650,8 @@ const mapStateToProps = state => ({
   versions: state.stopPlace.versions,
   originalPathLink: state.stopPlace.originalPathLink,
   moveQuayDialogOpen: state.mapUtils.moveQuayDialogOpen,
-  movingQuay: state.mapUtils.movingQuay
+  movingQuay: state.mapUtils.movingQuay,
+  activeMap: state.mapUtils.activeMap
 });
 
 export default withApollo(

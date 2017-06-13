@@ -56,6 +56,7 @@ export default class LeafLetMap extends React.Component {
       handleMapMoveEnd,
       onDoubleClick,
       newStopPlace,
+      handleZoomEnd,
     } = this.props;
 
     let { markers } = this.props;
@@ -77,6 +78,7 @@ export default class LeafLetMap extends React.Component {
         style={lmapStyle}
         center={centerPosition}
         className="leaflet-map"
+        onZoomEnd={e => handleZoomEnd && handleZoomEnd(e)}
         zoom={zoom}
         zoomControl={false}
         minZoom={minZoom || null}

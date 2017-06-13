@@ -31,7 +31,7 @@ export const getStateByOperation = (state, action) => {
           ) || state.centerPosition
       });
 
-    case  'mutateStopPlace':
+    case 'mutateStopPlace':
       if (!action.result.data.mutateStopPlace) return state;
 
       const mutatedStopPlace = action.result.data.mutateStopPlace[0];
@@ -105,8 +105,9 @@ export const getObjectFromCache = (state, action) => {
   return getDataFromResult(state, action);
 };
 
-const getProperZoomLevel = data => {
+const getProperZoomLevel = (data, prevZoom) => {
   if (!data || data.location) return 5;
+  if (prevZoom > 15) return prevZoom;
   return 15;
 };
 
@@ -147,8 +148,8 @@ const getDataFromResult = (state, action) => {
     versions: getAllVersionFromResult(state, action),
     originalCurrent: originalCurrentStop,
     originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
-    zoom: getProperZoomLevel(stopPlace),
-    minZoom: stopPlace && stopPlace.geometry ? 14 : 7,
+    zoom: getProperZoomLevel(stopPlace, state.zoom),
+    minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),
     neighbourStopQuays: {},
     centerPosition: !stopPlace || !stopPlace.geometry

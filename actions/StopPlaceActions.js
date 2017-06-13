@@ -37,8 +37,11 @@ StopPlaceActions.setMarkerOnMap = marker => dispatch => {
   dispatch(sendData(types.SET_ACTIVE_MARKER, activeMarker));
 };
 
-StopPlaceActions.changeMapCenter = position => dispatch => {
-  dispatch(sendData(types.CHANGED_MAP_CENTER, position));
+StopPlaceActions.changeMapCenter = (position, zoom) => dispatch => {
+  dispatch(sendData(types.CHANGED_MAP_CENTER, {
+    position,
+    zoom
+  }));
 };
 
 StopPlaceActions.addAltName = payLoad => dispatch => {

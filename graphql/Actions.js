@@ -7,7 +7,8 @@ import {
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
-  stopPlaceWithEverythingElse
+  stopPlaceWithEverythingElse,
+  stopPlaceBBQuery
 } from '../graphql/Queries';
 
 export const deleteQuay = (client, variables) =>
@@ -77,3 +78,17 @@ export const moveQuaysToStop = (client, toStopPlaceId, quayId) => (
     fetchPolicy: 'network-only'
   })
 );
+
+export const getNeighbourStops = (client, ignoreStopPlaceId, bounds) => (
+  client.query({
+    fetchPolicy: 'network-only',
+    query: stopPlaceBBQuery,
+    variables: {
+      ignoreStopPlaceId,
+      latMin: bounds.getSouthWest().lat,
+      latMax: bounds.getNorthEast().lat,
+      lonMin: bounds.getSouthWest().lng,
+      lonMax: bounds.getNorthEast().lng,
+    }
+  })
+)

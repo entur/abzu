@@ -288,4 +288,8 @@ UserActions.moveQuay = id => dispatch => {
   dispatch(sendData(types.REQUESTED_MOVE_QUAY, id));
 };
 
+UserActions.setZoomLevel = zoomLevel => dispatch =>{
+  dispatch(sendData(types.SET_ZOOM_LEVEL, zoomLevel));
+};
+
 export default UserActions;

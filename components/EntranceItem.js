@@ -67,7 +67,7 @@ class EntranceItem extends React.Component {
           >
             <MapsMyLocation
               style={locationStyle}
-              onClick={() => this.props.handleLocateOnMap(entrance.location)}
+              onClick={() => this.props.handleLocateOnMap(entrance.location, index, 'entrance')}
             />
             <div
               style={{ display: 'inline-block' }}
