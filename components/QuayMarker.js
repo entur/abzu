@@ -364,13 +364,13 @@ class QuayMarker extends React.PureComponent {
                     ? <div>
                         {isMergingFromThis
                           ? <span
-                              className="change-path-link"
+                              className="marker-popup-button"
                               onClick={() => this.handleCancelMerge()}
                             >
                               {' '}{translations.mergeQuayCancel}
                             </span>
                           : <span
-                              className="change-path-link"
+                              className="marker-popup-button"
                               onClick={() => this.handleMergeTo()}
                             >
                               {' '}{translations.mergeQuayTo}
@@ -379,7 +379,7 @@ class QuayMarker extends React.PureComponent {
                       </div>
                     : <div>
                         <span
-                          className="change-path-link"
+                          className="marker-popup-button"
                           onClick={() => this.handleMergeFrom()}
                         >
                           {translations.mergeQuayFrom}

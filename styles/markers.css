@@ -66,17 +66,21 @@
     margin-bottom: 15px;
 }
 
-.change-path-link {
+.marker-popup-button {
     fontWeight: 600;
     margin-top:5px;
     cursor: pointer;
-    color: #0068ff;
+    padding: 2px;
+    color: #fff;
+    background: rgba(18, 112, 149, 0.86);
+    font-size: 11px;
+    border-radius: 5px;
     width: 100%;
     display: inline-block;
     text-align: center;
 }
 
-.change-path-link.incomplete {
+.marker-popup-button.incomplete {
     color: #9A332C;
     pointer-events:none;
 }

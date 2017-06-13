@@ -101,7 +101,7 @@ class JunctionMarker extends React.Component {
               {text.junctionTitle}
             </div>
             <div
-              className="change-path-link"
+              className="marker-popup-button"
               onClick={() => {
                 handleUpdatePathLink(position, index, type);
               }}
