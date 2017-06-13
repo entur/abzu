@@ -335,7 +335,7 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_512_SIGN_STATE:
+    case types.CHANGED_TRANSPORT_SIGN_STATE:
       return Object.assign({}, state, {
         current: equipmentHelpers.update512SignEquipment(
           state.current,
@@ -384,6 +384,11 @@ const stopPlaceReducer = (state = {}, action) => {
         mergeStopDialog: {
           isOpen: false,
         },
+      });
+
+    case types.TOGGLED_IS_SHOW_EXPIRED_STOPS:
+      return Object.assign({}, state, {
+        showExpiredStops: action.payLoad
       });
 
     default:

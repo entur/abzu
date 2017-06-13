@@ -5,14 +5,14 @@ import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json';
 import clientStop from './json/clientStop.json';
 import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables';
 import { describe, before, it } from 'mocha';
-import { hasExpired } from '../../modelUtils/validBetweens';
+import { hasExpired } from '../../modelUtils/validBetween';
 
 describe('Model: map format from server to expected client model', () => {
   it('should let server response stop map to client model correctly', () => {
     const action = {
       type: 'APOLLO_QUERY_RESULT',
       result: stopPlaceMock,
-      operationName: 'stopPlace',
+      operationName: 'stopPlace'
     };
     const state = stopPlaceReducer({}, action);
 
@@ -25,6 +25,11 @@ describe('Model: map format from server to expected client model', () => {
       tariffZones: [],
       stopPlaceType: 'onstreetBus',
       isActive: true,
+      hasExpired: false,
+      validBetween: {
+        fromDate: "2017-05-26T14:52:10.096+0200",
+        toDate: null
+      },
       topographicPlace: 'Aremark',
       parentTopographicPlace: 'Østfold',
       alternativeNames: [],
@@ -34,8 +39,8 @@ describe('Model: map format from server to expected client model', () => {
           stepFreeAccess: 'UNKNOWN',
           escalatorFreeAccess: 'UNKNOWN',
           liftFreeAccess: 'UNKNOWN',
-          audibleSignalsAvailable: 'UNKNOWN',
-        },
+          audibleSignalsAvailable: 'UNKNOWN'
+        }
       },
       quays: [
         {
@@ -50,9 +55,9 @@ describe('Model: map format from server to expected client model', () => {
               stepFreeAccess: 'UNKNOWN',
               escalatorFreeAccess: 'UNKNOWN',
               liftFreeAccess: 'UNKNOWN',
-              audibleSignalsAvailable: 'UNKNOWN',
-            },
-          },
+              audibleSignalsAvailable: 'UNKNOWN'
+            }
+          }
         },
         {
           id: 'NSR:Quay:1695',
@@ -66,14 +71,14 @@ describe('Model: map format from server to expected client model', () => {
               stepFreeAccess: 'UNKNOWN',
               escalatorFreeAccess: 'UNKNOWN',
               liftFreeAccess: 'UNKNOWN',
-              audibleSignalsAvailable: 'UNKNOWN',
-            },
-          },
-        },
+              audibleSignalsAvailable: 'UNKNOWN'
+            }
+          }
+        }
       ],
       entrances: [],
       pathJunctions: [],
-      parking: [],
+      parking: []
     };
 
     expect(state.current).toEqual(formattedStop);
@@ -85,29 +90,29 @@ describe('Model: map format from server to expected client model', () => {
         name: 'park&ride example',
         location: [63.207698, 11.088595],
         totalCapacity: '100',
-        parkingVehicleTypes: ['car'],
-      },
+        parkingVehicleTypes: ['car']
+      }
     ];
 
     const expectedOutput = [
       {
         name: {
           lang: 'nb',
-          value: 'park&ride example',
+          value: 'park&ride example'
         },
         parentSiteRef: 'NSR:StopPlace:1',
         totalCapacity: 100,
         parkingVehicleTypes: ['car'],
         geometry: {
           type: 'Point',
-          coordinates: [[11.088595, 63.207698]],
-        },
-      },
+          coordinates: [[11.088595, 63.207698]]
+        }
+      }
     ];
 
     let result = QueryVariablesMapper.mapParkingToVariables(
       parking,
-      'NSR:StopPlace:1',
+      'NSR:StopPlace:1'
     );
 
     expect(result).toEqual(expectedOutput);
@@ -129,8 +134,8 @@ describe('Model: map format from server to expected client model', () => {
           stepFreeAccess: 'UNKNOWN',
           escalatorFreeAccess: 'UNKNOWN',
           liftFreeAccess: 'UNKNOWN',
-          audibleSignalsAvailable: 'UNKNOWN',
-        },
+          audibleSignalsAvailable: 'UNKNOWN'
+        }
       },
       placeEquipments: undefined,
       quays: [
@@ -140,14 +145,14 @@ describe('Model: map format from server to expected client model', () => {
           publicCode: null,
           description: {
             value: '',
-            lang: 'no',
+            lang: 'no'
           },
           geometry: {
             coordinates: [[11.17094, 59.587486]],
-            type: 'Point',
+            type: 'Point'
           },
           accessibilityAssessment: undefined,
-          placeEquipments: undefined,
+          placeEquipments: undefined
         },
         {
           id: 'NSR:Quay:30026',
@@ -157,14 +162,14 @@ describe('Model: map format from server to expected client model', () => {
           publicCode: null,
           description: {
             value: '',
-            lang: 'no',
+            lang: 'no'
           },
           geometry: {
             coordinates: [[11.170986, 59.587368]],
-            type: 'Point',
-          },
-        },
-      ],
+            type: 'Point'
+          }
+        }
+      ]
     };
 
     expect(schemaValidStop).toEqual(expectedStop);
@@ -178,7 +183,7 @@ describe('Changes correct properties', () => {
     const action = {
       type: 'APOLLO_QUERY_RESULT',
       result: stopPlaceMock10Quays,
-      operationName: 'stopPlace',
+      operationName: 'stopPlace'
     };
     state = stopPlaceReducer({}, action);
     expect(state.current.quays.length).toEqual(10);
@@ -194,8 +199,8 @@ describe('Changes correct properties', () => {
         payLoad: {
           type: 'quay',
           name: newPublicCode,
-          index: quayIndex,
-        },
+          index: quayIndex
+        }
       };
 
       state = stopPlaceReducer(state, changePublicCode);
@@ -203,36 +208,32 @@ describe('Changes correct properties', () => {
       expect(state.current.quays[quayIndex].publicCode).toEqual(newPublicCode);
 
       const stopValidWithSchema = QueryVariablesMapper.mapStopToVariables(
-        state.current,
+        state.current
       );
 
       expect(state.current.quays[quayIndex].id).toEqual(
-        stopValidWithSchema.quays[quayIndex].id,
+        stopValidWithSchema.quays[quayIndex].id
       );
     }
   });
 
-  describe('Should correctly determine if a stop has expired or not based on validBetweens', () => {
-    const expiredDate = [
-      {
-        fromDate: '2017-05-31T11:03:01.770+0200',
-        toDate: '2017-05-31T11:03:01.842+0200',
-      },
-    ];
+  describe('Should correctly determine if a stop has expired or not based on validBetween', () => {
+    const expiredDate = {
+      fromDate: '2017-05-31T11:03:01.770+0200',
+      toDate: '2017-05-31T11:03:01.842+0200'
+    };
 
     const hasStopExpired = hasExpired(expiredDate);
 
-    expect(hasStopExpired).toEqual(false);
+    expect(hasStopExpired).toEqual(true);
 
-    const validDate = [
-      {
-        fromDate: '2017-05-31T11:03:01.770+0200',
-        toDate: null,
-      },
-    ];
+    const validDate = {
+      fromDate: '2017-05-31T11:03:01.770+0200',
+      toDate: null
+    };
 
     const hasStopExpired2 = hasExpired(validDate);
 
-    expect(hasStopExpired2).toEqual(true);
+    expect(hasStopExpired2).toEqual(false);
   });
 });

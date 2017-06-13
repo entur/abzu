@@ -6,9 +6,9 @@ import mapReducer from '../reducers/mapReducer';
 import stopPlaceReducer from '../reducers/stopPlaceReducer';
 import userReducer from '../reducers/userReducer';
 import reportReducer from '../reducers/reportReducer';
-
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import SettingsManager from '../singletons/SettingsManager';
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -30,7 +30,7 @@ export default function configureStore(kc) {
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
         next();
       },
-    },
+    } ,
   ]);
 
   const client = new ApolloClient({
@@ -38,8 +38,6 @@ export default function configureStore(kc) {
   });
 
   if (process.env.NODE_ENV === 'development') {
-    window.ReactPerf = require('react-addons-perf');
-
     enchancer = compose(
       applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware()),
     );
@@ -47,14 +45,17 @@ export default function configureStore(kc) {
     enchancer = compose(applyMiddleware(thunkMiddleware, client.middleware()));
   }
 
+  const Settings = new SettingsManager();
+
   const initialState = {
     stopPlace: {
       centerPosition: [64.349421, 16.809082],
       zoom: 6,
       minZoom: 14,
-      isCompassBearingEnabled: true,
+      isCompassBearingEnabled: Settings.getShowCompassBearing(),
       isCreatingPolylines: false,
-      enablePolylines: true,
+      enablePolylines: Settings.getShowPathLinks(),
+      showExpiredStops: Settings.getShowExpiredStops(),
       kc: kc,
     },
     user: {
@@ -77,8 +78,8 @@ export default function configureStore(kc) {
       appliedLocale: null,
       favoriteNameDialogIsOpen: false,
       removedFavorites: [],
-      activeBaselayer: 'Rutebankens kart',
       activeElementTab: 0,
+      activeBaselayer: Settings.getMapLayer(),
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
       kc: kc,

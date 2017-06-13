@@ -28,6 +28,10 @@ export const stopPlaceBBQuery = gql`
             geometry {
                 coordinates
             }
+            validBetween {
+                fromDate
+                toDate
+            }
             stopPlaceType
             topographicPlace {
                 name {
@@ -39,7 +43,7 @@ export const stopPlaceBBQuery = gql`
     },
 `
 
-export const stopPlaceFullSet = gql`
+export const stopPlaceWithEverythingElse = gql`
     query stopPlaceAndPathLink($id: String!) {
         pathLink(stopPlaceId: $id) {
             ...VerbosePathLink
@@ -53,7 +57,7 @@ export const stopPlaceFullSet = gql`
         versions: 
             stopPlace(id: $id, allVersions: true, size: 100) {
                 id
-                validBetweens {
+                validBetween {
                     fromDate
                     toDate
                 }
@@ -74,7 +78,10 @@ export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
-            importedId
+            keyValues {
+                key
+                values
+            }
             name {
                 value
             }
@@ -84,6 +91,10 @@ export const findStop = gql`
             stopPlaceType
             quays {
                 id
+            }
+            validBetween {
+                fromDate
+                toDate
             }
             accessibilityAssessment {
                 limitations {
@@ -110,7 +121,10 @@ export const findStopForReport = gql`
         
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 100) {
             id
-            importedId
+            keyValues {
+                key
+                values
+            }
             name {
                 value
             }
@@ -120,7 +134,10 @@ export const findStopForReport = gql`
             stopPlaceType
             quays {
                 id
-                importedId
+                keyValues {
+                    key
+                    values
+                }
                 name {
                     value
                 }
@@ -192,7 +209,7 @@ export const allVersionsOfStopPlace = gql`
         versions:
         stopPlace(id: $id, allVersions: true, size: 100) {
             id
-            validBetweens {
+            validBetween {
                 fromDate
                 toDate
             }
@@ -220,7 +237,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
         versions:
         stopPlace(id: $id, allVersions: true, size: 100) {
             id
-            validBetweens {
+            validBetween {
                 fromDate
                 toDate
             }

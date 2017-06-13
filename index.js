@@ -35,7 +35,7 @@ cfgreader.readConfig(
   function(config) {
     window.config = config;
 
-    let token = JSON.parse(localStorage.getItem('GKT_TOKEN'));
+    let token = JSON.parse(localStorage.getItem('ABZU::GKT_TOKEN'));
 
     /* Renews token if it expires within 30 minutes to be on the safer side*/
     if (
@@ -48,7 +48,7 @@ cfgreader.readConfig(
         .get(config.endpointBase + 'token')
         .then(response => {
           let token = JSON.stringify(response.data);
-          localStorage.setItem('GKT_TOKEN', token);
+          localStorage.setItem('ABZU::GKT_TOKEN', token);
           authWithKeyCloak(config.endpointBase);
         })
         .catch(err => {

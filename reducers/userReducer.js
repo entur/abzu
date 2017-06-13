@@ -9,23 +9,24 @@ export const initialState = {
     topoiChips: [
       // e.g. {key: 0, text: 'Nordland', type: 'county', value: 2},
     ],
-    text: '',
+    text: ''
   },
   snackbarOptions: {
     isOpen: false,
-    message: '',
+    message: ''
   },
   localization: {
     locale: null,
-    messages: [],
+    messages: []
   },
   appliedLocale: null,
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
-  activeBaselayer: 'Rutebankens kart',
   activeElementTab: 0,
   showEditQuayAdditional: false,
   showEditStopAdditional: false,
+  keyValuesDialogOpen: false,
+  keyValuesDialogSource: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -35,17 +36,17 @@ const userReducer = (state = initialState, action) => {
         path: action.payLoad,
         showEditQuayAdditional: false,
         showEditStopAdditional: false,
-        isCreatingNewStop: false,
+        isCreatingNewStop: false
       });
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
       return Object.assign({}, state, {
-        isCreatingNewStop: !state.isCreatingNewStop,
+        isCreatingNewStop: !state.isCreatingNewStop
       });
 
     case types.APPLIED_STOPTYPE_SEARCH_FILTER:
       return Object.assign({}, state, {
-        searchFilters: { ...state.searchFilters, stopType: action.payLoad },
+        searchFilters: { ...state.searchFilters, stopType: action.payLoad }
       });
 
     case types.OPENED_SNACKBAR:
@@ -53,8 +54,8 @@ const userReducer = (state = initialState, action) => {
         snackbarOptions: {
           isOpen: true,
           message: action.payLoad.message,
-          status: action.payLoad.status,
-        },
+          status: action.payLoad.status
+        }
       });
 
     case types.DISMISSED_SNACKBAR:
@@ -73,8 +74,8 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: newChipList,
-        },
+          topoiChips: newChipList
+        }
       });
 
     case types.DELETED_TOPOS_CHIP:
@@ -86,32 +87,32 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: chips,
-        },
+          topoiChips: chips
+        }
       });
 
     case types.SET_TOPOS_CHIPS:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: action.payLoad,
-        },
+          topoiChips: action.payLoad
+        }
       });
 
     case types.SET_STOP_PLACE_TYPES:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          stopType: action.payLoad,
-        },
+          stopType: action.payLoad
+        }
       });
 
     case types.SET_SEARCH_TEXT:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          text: action.payLoad,
-        },
+          text: action.payLoad
+        }
       });
 
     case types.OPENED_FAVORITE_NAME_DIALOG:
@@ -122,7 +123,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.REMOVE_SEARCH_AS_FAVORITE:
       return Object.assign({}, state, {
-        removedFavorites: state.removedFavorites.concat(action.payLoad),
+        removedFavorites: state.removedFavorites.concat(action.payLoad)
       });
 
     case types.CHANGED_ACTIVE_BASELAYER:
@@ -132,7 +133,7 @@ const userReducer = (state = initialState, action) => {
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);
       newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position;
       return Object.assign({}, state, {
-        missingCoordsMap: newMissingCoordsMap,
+        missingCoordsMap: newMissingCoordsMap
       });
 
     case types.CHANGED_ELEMENT_TYPE_TAB:
@@ -159,28 +160,28 @@ const userReducer = (state = initialState, action) => {
       }
 
       return Object.assign({}, state, {
-        activeElementTab: activeElementTabIndex,
+        activeElementTab: activeElementTabIndex
       });
 
     case types.SHOW_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditQuayAdditional: true,
+        showEditQuayAdditional: true
       });
 
     case types.HID_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditQuayAdditional: false,
+        showEditQuayAdditional: false
       });
 
     case types.SHOW_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditStopAdditional: true,
+        showEditStopAdditional: true
       });
 
     case types.SET_FOCUS_ON_ELEMENT:
       if (action.payLoad.index > -1) {
         return Object.assign({}, state, {
-          showEditStopAdditional: false,
+          showEditStopAdditional: false
         });
       }
 
@@ -188,7 +189,19 @@ const userReducer = (state = initialState, action) => {
 
     case types.HID_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditStopAdditional: false,
+        showEditStopAdditional: false
+      });
+
+    case types.OPENED_KEY_VALUES_DIALOG:
+      return Object.assign({}, state, {
+        keyValuesDialogOpen: true,
+        keyValuesDialogSource: action.payLoad
+      });
+
+    case types.CLOSED_KEY_VALUES_DIALOG:
+      return Object.assign({}, state, {
+        keyValuesDialogOpen: false,
+        keyValuesDialogSource: []
       });
 
       break;

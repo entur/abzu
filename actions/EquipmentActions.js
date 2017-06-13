@@ -75,7 +75,7 @@ EqupmentActions.updateCycleStorageState = (
 
 EqupmentActions.update512SignState = (state, entityType, id) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_512_SIGN_STATE, {
+    sendData(types.CHANGED_TRANSPORT_SIGN_STATE, {
       state: state,
       type: entityType,
       id: id,

@@ -18,7 +18,10 @@ Fragments.quay = {
           description {
               value
           }
-          importedId
+          keyValues {
+              key
+              values
+          }
           accessibilityAssessment {
               limitations {
                   wheelchairAccess
@@ -90,7 +93,10 @@ Fragments.stopPlace = {
             ...VerboseQuay
         }
         version
-        importedId
+        keyValues {
+            key
+            values
+        }
         stopPlaceType
         tariffZones {
             name {
@@ -149,7 +155,7 @@ Fragments.stopPlace = {
                 stepFree
             }
         }
-        validBetweens {
+        validBetween {
             fromDate
             toDate
         }

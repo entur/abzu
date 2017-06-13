@@ -74,7 +74,7 @@ helpers.mapStopToVariables = (original, userInput) => {
       validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
     }
 
-    stopVariables.validBetweens = [validPeriod];
+    stopVariables.validBetween = validPeriod;
 
     stopVariables.versionComment = comment;
   }

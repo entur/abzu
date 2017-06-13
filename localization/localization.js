@@ -2,7 +2,7 @@ import { addLocaleData } from 'react-intl';
 import axios from 'axios';
 
 const localization = locale => {
-  const localStorageKey = '__stop_place__';
+  const localStorageKey = 'ABZU::settings::locale';
 
   return new Promise((resolve, reject) => {
     let preferredLocale = locale || localStorage.getItem(localStorageKey);
@@ -24,7 +24,7 @@ const localization = locale => {
 
         localStorage.setItem(localStorageKey, locale);
 
-        resolve({ locale: locale, messages: messages });
+        resolve({ locale, messages });
       })
       .catch(response => {
         reject(response);

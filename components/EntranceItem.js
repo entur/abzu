@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import TextField from 'material-ui/TextField';

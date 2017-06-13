@@ -20,6 +20,10 @@ class EditStopBoxTabs extends React.Component {
     }
   }
 
+  handleOpenKeyValuesDialog(keyValues) {
+    this.props.dispatch(UserActions.openKeyValuesDialog(keyValues));
+  }
+
   handleRemoveEntrance(index) {
     this.props.dispatch(
       StopPlaceActions.removeElementByType(index, 'entrance'),
@@ -67,6 +71,7 @@ class EditStopBoxTabs extends React.Component {
             index={index}
             publicCode={quay.publicCode}
             handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
+            handleOpenKeyValuesDialog={ () => this.handleOpenKeyValuesDialog(quay.keyValues)}
             handleLocateOnMap={this.handleLocateOnMap.bind(this)}
             handleToggleCollapse={this.handleToggleCollapse.bind(this)}
             stopPlaceType={activeStopPlace.stopPlaceType}

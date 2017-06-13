@@ -30,7 +30,7 @@ export default class LeafLetMap extends React.Component {
   }
 
   getLocalGKTToken() {
-    let localToken = JSON.parse(localStorage.getItem('GKT_TOKEN'));
+    let localToken = JSON.parse(localStorage.getItem('ABZU::GKT_TOKEN'));
 
     if (localToken && localToken.gkt) {
       return localToken.gkt;

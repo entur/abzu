@@ -9,6 +9,7 @@ import {
   StopPlaceActions,
   AssessmentActions,
   EquipmentActions,
+  UserActions
 } from '../actions/';
 import { connect } from 'react-redux';
 import TicketMachine from '../static/icons/facilities/TicketMachine';
@@ -29,10 +30,11 @@ import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
 import WeightingPopover from './WeightingPopover';
 import weightTypes, { weightColors, noValue } from '../models/weightTypes';
 import Sign512 from '../static/icons/TransportSign';
-import { hasExpired } from '../modelUtils/validBetweens';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
+import MdKey from 'material-ui/svg-icons/communication/vpn-key';
+import KeyValuesDialog from '../components/KeyValuesDialog';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -43,7 +45,7 @@ class StopPlaceDetails extends React.Component {
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
       altNamesDialogOpen: false,
-      tariffZoneOpen: false,
+      tariffZoneOpen: false
     };
 
     this.updateStopName = debounce(value => {
@@ -55,17 +57,65 @@ class StopPlaceDetails extends React.Component {
     }, 200);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      description: props.stopPlace.description || '',
-      name: props.stopPlace.name || '',
+      description: nextProps.stopPlace.description || '',
+      name: nextProps.stopPlace.name || ''
     });
+    if (
+      nextProps.keyValuesDialogOpen &&
+      this.props.keyValuesDialogOpen !== nextProps.keyValuesDialogOpen
+    ) {
+      this.setState({
+        stopTypes: false,
+        wheelChairOpen: false,
+        altNamesDialogOpen: false,
+        weightingOpen: false,
+        tariffZoneOpen: false
+      });
+    }
   }
 
   handleCloseStopPlaceTypePopover() {
     this.setState({
-      stopTypeOpen: false,
+      stopTypeOpen: false
     });
+  }
+
+  handleOpenKeyValues() {
+    this.setState({
+      tariffZoneOpen: false,
+      altNamesDialogOpen: false
+    });
+    this.props.dispatch(
+      UserActions.openKeyValuesDialog(this.props.stopPlace.keyValues)
+    );
+  }
+
+  handleOpenAltNames() {
+    this.setState({
+      stopTypes: false,
+      wheelChairOpen: false,
+      altNamesDialogOpen: true,
+      weightingOpen: false,
+      tariffZoneOpen: false
+    });
+    if (this.props.keyValuesDialogOpen) {
+      this.props.dispatch(UserActions.closeKeyValuesDialog());
+    }
+  }
+
+  handleOpenTZDialog() {
+    this.setState({
+      stopTypes: false,
+      wheelChairOpen: false,
+      altNamesDialogOpen: false,
+      weightingOpen: false,
+      tariffZoneOpen: true
+    });
+    if (this.props.keyValuesDialogOpen) {
+      this.props.dispatch(UserActions.closeKeyValuesDialog());
+    }
   }
 
   handleOpenStopPlaceTypePopover(event) {
@@ -75,7 +125,7 @@ class StopPlaceDetails extends React.Component {
         wheelChairOpen: false,
         stopTypeAnchorEl: event.currentTarget,
         altNamesDialogOpen: false,
-        weightingOpen: false,
+        weightingOpen: false
       });
     }
   }
@@ -103,14 +153,14 @@ class StopPlaceDetails extends React.Component {
       weightingAnchorEl: event.currentTarget,
       wheelChairOpen: false,
       stopTypeOpen: false,
-      altNamesDialogOpen: false,
+      altNamesDialogOpen: false
     });
   }
 
   handleStopNameChange(event) {
     const name = event.target.value;
     this.setState({
-      name: name,
+      name: name
     });
 
     this.updateStopName(name);
@@ -119,7 +169,7 @@ class StopPlaceDetails extends React.Component {
   handleStopDescriptionChange(event) {
     const description = event.target.value;
     this.setState({
-      description: description,
+      description: description
     });
 
     this.updateStopDescription(description);
@@ -141,8 +191,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateTicketMachineState(
           value,
           'stopPlace',
-          this.props.stopPlace.id,
-        ),
+          this.props.stopPlace.id
+        )
       );
     }
   }
@@ -153,8 +203,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateShelterEquipmentState(
           value,
           'stopPlace',
-          this.props.stopPlace.id,
-        ),
+          this.props.stopPlace.id
+        )
       );
     }
   }
@@ -165,8 +215,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateSanitaryState(
           value,
           'stopPlace',
-          this.props.stopPlace.id,
-        ),
+          this.props.stopPlace.id
+        )
       );
     }
   }
@@ -177,8 +227,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateWaitingRoomState(
           value,
           'stopPlace',
-          this.props.stopPlace.id,
-        ),
+          this.props.stopPlace.id
+        )
       );
     }
   }
@@ -187,7 +237,7 @@ class StopPlaceDetails extends React.Component {
     const { dispatch } = this.props;
     dispatch(StopPlaceActions.changeWeightingForStop(value));
     this.setState({
-      weightingOpen: false,
+      weightingOpen: false
     });
   }
 
@@ -197,15 +247,15 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.update512SignState(
           value,
           'stopPlace',
-          this.props.stopPlace.id,
-        ),
+          this.props.stopPlace.id
+        )
       );
     }
   }
 
   getStopTypeTranslation(locale, stopPlaceType) {
     let translations = stopTypes[locale].filter(
-      type => type.value === stopPlaceType,
+      type => type.value === stopPlaceType
     );
     if (translations && translations.length) return translations[0].name;
 
@@ -215,7 +265,7 @@ class StopPlaceDetails extends React.Component {
   render() {
     const fixedHeader = {
       position: 'relative',
-      display: 'block',
+      display: 'block'
     };
 
     const { stopPlace, intl, expanded, disabled } = this.props;
@@ -226,13 +276,13 @@ class StopPlaceDetails extends React.Component {
       altNamesDialogOpen,
       weightingOpen,
       weightingAnchorEl,
-      tariffZoneOpen,
+      tariffZoneOpen
     } = this.state;
 
     const wheelchairAccess = getIn(
       stopPlace,
       ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UNKNOWN',
+      'UNKNOWN'
     );
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace);
@@ -247,12 +297,12 @@ class StopPlaceDetails extends React.Component {
 
     const stopTypeHint = this.getStopTypeTranslation(
       locale,
-      stopPlace.stopPlaceType,
+      stopPlace.stopPlaceType
     );
     const weightingStateHint = this.getNameForWeightingState(stopPlace, locale);
     const expirationText = formatMessage({ id: 'stop_has_expired' });
     const versionLabel = formatMessage({ id: 'version' });
-    const stopIsInvalid = hasExpired(stopPlace.validBetweens);
+    const keyValuesHint = formatMessage({ id: 'key_values_hint' });
 
     const wheelChairHint =
       accessibilityAssessments.wheelchairAccess.values[locale][
@@ -285,7 +335,7 @@ class StopPlaceDetails extends React.Component {
                 <span style={{ fontWeight: 600 }}>
                   {versionLabel} {stopPlace.version}
                 </span>
-                {!stopIsInvalid &&
+                {stopPlace.hasExpired &&
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <MdWarning
                       color="orange"
@@ -294,54 +344,77 @@ class StopPlaceDetails extends React.Component {
                     <span style={{ color: '#bb271c', marginLeft: 5 }}>
                       {' '}{expirationText}
                     </span>
-                  </div>
-                }
+                  </div>}
+              </div>}
+            <div style={{ display: 'flex'}}>
+              <ImportedId
+                id={stopPlace.importedId}
+                text={formatMessage({ id: 'local_reference' })}
+              />
+              <div style={{display: 'flex', marginLeft: 'auto'}}>
+                <ToolTippable toolTipText={keyValuesHint}>
+                  <IconButton
+                    style={{
+                      borderBottom: disabled ? 'none' : '1px dotted grey'
+                    }}
+                    onClick={this.handleOpenKeyValues.bind(this)}
+                  >
+                    <MdKey
+                      color={
+                        (stopPlace.keyValues || []).length
+                          ? enturPrimaryDarker
+                          : '#000'
+                      }
+                    />
+                  </IconButton>
+                </ToolTippable>
+                <ToolTippable toolTipText={stopTypeHint}>
+                  <IconButton
+                    style={{
+                      borderBottom: disabled ? 'none' : '1px dotted grey',
+                      marginLeft: 5
+                    }}
+                    onClick={e => {
+                      this.handleOpenStopPlaceTypePopover(e);
+                    }}
+                  >
+                    <ModalityIcon type={stopPlace.stopPlaceType} />
+                  </IconButton>
+                </ToolTippable>
+                <Popover
+                  open={this.state.stopTypeOpen}
+                  anchorEl={this.state.stopTypeAnchorEl}
+                  anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                  targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                  onRequestClose={this.handleCloseStopPlaceTypePopover.bind(
+                    this
+                  )}
+                  animation={PopoverAnimationVertical}
+                  style={{ overflowY: 'none' }}
+                  animated={true}
+                >
+                  {stopTypes[locale].map((type, index) =>
+                    <MenuItem
+                      key={'stopType' + index}
+                      value={type.value}
+                      style={{ padding: '0px 10px' }}
+                      primaryText={type.name}
+                      onClick={() => {
+                        this.handleStopTypeChange(type.value);
+                      }}
+                      insetChildren={true}
+                      leftIcon={
+                        <ModalityIcon
+                          iconStyle={{ float: 'left' }}
+                          type={type.value}
+                        />
+                      }
+                    />
+                  )}
+                </Popover>
               </div>
-            }
-            <ImportedId
-              id={stopPlace.importedId}
-              text={formatMessage({ id: 'local_reference' })}
-            />
+            </div>
           </div>
-          <ToolTippable toolTipText={stopTypeHint}>
-            <IconButton
-              style={{ borderBottom: disabled ? 'none' : '1px dotted grey' }}
-              onClick={e => {
-                this.handleOpenStopPlaceTypePopover(e);
-              }}
-            >
-              <ModalityIcon type={stopPlace.stopPlaceType} />
-            </IconButton>
-          </ToolTippable>
-          <Popover
-            open={this.state.stopTypeOpen}
-            anchorEl={this.state.stopTypeAnchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={this.handleCloseStopPlaceTypePopover.bind(this)}
-            animation={PopoverAnimationVertical}
-            style={{ overflowY: 'none' }}
-            animated={true}
-          >
-            {stopTypes[locale].map((type, index) =>
-              <MenuItem
-                key={'stopType' + index}
-                value={type.value}
-                style={{ padding: '0px 10px' }}
-                primaryText={type.name}
-                onClick={() => {
-                  this.handleStopTypeChange(type.value);
-                }}
-                insetChildren={true}
-                leftIcon={
-                  <ModalityIcon
-                    iconStyle={{ float: 'left' }}
-                    type={type.value}
-                  />
-                }
-              />,
-            )}
-          </Popover>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
@@ -355,19 +428,13 @@ class StopPlaceDetails extends React.Component {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ToolTippable toolTipText={tariffZonesHint}>
               <div
-                onClick={() => {
-                  this.setState({
-                    tariffZoneOpen: true,
-                    altNamesDialogOpen: false,
-                    weightingOpen: false,
-                  });
-                }}
+                onClick={this.handleOpenTZDialog.bind(this)}
                 style={{
                   borderBottom: '1px dotted',
                   marginTop: 13,
                   paddingBottom: 4,
                   marginLeft: 8,
-                  cursor: 'pointer',
+                  cursor: 'pointer'
                 }}
               >
                 <span
@@ -375,7 +442,7 @@ class StopPlaceDetails extends React.Component {
                     fontSize: 18,
                     color: (stopPlace.tariffZones || []).length
                       ? enturPrimaryDarker
-                      : '#000',
+                      : '#000'
                   }}
                 >
                   Tz
@@ -385,20 +452,12 @@ class StopPlaceDetails extends React.Component {
             <div
               style={{
                 borderBottom: '1px dotted',
-                marginLeft: 8,
-                marginTop: -3,
+                marginLeft: 19,
+                marginTop: -3
               }}
             >
               <ToolTippable toolTipText={altNamesHint}>
-                <IconButton
-                  onClick={() => {
-                    this.setState({
-                      altNamesDialogOpen: true,
-                      weightingOpen: false,
-                      tariffZoneOpen: false,
-                    });
-                  }}
-                >
+                <IconButton onClick={this.handleOpenAltNames.bind(this)}>
                   <MdLanguage
                     color={hasAltNames ? enturPrimaryDarker : '#000'}
                   />
@@ -447,7 +506,7 @@ class StopPlaceDetails extends React.Component {
                 height: 15,
                 display: 'flex',
                 justifyContent: 'space-around',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <ToolTippable toolTipText={wheelChairHint}>
@@ -517,7 +576,7 @@ class StopPlaceDetails extends React.Component {
                     <Sign512
                       style={{
                         transform:
-                          'scale(1) translateY(-12px) translateX(-12px)',
+                          'scale(1) translateY(-12px) translateX(-12px)'
                       }}
                     />
                   }
@@ -527,7 +586,7 @@ class StopPlaceDetails extends React.Component {
                         transform:
                           'scale(1) translateY(-12px) translateX(-12px)',
                         fill: '#8c8c8c',
-                        opacity: '0.8',
+                        opacity: '0.8'
                       }}
                     />
                   }
@@ -557,6 +616,15 @@ class StopPlaceDetails extends React.Component {
             this.setState({ tariffZoneOpen: false });
           }}
         />
+        <KeyValuesDialog
+          open={this.props.keyValuesDialogOpen}
+          keyValues={this.props.keyValuesDialogSource}
+          intl={intl}
+          disabled={disabled}
+          handleClose={() => {
+            this.props.dispatch(UserActions.closeKeyValuesDialog());
+          }}
+        />
       </div>
     );
   }
@@ -564,6 +632,8 @@ class StopPlaceDetails extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
+  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
+  keyValuesDialogSource: state.user.keyValuesDialogSource
 });
 
 export default connect(mapStateToProps)(StopPlaceDetails);

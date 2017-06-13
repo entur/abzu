@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import {
   StopPlaceActions,
@@ -29,7 +30,9 @@ import Sign512 from '../static/icons/TransportSign';
 import CoordinatesDialog from './CoordinatesDialog';
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
-import MdDelete from 'material-ui/svg-icons/action/delete-forever'
+import MdDelete from 'material-ui/svg-icons/action/delete-forever';
+import MdKey from 'material-ui/svg-icons/communication/vpn-key';
+import { enturPrimaryDarker } from '../config/enturTheme';
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -197,7 +200,7 @@ class QuayItem extends React.Component {
       privateCode: formatMessage({ id: 'privateCode' }),
     };
 
-    const removeStyle = {
+    const iconButtonStyle = {
       textAlign: 'right',
       width: '100%',
       paddingBottom: 0,
@@ -418,7 +421,13 @@ class QuayItem extends React.Component {
                     />
                   : null}
               </div>
-              <div style={removeStyle}>
+              <div style={iconButtonStyle}>
+                <IconButton
+                  disabled={disabled}
+                  onClick={this.props.handleOpenKeyValuesDialog}
+                >
+                  <MdKey color={quay.keyValues.length ? enturPrimaryDarker : '#000'}/>
+                </IconButton>
                 <IconButton
                   disabled={disabled}
                   onClick={this.props.handleRemoveQuay}

@@ -1,7 +1,8 @@
 const markerIcon = require('../static/icons/quay-marker-background.png');
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
+import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import { connect } from 'react-redux';
 import compassIcon from '../static/icons/compass.png';
