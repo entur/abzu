@@ -150,8 +150,8 @@ class NeighbourMarker extends React.Component {
                   }}
                   onClick={() => handleHideQuays(id)}
                 >
-                  <span style={{ borderBottom: '1px dotted black' }}>
-                    {' '}{translations.hideQuays}
+                <span className="marker-popup-button">
+                    {translations.hideQuays}
                   </span>
                 </div>
               : <div
@@ -162,8 +162,8 @@ class NeighbourMarker extends React.Component {
                   }}
                   onClick={() => handleShowQuays(id)}
                 >
-                  <span style={{ borderBottom: '1px dotted black' }}>
-                    {' '}{translations.showQuays}
+                  <span className="marker-popup-button">
+                    {translations.showQuays}
                   </span>
                 </div>}
             {!disabled &&
@@ -176,9 +176,8 @@ class NeighbourMarker extends React.Component {
                 }}
                 onClick={() => handleMergeStopPlace(id, name)}
               >
-                <span style={{ borderBottom: '1px dotted black' }}>
-                  {' '}{translations.mergeStopPlace}
-                  {' '}
+                <span className="marker-popup-button">
+                  {translations.mergeStopPlace}
                 </span>
               </div>}
           </div>

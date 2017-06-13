@@ -6,7 +6,7 @@ class CustomMarkerIcon extends React.Component {
     markerIndex: PropTypes.number.isRequired,
     stopType: PropTypes.string,
     active: PropTypes.bool.isRequired,
-    hasExpired: PropTypes.bool.isRequired,
+    hasExpired: PropTypes.bool,
   };
 
   componentWillMount() {
