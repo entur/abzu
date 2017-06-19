@@ -31,6 +31,18 @@ StopPlaceActions.changeStopType = type => dispatch => {
   dispatch(sendData(types.CHANGED_STOP_TYPE, type));
 };
 
+StopPlaceActions.updateKeyValuesForKey = (key, values) => (dispatch, getState) => {
+
+  let state = getState();
+  let origin = state.user.keyValuesOrigin;
+
+  dispatch(sendData(types.UPDATED_KEY_VALUES_FOR_KEY, {
+    key,
+    values,
+    origin
+  }));
+}
+
 StopPlaceActions.setMarkerOnMap = marker => dispatch => {
   let activeMarker = JSON.parse(JSON.stringify(marker));
   activeMarker.isActive = true;

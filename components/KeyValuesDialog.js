@@ -1,9 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MdClose from 'material-ui/svg-icons/navigation/close';
+import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import IconButton from 'material-ui/IconButton';
+import { enturPrimary } from '../config/enturTheme';
+import EditKeyValuePair from './EditKeyValuePair';
+import { StopPlaceActions } from '../actions/';
+
 
 class KeyValuesDialog extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditingOpen: false,
+      editingKey: null
+    }
+  }
+
+  handleEditValuesForKey(key) {
+    this.setState({
+      isEditingOpen: true,
+      editingKey: key
+    })
+  }
+
+  handleUpdateValues(key, values) {
+    this.setState({
+      isEditingOpen: false
+    })
+    this.props.dispatch(StopPlaceActions.updateKeyValuesForKey(key, values));
+  }
+
   render() {
     const { open, intl, keyValues = [], handleClose } = this.props;
     const { formatMessage } = intl;
@@ -19,7 +47,7 @@ class KeyValuesDialog extends React.Component {
     const style = {
       position: 'fixed',
       left: 400,
-      top: 190,
+      top: 105,
       background: '#fff',
       border: '1px solid black',
       width: 350,
@@ -51,7 +79,6 @@ class KeyValuesDialog extends React.Component {
             }}
           >
             {translations.tariffZones}
-            {' '}
           </div>
           <IconButton
             style={{ marginRight: 5 }}
@@ -66,7 +93,8 @@ class KeyValuesDialog extends React.Component {
           style={{
             width: '100%',
             fontSize: 14,
-            maxHeight: 400,
+            maxHeight: 300,
+            overflowY: 'scroll',
             marginLeft: 15,
             marginBottom: 5,
           }}
@@ -80,7 +108,7 @@ class KeyValuesDialog extends React.Component {
                   fontSize: 12,
                 }}
               >
-                {' '}{translations.noTariffZones}
+                {translations.noTariffZones}
               </div>
             : <div
                 style={{
@@ -97,10 +125,18 @@ class KeyValuesDialog extends React.Component {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      lineHeight: 2,
+                      lineHeight: 1.2,
                     }}
                   >
-                    <div style={{...itemStyle, fontWeight: 600, flex: 1}}>{kvp.key}</div>
+                    <div style={{...itemStyle, fontWeight: 600, flex: 1}}>
+                      <div style={{display: 'flex', alignItems: 'center'}}>
+                        <span>{kvp.key}</span>
+                        <MdEdit
+                          style={{height: 14, width: 14, color: enturPrimary, marginTop: -2, marginLeft: 5, cursor: 'pointer'}}
+                          onClick={() => this.handleEditValuesForKey(kvp.key)}
+                        />
+                      </div>
+                    </div>
                     <div style={itemStyle}>
                       {kvp.values.map ( (v,i) => (
                         <p key={"value-"+i}>{v}</p>
@@ -110,6 +146,12 @@ class KeyValuesDialog extends React.Component {
                 )}
               </div>}
         </div>
+        <EditKeyValuePair
+          isOpen={this.state.isEditingOpen}
+          editingKey={this.state.editingKey}
+          keyValues={keyValues}
+          handleUpdateValues={this.handleUpdateValues.bind(this)}
+        />
       </div>
     );
   }

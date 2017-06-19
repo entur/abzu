@@ -26,7 +26,8 @@ export const initialState = {
   showEditQuayAdditional: false,
   showEditStopAdditional: false,
   keyValuesDialogOpen: false,
-  keyValuesDialogSource: []
+  keyValuesDialogSource: [],
+  keyValuesOrigin: null
 };
 
 const userReducer = (state = initialState, action) => {
@@ -195,7 +196,11 @@ const userReducer = (state = initialState, action) => {
     case types.OPENED_KEY_VALUES_DIALOG:
       return Object.assign({}, state, {
         keyValuesDialogOpen: true,
-        keyValuesDialogSource: action.payLoad
+        keyValuesDialogSource: action.payLoad.keyValues,
+        keyValuesOrigin: {
+          type: action.payLoad.type,
+          index: action.payLoad.index
+        }
       });
 
     case types.CLOSED_KEY_VALUES_DIALOG:

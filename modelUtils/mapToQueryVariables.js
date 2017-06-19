@@ -12,6 +12,7 @@ helpers.mapQuayToVariables = quay => {
     accessibilityAssessment: formatAccessibilityAssements(
       quay.accessibilityAssessment,
     ),
+    keyValues: quay.keyValues,
     placeEquipments: quay.placeEquipments,
     description: {
       value: quay.description,
@@ -56,6 +57,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     accessibilityAssessment: formatAccessibilityAssements(
       stop.accessibilityAssessment,
     ),
+    keyValues: stop.keyValues,
     placeEquipments: stop.placeEquipments,
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,

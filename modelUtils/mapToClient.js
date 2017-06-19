@@ -474,6 +474,46 @@ helpers.getCenterPosition = geometry => {
   ];
 };
 
+helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
+
+  const { index, type } = origin;
+
+  if (type === 'stopPlace') {
+    return Object.assign({
+      ...original,
+      importedId: key === 'imported-id' ? newValues : original.importedId,
+      keyValues: original.keyValues.map( kv => {
+        if (kv.key === key) {
+          kv.values = newValues
+        }
+        return kv;
+      })
+    });
+  }
+
+  if (type === 'quay') {
+    return Object.assign({
+      ...original,
+      quays: original.quays.map( (quay, quayIndex) => {
+        if (quayIndex === index) {
+
+          if (key === 'imported-id') {
+            quay.importedId = newValues;
+          }
+          quay.keyValues = quay.keyValues.map( kv => {
+            if (kv.key === key) {
+              kv.values = newValues
+            }
+            return kv;
+          })
+        }
+        return quay;
+      })
+    });
+  }
+
+}
+
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {
     stopPlaceType: type,

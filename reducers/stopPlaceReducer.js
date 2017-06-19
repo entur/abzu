@@ -95,6 +95,18 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
+
+    case types.UPDATED_KEY_VALUES_FOR_KEY:
+      return Object.assign({}, state, {
+        current: formatHelpers.updateKeyValuesByKey(
+          state.current,
+          action.payLoad.key,
+          action.payLoad.values,
+          action.payLoad.origin,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CHANGED_LOCATION_NEW_STOP:
       return Object.assign({}, state, {
         newStop: formatHelpers.createNewStopFromLocation(action.payLoad),

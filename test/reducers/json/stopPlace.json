@@ -8,6 +8,7 @@
           "value": "Aspestrand",
           "__typename": "EmbeddableMultilingualStringType"
         },
+        "keyValues": [],
         "version": 1,
         "alternativeNames": [],
         "geometry": {
@@ -41,6 +42,7 @@
             },
             "publicCode": "1",
             "compassBearing": 344,
+            "keyValues": [],
             "__typename": "quay"
           },
           {
@@ -50,6 +52,7 @@
             },
             "publicCode": "2",
             "compassBearing": 164,
+            "keyValues": [],
             "__typename": "quay"
           }
         ],

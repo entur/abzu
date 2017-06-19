@@ -20,6 +20,8 @@ describe('Model: map format from server to expected client model', () => {
       id: 'NSR:StopPlace:933',
       name: 'Aspestrand',
       weighting: null,
+      keyValues: [],
+      importedId: [],
       location: [60.260427, 5.435734],
       version: 1,
       tariffZones: [],
@@ -48,6 +50,8 @@ describe('Model: map format from server to expected client model', () => {
           location: [60.260427, 5.435734],
           compassBearing: 344,
           description: '',
+          keyValues: [],
+          importedId: [],
           publicCode: '1',
           accessibilityAssessment: {
             limitations: {
@@ -63,6 +67,8 @@ describe('Model: map format from server to expected client model', () => {
           id: 'NSR:Quay:1695',
           location: [60.260427, 5.435734],
           compassBearing: 164,
+          keyValues: [],
+          importedId: [],
           description: '',
           publicCode: '2',
           accessibilityAssessment: {
@@ -126,6 +132,7 @@ describe('Model: map format from server to expected client model', () => {
       alternativeNames: [],
       weighting: null,
       stopPlaceType: 'onstreetBus',
+      keyValues: [],
       description: 'Beskrivelse',
       coordinates: [[11.170963, 59.587427]],
       accessibilityAssessment: {
@@ -143,6 +150,7 @@ describe('Model: map format from server to expected client model', () => {
           id: 'NSR:Quay:30025',
           compassBearing: 212,
           publicCode: null,
+          keyValues: [],
           description: {
             value: '',
             lang: 'no'
@@ -160,6 +168,7 @@ describe('Model: map format from server to expected client model', () => {
           placeEquipments: undefined,
           compassBearing: 38,
           publicCode: null,
+          keyValues: [],
           description: {
             value: '',
             lang: 'no'

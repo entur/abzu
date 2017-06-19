@@ -276,8 +276,12 @@ UserActions.cancelMoveQuay = () => dispatch => {
   dispatch(sendData(types.CANCELLED_MOVE_QUAY_DIALOG, null));
 };
 
-UserActions.openKeyValuesDialog = keyValues => dispatch => {
-  dispatch(sendData(types.OPENED_KEY_VALUES_DIALOG, keyValues));
+UserActions.openKeyValuesDialog = (keyValues, type, index) => dispatch => {
+  dispatch(sendData(types.OPENED_KEY_VALUES_DIALOG, {
+    keyValues,
+    type,
+    index
+  }));
 };
 
 UserActions.closeKeyValuesDialog = () => dispatch => {

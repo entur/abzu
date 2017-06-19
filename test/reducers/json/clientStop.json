@@ -6,6 +6,7 @@
   "stopPlaceType": "onstreetBus",
   "isActive": true,
   "topographicPlace": "Askim",
+  "keyValues": [],
   "description": "Beskrivelse",
   "parentTopographicPlace": "Østfold",
   "location": [
@@ -27,6 +28,7 @@
       "compassBearing": 212,
       "publicCode": null,
       "description": "",
+      "keyValues": [],
       "location": [
         59.587486,
         11.17094
@@ -36,6 +38,7 @@
       "id": "NSR:Quay:30026",
       "compassBearing": 38,
       "publicCode": null,
+      "keyValues": [],
       "description": "",
       "location": [
         59.587368,

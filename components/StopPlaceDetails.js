@@ -88,7 +88,7 @@ class StopPlaceDetails extends React.Component {
       altNamesDialogOpen: false
     });
     this.props.dispatch(
-      UserActions.openKeyValuesDialog(this.props.stopPlace.keyValues)
+      UserActions.openKeyValuesDialog(this.props.stopPlace.keyValues, 'stopPlace', null)
     );
   }
 
