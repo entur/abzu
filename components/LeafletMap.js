@@ -97,7 +97,7 @@ export default class LeafLetMap extends React.Component {
             name="Rutebankens kart"
           >
             <TileLayer
-              attribution="&copy; <a href=&quot;http://test.rutebanken.org&quot;>Rutebankens kart"
+              attribution="&copy; <a href=&quot;http://test.rutebanken.org&quot;>OpenStreetMap contributors"
               url={window.config.OSMUrl}
               maxZoom="19"
             />
