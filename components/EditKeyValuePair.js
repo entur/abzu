@@ -37,7 +37,7 @@ class EditKeyValuePair extends React.Component {
 
     const { editingKey, isOpen, intl } = this.props;
     const { formatMessage } = intl;
-    const { values = [] } = this.state;
+    const { values = "" } = this.state;
 
     if (!isOpen) return null;
 
