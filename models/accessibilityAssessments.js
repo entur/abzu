@@ -22,13 +22,13 @@ const accessibilityAssements = {
       nb: {
         UNKNOWN: 'Ukjent trinnadgang',
         TRUE: 'Trinnfri adgang',
-        FALSE: 'Adgang med trinn',
+        FALSE: 'Adgang kun med trapper',
         PARTIAL: 'Delvis trinnfri adgang',
       },
       en: {
         UNKNOWN: 'Unknown step access',
         TRUE: 'Step free access',
-        FALSE: 'Accessable by steps',
+        FALSE: 'Accessable only by steps',
         PARTIAL: 'Partial Step free access',
       },
     },
