@@ -37,7 +37,8 @@ const userReducer = (state = initialState, action) => {
         path: action.payLoad,
         showEditQuayAdditional: false,
         showEditStopAdditional: false,
-        isCreatingNewStop: false
+        isCreatingNewStop: false,
+        keyValuesDialogOpen: false
       });
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
