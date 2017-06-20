@@ -31,6 +31,14 @@ StopPlaceActions.changeStopType = type => dispatch => {
   dispatch(sendData(types.CHANGED_STOP_TYPE, type));
 };
 
+StopPlaceActions.changeSubmode = (stopPlaceType, transportMode, submode) => dispatch => {
+  dispatch(sendData(types.CHANGED_STOP_SUBMODE, {
+    stopPlaceType,
+    transportMode,
+    submode
+  }));
+}
+
 StopPlaceActions.updateKeyValuesForKey = (key, values) => (dispatch, getState) => {
   let state = getState();
   let origin = state.user.keyValuesOrigin;

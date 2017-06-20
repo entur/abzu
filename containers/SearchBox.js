@@ -216,6 +216,7 @@ class SearchBox extends React.Component {
                 isStatic={false}
                 style={{ display: 'inline-block', position: 'relative' }}
                 type={element.stopPlaceType}
+                submode={element.submode}
               />
             }
           />

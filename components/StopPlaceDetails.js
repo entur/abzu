@@ -3,7 +3,6 @@ import ModalityIcon from '../components/ModalityIcon';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/MenuItem';
 import ImportedId from '../components/ImportedId';
 import {
   StopPlaceActions,
@@ -35,6 +34,7 @@ import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import KeyValuesDialog from '../components/KeyValuesDialog';
+import ModalitiesMenuItems from './ModalitiesMenuItems';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -180,9 +180,14 @@ class StopPlaceDetails extends React.Component {
       this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value));
   }
 
-  handleStopTypeChange(value) {
+  handleStopTypeChange(stopType) {
     this.handleCloseStopPlaceTypePopover();
-    this.props.dispatch(StopPlaceActions.changeStopType(value));
+    this.props.dispatch(StopPlaceActions.changeStopType(stopType));
+  }
+
+  handleSubModeTypeChange(stopType, transportMode, submode) {
+    this.handleCloseStopPlaceTypePopover();
+    this.props.dispatch(StopPlaceActions.changeSubmode(stopType, transportMode, submode));
   }
 
   handleTicketMachineChange(value) {
@@ -253,11 +258,25 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
-  getStopTypeTranslation(locale, stopPlaceType) {
+  getStopTypeTranslation(locale, stopPlaceType, submode) {
     let translations = stopTypes[locale].filter(
       type => type.value === stopPlaceType
     );
-    if (translations && translations.length) return translations[0].name;
+
+    if (translations && translations.length) {
+
+      let submodes = translations[0].submodes;
+
+      if (submode && submodes) {
+        for (let i = 0; i < submodes.length; i++) {
+          if (submodes[i].value === submode) {
+            return submodes[i].name;
+          }
+        }
+      }
+
+      return translations[0].name;
+    }
 
     return unknownStopPlaceType[locale];
   }
@@ -297,7 +316,8 @@ class StopPlaceDetails extends React.Component {
 
     const stopTypeHint = this.getStopTypeTranslation(
       locale,
-      stopPlace.stopPlaceType
+      stopPlace.stopPlaceType,
+      stopPlace.submode
     );
     const weightingStateHint = this.getNameForWeightingState(stopPlace, locale);
     const expirationText = formatMessage({ id: 'stop_has_expired' });
@@ -378,7 +398,7 @@ class StopPlaceDetails extends React.Component {
                       this.handleOpenStopPlaceTypePopover(e);
                     }}
                   >
-                    <ModalityIcon type={stopPlace.stopPlaceType} />
+                    <ModalityIcon type={stopPlace.stopPlaceType} submode={stopPlace.submode}/>
                   </IconButton>
                 </ToolTippable>
                 <Popover
@@ -393,24 +413,11 @@ class StopPlaceDetails extends React.Component {
                   style={{ overflowY: 'none' }}
                   animated={true}
                 >
-                  {stopTypes[locale].map((type, index) =>
-                    <MenuItem
-                      key={'stopType' + index}
-                      value={type.value}
-                      style={{ padding: '0px 10px' }}
-                      primaryText={type.name}
-                      onClick={() => {
-                        this.handleStopTypeChange(type.value);
-                      }}
-                      insetChildren={true}
-                      leftIcon={
-                        <ModalityIcon
-                          iconStyle={{ float: 'left' }}
-                          type={type.value}
-                        />
-                      }
-                    />
-                  )}
+                  <ModalitiesMenuItems
+                    handleSubModeTypeChange={this.handleSubModeTypeChange.bind(this)}
+                    handleStopTypeChange={this.handleStopTypeChange.bind(this)}
+                    stopTypes={stopTypes[locale]}
+                  />
                 </Popover>
               </div>
             </div>

@@ -46,6 +46,10 @@ class NeighbourMarker extends React.Component {
       return true;
     }
 
+    if (this.props.submode !== nextProps.submode) {
+      return true;
+    }
+
     return false;
   }
 
@@ -64,7 +68,8 @@ class NeighbourMarker extends React.Component {
       isShowingQuays,
       disabled,
       handleMergeStopPlace,
-      hasExpired
+      hasExpired,
+      submode
     } = this.props;
 
     if (!position) return null;
@@ -73,6 +78,7 @@ class NeighbourMarker extends React.Component {
       <CustomMarkerIcon
         markerIndex={index}
         stopType={stopType}
+        submode={submode}
         hasExpired={hasExpired}
         active={false}
       />

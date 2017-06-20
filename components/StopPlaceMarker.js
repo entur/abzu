@@ -52,25 +52,30 @@ class StopPlaceMarker extends React.Component {
       return true;
     }
 
+    if (this.props.submode !== nextProps.submode) {
+      return true;
+    }
+
     return false;
   }
 
   componentWillMount() {
-    const { index, stopType, active } = this.props;
-    this.createIcon(index, stopType, active);
+    const { index, stopType, submode, active } = this.props;
+    this.createIcon(index, stopType, submode, active);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { index, stopType, active } = nextProps;
-    this.createIcon(index, stopType, active);
+    const { index, stopType, active, submode } = nextProps;
+    this.createIcon(index, stopType, submode, active);
   }
 
-  createIcon(index, stopType, active) {
+  createIcon(index, stopType, submode, active) {
     let divIconBody = (
       <CustomMarkerIcon
         markerIndex={index}
         stopType={stopType}
         active={active}
+        submode={submode}
       />
     );
 

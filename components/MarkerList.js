@@ -194,6 +194,7 @@ class MarkerList extends React.Component {
               index={stopIndex}
               position={stop.location}
               name={stop.name}
+              submode={stop.submode}
               formattedStopType={localeStopType}
               handleDragEnd={handleDragEnd}
               active={!!stop.isActive}
@@ -357,6 +358,7 @@ class MarkerList extends React.Component {
                   this.handleStopOnClick(stop.id);
                 }}
                 index={stopIndex}
+                submode={stop.submode}
                 translations={CustomPopupMarkerText}
                 isShowingQuays={!!neighbourStopQuays[stop.id]}
                 isEditingStop={isEditingStop}

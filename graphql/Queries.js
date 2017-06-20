@@ -36,6 +36,7 @@ export const stopPlaceBBQuery = gql`
                 toDate
             }
             stopPlaceType
+            submode
             topographicPlace {
                 name {
                     value
@@ -92,6 +93,7 @@ export const findStop = gql`
                 coordinates
             }
             stopPlaceType
+            submode
             quays {
                 id
             }

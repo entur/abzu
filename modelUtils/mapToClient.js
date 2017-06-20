@@ -248,6 +248,8 @@ helpers.mapStopToClientStop = (
       weighting: stop.weighting,
       version: stop.version,
       hasExpired: hasExpired(stop.validBetween),
+      transportMode: stop.transportMode,
+      submode: stop.submode
     };
 
     if (stop.topographicPlace) {
@@ -391,6 +393,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       name: stop.name.value,
       isMissingLocation: !stop.geometry,
       stopPlaceType: stop.stopPlaceType,
+      submode: stop.submode,
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
       isActive: false,
@@ -548,6 +551,14 @@ helpers.updateCurrentStopWithType = (current, type) => {
     stopPlaceType: type,
   });
 };
+
+helpers.updateCurrentStopWithSubMode = (current, stopPlaceType, transportMode, submode) => {
+  return Object.assign({}, current, {
+    stopPlaceType,
+    transportMode,
+    submode
+  });
+}
 
 helpers.updateCurrentStopWithPosition = (current, location) => {
   return Object.assign({}, current, {

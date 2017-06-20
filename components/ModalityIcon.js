@@ -2,9 +2,6 @@ import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
 
 class ModalityIcon extends React.Component {
-  componentWillUpdate(nextProps) {
-    return this.props.type == nextProps.type;
-  }
 
   render() {
     let svgStyle = this.props.svgStyle || {
@@ -19,7 +16,7 @@ class ModalityIcon extends React.Component {
       transform: 'translateY(2px)',
     };
 
-    const iconId = getIconIdByModality(this.props.type);
+    const iconId = getIconIdByTypeOrSubmode(this.props.submode, this.props.type);
 
     let style = {
       ...(this.props.style || {}),
@@ -35,6 +32,13 @@ class ModalityIcon extends React.Component {
       </span>
     );
   }
+}
+
+const getIconIdByTypeOrSubmode = (submode, type) => {
+  const submodeMap = {
+    railReplacementBus: 'railReplacement',
+  };
+  return submodeMap[submode] || getIconIdByModality(type);
 }
 
 const getIconIdByModality = type => {
