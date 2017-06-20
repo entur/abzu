@@ -45,6 +45,7 @@ import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import DeleteStopPlaceDialog from '../components/DeleteStopPlaceDialog';
 import MoveQuayDialog from '../components/MoveQuayDialog';
+import Settings from '../singletons/SettingsManager';
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -117,7 +118,8 @@ class EditStopGeneral extends React.Component {
       );
       getStopPlaceWithAll(client, stopPlace.id).then( () => {
         if (activeMap) {
-          getNeighbourStops(client, stopPlace.id, activeMap.getBounds());
+          let includeExpired = new Settings().getShowExpiredStops();
+          getNeighbourStops(client, stopPlace.id, activeMap.getBounds(), includeExpired);
         }
       });
     });

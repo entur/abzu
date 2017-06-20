@@ -8,7 +8,8 @@ import CoordinatesDialog from '../components/CoordinatesDialog';
 import CompassBearingDialog from '../components/CompassBearingDialog';
 import debounce from 'lodash.debounce';
 import { withApollo } from 'react-apollo';
-import { getNeighbourStops } from '../graphql/Actions'
+import { getNeighbourStops } from '../graphql/Actions';
+import Settings from '../singletons/SettingsManager';
 
 class EditStopMap extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class EditStopMap extends React.Component {
 
       if (zoom > 12) {
         const bounds = leafletElement.getBounds();
-        getNeighbourStops(client, ignoreStopId, bounds);
+        let includeExpired = new Settings().getShowExpiredStops();
+        getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
       }
     };
     this.handleMapMoveEnd = debounce(mapEnd, 500);
@@ -151,7 +153,8 @@ class EditStopMap extends React.Component {
     const { dispatch, client, ignoreStopId } = this.props;
     dispatch(StopPlaceActions.setActiveMap(leafletElement));
     const bounds = leafletElement.getBounds();
-    getNeighbourStops(client, ignoreStopId, bounds);
+    let includeExpired = new Settings().getShowExpiredStops();
+    getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
   }
 
   render() {

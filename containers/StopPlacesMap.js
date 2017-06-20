@@ -3,9 +3,10 @@ import React from 'react';
 import LeafletMap from '../components/LeafletMap';
 import { StopPlaceActions, UserActions } from '../actions/';
 import { withApollo } from 'react-apollo';
-import { stopPlaceBBQuery } from '../graphql/Queries';
 import { getIn } from '../utils/';
 import { injectIntl } from 'react-intl';
+import { getNeighbourStops } from '../graphql/Actions';
+import Settings from '../singletons/SettingsManager';
 
 class StopPlacesMap extends React.Component {
   componentDidMount() {
@@ -38,20 +39,12 @@ class StopPlacesMap extends React.Component {
   handleMapMoveEnd(event, { leafletElement }) {
     const zoom = leafletElement.getZoom();
 
+    let includeExpired = new Settings().getShowExpiredStops()
+
     if (zoom > 14) {
       const bounds = leafletElement.getBounds();
-      const { ignoreStopId } = this.props;
-
-      this.props.client.query({
-        query: stopPlaceBBQuery,
-        variables: {
-          latMin: bounds.getSouthWest().lat,
-          latMax: bounds.getNorthEast().lat,
-          lonMin: bounds.getSouthWest().lng,
-          lonMax: bounds.getNorthEast().lng,
-          ignoreStopPlaceId: ignoreStopId,
-        },
-      });
+      const { ignoreStopId, client } = this.props;
+      getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
     } else {
       this.props.dispatch(UserActions.removeStopsNearbyForOverview());
     }

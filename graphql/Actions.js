@@ -79,11 +79,12 @@ export const moveQuaysToStop = (client, toStopPlaceId, quayId) => (
   })
 );
 
-export const getNeighbourStops = (client, ignoreStopPlaceId, bounds) => (
+export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpired) => (
   client.query({
     fetchPolicy: 'network-only',
     query: stopPlaceBBQuery,
     variables: {
+      includeExpired: includeExpired,
       ignoreStopPlaceId,
       latMin: bounds.getSouthWest().lat,
       latMax: bounds.getNorthEast().lat,
