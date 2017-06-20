@@ -32,11 +32,21 @@ StopPlaceActions.changeStopType = type => dispatch => {
 };
 
 StopPlaceActions.updateKeyValuesForKey = (key, values) => (dispatch, getState) => {
-
   let state = getState();
   let origin = state.user.keyValuesOrigin;
 
   dispatch(sendData(types.UPDATED_KEY_VALUES_FOR_KEY, {
+    key,
+    values,
+    origin
+  }));
+};
+
+StopPlaceActions.createKeyValuesPair = (key, values) => (dispatch, getState) => {
+  let state = getState();
+  let origin = state.user.keyValuesOrigin;
+
+  dispatch(sendData(types.CREATED_KEY_VALUES_PAIR, {
     key,
     values,
     origin

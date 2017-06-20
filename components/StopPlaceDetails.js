@@ -617,13 +617,8 @@ class StopPlaceDetails extends React.Component {
           }}
         />
         <KeyValuesDialog
-          open={this.props.keyValuesDialogOpen}
-          keyValues={this.props.keyValuesDialogSource}
           intl={intl}
           disabled={disabled}
-          handleClose={() => {
-            this.props.dispatch(UserActions.closeKeyValuesDialog());
-          }}
         />
       </div>
     );
@@ -632,8 +627,6 @@ class StopPlaceDetails extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
-  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
-  keyValuesDialogSource: state.user.keyValuesDialogSource
 });
 
 export default connect(mapStateToProps)(StopPlaceDetails);

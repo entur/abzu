@@ -5,13 +5,18 @@ import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import IconButton from 'material-ui/IconButton';
 import { enturPrimary } from '../config/enturTheme';
 import EditKeyValuePair from './EditKeyValuePair';
-import { StopPlaceActions } from '../actions/';
+import CreateKeyValuePair from './CreateKeyValuePair';
+import { StopPlaceActions, UserActions } from '../actions/';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { selectKeyValuesDataSource } from '../reducers/selectors';
 
 class KeyValuesDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isEditingOpen: false,
+      isCreatingOpen: false,
       editingKey: null
     };
   }
@@ -19,6 +24,7 @@ class KeyValuesDialog extends React.Component {
   handleEditValuesForKey(key) {
     this.setState({
       isEditingOpen: true,
+      isCreatingOpen: false,
       editingKey: key
     });
   }
@@ -30,8 +36,26 @@ class KeyValuesDialog extends React.Component {
     this.props.dispatch(StopPlaceActions.updateKeyValuesForKey(key, values));
   }
 
+  handleCreateValues(key, values) {
+    this.setState({
+      isCreatingOpen: false
+    });
+    this.props.dispatch(StopPlaceActions.createKeyValuesPair(key, values));
+  }
+
+  handleOpenCreateValues() {
+    this.setState({
+      isEditingOpen: false,
+      isCreatingOpen: true
+    });
+  }
+
+  handleClose() {
+    this.props.dispatch(UserActions.closeKeyValuesDialog());
+  }
+
   render() {
-    const { open, intl, keyValues = [], handleClose, disabled } = this.props;
+    const { open, intl, keyValues, disabled } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
@@ -81,7 +105,7 @@ class KeyValuesDialog extends React.Component {
           <IconButton
             style={{ marginRight: 5 }}
             onTouchTap={() => {
-              handleClose();
+              this.handleClose();
             }}
           >
             <MdClose />
@@ -150,15 +174,32 @@ class KeyValuesDialog extends React.Component {
                 )}
               </div>}
         </div>
+        <FloatingActionButton
+          onClick={this.handleOpenCreateValues.bind(this)}
+          mini={true}
+          style={{marginLeft: 20, marginBottom: 10}}
+        >
+          <ContentAdd />
+        </FloatingActionButton>
         <EditKeyValuePair
           isOpen={this.state.isEditingOpen}
           editingKey={this.state.editingKey}
           keyValues={keyValues}
           handleUpdateValues={this.handleUpdateValues.bind(this)}
         />
+        <CreateKeyValuePair
+          isOpen={this.state.isCreatingOpen}
+          keyValues={keyValues}
+          handleCreateValues={this.handleCreateValues.bind(this)}
+        />
       </div>
     );
   }
 }
 
-export default connect(null)(KeyValuesDialog);
+const mapStateToProps = state => ({
+  open: state.user.keyValuesDialogOpen,
+  keyValues: selectKeyValuesDataSource(state.user.keyValuesOrigin, state.stopPlace.current)
+})
+
+export default connect(mapStateToProps)(KeyValuesDialog);

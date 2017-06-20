@@ -463,6 +463,7 @@ helpers.createNewStopFromLocation = location => {
     parking: [],
     isNewStop: true,
     isActive: true,
+    keyValues: []
   };
 };
 
@@ -511,7 +512,35 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
       })
     });
   }
+}
 
+helpers.createKeyValuesPair = (original, key, newValues, origin) => {
+  const {index, type} = origin;
+
+  if (type === 'stopPlace') {
+    return Object.assign({
+      ...original,
+      keyValues: (original.keyValues || []).concat({
+        key,
+        values: newValues
+      })
+    });
+  }
+
+  if (type === 'quay') {
+    return Object.assign({
+      ...original,
+      quays: original.quays.map((quay, quayIndex) => {
+        if (quayIndex === index) {
+          quay.keyValues = (quay.keyValues || []).concat({
+            key,
+            values: newValues
+          });
+        }
+        return quay;
+      })
+    });
+  }
 }
 
 helpers.updateCurrentStopWithType = (current, type) => {
