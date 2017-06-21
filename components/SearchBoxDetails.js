@@ -41,7 +41,10 @@ const SearchBoxDetails = ({
         }}
       >
         <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
-        <ModalityIcon type={result.stopPlaceType} />
+        <ModalityIcon
+          submode={result.submode}
+          type={result.stopPlaceType}
+        />
       </div>
       {result.hasExpired &&
         <div style={{ display: 'flex', alignItems: 'center' }}>
