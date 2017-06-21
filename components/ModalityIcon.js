@@ -3,6 +3,14 @@ import SvgIcon from 'material-ui/SvgIcon';
 
 class ModalityIcon extends React.Component {
 
+  shouldComponentUpdate(nextProps) {
+    if (this.props.type === nextProps.type
+        && this.props.submode === nextProps.submode) {
+      return false
+    }
+    return true
+  }
+
   render() {
     let svgStyle = this.props.svgStyle || {
       width: 30,

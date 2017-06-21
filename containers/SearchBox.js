@@ -213,7 +213,6 @@ class SearchBox extends React.Component {
             leftIcon={
               <ModalityIcon
                 svgStyle={{ marginRight: 10 }}
-                isStatic={false}
                 style={{ display: 'inline-block', position: 'relative' }}
                 type={element.stopPlaceType}
                 submode={element.submode}
