@@ -466,23 +466,14 @@ class QuayMarkerIcon extends React.PureComponent {
             style={{
               color: '#fff',
               display: 'flex',
-              marginLeft: -2 * quayShortName.length,
-              fontSize: String(quayShortName.length).length > 1
-                ? '1em'
+              marginLeft: quayShortName.length === 1 ? 0 : -1  * (quayShortName || 'aa').length,
+              marginTop: !quayShortName ? 5 : 0,
+              fontSize: !quayShortName
+                ? '0.8em'
                 : '1.2em'
             }}
           >
-            <div>Q</div>
-            <div
-              style={{
-                color: '#fff',
-                display: 'inline-block',
-                fontSize: '0.6em',
-                textTransform: 'capitalize'
-              }}
-            >
-              {quayShortName}
-            </div>
+              {quayShortName || 'N/A'}
           </div>
         </div>
       </div>
