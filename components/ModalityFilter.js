@@ -5,12 +5,11 @@ import Checkbox from 'material-ui/Checkbox';
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {
-    const { stopTypeFilter, locale, dispatch } = this.props;
+    const { stopTypeFilter, locale } = this.props;
     let newFilters = stopTypeFilter.slice();
 
     if (checked) {
       newFilters.push(value);
-
       // i.e. no filters: all modalities are selected
       if (newFilters.length === stopTypes[locale].length) {
         newFilters = [];
@@ -35,7 +34,7 @@ class ModalityFilter extends React.Component {
     const wrapperStyle = {
       display: 'flex',
       padding: 8,
-      justifyContent: 'space-between',
+      justifyContent: 'space-between'
     };
 
     return (
@@ -51,6 +50,7 @@ class ModalityFilter extends React.Component {
                   <ModalityIcon
                     svgStyle={{ height: 20, width: 20 }}
                     type={item.value}
+                    forceUpdate={true}
                   />
                 }
                 uncheckedIcon={
@@ -58,6 +58,7 @@ class ModalityFilter extends React.Component {
                     svgStyle={{ height: 20, width: 20 }}
                     style={{ fill: '#8c8c8c', opacity: '0.8' }}
                     type={item.value}
+                    forceUpdate={true}
                   />
                 }
                 style={{ width: 'auto' }}

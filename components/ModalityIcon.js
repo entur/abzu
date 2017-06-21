@@ -4,6 +4,11 @@ import SvgIcon from 'material-ui/SvgIcon';
 class ModalityIcon extends React.Component {
 
   shouldComponentUpdate(nextProps) {
+
+    if (nextProps.forceUpdate) {
+      return true;
+    }
+
     if (this.props.type === nextProps.type
         && this.props.submode === nextProps.submode) {
       return false
