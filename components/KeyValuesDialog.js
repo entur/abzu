@@ -174,13 +174,14 @@ class KeyValuesDialog extends React.Component {
                 )}
               </div>}
         </div>
-        <FloatingActionButton
-          onClick={this.handleOpenCreateValues.bind(this)}
-          mini={true}
-          style={{marginLeft: 20, marginBottom: 10}}
-        >
-          <ContentAdd />
-        </FloatingActionButton>
+        {!disabled &&
+          <FloatingActionButton
+            onClick={this.handleOpenCreateValues.bind(this)}
+            mini={true}
+            style={{ marginLeft: 20, marginBottom: 10 }}
+          >
+            <ContentAdd />
+          </FloatingActionButton>}
         <EditKeyValuePair
           isOpen={this.state.isEditingOpen}
           editingKey={this.state.editingKey}
@@ -199,7 +200,10 @@ class KeyValuesDialog extends React.Component {
 
 const mapStateToProps = state => ({
   open: state.user.keyValuesDialogOpen,
-  keyValues: selectKeyValuesDataSource(state.user.keyValuesOrigin, state.stopPlace.current)
-})
+  keyValues: selectKeyValuesDataSource(
+    state.user.keyValuesOrigin,
+    state.stopPlace.current
+  )
+});
 
 export default connect(mapStateToProps)(KeyValuesDialog);
