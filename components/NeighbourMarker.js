@@ -147,31 +147,6 @@ class NeighbourMarker extends React.Component {
                 {position[1]}
               </span>
             </div>
-            {isShowingQuays
-              ? <div
-                  style={{
-                    marginTop: 10,
-                    cursor: 'pointer',
-                    textAlign: 'center'
-                  }}
-                  onClick={() => handleHideQuays(id)}
-                >
-                <span className="marker-popup-button">
-                    {translations.hideQuays}
-                  </span>
-                </div>
-              : <div
-                  style={{
-                    marginTop: 10,
-                    cursor: 'pointer',
-                    textAlign: 'center'
-                  }}
-                  onClick={() => handleShowQuays(id)}
-                >
-                  <span className="marker-popup-button">
-                    {translations.showQuays}
-                  </span>
-                </div>}
             {!disabled &&
               isEditingStop &&
               <div
@@ -185,6 +160,31 @@ class NeighbourMarker extends React.Component {
                 <span className="marker-popup-button">
                   {translations.mergeStopPlace}
                 </span>
+              </div>}
+            {isShowingQuays
+              ? <div
+                style={{
+                  marginTop: 10,
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+                onClick={() => handleHideQuays(id)}
+              >
+                <span className="marker-popup-button">
+                    {translations.hideQuays}
+                  </span>
+              </div>
+              : <div
+                style={{
+                  marginTop: 10,
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+                onClick={() => handleShowQuays(id)}
+              >
+                  <span className="marker-popup-button">
+                    {translations.showQuays}
+                  </span>
               </div>}
           </div>
         </Popup>

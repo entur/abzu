@@ -349,6 +349,7 @@ class SearchBox extends React.Component {
                       </FlatButton>
                     </div>
                     <AutoComplete
+                      floatingLabelText={formatMessage({ id: 'filter_by_topography' })}
                       hintText={formatMessage({ id: 'filter_by_topography' })}
                       dataSource={topographicalPlacesDataSource}
                       onUpdateInput={this.handleTopographicalPlaceInput.bind(

@@ -67,7 +67,6 @@
 }
 
 .marker-popup-button {
-    fontWeight: 600;
     margin-top:5px;
     cursor: pointer;
     padding: 2px;
@@ -78,9 +77,13 @@
     width: 100%;
     display: inline-block;
     text-align: center;
+    max-width: 120px;
 }
 
 .marker-popup-button.incomplete {
-    color: #9A332C;
+    color: #fff;
     pointer-events:none;
+    background: #777777;
+    border-radius: 0px;
+    max-width: none;
 }

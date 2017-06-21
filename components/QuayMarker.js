@@ -331,38 +331,6 @@ class QuayMarker extends React.PureComponent {
               </div>
             </div>
             <div style={{ marginTop: 10 }}>
-              {showPathLink && isEditingStop && !currentIsNewStop
-                ? <div>
-                    {id
-                      ? <div
-                          className={`marker-popup-button ${isIncomplete
-                            ? 'incomplete'
-                            : ''}`}
-                          onClick={() => {
-                            handleUpdatePathLink(position, id, 'quay');
-                          }}
-                        >
-                          {pathLinkText}
-                          {isIncomplete
-                            ? <div style={{ color: '#000', fontWeight: 600 }}>
-                                {' '}{translations.inComplete}
-                                {' '}
-                              </div>
-                            : null}
-                        </div>
-                      : <div
-                          style={{
-                            textAlign: 'center',
-                            padding: 10,
-                            border: '1px solid #9E9E9E'
-                          }}
-                        >
-                          {translations.saveFirstPathLink}
-                        </div>}
-                  </div>
-                : null}
-            </div>
-            <div style={{ marginTop: 10 }}>
               {shouldShowMoveQuay &&
                 <div style={{ textAlign: 'center' }}>
                   <span
@@ -382,14 +350,13 @@ class QuayMarker extends React.PureComponent {
                               className="marker-popup-button"
                               onClick={() => this.handleCancelMerge()}
                             >
-                              {' '}{translations.mergeQuayCancel}
+                              {translations.mergeQuayCancel}
                             </span>
                           : <span
                               className="marker-popup-button"
                               onClick={() => this.handleMergeTo()}
                             >
-                              {' '}{translations.mergeQuayTo}
-                              {' '}
+                              {translations.mergeQuayTo}
                             </span>}
                       </div>
                     : <div>
@@ -398,10 +365,36 @@ class QuayMarker extends React.PureComponent {
                           onClick={() => this.handleMergeFrom()}
                         >
                           {translations.mergeQuayFrom}
-                          {' '}
                         </span>
                       </div>}
                 </div>}
+            </div>
+            <div style={{ marginTop: 10 }}>
+              {showPathLink && isEditingStop && !currentIsNewStop
+                ? <div>
+                  {id
+                    ? <div
+                      className={`marker-popup-button ${isIncomplete
+                        ? 'incomplete'
+                        : ''}`}
+                      onClick={() => {
+                        handleUpdatePathLink(position, id, 'quay');
+                      }}
+                    >
+                      {pathLinkText}
+                      {isIncomplete && <div>{translations.inComplete}</div>}
+                      </div>
+                    : <div
+                      style={{
+                        textAlign: 'center',
+                        padding: 10,
+                        border: '1px solid #9E9E9E'
+                      }}
+                    >
+                      {translations.saveFirstPathLink}
+                    </div>}
+                </div>
+                : null}
             </div>
           </div>
         </Popup>
