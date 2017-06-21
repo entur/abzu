@@ -126,7 +126,7 @@ const stopTypes = {
         {
           value: 'touristRailway',
           name: 'Museumtog'
-        },
+        }
       ]
     },
     {
@@ -161,24 +161,24 @@ const stopTypes = {
           value: null
         },
         {
-          value: "highSpeedPassengerService",
-          name: "Hurtigbåt"
+          value: 'highSpeedPassengerService',
+          name: 'Hurtigbåt'
         },
         {
-          value: "highSpeedVehicleService",
-          name: "Kombibåt"
+          value: 'highSpeedVehicleService',
+          name: 'Kombibåt'
         },
         {
-          value: "internationalCarFerry",
-          name: "Internasjonal passsjerbåt"
+          value: 'internationalCarFerry',
+          name: 'Internasjonal passsjerbåt'
         },
         {
-          value: "localCarFerry",
-          name: "Innenriks bilferje"
+          value: 'localCarFerry',
+          name: 'Innenriks bilferje'
         },
         {
-          value: "nationalCarFerry",
-          name: "Hurtigruten"
+          value: 'nationalCarFerry',
+          name: 'Hurtigruten'
         }
       ]
     },
@@ -193,24 +193,24 @@ const stopTypes = {
           value: null
         },
         {
-          value: "highSpeedPassengerService",
-          name: "Hurtigbåt"
+          value: 'highSpeedPassengerService',
+          name: 'Hurtigbåt'
         },
         {
-          value: "highSpeedVehicleService",
-          name: "Kombibåt"
+          value: 'highSpeedVehicleService',
+          name: 'Kombibåt'
         },
         {
-          value: "internationalPassengerFerry",
-          name: "Internasjonal passasjerbåt"
+          value: 'internationalPassengerFerry',
+          name: 'Internasjonal passasjerbåt'
         },
         {
-          value: "localPassengerFerry",
-          name: "Innenriks bilferje"
+          value: 'localPassengerFerry',
+          name: 'Innenriks bilferje'
         },
         {
-          value: "sightseeingService",
-          name: "Turistbåtrute"
+          value: 'sightseeingService',
+          name: 'Turistbåtrute'
         }
       ]
     },
@@ -358,7 +358,7 @@ const stopTypes = {
         {
           value: 'touristRailway',
           name: 'Tourist railway'
-        },
+        }
       ]
     },
     {
@@ -393,24 +393,24 @@ const stopTypes = {
           value: null
         },
         {
-          value: "highSpeedPassengerService",
-          name: "High speed passenger service"
+          value: 'highSpeedPassengerService',
+          name: 'High speed passenger service'
         },
         {
-          value: "highSpeedVehicleService",
-          name: "High speed vehicle service"
+          value: 'highSpeedVehicleService',
+          name: 'High speed vehicle service'
         },
         {
-          value: "internationalCarFerry",
-          name: "International car ferry"
+          value: 'internationalCarFerry',
+          name: 'International car ferry'
         },
         {
-          value: "localCarFerry",
-          name: "Local car ferry"
+          value: 'localCarFerry',
+          name: 'Local car ferry'
         },
         {
-          value: "nationalCarFerry",
-          name: "National car ferry"
+          value: 'nationalCarFerry',
+          name: 'National car ferry'
         }
       ]
     },
@@ -425,24 +425,24 @@ const stopTypes = {
           value: null
         },
         {
-          value: "highSpeedPassengerService",
-          name: "High speed passenger service"
+          value: 'highSpeedPassengerService',
+          name: 'High speed passenger service'
         },
         {
-          value: "highSpeedVehicleService",
-          name: "High speed vehicle service"
+          value: 'highSpeedVehicleService',
+          name: 'High speed vehicle service'
         },
         {
-          value: "internationalPassengerFerry",
-          name: "International passenger ferry"
+          value: 'internationalPassengerFerry',
+          name: 'International passenger ferry'
         },
         {
-          value: "localPassengerFerry",
-          name: "Local passenger ferry"
+          value: 'localPassengerFerry',
+          name: 'Local passenger ferry'
         },
         {
-          value: "sightseeingService",
-          name: "Sightseeing service"
+          value: 'sightseeingService',
+          name: 'Sightseeing service'
         }
       ]
     },

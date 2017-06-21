@@ -9,6 +9,8 @@
           "__typename": "EmbeddableMultilingualStringType"
         },
         "keyValues": [],
+        "submode": null,
+        "transportMode": null,
         "version": 1,
         "alternativeNames": [],
         "geometry": {

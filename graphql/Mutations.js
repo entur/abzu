@@ -2,10 +2,12 @@ import gql from 'graphql-tag'
 import Fragments from './Fragments'
 
 export const mutateStopPlace = gql`
-    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput]) {
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput], $submode: SubmodeType, $transportMode: TransportModeType) {
         mutateStopPlace(StopPlace: {
             id: $id
             keyValues: $keyValues
+            submode: $submode
+            transportMode: $transportMode
             weighting: $weighting
             name: { value: $name, lang: "no" }
             description: { value: $description, lang: "no" }

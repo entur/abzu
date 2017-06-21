@@ -98,8 +98,8 @@ Fragments.stopPlace = {
             values
         }
         stopPlaceType
-        transportMode
         submode
+        transportMode
         tariffZones {
             name {
                 value

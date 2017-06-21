@@ -23,6 +23,8 @@ describe('Model: map format from server to expected client model', () => {
       keyValues: [],
       importedId: [],
       location: [60.260427, 5.435734],
+      transportMode: null,
+      submode: null,
       version: 1,
       tariffZones: [],
       stopPlaceType: 'onstreetBus',
@@ -133,6 +135,8 @@ describe('Model: map format from server to expected client model', () => {
       weighting: null,
       stopPlaceType: 'onstreetBus',
       keyValues: [],
+      submode: null,
+      transportMode: null,
       description: 'Beskrivelse',
       coordinates: [[11.170963, 59.587427]],
       accessibilityAssessment: {

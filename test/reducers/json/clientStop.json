@@ -9,6 +9,8 @@
   "keyValues": [],
   "description": "Beskrivelse",
   "parentTopographicPlace": "Østfold",
+  "submode": null,
+  "transportMode": null,
   "location": [
     59.587427,
     11.170963

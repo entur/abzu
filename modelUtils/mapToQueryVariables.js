@@ -61,6 +61,8 @@ helpers.mapStopToVariables = (original, userInput) => {
     placeEquipments: stop.placeEquipments,
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
+    submode: stop.submode,
+    transportMode: stop.transportMode
   };
 
   if (userInput) {
