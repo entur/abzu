@@ -93,22 +93,22 @@ export default class LeafLetMap extends React.Component {
       >
         <LayersControl position="topright">
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Rutebankens kart')}
-            name="Rutebankens kart"
-          >
-            <TileLayer
-              attribution="&copy; <a href=&quot;http://test.rutebanken.org&quot;>OpenStreetMap contributors"
-              url={window.config.OSMUrl}
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
             checked={this.getCheckedBaseLayerByValue('OpenStreetMap')}
             name="OpenStreetMap"
           >
             <TileLayer
               attribution="&copy; <a href=&quot;https://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
               url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={this.getCheckedBaseLayerByValue('Rutebankens kart')}
+            name="Rutebankens kart"
+          >
+            <TileLayer
+              attribution="&copy; <a href=&quot;http://test.rutebanken.org&quot;>OpenStreetMap contributors"
+              url={window.config.OSMUrl}
               maxZoom="19"
             />
           </BaseLayer>

@@ -44,7 +44,7 @@ class SettingsManager {
   }
 
   getMapLayer() {
-    return localStorage.getItem(mapLayerKey) || 'Rutebankens kart';
+    return localStorage.getItem(mapLayerKey) || 'OpenStreetMap';
   }
 
   setMapLayer(value) {
