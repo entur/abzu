@@ -39,6 +39,10 @@ class StopPlacesMap extends React.Component {
     }
   }
 
+  handleZoomEnd(event) {
+    this.props.dispatch(UserActions.setZoomLevel(event.target.getZoom()));
+  }
+
   handleBaselayerChanged(value) {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
@@ -65,6 +69,7 @@ class StopPlacesMap extends React.Component {
         position={position}
         markers={markers}
         zoom={zoom}
+        handleZoomEnd={this.handleZoomEnd.bind(this)}
         onDoubleClick={this.handleClick.bind(this)}
         handleDragEnd={() => {}}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
