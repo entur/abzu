@@ -449,10 +449,9 @@ class QuayMarkerIcon extends React.PureComponent {
     const quayStyle = {
       color: '#fff',
       position: 'absolute',
-      top: 10,
-      left: 36,
-      fontSize: '0.8em',
-      zIndex: 9999
+      top: 12,
+      left: 25,
+      zIndex: 9999,
     };
 
     return (
@@ -462,20 +461,12 @@ class QuayMarkerIcon extends React.PureComponent {
           : null}
         {this._markerIcon}
         <div style={quayStyle}>
-          <div
-            style={{
-              color: '#fff',
-              display: 'flex',
-              marginLeft: quayShortName.length === 1 ? 0 : -1  * (quayShortName || 'aa').length,
-              marginTop: !quayShortName ? 5 : 0,
-              fontSize: !quayShortName
-                ? '0.8em'
-                : '1.2em'
-            }}
-          >
-              {quayShortName || 'N/A'}
+          <div style={{
+            width: 30,
+            fontSize: quayShortName ? 12 : 10,
+            textAlign: 'center'
+          }}>{quayShortName || 'N/A'}</div>
           </div>
-        </div>
       </div>
     );
   }
