@@ -9,9 +9,16 @@ import { getNeighbourStops } from '../graphql/Actions';
 import Settings from '../singletons/SettingsManager';
 
 class StopPlacesMap extends React.Component {
+
   componentDidMount() {
     const { formatMessage } = this.props.intl;
     document.title = formatMessage({ id: '_title' });
+
+    if (this.props.activeMap) {
+      this.handleMapMoveEnd(null, {
+        leafletElement: this.props.activeMap
+      });
+    }
   }
 
   componentWillUpdate(nextProps) {
@@ -73,9 +80,7 @@ class StopPlacesMap extends React.Component {
 const mapStateToProps = state => {
   const {
     newStop,
-    centerPosition,
     activeSearchResult,
-    zoom,
     neighbourStops,
   } = state.stopPlace;
 
@@ -92,10 +97,11 @@ const mapStateToProps = state => {
   }
 
   return {
-    position: centerPosition,
+    position: state.stopPlace.centerPosition,
     markers: markers,
-    zoom: zoom,
-    isCreatingNewStop: state.user.isCreatingNewStop,
+    activeMap: state.mapUtils.activeMap,
+    zoom: state.stopPlace.zoom,
+    isCreatingNewStop: isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
     ignoreStopId: getIn(
       state.stopPlace,

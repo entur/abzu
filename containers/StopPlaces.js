@@ -3,7 +3,7 @@ import SearchBox from './SearchBox';
 import StopPlacesMap from './StopPlacesMap';
 import '../styles/main.css';
 
-const StopPlaces = props => {
+const StopPlaces = () => {
   return (
     <div>
       <SearchBox />
