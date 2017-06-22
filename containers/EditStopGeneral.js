@@ -132,8 +132,8 @@ class EditStopGeneral extends React.Component {
     mergeQuays(
       client,
       stopPlace.id,
-      mergingQuay.fromQuayId,
-      mergingQuay.toQuayId,
+      mergingQuay.fromQuay.id,
+      mergingQuay.toQuay.id,
       versionComment
     ).then(result => {
       dispatch(
