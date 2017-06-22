@@ -51,7 +51,7 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mergingQuay: {
           isMerging: true,
-          fromQuayId: action.payLoad,
+          fromQuay: action.payLoad,
           toQuay: null,
         },
       });
@@ -60,9 +60,9 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mergingQuayDialogOpen: true,
         mergingQuay: {
-          isMerging: false,
-          fromQuayId: state.mergingQuay.fromQuayId,
-          toQuayId: action.payLoad,
+          ...state.mergingQuay,
+        isMerging: false,
+        toQuay: action.payLoad,
         },
       });
 

@@ -239,12 +239,18 @@ UserActions.hideMergeQuaysDialog = () => dispatch => {
   dispatch(sendData(types.CLOSED_MERGE_QUAYS_DIALOG, null));
 };
 
-UserActions.startMergingQuayFrom = id => dispatch => {
-  dispatch(sendData(types.STARTED_MERGING_QUAY_FROM, id));
+UserActions.startMergingQuayFrom = id => (dispatch, getState) => {
+  let state = getState();
+  let quays = state.stopPlace.current.quays;
+  let quay = getQuayById(quays, id);
+  dispatch(sendData(types.STARTED_MERGING_QUAY_FROM, quay));
 };
 
-UserActions.endMergingQuayTo = id => dispatch => {
-  dispatch(sendData(types.ENDED_MERGING_QUAY_TO, id));
+UserActions.endMergingQuayTo = id => (dispatch, getState) => {
+  let state = getState();
+  let quays = state.stopPlace.current.quays;
+  let quay = getQuayById(quays, id);
+  dispatch(sendData(types.ENDED_MERGING_QUAY_TO, quay));
 };
 
 UserActions.cancelMergingQuayFrom = () => dispatch => {
@@ -294,6 +300,13 @@ UserActions.moveQuay = id => dispatch => {
 
 UserActions.setZoomLevel = zoomLevel => dispatch =>{
   dispatch(sendData(types.SET_ZOOM_LEVEL, zoomLevel));
+};
+
+const getQuayById = (quays = [], quayId) => {
+  for (let i = 0; quays.length; i++) {
+    if (quays[i].id === quayId) return quays[i];
+  }
+  return null;
 };
 
 export default UserActions;

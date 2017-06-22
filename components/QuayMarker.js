@@ -11,6 +11,7 @@ import { UserActions } from '../actions/';
 import OSMIcon from '../static/icons/osm_logo.png';
 import { getIn } from '../utils/';
 import ToolTippable from './ToolTippable';
+import Code from './Code';
 
 class QuayMarker extends React.PureComponent {
   static propTypes = {
@@ -187,7 +188,7 @@ class QuayMarker extends React.PureComponent {
     const shouldShowMergeQuay =
       isEditingStop && !disabled && !belongsToNeighbourStop && !!id && !currentIsNewStop;
     const isMergingFromThis =
-      id && mergingQuay.fromQuayId && id === mergingQuay.fromQuayId;
+      id && mergingQuay.fromQuay && mergingQuay.fromQuay.id && id === mergingQuay.fromQuay.id;
     const shouldShowMoveQuay =
       isEditingStop && !disabled && belongsToNeighbourStop && !!id && !currentIsNewStop;
 
@@ -220,37 +221,10 @@ class QuayMarker extends React.PureComponent {
             >
               <div>{formattedStopType}</div>
               <ToolTippable toolTipText={translations.publicCode}>
-                <div
-                  style={{
-                    marginLeft: 5,
-                    background: '#f5e527',
-                    minWidth: 15,
-                    textAlign: 'center',
-                    borderRadius: '50%',
-                    color: '#000',
-                    padding: 4,
-                    fontSize: 10,
-                    cursor: 'pointer'
-                  }}
-                >
-                  {publicCode || 'N/A'}
-                </div>
+                <Code type="publicCode" value={publicCode}/>
               </ToolTippable>
               <ToolTippable toolTipText={translations.privateCode}>
-                <div
-                  style={{
-                    marginLeft: 5,
-                    background: '#777',
-                    color: '#fff',
-                    padding: 4,
-                    fontSize: 10,
-                    borderRadius: '50%',
-                    minWidth: 15,
-                    textAlign: 'center'
-                  }}
-                >
-                  {privateCode || 'N/A'}
-                </div>
+                <Code type="privateCode" value={privateCode}/>
               </ToolTippable>
             </div>
             <div
