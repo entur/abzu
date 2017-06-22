@@ -1,4 +1,5 @@
 import * as types from './Types';
+import { getCentroid } from '../utils/mapUtils';
 
 var StopPlaceActions = {};
 
@@ -225,6 +226,17 @@ StopPlaceActions.changeParkingName = (index, name) => dispatch => {
       name,
     }),
   );
+};
+
+StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
+  let state = getState();
+  let quays = state.stopPlace.current.quays;
+  let originalCentroid = state.stopPlace.current.location;
+
+  let latlngs = quays.map( quay => quay.location);
+  let centroid = getCentroid(latlngs, originalCentroid);
+
+  dispatch(StopPlaceActions.changeCurrentStopPosition(centroid));
 };
 
 

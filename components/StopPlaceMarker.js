@@ -18,7 +18,7 @@ class StopPlaceMarker extends React.Component {
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
     id: PropTypes.string,
-    isEditingStop: PropTypes.bool.isRequired,
+    isEditingStop: PropTypes.bool.isRequired
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -85,7 +85,7 @@ class StopPlaceMarker extends React.Component {
       html: divIconBodyMarkup,
       iconAnchor: [10, 20],
       iconSize: [20, 20],
-      popupAnchor: [0, 17],
+      popupAnchor: [0, 17]
     });
   }
 
@@ -98,8 +98,10 @@ class StopPlaceMarker extends React.Component {
       draggable,
       missingCoordinatesMap,
       handleChangeCoordinates,
+      handleAdjustCentroid,
       translations,
       id,
+      disabled
     } = this.props;
 
     const markerLocation = position || missingCoordinatesMap[id];
@@ -134,7 +136,7 @@ class StopPlaceMarker extends React.Component {
                 display: 'inline-block',
                 width: '100%',
                 marginBottom: 15,
-                textAlign: 'center',
+                textAlign: 'center'
               }}
               onClick={handleOnClick}
             >
@@ -145,7 +147,7 @@ class StopPlaceMarker extends React.Component {
                 display: 'block',
                 cursor: 'pointer',
                 width: 'auto',
-                textAlign: 'center',
+                textAlign: 'center'
               }}
               onClick={() =>
                 handleChangeCoordinates &&
@@ -155,7 +157,7 @@ class StopPlaceMarker extends React.Component {
                 style={{
                   display: 'inline-block',
                   textAlign: 'center',
-                  borderBottom: '1px dotted black',
+                  borderBottom: '1px dotted black'
                 }}
               >
                 {markerLocation[0]}
@@ -164,12 +166,20 @@ class StopPlaceMarker extends React.Component {
                 style={{
                   display: 'inline-block',
                   marginLeft: 3,
-                  borderBottom: '1px dotted black',
+                  borderBottom: '1px dotted black'
                 }}
               >
                 {markerLocation[1]}
               </span>
             </div>
+            {!disabled &&
+              <div
+                className={'marker-popup-button'}
+                style={{ marginTop: 10 }}
+                onClick={handleAdjustCentroid}
+              >
+                {translations.adjustCentroid}
+              </div>}
           </div>
         </Popup>
       </Marker>

@@ -31,6 +31,10 @@ class MarkerList extends React.Component {
     this.createMarkerList(nextProps);
   }
 
+  handleAdjustCentroid() {
+    this.props.dispatch(StopPlaceActions.adjustCentroid());
+  }
+
   handleStopOnClick(id) {
     const { dispatch, client, path } = this.props;
 
@@ -159,7 +163,8 @@ class MarkerList extends React.Component {
       expired: formatMessage({ id: 'has_expired'}),
       publicCode: formatMessage({id: 'publicCode'}),
       privateCode: formatMessage({id: 'privateCode'}),
-      moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'})
+      moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'}),
+      adjustCentroid: formatMessage({id: 'adjust_centroid'})
     };
 
     const newStopMarkerText = {
@@ -196,9 +201,11 @@ class MarkerList extends React.Component {
               name={stop.name}
               submode={stop.submode}
               formattedStopType={localeStopType}
+              disabled={disabled}
               handleDragEnd={handleDragEnd}
               active={!!stop.isActive}
               stopType={stop.stopPlaceType}
+              handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
               translations={CustomPopupMarkerText}
