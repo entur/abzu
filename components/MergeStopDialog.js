@@ -43,6 +43,12 @@ class MergeStopDialog extends React.Component {
       : '';
     const canMerge = !!targetElement.id;
 
+    const mergeResultText =  `${fromStopPlace} => ${toStopPlace}`;
+
+    // versionComment should be in Norwegian
+    const fromVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}`;
+    const toVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}`;
+
     const actions = [
       <FlatButton
         label={translations.cancel}
@@ -55,7 +61,7 @@ class MergeStopDialog extends React.Component {
       actions.push(
         <FlatButton
           label={translations.confirm}
-          onTouchTap={handleConfirm}
+          onTouchTap={() => { handleConfirm(fromVersionComment, toVersionComment)}}
           primary={true}
           keyboardFocused={true}
           icon={<MdMerge />}
@@ -77,7 +83,7 @@ class MergeStopDialog extends React.Component {
         {canMerge
           ? <div>
               <div style={{ marginBottom: 20, color: '#000' }}>
-                {fromStopPlace} => {toStopPlace}
+                { mergeResultText }
               </div>
               <div style={{ marginLeft: 0 }}>{translations.info}</div>
               <div

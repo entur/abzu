@@ -25,6 +25,9 @@ class MoveQuayDialog extends React.Component {
       info: formatMessage({ id: 'move_quay_info' }),
     };
 
+    const fromVersionComment = `Flyttet ${quayId} til ${stopPlaceId}`;
+    const toVersionComment = `Flyttet ${quayId} til ${stopPlaceId}`;
+
     const actions = [
       <FlatButton
         label={translations.cancel}
@@ -33,7 +36,7 @@ class MoveQuayDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={handleConfirm}
+        onTouchTap={() => { handleConfirm(fromVersionComment,toVersionComment) }}
         primary={true}
         keyboardFocused={true}
         icon={<MdMerge />}

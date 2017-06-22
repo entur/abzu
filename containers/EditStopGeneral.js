@@ -37,7 +37,7 @@ import {
   deleteStopPlace,
   mergeQuays,
   getStopPlaceWithAll,
-  mergeQuaysFromStop,
+  mergeAllQuaysFromStop,
   moveQuaysToStop,
   getNeighbourStops,
 } from '../graphql/Actions';
@@ -109,10 +109,10 @@ class EditStopGeneral extends React.Component {
     });
   }
 
-  handleMergeQuaysFromStop() {
+  handleMergeQuaysFromStop(fromVersionComment, toVersionComment) {
     const { stopPlace, mergeSource, client, dispatch, activeMap } = this.props;
 
-    mergeQuaysFromStop(client, mergeSource.id, stopPlace.id).then(result => {
+    mergeAllQuaysFromStop(client, mergeSource.id, stopPlace.id, fromVersionComment, toVersionComment).then(result => {
       dispatch(
         UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
       );
@@ -126,14 +126,15 @@ class EditStopGeneral extends React.Component {
     this.handleCloseMergeStopDialog();
   }
 
-  handleMergeQuays() {
+  handleMergeQuays(versionComment) {
     const { mergingQuay, client, stopPlace, dispatch } = this.props;
 
     mergeQuays(
       client,
       stopPlace.id,
       mergingQuay.fromQuayId,
-      mergingQuay.toQuayId
+      mergingQuay.toQuayId,
+      versionComment
     ).then(result => {
       dispatch(
         UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
@@ -155,9 +156,9 @@ class EditStopGeneral extends React.Component {
     });
   }
 
-  handleMoveQuay() {
+  handleMoveQuay(fromVersionComment, toVersionComment) {
     const { client, movingQuay, dispatch, stopPlace } = this.props;
-    moveQuaysToStop(client, stopPlace.id, movingQuay).then(response => {
+    moveQuaysToStop(client, stopPlace.id, movingQuay, fromVersionComment, toVersionComment).then(response => {
       dispatch(UserActions.cancelMoveQuay());
       getStopPlaceWithAll(client, stopPlace.id);
     });

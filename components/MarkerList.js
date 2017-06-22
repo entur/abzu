@@ -390,6 +390,7 @@ class MarkerList extends React.Component {
                     publicCode={quay.publicCode || ''}
                     privateCode={quay.privateCode || ''}
                     parentStopPlaceName={stop.name}
+                    parentStopPlaceId={stop.id}
                     formattedStopType={localeStopType}
                     handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                     handleChangeCoordinates={() => {}}

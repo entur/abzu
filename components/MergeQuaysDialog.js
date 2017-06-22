@@ -28,6 +28,9 @@ class MergeQuaysDialog extends React.Component {
 
     const fromQuay = mergingQuays ? mergingQuays.fromQuayId : '';
     const toQuay = mergingQuays ? mergingQuays.toQuayId : '';
+    const mergingFlowText = `${fromQuay} => ${toQuay}`;
+
+    const versionComment = `Flettet quay ${fromQuay} til ${toQuay}`;
 
     const actions = [
       <FlatButton
@@ -37,7 +40,7 @@ class MergeQuaysDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={handleConfirm}
+        onTouchTap={() => { handleConfirm(versionComment) }}
         primary={true}
         keyboardFocused={true}
         icon={<MdMerge />}
@@ -57,7 +60,7 @@ class MergeQuaysDialog extends React.Component {
       >
         <div>
           <div style={{ marginBottom: 20, color: '#000' }}>
-            {fromQuay} => {toQuay}
+            { mergingFlowText }
           </div>
           <div style={{ marginLeft: 0 }}>{translations.info}</div>
           <div style={{ marginTop: 10, display: 'flex', alignItems: 'center' }}>

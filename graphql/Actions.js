@@ -36,13 +36,14 @@ export const getStopPlaceVersions = (client, stopPlaceId) =>
     fetchPolicy: 'network-only'
   });
 
-export const mergeQuays = (client, stopPlaceId, fromQuayId, toQuayId) =>
+export const mergeQuays = (client, stopPlaceId, fromQuayId, toQuayId, versionComment) =>
   client.mutate({
     mutation: mutateMergeQuays,
     variables: {
       stopPlaceId,
       fromQuayId,
-      toQuayId
+      toQuayId,
+      versionComment
     },
     fetchPolicy: 'network-only'
   });
@@ -57,23 +58,27 @@ export const getStopPlaceWithAll = (client, id) => (
   })
 );
 
-export const mergeQuaysFromStop = (client, fromStopPlaceId, toStopPlaceId) => (
+export const mergeAllQuaysFromStop = (client, fromStopPlaceId, toStopPlaceId, fromVersionComment, toVersionComment) => (
   client.mutate({
     mutation: mutateMergeStopPlaces,
     variables: {
       fromStopPlaceId,
-      toStopPlaceId
+      toStopPlaceId,
+      fromVersionComment,
+      toVersionComment
     },
     fetchPolicy: 'network-only'
   })
 );
 
-export const moveQuaysToStop = (client, toStopPlaceId, quayId) => (
+export const moveQuaysToStop = (client, toStopPlaceId, quayId, fromVersionComment, toVersionComment) => (
   client.mutate({
     mutation: mutateMoveQuaysToStop,
     variables: {
       toStopPlaceId,
-      quayId
+      quayId,
+      fromVersionComment,
+      toVersionComment,
     },
     fetchPolicy: 'network-only'
   })

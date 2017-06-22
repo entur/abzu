@@ -47,8 +47,8 @@ export const mutateParking = gql`
 `
 
 export const mutateMergeStopPlaces = gql`
-  mutation mergeStopPlaces($fromStopPlaceId: String!, $toStopPlaceId: String!) {
-      mergeStopPlaces(fromStopPlaceId: $fromStopPlaceId, toStopPlaceId: $toStopPlaceId) {
+  mutation mergeStopPlaces($fromStopPlaceId: String!, $toStopPlaceId: String!, $fromVersionComment: String!, $toVersionComment: String!) {
+      mergeStopPlaces(fromStopPlaceId: $fromStopPlaceId, toStopPlaceId: $toStopPlaceId, fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {
           ...VerboseStopPlace
       }
   }
@@ -71,8 +71,8 @@ export const mutateDeleteStopPlace = gql`
 `
 
 export const mutateMergeQuays = gql`
-    mutation mergeQuays($stopPlaceId: String!, $fromQuayId: String!, $toQuayId: String!) {
-        mergeQuays(stopPlaceId: $stopPlaceId, fromQuayId: $fromQuayId, toQuayId: $toQuayId) {
+    mutation mergeQuays($stopPlaceId: String!, $fromQuayId: String!, $toQuayId: String!, $versionComment: String!) {
+        mergeQuays(stopPlaceId: $stopPlaceId, fromQuayId: $fromQuayId, toQuayId: $toQuayId, versionComment: $versionComment) {
             ...VerboseStopPlace
         }
     }
@@ -80,8 +80,8 @@ export const mutateMergeQuays = gql`
 `
 
 export const mutateMoveQuaysToStop = gql`
-  mutation mutateMoveQuay($toStopPlaceId: String!, $quayId: String!) {
-      moveQuaysToStop(toStopPlaceId: $toStopPlaceId, quayIds: [$quayId]) {
+  mutation mutateMoveQuay($toStopPlaceId: String!, $quayId: String!, $fromVersionComment: String!, $toVersionComment: String!) {
+      moveQuaysToStop(toStopPlaceId: $toStopPlaceId, quayIds: [$quayId], fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {
           ...VerboseStopPlace
       }
   }
