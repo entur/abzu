@@ -33,6 +33,7 @@ import accessibilityAssessments from '../models/accessibilityAssessments';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import { enturPrimaryDarker } from '../config/enturTheme';
+import Code from './Code';
 
 class QuayItem extends React.Component {
   static PropTypes = {
@@ -215,7 +216,6 @@ class QuayItem extends React.Component {
     const quayTitlePrefix = `${translations.quayItemName
       ? translations.quayItemName
       : ''} `;
-    const quayTitleSuffix = `${publicCode || ''}`;
     const idTitle = `${quay.id || '?'}`;
 
     return (
@@ -249,23 +249,26 @@ class QuayItem extends React.Component {
                   />
                 </div>}
             <div
-              style={{ display: 'inline-block', verticalAlign: 'middle' }}
+              style={{ display: 'inline-block'}}
               onClick={() => handleToggleCollapse(index, 'quay')}
             >
-              <span style={{ color: '#2196F3' }}>
-                {quayTitlePrefix + quayTitleSuffix}
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <span style={{ color: '#2196F3' }}>
+                {quayTitlePrefix}
               </span>
-              <span
-                style={{
-                  fontSize: '0.8em',
-                  marginLeft: 5,
-                  fontWeight: 600,
-                  color: '#464545',
-                }}
-              >
-                {' '}{idTitle}
-                {' '}
+                <Code type="publicCode" value={quay.publicCode} />
+                <Code type="privateCode" value={quay.privateCode} />
+                <span
+                  style={{
+                    fontSize: '0.8em',
+                    marginLeft: 5,
+                    fontWeight: 600,
+                    color: '#464545',
+                  }}
+                >
+                  {idTitle}
               </span>
+              </div>
             </div>
             {!expanded
               ? <NavigationExpandMore

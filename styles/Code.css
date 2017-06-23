@@ -1,23 +1,30 @@
 .publicCode {
     margin-left: 5px;
     background: #f5e527;
-    min-width: 15px;
     text-align: center;
     border-radius: 50%;
     color: #000;
-    padding: 4px;
-    font-size: 10px;
+    height: 17px;
+    padding: 2px 3px 2px 3px;
+    text-align: center;
+    min-width: 16px;
     cursor: pointer;
+    font-size: 12px;
+    display: inline-block;
 }
 
 .privateCode {
-    margin-left: 5px;
     background: #777;
     color: #fff;
-    padding: 4px;
-    font-size: 10px;
-    border-radius: 50%;
-    min-width: 15px;
+    margin-left: 5px;
     text-align: center;
+    border-radius: 50%;
+    height: 17px;
+    padding: 2px 3px 2px 3px;
+    text-align: center;
+    min-width: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-block;
 }
 
