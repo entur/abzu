@@ -4,11 +4,12 @@ import { defaultEquipments, types } from '../models/Equipments';
 const EquipmentHelpers = {};
 
 EquipmentHelpers.getTicketMachineState = entity => {
-  return getIn(
+  const equipmentState = getIn(
     entity,
-    ['placeEquipments', 'ticketingEquipment', 'ticketMachines'],
-    false,
+    ['placeEquipments', 'ticketingEquipment'],
+    null,
   );
+  return equipmentState !== null;
 };
 
 EquipmentHelpers.getShelterEquipmentState = entity => {
