@@ -568,6 +568,7 @@ class EditStopGeneral extends React.Component {
             handleConfirm={this.handleMergeQuays.bind(this)}
             intl={intl}
             mergingQuays={this.props.mergingQuay}
+            hasStopBeenModified={stopHasBeenModified}
           />
           <DeleteQuayDialog
             open={this.props.deleteQuayDialogOpen}
@@ -590,6 +591,7 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             stopPlaceId={stopPlace.id}
             quayId={this.props.movingQuay}
+            hasStopBeenModified={stopHasBeenModified}
           />
         </div>
         <div

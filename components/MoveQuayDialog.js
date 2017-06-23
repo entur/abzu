@@ -7,6 +7,14 @@ import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 
 class MoveQuayDialog extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      changesUnderstood: false
+    };
+  }
+
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -15,8 +23,11 @@ class MoveQuayDialog extends React.Component {
   };
 
   render() {
-    const { open, intl, handleClose, handleConfirm, stopPlaceId, quayId } = this.props;
+    const { open, intl, handleClose, handleConfirm, stopPlaceId, quayId, hasStopBeenModified } = this.props;
     const { formatMessage } = intl;
+    const { changesUnderstood } = this.state;
+
+    console.log(hasStopBeenModified)
 
     const translations = {
       confirm: formatMessage({ id: 'confirm' }),
@@ -36,6 +47,7 @@ class MoveQuayDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
+        disabled={false}
         onTouchTap={() => { handleConfirm(fromVersionComment,toVersionComment) }}
         primary={true}
         keyboardFocused={true}
