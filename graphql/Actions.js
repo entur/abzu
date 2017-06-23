@@ -8,7 +8,8 @@ import {
 import {
   allVersionsOfStopPlace,
   stopPlaceWithEverythingElse,
-  stopPlaceBBQuery
+  stopPlaceBBQuery,
+  getMergeInfoStopPlace
 } from '../graphql/Queries';
 
 export const deleteQuay = (client, variables) =>
@@ -97,4 +98,14 @@ export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpi
       lonMax: bounds.getNorthEast().lng,
     }
   })
-)
+);
+
+export const getMergeInfoForStops = (client, stopPlaceId) => (
+  client.query({
+    fetchPolicy: 'network-only',
+    query: getMergeInfoStopPlace,
+    variables: {
+     stopPlaceId
+    }
+  })
+);

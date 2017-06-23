@@ -23,7 +23,7 @@ class AcceptChanges extends React.Component {
                 </span>
         </div>
         <Checkbox
-          style={{marginLeft: 26, padding: 10}}
+          style={{marginLeft: 26, padding: 10, width: '80%'}}
           checked={checked}
           label={checkboxLabel}
           onCheck={onChange}

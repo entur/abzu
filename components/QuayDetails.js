@@ -6,7 +6,7 @@ import { injectIntl } from 'react-intl';
 class QuayDetails extends React.Component {
   render() {
 
-    const { quay, isSource, intl } = this.props;
+    const { quay, isSource, intl, hideSourceOriginLabel } = this.props;
     const { formatMessage } = intl;
 
     if (!quay) return null;
@@ -18,7 +18,7 @@ class QuayDetails extends React.Component {
     return (
       <div>
         <div>
-          <span style={{fontWeight: 600, marginRight: 5}}>{message}:</span>
+          {!hideSourceOriginLabel && <span style={{fontWeight: 600, marginRight: 5}}>{message}:</span>}
           <span>{ quay.id }</span>
           </div>
           <div style={{display: 'flex', padding: 5, textAlign: 'center', width: '100%'}}>

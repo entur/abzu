@@ -158,7 +158,7 @@ class EditStopGeneral extends React.Component {
 
   handleMoveQuay(fromVersionComment, toVersionComment) {
     const { client, movingQuay, dispatch, stopPlace } = this.props;
-    moveQuaysToStop(client, stopPlace.id, movingQuay, fromVersionComment, toVersionComment).then(response => {
+    moveQuaysToStop(client, stopPlace.id, movingQuay.id, fromVersionComment, toVersionComment).then(response => {
       dispatch(UserActions.cancelMoveQuay());
       getStopPlaceWithAll(client, stopPlace.id);
     });
@@ -556,6 +556,7 @@ class EditStopGeneral extends React.Component {
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
             handleConfirm={this.handleMergeQuaysFromStop.bind(this)}
             intl={intl}
+            hasStopBeenModified={stopHasBeenModified}
             sourceElement={this.props.mergeSource}
             targetElement={{
               id: stopPlace.id,
@@ -590,7 +591,7 @@ class EditStopGeneral extends React.Component {
             handleConfirm={this.handleMoveQuay.bind(this)}
             intl={intl}
             stopPlaceId={stopPlace.id}
-            quayId={this.props.movingQuay}
+            quay={this.props.movingQuay}
             hasStopBeenModified={stopHasBeenModified}
           />
         </div>

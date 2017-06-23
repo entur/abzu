@@ -116,6 +116,8 @@
   "map_settings": "Map settings",
   "merge_stop_here": "Merge into stop place",
   "merge_stop_title": "You are merging two stop places",
+  "merge_stop_new_quays": "Following quays will be merged",
+  "merge_stop_no_new_quays": "No quays will be merged",
   "merge_stop_info": "You are merging a stop place into this one. All data including history will be copied over in a new version. The other stop place will expire.",
   "merge_stop_warning": "All your unsaved changes will be discarded!",
   "merging_not_allowed": "Merging not allowed: This stop is not yet created. You have to create a new version of this stop in order to merge.",

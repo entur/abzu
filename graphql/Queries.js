@@ -293,6 +293,22 @@ export const topopGraphicalPlacesReportQuery = gql`
     }
 `
 
+export const getMergeInfoStopPlace = gql`
+    query MergeInfoStopPlace($stopPlaceId: String!) {
+        stopPlace(id: $stopPlaceId) {
+            quays {
+                id
+                privateCode {
+                    value
+                }
+                compassBearing
+                publicCode
+            }
+        }
+    }
+`
+
+
 export const getParkingForMultipleStopPlaces = stopPlaceIds => {
 
   const stopPlaces = stopPlaceIds.map( id => ({

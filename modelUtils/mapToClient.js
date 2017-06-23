@@ -836,6 +836,6 @@ helpers.getImportedId = keyValues => {
     }
   }
   return [];
-}
+};
 
 export default helpers;

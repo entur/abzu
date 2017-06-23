@@ -52,7 +52,11 @@ class QuayMarker extends React.PureComponent {
   }
 
   handleMoveQuay() {
-    this.props.dispatch(UserActions.moveQuay(this.props.id));
+    this.props.dispatch(UserActions.moveQuay({
+      id: this.props.id,
+      privateCode: this.props.privateCode,
+      publicCode: this.props.publicCode
+    }));
   }
 
   shouldComponentUpdate(nextProps, nextState) {

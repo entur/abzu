@@ -3,7 +3,8 @@ import { browserHistory } from 'react-router';
 import configureLocalization from '../localization/localization';
 import FavoriteManager from '../singletons/FavoriteManager';
 import SettingsManager from '../singletons/SettingsManager';
-
+import { getMergeInfoForStops } from '../graphql/Actions';
+import { getIn } from '../utils/';
 
 var UserActions = {};
 
@@ -222,13 +223,29 @@ UserActions.changeElementTypeTab = value => dispatch => {
   dispatch(sendData(types.CHANGED_ELEMENT_TYPE_TAB, value));
 };
 
-UserActions.showMergeStopDialog = (id, name) => dispatch => {
+UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch, getState) => {
+
+  let state = getState();
+  let client = state.user.client;
+
   dispatch(
     sendData(types.OPENED_MERGE_STOP_DIALOG, {
-      id: id,
-      name: name
+      id: fromStopPlaceID,
+      name: name,
     })
   );
+
+  if (client) {
+    getMergeInfoForStops(client, fromStopPlaceID).then( response => {
+      dispatch(
+        sendData(types.OPENED_MERGE_STOP_DIALOG, {
+          id: fromStopPlaceID,
+          name: name,
+          quays: getQuaysForMergeInfo(response.data.stopPlace)
+        })
+      );
+    }).catch( err => { console.log(err); });
+  }
 };
 
 UserActions.hideMergeStopDialog = () => dispatch => {
@@ -294,8 +311,8 @@ UserActions.closeKeyValuesDialog = () => dispatch => {
   dispatch(sendData(types.CLOSED_KEY_VALUES_DIALOG, null));
 };
 
-UserActions.moveQuay = id => dispatch => {
-  dispatch(sendData(types.REQUESTED_MOVE_QUAY, id));
+UserActions.moveQuay = quayProps => dispatch => {
+  dispatch(sendData(types.REQUESTED_MOVE_QUAY, quayProps));
 };
 
 UserActions.setZoomLevel = zoomLevel => dispatch =>{
@@ -308,5 +325,17 @@ const getQuayById = (quays = [], quayId) => {
   }
   return null;
 };
+
+const getQuaysForMergeInfo = stopPlace => {
+  if (!stopPlace || !stopPlace.length) return [];
+
+  return stopPlace[0].quays.map( quay => ({
+    publicCode: quay.publicCode,
+    compassBearing: quay.compassBearing,
+    privateCode: getIn(quay, ['privateCode', 'value'], null),
+    id: quay.id
+  }));
+}
+
 
 export default UserActions;

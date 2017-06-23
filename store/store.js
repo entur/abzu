@@ -83,6 +83,7 @@ export default function configureStore(kc) {
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
       kc: kc,
+      client: client
     },
   };
 
