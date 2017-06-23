@@ -21,6 +21,10 @@ class SaveDialog extends React.Component {
     this.setState(this.getInitialState);
   }
 
+  componentDidMount(){
+    this.commentInput.focus();
+  }
+
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -237,6 +241,7 @@ class SaveDialog extends React.Component {
         <div style={{ width: '90%', margin: 'auto', marginBottom: 20 }}>
           <TextField
             floatingLabelText={translations.comment}
+            ref={(input) => { this.commentInput = input; }}
             fullWidth={true}
             multiLine={true}
             value={comment}
