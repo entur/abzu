@@ -3,7 +3,7 @@ import { isCoordinatesInsidePolygon } from '../utils/mapUtils';
 
 const topographicPlacePrefix = 'KVE:TopographicPlace:';
 let instance = null;
-let fetchedPolygons = {};
+let fetchedPolygons = null;
 
 class PolygonManager {
   constructor() {
@@ -14,7 +14,6 @@ class PolygonManager {
   }
 
   getAdministrativeZoneIds(tokenParsed) {
-
     let administrativeZoneIds = [];
 
     if (!tokenParsed || !tokenParsed.roles) return [];
@@ -34,14 +33,11 @@ class PolygonManager {
   isPointInPolygon(point) {
     let inside = false;
 
-    Object.keys(fetchedPolygons).forEach( k => {
-      let data = fetchedPolygons[k];
-      if (data.topographicPlace && data.topographicPlace.length) {
-        let polygon = data.topographicPlace[0].polygon.coordinates;
-        let found = isCoordinatesInsidePolygon(point, polygon);
-        if (found) {
-          inside = true;
-        }
+    Object.keys(fetchedPolygons).forEach(k => {
+      let polygon = fetchedPolygons[k];
+      let found = isCoordinatesInsidePolygon(point, polygon);
+      if (found) {
+        inside = true;
       }
     });
 
@@ -57,15 +53,29 @@ class PolygonManager {
     let adminZones = this.getAdministrativeZoneIds(tokenParsed);
 
     if (adminZones.length) {
-      this.fetchById(client, adminZones[0]);
+      this.fetchByIds(client, adminZones);
     }
   }
 
-  fetchById(client, id) {
-    if (typeof fetchedPolygons[id] === 'undefined') {
-      getPolygon(client, id).then(response => {
-        fetchedPolygons[id] = response.data;
-      });
+  fetchByIds(client, ids) {
+    if (fetchedPolygons === null) {
+      getPolygon(client, ids)
+        .then(response => {
+          let data = response.data;
+
+          if (data) {
+            fetchedPolygons = {};
+
+            Object.keys(data).forEach(key => {
+              let resultItem = data[key][0];
+
+              if (resultItem) {
+                fetchedPolygons[resultItem.id] = resultItem.polygon ? resultItem.polygon.coordinates : [[]];
+              }
+            });
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 }

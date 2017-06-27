@@ -10,7 +10,7 @@ import {
   stopPlaceWithEverythingElse,
   stopPlaceBBQuery,
   getMergeInfoStopPlace,
-  getPolygonForTopographicPlace
+  getPolygons
 } from '../graphql/Queries';
 
 export const deleteQuay = (client, variables) =>
@@ -101,13 +101,11 @@ export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpi
   })
 );
 
-export const getPolygon = (client, id) => (
+export const getPolygon = (client, ids) => (
   client.query({
     fetchPolicy: 'network-only',
-    query: getPolygonForTopographicPlace,
-    variables: {
-      id
-    }
+    query: getPolygons(ids),
+    operationName: 'getPolygons',
   })
 );
 

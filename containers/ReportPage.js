@@ -141,7 +141,8 @@ class ReportPage extends React.Component {
           .query({
             query: getParkingForMultipleStopPlaces(stopPlaceIds),
             reducer: reportReducer,
-            fetchPolicy: 'network-only'
+            fetchPolicy: 'network-only',
+            operationName: 'multipleParkingQuery'
           })
           .then(response => {
             this.setState({
