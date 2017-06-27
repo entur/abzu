@@ -333,3 +333,14 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
     }
   `
 }
+
+export const getPolygonForTopographicPlace = gql`
+    query polygonForTopgraphicPlace($id: String!) {
+        topographicPlace(id: $id) {
+            id
+            polygon {
+                coordinates
+            }
+        }
+    }
+`

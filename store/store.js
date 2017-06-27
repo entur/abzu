@@ -5,10 +5,12 @@ import { createLogger } from 'redux-logger';
 import mapReducer from '../reducers/mapReducer';
 import stopPlaceReducer from '../reducers/stopPlaceReducer';
 import userReducer from '../reducers/userReducer';
+import rolesReducer from '../reducers/rolesReducer';
 import reportReducer from '../reducers/reportReducer';
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
+import PolygonManager from '../singletons/PolygonManager';
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -45,6 +47,8 @@ export default function configureStore(kc) {
     enchancer = compose(applyMiddleware(thunkMiddleware, client.middleware()));
   }
 
+  new PolygonManager().fetch(client, kc.tokenParsed);
+
   const Settings = new SettingsManager();
 
   const initialState = {
@@ -56,7 +60,6 @@ export default function configureStore(kc) {
       isCreatingPolylines: false,
       enablePolylines: Settings.getShowPathLinks(),
       showExpiredStops: Settings.getShowExpiredStops(),
-      kc: kc,
     },
     user: {
       path: '/',
@@ -82,9 +85,11 @@ export default function configureStore(kc) {
       activeBaselayer: Settings.getMapLayer(),
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
-      kc: kc,
-      client: client
+      client
     },
+    roles: {
+      kc
+    }
   };
 
   const combinedReducer = combineReducers({
@@ -94,6 +99,7 @@ export default function configureStore(kc) {
     stopPlace: stopPlaceReducer,
     report: reportReducer,
     apollo: client.reducer(),
+    roles: rolesReducer,
   });
 
   return {

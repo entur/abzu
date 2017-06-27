@@ -175,7 +175,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  kc: state.user.kc,
+  kc: state.roles.kc,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   showExpiredStops: state.stopPlace.showExpiredStops,

@@ -104,6 +104,7 @@ const mapStateToProps = state => {
   return {
     position: state.stopPlace.centerPosition,
     markers: markers,
+    kc: state.roles.kc,
     activeMap: state.mapUtils.activeMap,
     zoom: state.stopPlace.zoom,
     isCreatingNewStop: isCreatingNewStop,

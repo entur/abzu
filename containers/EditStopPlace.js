@@ -13,7 +13,7 @@ import '../styles/main.css';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { UserActions } from '../actions/';
-import rolesParser from '../roles/rolesParser';
+import { getIn } from '../utils';
 import NewElementsBox from './NewElementsBox';
 
 class EditStopPlace extends React.Component {
@@ -92,7 +92,7 @@ class EditStopPlace extends React.Component {
   }
 
   render() {
-    const { isCreatingPolylines, stopPlace, kc } = this.props;
+    const { isCreatingPolylines, stopPlace, disabled } = this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
     const { locale, formatMessage } = this.props.intl;
 
@@ -110,8 +110,6 @@ class EditStopPlace extends React.Component {
     const shouldDisplayMessage =
       isCreatingPolylines &&
       new InformationManager().getShouldPathLinkBeDisplayed();
-
-    const disabled = !rolesParser.canEdit(kc.tokenParsed);
 
     return (
       <div>
@@ -151,7 +149,7 @@ class EditStopPlace extends React.Component {
 const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   stopPlace: state.stopPlace.current || state.stopPlace.newStop,
-  kc: state.user.kc,
+  disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
 });
 
 const EditStopPlaceWithIntl = injectIntl(

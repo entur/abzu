@@ -9,7 +9,8 @@ import {
   allVersionsOfStopPlace,
   stopPlaceWithEverythingElse,
   stopPlaceBBQuery,
-  getMergeInfoStopPlace
+  getMergeInfoStopPlace,
+  getPolygonForTopographicPlace
 } from '../graphql/Queries';
 
 export const deleteQuay = (client, variables) =>
@@ -96,6 +97,16 @@ export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpi
       latMax: bounds.getNorthEast().lat,
       lonMin: bounds.getSouthWest().lng,
       lonMax: bounds.getNorthEast().lng,
+    }
+  })
+);
+
+export const getPolygon = (client, id) => (
+  client.query({
+    fetchPolicy: 'network-only',
+    query: getPolygonForTopographicPlace,
+    variables: {
+      id
     }
   })
 );
