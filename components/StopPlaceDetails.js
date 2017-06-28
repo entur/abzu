@@ -362,7 +362,7 @@ class StopPlaceDetails extends React.Component {
                       style={{ marginTop: -5, marginLeft: 10 }}
                     />
                     <span style={{ color: '#bb271c', marginLeft: 5 }}>
-                      {' '}{expirationText}
+                      {expirationText}
                     </span>
                   </div>}
               </div>}

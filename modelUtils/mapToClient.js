@@ -218,6 +218,7 @@ helpers.mapVersionToClientVersion = source => {
             transformer,
           ),
           versionComment: data.versionComment,
+          changedBy: data.changedBy ? data.changedBy : ''
         };
         return version;
       });

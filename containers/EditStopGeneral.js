@@ -453,7 +453,7 @@ class EditStopGeneral extends React.Component {
                         <div>{version.name}</div>
                       </div>
                       <div style={{ marginTop: -10 }}>
-                        {version.versionComment || ''}
+                        {version.changedBy || 'N/A'}: {version.versionComment || 'N/A'}
                       </div>
                     </div>
                   }

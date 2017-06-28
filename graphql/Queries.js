@@ -222,6 +222,7 @@ export const allVersionsOfStopPlace = gql`
                 value
                 lang
             }
+            changedBy
             version
             versionComment
         }
