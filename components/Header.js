@@ -13,6 +13,7 @@ import MdSettings from 'material-ui/svg-icons/action/settings';
 import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
+import MdHelp from 'material-ui/svg-icons/action/help';
 
 class Header extends React.Component {
   handleNavigateToMain() {
@@ -72,6 +73,7 @@ class Header extends React.Component {
     const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
     const reportSite = formatMessage({ id: 'report_site' });
     const expiredStopLabel = formatMessage({id: 'show_expired_stops'});
+    const userGuide = formatMessage({id: 'user_guide'});
 
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
 
@@ -160,6 +162,19 @@ class Header extends React.Component {
                   checked={locale === 'en'}
                 />,
               ]}
+            />
+            <MenuItem
+              leftIcon={<MdHelp color="#41c0c4" />}
+              primaryText={
+                <a
+                  target="_blank"
+                  style={{textDecoration: 'none', color: '#000'}}
+                  href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
+                >
+                  {userGuide}
+                  </a>
+              }
+              style={{ fontSize: 12, padding: 0 }}
             />
             <MenuItem
               leftIcon={<MdAccount color="#41c0c4" />}
