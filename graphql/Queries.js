@@ -94,6 +94,7 @@ export const findStop = gql`
             }
             stopPlaceType
             submode
+            transportMode
             quays {
                 id
             }

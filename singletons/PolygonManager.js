@@ -33,6 +33,8 @@ class PolygonManager {
   isPointInPolygon(point) {
     let inside = false;
 
+    if (!fetchedPolygons) return true;
+
     Object.keys(fetchedPolygons).forEach(k => {
       let polygon = fetchedPolygons[k];
       let found = isCoordinatesInsidePolygon(point, polygon);

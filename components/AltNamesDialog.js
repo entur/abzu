@@ -158,7 +158,6 @@ class AltNamesDialog extends React.Component {
             }}
           >
             {translations.alternativeNames}
-            {' '}
           </div>
           <IconButton
             style={{ marginRight: 5 }}

@@ -10,13 +10,16 @@ export const getAllowanceInfo = (result, tokenParsed) => {
     latlng
   );
 
-  let stopPlaceType = getStopPlaceTypeFromResult(result);
+  const stopPlace = getStopPlace(result);
 
-  let finalRoles = roleParser.filterByEntityRestriction(rolesAllowingGeo, stopPlaceType, null, null);
+  let stopPlaceType = stopPlace.stopPlaceType;
+  let transportMode = stopPlace.transportMode;
+  let submode = stopPlace.submode;
+  let responsibleRoles = roleParser.filterByEntity(rolesAllowingGeo, stopPlaceType, transportMode, submode);
 
   return {
-    roles: finalRoles,
-    canEdit: finalRoles.length > 0
+    roles: responsibleRoles,
+    canEdit: responsibleRoles.length > 0
   };
 };
 
@@ -29,8 +32,10 @@ export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
   );
 
   let stopPlaceType = payLoad.stopPlaceType;
+  let transportMode = payLoad.transportMode;
+  let submode = payLoad.submode;
 
-  let finalRoles = roleParser.filterByEntityRestriction(rolesAllowingGeo, stopPlaceType, null, null);
+  let finalRoles = roleParser.filterByEntity(rolesAllowingGeo, stopPlaceType, transportMode, submode);
 
   return {
     roles: finalRoles,
@@ -56,6 +61,7 @@ export const getLatLngFromResult = result => {
 };
 
 export const getStopPlace = result => {
+
   if (!result || !result.data || !result.data.stopPlace) {
     return null;
   }
@@ -66,14 +72,10 @@ export const getStopPlace = result => {
 
   let stopPlace = result.data.stopPlace[0];
 
-  return stopPlace;
+  if (stopPlace) {
+    return JSON.parse(JSON.stringify(stopPlace));
+  }
+
+  return null;
 }
 
-export const getStopPlaceTypeFromResult  = result => {
-
-  let stopPlace = getStopPlace(result);
-
-  if (!stopPlace) return null;
-
-  return stopPlace.stopPlaceType;
-}

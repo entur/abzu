@@ -394,6 +394,7 @@ helpers.mapSearchResultatToClientStops = stops => {
       isMissingLocation: !stop.geometry,
       stopPlaceType: stop.stopPlaceType,
       submode: stop.submode,
+      transportMode: stop.transportMode,
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
       isActive: false,
