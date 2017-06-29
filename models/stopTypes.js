@@ -470,4 +470,38 @@ export const unknownStopPlaceType = {
   en: 'Modality not defined'
 };
 
+export const submodes = [
+  "airportLinkBus",
+  "expressBus",
+  "localBus",
+  "nightBus",
+  "railReplacementBus",
+  "regionalBus",
+  "schoolBus",
+  "shuttleBus",
+  "sightseeingBus",
+  "localTram",
+  "internationalRail",
+  "interregionalRail",
+  "local",
+  "longDistance",
+  "nightRail",
+  "regionalRail",
+  "touristRailway",
+  "metro",
+  "domesticFlight",
+  "helicopterService",
+  "internationalFlight",
+  "highSpeedPassengerService",
+  "highSpeedVehicleService",
+  "internationalCarFerry",
+  "internationalPassengerFerry",
+  "localCarFerry",
+  "localPassengerFerry",
+  "nationalCarFerry",
+  "sightseeingService",
+  "telecabin",
+  "funicular"
+];
+
 export default stopTypes;

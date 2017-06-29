@@ -1,6 +1,6 @@
 import roleParser, { getModeOptions, isModeOptionsValidForMode } from '../roles/rolesParser';
 import { getIn } from '../utils/';
-import stopTypes from '../models/stopTypes';
+import stopTypes, { submodes } from '../models/stopTypes';
 
 export const getAllowanceInfo = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
@@ -20,43 +20,52 @@ export const getAllowanceInfo = (result, tokenParsed) => {
   let canEdit = responsibleRoles.length > 0
 
   let legalStopPlaceTypes = [];
+  let legalSubmodes = [];
 
   if (canEdit) {
     legalStopPlaceTypes = getLegalStopPlaceTypes(responsibleRoles);
+    legalSubmodes = getLegalSubmodes(responsibleRoles);
   }
 
   return {
     roles: responsibleRoles,
     legalStopPlaceTypes,
+    legalSubmodes,
     canEdit
   };
 };
 
+export const getLegalSubmodes = roles => {
+  return filterByLegalMode(roles, submodes, 'Submode');
+}
 
-export const getLegalStopPlaceTypes = roles => {
-
-  let allStopTypes = stopTypes.en.map(stopType => stopType.value);
+const filterByLegalMode = (roles, completeList, key) => {
   let typesFoundInRoles = new Set();
 
   for (let i = 0; i < roles.length; i++) {
     let role = roles[i];
-    if (role.e.StopPlaceType && role.e.StopPlaceType.length) {
-      for (let i = 0; i < role.e.StopPlaceType.length; i++) {
-        let stopPlaceType = role.e.StopPlaceType[i];
-        if (stopPlaceType === '*') {
-          return allStopTypes;
+    if (role.e[key] && role.e[key].length) {
+      for (let i = 0; i < role.e[key].length; i++) {
+        let entityType = role.e[key][i];
+        if (entityType === '*') {
+          return completeList;
         } else {
-          typesFoundInRoles.add(stopPlaceType);
+          typesFoundInRoles.add(entityType);
         }
       }
     } else {
-      return allStopTypes;
+      return completeList;
     }
   }
 
   const options = getModeOptions(Array.from(typesFoundInRoles));
 
-  return allStopTypes.filter( stopPlaceType => isModeOptionsValidForMode(options, stopPlaceType));
+  return completeList.filter( entityType => isModeOptionsValidForMode(options, entityType));
+}
+
+export const getLegalStopPlaceTypes = roles => {
+  let allStopTypes = stopTypes.en.map(stopType => stopType.value);
+  return filterByLegalMode(roles, allStopTypes, 'StopPlaceType')
 }
 
 export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {

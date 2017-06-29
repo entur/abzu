@@ -10,6 +10,7 @@ class ModalitiesMenuItems extends React.Component {
     const { stopTypes, handleStopTypeChange, handleSubModeTypeChange, allowsInfo } = this.props;
 
     const legalStopPlaceTypes = allowsInfo.legalStopPlaceTypes || [];
+    const legalSubmodes = allowsInfo.legalSubmodes|| [];
 
     return (
       <div>
@@ -31,25 +32,31 @@ class ModalitiesMenuItems extends React.Component {
               type={type.value}
             />
           }
-          menuItems={type.submodes && type.submodes.map( (submode,i) => (
-            <MenuItem
-              key={'stopType-sub' + submode.value + '-' + index}
-              value={submode.value}
-              style={{ padding: '0px 10px' }}
-              primaryText={submode.name}
-              onClick={() => {
-                handleSubModeTypeChange(type.value, type.transportMode, submode.value);
-              }}
-              leftIcon={
-                <ModalityIcon
-                  iconStyle={{ float: 'left' }}
-                  type={type.value}
-                  submode={submode.value}
-                />
-              }
-              insetChildren={true}
-            />
-          ))}
+          menuItems={type.submodes && type.submodes.map( submode => {
+
+            const isLegal = (legalSubmodes.indexOf(submode.value) > -1 || submode.value == null)
+
+            return (
+              <MenuItem
+                key={'stopType-sub' + submode.value + '-' + index}
+                value={submode.value}
+                className={isLegal ? '' : 'menu-item--not-legal'}
+                style={{ padding: '0px 10px' }}
+                primaryText={submode.name}
+                onClick={() => {
+                  handleSubModeTypeChange(type.value, type.transportMode, submode.value);
+                }}
+                leftIcon={
+                  <ModalityIcon
+                    iconStyle={{ float: 'left' }}
+                    type={type.value}
+                    submode={submode.value}
+                  />
+                }
+                insetChildren={true}
+              />
+            )
+          })}
         />
       )}
       </div>

@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { isModeOptionsValidForMode, getModeOptions } from '../../roles/rolesParser';
-import { getAllowanceInfo , getLatLngFromResult, getLegalStopPlaceTypes} from '../../reducers/rolesReducerUtils';
-import stopTypes from '../../models/stopTypes';
+import { getAllowanceInfo , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
+import stopTypes, { submodes } from '../../models/stopTypes';
 
 const stopPlaceResult = {
   data: {
@@ -27,7 +27,54 @@ describe('getAllowanceInfo', () => {
     expect(latlng).toEqual([59.833343, 10.434486]);
   })
 
-  it('should get legal stopPlaces when blacklisted', () => {
+  it('should get legal submode types when *', () => {
+
+    let roles = [
+      {
+        "r": "editStops",
+        "o": "OST",
+        "z": "01",
+        "e": {
+          "EntityType": [
+            "StopPlace"
+          ],
+          "Submode": [
+            "*",
+          ],
+        }
+      }
+    ];
+
+    let legalSubmodes = getLegalSubmodes(roles);
+    expect(legalSubmodes).toEqual(submodes);
+  })
+
+  it('should get legal submode types when whitelisted', () => {
+
+    let roles = [
+      {
+        "r": "editStops",
+        "o": "OST",
+        "z": "01",
+        "e": {
+          "EntityType": [
+            "StopPlace"
+          ],
+          "Submode": [
+            "railReplacementBus",
+          ],
+        }
+      }
+    ];
+
+    let legalSubmodes = getLegalSubmodes(roles);
+    expect(legalSubmodes).toEqual([
+      "railReplacementBus"
+    ]);
+  })
+
+
+  it('should get legal stopPlace types when blacklisted', () => {
 
     let roles = [
       {
@@ -60,7 +107,7 @@ describe('getAllowanceInfo', () => {
     );
   });
 
-  it('should get legal stopPlaces that are whitelisted', () => {
+  it('should get legal stopPlace types that are whitelisted', () => {
 
     let roles = [
       {
@@ -88,7 +135,7 @@ describe('getAllowanceInfo', () => {
     );
   });
 
-  it('should get all stopPlaces when * is used', () => {
+  it('should get all stopPlace types when * is used', () => {
 
     let roles = [
       {
@@ -163,6 +210,17 @@ describe('getAllowanceInfo', () => {
     expect(options2).toEqual(expectedOptions2);
     expect(options3).toEqual(expectedOptions3);
     expect(options4).toEqual(expectedOptions4);
+  });
+
+  it('should determine whether submode is valid based on options', () => {
+    const listedSubmodes = [
+      "!railReplacementBus"
+    ]
+
+    const options1 = getModeOptions(listedSubmodes);
+    let valid1 = isModeOptionsValidForMode(options1, 'sightseeingService');
+
+    expect(valid1).toEqual(true);
   })
 
   it('should determine whether stopType is valid based on options', () => {
