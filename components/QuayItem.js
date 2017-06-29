@@ -426,7 +426,6 @@ class QuayItem extends React.Component {
               </div>
               <div style={iconButtonStyle}>
                 <IconButton
-                  disabled={disabled}
                   onClick={this.props.handleOpenKeyValuesDialog}
                 >
                   <MdKey color={quay.keyValues.length ? enturPrimaryDarker : '#000'}/>
