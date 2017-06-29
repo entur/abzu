@@ -94,6 +94,7 @@ export const findStop = gql`
             }
             stopPlaceType
             submode
+            transportMode
             quays {
                 id
             }
@@ -332,5 +333,34 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
     query {
         ${queryContent}
     }
+  `
+}
+
+
+export const getPolygons = ids => {
+
+  const topographicPlacePrefix = 'KVE:TopographicPlace:';
+  const aliasPrefix = 'TP';
+
+  let queryContent = ""
+
+  ids.forEach( id => {
+
+    let alias = id.replace(topographicPlacePrefix, aliasPrefix);
+
+    queryContent += `
+        ${alias}: topographicPlace(id: "${id}") {
+           id
+            polygon {
+                coordinates
+            }
+        }
+    `
+  })
+
+  return gql`
+      query {
+          ${queryContent}
+      }
   `
 }

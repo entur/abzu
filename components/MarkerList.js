@@ -136,7 +136,7 @@ class MarkerList extends React.Component {
       neighbourStopQuays,
       missingCoordinatesMap,
       handleSetCompassBearing,
-      kc,
+      disabled,
       intl,
       showExpiredStops,
       isEditingStop,
@@ -172,8 +172,6 @@ class MarkerList extends React.Component {
       newStopQuestion: formatMessage({ id: 'new_stop_question' }),
       createNow: formatMessage({ id: 'create_now' }),
     };
-
-    const disabled = !rolesParser.canEdit(kc.tokenParsed);
 
     stops.forEach((stop, stopIndex) => {
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, intl);
@@ -436,7 +434,7 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
-  kc: state.user.kc,
+  disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

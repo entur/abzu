@@ -23,8 +23,8 @@ import ModalityFilter from '../components/ModalityFilter';
 import FavoriteNameDialog from '../components/FavoriteNameDialog';
 import TopographicalFilter from '../components/TopographicalFilter';
 import Divider from 'material-ui/Divider';
-import roleParser from '../roles/rolesParser';
 import debounce from 'lodash.debounce';
+import { getIn } from '../utils/';
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -486,7 +486,7 @@ const mapStateToProps = state => {
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: roleParser.canEdit(state.user.kc.tokenParsed),
+    canEdit: getIn(state.roles, ['allowanceInfoSearchResult', 'canEdit'], false),
   };
 };
 
