@@ -15,7 +15,6 @@ import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
 import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../graphql/Queries';
 import { getIn } from '../utils/';
-import rolesParser from '../roles/rolesParser';
 
 class MarkerList extends React.Component {
   static PropTypes = {

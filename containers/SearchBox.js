@@ -251,6 +251,7 @@ class SearchBox extends React.Component {
       topoiChips,
       topographicalPlaces,
       canEdit,
+      isGuest,
     } = this.props;
     const { coordinatesDialogOpen, showMoreFilterOptions } = this.state;
     const { formatMessage, locale } = intl;
@@ -447,17 +448,17 @@ class SearchBox extends React.Component {
                   formatMessage={formatMessage}
                 />
               : null}
-            <div style={{ marginTop: 30 }}>
+            { !isGuest && <div style={{ marginTop: 30 }}>
               {isCreatingNewStop
                 ? <NewStopPlace text={newStopText} />
                 : <RaisedButton
-                    onClick={this.handleNewStop.bind(this)}
-                    style={{ float: 'right' }}
-                    icon={<ContentAdd />}
-                    primary={true}
-                    label={formatMessage({ id: 'new_stop' })}
-                  />}
-            </div>
+                  onClick={this.handleNewStop.bind(this)}
+                  style={{ float: 'right' }}
+                  icon={<ContentAdd />}
+                  primary={true}
+                  label={formatMessage({ id: 'new_stop' })}
+                />}
+            </div>}
           </div>
         </div>
       </div>
@@ -487,6 +488,7 @@ const mapStateToProps = state => {
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
     canEdit: getIn(state.roles, ['allowanceInfoSearchResult', 'canEdit'], false),
+    isGuest: state.roles.isGuest
   };
 };
 

@@ -11,6 +11,7 @@ import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
 import PolygonManager from '../singletons/PolygonManager';
+import rolesParser from '../roles/rolesParser';
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -88,7 +89,8 @@ export default function configureStore(kc) {
       client
     },
     roles: {
-      kc
+      kc,
+      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true,
     }
   };
 

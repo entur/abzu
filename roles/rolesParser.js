@@ -16,6 +16,11 @@ RoleParser.getEditStopRoles = tokenParsed => {
   return roles;
 };
 
+
+RoleParser.isGuest = tokenParsed => {
+  return RoleParser.getEditStopRoles(tokenParsed).length === 0;
+}
+
 RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
   if (!roles || !roles.length) return [];
 
