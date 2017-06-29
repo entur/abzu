@@ -171,6 +171,7 @@ class MarkerList extends React.Component {
       newStopTitle: formatMessage({ id: 'new_stop_title' }),
       newStopQuestion: formatMessage({ id: 'new_stop_question' }),
       createNow: formatMessage({ id: 'create_now' }),
+      createNotAllowed: formatMessage({id: 'create_not_allowed'})
     };
 
     stops.forEach((stop, stopIndex) => {

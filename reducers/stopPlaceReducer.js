@@ -178,6 +178,7 @@ const stopPlaceReducer = (state = {}, action) => {
       return Object.assign({}, state, {
         current: JSON.parse(JSON.stringify(state.newStop)),
         centerPosition: state.newStop.location,
+        isCreatingPolylines: false,
         zoom: 14,
         stopHasBeenModified: false,
       });

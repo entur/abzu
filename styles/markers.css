@@ -85,3 +85,13 @@
     background: #777777;
     border-radius: 0px;
 }
+
+.marker-popup-not-legal {
+    color: #fff;
+    pointer-events:none;
+    background: #777777;
+    border-radius: 0px;
+    font-size: 11px;
+    padding: 5px;
+    text-align: center;
+}

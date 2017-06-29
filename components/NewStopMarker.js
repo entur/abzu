@@ -4,6 +4,7 @@ import { Marker, Popup } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
 const newStopIcon = require('../static/icons/new-stop-icon-2x.png');
 const markerShadow = require('../static/icons/marker-shadow.png');
+import PManager from '../singletons/PolygonManager';
 
 class NewStopMarker extends React.PureComponent {
   static PropTypes = {
@@ -13,18 +14,8 @@ class NewStopMarker extends React.PureComponent {
   };
 
   render() {
-    let { children, position, handleOnClick, handleDragEnd, text } = this.props;
 
-    const buttonStyle = {
-      borderStyle: 'none',
-      fontWeight: '600',
-      cursor: 'pointer',
-      textDecoration: 'underline',
-      background: '#fff',
-      padding: '1px',
-      width: '100%',
-      verticalAlign: 'middle',
-    };
+    let { children, position, handleOnClick, handleDragEnd, text } = this.props;
 
     var icon = L.icon({
       iconUrl: newStopIcon,
@@ -35,6 +26,8 @@ class NewStopMarker extends React.PureComponent {
       shadowAnchor: [12, 12],
       shadowSize: [36, 16],
     });
+
+    let latlngInside = new PManager().isPointInPolygon(position);
 
     return (
       <Marker
@@ -50,18 +43,28 @@ class NewStopMarker extends React.PureComponent {
         <Popup>
           <div>
             <span onClick={handleOnClick}>{children}</span>
-            <div>
-              <p style={{ fontWeight: '600' }}>{text.newStopTitle}</p>
-              <p>{text.newStopQuestion}</p>
-              <button
-                style={buttonStyle}
-                onClick={() => {
-                  handleOnClick(position);
-                }}
-              >
-                {text.createNow}
-              </button>
-            </div>
+            { latlngInside ?
+              <div>
+                <p style={{ fontWeight: '600' }}>{text.newStopTitle}</p>
+                <p>{text.newStopQuestion}</p>
+                <div
+                  className="marker-popup-button"
+                  onClick={() => {
+                    handleOnClick(position);
+                  }}
+                >
+                  {text.createNow}
+                </div>
+              </div>
+              : <div>
+                <p style={{fontWeight: 600}}>{text.newStopTitle}</p>
+                <div
+                  className="marker-popup-not-legal"
+                >
+                  {text.createNotAllowed}
+                </div>
+              </div>
+            }
           </div>
         </Popup>
       </Marker>

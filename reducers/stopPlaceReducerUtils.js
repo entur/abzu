@@ -42,6 +42,7 @@ export const getStateByOperation = (state, action) => {
           mutatedStopPlace,
           true
         ),
+        isCreatingPolylines: false,
         minZoom: mutatedStopPlace.geometry ? 14 : 5,
         centerPosition:
           formatHelpers.getCenterPosition(mutatedStopPlace.geometry) ||
@@ -155,7 +156,8 @@ const getDataFromResult = (state, action) => {
     centerPosition: !stopPlace || !stopPlace.geometry
       ? state.centerPosition
       : formatHelpers.getCenterPosition(stopPlace.geometry),
-    stopHasBeenModified: false
+    stopHasBeenModified: false,
+    isCreatingPolylines: false,
   });
 };
 
