@@ -113,6 +113,16 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
+            checked={this.getCheckedBaseLayerByValue('Kartverket kart')}
+            name="Karverket kart"
+          >
+            <TileLayer
+              attribution="&copy; <a href=&quot;http://www.kartverket.no&quot;>Kartverket"
+              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
             checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')}
             name="Google Maps Hydrid"
           >
