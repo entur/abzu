@@ -37,12 +37,6 @@ RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
 
 
 RoleParser.filterByEntity = (roles, stopPlaceType, transportMode, submode, stopPlace) => {
-
-  console.info(stopPlaceType);
-  console.info(transportMode);
-  console.info(submode);
-  console.info("stopPlace", stopPlace);
-
   if (!roles || !roles.length) return [];
 
   let result = [];
