@@ -48,6 +48,20 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
   }
 
+  getTiamatEnv() {
+    let tiamatBaseUrl = getIn(window, ['config', 'tiamatBaseUrl'], null);
+    if (tiamatBaseUrl == null) return 'Local';
+
+    if (tiamatBaseUrl.indexOf('api.entur.org') > -1) {
+      return 'Prod';
+    }
+
+    if (tiamatBaseUrl.indexOf('www-test.entur.org') > -1) {
+      return 'Test';
+    }
+    return 'Local';
+  }
+
   render() {
     const {
       intl,
@@ -55,7 +69,7 @@ class Header extends React.Component {
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
       isDisplayingReports,
-      showExpiredStops,
+      showExpiredStops
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -72,14 +86,23 @@ class Header extends React.Component {
     const showPathLinks = formatMessage({ id: 'show_path_links' });
     const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
     const reportSite = formatMessage({ id: 'report_site' });
-    const expiredStopLabel = formatMessage({id: 'show_expired_stops'});
-    const userGuide = formatMessage({id: 'user_guide'});
-
+    const expiredStopLabel = formatMessage({ id: 'show_expired_stops' });
+    const userGuide = formatMessage({ id: 'user_guide' });
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
+
+    const getTiamatEnv = this.getTiamatEnv();
 
     return (
       <AppBar
-        title={title}
+        title={
+          <div>
+            {title}
+            {getTiamatEnv !== 'Prod' &&
+              <span style={{ fontSize: 18, marginLeft: 8, color: getTiamatEnv === 'Local' ? '#f0b04b' : '#3df23d' }}>
+                {getTiamatEnv}
+              </span>}
+          </div>
+        }
         style={{ zIndex: 999 }}
         showMenuIconButton={true}
         iconElementLeft={
@@ -160,7 +183,7 @@ class Header extends React.Component {
                   insetChildren
                   primaryText={english}
                   checked={locale === 'en'}
-                />,
+                />
               ]}
             />
             <MenuItem
@@ -168,11 +191,11 @@ class Header extends React.Component {
               primaryText={
                 <a
                   target="_blank"
-                  style={{textDecoration: 'none', color: '#000'}}
+                  style={{ textDecoration: 'none', color: '#000' }}
                   href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
                 >
                   {userGuide}
-                  </a>
+                </a>
               }
               style={{ fontSize: 12, padding: 0 }}
             />
@@ -195,7 +218,7 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports:
-    state.routing.locationBeforeTransitions.pathname == '/reports',
+    state.routing.locationBeforeTransitions.pathname == '/reports'
 });
 
 export default connect(mapStateToProps)(Header);
