@@ -48,14 +48,11 @@ RoleParser.filterByEntity = (roles, stopPlaceType, transportMode, submode, stopP
         let transportModeOptions = getModeOptions(role.e.TransportMode);
         let submodeOptions = getModeOptions(role.e.Submode);
 
-        let a = isModeOptionsValidForMode(stopPlaceTypeOptions, stopPlaceType)
-        let b = isModeOptionsValidForMode(transportModeOptions, transportMode)
-        let c = isModeOptionsValidForMode(submodeOptions, submode)
+        let stopPlaceTypValid = isModeOptionsValidForMode(stopPlaceTypeOptions, stopPlaceType)
+        let transportModeValid = isModeOptionsValidForMode(transportModeOptions, transportMode)
+        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode)
 
-        console.log("isModeOptions", a, b,c, submodeOptions)
-
-        if (a && b && c
-        ) {
+        if (stopPlaceTypValid && transportModeValid && submodeValid) {
           result.push(role);
         }
       }
@@ -76,25 +73,25 @@ const isInArrayIgnoreCase = (array, value) => {
   );
 };
 
-const isModeOptionsValidForMode = (options, mode) => {
+export const isModeOptionsValidForMode = (options, mode) => {
   const { blacklisted, whitelisted, allowAll } = options;
 
   if (allowAll || !mode) {
     return true;
   }
 
-  if (isInArrayIgnoreCase(whitelisted, mode)) {
-    return true;
+  if (isInArrayIgnoreCase(blacklisted, mode)) {
+    return false;
   }
 
-  if (!isInArrayIgnoreCase(blacklisted, mode)) {
-    return true;
+  if (whitelisted.length && !isInArrayIgnoreCase(whitelisted, mode)) {
+    return false;
   }
 
-  return false;
+  return true;
 };
 
-const getModeOptions = list => {
+export const getModeOptions = list => {
   let blacklisted = [];
   let whitelisted = [];
   let allowAll = false;
@@ -109,6 +106,7 @@ const getModeOptions = list => {
   }
 
   list.forEach(type => {
+
     if (type.indexOf('!') === 0) {
       blacklisted.push(type.substring(1));
     } else if (type === '*') {

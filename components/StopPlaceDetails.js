@@ -119,15 +119,13 @@ class StopPlaceDetails extends React.Component {
   }
 
   handleOpenStopPlaceTypePopover(event) {
-    if (!this.props.disabled) {
-      this.setState({
-        stopTypeOpen: true,
-        wheelChairOpen: false,
-        stopTypeAnchorEl: event.currentTarget,
-        altNamesDialogOpen: false,
-        weightingOpen: false
-      });
-    }
+    this.setState({
+      stopTypeOpen: true,
+      wheelChairOpen: false,
+      stopTypeAnchorEl: event.currentTarget,
+      altNamesDialogOpen: false,
+      weightingOpen: false
+    });
   }
 
   getWeightingStateColor(stopPlace) {

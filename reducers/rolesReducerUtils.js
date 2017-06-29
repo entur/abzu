@@ -1,5 +1,6 @@
-import roleParser from '../roles/rolesParser';
+import roleParser, { getModeOptions, isModeOptionsValidForMode } from '../roles/rolesParser';
 import { getIn } from '../utils/';
+import stopTypes from '../models/stopTypes';
 
 export const getAllowanceInfo = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
@@ -16,12 +17,47 @@ export const getAllowanceInfo = (result, tokenParsed) => {
   let transportMode = stopPlace.transportMode;
   let submode = stopPlace.submode;
   let responsibleRoles = roleParser.filterByEntity(rolesAllowingGeo, stopPlaceType, transportMode, submode);
+  let canEdit = responsibleRoles.length > 0
+
+  let legalStopPlaceTypes = [];
+
+  if (canEdit) {
+    legalStopPlaceTypes = getLegalStopPlaceTypes(responsibleRoles);
+  }
 
   return {
     roles: responsibleRoles,
-    canEdit: responsibleRoles.length > 0
+    legalStopPlaceTypes,
+    canEdit
   };
 };
+
+
+export const getLegalStopPlaceTypes = roles => {
+
+  let allStopTypes = stopTypes.en.map(stopType => stopType.value);
+  let typesFoundInRoles = new Set();
+
+  for (let i = 0; i < roles.length; i++) {
+    let role = roles[i];
+    if (role.e.StopPlaceType && role.e.StopPlaceType.length) {
+      for (let i = 0; i < role.e.StopPlaceType.length; i++) {
+        let stopPlaceType = role.e.StopPlaceType[i];
+        if (stopPlaceType === '*') {
+          return allStopTypes;
+        } else {
+          typesFoundInRoles.add(stopPlaceType);
+        }
+      }
+    } else {
+      return allStopTypes;
+    }
+  }
+
+  const options = getModeOptions(Array.from(typesFoundInRoles));
+
+  return allStopTypes.filter( stopPlaceType => isModeOptionsValidForMode(options, stopPlaceType));
+}
 
 export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
   let editStopRoles = roleParser.getEditStopRoles(tokenParsed);

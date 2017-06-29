@@ -624,7 +624,7 @@ class EditStopGeneral extends React.Component {
           </IconButton>
           <FlatButton
             icon={<MdSave />}
-            disabled={disabled || !stopHasBeenModified}
+            disabled={disabled || !stopHasBeenModified || !stopPlace.name.length }
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.8em' }}

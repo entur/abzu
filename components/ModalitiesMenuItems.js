@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import MenuItem from 'material-ui/MenuItem';
 import ModalityIcon from './ModalityIcon';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
@@ -6,15 +7,18 @@ import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 class ModalitiesMenuItems extends React.Component {
   render() {
 
-    const { stopTypes, handleStopTypeChange, handleSubModeTypeChange } = this.props;
+    const { stopTypes, handleStopTypeChange, handleSubModeTypeChange, allowsInfo } = this.props;
+
+    const legalStopPlaceTypes = allowsInfo.legalStopPlaceTypes || [];
 
     return (
       <div>
       {stopTypes.map((type, index) =>
         <MenuItem
           key={'stopType' + index}
+          className={legalStopPlaceTypes.indexOf(type.value) > -1 ? '' : 'menu-item--not-legal'}
           value={type.value}
-          style={{ padding: '0px 10px' }}
+          style={{ padding: '0px 10px'}}
           primaryText={type.name}
           onTouchTap={() => {
             !type.submodes && handleStopTypeChange(type.value);
@@ -53,4 +57,8 @@ class ModalitiesMenuItems extends React.Component {
   }
 }
 
-export default ModalitiesMenuItems;
+const mapStateToProps = state => ({
+  allowsInfo: state.roles.allowanceInfo
+})
+
+export default connect(mapStateToProps)(ModalitiesMenuItems);
