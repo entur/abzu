@@ -1,6 +1,7 @@
 import expect from 'expect';
 import { isModeOptionsValidForMode, getModeOptions } from '../../roles/rolesParser';
 import { getAllowanceInfo , getLatLngFromResult, getLegalStopPlaceTypes} from '../../reducers/rolesReducerUtils';
+import stopTypes from '../../models/stopTypes';
 
 const stopPlaceResult = {
   data: {
@@ -45,8 +46,8 @@ describe('getAllowanceInfo', () => {
       }
     ];
 
-    let protectedStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    expect(protectedStopPlaceTypes).toEqual(
+    let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
+    expect(legalStopPlaceTypes).toEqual(
       [
         "onstreetBus",
         "onstreetTram",
@@ -59,7 +60,7 @@ describe('getAllowanceInfo', () => {
     );
   });
 
-  it('should get protected stopPlaces that are whitelisted', () => {
+  it('should get legal stopPlaces that are whitelisted', () => {
 
     let roles = [
       {
@@ -78,13 +79,37 @@ describe('getAllowanceInfo', () => {
       }
     ];
 
-    let protectedStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    expect(protectedStopPlaceTypes).toEqual(
+    let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
+    expect(legalStopPlaceTypes).toEqual(
       [
         "airport",
         "railStation"
       ]
     );
+  });
+
+  it('should get all stopPlaces when * is used', () => {
+
+    let roles = [
+      {
+        "r": "editStops",
+        "o": "OST",
+        "z": "01",
+        "e": {
+          "EntityType": [
+            "StopPlace"
+          ],
+          "StopPlaceType": [
+            "*"
+          ],
+        }
+      }
+    ];
+
+    let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
+    let allStopTypes = stopTypes.en.map( type => type.value);
+
+    expect(legalStopPlaceTypes).toEqual(allStopTypes);
   });
 
   it('should white- or blacklist based on StopPlaceTypes from role assignment', () => {
