@@ -130,6 +130,10 @@ const getDataFromResult = (state, action) => {
     ? action.result.data.stopPlace[0]
     : null;
 
+  if (stopPlace === null) {
+    return state;
+  }
+
   const pathLink = action.result.data.pathLink
     ? action.result.data.pathLink
     : [];

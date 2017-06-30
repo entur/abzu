@@ -13,6 +13,15 @@ export const getAllowanceInfo = (result, tokenParsed) => {
 
   const stopPlace = getStopPlace(result);
 
+  if (!stopPlace) {
+    return {
+      roles: [],
+      legalStopPlaceTypes: [],
+      legalSubmodes: [],
+      canEdit: false
+    }
+  }
+
   let stopPlaceType = stopPlace.stopPlaceType;
   let transportMode = stopPlace.transportMode;
   let submode = stopPlace.submode;

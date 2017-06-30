@@ -70,6 +70,9 @@ class EditStopPlace extends React.Component {
           },
         })
         .then(response => {
+
+          console.log("response", response.data);
+
           if (!response.data.stopPlace.length) {
             this.setState({
               showErrorDialog: true,
@@ -121,7 +124,7 @@ class EditStopPlace extends React.Component {
             this.setState({ showErrorDialog: false });
           }}
         >
-          {' '}{resourceNotFound
+          {resourceNotFound
             ? formatMessage({ id: 'error_stopPlace_404' }) + idFromPath
             : formatMessage({ id: 'error_unable_to_load_stop' })}
         </Dialog>

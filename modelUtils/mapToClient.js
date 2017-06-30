@@ -240,6 +240,7 @@ helpers.mapStopToClientStop = (
   userDefinedCoordinates = {},
 ) => {
   try {
+
     let clientStop = {
       id: stop.id,
       name: stop.name.value,
