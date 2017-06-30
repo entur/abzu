@@ -65,8 +65,8 @@ class KeyValuesDialog extends React.Component {
 
     const translations = {
       value: formatMessage({ id: 'name' }),
-      tariffZones: formatMessage({ id: 'key_values_hint' }),
-      noTariffZones: formatMessage({ id: 'key_values_no' })
+      keyValuesTitle: formatMessage({ id: 'key_values_hint' }),
+      noKeyValues: formatMessage({ id: 'key_values_no' })
     };
 
     if (!open) return null;
@@ -105,7 +105,7 @@ class KeyValuesDialog extends React.Component {
               fontWeight: 600
             }}
           >
-            {translations.tariffZones}
+            {translations.keyValuesTitle}
           </div>
           <IconButton
             style={{ marginRight: 5 }}
@@ -135,7 +135,7 @@ class KeyValuesDialog extends React.Component {
                   fontSize: 12
                 }}
               >
-                {translations.noTariffZones}
+                {translations.noKeyValues}
               </div>
             : <div
                 style={{
