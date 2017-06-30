@@ -175,9 +175,9 @@ class EditStopGeneral extends React.Component {
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
         }
       })
-      .catch(err => {
-        dispatch(UserActions.hideDeleteStopDialog());
-        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
+      .catch( err => {
+        dispatch(UserActions.hideDeleteStopDialog(true));
+        dispatch(UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR));
       });
   }
 
