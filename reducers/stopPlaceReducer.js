@@ -108,6 +108,16 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.DELETED_KEY_VALUES_BY_KEY:
+      return Object.assign({}, state, {
+        current: formatHelpers.deleteKeyValuesByKey(
+          state.current,
+          action.payLoad.key,
+          action.payLoad.origin,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.CREATED_KEY_VALUES_PAIR:
       return Object.assign({}, state, {
         current: formatHelpers.createKeyValuesPair(

@@ -8,7 +8,7 @@ class EditKeyValuePair extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      values: []
+      values: [],
     }
   }
 

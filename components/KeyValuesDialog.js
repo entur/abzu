@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
+import MdRemove from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import { enturPrimary } from '../config/enturTheme';
 import EditKeyValuePair from './EditKeyValuePair';
@@ -27,6 +28,10 @@ class KeyValuesDialog extends React.Component {
       isCreatingOpen: false,
       editingKey: key
     });
+  }
+
+  handleDeleteKey(key) {
+    this.props.dispatch(StopPlaceActions.deleteKeyValuesByKey(key));
   }
 
   handleUpdateValues(key, values) {
@@ -151,9 +156,10 @@ class KeyValuesDialog extends React.Component {
                     }}
                   >
                     <div style={{ ...itemStyle, fontWeight: 600, flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', flexBasis: '100%' }}>
                         <span>{kvp.key}</span>
                         {!disabled &&
+                        <div>
                           <MdEdit
                             style={{
                               height: 14,
@@ -164,7 +170,20 @@ class KeyValuesDialog extends React.Component {
                               cursor: 'pointer'
                             }}
                             onClick={() => this.handleEditValuesForKey(kvp.key)}
-                          />}
+                          />
+                          <MdRemove
+                            style={{
+                              height: 14,
+                              width: 14,
+                              color: '#df544a',
+                              marginTop: -2,
+                              marginLeft: 5,
+                              cursor: 'pointer'
+                            }}
+                            onClick={() => this.handleDeleteKey(kvp.key)}
+                          />
+                        </div>
+                        }
                       </div>
                     </div>
                     <div style={itemStyle}>

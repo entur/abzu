@@ -51,6 +51,16 @@ StopPlaceActions.updateKeyValuesForKey = (key, values) => (dispatch, getState) =
   }));
 };
 
+StopPlaceActions.deleteKeyValuesByKey = key => (dispatch, getState) => {
+  let state = getState();
+  let origin = state.user.keyValuesOrigin;
+
+  dispatch(sendData(types.DELETED_KEY_VALUES_BY_KEY, {
+    key,
+    origin
+  }));
+}
+
 StopPlaceActions.createKeyValuesPair = (key, values) => (dispatch, getState) => {
   let state = getState();
   let origin = state.user.keyValuesOrigin;

@@ -32,6 +32,10 @@ class CreateKeyValuePair extends React.Component {
       this.setState({
         errorMsg: `${intl.formatMessage({id: 'key_already_exists'})}: ${key}`
       })
+    } else if (!key) {
+      this.setState({
+        errorMsg: `${intl.formatMessage({id: 'key_cannot_be_empty'})}`
+      });
     } else {
       handleCreateValues(key, values.split('\n'));
       this.setState(this.getInitialValues);

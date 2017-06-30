@@ -519,6 +519,34 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
   }
 }
 
+helpers.deleteKeyValuesByKey = (original, key, origin) => {
+  const { index, type } = origin;
+
+  if (type === 'stopPlace') {
+    return Object.assign({
+      ...original,
+      importedId: key === 'imported-id' ? [] : original.importedId,
+      keyValues: original.keyValues.filter( kv => kv.key !== key)
+    });
+  }
+
+  if (type === 'quay') {
+    return Object.assign({
+      ...original,
+      quays: original.quays.map( (quay, quayIndex) => {
+        if (quayIndex === index) {
+
+          if (key === 'imported-id') {
+            quay.importedId = [];
+          }
+          quay.keyValues = quay.keyValues.filter( kv => kv.key !== key);
+        }
+        return quay;
+      })
+    });
+  }
+}
+
 helpers.createKeyValuesPair = (original, key, newValues, origin) => {
   const {index, type} = origin;
 

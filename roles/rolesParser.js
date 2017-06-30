@@ -48,7 +48,7 @@ RoleParser.filterByEntity = (roles, stopPlaceType, transportMode, submode, stopP
 
   roles.forEach(role => {
     if (role.e.EntityType) {
-      if (isInArrayIgnoreCase(role.e.EntityType, 'stopPlace')) {
+      if (isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') || isInArrayIgnoreCase(role.e.EntityType, '*')) {
         let stopPlaceTypeOptions = getModeOptions(role.e.StopPlaceType);
         let transportModeOptions = getModeOptions(role.e.TransportMode);
         let submodeOptions = getModeOptions(role.e.Submode);

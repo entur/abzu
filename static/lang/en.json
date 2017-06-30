@@ -107,6 +107,7 @@
   "is_missing_coordinates": "Missing coordinates",
   "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",
   "key_already_exists": "Key already exists",
+  "key_cannot_be_empty" : "Key cannot be empty",
   "key_values_hint": "Key-value pairs",
   "key_values_no": "No key-value pairs",
   "language": "Language",
