@@ -116,14 +116,18 @@ class EditStopGeneral extends React.Component {
       dispatch(
         UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
       );
+      this.handleCloseMergeStopDialog();
       getStopPlaceWithAll(client, stopPlace.id).then( () => {
         if (activeMap) {
           let includeExpired = new Settings().getShowExpiredStops();
           getNeighbourStops(client, stopPlace.id, activeMap.getBounds(), includeExpired);
         }
       });
+    }).catch(err => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+      );
     });
-    this.handleCloseMergeStopDialog();
   }
 
   handleMergeQuays(versionComment) {
@@ -141,11 +145,15 @@ class EditStopGeneral extends React.Component {
       );
       this.handleCloseMergeQuaysDialog();
       getStopPlaceWithAll(client, stopPlace.id);
+    }).catch( err => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+      );
     });
   }
 
   handleDeleteQuay() {
-    const { client, deletingQuay, dispatch, stopPlace } = this.props;
+    const {client, deletingQuay, dispatch, stopPlace} = this.props;
     deleteQuay(client, deletingQuay).then(response => {
       dispatch(UserActions.hideDeleteQuayDialog());
       getStopPlaceWithAll(client, stopPlace.id).then(response => {
@@ -153,6 +161,10 @@ class EditStopGeneral extends React.Component {
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
         );
       });
+    }).catch(err => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+      );
     });
   }
 
@@ -161,6 +173,10 @@ class EditStopGeneral extends React.Component {
     moveQuaysToStop(client, stopPlace.id, movingQuay.id, fromVersionComment, toVersionComment).then(response => {
       dispatch(UserActions.cancelMoveQuay());
       getStopPlaceWithAll(client, stopPlace.id);
+    }).catch(err => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+      );
     });
   };
 
