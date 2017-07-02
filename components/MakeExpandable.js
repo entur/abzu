@@ -3,7 +3,7 @@ import MdExpand from 'material-ui/svg-icons/navigation/expand-more';
 import MdCollapse from 'material-ui/svg-icons/navigation/expand-less';
 import IconButton from 'material-ui/IconButton';
 
-class MakeExpandable extends React.Component {
+class MakeExpandable extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,9 +12,17 @@ class MakeExpandable extends React.Component {
   }
 
   handleToggle() {
-    this.setState(prevState => {
-      return { expanded: !prevState.expanded };
-    });
+    this.setState(prevState => ({ expanded: !prevState.expanded}));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.ownerId && nextProps.ownerId) {
+      if (this.props.ownerId !== nextProps.ownerId) {
+        this.setState({
+          expanded: false
+        });
+      }
+    }
   }
 
   render() {
