@@ -150,6 +150,7 @@
   "number_of_seats": "Antall sitteplasser",
   "number_of_spaces": "Antall plasser",
   "number_of_ticket_machines": "Antall billettautomater",
+  "only_without_coordinates": "Kun uten koordinater",
   "optional_search_string": "Valgfri søketekst",
   "overwrite_alt_name_body": "Et alternativt navn for denne navntypen finnes allrede for angitt språk. Ønsker du å overskrive den eksisterende med denne?",
   "overwrite_alt_name_cancel": "Behold forrige",

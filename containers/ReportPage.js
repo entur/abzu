@@ -7,6 +7,7 @@ import ModalityFilter from '../components/ModalityFilter';
 import TopographicalFilter from '../components/TopographicalFilter';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
+import Checkbox from 'material-ui/Checkbox';
 import {
   topopGraphicalPlacesReportQuery,
   findStopForReport
@@ -37,7 +38,8 @@ class ReportPage extends React.Component {
       searchQuery: '',
       isLoading: false,
       columnOptionsQuays: columnOptionsQuays,
-      columnOptionsStopPlace: columnOptionsStopPlace
+      columnOptionsStopPlace: columnOptionsStopPlace,
+      withoutLocationOnly: false,
     };
   }
 
@@ -111,7 +113,7 @@ class ReportPage extends React.Component {
   }
 
   handleSearch() {
-    const { searchQuery, topoiChips, stopTypeFilter } = this.state;
+    const { searchQuery, topoiChips, stopTypeFilter, withoutLocationOnly } = this.state;
     const { client } = this.props;
 
     this.setState({
@@ -124,6 +126,7 @@ class ReportPage extends React.Component {
         fetchPolicy: 'network-only',
         variables: {
           query: searchQuery,
+          withoutLocationOnly: withoutLocationOnly,
           stopPlaceType: stopTypeFilter,
           municipalityReference: topoiChips
             .filter(topos => topos.type === 'town')
@@ -146,7 +149,8 @@ class ReportPage extends React.Component {
           })
           .then(response => {
             this.setState({
-              isLoading: false
+              isLoading: false,
+              activePageIndex: 0,
             });
           });
       })
@@ -198,11 +202,10 @@ class ReportPage extends React.Component {
   render() {
     const {
       stopTypeFilter,
-      quayMin,
-      quayMax,
       topoiChips,
       activePageIndex,
-      isLoading
+      isLoading,
+      withoutLocationOnly
     } = this.state;
     const { intl, topographicalPlaces, results } = this.props;
     const { locale, formatMessage } = intl;
@@ -280,15 +283,15 @@ class ReportPage extends React.Component {
               </div>
             </ReportFilterBox>
             <ReportFilterBox style={{ width: '50%' }}>
-              {/*<div style={{fontWeight: 600, marginBottom: 5, fontSize: 12, padding: 5, marginLeft: 5}}>
-                Øvrige filtre
-              </div> */}
-              {/*<div style={{display: 'flex', alignItems: 'center', padding: 5}}>
-                <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>Quays</div>
-                <input value={quayMin} min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
-                <div style={{marginLeft: 5, marginRight: 5, fontSize: 12}}>to</div>
-                <input value={quayMax}  min="0" style={{flex: 2, lineHeight: '20px'}} type="number"></input>
-              </div> */}
+              <div style={{marginLeft: 10, marginTop: 10}}>
+                <Checkbox
+                  label={formatMessage({id: 'only_without_coordinates'})}
+                  labelPosition="left"
+                  labelStyle={{width: 'auto'}}
+                  checked={withoutLocationOnly}
+                  onCheck={ (e, value) => { this.setState({withoutLocationOnly: value})}}
+                />
+              </div>
               <div
                 style={{
                   marginLeft: 10,

@@ -151,6 +151,7 @@
   "number_of_spaces": "Number of spaces",
   "number_of_ticket_machines": "Number of ticket machines",
   "optional_search_string": "Optional search string",
+  "only_without_coordinates": "Only without coordinates",
   "overwrite_alt_name_body": "An alternative name for this name type already exsists in chosen language. Do you want overwrite this with current?",
   "overwrite_alt_name_cancel": "Keep previous",
   "overwrite_alt_name_confirm": "Overwrite",
