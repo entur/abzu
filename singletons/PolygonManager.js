@@ -1,7 +1,6 @@
 import { getPolygon } from '../graphql/Actions';
 import { isCoordinatesInsidePolygon } from '../utils/mapUtils';
 
-const topographicPlacePrefix = 'KVE:TopographicPlace:';
 let instance = null;
 let fetchedPolygons = null;
 
@@ -22,7 +21,7 @@ class PolygonManager {
       let roleJSON = JSON.parse(roleString);
       if (roleJSON.r === 'editStops') {
         if (!!roleJSON.z) {
-          administrativeZoneIds.push(topographicPlacePrefix + roleJSON.z);
+          administrativeZoneIds.push(roleJSON.z);
         }
       }
     });

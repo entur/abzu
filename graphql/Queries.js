@@ -339,14 +339,11 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
 
 export const getPolygons = ids => {
 
-  const topographicPlacePrefix = 'KVE:TopographicPlace:';
-  const aliasPrefix = 'TP';
-
   let queryContent = ""
 
   ids.forEach( id => {
 
-    let alias = id.replace(topographicPlacePrefix, aliasPrefix);
+      let alias = id.replace(':', '').replace(':', '');
 
     queryContent += `
         ${alias}: topographicPlace(id: "${id}") {
