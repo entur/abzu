@@ -7,6 +7,11 @@ import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { StopPlaceActions } from '../actions/';
+import Warning from 'material-ui/svg-icons/alert/warning';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import MdRestore from 'material-ui/svg-icons/action/restore';
+import ToolTippable from './ToolTippable';
+import { injectIntl } from 'react-intl';
 
 class ParkingItem extends React.Component {
   static propTypes = {
@@ -26,6 +31,14 @@ class ParkingItem extends React.Component {
     dispatch(StopPlaceActions.changeParkingName(index, value));
   }
 
+  handleExpireParking(index) {
+    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'parking'));
+  }
+
+  handleOpenParking(index) {
+    this.props.dispatch(StopPlaceActions.openParkingElement(index));
+  }
+
   render() {
     const {
       parking,
@@ -35,7 +48,10 @@ class ParkingItem extends React.Component {
       index,
       disabled,
       parkingType,
+      intl
     } = this.props;
+
+    const { formatMessage } = intl;
 
     const locationStyle = {
       marginRight: 5,
@@ -43,6 +59,7 @@ class ParkingItem extends React.Component {
       height: 16,
       width: 16,
     };
+
 
     return (
       <div>
@@ -58,7 +75,16 @@ class ParkingItem extends React.Component {
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'parking')}
             >
-              {translations[parkingType]}
+              <div style={{display: 'flex', lineHeight: '28px'}}>
+                {translations[parkingType]} { parking.hasExpired &&
+                <ToolTippable
+                  toolTipText={formatMessage({id: 'parking_expired'})}
+                  toolTipStyle={{padding: '0 5'}}
+                >
+                  <Warning color="orange" style={{width: 20, height: 20, marginLeft: 5}}/>
+                </ToolTippable>
+                }
+              </div>
             </div>
             <div
               style={{ display: 'inline-block' }}
@@ -80,7 +106,7 @@ class ParkingItem extends React.Component {
           : <div>
               <TextField
                 hintText={translations.name}
-                disabled={disabled}
+                disabled={disabled || parking.hasExpired}
                 floatingLabelText={translations.name}
                 onChange={(e, v) => {
                   this.handleSetName(v);
@@ -90,7 +116,7 @@ class ParkingItem extends React.Component {
               />
               <TextField
                 hintText={translations.capacity}
-                disabled={disabled}
+                disabled={disabled || parking.hasExpired}
                 floatingLabelText={translations.capacity}
                 onChange={(e, v) => {
                   this.handleSetTotalCapacity(v);
@@ -102,10 +128,25 @@ class ParkingItem extends React.Component {
               <div style={{ width: '100%', textAlign: 'right' }}>
                 <IconButton
                   disabled={disabled}
-                  iconClassName="material-icons"
-                  onClick={this.props.handleRemoveParking}
                 >
-                  delete
+                  { parking.hasExpired
+                    ?
+
+                    <ToolTippable
+                    toolTipText={formatMessage({id: 'restore_parking'})}
+                    >
+                      <MdRestore
+                        onClick={() => this.handleOpenParking(index)}
+                      />                    </ToolTippable>
+                    :
+                    <ToolTippable
+                      toolTipText={formatMessage({id: 'expire_parking'})}
+                    >
+                      <MdDelete
+                        onClick={() => this.handleExpireParking(index)}
+                      />                  </ToolTippable>
+
+                  }
                 </IconButton>
               </div>
             </div>}
@@ -114,4 +155,4 @@ class ParkingItem extends React.Component {
   }
 }
 
-export default connect(null)(ParkingItem);
+export default injectIntl(connect(null)(ParkingItem));

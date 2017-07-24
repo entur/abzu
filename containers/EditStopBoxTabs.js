@@ -49,10 +49,6 @@ class EditStopBoxTabs extends React.Component {
 
   }
 
-  handleRemoveParking(index) {
-    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'parking'));
-  }
-
   getParkingType(parking) {
     if (parking.parkingVehicleTypes.indexOf('car') > -1) return 'parkAndRide';
     if (parking.parkingVehicleTypes.indexOf('pedalCycle') > -1)
@@ -176,7 +172,6 @@ class EditStopBoxTabs extends React.Component {
               parking={parking}
               parkingType={parkingType}
               handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              handleRemoveParking={() => this.handleRemoveParking(index)}
               handleToggleCollapse={this.handleToggleCollapse.bind(this)}
               expanded={
                 expandedItem.type === 'parking' && index === expandedItem.index

@@ -98,7 +98,8 @@ describe('Model: map format from server to expected client model', () => {
         name: 'park&ride example',
         location: [63.207698, 11.088595],
         totalCapacity: '100',
-        parkingVehicleTypes: ['car']
+        parkingVehicleTypes: ['car'],
+        validBetween: null,
       }
     ];
 
@@ -114,7 +115,8 @@ describe('Model: map format from server to expected client model', () => {
         geometry: {
           type: 'Point',
           coordinates: [[11.088595, 63.207698]]
-        }
+        },
+        validBetween: null,
       }
     ];
 

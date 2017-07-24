@@ -220,6 +220,10 @@ Fragments.parking = {
               coordinates
           }
           parkingVehicleTypes
+          validBetween {
+              fromDate
+              toDate
+          }
       }
     `
 }

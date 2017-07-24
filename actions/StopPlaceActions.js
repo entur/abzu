@@ -102,6 +102,12 @@ StopPlaceActions.removeElementByType = (index, type) => dispatch => {
   );
 };
 
+StopPlaceActions.openParkingElement = index => dispatch => {
+  dispatch(
+    sendData(types.OPEN_PARKING_ELEMENT, index)
+  );
+}
+
 StopPlaceActions.changePublicCodeName = (index, name, type) => dispatch => {
   dispatch(
     sendData(types.CHANGE_PUBLIC_CODE_NAME, {

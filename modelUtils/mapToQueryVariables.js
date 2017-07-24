@@ -127,6 +127,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       totalCapacity: Number(source.totalCapacity) || 0,
       parentSiteRef: parentRef,
       parkingVehicleTypes: source.parkingVehicleTypes,
+      validBetween: source.validBetween
     };
 
     if (source.id) {

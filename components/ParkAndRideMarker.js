@@ -11,6 +11,7 @@ class ParkingAndRideMarker extends React.Component {
     position: PropTypes.arrayOf(PropTypes.number),
     index: PropTypes.number.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
+    hasExpired: PropTypes.bool.isRequired,
     translations: PropTypes.shape({
       title: PropTypes.string.isRequired,
       totalCapacity: PropTypes.string.isRequired,
@@ -47,6 +48,10 @@ class ParkingAndRideMarker extends React.Component {
       return true;
     }
 
+    if (this.props.hasExpired !== nextProps.hasExpired) {
+      return true;
+    }
+
     if (this.props.totalCapacity !== nextProps.totalCapacity) {
       return true;
     }
@@ -61,6 +66,7 @@ class ParkingAndRideMarker extends React.Component {
       handleDragEnd,
       translations,
       name,
+      hasExpired,
       totalCapacity,
       draggable,
     } = this.props;
@@ -72,6 +78,7 @@ class ParkingAndRideMarker extends React.Component {
       iconSize: [20, 30],
       iconAnchor: [10, 30],
       popupAnchor: [0, 15],
+      className: hasExpired ? 'expired' : ''
     });
 
     return (
@@ -87,6 +94,7 @@ class ParkingAndRideMarker extends React.Component {
       >
         <Popup>
           <div>
+            <div style={{marginTop: 10, fontWeight: 600, color: 'red', marginBottom: 10, textAlign: 'center'}}>{hasExpired && translations.parkingExpired}</div>
             <div
               style={{
                 fontWeight: 600,
@@ -107,8 +115,7 @@ class ParkingAndRideMarker extends React.Component {
                 fontSize: '1em',
               }}
             >
-              {translations.title}
-              {' '}
+              <div>{translations.title}</div>
             </div>
             <div
               style={{

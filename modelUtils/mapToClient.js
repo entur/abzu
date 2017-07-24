@@ -41,6 +41,8 @@ helpers.mapParkingToClient = parkingObjs => {
       name: getIn(parking, ['name', 'value'], ''),
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
+      hasExpired: hasExpired(parking.validBetween),
+      validBetween: parking.validBetween
     };
     let coordinates = getIn(parking, ['geometry', 'coordinates'], null);
 
@@ -196,6 +198,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
 helpers.mapVersionToClientVersion = source => {
   if (source) {
+
     const transformer = value => moment(value).format('YYYY-DD-MM HH:mm');
 
     return source
@@ -655,7 +658,7 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
       copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index);
       break;
     case 'parking':
-      copy.parking = removeElementByIndex(copy.parking, index);
+      copy.parking = setExpirationToNowForParking(copy.parking, index);
       break;
     default:
       throw new Error('element not supported', type);
@@ -855,10 +858,36 @@ helpers.removeAltName = (original, index) => {
   return copy;
 };
 
+const setExpirationToNowForParking = (list, index) => {
+  let parkinglist = list.slice();
+  let parking = parkinglist[index];
+  let nowDate = new Date();
+  let utcDateString = moment(nowDate).utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+  parking.validBetween = {
+    fromDate: parking.validBetween.fromDate || utcDateString,
+    toDate: utcDateString
+  }
+  parking.hasExpired = true;
+  return parkinglist;
+}
+
 const removeElementByIndex = (list, index) => [
   ...list.slice(0, index),
   ...list.slice(index + 1),
 ];
+
+helpers.updateCurrentOpenParking = (current, index) => {
+  let parkingElements = current.parking.slice();
+  let parking = parkingElements[index];
+  parking.validBetween = {
+    ...parking.validBetween,
+    toDate: null
+  }
+  parking.hasExpired = false;
+  return Object.assign({}, current, {
+    parking: parkingElements
+  });
+}
 
 helpers.getImportedId = keyValues => {
   for (let i = 0; i < keyValues.length; i++) {

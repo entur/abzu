@@ -230,6 +230,7 @@ class MarkerList extends React.Component {
                     position={parking.location}
                     index={index}
                     name={parking.name || ''}
+                    hasExpired={parking.hasExpired}
                     draggable={!disabled}
                     type="parking"
                     key={'parking-' + index}
@@ -237,6 +238,7 @@ class MarkerList extends React.Component {
                     translations={{
                       title: formatMessage({ id: 'parking' }),
                       totalCapacity: formatMessage({ id: 'total_capacity' }),
+                      parkingExpired: formatMessage({id: 'parking_expired'}),
                       totalCapacityUnknown: formatMessage({
                         id: 'total_capacity_unknown',
                       }),
@@ -251,12 +253,14 @@ class MarkerList extends React.Component {
                     index={index}
                     name={parking.name || ''}
                     totalCapacity={parking.totalCapacity}
+                    hasExpired={parking.hasExpired}
                     key={'parking-' + index}
                     draggable={!disabled}
                     type="parking"
                     translations={{
                       title: formatMessage({ id: 'parking_bike' }),
                       totalCapacity: formatMessage({ id: 'total_capacity' }),
+                      parkingExpired: formatMessage({id: 'parking_expired'}),
                       totalCapacityUnknown: formatMessage({
                         id: 'total_capacity_unknown',
                       }),

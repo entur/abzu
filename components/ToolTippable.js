@@ -52,7 +52,7 @@ class ToolTippable extends React.Component {
         onMouseOver={this.handleShowToolTip.bind(this)}
         onMouseOut={this.handleHideToolTip.bind(this)}
       >
-        {children}
+        <span>{children}</span>
         {showToolTip && <span style={appliedStyle}>{toolTipText}</span>}
       </div>
     );
