@@ -1,5 +1,6 @@
 import * as types from './Types';
 import { getCentroid } from '../utils/mapUtils';
+import { UserActions } from './'
 
 var StopPlaceActions = {};
 
@@ -166,7 +167,16 @@ StopPlaceActions.changeQuayCompassBearing = (
   );
 };
 
-StopPlaceActions.setElementFocus = (index, type) => dispatch => {
+StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
+
+  let state = getState();
+  let keyValuesDialogOpen = state.user.keyValuesDialogOpen;
+  let keyValuesOrigin = state.user.keyValuesOrigin;
+
+  if (index > -1 && type === 'quay' && keyValuesDialogOpen && keyValuesOrigin && keyValuesOrigin.type === 'quay') {
+    dispatch(UserActions.closeKeyValuesDialog());
+  }
+
   dispatch(
     sendData(types.SET_FOCUS_ON_ELEMENT, {
       index: index,

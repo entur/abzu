@@ -283,7 +283,7 @@ class QuayItem extends React.Component {
         </div>
         {!expanded
           ? null
-          : <div>
+          : <div className="quay-item-expanded">
               <ImportedId
                 text={translations.localReference}
                 id={quay.importedId}

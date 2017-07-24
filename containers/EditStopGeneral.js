@@ -485,7 +485,7 @@ class EditStopGeneral extends React.Component {
             </Menu>
           </Popover>
         </div>
-        <div style={scrollable}>
+        <div id="scroll-body" style={scrollable}>
           <div style={{ padding: '10 5' }}>
             <StopPlaceDetails
               disabled={disabled}

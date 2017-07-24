@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom/server';
 import { connect } from 'react-redux';
 import compassIcon from '../static/icons/compass.png';
 import compassBearingIcon from '../static/icons/compass-bearing.png';
-import { UserActions } from '../actions/';
+import { UserActions, StopPlaceActions } from '../actions/';
 import OSMIcon from '../static/icons/osm_logo.png';
 import { getIn } from '../utils/';
 import ToolTippable from './ToolTippable';
@@ -49,6 +49,13 @@ class QuayMarker extends React.PureComponent {
 
   handleCancelMerge() {
     this.props.dispatch(UserActions.cancelMergingQuayFrom());
+  }
+
+  handleSetFocus() {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.setElementFocus(index, 'quay'));
+    document.querySelector(".quay-item-expanded").scrollIntoView(true);
+    document.querySelector("#scroll-body").scrollTop -= 50;
   }
 
   handleMoveQuay() {
@@ -206,7 +213,7 @@ class QuayMarker extends React.PureComponent {
         }}
         keyboard={false}
       >
-        <Popup autoPan={false}>
+        <Popup autoPan={false} onOpen={() => { this.handleSetFocus() }}>
           <div>
             <span className="quay-marker-title">
               {parentStopPlaceName}
@@ -460,7 +467,7 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,
-  pathLink: state.stopPlace.pathLink
+  pathLink: state.stopPlace.pathLink,
 });
 
 export default connect(mapStateToProps)(QuayMarker);

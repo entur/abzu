@@ -43,10 +43,6 @@ class EditStopBoxTabs extends React.Component {
       expandedItem.type === type && expandedItem.index == index;
     dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type));
 
-    if (isExpanded && type === 'quay' && keyValuesDialogOpen && keyValuesOrigin && keyValuesOrigin.type === 'quay') {
-      dispatch(UserActions.closeKeyValuesDialog());
-    }
-
   }
 
   getParkingType(parking) {
@@ -243,8 +239,6 @@ class EditStopBoxTabs extends React.Component {
 const mapStateToProps = state => ({
   activeElementTab: state.user.activeElementTab,
   expandedItem: state.mapUtils.focusedElement,
-  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
-  keyValuesOrigin: state.user.keyValuesOrigin
 });
 
 export default connect(mapStateToProps)(EditStopBoxTabs);
