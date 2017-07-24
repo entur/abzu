@@ -57,6 +57,10 @@ class KeyValuesDialog extends React.Component {
 
   handleClose() {
     this.props.dispatch(UserActions.closeKeyValuesDialog());
+    this.setState({
+      isEditingOpen: false,
+      isCreatingOpen: false
+    })
   }
 
   render() {
@@ -77,14 +81,16 @@ class KeyValuesDialog extends React.Component {
       top: 105,
       background: '#fff',
       border: '1px solid black',
-      width: 350,
+      width: 'auto',
+      minWidth: 350,
       zIndex: 999
     };
 
     const itemStyle = {
       flexBasis: '100%',
       textAlign: 'left',
-      flex: 2
+      flex: 2,
+      padding: 5,
     };
 
     return (
@@ -118,7 +124,6 @@ class KeyValuesDialog extends React.Component {
         </div>
         <div
           style={{
-            width: '100%',
             fontSize: 14,
             maxHeight: 300,
             overflowY: 'scroll',
@@ -139,10 +144,8 @@ class KeyValuesDialog extends React.Component {
               </div>
             : <div
                 style={{
-                  width: '100%',
                   fontSize: 12,
                   overflowY: 'overlay',
-                  maxHeight: 400,
                   marginLeft: 5
                 }}
               >
@@ -159,7 +162,7 @@ class KeyValuesDialog extends React.Component {
                       <div style={{ display: 'flex', alignItems: 'center', flexBasis: '100%' }}>
                         <span>{kvp.key}</span>
                         {!disabled &&
-                        <div>
+                        <div style={{display: 'flex'}}>
                           <MdEdit
                             style={{
                               height: 14,
