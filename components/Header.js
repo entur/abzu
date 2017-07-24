@@ -14,6 +14,7 @@ import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
 import MdHelp from 'material-ui/svg-icons/action/help';
+import { getTiamatEnv, getEnvColor } from '../config/enturTheme';
 
 class Header extends React.Component {
   handleNavigateToMain() {
@@ -48,19 +49,7 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
   }
 
-  getTiamatEnv() {
-    let tiamatBaseUrl = getIn(window, ['config', 'tiamatBaseUrl'], null);
-    if (tiamatBaseUrl == null) return 'Local';
 
-    if (tiamatBaseUrl.indexOf('api.entur.org') > -1) {
-      return 'Prod';
-    }
-
-    if (tiamatBaseUrl.indexOf('www-test.entur.org') > -1) {
-      return 'Test';
-    }
-    return 'Local';
-  }
 
   render() {
     const {
@@ -90,20 +79,23 @@ class Header extends React.Component {
     const userGuide = formatMessage({ id: 'user_guide' });
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
 
-    const getTiamatEnv = this.getTiamatEnv();
+    const tiamatEnv = getTiamatEnv();
 
     return (
       <AppBar
+        style={{
+          zIndex: 999,
+          background: getEnvColor(tiamatEnv)
+        }}
         title={
           <div>
             {title}
-            {getTiamatEnv !== 'Prod' &&
-              <span style={{ fontSize: 18, marginLeft: 8, color: getTiamatEnv === 'Local' ? '#f0b04b' : '#3df23d' }}>
-                {getTiamatEnv}
+            {tiamatEnv !== 'Prod' &&
+              <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
+                {tiamatEnv}
               </span>}
           </div>
         }
-        style={{ zIndex: 999 }}
         showMenuIconButton={true}
         iconElementLeft={
           <img

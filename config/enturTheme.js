@@ -1,4 +1,5 @@
 import { fade } from 'material-ui/utils/colorManipulator';
+import { getIn } from '../utils';
 
 export const enturPrimary = '#41c0c4';
 export const enturPrimaryDarker = '#37abaf';
@@ -11,6 +12,32 @@ const grey500 = '#9e9e9e';
 const white = '#ffffff';
 const darkBlack = 'rgba(0, 0, 0, 0.87)';
 const fullBlack = 'rgba(0, 0, 0, 1)';
+
+export const getTiamatEnv = () => {
+
+  let tiamatBaseUrl = getIn(window, ['config', 'tiamatBaseUrl'], null);
+  if (tiamatBaseUrl == null) return 'Local';
+
+  if (tiamatBaseUrl.indexOf('api.entur.org') > -1) {
+    return 'Prod';
+  }
+
+  if (tiamatBaseUrl.indexOf('www-test.entur.org') > -1) {
+    return 'Test';
+  }
+  return 'Local';
+};
+
+export const getEnvColor = env => {
+  let currentEnv = env || getTiamatEnv();
+
+  switch (currentEnv) {
+    case 'Local': return '#d18e25';
+    case 'Test': return '#457645';
+    case 'Prod': return enturDark;
+    default: return enturDark;
+  }
+}
 
 export default {
   fontFamily: 'Roboto, sans-serif',
@@ -28,16 +55,17 @@ export default {
     disabledColor: fade(darkBlack, 0.3),
     pickerHeaderColor: enturPrimary,
     clockCircleColor: fade(darkBlack, 0.07),
-    shadowColor: fullBlack,
+    shadowColor: fullBlack
   },
   datePicker: {
     selectColor: enturPrimary,
-    selectTextColor: white,
+    selectTextColor: white
   },
   checkbox: {
-    checkedColor: enturPrimaryDarker,
+    checkedColor: enturPrimaryDarker
   },
   appBar: {
-    color: enturDark,
-  },
+    color: enturDark
+  }
 };
+
