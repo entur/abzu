@@ -8,6 +8,7 @@ import {
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import moment from 'moment';
 
 class ReportPageFooter extends React.Component {
   constructor(props) {
@@ -25,15 +26,24 @@ class ReportPageFooter extends React.Component {
     });
   }
 
-  // TODO : This only works correctly in Chrome, fix for FF and Safari needed
   downloadCSV(items, columns, filename, transformer) {
     let csv = jsonArrayToCSV(items, columns, ';', transformer);
     var element = document.createElement('a');
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    let dateNow = moment(new Date()).format('DD-MM-YYYY');
+    let fullFilename = filename + '-' + dateNow + '.csv';
     var url = URL.createObjectURL(blob);
     element.href = url;
-    element.setAttribute('download', filename);
-    element.click();
+    element.setAttribute('target', '_blank');
+    element.setAttribute('download', fullFilename);
+
+    let event = document.createEvent("MouseEvents")
+    event.initMouseEvent(
+      "click", true, false, window, 0, 0, 0, 0, 0
+      , false, false, false, false, 0, null
+    );
+
+    element.dispatchEvent(event);
   }
 
   handleGetCSVStopPlace() {
