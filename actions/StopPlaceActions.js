@@ -177,6 +177,8 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
     dispatch(UserActions.closeKeyValuesDialog());
   }
 
+  dispatch(UserActions.changeElementTypeTabByType(type));
+
   dispatch(
     sendData(types.SET_FOCUS_ON_ELEMENT, {
       index: index,

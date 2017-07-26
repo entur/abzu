@@ -223,6 +223,17 @@ UserActions.changeElementTypeTab = value => dispatch => {
   dispatch(sendData(types.CHANGED_ELEMENT_TYPE_TAB, value));
 };
 
+UserActions.changeElementTypeTabByType = type => dispatch => {
+  let typesMap = {
+    'quay': 0,
+    'entrance': 1,
+    'pathJunction': 1,
+    'parking': 2
+  };
+  let value = typesMap[type] || 0;
+  dispatch(UserActions.changeElementTypeTab(value));
+}
+
 UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch, getState) => {
 
   let state = getState();
