@@ -29,4 +29,12 @@ const isSet = type => {
   return false;
 };
 
+export const CodeBadge = ({icon, type}) => {
+  return (
+    <div className={type}>
+        <div style={{ marginTop: 2 }}>{icon}</div>
+    </div>
+  );
+}
+
 export default Code;

@@ -67,6 +67,11 @@ const stopPlaceReducer = (state = {}, action) => {
         neighbourStops: [],
       });
 
+    case types.SORTED_QUAYS:
+      return Object.assign({}, state, {
+        current: formatHelpers.sortQuays(state.current, action.payLoad)
+      })
+
     case types.CHANGED_WEIGHTING_STOP_PLACE:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithWeighting(

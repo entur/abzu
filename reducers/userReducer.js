@@ -209,6 +209,13 @@ const userReducer = (state = initialState, action) => {
         keyValuesDialogOpen: false,
       });
 
+    case types.SORTED_QUAYS:
+      return Object.assign({}, state, {
+        keyValuesDialogOpen: false,
+        showEditStopAdditional: false,
+        showEditQuayAdditional: false,
+      });
+
       break;
 
     default:

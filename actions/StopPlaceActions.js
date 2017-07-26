@@ -18,6 +18,10 @@ StopPlaceActions.changeLocationNewStop = location => dispatch => {
   );
 };
 
+StopPlaceActions.sortQuays = attribute => dispatch => {
+  dispatch(sendData(types.SORTED_QUAYS, attribute));
+}
+
 StopPlaceActions.useNewStopAsCurrent = () => (dispatch, getState) => {
   let state = getState();
   let location = getIn(state, ['stopPlace','newStop', 'location'], null);

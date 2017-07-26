@@ -54,6 +54,18 @@ helpers.mapParkingToClient = parkingObjs => {
   });
 };
 
+helpers.sortQuays = (current, attribute) => {
+  let copy = JSON.parse(JSON.stringify(current));
+  let quays = copy.quays;
+
+  quays.sort( (a,b) => (a[attribute] || 'ZZZZZ').localeCompare((b[attribute] || 'ZZZZZ')));
+
+  return {
+    ...copy,
+    quays
+  }
+}
+
 helpers.mapPathLinkToClient = pathLinks => {
   if (!pathLinks) return [];
 

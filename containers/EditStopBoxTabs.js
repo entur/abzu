@@ -5,6 +5,8 @@ import EntranceItem from '../components/EntranceItem';
 import ParkingItem from '../components/ParkingItem';
 import { connect } from 'react-redux';
 import { StopPlaceActions, UserActions } from '../actions/';
+import { CodeBadge } from '../components/Code';
+import MdSortByAlpha from 'material-ui/svg-icons/av/sort-by-alpha';
 
 class EditStopBoxTabs extends React.Component {
   handleLocateOnMap(position, index, type) {
@@ -39,6 +41,10 @@ class EditStopBoxTabs extends React.Component {
     );
   }
 
+  handleSortQuays(attribute) {
+    this.props.dispatch(StopPlaceActions.sortQuays(attribute));
+  }
+
   handleToggleCollapse(index, type) {
     const { dispatch, expandedItem } = this.props;
     const isExpanded =
@@ -66,7 +72,6 @@ class EditStopBoxTabs extends React.Component {
             key={'quay-' + index}
             quay={quay}
             disabled={disabled}
-            ref={'quay-' + index}
             index={index}
             publicCode={quay.publicCode}
             handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
@@ -205,6 +210,22 @@ class EditStopBoxTabs extends React.Component {
 
     return (
       <div style={tabContainerStyle}>
+        {activeElementTab === 0 &&
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div
+              style={{ cursor: 'pointer', marginLeft: 5 }}
+              onClick={() => this.handleSortQuays('publicCode')}
+            >
+              <CodeBadge icon={<MdSortByAlpha style={{width: 14, height: 14}}/>} type="publicCode"/>
+            </div>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => this.handleSortQuays('privateCode')}
+            >
+              <CodeBadge icon={<MdSortByAlpha style={{width: 14, height: 14, color: '#fff'}}/>} type="privateCode"/>
+            </div>
+          </div>
+        }
         {activeElementTab === 0
           ? this.getQuayItems(
               activeStopPlace,

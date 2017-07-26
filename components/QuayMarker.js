@@ -13,7 +13,7 @@ import { getIn } from '../utils/';
 import ToolTippable from './ToolTippable';
 import Code from './Code';
 
-class QuayMarker extends React.PureComponent {
+class QuayMarker extends React.Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
     id: PropTypes.string,

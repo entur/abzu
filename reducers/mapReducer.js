@@ -39,6 +39,14 @@ const mapReducer = (state = initialState, action) => {
         },
       });
 
+    case types.SORTED_QUAYS:
+      return Object.assign({}, state, {
+        focusedElement: {
+          index: -1,
+          type: 'quay',
+        },
+      });
+
     case types.SHOW_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
         focusedElement: {

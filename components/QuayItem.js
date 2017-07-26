@@ -227,7 +227,7 @@ class QuayItem extends React.Component {
               alignItems: 'center',
               width: '95%',
               marginTop: 10,
-              padding: 5,
+              padding: 3,
             }}
           >
             {quay.location
