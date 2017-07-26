@@ -628,10 +628,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         totalCapacity: null,
         parkingVehicleTypes: ['car'],
         hasExpired: false,
-        validBetween: {
-          fromDate: null,
-          toDate: null,
-        }
+        validBetween: null
       });
       break;
     case 'bikeParking':
@@ -640,10 +637,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         totalCapacity: null,
         parkingVehicleTypes: ['pedalCycle'],
         hasExpired: false,
-        validBetween: {
-          fromDate: null,
-          toDate: null,
-        }
+        validBetween: null
       });
       break;
 
