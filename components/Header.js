@@ -15,16 +15,36 @@ import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
 import MdHelp from 'material-ui/svg-icons/action/help';
 import { getTiamatEnv, getEnvColor } from '../config/enturTheme';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 class Header extends React.Component {
-  handleNavigateToMain() {
-    const { dispatch } = this.props;
-    dispatch(UserActions.navigateTo('/', ''));
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isConfirmDialogOpen: false
+    }
+  }
+
+  returnToMain() {
+    this.setState({
+      isConfirmDialogOpen: false
+    });
+    this.props.dispatch(UserActions.navigateTo('/', ''));
+  }
+
+  handleAllowUserToGoBack() {
+    if (this.props.stopHasBeenModified) {
+      this.setState({
+        isConfirmDialogOpen: true
+      });
+    } else {
+      this.returnToMain();
+    }
   }
 
   handleSetLanguage(locale) {
-    const { dispatch } = this.props;
-    dispatch(UserActions.applyLocale(locale));
+    this.props.dispatch(UserActions.applyLocale(locale));
   }
 
   handleLogOut() {
@@ -48,7 +68,6 @@ class Header extends React.Component {
   handleToggleShowExpiredStops(value) {
     this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
   }
-
 
 
   render() {
@@ -82,124 +101,144 @@ class Header extends React.Component {
     const tiamatEnv = getTiamatEnv();
 
     return (
-      <AppBar
-        style={{
-          zIndex: 999,
-          background: getEnvColor(tiamatEnv)
-        }}
-        title={
-          <div>
-            {title}
-            {(tiamatEnv === 'test' || tiamatEnv === 'development') &&
+      <div>
+        <AppBar
+          style={{
+            zIndex: 999,
+            background: getEnvColor(tiamatEnv)
+          }}
+          title={
+            <div>
+              {title}
+              {(tiamatEnv === 'test' || tiamatEnv === 'development') &&
               <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
                 {tiamatEnv}
               </span>}
-          </div>
-        }
-        showMenuIconButton={true}
-        iconElementLeft={
-          <img
-            src={Logo}
-            style={{ width: 40, height: 'auto', cursor: 'pointer' }}
-            onClick={() => this.handleNavigateToMain()}
-          />
-        }
-        iconElementRight={
-          <IconMenu
-            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-          >
-            <MenuItem
-              leftIcon={<MdReport color="#41c0c4" />}
-              primaryText={reportSite}
-              onClick={() => this.handleReports()}
-              style={{ fontSize: 12, padding: 0 }}
+            </div>
+          }
+          showMenuIconButton={true}
+          iconElementLeft={
+            <img
+              src={Logo}
+              style={{ width: 40, height: 'auto', cursor: 'pointer' }}
+              onClick={() => this.handleAllowUserToGoBack()}
             />
-            <MenuItem
-              primaryText={mapSettings}
-              rightIcon={<ArrowDropRight />}
-              leftIcon={<MdSettings color="#41c0c4" />}
-              style={{ fontSize: 12, padding: 0 }}
-              desktop={true}
-              multiple
-              menuItems={[
-                <MenuItem
-                  style={{ fontSize: 12, padding: 0 }}
-                  onClick={() =>
-                    this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)}
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={isMultiPolylinesEnabled}
-                  primaryText={showPathLinks}
-                />,
-                <MenuItem
-                  style={{ fontSize: 12, padding: 0 }}
-                  onClick={() =>
-                    this.handleToggleCompassBearing(!isCompassBearingEnabled)}
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={isCompassBearingEnabled}
-                  primaryText={showCompassBearing}
-                />,
-                <MenuItem
-                  style={{ fontSize: 12, padding: 0 }}
-                  onClick={() =>
-                    this.handleToggleShowExpiredStops(!showExpiredStops)}
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={showExpiredStops}
-                  primaryText={expiredStopLabel}
-                />
-              ]}
-            />
-            <MenuItem
-              primaryText={language}
-              rightIcon={<ArrowDropRight />}
-              leftIcon={<MdLanguage color="#41c0c4" />}
-              style={{ fontSize: 12, padding: 0 }}
-              menuItems={[
-                <MenuItem
-                  style={{ fontSize: 12, padding: 0 }}
-                  onClick={() => this.handleSetLanguage('nb')}
-                  insetChildren
-                  primaryText={norwegian}
-                  checked={locale === 'nb'}
-                />,
-                <MenuItem
-                  style={{ fontSize: 12, padding: 0 }}
-                  onClick={() => this.handleSetLanguage('en')}
-                  insetChildren
-                  primaryText={english}
-                  checked={locale === 'en'}
-                />
-              ]}
-            />
-            <MenuItem
-              leftIcon={<MdHelp color="#41c0c4" />}
-              primaryText={
-                <a
-                  target="_blank"
-                  style={{ textDecoration: 'none', color: '#000' }}
-                  href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
-                >
-                  {userGuide}
-                </a>
-              }
-              style={{ fontSize: 12, padding: 0 }}
-            />
-            <MenuItem
-              leftIcon={<MdAccount color="#41c0c4" />}
-              primaryText={`${logOut} ${username}`}
-              onClick={() => this.handleLogOut()}
-              style={{ fontSize: 12, padding: 0 }}
-            />
-          </IconMenu>
-        }
-      />
+          }
+          iconElementRight={
+            <IconMenu
+              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+            >
+              <MenuItem
+                leftIcon={<MdReport color="#41c0c4" />}
+                primaryText={reportSite}
+                onClick={() => this.handleReports()}
+                style={{ fontSize: 12, padding: 0 }}
+              />
+              <MenuItem
+                primaryText={mapSettings}
+                rightIcon={<ArrowDropRight />}
+                leftIcon={<MdSettings color="#41c0c4" />}
+                style={{ fontSize: 12, padding: 0 }}
+                desktop={true}
+                multiple
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={isMultiPolylinesEnabled}
+                    primaryText={showPathLinks}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleCompassBearing(!isCompassBearingEnabled)}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={isCompassBearingEnabled}
+                    primaryText={showCompassBearing}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowExpiredStops(!showExpiredStops)}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showExpiredStops}
+                    primaryText={expiredStopLabel}
+                  />
+                ]}
+              />
+              <MenuItem
+                primaryText={language}
+                rightIcon={<ArrowDropRight />}
+                leftIcon={<MdLanguage color="#41c0c4" />}
+                style={{ fontSize: 12, padding: 0 }}
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage('nb')}
+                    insetChildren
+                    primaryText={norwegian}
+                    checked={locale === 'nb'}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage('en')}
+                    insetChildren
+                    primaryText={english}
+                    checked={locale === 'en'}
+                  />
+                ]}
+              />
+              <MenuItem
+                leftIcon={<MdHelp color="#41c0c4" />}
+                primaryText={
+                  <a
+                    target="_blank"
+                    style={{ textDecoration: 'none', color: '#000' }}
+                    href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
+                  >
+                    {userGuide}
+                  </a>
+                }
+                style={{ fontSize: 12, padding: 0 }}
+              />
+              <MenuItem
+                leftIcon={<MdAccount color="#41c0c4" />}
+                primaryText={`${logOut} ${username}`}
+                onClick={() => this.handleLogOut()}
+                style={{ fontSize: 12, padding: 0 }}
+              />
+            </IconMenu>
+          }
+        />
+        <ConfirmDialog
+          open={this.state.isConfirmDialogOpen}
+          handleClose={() => {
+            this.setState({
+              isConfirmDialogOpen: false
+            })
+          }}
+          handleConfirm={() => {
+            this.returnToMain();
+          }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel'
+          }}
+          intl={intl}
+        />
+      </div>
     );
   }
 }
@@ -208,6 +247,7 @@ const mapStateToProps = state => ({
   kc: state.roles.kc,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
+  stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports:
     state.routing.locationBeforeTransitions.pathname == '/reports'

@@ -284,6 +284,9 @@ class EditStopGeneral extends React.Component {
   }
 
   handleGoBack() {
+    this.setState({
+      confirmGoBack: false
+    });
     this.props.dispatch(UserActions.navigateTo('/', ''));
   }
 
