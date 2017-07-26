@@ -290,6 +290,16 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.navigateTo('/', ''));
   }
 
+  handleAllowUserToGoBack() {
+    if (this.props.stopHasBeenModified) {
+      this.setState({
+        confirmGoBack: true
+      });
+    } else {
+      this.handleGoBack();
+    }
+  }
+
   handleDiscardChanges() {
     this.setState({
       confirmUndoOpen: false
@@ -436,11 +446,7 @@ class EditStopGeneral extends React.Component {
                 marginRight: 2,
                 transform: 'scale(0.8)'
               }}
-              onClick={() => {
-                this.setState({
-                  confirmGoBack: true
-                })
-              }}
+              onClick={() => this.handleAllowUserToGoBack()}
             />
             <div>{stopPlaceLabel}</div>
           </div>
