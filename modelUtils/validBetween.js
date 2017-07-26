@@ -1,7 +1,7 @@
-// determines whether a stopPlace has expired based on validBetweens
+// determines whether an entity has expired based on validBetweens
 export const hasExpired = validBetween => {
 
-  if (!validBetween) return true;
+  if (!validBetween) return false;
 
   if (validBetween.toDate === null) return false;
 
