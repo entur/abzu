@@ -192,7 +192,7 @@ class QuayMarker extends React.Component {
       html: divBody,
       iconSize: [22, 35],
       iconAnchor: [11, 35],
-      popupAnchor: [0, 0]
+      popupAnchor: [5, 0]
     });
 
     const osmURL = this.getOSMURL();
