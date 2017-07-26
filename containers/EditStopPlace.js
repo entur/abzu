@@ -70,9 +70,6 @@ class EditStopPlace extends React.Component {
           },
         })
         .then(response => {
-
-          console.log("response", response.data);
-
           if (!response.data.stopPlace.length) {
             this.setState({
               showErrorDialog: true,

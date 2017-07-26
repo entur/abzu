@@ -13,36 +13,37 @@ class EditStopBoxTabs extends React.Component {
   }
 
   handleRemoveQuay(index, quayId) {
-    const { dispatch, activeStopPlace } = this.props
+    const { dispatch, activeStopPlace } = this.props;
     if (!quayId) {
       dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
     } else {
-      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId))
+      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId));
     }
   }
 
   handleOpenKeyValuesDialog(keyValues, type, index) {
-    this.props.dispatch(UserActions.openKeyValuesDialog(keyValues, type, index));
+    this.props.dispatch(
+      UserActions.openKeyValuesDialog(keyValues, type, index)
+    );
   }
 
   handleRemoveEntrance(index) {
     this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, 'entrance'),
+      StopPlaceActions.removeElementByType(index, 'entrance')
     );
   }
 
   handleRemovePathJunction(index) {
     this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, 'pathJunction'),
+      StopPlaceActions.removeElementByType(index, 'pathJunction')
     );
   }
 
   handleToggleCollapse(index, type) {
-    const { dispatch, expandedItem, keyValuesDialogOpen, keyValuesOrigin } = this.props;
+    const { dispatch, expandedItem } = this.props;
     const isExpanded =
       expandedItem.type === type && expandedItem.index == index;
     dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type));
-
   }
 
   getParkingType(parking) {
@@ -57,7 +58,7 @@ class EditStopBoxTabs extends React.Component {
     expandedItem,
     itemTranslation,
     noElementsStyle,
-    disabled,
+    disabled
   ) {
     return activeStopPlace.quays.length
       ? activeStopPlace.quays.map((quay, index) =>
@@ -69,14 +70,15 @@ class EditStopBoxTabs extends React.Component {
             index={index}
             publicCode={quay.publicCode}
             handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
-            handleOpenKeyValuesDialog={ () => this.handleOpenKeyValuesDialog(quay.keyValues, 'quay', index)}
+            handleOpenKeyValuesDialog={() =>
+              this.handleOpenKeyValuesDialog(quay.keyValues, 'quay', index)}
             handleLocateOnMap={this.handleLocateOnMap.bind(this)}
             handleToggleCollapse={this.handleToggleCollapse.bind(this)}
             stopPlaceType={activeStopPlace.stopPlaceType}
             expanded={
               expandedItem.type === 'quay' && index === expandedItem.index
             }
-          />,
+          />
         )
       : <div style={noElementsStyle}>
           {itemTranslation.none} {itemTranslation.quays}
@@ -88,7 +90,7 @@ class EditStopBoxTabs extends React.Component {
     expandedItem,
     itemTranslation,
     noElementsStyle,
-    disabled,
+    disabled
   ) {
     const elementsHeaderStyle = {
       fontWeight: 600,
@@ -97,7 +99,7 @@ class EditStopBoxTabs extends React.Component {
       marginTop: 30,
       textAlign: 'center',
       marginBottom: 10,
-      color: '#2196F3',
+      color: '#2196F3'
     };
 
     const hasElements =
@@ -106,8 +108,7 @@ class EditStopBoxTabs extends React.Component {
     return hasElements
       ? <div>
           <div style={elementsHeaderStyle}>
-            {' '}{itemTranslation.pathJunctions}
-            {' '}
+            {itemTranslation.pathJunctions}
           </div>
           {activeStopPlace.pathJunctions.map((pathJunction, index) =>
             <PathJunctionItem
@@ -124,7 +125,7 @@ class EditStopBoxTabs extends React.Component {
                 expandedItem.type === 'pathJunction' &&
                 index === expandedItem.index
               }
-            />,
+            />
           )}
 
           <div style={elementsHeaderStyle}> {itemTranslation.entrances} </div>
@@ -141,7 +142,7 @@ class EditStopBoxTabs extends React.Component {
               expanded={
                 expandedItem.type === 'entrance' && index === expandedItem.index
               }
-            />,
+            />
           )}
         </div>
       : <div style={noElementsStyle}>
@@ -154,7 +155,7 @@ class EditStopBoxTabs extends React.Component {
     expandedItem,
     itemTranslation,
     noElementsStyle,
-    disabled,
+    disabled
   ) {
     return activeStopPlace.parking.length
       ? activeStopPlace.parking.map((parking, index) => {
@@ -185,13 +186,13 @@ class EditStopBoxTabs extends React.Component {
       fontStyle: 'italic',
       marginTop: 100,
       textAlign: 'center',
-      fontSize: '0.8em',
+      fontSize: '0.8em'
     };
 
     const tabContainerStyle = {
       height: 220,
       position: 'relative',
-      display: 'block',
+      display: 'block'
     };
 
     const {
@@ -199,7 +200,7 @@ class EditStopBoxTabs extends React.Component {
       itemTranslation,
       activeStopPlace,
       expandedItem,
-      disabled,
+      disabled
     } = this.props;
 
     return (
@@ -210,7 +211,7 @@ class EditStopBoxTabs extends React.Component {
               expandedItem,
               itemTranslation,
               noElementsStyle,
-              disabled,
+              disabled
             )
           : null}
         {activeElementTab === 1
@@ -219,7 +220,7 @@ class EditStopBoxTabs extends React.Component {
               expandedItem,
               itemTranslation,
               noElementsStyle,
-              disabled,
+              disabled
             )
           : null}
         {activeElementTab === 2
@@ -228,7 +229,7 @@ class EditStopBoxTabs extends React.Component {
               expandedItem,
               itemTranslation,
               noElementsStyle,
-              disabled,
+              disabled
             )
           : null}
       </div>
@@ -238,7 +239,7 @@ class EditStopBoxTabs extends React.Component {
 
 const mapStateToProps = state => ({
   activeElementTab: state.user.activeElementTab,
-  expandedItem: state.mapUtils.focusedElement,
+  expandedItem: state.mapUtils.focusedElement
 });
 
 export default connect(mapStateToProps)(EditStopBoxTabs);

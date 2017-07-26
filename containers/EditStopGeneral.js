@@ -48,10 +48,12 @@ import MoveQuayDialog from '../components/MoveQuayDialog';
 import Settings from '../singletons/SettingsManager';
 
 class EditStopGeneral extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      confirmDialogOpen: false,
+      confirmUndoOpen: false,
+      confirmGoBack: false,
       saveDialogOpen: false,
       errorMessage: '',
       versionsOpen: false
@@ -287,7 +289,7 @@ class EditStopGeneral extends React.Component {
 
   handleDiscardChanges() {
     this.setState({
-      confirmDialogOpen: false
+      confirmUndoOpen: false
     });
     this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
   }
@@ -304,9 +306,9 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.hideEditStopAdditional());
   };
 
-  handleDialogClose() {
+  handleDialogClose(dialog) {
     this.setState({
-      confirmDialogOpen: false,
+      [dialog]: false,
       allowPathLinkAdjustmentsDialog: false,
       saveDialogOpen: false
     });
@@ -431,7 +433,11 @@ class EditStopGeneral extends React.Component {
                 marginRight: 2,
                 transform: 'scale(0.8)'
               }}
-              onClick={this.handleGoBack.bind(this)}
+              onClick={() => {
+                this.setState({
+                  confirmGoBack: true
+                })
+              }}
             />
             <div>{stopPlaceLabel}</div>
           </div>
@@ -541,12 +547,28 @@ class EditStopGeneral extends React.Component {
             />
           </div>
           <ConfirmDialog
-            open={this.state.confirmDialogOpen}
+            open={this.state.confirmUndoOpen}
             handleClose={() => {
-              this.handleDialogClose();
+              this.handleDialogClose('confirmUndoOpen');
             }}
             handleConfirm={() => {
               this.handleDiscardChanges();
+            }}
+            messagesById={{
+              title: 'discard_changes_title',
+              body: 'discard_changes_body',
+              confirm: 'discard_changes_confirm',
+              cancel: 'discard_changes_cancel'
+            }}
+            intl={intl}
+          />
+          <ConfirmDialog
+            open={this.state.confirmGoBack}
+            handleClose={() => {
+              this.handleDialogClose('confirmGoBack');
+            }}
+            handleConfirm={() => {
+              this.handleGoBack();
             }}
             messagesById={{
               title: 'discard_changes_title',
@@ -627,7 +649,7 @@ class EditStopGeneral extends React.Component {
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.8em' }}
             onClick={() => {
-              this.setState({ confirmDialogOpen: true });
+              this.setState({ confirmUndoOpen: true });
             }}
           />
           <IconButton
