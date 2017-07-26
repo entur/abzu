@@ -5,6 +5,8 @@ import L, { divIcon } from 'leaflet';
 import ParkingIcon from '../static/icons/parking-icon.png';
 import { connect } from 'react-redux';
 import { enturPrimaryDarker } from '../config/enturTheme';
+import { StopPlaceActions } from '../actions/';
+
 
 class ParkingAndRideMarker extends React.Component {
   static propTypes = {
@@ -28,6 +30,13 @@ class ParkingAndRideMarker extends React.Component {
     } else {
       L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
     }
+  }
+
+  handleSetFocus() {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.setElementFocus(index, 'parking'));
+    document.querySelector(".pr-item-expanded").scrollIntoView(true);
+    document.querySelector("#scroll-body").scrollTop -= 50;
   }
 
   shouldComponentUpdate(nextProps) {
@@ -92,7 +101,7 @@ class ParkingAndRideMarker extends React.Component {
         }}
         ref="marker"
       >
-        <Popup>
+        <Popup autoPan={false} onOpen={() => { this.handleSetFocus() }}>
           <div>
             <div style={{marginTop: 10, fontWeight: 600, color: 'red', marginBottom: 10, textAlign: 'center'}}>{hasExpired && translations.parkingExpired}</div>
             <div

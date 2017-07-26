@@ -103,7 +103,7 @@ class ParkingItem extends React.Component {
         </div>
         {!expanded
           ? null
-          : <div>
+          : <div className="pr-item-expanded">
               <TextField
                 hintText={translations.name}
                 disabled={disabled || parking.hasExpired}
