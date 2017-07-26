@@ -68,7 +68,8 @@ convictPromise
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),
-          OSMUrl: convict.get('OSMUrl')
+          OSMUrl: convict.get('OSMUrl'),
+          tiamatEnv: convict.get('tiamatEnv')
         };
 
         createKeyCloakConfig(convict.get('authServerUrl'));

@@ -10,6 +10,12 @@ module.exports = new Promise(function(resolve, reject) {
       default: 'development',
       env: 'NODE_ENV'
     },
+    tiamatEnv: {
+      doc: 'Back end applicaton environment.',
+      format: ['production', 'development', 'test'],
+      default: 'development',
+      env: 'TIAMAT_ENV'
+    },
     configUrl: {
       doc: 'URL for where to read the configuration',
       format: '*',

@@ -14,27 +14,15 @@ const darkBlack = 'rgba(0, 0, 0, 0.87)';
 const fullBlack = 'rgba(0, 0, 0, 1)';
 
 export const getTiamatEnv = () => {
-
-  let tiamatBaseUrl = getIn(window, ['config', 'tiamatBaseUrl'], null);
-  if (tiamatBaseUrl == null) return 'Local';
-
-  if (tiamatBaseUrl.indexOf('api.entur.org') > -1) {
-    return 'Prod';
-  }
-
-  if (tiamatBaseUrl.indexOf('www-test.entur.org') > -1) {
-    return 'Test';
-  }
-  return 'Local';
+  return getIn(window, ['config', 'tiamatEnv'], 'development');
 };
 
 export const getEnvColor = env => {
   let currentEnv = env || getTiamatEnv();
-
-  switch (currentEnv) {
-    case 'Local': return '#d18e25';
-    case 'Test': return '#457645';
-    case 'Prod': return enturDark;
+  switch (currentEnv.toLowerCase()) {
+    case 'development': return '#d18e25';
+    case 'test': return '#457645';
+    case 'prod': return enturDark;
     default: return enturDark;
   }
 }

@@ -90,7 +90,7 @@ class Header extends React.Component {
         title={
           <div>
             {title}
-            {tiamatEnv !== 'Prod' &&
+            {(tiamatEnv === 'test' || tiamatEnv === 'development') &&
               <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
                 {tiamatEnv}
               </span>}
