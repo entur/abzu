@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { isModeOptionsValidForMode, getModeOptions } from '../../roles/rolesParser';
-import { getAllowanceInfo , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
+import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
 import stopTypes, { submodes } from '../../models/stopTypes';
 
 const stopPlaceResult = {

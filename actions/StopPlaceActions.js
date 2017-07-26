@@ -1,6 +1,7 @@
 import * as types from './Types';
 import { getCentroid } from '../utils/mapUtils';
-import { UserActions } from './'
+import { UserActions } from './';
+import { getIn } from '../utils/'
 
 var StopPlaceActions = {};
 
@@ -17,8 +18,10 @@ StopPlaceActions.changeLocationNewStop = location => dispatch => {
   );
 };
 
-StopPlaceActions.useNewStopAsCurrent = () => dispatch => {
-  dispatch(sendData(types.USE_NEW_STOP_AS_CURENT, null));
+StopPlaceActions.useNewStopAsCurrent = () => (dispatch, getState) => {
+  let state = getState();
+  let location = getIn(state, ['stopPlace','newStop', 'location'], null);
+  dispatch(sendData(types.USE_NEW_STOP_AS_CURENT, location));
 };
 
 StopPlaceActions.changeStopName = name => dispatch => {

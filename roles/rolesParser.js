@@ -66,8 +66,6 @@ RoleParser.filterByEntity = (roles, stopPlaceType, transportMode, submode, stopP
   return result;
 };
 
-const areEqual = (a, b) => a.toUpperCase() === b.toUpperCase();
-
 const isInArrayIgnoreCase = (array, value) => {
   if (!array || !array.length) return false;
 

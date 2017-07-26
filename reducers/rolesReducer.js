@@ -1,5 +1,5 @@
 import * as types from '../actions/Types';
-import { getAllowanceInfo, getAllowanceSearchInfo } from './rolesReducerUtils';
+import { getAllowanceInfoForStop, getAllowanceSearchInfo, getAllowInfoNewStop } from './rolesReducerUtils';
 
 export const initialState = {};
 
@@ -8,7 +8,7 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === 'stopPlaceAndPathLink') {
         return Object.assign({}, state, {
-          allowanceInfo: getAllowanceInfo(action.result, state.kc.tokenParsed)
+          allowanceInfo: getAllowanceInfoForStop(action.result, state.kc.tokenParsed)
         });
       } else {
         return state;
@@ -18,6 +18,11 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfoSearchResult: getAllowanceSearchInfo(action.payLoad, state.kc.tokenParsed)
       });
+
+    case types.USE_NEW_STOP_AS_CURENT:
+      return Object.assign(({}, state, {
+        allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
+      }))
 
     default:
       return state;

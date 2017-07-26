@@ -2,7 +2,7 @@ import roleParser, { getModeOptions, isModeOptionsValidForMode } from '../roles/
 import { getIn } from '../utils/';
 import stopTypes, { submodes } from '../models/stopTypes';
 
-export const getAllowanceInfo = (result, tokenParsed) => {
+export const getAllowanceInfoForStop = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
   let editStopRoles = roleParser.getEditStopRoles(tokenParsed);
   let latlng = getLatLngFromResult(result);
@@ -43,6 +43,19 @@ export const getAllowanceInfo = (result, tokenParsed) => {
     canEdit
   };
 };
+
+export const getAllowInfoNewStop = (latlng, tokenParsed) => {
+  let editStopRoles = roleParser.getEditStopRoles(tokenParsed);
+  let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
+    editStopRoles,
+    latlng
+  );
+  return {
+    legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
+    legalSubmodes: getLegalSubmodes(rolesAllowingGeo),
+    canEdit: true,
+  }
+}
 
 export const getLegalSubmodes = roles => {
   return filterByLegalMode(roles, submodes, 'Submode');
