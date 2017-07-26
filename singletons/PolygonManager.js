@@ -3,6 +3,7 @@ import { isCoordinatesInsidePolygon } from '../utils/mapUtils';
 
 let instance = null;
 let fetchedPolygons = null;
+let allowNewStopEverywhere = false;
 
 class PolygonManager {
   constructor() {
@@ -22,6 +23,8 @@ class PolygonManager {
       if (roleJSON.r === 'editStops') {
         if (!!roleJSON.z) {
           administrativeZoneIds.push(roleJSON.z);
+        } else {
+          allowNewStopEverywhere = true;
         }
       }
     });
@@ -32,7 +35,7 @@ class PolygonManager {
   isPointInPolygon(point) {
     let inside = false;
 
-    if (!fetchedPolygons) return true;
+    if (!fetchedPolygons || allowNewStopEverywhere) return true;
 
     Object.keys(fetchedPolygons).forEach(k => {
       let polygon = fetchedPolygons[k];
