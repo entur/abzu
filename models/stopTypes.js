@@ -11,7 +11,7 @@ const stopTypes = {
           value: null
         },
         {
-          name: 'Erstatningsbus',
+          name: 'Erstatningsbuss',
           value: 'railReplacementBus'
         },
         {
@@ -35,11 +35,11 @@ const stopTypes = {
           value: 'schoolBus'
         },
         {
-          name: 'Shufflebuss',
+          name: 'Shuttlebuss',
           value: 'shuttleBus'
         },
         {
-          name: 'Turistbus',
+          name: 'Turistbuss',
           value: 'sightseeingBus'
         },
         {
