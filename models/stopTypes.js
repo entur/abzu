@@ -11,40 +11,149 @@ const stopTypes = {
           value: null
         },
         {
-          name: 'Erstatningsbuss',
-          value: 'railReplacementBus'
+          name: "Ekspressbuss",
+          value: "expressBus"
         },
         {
-          name: 'Lokalbuss',
-          value: 'localBus'
+          name: "Erstatningsbuss",
+          value: "railReplacementBus"
         },
         {
-          name: 'Regional bussrute',
-          value: 'regionalBus'
+          name: "Flybuss",
+          value: "airportLinkBus"
         },
         {
-          name: 'Ekspressbuss',
-          value: 'expressBus'
+          name: "Lokalbuss",
+          value: "localBus"
         },
         {
-          name: 'Nattbuss',
-          value: 'nightBus'
+          name: "Nattbuss",
+          value: "nightBus"
         },
         {
-          name: 'Skolerute',
-          value: 'schoolBus'
+          name: "Regional bussrute",
+          value: "regionalBus"
         },
         {
-          name: 'Shuttlebuss',
-          value: 'shuttleBus'
+          name: "Shuttlebuss",
+          value: "shuttleBus"
         },
         {
-          name: 'Turistbuss',
-          value: 'sightseeingBus'
+          name: "Skolerute",
+          value: "schoolBus"
         },
         {
-          name: 'Flybuss',
-          value: 'airportLinkBus'
+          name: "Turistbuss",
+          value: "sightseeingBus"
+        }
+      ]
+    },
+    {
+      name: 'Bussterminal',
+      value: 'busStation',
+      quayItemName: 'platform'
+    },
+    {
+      name: 'Bilferjekai',
+      value: 'harbourPort',
+      quayItemName: 'port',
+      transportMode: 'water',
+      submodes: [
+        {
+          name: 'Ikke spesifisert',
+          value: null
+        },
+        {
+          value: "highSpeedPassengerService",
+          name: "Hurtigbåt"
+        },
+        {
+          value: "nationalCarFerry",
+          name: "Hurtigruten"
+        },
+        {
+          value: "localCarFerry",
+          name: "Innenriks bilferje"
+        },
+        {
+          value: "internationalCarFerry",
+          name: "Internasjonal passsjerbåt"
+        },
+        {
+          value: "highSpeedVehicleService",
+          name: "Kombibåt"
+        }
+      ]
+    },
+    {
+      name: 'Passasjerbåtkai',
+      value: 'ferryStop',
+      quayItemName: 'port',
+      transportMode: 'water',
+      submodes: [
+        {
+          name: 'Ikke spesifisert',
+          value: null
+        },
+        {
+          value: "highSpeedPassengerService",
+          name: "Hurtigbåt"
+        },
+        {
+          value: "localPassengerFerry",
+          name: "Innenriks bilferje"
+        },
+        {
+          value: "internationalPassengerFerry",
+          name: "Internasjonal passasjerbåt"
+        },
+        {
+          value: "highSpeedVehicleService",
+          name: "Kombibåt"
+        },
+        {
+          value: "sightseeingService",
+          name: "Turistbåtrute"
+        }
+      ]
+    },
+    {
+      name: 'Togstopp',
+      value: 'railStation',
+      quayItemName: 'track',
+      transportMode: 'rail',
+      submodes: [
+        {
+          name: 'Ikke spesifisert',
+          value: null
+        },
+        {
+          value: "longDistance",
+          name: "Intercity (IC)"
+        },
+        {
+          value: "internationalRail",
+          name: "Internasjonal jernbane"
+        },
+        {
+          value: "local",
+          name: "Lokaltog"
+        },
+        {
+          value: "touristRailway",
+          name: "Museumtog"
+        },
+        {
+          value: "nightRail",
+          name: "Nattog"
+        },
+        {
+          value: "interregionalRail",
+          name: "Regiontog (DT)"
+        },
+        {
+          value: "regionalRail",
+          name: "Regiontog (RT)"
         }
       ]
     },
@@ -61,6 +170,22 @@ const stopTypes = {
         {
           value: 'localTram',
           name: 'Sporvogn'
+        }
+      ]
+    },
+    {
+      name: 'T-banestopp',
+      value: 'metroStation',
+      quayItemName: 'track',
+      transportMode: 'metro',
+      submodes: [
+        {
+          name: 'Ikke spesifisert',
+          value: null
+        },
+        {
+          name: 'T-bane',
+          value: 'metro'
         }
       ]
     },
@@ -85,132 +210,6 @@ const stopTypes = {
         {
           value: 'helicopterService',
           name: 'Helikopterrute'
-        }
-      ]
-    },
-    {
-      name: 'Togstopp',
-      value: 'railStation',
-      quayItemName: 'track',
-      transportMode: 'rail',
-      submodes: [
-        {
-          name: 'Ikke spesifisert',
-          value: null
-        },
-        {
-          value: 'local',
-          name: 'Lokaltog'
-        },
-        {
-          value: 'regionalRail',
-          name: 'Regiontog (RT)'
-        },
-        {
-          value: 'internationalRail',
-          name: 'Internasjonal jernbane'
-        },
-        {
-          value: 'interregionalRail',
-          name: 'Regiontog (DT)'
-        },
-
-        {
-          value: 'longDistance',
-          name: 'Intercity (IC)'
-        },
-        {
-          value: 'nightRail',
-          name: 'Nattog'
-        },
-        {
-          value: 'touristRailway',
-          name: 'Museumtog'
-        }
-      ]
-    },
-    {
-      name: 'T-banestopp',
-      value: 'metroStation',
-      quayItemName: 'track',
-      transportMode: 'metro',
-      submodes: [
-        {
-          name: 'Ikke spesifisert',
-          value: null
-        },
-        {
-          name: 'T-bane',
-          value: 'metro'
-        }
-      ]
-    },
-    {
-      name: 'Bussterminal',
-      value: 'busStation',
-      quayItemName: 'platform'
-    },
-    {
-      name: 'Bilferjekai',
-      value: 'harbourPort',
-      quayItemName: 'port',
-      transportMode: 'water',
-      submodes: [
-        {
-          name: 'Ikke spesifisert',
-          value: null
-        },
-        {
-          value: 'highSpeedPassengerService',
-          name: 'Hurtigbåt'
-        },
-        {
-          value: 'highSpeedVehicleService',
-          name: 'Kombibåt'
-        },
-        {
-          value: 'internationalCarFerry',
-          name: 'Internasjonal passsjerbåt'
-        },
-        {
-          value: 'localCarFerry',
-          name: 'Innenriks bilferje'
-        },
-        {
-          value: 'nationalCarFerry',
-          name: 'Hurtigruten'
-        }
-      ]
-    },
-    {
-      name: 'Passasjerbåtkai',
-      value: 'ferryStop',
-      quayItemName: 'port',
-      transportMode: 'water',
-      submodes: [
-        {
-          name: 'Ikke spesifisert',
-          value: null
-        },
-        {
-          value: 'highSpeedPassengerService',
-          name: 'Hurtigbåt'
-        },
-        {
-          value: 'highSpeedVehicleService',
-          name: 'Kombibåt'
-        },
-        {
-          value: 'internationalPassengerFerry',
-          name: 'Internasjonal passasjerbåt'
-        },
-        {
-          value: 'localPassengerFerry',
-          name: 'Innenriks bilferje'
-        },
-        {
-          value: 'sightseeingService',
-          name: 'Turistbåtrute'
         }
       ]
     },
@@ -243,137 +242,40 @@ const stopTypes = {
           value: null
         },
         {
-          name: 'Rail replacement bus',
-          value: 'railReplacementBus'
+          name: "Airport Link bus",
+          value: "airportLinkBus"
         },
         {
-          name: 'Local bus',
-          value: 'localBus'
+          name: "Express bus",
+          value: "expressBus"
         },
         {
-          name: 'Regional bus',
-          value: 'regionalBus'
+          name: "Local bus",
+          value: "localBus"
         },
         {
-          name: 'Express bus',
-          value: 'expressBus'
+          name: "Night bus",
+          value: "nightBus"
         },
         {
-          name: 'Night bus',
-          value: 'nightBus'
+          name: "Rail replacement bus",
+          value: "railReplacementBus"
         },
         {
-          name: 'School bus',
-          value: 'schoolBus'
+          name: "Regional bus",
+          value: "regionalBus"
         },
         {
-          name: 'Shuttle bus',
-          value: 'shuttleBus'
+          name: "School bus",
+          value: "schoolBus"
         },
         {
-          name: 'Sightseeing bus',
-          value: 'sightseeingBus'
+          name: "Shuttle bus",
+          value: "shuttleBus"
         },
         {
-          name: 'Airport Link bus',
-          value: 'airportLinkBus'
-        }
-      ]
-    },
-    {
-      name: 'City tram',
-      value: 'onstreetTram',
-      transportMode: 'tram',
-      quayItemName: 'platform',
-      submodes: [
-        {
-          name: 'Not specified',
-          value: null
-        },
-        {
-          value: 'localTram',
-          name: 'Local tram'
-        }
-      ]
-    },
-    {
-      name: 'Airport',
-      value: 'airport',
-      transportMode: 'air',
-      quayItemName: 'gate',
-      submodes: [
-        {
-          name: 'Not specified',
-          value: null
-        },
-        {
-          value: 'domesticFlight',
-          name: 'Domestic flight'
-        },
-        {
-          value: 'internationalFlight',
-          name: 'International flight'
-        },
-        {
-          value: 'helicopterService',
-          name: 'Helicopter service'
-        }
-      ]
-    },
-    {
-      name: 'Rail station',
-      value: 'railStation',
-      quayItemName: 'track',
-      transportMode: 'rail',
-      submodes: [
-        {
-          name: 'Not specified',
-          value: null
-        },
-        {
-          value: 'local',
-          name: 'Local train'
-        },
-        {
-          value: 'regionalRail',
-          name: 'Regional train'
-        },
-        {
-          value: 'internationalRail',
-          name: 'International rail'
-        },
-        {
-          value: 'interregionalRail',
-          name: 'Interregional rail'
-        },
-
-        {
-          value: 'longDistance',
-          name: 'Long distance train'
-        },
-        {
-          value: 'nightRail',
-          name: 'Night rail'
-        },
-        {
-          value: 'touristRailway',
-          name: 'Tourist railway'
-        }
-      ]
-    },
-    {
-      name: 'Metro stop',
-      quayItemName: 'track',
-      value: 'metroStation',
-      transportMode: 'metro',
-      submodes: [
-        {
-          name: 'Not specified',
-          value: null
-        },
-        {
-          name: 'Metro',
-          value: 'metro'
+          name: "Sightseeing bus",
+          value: "sightseeingBus"
         }
       ]
     },
@@ -393,24 +295,24 @@ const stopTypes = {
           value: null
         },
         {
-          value: 'highSpeedPassengerService',
-          name: 'High speed passenger service'
+          value: "highSpeedPassengerService",
+          name: "High speed passenger service"
         },
         {
-          value: 'highSpeedVehicleService',
-          name: 'High speed vehicle service'
+          value: "highSpeedVehicleService",
+          name: "High speed vehicle service"
         },
         {
-          value: 'internationalCarFerry',
-          name: 'International car ferry'
+          value: "internationalCarFerry",
+          name: "International car ferry"
         },
         {
-          value: 'localCarFerry',
-          name: 'Local car ferry'
+          value: "localCarFerry",
+          name: "Local car ferry"
         },
         {
-          value: 'nationalCarFerry',
-          name: 'National car ferry'
+          value: "nationalCarFerry",
+          name: "National car ferry"
         }
       ]
     },
@@ -443,6 +345,102 @@ const stopTypes = {
         {
           value: 'sightseeingService',
           name: 'Sightseeing service'
+        }
+      ]
+    },
+    {
+      name: 'Rail station',
+      value: 'railStation',
+      quayItemName: 'track',
+      transportMode: 'rail',
+      submodes: [
+        {
+          name: 'Not specified',
+          value: null
+        },
+        {
+          value: "internationalRail",
+          name: "International rail"
+        },
+        {
+          value: "interregionalRail",
+          name: "Interregional rail"
+        },
+        {
+          value: "local",
+          name: "Local train"
+        },
+        {
+          value: "longDistance",
+          name: "Long distance train"
+        },
+        {
+          value: "nightRail",
+          name: "Night rail"
+        },
+        {
+          value: "regionalRail",
+          name: "Regional train"
+        },
+        {
+          value: "touristRailway",
+          name: "Tourist railway"
+        }
+      ]
+    },
+    {
+      name: 'City tram',
+      value: 'onstreetTram',
+      transportMode: 'tram',
+      quayItemName: 'platform',
+      submodes: [
+        {
+          name: 'Not specified',
+          value: null
+        },
+        {
+          value: 'localTram',
+          name: 'Local tram'
+        }
+      ]
+    },
+    {
+      name: 'Metro stop',
+      quayItemName: 'track',
+      value: 'metroStation',
+      transportMode: 'metro',
+      submodes: [
+        {
+          name: 'Not specified',
+          value: null
+        },
+        {
+          name: 'Metro',
+          value: 'metro'
+        }
+      ]
+    },
+    {
+      name: 'Airport',
+      value: 'airport',
+      transportMode: 'air',
+      quayItemName: 'gate',
+      submodes: [
+        {
+          name: 'Not specified',
+          value: null
+        },
+        {
+          value: 'domesticFlight',
+          name: 'Domestic flight'
+        },
+        {
+          value: 'helicopterService',
+          name: 'Helicopter service'
+        },
+        {
+          value: 'internationalFlight',
+          name: 'International flight'
         }
       ]
     },
