@@ -38,6 +38,64 @@ class SaveDialog extends React.Component {
     });
   }
 
+  handleSetToDate(value) {
+    const { timeFrom, timeTo } = this.state;
+
+    let newTimeFrom = timeTo
+      ? new Date(timeTo.valueOf())
+      : new Date(timeFrom.valueOf());
+
+    if (timeTo === null) {
+      if (timeTo === null && timeFrom !== null) {
+        newTimeFrom = newTimeFrom.setTime(
+          timeFrom.getTime() + 1000 * 60
+        );
+      }
+    }
+
+    this.setState({
+      dateTo: value,
+      timeTo: new Date(newTimeFrom)
+    });
+  }
+
+  isDateRangeLegal() {
+    const { dateTo, dateFrom, expiraryExpanded, timeFrom, timeTo } = this.state;
+    // No doing this computation
+    if (!expiraryExpanded) {
+      return {
+        dateLegal: true,
+        timeLegal: true
+      };
+    }
+
+    if (timeTo === null && timeFrom === null && dateTo !== null && dateFrom !== null) {
+      return {
+        dateLegal: dateTo > dateFrom,
+        timeLegal: true
+      };
+    }
+
+    if (timeTo !== null && timeFrom !== null && dateTo !== null && dateFrom !== null) {
+      if (dateTo.toDateString() === dateFrom.toDateString()) {
+        return {
+          dateLegal: true,
+          timeLegal: timeTo > timeFrom
+        };
+      } else {
+        return {
+          dateLegal: dateTo > dateFrom,
+          timeLegal: true
+        };
+      }
+    }
+    return {
+      dateLegal: dateTo < dateFrom,
+      timeLegal: true
+    };
+
+  }
+
   getInitialState() {
     const now = new Date();
     return {
@@ -121,11 +179,7 @@ class SaveDialog extends React.Component {
       comment: formatMessage({ id: 'comment' }),
     };
 
-    const toDateIsBeforeFromDate = dateTo != null &&
-      dateFrom != null &&
-      expiraryExpanded
-      ? new Date(dateTo) < new Date(dateFrom)
-      : false;
+    const { timeLegal, dateLegal } = this.isDateRangeLegal();
 
     const actions = [
       <FlatButton
@@ -138,7 +192,7 @@ class SaveDialog extends React.Component {
         primary={true}
         keyboardFocused={true}
         icon={isSaving && !errorMessage.length ? <MdSpinner /> : <MdSave />}
-        disabled={toDateIsBeforeFromDate || isSaving}
+        disabled={!timeLegal || !dateLegal || isSaving}
         onTouchTap={() => this.handleSave()}
       />,
     ];
@@ -211,16 +265,16 @@ class SaveDialog extends React.Component {
                   value={dateTo}
                   textFieldStyle={{
                     width: '80%',
-                    border: toDateIsBeforeFromDate
+                    border: !dateLegal
                       ? '1px solid #ff0d0d'
                       : 'none',
                   }}
                   onChange={(event, value) => {
-                    this.setState({ dateTo: value });
+                    this.handleSetToDate(value);
                   }}
                 />
                 <div style={{ fontSize: 10, color: 'rgb(244, 67, 54)' }}>
-                  {toDateIsBeforeFromDate ? translations.error : ''}
+                  {!dateLegal ? translations.error : ''}
                 </div>
                 <TimePicker
                   format="24hr"
@@ -228,13 +282,21 @@ class SaveDialog extends React.Component {
                   hintText={translations.time}
                   value={timeTo}
                   okLabel={translations.use}
-                  textFieldStyle={{ width: '80%' }}
+                  textFieldStyle={{
+                    width: '80%',
+                    border: !timeLegal
+                      ? '1px solid #ff0d0d'
+                      : 'none',
+                  }}
                   onChange={(event, value) => {
                     this.setState({
                       timeTo: new Date(new Date(value).setSeconds(0)),
                     });
                   }}
                 />
+                <div style={{ fontSize: 10, color: 'rgb(244, 67, 54)' }}>
+                  {!timeLegal ? translations.error : ''}
+                </div>
               </div>
             </div>
           : null}
