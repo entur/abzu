@@ -97,11 +97,11 @@ describe('getAllowanceInfo', () => {
     expect(legalStopPlaceTypes).toEqual(
       [
         "onstreetBus",
-        "onstreetTram",
-        "metroStation",
         "busStation",
         "harbourPort",
         "ferryStop",
+        "onstreetTram",
+        "metroStation",
         "liftStation"
       ]
     );
@@ -129,8 +129,8 @@ describe('getAllowanceInfo', () => {
     let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
     expect(legalStopPlaceTypes).toEqual(
       [
-        "airport",
-        "railStation"
+        "railStation",
+        "airport"
       ]
     );
   });
