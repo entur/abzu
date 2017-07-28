@@ -94,6 +94,7 @@
   "filter_by_topography" : "Kommune / fylke",
   "filter_report_by_modality": "Filtrer på modalitet",
   "filter_report_by_topography": "Filtrer på fylker og kommuner",
+  "filters_are_applied": "Ditt søk har aktive filtre",
   "filter_save_favorite": "Lagre søk ...",
   "filters" : "Filtre ...",
   "filters_less": "Færre filtre",

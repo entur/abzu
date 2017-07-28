@@ -25,6 +25,7 @@ import TopographicalFilter from '../components/TopographicalFilter';
 import Divider from 'material-ui/Divider';
 import debounce from 'lodash.debounce';
 import { getIn } from '../utils/';
+import { enturPrimaryDarker } from '../config/enturTheme';
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -80,6 +81,13 @@ class SearchBox extends React.Component {
 
   handleSaveAsFavorite() {
     this.props.dispatch(UserActions.openFavoriteNameDialog());
+  }
+
+  removeFiltersAndSearch() {
+    this.props.dispatch(UserActions.removeAllFilters());
+    this.handleSearchUpdate(this.props.searchText, null, null, {
+      topoiChips: [], stopTypeFilter: []
+    });
   }
 
   handleRetrieveFilter(filter) {
@@ -171,7 +179,7 @@ class SearchBox extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    const { dataSource = [] } = nextProps;
+    const { dataSource = [], topoiChips, stopTypeFilter } = nextProps;
     const { formatMessage } = nextProps.intl;
 
     // do not map menuItems if source is the same
@@ -188,7 +196,7 @@ class SearchBox extends React.Component {
         text: element.name,
         value: (
           <MenuItem
-            style={{ marginTop: 5, paddingRight: 5, width: 'auto' }}
+            style={{ marginTop: 3, paddingRight: 5, width: 'auto' }}
             key={element.id}
             innerDivStyle={{ minWidth: 300, padding: '0px 16px 0px 0px' }}
             primaryText={
@@ -238,6 +246,39 @@ class SearchBox extends React.Component {
         },
       ];
     }
+
+    if (stopTypeFilter.length || topoiChips.length) {
+
+      const filterNotification = {
+        text: '',
+        value: (
+          <MenuItem
+            style={{ paddingRight: 10, width: 'auto', paddingTop: 2, paddingBottom: 2}}
+            disabled={true}
+            primaryText={
+              <div style={{display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #000'}}>
+                <span style={{ fontSize: '0.8em', color: '#777' }}>
+                  { formatMessage({id: 'filters_are_applied'}) }
+                </span>
+                <span
+                  onClick={() => this.removeFiltersAndSearch()}
+                  style={{ fontSize: '0.8em', color: enturPrimaryDarker, marginRight: 5, cursor: 'pointer'}}
+                >
+                  { formatMessage({id: 'remove'})}
+                </span>
+              </div>
+            }
+          />
+        ),
+      };
+
+      if (this._menuItems.length > 6) {
+        this._menuItems[6] = filterNotification;
+      } else {
+        this._menuItems.push(filterNotification);
+      }
+    }
+
   }
 
   render() {
@@ -370,8 +411,8 @@ class SearchBox extends React.Component {
                     />
                     <TopographicalFilter
                       topoiChips={topoiChips}
-                      handleDeleteChip={chip =>
-                        this.props.dispatch(UserActions.deleteChip(chip))}
+                      handleDeleteChip={chipId =>
+                        this.props.dispatch(UserActions.deleteChip(chipId))}
                     />
                   </div>
                 : <div style={{ width: '100%', textAlign: 'center' }}>

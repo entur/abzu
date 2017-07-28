@@ -174,6 +174,10 @@ class ReportPage extends React.Component {
       this.setState({
         topoiChips: this.state.topoiChips.concat(chip)
       });
+
+      this.refs.topoFilter.setState({
+        searchText: ''
+      });
     }
   }
 

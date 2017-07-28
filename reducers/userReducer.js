@@ -52,6 +52,11 @@ const userReducer = (state = initialState, action) => {
         searchFilters: { ...state.searchFilters, stopType: action.payLoad }
       });
 
+    case types.REMOVED_ALL_FILTERS:
+      return Object.assign({}, state, {
+        searchFilters: { topoiChips: [], stopType: [] }
+      });
+
     case types.OPENED_SNACKBAR:
       return Object.assign({}, state, {
         snackbarOptions: {
@@ -82,11 +87,8 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.DELETED_TOPOS_CHIP:
-      let chipToDelete = state.searchFilters.topoiChips
-        .map(chip => chip.key)
-        .indexOf(action.payLoad);
-      let chips = state.searchFilters.topoiChips.slice(0);
-      chips.splice(chipToDelete, 1);
+      let chips = state.searchFilters.topoiChips
+        .filter(chip => chip.value !== action.payLoad);
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,

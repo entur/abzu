@@ -2,6 +2,7 @@ import React from 'react';
 import Chip from 'material-ui/Chip';
 
 class TopographicalFilter extends React.Component {
+
   renderChip(data) {
     const isCounty = data.type === 'county';
     const typeColor = isCounty ? '#73919b' : '#cde7eb';
@@ -12,10 +13,12 @@ class TopographicalFilter extends React.Component {
       backgroundColor: typeColor,
     };
 
+    let id = data.id || data.value;
+
     return (
       <Chip
-        key={data.id}
-        onRequestDelete={() => this.props.handleDeleteChip(data.id)}
+        key={id}
+        onRequestDelete={() => this.props.handleDeleteChip(id)}
         style={chipStyle}
       >
         <span style={{ color: typeTextColor }}>{data.text}</span>

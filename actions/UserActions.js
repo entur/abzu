@@ -188,6 +188,12 @@ UserActions.startCreatingPolyline = (coordinates, id, type) => dispatch => {
   );
 };
 
+UserActions.removeAllFilters = () => dispatch => {
+  dispatch(
+    sendData(types.REMOVED_ALL_FILTERS, null)
+  )
+};
+
 UserActions.addCoordinatesToPolylines = coords => dispatch => {
   dispatch(sendData(types.ADDED_COORDINATES_TO_POLYLINE, coords));
 };

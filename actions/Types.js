@@ -93,6 +93,7 @@ export const CREATED_KEY_VALUES_PAIR = 'CREATED_KEY_VALUES_PAIR';
 export const DELETED_KEY_VALUES_BY_KEY = 'DELETED_KEY_VALUES_BY_KEY';
 export const OPEN_PARKING_ELEMENT = 'OPEN_PARKING_ELEMENT';
 export const SORTED_QUAYS = 'SORTED_QUAYS';
+export const REMOVED_ALL_FILTERS = 'REMOVED_ALL_FILTERS';
 
 //Snackbar types
 export const SNACKBAR_MESSAGE_SAVED = 'snackbar_message_saved';
