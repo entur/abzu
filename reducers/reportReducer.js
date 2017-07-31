@@ -14,7 +14,7 @@ const reportReducer = (state = initialState, action) => {
       } else if (action.operationName === 'findStopForReport') {
         return reduceSearchResultsForReport(state, action);
         // Used for adding parking elements to stopPlaces
-      } else if (action.operationName === '') {
+      } else if (!action.operationName) {
         return populateStopPlacesWithParking(state, action.result.data);
       } else {
         return state;
