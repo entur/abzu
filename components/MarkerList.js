@@ -15,6 +15,7 @@ import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
 import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../graphql/Queries';
 import { getIn } from '../utils/';
+import CoordinateMarker from './CoordinateMarker';
 
 class MarkerList extends React.Component {
   static PropTypes = {
@@ -175,6 +176,13 @@ class MarkerList extends React.Component {
 
     stops.forEach((stop, stopIndex) => {
       const localeStopType = getLocaleStopTypeName(stop.stopPlaceType, intl);
+
+      if (stop.coordinatePin) {
+        popupMarkers.push(
+          <CoordinateMarker position={stop.position} key={'coordinatePin'}
+          />
+        );
+      }
 
       if (stop.isNewStop && !isEditingStop) {
         popupMarkers.push(

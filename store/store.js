@@ -86,6 +86,7 @@ export default function configureStore(kc) {
       activeBaselayer: Settings.getMapLayer(),
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
+      lookupCoordinatesOpen: false,
       client
     },
     roles: {

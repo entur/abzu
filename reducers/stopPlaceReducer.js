@@ -6,6 +6,7 @@ import * as types from '../actions/Types';
 import formatHelpers from '../modelUtils/mapToClient';
 import limitationHelpers from '../modelUtils/limitationHelpers';
 import equipmentHelpers from '../modelUtils/equipmentHelpers';
+import { setDecimalPrecision } from '../utils/';
 
 const stopPlaceReducer = (state = {}, action) => {
   switch (action.type) {
@@ -51,6 +52,12 @@ const stopPlaceReducer = (state = {}, action) => {
         pathLink: JSON.parse(JSON.stringify(state.originalPathLink)),
       });
 
+    case types.SET_CENTER_AND_ZOOM:
+      return Object.assign({}, state, {
+        centerPosition: action.payLoad.position.slice(),
+        zoom: action.payLoad.zoom
+      });
+
     case types.NAVIGATE_TO:
       if (action.payLoad === '') {
         return Object.assign({}, state, {
@@ -70,7 +77,17 @@ const stopPlaceReducer = (state = {}, action) => {
     case types.SORTED_QUAYS:
       return Object.assign({}, state, {
         current: formatHelpers.sortQuays(state.current, action.payLoad)
-      })
+      });
+
+    case types.LOOKUP_COORDINATES:
+      return Object.assign({}, state, {
+        findCoordinates: {
+          position: action.payLoad.position.map(pos => setDecimalPrecision(pos, 6)),
+          coordinatePin: true
+        },
+        centerPosition: action.payLoad.triggeredByDrag ? state.centerPosition : action.payLoad.position,
+        zoom: action.payLoad.triggeredByDrag ? state.zoom : 5,
+      });
 
     case types.CHANGED_WEIGHTING_STOP_PLACE:
       return Object.assign({}, state, {

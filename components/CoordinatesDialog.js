@@ -67,12 +67,12 @@ class CoordinatesDialog extends React.Component {
   }
 
   render() {
-    const { open, intl } = this.props;
+    const { open, intl, titleId } = this.props;
     const { formatMessage } = intl;
     const coordinates = this.state.coordinates || this.props.coordinates;
 
     const confirmDialogTranslation = {
-      title: formatMessage({ id: 'change_coordinates' }),
+      title: formatMessage({ id: titleId || 'change_coordinates' }),
       body: formatMessage({ id: 'change_coordinates_help_text' }),
       confirm: formatMessage({ id: 'change_coordinates_confirm' }),
       cancel: formatMessage({ id: 'change_coordinates_cancel' }),

@@ -33,6 +33,14 @@ UserActions.navigateToMainAfterDelete = () => dispatch => {
   goToRoute('/','');
 };
 
+UserActions.closeLookupCoordinatesDialog = () => dispatch => {
+  dispatch(sendData(types.CLOSED_LOOKUP_COORDINATES_DIALOG, null));
+};
+
+UserActions.openLookupCoordinatesDialog = () => dispatch => {
+  dispatch(sendData(types.OPEN_LOOKUP_COORDINATES_DIALOG, null));
+};
+
 UserActions.clearSearchResults = () => dispatch => {
   dispatch(sendData(types.CLEAR_SEARCH_RESULTS, null));
 };
@@ -120,6 +128,12 @@ UserActions.setStopPlaceTypes = stopPlaces => dispatch => {
 
 UserActions.deleteChip = key => dispatch => {
   dispatch(sendData(types.DELETED_TOPOS_CHIP, key));
+};
+
+UserActions.setCenterAndZoom = (position, zoom) => (dispatch, getState) => {
+  const state = getState();
+  let newZoom = zoom || state.stopPlace.zoom;
+  dispatch(sendData(types.SET_CENTER_AND_ZOOM, { position, zoom: newZoom }));
 };
 
 UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
@@ -332,8 +346,12 @@ UserActions.moveQuay = quayProps => dispatch => {
   dispatch(sendData(types.REQUESTED_MOVE_QUAY, quayProps));
 };
 
-UserActions.setZoomLevel = zoomLevel => dispatch =>{
+UserActions.setZoomLevel = zoomLevel => dispatch => {
   dispatch(sendData(types.SET_ZOOM_LEVEL, zoomLevel));
+};
+
+UserActions.lookupCoordinates = (latLng, triggeredByDrag) => dispatch => {
+  dispatch(sendData(types.LOOKUP_COORDINATES, {position: latLng, triggeredByDrag}));
 };
 
 const getQuayById = (quays = [], quayId) => {

@@ -54,7 +54,9 @@ const SearchBoxDetails = ({
           </span>
         </div>}
       <div style={{display: 'flex', flexDirection: 'column'}}>
-        <div style={{fontSize: 18}}>{ `${result.topographicPlace || '?' }, ${result.parentTopographicPlace || '?' }` }</div>
+        { result.topographicPlace && result.parentTopographicPlace &&
+          <div style={{fontSize: 18}}>{ `${result.topographicPlace}, ${result.parentTopographicPlace}` }</div>
+        }
         <div style={{fontSize: 14}}>{result.id}</div>
       </div>
         <div style={{ display: 'block', fontSize: 10 }}>

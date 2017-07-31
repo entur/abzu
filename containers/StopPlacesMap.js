@@ -49,15 +49,23 @@ class StopPlacesMap extends React.Component {
 
   handleMapMoveEnd(event, { leafletElement }) {
     const zoom = leafletElement.getZoom();
+    const center = leafletElement.getCenter();
 
-    let includeExpired = new Settings().getShowExpiredStops()
+    let includeExpired = new Settings().getShowExpiredStops();
+
+    const { dispatch } = this.props;
+
+    dispatch(UserActions.setCenterAndZoom([center.lat, center.lng], null));
 
     if (zoom > 14) {
       const bounds = leafletElement.getBounds();
       const { ignoreStopId, client } = this.props;
       getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
     } else {
-      this.props.dispatch(UserActions.removeStopsNearbyForOverview());
+      const { neighbourMarkersCount } = this.props;
+      if (neighbourMarkersCount) {
+        dispatch(UserActions.removeStopsNearbyForOverview());
+      }
     }
   }
 
@@ -85,6 +93,7 @@ class StopPlacesMap extends React.Component {
 const mapStateToProps = state => {
   const {
     newStop,
+    findCoordinates,
     activeSearchResult,
     neighbourStops,
   } = state.stopPlace;
@@ -101,8 +110,13 @@ const mapStateToProps = state => {
     markers = markers.concat(neighbourStops);
   }
 
+  if (findCoordinates) {
+    markers = markers.concat(findCoordinates);
+  }
+
   return {
     position: state.stopPlace.centerPosition,
+    neighbourMarkersCount: state.stopPlace.neighbourStops ? state.stopPlace.neighbourStops.length : 0,
     markers: markers,
     kc: state.roles.kc,
     activeMap: state.mapUtils.activeMap,

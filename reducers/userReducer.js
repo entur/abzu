@@ -27,7 +27,8 @@ export const initialState = {
   showEditStopAdditional: false,
   keyValuesDialogOpen: false,
   keyValuesDialogSource: [],
-  keyValuesOrigin: null
+  keyValuesOrigin: null,
+  lookupCoordinatesOpen: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -55,6 +56,16 @@ const userReducer = (state = initialState, action) => {
     case types.REMOVED_ALL_FILTERS:
       return Object.assign({}, state, {
         searchFilters: { topoiChips: [], stopType: [] }
+      });
+
+    case types.OPEN_LOOKUP_COORDINATES_DIALOG:
+      return Object.assign({}, state, {
+        lookupCoordinatesOpen: true
+      });
+
+    case types.CLOSED_LOOKUP_COORDINATES_DIALOG:
+      return Object.assign({}, state, {
+        lookupCoordinatesOpen: false
       });
 
     case types.OPENED_SNACKBAR:

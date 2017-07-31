@@ -26,6 +26,7 @@ import Divider from 'material-ui/Divider';
 import debounce from 'lodash.debounce';
 import { getIn } from '../utils/';
 import { enturPrimaryDarker } from '../config/enturTheme';
+import MdLocationSearching from 'material-ui/svg-icons/device/location-searching';
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -120,10 +121,18 @@ class SearchBox extends React.Component {
     }
   }
 
-  handleChangeCoordinates() {
+  handleOpenCoordinatesDialog() {
     this.setState({
       coordinatesDialogOpen: true,
     });
+  }
+
+  handleOpenLookupCoordinatesDialog() {
+    this.props.dispatch(UserActions.openLookupCoordinatesDialog());
+  }
+
+  handleCloseLookupCoordinatesDialog() {
+    this.props.dispatch(UserActions.closeLookupCoordinatesDialog());
   }
 
   handleApplyFilters(filters) {
@@ -151,6 +160,11 @@ class SearchBox extends React.Component {
   }
   handleNewStop() {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop());
+  }
+
+  handleLookupCoordinates(position) {
+    this.props.dispatch(UserActions.lookupCoordinates(position, false));
+    this.handleCloseLookupCoordinatesDialog();
   }
 
   handleClearSearch() {
@@ -293,6 +307,7 @@ class SearchBox extends React.Component {
       topographicalPlaces,
       canEdit,
       isGuest,
+      lookupCoordinatesOpen,
     } = this.props;
     const { coordinatesDialogOpen, showMoreFilterOptions } = this.state;
     const { formatMessage, locale } = intl;
@@ -338,7 +353,7 @@ class SearchBox extends React.Component {
     };
 
     const searchBoxWrapperStyle = {
-      top: 90,
+      top: 70,
       background: 'white',
       height: 'auto',
       width: 460,
@@ -351,6 +366,13 @@ class SearchBox extends React.Component {
 
     return (
       <div>
+        <CoordinatesDialog
+          open={lookupCoordinatesOpen}
+          handleClose={this.handleCloseLookupCoordinatesDialog.bind(this)}
+          handleConfirm={this.handleLookupCoordinates.bind(this)}
+          titleId={'lookup_coordinates'}
+          intl={intl}
+        />
         <CoordinatesDialog
           open={coordinatesDialogOpen}
           handleClose={() => this.setState({ coordinatesDialogOpen: false })}
@@ -477,7 +499,7 @@ class SearchBox extends React.Component {
               ? <SearchBoxDetails
                   handleEdit={this.handleEdit.bind(this)}
                   result={chosenResult}
-                  handleChangeCoordinates={this.handleChangeCoordinates.bind(
+                  handleChangeCoordinates={this.handleOpenCoordinatesDialog.bind(
                     this,
                   )}
                   userSuppliedCoordinates={
@@ -492,13 +514,24 @@ class SearchBox extends React.Component {
             { !isGuest && <div style={{ marginTop: 30 }}>
               {isCreatingNewStop
                 ? <NewStopPlace text={newStopText} />
-                : <RaisedButton
-                  onClick={this.handleNewStop.bind(this)}
-                  style={{ float: 'right' }}
-                  icon={<ContentAdd />}
-                  primary={true}
-                  label={formatMessage({ id: 'new_stop' })}
-                />}
+                : <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <RaisedButton
+                    onClick={this.handleOpenLookupCoordinatesDialog.bind(this)}
+                    icon={<MdLocationSearching style={{width: 20, height: 20}} />}
+                    primary={false}
+                    labelStyle={{fontSize: 11}}
+                    label={formatMessage({ id: 'lookup_coordinates' })}
+                  />
+                    <RaisedButton
+                      onClick={this.handleNewStop.bind(this)}
+                      icon={<ContentAdd style={{width: 20, height: 20}} />}
+                      primary={true}
+                      labelStyle={{fontSize: 11}}
+                      label={formatMessage({ id: 'new_stop' })}
+                    />
+                </div>
+
+                  }
             </div>}
           </div>
         </div>
@@ -529,7 +562,8 @@ const mapStateToProps = state => {
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
     canEdit: getIn(state.roles, ['allowanceInfoSearchResult', 'canEdit'], false),
-    isGuest: state.roles.isGuest
+    isGuest: state.roles.isGuest,
+    lookupCoordinatesOpen: state.user.lookupCoordinatesOpen
   };
 };
 
