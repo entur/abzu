@@ -1,14 +1,14 @@
 const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
 
-RoleParser.getEditStopRoles = tokenParsed => {
+const getRolesFromTokenByType = (tokenParsed, type) => {
   if (!tokenParsed || !tokenParsed.roles) return [];
 
   let roles = [];
 
   tokenParsed.roles.forEach(roleString => {
     let roleJSON = JSON.parse(roleString);
-    if (roleJSON.r === 'editStops') {
+    if (roleJSON.r === type) {
       roles.push(roleJSON);
     }
   });
@@ -16,10 +16,18 @@ RoleParser.getEditStopRoles = tokenParsed => {
   return roles;
 };
 
+RoleParser.getEditStopRoles = tokenParsed => {
+  return getRolesFromTokenByType(tokenParsed, 'editStops');
+};
+
+RoleParser.getDeleteStopRoles = tokenParsed => {
+  return getRolesFromTokenByType(tokenParsed, 'deleteStops');
+};
+
 
 RoleParser.isGuest = tokenParsed => {
   return RoleParser.getEditStopRoles(tokenParsed).length === 0;
-}
+};
 
 RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
   if (!roles || !roles.length) return [];
@@ -40,22 +48,78 @@ RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
   return result;
 };
 
-
-RoleParser.filterByEntity = (roles, stopPlaceType, transportMode, submode, stopPlace) => {
+RoleParser.filterDeleteRolesByEntity = (
+  roles,
+  stopPlaceType,
+  transportMode,
+  submode,
+  stopPlace
+) => {
   if (!roles || !roles.length) return [];
 
   let result = [];
 
   roles.forEach(role => {
-    if (role.e.EntityType) {
-      if (isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') || isInArrayIgnoreCase(role.e.EntityType, '*')) {
+    if (role.e && role.e.EntityType) {
+      if (
+        isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
+        isInArrayIgnoreCase(role.e.EntityType, '*')
+      ) {
         let stopPlaceTypeOptions = getModeOptions(role.e.StopPlaceType);
         let transportModeOptions = getModeOptions(role.e.TransportMode);
         let submodeOptions = getModeOptions(role.e.Submode);
 
-        let stopPlaceTypValid = isModeOptionsValidForMode(stopPlaceTypeOptions, stopPlaceType)
-        let transportModeValid = isModeOptionsValidForMode(transportModeOptions, transportMode)
-        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode)
+        let stopPlaceTypValid = isModeOptionsValidForMode(
+          stopPlaceTypeOptions,
+          stopPlaceType
+        );
+        let transportModeValid = isModeOptionsValidForMode(
+          transportModeOptions,
+          transportMode
+        );
+        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode);
+
+        if (stopPlaceTypValid && transportModeValid && submodeValid) {
+          result.push(role);
+        }
+      }
+    } else {
+      result.push(role);
+    }
+  });
+  return result;
+};
+
+RoleParser.filterEditRolesByEntity = (
+  roles,
+  stopPlaceType,
+  transportMode,
+  submode,
+  stopPlace
+) => {
+  if (!roles || !roles.length) return [];
+
+  let result = [];
+
+  roles.forEach(role => {
+    if (role.e && role.e.EntityType) {
+      if (
+        isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
+        isInArrayIgnoreCase(role.e.EntityType, '*')
+      ) {
+        let stopPlaceTypeOptions = getModeOptions(role.e.StopPlaceType);
+        let transportModeOptions = getModeOptions(role.e.TransportMode);
+        let submodeOptions = getModeOptions(role.e.Submode);
+
+        let stopPlaceTypValid = isModeOptionsValidForMode(
+          stopPlaceTypeOptions,
+          stopPlaceType
+        );
+        let transportModeValid = isModeOptionsValidForMode(
+          transportModeOptions,
+          transportMode
+        );
+        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode);
 
         if (stopPlaceTypValid && transportModeValid && submodeValid) {
           result.push(role);
@@ -109,7 +173,6 @@ export const getModeOptions = list => {
   }
 
   list.forEach(type => {
-
     if (type.indexOf('!') === 0) {
       blacklisted.push(type.substring(1));
     } else if (type === '*') {

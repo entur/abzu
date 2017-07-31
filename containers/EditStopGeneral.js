@@ -46,6 +46,7 @@ import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import DeleteStopPlaceDialog from '../components/DeleteStopPlaceDialog';
 import MoveQuayDialog from '../components/MoveQuayDialog';
 import Settings from '../singletons/SettingsManager';
+import { getIn } from '../utils/';
 
 class EditStopGeneral extends React.Component {
 
@@ -375,6 +376,7 @@ class EditStopGeneral extends React.Component {
       showEditStopAdditional,
       versions,
       disabled,
+      canDeleteStop,
       mergeStopDialogOpen
     } = this.props;
     const { formatMessage, locale } = intl;
@@ -662,9 +664,9 @@ class EditStopGeneral extends React.Component {
             }}
           />
           <IconButton
-            disabled={disabled || stopPlace.isNewStop}
+            disabled={!canDeleteStop || stopPlace.isNewStop}
             onClick={() => {
-              this.props.dispatch(UserActions.requestDeleteStopPlace());
+              canDeleteStop && this.props.dispatch(UserActions.requestDeleteStopPlace());
             }}
           >
             <MdDelete />
@@ -704,7 +706,8 @@ const mapStateToProps = state => ({
   originalPathLink: state.stopPlace.originalPathLink,
   moveQuayDialogOpen: state.mapUtils.moveQuayDialogOpen,
   movingQuay: state.mapUtils.movingQuay,
-  activeMap: state.mapUtils.activeMap
+  activeMap: state.mapUtils.activeMap,
+  canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false)
 });
 
 export default withApollo(
