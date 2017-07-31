@@ -1,5 +1,5 @@
-import gql from 'graphql-tag'
-import Fragments from './Fragments'
+import gql from 'graphql-tag';
+import Fragments from './Fragments';
 
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
@@ -19,7 +19,7 @@ export const neighbourStopPlaceQuays = gql`
           }
       }
   }
-`
+`;
 
 export const stopPlaceBBQuery = gql`
     query stopPlaceBBox($ignoreStopPlaceId: String, $lonMin: BigDecimal!, $lonMax: BigDecimal!, $latMin: BigDecimal!, $latMax: BigDecimal!, $includeExpired: Boolean) {
@@ -45,7 +45,7 @@ export const stopPlaceBBQuery = gql`
             }
         }
     },
-`
+`;
 
 export const stopPlaceWithEverythingElse = gql`
     query stopPlaceAndPathLink($id: String!) {
@@ -76,7 +76,7 @@ export const stopPlaceWithEverythingElse = gql`
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
     ${Fragments.parking.verbose},
-`
+`;
 
 export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
@@ -97,6 +97,7 @@ export const findStop = gql`
             transportMode
             quays {
                 id
+                importedId
             }
             validBetween {
                 fromDate
@@ -120,7 +121,7 @@ export const findStop = gql`
             }
         }
     },
-`
+`;
 
 export const findStopForReport = gql`
     query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
@@ -208,7 +209,7 @@ export const findStopForReport = gql`
             }
         }
     },
-`
+`;
 
 export const allVersionsOfStopPlace = gql`
     query stopPlaceAllVersions($id: String!) {
@@ -228,7 +229,7 @@ export const allVersionsOfStopPlace = gql`
             versionComment
         }
     },
-`
+`;
 
 export const stopPlaceAndPathLinkByVersion = gql`
     query stopPlaceAndPathLink($id: String!, $version: Int) {
@@ -259,7 +260,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
     ${Fragments.parking.verbose}
-`
+`;
 
 export const topopGraphicalPlacesQuery = gql`
     query TopopGraphicalPlaces($query: String!) {
@@ -276,7 +277,7 @@ export const topopGraphicalPlacesQuery = gql`
             }
         }
     }
-`
+`;
 
 export const topopGraphicalPlacesReportQuery = gql`
     query TopopGraphicalPlacesForReport($query: String!) {
@@ -293,7 +294,7 @@ export const topopGraphicalPlacesReportQuery = gql`
             }
         }
     }
-`
+`;
 
 export const getMergeInfoStopPlace = gql`
     query MergeInfoStopPlace($stopPlaceId: String!) {
@@ -308,42 +309,37 @@ export const getMergeInfoStopPlace = gql`
             }
         }
     }
-`
-
+`;
 
 export const getParkingForMultipleStopPlaces = stopPlaceIds => {
-
-  const stopPlaces = stopPlaceIds.map( id => ({
+  const stopPlaces = stopPlaceIds.map(id => ({
     id,
-    alias: id.replace("NSR:StopPlace:", "StopPlace")
-  }))
+    alias: id.replace('NSR:StopPlace:', 'StopPlace')
+  }));
 
-  let queryContent = ""
+  let queryContent = '';
 
-  stopPlaces.forEach( stopPlace => {
+  stopPlaces.forEach(stopPlace => {
     queryContent += `
         ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
             id
             parkingVehicleTypes
         }
-    `
-  })
+    `;
+  });
 
   return gql`
     query {
         ${queryContent}
     }
-  `
-}
-
+  `;
+};
 
 export const getPolygons = ids => {
+  let queryContent = '';
 
-  let queryContent = ""
-
-  ids.forEach( id => {
-
-      let alias = id.replace(':', '').replace(':', '');
+  ids.forEach(id => {
+    let alias = id.replace(':', '').replace(':', '');
 
     queryContent += `
         ${alias}: topographicPlace(id: "${id}") {
@@ -352,12 +348,12 @@ export const getPolygons = ids => {
                 coordinates
             }
         }
-    `
-  })
+    `;
+  });
 
   return gql`
       query {
           ${queryContent}
       }
-  `
-}
+  `;
+};
