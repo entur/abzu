@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { StopPlaceActions } from '../actions';
 import { setDecimalPrecision } from '../utils';
-import ConfirmDialog from '../components/ConfirmDialog';
-
+import ConfirmDialog from '../components/Dialogs/ConfirmDialog';
 const entranceIcon = require('../static/icons/entrance-icon-2x.png');
 const junctionIcon = require('../static/icons/junction-icon-2x.png');
 const quayIcon = require('../static/icons/quay-marker.png');

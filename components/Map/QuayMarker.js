@@ -11,7 +11,7 @@ import { UserActions, StopPlaceActions } from '../actions/';
 import OSMIcon from '../static/icons/osm_logo.png';
 import { getIn } from '../utils/';
 import ToolTippable from './ToolTippable';
-import Code from './Code';
+import Code from './EditStopPage/Code';
 
 class QuayMarker extends React.Component {
   static propTypes = {

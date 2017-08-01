@@ -1,11 +1,10 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { connect } from 'react-redux';
-import FacilitiesQuayTab from '../components/FacilitiesQuayTab';
-import AccessiblityQuayTab from '../components/AcessibilityQuayTab';
+import FacilitiesStopTab from '../components/EditStopPage/FacilitiesStopTab';
+import AcessibilityStopTab from '../components/EditStopPage/AcessibilityStopTab';
 import { injectIntl } from 'react-intl';
 
-class EditQuayAdditional extends React.Component {
+class EditStopAdditional extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,19 +19,17 @@ class EditQuayAdditional extends React.Component {
   };
 
   render() {
-    const { intl, quay, index, disabled } = this.props;
+    const { intl, disabled } = this.props;
     const { formatMessage } = intl;
 
     const style = {
       background: '#fff',
-      overflowX: 'hidden',
     };
 
     const tabStyle = {
       color: '#000',
       fontSize: '0.7em',
       fontWeight: 600,
-      marginTop: -10,
     };
 
     const { activeTabIndex } = this.state;
@@ -49,24 +46,14 @@ class EditQuayAdditional extends React.Component {
             label={formatMessage({ id: 'accessibility' })}
             value={0}
           >
-            <AccessiblityQuayTab
-              intl={intl}
-              quay={quay}
-              index={index}
-              disabled={disabled}
-            />
+            <AcessibilityStopTab intl={intl} disabled={disabled} />
           </Tab>
           <Tab
             style={tabStyle}
             label={formatMessage({ id: 'facilities' })}
             value={1}
           >
-            <FacilitiesQuayTab
-              intl={intl}
-              quay={quay}
-              index={index}
-              disabled={disabled}
-            />
+            <FacilitiesStopTab intl={intl} disabled={disabled} />
           </Tab>
         </Tabs>
       </div>
@@ -74,9 +61,4 @@ class EditQuayAdditional extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  focusedElement: state.mapUtils.focusedElement,
-  stopPlace: state.stopPlace.current,
-});
-
-export default injectIntl(connect(mapStateToProps)(EditQuayAdditional));
+export default injectIntl(EditStopAdditional);

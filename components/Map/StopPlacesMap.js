@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import LeafletMap from '../components/LeafletMap';
+import LeafletMap from '../components/Map/LeafletMap';
 import { StopPlaceActions, UserActions } from '../actions/';
 import { withApollo } from 'react-apollo';
 import { getIn } from '../utils/';

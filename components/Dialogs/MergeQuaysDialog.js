@@ -4,8 +4,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
-import MergeQuaysDetails from './MergeQuaysDetails';
-import AcceptChanges from './AcceptChanges';
+import MergeQuaysDetails from './EditStopPage/MergeQuaysDetails';
+import AcceptChanges from './EditStopPage/AcceptChanges';
 
 class MergeQuaysDialog extends React.Component {
 

@@ -3,7 +3,7 @@ import {
   ColumnTransformerStopPlaceJsx,
   ColumnTranslations,
 } from '../models/columnTransformers';
-import MakeExpandable from './MakeExpandable';
+import MakeExpandable from './EditStopPage/MakeExpandable';
 import ReportQuayRows from './ReportQuayRows';
 
 class ReportResultView extends React.Component {

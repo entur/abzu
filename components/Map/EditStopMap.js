@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import LeafletMap from '../components/LeafletMap';
+import LeafletMap from '../components/Map/LeafletMap';
 import { StopPlaceActions, UserActions } from '../actions/';
 import { injectIntl } from 'react-intl';
 import { setDecimalPrecision } from '../utils';
-import CoordinatesDialog from '../components/CoordinatesDialog';
-import CompassBearingDialog from '../components/CompassBearingDialog';
+import CoordinatesDialog from '../components/Dialogs/CoordinatesDialog';
+import CompassBearingDialog from '../components/Dialogs/CompassBearingDialog';
 import debounce from 'lodash.debounce';
 import { withApollo } from 'react-apollo';
 import { getNeighbourStops } from '../graphql/Actions';

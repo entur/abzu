@@ -1,9 +1,9 @@
 import React from 'react';
-import ModalityIcon from '../components/ModalityIcon';
+import ModalityIcon from './MainPage/ModalityIcon';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
-import ImportedId from '../components/ImportedId';
+import ImportedId from './EditStopPage/ImportedId';
 import {
   StopPlaceActions,
   AssessmentActions,
@@ -18,23 +18,23 @@ import Checkbox from 'material-ui/Checkbox';
 import stopTypes, { unknownStopPlaceType } from '../models/stopTypes';
 import MdWC from 'material-ui/svg-icons/notification/wc';
 import WaitingRoom from '../static/icons/facilities/WaitingRoom';
-import WheelChairPopover from './WheelChairPopover';
+import WheelChairPopover from './EditStopPage/WheelChairPopover';
 import { getIn } from '../utils';
 import equipmentHelpers from '../modelUtils/equipmentHelpers';
 import MdLanguage from 'material-ui/svg-icons/action/language';
 import { enturPrimaryDarker } from '../config/enturTheme';
-import AltNamesDialog from './AltNamesDialog';
-import TariffZonesDialog from './TariffZonesDialog';
+import AltNamesDialog from './Dialogs/AltNamesDialog';
+import TariffZonesDialog from './Dialogs/TariffZonesDialog';
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
-import WeightingPopover from './WeightingPopover';
+import WeightingPopover from './EditStopPage/WeightingPopover';
 import weightTypes, { weightColors, noValue } from '../models/weightTypes';
 import Sign512 from '../static/icons/TransportSign';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
-import ToolTippable from './ToolTippable';
+import ToolTippable from './EditStopPage/ToolTippable';
 import accessibilityAssessments from '../models/accessibilityAssessments';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
-import KeyValuesDialog from '../components/KeyValuesDialog';
-import ModalitiesMenuItems from './ModalitiesMenuItems';
+import KeyValuesDialog from './Dialogs/KeyValuesDialog';
+import ModalitiesMenuItems from './EditStopPage/ModalitiesMenuItems';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {

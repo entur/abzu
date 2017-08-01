@@ -4,10 +4,10 @@ import FlatButton from 'material-ui/FlatButton';
 import { StopPlaceActions, UserActions } from '../actions/';
 import stopTypes from '../models/stopTypes';
 import { injectIntl } from 'react-intl';
-import ConfirmDialog from '../components/ConfirmDialog';
-import EditStopBoxTabs from './EditStopBoxTabs';
+import ConfirmDialog from '../components/Dialogs/ConfirmDialog';
+import EditStopBoxTabs from '../components/EditStopPage/EditStopBoxTabs';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import StopPlaceDetails from '../components/StopPlaceDetails';
+import StopPlaceDetails from '../components/EditStopPage/StopPlaceDetails';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 import {
@@ -26,11 +26,11 @@ import Divider from 'material-ui/Divider';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import SaveDialog from '../components/SaveDialog';
-import MergeStopDialog from '../components/MergeStopDialog';
-import MergeQuaysDialog from '../components/MergeQuaysDialog';
+import SaveDialog from '../components/Dialogs/SaveDialog';
+import MergeStopDialog from '../components/Dialogs/MergeStopDialog';
+import MergeQuaysDialog from '../components/Dialogs/MergeQuaysDialog';
 import { MutationErrorCodes } from '../models/ErrorCodes';
-import DeleteQuayDialog from '../components/DeleteQuayDialog';
+import DeleteQuayDialog from '../components/Dialogs/DeleteQuayDialog';
 import {
   deleteQuay,
   getStopPlaceVersions,
@@ -43,8 +43,8 @@ import {
 } from '../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
-import DeleteStopPlaceDialog from '../components/DeleteStopPlaceDialog';
-import MoveQuayDialog from '../components/MoveQuayDialog';
+import DeleteStopPlaceDialog from '../components/Dialogs/DeleteStopPlaceDialog';
+import MoveQuayDialog from '../components/Dialogs/MoveQuayDialog';
 import Settings from '../singletons/SettingsManager';
 import { getIn } from '../utils/';
 

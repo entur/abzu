@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
-import CustomMarkerIcon from './CustomMarkerIcon';
+import CustomMarkerIcon from './Map/CustomMarkerIcon';
 
 class NeighbourMarker extends React.Component {
   static propTypes = {

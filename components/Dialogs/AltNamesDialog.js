@@ -4,12 +4,12 @@ import FlatButton from 'material-ui/FlatButton';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import * as altNameConfig from '../config/altNamesConfig';
+import * as altNameConfig from '../../config/altNamesConfig';
 import TextField from 'material-ui/TextField';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
-import { StopPlaceActions } from '../actions/';
-import ConfirmDialog from './ConfirmDialog';
+import { StopPlaceActions } from '../../actions/';
+import ConfirmDialog from '../Dialogs/ConfirmDialog';
 
 class AltNamesDialog extends React.Component {
   constructor(props) {

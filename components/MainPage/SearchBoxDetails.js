@@ -1,11 +1,11 @@
 import React from 'react';
 import Edit from 'material-ui/svg-icons/editor/mode-edit';
 import FlatButton from 'material-ui/FlatButton';
-import ModalityIcon from '../components/ModalityIcon';
+import ModalityIcon from './MainPage/ModalityIcon';
 import { FormattedMessage } from 'react-intl';
 import Warning from 'material-ui/svg-icons/alert/warning';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
-import CircularNumber from '../components/CircularNumber';
+import CircularNumber from './MainPage/CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getIn } from '../utils/';
 

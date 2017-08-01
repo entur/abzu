@@ -6,16 +6,16 @@ import { StopPlaceActions, UserActions } from '../actions/';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import stopTypes from '../models/stopTypes';
-import JunctionMarker from './JunctionMarker';
+import JunctionMarker from './Map/JunctionMarker';
 import NeighbourMarker from './NeighbourMarker';
 import ParkAndRideMarker from './ParkAndRideMarker';
-import CycleParkingMarker from './CycleParkingMarker';
+import CycleParkingMarker from './Map/CycleParkingMarker';
 import { setDecimalPrecision } from '../utils';
 import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
 import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../graphql/Queries';
 import { getIn } from '../utils/';
-import CoordinateMarker from './CoordinateMarker';
+import CoordinateMarker from './Map/CoordinateMarker';
 
 class MarkerList extends React.Component {
   static PropTypes = {

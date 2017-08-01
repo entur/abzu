@@ -4,8 +4,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
-import Code from './Code';
-import AcceptChanges from './AcceptChanges';
+import Code from './EditStopPage/Code';
+import AcceptChanges from './EditStopPage/AcceptChanges';
 
 class MoveQuayDialog extends React.Component {
 
