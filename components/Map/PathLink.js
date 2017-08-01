@@ -7,7 +7,7 @@ import { injectIntl } from 'react-intl';
 import WalkingDistanceDialog from '../Dialogs/WalkingDistanceDialog';
 import { getIn } from '../../utils';
 
-class MultiPolyline extends React.Component {
+class PathLink extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,12 +56,12 @@ class MultiPolyline extends React.Component {
 
       return (
         <Polyline
-          weight={6}
+          weight={8}
           key={'pl' + index}
           color={color}
           positions={position}
-          opacity={isCompleted ? 0.8 : 1.0}
-          dashArray="8,14"
+          opacity={isCompleted ? 1 : 0.8}
+          dashArray="8,2"
         >
           <WalkingDistanceDialog
             open={openDialog}
@@ -96,18 +96,17 @@ class MultiPolyline extends React.Component {
                         display: 'inline-block',
                       }}
                     >
-                      {' '}{parseFloat(polyline.distance.toFixed(2))} m
+                     {parseFloat(polyline.distance.toFixed(2))} m
                     </span>
                   : null}
                 <span
                   style={polylinePopupStyle}
                   onClick={() => this.setState({ openDialog: true })}
                 >
-                  {polyline.estimate}
+                  {polyline.estimate}{' '}
                   {Number(polyline.estimate) === 1
                     ? formatMessage({ id: 'second' })
                     : formatMessage({ id: 'seconds' })}
-
                 </span>
               </div>
             </div>
@@ -162,4 +161,4 @@ const mapStateToProps = state => ({
   isEnabled: state.stopPlace.enablePolylines,
 });
 
-export default injectIntl(connect(mapStateToProps)(MultiPolyline));
+export default injectIntl(connect(mapStateToProps)(PathLink));

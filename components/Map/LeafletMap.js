@@ -8,7 +8,7 @@ import {
   ScaleControl,
 } from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
-import MultiPolylineList from './MultiPolyline';
+import MultiPolylineList from './PathLink';
 import WMTSLayer from './WMTSLayer';
 
 export default class LeafLetMap extends React.Component {
