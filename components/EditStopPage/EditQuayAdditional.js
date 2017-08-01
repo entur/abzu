@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { connect } from 'react-redux';
-import FacilitiesQuayTab from '../components/EditStopPage/FacilitiesQuayTab';
-import AccessiblityQuayTab from '../components/EditStopPage/AcessibilityQuayTab';
+import FacilitiesQuayTab from './FacilitiesQuayTab';
+import AccessiblityQuayTab from './AcessibilityQuayTab';
 import { injectIntl } from 'react-intl';
 
 class EditQuayAdditional extends React.Component {

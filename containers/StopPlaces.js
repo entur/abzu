@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBox from './SearchBox';
-import StopPlacesMap from './StopPlacesMap';
+import SearchBox from '../components/MainPage/SearchBox';
+import StopPlacesMap from '../components/Map/StopPlacesMap';
 import '../styles/main.css';
 
 const StopPlaces = () => {

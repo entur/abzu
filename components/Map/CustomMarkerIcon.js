@@ -41,7 +41,7 @@ class CustomMarkerIcon extends React.Component {
 
 const getIconIdByTypeOrSubmode = (submode, type) => {
   const submodeMap = {
-    railReplacementBus: require('../static/icons/modalities/' + 'railReplacement' + '.png')
+    railReplacementBus: require('../../static/icons/modalities/' + 'railReplacement' + '.png')
   };
   return submodeMap[submode] || getIconIdByModality(type);
 
@@ -61,7 +61,7 @@ const getIconIdByModality = type => {
 
   const stopType = modalityMap[type] || 'no-information';
 
-  return require('../static/icons/modalities/' + stopType + '.png');
+  return require('../../static/icons/modalities/' + stopType + '.png');
 };
 
 export default CustomMarkerIcon;

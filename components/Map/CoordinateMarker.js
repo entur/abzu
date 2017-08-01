@@ -1,12 +1,12 @@
 import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { connect } from 'react-redux';
-import { UserActions } from '../actions/';
+import { UserActions } from '../../actions/';
 import L from 'leaflet';
-import coordinatesIcon from '../static/icons/coordinates-marker.png';
+import coordinatesIcon from '../../static/icons/coordinates-marker.png';
 import { injectIntl } from 'react-intl';
-import mapCenterIcon from '../static/icons/map-center.png';
-import mapZoomIn from '../static/icons/map-zoom-in.png';
+import mapCenterIcon from '../../static/icons/map-center.png';
+import mapZoomIn from '../../static/icons/map-zoom-in.png';
 
 class CoordinateMarker extends React.Component {
 

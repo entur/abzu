@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
-import { StopPlaceActions } from '../actions/';
+import { StopPlaceActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import MdRestore from 'material-ui/svg-icons/action/restore';

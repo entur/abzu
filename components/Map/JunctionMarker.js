@@ -35,8 +35,8 @@ class JunctionMarker extends React.Component {
   createIcon(props) {
     const { type } = props;
     const iconURL = type === 'entrance'
-      ? require('../static/icons/entrance-icon-2x.png')
-      : require('../static/icons/junction-icon-2x.png');
+      ? require('../../static/icons/entrance-icon-2x.png')
+      : require('../../static/icons/junction-icon-2x.png');
 
     this._icon = L.icon({
       iconUrl: iconURL,

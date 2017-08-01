@@ -1,10 +1,10 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
-import { UserActions } from '../actions/';
-const newStopIcon = require('../static/icons/new-stop-icon-2x.png');
+import { UserActions } from '../../actions/';
+const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
 
-class NewStopPlace extends React.Component {
+class CreateNewStop extends React.Component {
   handleOnClick() {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop());
   }
@@ -53,4 +53,4 @@ const mapStateToProps = state => ({
   isCreatingNewStop: state.user.isCreatingNewStop,
 });
 
-export default connect(mapStateToProps)(NewStopPlace);
+export default connect(mapStateToProps)(CreateNewStop);

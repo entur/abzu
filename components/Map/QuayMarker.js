@@ -1,17 +1,17 @@
-const markerIcon = require('../static/icons/quay-marker-background.png');
+const markerIcon = require('../../static/icons/quay-marker-background.png');
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import { connect } from 'react-redux';
-import compassIcon from '../static/icons/compass.png';
-import compassBearingIcon from '../static/icons/compass-bearing.png';
-import { UserActions, StopPlaceActions } from '../actions/';
-import OSMIcon from '../static/icons/osm_logo.png';
-import { getIn } from '../utils/';
-import ToolTippable from './ToolTippable';
-import Code from './EditStopPage/Code';
+import compassIcon from '../../static/icons/compass.png';
+import compassBearingIcon from '../../static/icons/compass-bearing.png';
+import { UserActions, StopPlaceActions } from '../../actions/';
+import OSMIcon from '../../static/icons/osm_logo.png';
+import { getIn } from '../../utils/';
+import ToolTippable from '../EditStopPage/ToolTippable';
+import Code from '../EditStopPage/Code';
 
 class QuayMarker extends React.Component {
   static propTypes = {

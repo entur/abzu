@@ -4,13 +4,13 @@ import MdClose from 'material-ui/svg-icons/navigation/close';
 import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import MdRemove from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
-import { enturPrimary } from '../config/enturTheme';
-import EditKeyValuePair from './EditStopPage/EditKeyValuePair';
-import CreateKeyValuePair from './EditStopPage/CreateKeyValuePair';
-import { StopPlaceActions, UserActions } from '../actions/';
+import { enturPrimary } from '../../config/enturTheme';
+import EditKeyValuePair from '../EditStopPage/EditKeyValuePair';
+import CreateKeyValuePair from '../EditStopPage/CreateKeyValuePair';
+import { StopPlaceActions, UserActions } from '../../actions/';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { selectKeyValuesDataSource } from '../reducers/selectors';
+import { selectKeyValuesDataSource } from '../../reducers/selectors';
 
 class KeyValuesDialog extends React.Component {
   constructor(props) {

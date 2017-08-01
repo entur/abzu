@@ -3,7 +3,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import IconButton from 'material-ui/IconButton';
-import accessibilityAssessments from '../models/accessibilityAssessments';
+import accessibilityAssessments from '../../models/accessibilityAssessments';
 
 class WheelChairPopover extends React.Component {
   constructor(props) {

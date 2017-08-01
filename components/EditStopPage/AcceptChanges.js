@@ -2,7 +2,7 @@ import React from 'react';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import Checkbox from 'material-ui/Checkbox';
 import { injectIntl } from 'react-intl';
-import { enturPrimary } from '../config/enturTheme';
+import { enturPrimary } from '../../config/enturTheme';
 
 class AcceptChanges extends React.Component {
 

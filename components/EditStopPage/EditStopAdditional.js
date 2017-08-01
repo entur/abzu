@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import FacilitiesStopTab from '../components/EditStopPage/FacilitiesStopTab';
-import AcessibilityStopTab from '../components/EditStopPage/AcessibilityStopTab';
+import FacilitiesStopTab from './FacilitiesStopTab';
+import AcessibilityStopTab from './AcessibilityStopTab';
 import { injectIntl } from 'react-intl';
 
 class EditStopAdditional extends React.Component {

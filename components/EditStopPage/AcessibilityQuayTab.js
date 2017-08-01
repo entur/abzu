@@ -3,9 +3,9 @@ import WheelChairPopover from './WheelChairPopover';
 import StepFreePopover from './StepFreePopover';
 import ToolTipIcon from './ToolTipIcon';
 import Divider from 'material-ui/Divider';
-import { getIn } from '../utils/';
+import { getIn } from '../../utils/';
 import { connect } from 'react-redux';
-import { AssessmentActions } from '../actions/';
+import { AssessmentActions } from '../../actions/';
 
 class AcessibilityQuayTab extends React.Component {
   constructor(props) {

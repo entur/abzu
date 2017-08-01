@@ -3,7 +3,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';
-import { ColumnTranslations } from '../models/columnTransformers';
+import { ColumnTranslations } from '../../models/columnTransformers';
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {

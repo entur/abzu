@@ -2,7 +2,7 @@ import React from 'react';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import MenuItem from 'material-ui/MenuItem';
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
-import weightTypes, { weightColors } from '../models/weightTypes';
+import weightTypes, { weightColors } from '../../models/weightTypes';
 
 class WeightingPopover extends React.Component {
   render() {

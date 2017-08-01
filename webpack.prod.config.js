@@ -55,6 +55,7 @@ module.exports = {
         screw_ie8: true,
       },
     }),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
 
   module: {

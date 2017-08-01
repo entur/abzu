@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { UserActions } from '../actions/';
+import { UserActions } from '../../actions/';
 
 class FavoriteNameDialog extends React.Component {
   constructor(props) {

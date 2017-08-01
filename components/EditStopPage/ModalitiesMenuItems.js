@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MenuItem from 'material-ui/MenuItem';
-import ModalityIcon from './ModalityIcon';
+import ModalityIcon from '../MainPage/ModalityIcon';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 
 class ModalitiesMenuItems extends React.Component {

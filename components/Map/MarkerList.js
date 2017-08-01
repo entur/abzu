@@ -2,20 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StopPlaceMarker from './StopPlaceMarker';
 import NewStopMarker from './NewStopMarker';
-import { StopPlaceActions, UserActions } from '../actions/';
+import { StopPlaceActions, UserActions } from '../../actions/';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import stopTypes from '../models/stopTypes';
-import JunctionMarker from './Map/JunctionMarker';
+import stopTypes from '../../models/stopTypes';
+import JunctionMarker from './JunctionMarker';
 import NeighbourMarker from './NeighbourMarker';
 import ParkAndRideMarker from './ParkAndRideMarker';
-import CycleParkingMarker from './Map/CycleParkingMarker';
-import { setDecimalPrecision } from '../utils';
+import CycleParkingMarker from './CycleParkingMarker';
+import { setDecimalPrecision, getIn } from '../../utils';
 import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
-import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../graphql/Queries';
-import { getIn } from '../utils/';
-import CoordinateMarker from './Map/CoordinateMarker';
+import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../../graphql/Queries';
+import CoordinateMarker from './CoordinateMarker';
 
 class MarkerList extends React.Component {
   static PropTypes = {

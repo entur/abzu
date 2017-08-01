@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl';
 import {
   ColumnTransformerQuaysJsx,
   ColumnTranslations
-} from '../models/columnTransformers';
+} from '../../models/columnTransformers';
 
 class ReportQuayRows extends React.Component {
   render() {

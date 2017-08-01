@@ -1,6 +1,6 @@
 import React from 'react';
-import Code from './EditStopPage/Code';
-import CompassBearingInfo from './EditStopPage/CompassBearingInfo';
+import Code from './Code';
+import CompassBearingInfo from './CompassBearingInfo';
 import { injectIntl } from 'react-intl';
 
 class QuayDetails extends React.Component {

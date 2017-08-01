@@ -15,7 +15,7 @@ import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
 import MdHelp from 'material-ui/svg-icons/action/help';
 import { getTiamatEnv, getEnvColor } from '../config/enturTheme';
-import ConfirmDialog from '../components/ConfirmDialog';
+import ConfirmDialog from './Dialogs/ConfirmDialog';
 
 class Header extends React.Component {
 

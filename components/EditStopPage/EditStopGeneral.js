@@ -1,22 +1,22 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
-import { StopPlaceActions, UserActions } from '../actions/';
-import stopTypes from '../models/stopTypes';
+import { StopPlaceActions, UserActions } from '../../actions/';
+import stopTypes from '../../models/stopTypes';
 import { injectIntl } from 'react-intl';
-import ConfirmDialog from '../components/Dialogs/ConfirmDialog';
-import EditStopBoxTabs from '../components/EditStopPage/EditStopBoxTabs';
+import ConfirmDialog from '../Dialogs/ConfirmDialog';
+import EditStopBoxTabs from './EditStopBoxTabs';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import StopPlaceDetails from '../components/EditStopPage/StopPlaceDetails';
+import StopPlaceDetails from './StopPlaceDetails';
 import { withApollo } from 'react-apollo';
-import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
+import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
 import {
   mutateStopPlace,
   mutatePathLink,
   mutateParking
-} from '../graphql/Mutations';
-import { stopPlaceAndPathLinkByVersion } from '../graphql/Queries';
-import * as types from '../actions/Types';
+} from '../../graphql/Mutations';
+import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
+import * as types from '../../actions/Types';
 import EditStopAdditional from './EditStopAdditional';
 import MdUndo from 'material-ui/svg-icons/content/undo';
 import MdSave from 'material-ui/svg-icons/content/save';
@@ -26,11 +26,11 @@ import Divider from 'material-ui/Divider';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import SaveDialog from '../components/Dialogs/SaveDialog';
-import MergeStopDialog from '../components/Dialogs/MergeStopDialog';
-import MergeQuaysDialog from '../components/Dialogs/MergeQuaysDialog';
-import { MutationErrorCodes } from '../models/ErrorCodes';
-import DeleteQuayDialog from '../components/Dialogs/DeleteQuayDialog';
+import SaveDialog from '../Dialogs/SaveDialog';
+import MergeStopDialog from '../Dialogs/MergeStopDialog';
+import MergeQuaysDialog from '../Dialogs/MergeQuaysDialog';
+import { MutationErrorCodes } from '../../models/ErrorCodes';
+import DeleteQuayDialog from '../Dialogs/DeleteQuayDialog';
 import {
   deleteQuay,
   getStopPlaceVersions,
@@ -40,13 +40,13 @@ import {
   mergeAllQuaysFromStop,
   moveQuaysToStop,
   getNeighbourStops,
-} from '../graphql/Actions';
+} from '../../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
-import DeleteStopPlaceDialog from '../components/Dialogs/DeleteStopPlaceDialog';
-import MoveQuayDialog from '../components/Dialogs/MoveQuayDialog';
-import Settings from '../singletons/SettingsManager';
-import { getIn } from '../utils/';
+import DeleteStopPlaceDialog from '../Dialogs/DeleteStopPlaceDialog';
+import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
+import Settings from '../../singletons/SettingsManager';
+import { getIn } from '../../utils/';
 
 class EditStopGeneral extends React.Component {
 

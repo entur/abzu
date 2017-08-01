@@ -8,8 +8,8 @@ import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import MdSave from 'material-ui/svg-icons/content/save';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
-import MdSpinner from '../static/icons/spinner';
-import { HumanReadableErrorCodes } from '../models/ErrorCodes';
+import MdSpinner from '../../static/icons/spinner';
+import { HumanReadableErrorCodes } from '../../models/ErrorCodes';
 
 class SaveDialog extends React.Component {
   constructor(props) {

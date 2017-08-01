@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { StopPlaceActions } from '../actions';
-import { setDecimalPrecision } from '../utils';
-import ConfirmDialog from '../components/Dialogs/ConfirmDialog';
-const entranceIcon = require('../static/icons/entrance-icon-2x.png');
-const junctionIcon = require('../static/icons/junction-icon-2x.png');
-const quayIcon = require('../static/icons/quay-marker.png');
-const newStopIcon = require('../static/icons/new-stop-icon-2x.png');
-const parkAndRideIcon = require('../static/icons/parking-icon.png');
-const bikeParkingIcon = require('../static/icons/cycle-parking-icon.png');
+import { StopPlaceActions } from '../../actions';
+import { setDecimalPrecision } from '../../utils';
+import ConfirmDialog from '../Dialogs/ConfirmDialog';
+const entranceIcon = require('../../static/icons/entrance-icon-2x.png');
+const junctionIcon = require('../../static/icons/junction-icon-2x.png');
+const quayIcon = require('../../static/icons/quay-marker.png');
+const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
+const parkAndRideIcon = require('../../static/icons/parking-icon.png');
+const bikeParkingIcon = require('../../static/icons/cycle-parking-icon.png');
 
 class NewElementsBox extends React.Component {
   constructor(props) {

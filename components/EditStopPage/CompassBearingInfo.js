@@ -1,5 +1,5 @@
 import React from 'react';
-import icon from '../static/icons/compass.png';
+import icon from '../../static/icons/compass.png';
 
 const CompassBearingInfo = ({value}) => {
   return (

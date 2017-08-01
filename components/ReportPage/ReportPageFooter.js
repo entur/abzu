@@ -1,10 +1,10 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import { jsonArrayToCSV } from '../utils/CSVHelper';
+import { jsonArrayToCSV } from '../../utils/CSVHelper';
 import {
   ColumnTransformersStopPlace,
   ColumnTransformersQuays
-} from '../models/columnTransformers';
+} from '../../models/columnTransformers';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';

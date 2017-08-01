@@ -1,23 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
-import TicketMachine from '../static/icons/facilities/TicketMachine';
-import BusShelter from '../static/icons/facilities/BusShelter';
+import TicketMachine from '../../static/icons/facilities/TicketMachine';
+import BusShelter from '../../static/icons/facilities/BusShelter';
 import Divider from 'material-ui/Divider';
 import ToolTipIcon from './ToolTipIcon';
 import MdWc from 'material-ui/svg-icons/notification/wc';
-import WaitingRoom from '../static/icons/facilities/WaitingRoom';
+import WaitingRoom from '../../static/icons/facilities/WaitingRoom';
 import TextField from 'material-ui/TextField';
 import MdMore from 'material-ui/svg-icons/navigation/expand-more';
 import MdLess from 'material-ui/svg-icons/navigation/expand-less';
 import FlatButton from 'material-ui/FlatButton';
-import StairsIcon from '../static/icons/accessibility/Stairs';
-import EnclosedIcon from '../static/icons/facilities/Enclosed';
-import Heated from '../static/icons/facilities/Heated';
-import equipmentHelpers from '../modelUtils/equipmentHelpers';
-import { EquipmentActions } from '../actions/';
-import { getIn } from '../utils/';
-import Sign512 from '../static/icons/TransportSign';
+import StairsIcon from '../../static/icons/accessibility/Stairs';
+import EnclosedIcon from '../../static/icons/facilities/Enclosed';
+import Heated from '../../static/icons/facilities/Heated';
+import equipmentHelpers from '../../modelUtils/equipmentHelpers';
+import { EquipmentActions } from '../../actions/';
+import { getIn } from '../../utils/';
+import Sign512 from '../../static/icons/TransportSign';
 
 class FacilitiesQuayTab extends React.Component {
   constructor(props) {

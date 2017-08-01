@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import Loader from '../components/Loader';
-import EditStopMap from './EditStopMap';
-import EditStopGeneral from './EditStopGeneral';
-import InformationBanner from '../components/InformationBanner';
+import Loader from '../components/Dialogs/Loader';
+import EditStopMap from '../components/Map/EditStopMap';
+import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
+import InformationBanner from '../components/EditStopPage/InformationBanner';
 import Information from '../config/information';
 import { injectIntl } from 'react-intl';
 import InformationManager from '../singletons/InformationManager';
@@ -14,7 +14,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { UserActions } from '../actions/';
 import { getIn } from '../utils';
-import NewElementsBox from './NewElementsBox';
+import NewElementsBox from '../components/EditStopPage/NewElementsBox';
 
 class EditStopPlace extends React.Component {
   constructor(props) {

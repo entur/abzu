@@ -1,11 +1,11 @@
 import React from 'react';
-import QuayItem from '../components/EditStopPage/QuayItem';
-import PathJunctionItem from '../components/EditStopPage/PathJunctionItem';
-import EntranceItem from '../components/EditStopPage/EntranceItem';
-import ParkingItem from '../components/EditStopPage/ParkingItem';
+import QuayItem from './QuayItem';
+import PathJunctionItem from './PathJunctionItem';
+import EntranceItem from './EntranceItem';
+import ParkingItem from './ParkingItem';
 import { connect } from 'react-redux';
-import { StopPlaceActions, UserActions } from '../actions/';
-import { CodeBadge } from '../components/EditStopPage/Code';
+import { StopPlaceActions, UserActions } from '../../actions/';
+import { CodeBadge } from './Code';
 import MdSortByAlpha from 'material-ui/svg-icons/av/sort-by-alpha';
 
 class EditStopBoxTabs extends React.Component {

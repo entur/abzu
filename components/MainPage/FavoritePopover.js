@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Popover from 'material-ui/Popover';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import FavoriteManager from '../singletons/FavoriteManager';
+import FavoriteManager from '../../singletons/FavoriteManager';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import { UserActions } from '../actions/';
+import { UserActions } from '../../actions/';
 
 class FilterPopover extends React.Component {
   constructor(props) {

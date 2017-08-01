@@ -1,6 +1,6 @@
 import React from 'react';
-import StopPlaceLink from '../components/StopPlaceLink';
-import ModalityIcon from './../components/ModalityIcon';
+import StopPlaceLink from '../components/ReportPage/StopPlaceLink';
+import ModalityIcon from '../components/MainPage/ModalityIcon';
 import CarParkingIcon from '../static/icons/ParkingIcon';
 import BikeParkingIcon from '../static/icons/facilities/BikeParking';
 import { getIn, getInTransform } from '../utils/';

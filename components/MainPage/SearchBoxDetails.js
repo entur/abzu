@@ -1,13 +1,13 @@
 import React from 'react';
 import Edit from 'material-ui/svg-icons/editor/mode-edit';
 import FlatButton from 'material-ui/FlatButton';
-import ModalityIcon from './MainPage/ModalityIcon';
+import ModalityIcon from './ModalityIcon';
 import { FormattedMessage } from 'react-intl';
 import Warning from 'material-ui/svg-icons/alert/warning';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
-import CircularNumber from './MainPage/CircularNumber';
+import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
-import { getIn } from '../utils/';
+import { getIn } from '../../utils/';
 
 const SearchBoxDetails = ({
   text,

@@ -5,35 +5,35 @@ import {
   StopPlaceActions,
   AssessmentActions,
   EquipmentActions,
-} from '../actions/';
+} from '../../actions/';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
-import TicketMachine from '../static/icons/facilities/TicketMachine';
-import BusShelter from '../static/icons/facilities/BusShelter';
+import TicketMachine from '../../static/icons/facilities/TicketMachine';
+import BusShelter from '../../static/icons/facilities/BusShelter';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
-import stopTypes from '../models/stopTypes';
+import stopTypes from '../../models/stopTypes';
 import Divider from 'material-ui/Divider';
 import MdError from 'material-ui/svg-icons/alert/error';
-import ImportedId from './EditStopPage/ImportedId';
+import ImportedId from './ImportedId';
 import MdLess from 'material-ui/svg-icons/navigation/expand-less';
-import EditQuayAdditional from '../containers/EditQuayAdditional';
+import EditQuayAdditional from './EditQuayAdditional';
 import WheelChairPopover from './WheelChairPopover';
 import StepFreePopover from './StepFreePopover';
-import { getIn } from '../utils/';
-import equipmentHelpers from '../modelUtils/equipmentHelpers';
-import Sign512 from '../static/icons/TransportSign';
-import CoordinatesDialog from './Dialogs/CoordinatesDialog';
+import { getIn } from '../../utils/';
+import equipmentHelpers from '../../modelUtils/equipmentHelpers';
+import Sign512 from '../../static/icons/TransportSign';
+import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import ToolTippable from './ToolTippable';
-import accessibilityAssessments from '../models/accessibilityAssessments';
+import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
-import { enturPrimaryDarker } from '../config/enturTheme';
-import Code from './EditStopPage/Code';
+import { enturPrimaryDarker } from '../../config/enturTheme';
+import Code from './Code';
 
 class QuayItem extends React.Component {
   static PropTypes = {

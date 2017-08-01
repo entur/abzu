@@ -2,10 +2,10 @@ import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import L, { divIcon } from 'leaflet';
-import ParkingIcon from '../static/icons/parking-icon.png';
+import ParkingIcon from '../../static/icons/parking-icon.png';
 import { connect } from 'react-redux';
-import { enturPrimaryDarker } from '../config/enturTheme';
-import { StopPlaceActions } from '../actions/';
+import { enturPrimaryDarker } from '../../config/enturTheme';
+import { StopPlaceActions } from '../../actions/';
 
 
 class ParkingAndRideMarker extends React.Component {

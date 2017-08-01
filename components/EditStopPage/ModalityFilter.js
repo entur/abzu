@@ -1,6 +1,6 @@
 import React from 'react';
-import ModalityIcon from './ModalityIcon';
-import stopTypes from '../models/stopTypes';
+import ModalityIcon from '../MainPage/ModalityIcon';
+import stopTypes from '../../models/stopTypes';
 import Checkbox from 'material-ui/Checkbox';
 
 class ModalityFilter extends React.Component {

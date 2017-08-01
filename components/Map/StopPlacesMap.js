@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import LeafletMap from '../components/Map/LeafletMap';
-import { StopPlaceActions, UserActions } from '../actions/';
+import LeafletMap from './LeafletMap';
+import { StopPlaceActions, UserActions } from '../../actions/';
 import { withApollo } from 'react-apollo';
-import { getIn } from '../utils/';
+import { getIn } from '../../utils/';
 import { injectIntl } from 'react-intl';
-import { getNeighbourStops } from '../graphql/Actions';
-import Settings from '../singletons/SettingsManager';
+import { getNeighbourStops } from '../../graphql/Actions';
+import Settings from '../../singletons/SettingsManager';
 
 class StopPlacesMap extends React.Component {
 

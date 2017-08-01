@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TileLayer } from 'react-leaflet';
-import reactWMTSLayer from '../plugins/WMTSPlugin';
+import reactWMTSLayer from '../../plugins/WMTSPlugin';
 
 export default class WMTSLayer extends TileLayer {
   static propTypes = {

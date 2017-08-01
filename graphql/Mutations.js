@@ -1,5 +1,5 @@
-import gql from 'graphql-tag'
-import Fragments from './Fragments'
+import gql from 'graphql-tag';
+import Fragments from './Fragments';
 
 export const mutateStopPlace = gql`
     mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput], $submode: SubmodeType, $transportMode: TransportModeType) {
@@ -26,7 +26,7 @@ export const mutateStopPlace = gql`
         }
     }
     ${Fragments.stopPlace.verbose}
-`
+`;
 
 export const mutatePathLink = gql`
     mutation mutatePathLink($PathLink: [PathLinkInput]!) {
@@ -35,7 +35,7 @@ export const mutatePathLink = gql`
       }
   }
   ${Fragments.pathLink.verbose}
-`
+`;
 
 export const mutateParking = gql`
   mutation mutateParking($Parking: [ParkingInput]!) {
@@ -44,7 +44,7 @@ export const mutateParking = gql`
       }
   }
   ${Fragments.parking.verbose}
-`
+`;
 
 export const mutateMergeStopPlaces = gql`
   mutation mergeStopPlaces($fromStopPlaceId: String!, $toStopPlaceId: String!, $fromVersionComment: String!, $toVersionComment: String!) {
@@ -53,7 +53,7 @@ export const mutateMergeStopPlaces = gql`
       }
   }
   ${Fragments.stopPlace.verbose}
-`
+`;
 
 export const mutateDeleteQuay = gql`
   mutation mutateDeleteQuay($stopPlaceId: String!, $quayId: String!) {
@@ -62,13 +62,13 @@ export const mutateDeleteQuay = gql`
       }
   }
   ${Fragments.stopPlace.verbose}
-`
+`;
 
 export const mutateDeleteStopPlace = gql`
     mutation mutateDeleteStopPlace($stopPlaceId: String!) {
         deleteStopPlace(stopPlaceId: $stopPlaceId)
     }
-`
+`;
 
 export const mutateMergeQuays = gql`
     mutation mergeQuays($stopPlaceId: String!, $fromQuayId: String!, $toQuayId: String!, $versionComment: String!) {
@@ -77,7 +77,7 @@ export const mutateMergeQuays = gql`
         }
     }
     ${Fragments.stopPlace.verbose}
-`
+`;
 
 export const mutateMoveQuaysToStop = gql`
   mutation mutateMoveQuay($toStopPlaceId: String!, $quayId: String!, $fromVersionComment: String!, $toVersionComment: String!) {
@@ -86,4 +86,4 @@ export const mutateMoveQuaysToStop = gql`
       }
   }
   ${Fragments.stopPlace.verbose}
-`
+`;

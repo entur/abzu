@@ -4,8 +4,8 @@ import Divider from 'material-ui/Divider';
 import WheelChairPopover from './WheelChairPopover';
 import StepFreePopover from './StepFreePopover';
 import { connect } from 'react-redux';
-import { getIn } from '../utils';
-import { AssessmentActions } from '../actions/';
+import { getIn } from '../../utils';
+import { AssessmentActions } from '../../actions/';
 
 class AcessibilityStopTab extends React.Component {
   handleWheelChairChange(value) {

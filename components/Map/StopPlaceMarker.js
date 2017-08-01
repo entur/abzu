@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
-import CustomMarkerIcon from './Map/CustomMarkerIcon';
+import CustomMarkerIcon from './CustomMarkerIcon';
 
 class StopPlaceMarker extends React.Component {
   static propTypes = {

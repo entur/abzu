@@ -1,6 +1,6 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-const Fragments = {}
+const Fragments = {};
 
 Fragments.quay = {
   verbose: gql`
@@ -65,7 +65,7 @@ Fragments.quay = {
           }
       }
   `
-}
+};
 
 
 Fragments.stopPlace = {
@@ -165,7 +165,7 @@ Fragments.stopPlace = {
     }
     ${Fragments.quay.verbose}
   `
-}
+};
 
 Fragments.pathLink = {
   verbose: gql `
@@ -206,7 +206,7 @@ Fragments.pathLink = {
           }
       }
   `
-}
+};
 
 Fragments.parking = {
     verbose: gql`
@@ -226,7 +226,6 @@ Fragments.parking = {
           }
       }
     `
-}
-
+};
 
 export default Fragments

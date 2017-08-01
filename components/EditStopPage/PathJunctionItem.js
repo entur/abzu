@@ -5,7 +5,7 @@ import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import TextField from 'material-ui/TextField';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
 import IconButton from 'material-ui/IconButton';
-import { StopPlaceActions } from '../actions/';
+import { StopPlaceActions } from '../../actions/';
 import { connect } from 'react-redux';
 
 class PathJunctionItem extends React.Component {

@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import { StopPlaceActions } from '../../actions/';
-import ConfirmDialog from '../Dialogs/ConfirmDialog';
+import ConfirmDialog from './ConfirmDialog';
 
 class AltNamesDialog extends React.Component {
   constructor(props) {

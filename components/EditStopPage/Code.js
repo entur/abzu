@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Code.css';
+import '../../styles/Code.css';
 
 const Code = ({ type, value }) => {
   // As a tribute to PHP
