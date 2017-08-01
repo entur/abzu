@@ -87,3 +87,12 @@ export const mutateMoveQuaysToStop = gql`
   }
   ${Fragments.stopPlace.verbose}
 `;
+
+export const mutateMoveQuaysToNewStop = gql`
+  mutation mutateMoveQuaysToNewStop($quayId: [String]!, $fromVersionComment: String!, $toVersionComment: String!) {
+      moveQuaysToStop(quayIds: [$quayId], fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {
+          ...VerboseStopPlace
+      }
+  }
+  ${Fragments.stopPlace.verbose}
+`

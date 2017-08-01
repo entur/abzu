@@ -3,7 +3,8 @@ import {
   mutateDeleteStopPlace,
   mutateMergeQuays,
   mutateMergeStopPlaces,
-  mutateMoveQuaysToStop
+  mutateMoveQuaysToStop,
+  mutateMoveQuaysToNewStop
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -83,6 +84,17 @@ export const moveQuaysToStop = (client, toStopPlaceId, quayId, fromVersionCommen
       toVersionComment,
     },
     fetchPolicy: 'network-only'
+  })
+);
+
+export const moveQuaysToNewStop = (client, quayId, fromVersionComment, toVersionComment) => (
+  client.mutate({
+    mutation: mutateMoveQuaysToNewStop,
+    variables: {
+      quayId,
+      fromVersionComment,
+      toVersionComment
+    }
   })
 );
 
