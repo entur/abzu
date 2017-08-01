@@ -22,6 +22,7 @@ class StopPlaceMarker extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
+
     if (
       JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)
     ) {
@@ -172,7 +173,7 @@ class StopPlaceMarker extends React.Component {
                 {markerLocation[1]}
               </span>
             </div>
-            {!disabled &&
+            {(!disabled && draggable) &&
               <div
                 className={'marker-popup-button'}
                 style={{ marginTop: 10 }}

@@ -13,12 +13,6 @@ class StopPlacesMap extends React.Component {
   componentDidMount() {
     const { formatMessage } = this.props.intl;
     document.title = formatMessage({ id: '_title' });
-
-    if (this.props.activeMap) {
-      this.handleMapMoveEnd(null, {
-        leafletElement: this.props.activeMap
-      });
-    }
   }
 
   componentWillUpdate(nextProps) {
@@ -119,7 +113,6 @@ const mapStateToProps = state => {
     neighbourMarkersCount: state.stopPlace.neighbourStops ? state.stopPlace.neighbourStops.length : 0,
     markers: markers,
     kc: state.roles.kc,
-    activeMap: state.mapUtils.activeMap,
     zoom: state.stopPlace.zoom,
     isCreatingNewStop: isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
