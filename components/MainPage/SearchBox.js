@@ -8,7 +8,6 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { StopPlaceActions, UserActions } from '../../actions/';
 import SearchBoxDetails from './SearchBoxDetails';
-import cfgreader from '../../config/readConfig';
 import NewStopPlace from './CreateNewStop';
 import { injectIntl } from 'react-intl';
 import MenuItem from 'material-ui/MenuItem';
@@ -65,15 +64,6 @@ class SearchBox extends React.Component {
       }
     };
     this.handleSearchUpdate = debounce(searchStop, 200);
-  }
-
-  componentDidMount() {
-    cfgreader.readConfig(
-      function(config) {
-        window.config = config;
-        this.refs.searchText.focus();
-      }.bind(this),
-    );
   }
 
   handleEdit(id) {
