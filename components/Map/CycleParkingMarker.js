@@ -6,7 +6,7 @@ import CycleParkingIcon from '../../static/icons/cycle-parking-icon.png';
 import { connect } from 'react-redux';
 import { enturPrimaryDarker } from '../../config/enturTheme';
 import { StopPlaceActions } from '../../actions/';
-
+import { shallowCycleParkingMarker as shallowCompare } from './shallowCompare/';
 
 class CycleParkingMarker extends React.Component {
   static propTypes = {
@@ -40,32 +40,7 @@ class CycleParkingMarker extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (
-      JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)
-    ) {
-      return true;
-    }
-
-    if (
-      JSON.stringify(this.props.focusedElement) !==
-      JSON.stringify(nextProps.focusedElement)
-    ) {
-      return true;
-    }
-
-    if (this.props.name !== nextProps.name) {
-      return true;
-    }
-
-    if (this.props.hasExpired !== nextProps.hasExpired) {
-      return true;
-    }
-
-    if (this.props.totalCapacity !== nextProps.totalCapacity) {
-      return true;
-    }
-
-    return false;
+    return shallowCompare(this, nextProps);
   }
 
   render() {

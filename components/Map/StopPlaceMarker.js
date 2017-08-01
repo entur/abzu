@@ -4,6 +4,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
+import { shallowCompareStopPlaceMarker as shallowCompare } from './shallowCompare/';
 
 class StopPlaceMarker extends React.Component {
   static propTypes = {
@@ -21,56 +22,20 @@ class StopPlaceMarker extends React.Component {
     isEditingStop: PropTypes.bool.isRequired
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-
-    if (
-      JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)
-    ) {
-      return true;
-    }
-
-    if (this.props.draggable !== nextProps.draggable) {
-      return true;
-    }
-
-    if (this.props.active !== nextProps.active) {
-      return true;
-    }
-
-    if (this.props.stopType !== nextProps.stopType) {
-      return true;
-    }
-
-    if (this.props.id !== nextProps.id) {
-      return true;
-    }
-
-    if (this.props.isShowingQuays !== nextProps.isShowingQuays) {
-      return true;
-    }
-
-    if (this.props.name !== nextProps.name) {
-      return true;
-    }
-
-    if (this.props.submode !== nextProps.submode) {
-      return true;
-    }
-
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return shallowCompare(this, nextProps);
   }
 
   componentWillMount() {
-    const { index, stopType, submode, active } = this.props;
-    this.createIcon(index, stopType, submode, active);
+    const { props } = this;
+    this.createIcon(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    const { index, stopType, active, submode } = nextProps;
-    this.createIcon(index, stopType, submode, active);
+  componentWillUpdate(nextProps) {
+    this.createIcon(nextProps);
   }
 
-  createIcon(index, stopType, submode, active) {
+  createIcon({index, stopType, submode, active}) {
     let divIconBody = (
       <CustomMarkerIcon
         markerIndex={index}

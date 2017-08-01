@@ -4,6 +4,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
+import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
 
 class NeighbourMarker extends React.Component {
   static propTypes = {
@@ -20,37 +21,7 @@ class NeighbourMarker extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    if (
-      JSON.stringify(this.props.position) !== JSON.stringify(nextProps.position)
-    ) {
-      return true;
-    }
-
-    if (this.props.stopType !== nextProps.stopType) {
-      return true;
-    }
-
-    if (this.props.id !== nextProps.id) {
-      return true;
-    }
-
-    if (this.props.isShowingQuays !== nextProps.isShowingQuays) {
-      return true;
-    }
-
-    if (this.props.name !== nextProps.name) {
-      return true;
-    }
-
-    if (this.props.hasExpired !== nextProps.hasExpired) {
-      return true;
-    }
-
-    if (this.props.submode !== nextProps.submode) {
-      return true;
-    }
-
-    return false;
+    return shallowCompare(this, nextProps);
   }
 
   render() {

@@ -14,11 +14,6 @@ class MultiPolyline extends React.Component {
       openDialog: false,
     };
   }
-
-  handleRemovePolyline(index) {
-    // NB: This is not supported yet, awaiting versioning
-  }
-
   handleEditTimeEstimate(index, estimate) {
     if (estimate && !isNaN(estimate)) {
       this.props.dispatch(
@@ -108,17 +103,12 @@ class MultiPolyline extends React.Component {
                   style={polylinePopupStyle}
                   onClick={() => this.setState({ openDialog: true })}
                 >
-
                   {polyline.estimate}
-                  {' '}{Number(polyline.estimate) === 1
+                  {Number(polyline.estimate) === 1
                     ? formatMessage({ id: 'second' })
                     : formatMessage({ id: 'seconds' })}
 
                 </span>
-                {/* <span
-                  onClick={() => this.handleRemovePolyline(index)}
-                  style={polylinePopupStyle}
-                > { formatMessage({id: 'remove'}) } </span> */}
               </div>
             </div>
           </Popup>

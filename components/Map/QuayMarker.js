@@ -1,4 +1,3 @@
-const markerIcon = require('../../static/icons/quay-marker-background.png');
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
@@ -6,12 +5,13 @@ import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import { connect } from 'react-redux';
 import compassIcon from '../../static/icons/compass.png';
-import compassBearingIcon from '../../static/icons/compass-bearing.png';
 import { UserActions, StopPlaceActions } from '../../actions/';
 import OSMIcon from '../../static/icons/osm_logo.png';
 import { getIn } from '../../utils/';
 import ToolTippable from '../EditStopPage/ToolTippable';
 import Code from '../EditStopPage/Code';
+import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
+import QuayMarkerIcon from './QuayMarkerIcon';
 
 class QuayMarker extends React.Component {
   static propTypes = {
@@ -66,64 +66,8 @@ class QuayMarker extends React.Component {
     }));
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.position !== nextProps.position) {
-      return true;
-    }
-
-    if (this.props.publicCode !== nextProps.publicCode) {
-      return true;
-    }
-
-    if (this.props.privateCode !== nextProps.privateCode) {
-      return true;
-    }
-
-    if (this.props.index !== nextProps.index) {
-      return true;
-    }
-
-    if (this.props.focusedElement !== nextProps.focusedElement) {
-      return true;
-    }
-
-    if (
-      this.props.belongsToNeighbourStop !== nextProps.belongsToNeighbourStop
-    ) {
-      return true;
-    }
-
-    if (this.props.compassBearing !== nextProps.compassBearing) {
-      return true;
-    }
-
-    if (
-      this.props.isCompassBearingEnabled !== nextProps.isCompassBearingEnabled
-    ) {
-      return true;
-    }
-
-    if (this.props.formattedStopType !== nextProps.formattedStopType) {
-      return true;
-    }
-
-    if (this.props.isCreatingPolylines !== nextProps.isCreatingPolylines) {
-      return true;
-    }
-
-    if (this.props.id !== nextProps.id) {
-      return true;
-    }
-
-    if (this.props.pathLink !== nextProps.pathLink) {
-      return true;
-    }
-
-    if (this.props.mergingQuay !== nextProps.mergingQuay) {
-      return true;
-    }
-
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return shallowCompare(this, nextProps);
   }
 
   render() {
@@ -325,7 +269,6 @@ class QuayMarker extends React.Component {
                     {translations.moveQuayToCurrent}
                   </span>
                 </div>}
-
               {shouldShowMergeQuay &&
                 <div style={{ textAlign: 'center' }}>
                   {mergingQuay.isMerging
@@ -387,81 +330,6 @@ class QuayMarker extends React.Component {
     );
   }
 }
-
-class QuayMarkerIcon extends React.PureComponent {
-  componentWillMount() {
-    const {
-      focusedElement,
-      index,
-      belongsToNeighbourStop,
-      compassBearing
-    } = this.props;
-
-    let markerIconStyle = { transform: 'scale(0.7)' };
-
-    if (belongsToNeighbourStop) {
-      markerIconStyle.filter = 'grayscale(100%)';
-      markerIconStyle.opacity = '0.8';
-    }
-
-    this._shouldBeFocused =
-      focusedElement.type === 'quay' && index === focusedElement.index;
-    this._markerIcon = (
-      <img
-        src={markerIcon}
-        style={markerIconStyle}
-        className={this._shouldBeFocused ? 'focused' : ''}
-      />
-    );
-    this._compassBearingIcon = (
-      <img
-        style={{
-          width: 20,
-          height: 20,
-          marginLeft: 6,
-          position: 'absolute',
-          marginTop: -12,
-          transform: `rotate(${compassBearing}deg) scale(0.7)`
-        }}
-        src={compassBearingIcon}
-      />
-    );
-  }
-
-  render() {
-    const { publicCode, compassBearing, isCompassBearingEnabled } = this.props;
-    const quayShortName = getShortQuayName(publicCode);
-
-    const quayStyle = {
-      color: '#fff',
-      position: 'absolute',
-      top: 12,
-      left: 1,
-      zIndex: 9999,
-    };
-
-    return (
-      <div>
-        {isCompassBearingEnabled && compassBearing
-          ? this._compassBearingIcon
-          : null}
-        {this._markerIcon}
-        <div style={quayStyle}>
-          <div style={{
-            width: 30,
-            fontSize: quayShortName ? 12 : 10,
-            textAlign: 'center'
-          }}>{quayShortName || 'N/A'}</div>
-          </div>
-      </div>
-    );
-  }
-}
-
-const getShortQuayName = quayName => {
-  if (!isNaN(quayName)) return quayName;
-  return quayName.length > 1 ? quayName.substring(0, 1) : quayName;
-};
 
 const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
