@@ -14,6 +14,8 @@ export const initialState = {
   deleteQuayDialogOpen: false,
   deleteStopDialogOpen: false,
   moveQuayDialogOpen: false,
+  moveQuayToNewStopDialogOpen: false,
+  movingQuayToNewStop: null,
   deletingQuay: null,
   movingQuay: null,
 };
@@ -94,6 +96,17 @@ const mapReducer = (state = initialState, action) => {
         deletingQuay: action.payLoad
       });
 
+    case types.REQUESTED_MOVE_QUAY_NEW_STOP:
+      return Object.assign({}, state, {
+        moveQuayToNewStopDialogOpen: true,
+        movingQuayToNewStop: action.payLoad
+      });
+
+    case types.CANCELLED_MOVE_QUAY_NEW_STOP:
+      return Object.assign({}, state, {
+        moveQuayToNewStopDialogOpen: false,
+        movingQuayToNewStop: null
+      });
 
     case types.REQUESTED_DELETE_STOP_DIALOG:
       return Object.assign({}, state, {

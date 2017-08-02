@@ -87,11 +87,11 @@ export const moveQuaysToStop = (client, toStopPlaceId, quayId, fromVersionCommen
   })
 );
 
-export const moveQuaysToNewStop = (client, quayId, fromVersionComment, toVersionComment) => (
+export const moveQuaysToNewStop = (client, quayIds, fromVersionComment, toVersionComment) => (
   client.mutate({
     mutation: mutateMoveQuaysToNewStop,
     variables: {
-      quayId,
+      quayIds,
       fromVersionComment,
       toVersionComment
     }

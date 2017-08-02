@@ -163,7 +163,8 @@ class MarkerList extends React.Component {
       publicCode: formatMessage({id: 'publicCode'}),
       privateCode: formatMessage({id: 'privateCode'}),
       moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'}),
-      adjustCentroid: formatMessage({id: 'adjust_centroid'})
+      moveQuaysToNewStop: formatMessage({id: 'move_quays_to_new_stop'}),
+      adjustCentroid: formatMessage({id: 'adjust_centroid'}),
     };
 
     const newStopMarkerText = {

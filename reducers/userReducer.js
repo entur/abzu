@@ -107,6 +107,22 @@ const userReducer = (state = initialState, action) => {
         }
       });
 
+    case types.SHOW_CREATED_NEW_STOP_INFO:
+      return Object.assign({}, state, {
+        newStopCreated: {
+          open: true,
+          stopPlaceId: action.payLoad
+        }
+      });
+
+    case types.HIDE_CREATED_NEW_STOP_INFO:
+      return Object.assign({}, state, {
+        newStopCreated: {
+          open: false,
+          stopPlaceId: null
+        }
+      });
+
     case types.SET_TOPOS_CHIPS:
       return Object.assign({}, state, {
         searchFilters: {

@@ -40,11 +40,13 @@ import {
   mergeAllQuaysFromStop,
   moveQuaysToStop,
   getNeighbourStops,
+  moveQuaysToNewStop
 } from '../../graphql/Actions';
 import IconButton from 'material-ui/IconButton';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import DeleteStopPlaceDialog from '../Dialogs/DeleteStopPlaceDialog';
 import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
+import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
 import { getIn } from '../../utils/';
 
@@ -85,7 +87,11 @@ class EditStopGeneral extends React.Component {
   }
 
   handleCloseMoveQuay() {
-    this.props.dispatch(UserActions.cancelMoveQuay());
+    this.props.dispatch(UserActions.closeMoveQuayDialog());
+  }
+
+  handleCloseMoveQuayNewStop() {
+    this.props.dispatch(UserActions.closeMoveQuayToNewStopDialog());
   }
 
   handleSaveSuccess(stopPlaceId) {
@@ -174,7 +180,7 @@ class EditStopGeneral extends React.Component {
   handleMoveQuay(fromVersionComment, toVersionComment) {
     const { client, movingQuay, dispatch, stopPlace } = this.props;
     moveQuaysToStop(client, stopPlace.id, movingQuay.id, fromVersionComment, toVersionComment).then(response => {
-      dispatch(UserActions.cancelMoveQuay());
+      dispatch(UserActions.closeMoveQuayDialog());
       getStopPlaceWithAll(client, stopPlace.id);
     }).catch(err => {
       dispatch(
@@ -328,6 +334,25 @@ class EditStopGeneral extends React.Component {
     });
   }
 
+  handleMoveQuaysNewStop(quayIds, fromVersionComment, toVersionComment) {
+    const { client, dispatch, stopPlace } = this.props;
+    moveQuaysToNewStop(client, quayIds, fromVersionComment, toVersionComment).then(response => {
+      dispatch(UserActions.closeMoveQuayToNewStopDialog());
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+      );
+      getStopPlaceWithAll(client, stopPlace.id).then( response => {
+        if (response.data && response.data.stopPlace && response.data.stopPlace.length) {
+          dispatch(UserActions.openSuccessfullyCreatedNewStop(response.data.stopPlace[0].id));
+        };
+      });
+    }).catch(err => {
+      dispatch(
+        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+      );
+    });
+  }
+
   handleTouchTapVersions = event => {
     event.preventDefault();
     this.setState({
@@ -347,8 +372,8 @@ class EditStopGeneral extends React.Component {
       fetchPolicy: 'network-only',
       query: stopPlaceAndPathLinkByVersion,
       variables: {
-        id: id,
-        version: version
+        id,
+        version
       }
     });
   };
@@ -643,6 +668,16 @@ class EditStopGeneral extends React.Component {
             quay={this.props.movingQuay}
             hasStopBeenModified={stopHasBeenModified}
           />
+          <MoveQuayNewStopDialog
+            open={this.props.moveQuayToNewStopDialogOpen}
+            handleClose={this.handleCloseMoveQuayNewStop.bind(this)}
+            quays={stopPlace.quays}
+            handleConfirm={this.handleMoveQuaysNewStop.bind(this)}
+            intl={intl}
+            fromStopPlaceId={stopPlace.id}
+            quay={this.props.movingQuayToNewStop}
+            hasStopBeenModified={stopHasBeenModified}
+            />
         </div>
         <div
           style={{
@@ -705,7 +740,9 @@ const mapStateToProps = state => ({
   versions: state.stopPlace.versions,
   originalPathLink: state.stopPlace.originalPathLink,
   moveQuayDialogOpen: state.mapUtils.moveQuayDialogOpen,
+  moveQuayToNewStopDialogOpen: state.mapUtils.moveQuayToNewStopDialogOpen,
   movingQuay: state.mapUtils.movingQuay,
+  movingQuayToNewStop: state.mapUtils.movingQuayToNewStop,
   activeMap: state.mapUtils.activeMap,
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false)
 });

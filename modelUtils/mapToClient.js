@@ -258,7 +258,7 @@ helpers.mapStopToClientStop = (
 
     let clientStop = {
       id: stop.id,
-      name: stop.name.value,
+      name: stop.name ? stop.name.value : '',
       alternativeNames: extractAlternativeNames(stop.alternativeNames),
       stopPlaceType: stop.stopPlaceType,
       isActive: isActive,

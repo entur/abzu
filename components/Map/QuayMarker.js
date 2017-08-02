@@ -66,6 +66,14 @@ class QuayMarker extends React.Component {
     }));
   }
 
+  handleMoveQuayToNewStop() {
+    this.props.dispatch(UserActions.moveQuayToNewStopPlace({
+      id: this.props.id,
+      privateCode: this.props.privateCode,
+      publicCode: this.props.publicCode
+    }));
+  }
+
   shouldComponentUpdate(nextProps) {
     return shallowCompare(this, nextProps);
   }
@@ -295,6 +303,16 @@ class QuayMarker extends React.Component {
                           {translations.mergeQuayFrom}
                         </span>
                       </div>}
+                  { !disabled &&
+                    <div style={{marginTop: 10}}>
+                      <span
+                        className="marker-popup-button"
+                        onClick={() => this.handleMoveQuayToNewStop()}
+                      >
+                        {translations.moveQuaysToNewStop}
+                      </span>
+                    </div>
+                  }
                 </div>}
             </div>
             <div style={{ marginTop: 10 }}>

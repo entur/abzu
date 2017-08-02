@@ -87,6 +87,10 @@ export default function configureStore(kc) {
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
       lookupCoordinatesOpen: false,
+      newStopCreated: {
+        open: false,
+        stopPlaceId: null
+      },
       client
     },
     roles: {

@@ -15,6 +15,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import NewElementsBox from '../components/EditStopPage/NewElementsBox';
+import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
 
 class EditStopPlace extends React.Component {
   constructor(props) {
@@ -92,7 +93,7 @@ class EditStopPlace extends React.Component {
   }
 
   render() {
-    const { isCreatingPolylines, stopPlace, disabled } = this.props;
+    const { isCreatingPolylines, stopPlace, disabled, newStopCreated } = this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
     const { locale, formatMessage } = this.props.intl;
 
@@ -125,15 +126,16 @@ class EditStopPlace extends React.Component {
             ? formatMessage({ id: 'error_stopPlace_404' }) + idFromPath
             : formatMessage({ id: 'error_unable_to_load_stop' })}
         </Dialog>
-        {shouldDisplayMessage
-          ? <InformationBanner
+        <NewStopPlaceInfo open={newStopCreated.open} stopPlaceId={newStopCreated.stopPlaceId}/>
+        {shouldDisplayMessage &&
+          <InformationBanner
               title={Information[locale].path_links.title}
               ingress={Information[locale].path_links.ingress}
               body={Information[locale].path_links.body}
               closeButtonTitle={Information[locale].path_links.closeButtonTitle}
               handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
             />
-          : null}
+          }
         {stopPlace
           ? <div>
               <NewElementsBox disabled={disabled} />
@@ -150,6 +152,7 @@ const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   stopPlace: state.stopPlace.current || state.stopPlace.newStop,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  newStopCreated: state.user.newStopCreated
 });
 
 const EditStopPlaceWithIntl = injectIntl(

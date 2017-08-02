@@ -41,6 +41,14 @@ UserActions.openLookupCoordinatesDialog = () => dispatch => {
   dispatch(sendData(types.OPEN_LOOKUP_COORDINATES_DIALOG, null));
 };
 
+UserActions.openSuccessfullyCreatedNewStop = stopPlaceId => dispatch => {
+  dispatch(sendData(types.SHOW_CREATED_NEW_STOP_INFO, stopPlaceId));
+};
+
+UserActions.closeSuccessfullyCreatedNewStop = () => dispatch => {
+  dispatch(sendData(types.HIDE_CREATED_NEW_STOP_INFO, null));
+};
+
 UserActions.clearSearchResults = () => dispatch => {
   dispatch(sendData(types.CLEAR_SEARCH_RESULTS, null));
 };
@@ -326,7 +334,7 @@ UserActions.requestDeleteStopPlace = () => dispatch => {
   dispatch(sendData(types.REQUESTED_DELETE_STOP_DIALOG, null));
 };
 
-UserActions.cancelMoveQuay = () => dispatch => {
+UserActions.closeMoveQuayDialog = () => dispatch => {
   dispatch(sendData(types.CANCELLED_MOVE_QUAY_DIALOG, null));
 };
 
@@ -344,6 +352,14 @@ UserActions.closeKeyValuesDialog = () => dispatch => {
 
 UserActions.moveQuay = quayProps => dispatch => {
   dispatch(sendData(types.REQUESTED_MOVE_QUAY, quayProps));
+};
+
+UserActions.closeMoveQuayToNewStopDialog = () => dispatch => {
+  dispatch(sendData(types.CANCELLED_MOVE_QUAY_NEW_STOP, null));
+};
+
+UserActions.moveQuayToNewStopPlace = quayProps => dispatch => {
+  dispatch(sendData(types.REQUESTED_MOVE_QUAY_NEW_STOP, quayProps));
 };
 
 UserActions.setZoomLevel = zoomLevel => dispatch => {

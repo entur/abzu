@@ -89,8 +89,8 @@ export const mutateMoveQuaysToStop = gql`
 `;
 
 export const mutateMoveQuaysToNewStop = gql`
-  mutation mutateMoveQuaysToNewStop($quayId: [String]!, $fromVersionComment: String!, $toVersionComment: String!) {
-      moveQuaysToStop(quayIds: [$quayId], fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {
+  mutation mutateMoveQuaysToNewStop($quayIds: [String!], $fromVersionComment: String!, $toVersionComment: String!) {
+      moveQuaysToStop(quayIds: $quayIds, fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {
           ...VerboseStopPlace
       }
   }
