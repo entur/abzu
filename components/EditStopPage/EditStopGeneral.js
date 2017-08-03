@@ -336,14 +336,19 @@ class EditStopGeneral extends React.Component {
 
   handleMoveQuaysNewStop(quayIds, fromVersionComment, toVersionComment) {
     const { client, dispatch, stopPlace } = this.props;
+    let newStopPlaceId = null;
+
     moveQuaysToNewStop(client, quayIds, fromVersionComment, toVersionComment).then(response => {
+      if (response.data && response.data.moveQuaysToStop && response.data.moveQuaysToStop.id) {
+        newStopPlaceId = response.data.moveQuaysToStop.id;
+      }
       dispatch(UserActions.closeMoveQuayToNewStopDialog());
       dispatch(
         UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
       );
       getStopPlaceWithAll(client, stopPlace.id).then( response => {
-        if (response.data && response.data.stopPlace && response.data.stopPlace.length) {
-          dispatch(UserActions.openSuccessfullyCreatedNewStop(response.data.stopPlace[0].id));
+        if (newStopPlaceId) {
+          dispatch(UserActions.openSuccessfullyCreatedNewStop(newStopPlaceId));
         };
       });
     }).catch(err => {

@@ -105,7 +105,7 @@ class MoveQuayNewStopDialog extends React.Component {
         onRequestClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: '30%', minWidth: '30%', margin: 'auto' }}
+        contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         <div>
           <div style={{ marginBottom: 10, fontWeight: 600, color: '#000' }}>
@@ -117,7 +117,7 @@ class MoveQuayNewStopDialog extends React.Component {
             handleUpdate={this.handleUpdate.bind(this)}
             defaultQuayId={quay.id}
           />
-          <span>{translations.info}</span>
+          <div style={{fontSize: '0.9em'}}>{translations.info}</div>
           {hasStopBeenModified &&
             <AcceptChanges
               checked={changesUnderstood}

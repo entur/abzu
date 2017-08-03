@@ -6,17 +6,29 @@ import { enturPrimaryDarker } from '../../config/enturTheme';
 import { connect } from 'react-redux';
 import { UserActions } from '../../actions/';
 
-
 class NewStopPlaceInfo extends React.Component {
-
-
   handleClose() {
     this.props.dispatch(UserActions.closeSuccessfullyCreatedNewStop());
   }
 
-  render() {
+  createHref(stopPlaceId) {
+    const path = window.location.href;
+    const lastIndexOfSlash = path.lastIndexOf('/') +1;
+    const href = path.substr(0,lastIndexOfSlash) + stopPlaceId;
+    return href;
+  };
 
-    const { open, stopPlaceId, dispatch } = this.props;
+  render() {
+    const { open, stopPlaceId, intl } = this.props;
+    const { formatMessage } = intl;
+    const translations = {
+      close: formatMessage({ id: 'close' }),
+      newStopCreated: formatMessage({ id: 'new_stop_created' }),
+      newStopCreatedMore: formatMessage({ id: 'new_stop_created_more' }),
+      openQuestion: formatMessage({ id: 'open_question' }),
+      open: formatMessage({ id: 'open' }),
+      openTab: formatMessage({ id: 'open_tab' })
+    };
 
     if (!open) return null;
 
@@ -34,13 +46,13 @@ class NewStopPlaceInfo extends React.Component {
       fontWeight: 600,
       marginTop: 20,
       fontSize: '2.2em',
-      textAlign: 'center',
+      textAlign: 'center'
     };
 
     const ingressStyle = {
       fontSize: '1.1em',
       margin: 20,
-      textAlign: 'center',
+      textAlign: 'center'
     };
 
     const bodyStyle = {
@@ -55,7 +67,7 @@ class NewStopPlaceInfo extends React.Component {
       marginTop: 5,
       textAlign: 'centre',
       width: '100%',
-      textDecoration: 'underline',
+      textDecoration: 'underline'
     };
 
     const goToStyle = {
@@ -67,8 +79,11 @@ class NewStopPlaceInfo extends React.Component {
       marginRight: 10,
       marginLeft: 10,
       cursor: 'pointer',
-      color: enturPrimaryDarker
+      color: enturPrimaryDarker,
+      textDecoration: 'none'
     };
+
+    const href = this.createHref(stopPlaceId);
 
     return (
       <div style={informationBannerStyle}>
@@ -80,24 +95,23 @@ class NewStopPlaceInfo extends React.Component {
               color: '#ffae19',
               verticalAlign: 'middle',
               marginBottom: 7,
-              paddingRight: 2,
+              paddingRight: 2
             }}
           />
-          {"Nytt stoppested opprettet"}
+          {translations.newStopCreated}
         </div>
-        <div style={bodyStyle}>{"ID: " + stopPlaceId}</div>
-        <div style={ingressStyle}>{"Et nytt stoppested er blitt opprettet, og er nå tilgjengelig i stoppestedsregisteret."}</div>
-        <div style={bodyStyle}>{"Ønsker du å gå til det nå?"}</div>
+        <div style={bodyStyle}>{'ID: ' + stopPlaceId}</div>
+        <div style={ingressStyle}>{translations.newStopCreatedMore}</div>
+        <div style={bodyStyle}>{translations.openQuestion}</div>
         <div style={goToStyle}>
-          <div style={goToItem}>Åpne</div>
-          <div style={goToItem}>Åpne i ny fane</div>
+          <a style={goToItem} href={href}>{translations.open}</a>
+          <a style={goToItem} target="_blank" href={href}>{translations.openTab}</a>
         </div>
         <FlatButton style={closeStyle} onClick={this.handleClose.bind(this)}>
-          Lukk
+          {translations.close}
         </FlatButton>
       </div>
-    )
-
+    );
   }
 }
 
