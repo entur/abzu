@@ -18,33 +18,54 @@ import { getTiamatEnv, getEnvColor } from '../config/enturTheme';
 import ConfirmDialog from './Dialogs/ConfirmDialog';
 
 class Header extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      isConfirmDialogOpen: false
-    }
+      isConfirmDialogOpen: false,
+      actionOnDone: 'GoToMain'
+    };
   }
 
-  returnToMain() {
-    this.setState({
-      isConfirmDialogOpen: false
-    });
+  goToMain() {
     this.props.dispatch(UserActions.navigateTo('/', ''));
   }
 
-  handleAllowUserToGoBack() {
-    if (this.props.stopHasBeenModified) {
+  handleConfirmChangeRoute(next, action) {
+    const { stopHasBeenModified, isDisplayingReports } = this.props;
+
+    if (stopHasBeenModified && !isDisplayingReports) {
       this.setState({
-        isConfirmDialogOpen: true
+        isConfirmDialogOpen: true,
+        actionOnDone: action
       });
     } else {
-      this.returnToMain();
+      next();
     }
   }
 
   handleSetLanguage(locale) {
     this.props.dispatch(UserActions.applyLocale(locale));
+  }
+
+  handleConfirm() {
+    this.setState({
+      isConfirmDialogOpen: false
+    });
+
+    const { actionOnDone } = this.state;
+    switch (actionOnDone) {
+      case 'GoToMain':
+        this.goToMain();
+        break;
+      case 'GoToReports':
+        this.goToReports();
+        break;
+      default:
+        () => {
+          console.info('Invalid action', actionOnDone, ' ignored');
+        };
+        break;
+    }
   }
 
   handleLogOut() {
@@ -53,7 +74,7 @@ class Header extends React.Component {
     }
   }
 
-  handleReports() {
+  goToReports() {
     this.props.dispatch(UserActions.navigateTo('reports', ''));
   }
 
@@ -68,7 +89,6 @@ class Header extends React.Component {
   handleToggleShowExpiredStops(value) {
     this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
   }
-
 
   render() {
     const {
@@ -111,9 +131,9 @@ class Header extends React.Component {
             <div>
               {title}
               {(tiamatEnv === 'test' || tiamatEnv === 'development') &&
-              <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
-                {tiamatEnv}
-              </span>}
+                <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
+                  {tiamatEnv}
+                </span>}
             </div>
           }
           showMenuIconButton={true}
@@ -121,7 +141,11 @@ class Header extends React.Component {
             <img
               src={Logo}
               style={{ width: 40, height: 'auto', cursor: 'pointer' }}
-              onClick={() => this.handleAllowUserToGoBack()}
+              onClick={() =>
+                this.handleConfirmChangeRoute(
+                  this.goToMain.bind(this),
+                  'GoToMain'
+                )}
             />
           }
           iconElementRight={
@@ -133,7 +157,11 @@ class Header extends React.Component {
               <MenuItem
                 leftIcon={<MdReport color="#41c0c4" />}
                 primaryText={reportSite}
-                onClick={() => this.handleReports()}
+                onClick={() =>
+                  this.handleConfirmChangeRoute(
+                    this.goToReports.bind(this),
+                    'GoToReports'
+                  )}
                 style={{ fontSize: 12, padding: 0 }}
               />
               <MenuItem
@@ -225,10 +253,10 @@ class Header extends React.Component {
           handleClose={() => {
             this.setState({
               isConfirmDialogOpen: false
-            })
+            });
           }}
           handleConfirm={() => {
-            this.returnToMain();
+            this.handleConfirm();
           }}
           messagesById={{
             title: 'discard_changes_title',
