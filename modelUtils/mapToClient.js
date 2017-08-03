@@ -880,7 +880,7 @@ const setExpirationToNowForParking = (list, index) => {
   let nowDate = new Date();
   let utcDateString = moment(nowDate).utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
   parking.validBetween = {
-    fromDate: parking.validBetween.fromDate || utcDateString,
+    fromDate: parking.validBetween && parking.validBetween.fromDate || utcDateString,
     toDate: utcDateString
   }
   parking.hasExpired = true;
