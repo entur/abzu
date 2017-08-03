@@ -78,7 +78,7 @@ class ToolTippable extends React.Component {
       left,
       padding: 5,
       fontSize: 12,
-      zIndex: 99999,
+      zIndex: 999999,
       color: '#fff',
     };
 
