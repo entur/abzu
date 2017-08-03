@@ -6,6 +6,8 @@ class ToolTippable extends React.Component {
     super(props);
     this.state = {
       showToolTip: false,
+      top: 0,
+      left: 0,
     };
   }
 
@@ -31,14 +33,49 @@ class ToolTippable extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.refs.child) {
+      const ignorePostRender = this.state.open === prevState.open;
+      const { top, left }  = this.refs.child.getBoundingClientRect();
+      if (!ignorePostRender || this.state.top !== top || this.state.left !== left) {
+        this.setState({
+          left,
+          top
+        });
+      }
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const nextLeft = nextState.left;
+    const nextTop = nextState.top;
+    const nextOpen = nextState.top;
+    const { top, left, open } = this.state;
+
+    if (nextOpen !== open) {
+      return true;
+    }
+
+    if (left === nextLeft && top === nextTop) {
+      return false;
+    }
+
+    console.log("returning true", left, nextLeft);
+
+    return true;
+  }
+
   render() {
     const { children, toolTipText, toolTipStyle } = this.props;
-    const { showToolTip } = this.state;
+    const { showToolTip, top, left } = this.state;
 
     const defaultStyle = {
       background: '#595959',
       position: 'fixed',
-      marginTop: 5,
+      marginTop: 40,
+      marginLeft: -20,
+      top,
+      left,
       padding: 5,
       fontSize: 12,
       zIndex: 99999,
@@ -52,7 +89,7 @@ class ToolTippable extends React.Component {
         onMouseOver={this.handleShowToolTip.bind(this)}
         onMouseOut={this.handleHideToolTip.bind(this)}
       >
-        <span>{children}</span>
+        <div ref="child">{children}</div>
         {showToolTip && <span style={appliedStyle}>{toolTipText}</span>}
       </div>
     );
