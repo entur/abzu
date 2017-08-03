@@ -138,6 +138,7 @@
   "move_quay_title": "Du flytter en quay",
   "move_quay_info": "Du er ferd med å flytte følgende quay til det aktive stoppestedet. Alle dine øvrige ulagrede endringer vil bli forkastet!",
   "name" : "Navn",
+  "name_is_required": "Navn er påkrevd",
   "name_type": "Navntype",
   "navigation": "Navigasjon",
   "new_element_help_text" : "Du kan legge til nye elementer i kartet ved å dra dem inn i kartet.",

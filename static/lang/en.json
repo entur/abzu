@@ -143,6 +143,7 @@
   "move_quay_title": "You are about to move a quay to current stop place",
   "move_quay_info": "You are moving a quay into current stop place. This is a permanent change. All your other changes will be discarded.",
   "name": "Name",
+  "name_is_required": "Name is required",
   "name_type": "Name type",
   "navigation": "Navigation",
   "new_element_help_text" : "You can add new elements to the map by dragging desired element into the map.",
