@@ -23,7 +23,7 @@ var imageLoaderQuery = {
 
 
 module.exports = {
-  devtool: 'inline-eval-cheap-source-map',
+  devtool: 'source-map',
   entry: ['webpack-hot-middleware/client', './index'],
   output: {
     path: __dirname + '/public',
