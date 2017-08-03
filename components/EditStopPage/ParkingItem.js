@@ -18,7 +18,7 @@ class ParkingItem extends React.Component {
     translations: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     expanded: PropTypes.bool.isRequired,
-    parking: PropTypes.object.isRequired,
+    parking: PropTypes.object.isRequired
   };
 
   handleSetTotalCapacity(value) {
@@ -57,9 +57,8 @@ class ParkingItem extends React.Component {
       marginRight: 5,
       verticalAlign: 'text-top',
       height: 16,
-      width: 16,
+      width: 16
     };
-
 
     return (
       <div>
@@ -69,21 +68,29 @@ class ParkingItem extends React.Component {
           >
             <MapsMyLocation
               style={locationStyle}
-              onClick={() => this.props.handleLocateOnMap(parking.location, index, 'parking')}
+              onClick={() =>
+                this.props.handleLocateOnMap(
+                  parking.location,
+                  index,
+                  'parking'
+                )}
             />
             <div
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'parking')}
             >
-              <div style={{display: 'flex', lineHeight: '28px'}}>
-                {translations[parkingType]} { parking.hasExpired &&
-                <ToolTippable
-                  toolTipText={formatMessage({id: 'parking_expired'})}
-                  toolTipStyle={{padding: '0 5'}}
-                >
-                  <Warning color="orange" style={{width: 20, height: 20, marginLeft: 5}}/>
-                </ToolTippable>
-                }
+              <div style={{ display: 'flex', lineHeight: '28px' }}>
+                {translations[parkingType]}
+                {parking.hasExpired &&
+                  <ToolTippable
+                    toolTipText={formatMessage({ id: 'parking_expired' })}
+                    toolTipStyle={{ padding: '0 5' }}
+                  >
+                    <Warning
+                      color="orange"
+                      style={{ width: 20, height: 20, marginLeft: 5 }}
+                    />
+                  </ToolTippable>}
               </div>
             </div>
             <div
@@ -126,27 +133,22 @@ class ParkingItem extends React.Component {
                 style={{ width: '95%', marginTop: -10 }}
               />
               <div style={{ width: '100%', textAlign: 'right' }}>
-                <IconButton
-                  disabled={disabled}
-                >
-                  { parking.hasExpired
-                    ?
-
-                    <ToolTippable
-                    toolTipText={formatMessage({id: 'restore_parking'})}
-                    >
-                      <MdRestore
-                        onClick={() => this.handleOpenParking(index)}
-                      />                    </ToolTippable>
-                    :
-                    <ToolTippable
-                      toolTipText={formatMessage({id: 'expire_parking'})}
-                    >
-                      <MdDelete
-                        onClick={() => this.handleExpireParking(index)}
-                      />                  </ToolTippable>
-
-                  }
+                <IconButton disabled={disabled}>
+                  {parking.hasExpired
+                    ? <ToolTippable
+                        toolTipText={formatMessage({ id: 'restore_parking' })}
+                      >
+                        <MdRestore
+                          onClick={() => this.handleOpenParking(index)}
+                        />
+                      </ToolTippable>
+                    : <ToolTippable
+                        toolTipText={formatMessage({ id: 'expire_parking' })}
+                      >
+                        <MdDelete
+                          onClick={() => this.handleExpireParking(index)}
+                        />
+                      </ToolTippable>}
                 </IconButton>
               </div>
             </div>}
