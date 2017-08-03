@@ -19,9 +19,9 @@ class CompassBearingDialog extends React.Component {
     handleConfirm: PropTypes.func.isRequired,
   };
 
-  handleInputChange(event, newValue) {
+  handleInputChange(event, compassBearing) {
     this.setState({
-      compassBearing: newValue,
+      compassBearing
     });
   }
 
@@ -59,8 +59,7 @@ class CompassBearingDialog extends React.Component {
   render() {
     const { open, intl } = this.props;
     const { formatMessage } = intl;
-    const compassBearing =
-      this.state.compassBearing || this.props.compassBearing;
+    const compassBearing = this.state.compassBearing !== null ? this.state.compassBearing : this.props.compassBearing;
 
     const compassBearingTranslation = {
       title: formatMessage({ id: 'change_compass_bearing' }),
@@ -96,6 +95,7 @@ class CompassBearingDialog extends React.Component {
         <FlatButton
           label={compassBearingTranslation.confirm}
           primary={true}
+          disabled={!this.state.compassBearing}
           keyboardFocused={true}
           onTouchTap={() => this.handleConfirm()}
         />

@@ -57,7 +57,7 @@ class QuayMarkerIcon extends React.Component {
 
     return (
       <div>
-        {isCompassBearingEnabled && compassBearing
+        {isCompassBearingEnabled && (typeof compassBearing === 'number')
           ? this._compassBearingIcon
           : null}
         {this._markerIcon}

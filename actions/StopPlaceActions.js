@@ -168,8 +168,8 @@ StopPlaceActions.changeQuayCompassBearing = (
 ) => dispatch => {
   dispatch(
     sendData(types.CHANGED_QUAY_COMPASS_BEARING, {
-      index: index,
-      compassBearing: compassBearing,
+      index,
+      compassBearing,
     }),
   );
 };
