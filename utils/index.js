@@ -7,7 +7,7 @@ export const setDecimalPrecision = (number, n) => {
   let splittedNumbers = String(number).split('.');
   let paddedLength = splittedNumbers[0].length;
 
-  return Number(number.toPrecision(paddedLength + n));
+  return Number(Number(number).toPrecision(paddedLength + n));
 };
 
 export const getIn = (object, keys, defaultValue) => {
@@ -20,3 +20,26 @@ export const getInTransform = (object, keys, defaultValue, transformater) => {
   let value = getIn(object, keys, null);
   return value !== null ? transformater(value) : defaultValue;
 };
+
+export const extractCoordinates = latLngString => {
+  if (!latLngString) return null;
+
+  let coords = null;
+
+  if (latLngString.indexOf(',') > 1) {
+    coords = latLngString.split(',');
+  } else {
+    coords = latLngString.split(/\s*[\s,]\s*/);
+  }
+
+  if (
+    coords &&
+    coords.length === 2 &&
+    !isNaN(coords[0]) &&
+    !isNaN(coords[1])
+  ) {
+    const result = coords.map( c => setDecimalPrecision(c, 6));
+    return result;
+  }
+  return null;
+}

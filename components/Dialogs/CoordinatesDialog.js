@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import { extractCoordinates } from '../../utils/'
 
 class CoordinatesDialog extends React.Component {
   constructor(props) {
@@ -41,17 +42,11 @@ class CoordinatesDialog extends React.Component {
 
     if (typeof coordinatesString === 'undefined') return;
 
-    const position = coordinatesString && coordinatesString.split(',');
+    const position = extractCoordinates(coordinatesString);
 
-    if (
-      position &&
-      position.length == 2 &&
-      !isNaN(position[0]) &&
-      !isNaN(position[1])
-    ) {
-      const latLng = [Number(position[0].trim()), Number(position[1].trim())];
+    if (position) {
 
-      this.props.handleConfirm(latLng);
+      this.props.handleConfirm(position);
 
       this.setState({
         coordinates: null,
