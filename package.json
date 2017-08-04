@@ -1,6 +1,6 @@
 {
   "name": "Abzu",
-  "version": "0.8.9",
+  "version": "0.9.0",
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
