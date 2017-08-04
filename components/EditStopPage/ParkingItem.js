@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { StopPlaceActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
-import MdDelete from 'material-ui/svg-icons/action/delete';
+import MdNotInterested from 'material-ui/svg-icons/av/not-interested';
 import MdRestore from 'material-ui/svg-icons/action/restore';
 import ToolTippable from './ToolTippable';
 import { injectIntl } from 'react-intl';
@@ -145,7 +145,7 @@ class ParkingItem extends React.Component {
                     : <ToolTippable
                         toolTipText={formatMessage({ id: 'expire_parking' })}
                       >
-                        <MdDelete
+                        <MdNotInterested
                           onClick={() => this.handleExpireParking(index)}
                         />
                       </ToolTippable>}

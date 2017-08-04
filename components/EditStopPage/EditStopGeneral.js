@@ -49,6 +49,7 @@ import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
 import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
 import { getIn } from '../../utils/';
+import ToolTippable from './ToolTippable';
 
 class EditStopGeneral extends React.Component {
 
@@ -693,6 +694,16 @@ class EditStopGeneral extends React.Component {
             justifyContent: 'space-around'
           }}
         >
+          <ToolTippable toolTipText={formatMessage({ id: 'delete_stop_place' })} toolTipStyle={{marginLeft: 50, marginTop: 5}}>
+            <IconButton
+              disabled={!canDeleteStop || stopPlace.isNewStop}
+              onClick={() => {
+                canDeleteStop && this.props.dispatch(UserActions.requestDeleteStopPlace());
+              }}
+            >
+              <MdDelete />
+            </IconButton>
+          </ToolTippable>
           <FlatButton
             icon={<MdUndo />}
             disabled={!stopHasBeenModified}
@@ -703,14 +714,6 @@ class EditStopGeneral extends React.Component {
               this.setState({ confirmUndoOpen: true });
             }}
           />
-          <IconButton
-            disabled={!canDeleteStop || stopPlace.isNewStop}
-            onClick={() => {
-              canDeleteStop && this.props.dispatch(UserActions.requestDeleteStopPlace());
-            }}
-          >
-            <MdDelete />
-          </IconButton>
           <FlatButton
             icon={<MdSave />}
             disabled={disabled || !stopHasBeenModified || !stopPlace.name.length }

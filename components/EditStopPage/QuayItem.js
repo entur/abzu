@@ -35,6 +35,7 @@ import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import { enturPrimaryDarker } from '../../config/enturTheme';
 import Code from './Code';
 
+
 class QuayItem extends React.Component {
   static PropTypes = {
     publicCode: PropTypes.string.isRequired,
@@ -205,6 +206,8 @@ class QuayItem extends React.Component {
       textAlign: 'right',
       width: '100%',
       paddingBottom: 0,
+      display: 'flex',
+      justifyContent: 'flex-end'
     };
 
     const locationStyle = {
@@ -413,7 +416,8 @@ class QuayItem extends React.Component {
                       onClick={() => this.showMoreOptionsForQuay(false)}
                     />
                   : <FlatButton
-                      label={formatMessage({ id: 'more' })}
+                    style={{marginTop: 5, marginBottom: -5}}
+                    label={formatMessage({ id: 'more' })}
                       onClick={() => this.showMoreOptionsForQuay(true)}
                     />}
                 {additionalExpanded
@@ -425,17 +429,21 @@ class QuayItem extends React.Component {
                   : null}
               </div>
               <div style={iconButtonStyle}>
-                <IconButton
-                  onClick={this.props.handleOpenKeyValuesDialog}
-                >
-                  <MdKey color={quay.keyValues.length ? enturPrimaryDarker : '#000'}/>
-                </IconButton>
-                <IconButton
-                  disabled={disabled}
-                  onClick={this.props.handleRemoveQuay}
-                >
-                  <MdDelete/>
-                </IconButton>
+                <ToolTippable toolTipText={formatMessage({id: 'key_values_hint'})}>
+                  <IconButton
+                    onClick={this.props.handleOpenKeyValuesDialog}
+                  >
+                    <MdKey color={quay.keyValues.length ? enturPrimaryDarker : '#000'}/>
+                  </IconButton>
+                </ToolTippable>
+                <ToolTippable toolTipText={formatMessage({id: 'delete_quay'})} toolTipStyle={{marginLeft: 10}}>
+                  <IconButton
+                    disabled={disabled}
+                    onClick={this.props.handleRemoveQuay}
+                  >
+                    <MdDelete/>
+                  </IconButton>
+                </ToolTippable>
               </div>
             </div>}
         <Divider inset={true} style={{ marginTop: 2 }} />
