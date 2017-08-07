@@ -116,6 +116,7 @@
   "key_values_hint": "Key-value pairs",
   "key_values_no": "No key-value pairs",
   "language": "Language",
+  "loading": "Loading...",
   "local_reference": "Local reference:",
   "lookup_coordinates": "Lookup coordinates",
   "log_out": "Log out",

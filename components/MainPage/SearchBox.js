@@ -26,6 +26,8 @@ import debounce from 'lodash.debounce';
 import { getIn } from '../../utils/';
 import { enturPrimaryDarker } from '../../config/enturTheme';
 import MdLocationSearching from 'material-ui/svg-icons/device/location-searching';
+import MdSpinner from '../../static/icons/spinner';
+
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class SearchBox extends React.Component {
     this.state = {
       showMoreFilterOptions: false,
       coordinatesDialogOpen: false,
+      loading: false
     };
 
     const searchStop = (searchText, dataSource, params, filter) => {
@@ -45,6 +48,8 @@ class SearchBox extends React.Component {
         const stopPlaceTypes = filter
           ? filter.stopType
           : this.props.stopTypeFilter;
+
+        this.setState({loading: true});
 
         this.props.client.query({
           query: findStop,
@@ -59,7 +64,10 @@ class SearchBox extends React.Component {
               .filter(topos => topos.type === 'county')
               .map(topos => topos.value),
           },
+        }).then( response => {
+          this.setState({loading: false});
         });
+
         this.props.dispatch(UserActions.setSearchText(searchText));
       }
     };
@@ -183,7 +191,7 @@ class SearchBox extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    const { dataSource = [], topoiChips, stopTypeFilter } = nextProps;
+    const { dataSource, topoiChips, stopTypeFilter } = nextProps;
     const { formatMessage } = nextProps.intl;
 
     // do not map menuItems if source is the same
@@ -194,7 +202,7 @@ class SearchBox extends React.Component {
       return;
     }
 
-    if (dataSource.length) {
+    if (dataSource && dataSource.length) {
       this._menuItems = dataSource.map(element => ({
         element: element,
         text: element.name,
@@ -298,9 +306,29 @@ class SearchBox extends React.Component {
       canEdit,
       isGuest,
       lookupCoordinatesOpen,
+      dataSource,
     } = this.props;
-    const { coordinatesDialogOpen, showMoreFilterOptions } = this.state;
+    const { coordinatesDialogOpen, showMoreFilterOptions, loading } = this.state;
     const { formatMessage, locale } = intl;
+
+    const Loading = (loading && !dataSource.length && (
+        [
+          {
+            text: '',
+            value: (
+              <MenuItem
+                style={{ paddingRight: 10, width: 'auto' }}
+                primaryText={
+                  <div style={{ fontWeight: 600, fontSize: '0.8em', display: 'flex', alignItems: 'center'}}>
+                    <MdSpinner/>
+                    <div style={{marginLeft: 5}}>{formatMessage({id: 'loading'})}</div>
+                  </div>
+                }
+              />
+            ),
+          },
+        ]
+    ));
 
     const topographicalPlacesDataSource = topographicalPlaces
       .filter(
@@ -449,7 +477,7 @@ class SearchBox extends React.Component {
               animated={false}
               openOnFocus
               hintText={formatMessage({ id: 'filter_by_name' })}
-              dataSource={this._menuItems || []}
+              dataSource={loading && !dataSource.length ? Loading : (this._menuItems || [])}
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleSearchUpdate.bind(this)}
               maxSearchResults={7}
@@ -543,7 +571,7 @@ const mapStateToProps = state => {
 
   return {
     chosenResult: state.stopPlace.activeSearchResult,
-    dataSource: state.stopPlace.searchResults,
+    dataSource: state.stopPlace.searchResults || [],
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,

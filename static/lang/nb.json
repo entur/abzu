@@ -116,6 +116,7 @@
   "key_values_hint": "Nøkkelverdier",
   "key_values_no": "Ingen nøkkelverdier",
   "language" : "Språk",
+  "loading": "Laster ...",
   "local_reference": "Lokal referanse:",
   "lookup_coordinates": "Koordinatsøk",
   "log_out": "Logg ut",
