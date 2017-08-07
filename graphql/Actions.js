@@ -11,6 +11,8 @@ import {
   stopPlaceWithEverythingElse,
   stopPlaceBBQuery,
   getMergeInfoStopPlace,
+  topopGraphicalPlacesQuery,
+  findStop,
   getPolygons
 } from '../graphql/Queries';
 
@@ -130,3 +132,32 @@ export const getMergeInfoForStops = (client, stopPlaceId) => (
     }
   })
 );
+
+export const findStopWithFilters = (client, query, stopPlaceType, chips) => {
+  const municipalityReference = chips
+  .filter(topos => topos.type === 'town')
+    .map(topos => topos.value);
+  const countyReference = chips
+    .filter(topos => topos.type === 'county')
+    .map(topos => topos.value);
+
+  return client.query({
+    query: findStop,
+    fetchPolicy: 'network-only',
+    variables: {
+      query,
+      stopPlaceType,
+      municipalityReference: municipalityReference ,
+      countyReference: countyReference
+    },
+  });
+};
+
+export const findTopographicalPlace = (client, query) =>
+  client.query({
+  query: topopGraphicalPlacesQuery,
+  fetchPolicy: 'network-only',
+  variables: {
+    query,
+  },
+});

@@ -15,7 +15,7 @@ import ModalityIcon from './ModalityIcon';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import FavoriteManager from '../../singletons/FavoriteManager';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
-import { findStop, topopGraphicalPlacesQuery } from '../../graphql/Queries';
+import { findStopWithFilters, findTopographicalPlace } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import FavoritePopover from './FavoritePopover';
 import ModalityFilter from '../EditStopPage/ModalityFilter';
@@ -51,20 +51,7 @@ class SearchBox extends React.Component {
 
         this.setState({loading: true});
 
-        this.props.client.query({
-          query: findStop,
-          fetchPolicy: 'network-only',
-          variables: {
-            query: searchText,
-            stopPlaceType: stopPlaceTypes,
-            municipalityReference: chips
-              .filter(topos => topos.type === 'town')
-              .map(topos => topos.value),
-            countyReference: this.props.topoiChips
-              .filter(topos => topos.type === 'county')
-              .map(topos => topos.value),
-          },
-        }).then( response => {
+        findStopWithFilters(this.props.client, searchText, stopPlaceTypes, chips).then( response => {
           this.setState({loading: false});
         });
 
@@ -104,13 +91,8 @@ class SearchBox extends React.Component {
   }
 
   handleTopographicalPlaceInput(searchText) {
-    this.props.client.query({
-      query: topopGraphicalPlacesQuery,
-      fetchPolicy: 'network-only',
-      variables: {
-        query: searchText,
-      },
-    });
+    const { client } = this.props;
+    findTopographicalPlace(client, searchText);
   }
 
   handleNewRequest(result) {
