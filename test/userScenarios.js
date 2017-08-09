@@ -1,27 +1,9 @@
 import expect from 'expect';
-import { isModeOptionsValidForMode, getRoleOptions } from '../roles/rolesParser';
-import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../reducers/rolesReducerUtils';
-import stopTypes, { submodes } from '../models/stopTypes';
+import { getAllowanceInfoForStop} from '../reducers/rolesReducerUtils';
 import mockRailReplacementStop from './mock/mockRailReplacementStop';
 import mockRailStop from './mock/mockRailStop';
-import { getSubModeRelevance } from '../roles/rolesParser';
+import mockBusStop from './mock/mockBusStop';
 
-const stopPlaceResult = {
-  data: {
-    stopPlace: [
-      {
-        geometry: {
-          coordinates: [
-            [
-              10.434486,
-              59.833343
-            ]
-          ]
-        }
-      }
-    ]
-  }
-};
 
 describe('User and roles - scenarios', () => {
 
@@ -167,10 +149,40 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
-    expect(allowanceRailStop.canEdit).toEqual(false);
+    //const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    //expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
     expect(allowanceRailReplacementBus.canEdit).toEqual(false);
+  });
+
+  it('(Østfold) Edit stops - blacklisted StopPlaceType and Submode', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "*"
+            ],
+            "StopPlaceType": [
+              "!railStation",
+              "!airport"
+            ],
+            "Submode": [
+              "!railReplacementBus",
+            ],
+          }
+        })
+      ]
+    };
+
+    //const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    //expect(allowanceRailStop.canEdit).toEqual(false);
+    const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    expect(allowanceBusStop.canEdit).toEqual(true);
   });
 
 

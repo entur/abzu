@@ -107,12 +107,23 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
     if (submodeValid && transportModeValid) {
       return true;
     }
-  } else {
-    if (stopPlaceTypeValid) {
-      return true;
-    }
   }
+
+  if (!submodeValid && stopPlace.submode) {
+    return false;
+  }
+
+  if (stopPlaceTypeValid) {
+    return true;
+  }
+
   return false;
+};
+
+const finalCheckStopPlaceType = (options, stopPlaceType) => {
+  if (!options) return false;
+  if (options.allowAll) return true;
+
 };
 
 export const getSubModeRelevance = (submode, stopPlaceType) => {
@@ -134,7 +145,7 @@ export const getSubModeRelevance = (submode, stopPlaceType) => {
   return false;
 };
 
-const isInArrayIgnoreCase = (array, value) => {
+export const isInArrayIgnoreCase = (array, value) => {
   if (!array || !array.length) return false;
 
   if (!value) return true;
@@ -159,7 +170,11 @@ export const isModeOptionsValidForMode = (options, mode, forgiveNotSet = true) =
     return false;
   }
 
-  if (isInArrayIgnoreCase(whitelisted, mode)) {
+  if (whitelisted.length && isInArrayIgnoreCase(whitelisted, mode)) {
+    return true;
+  }
+
+  if (!whitelisted.length) {
     return true;
   }
 
@@ -229,6 +244,11 @@ export const getStopPlacesForSubmodes = legalSubmodes => {
 
 export const getInverseSubmodesWhitelist = whitelist => {
   return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
+};
+
+export const getInverseStopPlaceTypesWhitelist = whitelist => {
+  const allStopTypes = stopTypes.nb.map( stop => stop.value);
+  return allStopTypes.filter( stopType => whitelist.indexOf(stopType) == -1);
 };
 
 export default RoleParser;

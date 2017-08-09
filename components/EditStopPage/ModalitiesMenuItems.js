@@ -12,6 +12,7 @@ class ModalitiesMenuItems extends React.Component {
 
     const legalStopPlaceTypes = allowsInfo.legalStopPlaceTypes || [];
     const legalSubmodes = allowsInfo.legalSubmodes|| [];
+    const blacklistedStopTypes = allowsInfo.blacklistedStopPlaceTypes || [];
     const illegalSubmodes = getInverseSubmodesWhitelist(legalSubmodes);
     // stopPlacesTypes that submodes are depending on to be legal in order to render
     const adHocStopPlaceTypes = getStopPlacesForSubmodes(legalSubmodes);
@@ -21,6 +22,10 @@ class ModalitiesMenuItems extends React.Component {
       {stopTypes.map((type, index) => {
 
         let isLegal = adHocStopPlaceTypes.indexOf(type.value) > -1 || legalStopPlaceTypes.indexOf(type.value) > -1;
+
+        if (blacklistedStopTypes.indexOf(type.value) > -1) {
+          isLegal = false;
+        }
 
         return (
           <MenuItem

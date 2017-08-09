@@ -1,4 +1,4 @@
-import roleParser, { getRoleOptions, isModeOptionsValidForMode } from '../roles/rolesParser';
+import roleParser, { getRoleOptions, isModeOptionsValidForMode, isInArrayIgnoreCase } from '../roles/rolesParser';
 import { getIn } from '../utils/';
 import stopTypes, { submodes } from '../models/stopTypes';
 
@@ -48,6 +48,7 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
     roles: responsibleEditRoles,
     legalStopPlaceTypes,
     legalSubmodes,
+    blacklistedStopPlaceTypes: getBlacklistedStopPlaceTypes(responsibleEditRoles),
     canEdit,
     canDeleteStop
   };
@@ -152,6 +153,32 @@ const filterByLegalMode = (roles, completeList, key) => {
 export const getLegalStopPlaceTypes = roles => {
   let allStopTypes = stopTypes.en.map(stopType => stopType.value);
   return filterByLegalMode(roles, allStopTypes, 'StopPlaceType')
+}
+
+const getBlacklistedStopPlaceTypes = roles => {
+
+  const blacklistSet = new Set();
+
+  const stopPlaceRoles = roles.map(role => {
+    if (role.e && role.e.EntityType) {
+      if (
+        isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
+        isInArrayIgnoreCase(role.e.EntityType, '*')
+      ) {
+        return getRoleOptions(role.e.StopPlaceType);
+      }
+    };
+  });
+
+  stopPlaceRoles.forEach( role => {
+    role.blacklisted.forEach( b => {
+      if (b) {
+        blacklistSet.add(b);
+      }
+    })
+  });
+
+  return Array.from(blacklistSet);
 }
 
 export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
