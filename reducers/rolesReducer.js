@@ -8,6 +8,7 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === 'stopPlaceAndPathLink') {
         return Object.assign({}, state, {
+          kc: state.kc,
           allowanceInfo: getAllowanceInfoForStop(action.result, state.kc.tokenParsed)
         });
       } else {
@@ -16,11 +17,13 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
+        kc: state.kc,
         allowanceInfoSearchResult: getAllowanceSearchInfo(action.payLoad, state.kc.tokenParsed)
       });
 
     case types.USE_NEW_STOP_AS_CURENT:
       return Object.assign(({}, state, {
+        kc: state.kc,
         allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
       }))
 

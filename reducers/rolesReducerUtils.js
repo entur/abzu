@@ -4,8 +4,9 @@ import stopTypes, { submodes } from '../models/stopTypes';
 
 export const getAllowanceInfoForStop = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
-  const editStopRoles = roleParser.getEditStopRoles(tokenParsed);
-  const deleteStopRoles = roleParser.getDeleteStopRoles(tokenParsed);
+  const token = { ... tokenParsed };
+  const editStopRoles = roleParser.getEditStopRoles(token);
+  const deleteStopRoles = roleParser.getDeleteStopRoles(token);
   const latlng = getLatLngFromResult(result);
   const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
@@ -50,7 +51,8 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
 };
 
 export const getAllowInfoNewStop = (latlng, tokenParsed) => {
-  let editStopRoles = roleParser.getEditStopRoles(tokenParsed);
+  const token = { ... tokenParsed };
+  let editStopRoles = roleParser.getEditStopRoles(token);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
@@ -96,7 +98,8 @@ export const getLegalStopPlaceTypes = roles => {
 }
 
 export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
-  let editStopRoles = roleParser.getEditStopRoles(tokenParsed);
+  const token = { ... tokenParsed };
+  let editStopRoles = roleParser.getEditStopRoles(token);
   let latlng = payLoad.location;
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
