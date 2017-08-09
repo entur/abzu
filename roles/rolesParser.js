@@ -98,6 +98,11 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   const legalSubmodes = getLegalSubmodes(roles);
   const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
 
+  // if stopPlace is not defined and submode is not whitelisted
+  if (!roleStopPlaceType && !submodeValid) {
+    return false;
+  }
+
   if (isSubModeRestrictionRelevant) {
     if (submodeValid && transportModeValid) {
       return true;

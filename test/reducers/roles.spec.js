@@ -4,7 +4,7 @@ import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, 
 import stopTypes, { submodes } from '../../models/stopTypes';
 import mockRailReplacementStop from '../mock/mockRailReplacementStop';
 import mockBusStop from '../mock/mockBusStop';
-import { getSubModeRelevance } from '../../roles/rolesParser';
+import mockRailStop from '../mock/mockRailStop';
 
 const stopPlaceResult = {
   data: {
@@ -150,6 +150,32 @@ describe('getAllowanceInfo', () => {
     const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
+
+
+  it('should not be able to edit trainStop if submode stopPlaceType is not set and submode is railReplacementBus', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "Submode": [
+              "railReplacementBus",
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+    expect(allowanceInfo.canEdit).toEqual(false);
+
+  })
 
   it('should not be able to edit stop without submode railReplacementBus if is relevant for stopPlace', () => {
 
