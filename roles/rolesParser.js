@@ -2,6 +2,7 @@ const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
 import stopTypes from '../models/stopTypes';
 import { getLegalSubmodes } from '../reducers/rolesReducerUtils';
+import { submodes as allSubmodes } from '../models/submodes';
 
 const getRolesFromTokenByType = (tokenParsed, type) => {
   if (!tokenParsed || !tokenParsed.roles) return [];
@@ -200,6 +201,29 @@ export const getRoleOptions = (list, allOptions = []) => {
     whitelisted,
     allowAll
   };
+};
+
+export const getStopPlacesForSubmodes = legalSubmodes => {
+  let result = [];
+
+  if (!legalSubmodes || !legalSubmodes.length) return result;
+
+  for (let i = 0; i < stopTypes.en.length; i++) {
+    const submodes = stopTypes.en[i].submodes || [];
+    const submodesValues = submodes.map( submode => submode.value );
+    legalSubmodes.forEach( legalSubmode => {
+      if (submodesValues.indexOf(legalSubmode) > -1) {
+        if (result.indexOf(stopTypes.en[i].value) === -1 && legalSubmode !== null) {
+          result.push(stopTypes.en[i].value);
+        }
+      }
+    });
+  };
+  return result;
+};
+
+export const getInverseSubmodesWhitelist = whitelist => {
+  return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
 };
 
 export default RoleParser;

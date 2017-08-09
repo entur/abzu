@@ -60,8 +60,6 @@ class ToolTippable extends React.Component {
       return false;
     }
 
-    console.log("returning true", left, nextLeft);
-
     return true;
   }
 

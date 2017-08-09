@@ -36,9 +36,12 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
   let legalStopPlaceTypes = [];
   let legalSubmodes = [];
 
+  const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(editStopRolesGeoFiltered);
+  const submodesFoundinRoles = getLegalSubmodes(responsibleEditRoles);
+
   if (canEdit) {
-    legalStopPlaceTypes = getLegalStopPlaceTypes(responsibleEditRoles);
-    legalSubmodes = getLegalSubmodes(responsibleEditRoles);
+    legalStopPlaceTypes = restrictModeByRoles(editStopRolesGeoFiltered, stopPlaceTypesFoundinRoles, 'StopPlaceType');
+    legalSubmodes = submodesFoundinRoles;
   }
 
   return {
@@ -48,6 +51,60 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
     canEdit,
     canDeleteStop
   };
+};
+
+
+const restrictModeByRoles = (roles, modes, entityType) => {
+
+  let foundEditStops = false;
+  let result = new Set();
+  let blacklistedSet = new Set();
+
+  roles.forEach(role => {
+
+    if (role.r === 'editStops') {
+      foundEditStops = true;
+    }
+
+    if (role.e && role.e[entityType] && role.e[entityType].length) {
+      modes.forEach( mode => {
+
+        (role.e[entityType] || []).forEach( roleMode => {
+
+          const isBlacklisted = roleMode.indexOf('!') > -1;
+
+          // only add if whitelisted or whitelisted
+          if (!isBlacklisted && roleMode === mode || roleMode === '*') {
+            result.add(mode);
+          } else {
+            const blacklistedEntity = roleMode.substring(1);
+            blacklistedSet.add(blacklistedEntity);
+          }
+        })
+      });
+    }
+  });
+
+  if (foundEditStops) {
+
+    // add all other as withlisted for entities that are blacklisted
+    Array.from(blacklistedSet).forEach( b => {
+      modes.forEach( m => {
+        if (b !== m) {
+          result.add(m);
+        }
+      });
+    });
+
+    // cleanup by removing all blacklisted
+    Array.from(blacklistedSet).forEach( b => {
+      result.delete(b);
+    });
+
+    return Array.from(result);
+  }
+
+  return [];
 };
 
 export const getAllowInfoNewStop = (latlng, tokenParsed) => {
@@ -83,7 +140,7 @@ const filterByLegalMode = (roles, completeList, key) => {
         }
       }
     } else {
-      return completeList;
+      return [];
     }
   }
 
