@@ -1,7 +1,10 @@
 import expect from 'expect';
-import { isModeOptionsValidForMode, getModeOptions } from '../../roles/rolesParser';
+import { isModeOptionsValidForMode, getRoleOptions } from '../../roles/rolesParser';
 import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
 import stopTypes, { submodes } from '../../models/stopTypes';
+import mockRailReplacementStop from '../mock/mockRailReplacementStop';
+import mockBusStop from '../mock/mockBusStop';
+import { getSubModeRelevance } from '../../roles/rolesParser';
 
 const stopPlaceResult = {
   data: {
@@ -21,6 +24,7 @@ const stopPlaceResult = {
 };
 
 describe('getAllowanceInfo', () => {
+
 
   it('should get latlng from stopPlaceResult', () => {
     let latlng = getLatLngFromResult(stopPlaceResult);
@@ -71,8 +75,105 @@ describe('getAllowanceInfo', () => {
     expect(legalSubmodes).toEqual([
       "railReplacementBus"
     ]);
-  })
+  });
 
+  it('should be able to edit railReplacementBus stop', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "Submode": [
+              "railReplacementBus",
+            ],
+          }
+        })
+        ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
+
+
+  it('should be able to edit railReplacementBus stop with only submode in role', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "Submode": [
+              "railReplacementBus",
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
+
+
+  it('should be able to edit railReplacementBus even if is stopPLaceType is not set in role', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "Submode": [
+              "railReplacementBus",
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
+
+  it('should not be able to edit stop without submode railReplacementBus if is relevant for stopPlace', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "Submode": [
+              "railReplacementBus",
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(mockBusStop, token);
+    expect(allowanceInfo.canEdit).toEqual(false);
+  });
 
   it('should get legal stopPlace types when blacklisted', () => {
 
@@ -107,6 +208,7 @@ describe('getAllowanceInfo', () => {
     );
   });
 
+
   it('should get legal stopPlace types that are whitelisted', () => {
 
     let roles = [
@@ -135,6 +237,7 @@ describe('getAllowanceInfo', () => {
     );
   });
 
+
   it('should get all stopPlace types when * is used', () => {
 
     let roles = [
@@ -159,6 +262,7 @@ describe('getAllowanceInfo', () => {
     expect(legalStopPlaceTypes).toEqual(allStopTypes);
   });
 
+
   it('should white- or blacklist based on StopPlaceTypes from role assignment', () => {
 
     const listedStopPlaceTypes1 = [
@@ -177,10 +281,10 @@ describe('getAllowanceInfo', () => {
       "airport", "!railStation"
     ];
 
-    const options1 = getModeOptions(listedStopPlaceTypes1);
-    const options2 = getModeOptions(listedStopPlaceTypes2);
-    const options3 = getModeOptions(listedStopPlaceTypes3);
-    const options4 = getModeOptions(listedStopPlaceTypes4);
+    const options1 = getRoleOptions(listedStopPlaceTypes1);
+    const options2 = getRoleOptions(listedStopPlaceTypes2);
+    const options3 = getRoleOptions(listedStopPlaceTypes3);
+    const options4 = getRoleOptions(listedStopPlaceTypes4);
 
     const expectedOptions1 = {
       blacklisted: [],
@@ -215,9 +319,20 @@ describe('getAllowanceInfo', () => {
   it('should determine whether submode is valid based on options', () => {
     const listedSubmodes = [
       "!railReplacementBus"
-    ]
+    ];
 
-    const options1 = getModeOptions(listedSubmodes);
+    let allSubmodes = [];
+
+    stopTypes.en.map( stopType => {
+      if (stopType.submodes) {
+        stopType.submodes.forEach( submode => {
+          if(submode.value)
+            allSubmodes.push(submode.value)
+        });
+      }
+    });
+
+    const options1 = getRoleOptions(listedSubmodes, allSubmodes);
     let valid1 = isModeOptionsValidForMode(options1, 'sightseeingService');
 
     expect(valid1).toEqual(true);
@@ -232,10 +347,11 @@ describe('getAllowanceInfo', () => {
     const listedStopPlaceTypes2 = ['*'];
 
     const listedStopPlaceTypes3 = ['airport', 'ferryStop'];
+    const allStopTypes = stopTypes.en.map( stopType => stopType.value);
 
-    const options1 = getModeOptions(listedStopPlaceTypes1);
-    const options2 = getModeOptions(listedStopPlaceTypes2);
-    const options3 = getModeOptions(listedStopPlaceTypes3);
+    const options1 = getRoleOptions(listedStopPlaceTypes1, allStopTypes);
+    const options2 = getRoleOptions(listedStopPlaceTypes2, allStopTypes);
+    const options3 = getRoleOptions(listedStopPlaceTypes3, allStopTypes);
 
     let valid1 = isModeOptionsValidForMode(options1, 'airport');
     let valid2 = isModeOptionsValidForMode(options2, 'airport');
@@ -249,6 +365,7 @@ describe('getAllowanceInfo', () => {
 
     expect(invalid1).toEqual(false);
     expect(invalid2).toEqual(false);
-  })
+  });
+
 
 });

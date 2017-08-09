@@ -1,5 +1,7 @@
 const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
+import stopTypes from '../models/stopTypes';
+import { getLegalSubmodes } from '../reducers/rolesReducerUtils';
 
 const getRolesFromTokenByType = (tokenParsed, type) => {
   if (!tokenParsed || !tokenParsed.roles) return [];
@@ -48,86 +50,82 @@ RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
   return result;
 };
 
-RoleParser.filterDeleteRolesByEntity = (
+
+RoleParser.filterRolesByEntityModes = (
   roles,
-  stopPlaceType,
-  transportMode,
-  submode,
   stopPlace
 ) => {
+
   if (!roles || !roles.length) return [];
 
-  let result = [];
-
-  roles.forEach(role => {
+  const stopPlaceRoles = roles.filter(role => {
     if (role.e && role.e.EntityType) {
       if (
         isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
         isInArrayIgnoreCase(role.e.EntityType, '*')
       ) {
-        let stopPlaceTypeOptions = getModeOptions(role.e.StopPlaceType);
-        let transportModeOptions = getModeOptions(role.e.TransportMode);
-        let submodeOptions = getModeOptions(role.e.Submode);
-
-        let stopPlaceTypValid = isModeOptionsValidForMode(
-          stopPlaceTypeOptions,
-          stopPlaceType
-        );
-        let transportModeValid = isModeOptionsValidForMode(
-          transportModeOptions,
-          transportMode
-        );
-        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode);
-
-        if (stopPlaceTypValid && transportModeValid && submodeValid) {
-          result.push(role);
-        }
+        return role;
       }
-    } else {
-      result.push(role);
-    }
+    };
   });
-  return result;
+
+  const validForStop = stopPlaceRoles.filter( role => doesRoleGrantAccessToStop(
+    stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, stopPlace
+  ));
+
+  return validForStop;
 };
 
-RoleParser.filterEditRolesByEntity = (
-  roles,
-  stopPlaceType,
-  transportMode,
-  submode,
-  stopPlace
-) => {
-  if (!roles || !roles.length) return [];
+const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, roleSubmode, stopPlace) => {
 
-  let result = [];
+  const submodeOptions = getRoleOptions(roleSubmode);
+  const forgiveSubmodeNotSet = false;
+  const forgiveTransportmodeNotSet = false;
+  const submodeValid = isModeOptionsValidForMode(submodeOptions, stopPlace.submode, forgiveSubmodeNotSet);
+  const transportModeOptions = getRoleOptions(roleTransportMode);
+  const transportModeValid = isModeOptionsValidForMode(
+    transportModeOptions,
+    stopPlace.transportMode,
+    forgiveTransportmodeNotSet
+  );
+  const stopPlaceTypeOptions = getRoleOptions(roleStopPlaceType);
+  const stopPlaceTypeValid = isModeOptionsValidForMode(
+    stopPlaceTypeOptions,
+    stopPlace.stopPlaceType,
+  );
 
-  roles.forEach(role => {
-    if (role.e && role.e.EntityType) {
-      if (
-        isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
-        isInArrayIgnoreCase(role.e.EntityType, '*')
-      ) {
-        let stopPlaceTypeOptions = getModeOptions(role.e.StopPlaceType);
-        let transportModeOptions = getModeOptions(role.e.TransportMode);
-        let submodeOptions = getModeOptions(role.e.Submode);
+  const legalSubmodes = getLegalSubmodes(roles);
+  const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
 
-        let stopPlaceTypValid = isModeOptionsValidForMode(
-          stopPlaceTypeOptions,
-          stopPlaceType
-        );
-        let transportModeValid = isModeOptionsValidForMode(
-          transportModeOptions,
-          transportMode
-        );
-        let submodeValid = isModeOptionsValidForMode(submodeOptions, submode);
+  if (isSubModeRestrictionRelevant) {
+    if (submodeValid && transportModeValid) {
+      return true;
+    }
+  } else {
+    if (stopPlaceTypeValid) {
+      return true;
+    }
+  }
+  return false;
+};
 
-        if (stopPlaceTypValid && transportModeValid && submodeValid) {
-          result.push(role);
+export const getSubModeRelevance = (submode, stopPlaceType) => {
+
+  if (!submode) return false;
+
+  for (let i = 0; i < stopTypes.nb.length; i++) {
+    const stopType = stopTypes.nb[i];
+    if (stopType.value === stopPlaceType && stopType.submodes) {
+      for (let y = 0; i < stopType.submodes.length; y++) {
+        const _submode = stopType.submodes[y];
+        if (_submode && submode === _submode.value) {
+          return true;
         }
       }
     }
-  });
-  return result;
+    return false;
+  };
+  return false;
 };
 
 const isInArrayIgnoreCase = (array, value) => {
@@ -140,30 +138,33 @@ const isInArrayIgnoreCase = (array, value) => {
   );
 };
 
-export const isModeOptionsValidForMode = (options, mode) => {
+export const isModeOptionsValidForMode = (options, mode, forgiveNotSet = true) => {
   const { blacklisted, whitelisted, allowAll } = options;
 
-  if (allowAll || !mode) {
+  if (allowAll) {
     return true;
+  }
+
+  if (!mode) {
+    return forgiveNotSet;
   }
 
   if (isInArrayIgnoreCase(blacklisted, mode)) {
     return false;
   }
 
-  if (whitelisted.length && !isInArrayIgnoreCase(whitelisted, mode)) {
-    return false;
+  if (isInArrayIgnoreCase(whitelisted, mode)) {
+    return true;
   }
 
-  return true;
+  return false;
 };
 
-export const getModeOptions = list => {
+export const getRoleOptions = (list, allOptions = []) => {
   let blacklisted = [];
   let whitelisted = [];
   let allowAll = false;
 
-  // If stopPlaceTypes are not specified, allow all
   if (!list || !list.length) {
     return {
       allowAll: true,
@@ -181,6 +182,18 @@ export const getModeOptions = list => {
       whitelisted.push(type);
     }
   });
+
+  // avoid pushing new items to whitelist if this list exists and is accounted for
+  const whiteListIsLocked = !!whitelisted.length;
+
+  // add inverse of blacklist to whitelist
+  if (allOptions.length) {
+    allOptions.forEach( option => {
+      if (!whiteListIsLocked && whitelisted.indexOf(option) === -1 && blacklisted.indexOf(option) === -1) {
+        whitelisted.push(option);
+      }
+    });
+  }
 
   return {
     blacklisted,

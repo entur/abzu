@@ -1,13 +1,13 @@
-import roleParser, { getModeOptions, isModeOptionsValidForMode } from '../roles/rolesParser';
+import roleParser, { getRoleOptions, isModeOptionsValidForMode } from '../roles/rolesParser';
 import { getIn } from '../utils/';
 import stopTypes, { submodes } from '../models/stopTypes';
 
 export const getAllowanceInfoForStop = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
-  let editStopRoles = roleParser.getEditStopRoles(tokenParsed);
-  let deleteStopRoles = roleParser.getDeleteStopRoles(tokenParsed);
-  let latlng = getLatLngFromResult(result);
-  let editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
+  const editStopRoles = roleParser.getEditStopRoles(tokenParsed);
+  const deleteStopRoles = roleParser.getDeleteStopRoles(tokenParsed);
+  const latlng = getLatLngFromResult(result);
+  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
   );
@@ -23,14 +23,14 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
     }
   }
 
-  let stopPlaceType = stopPlace.stopPlaceType;
-  let transportMode = stopPlace.transportMode;
-  let submode = stopPlace.submode;
-  let responsibleEditRoles = roleParser.filterEditRolesByEntity(editStopRolesGeoFiltered, stopPlaceType, transportMode, submode);
-  let responsibleDeleteRoles = roleParser.filterDeleteRolesByEntity(deleteStopRoles, stopPlaceType, transportMode, submode);
+  // retrieve all roles that allow editing a given stop
+  const responsibleEditRoles = roleParser.filterRolesByEntityModes(editStopRolesGeoFiltered, stopPlace);
 
-  let canEdit = responsibleEditRoles.length > 0;
-  let canDeleteStop = responsibleDeleteRoles.length > 0;
+  // retrieve all roles that allow hard-deleting a given stop
+  const responsibleDeleteRoles = roleParser.filterRolesByEntityModes(deleteStopRoles, stopPlace);
+
+  const canEdit = responsibleEditRoles.length > 0;
+  const canDeleteStop = responsibleDeleteRoles.length > 0;
 
   let legalStopPlaceTypes = [];
   let legalSubmodes = [];
@@ -85,7 +85,7 @@ const filterByLegalMode = (roles, completeList, key) => {
     }
   }
 
-  const options = getModeOptions(Array.from(typesFoundInRoles));
+  const options = getRoleOptions(Array.from(typesFoundInRoles), completeList);
 
   return completeList.filter( entityType => isModeOptionsValidForMode(options, entityType));
 }
@@ -103,11 +103,7 @@ export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
     latlng
   );
 
-  let stopPlaceType = payLoad.stopPlaceType;
-  let transportMode = payLoad.transportMode;
-  let submode = payLoad.submode;
-
-  let finalRoles = roleParser.filterEditRolesByEntity(rolesAllowingGeo, stopPlaceType, transportMode, submode);
+  let finalRoles = roleParser.filterRolesByEntityModes(rolesAllowingGeo, payLoad);
 
   return {
     roles: finalRoles,
