@@ -11,7 +11,7 @@ class ModalitiesMenuItems extends React.Component {
     const { stopTypes, handleStopTypeChange, handleSubModeTypeChange, allowsInfo } = this.props;
 
     const legalStopPlaceTypes = allowsInfo.legalStopPlaceTypes || [];
-    const legalSubmodes = allowsInfo.legalSubmodes|| [];
+    const legalSubmodes = allowsInfo.legalSubmodes || [];
     const blacklistedStopTypes = allowsInfo.blacklistedStopPlaceTypes || [];
     const illegalSubmodes = getInverseSubmodesWhitelist(legalSubmodes);
     // stopPlacesTypes that submodes are depending on to be legal in order to render

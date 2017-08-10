@@ -1,7 +1,7 @@
 const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
 import stopTypes from '../models/stopTypes';
-import { getLegalSubmodes } from '../reducers/rolesReducerUtils';
+import { getLegalSubmodes, getLegalStopPlaceTypes } from '../reducers/rolesReducerUtils';
 import { submodes as allSubmodes } from '../models/submodes';
 
 const getRolesFromTokenByType = (tokenParsed, type) => {
@@ -89,13 +89,10 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
     stopPlace.transportMode,
     forgiveTransportmodeNotSet
   );
-  const stopPlaceTypeOptions = getRoleOptions(roleStopPlaceType);
-  const stopPlaceTypeValid = isModeOptionsValidForMode(
-    stopPlaceTypeOptions,
-    stopPlace.stopPlaceType,
-  );
+  const legalStopPlaceTypes = getLegalStopPlaceTypes(roles, true);
+  const stopPlaceTypeValid =  legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1;
 
-  const legalSubmodes = getLegalSubmodes(roles);
+  const legalSubmodes = getLegalSubmodes(roles, true);
   const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
 
   // if stopPlace is not defined and submode is not whitelisted
@@ -103,28 +100,37 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
     return false;
   }
 
-  if (isSubModeRestrictionRelevant) {
+  // if stopPlace is valid and listed as whitelisted
+  if (stopPlaceTypeValid && legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1) {
+
+    // if submode is legal
+    if (legalSubmodes.indexOf(stopPlace.submode) > -1 && stopPlace.submode) {
+      return true;
+    }
+
+    if (!stopPlace.submode) {
+      return true;
+    }
+  }
+
+  if (!stopPlaceTypeValid && !isSubModeRestrictionRelevant) {
+
+    if (!stopPlace.submode) {
+      return false;
+    }
+
     if (submodeValid && transportModeValid) {
       return true;
     }
   }
 
-  if (!submodeValid && stopPlace.submode) {
-    return false;
-  }
-
-  if (stopPlaceTypeValid) {
+  if (!stopPlaceTypeValid && submodeValid) {
     return true;
   }
 
   return false;
 };
 
-const finalCheckStopPlaceType = (options, stopPlaceType) => {
-  if (!options) return false;
-  if (options.allowAll) return true;
-
-};
 
 export const getSubModeRelevance = (submode, stopPlaceType) => {
 
@@ -219,7 +225,8 @@ export const getRoleOptions = (list, allOptions = []) => {
   return {
     blacklisted,
     whitelisted,
-    allowAll
+    allowAll,
+    whiteListIsLocked
   };
 };
 
@@ -246,9 +253,5 @@ export const getInverseSubmodesWhitelist = whitelist => {
   return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
 };
 
-export const getInverseStopPlaceTypesWhitelist = whitelist => {
-  const allStopTypes = stopTypes.nb.map( stop => stop.value);
-  return allStopTypes.filter( stopType => whitelist.indexOf(stopType) == -1);
-};
 
 export default RoleParser;

@@ -289,59 +289,6 @@ describe('getAllowanceInfo', () => {
   });
 
 
-  it('should white- or blacklist based on StopPlaceTypes from role assignment', () => {
-
-    const listedStopPlaceTypes1 = [
-      "airport", "railStation"
-    ];
-
-    const listedStopPlaceTypes2 = [
-      "!airport", "!railStation"
-    ];
-
-    const listedStopPlaceTypes3 = [
-      "*"
-    ];
-
-    const listedStopPlaceTypes4 = [
-      "airport", "!railStation"
-    ];
-
-    const options1 = getRoleOptions(listedStopPlaceTypes1);
-    const options2 = getRoleOptions(listedStopPlaceTypes2);
-    const options3 = getRoleOptions(listedStopPlaceTypes3);
-    const options4 = getRoleOptions(listedStopPlaceTypes4);
-
-    const expectedOptions1 = {
-      blacklisted: [],
-      whitelisted: ["airport", "railStation"],
-      allowAll: false
-    };
-
-    const expectedOptions2 = {
-      whitelisted: [],
-      blacklisted: ["airport", "railStation"],
-      allowAll: false
-    };
-
-    const expectedOptions3 = {
-      whitelisted: [],
-      blacklisted: [],
-      allowAll: true
-    };
-
-    const expectedOptions4 = {
-      whitelisted: ['airport'],
-      blacklisted: ['railStation'],
-      allowAll: false
-    };
-
-    expect(options1).toEqual(expectedOptions1);
-    expect(options2).toEqual(expectedOptions2);
-    expect(options3).toEqual(expectedOptions3);
-    expect(options4).toEqual(expectedOptions4);
-  });
-
   it('should determine whether submode is valid based on options', () => {
     const listedSubmodes = [
       "!railReplacementBus"

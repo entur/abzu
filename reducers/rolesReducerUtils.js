@@ -37,7 +37,7 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
   let legalSubmodes = [];
 
   const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(editStopRolesGeoFiltered);
-  const submodesFoundinRoles = getLegalSubmodes(responsibleEditRoles);
+  const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
 
   if (canEdit) {
     legalStopPlaceTypes = restrictModeByRoles(editStopRolesGeoFiltered, stopPlaceTypesFoundinRoles, 'StopPlaceType');
@@ -122,12 +122,13 @@ export const getAllowInfoNewStop = (latlng, tokenParsed) => {
   }
 }
 
-export const getLegalSubmodes = roles => {
-  return filterByLegalMode(roles, submodes, 'Submode');
+export const getLegalSubmodes = (roles, restrict = false) => {
+  return filterByLegalMode(roles, submodes, 'Submode', restrict);
 }
 
-const filterByLegalMode = (roles, completeList, key) => {
-  let typesFoundInRoles = new Set();
+const filterByLegalMode = (roles, completeList, key, restrict = false) => {
+  const typesFoundInRoles = new Set();
+  const blacklisted = new Set();
 
   for (let i = 0; i < roles.length; i++) {
     let role = roles[i];
@@ -137,18 +138,36 @@ const filterByLegalMode = (roles, completeList, key) => {
         if (entityType === '*') {
           return completeList;
         } else {
-          typesFoundInRoles.add(entityType);
+
+          if (entityType.indexOf('!') > -1 ) {
+            const blacklistedEntity = entityType.substring(1);
+            completeList.forEach( item => {
+              if (item !== blacklistedEntity) {
+                typesFoundInRoles.add(item);
+              }
+            });
+            blacklisted.add(blacklistedEntity);
+          } else {
+            typesFoundInRoles.add(entityType);
+          }
         }
       }
-    } else {
-      return [];
     }
   }
 
-  const options = getRoleOptions(Array.from(typesFoundInRoles), completeList);
+  const whitelistedRoles = Array.from(typesFoundInRoles).filter( role => {
+    return !(blacklisted.has(role))
+  });
+
+  const options = getRoleOptions(Array.from(whitelistedRoles), completeList);
+
+  if (restrict) {
+    return Array.from(whitelistedRoles);
+  }
 
   return completeList.filter( entityType => isModeOptionsValidForMode(options, entityType));
-}
+};
+
 
 export const getLegalStopPlaceTypes = roles => {
   let allStopTypes = stopTypes.en.map(stopType => stopType.value);
