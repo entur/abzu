@@ -140,6 +140,7 @@ export const findStopForReport = gql`
                 coordinates
             }
             stopPlaceType
+            submode
             quays {
                 id
                 keyValues {

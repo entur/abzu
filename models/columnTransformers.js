@@ -57,7 +57,7 @@ export const ColumnTransformerStopPlaceJsx = {
       ? 'red'
       : '#000';
     return (
-      <ModalityIcon svgStyle={{ color: iconColor }} type={stop.stopPlaceType} />
+      <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor }} type={stop.stopPlaceType} />
     );
   },
   muncipality: stop => stop.topographicPlace,

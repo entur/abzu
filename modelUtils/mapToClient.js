@@ -456,6 +456,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
       importedId: helpers.getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
       placeEquipments: stop.placeEquipments,
+      submode: stop.submode,
     };
 
     if (stop.geometry && stop.geometry.coordinates) {
