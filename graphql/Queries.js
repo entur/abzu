@@ -71,6 +71,7 @@ export const stopPlaceWithEverythingElse = gql`
                 }
                 version
                 versionComment
+                changedBy
             }
         },
     ${Fragments.stopPlace.verbose},
@@ -255,6 +256,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
             }
             version
             versionComment
+            changedBy
         }
     },
     ${Fragments.stopPlace.verbose},
