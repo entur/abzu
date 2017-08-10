@@ -196,9 +196,9 @@ export const ColumnTransformersQuays = {
 
 export const ColumnTranslations = {
   nb: {
-    id: 'Id',
     name: 'Navn',
     modality: 'Modalitet',
+    id: 'Id',
     muncipality: 'Kommune',
     county: 'Fylke',
     importedId: 'LokalID',
@@ -215,9 +215,9 @@ export const ColumnTranslations = {
     generalSign: 'Transportskilt',
   },
   en: {
-    id: 'Id',
     name: 'Name',
     modality: 'Modality',
+    id: 'Id',
     muncipality: 'Muncipality',
     county: 'County',
     importedId: 'ImportedId',

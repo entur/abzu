@@ -48,15 +48,15 @@ export const columnOptionsQuays = [
 
 export const columnOptionsStopPlace = [
   {
-    id: 'id',
-    checked: true
-  },
-  {
     id: 'name',
     checked: true
   },
   {
     id: 'modality',
+    checked: true
+  },
+  {
+    id: 'id',
     checked: true
   },
   {
