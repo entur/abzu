@@ -73,7 +73,7 @@ const SearchBoxDetails = ({
           <CircularNumber number={result.quays.length} color="#0097a7" />
         </div>
       </div>
-      <div style={{display: 'flex', flexDirection: 'column', fontSize: 10, maxHeight: 120, overflow: 'scroll', width: '95%', margin: '0px auto 20px auto'}}>
+      <div style={{display: 'flex', flexDirection: 'column', fontSize: 10, maxHeight: 120, overflow: 'auto', width: '95%', margin: '0px auto 20px auto'}}>
         { result.quays.map( (quay, i) => (
           <div key={'q-importedID' + quay.id} style={{borderBottom: '1px solid #0078a8', background: i % 2 ? '#f8f8f8' : '#fff', padding: 2}}>
             <div style={{fontWeight: 600 }}>{formatMessage({ id: 'local_reference' }).replace(':','')} {` (${quay.id}):`}</div>

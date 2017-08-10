@@ -35,7 +35,8 @@ class ScrollableQuayList extends React.Component {
     const { checkedQuays } = this.state;
     const innerDivStyle = {
       height: 300,
-      overflow: 'scroll',
+      overflowY: 'auto',
+      overflowX: 'auto',
       border: '1px solid #777'
     };
 
