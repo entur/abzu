@@ -128,6 +128,10 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
     return true;
   }
 
+  if (stopPlaceTypeValid && submodeValid && transportModeValid) {
+    return true;
+  }
+
   return false;
 };
 

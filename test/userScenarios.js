@@ -216,4 +216,32 @@ describe('User and roles - scenarios', () => {
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
 
+  it('Administer all stops', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "*"
+            ],
+            "StopPlaceType": [
+              "*",
+            ],
+          }
+        })
+      ]
+    };
+
+    //const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    //expect(allowanceRailStop.canEdit).toEqual(true);
+    //const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    //expect(allowanceBusStop.canEdit).toEqual(true);
+    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    expect(allowanceRailReplacementBus.canEdit).toEqual(true);
+  });
+
 });
