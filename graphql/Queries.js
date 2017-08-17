@@ -4,9 +4,9 @@ import Fragments from './Fragments';
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
       stopPlace(id: $id) {
-          id 
+          id
           quays {
-              id 
+              id
               version
               geometry {
                   coordinates
@@ -58,7 +58,7 @@ export const stopPlaceWithEverythingElse = gql`
         parking: parking(stopPlaceId: $id) {
             ...VerboseParking
         },
-        versions: 
+        versions:
             stopPlace(id: $id, allVersions: true, size: 100) {
                 id
                 validBetween {
@@ -93,13 +93,6 @@ export const findStop = gql`
             geometry {
                 coordinates
             }
-            stopPlaceType
-            submode
-            transportMode
-            quays {
-                id
-                importedId
-            }
             validBetween {
                 fromDate
                 toDate
@@ -120,13 +113,22 @@ export const findStop = gql`
                     }
                 }
             }
+            ... on StopPlace {
+              stopPlaceType
+              submode
+              transportMode
+              quays {
+                  id
+                  importedId
+              }
+            }
         }
     },
 `;
 
 export const findStopForReport = gql`
     query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
-        
+
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, size: 300) {
             id
             keyValues {
@@ -138,42 +140,6 @@ export const findStopForReport = gql`
             }
             geometry {
                 coordinates
-            }
-            stopPlaceType
-            submode
-            quays {
-                id
-                keyValues {
-                    key
-                    values
-                }
-                name {
-                    value
-                }
-                geometry {
-                    coordinates
-                }
-                placeEquipments {
-                    shelterEquipment {
-                        id
-                    }
-                    waitingRoomEquipment {
-                        id
-                    }
-                    sanitaryEquipment {
-                        id
-                    }
-                    generalSign {
-                        signContentType
-                        privateCode {
-                            value
-                        }
-                    }
-                }
-                privateCode {
-                    value
-                }
-                publicCode
             }
             accessibilityAssessment {
                 limitations {
@@ -189,7 +155,7 @@ export const findStopForReport = gql`
                     id
                 }
                 sanitaryEquipment {
-                    id 
+                    id
                 }
                 generalSign {
                     signContentType
@@ -209,6 +175,44 @@ export const findStopForReport = gql`
                     }
                 }
             }
+            ... on StopPlace {
+              stopPlaceType
+              submode
+              quays {
+                  id
+                  keyValues {
+                      key
+                      values
+                  }
+                  name {
+                      value
+                  }
+                  geometry {
+                      coordinates
+                  }
+                  placeEquipments {
+                      shelterEquipment {
+                          id
+                      }
+                      waitingRoomEquipment {
+                          id
+                      }
+                      sanitaryEquipment {
+                          id
+                      }
+                      generalSign {
+                          signContentType
+                          privateCode {
+                              value
+                          }
+                      }
+                  }
+                  privateCode {
+                      value
+                  }
+                  publicCode
+              }
+           }
         }
     },
 `;
