@@ -77,11 +77,11 @@ const stopTypes = {
         },
         {
           value: "internationalCarFerry",
-          name: "Internasjonal passsjerbåt"
+          name: "Internasjonal bilferje"
         },
         {
           value: "highSpeedVehicleService",
-          name: "Kombibåt"
+          name: "Hurtiggående bilferje"
         }
       ]
     },
@@ -101,15 +101,11 @@ const stopTypes = {
         },
         {
           value: "localPassengerFerry",
-          name: "Innenriks bilferje"
+          name: "Innenriks passasjerbåt"
         },
         {
           value: "internationalPassengerFerry",
           name: "Internasjonal passasjerbåt"
-        },
-        {
-          value: "highSpeedVehicleService",
-          name: "Kombibåt"
         },
         {
           value: "sightseeingService",
@@ -201,15 +197,15 @@ const stopTypes = {
         },
         {
           value: 'domesticFlight',
-          name: 'Innenriks flyrute'
+          name: 'Innenriksterminal'
         },
         {
           value: 'internationalFlight',
-          name: 'Internasjonell flyrute'
+          name: 'Utenlandsterminal'
         },
         {
           value: 'helicopterService',
-          name: 'Helikopterrute'
+          name: 'Helikopterterminal'
         }
       ]
     },
