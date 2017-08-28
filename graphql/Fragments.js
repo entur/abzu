@@ -82,24 +82,26 @@ Fragments.stopPlace = {
                 lang
             }
         }
-        weighting
         description {
             value
         }
         geometry {
             coordinates
         }
-        quays {
-            ...VerboseQuay
+        ...on StopPlace {
+            quays {
+                ...VerboseQuay
+            }
+            weighting
+            stopPlaceType
+            submode
+            transportMode
+            version
         }
-        version
         keyValues {
             key
             values
         }
-        stopPlaceType
-        submode
-        transportMode
         tariffZones {
             name {
                 value
@@ -161,7 +163,6 @@ Fragments.stopPlace = {
             fromDate
             toDate
         }
-        version
     }
     ${Fragments.quay.verbose}
   `

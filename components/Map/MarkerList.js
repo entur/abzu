@@ -13,7 +13,7 @@ import CycleParkingMarker from './CycleParkingMarker';
 import { setDecimalPrecision, getIn } from '../../utils';
 import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
-import { stopPlaceWithEverythingElse, neighbourStopPlaceQuays } from '../../graphql/Queries';
+import { allEntities, neighbourStopPlaceQuays } from '../../graphql/Queries';
 import CoordinateMarker from './CoordinateMarker';
 
 class MarkerList extends React.Component {
@@ -43,7 +43,7 @@ class MarkerList extends React.Component {
       client
         .query({
           fetchPolicy: 'network-only',
-          query: stopPlaceWithEverythingElse,
+          query: allEntities,
           variables: {
             id: id,
           },

@@ -8,7 +8,7 @@ import {
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
-  stopPlaceWithEverythingElse,
+  allEntities,
   stopPlaceBBQuery,
   getMergeInfoStopPlace,
   topopGraphicalPlacesQuery,
@@ -55,7 +55,7 @@ export const mergeQuays = (client, stopPlaceId, fromQuayId, toQuayId, versionCom
 
 export const getStopPlaceWithAll = (client, id) => (
   client.query({
-    query: stopPlaceWithEverythingElse,
+    query: allEntities,
     variables: {
       id
     },

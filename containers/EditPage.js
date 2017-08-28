@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import Loader from '../components/Dialogs/Loader';
 import EditStopMap from '../components/Map/EditStopMap';
 import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
 import InformationBanner from '../components/EditStopPage/InformationBanner';
 import Information from '../config/information';
 import { injectIntl } from 'react-intl';
 import InformationManager from '../singletons/InformationManager';
-import { stopPlaceWithEverythingElse } from '../graphql/Queries';
+import { allEntities } from '../graphql/Queries';
 import { withApollo } from 'react-apollo';
 import '../styles/main.css';
 import Dialog from 'material-ui/Dialog';
@@ -16,8 +15,9 @@ import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import NewElementsBox from '../components/EditStopPage/NewElementsBox';
 import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
+import LoadingPage from './LoadingPage';
 
-class EditStopPlace extends React.Component {
+class EditPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +65,7 @@ class EditStopPlace extends React.Component {
       client
         .query({
           fetchPolicy: 'network-only',
-          query: stopPlaceWithEverythingElse,
+          query: allEntities,
           variables: {
             id: idFromPath,
           },
@@ -79,6 +79,7 @@ class EditStopPlace extends React.Component {
           }
         })
         .catch(err => {
+          console.error("error fetching stopPlace", err);
           this.setState({
             showErrorDialog: true,
             resourceNotFound: false,
@@ -142,7 +143,8 @@ class EditStopPlace extends React.Component {
               <EditStopGeneral disabled={disabled} />
               <EditStopMap disabled={disabled} />
             </div>
-          : <Loader />}
+          : <LoadingPage/>
+        }
       </div>
     );
   }
@@ -155,8 +157,8 @@ const mapStateToProps = state => ({
   newStopCreated: state.user.newStopCreated
 });
 
-const EditStopPlaceWithIntl = injectIntl(
-  connect(mapStateToProps)(EditStopPlace),
+const EditPlaceIntl = injectIntl(
+  connect(mapStateToProps)(EditPage),
 );
 
-export default withApollo(EditStopPlaceWithIntl);
+export default withApollo(EditPlaceIntl);
