@@ -394,44 +394,93 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 
 helpers.mapSearchResultatToClientStops = stops => {
   return stops.map(stop => {
-    let parentTopographicPlace = getIn(
-      stop,
-      ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-      '',
-    );
-    let topographicPlace = getIn(
-      stop,
-      ['topographicPlace', 'name', 'value'],
-      '',
-    );
-
-    const clientStop = {
-      id: stop.id,
-      name: stop.name.value,
-      isMissingLocation: !stop.geometry,
-      stopPlaceType: stop.stopPlaceType,
-      submode: stop.submode,
-      transportMode: stop.transportMode,
-      topographicPlace: topographicPlace,
-      parentTopographicPlace: parentTopographicPlace,
-      isActive: false,
-      quays: stop.quays,
-      importedId: helpers.getImportedId(stop.keyValues),
-      accessibilityAssessment: stop.accessibilityAssessment,
-      hasExpired: hasExpired(stop.validBetween),
-    };
-
-    if (stop.geometry && stop.geometry.coordinates) {
-      let coordinates = stop.geometry.coordinates[0].slice();
-      clientStop.location = [
-        setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6),
-      ];
-    }
-
-    return clientStop;
+      if (stop.__typename === 'StopPlace') {
+        return helpers.mapSearchResultStopPlace(stop);
+      } else if (stop.__typename === 'ParentStopPlace') {
+        return helpers.mapSearchResultParentStopPlace(stop);
+      }
   });
 };
+
+helpers.mapSearchResultStopPlace = stop => {
+  let parentTopographicPlace = getIn(
+    stop,
+    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
+    '',
+  );
+  let topographicPlace = getIn(
+    stop,
+    ['topographicPlace', 'name', 'value'],
+    '',
+  );
+
+  const clientStop = {
+    isParent: false,
+    id: stop.id,
+    name: stop.name.value,
+    isMissingLocation: !stop.geometry,
+    stopPlaceType: stop.stopPlaceType,
+    submode: stop.submode,
+    transportMode: stop.transportMode,
+    topographicPlace: topographicPlace,
+    parentTopographicPlace: parentTopographicPlace,
+    isActive: false,
+    quays: stop.quays,
+    importedId: helpers.getImportedId(stop.keyValues),
+    accessibilityAssessment: stop.accessibilityAssessment,
+    hasExpired: hasExpired(stop.validBetween),
+  };
+
+  if (stop.geometry && stop.geometry.coordinates) {
+    let coordinates = stop.geometry.coordinates[0].slice();
+    clientStop.location = [
+      setDecimalPrecision(coordinates[1], 6),
+      setDecimalPrecision(coordinates[0], 6),
+    ];
+  }
+  return clientStop;
+};
+
+
+helpers.mapSearchResultParentStopPlace = stop => {
+  let parentTopographicPlace = getIn(
+    stop,
+    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
+    '',
+  );
+  let topographicPlace = getIn(
+    stop,
+    ['topographicPlace', 'name', 'value'],
+    '',
+  );
+
+  const clientParentStop = {
+    isParent: true,
+    id: stop.id,
+    name: stop.name.value,
+    isMissingLocation: !stop.geometry,
+    stopPlaceType: stop.stopPlaceType,
+    submode: stop.submode,
+    transportMode: stop.transportMode,
+    topographicPlace: topographicPlace,
+    parentTopographicPlace: parentTopographicPlace,
+    isActive: false,
+    children: stop.children.sort( (a, b) => b.id.localeCompare(a.id)),
+    importedId: helpers.getImportedId(stop.keyValues),
+    accessibilityAssessment: stop.accessibilityAssessment,
+    hasExpired: hasExpired(stop.validBetween),
+  };
+
+  if (stop.geometry && stop.geometry.coordinates) {
+    let coordinates = stop.geometry.coordinates[0].slice();
+    clientParentStop.location = [
+      setDecimalPrecision(coordinates[1], 6),
+      setDecimalPrecision(coordinates[0], 6),
+    ];
+  }
+  return clientParentStop;
+};
+
 
 helpers.mapReportSearchResultsToClientStop = stops => {
   return stops.map(stop => {

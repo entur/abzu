@@ -60,9 +60,8 @@ export const allEntities = gql`
         parking: parking(stopPlaceId: $id) {
             ...VerboseParking
         },
-        versions: 
+        versions:
             stopPlace(id: $id, allVersions: true, size: 100) {
-                ...on StopPlace {
                     id
                     validBetween {
                         fromDate
@@ -76,7 +75,6 @@ export const allEntities = gql`
                     versionComment
                     changedBy
                 }
-            }
         },
     ${Fragments.stopPlace.verbose},
     ${Fragments.pathLink.verbose},
@@ -87,6 +85,7 @@ export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String]) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7) {
             id
+            __typename
             keyValues {
                 key
                 values
@@ -96,18 +95,6 @@ export const findStop = gql`
             }
             geometry {
                 coordinates
-            }
-            ...on ParentStop {
-                
-            }
-            ...on StopPlace {
-                stopPlaceType
-                submode
-                transportMode
-                quays {
-                    id
-                    importedId
-                }
             }
             validBetween {
                 fromDate
@@ -129,13 +116,38 @@ export const findStop = gql`
                     }
                 }
             }
+            ... on StopPlace {
+              stopPlaceType
+              submode
+              transportMode
+              quays {
+                  id
+                  importedId
+              }
+            }
+           ... on ParentStopPlace {
+               geometry {
+                   coordinates 
+                   type 
+               }
+               children {
+                   name {
+                       value
+                   }
+                   id
+                   importedId
+                   stopPlaceType 
+                   transportMode 
+                   submode
+               }
+           }
         }
     },
 `;
 
 export const findStopForReport = gql`
     query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
-        
+
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, size: 300) {
             id
             keyValues {
@@ -147,44 +159,6 @@ export const findStopForReport = gql`
             }
             geometry {
                 coordinates
-            }
-            ...on StopPlace {
-                stopPlaceType
-                submode
-                quays {
-                    id
-                    keyValues {
-                        key
-                        values
-                    }
-                    name {
-                        value
-                    }
-                    geometry {
-                        coordinates
-                    }
-                    placeEquipments {
-                        shelterEquipment {
-                            id
-                        }
-                        waitingRoomEquipment {
-                            id
-                        }
-                        sanitaryEquipment {
-                            id
-                        }
-                        generalSign {
-                            signContentType
-                            privateCode {
-                                value
-                            }
-                        }
-                    }
-                    privateCode {
-                        value
-                    }
-                    publicCode
-                }
             }
             accessibilityAssessment {
                 limitations {
@@ -200,7 +174,7 @@ export const findStopForReport = gql`
                     id
                 }
                 sanitaryEquipment {
-                    id 
+                    id
                 }
                 generalSign {
                     signContentType
@@ -220,6 +194,44 @@ export const findStopForReport = gql`
                     }
                 }
             }
+            ... on StopPlace {
+              stopPlaceType
+              submode
+              quays {
+                  id
+                  keyValues {
+                      key
+                      values
+                  }
+                  name {
+                      value
+                  }
+                  geometry {
+                      coordinates
+                  }
+                  placeEquipments {
+                      shelterEquipment {
+                          id
+                      }
+                      waitingRoomEquipment {
+                          id
+                      }
+                      sanitaryEquipment {
+                          id
+                      }
+                      generalSign {
+                          signContentType
+                          privateCode {
+                              value
+                          }
+                      }
+                  }
+                  privateCode {
+                      value
+                  }
+                  publicCode
+              }
+           }
         }
     },
 `;

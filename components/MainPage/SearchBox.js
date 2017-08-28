@@ -11,7 +11,6 @@ import SearchBoxDetails from './SearchBoxDetails';
 import NewStopPlace from './CreateNewStop';
 import { injectIntl } from 'react-intl';
 import MenuItem from 'material-ui/MenuItem';
-import ModalityIcon from './ModalityIcon';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import FavoriteManager from '../../singletons/FavoriteManager';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
@@ -27,7 +26,7 @@ import { getIn } from '../../utils/';
 import { enturPrimaryDarker } from '../../config/enturTheme';
 import MdLocationSearching from 'material-ui/svg-icons/device/location-searching';
 import MdSpinner from '../../static/icons/spinner';
-
+import { createSearchMenuItem } from './SearchMenuItem';
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -185,44 +184,7 @@ class SearchBox extends React.Component {
     }
 
     if (dataSource && dataSource.length) {
-      this._menuItems = dataSource.map(element => ({
-        element: element,
-        text: element.name,
-        value: (
-          <MenuItem
-            style={{ marginTop: 3, paddingRight: 5, width: 'auto' }}
-            key={element.id}
-            innerDivStyle={{ minWidth: 300, padding: '0px 16px 0px 0px' }}
-            primaryText={
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: '0.9em' }}>{element.name}</div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    color: 'grey',
-                    fontSize: '0.7em',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div
-                    style={{ marginBottom: 0 }}
-                  >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-                  <div style={{ marginTop: -30 }}>{element.id}</div>
-                </div>
-              </div>
-            }
-            leftIcon={
-              <ModalityIcon
-                svgStyle={{ marginRight: 10 }}
-                style={{ display: 'inline-block', position: 'relative' }}
-                type={element.stopPlaceType}
-                submode={element.submode}
-              />
-            }
-          />
-        ),
-      }));
+      this._menuItems = dataSource.map(element => createSearchMenuItem(element));
     } else {
       this._menuItems = [
         {

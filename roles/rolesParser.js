@@ -80,6 +80,7 @@ RoleParser.filterRolesByEntityModes = (
 const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, roleSubmode, stopPlace) => {
 
   const submodeOptions = getRoleOptions(roleSubmode);
+  const stopPlaceTypeOptions = getRoleOptions(roleStopPlaceType);
   const forgiveSubmodeNotSet = false;
   const forgiveTransportmodeNotSet = false;
   const submodeValid = isModeOptionsValidForMode(submodeOptions, stopPlace.submode, forgiveSubmodeNotSet);
@@ -95,7 +96,11 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   const legalSubmodes = getLegalSubmodes(roles, true);
   const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
 
-  // if stopPlace is not defined and submode is not whitelisted
+  if (!stopPlace.stopPlaceType && stopPlaceTypeOptions.allowAll && submodeValid) {
+    return true;
+  }
+
+  // if stopPlaceType is not defined and submode is not whitelisted
   if (!roleStopPlaceType && !submodeValid) {
     return false;
   }

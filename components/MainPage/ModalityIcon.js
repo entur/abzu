@@ -13,6 +13,7 @@ class ModalityIcon extends React.Component {
         && this.props.submode === nextProps.submode) {
       return false
     }
+
     return true
   }
 
