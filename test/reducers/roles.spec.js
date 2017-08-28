@@ -4,6 +4,7 @@ import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, 
 import stopTypes, { submodes } from '../../models/stopTypes';
 import mockRailReplacementStop from '../mock/mockRailReplacementStop';
 import mockBusStop from '../mock/mockBusStop';
+import stopWithoutStopPlaceType from '../mock/stopWithoutStopPlaceType';
 import mockRailStop from '../mock/mockRailStop';
 
 const stopPlaceResult = {
@@ -199,6 +200,51 @@ describe('getAllowanceInfo', () => {
 
     const allowanceInfo = getAllowanceInfoForStop(mockBusStop, token);
     expect(allowanceInfo.canEdit).toEqual(false);
+  });
+
+  it('should be able to edit stop if stopPlace type is not set and StopPlaceType is *', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+            "StopPlaceType": [
+              "*",
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(stopWithoutStopPlaceType, token);
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
+
+  it('should be able to edit stop if stopPlace type is not set and StopPlaceType is not defined', () => {
+
+    let token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "OST",
+          "z": "01",
+          "e": {
+            "EntityType": [
+              "StopPlace"
+            ],
+          }
+        })
+      ]
+    };
+
+    const allowanceInfo = getAllowanceInfoForStop(stopWithoutStopPlaceType, token);
+    expect(allowanceInfo.canEdit).toEqual(true);
   });
 
   it('should get legal stopPlace types when blacklisted', () => {
