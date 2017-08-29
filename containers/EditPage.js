@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import EditStopMap from '../components/Map/EditStopMap';
 import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
+import EditParentGeneral from '../components/EditParentStopPage/EditParentGeneral';
 import InformationBanner from '../components/EditStopPage/InformationBanner';
 import Information from '../config/information';
 import { injectIntl } from 'react-intl';
@@ -137,13 +138,19 @@ class EditPage extends React.Component {
               handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
             />
           }
-        {stopPlace
-          ? <div>
-              <NewElementsBox disabled={disabled} />
-              <EditStopGeneral disabled={disabled} />
-              <EditStopMap disabled={disabled} />
-            </div>
-          : <LoadingPage/>
+        { !stopPlace && <LoadingPage/> }
+        {stopPlace && !stopPlace.isParent &&
+          <div>
+            <NewElementsBox disabled={disabled} />
+            <EditStopGeneral disabled={disabled} />
+            <EditStopMap disabled={disabled} />
+          </div>
+        }
+        {stopPlace && stopPlace.isParent &&
+        <div>
+          <EditParentGeneral/>
+          <EditStopMap disabled={disabled} />
+        </div>
         }
       </div>
     );

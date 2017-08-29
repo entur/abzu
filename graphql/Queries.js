@@ -1,19 +1,6 @@
 import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
-export const schemaInfo = gql`
-    {
-        __schema {
-            types {
-                kind
-                name
-                possibleTypes {
-                    name
-                }
-            }
-        }
-    }
-`;
 
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
@@ -342,13 +329,15 @@ export const topopGraphicalPlacesReportQuery = gql`
 export const getMergeInfoStopPlace = gql`
     query MergeInfoStopPlace($stopPlaceId: String!) {
         stopPlace(id: $stopPlaceId) {
-            quays {
-                id
-                privateCode {
-                    value
+            ...on StopPlace {
+                quays {
+                    id
+                    privateCode {
+                        value
+                    }
+                    compassBearing
+                    publicCode
                 }
-                compassBearing
-                publicCode
             }
         }
     }

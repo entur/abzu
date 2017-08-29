@@ -1,125 +1,41 @@
 import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
 import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
-import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import moment from 'moment';
 import { hasExpired } from '../modelUtils/validBetween';
+import { getImportedId } from '../models/StopPlaceUtils';
+import {
+  getUniquePathLinks,
+  calculateDistance,
+  calculateEstimate
+} from '../modelUtils/pathlinkHelpers';
+import Quay from '../models/Quay';
+import StopPlace from '../models/StopPlace';
+import ParentStopPlace from '../models/ParentStopPlace';
+import PathLink from '../models/PathLink';
+import Parking from '../models/Parking';
 
 const helpers = {};
 
-const getUniqListBy = (a, key) => {
-  var seen = {};
-  return a.filter(function(item) {
-    let k = key(item);
-    return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-  })
-};
-
-const calculateDistance = coords => {
-  let latlngDistances = coords.map(
-    position => new LatLng(position[0], position[1]),
-  );
-  let totalDistance = 0;
-
-  for (let i = 0; i < latlngDistances.length; i++) {
-    if (latlngDistances[i + 1] == null) break;
-    totalDistance += latlngDistances[i].distanceTo(latlngDistances[i + 1]);
-  }
-  return totalDistance;
-};
-
-const calculateEstimate = distance => {
-  const walkingSpeed = 1.34112; // i.e. 3 mph / 3.6
-  return Math.max(Math.floor(distance / walkingSpeed), 1);
-};
-
-helpers.mapParkingToClient = parkingObjs => {
-  if (!parkingObjs) return [];
-  return parkingObjs.map(parking => {
-    let clientParking = {
-      id: parking.id,
-      name: getIn(parking, ['name', 'value'], ''),
-      totalCapacity: parking.totalCapacity,
-      parkingVehicleTypes: parking.parkingVehicleTypes,
-      hasExpired: hasExpired(parking.validBetween),
-      validBetween: parking.validBetween
-    };
-    let coordinates = getIn(parking, ['geometry', 'coordinates'], null);
-
-    if (coordinates && coordinates.length) {
-      clientParking.location = [coordinates[0][1], coordinates[0][0]];
-    }
-
-    return clientParking;
-  });
-};
+helpers.mapParkingToClient = (parkingObjs = []) =>
+  parkingObjs.map(parking => new Parking(parking).toClient());
 
 helpers.sortQuays = (current, attribute) => {
   let copy = JSON.parse(JSON.stringify(current));
   let quays = copy.quays;
-
-  quays.sort( (a,b) => (a[attribute] || 'ZZZZZ').localeCompare((b[attribute] || 'ZZZZZ')));
-
+  quays.sort((a, b) =>
+    (a[attribute] || 'ZZZZZ').localeCompare(b[attribute] || 'ZZZZZ')
+  );
   return {
     ...copy,
     quays
-  }
-}
+  };
+};
 
-helpers.mapPathLinkToClient = pathLinks => {
-  if (!pathLinks) return [];
-
+helpers.mapPathLinkToClient = (pathLinks = []) => {
   // NRP-1675, this is a temporary solution until pathLinks(stopPLaceId: $id) returns a unique list
-  let uniquePathLinks = getUniqListBy(pathLinks, pathLink => pathLink.id);
-
-  return uniquePathLinks.map(pathLink => {
-    let clientPathLink = JSON.parse(JSON.stringify(pathLink));
-
-    let latlngCoordinates = [];
-
-    let startCoordinates = getIn(
-      clientPathLink,
-      ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
-      null,
-    );
-    let inBetweenCoordinates = getIn(clientPathLink, [
-      'geometry',
-      'coordinates',
-    ]);
-    let endCoordinates = getIn(
-      clientPathLink,
-      ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
-      null,
-    );
-
-    if (startCoordinates) {
-      startCoordinates[0].reverse();
-      latlngCoordinates.push(startCoordinates[0]);
-    }
-
-    if (inBetweenCoordinates) {
-      inBetweenCoordinates.map(lngLat => lngLat.reverse());
-      clientPathLink.inBetween = inBetweenCoordinates;
-      latlngCoordinates.push.apply(latlngCoordinates, clientPathLink.inBetween);
-    }
-
-    if (endCoordinates) {
-      endCoordinates[0].reverse();
-      latlngCoordinates.push(endCoordinates[0]);
-    }
-
-    clientPathLink.distance = calculateDistance(latlngCoordinates);
-
-    if (
-      pathLink.transferDuration &&
-      pathLink.transferDuration.defaultDuration
-    ) {
-      clientPathLink.estimate = pathLink.transferDuration.defaultDuration;
-    } else {
-      clientPathLink.estimate = calculateEstimate(clientPathLink.distance);
-    }
-    return clientPathLink;
-  });
+  let uniquePathLinks = getUniquePathLinks(pathLinks, pathLink => pathLink.id);
+  return uniquePathLinks.map(data => new PathLink(data).toClient());
 };
 
 helpers.updateEstimateForPathLink = (action, pathLink) => {
@@ -155,18 +71,18 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
             version: 'any',
             geometry: {
               type: 'Point',
-              coordinates: [action.payLoad.coordinates],
-            },
-          },
-        },
-      },
+              coordinates: [action.payLoad.coordinates]
+            }
+          }
+        }
+      }
     };
     return pathLink.concat(newPathLink);
   }
 
   if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
     let lastPathLink = JSON.parse(
-      JSON.stringify(pathLink[pathLink.length - 1]),
+      JSON.stringify(pathLink[pathLink.length - 1])
     );
 
     let latlngCoordinates = [];
@@ -174,7 +90,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
     let startCoordinates = getIn(
       lastPathLink,
       ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
-      null,
+      null
     );
 
     if (startCoordinates) {
@@ -193,10 +109,10 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
           id: action.payLoad.id,
           geometry: {
             type: 'Point',
-            coordinates: [action.payLoad.coordinates],
-          },
-        },
-      },
+            coordinates: [action.payLoad.coordinates]
+          }
+        }
+      }
     };
 
     latlngCoordinates.push(action.payLoad.coordinates);
@@ -210,7 +126,6 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
 helpers.mapVersionToClientVersion = source => {
   if (source) {
-
     const transformer = value => moment(value).format('YYYY-DD-MM HH:mm');
 
     return source
@@ -224,13 +139,13 @@ helpers.mapVersionToClientVersion = source => {
             data.validBetween,
             ['fromDate'],
             '',
-            transformer,
+            transformer
           ),
           toDate: getInTransform(
             data.validBetween,
             ['toDate'],
             '',
-            transformer,
+            transformer
           ),
           versionComment: data.versionComment,
           changedBy: data.changedBy ? data.changedBy : ''
@@ -241,151 +156,31 @@ helpers.mapVersionToClientVersion = source => {
   return [];
 };
 
-const extractAlternativeNames = alternativeNames => {
-  if (!alternativeNames) return [];
-  return alternativeNames.filter(
-    alt => alt.name && alt.name.value && alt.nameType,
-  );
-};
-
 helpers.mapStopToClientStop = (
   stop,
   isActive,
   parking,
-  userDefinedCoordinates = {},
+  userDefinedCoordinates = {}
 ) => {
-  try {
-
-    let clientStop = {
-      id: stop.id,
-      name: stop.name ? stop.name.value : '',
-      alternativeNames: extractAlternativeNames(stop.alternativeNames),
-      stopPlaceType: stop.stopPlaceType,
-      isActive: isActive,
-      weighting: stop.weighting,
-      version: stop.version,
-      hasExpired: hasExpired(stop.validBetween),
-      transportMode: stop.transportMode,
-      submode: stop.submode
-    };
-
-    if (stop.topographicPlace) {
-      if (stop.topographicPlace.name) {
-        clientStop.topographicPlace = stop.topographicPlace.name.value;
-      }
-      if (
-        stop.topographicPlace.parentTopographicPlace &&
-        stop.topographicPlace.parentTopographicPlace.name
-      ) {
-        clientStop.parentTopographicPlace =
-          stop.topographicPlace.parentTopographicPlace.name.value;
-      }
-    }
-
-    if (stop.validBetween) {
-      clientStop.validBetween = stop.validBetween;
-    }
-
-    if (stop.tariffZones && stop.tariffZones.length) {
-      clientStop.tariffZones = stop.tariffZones.map(zone => {
-        if (zone.name && zone.name.value) {
-          return {
-            name: zone.name.value,
-            id: zone.id,
-          };
-        }
-      });
-    } else {
-      clientStop.tariffZones = [];
-    }
-
-    clientStop.accessibilityAssessment = stop.accessibilityAssessment
-      ? stop.accessibilityAssessment
-      : getAssessmentSetBasedOnQuays(stop.quays);
-
-    if (stop.description) {
-      clientStop.description = stop.description.value;
-    }
-
-    if (stop.placeEquipments) {
-      clientStop.placeEquipments = stop.placeEquipments;
-    }
-
-    if (stop.geometry && stop.geometry.coordinates) {
-      let coordinates = stop.geometry.coordinates[0].slice();
-      // Leaflet uses latLng, GeoJSON [long,lat]
-      clientStop.location = [
-        setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6),
-      ];
-    } else {
-      if (stop.id === userDefinedCoordinates.stopPlaceId) {
-        clientStop.location = userDefinedCoordinates.position.slice();
-      }
-    }
-
-    if (stop.keyValues) {
-      clientStop.importedId = helpers.getImportedId(stop.keyValues);
-      clientStop.keyValues = stop.keyValues;
-    }
-
-    if (isActive) {
-      clientStop.quays = [];
-      clientStop.entrances = [];
-      clientStop.pathJunctions = [];
-      clientStop.parking = parking || [];
-
-      if (stop.quays) {
-        clientStop.quays = stop.quays
-          .map(quay =>
-            helpers.mapQuayToClientQuay(
-              quay,
-              clientStop.accessibilityAssessment,
-            ),
-          )
-          .sort((a, b) => (a.publicCode || '') - b.publicCode || '');
-      }
-    }
-    return clientStop;
-  } catch (e) {
-    console.log('error', e.stackTrace());
+  if (stop.__typename === 'ParentStopPlace') {
+    return new ParentStopPlace(
+      stop,
+      isActive,
+      parking,
+      userDefinedCoordinates
+    ).toClient();
+  } else {
+    return new StopPlace(
+      stop,
+      isActive,
+      parking,
+      userDefinedCoordinates
+    ).toClient();
   }
 };
 
 helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
-  const clientQuay = {
-    id: quay.id,
-    compassBearing: quay.compassBearing,
-    publicCode: quay.publicCode,
-    description: quay.description ? quay.description.value : '',
-  };
-
-  clientQuay.accessibilityAssessment =
-    quay.accessibilityAssessment || accessibilityAssessment;
-
-  if (quay.keyValues) {
-    clientQuay.importedId = helpers.getImportedId(quay.keyValues);
-    clientQuay.keyValues = quay.keyValues;
-  }
-
-  if (quay.privateCode && quay.privateCode.value) {
-    clientQuay.privateCode = quay.privateCode.value;
-  }
-
-  if (quay.geometry && quay.geometry.coordinates) {
-    let coordinates = quay.geometry.coordinates[0].slice();
-
-    clientQuay.location = [
-      setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6),
-    ];
-  }
-
-  if (quay.placeEquipments) {
-    clientQuay.placeEquipments = quay.placeEquipments;
-  }
-
-  return clientQuay;
+  return new Quay(quay, accessibilityAssessment).toClient();
 };
 
 helpers.mapNeighbourStopsToClientStops = stops => {
@@ -394,11 +189,11 @@ helpers.mapNeighbourStopsToClientStops = stops => {
 
 helpers.mapSearchResultatToClientStops = stops => {
   return stops.map(stop => {
-      if (stop.__typename === 'StopPlace') {
-        return helpers.mapSearchResultStopPlace(stop);
-      } else if (stop.__typename === 'ParentStopPlace') {
-        return helpers.mapSearchResultParentStopPlace(stop);
-      }
+    if (stop.__typename === 'StopPlace') {
+      return helpers.mapSearchResultStopPlace(stop);
+    } else if (stop.__typename === 'ParentStopPlace') {
+      return helpers.mapSearchResultParentStopPlace(stop);
+    }
   });
 };
 
@@ -406,13 +201,9 @@ helpers.mapSearchResultStopPlace = stop => {
   let parentTopographicPlace = getIn(
     stop,
     ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    '',
+    ''
   );
-  let topographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'name', 'value'],
-    '',
-  );
+  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
 
   const clientStop = {
     isParent: false,
@@ -426,33 +217,28 @@ helpers.mapSearchResultStopPlace = stop => {
     parentTopographicPlace: parentTopographicPlace,
     isActive: false,
     quays: stop.quays,
-    importedId: helpers.getImportedId(stop.keyValues),
+    importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
+    hasExpired: hasExpired(stop.validBetween)
   };
 
   if (stop.geometry && stop.geometry.coordinates) {
     let coordinates = stop.geometry.coordinates[0].slice();
     clientStop.location = [
       setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6),
+      setDecimalPrecision(coordinates[0], 6)
     ];
   }
   return clientStop;
 };
 
-
 helpers.mapSearchResultParentStopPlace = stop => {
   let parentTopographicPlace = getIn(
     stop,
     ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    '',
+    ''
   );
-  let topographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'name', 'value'],
-    '',
-  );
+  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
 
   const clientParentStop = {
     isParent: true,
@@ -465,34 +251,33 @@ helpers.mapSearchResultParentStopPlace = stop => {
     topographicPlace: topographicPlace,
     parentTopographicPlace: parentTopographicPlace,
     isActive: false,
-    children: stop.children.sort( (a, b) => b.id.localeCompare(a.id)),
-    importedId: helpers.getImportedId(stop.keyValues),
+    children: stop.children.sort((a, b) => b.id.localeCompare(a.id)),
+    importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
+    hasExpired: hasExpired(stop.validBetween)
   };
 
   if (stop.geometry && stop.geometry.coordinates) {
     let coordinates = stop.geometry.coordinates[0].slice();
     clientParentStop.location = [
       setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6),
+      setDecimalPrecision(coordinates[0], 6)
     ];
   }
   return clientParentStop;
 };
-
 
 helpers.mapReportSearchResultsToClientStop = stops => {
   return stops.map(stop => {
     let parentTopographicPlace = getIn(
       stop,
       ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-      '',
+      ''
     );
     let topographicPlace = getIn(
       stop,
       ['topographicPlace', 'name', 'value'],
-      '',
+      ''
     );
 
     const clientStop = {
@@ -502,17 +287,17 @@ helpers.mapReportSearchResultsToClientStop = stops => {
       topographicPlace: topographicPlace,
       parentTopographicPlace: parentTopographicPlace,
       quays: stop.quays.map(quay => helpers.mapQuayToClientQuay(quay)),
-      importedId: helpers.getImportedId(stop.keyValues),
+      importedId: getImportedId(stop.keyValues),
       accessibilityAssessment: stop.accessibilityAssessment,
       placeEquipments: stop.placeEquipments,
-      submode: stop.submode,
+      submode: stop.submode
     };
 
     if (stop.geometry && stop.geometry.coordinates) {
       let coordinates = stop.geometry.coordinates[0].slice();
       clientStop.location = [
         setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6),
+        setDecimalPrecision(coordinates[0], 6)
       ];
     }
 
@@ -542,21 +327,20 @@ helpers.getCenterPosition = geometry => {
   if (!geometry) return null;
   return [
     setDecimalPrecision(geometry.coordinates[0][1], 6),
-    setDecimalPrecision(geometry.coordinates[0][0], 6),
+    setDecimalPrecision(geometry.coordinates[0][0], 6)
   ];
 };
 
 helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
-
   const { index, type } = origin;
 
   if (type === 'stopPlace') {
     return Object.assign({
       ...original,
       importedId: key === 'imported-id' ? newValues : original.importedId,
-      keyValues: original.keyValues.map( kv => {
+      keyValues: original.keyValues.map(kv => {
         if (kv.key === key) {
-          kv.values = newValues
+          kv.values = newValues;
         }
         return kv;
       })
@@ -566,24 +350,23 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
   if (type === 'quay') {
     return Object.assign({
       ...original,
-      quays: original.quays.map( (quay, quayIndex) => {
+      quays: original.quays.map((quay, quayIndex) => {
         if (quayIndex === index) {
-
           if (key === 'imported-id') {
             quay.importedId = newValues;
           }
-          quay.keyValues = quay.keyValues.map( kv => {
+          quay.keyValues = quay.keyValues.map(kv => {
             if (kv.key === key) {
-              kv.values = newValues
+              kv.values = newValues;
             }
             return kv;
-          })
+          });
         }
         return quay;
       })
     });
   }
-}
+};
 
 helpers.deleteKeyValuesByKey = (original, key, origin) => {
   const { index, type } = origin;
@@ -592,29 +375,28 @@ helpers.deleteKeyValuesByKey = (original, key, origin) => {
     return Object.assign({
       ...original,
       importedId: key === 'imported-id' ? [] : original.importedId,
-      keyValues: original.keyValues.filter( kv => kv.key !== key)
+      keyValues: original.keyValues.filter(kv => kv.key !== key)
     });
   }
 
   if (type === 'quay') {
     return Object.assign({
       ...original,
-      quays: original.quays.map( (quay, quayIndex) => {
+      quays: original.quays.map((quay, quayIndex) => {
         if (quayIndex === index) {
-
           if (key === 'imported-id') {
             quay.importedId = [];
           }
-          quay.keyValues = quay.keyValues.filter( kv => kv.key !== key);
+          quay.keyValues = quay.keyValues.filter(kv => kv.key !== key);
         }
         return quay;
       })
     });
   }
-}
+};
 
 helpers.createKeyValuesPair = (original, key, newValues, origin) => {
-  const {index, type} = origin;
+  const { index, type } = origin;
 
   if (type === 'stopPlace') {
     return Object.assign({
@@ -640,25 +422,30 @@ helpers.createKeyValuesPair = (original, key, newValues, origin) => {
       })
     });
   }
-}
+};
 
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {
-    stopPlaceType: type,
+    stopPlaceType: type
   });
 };
 
-helpers.updateCurrentStopWithSubMode = (current, stopPlaceType, transportMode, submode) => {
+helpers.updateCurrentStopWithSubMode = (
+  current,
+  stopPlaceType,
+  transportMode,
+  submode
+) => {
   return Object.assign({}, current, {
     stopPlaceType,
     transportMode,
     submode
   });
-}
+};
 
 helpers.updateCurrentStopWithPosition = (current, location) => {
   return Object.assign({}, current, {
-    location: location,
+    location: location
   });
 };
 
@@ -668,7 +455,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 
   const newElement = {
     location: position.slice(),
-    name: '',
+    name: ''
   };
 
   switch (type) {
@@ -739,22 +526,22 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   switch (type) {
     case 'quay':
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        location: position,
+        location: position
       });
       break;
     case 'entrance':
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        location: position,
+        location: position
       });
       break;
     case 'pathJunction':
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        location: position,
+        location: position
       });
       break;
     case 'parking':
       copy.parking[index] = Object.assign({}, copy.parking[index], {
-        location: position,
+        location: position
       });
       break;
     default:
@@ -771,17 +558,17 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
   switch (type) {
     case 'quay':
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        publicCode: name,
+        publicCode: name
       });
       break;
     case 'entrance':
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        name: name,
+        name: name
       });
       break;
     case 'pathJunction':
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        name: name,
+        name: name
       });
       break;
     default:
@@ -797,7 +584,7 @@ helpers.updateCurrentWithPrivateCode = (current, payLoad) => {
   switch (type) {
     case 'quay':
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        privateCode: name,
+        privateCode: name
       });
       break;
     default:
@@ -812,7 +599,7 @@ helpers.updateCompassBearing = (current, payLoad) => {
   quaysCopy[index].compassBearing = compassBearing;
   return {
     ...current,
-    quays: quaysCopy,
+    quays: quaysCopy
   };
 };
 
@@ -823,17 +610,17 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   switch (type) {
     case 'quay':
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        description: description,
+        description: description
       });
       break;
     case 'entrance':
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        description: description,
+        description: description
       });
       break;
     case 'pathJunction':
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        description: description,
+        description: description
       });
       break;
     default:
@@ -858,7 +645,7 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
       let coordinates = quay.geometry.coordinates[0].slice();
       clientQuay.location = [
         setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6),
+        setDecimalPrecision(coordinates[0], 6)
       ];
     }
 
@@ -887,8 +674,8 @@ helpers.addAltName = (original, payLoad) => {
     nameType: nameType,
     name: {
       lang: lang,
-      value: value,
-    },
+      value: value
+    }
   });
   return copy;
 };
@@ -928,19 +715,16 @@ const setExpirationToNowForParking = (list, index) => {
   let parkinglist = list.slice();
   let parking = parkinglist[index];
   let nowDate = new Date();
-  let utcDateString = moment(nowDate).utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+  let utcDateString =
+    moment(nowDate).utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
   parking.validBetween = {
-    fromDate: parking.validBetween && parking.validBetween.fromDate || utcDateString,
+    fromDate:
+      (parking.validBetween && parking.validBetween.fromDate) || utcDateString,
     toDate: utcDateString
-  }
+  };
   parking.hasExpired = true;
   return parkinglist;
-}
-
-const removeElementByIndex = (list, index) => [
-  ...list.slice(0, index),
-  ...list.slice(index + 1),
-];
+};
 
 helpers.updateCurrentOpenParking = (current, index) => {
   let parkingElements = current.parking.slice();
@@ -948,20 +732,16 @@ helpers.updateCurrentOpenParking = (current, index) => {
   parking.validBetween = {
     ...parking.validBetween,
     toDate: null
-  }
+  };
   parking.hasExpired = false;
   return Object.assign({}, current, {
     parking: parkingElements
   });
-}
-
-helpers.getImportedId = keyValues => {
-  for (let i = 0; i < keyValues.length; i++) {
-    if (keyValues[i].key === "imported-id") {
-      return keyValues[i].values;
-    }
-  }
-  return [];
 };
+
+const removeElementByIndex = (list, index) => [
+  ...list.slice(0, index),
+  ...list.slice(index + 1)
+];
 
 export default helpers;

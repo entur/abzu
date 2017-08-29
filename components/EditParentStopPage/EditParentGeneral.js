@@ -1,5 +1,4 @@
 import React from 'react';
-import Loader from '../components/Dialogs/Loader';
 
 class EditParentGeneral extends React.Component {
   render() {
@@ -11,7 +10,8 @@ class EditParentGeneral extends React.Component {
       marginTop: 1,
       position: 'absolute',
       zIndex: 999,
-      marginLeft: 2
+      marginLeft: 2,
+      height: 200
     };
 
     return (
