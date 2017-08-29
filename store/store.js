@@ -12,6 +12,8 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
 import PolygonManager from '../singletons/PolygonManager';
 import rolesParser from '../roles/rolesParser';
+import { IntrospectionFragmentMatcher } from 'react-apollo';
+import schema from '../graphql/schema.json';
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -19,7 +21,7 @@ export default function configureStore(kc) {
   var enchancer = {};
 
   const networkInterface = createNetworkInterface({
-    uri: window.config.tiamatBaseUrl,
+    uri: window.config.tiamatBaseUrl
   });
 
   /*networkInterface.use([
@@ -36,13 +38,18 @@ export default function configureStore(kc) {
     } ,
   ]); */
 
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: schema
+  });
+
   const client = new ApolloClient({
-    networkInterface: networkInterface,
+    networkInterface,
+    fragmentMatcher
   });
 
   if (process.env.NODE_ENV === 'development') {
     enchancer = compose(
-      applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware()),
+      applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware())
     );
   } else {
     enchancer = compose(applyMiddleware(thunkMiddleware, client.middleware()));
@@ -60,7 +67,7 @@ export default function configureStore(kc) {
       isCompassBearingEnabled: Settings.getShowCompassBearing(),
       isCreatingPolylines: false,
       enablePolylines: Settings.getShowPathLinks(),
-      showExpiredStops: Settings.getShowExpiredStops(),
+      showExpiredStops: Settings.getShowExpiredStops()
     },
     user: {
       path: '/',
@@ -69,15 +76,15 @@ export default function configureStore(kc) {
       searchFilters: {
         stopType: [],
         topoiChips: [],
-        text: '',
+        text: ''
       },
       snackbarOptions: {
         isOpen: false,
-        message: '',
+        message: ''
       },
       localization: {
         locale: null,
-        messages: [],
+        messages: []
       },
       appliedLocale: null,
       favoriteNameDialogIsOpen: false,
@@ -95,7 +102,7 @@ export default function configureStore(kc) {
     },
     roles: {
       kc,
-      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true,
+      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true
     }
   };
 
@@ -106,11 +113,11 @@ export default function configureStore(kc) {
     stopPlace: stopPlaceReducer,
     report: reportReducer,
     apollo: client.reducer(),
-    roles: rolesReducer,
+    roles: rolesReducer
   });
 
   return {
     self: createStore(combinedReducer, initialState, enchancer),
-    client: client,
+    client: client
   };
 }

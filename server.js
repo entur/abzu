@@ -7,6 +7,7 @@ var globSync = require('glob').sync;
 var path = require('path');
 var fs = require('fs');
 var axios = require('axios');
+var introspectionQuery = require('./graphql/introspection').introspectionQuery;
 
 convictPromise
   .then(convict => {
@@ -117,18 +118,33 @@ convictPromise
       res.redirect(ENDPOINTBASE);
     });
 
-    app.listen(port, function(error) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.info(
-          '==> Listening on port %s. Open up http://localhost:%s%s in your browser.',
-          port,
-          port,
-          ENDPOINTBASE
-        );
-      }
+    const fetch = require('graphql-fetch')(convict.get('tiamatBaseUrl'));
+
+    fetch(introspectionQuery).then(response => {
+
+      fs.writeFileSync(
+        './graphql/schema.json',
+        JSON.stringify(response.data),
+        'utf8'
+      );
+
+      app.listen(port, function(error) {
+        if (error) {
+          console.error(error);
+        } else {
+          console.info(
+            '==> Listening on port %s. Open up http://localhost:%s%s in your browser.',
+            port,
+            port,
+            ENDPOINTBASE
+          );
+        }
+      });
+    }).catch( err => {
+      console.log("Unable to fetch schema, server exited with error");
+      process.exit(1);
     });
+
 
     const createKeyCloakConfig = authServerUrl => {
       let config = {

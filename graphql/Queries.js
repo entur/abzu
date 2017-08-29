@@ -1,6 +1,20 @@
 import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
+export const schemaInfo = gql`
+    {
+        __schema {
+            types {
+                kind
+                name
+                possibleTypes {
+                    name
+                }
+            }
+        }
+    }
+`;
+
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
       stopPlace(id: $id) {
