@@ -67,10 +67,37 @@ Fragments.quay = {
   `
 };
 
+Fragments.parentStopPlace = {
+  verbose: gql`
+      fragment VerboseParentStopPlace on ParentStopPlace {
+          __typename
+          id
+          name {
+              value
+          }
+          description {
+              value
+          }
+          geometry {
+              coordinates
+          }
+          children {
+              id
+              name {
+                  value
+              }
+              stopPlaceType
+              submode
+              transportMode
+          }
+      }
+    `
+};
 
 Fragments.stopPlace = {
-  verbose: gql `
+  verbose: gql`
     fragment VerboseStopPlace on StopPlace {
+        __typename
         id
         name {
             value
@@ -88,16 +115,14 @@ Fragments.stopPlace = {
         geometry {
             coordinates
         }
-        ...on StopPlace {
-            quays {
-                ...VerboseQuay
-            }
-            weighting
-            stopPlaceType
-            submode
-            transportMode
-            version
+        quays {
+            ...VerboseQuay
         }
+        weighting
+        stopPlaceType
+        submode
+        transportMode
+        version
         keyValues {
             key
             values
@@ -169,7 +194,7 @@ Fragments.stopPlace = {
 };
 
 Fragments.pathLink = {
-  verbose: gql `
+  verbose: gql`
       fragment VerbosePathLink on PathLink {
           id
           transferDuration {
@@ -210,7 +235,7 @@ Fragments.pathLink = {
 };
 
 Fragments.parking = {
-    verbose: gql`
+  verbose: gql`
       fragment VerboseParking on Parking {
           id
           totalCapacity
@@ -229,4 +254,4 @@ Fragments.parking = {
     `
 };
 
-export default Fragments
+export default Fragments;

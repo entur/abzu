@@ -348,7 +348,7 @@ helpers.mapStopToClientStop = (
     }
     return clientStop;
   } catch (e) {
-    console.log('error', e);
+    console.log('error', e.stackTrace());
   }
 };
 

@@ -12,7 +12,6 @@ const stopPlaceReducer = (state = {}, action) => {
   switch (action.type) {
 
     /* These actions are dispatched by Apollo-Client */
-    // TODO: These helper functions need a cleanup
     case types.APOLLO_QUERY_RESULT:
       return getStateByOperation(state, action);
 

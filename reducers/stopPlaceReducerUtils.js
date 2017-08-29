@@ -103,7 +103,8 @@ export const getStateByOperation = (state, action) => {
 };
 
 export const getObjectFromCache = (state, action) => {
-  return getDataFromResult(state, action);
+  console.error("Caching is not used, use a different strategy!");
+  return state;
 };
 
 const getProperZoomLevel = (data, prevZoom) => {

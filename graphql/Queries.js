@@ -51,11 +51,13 @@ export const stopPlaceBBQuery = gql`
 
 export const allEntities = gql`
     query stopPlaceAndPathLink($id: String!) {
+        __typename
         pathLink(stopPlaceId: $id) {
             ...VerbosePathLink
         },
         stopPlace(id: $id) {
             ...VerboseStopPlace
+            ...VerboseParentStopPlace
         }
         parking: parking(stopPlaceId: $id) {
             ...VerboseParking
@@ -77,6 +79,7 @@ export const allEntities = gql`
                 }
         },
     ${Fragments.stopPlace.verbose},
+    ${Fragments.parentStopPlace.verbose},
     ${Fragments.pathLink.verbose},
     ${Fragments.parking.verbose},
 `;
