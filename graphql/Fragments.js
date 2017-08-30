@@ -67,32 +67,6 @@ Fragments.quay = {
   `
 };
 
-Fragments.parentStopPlace = {
-  verbose: gql`
-      fragment VerboseParentStopPlace on ParentStopPlace {
-          __typename
-          id
-          name {
-              value
-          }
-          description {
-              value
-          }
-          geometry {
-              coordinates
-          }
-          children {
-              id
-              name {
-                  value
-              }
-              stopPlaceType
-              submode
-              transportMode
-          }
-      }
-    `
-};
 
 Fragments.stopPlace = {
   verbose: gql`
@@ -190,6 +164,36 @@ Fragments.stopPlace = {
         }
     }
     ${Fragments.quay.verbose}
+  `
+};
+
+Fragments.parentStopPlace = {
+  verbose: gql`
+      fragment VerboseParentStopPlace on ParentStopPlace {
+          __typename
+          id
+          name {
+              value
+          }
+          description {
+              value
+          }
+          geometry {
+              coordinates
+          }
+          description {
+              value
+          }
+          children {
+              ...VerboseStopPlace
+          }
+          version
+          validBetween {
+              fromDate
+              toDate
+          }
+      },
+      ${Fragments.stopPlace.verbose},
   `
 };
 

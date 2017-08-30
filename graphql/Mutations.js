@@ -1,6 +1,21 @@
 import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
+export const mutateParentStopPlace = gql`
+  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String) {
+      mutateParentStopPlace(ParentStopPlace: {
+          id: $id
+          name: { value: $name, lang: "no" }
+          description: { value: $description, lang: "no" }
+          versionComment: $versionComment
+          validBetween: $validBetween
+      }) {
+          ...VerboseParentStopPlace
+      }
+  },
+  ${Fragments.parentStopPlace.verbose}
+`
+
 export const mutateStopPlace = gql`
     mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput], $submode: SubmodeType, $transportMode: TransportModeType) {
         mutateStopPlace(StopPlace: {

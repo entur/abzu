@@ -81,7 +81,7 @@ class ParentStopPlace {
           setDecimalPrecision(coordinates[0], 6),
         ];
       } else {
-        if (stop.id === userDefinedCoordinates.stopPlaceId) {
+        if (stop.id === userDefinedCoordinates.stopPlaceId && userDefinedCoordinates.position) {
           clientStop.location = userDefinedCoordinates.position.slice();
         }
       }
@@ -94,7 +94,7 @@ class ParentStopPlace {
       if (isActive) {
         if (stop.children) {
           clientStop.children = stop.children
-            .map(item => new StopPlace(item).toClient())
+            .map(item => new StopPlace(item, isActive).toClient())
         }
       }
       return clientStop;

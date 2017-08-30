@@ -267,6 +267,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
         },
         stopPlace(id: $id, version: $version) {
             ...VerboseStopPlace
+            ...VerboseParentStopPlace
         }
         parking: parking(stopPlaceId: $id) {
             ...VerboseParking
@@ -288,6 +289,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
         }
     },
     ${Fragments.stopPlace.verbose},
+    ${Fragments.parentStopPlace.verbose},
     ${Fragments.pathLink.verbose},
     ${Fragments.parking.verbose}
 `;

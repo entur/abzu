@@ -4,7 +4,8 @@ import {
   mutateMergeQuays,
   mutateMergeStopPlaces,
   mutateMoveQuaysToStop,
-  mutateMoveQuaysToNewStop
+  mutateMoveQuaysToNewStop,
+  mutateParentStopPlace
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -15,6 +16,14 @@ import {
   findStop,
   getPolygons
 } from '../graphql/Queries';
+
+
+export const saveParentStopPlace = (client, variables) =>
+  client.mutate({
+    mutation: mutateParentStopPlace,
+    variables,
+    fetchPolicy: 'network-only'
+  });
 
 export const deleteQuay = (client, variables) =>
   client.mutate({

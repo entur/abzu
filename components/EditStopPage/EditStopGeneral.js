@@ -23,9 +23,6 @@ import MdSave from 'material-ui/svg-icons/content/save';
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back';
 import MdLess from 'material-ui/svg-icons/navigation/expand-less';
 import Divider from 'material-ui/Divider';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
 import SaveDialog from '../Dialogs/SaveDialog';
 import MergeStopDialog from '../Dialogs/MergeStopDialog';
 import MergeQuaysDialog from '../Dialogs/MergeQuaysDialog';
@@ -50,6 +47,7 @@ import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
 import { getIn } from '../../utils/';
 import ToolTippable from './ToolTippable';
+import VersionsPopover from './VersionsPopover';
 
 class EditStopGeneral extends React.Component {
 
@@ -60,7 +58,6 @@ class EditStopGeneral extends React.Component {
       confirmGoBack: false,
       saveDialogOpen: false,
       errorMessage: '',
-      versionsOpen: false
     };
   }
 
@@ -359,21 +356,8 @@ class EditStopGeneral extends React.Component {
     });
   }
 
-  handleTouchTapVersions = event => {
-    event.preventDefault();
-    this.setState({
-      versionsOpen: true,
-      anchorEl: event.currentTarget
-    });
-  };
-
   handleLoadVersion = ({ id, version }) => {
-    this.setState({
-      versionsOpen: false
-    });
-
     const { client } = this.props;
-
     client.query({
       fetchPolicy: 'network-only',
       query: stopPlaceAndPathLinkByVersion,
@@ -483,55 +467,12 @@ class EditStopGeneral extends React.Component {
             />
             <div>{stopPlaceLabel}</div>
           </div>
-          <FlatButton
-            label={translations.versions}
-            disabled={!versions.length}
-            labelStyle={{
-              color: '#fff',
-              fontSize: 10,
-              borderBottom: '1px dotted #fff',
-              color: '#fff',
-              padding: 0
-            }}
-            style={{ margin: 0, zIndex: 999 }}
-            onTouchTap={this.handleTouchTapVersions}
-          />
-          <Popover
-            open={this.state.versionsOpen}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-            onRequestClose={() => this.setState({ versionsOpen: false })}
-            animation={PopoverAnimationVertical}
-          >
-            <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
-              {versions.map((version, i) =>
-                <MenuItem
-                  key={'version' + i}
-                  primaryText={
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex' }}>
-                        <div style={{ marginRight: 8, fontWeight: 600 }}>
-                          {version.version}
-                        </div>
-                        <div>{version.name}</div>
-                      </div>
-                      <div style={{ marginTop: -10 }}>
-                        {version.changedBy || 'N/A'}: {version.versionComment || 'N/A'}
-                      </div>
-                    </div>
-                  }
-                  secondaryText={
-                    <div
-                      style={{ transform: 'translateY(-14px)' }}
-                    >{`${version.fromDate || 'N/A'} - ${version.toDate ||
-                      'N/A'}`}</div>
-                  }
-                  onTouchTap={() => this.handleLoadVersion(version)}
-                />
-              )}
-            </Menu>
-          </Popover>
+         <VersionsPopover
+           versions={versions}
+           buttonLabel={translations.versions}
+           disabled={!versions.length}
+           handleSelect={this.handleLoadVersion.bind(this)}
+         />
         </div>
         <div id="scroll-body" style={scrollable}>
           <div style={{ padding: '10 5' }}>

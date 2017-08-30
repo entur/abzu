@@ -10,26 +10,26 @@ helpers.mapQuayToVariables = quay => {
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
     accessibilityAssessment: formatAccessibilityAssements(
-      quay.accessibilityAssessment,
+      quay.accessibilityAssessment
     ),
     keyValues: quay.keyValues,
     placeEquipments: quay.placeEquipments,
     description: {
       value: quay.description,
-      lang: 'no',
-    },
+      lang: 'no'
+    }
   };
 
   if (quay.privateCode) {
     quayVariables.privateCode = {
-      value: quay.privateCode,
+      value: quay.privateCode
     };
   }
 
   if (quay.location) {
     quayVariables.geometry = {
       coordinates: [[quay.location[1], quay.location[0]]],
-      type: 'Point',
+      type: 'Point'
     };
   }
   return quayVariables;
@@ -40,9 +40,39 @@ helpers.getFullUTCString = (time, date) => {
   const dateStringFrom = moment(date).utc().format('YYYY-MM-DD').toString();
   return (
     moment(`${dateStringFrom} ${timeStringFrom}`).format(
-      'YYYY-MM-DDTHH:mm:ss.SSS',
+      'YYYY-MM-DDTHH:mm:ss.SSS'
     ) + 'Z'
   );
+};
+
+helpers.mapParentStopToVariables = (original, userInput) => {
+  const stop = JSON.parse(JSON.stringify(original));
+
+  let parentStopVariables = {
+    id: stop.id,
+    name: stop.name,
+    description: stop.description || null
+  };
+
+  if (userInput) {
+    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
+
+    let validPeriod = {};
+
+    if (timeFrom && dateFrom) {
+      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom);
+    }
+
+    if (timeTo && dateTo) {
+      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
+    }
+
+    parentStopVariables.validBetween = validPeriod;
+
+    parentStopVariables.versionComment = comment;
+  }
+
+  return parentStopVariables;
 };
 
 helpers.mapStopToVariables = (original, userInput) => {
@@ -55,7 +85,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(
-      stop.accessibilityAssessment,
+      stop.accessibilityAssessment
     ),
     keyValues: stop.keyValues,
     placeEquipments: stop.placeEquipments,
@@ -108,13 +138,13 @@ helpers.mapPathLinkToVariables = pathLinks => {
     }
 
     pathLink.transferDuration = {
-      defaultDuration: source.estimate,
+      defaultDuration: source.estimate
     };
 
     if (pathLink.inBetween && pathLink.inBetween.length) {
       pathLink.geometry = {
         type: 'LineString',
-        coordinates: pathLink.inBetween.map(latlng => latlng.reverse()),
+        coordinates: pathLink.inBetween.map(latlng => latlng.reverse())
       };
     }
     return stripRedundantFields(pathLink);
@@ -136,7 +166,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     parking.name = {
       value: source.name,
-      lang: 'nb',
+      lang: 'nb'
     };
 
     if (source.location) {
@@ -151,7 +181,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
       parking.geometry = {
         type: 'Point',
-        coordinates: [coordinates],
+        coordinates: [coordinates]
       };
     } else {
       parking.geometry = null;

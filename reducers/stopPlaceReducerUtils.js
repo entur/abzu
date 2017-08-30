@@ -49,6 +49,24 @@ export const getStateByOperation = (state, action) => {
             state.centerPosition
       });
 
+    case 'mutateParentStopPlace':
+      if (!action.result.data.mutateParentStopPlace) return state;
+
+      const mutatedParentStopPlace = action.result.data.mutateParentStopPlace[0];
+
+      return Object.assign({}, state, {
+        current: formatHelpers.mapStopToClientStop(mutatedParentStopPlace, true),
+        originalCurrent: formatHelpers.mapStopToClientStop(
+          mutatedParentStopPlace,
+          true
+        ),
+        isCreatingPolylines: false,
+        minZoom: mutatedParentStopPlace.geometry ? 14 : 5,
+        centerPosition:
+        formatHelpers.getCenterPosition(mutatedParentStopPlace.geometry) ||
+        state.centerPosition
+      });
+
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
@@ -130,6 +148,7 @@ const getDataFromResult = (state, action) => {
     action.result.data.stopPlace.length
     ? action.result.data.stopPlace[0]
     : null;
+
 
   if (stopPlace === null) {
     return state;

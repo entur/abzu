@@ -280,6 +280,7 @@ class StopPlaceDetails extends React.Component {
   }
 
   render() {
+
     const fixedHeader = {
       position: 'relative',
       display: 'block'
