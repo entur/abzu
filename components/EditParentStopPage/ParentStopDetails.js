@@ -7,12 +7,33 @@ import { StopPlaceActions } from '../../actions/';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import StopPlaceList from './StopPlaceList';
+import FlatButton from 'material-ui/FlatButton';
+import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 
 
 class ParentStopDetails extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      changePositionOpen: false
+    }
+  }
+
   handleChangeName(e, value) {
     this.props.dispatch(StopPlaceActions.changeStopName(value));
+  }
+
+
+  handleSubmitChangeCoordinates(position) {
+    const { dispatch } = this.props;
+
+    dispatch(StopPlaceActions.changeCurrentStopPosition(position));
+    dispatch(StopPlaceActions.changeMapCenter(position, 14));
+
+    this.setState({
+      changePositionOpen: false,
+    });
   }
 
   handleChangeDescription(e, value) {
@@ -22,11 +43,15 @@ class ParentStopDetails extends Component {
   render() {
 
     const { stopPlace, intl } = this.props;
+    const { changePositionOpen } = this.state;
     const { formatMessage } = intl;
 
     return (
-      <div style={{padding: '10px 5px'}}>
+      <div style={{padding: '10px 5px', minHeight: 600}}>
         <div style={{fontWeight: 600, fontSize: '1.1em'}}>{formatMessage({id: 'parentStopPlace'})}</div>
+        <div style={{textAlign: 'right'}}>
+          <FlatButton label={"Endre tyngepunkt"} labelStyle={{fontSize: '0.7em'}} onClick={() => this.setState({changePositionOpen: true})}/>
+        </div>
         <div style={{  }}>
           {!stopPlace.isNewStop &&
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -71,6 +96,13 @@ class ParentStopDetails extends Component {
           <Divider/>
         </div>
         <StopPlaceList stopPlaces={stopPlace.children}/>
+        <CoordinatesDialog
+          intl={this.props.intl}
+          open={changePositionOpen}
+          coordinates={stopPlace.position}
+          handleClose={() => this.setState({changePositionOpen: false})}
+          handleConfirm={this.handleSubmitChangeCoordinates.bind(this)}
+        />
       </div>
     );
   }

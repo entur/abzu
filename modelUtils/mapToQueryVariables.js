@@ -54,6 +54,10 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     description: stop.description || null
   };
 
+  if (stop.location) {
+    parentStopVariables.coordinates = [[stop.location[1], stop.location[0]]];
+  }
+
   if (userInput) {
     const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
 
