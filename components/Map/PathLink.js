@@ -47,6 +47,8 @@ class PathLink extends React.Component {
       fontWeight: 600,
     };
 
+    if (!pathLink || !pathLink.length) return null;
+
     let lines = pathLink.map((polyline, index) => {
       let color = GenerateColor(index);
 

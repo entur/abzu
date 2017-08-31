@@ -12,12 +12,9 @@ class StopPlaceList extends Component {
     };
   }
 
-  handleAddStopPlace() {
-    console.log("Adding");
-  }
 
   render() {
-    const { stopPlaces } = this.props;
+    const { stopPlaces, handleAddStopPlaceOpen } = this.props;
     const { expandedItem } = this.state;
 
     return (
@@ -25,7 +22,7 @@ class StopPlaceList extends Component {
         <div style={{ padding: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{fontWeight: 600, fontSize: '.9em'}}>Tilhørende stoppesteder</div>
           <FloatingActionButton
-            onClick={this.handleAddStopPlace.bind(this)}
+            onClick={handleAddStopPlaceOpen}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
@@ -49,7 +46,8 @@ class StopPlaceList extends Component {
 }
 
 StopPlaceList.propTypes = {
-  stopPlaces: PropTypes.arrayOf(PropTypes.object)
+  stopPlaces: PropTypes.arrayOf(PropTypes.object),
+  handleAddStopPlaceOpen: PropTypes.func.isRequired
 };
 
 export default StopPlaceList;

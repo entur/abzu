@@ -1,5 +1,5 @@
 import { getIn } from '../utils/';
-import { calculateDistance, calculateEstimate } from '../modelUtils/pathlinkHelpers';
+import { calculateDistance, calculateEstimate } from '../modelUtils/leafletUtils';
 
 class PathLink {
 

@@ -8,7 +8,7 @@ import {
   getUniquePathLinks,
   calculateDistance,
   calculateEstimate
-} from '../modelUtils/pathlinkHelpers';
+} from '../modelUtils/leafletUtils';
 import Quay from '../models/Quay';
 import StopPlace from '../models/StopPlace';
 import ParentStopPlace from '../models/ParentStopPlace';
@@ -162,6 +162,7 @@ helpers.mapStopToClientStop = (
   parking,
   userDefinedCoordinates = {}
 ) => {
+
   if (stop.__typename === 'ParentStopPlace') {
     return new ParentStopPlace(
       stop,

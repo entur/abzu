@@ -54,8 +54,12 @@ class QuayMarker extends React.Component {
   handleSetFocus() {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.setElementFocus(index, 'quay'));
-    document.querySelector(".quay-item-expanded").scrollIntoView(true);
-    document.querySelector("#scroll-body").scrollTop -= 50;
+    const expandedQuayEl = document.querySelector(".quay-item-expanded");
+    const scrollBodyEl = document.querySelector("#scroll-body");
+    if (expandedQuayEl && scrollBodyEl) {
+      expandedQuayEl.scrollIntoView(true);
+      scrollBodyEl.scrollTop -= 50;
+    }
   }
 
   handleMoveQuay() {

@@ -25,3 +25,22 @@ export const calculateEstimate = distance => {
   const walkingSpeed = 1.34112; // i.e. 3 mph / 3.6
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
+
+export const sortNeighbourStopsByDistance = (stopPlaceCentroid, neighbourStops, nFirst) => {
+
+  let suggestions = (neighbourStops||[]).slice();
+
+  if (stopPlaceCentroid) {
+    suggestions = (suggestions.map( stop => {
+      let distance = null;
+      if (stop.location) {
+        distance = calculateDistance([stopPlaceCentroid, stop.location]);}
+      return ({
+        ...stop,
+        distance
+      });
+    }) || []).sort( (a,b) => a.distance - b.distance);
+  }
+
+  return suggestions.slice(0, nFirst);
+}
