@@ -156,6 +156,9 @@ describe('Model: map format from server to expected client model', () => {
           id: 'NSR:Quay:30025',
           compassBearing: 212,
           publicCode: null,
+          privateCode: {
+            value: ''
+          },
           keyValues: [],
           description: {
             value: '',
@@ -174,6 +177,9 @@ describe('Model: map format from server to expected client model', () => {
           placeEquipments: undefined,
           compassBearing: 38,
           publicCode: null,
+          privateCode: {
+            value: ''
+          },
           keyValues: [],
           description: {
             value: '',
