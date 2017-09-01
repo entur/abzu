@@ -4,6 +4,7 @@ import HasExpiredInfo from './HasExpiredInfo';
 import ModalityIcon from './ModalityIcon';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
+import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
 
 
 class ParentStopPlaceResultInfo extends Component {
@@ -30,8 +31,8 @@ class ParentStopPlaceResultInfo extends Component {
           <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
           <div>
             {
-              result.children.map( child => (
-                <ModalityIcon key={'child-' + child.id} submode={child.submode} type={child.stopPlaceType} />
+              getUniqueStopPlaceTypes(result.children).map( (child, i) => (
+                <ModalityIcon key={'child-' + i} submode={child.submode} type={child.stopPlaceType} />
               ))
             }
           </div>

@@ -136,6 +136,19 @@ const mapReducer = (state = initialState, action) => {
         movingQuay: action.payLoad
       });
 
+    case types.SHOW_REMOVE_STOP_PLACE_FROM_PARENT:
+      return Object.assign({}, state, {
+        removeStopPlaceFromParentOpen: true,
+        removingStopPlaceFromParentId: action.payLoad
+      });
+
+    case types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT:
+      return Object.assign({}, state, {
+        removeStopPlaceFromParentOpen: false,
+        removingStopPlaceFromParentId: null
+      });
+
+
     default:
       return state;
   }

@@ -12,20 +12,25 @@ import { StopPlaceActions, UserActions } from '../../actions/';
 import SaveDialog from '../Dialogs/SaveDialog';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
-import { saveParentStopPlace, getStopPlaceVersions, createParentStopPlace } from '../../graphql/Actions';
+import {
+  saveParentStopPlace,
+  getStopPlaceVersions,
+  createParentStopPlace,
+  removeStopPlaceFromMultiModalStop
+} from '../../graphql/Actions';
 import * as types from '../../actions/Types';
 import { MutationErrorCodes } from '../../models/ErrorCodes';
 import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
+import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
 
 class EditParentGeneral extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       confirmUndoOpen: false,
       saveDialogOpen: false,
-      errorMessage: '',
-    }
+      errorMessage: ''
+    };
   }
 
   getTitleText = (stopPlace, formatMessage) => {
@@ -34,7 +39,7 @@ class EditParentGeneral extends React.Component {
       : formatMessage({ id: 'new_stop_title' });
   };
 
-  handleLoadVersion({id, version}) {
+  handleLoadVersion({ id, version }) {
     const { client } = this.props;
     client.query({
       fetchPolicy: 'network-only',
@@ -43,6 +48,21 @@ class EditParentGeneral extends React.Component {
         id,
         version
       }
+    });
+  }
+
+  handleCloseRemoveStopFromParent() {
+    this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
+  }
+
+  handleRemoveStopFromParent() {
+    const { removingStopPlaceFromParentId, client, stopPlace } = this.props;
+    removeStopPlaceFromMultiModalStop(client, stopPlace.id, removingStopPlaceFromParentId).then( response => {
+      this.handleSaveSuccess(stopPlace.id);
+      this.handleCloseRemoveStopFromParent();
+    }).catch( err => {
+      this.handleSaveError(err);
+      this.handleCloseRemoveStopFromParent();
     });
   }
 
@@ -86,14 +106,20 @@ class EditParentGeneral extends React.Component {
 
   handleCreateNewParentStopPlace(stopPlaceIds) {
     const { client, stopPlace } = this.props;
-    createParentStopPlace(client, stopPlace.name, stopPlaceIds).then( ({data}) => {
-      if (data && data.createMultiModalStopPlace && data.createMultiModalStopPlace.length) {
-        const parentStopPlaceId = data.createMultiModalStopPlace[0].id;
-        this.handleSaveSuccess(parentStopPlaceId);
-      }
-    }).then( err => {
-      this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
-    });
+    createParentStopPlace(client, stopPlace.name, stopPlaceIds)
+      .then(({ data }) => {
+        if (
+          data &&
+          data.createMultiModalStopPlace &&
+          data.createMultiModalStopPlace.length
+        ) {
+          const parentStopPlaceId = data.createMultiModalStopPlace[0].id;
+          this.handleSaveSuccess(parentStopPlaceId);
+        }
+      })
+      .then(err => {
+        this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
+      });
   }
 
   saveParentStop(userInput) {
@@ -103,22 +129,32 @@ class EditParentGeneral extends React.Component {
       userInput
     );
 
-    saveParentStopPlace(client, parentStopPlaceVariables).then(
-      ({data}) => {
-        if (data && data.mutateParentStopPlace && data.mutateParentStopPlace.length) {
+    saveParentStopPlace(client, parentStopPlaceVariables)
+      .then(({ data }) => {
+        if (
+          data &&
+          data.mutateParentStopPlace &&
+          data.mutateParentStopPlace.length
+        ) {
           const parentStopPlaceId = data.mutateParentStopPlace[0].id;
           this.handleSaveSuccess(parentStopPlaceId);
         }
-      }
-    ).catch( err => {
-      this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
-    });
-
+      })
+      .catch(err => {
+        this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
+      });
   }
 
   render() {
-
-    const { stopPlace, versions, intl, stopHasBeenModified, disabled } = this.props;
+    const {
+      stopPlace,
+      versions,
+      intl,
+      stopHasBeenModified,
+      disabled,
+      removingStopPlaceFromParentId,
+      removeStopPlaceFromParentOpen
+    } = this.props;
     const { formatMessage } = intl;
 
     const containerStyle = {
@@ -161,13 +197,15 @@ class EditParentGeneral extends React.Component {
           </div>
           <VersionsPopover
             versions={versions || []}
-            buttonLabel={formatMessage({id: 'versions'})}
+            buttonLabel={formatMessage({ id: 'versions' })}
             disabled={!versions.length}
             handleSelect={this.handleLoadVersion.bind(this)}
           />
         </div>
         <ParentStopDetails
-          handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(this)}
+          handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(
+            this
+          )}
         />
         <div
           style={{
@@ -190,7 +228,12 @@ class EditParentGeneral extends React.Component {
           />
           <FlatButton
             icon={<MdSave />}
-            disabled={disabled || !stopHasBeenModified || !stopPlace.name.length || !stopPlace.id }
+            disabled={
+              disabled ||
+              !stopHasBeenModified ||
+              !stopPlace.name.length ||
+              !stopPlace.id
+            }
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.8em' }}
@@ -200,7 +243,7 @@ class EditParentGeneral extends React.Component {
         <ConfirmDialog
           open={this.state.confirmUndoOpen}
           handleClose={() => {
-            this.setState({confirmUndoOpen: false})
+            this.setState({ confirmUndoOpen: false });
           }}
           handleConfirm={() => {
             this.handleDiscardChanges();
@@ -213,26 +256,37 @@ class EditParentGeneral extends React.Component {
           }}
           intl={intl}
         />
+        <RemoveStopFromParentDialog
+          open={removeStopPlaceFromParentOpen}
+          handleClose={this.handleCloseRemoveStopFromParent.bind(this)}
+          handleConfirm={this.handleRemoveStopFromParent.bind(this)}
+          intl={intl}
+          stopPlaceId={removingStopPlaceFromParentId}
+        />
         {this.state.saveDialogOpen && !disabled
           ? <SaveDialog
-            open={this.state.saveDialogOpen}
-            handleClose={() => {
-              this.setState({saveDialogOpen: false})
-            }}
-            handleConfirm={this.saveParentStop.bind(this)}
-            errorMessage={this.state.errorMessage}
-            intl={intl}
-          />
+              open={this.state.saveDialogOpen}
+              handleClose={() => {
+                this.setState({ saveDialogOpen: false });
+              }}
+              handleConfirm={this.saveParentStop.bind(this)}
+              errorMessage={this.state.errorMessage}
+              intl={intl}
+            />
           : null}
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = ({stopPlace}) => ({
+const mapStateToProps = ({ stopPlace, mapUtils }) => ({
   stopPlace: stopPlace.current,
   versions: stopPlace.versions,
-  stopHasBeenModified: stopPlace.stopHasBeenModified
+  stopHasBeenModified: stopPlace.stopHasBeenModified,
+  removeStopPlaceFromParentOpen: mapUtils.removeStopPlaceFromParentOpen,
+  removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId
 });
 
-export default withApollo(injectIntl(connect(mapStateToProps)(EditParentGeneral)));
+export default withApollo(
+  injectIntl(connect(mapStateToProps)(EditParentGeneral))
+);

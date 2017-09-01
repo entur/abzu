@@ -36,7 +36,7 @@ export default function configureStore(kc) {
         next();
       },
     } ,
-  ]); */
+  ]);*/
 
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData: schema

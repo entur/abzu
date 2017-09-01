@@ -13,7 +13,7 @@ class StopPlaceListItemQuayItem extends Component {
     return (
       <div>
         <Divider />
-        <div style={{ display: 'flex', alignItems: 'center', padding: 5}}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: 8}}>
           <Code type="publicCode" value={quay.publicCode} />
           <Code type="privateCode" value={quay.privateCode} />
           <div style={{display: 'flex', alignItems: 'center', marginLeft: 5}}>

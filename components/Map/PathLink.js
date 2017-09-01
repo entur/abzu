@@ -35,7 +35,7 @@ class PathLink extends React.Component {
     const { openDialog } = this.state;
     const { formatMessage } = intl;
 
-    if (!isEnabled) return null;
+    if (!isEnabled || (!pathLink || !pathLink.length)) return null;
 
     const polylinePopupStyle = {
       cursor: 'pointer',
@@ -46,8 +46,6 @@ class PathLink extends React.Component {
       textDecoration: 'underline',
       fontWeight: 600,
     };
-
-    if (!pathLink || !pathLink.length) return null;
 
     let lines = pathLink.map((polyline, index) => {
       let color = GenerateColor(index);

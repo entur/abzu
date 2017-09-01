@@ -12,39 +12,70 @@ class StopPlaceList extends Component {
     };
   }
 
-
   render() {
     const { stopPlaces, handleAddStopPlaceOpen } = this.props;
     const { expandedItem } = this.state;
 
     return (
       <div>
-        <div style={{ padding: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{fontWeight: 600, fontSize: '.9em'}}>Tilhørende stoppesteder</div>
+        <div
+          style={{
+            padding: 5,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <div style={{ fontWeight: 600, fontSize: '.9em' }}>
+            Tilhørende stoppesteder
+          </div>
           <FloatingActionButton
             onClick={handleAddStopPlaceOpen}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
-            <ContentAdd/>
+            <ContentAdd />
           </FloatingActionButton>
         </div>
-        <div>
-          {(stopPlaces && stopPlaces.length) ? stopPlaces.map( (stopPlace, i) =>
-            <StopPlaceListItem
-              key={'stopPlaceItem'- + stopPlace.id}
-              stopPlace={stopPlace}
-              handleExpand={() => this.setState({expandedItem: i})}
-              handleCollapse={() => this.setState({expandedItem: -1})}
-              expanded={expandedItem === i}
-            />)
-            : <div style={{marginTop: 5}}>
-              <div style={{fontStyle: 'italic', marginLeft: 10, fontSize: '0.9em'}}>Ingen stoppesteder</div>
-              <div style={{fontStyle: 'italic', marginLeft: 10, fontSize: '0.8em', width: '80%', fontWeight: 600}}>
-                Et multimodalt stoppested må ha underordnede stoppested for å eksistere.
-              </div>
-            </div>
-          }
+        <div
+          style={{
+            maxHeight: 320,
+            overflowX: 'auto'
+          }}
+        >
+          {stopPlaces && stopPlaces.length
+            ? stopPlaces.map((stopPlace, i) =>
+                <StopPlaceListItem
+                  key={'stopPlaceItem-' + stopPlace.id}
+                  stopPlace={stopPlace}
+                  handleExpand={() => this.setState({ expandedItem: i })}
+                  handleCollapse={() => this.setState({ expandedItem: -1 })}
+                  expanded={expandedItem === i}
+                />
+              )
+            : <div style={{ marginTop: 5 }}>
+                <div
+                  style={{
+                    fontStyle: 'italic',
+                    marginLeft: 10,
+                    fontSize: '0.9em'
+                  }}
+                >
+                  Ingen stoppesteder
+                </div>
+                <div
+                  style={{
+                    fontStyle: 'italic',
+                    marginLeft: 10,
+                    fontSize: '0.8em',
+                    width: '80%',
+                    fontWeight: 600
+                  }}
+                >
+                  Et multimodalt stoppested må ha underordnede stoppested for å
+                  eksistere.
+                </div>
+              </div>}
         </div>
       </div>
     );

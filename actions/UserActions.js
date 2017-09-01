@@ -370,6 +370,14 @@ UserActions.lookupCoordinates = (latLng, triggeredByDrag) => dispatch => {
   dispatch(sendData(types.LOOKUP_COORDINATES, {position: latLng, triggeredByDrag}));
 };
 
+UserActions.showRemoveStopPlaceFromParent = stopPlaceId => dispatch => {
+  dispatch(sendData(types.SHOW_REMOVE_STOP_PLACE_FROM_PARENT, stopPlaceId));
+};
+
+UserActions.hideRemoveStopPlaceFromParent = () => dispatch => {
+  dispatch(sendData(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
+};
+
 const getQuayById = (quays = [], quayId) => {
   for (let i = 0; quays.length; i++) {
     if (quays[i].id === quayId) return quays[i];

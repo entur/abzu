@@ -83,6 +83,15 @@ export const mutateParking = gql`
   ${Fragments.parking.verbose}
 `;
 
+export const removeStopPlaceFromParent = gql`
+    mutation removeStopPlaceFromParent($parentSiteRef: String!, $stopPlaceId: [String!]) {
+        removeFromMultiModalStopPlace(parentSiteRef: $parentSiteRef, stopPlaceId: $stopPlaceId) {
+            ...VerboseParentStopPlace
+        }
+    },
+    ${Fragments.parentStopPlace.verbose}
+`
+
 export const mutateMergeStopPlaces = gql`
   mutation mergeStopPlaces($fromStopPlaceId: String!, $toStopPlaceId: String!, $fromVersionComment: String!, $toVersionComment: String!) {
       mergeStopPlaces(fromStopPlaceId: $fromStopPlaceId, toStopPlaceId: $toStopPlaceId, fromVersionComment: $fromVersionComment, toVersionComment: $toVersionComment) {

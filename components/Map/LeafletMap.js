@@ -114,7 +114,7 @@ export default class LeafLetMap extends React.Component {
           </BaseLayer>
           <BaseLayer
             checked={this.getCheckedBaseLayerByValue('Kartverket kart')}
-            name="Karverket kart"
+            name="Kartverket kart"
           >
             <TileLayer
               attribution="&copy; <a href=&quot;http://www.kartverket.no&quot;>Kartverket"

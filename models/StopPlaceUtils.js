@@ -13,3 +13,14 @@ export const getImportedId = keyValues => {
   }
   return [];
 };
+
+export const getUniqueStopPlaceTypes = children => {
+  let stopPlaceTypes = children.map(child =>
+    JSON.stringify({
+      stopPlaceType: child.stopPlaceType,
+      submode: child.submode
+    })
+  );
+
+  return [...new Set(stopPlaceTypes)].map(child => JSON.parse(child));
+};
