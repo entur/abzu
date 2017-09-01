@@ -20,11 +20,9 @@ helpers.mapQuayToVariables = quay => {
     },
   };
 
-  if (quay.privateCode) {
-    quayVariables.privateCode = {
-      value: quay.privateCode,
-    };
-  }
+  quayVariables.privateCode = {
+    value: quay.privateCode || '',
+  };
 
   if (quay.location) {
     quayVariables.geometry = {
