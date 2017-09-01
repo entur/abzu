@@ -306,23 +306,33 @@ helpers.mapReportSearchResultsToClientStop = stops => {
   });
 };
 
-helpers.createNewStopFromLocation = location => {
-  return {
-    id: null,
-    name: '',
-    description: '',
-    location: location.map(pos => setDecimalPrecision(pos, 6)),
-    stopPlaceType: null,
-    topographicPlace: '',
-    quays: [],
-    entrances: [],
-    pathJunctions: [],
-    parking: [],
-    isNewStop: true,
-    isActive: true,
-    keyValues: []
-  };
-};
+helpers.createNewStopFromLocation = location => ({
+  id: null,
+  name: '',
+  description: '',
+  location: location.map(pos => setDecimalPrecision(pos, 6)),
+  stopPlaceType: null,
+  topographicPlace: '',
+  quays: [],
+  entrances: [],
+  pathJunctions: [],
+  parking: [],
+  isNewStop: true,
+  isActive: true,
+  keyValues: []
+});
+
+helpers.createNewParentStopFromLocation = location => ({
+  id: null,
+  name: '',
+  description: '',
+  location: location.map(pos => setDecimalPrecision(pos, 6)),
+  isParent: true,
+  children: [],
+  isNewStop: true,
+  isActive: true,
+  keyValues: []
+});
 
 helpers.getCenterPosition = geometry => {
   if (!geometry) return null;

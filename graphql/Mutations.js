@@ -20,6 +20,15 @@ export const mutateParentStopPlace = gql`
   ${Fragments.parentStopPlace.verbose}
 `
 
+export const mutateCreateMultiModalStopPlace = gql`
+  mutation mutateCreateMultiModalStopPlace($name: String!, $stopPlaceIds: [String!]) {
+      createMultiModalStopPlace(name: { value: $name, lang: "no" }, stopPlaceId: $stopPlaceIds) {
+          ...VerboseParentStopPlace
+      }
+  },
+  ${Fragments.parentStopPlace.verbose}
+`
+
 export const mutateAddToMultiModalStopPlace  = gql`
   mutation mutateAddToMultiModalStopPlace($parentSiteRef: String!, $stopPlaceIds: [String!]) {
       addToMultiModalStopPlace(parentSiteRef: $parentSiteRef, stopPlaceId: $stopPlaceIds) {

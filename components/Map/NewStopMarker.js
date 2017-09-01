@@ -6,7 +6,7 @@ const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
 const markerShadow = require('../../static/icons/marker-shadow.png');
 import PManager from '../../singletons/PolygonManager';
 
-class NewStopMarker extends React.PureComponent {
+class NewStopMarker extends React.Component {
   static PropTypes = {
     text: PropTypes.string.isRequired,
     handleOnClick: PropTypes.func.isRequired,
@@ -15,7 +15,7 @@ class NewStopMarker extends React.PureComponent {
 
   render() {
 
-    let { children, position, handleOnClick, handleDragEnd, text } = this.props;
+    let { children, position, handleOnClick, handleDragEnd, text, newStopIsMultiModal } = this.props;
 
     var icon = L.icon({
       iconUrl: newStopIcon,
@@ -45,23 +45,33 @@ class NewStopMarker extends React.PureComponent {
             <span onClick={handleOnClick}>{children}</span>
             { latlngInside ?
               <div>
-                <p style={{ fontWeight: '600' }}>{text.newStopTitle}</p>
-                <p>{text.newStopQuestion}</p>
-                <div
-                  className="marker-popup-button"
-                  onClick={() => {
-                    handleOnClick(position);
-                  }}
-                >
-                  {text.createNow}
+                <p style={{ fontWeight: '600' }}>
+                  {newStopIsMultiModal ? text.newParentStopTitle : text.newStopTitle}
+                </p>
+                <p> {newStopIsMultiModal ? text.newParentStopQuestion : text.newStopQuestion}</p>
+                <div style={{textAlign: 'center'}}>
+                  <div
+                    className="marker-popup-button"
+                    style={{maxWidth: 180}}
+                    onClick={() => {
+                      handleOnClick(position);
+                    }}
+                  >
+                    {text.createNow}
+                  </div>
                 </div>
               </div>
               : <div>
-                <p style={{fontWeight: 600}}>{text.newStopTitle}</p>
-                <div
-                  className="marker-popup-not-legal"
-                >
-                  {text.createNotAllowed}
+                <p style={{fontWeight: 600}}>
+                  {newStopIsMultiModal ? text.newParentStopTitle : text.newStopTitle}
+                  </p>
+                <div style={{textAlign: 'center'}}>
+                  <div
+                    className="marker-popup-not-legal"
+                    style={{maxWidth: 180}}
+                  >
+                    {text.createNotAllowed}
+                  </div>
                 </div>
               </div>
             }

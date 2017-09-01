@@ -12,7 +12,7 @@ import { StopPlaceActions, UserActions } from '../../actions/';
 import SaveDialog from '../Dialogs/SaveDialog';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
-import { saveParentStopPlace, getStopPlaceVersions } from '../../graphql/Actions';
+import { saveParentStopPlace, getStopPlaceVersions, createParentStopPlace } from '../../graphql/Actions';
 import * as types from '../../actions/Types';
 import { MutationErrorCodes } from '../../models/ErrorCodes';
 import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
@@ -82,6 +82,18 @@ class EditParentGeneral extends React.Component {
       confirmUndoOpen: false
     });
     this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
+  }
+
+  handleCreateNewParentStopPlace(stopPlaceIds) {
+    const { client, stopPlace } = this.props;
+    createParentStopPlace(client, stopPlace.name, stopPlaceIds).then( ({data}) => {
+      if (data && data.createMultiModalStopPlace && data.createMultiModalStopPlace.length) {
+        const parentStopPlaceId = data.createMultiModalStopPlace[0].id;
+        this.handleSaveSuccess(parentStopPlaceId);
+      }
+    }).then( err => {
+      this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
+    });
   }
 
   saveParentStop(userInput) {
@@ -154,7 +166,9 @@ class EditParentGeneral extends React.Component {
             handleSelect={this.handleLoadVersion.bind(this)}
           />
         </div>
-        <ParentStopDetails/>
+        <ParentStopDetails
+          handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(this)}
+        />
         <div
           style={{
             border: '1px solid #efeeef',
@@ -176,7 +190,7 @@ class EditParentGeneral extends React.Component {
           />
           <FlatButton
             icon={<MdSave />}
-            disabled={disabled || !stopHasBeenModified || !stopPlace.name.length }
+            disabled={disabled || !stopHasBeenModified || !stopPlace.name.length || !stopPlace.id }
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.8em' }}

@@ -30,15 +30,21 @@ class StopPlaceList extends Component {
           </FloatingActionButton>
         </div>
         <div>
-          {stopPlaces.map( (stopPlace, i) =>
+          {(stopPlaces && stopPlaces.length) ? stopPlaces.map( (stopPlace, i) =>
             <StopPlaceListItem
-              key={stopPlace.id}
+              key={'stopPlaceItem'- + stopPlace.id}
               stopPlace={stopPlace}
               handleExpand={() => this.setState({expandedItem: i})}
               handleCollapse={() => this.setState({expandedItem: -1})}
               expanded={expandedItem === i}
-            />
-          )}
+            />)
+            : <div style={{marginTop: 5}}>
+              <div style={{fontStyle: 'italic', marginLeft: 10, fontSize: '0.9em'}}>Ingen stoppesteder</div>
+              <div style={{fontStyle: 'italic', marginLeft: 10, fontSize: '0.8em', width: '80%', fontWeight: 600}}>
+                Et multimodalt stoppested må ha underordnede stoppested for å eksistere.
+              </div>
+            </div>
+          }
         </div>
       </div>
     );

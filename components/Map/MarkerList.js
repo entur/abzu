@@ -169,6 +169,8 @@ class MarkerList extends React.Component {
 
     const newStopMarkerText = {
       newStopTitle: formatMessage({ id: 'new_stop_title' }),
+      newParentStopTitle: formatMessage({ id: 'new_parent_stop_title' }),
+      newParentStopQuestion: formatMessage({ id: 'new_parent_stop_question' }),
       newStopQuestion: formatMessage({ id: 'new_stop_question' }),
       createNow: formatMessage({ id: 'create_now' }),
       createNotAllowed: formatMessage({id: 'create_not_allowed'})
@@ -189,6 +191,7 @@ class MarkerList extends React.Component {
           <NewStopMarker
             key={'newstop-parent- ' + stopIndex}
             position={stop.location}
+            newStopIsMultiModal={this.props.newStopIsMultiModal}
             handleDragEnd={this.handleDragEndNewStop.bind(this)}
             text={newStopMarkerText}
             handleOnClick={() => {
@@ -448,6 +451,7 @@ const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  newStopIsMultiModal: state.user.newStopIsMultiModal
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

@@ -27,6 +27,11 @@ const stopPlaceReducer = (state = {}, action) => {
         searchResults: [],
       });
 
+    case types.DESTROYED_NEW_STOP:
+      return Object.assign({}, state, {
+        newStop: null
+      });
+
     case types.NAVIGATE_TO_MAIN_AFTER_DELETE:
       return Object.assign({}, state, {
         searchResults: [],
@@ -98,13 +103,18 @@ const stopPlaceReducer = (state = {}, action) => {
       });
 
     case types.CREATED_NEW_STOP:
+
+      const { location, isMultimodal } = action.payLoad;
+      const stopToBeCreated = isMultimodal
+        ? formatHelpers.createNewParentStopFromLocation(location)
+        : formatHelpers.createNewStopFromLocation(location);
+
       return Object.assign({}, state, {
-        newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
-        originalCurrent: formatHelpers.createNewStopFromLocation(
-          action.payLoad,
-        ),
+        newStop: stopToBeCreated,
+        originalCurrent: JSON.parse(JSON.stringify(stopToBeCreated)),
         versions: [],
         pathLink: [],
+        newStopIsMultiModal: isMultimodal,
         stopHasBeenModified: false,
       });
 

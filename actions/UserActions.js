@@ -69,14 +69,14 @@ UserActions.showEditQuayAdditional = () => dispatch => {
   dispatch(sendData(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
 };
 
-UserActions.toggleIsCreatingNewStop = () => (dispatch, getState) => {
+UserActions.toggleIsCreatingNewStop = isMultiModal => (dispatch, getState) => {
   const state = getState();
   const isCreatingNewStop = state.user.isCreatingNewStop;
 
   if (isCreatingNewStop) {
     dispatch(sendData(types.DESTROYED_NEW_STOP, null));
   }
-  dispatch(sendData(types.TOGGLED_IS_CREATING_NEW_STOP, null));
+  dispatch(sendData(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
 };
 
 UserActions.togglePathLinksEnabled = value => dispatch => {

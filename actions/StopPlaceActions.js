@@ -194,12 +194,17 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
   );
 };
 
-StopPlaceActions.createNewStop = location => dispatch => {
+StopPlaceActions.createNewStop = location => (dispatch, getState) => {
+  const state = getState();
+  const isMultimodal = state.user.newStopIsMultiModal;
   dispatch(
-    sendData(types.CREATED_NEW_STOP, [
-      Number(location.lat),
-      Number(location.lng),
-    ]),
+    sendData(types.CREATED_NEW_STOP, {
+      isMultimodal,
+      location: [
+        Number(location.lat),
+        Number(location.lng),
+      ]
+    }),
   );
 };
 

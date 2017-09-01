@@ -33,7 +33,6 @@ class StopPlaceListItem extends Component {
             <ModalityIcon
               type={stopPlace.stopPlaceType}
               submode={stopPlace.submode}
-              forceUpdate={true}
               style={{ marginTop: -8 }}
             />
             <a

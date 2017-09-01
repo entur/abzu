@@ -54,18 +54,23 @@ class ParentStopDetails extends Component {
       addStopPlaceOpen: false
     });
 
-    addToMultiModalStopPlace(client, stopPlace.id, checkedItems)
-      .then(() => {
-        getStopPlaceWithAll(client, stopPlace.id).then(() => {
-          dispatch(
-            UserActions.openSnackbar(SNACKBAR_MESSAGE_SAVED, SUCCESS)
-          );
+    if (stopPlace.id) {
+      addToMultiModalStopPlace(client, stopPlace.id, checkedItems)
+        .then(() => {
+          getStopPlaceWithAll(client, stopPlace.id).then(() => {
+            dispatch(
+              UserActions.openSnackbar(SNACKBAR_MESSAGE_SAVED, SUCCESS)
+            );
+          });
+        })
+        .catch(err => {
+          dispatch(UserActions.openSnackbar(SNACKBAR_MESSAGE_FAILED, ERROR));
         });
-      })
-      .catch(err => {
-        dispatch(UserActions.openSnackbar(SNACKBAR_MESSAGE_FAILED, ERROR));
-      });
+    } else {
+      this.props.handleCreateNewParentStopPlace(checkedItems);
+    }
   }
+
 
   handleSubmitChangeCoordinates(position) {
     const { dispatch } = this.props;
@@ -128,6 +133,7 @@ class ParentStopDetails extends Component {
             fullWidth={true}
             value={stopPlace.name}
             disabled={false}
+            style={{ marginTop: -10 }}
             errorText={
               stopPlace.name ? '' : formatMessage({ id: 'name_is_required' })
             }
@@ -139,7 +145,6 @@ class ParentStopDetails extends Component {
             fullWidth={true}
             disabled={false}
             value={stopPlace.description || ''}
-            style={{ marginTop: -10 }}
             onChange={this.handleChangeDescription.bind(this)}
           />
           <Divider />

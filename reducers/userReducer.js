@@ -29,6 +29,7 @@ export const initialState = {
   keyValuesDialogSource: [],
   keyValuesOrigin: null,
   lookupCoordinatesOpen: false,
+  newStopIsMultiModal: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -45,7 +46,8 @@ const userReducer = (state = initialState, action) => {
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
       return Object.assign({}, state, {
-        isCreatingNewStop: !state.isCreatingNewStop
+        isCreatingNewStop: !state.isCreatingNewStop,
+        newStopIsMultiModal: action.payLoad,
       });
 
     case types.APPLIED_STOPTYPE_SEARCH_FILTER:

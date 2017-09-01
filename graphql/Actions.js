@@ -6,7 +6,8 @@ import {
   mutateMoveQuaysToStop,
   mutateMoveQuaysToNewStop,
   mutateParentStopPlace,
-  mutateAddToMultiModalStopPlace
+  mutateAddToMultiModalStopPlace,
+  mutateCreateMultiModalStopPlace
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -52,6 +53,14 @@ export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
     fetchPolicy: 'network-only'
   });
 
+export const createParentStopPlace = (client, name, stopPlaceIds) =>
+  client.mutate({
+    mutation: mutateCreateMultiModalStopPlace,
+    variables: {
+      name,
+      stopPlaceIds
+    }
+  });
 
 export const getStopPlaceVersions = (client, stopPlaceId) =>
   client.query({
