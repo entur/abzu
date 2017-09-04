@@ -43,6 +43,42 @@ helpers.getFullUTCString = (time, date) => {
   );
 };
 
+helpers.mapChildStopToVariables = (original, userInput) => {
+  const stop = JSON.parse(JSON.stringify(original));
+
+  const child = helpers.mapDeepStopToVariables(original, null);
+
+  let variables = {
+    id: stop.parentStop.id,
+    children: [child],
+    name: stop.parentStop.name
+  };
+
+  if (stop.parentStop.location) {
+    variables.coordinates = [[stop.parentStop.location[1], stop.parentStop.location[0]]];
+  }
+
+  if (userInput) {
+    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
+
+    let validPeriod = {};
+
+    if (timeFrom && dateFrom) {
+      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom);
+    }
+
+    if (timeTo && dateTo) {
+      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
+    }
+
+    variables.validBetween = validPeriod;
+
+    variables.versionComment = comment;
+  }
+
+  return variables;
+}
+
 helpers.mapParentStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
 
@@ -76,6 +112,27 @@ helpers.mapParentStopToVariables = (original, userInput) => {
 
   return parentStopVariables;
 };
+
+const createEmbeddableMultilingualString = string => ({
+  value: string || '',
+  lang: 'no'
+});
+
+// properly maps object when Object is used as InputObject and not shallow variables for query
+helpers.mapDeepStopToVariables = original => {
+  let stopPlace = helpers.mapStopToVariables(original, null);
+  stopPlace.name = createEmbeddableMultilingualString(stopPlace.name);
+  stopPlace.description = createEmbeddableMultilingualString(stopPlace.description);
+
+  if (stopPlace.coordinates) {
+    stopPlace.geometry = {
+      coordinates: stopPlace.coordinates.slice(),
+      type: 'Point'
+    }
+    delete stopPlace.coordinates;
+  }
+  return stopPlace;
+}
 
 helpers.mapStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));

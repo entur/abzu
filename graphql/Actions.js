@@ -9,7 +9,8 @@ import {
   mutateAddToMultiModalStopPlace,
   mutateCreateMultiModalStopPlace,
   removeStopPlaceFromParent,
-  mutateStopPlace
+  mutateStopPlace,
+  updateChildOfParentStop
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -50,9 +51,24 @@ export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
       });
     });
   } else {
-      return new Promise((resolve, reject) => {
-        reject("Not yet implemented");
+
+    return new Promise((resolve, reject) => {
+
+      const variables = mapToMutationVariables.mapChildStopToVariables(
+        stopPlace,
+        userInput
+      );
+
+      client.mutate({
+        mutation: updateChildOfParentStop,
+        variables,
+        fetchPolicy: 'network-only'
+      }).then( result => {
+        resolve(stopPlace.id);
+      }).catch( err => {
+        reject(err);
       });
+    });
   }
 }
 

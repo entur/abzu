@@ -3,6 +3,7 @@ import formatHelpers from '../modelUtils/mapToClient';
 export const getStateByOperation = (state, action) => {
   switch (action.operationName) {
     case 'stopPlace':
+    case 'updateChildOfParentStop':
     case 'stopPlaceAndPathLink':
       return getDataFromResult(state, action);
 
@@ -52,10 +53,14 @@ export const getStateByOperation = (state, action) => {
     case 'mutateParentStopPlace':
       if (!action.result.data.mutateParentStopPlace) return state;
 
-      const mutatedParentStopPlace = action.result.data.mutateParentStopPlace[0];
+      const mutatedParentStopPlace =
+        action.result.data.mutateParentStopPlace[0];
 
       return Object.assign({}, state, {
-        current: formatHelpers.mapStopToClientStop(mutatedParentStopPlace, true),
+        current: formatHelpers.mapStopToClientStop(
+          mutatedParentStopPlace,
+          true
+        ),
         originalCurrent: formatHelpers.mapStopToClientStop(
           mutatedParentStopPlace,
           true
@@ -63,8 +68,8 @@ export const getStateByOperation = (state, action) => {
         isCreatingPolylines: false,
         minZoom: mutatedParentStopPlace.geometry ? 14 : 5,
         centerPosition:
-        formatHelpers.getCenterPosition(mutatedParentStopPlace.geometry) ||
-        state.centerPosition
+          formatHelpers.getCenterPosition(mutatedParentStopPlace.geometry) ||
+            state.centerPosition
       });
 
     case 'stopPlaceBBox':
@@ -120,11 +125,6 @@ export const getStateByOperation = (state, action) => {
   }
 };
 
-export const getObjectFromCache = (state, action) => {
-  console.error("Caching is not used, use a different strategy!");
-  return state;
-};
-
 const getProperZoomLevel = (data, prevZoom) => {
   if (!data || data.location) return 5;
   if (prevZoom > 15) return prevZoom;
@@ -144,11 +144,19 @@ const getDataFromResult = (state, action) => {
     });
   }
 
-  const stopPlace = action.result.data.stopPlace &&
+  let stopPlace = action.result.data.stopPlace &&
     action.result.data.stopPlace.length
     ? action.result.data.stopPlace[0]
     : null;
 
+  if (!stopPlace) {
+    if (
+      action.result.data.mutateParentStopPlace &&
+      action.result.data.mutateParentStopPlace.length
+    ) {
+      stopPlace = action.result.data.mutateParentStopPlace[0];
+    }
+  }
 
   if (stopPlace === null) {
     return state;
@@ -160,7 +168,7 @@ const getDataFromResult = (state, action) => {
 
   const parking = action.result.data.parking ? action.result.data.parking : [];
 
-  const resourceId = action.variables ? action.variables.id : null;
+  const resourceId = extractResourceId(action);
 
   const currentStop = formatHelpers.mapStopToClientStop(
     stopPlace,
@@ -177,20 +185,63 @@ const getDataFromResult = (state, action) => {
     originalCurrent: originalCurrentStop,
     originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
     zoom: getProperZoomLevel(stopPlace, state.zoom),
-    minZoom: (stopPlace && stopPlace.geometry) ? 14 : 7,
+    minZoom: stopPlace && stopPlace.geometry ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),
     neighbourStopQuays: {},
     centerPosition: !stopPlace || !stopPlace.geometry
       ? state.centerPosition
       : formatHelpers.getCenterPosition(stopPlace.geometry),
     stopHasBeenModified: false,
-    isCreatingPolylines: false,
+    isCreatingPolylines: false
   });
 };
 
-const getAllVersionFromResult = (state, action) => {
+const getAllVersionFromResult = (state, action)   => {
+
+  const idFromVariables = action.variables.id;
+
   const data = action.result.data.versions && action.result.data.versions.length
     ? action.result.data.versions
     : null;
-  return formatHelpers.mapVersionToClientVersion(data);
+
+  let correctData = [];
+
+  if (data && data.length) {
+    const idFromTopLevel = data[0].id;
+    // get versions of parent stop or normal stop place
+    if (idFromTopLevel === idFromVariables) {
+      correctData = data;
+    } else {
+      // get versions from parent stop place structure by inspecting its children
+      correctData = data.map( item => {
+        if (item.children) {
+          for (let i = 0; i < item.children; i++) {
+            let child = item.children[i];
+            if (child.id === idFromVariables) {
+              return child;
+            }
+          }
+        }
+      });
+    }
+
+  }
+
+  return formatHelpers.mapVersionToClientVersion(correctData);
+};
+
+/* determine whether mutation result was intended for a parentStopPlace or child of a parentStopPlace
+since body always will be full parentStopPlace */
+const extractResourceId = action => {
+  if (!action || !action.variables) return null;
+
+  if (
+    action.operationName === 'updateChildOfParentStop' &&
+    action.variables.children &&
+    action.variables.children.length
+  ) {
+    return action.variables.children[0].id;
+  }
+
+  return action.variables.id;
 };

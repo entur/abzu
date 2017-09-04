@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
 export const mutateParentStopPlace = gql`
-  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {
+  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!, $children: [StopPlaceInput]) {
       mutateParentStopPlace(ParentStopPlace: {
           id: $id
           name: { value: $name, lang: "no" }
@@ -13,11 +13,32 @@ export const mutateParentStopPlace = gql`
               type: Point
               coordinates: $coordinates
           }
+          children: $children 
       }) {
           ...VerboseParentStopPlace
       }
   },
   ${Fragments.parentStopPlace.verbose}
+`
+
+export const updateChildOfParentStop = gql`
+    mutation updateChildOfParentStop($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!, $children: [StopPlaceInput]) {
+        mutateParentStopPlace(ParentStopPlace: {
+            id: $id
+            name: { value: $name, lang: "no" }
+            description: { value: $description, lang: "no" }
+            versionComment: $versionComment
+            validBetween: $validBetween
+            geometry: {
+                type: Point
+                coordinates: $coordinates
+            }
+            children: $children
+        }) {
+            ...VerboseParentStopPlace
+        }
+    },
+    ${Fragments.parentStopPlace.verbose}
 `
 
 export const mutateCreateMultiModalStopPlace = gql`

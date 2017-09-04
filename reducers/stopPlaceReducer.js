@@ -1,6 +1,5 @@
 import {
   getStateByOperation,
-  getObjectFromCache,
 } from './stopPlaceReducerUtils';
 import * as types from '../actions/Types';
 import formatHelpers from '../modelUtils/mapToClient';
@@ -13,14 +12,8 @@ const stopPlaceReducer = (state = {}, action) => {
 
     /* These actions are dispatched by Apollo-Client */
     case types.APOLLO_QUERY_RESULT:
-      return getStateByOperation(state, action);
-
     case types.APOLLO_MUTATION_RESULT:
       return getStateByOperation(state, action);
-
-    case types.APOLLO_QUERY_RESULT_CLIENT:
-      return getObjectFromCache(state, action);
-    /* end */
 
     case types.CLEAR_SEARCH_RESULTS:
       return Object.assign({}, state, {
