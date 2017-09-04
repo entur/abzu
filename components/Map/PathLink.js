@@ -12,6 +12,8 @@ class PathLink extends React.Component {
     super(props);
     this.state = {
       openDialog: false,
+      index: -1,
+      defaultEstimate: -0
     };
   }
   handleEditTimeEstimate(index, estimate) {
@@ -19,6 +21,11 @@ class PathLink extends React.Component {
       this.props.dispatch(
         UserActions.editPolylineTimeEstimate(index, parseInt(estimate)),
       );
+
+      this.setState({
+        defaultEstimate: estimate,
+        index: index
+      });
     }
 
     this.handleCloseDialog();
@@ -63,14 +70,6 @@ class PathLink extends React.Component {
           opacity={isCompleted ? 1 : 0.8}
           dashArray="8,2"
         >
-          <WalkingDistanceDialog
-            open={openDialog}
-            intl={intl}
-            handleConfirm={this.handleEditTimeEstimate.bind(this)}
-            handleClose={this.handleCloseDialog.bind(this)}
-            estimate={polyline.estimate}
-            index={index}
-          />
           <Popup key={'pl' + index}>
             <div>
               <div
@@ -101,7 +100,7 @@ class PathLink extends React.Component {
                   : null}
                 <span
                   style={polylinePopupStyle}
-                  onClick={() => this.setState({ openDialog: true })}
+                  onClick={() => this.setState({ openDialog: true, defaultEstimate: polyline.estimate, index: index })}
                 >
                   {polyline.estimate}{' '}
                   {Number(polyline.estimate) === 1
@@ -117,7 +116,17 @@ class PathLink extends React.Component {
 
     return (
       <FeatureGroup>
-        {lines}
+        <div>
+          <WalkingDistanceDialog
+            open={openDialog}
+            intl={intl}
+            handleConfirm={this.handleEditTimeEstimate.bind(this)}
+            handleClose={this.handleCloseDialog.bind(this)}
+            estimate={this.state.defaultEstimate}
+            index={this.state.index}
+          />
+          {lines}
+        </div>
       </FeatureGroup>
     );
   }
