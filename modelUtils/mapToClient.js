@@ -14,6 +14,7 @@ import StopPlace from '../models/StopPlace';
 import ParentStopPlace from '../models/ParentStopPlace';
 import PathLink from '../models/PathLink';
 import Parking from '../models/Parking';
+import ChildOfParentStopPlace from '../models/ChildOfParentStopPlace';
 
 const helpers = {};
 
@@ -160,16 +161,28 @@ helpers.mapStopToClientStop = (
   stop,
   isActive,
   parking,
-  userDefinedCoordinates = {}
+  userDefinedCoordinates = {},
+  resourceId
 ) => {
 
   if (stop.__typename === 'ParentStopPlace') {
-    return new ParentStopPlace(
-      stop,
-      isActive,
-      parking,
-      userDefinedCoordinates
-    ).toClient();
+    if (resourceId && stop.id !== resourceId) {
+      return new ChildOfParentStopPlace(
+        stop,
+        isActive,
+        parking,
+        userDefinedCoordinates,
+        resourceId
+      ).toClient();
+    } else {
+      return new ParentStopPlace(
+        stop,
+        isActive,
+        parking,
+        userDefinedCoordinates
+      ).toClient();
+    }
+
   } else {
     return new StopPlace(
       stop,

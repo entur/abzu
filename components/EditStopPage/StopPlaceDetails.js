@@ -35,6 +35,7 @@ import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import KeyValuesDialog from '../Dialogs/KeyValuesDialog';
 import ModalitiesMenuItems from './ModalitiesMenuItems';
+import { createStopPlaceHref } from '../../utils/';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -288,6 +289,9 @@ class StopPlaceDetails extends React.Component {
 
     const { stopPlace, intl, expanded, disabled } = this.props;
     const { formatMessage, locale } = intl;
+
+    const isChildOfParent = stopPlace.isChildOfParent;
+
     const {
       name,
       description,
@@ -344,14 +348,23 @@ class StopPlaceDetails extends React.Component {
       : formatMessage({ id: 'transport_sign_no' });
     const tariffZonesHint = formatMessage({ id: 'tariffZones' });
     const altNamesHint = formatMessage({ id: 'alternative_names' });
+    const belongsToParent = formatMessage({id: 'belongs_to_parent'});
+
+    const parentStopHref = belongsToParent ? createStopPlaceHref(getIn(stopPlace, ['parentStop', 'id'], null)) : '';
 
     return (
       <div style={fixedHeader}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: 1 }}>
+            {isChildOfParent &&
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <span style={{fontWeight: 600, fontSize: '0.9em'}}>{belongsToParent}</span>
+              <a target="_blank" style={{fontSize: '0.9em'}} href={parentStopHref}>{stopPlace.parentStop.id}</a>
+            </div>
+            }
             {!stopPlace.isNewStop &&
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ fontWeight: 600 }}>
+                <span style={{ fontWeight: 600}}>
                   {versionLabel} {stopPlace.version}
                 </span>
                 {stopPlace.hasExpired &&
@@ -428,7 +441,7 @@ class StopPlaceDetails extends React.Component {
             floatingLabelText={formatMessage({ id: 'name' })}
             style={{ marginTop: -10, width: 300 }}
             value={name}
-            disabled={disabled}
+            disabled={isChildOfParent || disabled}
             errorText={name ? '' : formatMessage({id: 'name_is_required'})}
             onChange={this.handleStopNameChange.bind(this)}
           />

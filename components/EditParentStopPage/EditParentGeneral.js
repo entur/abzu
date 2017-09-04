@@ -110,10 +110,9 @@ class EditParentGeneral extends React.Component {
       .then(({ data }) => {
         if (
           data &&
-          data.createMultiModalStopPlace &&
-          data.createMultiModalStopPlace.length
+          data.createMultiModalStopPlace
         ) {
-          const parentStopPlaceId = data.createMultiModalStopPlace[0].id;
+          const parentStopPlaceId = data.createMultiModalStopPlace.id;
           this.handleSaveSuccess(parentStopPlaceId);
         }
       })

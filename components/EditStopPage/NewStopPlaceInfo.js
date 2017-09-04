@@ -5,18 +5,12 @@ import FlatButton from 'material-ui/FlatButton';
 import { enturPrimaryDarker } from '../../config/enturTheme';
 import { connect } from 'react-redux';
 import { UserActions } from '../../actions/';
+import { createStopPlaceHref } from '../../utils/';
 
 class NewStopPlaceInfo extends React.Component {
   handleClose() {
     this.props.dispatch(UserActions.closeSuccessfullyCreatedNewStop());
   }
-
-  createHref(stopPlaceId) {
-    const path = window.location.href;
-    const lastIndexOfSlash = path.lastIndexOf('/') +1;
-    const href = path.substr(0,lastIndexOfSlash) + stopPlaceId;
-    return href;
-  };
 
   render() {
     const { open, stopPlaceId, intl } = this.props;
@@ -83,7 +77,7 @@ class NewStopPlaceInfo extends React.Component {
       textDecoration: 'none'
     };
 
-    const href = this.createHref(stopPlaceId);
+    const href = createStopPlaceHref(stopPlaceId);
 
     return (
       <div style={informationBannerStyle}>

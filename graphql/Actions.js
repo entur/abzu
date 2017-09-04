@@ -8,7 +8,8 @@ import {
   mutateParentStopPlace,
   mutateAddToMultiModalStopPlace,
   mutateCreateMultiModalStopPlace,
-  removeStopPlaceFromParent
+  removeStopPlaceFromParent,
+  mutateStopPlace
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -19,7 +20,41 @@ import {
   findStop,
   getPolygons
 } from '../graphql/Queries';
+import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
+
+export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
+
+  const { isChildOfParent } = stopPlace;
+
+  if (!isChildOfParent) {
+
+    const variables = mapToMutationVariables.mapStopToVariables(
+      stopPlace,
+      userInput
+    );
+
+    return new Promise((resolve, reject) => {
+      client.mutate({
+        mutation: mutateStopPlace,
+        variables,
+        fetchPolicy: 'network-only'
+      }).then( result => {
+        if (result.data.mutateStopPlace[0].id) {
+          resolve(result.data.mutateStopPlace[0].id);
+        } else {
+          reject("Id not returned");
+        }
+      }).catch( err => {
+        reject(err);
+      });
+    });
+  } else {
+      return new Promise((resolve, reject) => {
+        reject("Not yet implemented");
+      });
+  }
+}
 
 export const saveParentStopPlace = (client, variables) =>
   client.mutate({

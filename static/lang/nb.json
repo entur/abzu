@@ -20,6 +20,7 @@
   "alternative_names_no": "Ingen alternative navn",
   "at": "ved",
   "beta_functionality": " (BETA)",
+  "belongs_to_parent": "Tilhører multimodalt stoppested",
   "bike_parking": "Sykkelparking",
   "bike_parking_hint": "Har dette stoppet sykkelstativer?",
   "bike_parking_no": "Ingen sykkelparking",

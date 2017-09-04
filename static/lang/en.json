@@ -20,6 +20,7 @@
   "alternative_names_no": "No alternative names",
   "at": "at",
   "beta_functionality": " (BETA)",
+  "belongs_to_parent": "Belongs to multimodal stop place",
   "bike_parking": "Bike rack",
   "bike_parking_hint": "Does this stop have bike racks?",
   "bike_parking_no": "No bike rack available",

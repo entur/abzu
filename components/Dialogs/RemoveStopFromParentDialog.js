@@ -8,14 +8,14 @@ import MdWarning from 'material-ui/svg-icons/alert/warning';
 
 class RemoveStopFromParentDialog extends React.Component {
   static propTypes = {
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
   render() {
-    const { open, intl, handleClose, handleConfirm, stopPlaceId } = this.props;
+    const { open = false, intl, handleClose, handleConfirm, stopPlaceId } = this.props;
     const { formatMessage } = intl;
 
     const translations = {

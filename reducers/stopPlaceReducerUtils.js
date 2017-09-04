@@ -160,11 +160,14 @@ const getDataFromResult = (state, action) => {
 
   const parking = action.result.data.parking ? action.result.data.parking : [];
 
+  const resourceId = action.variables ? action.variables.id : null;
+
   const currentStop = formatHelpers.mapStopToClientStop(
     stopPlace,
     true,
     formatHelpers.mapParkingToClient(parking),
-    state.userDefinedCoordinates
+    state.userDefinedCoordinates,
+    resourceId
   );
   const originalCurrentStop = JSON.parse(JSON.stringify(currentStop));
 

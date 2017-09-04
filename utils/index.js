@@ -42,4 +42,11 @@ export const extractCoordinates = latLngString => {
     return result;
   }
   return null;
-}
+};
+
+export const createStopPlaceHref = stopPlaceId => {
+  const path = window.location.href;
+  const lastIndexOfSlash = path.lastIndexOf('/') +1;
+  const href = path.substr(0,lastIndexOfSlash) + stopPlaceId;
+  return href;
+};
