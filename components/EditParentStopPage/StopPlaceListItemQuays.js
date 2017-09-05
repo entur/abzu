@@ -11,12 +11,14 @@ class StopPlaceListItemQuays extends Component {
   }
 
   render() {
-    const { quays } = this.props;
+    const { quays, formatMessage } = this.props;
     const { expandedQuay } = this.state;
 
     return (
       <div style={{width: '90%', margin: 'auto'}}>
-        <span style={{fontWeight: 600, fontSize: '0.8em'}}>Quayer</span>
+        <span style={{fontWeight: 600, fontSize: '0.8em', textTransform: 'capitalize'}}>
+          {formatMessage({id: 'quays'})}
+        </span>
         {quays.map( (quay, i) =>
           <StopPlaceListItemQuayItem
             key={quay.id}

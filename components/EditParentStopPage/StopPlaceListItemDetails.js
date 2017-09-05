@@ -20,17 +20,20 @@ class StopPlaceListItemDetails extends Component {
 
   render() {
 
-    const { stopPlace } = this.props;
+    const { stopPlace, intl } = this.props;
     const { notSaved } = stopPlace;
+    const { formatMessage } = intl;
 
     return (
       <div style={{marginTop: 10}}>
-        <StopPlaceListItemQuays quays={stopPlace.quays}/>
+        <StopPlaceListItemQuays quays={stopPlace.quays} formatMessage={formatMessage}/>
         <div style={{padding: 5, textAlign: 'right', display: 'flex', justifyContent: notSaved ? 'space-between' : 'flex-end'}}>
           { notSaved &&
             <div style={{display: 'flex', alignItems: 'center'}}>
               <MdWarning color="orange"/>
-              <span style={{fontSize: '0.8em', fontWeight: 600, marginLeft: 5}}>Ikke lagret</span>
+              <span style={{fontSize: '0.8em', fontWeight: 600, marginLeft: 5}}>
+                {formatMessage({id: 'unsaved'})}
+              </span>
             </div>
           }
           <IconButton onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}>

@@ -21,8 +21,8 @@ class RemoveStopFromParentDialog extends React.Component {
     const translations = {
       confirm: formatMessage({ id: 'confirm' }),
       cancel: formatMessage({ id: 'cancel' }),
-      title: formatMessage({ id: 'delete_stop_title' }),
-      info: formatMessage({ id: 'delete_stop_info' }),
+      title: formatMessage({ id: 'remove_stop_from_parent_title' }),
+      info: formatMessage({ id: 'remove_stop_from_parent_info' }),
     };
 
     const actions = [

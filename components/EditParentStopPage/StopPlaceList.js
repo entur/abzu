@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import StopPlaceListItem from './StopPlaceListItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import { injectIntl } from 'react-intl';
 
 class StopPlaceList extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class StopPlaceList extends Component {
   }
 
   render() {
-    const { stopPlaces, handleAddStopPlaceOpen } = this.props;
+    const { stopPlaces, handleAddStopPlaceOpen, intl } = this.props;
+    const { formatMessage } = intl;
     const { expandedItem } = this.state;
 
     return (
@@ -27,7 +29,7 @@ class StopPlaceList extends Component {
           }}
         >
           <div style={{ fontWeight: 600, fontSize: '.9em' }}>
-            Tilhørende stoppesteder
+            {formatMessage({id: 'children_of_parent_stop_place'})}
           </div>
           <FloatingActionButton
             onClick={handleAddStopPlaceOpen}
@@ -61,7 +63,7 @@ class StopPlaceList extends Component {
                     fontSize: '0.9em'
                   }}
                 >
-                  Ingen stoppesteder
+                  {formatMessage({id: 'parent_stop_place__no_children'})}
                 </div>
                 <div
                   style={{
@@ -72,8 +74,7 @@ class StopPlaceList extends Component {
                     fontWeight: 600
                   }}
                 >
-                  Et multimodalt stoppested må ha underordnede stoppested for å
-                  eksistere.
+                  {formatMessage({id: 'parent_stop_place_requires_children'})}
                 </div>
               </div>}
         </div>
@@ -87,4 +88,4 @@ StopPlaceList.propTypes = {
   handleAddStopPlaceOpen: PropTypes.func.isRequired
 };
 
-export default StopPlaceList;
+export default injectIntl(StopPlaceList);

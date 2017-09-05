@@ -70,7 +70,7 @@ class AddStopPlaceToParent extends Component {
     ];
 
     return (
-      <Dialog actions={actions} open={open} title={'Legg til stoppested'}>
+      <Dialog actions={actions} open={open} title={formatMessage({id: 'add_stop_place'})}>
         <AddStopPlaceSuggestionList
           suggestions={suggestions}
           checkedItems={checkedItems}

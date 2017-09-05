@@ -79,7 +79,7 @@ class ParentStopDetails extends Component {
         </div>
         <div style={{ textAlign: 'right' }}>
           <FlatButton
-            label={'Endre tyngepunkt'}
+            label={formatMessage({id: 'set_centroid'})}
             labelStyle={{ fontSize: '0.7em' }}
             onClick={() => this.setState({ changePositionOpen: true })}
           />
