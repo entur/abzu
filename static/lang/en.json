@@ -63,6 +63,7 @@
   "create_path_link_here": "Create path link here",
   "date": "Date",
   "description": "Description for travellers",
+  "delete_stop_not_allowed": "This stop place is a member of a multimodal stop place and cannot be deleted",
   "delete_quay": "Delete quay",
   "delete_quay_title": "You are about to delete quay",
   "delete_quay_info": "This will irreversibly delete this quay. Use with caution.",
