@@ -29,7 +29,8 @@ class EditParentGeneral extends React.Component {
     this.state = {
       confirmUndoOpen: false,
       saveDialogOpen: false,
-      errorMessage: ''
+      errorMessage: '',
+      confirmGoBack: false,
     };
   }
 
@@ -53,6 +54,23 @@ class EditParentGeneral extends React.Component {
 
   handleCloseRemoveStopFromParent() {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
+  }
+
+  handleGoBack() {
+    this.setState({
+      confirmGoBack: false
+    });
+    this.props.dispatch(UserActions.navigateTo('/', ''));
+  }
+
+  handleAllowUserToGoBack() {
+    if (this.props.stopHasBeenModified) {
+      this.setState({
+        confirmGoBack: true
+      });
+    } else {
+      this.handleGoBack();
+    }
   }
 
   handleRemoveStopFromParent() {
@@ -190,7 +208,7 @@ class EditParentGeneral extends React.Component {
                 marginRight: 2,
                 transform: 'scale(0.8)'
               }}
-              onClick={() => {}}
+              onClick={() => this.handleAllowUserToGoBack()}
             />
             <div>{stopPlaceLabel}</div>
           </div>
@@ -261,6 +279,22 @@ class EditParentGeneral extends React.Component {
           handleConfirm={this.handleRemoveStopFromParent.bind(this)}
           intl={intl}
           stopPlaceId={removingStopPlaceFromParentId}
+        />
+        <ConfirmDialog
+          open={this.state.confirmGoBack}
+          handleClose={() => {
+            this.setState({confirmGoBack: false})
+          }}
+          handleConfirm={() => {
+            this.handleGoBack();
+          }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel'
+          }}
+          intl={intl}
         />
         {this.state.saveDialogOpen && !disabled
           ? <SaveDialog

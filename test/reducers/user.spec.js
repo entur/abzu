@@ -22,7 +22,7 @@ describe('user reducer', () => {
 
   it('Should toggle new stop form visibility', () => {
     expect(
-      userReducer(undefined, { type: types.TOGGLED_IS_CREATING_NEW_STOP }),
+      userReducer(undefined, { type: types.TOGGLED_IS_CREATING_NEW_STOP, payLoad: false }),
     ).toEqual({
       ...initialState,
       isCreatingNewStop: true,

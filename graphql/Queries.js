@@ -296,7 +296,6 @@ export const allVersionsOfStopPlace = gql`
 
 export const stopPlaceAndPathLinkByVersion = gql`
     query stopPlaceAndPathLink($id: String!, $version: Int) {
-        version
         pathLink(stopPlaceId: $id) {
             ...VerbosePathLink
         },
@@ -307,6 +306,7 @@ export const stopPlaceAndPathLinkByVersion = gql`
         parking: parking(stopPlaceId: $id) {
             ...VerboseParking
         }
+        versions:
         stopPlace(id: $id, allVersions: true, size: 100) {
             id
             validBetween {

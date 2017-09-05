@@ -30,6 +30,7 @@ export const initialState = {
   keyValuesOrigin: null,
   lookupCoordinatesOpen: false,
   newStopIsMultiModal: false,
+  isCreatingNewStop: false,
 };
 
 const userReducer = (state = initialState, action) => {

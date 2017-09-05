@@ -14,63 +14,16 @@ export const getStateByOperation = (state, action) => {
       });
 
     case 'mutateDeleteQuay':
-      if (!action.result.data.deleteQuay) return state;
+      return updateStopPlaceStateAfterMutate(state, action, 'deleteQuay');
 
-      return Object.assign({}, state, {
-        current: formatHelpers.mapStopToClientStop(
-          action.result.data.deleteQuay,
-          true
-        ),
-        originalCurrent: formatHelpers.mapStopToClientStop(
-          action.result.data.deleteQuay,
-          true
-        ),
-        minZoom: action.result.data.deleteQuay.geometry ? 14 : 5,
-        centerPosition:
-          formatHelpers.getCenterPosition(
-            action.result.data.deleteQuay.geometry
-          ) || state.centerPosition
-      });
+    case 'mutateCreateMultiModalStopPlace':
+      return updateStopPlaceStateAfterMutate(state, action, 'createMultiModalStopPlace');
 
     case 'mutateStopPlace':
-      if (!action.result.data.mutateStopPlace) return state;
-
-      const mutatedStopPlace = action.result.data.mutateStopPlace[0];
-
-      return Object.assign({}, state, {
-        current: formatHelpers.mapStopToClientStop(mutatedStopPlace, true),
-        originalCurrent: formatHelpers.mapStopToClientStop(
-          mutatedStopPlace,
-          true
-        ),
-        isCreatingPolylines: false,
-        minZoom: mutatedStopPlace.geometry ? 14 : 5,
-        centerPosition:
-          formatHelpers.getCenterPosition(mutatedStopPlace.geometry) ||
-            state.centerPosition
-      });
+      return updateStopPlaceStateAfterMutate(state, action, 'mutateStopPlace');
 
     case 'mutateParentStopPlace':
-      if (!action.result.data.mutateParentStopPlace) return state;
-
-      const mutatedParentStopPlace =
-        action.result.data.mutateParentStopPlace[0];
-
-      return Object.assign({}, state, {
-        current: formatHelpers.mapStopToClientStop(
-          mutatedParentStopPlace,
-          true
-        ),
-        originalCurrent: formatHelpers.mapStopToClientStop(
-          mutatedParentStopPlace,
-          true
-        ),
-        isCreatingPolylines: false,
-        minZoom: mutatedParentStopPlace.geometry ? 14 : 5,
-        centerPosition:
-          formatHelpers.getCenterPosition(mutatedParentStopPlace.geometry) ||
-            state.centerPosition
-      });
+      return updateStopPlaceStateAfterMutate(state, action, 'mutateParentStopPlace');
 
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
@@ -197,38 +150,32 @@ const getDataFromResult = (state, action) => {
 };
 
 const getAllVersionFromResult = (state, action)   => {
-
-  const idFromVariables = action.variables.id;
-
   const data = action.result.data.versions && action.result.data.versions.length
     ? action.result.data.versions
     : null;
 
-  let correctData = [];
-
-  if (data && data.length) {
-    const idFromTopLevel = data[0].id;
-    // get versions of parent stop or normal stop place
-    if (idFromTopLevel === idFromVariables) {
-      correctData = data;
-    } else {
-      // get versions from parent stop place structure by inspecting its children
-      correctData = data.map( item => {
-        if (item.children) {
-          for (let i = 0; i < item.children; i++) {
-            let child = item.children[i];
-            if (child.id === idFromVariables) {
-              return child;
-            }
-          }
-        }
-      });
-    }
-
-  }
-
-  return formatHelpers.mapVersionToClientVersion(correctData);
+  return formatHelpers.mapVersionToClientVersion(data);
 };
+
+const updateStopPlaceStateAfterMutate = (state, action, dataResource) => {
+  if (!action.result.data[dataResource]) return state;
+
+  const isArray = Array.isArray(action.result.data[dataResource]);
+  const stopPlace = isArray ? action.result.data[dataResource][0] : action.result.data[dataResource];
+
+  return Object.assign({}, state, {
+    current: formatHelpers.mapStopToClientStop(stopPlace, true),
+    originalCurrent: formatHelpers.mapStopToClientStop(
+      stopPlace,
+      true
+    ),
+    isCreatingPolylines: false,
+    minZoom: stopPlace.geometry ? 14 : 5,
+    centerPosition:
+    formatHelpers.getCenterPosition(stopPlace.geometry) ||
+    state.centerPosition
+  });
+}
 
 /* determine whether mutation result was intended for a parentStopPlace or child of a parentStopPlace
 since body always will be full parentStopPlace */

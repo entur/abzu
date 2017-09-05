@@ -94,6 +94,7 @@ export default function configureStore(kc) {
       showEditQuayAdditional: false,
       showEditStopAdditional: false,
       lookupCoordinatesOpen: false,
+      newStopIsMultiModal: false,
       newStopCreated: {
         open: false,
         stopPlaceId: null

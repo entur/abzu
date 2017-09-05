@@ -9,7 +9,10 @@ describe('stop place reducer', () => {
 
     const action = {
       type: types.CREATED_NEW_STOP,
-      payLoad: location,
+      payLoad: {
+        location,
+        isMultimodal: false
+      }
     };
 
     const state = stopPlaceReducer({}, action);
