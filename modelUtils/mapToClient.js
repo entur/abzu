@@ -33,6 +33,19 @@ helpers.sortQuays = (current, attribute) => {
   };
 };
 
+
+helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
+  const copy = JSON.parse(JSON.stringify(current));
+  copy.children = copy.children.concat(payLoad);
+  return copy;
+}
+
+helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
+  const copy = JSON.parse(JSON.stringify(current));
+  copy.children = copy.children.filter( child => child.id !== payLoad);
+  return copy;
+};
+
 helpers.mapPathLinkToClient = (pathLinks = []) => {
   // NRP-1675, this is a temporary solution until pathLinks(stopPLaceId: $id) returns a unique list
   let uniquePathLinks = getUniquePathLinks(pathLinks, pathLink => pathLink.id);

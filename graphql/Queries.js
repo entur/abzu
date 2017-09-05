@@ -29,17 +29,19 @@ export const stopPlaceBBQuery = gql`
         stopPlaceBBox(ignoreStopPlaceId: $ignoreStopPlaceId, latMin: $latMin, latMax: $latMax, lonMin: $lonMin, lonMax: $lonMax, size: 500, includeExpired: $includeExpired) {
             __typename
             id
-            name {
-                value
-            }
             geometry {
                 coordinates
             }
+            name {
+                value
+            }
+
             validBetween {
                 fromDate
                 toDate
             }
             ...on StopPlace {
+                __typename
                 stopPlaceType
                 submode
             }
@@ -402,6 +404,46 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
     }
   `;
 };
+
+export const getStopPlacesById = stopPlaceIds => {
+
+    const stopPlaces = stopPlaceIds.map(id => ({
+    id,
+    alias: id.replace('NSR:StopPlace:', 'StopPlace')
+  }));
+
+  let queryContent = '';
+
+  stopPlaces.forEach(stopPlace => {
+    queryContent += `
+        ${stopPlace.alias}: stopPlace(id: "${stopPlace.id}") {
+            ...on StopPlace {
+                id
+                name {
+                    value
+                }
+                submode
+                transportMode
+                stopPlaceType
+                quays {
+                    id
+                    publicCode
+                    privateCode {
+                        value
+                    }
+                }
+            }
+        }
+    `;
+  });
+
+  return gql`
+      query {
+          ${queryContent}
+      }
+  `;
+
+}
 
 export const getPolygons = ids => {
   let queryContent = '';

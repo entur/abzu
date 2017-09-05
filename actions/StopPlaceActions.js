@@ -12,6 +12,28 @@ const sendData = (type, payLoad) => {
   };
 };
 
+StopPlaceActions.removeChildFromParentStopPlace = stopPlaceId => dispatch => {
+  dispatch(sendData(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId))
+};
+
+StopPlaceActions.addChildrenToParenStopPlace = ({data}) => (dispatch, getState) => {
+  // extract stopPlaces from query result
+  let foundStopPlaces = [];
+
+  Object.values(data).forEach( entry => foundStopPlaces = foundStopPlaces.concat(entry[0]));
+
+  const state = getState();
+  // Do not append children already added
+  const alreadyAdded = state.stopPlace.current.children.map( child => child.id );
+  const toAdd = foundStopPlaces
+    .filter( item => alreadyAdded.indexOf(item.id) === -1)
+    .map( item => ({ ...item, notSaved: true}));
+
+  dispatch(
+    sendData(types.ADDED_STOP_PLACES_TO_PARENT, toAdd)
+  );
+}
+
 StopPlaceActions.changeLocationNewStop = location => dispatch => {
   dispatch(
     sendData(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]),

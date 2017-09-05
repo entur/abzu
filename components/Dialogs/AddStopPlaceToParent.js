@@ -4,17 +4,14 @@ import FlatButton from 'material-ui/FlatButton';
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { sortNeighbourStopsByDistance } from '../../modelUtils/leafletUtils';
+import { sortNeighbourStopPlacesByDistance } from '../../modelUtils/leafletUtils';
 import AddStopPlaceSuggestionList from './AddStopPlaceSuggestionList';
-import AcceptChanges from '../EditStopPage/AcceptChanges';
-
 
 class AddStopPlaceToParent extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      changesUnderstood: false,
       checkedItems: [],
     }
   }
@@ -43,19 +40,15 @@ class AddStopPlaceToParent extends Component {
       intl,
       neighbourStops,
       stopPlaceCentroid,
-      stopHasBeenModified
     } = this.props;
 
     const { formatMessage } = intl;
-    const { changesUnderstood, checkedItems } = this.state;
+    const { checkedItems } = this.state;
 
     let canSave = !!checkedItems.length;
 
-    if (stopHasBeenModified && !changesUnderstood) {
-      canSave = false;
-    }
 
-    const suggestions = sortNeighbourStopsByDistance(
+    const suggestions = sortNeighbourStopPlacesByDistance(
       stopPlaceCentroid,
       neighbourStops,
       10
@@ -83,11 +76,6 @@ class AddStopPlaceToParent extends Component {
           checkedItems={checkedItems}
           onItemCheck={this.handleOnItemCheck.bind(this)}
         />
-        {stopHasBeenModified &&
-          <AcceptChanges
-            checked={changesUnderstood}
-            onChange={(e, v) => this.setState({ changesUnderstood: v })}
-          />}
       </Dialog>
     );
   }

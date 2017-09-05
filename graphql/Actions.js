@@ -19,10 +19,18 @@ import {
   getMergeInfoStopPlace,
   topopGraphicalPlacesQuery,
   findStop,
+  getStopPlacesById,
   getPolygons
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
+
+export const getAddStopPlaceInfo = (client, stopPlaceIds) =>
+  client.query({
+    query: getStopPlacesById(stopPlaceIds),
+    operationName: 'getAddStopPlaceInfo',
+    fetchPolicy: 'network-only'
+  });
 
 export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
 

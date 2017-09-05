@@ -3,23 +3,14 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ImportedId from '../EditStopPage/ImportedId';
-import { StopPlaceActions, UserActions } from '../../actions/';
-import {
-  SNACKBAR_MESSAGE_SAVED,
-  SNACKBAR_MESSAGE_FAILED,
-  SUCCESS,
-  ERROR
-} from '../../actions/Types';
+import { StopPlaceActions } from '../../actions/';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import StopPlaceList from './StopPlaceList';
 import FlatButton from 'material-ui/FlatButton';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import AddStopPlaceToParent from '../Dialogs/AddStopPlaceToParent';
-import {
-  addToMultiModalStopPlace,
-  getStopPlaceWithAll
-} from '../../graphql/Actions';
+import { getAddStopPlaceInfo } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 
 class ParentStopDetails extends Component {
@@ -48,27 +39,16 @@ class ParentStopDetails extends Component {
   }
 
   handleAddStopPlace(checkedItems) {
-    const { client, dispatch, stopPlace } = this.props;
+    const { dispatch, stopPlace, client } = this.props;
 
     this.setState({
       addStopPlaceOpen: false
     });
 
-    if (stopPlace.id) {
-      addToMultiModalStopPlace(client, stopPlace.id, checkedItems)
-        .then(() => {
-          getStopPlaceWithAll(client, stopPlace.id).then(() => {
-            dispatch(
-              UserActions.openSnackbar(SNACKBAR_MESSAGE_SAVED, SUCCESS)
-            );
-          });
-        })
-        .catch(err => {
-          dispatch(UserActions.openSnackbar(SNACKBAR_MESSAGE_FAILED, ERROR));
-        });
-    } else {
-      this.props.handleCreateNewParentStopPlace(checkedItems);
-    }
+    getAddStopPlaceInfo(client, checkedItems).then( result => {
+      dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
+    });
+
   }
 
 

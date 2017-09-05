@@ -20,6 +20,24 @@ const stopPlaceReducer = (state = {}, action) => {
         searchResults: [],
       });
 
+    case types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE:
+      return Object.assign({}, state, {
+        current: formatHelpers.updateParenStopWithoutStopPlace(
+          state.current,
+          action.payLoad,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.ADDED_STOP_PLACES_TO_PARENT:
+      return Object.assign({}, state, {
+        current: formatHelpers.updateParentStopWithStopPlaces(
+          state.current,
+          action.payLoad,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.DESTROYED_NEW_STOP:
       return Object.assign({}, state, {
         newStop: null

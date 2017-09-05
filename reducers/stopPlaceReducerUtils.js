@@ -16,6 +16,9 @@ export const getStateByOperation = (state, action) => {
     case 'mutateDeleteQuay':
       return updateStopPlaceStateAfterMutate(state, action, 'deleteQuay');
 
+    case 'removeStopPlaceFromParent':
+      return updateStopPlaceStateAfterMutate(state, action, 'removeFromMultiModalStopPlace');
+
     case 'mutateCreateMultiModalStopPlace':
       return updateStopPlaceStateAfterMutate(state, action, 'createMultiModalStopPlace');
 

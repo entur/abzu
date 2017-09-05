@@ -26,7 +26,7 @@ export const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
 
-export const sortNeighbourStopsByDistance = (stopPlaceCentroid, neighbourStops, nFirst) => {
+export const sortNeighbourStopPlacesByDistance = (stopPlaceCentroid, neighbourStops, nFirst) => {
 
   let suggestions = (neighbourStops||[]).slice();
 
