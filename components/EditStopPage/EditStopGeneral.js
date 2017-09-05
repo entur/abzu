@@ -502,6 +502,7 @@ class EditStopGeneral extends React.Component {
             versions={versions}
             buttonLabel={translations.versions}
             disabled={!versions.length}
+            hide={stopPlace.isChildOfParent}
             handleSelect={this.handleLoadVersion.bind(this)}
           />
         </div>

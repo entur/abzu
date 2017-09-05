@@ -34,7 +34,9 @@ class VersionsPopover extends Component {
   render() {
 
     const { open, anchorEl } = this.state;
-    const { versions, buttonLabel, disabled } = this.props;
+    const { versions, buttonLabel, disabled, hide } = this.props;
+
+    if (hide) return null;
 
     return (
 
