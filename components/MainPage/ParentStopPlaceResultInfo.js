@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { getIn } from '../../utils/';
 import HasExpiredInfo from './HasExpiredInfo';
 import ModalityIcon from './ModalityIcon';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
-
+import ModalityTray from '../ReportPage/ModalityIconTray';
 
 class ParentStopPlaceResultInfo extends Component {
-
   render() {
     const { result, formatMessage } = this.props;
 
@@ -30,20 +29,21 @@ class ParentStopPlaceResultInfo extends Component {
         >
           <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
           <div>
-            {
-              getUniqueStopPlaceTypes(result.children).map( (child, i) => (
-                <ModalityIcon key={'child-' + i} submode={child.submode} type={child.stopPlaceType} />
-              ))
-            }
+            <ModalityTray
+              modalities={result.children.map(child => ({
+                submode: child.submode,
+                stopPlaceType: child.stopPlaceType
+              }))}
+            />
           </div>
         </div>
         <HasExpiredInfo show={result.hasExpired} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {result.topographicPlace &&
-          result.parentTopographicPlace &&
-          <div
-            style={{ fontSize: 18 }}
-          >{`${result.topographicPlace}, ${result.parentTopographicPlace}`}</div>}
+            result.parentTopographicPlace &&
+            <div
+              style={{ fontSize: 18 }}
+            >{`${result.topographicPlace}, ${result.parentTopographicPlace}`}</div>}
           <div style={{ fontSize: 14 }}>{result.id}</div>
         </div>
         <div style={{ display: 'block', fontSize: 10 }}>
@@ -90,23 +90,22 @@ class ParentStopPlaceResultInfo extends Component {
         </div>
         {hasWheelchairAccess
           ? <div
-            style={{
-              display: 'flex',
-              marginLeft: 5,
-              alignItems: 'center',
-              fontSize: 12
-            }}
-          >
-            <WheelChair color="#0097a7" />
-            <span style={{ marginLeft: 5 }}>
+              style={{
+                display: 'flex',
+                marginLeft: 5,
+                alignItems: 'center',
+                fontSize: 12
+              }}
+            >
+              <WheelChair color="#0097a7" />
+              <span style={{ marginLeft: 5 }}>
                 {formatMessage({ id: 'wheelchairAccess' })}
               </span>
-          </div>
+            </div>
           : null}
       </div>
     );
   }
-
 }
 
 export default ParentStopPlaceResultInfo;

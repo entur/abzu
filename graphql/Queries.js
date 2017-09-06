@@ -172,93 +172,17 @@ export const findStop = gql`
 
 export const findStopForReport = gql`
     query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
-
         stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, size: 300) {
-            id
-            keyValues {
-                key
-                values
+            ...on StopPlace {
+                ...ReportStopPlace
             }
-            name {
-                value
+            ...on ParentStopPlace {
+                ...ReportParentStopPlace
             }
-            geometry {
-                coordinates
-            }
-            accessibilityAssessment {
-                limitations {
-                    wheelchairAccess
-                    stepFreeAccess
-                }
-            }
-            placeEquipments {
-                shelterEquipment {
-                    id
-                }
-                waitingRoomEquipment {
-                    id
-                }
-                sanitaryEquipment {
-                    id
-                }
-                generalSign {
-                    signContentType
-                    privateCode {
-                        value
-                    }
-                }
-            }
-            topographicPlace {
-                name {
-                    value
-                }
-                topographicPlaceType
-                parentTopographicPlace {
-                    name {
-                        value
-                    }
-                }
-            }
-            ... on StopPlace {
-              stopPlaceType
-              submode
-              quays {
-                  id
-                  keyValues {
-                      key
-                      values
-                  }
-                  name {
-                      value
-                  }
-                  geometry {
-                      coordinates
-                  }
-                  placeEquipments {
-                      shelterEquipment {
-                          id
-                      }
-                      waitingRoomEquipment {
-                          id
-                      }
-                      sanitaryEquipment {
-                          id
-                      }
-                      generalSign {
-                          signContentType
-                          privateCode {
-                              value
-                          }
-                      }
-                  }
-                  privateCode {
-                      value
-                  }
-                  publicCode
-              }
-           }
         }
     },
+  ${Fragments.stopPlace.reportView},
+  ${Fragments.parentStopPlace.reportView}
 `;
 
 export const allVersionsOfStopPlace = gql`

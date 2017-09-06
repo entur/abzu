@@ -14,13 +14,7 @@ export const getImportedId = keyValues => {
   return [];
 };
 
-export const getUniqueStopPlaceTypes = children => {
-  let stopPlaceTypes = children.map(child =>
-    JSON.stringify({
-      stopPlaceType: child.stopPlaceType,
-      submode: child.submode
-    })
-  );
-
+export const getUniqueStopPlaceTypes = modalities => {
+  const stopPlaceTypes = modalities.map(child => JSON.stringify(child));
   return [...new Set(stopPlaceTypes)].map(child => JSON.parse(child));
 };

@@ -22,6 +22,8 @@ class ReportQuayRows extends React.Component {
 
     const columns = columnOptions.filter(c => c.checked).map(c => c.id);
 
+    if (!quays.length) return null;
+
     return (
       <div>
         <div style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}>

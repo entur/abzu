@@ -2,6 +2,57 @@ import gql from 'graphql-tag';
 
 const Fragments = {};
 
+Fragments.accessibilityAssessment = {
+  verbose: gql`
+      fragment AccessibilityAssessment on AccessibilityAssessment {
+          limitations {
+              wheelchairAccess
+              stepFreeAccess
+              escalatorFreeAccess
+              liftFreeAccess
+              audibleSignalsAvailable
+          }
+      }
+  `
+}
+
+Fragments.placeEquipments = {
+  verbose: gql`
+      fragment PlaceEquipments on PlaceEquipments {
+          generalSign {
+              id
+              signContentType
+              privateCode {
+                  value
+              }
+          }
+          waitingRoomEquipment {
+              seats
+              heated
+              stepFree
+          }
+          sanitaryEquipment {
+              numberOfToilets
+              gender
+          }
+          ticketingEquipment {
+              ticketOffice
+              ticketMachines
+              numberOfMachines
+          }
+          cycleStorageEquipment {
+              numberOfSpaces
+              cycleStorageType
+          }
+          shelterEquipment {
+              seats
+              stepFree
+              enclosed
+          }
+      }
+  `
+};
+
 Fragments.quay = {
   verbose: gql`
       fragment VerboseQuay on Quay {
@@ -23,47 +74,14 @@ Fragments.quay = {
               values
           }
           accessibilityAssessment {
-              limitations {
-                  wheelchairAccess
-                  stepFreeAccess
-                  escalatorFreeAccess
-                  liftFreeAccess
-                  audibleSignalsAvailable
-              }
+              ...AccessibilityAssessment
           }
           placeEquipments {
-              generalSign {
-                  id
-                  signContentType
-                  privateCode {
-                      value
-                  }
-              }
-              waitingRoomEquipment {
-                  seats
-                  heated
-                  stepFree
-              }
-              sanitaryEquipment {
-                  numberOfToilets
-                  gender
-              }
-              ticketingEquipment {
-                  ticketOffice
-                  ticketMachines
-                  numberOfMachines
-              }
-              cycleStorageEquipment {
-                  numberOfSpaces
-                  cycleStorageType
-              }
-              shelterEquipment {
-                  seats
-                  stepFree
-                  enclosed
-              }
+              ...PlaceEquipments
           }
-      }
+      },
+      ${Fragments.placeEquipments.verbose},
+      ${Fragments.accessibilityAssessment.verbose}
   `
 };
 
@@ -119,53 +137,82 @@ Fragments.stopPlace = {
             topographicPlaceType
         }
         accessibilityAssessment {
-            limitations {
-                wheelchairAccess
-                stepFreeAccess
-                escalatorFreeAccess
-                liftFreeAccess
-                audibleSignalsAvailable
-            }
+            ...AccessibilityAssessment
         }
         placeEquipments {
-            generalSign {
-                id
-                signContentType
-                privateCode {
-                    value
-                }
-            }
-            waitingRoomEquipment {
-                seats
-                heated
-                stepFree
-            }
-            sanitaryEquipment {
-                numberOfToilets
-                gender
-            }
-            ticketingEquipment {
-                ticketOffice
-                ticketMachines
-                numberOfMachines
-            }
-            cycleStorageEquipment {
-                numberOfSpaces
-                cycleStorageType
-            }
-            shelterEquipment {
-                seats
-                stepFree
-            }
+            ...PlaceEquipments
         }
         validBetween {
             fromDate
             toDate
         }
     }
-    ${Fragments.quay.verbose}
-  `
+    ${Fragments.quay.verbose},
+    ${Fragments.placeEquipments.verbose},
+    ${Fragments.accessibilityAssessment.verbose}
+  `,
+  reportView: gql`
+      fragment ReportStopPlace on StopPlace {
+          __typename
+          id
+          name {
+              value
+          }
+          alternativeNames {
+              nameType
+              name {
+                  value
+                  lang
+              }
+          }
+          geometry {
+              coordinates
+          }
+          quays {
+              ...VerboseQuay
+          }
+          stopPlaceType
+          submode
+          transportMode
+          version
+          keyValues {
+              key
+              values
+          }
+          tariffZones {
+              name {
+                  value
+              }
+              id
+          }
+          topographicPlace {
+              name {
+                  value
+              }
+              parentTopographicPlace {
+                  name {
+                      value
+                  }
+              }
+              topographicPlaceType
+          }
+          accessibilityAssessment {
+              ...AccessibilityAssessment
+          }
+          placeEquipments {
+              ...PlaceEquipments
+          }
+          validBetween {
+              fromDate
+              toDate
+          }
+      }
+      ${Fragments.quay.verbose},
+      ${Fragments.placeEquipments.verbose},
+      ${Fragments.accessibilityAssessment.verbose}
+  `,
 };
+
 
 Fragments.parentStopPlace = {
   verbose: gql`
@@ -194,6 +241,37 @@ Fragments.parentStopPlace = {
           }
       },
       ${Fragments.stopPlace.verbose},
+  `,
+  reportView: gql`
+    fragment ReportParentStopPlace on ParentStopPlace {
+        __typename
+        id
+        name {
+            value
+        }
+        topographicPlace {
+            name {
+                value
+            }
+            parentTopographicPlace {
+                name {
+                    value
+                }
+            }
+            topographicPlaceType
+        }
+        keyValues {
+            values
+            key
+        }
+        geometry {
+            coordinates
+        }
+        children {
+            ...ReportStopPlace
+        }
+    },
+    ${Fragments.stopPlace.reportView}
   `
 };
 

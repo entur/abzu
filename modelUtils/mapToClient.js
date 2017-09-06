@@ -33,16 +33,15 @@ helpers.sortQuays = (current, attribute) => {
   };
 };
 
-
 helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
   copy.children = copy.children.concat(payLoad);
   return copy;
-}
+};
 
 helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
-  copy.children = copy.children.filter( child => child.id !== payLoad);
+  copy.children = copy.children.filter(child => child.id !== payLoad);
   return copy;
 };
 
@@ -177,7 +176,6 @@ helpers.mapStopToClientStop = (
   userDefinedCoordinates = {},
   resourceId
 ) => {
-
   if (stop.__typename === 'ParentStopPlace') {
     if (resourceId && stop.id !== resourceId) {
       return new ChildOfParentStopPlace(
@@ -195,7 +193,6 @@ helpers.mapStopToClientStop = (
         userDefinedCoordinates
       ).toClient();
     }
-
   } else {
     return new StopPlace(
       stop,
@@ -295,42 +292,37 @@ helpers.mapSearchResultParentStopPlace = stop => {
 };
 
 helpers.mapReportSearchResultsToClientStop = stops => {
-  return stops.map(stop => {
-    let parentTopographicPlace = getIn(
-      stop,
-      ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-      ''
-    );
-    let topographicPlace = getIn(
-      stop,
-      ['topographicPlace', 'name', 'value'],
-      ''
-    );
+  let result = [];
 
-    const clientStop = {
-      id: stop.id,
-      name: stop.name.value,
-      stopPlaceType: stop.stopPlaceType,
-      topographicPlace: topographicPlace,
-      parentTopographicPlace: parentTopographicPlace,
-      quays: stop.quays.map(quay => helpers.mapQuayToClientQuay(quay)),
-      importedId: getImportedId(stop.keyValues),
-      accessibilityAssessment: stop.accessibilityAssessment,
-      placeEquipments: stop.placeEquipments,
-      submode: stop.submode
-    };
+  const stopPlacesAndParents = stops.map(stop => helpers.mapStopToClientStop(stop, true, null, null, null));
 
-    if (stop.geometry && stop.geometry.coordinates) {
-      let coordinates = stop.geometry.coordinates[0].slice();
-      clientStop.location = [
-        setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6)
-      ];
+  stopPlacesAndParents.map( stopPlace => {
+
+    if (!stopPlace) return null;
+
+    let modesFromChildren = [];
+    if (stopPlace.isParent && stopPlace.children) {
+      // map all children to result list
+      const children = stopPlace.children.map( child => {
+        child.name = stopPlace.name;
+        child.isChildOfParent = true;
+        modesFromChildren.push({
+          submode: child.submode,
+          stopPlaceType: child.stopPlaceType
+        });
+        return child;
+      });
+
+      stopPlace.modesFromChildren = modesFromChildren;
+      stopPlace.quays = [];
+      stopPlace.parking = [];
+      result = result.concat(children);
     }
-
-    return clientStop;
+    result.push(stopPlace);
   });
-};
+  return result;
+}
+
 
 helpers.createNewStopFromLocation = location => ({
   id: null,

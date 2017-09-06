@@ -1,5 +1,6 @@
 import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
+import PropTypes from 'prop-types';
 
 class ModalityIcon extends React.Component {
 
@@ -47,6 +48,15 @@ class ModalityIcon extends React.Component {
     );
   }
 }
+
+ModalityIcon.propTypes = {
+  type: PropTypes.string.isRequired,
+  submode: PropTypes.string,
+  iconStyle: PropTypes.object,
+  style: PropTypes.object,
+  forceUpdate: PropTypes.bool
+};
+
 
 const getIconIdByTypeOrSubmode = (submode, type) => {
   const submodeMap = {

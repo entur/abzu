@@ -68,6 +68,7 @@ class ReportResultView extends React.Component {
             return (
               <MakeExpandable
                 ownerId={item.id}
+                hideToggle={!item.quays.length}
                 expandedContent={
                   <ReportQuayRows
                     quays={item.quays}

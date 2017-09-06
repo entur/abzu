@@ -12,7 +12,7 @@ class MakeExpandable extends React.PureComponent {
   }
 
   handleToggle() {
-    this.setState(prevState => ({ expanded: !prevState.expanded}));
+    this.setState(prevState => ({ expanded: !prevState.expanded }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,11 +26,7 @@ class MakeExpandable extends React.PureComponent {
   }
 
   render() {
-    let expandButtonStyle = {
-      display: 'block',
-      width: '100%',
-      textAlign: 'center'
-    };
+    const { hideToggle, style } = this.props;
 
     let iconButtonStyle = {
       flexBasis: '100%',
@@ -39,16 +35,13 @@ class MakeExpandable extends React.PureComponent {
       marginTop: -10,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      fontSize: 12
+      fontSize: 12,
+      visibility: hideToggle ? 'hidden' : ''
     };
-
-    if (this.props.style.background) {
-      expandButtonStyle.background = this.props.style.background;
-    }
 
     return (
       <div>
-        <div style={this.props.style}>
+        <div style={style}>
           {this.props.children}
           <div style={iconButtonStyle}>
             <IconButton onTouchTap={this.handleToggle.bind(this)}>

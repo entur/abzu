@@ -9,9 +9,11 @@ import WheelChair from 'material-ui/svg-icons/action/accessible';
 import MdCheck from 'material-ui/svg-icons/action/check-circle';
 import MdNotChecked from 'material-ui/svg-icons/action/highlight-off';
 import StairsIcon from '../static/icons/accessibility/Stairs';
+import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
+import { enturDark } from '../config/enturTheme';
 
 const getParkingElements = (parking = []) => {
-  if (!parking.length) {
+  if (!parking || !parking.length) {
     return <MdNotChecked color="#B71C1C" />;
   }
   return parking.map(p =>
@@ -29,11 +31,10 @@ const getParkingType = parking => {
   const pedalCycle = 'pedalCycle';
   const carParking = 'car';
   const unknownParking = 'N/A';
-
   const iconStyle = {
     borderRadius: '50%',
     border: '1px solid #000',
-    padding: 5,
+    padding: 3,
     height: 20,
     width: 20,
     color: 'rgb(39, 58, 70)'
@@ -51,20 +52,55 @@ const getParkingType = parking => {
 
 export const ColumnTransformerStopPlaceJsx = {
   id: stop => <StopPlaceLink id={stop.id} />,
-  name: stop => stop.name,
+  name: stop => {
+
+    const parentChildStyle = {
+      fontWeight: 600,
+      textTransform: 'uppercase',
+      marginLeft: 2,
+      color: enturDark,
+      fontSize: '0.6em',
+      lineHeight: '1em',
+      top: '-0.4em',
+      vericalAlign: 'baseline',
+      position: 'relative'
+    };
+
+    if (stop.isParent) {
+      return (
+        <div>
+          <span>{stop.name}</span>
+          <span style={parentChildStyle}>Parent</span>
+        </div>
+      )
+  } else if (stop.isChildOfParent) {
+      return (
+        <div>
+          <span>{stop.name}</span>
+          <span style={parentChildStyle}>Child</span>
+        </div>
+      )
+    } else {
+      return stop.name
+    }
+  },
   modality: stop => {
-    const iconColor = !stop.stopPlaceType || stop.stopPlaceType === 'other'
-      ? 'red'
-      : '#000';
-    return (
-      <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor }} type={stop.stopPlaceType} />
-    );
+    if (!stop.isParent) {
+      const iconColor = !stop.stopPlaceType || stop.stopPlaceType === 'other'
+        ? 'red'
+        : '#000';
+      return (
+        <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor, marginTop: -5 }} type={stop.stopPlaceType} />
+      );
+    } else {
+      return <ModalityIconTray modalities={stop.modesFromChildren}/>
+    }
   },
   muncipality: stop => stop.topographicPlace,
   county: stop => stop.parentTopographicPlace,
   importedId: stop => stop.importedId.join('\r\n'),
   position: stop => stop.location ? stop.location.join(',') : 'N/A',
-  quays: stop => stop.quays.length,
+  quays: stop => stop.quays ? stop.quays.length : 0,
   parking: stop => getParkingElements(stop.parking),
   wheelchairAccess: stop => {
     const wheelchairAccess = getIn(
@@ -128,10 +164,13 @@ export const ColumnTransformerStopPlaceJsx = {
 export const ColumnTransformersStopPlace = {
   ...ColumnTransformerStopPlaceJsx,
   id: stop => stop.id,
-  modality: stop => stop.stopPlaceType,
+  modality: stop => {
+    if (stop.isParent) return stop.modesFromChildren.map(mode => mode.stopPlaceType).join(',');
+    return stop.stopPlaceType;
+  },
   importedId: stop => stop.importedId.join(','),
-  quays: stop => stop.quays.map(quay => quay.id).join(','),
-  parking: stop => stop.parking.map(parking => parking.id).join(','),
+  quays: stop => stop.quays ? stop.quays.map(quay => quay.id).join(',') : '',
+  parking: stop => stop.parking ? stop.parking.map(parking => parking.id).join(',') : '',
   wheelchairAccess: stop =>
     getIn(
       stop,

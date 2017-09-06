@@ -82,7 +82,7 @@ class StopPlace {
           setDecimalPrecision(coordinates[0], 6),
         ];
       } else {
-        if (stop.id === userDefinedCoordinates.stopPlaceId && userDefinedCoordinates.position) {
+        if (userDefinedCoordinates && stop.id === userDefinedCoordinates.stopPlaceId && userDefinedCoordinates.position) {
           clientStop.location = userDefinedCoordinates.position.slice();
         }
       }

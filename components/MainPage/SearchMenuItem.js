@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalityIcon from './ModalityIcon';
 import MenuItem from 'material-ui/MenuItem';
-import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
+import ModalityIconTray from '../ReportPage/ModalityIconTray';
 
 export const createSearchMenuItem = element => {
   if (element.isParent) {
@@ -9,7 +9,6 @@ export const createSearchMenuItem = element => {
   }
   return createStopPlaceMenuItem(element);
 };
-
 
 const createParentStopPlaceMenuItem = element => {
   return {
@@ -22,22 +21,14 @@ const createParentStopPlaceMenuItem = element => {
         innerDivStyle={{ minWidth: 300, padding: '0px 16px 0px 0px' }}
         primaryText={
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex' }}>
-              <div style={{ display: 'flex', marginLeft: 15 }}>
-                {getUniqueStopPlaceTypes(element.children).map((child, i) =>
-                  <ModalityIcon
-                    key={'child-' + i}
-                    iconStyle={{
-                      display: 'inline-block',
-                      marginRight: 2,
-                      position: 'relative'
-                    }}
-                    svgStyle={{ marginRight: 5, marginTop: 10 }}
-                    type={child.stopPlaceType}
-                    submode={child.submode}
-                  />
-                )}
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <ModalityIconTray
+                style={{marginLeft: 15, display: 'flex'}}
+                modalities={element.children.map(child => ({
+                  submode: child.submode,
+                  stopPlaceType: child.stopPlaceType
+                }))}
+              />
               <div style={{ fontSize: '0.9em' }}>{element.name}</div>
             </div>
             <div
