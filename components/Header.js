@@ -96,16 +96,12 @@ class Header extends React.Component {
       kc,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
-      isDisplayingReports,
       showExpiredStops
     } = this.props;
     const { formatMessage, locale } = intl;
 
     const help = formatMessage({ id: 'help' });
-    const betaFunctionality = formatMessage({ id: 'beta_functionality' });
-    const title =
-      formatMessage({ id: '_title' }) +
-      (isDisplayingReports ? betaFunctionality : '');
+    const title = formatMessage({ id: '_title' });
     const language = formatMessage({ id: 'language' });
     const english = formatMessage({ id: 'english' });
     const norwegian = formatMessage({ id: 'norwegian' });
@@ -277,8 +273,6 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
-  isDisplayingReports:
-    state.routing.locationBeforeTransitions.pathname == '/reports'
 });
 
 export default connect(mapStateToProps)(Header);

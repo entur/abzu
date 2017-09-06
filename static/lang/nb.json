@@ -206,7 +206,7 @@
   "quay_adjustments_title": "Endringer til posisjon av quay påvirker ganglenke",
   "quay_is_missing_location": "Denne quayen mangler posisjon",
   "quays" : "quayer",
-  "report_site": "Rapporter (BETA)",
+  "report_site": "Rapporter",
   "remove": "Fjern",
   "remove_stop_from_parent_title": "Fjerne stoppested fra multimodalt stoppested",
   "remove_stop_from_parent_info": "Stoppestedet vil bli fjernet som referanse. Alle de øvrige endringer vil bli forkastet",
