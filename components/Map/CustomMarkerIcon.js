@@ -10,7 +10,7 @@ class CustomMarkerIcon extends React.Component {
   };
 
   componentWillMount() {
-    const { stopType, active, hasExpired, submode } = this.props;
+    const { stopType, active, hasExpired, submode, isMultimodal } = this.props;
 
     let imageStyle = {
       padding: 3,
@@ -23,7 +23,7 @@ class CustomMarkerIcon extends React.Component {
       imageStyle.filter = 'grayscale(80%)';
     }
 
-    const icon = getIconIdByTypeOrSubmode(submode, stopType);
+    const icon = getIconIdByTypeOrSubmode(submode, stopType, isMultimodal);
 
     this._stopTypeIcon = (
       <img style={{ width: 20, height: 20, ...imageStyle }} src={icon} />
@@ -39,14 +39,19 @@ class CustomMarkerIcon extends React.Component {
   }
 }
 
-const getIconIdByTypeOrSubmode = (submode, type) => {
+const getIconIdByTypeOrSubmode = (submode, type, isMultimodal) => {
   const submodeMap = {
     railReplacementBus: require('../../static/icons/modalities/' + 'railReplacement' + '.png')
   };
-  return submodeMap[submode] || getIconIdByModality(type);
+  return submodeMap[submode] || getIconIdByModality(type, isMultimodal);
 
 }
-const getIconIdByModality = type => {
+const getIconIdByModality = (type, isMultimodal) => {
+
+  if (isMultimodal) {
+    return require('../../static/icons/modalities/multiModal.png');
+  }
+
   const modalityMap = {
     onstreetBus: 'bus-without-box',
     onstreetTram: 'tram-without-box',

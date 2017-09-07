@@ -40,6 +40,7 @@ class NeighbourMarker extends React.Component {
       disabled,
       handleMergeStopPlace,
       hasExpired,
+      isMultimodal,
       submode
     } = this.props;
 
@@ -51,6 +52,7 @@ class NeighbourMarker extends React.Component {
         stopType={stopType}
         submode={submode}
         hasExpired={hasExpired}
+        isMultimodal={isMultimodal}
         active={false}
       />
     );

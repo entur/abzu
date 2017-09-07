@@ -35,10 +35,11 @@ class StopPlaceMarker extends React.Component {
     this.createIcon(nextProps);
   }
 
-  createIcon({index, stopType, submode, active}) {
+  createIcon({index, stopType, submode, active, isMultimodal}) {
     let divIconBody = (
       <CustomMarkerIcon
         markerIndex={index}
+        isMultimodal={isMultimodal}
         stopType={stopType}
         active={active}
         submode={submode}

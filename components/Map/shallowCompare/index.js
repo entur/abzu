@@ -157,6 +157,10 @@ export const shallowCompareStopPlaceMarker = (props, nextProps) => {
     return true;
   }
 
+  if (props.isMultimodal !== nextProps.isMultimodal) {
+    return true;
+  }
+
   if (props.id !== nextProps.id) {
     return true;
   }
