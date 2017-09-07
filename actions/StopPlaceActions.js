@@ -291,14 +291,20 @@ StopPlaceActions.changeParkingName = (index, name) => dispatch => {
 };
 
 StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
-  let state = getState();
-  let quays = state.stopPlace.current.quays;
-  let originalCentroid = state.stopPlace.current.location;
+  const state = getState();
+  const stopPlace = state.stopPlace.current;
+  let centroid = null;
 
-  let latlngs = quays.map( quay => quay.location);
-  let centroid = getCentroid(latlngs, originalCentroid);
-
+  // adjust by childrens' location
+  if (stopPlace.isParent) {
+    let latlngs = stopPlace.children.map( child => child.location);
+    centroid = getCentroid(latlngs, stopPlace.location);
+  } else {
+    let latlngs = stopPlace.quays.map( quay => quay.location);
+    centroid = getCentroid(latlngs, stopPlace.location);
+  }
   dispatch(StopPlaceActions.changeCurrentStopPosition(centroid));
+  dispatch(UserActions.setCenterAndZoom(centroid, null));
 };
 
 

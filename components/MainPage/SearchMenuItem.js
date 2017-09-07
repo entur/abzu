@@ -23,7 +23,7 @@ const createParentStopPlaceMenuItem = element => {
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <ModalityIconTray
-                style={{marginLeft: 15, display: 'flex'}}
+                style={{marginLeft: 15, display: 'flex', flexDirection: 'column'}}
                 modalities={element.children.map(child => ({
                   submode: child.submode,
                   stopPlaceType: child.stopPlaceType
