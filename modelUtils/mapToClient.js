@@ -243,7 +243,8 @@ helpers.mapSearchResultStopPlace = stop => {
     quays: stop.quays,
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween)
+    hasExpired: hasExpired(stop.validBetween),
+    tags: stop.tags
   };
 
   if (stop.geometry && stop.geometry.coordinates) {
