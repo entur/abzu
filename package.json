@@ -44,7 +44,7 @@
     "keycloak-js": "3.2.1",
     "leaflet": "1.2.0",
     "lodash.debounce": "4.0.8",
-    "material-ui": "0.18.7",
+    "material-ui": "0.19.1",
     "mocha": "3.5.0",
     "moment": "2.18.1",
     "nightwatch": "0.9.16",

@@ -33,11 +33,12 @@ class StopPlaceListItem extends Component {
             <ModalityIcon
               type={stopPlace.stopPlaceType}
               submode={stopPlace.submode}
-              style={{ marginTop: -8 }}
+              svgStyle={{transform: 'scale(0.8)'}}
+              style={{ marginTop: -8, marginRight: 5 }}
             />
             <a
               style={{
-                fontSize: '0.9em',
+                fontSize: '0.8em',
                 color: 'rgb(33, 150, 243)',
               }}
               target="_blank"

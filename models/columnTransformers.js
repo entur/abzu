@@ -90,7 +90,7 @@ export const ColumnTransformerStopPlaceJsx = {
         ? 'red'
         : '#000';
       return (
-        <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor, marginTop: -5 }} type={stop.stopPlaceType} />
+        <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor, marginTop: -5, transform: 'scale(0.8)' }} type={stop.stopPlaceType} />
       );
     } else {
       return <ModalityIconTray modalities={stop.modesFromChildren}/>

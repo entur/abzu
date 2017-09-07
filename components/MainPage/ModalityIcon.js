@@ -20,11 +20,11 @@ class ModalityIcon extends React.Component {
   }
 
   render() {
-    let svgStyle = this.props.svgStyle || {
+
+    let svgStyle = {
       width: 30,
       height: 25,
-      display: 'inline-block',
-      marginRight: 5,
+      ...this.props.svgStyle,
     };
 
     const iconStyle = this.props.iconStyle || {

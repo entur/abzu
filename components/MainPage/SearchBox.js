@@ -44,31 +44,35 @@ class SearchBox extends React.Component {
     };
 
     const searchStop = (searchText, dataSource, params, filter) => {
-      if (!searchText || !searchText.length) {
-        this.props.dispatch(UserActions.clearSearchResults());
-      } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
-        return;
-      } else {
-        const chips = filter ? filter.topoiChips : this.props.topoiChips;
-        const stopPlaceTypes = filter
-          ? filter.stopType
-          : this.props.stopTypeFilter;
+      const chips = filter ? filter.topoiChips : this.props.topoiChips;
+      const stopPlaceTypes = filter
+        ? filter.stopType
+        : this.props.stopTypeFilter;
 
-        this.setState({ loading: true });
+      this.setState({ loading: true });
 
-        findStopWithFilters(
-          this.props.client,
-          searchText,
-          stopPlaceTypes,
-          chips
-        ).then(response => {
-          this.setState({ loading: false });
-        });
-
-        this.props.dispatch(UserActions.setSearchText(searchText));
-      }
+      findStopWithFilters(
+        this.props.client,
+        searchText,
+        stopPlaceTypes,
+        chips
+      ).then(response => {
+        this.setState({ loading: false });
+      });
     };
-    this.handleSearchUpdate = debounce(searchStop, 200);
+    this.debouncedSearch = debounce(searchStop, 200);
+  }
+
+  handleSearchUpdate(searchText, dataSource, params, filter) {
+    if (!searchText || !searchText.length) {
+      this.props.dispatch(UserActions.clearSearchResults());
+      this.props.dispatch(UserActions.setSearchText(''));
+    } else if (searchText.indexOf('(') > -1 && searchText.indexOf(')') > -1) {
+      return;
+    } else {
+      this.props.dispatch(UserActions.setSearchText(searchText));
+      this.debouncedSearch(searchText, dataSource, params, filter);
+    }
   }
 
   handleEdit(id) {
@@ -186,14 +190,6 @@ class SearchBox extends React.Component {
   componentWillUpdate(nextProps) {
     const { dataSource, topoiChips, stopTypeFilter } = nextProps;
     const { formatMessage } = nextProps.intl;
-
-    // do not map menuItems if source is the same
-    if (
-      JSON.stringify(this.props.dataSource) ===
-      JSON.stringify(nextProps.dataSource)
-    ) {
-      return;
-    }
 
     if (dataSource && dataSource.length) {
       this._menuItems = dataSource.map(element =>

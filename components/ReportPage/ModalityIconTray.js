@@ -16,8 +16,11 @@ class ModalityIconTray extends Component {
         {uniqueModalities.map((modality, i) =>
           <ModalityIcon
             key={'modality-' + i}
-            iconStyle={{transform: 'scale(0.8)'}}
             submode={modality.submode}
+            iconStyle={{
+              float: 'right',
+              transform: 'translateY(2px) scale(0.8)'
+            }}
             type={modality.stopPlaceType}
           />
         )}
