@@ -7,8 +7,14 @@ import { getIn } from '../../utils/';
 import { injectIntl } from 'react-intl';
 import { getNeighbourStops } from '../../graphql/Actions';
 import Settings from '../../singletons/SettingsManager';
+import debounce from 'lodash.debounce';
 
 class StopPlacesMap extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.getNearbyStops = debounce(getNeighbourStops, 500);
+  }
 
   componentDidMount() {
     const { formatMessage } = this.props.intl;
@@ -54,7 +60,7 @@ class StopPlacesMap extends React.Component {
     if (zoom > 14) {
       const bounds = leafletElement.getBounds();
       const { ignoreStopId, client } = this.props;
-      getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
+      this.getNearbyStops(client, ignoreStopId, bounds, includeExpired);
     } else {
       const { neighbourMarkersCount } = this.props;
       if (neighbourMarkersCount) {
