@@ -110,6 +110,11 @@ Fragments.stopPlace = {
         quays {
             ...VerboseQuay
         }
+        tags {
+            name
+            comment
+            created
+        }
         weighting
         stopPlaceType
         submode
@@ -171,6 +176,11 @@ Fragments.stopPlace = {
           quays {
               ...VerboseQuay
           }
+          tags {
+              name
+              comment
+              created
+          }
           stopPlaceType
           submode
           transportMode
@@ -228,6 +238,11 @@ Fragments.parentStopPlace = {
           geometry {
               coordinates
           }
+          tags {
+              name
+              comment
+              created
+          }
           description {
               value
           }
@@ -248,6 +263,11 @@ Fragments.parentStopPlace = {
         id
         name {
             value
+        }
+        tags {
+            name
+            comment
+            created
         }
         topographicPlace {
             name {

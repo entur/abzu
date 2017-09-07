@@ -118,6 +118,11 @@ export const findStop = gql`
             name {
                 value
             }
+            tags {
+                name
+                comment
+                created
+            }
             geometry {
                 coordinates
             }
