@@ -4,6 +4,7 @@ import ModalityIcon from './ModalityIcon';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getIn } from '../../utils/';
+import TagTray from './TagTray';
 
 class StopPlaceResultInfo extends Component {
 
@@ -44,6 +45,7 @@ class StopPlaceResultInfo extends Component {
           </span>
           {result.importedId ? result.importedId.join(', ') : ''}
         </div>
+        <TagTray tags={result.tags}/>
         <div style={{ display: 'flex', justifyItems: 'center', padding: 10 }}>
           <div style={{ fontSize: 16, textTransform: 'capitalize' }}>
             {formatMessage({ id: 'quays' })}

@@ -13,7 +13,7 @@ class SearchBoxEditAction extends Component {
       <div style={{ width: '100%', textAlign: 'right' }}>
         <FlatButton
           onClick={() => handleEdit(result.id)}
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 0 }}
         >
           {canEdit
             ? <Edit

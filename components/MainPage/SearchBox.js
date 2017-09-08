@@ -356,14 +356,14 @@ class SearchBox extends React.Component {
     };
 
     const searchBoxWrapperStyle = {
-      top: 70,
-      background: 'white',
+      top: 60,
+      background: '#fff',
       height: 'auto',
       width: 460,
-      margin: 10,
+      margin: 8,
       position: 'absolute',
       zIndex: 999,
-      padding: 10,
+      padding: 8,
       border: '1px solid rgb(81, 30, 18)'
     };
 
@@ -429,7 +429,7 @@ class SearchBox extends React.Component {
                         margin: 'auto',
                         width: '100%',
                         textAlign: 'center',
-                        marginTop: -10
+                        marginTop: -20
                       }}
                       maxSearchResults={5}
                       fullWidth={true}
@@ -488,7 +488,7 @@ class SearchBox extends React.Component {
             <Divider />
           </div>
           <div
-            style={{ marginBottom: 15, textAlign: 'right', marginRight: 10 }}
+            style={{ marginBottom: 5, textAlign: 'right', marginRight: 10 }}
           >
             <FlatButton
               style={{ marginLeft: 10, fontSize: 12 }}
@@ -519,7 +519,7 @@ class SearchBox extends React.Component {
                 />
               : null}
             {!isGuest &&
-              <div style={{ marginTop: 30 }}>
+              <div style={{ marginTop: 10 }}>
                 {isCreatingNewStop
                   ? <NewStopPlace
                       text={newStopText}
