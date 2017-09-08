@@ -165,7 +165,7 @@
   "new_stop_title": "You are now creating a new stop place",
   "new_parent_stop_question" : "Do you wish to create a new multimodal stop here?",
   "new_parent_stop_title" : "You are now creating a new multimodal stop place",
-  "no_favorites_found": "You have currenly no favorite searches. Click the star to save your search.",
+  "no_favorites_found": "You have currenly no saved searches",
   "no_results_found": "No results with your search criteras.",
   "noTariffZones" : "No tariff zones",
   "none_no": "no",
