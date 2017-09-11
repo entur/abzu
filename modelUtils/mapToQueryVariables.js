@@ -83,11 +83,15 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
 
   let parentStopVariables = {
-    id: stop.id,
     name: stop.name,
     description: stop.description || null,
-    children: stop.children.map( child => ({id: child.id}) )
   };
+
+  if (stop.id) {
+    parentStopVariables.id = stop.id;
+  } else {
+    parentStopVariables.stopPlaceIds = stop.children.map( child => child.id )
+  }
 
   if (stop.location) {
     parentStopVariables.coordinates = [[stop.location[1], stop.location[0]]];

@@ -578,7 +578,6 @@ class SearchBox extends React.Component {
                           <MenuItem
                             onClick={() => this.handleNewStop(true)}
                             style={{ fontSize: '0.9em' }}
-                            disabled={true}
                             primaryText={formatMessage({
                               id: 'new__multi_stop'
                             })}

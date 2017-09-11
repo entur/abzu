@@ -146,11 +146,15 @@ export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
     fetchPolicy: 'network-only'
   });
 
-export const createParentStopPlace = (client, name, stopPlaceIds) =>
+export const createParentStopPlace = (client, {name, description, versionComment, coordinates, validBetween, stopPlaceIds}) =>
   client.mutate({
     mutation: mutateCreateMultiModalStopPlace,
     variables: {
       name,
+      description,
+      versionComment,
+      coordinates,
+      validBetween,
       stopPlaceIds
     }
   });

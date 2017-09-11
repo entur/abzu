@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
 export const mutateParentStopPlace = gql`
-  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!, $children: [StopPlaceInput]) {
+  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {
       mutateParentStopPlace(ParentStopPlace: {
           id: $id
           name: { value: $name, lang: "no" }
@@ -13,7 +13,6 @@ export const mutateParentStopPlace = gql`
               type: Point
               coordinates: $coordinates
           }
-          children: $children 
       }) {
           ...VerboseParentStopPlace
       }
@@ -50,8 +49,24 @@ export const updateChildOfParentStop = gql`
 `
 
 export const mutateCreateMultiModalStopPlace = gql`
-  mutation mutateCreateMultiModalStopPlace($name: String!, $stopPlaceIds: [String!]) {
-      createMultiModalStopPlace(name: { value: $name, lang: "no" }, stopPlaceId: $stopPlaceIds) {
+  mutation mutateCreateMultiModalStopPlace($name: String!, $stopPlaceIds: [String]!, $description: String, $coordinates: Coordinates!, $versionComment: String, $validBetween: ValidBetweenInput) {
+      createMultiModalStopPlace(createMultiModalStopPlaceInput: {
+          name: {
+              value: $name
+              lang: "no"
+          }
+          stopPlaceIds: $stopPlaceIds
+          description: {
+              value: $description
+              lang: "no"
+          }
+          geometry: {
+              type: Point
+              coordinates: $coordinates
+          }
+          versionComment: $versionComment
+          validBetween: $validBetween
+      }) {
           ...VerboseParentStopPlace
       }
   },
@@ -59,12 +74,13 @@ export const mutateCreateMultiModalStopPlace = gql`
 `
 
 export const mutateAddToMultiModalStopPlace  = gql`
-  mutation mutateAddToMultiModalStopPlace($parentSiteRef: String!, $stopPlaceIds: [String!]) {
-      addToMultiModalStopPlace(parentSiteRef: $parentSiteRef, stopPlaceId: $stopPlaceIds) {
-          ...VerboseParentStopPlace
+  mutation mutateAddToMultiModalStopPlace($parentSiteRef: String!, $stopPlaceIds: [String]!) {
+      addToMultiModalStopPlace(addToMultiModalStopPlaceInput: {
+          parentSiteRef: $parentSiteRef, stopPlaceIds: $stopPlaceIds
+      }) {
+          id
       }
-  },
-  ${Fragments.parentStopPlace.verbose}
+  }
 `;
 
 export const mutateStopPlace = gql`

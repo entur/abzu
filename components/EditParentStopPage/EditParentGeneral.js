@@ -16,6 +16,7 @@ import {
   saveParentStopPlace,
   getStopPlaceVersions,
   createParentStopPlace,
+  addToMultiModalStopPlace,
   removeStopPlaceFromMultiModalStop
 } from '../../graphql/Actions';
 import * as types from '../../actions/Types';
@@ -54,6 +55,21 @@ class EditParentGeneral extends React.Component {
 
   handleCloseRemoveStopFromParent() {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
+  }
+
+  determineHowToSave(userInput) {
+    const { stopPlace, client } = this.props;
+
+    if (stopPlace.isNewStop) {
+      const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(stopPlace, userInput);
+      this.handleCreateNewParentStopPlace(stopPlaceVariables);
+    } else {
+      const childrenToAdd = stopPlace.children.filter( child => child.notSaved).map( child => child.id);
+      addToMultiModalStopPlace(client, stopPlace.id, childrenToAdd).then( response => {
+        const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(stopPlace, userInput);
+        this.saveParentStop(stopPlaceVariables);
+      });
+    }
   }
 
   handleGoBack() {
@@ -122,9 +138,10 @@ class EditParentGeneral extends React.Component {
     this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
   }
 
-  handleCreateNewParentStopPlace(stopPlaceIds) {
-    const { client, stopPlace } = this.props;
-    createParentStopPlace(client, stopPlace.name, stopPlaceIds)
+  handleCreateNewParentStopPlace(variables) {
+    const { client} = this.props;
+
+    createParentStopPlace(client, variables)
       .then(({ data }) => {
         if (
           data &&
@@ -134,17 +151,13 @@ class EditParentGeneral extends React.Component {
           this.handleSaveSuccess(parentStopPlaceId);
         }
       })
-      .then(err => {
+      .catch(err => {
         this.handleSaveError(MutationErrorCodes.ERROR_STOP_PLACE);
       });
   }
 
-  saveParentStop(userInput) {
-    const { client, stopPlace } = this.props;
-    const parentStopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
-      stopPlace,
-      userInput
-    );
+  saveParentStop(parentStopPlaceVariables) {
+    const { client } = this.props;
 
     saveParentStopPlace(client, parentStopPlaceVariables)
       .then(({ data }) => {
@@ -248,8 +261,7 @@ class EditParentGeneral extends React.Component {
             disabled={
               disabled ||
               !stopHasBeenModified ||
-              !stopPlace.name.length ||
-              !stopPlace.id
+              !stopPlace.name.length
             }
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
@@ -302,7 +314,7 @@ class EditParentGeneral extends React.Component {
               handleClose={() => {
                 this.setState({ saveDialogOpen: false });
               }}
-              handleConfirm={this.saveParentStop.bind(this)}
+              handleConfirm={this.determineHowToSave.bind(this)}
               errorMessage={this.state.errorMessage}
               intl={intl}
             />
