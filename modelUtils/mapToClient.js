@@ -39,6 +39,18 @@ helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
   return copy;
 };
 
+helpers.updateStopWithTags = (current, payLoad) => {
+  const copy = JSON.parse(JSON.stringify(current));
+  const { result } = payLoad;
+
+  if (result.data && result.data.stopPlace && result.data && result.data.stopPlace.length) {
+    const tags = result.data.stopPlace[0].tags;
+    copy.tags = tags;
+    return copy;
+  }
+  return current;
+}
+
 helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
   copy.children = copy.children.filter(child => child.id !== payLoad);

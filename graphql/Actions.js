@@ -10,7 +10,9 @@ import {
   mutateCreateMultiModalStopPlace,
   removeStopPlaceFromParent,
   mutateStopPlace,
-  updateChildOfParentStop
+  updateChildOfParentStop,
+  mutateRemoveTag,
+  mutateCreateTag
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -20,10 +22,31 @@ import {
   topopGraphicalPlacesQuery,
   findStop,
   getStopPlacesById,
-  getPolygons
+  getPolygons,
+  getTagsQuery,
+  findTagByNameQuery
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
+export const findTagByName = (client, name) =>
+  client.query({
+    query: findTagByNameQuery,
+    fetchPolicy: 'network-only',
+    variables: {
+      name
+    }
+  });
+
+export const addTag = (client, idReference, name, comment) =>
+  client.mutate({
+    mutation: mutateCreateTag,
+    fetchPolicy: 'network-only',
+    variables: {
+      idReference,
+      name,
+      comment
+    }
+  });
 
 export const getAddStopPlaceInfo = (client, stopPlaceIds) =>
   client.query({
@@ -261,3 +284,22 @@ export const findTopographicalPlace = (client, query) =>
     query,
   },
 });
+
+export const getTags = (client, idReference) =>
+  client.query({
+    query: getTagsQuery,
+    fetchPolicy: 'network-only',
+    variables: {
+      idReference,
+    },
+  });
+
+export const removeTag = (client, name, idReference) =>
+  client.mutate({
+    mutation: mutateRemoveTag,
+    variables: {
+      name,
+      idReference
+    },
+    fetchPolicy: 'network-only'
+  });

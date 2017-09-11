@@ -60,7 +60,7 @@ class KeyValuesDialog extends React.Component {
     this.setState({
       isEditingOpen: false,
       isCreatingOpen: false
-    })
+    });
   }
 
   render() {
@@ -90,7 +90,7 @@ class KeyValuesDialog extends React.Component {
       flexBasis: '100%',
       textAlign: 'left',
       flex: 2,
-      padding: 5,
+      padding: 5
     };
 
     return (
@@ -159,34 +159,40 @@ class KeyValuesDialog extends React.Component {
                     }}
                   >
                     <div style={{ ...itemStyle, fontWeight: 600, flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', flexBasis: '100%' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          flexBasis: '100%'
+                        }}
+                      >
                         <span>{kvp.key}</span>
                         {!disabled &&
-                        <div style={{display: 'flex'}}>
-                          <MdEdit
-                            style={{
-                              height: 14,
-                              width: 14,
-                              color: enturPrimary,
-                              marginTop: -2,
-                              marginLeft: 5,
-                              cursor: 'pointer'
-                            }}
-                            onClick={() => this.handleEditValuesForKey(kvp.key)}
-                          />
-                          <MdRemove
-                            style={{
-                              height: 14,
-                              width: 14,
-                              color: '#df544a',
-                              marginTop: -2,
-                              marginLeft: 5,
-                              cursor: 'pointer'
-                            }}
-                            onClick={() => this.handleDeleteKey(kvp.key)}
-                          />
-                        </div>
-                        }
+                          <div style={{ display: 'flex' }}>
+                            <MdEdit
+                              style={{
+                                height: 14,
+                                width: 14,
+                                color: enturPrimary,
+                                marginTop: -2,
+                                marginLeft: 5,
+                                cursor: 'pointer'
+                              }}
+                              onClick={() =>
+                                this.handleEditValuesForKey(kvp.key)}
+                            />
+                            <MdRemove
+                              style={{
+                                height: 14,
+                                width: 14,
+                                color: '#df544a',
+                                marginTop: -2,
+                                marginLeft: 5,
+                                cursor: 'pointer'
+                              }}
+                              onClick={() => this.handleDeleteKey(kvp.key)}
+                            />
+                          </div>}
                       </div>
                     </div>
                     <div style={itemStyle}>

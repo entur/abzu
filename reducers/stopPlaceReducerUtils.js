@@ -28,6 +28,13 @@ export const getStateByOperation = (state, action) => {
     case 'mutateParentStopPlace':
       return updateStopPlaceStateAfterMutate(state, action, 'mutateParentStopPlace');
 
+    case 'getTagsQuery':
+      return Object.assign({}, state, {
+        current: formatHelpers.updateStopWithTags(
+          state.current, action
+        )
+      });
+
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(

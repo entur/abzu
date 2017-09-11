@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ToolTippable from '../EditStopPage/ToolTippable';
 import { enturPrimary } from '../../config/enturTheme';
+import { injectIntl } from 'react-intl';
 
 class Tag extends Component {
   render() {
-    const { name, comment } = this.props.data;
+    const { data, intl } = this.props;
+    const { name, comment } = data;
+    const { formatMessage } = intl;
+    const noComment = formatMessage({id: 'comment_missing'});
+    const tagComment = comment || noComment;
+
+    if (!name) return null;
 
     const content = (
       <div
@@ -18,6 +25,7 @@ class Tag extends Component {
           background: enturPrimary,
           color: '#fff',
           width: 'auto',
+          cursor: 'pointer',
           fontSize: '0.7em',
           textTransform: 'uppercase'
         }}
@@ -26,15 +34,12 @@ class Tag extends Component {
       </div>
     )
 
-    if (comment) {
-      return (
-        <ToolTippable toolTipText={comment}>
-          {content}
-        </ToolTippable>
-      );
-    } else {
-      return {content}
-    }
+    return (
+      <ToolTippable toolTipText={tagComment}>
+        <span>{content}</span>
+      </ToolTippable>
+    );
+
   }
 }
 
@@ -45,6 +50,5 @@ Tag.propTypes = {
     comment: PropTypes.string
   })
 };
-Tag.defaultProps = {};
 
-export default Tag;
+export default injectIntl(Tag);

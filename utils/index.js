@@ -50,3 +50,14 @@ export const createStopPlaceHref = stopPlaceId => {
   const href = path.substr(0,lastIndexOfSlash) + stopPlaceId;
   return href;
 };
+
+export const toCamelCase = string => {
+  if (!(/\s/g.test(string))) {
+    return string.toLowerCase();
+  }
+
+  return string.replace(/^([A-Z])|\s(\w)/g, (match, p1, p2) => {
+    if (p2) return p2.toUpperCase();
+    return p1.toLowerCase();
+  });
+};

@@ -26,6 +26,7 @@ describe('Model: map format from server to expected client model', () => {
       transportMode: null,
       submode: null,
       version: 1,
+      tags: [],
       tariffZones: [],
       stopPlaceType: 'onstreetBus',
       isActive: true,

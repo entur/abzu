@@ -36,6 +36,8 @@ import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import KeyValuesDialog from '../Dialogs/KeyValuesDialog';
 import ModalitiesMenuItems from './ModalitiesMenuItems';
 import { createStopPlaceHref } from '../../utils/';
+import FlatButton from 'material-ui/FlatButton';
+import TagsDialog from './TagsDialog';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -46,7 +48,8 @@ class StopPlaceDetails extends React.Component {
       name: props.stopPlace.name || '',
       description: props.stopPlace.description || '',
       altNamesDialogOpen: false,
-      tariffZoneOpen: false
+      tariffZoneOpen: false,
+      tagsOpen: false
     };
 
     this.updateStopName = debounce(value => {
@@ -56,6 +59,19 @@ class StopPlaceDetails extends React.Component {
     this.updateStopDescription = debounce(value => {
       this.props.dispatch(StopPlaceActions.changeStopDescription(value));
     }, 200);
+  }
+
+  handleOpenTags() {
+    this.setState({
+      stopTypeOpen: false,
+      weightingOpen: false,
+      altNamesDialogOpen: false,
+      tariffZoneOpen: false,
+      tagsOpen: true
+    });
+    if (this.props.keyValuesDialogOpen) {
+      this.props.dispatch(UserActions.closeKeyValuesDialog());
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,7 +88,8 @@ class StopPlaceDetails extends React.Component {
         wheelChairOpen: false,
         altNamesDialogOpen: false,
         weightingOpen: false,
-        tariffZoneOpen: false
+        tariffZoneOpen: false,
+        tagsOpen: false
       });
     }
   }
@@ -86,7 +103,8 @@ class StopPlaceDetails extends React.Component {
   handleOpenKeyValues() {
     this.setState({
       tariffZoneOpen: false,
-      altNamesDialogOpen: false
+      altNamesDialogOpen: false,
+      tagsOpen: false,
     });
     this.props.dispatch(
       UserActions.openKeyValuesDialog(this.props.stopPlace.keyValues, 'stopPlace', null)
@@ -99,7 +117,8 @@ class StopPlaceDetails extends React.Component {
       wheelChairOpen: false,
       altNamesDialogOpen: true,
       weightingOpen: false,
-      tariffZoneOpen: false
+      tariffZoneOpen: false,
+      tagsOpen: false
     });
     if (this.props.keyValuesDialogOpen) {
       this.props.dispatch(UserActions.closeKeyValuesDialog());
@@ -112,7 +131,8 @@ class StopPlaceDetails extends React.Component {
       wheelChairOpen: false,
       altNamesDialogOpen: false,
       weightingOpen: false,
-      tariffZoneOpen: true
+      tariffZoneOpen: true,
+      tagsOpen: false
     });
     if (this.props.keyValuesDialogOpen) {
       this.props.dispatch(UserActions.closeKeyValuesDialog());
@@ -125,7 +145,8 @@ class StopPlaceDetails extends React.Component {
       wheelChairOpen: false,
       stopTypeAnchorEl: event.currentTarget,
       altNamesDialogOpen: false,
-      weightingOpen: false
+      weightingOpen: false,
+      tagsOpen: false
     });
   }
 
@@ -363,20 +384,21 @@ class StopPlaceDetails extends React.Component {
             </div>
             }
             {!stopPlace.isNewStop &&
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontWeight: 600}}>
                   {versionLabel} {stopPlace.version}
                 </span>
                 {stopPlace.hasExpired &&
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', flex: 2 }}>
                     <MdWarning
                       color="orange"
                       style={{ marginTop: -5, marginLeft: 10 }}
                     />
-                    <span style={{ color: '#bb271c', marginLeft: 5 }}>
+                    <span style={{ color: '#bb271c', marginLeft: 5, fontSize: '0.8em' }}>
                       {expirationText}
                     </span>
                   </div>}
+                <FlatButton onClick={this.handleOpenTags.bind(this)} style={{marginTop: -8}} label={formatMessage({id: 'tags'})}/>
               </div>}
             <div style={{ display: 'flex'}}>
               <ImportedId
@@ -627,6 +649,15 @@ class StopPlaceDetails extends React.Component {
             this.setState({ altNamesDialogOpen: false });
           }}
         />
+        <TagsDialog
+          open={this.state.tagsOpen}
+          tags={stopPlace.tags}
+          intl={intl}
+          disabled={disabled}
+          handleClose={() => {
+            this.setState({ tagsOpen: false });
+          }}
+        />
         <TariffZonesDialog
           open={tariffZoneOpen}
           tariffZones={stopPlace.tariffZones}
@@ -647,6 +678,7 @@ class StopPlaceDetails extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
+  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
 });
 
 export default connect(mapStateToProps)(StopPlaceDetails);

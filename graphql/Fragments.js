@@ -114,6 +114,8 @@ Fragments.stopPlace = {
             name
             comment
             created
+            createdBy
+            idReference
         }
         weighting
         stopPlaceType
@@ -180,6 +182,8 @@ Fragments.stopPlace = {
               name
               comment
               created
+              createdBy
+              idReference
           }
           stopPlaceType
           submode
@@ -242,6 +246,8 @@ Fragments.parentStopPlace = {
               name
               comment
               created
+              createdBy
+              idReference
           }
           description {
               value
@@ -268,6 +274,8 @@ Fragments.parentStopPlace = {
             name
             comment
             created
+            createdBy
+            idReference
         }
         topographicPlace {
             name {

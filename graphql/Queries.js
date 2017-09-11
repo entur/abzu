@@ -122,6 +122,7 @@ export const findStop = gql`
                 name
                 comment
                 created
+                createdBy
             }
             geometry {
                 coordinates
@@ -223,6 +224,34 @@ export const allVersionsOfStopPlace = gql`
             }
         }
     },
+`;
+
+
+export const getTagsQuery = gql`
+  query getTagsQuery($idReference: String!) {
+      stopPlace(id: $idReference) {
+          __typename
+          tags {
+              name
+              comment
+              created
+              createdBy
+              idReference
+          }
+      }
+  }
+`
+
+export const findTagByNameQuery = gql`
+  query findTagByName($name: String!) {
+      tags(name: $name) {
+          name
+          comment
+          created
+          createdBy
+          idReference
+      }
+  }
 `;
 
 export const stopPlaceAndPathLinkByVersion = gql`

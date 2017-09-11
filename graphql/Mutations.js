@@ -21,6 +21,14 @@ export const mutateParentStopPlace = gql`
   ${Fragments.parentStopPlace.verbose}
 `
 
+export const mutateCreateTag = gql`
+  mutation mutateCreateTag($idReference: String!, $name: String!, $comment: String) {
+      createTag(idReference: $idReference, name: $name, comment: $comment) {
+          name
+      }
+  }
+`
+
 export const updateChildOfParentStop = gql`
     mutation updateChildOfParentStop($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!, $children: [StopPlaceInput]) {
         mutateParentStopPlace(ParentStopPlace: {
@@ -162,4 +170,12 @@ export const mutateMoveQuaysToNewStop = gql`
       }
   }
   ${Fragments.stopPlace.verbose}
-`
+`;
+
+export const mutateRemoveTag = gql`
+  mutation mutateRemoveTag($name: String!, $idReference: String!) {
+      removeTag: removeTag(name: $name, idReference: $idReference) {
+          removed
+      }
+  }
+`;

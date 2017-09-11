@@ -538,8 +538,8 @@ class EditStopGeneral extends React.Component {
             >
               <Tab
                 style={tabStyle}
-                label={`${formatMessage({ id: 'quays' })} (${stopPlace.quays
-                  .length})`}
+                label={`${formatMessage({ id: 'quays' })} (${stopPlace.quays ? stopPlace.quays
+                  .length : 0})`}
                 value={0}
               />
               <Tab

@@ -29,7 +29,8 @@ class StopPlace {
         version: stop.version,
         hasExpired: hasExpired(stop.validBetween),
         transportMode: stop.transportMode,
-        submode: stop.submode
+        submode: stop.submode,
+        tags: stop.tags
       };
 
       if (stop.topographicPlace) {
