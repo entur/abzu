@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { getIn } from '../../utils/';
 import HasExpiredInfo from './HasExpiredInfo';
-import ModalityIcon from './ModalityIcon';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
-import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
 import ModalityTray from '../ReportPage/ModalityIconTray';
+import TagTray from './TagTray';
+
 
 class ParentStopPlaceResultInfo extends Component {
   render() {
@@ -52,6 +52,7 @@ class ParentStopPlaceResultInfo extends Component {
           </span>
           {result.importedId ? result.importedId.join(', ') : ''}
         </div>
+        <TagTray tags={result.tags}/>
         <div style={{ display: 'flex', justifyItems: 'center', padding: 10 }}>
           <div style={{ fontSize: 16, textTransform: 'capitalize' }}>
             {formatMessage({ id: 'stop_places' })}

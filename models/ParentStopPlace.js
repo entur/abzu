@@ -29,6 +29,7 @@ class ParentStopPlace {
         version: stop.version,
         hasExpired: hasExpired(stop.validBetween),
         isParent: true,
+        tags: stop.tags,
       };
 
       if (stop.topographicPlace) {

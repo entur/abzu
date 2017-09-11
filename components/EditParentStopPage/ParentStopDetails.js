@@ -10,15 +10,17 @@ import StopPlaceList from './StopPlaceList';
 import FlatButton from 'material-ui/FlatButton';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import AddStopPlaceToParent from '../Dialogs/AddStopPlaceToParent';
-import { getAddStopPlaceInfo } from '../../graphql/Actions';
+import { getAddStopPlaceInfo } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
+import TagsDialog from '../EditStopPage/TagsDialog';
 
 class ParentStopDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       changePositionOpen: false,
-      addStopPlaceOpen: false
+      addStopPlaceOpen: false,
+      tagsOpen: false
     };
   }
 
@@ -45,12 +47,10 @@ class ParentStopDetails extends Component {
       addStopPlaceOpen: false
     });
 
-    getAddStopPlaceInfo(client, checkedItems).then( result => {
+    getAddStopPlaceInfo(client, checkedItems).then(result => {
       dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
     });
-
   }
-
 
   handleSubmitChangeCoordinates(position) {
     const { dispatch } = this.props;
@@ -74,12 +74,17 @@ class ParentStopDetails extends Component {
 
     return (
       <div style={{ padding: '10px 5px', minHeight: 600 }}>
-        <div style={{ fontWeight: 600, fontSize: '1.1em' }}>
-          {formatMessage({ id: 'parentStopPlace' })}
+        <div style={{ fontWeight: 600, fontSize: '1.1em', display: 'flex', justifyContent: 'space-between'}}>
+          <div>{formatMessage({ id: 'parentStopPlace' })}</div>
+          <FlatButton
+            onClick={() => this.setState({ tagsOpen: true })}
+            style={{ marginTop: -8 }}
+            label={formatMessage({ id: 'tags' })}
+          />
         </div>
         <div style={{ textAlign: 'right' }}>
           <FlatButton
-            label={formatMessage({id: 'set_centroid'})}
+            label={formatMessage({ id: 'set_centroid' })}
             labelStyle={{ fontSize: '0.7em' }}
             onClick={() => this.setState({ changePositionOpen: true })}
           />
@@ -145,6 +150,14 @@ class ParentStopDetails extends Component {
           coordinates={stopPlace.position}
           handleClose={() => this.setState({ changePositionOpen: false })}
           handleConfirm={this.handleSubmitChangeCoordinates.bind(this)}
+        />
+        <TagsDialog
+          open={this.state.tagsOpen}
+          tags={stopPlace.tags}
+          intl={intl}
+          handleClose={() => {
+            this.setState({ tagsOpen: false });
+          }}
         />
       </div>
     );

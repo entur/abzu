@@ -291,7 +291,8 @@ helpers.mapSearchResultParentStopPlace = stop => {
     children: stop.children.sort((a, b) => b.id.localeCompare(a.id)),
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween)
+    hasExpired: hasExpired(stop.validBetween),
+    tags: stop.tags,
   };
 
   if (stop.geometry && stop.geometry.coordinates) {
