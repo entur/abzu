@@ -244,7 +244,7 @@ helpers.mapSearchResultStopPlace = stop => {
   const clientStop = {
     isParent: false,
     id: stop.id,
-    name: stop.name.value,
+    name: stop.name ? stop.name.value : '',
     isMissingLocation: !stop.geometry,
     stopPlaceType: stop.stopPlaceType,
     submode: stop.submode,
