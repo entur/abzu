@@ -6,7 +6,7 @@ import { injectIntl } from 'react-intl';
 
 class Tag extends Component {
   render() {
-    const { data, intl } = this.props;
+    const { data, intl, textSize } = this.props;
     const { name, comment } = data;
     const { formatMessage } = intl;
     const noComment = formatMessage({id: 'comment_missing'});
@@ -26,7 +26,7 @@ class Tag extends Component {
           color: '#fff',
           width: 'auto',
           cursor: 'pointer',
-          fontSize: '0.7em',
+          fontSize: textSize || '0.7em',
           textTransform: 'uppercase'
         }}
       >

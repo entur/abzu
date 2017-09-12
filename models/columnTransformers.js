@@ -11,6 +11,7 @@ import MdNotChecked from 'material-ui/svg-icons/action/highlight-off';
 import StairsIcon from '../static/icons/accessibility/Stairs';
 import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
 import { enturDark } from '../config/enturTheme';
+import TagTray from '../components/MainPage/TagTray';
 
 const getParkingElements = (parking = []) => {
   if (!parking || !parking.length) {
@@ -159,6 +160,7 @@ export const ColumnTransformerStopPlaceJsx = {
     }
     return <MdNotChecked color="#B71C1C" />;
   },
+  tags: stop => <TagTray tags={stop.tags} textSize="0.9em" direction="column" align="left"/>
 };
 
 export const ColumnTransformersStopPlace = {
@@ -203,7 +205,8 @@ export const ColumnTransformersStopPlace = {
       return signString.length ? signString.substring(0, signString.length-1) : signString;
     }
     return '';
-  }
+  },
+  tags: stop => stop.tags.map( tag => tag.name).join(',')
 };
 
 export const ColumnTransformerQuaysJsx = {
@@ -252,6 +255,7 @@ export const ColumnTranslations = {
     waitingRoomEquipment: 'Venterom',
     sanitaryEquipment: 'WC',
     generalSign: 'Transportskilt',
+    tags: 'Tagger',
   },
   en: {
     name: 'Name',
@@ -271,5 +275,6 @@ export const ColumnTranslations = {
     waitingRoomEquipment: 'Waiting room',
     sanitaryEquipment: 'WC',
     generalSign: 'Transport sign',
+    tags: 'Tags'
   }
 };

@@ -102,5 +102,9 @@ export const columnOptionsStopPlace = [
   {
     id: 'generalSign',
     checked: false
+  },
+  {
+    id: 'tags',
+    checked: false
   }
 ];
