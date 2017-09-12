@@ -690,12 +690,25 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   return copy;
 };
 
-helpers.mapNeighbourQuaysToClient = (original, payLoad) => {
+helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
+
   let neighbourQuaysMap = { ...original } || {};
 
   if (!payLoad || !payLoad.length) return neighbourQuaysMap;
 
-  const stopPlace = payLoad[0];
+  const rootStopPlace = payLoad[0];
+  let stopPlace = null;
+
+  // root element in possible multimodal strcture is the one requested
+  if (rootStopPlace && rootStopPlace.id === resourceId) {
+    stopPlace = rootStopPlace;
+  } else if (rootStopPlace.children) {
+    // find child with resourceId and its quays
+    stopPlace = rootStopPlace.children.find(stop => stop.id === resourceId);
+  } else {
+    console.info("StopPlace is not found, ignoring getting quays");
+    return original;
+  }
 
   neighbourQuaysMap[stopPlace.id] = stopPlace.quays.map(quay => {
     let clientQuay = {};

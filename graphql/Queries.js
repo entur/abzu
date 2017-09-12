@@ -6,7 +6,25 @@ export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
       stopPlace(id: $id) {
           id 
+          ...on ParentStopPlace {
+              children {
+                  id
+                  quays {
+                      id
+                      version
+                      geometry {
+                          coordinates
+                      }
+                      compassBearing
+                      publicCode
+                      privateCode {
+                          value
+                      }
+                  }
+              }
+          }
           ...on StopPlace {
+              id
               quays {
                   id
                   version

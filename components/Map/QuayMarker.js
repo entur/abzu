@@ -54,8 +54,8 @@ class QuayMarker extends React.Component {
   handleSetFocus() {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.setElementFocus(index, 'quay'));
-    const expandedQuayEl = document.querySelector(".quay-item-expanded");
-    const scrollBodyEl = document.querySelector("#scroll-body");
+    const expandedQuayEl = document.querySelector('.quay-item-expanded');
+    const scrollBodyEl = document.querySelector('#scroll-body');
     if (expandedQuayEl && scrollBodyEl) {
       expandedQuayEl.scrollIntoView(true);
       scrollBodyEl.scrollTop -= 50;
@@ -63,19 +63,23 @@ class QuayMarker extends React.Component {
   }
 
   handleMoveQuay() {
-    this.props.dispatch(UserActions.moveQuay({
-      id: this.props.id,
-      privateCode: this.props.privateCode,
-      publicCode: this.props.publicCode
-    }));
+    this.props.dispatch(
+      UserActions.moveQuay({
+        id: this.props.id,
+        privateCode: this.props.privateCode,
+        publicCode: this.props.publicCode
+      })
+    );
   }
 
   handleMoveQuayToNewStop() {
-    this.props.dispatch(UserActions.moveQuayToNewStopPlace({
-      id: this.props.id,
-      privateCode: this.props.privateCode,
-      publicCode: this.props.publicCode
-    }));
+    this.props.dispatch(
+      UserActions.moveQuayToNewStopPlace({
+        id: this.props.id,
+        privateCode: this.props.privateCode,
+        publicCode: this.props.publicCode
+      })
+    );
   }
 
   shouldComponentUpdate(nextProps) {
@@ -83,18 +87,49 @@ class QuayMarker extends React.Component {
   }
 
   getShouldShowMergeQuay() {
-    const { isEditingStop, disabled, belongsToNeighbourStop, currentIsNewStop, id } = this.props;
-    return isEditingStop && !disabled && !belongsToNeighbourStop && !!id && !currentIsNewStop;
+    const {
+      isEditingStop,
+      disabled,
+      belongsToNeighbourStop,
+      currentIsNewStop,
+      id
+    } = this.props;
+    return (
+      isEditingStop &&
+      !disabled &&
+      !belongsToNeighbourStop &&
+      !!id &&
+      !currentIsNewStop
+    );
   }
 
   getIsMergingFromThis() {
     const { id, mergingQuay } = this.props;
-    return id && mergingQuay.fromQuay && mergingQuay.fromQuay.id && id === mergingQuay.fromQuay.id;
+    return (
+      id &&
+      mergingQuay.fromQuay &&
+      mergingQuay.fromQuay.id &&
+      id === mergingQuay.fromQuay.id
+    );
   }
 
   getShouldShowMoveQuay() {
-    const { isEditingStop, disabled, belongsToNeighbourStop, currentIsNewStop, id, currentStopIsMultimodal } = this.props;
-    return isEditingStop && !disabled && belongsToNeighbourStop && !!id && !currentIsNewStop && !currentStopIsMultimodal;
+    const {
+      isEditingStop,
+      disabled,
+      belongsToNeighbourStop,
+      currentIsNewStop,
+      id,
+      currentStopIsMultimodal
+    } = this.props;
+    return (
+      isEditingStop &&
+      !disabled &&
+      belongsToNeighbourStop &&
+      !!id &&
+      !currentIsNewStop &&
+      !currentStopIsMultimodal
+    );
   }
 
   render() {
@@ -181,7 +216,12 @@ class QuayMarker extends React.Component {
         }}
         keyboard={false}
       >
-        <Popup autoPan={false} onOpen={() => { this.handleSetFocus() }}>
+        <Popup
+          autoPan={false}
+          onOpen={() => {
+            this.handleSetFocus();
+          }}
+        >
           <div>
             <span className="quay-marker-title">
               {parentStopPlaceName}
@@ -200,10 +240,10 @@ class QuayMarker extends React.Component {
             >
               <div>{formattedStopType}</div>
               <ToolTippable toolTipText={translations.publicCode}>
-                <Code type="publicCode" value={publicCode}/>
+                <Code type="publicCode" value={publicCode} />
               </ToolTippable>
               <ToolTippable toolTipText={translations.privateCode}>
-                <Code type="privateCode" value={privateCode}/>
+                <Code type="privateCode" value={privateCode} />
               </ToolTippable>
             </div>
             <div
@@ -319,43 +359,42 @@ class QuayMarker extends React.Component {
                           {translations.mergeQuayFrom}
                         </span>
                       </div>}
-                  { !disabled &&
-                    <div style={{marginTop: 10}}>
+                  {!disabled &&
+                    <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
                         onClick={() => this.handleMoveQuayToNewStop()}
                       >
                         {translations.moveQuaysToNewStop}
                       </span>
-                    </div>
-                  }
+                    </div>}
                 </div>}
             </div>
             <div style={{ marginTop: 10 }}>
               {showPathLink && isEditingStop && !currentIsNewStop
                 ? <div>
-                  {id
-                    ? <div
-                      className={`marker-popup-button ${isIncomplete
-                        ? 'incomplete'
-                        : ''}`}
-                      onClick={() => {
-                        handleUpdatePathLink(position, id, 'quay');
-                      }}
-                    >
-                      {pathLinkText}
-                      {isIncomplete && <div>{translations.inComplete}</div>}
-                      </div>
-                    : <div
-                      style={{
-                        textAlign: 'center',
-                        padding: 10,
-                        border: '1px solid #9E9E9E'
-                      }}
-                    >
-                      {translations.saveFirstPathLink}
-                    </div>}
-                </div>
+                    {id
+                      ? <div
+                          className={`marker-popup-button ${isIncomplete
+                            ? 'incomplete'
+                            : ''}`}
+                          onClick={() => {
+                            handleUpdatePathLink(position, id, 'quay');
+                          }}
+                        >
+                          {pathLinkText}
+                          {isIncomplete && <div>{translations.inComplete}</div>}
+                        </div>
+                      : <div
+                          style={{
+                            textAlign: 'center',
+                            padding: 10,
+                            border: '1px solid #9E9E9E'
+                          }}
+                        >
+                          {translations.saveFirstPathLink}
+                        </div>}
+                  </div>
                 : null}
             </div>
           </div>
@@ -371,7 +410,11 @@ const mapStateToProps = state => ({
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,
   pathLink: state.stopPlace.pathLink,
-  currentStopIsMultimodal: getIn(state, ['stopPlace', 'current', 'isParent'], false)
+  currentStopIsMultimodal: getIn(
+    state,
+    ['stopPlace', 'current', 'isParent'],
+    false
+  )
 });
 
 export default connect(mapStateToProps)(QuayMarker);

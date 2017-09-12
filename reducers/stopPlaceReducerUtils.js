@@ -72,10 +72,12 @@ export const getStateByOperation = (state, action) => {
       });
 
     case 'neighbourStopPlaceQuays':
+      const resourceId = extractResourceId(action, 'neighbourStopPlaceQuays');
       return Object.assign({}, state, {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(
           state.neighbourStopQuays,
-          action.result.data.stopPlace
+          action.result.data.stopPlace,
+          resourceId
         )
       });
 
@@ -127,7 +129,7 @@ const getStateWithEntitiesFromQuery = (state, action) => {
 
   const parking = action.result.data.parking ? action.result.data.parking : [];
 
-  const resourceId = extractResourceId(action);
+  const resourceId = extractResourceId(action, 'updateChildOfParentStop');
 
   const currentStop = formatHelpers.mapStopToClientStop(
     stopPlace,
@@ -183,11 +185,11 @@ const updateStopPlaceStateAfterMutate = (state, action, dataResource) => {
 
 /* determine whether mutation result was intended for a parentStopPlace or child of a parentStopPlace
 since body always will be full parentStopPlace */
-const extractResourceId = action => {
+const extractResourceId = (action, operationName) => {
   if (!action || !action.variables) return null;
 
   if (
-    action.operationName === 'updateChildOfParentStop' &&
+    action.operationName === operationName &&
     action.variables.children &&
     action.variables.children.length
   ) {
