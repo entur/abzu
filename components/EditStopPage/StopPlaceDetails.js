@@ -450,6 +450,8 @@ class StopPlaceDetails extends React.Component {
                   <ModalitiesMenuItems
                     handleSubModeTypeChange={this.handleSubModeTypeChange.bind(this)}
                     handleStopTypeChange={this.handleStopTypeChange.bind(this)}
+                    stopPlaceTypeChosen={stopPlace.stopPlaceType}
+                    submodeChosen={stopPlace.submode}
                     stopTypes={stopTypes[locale]}
                   />
                 </Popover>
