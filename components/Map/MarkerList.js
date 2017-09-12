@@ -212,6 +212,9 @@ class MarkerList extends React.Component {
                   index={stopIndex}
                   position={child.location}
                   name={stop.name}
+                  isShowingQuays={!!neighbourStopQuays[child.id]}
+                  handleShowQuays={this.handleShowQuays.bind(this)}
+                  handleHideQuays={this.handleHideQuays.bind(this)}
                   submode={child.submode}
                   formattedStopType={localeStopType}
                   isMultimodal={false}
@@ -230,7 +233,43 @@ class MarkerList extends React.Component {
                   isEditingStop={isEditingStop}
                   missingCoordinatesMap={missingCoordinatesMap}
                 />
-              )
+              );
+
+              if (neighbourStopQuays[child.id]) {
+                neighbourStopQuays[child.id].forEach( (quayOfChild, index) => {
+                  popupMarkers.push(
+                    <QuayMarker
+                      index={index}
+                      parentId={stopIndex}
+                      id={quayOfChild.id}
+                      position={quayOfChild.location}
+                      key={'quay-neighbour-child' + quayOfChild.id}
+                      handleQuayDragEnd={() => {}}
+                      translations={Object.assign(
+                        {},
+                        newStopMarkerText,
+                        CustomPopupMarkerText,
+                      )}
+                      compassBearing={quayOfChild.compassBearing}
+                      publicCode={quayOfChild.publicCode || ''}
+                      privateCode={quayOfChild.privateCode || ''}
+                      parentStopPlaceName={stop.name}
+                      parentStopPlaceId={child.id}
+                      formattedStopType={localeStopType}
+                      handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
+                      handleChangeCoordinates={() => {}}
+                      draggable={false}
+                      belongsToNeighbourStop={true}
+                      handleSetCompassBearing={() => {}}
+                      showPathLink={!disabled}
+                      isEditingStop={isEditingStop}
+                      disabled={disabled}
+                      currentIsNewStop={currentIsNewStop}
+                    />,
+                  )
+                });
+              }
+
             })
           }
 
@@ -415,13 +454,13 @@ class MarkerList extends React.Component {
                 index={stopIndex}
                 submode={stop.submode}
                 translations={CustomPopupMarkerText}
-                isShowingQuays={!!neighbourStopQuays[stop.id]}
                 isEditingStop={isEditingStop}
                 isMultimodal={stop.isParent}
                 currentStopIsMultiModal={currentStopIsMultiModal}
                 disabled={disabled}
                 stopType={stop.stopPlaceType}
                 handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
+                isShowingQuays={!!neighbourStopQuays[stop.id]}
                 handleShowQuays={this.handleShowQuays.bind(this)}
                 handleHideQuays={this.handleHideQuays.bind(this)}
                 hasExpired={stop.hasExpired}

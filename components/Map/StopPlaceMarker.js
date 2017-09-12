@@ -35,11 +35,12 @@ class StopPlaceMarker extends React.Component {
     this.createIcon(nextProps);
   }
 
-  createIcon({index, stopType, submode, active, isMultimodal}) {
+  createIcon({index, stopType, submode, active, isMultimodal, isMultimodalChild}) {
     let divIconBody = (
       <CustomMarkerIcon
         markerIndex={index}
         isMultimodal={isMultimodal}
+        isMultimodalChild={isMultimodalChild}
         stopType={stopType}
         active={active}
         submode={submode}
@@ -67,6 +68,10 @@ class StopPlaceMarker extends React.Component {
       handleChangeCoordinates,
       handleAdjustCentroid,
       translations,
+      isShowingQuays,
+      handleShowQuays,
+      handleHideQuays,
+      isMultimodalChild,
       id,
       disabled
     } = this.props;
@@ -147,6 +152,14 @@ class StopPlaceMarker extends React.Component {
               >
                 {translations.adjustCentroid}
               </div>}
+            {isMultimodalChild &&
+            <div
+              className={'marker-popup-button'}
+              style={{ marginTop: 10 }}
+              onClick={() => isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)}
+            >
+              {isShowingQuays ? translations.hideQuays : translations.showQuays}
+            </div>}
           </div>
         </Popup>
       </Marker>

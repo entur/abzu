@@ -10,7 +10,7 @@ class CustomMarkerIcon extends React.Component {
   };
 
   componentWillMount() {
-    const { stopType, active, hasExpired, submode, isMultimodal } = this.props;
+    const { stopType, active, hasExpired, submode, isMultimodal, isMultimodalChild } = this.props;
 
     let imageStyle = {
       padding: 3,
@@ -20,7 +20,7 @@ class CustomMarkerIcon extends React.Component {
 
     if (!active) {
       imageStyle.opacity = hasExpired ? '0.5' : '1.0';
-      imageStyle.filter = 'grayscale(80%)';
+      imageStyle.filter = isMultimodalChild ? 'grayscale(60%)' : 'grayscale(80%)';
     }
 
     const icon = getIconIdByTypeOrSubmode(submode, stopType, isMultimodal);

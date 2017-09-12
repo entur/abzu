@@ -4,7 +4,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
-import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
+import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
 
 class NeighbourMarker extends React.Component {
   static propTypes = {
@@ -25,7 +25,12 @@ class NeighbourMarker extends React.Component {
   }
 
   getIsMergingStopAllowed() {
-    const { currentStopIsMultiModal, isMultimodal, disabled, isEditingStop } = this.props;
+    const {
+      currentStopIsMultiModal,
+      isMultimodal,
+      disabled,
+      isEditingStop
+    } = this.props;
     if (disabled) return false;
 
     if (isMultimodal || currentStopIsMultiModal) {
@@ -130,7 +135,7 @@ class NeighbourMarker extends React.Component {
                 {position[1]}
               </span>
             </div>
-            { isMergingStopAllowed &&
+            {isMergingStopAllowed &&
               <div
                 style={{
                   marginTop: 10,
@@ -143,30 +148,33 @@ class NeighbourMarker extends React.Component {
                   {translations.mergeStopPlace}
                 </span>
               </div>}
-            {isShowingQuays
-              ? <div
-                style={{
-                  marginTop: 10,
-                  cursor: 'pointer',
-                  textAlign: 'center'
-                }}
-                onClick={() => handleHideQuays(id)}
-              >
-                <span className="marker-popup-button">
-                    {translations.hideQuays}
-                  </span>
-              </div>
-              : <div
-                style={{
-                  marginTop: 10,
-                  cursor: 'pointer',
-                  textAlign: 'center'
-                }}
-                onClick={() => handleShowQuays(id)}
-              >
-                  <span className="marker-popup-button">
-                    {translations.showQuays}
-                  </span>
+            {!isMultimodal &&
+              <div>
+                {isShowingQuays
+                  ? <div
+                      style={{
+                        marginTop: 10,
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                      onClick={() => handleHideQuays(id)}
+                    >
+                      <span className="marker-popup-button">
+                        {translations.hideQuays}
+                      </span>
+                    </div>
+                  : <div
+                      style={{
+                        marginTop: 10,
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                      onClick={() => handleShowQuays(id)}
+                    >
+                      <span className="marker-popup-button">
+                        {translations.showQuays}
+                      </span>
+                    </div>}
               </div>}
           </div>
         </Popup>
