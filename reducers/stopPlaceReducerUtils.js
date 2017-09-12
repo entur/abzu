@@ -38,7 +38,8 @@ export const getStateByOperation = (state, action) => {
     case 'stopPlaceBBox':
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
-          action.result.data.stopPlaceBBox
+          action.result.data.stopPlaceBBox,
+          state.current
         )
       });
 
@@ -101,8 +102,10 @@ const getDataFromResult = (state, action) => {
 
   if (action.result.data.stopPlaceBBox) {
     return Object.assign({}, state, {
-      neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
-        action.result.data.stopPlaceBBox
+      neighbourStops: formatHelpers.
+      mapNeighbourStopsToClientStops(
+        action.result.data.stopPlaceBBox,
+        state.current
       )
     });
   }

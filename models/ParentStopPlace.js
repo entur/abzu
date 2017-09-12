@@ -92,12 +92,11 @@ class ParentStopPlace {
         clientStop.keyValues = stop.keyValues;
       }
 
-      if (isActive) {
-        if (stop.children) {
-          clientStop.children = stop.children
-            .map(item => new StopPlace(item, isActive).toClient())
-        }
+      if (stop.children) {
+        clientStop.children = stop.children
+          .map(item => new StopPlace(item, isActive).toClient())
       }
+
       return clientStop;
     } catch (e) {
       console.log('error', e);

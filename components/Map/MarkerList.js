@@ -201,6 +201,38 @@ class MarkerList extends React.Component {
         );
       } else {
         if (stop.isActive) {
+
+          if (stop.isParent && stop.children) {
+            stop.children.forEach( (child, i) => {
+              popupMarkers.push(
+                <StopPlaceMarker
+                  key={'stopPlace-child-' + stop.id + '-' + i}
+                  id={child.id}
+                  index={stopIndex}
+                  position={child.location}
+                  name={stop.name}
+                  submode={child.submode}
+                  formattedStopType={localeStopType}
+                  isMultimodal={false}
+                  isMultimodalChild={true}
+                  disabled={disabled}
+                  handleDragEnd={handleDragEnd}
+                  active={false}
+                  stopType={child.stopPlaceType}
+                  handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
+                  draggable={false}
+                  handleChangeCoordinates={changeCoordinates}
+                  translations={CustomPopupMarkerText}
+                  handleOnClick={() => {
+                    this.handleStopOnClick(child.id);
+                  }}
+                  isEditingStop={isEditingStop}
+                  missingCoordinatesMap={missingCoordinatesMap}
+                />
+              )
+            })
+          }
+
           popupMarkers.push(
             <StopPlaceMarker
               key={'stopPlace-' + stop.id}

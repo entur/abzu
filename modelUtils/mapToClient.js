@@ -219,8 +219,26 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
   return new Quay(quay, accessibilityAssessment).toClient();
 };
 
-helpers.mapNeighbourStopsToClientStops = stops => {
-  return stops.map(stop => helpers.mapStopToClientStop(stop, false));
+helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
+  const allStops = stops.map(stop => helpers.mapStopToClientStop(stop, false));
+  let extractedChildren = [];
+  const currentStopPlaceId = currentStopPlace ? currentStopPlace.id : null;
+
+  // extract all children of potential parent stop places
+  allStops.forEach( stop => {
+    if (stop.isParent && stop.children) {
+      const children = stop.children
+        // a parent stop place may contain active stop as a child, i.e. sibling
+        .filter(child => child.id !== currentStopPlaceId)
+        .map( child => {
+          child.name = stop.name;
+          child.isChildOfParent = true;
+          return child;
+      });
+      extractedChildren = extractedChildren.concat(children);
+    }
+  });
+  return allStops.concat(extractedChildren);
 };
 
 helpers.mapSearchResultatToClientStops = stops => {

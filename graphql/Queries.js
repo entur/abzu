@@ -50,6 +50,24 @@ export const stopPlaceBBQuery = gql`
                 submode
             }
             ...on ParentStopPlace {
+                children {
+                    id
+                    stopPlaceType
+                    submode
+                    geometry {
+                        coordinates
+                    }
+                    topographicPlace {
+                        name {
+                            value
+                        }
+                        topographicPlaceType
+                    }
+                    validBetween {
+                        fromDate
+                        toDate
+                    }
+                }
                 name {
                     value
                 }
