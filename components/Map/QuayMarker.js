@@ -82,6 +82,21 @@ class QuayMarker extends React.Component {
     return shallowCompare(this, nextProps);
   }
 
+  getShouldShowMergeQuay() {
+    const { isEditingStop, disabled, belongsToNeighbourStop, currentIsNewStop, id } = this.props;
+    return isEditingStop && !disabled && !belongsToNeighbourStop && !!id && !currentIsNewStop;
+  }
+
+  getIsMergingFromThis() {
+    const { id, mergingQuay } = this.props;
+    return id && mergingQuay.fromQuay && mergingQuay.fromQuay.id && id === mergingQuay.fromQuay.id;
+  }
+
+  getShouldShowMoveQuay() {
+    const { isEditingStop, disabled, belongsToNeighbourStop, currentIsNewStop, id, currentStopIsMultimodal } = this.props;
+    return isEditingStop && !disabled && belongsToNeighbourStop && !!id && !currentIsNewStop && !currentStopIsMultimodal;
+  }
+
   render() {
     const {
       position,
@@ -152,12 +167,9 @@ class QuayMarker extends React.Component {
     });
 
     const osmURL = this.getOSMURL();
-    const shouldShowMergeQuay =
-      isEditingStop && !disabled && !belongsToNeighbourStop && !!id && !currentIsNewStop;
-    const isMergingFromThis =
-      id && mergingQuay.fromQuay && mergingQuay.fromQuay.id && id === mergingQuay.fromQuay.id;
-    const shouldShowMoveQuay =
-      isEditingStop && !disabled && belongsToNeighbourStop && !!id && !currentIsNewStop;
+    const shouldShowMergeQuay = this.getShouldShowMergeQuay();
+    const isMergingFromThis = this.getIsMergingFromThis();
+    const shouldShowMoveQuay = this.getShouldShowMoveQuay();
 
     return (
       <Marker
@@ -359,6 +371,7 @@ const mapStateToProps = state => ({
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,
   pathLink: state.stopPlace.pathLink,
+  currentStopIsMultimodal: getIn(state, ['stopPlace', 'current', 'isParent'], false)
 });
 
 export default connect(mapStateToProps)(QuayMarker);
