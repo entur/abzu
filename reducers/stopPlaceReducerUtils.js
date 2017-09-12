@@ -22,6 +22,9 @@ export const getStateByOperation = (state, action) => {
     case 'mutateStopPlace':
       return updateStopPlaceStateAfterMutate(state, action, 'mutateStopPlace');
 
+    case 'mutateCreateMultiModalStopPlace':
+      return updateStopPlaceStateAfterMutate(state, action, 'createMultiModalStopPlace');
+
     case 'mutateParentStopPlace':
       return updateStopPlaceStateAfterMutate(state, action, 'mutateParentStopPlace');
 

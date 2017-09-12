@@ -50,7 +50,7 @@ export const updateChildOfParentStop = gql`
 
 export const mutateCreateMultiModalStopPlace = gql`
   mutation mutateCreateMultiModalStopPlace($name: String!, $stopPlaceIds: [String]!, $description: String, $coordinates: Coordinates!, $versionComment: String, $validBetween: ValidBetweenInput) {
-      createMultiModalStopPlace(createMultiModalStopPlaceInput: {
+      createMultiModalStopPlace(input: {
           name: {
               value: $name
               lang: "no"
@@ -75,7 +75,7 @@ export const mutateCreateMultiModalStopPlace = gql`
 
 export const mutateAddToMultiModalStopPlace  = gql`
   mutation mutateAddToMultiModalStopPlace($parentSiteRef: String!, $stopPlaceIds: [String]!) {
-      addToMultiModalStopPlace(addToMultiModalStopPlaceInput: {
+      addToMultiModalStopPlace(input: {
           parentSiteRef: $parentSiteRef, stopPlaceIds: $stopPlaceIds
       }) {
           id
