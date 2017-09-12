@@ -139,7 +139,8 @@ class MarkerList extends React.Component {
       intl,
       showExpiredStops,
       isEditingStop,
-      currentIsNewStop
+      currentIsNewStop,
+      currentStopIsMultiModal
     } = props;
     const { formatMessage } = intl;
 
@@ -417,6 +418,7 @@ class MarkerList extends React.Component {
                 isShowingQuays={!!neighbourStopQuays[stop.id]}
                 isEditingStop={isEditingStop}
                 isMultimodal={stop.isParent}
+                currentStopIsMultiModal={currentStopIsMultiModal}
                 disabled={disabled}
                 stopType={stop.stopPlaceType}
                 handleMergeStopPlace={this.handleMergeStopPlace.bind(this)}
@@ -485,7 +487,8 @@ const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
-  newStopIsMultiModal: state.user.newStopIsMultiModal
+  newStopIsMultiModal: state.user.newStopIsMultiModal,
+  currentStopIsMultiModal: getIn(state.stopPlace, ['current', 'isParent'], false)
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

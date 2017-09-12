@@ -24,6 +24,16 @@ class NeighbourMarker extends React.Component {
     return shallowCompare(this, nextProps);
   }
 
+  getIsMergingStopAllowed() {
+    const { currentStopIsMultiModal, isMultimodal, disabled, isEditingStop } = this.props;
+    if (disabled) return false;
+
+    if (isMultimodal || currentStopIsMultiModal) {
+      return false;
+    }
+    return isEditingStop;
+  }
+
   render() {
     const {
       position,
@@ -45,6 +55,8 @@ class NeighbourMarker extends React.Component {
     } = this.props;
 
     if (!position) return null;
+
+    const isMergingStopAllowed = this.getIsMergingStopAllowed();
 
     let divIconBodyMarkup = ReactDOM.renderToStaticMarkup(
       <CustomMarkerIcon
@@ -120,8 +132,7 @@ class NeighbourMarker extends React.Component {
                 {position[1]}
               </span>
             </div>
-            {!disabled &&
-              isEditingStop &&
+            { isMergingStopAllowed &&
               <div
                 style={{
                   marginTop: 10,
