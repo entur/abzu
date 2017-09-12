@@ -5,7 +5,7 @@ export const getStateByOperation = (state, action) => {
     case 'stopPlace':
     case 'updateChildOfParentStop':
     case 'stopPlaceAndPathLink':
-      return getDataFromResult(state, action);
+      return getStateWithEntitiesFromQuery(state, action);
 
     case 'stopPlaceAllVersions':
       return Object.assign({}, state, {
@@ -95,27 +95,19 @@ const getProperZoomLevel = (data, prevZoom) => {
   return 15;
 };
 
-const getDataFromResult = (state, action) => {
+const getStateWithEntitiesFromQuery = (state, action) => {
   if (!action.result.data) {
     return state;
   }
 
-  if (action.result.data.stopPlaceBBox) {
-    return Object.assign({}, state, {
-      neighbourStops: formatHelpers.
-      mapNeighbourStopsToClientStops(
-        action.result.data.stopPlaceBBox,
-        state.current
-      )
-    });
-  }
-
+  // result extracted from query
   let stopPlace = action.result.data.stopPlace &&
     action.result.data.stopPlace.length
     ? action.result.data.stopPlace[0]
     : null;
 
   if (!stopPlace) {
+    // result extracted from result from mutation
     if (
       action.result.data.mutateParentStopPlace &&
       action.result.data.mutateParentStopPlace.length
@@ -123,8 +115,9 @@ const getDataFromResult = (state, action) => {
       stopPlace = action.result.data.mutateParentStopPlace[0];
     }
   }
-
+  // no stop place found
   if (stopPlace === null) {
+    console.warning("Result contains no stop place data, ignored");
     return state;
   }
 
@@ -154,9 +147,7 @@ const getDataFromResult = (state, action) => {
     minZoom: stopPlace && stopPlace.geometry ? 14 : 7,
     pathLink: formatHelpers.mapPathLinkToClient(pathLink),
     neighbourStopQuays: {},
-    centerPosition: !stopPlace || !stopPlace.geometry
-      ? state.centerPosition
-      : formatHelpers.getCenterPosition(stopPlace.geometry),
+    centerPosition: currentStop.location,
     stopHasBeenModified: false,
     isCreatingPolylines: false
   });
