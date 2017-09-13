@@ -26,9 +26,12 @@ export const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
 
-export const sortNeighbourStopPlacesByDistance = (stopPlaceCentroid, neighbourStops, nFirst) => {
+/* filters stopPlaces that elligible to be added to parent stop place
+  (not parent or child of a multimodal stop place) and sorts them by distance asc
+ */
+export const getAndSortNeighbourStopPlacesBystance = (stopPlaceCentroid, neighbourStops, nFirst) => {
 
-  let suggestions = (neighbourStops||[]).slice();
+  let suggestions = neighbourStops.filter(stop => !stop.isParent && !stop.isChildOfParent);
 
   if (stopPlaceCentroid) {
     suggestions = (suggestions.map( stop => {

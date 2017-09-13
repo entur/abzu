@@ -54,7 +54,6 @@ const getParkingType = parking => {
 export const ColumnTransformerStopPlaceJsx = {
   id: stop => <StopPlaceLink id={stop.id} />,
   name: stop => {
-
     const parentChildStyle = {
       fontWeight: 600,
       textTransform: 'uppercase',
@@ -73,16 +72,16 @@ export const ColumnTransformerStopPlaceJsx = {
           <span>{stop.name}</span>
           <span style={parentChildStyle}>Parent</span>
         </div>
-      )
-  } else if (stop.isChildOfParent) {
+      );
+    } else if (stop.isChildOfParent) {
       return (
         <div>
           <span>{stop.name}</span>
           <span style={parentChildStyle}>Child</span>
         </div>
-      )
+      );
     } else {
-      return stop.name
+      return stop.name;
     }
   },
   modality: stop => {
@@ -91,17 +90,25 @@ export const ColumnTransformerStopPlaceJsx = {
         ? 'red'
         : '#000';
       return (
-        <ModalityIcon submode={stop.submode} svgStyle={{ color: iconColor, marginTop: -5, transform: 'scale(0.8)' }} type={stop.stopPlaceType} />
+        <ModalityIcon
+          submode={stop.submode}
+          svgStyle={{
+            color: iconColor,
+            marginTop: -5,
+            transform: 'scale(0.8)'
+          }}
+          type={stop.stopPlaceType}
+        />
       );
     } else {
-      return <ModalityIconTray modalities={stop.modesFromChildren}/>
+      return <ModalityIconTray modalities={stop.modesFromChildren} />;
     }
   },
   muncipality: stop => stop.topographicPlace,
   county: stop => stop.parentTopographicPlace,
   importedId: stop => stop.importedId.join('\r\n'),
-  position: stop => stop.location ? stop.location.join(',') : 'N/A',
-  quays: stop => stop.quays ? stop.quays.length : 0,
+  position: stop => (stop.location ? stop.location.join(',') : 'N/A'),
+  quays: stop => (stop.quays ? stop.quays.length : 0),
   parking: stop => getParkingElements(stop.parking),
   wheelchairAccess: stop => {
     const wheelchairAccess = getIn(
@@ -142,37 +149,53 @@ export const ColumnTransformerStopPlaceJsx = {
     let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
     if (signs && signs.length) {
       let transportModeSigns = [];
-      signs.forEach( (sign, i) => {
-        const { signContentType } = sign
-        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null)
-        if (signContentType === "transportMode" && privateCodeValue) {
+      signs.forEach((sign, i) => {
+        const { signContentType } = sign;
+        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null);
+        if (signContentType === 'transportMode' && privateCodeValue) {
           transportModeSigns.push(
-            <div
-              key={"sign-" + stop.id + "-" + i}
-            >
-              <span style={{borderRadius: '50%', padding: 5, position: 'absolute', fontWeight: 600, marginTop: -5, border: '1px solid black'}}
-              >{ privateCodeValue }</span> 
+            <div key={'sign-' + stop.id + '-' + i}>
+              <span
+                style={{
+                  borderRadius: '50%',
+                  padding: 5,
+                  position: 'absolute',
+                  fontWeight: 600,
+                  marginTop: -5,
+                  border: '1px solid black'
+                }}
+              >
+                {privateCodeValue}
+              </span>
             </div>
-          )
+          );
         }
       });
       return transportModeSigns;
     }
     return <MdNotChecked color="#B71C1C" />;
   },
-  tags: stop => <TagTray tags={stop.tags} textSize="0.9em" direction="column" align="left"/>
+  tags: stop =>
+    <TagTray
+      tags={stop.tags}
+      textSize="0.9em"
+      direction="column"
+      align="left"
+    />
 };
 
 export const ColumnTransformersStopPlace = {
   ...ColumnTransformerStopPlaceJsx,
   id: stop => stop.id,
   modality: stop => {
-    if (stop.isParent) return stop.modesFromChildren.map(mode => mode.stopPlaceType).join(',');
+    if (stop.isParent)
+      return stop.modesFromChildren.map(mode => mode.stopPlaceType).join(',');
     return stop.stopPlaceType;
   },
   importedId: stop => stop.importedId.join(','),
-  quays: stop => stop.quays ? stop.quays.map(quay => quay.id).join(',') : '',
-  parking: stop => stop.parking ? stop.parking.map(parking => parking.id).join(',') : '',
+  quays: stop => (stop.quays ? stop.quays.map(quay => quay.id).join(',') : ''),
+  parking: stop =>
+    stop.parking ? stop.parking.map(parking => parking.id).join(',') : '',
   wheelchairAccess: stop =>
     getIn(
       stop,
@@ -195,32 +218,38 @@ export const ColumnTransformersStopPlace = {
     let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
     if (signs && signs.length) {
       let signString = '';
-      signs.forEach( sign => {
-        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null)
-        if (sign.signContentType === "transportMode" && privateCodeValue) {
-          signString += privateCodeValue + ";"
+      signs.forEach(sign => {
+        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null);
+        if (sign.signContentType === 'transportMode' && privateCodeValue) {
+          signString += privateCodeValue + ';';
         }
       });
 
-      return signString.length ? signString.substring(0, signString.length-1) : signString;
+      return signString.length
+        ? signString.substring(0, signString.length - 1)
+        : signString;
     }
     return '';
   },
-  tags: stop => stop.tags.map( tag => tag.name).join(',')
+  tags: stop => stop.tags.map(tag => tag.name).join(',')
 };
 
 export const ColumnTransformerQuaysJsx = {
   id: quay => quay.id,
   importedId: quay => quay.importedId.join('\r\n'),
-  position: quay => quay.location ? quay.location.join(',') : 'N/A',
+  position: quay => (quay.location ? quay.location.join(',') : 'N/A'),
   publicCode: quay => quay.publicCode,
   privateCode: quay => quay.privateCode,
-  wheelchairAccess: quay => ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
-  sanitaryEquipment: quay => ColumnTransformerStopPlaceJsx.sanitaryEquipment(quay),
-  shelterEquipment: quay => ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
+  wheelchairAccess: quay =>
+    ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
+  sanitaryEquipment: quay =>
+    ColumnTransformerStopPlaceJsx.sanitaryEquipment(quay),
+  shelterEquipment: quay =>
+    ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
   stepFreeAccess: quay => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
   generalSign: quay => ColumnTransformerStopPlaceJsx.generalSign(quay),
-  waitingRoomEquipment: quay => ColumnTransformerStopPlaceJsx.waitingRoomEquipment(quay),
+  waitingRoomEquipment: quay =>
+    ColumnTransformerStopPlaceJsx.waitingRoomEquipment(quay)
 };
 
 export const ColumnTransformersQuays = {
@@ -229,11 +258,13 @@ export const ColumnTransformersQuays = {
   stopPlaceName: quay => quay.stopPlaceName,
   importedId: quay => quay.importedId.join(','),
   wheelchairAccess: quay => ColumnTransformersStopPlace.wheelchairAccess(quay),
-  sanitaryEquipment: quay => ColumnTransformersStopPlace.sanitaryEquipment(quay),
+  sanitaryEquipment: quay =>
+    ColumnTransformersStopPlace.sanitaryEquipment(quay),
   shelterEquipment: quay => ColumnTransformersStopPlace.shelterEquipment(quay),
   stepFreeAccess: quay => ColumnTransformersStopPlace.stepFreeAccess(quay),
   generalSign: quay => ColumnTransformersStopPlace.generalSign(quay),
-  waitingRoomEquipment: quay => ColumnTransformersStopPlace.waitingRoomEquipment(quay),
+  waitingRoomEquipment: quay =>
+    ColumnTransformersStopPlace.waitingRoomEquipment(quay)
 };
 
 export const ColumnTranslations = {
@@ -255,7 +286,7 @@ export const ColumnTranslations = {
     waitingRoomEquipment: 'Venterom',
     sanitaryEquipment: 'WC',
     generalSign: 'Transportskilt',
-    tags: 'Tagger',
+    tags: 'Tagger'
   },
   en: {
     name: 'Name',

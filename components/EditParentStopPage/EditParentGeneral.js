@@ -175,7 +175,18 @@ class EditParentGeneral extends React.Component {
       });
   }
 
+  getIsAllowedToSave() {
+    const { disabled, stopHasBeenModified, stopPlace } = this.props;
+    if (disabled) return false;
+    if (!stopPlace.name.length) return false;
+    if (!stopPlace.id && !stopPlace.children.length){
+      return false;
+    }
+    return stopHasBeenModified;
+  }
+
   render() {
+
     const {
       stopPlace,
       versions,
@@ -185,7 +196,9 @@ class EditParentGeneral extends React.Component {
       removingStopPlaceFromParentId,
       removeStopPlaceFromParentOpen
     } = this.props;
+
     const { formatMessage } = intl;
+    const isAllowedToSave = this.getIsAllowedToSave();
 
     const containerStyle = {
       border: '1px solid #511E12',
@@ -258,11 +271,7 @@ class EditParentGeneral extends React.Component {
           />
           <FlatButton
             icon={<MdSave />}
-            disabled={
-              disabled ||
-              !stopHasBeenModified ||
-              !stopPlace.name.length
-            }
+            disabled={!isAllowedToSave}
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.8em' }}
