@@ -31,9 +31,11 @@ class Header extends React.Component {
   }
 
   handleConfirmChangeRoute(next, action) {
-    const { stopHasBeenModified, isDisplayingReports } = this.props;
+    const { stopHasBeenModified, isDisplayingReports, isDisplayingEditStopPlace } = this.props;
 
-    if (stopHasBeenModified && !isDisplayingReports) {
+    if (isDisplayingReports) {
+      next();
+    } else if (stopHasBeenModified && isDisplayingEditStopPlace) {
       this.setState({
         isConfirmDialogOpen: true,
         actionOnDone: action
@@ -273,6 +275,8 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
+  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
+  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/edit/') > -1
 });
 
 export default connect(mapStateToProps)(Header);
