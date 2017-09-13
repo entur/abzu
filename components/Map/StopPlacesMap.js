@@ -8,6 +8,7 @@ import { injectIntl } from 'react-intl';
 import { getNeighbourStops } from '../../graphql/Actions';
 import Settings from '../../singletons/SettingsManager';
 import debounce from 'lodash.debounce';
+import { getMarkersForMap } from '../../selectors/StopPlaceMap';
 
 class StopPlacesMap extends React.Component {
 
@@ -91,45 +92,13 @@ class StopPlacesMap extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const {
-    newStop,
-    findCoordinates,
-    activeSearchResult,
-    neighbourStops,
-  } = state.stopPlace;
-
-  const { isCreatingNewStop } = state.user;
-
-  let markers = activeSearchResult ? [activeSearchResult] : [];
-
-  if (activeSearchResult && activeSearchResult.isParent && activeSearchResult.children) {
-    markers = markers.concat(
-      activeSearchResult.children.map( child => {
-        child.name = activeSearchResult.name;
-        return child;
-      })
-    );
-  }
-
-  if (newStop && isCreatingNewStop) {
-    markers = markers.concat(newStop);
-  }
-
-  if (neighbourStops && neighbourStops.length) {
-    markers = markers.concat(neighbourStops);
-  }
-
-  if (findCoordinates) {
-    markers = markers.concat(findCoordinates);
-  }
-
   return {
     position: state.stopPlace.centerPosition,
     neighbourMarkersCount: state.stopPlace.neighbourStops ? state.stopPlace.neighbourStops.length : 0,
-    markers: markers,
+    markers: getMarkersForMap(state),
     kc: state.roles.kc,
     zoom: state.stopPlace.zoom,
-    isCreatingNewStop: isCreatingNewStop,
+    isCreatingNewStop: state.user.isCreatingNewStop,
     activeBaselayer: state.user.activeBaselayer,
     ignoreStopId: getIn(
       state.stopPlace,

@@ -50,21 +50,14 @@ export default class LeafLetMap extends React.Component {
       handleOnClick,
       minZoom,
       handleSetCompassBearing,
-    } = this.props;
-    const {
+      markers,
       dragableMarkers,
       handleMapMoveEnd,
       onDoubleClick,
-      newStopPlace,
-      handleZoomEnd,
+      handleZoomEnd
     } = this.props;
 
-    let { markers } = this.props;
     const { BaseLayer } = LayersControl;
-
-    if (newStopPlace && typeof newStopPlace == 'object') {
-      markers = markers.concat(newStopPlace);
-    }
 
     const lmapStyle = {
       border: '2px solid #eee',
@@ -147,7 +140,7 @@ export default class LeafLetMap extends React.Component {
         <ZoomControl position="bottomright" />
         <MarkerList
           changeCoordinates={handleChangeCoordinates}
-          stops={markers || []}
+          stops={markers}
           handleDragEnd={handleDragEnd}
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
