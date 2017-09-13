@@ -80,6 +80,7 @@ class ParentStopDetails extends Component {
             onClick={() => this.setState({ tagsOpen: true })}
             style={{ marginTop: -8 }}
             label={formatMessage({ id: 'tags' })}
+            disabled={!stopPlace.id}
           />
         </div>
         <div style={{ textAlign: 'right' }}>
