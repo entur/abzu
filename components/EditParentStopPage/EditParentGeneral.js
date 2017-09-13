@@ -177,6 +177,7 @@ class EditParentGeneral extends React.Component {
 
   getIsAllowedToSave() {
     const { disabled, stopHasBeenModified, stopPlace } = this.props;
+    if (!stopPlace) return false;
     if (disabled) return false;
     if (!stopPlace.name.length) return false;
     if (!stopPlace.id && !stopPlace.children.length){
@@ -196,6 +197,8 @@ class EditParentGeneral extends React.Component {
       removingStopPlaceFromParentId,
       removeStopPlaceFromParentOpen
     } = this.props;
+
+    if (!stopPlace) return null;
 
     const { formatMessage } = intl;
     const isAllowedToSave = this.getIsAllowedToSave();

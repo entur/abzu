@@ -295,7 +295,7 @@ helpers.mapSearchResultParentStopPlace = stop => {
   );
   let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
 
-  const clientParentStop = {
+  let clientParentStop = {
     isParent: true,
     id: stop.id,
     name: stop.name.value,
@@ -306,22 +306,33 @@ helpers.mapSearchResultParentStopPlace = stop => {
     topographicPlace: topographicPlace,
     parentTopographicPlace: parentTopographicPlace,
     isActive: false,
-    children: stop.children.sort((a, b) => b.id.localeCompare(a.id)),
+    children: stop.children
+      .map(stop => updateObjectWithLocation(stop))
+      .sort((a, b) => b.id.localeCompare(a.id)),
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
     hasExpired: hasExpired(stop.validBetween),
     tags: stop.tags,
+    geometry: stop.geometry
   };
 
+  clientParentStop = updateObjectWithLocation(clientParentStop);
+
+  return clientParentStop;
+};
+
+const updateObjectWithLocation = stop => {
+  let newStop = Object.assign({}, stop);
   if (stop.geometry && stop.geometry.coordinates) {
     let coordinates = stop.geometry.coordinates[0].slice();
-    clientParentStop.location = [
+    newStop.location = [
       setDecimalPrecision(coordinates[1], 6),
       setDecimalPrecision(coordinates[0], 6)
     ];
+    return newStop;
   }
-  return clientParentStop;
-};
+  return stop;
+}
 
 helpers.mapReportSearchResultsToClientStop = stops => {
   let result = [];

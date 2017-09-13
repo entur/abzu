@@ -77,8 +77,7 @@ const stopPlaceReducer = (state = {}, action) => {
       if (action.payLoad === '') {
         return Object.assign({}, state, {
           pathLink: [],
-          current: null,
-          neighbourStops: []
+          current: null
         });
       } else {
         return state;

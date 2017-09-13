@@ -210,6 +210,9 @@ export const findStop = gql`
                    stopPlaceType 
                    transportMode 
                    submode
+                   geometry {
+                       coordinates
+                   }
                }
            }
         }
