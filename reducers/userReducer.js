@@ -2,7 +2,6 @@ import * as types from '../actions/Types';
 
 export const initialState = {
   path: '/',
-  isCreatingNewStop: false,
   missingCoordsMap: {},
   searchFilters: {
     stopType: [],
@@ -42,7 +41,7 @@ const userReducer = (state = initialState, action) => {
         showEditQuayAdditional: false,
         showEditStopAdditional: false,
         isCreatingNewStop: false,
-        keyValuesDialogOpen: false
+        keyValuesDialogOpen: false,
       });
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
