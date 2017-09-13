@@ -5,6 +5,7 @@ import { UserActions } from '../../actions/';
 const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
 
 class CreateNewStop extends React.Component {
+
   handleOnClick(e) {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop());
     if (this.props.onClose) {

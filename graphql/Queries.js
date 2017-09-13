@@ -424,6 +424,9 @@ export const getStopPlacesById = stopPlaceIds => {
                     value
                 }
                 submode
+                geometry {
+                  coordinates
+                }
                 transportMode
                 stopPlaceType
                 quays {

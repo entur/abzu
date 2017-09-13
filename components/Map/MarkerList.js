@@ -61,6 +61,11 @@ class MarkerList extends React.Component {
     document.title = intl.formatMessage({ id: '_title_new_stop' });
   }
 
+  createNewMultimodalStopFrom(stopPlaceId) {
+    const { dispatch, client } = this.props;
+    dispatch(UserActions.createMultimodalWith(client, stopPlaceId));
+  }
+
   handleDragEndNewStop(event) {
     this.props.dispatch(
       StopPlaceActions.changeLocationNewStop(event.target.getLatLng()),
@@ -166,6 +171,7 @@ class MarkerList extends React.Component {
       moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'}),
       moveQuaysToNewStop: formatMessage({id: 'move_quays_to_new_stop'}),
       adjustCentroid: formatMessage({id: 'adjust_centroid'}),
+      createMultimodal: formatMessage({id: 'new__multi_stop'})
     };
 
     const newStopMarkerText = {
@@ -452,6 +458,7 @@ class MarkerList extends React.Component {
                   this.handleStopOnClick(stop.id);
                 }}
                 index={stopIndex}
+                isChildOfParent={stop.isChildOfParent}
                 submode={stop.submode}
                 translations={CustomPopupMarkerText}
                 isEditingStop={isEditingStop}
@@ -464,6 +471,7 @@ class MarkerList extends React.Component {
                 handleShowQuays={this.handleShowQuays.bind(this)}
                 handleHideQuays={this.handleHideQuays.bind(this)}
                 hasExpired={stop.hasExpired}
+                createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
               />,
             );
 

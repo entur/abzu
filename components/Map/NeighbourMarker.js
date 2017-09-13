@@ -5,6 +5,7 @@ import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
 import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
+import PopupButton from './PopupButton';
 
 class NeighbourMarker extends React.Component {
   static propTypes = {
@@ -39,6 +40,10 @@ class NeighbourMarker extends React.Component {
     return isEditingStop;
   }
 
+  createMultimodalStopWith(stopPlaceId) {
+    this.props.createNewMultimodalStopFrom(stopPlaceId);
+  }
+
   render() {
     const {
       position,
@@ -54,6 +59,7 @@ class NeighbourMarker extends React.Component {
       handleMergeStopPlace,
       hasExpired,
       isMultimodal,
+      isChildOfParent,
       submode
     } = this.props;
 
@@ -125,9 +131,7 @@ class NeighbourMarker extends React.Component {
                 </div>
               </div>
             </div>
-            <div
-              style={{ display: 'block', width: 'auto', textAlign: 'center' }}
-            >
+            <div style={{ display: 'block', width: 'auto', textAlign: 'center' }}>
               <span style={{ display: 'inline-block', textAlign: 'center' }}>
                 {position[0]}
               </span>
@@ -136,46 +140,28 @@ class NeighbourMarker extends React.Component {
               </span>
             </div>
             {isMergingStopAllowed &&
-              <div
-                style={{
-                  marginTop: 10,
-                  cursor: 'pointer',
-                  textAlign: 'center'
-                }}
+              <PopupButton
                 onClick={() => handleMergeStopPlace(id, name)}
-              >
-                <span className="marker-popup-button">
-                  {translations.mergeStopPlace}
-                </span>
-              </div>}
+                label={translations.mergeStopPlace}
+              />}
             {!isMultimodal &&
               <div>
                 {isShowingQuays
-                  ? <div
-                      style={{
-                        marginTop: 10,
-                        cursor: 'pointer',
-                        textAlign: 'center'
-                      }}
+                  ? <PopupButton
                       onClick={() => handleHideQuays(id)}
-                    >
-                      <span className="marker-popup-button">
-                        {translations.hideQuays}
-                      </span>
-                    </div>
-                  : <div
-                      style={{
-                        marginTop: 10,
-                        cursor: 'pointer',
-                        textAlign: 'center'
-                      }}
+                      label={translations.hideQuays}
+                    />
+                  : <PopupButton
                       onClick={() => handleShowQuays(id)}
-                    >
-                      <span className="marker-popup-button">
-                        {translations.showQuays}
-                      </span>
-                    </div>}
+                      label={translations.showQuays}
+                    />}
               </div>}
+            {!isMultimodal && !isChildOfParent &&
+            <PopupButton
+              onClick={() => this.createMultimodalStopWith(id)}
+              label={translations.createMultimodal}
+            />
+            }
           </div>
         </Popup>
       </Marker>

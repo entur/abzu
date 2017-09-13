@@ -244,7 +244,7 @@ class EditParentGeneral extends React.Component {
           <VersionsPopover
             versions={versions || []}
             buttonLabel={formatMessage({ id: 'versions' })}
-            disabled={!versions.length}
+            disabled={!(versions||[]).length}
             handleSelect={this.handleLoadVersion.bind(this)}
           />
         </div>

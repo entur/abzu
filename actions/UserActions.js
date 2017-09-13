@@ -3,8 +3,9 @@ import { browserHistory } from 'react-router';
 import configureLocalization from '../localization/localization';
 import FavoriteManager from '../singletons/FavoriteManager';
 import SettingsManager from '../singletons/SettingsManager';
-import { getMergeInfoForStops } from '../graphql/Actions';
+import { getMergeInfoForStops, getAddStopPlaceInfo } from '../graphql/Actions';
 import { getIn } from '../utils/';
+import ParentStopPlace from '../models/ParentStopPlace';
 
 var UserActions = {};
 
@@ -377,6 +378,20 @@ UserActions.showRemoveStopPlaceFromParent = stopPlaceId => dispatch => {
 UserActions.hideRemoveStopPlaceFromParent = () => dispatch => {
   dispatch(sendData(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
 };
+
+UserActions.createMultimodalWith = (client, stopPlaceId) => dispatch => {
+  getAddStopPlaceInfo(client, [stopPlaceId]).then( response => {
+    if (response.data) {
+      const foundStop = Object.values(response.data)[0][0];
+      const newStopPlace = new ParentStopPlace().createNew(foundStop.name, foundStop);
+      dispatch(
+        sendData(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING,
+          newStopPlace)
+      );
+      dispatch(UserActions.navigateTo('/edit/', 'new'));
+    }
+  });
+}
 
 const getQuayById = (quays = [], quayId) => {
   for (let i = 0; quays.length; i++) {

@@ -5,12 +5,12 @@ export const getUniquePathLinks = (a, key) => {
   return a.filter(function(item) {
     let k = key(item);
     return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-  })
+  });
 };
 
 export const calculateDistance = coords => {
   let latlngDistances = coords.map(
-    position => new LatLng(position[0], position[1]),
+    position => new LatLng(position[0], position[1])
   );
   let totalDistance = 0;
 
@@ -29,21 +29,32 @@ export const calculateEstimate = distance => {
 /* filters stopPlaces that elligible to be added to parent stop place
   (not parent or child of a multimodal stop place) and sorts them by distance asc
  */
-export const getAndSortNeighbourStopPlacesBystance = (stopPlaceCentroid, neighbourStops, nFirst) => {
+export const getChildStopPlaceSuggestions = (
+  children,
+  stopPlaceCentroid,
+  neighbourStops,
+  nFirst
+) => {
 
-  let suggestions = neighbourStops.filter(stop => !stop.isParent && !stop.isChildOfParent);
+  const alreadyAdded = children.map(child => child.id);
+
+  let suggestions = neighbourStops.filter(
+    stop => !stop.isParent && !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
+  );
 
   if (stopPlaceCentroid) {
-    suggestions = (suggestions.map( stop => {
+    suggestions = (suggestions.map(stop => {
       let distance = null;
       if (stop.location) {
-        distance = calculateDistance([stopPlaceCentroid, stop.location]);}
-      return ({
+        distance = calculateDistance([stopPlaceCentroid, stop.location]);
+      }
+      return {
         ...stop,
         distance
-      });
-    }) || []).sort( (a,b) => a.distance - b.distance);
+      };
+    }) || [])
+      .sort((a, b) => a.distance - b.distance);
   }
 
   return suggestions.slice(0, nFirst);
-}
+};

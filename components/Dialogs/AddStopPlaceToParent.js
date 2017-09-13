@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAndSortNeighbourStopPlacesBystance } from '../../modelUtils/leafletUtils';
+import { getChildStopPlaceSuggestions } from '../../modelUtils/leafletUtils';
 import AddStopPlaceSuggestionList from './AddStopPlaceSuggestionList';
 
 class AddStopPlaceToParent extends Component {
@@ -40,6 +40,7 @@ class AddStopPlaceToParent extends Component {
       intl,
       neighbourStops,
       stopPlaceCentroid,
+      stopPlaceChildren
     } = this.props;
 
     const { formatMessage } = intl;
@@ -48,7 +49,8 @@ class AddStopPlaceToParent extends Component {
     let canSave = !!checkedItems.length;
 
 
-    const suggestions = getAndSortNeighbourStopPlacesBystance(
+    const suggestions = getChildStopPlaceSuggestions(
+      stopPlaceChildren,
       stopPlaceCentroid,
       neighbourStops,
       10
@@ -90,6 +92,7 @@ AddStopPlaceToParent.propTypes = {
 const mapStateToProps = ({ stopPlace }) => ({
   neighbourStops: stopPlace.neighbourStops,
   stopPlaceCentroid: stopPlace.current.location,
+  stopPlaceChildren: stopPlace.current.children,
   stopHasBeenModified: stopPlace.stopHasBeenModified
 });
 

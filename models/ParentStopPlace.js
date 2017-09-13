@@ -14,6 +14,35 @@ class ParentStopPlace {
     this.userDefinedCoordinates = userDefinedCoordinates;
   }
 
+  // This creates a new dummy with a minimum of values set
+  createNew(name, child) {
+
+    const childToAdd = {
+      ...child,
+      notSaved: true
+    };
+
+    let clientStop = {
+      isNewStop: true,
+      name: name ? name.value : '',
+      isParent: true,
+      isActive: true,
+      tags: [],
+      children: [childToAdd],
+      versions: [],
+    };
+
+    if (child.geometry && child.geometry.coordinates) {
+      let coordinates = child.geometry.coordinates[0].slice();
+      // Leaflet uses latLng, GeoJSON [long,lat]
+      clientStop.location = [
+        setDecimalPrecision(coordinates[1], 6),
+        setDecimalPrecision(coordinates[0], 6),
+      ];
+    }
+    return clientStop;
+  }
+
   toClient() {
 
     try {
