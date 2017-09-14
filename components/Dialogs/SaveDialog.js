@@ -10,6 +10,17 @@ import MdSave from 'material-ui/svg-icons/content/save';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdSpinner from '../../static/icons/spinner';
 import { HumanReadableErrorCodes } from '../../models/ErrorCodes';
+import areIntlLocalesSupported from 'intl-locales-supported';
+
+let DateTimeFormat;
+
+if (areIntlLocalesSupported(['nb'])) {
+  DateTimeFormat = global.Intl.DateTimeFormat;
+} else {
+  const IntlPolyfill = require('intl');
+  DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  require('intl/locale-data/jsonp/nb');
+}
 
 class SaveDialog extends React.Component {
   constructor(props) {
@@ -32,13 +43,8 @@ class SaveDialog extends React.Component {
     intl: PropTypes.object.isRequired,
   };
 
-  handleSave() {
-    this.setState({
-      isSaving: true,
-    });
-  }
-
   handleSetToDate(value) {
+
     const { timeFrom, timeTo } = this.state;
 
     let newTimeFrom = timeTo
@@ -138,11 +144,11 @@ class SaveDialog extends React.Component {
       userInput.timeTo = timeTo;
     }
 
-    this.setState({
+    /*this.setState({
       isSaving: true,
-    });
+    });*/
 
-    handleConfirm(JSON.parse(JSON.stringify(userInput)));
+    handleConfirm(userInput);
   }
 
   render() {
@@ -214,6 +220,12 @@ class SaveDialog extends React.Component {
             hintText={translations.date}
             cancelLabel={translations.cancel}
             okLabel={translations.use}
+            DateTimeFormat={DateTimeFormat}
+            formatDate={new DateTimeFormat('nb', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }).format}
             autoOk
             mode="landscape"
             minDate={now}
@@ -259,6 +271,12 @@ class SaveDialog extends React.Component {
                   hintText={translations.date}
                   cancelLabel={translations.cancel}
                   okLabel={translations.use}
+                  DateTimeFormat={DateTimeFormat}
+                  formatDate={new DateTimeFormat('nb', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  }).format}
                   autoOk
                   mode="landscape"
                   minDate={dateFrom ? new Date(dateFrom) : now}

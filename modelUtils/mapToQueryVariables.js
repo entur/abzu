@@ -34,12 +34,13 @@ helpers.mapQuayToVariables = quay => {
 };
 
 helpers.getFullUTCString = (time, date) => {
-  const timeStringFrom = moment(time).utc().format('HH:mm:ss').toString();
-  const dateStringFrom = moment(date).utc().format('YYYY-MM-DD').toString();
+  const timeString = moment(time).utc().format('HH:mm:ss');
+  // Do not format this to UTC in order to retain correct date, 2017-09-1500:02+GMT will be 2017-08... in UTC
+  const dateString = moment(date).format('YYYY-MM-DD');
   return (
-    moment(`${dateStringFrom} ${timeStringFrom}`).format(
+    moment(`${dateString} ${timeString}`).format(
       'YYYY-MM-DDTHH:mm:ss.SSS'
-    ) + 'Z'
+    ).toString() + 'Z'
   );
 };
 
@@ -60,6 +61,8 @@ helpers.mapChildStopToVariables = (original, userInput) => {
 
   if (userInput) {
     const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
+
+    console.log("userInput", userInput);
 
     let validPeriod = {};
 

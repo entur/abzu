@@ -10,10 +10,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import StopPlaceDetails from './StopPlaceDetails';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
-import {
-  mutatePathLink,
-  mutateParking
-} from '../../graphql/Mutations';
+import { mutatePathLink, mutateParking } from '../../graphql/Mutations';
 import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
 import * as types from '../../actions/Types';
 import EditStopAdditional from './EditStopAdditional';
@@ -239,6 +236,7 @@ class EditStopGeneral extends React.Component {
     const shouldMutateParking = !!(
       stopPlace.parking && stopPlace.parking.length
     );
+
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
       pathLink
     );
@@ -255,8 +253,6 @@ class EditStopGeneral extends React.Component {
     saveStopPlaceBasedOnType(client, stopPlace, userInput)
       .then(resultId => {
         id = resultId;
-      })
-      .then(() => {
         if (!shouldMutateParking && !shouldMutatePathLinks) {
           this.handleSaveSuccess(id);
         } else {
@@ -538,8 +534,9 @@ class EditStopGeneral extends React.Component {
             >
               <Tab
                 style={tabStyle}
-                label={`${formatMessage({ id: 'quays' })} (${stopPlace.quays ? stopPlace.quays
-                  .length : 0})`}
+                label={`${formatMessage({ id: 'quays' })} (${stopPlace.quays
+                  ? stopPlace.quays.length
+                  : 0})`}
                 value={0}
               />
               <Tab
