@@ -5,6 +5,7 @@ import { divIcon } from 'leaflet';
 import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
 import { shallowCompareStopPlaceMarker as shallowCompare } from './shallowCompare/';
+import PopupButton from '../Map/PopupButton';
 
 class StopPlaceMarker extends React.Component {
   static propTypes = {
@@ -35,7 +36,14 @@ class StopPlaceMarker extends React.Component {
     this.createIcon(nextProps);
   }
 
-  createIcon({index, stopType, submode, active, isMultimodal, isMultimodalChild}) {
+  createIcon({
+    index,
+    stopType,
+    submode,
+    active,
+    isMultimodal,
+    isMultimodalChild
+  }) {
     let divIconBody = (
       <CustomMarkerIcon
         markerIndex={index}
@@ -72,6 +80,7 @@ class StopPlaceMarker extends React.Component {
       handleShowQuays,
       handleHideQuays,
       isMultimodalChild,
+      isMultimodal,
       id,
       disabled
     } = this.props;
@@ -104,7 +113,6 @@ class StopPlaceMarker extends React.Component {
                 color: '#41c0c4',
                 fontSize: '1.2em',
                 cursor: 'pointer',
-                marginBottom: 10,
                 display: 'inline-block',
                 width: '100%',
                 marginBottom: 15,
@@ -144,22 +152,24 @@ class StopPlaceMarker extends React.Component {
                 {markerLocation[1]}
               </span>
             </div>
-            {(!disabled && draggable) &&
-              <div
-                className={'marker-popup-button'}
-                style={{ marginTop: 10 }}
-                onClick={handleAdjustCentroid}
-              >
-                {translations.adjustCentroid}
-              </div>}
-            {isMultimodalChild &&
-            <div
-              className={'marker-popup-button'}
-              style={{ marginTop: 10 }}
-              onClick={() => isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)}
-            >
-              {isShowingQuays ? translations.hideQuays : translations.showQuays}
-            </div>}
+            <PopupButton
+              hidden={disabled || !draggable}
+              onClick={handleAdjustCentroid}
+              label={translations.adjustCentroid}
+            />
+            <PopupButton
+              hidden={!isMultimodalChild}
+              onClick={() =>
+                isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)}
+              label={
+                isShowingQuays ? translations.hideQuays : translations.showQuays
+              }
+            />
+            <PopupButton
+              hidden={isMultimodalChild || isMultimodal}
+              onClick={() => this.props.createNewMultimodalStopFrom(id)}
+              label={translations.createMultimodal}
+            />
           </div>
         </Popup>
       </Marker>

@@ -68,7 +68,7 @@ class MarkerList extends React.Component {
 
   handleDragEndNewStop(event) {
     this.props.dispatch(
-      StopPlaceActions.changeLocationNewStop(event.target.getLatLng()),
+      StopPlaceActions.changeLocationNewStop(event.target.getLatLng())
     );
   }
 
@@ -238,6 +238,7 @@ class MarkerList extends React.Component {
                   }}
                   isEditingStop={isEditingStop}
                   missingCoordinatesMap={missingCoordinatesMap}
+                  createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
                 />
               );
 
@@ -296,6 +297,7 @@ class MarkerList extends React.Component {
               handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
+              createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
               translations={CustomPopupMarkerText}
               handleOnClick={() => {
                 this.handleStopOnClick(stop.id);

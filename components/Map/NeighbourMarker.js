@@ -40,10 +40,6 @@ class NeighbourMarker extends React.Component {
     return isEditingStop;
   }
 
-  createMultimodalStopWith(stopPlaceId) {
-    this.props.createNewMultimodalStopFrom(stopPlaceId);
-  }
-
   render() {
     const {
       position,
@@ -131,7 +127,9 @@ class NeighbourMarker extends React.Component {
                 </div>
               </div>
             </div>
-            <div style={{ display: 'block', width: 'auto', textAlign: 'center' }}>
+            <div
+              style={{ display: 'block', width: 'auto', textAlign: 'center' }}
+            >
               <span style={{ display: 'inline-block', textAlign: 'center' }}>
                 {position[0]}
               </span>
@@ -139,29 +137,27 @@ class NeighbourMarker extends React.Component {
                 {position[1]}
               </span>
             </div>
-            {isMergingStopAllowed &&
-              <PopupButton
-                onClick={() => handleMergeStopPlace(id, name)}
-                label={translations.mergeStopPlace}
-              />}
-            {!isMultimodal &&
-              <div>
-                {isShowingQuays
-                  ? <PopupButton
-                      onClick={() => handleHideQuays(id)}
-                      label={translations.hideQuays}
-                    />
-                  : <PopupButton
-                      onClick={() => handleShowQuays(id)}
-                      label={translations.showQuays}
-                    />}
-              </div>}
-            {!isMultimodal && !isChildOfParent &&
             <PopupButton
-              onClick={() => this.createMultimodalStopWith(id)}
+              hidden={!isMergingStopAllowed}
+              onClick={() => handleMergeStopPlace(id, name)}
+              label={translations.mergeStopPlace}
+            />
+            {isShowingQuays
+              ? <PopupButton
+                  hidden={isMultimodal}
+                  onClick={() => handleHideQuays(id)}
+                  label={translations.hideQuays}
+                />
+              : <PopupButton
+                  hidden={isMultimodal}
+                  onClick={() => handleShowQuays(id)}
+                  label={translations.showQuays}
+                />}
+            <PopupButton
+              hidden={isMultimodal || isChildOfParent}
+              onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />
-            }
           </div>
         </Popup>
       </Marker>

@@ -88,6 +88,11 @@ const mapReducer = (state = initialState, action) => {
     case types.CLOSED_MERGE_QUAYS_DIALOG:
       return Object.assign({}, state, {
         mergingQuayDialogOpen: false,
+        mergingQuay: {
+          isMerging: false,
+          fromQuay: null,
+          toQuay: null,
+        },
       });
 
     case types.REQUESTED_DELETE_QUAY:

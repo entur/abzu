@@ -12,6 +12,7 @@ import ToolTippable from '../EditStopPage/ToolTippable';
 import Code from '../EditStopPage/Code';
 import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
 import QuayMarkerIcon from './QuayMarkerIcon';
+import PopupButton from './PopupButton';
 
 class QuayMarker extends React.Component {
   static propTypes = {
@@ -132,6 +133,30 @@ class QuayMarker extends React.Component {
     );
   }
 
+  getHideMergingTo() {
+    const isMergingFromThis = this.getIsMergingFromThis();
+    const shouldShowMergeQuay = this.getShouldShowMergeQuay();
+    const { mergingQuay } = this.props;
+    const isAllowed = !isMergingFromThis && shouldShowMergeQuay && mergingQuay.isMerging;
+    return !isAllowed;
+  }
+
+  getHideMergingFrom() {
+    const isMergingFromThis = this.getIsMergingFromThis();
+    const shouldShowMergeQuay = this.getShouldShowMergeQuay();
+    const { mergingQuay } = this.props;
+    const isAllowed = shouldShowMergeQuay && !isMergingFromThis && !mergingQuay.isMerging;
+    return !isAllowed;
+  }
+
+  getCancelMergingFromThis() {
+    const isMergingFromThis = this.getIsMergingFromThis();
+    const shouldShowMergeQuay = this.getShouldShowMergeQuay();
+    const { mergingQuay } = this.props;
+    const isAllowed = shouldShowMergeQuay && isMergingFromThis && mergingQuay.isMerging;
+    return !isAllowed;
+  }
+
   render() {
     const {
       position,
@@ -202,9 +227,10 @@ class QuayMarker extends React.Component {
     });
 
     const osmURL = this.getOSMURL();
-    const shouldShowMergeQuay = this.getShouldShowMergeQuay();
-    const isMergingFromThis = this.getIsMergingFromThis();
     const shouldShowMoveQuay = this.getShouldShowMoveQuay();
+    const hideMergingTo = this.getHideMergingTo();
+    const hideMergingFrom = this.getHideMergingFrom();
+    const hideCancelMergingFromThis = this.getCancelMergingFromThis();
 
     return (
       <Marker
@@ -324,41 +350,27 @@ class QuayMarker extends React.Component {
               </div>
             </div>
             <div style={{ marginTop: 10 }}>
-              {shouldShowMoveQuay &&
+              <PopupButton
+                hidden={!shouldShowMoveQuay}
+                onClick={() => this.handleMoveQuay()}
+                label={translations.moveQuayToCurrent}
+              />
                 <div style={{ textAlign: 'center' }}>
-                  <span
-                    className="marker-popup-button"
-                    onClick={() => this.handleMoveQuay()}
-                  >
-                    {translations.moveQuayToCurrent}
-                  </span>
-                </div>}
-              {shouldShowMergeQuay &&
-                <div style={{ textAlign: 'center' }}>
-                  {mergingQuay.isMerging
-                    ? <div>
-                        {isMergingFromThis
-                          ? <span
-                              className="marker-popup-button"
-                              onClick={() => this.handleCancelMerge()}
-                            >
-                              {translations.mergeQuayCancel}
-                            </span>
-                          : <span
-                              className="marker-popup-button"
-                              onClick={() => this.handleMergeTo()}
-                            >
-                              {translations.mergeQuayTo}
-                            </span>}
-                      </div>
-                    : <div>
-                        <span
-                          className="marker-popup-button"
-                          onClick={() => this.handleMergeFrom()}
-                        >
-                          {translations.mergeQuayFrom}
-                        </span>
-                      </div>}
+                  <PopupButton
+                      hidden={hideCancelMergingFromThis}
+                      onClick={() => this.handleCancelMerge()}
+                      label={translations.mergeQuayCancel}
+                    />
+                  <PopupButton
+                    hidden={hideMergingTo}
+                    onClick={() => this.handleMergeTo()}
+                    label={translations.mergeQuayTo}
+                  />
+                  <PopupButton
+                    hidden={hideMergingFrom}
+                    onClick={() => this.handleMergeFrom()}
+                    label={translations.mergeQuayFrom}
+                  />
                   {!disabled &&
                     <div style={{ marginTop: 10 }}>
                       <span
@@ -368,7 +380,7 @@ class QuayMarker extends React.Component {
                         {translations.moveQuaysToNewStop}
                       </span>
                     </div>}
-                </div>}
+                </div>
             </div>
             <div style={{ marginTop: 10 }}>
               {showPathLink && isEditingStop && !currentIsNewStop
