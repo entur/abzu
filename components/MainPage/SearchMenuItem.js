@@ -23,7 +23,7 @@ const createParentStopPlaceMenuItem = element => {
           <div style={{display: 'flex'}}>
             <div style={{marginLeft: 10, display: 'flex', flexDirection: 'column', minWidth: 280}}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: '0.9em' }}>{element.name}</div>
+                <div style={{ fontSize: '0.9em' }}>{element.name}<span style={{fontWeight: 600, fontSize: '0.7em', marginLeft: 5}}>MM</span></div>
                 <div style={{ fontSize: '0.6em', color: 'grey' }}>{element.id}</div>
               </div>
               <div
