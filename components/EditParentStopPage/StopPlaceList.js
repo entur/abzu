@@ -14,7 +14,7 @@ class StopPlaceList extends Component {
   }
 
   render() {
-    const { stopPlaces, handleAddStopPlaceOpen, intl } = this.props;
+    const { stopPlaces, handleAddStopPlaceOpen, intl, disabled } = this.props;
     const { formatMessage } = intl;
     const { expandedItem } = this.state;
 
@@ -33,6 +33,7 @@ class StopPlaceList extends Component {
           </div>
           <FloatingActionButton
             onClick={handleAddStopPlaceOpen}
+            disabled={disabled}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
@@ -53,6 +54,7 @@ class StopPlaceList extends Component {
                   handleExpand={() => this.setState({ expandedItem: i })}
                   handleCollapse={() => this.setState({ expandedItem: -1 })}
                   expanded={expandedItem === i}
+                  disabled={disabled}
                 />
               )
             : <div style={{ marginTop: 5 }}>

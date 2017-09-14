@@ -20,7 +20,7 @@ class StopPlaceListItemDetails extends Component {
 
   render() {
 
-    const { stopPlace, intl } = this.props;
+    const { stopPlace, intl, disabled } = this.props;
     const { notSaved } = stopPlace;
     const { formatMessage } = intl;
 
@@ -36,7 +36,10 @@ class StopPlaceListItemDetails extends Component {
               </span>
             </div>
           }
-          <IconButton onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}>
+          <IconButton
+            disabled={disabled}
+            onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}
+          >
             <MdDelete/>
           </IconButton>
         </div>

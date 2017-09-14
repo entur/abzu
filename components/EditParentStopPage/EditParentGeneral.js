@@ -252,6 +252,7 @@ class EditParentGeneral extends React.Component {
           handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(
             this
           )}
+          disabled={disabled}
         />
         <div
           style={{

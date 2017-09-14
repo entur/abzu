@@ -3,6 +3,7 @@ const mockRailReplacementStop = {
     pathLink: [],
     stopPlace: [
       {
+        __typename: 'StopPlace',
         id: 'NSR:StopPlace:70392',
         name: {
           value: 'TestStopp - buss for tog',

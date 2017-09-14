@@ -3,6 +3,7 @@ const mockBusStop = {
     pathLink: [],
     stopPlace: [
       {
+        __typename: 'StopPlace',
         id: 'NSR:StopPlace:418',
         name: { value: 'Asker', __typename: 'EmbeddableMultilingualString' },
         alternativeNames: [],

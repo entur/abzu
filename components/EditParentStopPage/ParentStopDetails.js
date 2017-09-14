@@ -68,7 +68,7 @@ class ParentStopDetails extends Component {
   }
 
   render() {
-    const { stopPlace, intl } = this.props;
+    const { stopPlace, intl, disabled } = this.props;
     const { changePositionOpen, addStopPlaceOpen } = this.state;
     const { formatMessage } = intl;
 
@@ -87,6 +87,7 @@ class ParentStopDetails extends Component {
           <FlatButton
             label={formatMessage({ id: 'set_centroid' })}
             labelStyle={{ fontSize: '0.7em' }}
+            disabled={disabled}
             onClick={() => this.setState({ changePositionOpen: true })}
           />
         </div>
@@ -118,7 +119,7 @@ class ParentStopDetails extends Component {
             floatingLabelText={formatMessage({ id: 'name' })}
             fullWidth={true}
             value={stopPlace.name}
-            disabled={false}
+            disabled={disabled}
             style={{ marginTop: -10 }}
             errorText={
               stopPlace.name ? '' : formatMessage({ id: 'name_is_required' })
@@ -129,7 +130,7 @@ class ParentStopDetails extends Component {
             hintText={formatMessage({ id: 'description' })}
             floatingLabelText={formatMessage({ id: 'description' })}
             fullWidth={true}
-            disabled={false}
+            disabled={disabled}
             value={stopPlace.description || ''}
             onChange={this.handleChangeDescription.bind(this)}
           />
@@ -138,6 +139,7 @@ class ParentStopDetails extends Component {
         <StopPlaceList
           handleAddStopPlaceOpen={this.handleAddStopPlaceOpen.bind(this)}
           stopPlaces={stopPlace.children}
+          disabled={disabled}
         />
         {addStopPlaceOpen &&
           <AddStopPlaceToParent

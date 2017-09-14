@@ -148,7 +148,7 @@ class EditPage extends React.Component {
         }
         {stopPlace && stopPlace.isParent &&
         <div>
-          <EditParentGeneral/>
+          <EditParentGeneral disabled={disabled}/>
           <EditStopMap disabled={disabled} />
         </div>
         }

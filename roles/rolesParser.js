@@ -70,9 +70,20 @@ RoleParser.filterRolesByEntityModes = (
     };
   });
 
-  const validForStop = stopPlaceRoles.filter( role => doesRoleGrantAccessToStop(
-    stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, stopPlace
-  ));
+  const stopPlaceIsMultiModal =
+    stopPlace.__typename === 'ParentStopPlace' || stopPlace.isParent;
+
+  const validForStop = stopPlaceRoles.filter( role => {
+    if (stopPlaceIsMultiModal) {
+      return stopPlace.children.map( child => doesRoleGrantAccessToStop(
+        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, child
+      )).reduce( (a,b) => a && b);
+    } else {
+      return doesRoleGrantAccessToStop(
+        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, stopPlace
+      )
+    }
+  });
 
   return validForStop;
 };

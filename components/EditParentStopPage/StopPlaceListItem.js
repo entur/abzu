@@ -15,7 +15,7 @@ class StopPlaceListItem extends Component {
 
   render() {
 
-    const { stopPlace, expanded, handleExpand, handleCollapse } = this.props;
+    const { stopPlace, expanded, handleExpand, handleCollapse, disabled} = this.props;
     const stopPlaceHref = this.getStopPlaceHref(stopPlace.id);
 
     return (
@@ -53,7 +53,7 @@ class StopPlaceListItem extends Component {
               : <NavigationExpandMore onClick={handleExpand} />}
           </div>
         </div>
-        {expanded && <StopPlaceListItemDetails stopPlace={stopPlace} />}
+        {expanded && <StopPlaceListItemDetails stopPlace={stopPlace} disabled={disabled} />}
         <Divider />
       </div>
     );
