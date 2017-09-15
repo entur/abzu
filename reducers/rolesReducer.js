@@ -27,6 +27,12 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
       }))
 
+    case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
+      return Object.assign(({}, state, {
+        kc: state.kc,
+        allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
+      }))
+
     default:
       return state;
   }
