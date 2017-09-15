@@ -145,7 +145,8 @@ class MarkerList extends React.Component {
       showExpiredStops,
       isEditingStop,
       currentIsNewStop,
-      currentStopIsMultiModal
+      currentStopIsMultiModal,
+      tokenParsed
     } = props;
     const { formatMessage } = intl;
 
@@ -208,7 +209,6 @@ class MarkerList extends React.Component {
         );
       } else {
         if (stop.isActive) {
-
           if (stop.isParent && stop.children) {
             stop.children.forEach( (child, i) => {
               popupMarkers.push(
@@ -450,6 +450,7 @@ class MarkerList extends React.Component {
         } else {
 
           if ((showExpiredStops && stop.hasExpired) || !stop.hasExpired) {
+
             popupMarkers.push(
               <NeighbourMarker
                 key={'neighbourStop-' + stop.id}
@@ -474,6 +475,8 @@ class MarkerList extends React.Component {
                 handleHideQuays={this.handleHideQuays.bind(this)}
                 hasExpired={stop.hasExpired}
                 createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
+                stopPlace={stop}
+                tokenParsed={tokenParsed}
               />,
             );
 
@@ -537,7 +540,8 @@ const mapStateToProps = state => ({
   showExpiredStops: state.stopPlace.showExpiredStops,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
   newStopIsMultiModal: state.user.newStopIsMultiModal,
-  currentStopIsMultiModal: getIn(state.stopPlace, ['current', 'isParent'], false)
+  currentStopIsMultiModal: getIn(state.stopPlace, ['current', 'isParent'], false),
+  tokenParsed: getIn(state.roles, ['kc', 'tokenParsed'], null)
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

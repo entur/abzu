@@ -1,4 +1,5 @@
 import { LatLng } from 'leaflet';
+import { isLegalChildStopPlace } from '../reducers/rolesReducerUtils';
 
 export const getUniquePathLinks = (a, key) => {
   var seen = {};
@@ -33,6 +34,7 @@ export const getChildStopPlaceSuggestions = (
   children,
   stopPlaceCentroid,
   neighbourStops,
+  tokenParsed,
   nFirst
 ) => {
 
@@ -56,5 +58,9 @@ export const getChildStopPlaceSuggestions = (
       .sort((a, b) => a.distance - b.distance);
   }
 
-  return suggestions.slice(0, nFirst);
+  const legalSuggestions = suggestions
+    .filter( suggestion => isLegalChildStopPlace(suggestion, tokenParsed))
+
+  return legalSuggestions.slice(0, nFirst);
 };
+

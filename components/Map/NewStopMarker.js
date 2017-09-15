@@ -62,14 +62,11 @@ class NewStopMarker extends React.Component {
                 </div>
               </div>
               : <div>
-                <p style={{fontWeight: 600}}>
+                <p style={{fontWeight: 600, textAlign: 'center'}}>
                   {newStopIsMultiModal ? text.newParentStopTitle : text.newStopTitle}
                   </p>
                 <div style={{textAlign: 'center'}}>
-                  <div
-                    className="marker-popup-not-legal"
-                    style={{maxWidth: 180}}
-                  >
+                  <div className="marker-popup-not-legal">
                     {text.createNotAllowed}
                   </div>
                 </div>

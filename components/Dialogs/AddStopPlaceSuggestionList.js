@@ -6,7 +6,8 @@ class AddStopPlaceSuggestionList extends Component {
 
   render() {
 
-    const { suggestions, onItemCheck, checkedItems } = this.props;
+    const { suggestions, onItemCheck, checkedItems, formatMessage } = this.props;
+    const noStopSNearby = formatMessage({id: 'no_stops_nearby'});
 
     return (
       <div>
@@ -18,7 +19,7 @@ class AddStopPlaceSuggestionList extends Component {
               suggestion={suggestion}
             />
         ))}
-        { !suggestions.length && <div>Ingen stoppesteder i nærheten ...</div>}
+        { !suggestions.length && <div>{noStopSNearby}</div>}
       </div>
     );
   }

@@ -54,6 +54,22 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
   };
 };
 
+export const isLegalChildStopPlace = (stopPlace, tokenParsed) => {
+
+  if (!stopPlace) {
+    return false
+  }
+
+  const token = { ... tokenParsed };
+  const editStopRoles = roleParser.getEditStopRoles(token);
+  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
+    editStopRoles,
+    stopPlace.location
+  );
+  const responsibleEditRoles = roleParser.filterRolesByEntityModes(editStopRolesGeoFiltered, stopPlace);
+  const isLegal = responsibleEditRoles.length > 0;
+  return isLegal;
+}
 
 const restrictModeByRoles = (roles, modes, entityType) => {
 

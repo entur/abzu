@@ -62,8 +62,6 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   if (userInput) {
     const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
 
-    console.log("userInput", userInput);
-
     let validPeriod = {};
 
     if (timeFrom && dateFrom) {

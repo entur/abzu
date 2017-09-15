@@ -40,7 +40,8 @@ class AddStopPlaceToParent extends Component {
       intl,
       neighbourStops,
       stopPlaceCentroid,
-      stopPlaceChildren
+      stopPlaceChildren,
+      tokenParsed
     } = this.props;
 
     const { formatMessage } = intl;
@@ -48,11 +49,11 @@ class AddStopPlaceToParent extends Component {
 
     let canSave = !!checkedItems.length;
 
-
     const suggestions = getChildStopPlaceSuggestions(
       stopPlaceChildren,
       stopPlaceCentroid,
       neighbourStops,
+      tokenParsed,
       10
     );
 
@@ -76,6 +77,7 @@ class AddStopPlaceToParent extends Component {
         <AddStopPlaceSuggestionList
           suggestions={suggestions}
           checkedItems={checkedItems}
+          formatMessage={formatMessage}
           onItemCheck={this.handleOnItemCheck.bind(this)}
         />
       </Dialog>
@@ -89,11 +91,12 @@ AddStopPlaceToParent.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stopPlace }) => ({
+const mapStateToProps = ({ stopPlace, roles }) => ({
   neighbourStops: stopPlace.neighbourStops,
   stopPlaceCentroid: stopPlace.current.location,
   stopPlaceChildren: stopPlace.current.children,
-  stopHasBeenModified: stopPlace.stopHasBeenModified
+  stopHasBeenModified: stopPlace.stopHasBeenModified,
+  tokenParsed: roles.kc.tokenParsed,
 });
 
 export default connect(mapStateToProps)(injectIntl(AddStopPlaceToParent));

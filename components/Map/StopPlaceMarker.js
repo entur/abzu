@@ -166,7 +166,7 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={isMultimodalChild || isMultimodal}
+              hidden={isMultimodalChild || isMultimodal || disabled}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

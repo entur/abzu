@@ -66,9 +66,6 @@ export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
       userInput
     );
 
-    console.log("userInput2", userInput);
-    console.log("variables", variables.validBetween)
-
     return new Promise((resolve, reject) => {
       client.mutate({
         mutation: mutateStopPlace,

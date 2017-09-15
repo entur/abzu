@@ -6,8 +6,17 @@ import ReactDOM from 'react-dom/server';
 import CustomMarkerIcon from './CustomMarkerIcon';
 import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
 import PopupButton from './PopupButton';
+import { isLegalChildStopPlace } from '../../reducers/rolesReducerUtils';
 
 class NeighbourMarker extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      createMultimodalNotAllowed: false
+    }
+  }
+
   static propTypes = {
     position: PropTypes.arrayOf(Number),
     handleOnClick: PropTypes.func.isRequired,
@@ -21,7 +30,10 @@ class NeighbourMarker extends React.Component {
     isEditingStop: PropTypes.bool.isRequired
   };
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.createMultimodalNotAllowed !== nextState.createMultimodalNotAllowed) {
+      return true;
+    }
     return shallowCompare(this, nextProps);
   }
 
@@ -56,8 +68,12 @@ class NeighbourMarker extends React.Component {
       hasExpired,
       isMultimodal,
       isChildOfParent,
-      submode
+      submode,
+      stopPlace,
+      tokenParsed
     } = this.props;
+
+    const { createMultimodalNotAllowed } = this.state;
 
     if (!position) return null;
 
@@ -97,7 +113,14 @@ class NeighbourMarker extends React.Component {
         position={position}
         draggable={false}
       >
-        <Popup autoPan={false}>
+        <Popup
+          onOpen={() => {
+            this.setState({
+              createMultimodalNotAllowed: !isLegalChildStopPlace(stopPlace, tokenParsed)
+            })
+          }}
+          autoPan={false}
+        >
           <div>
             <div
               style={{
@@ -154,7 +177,7 @@ class NeighbourMarker extends React.Component {
                   label={translations.showQuays}
                 />}
             <PopupButton
-              hidden={isMultimodal || isChildOfParent}
+              hidden={isMultimodal || isChildOfParent || createMultimodalNotAllowed}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

@@ -67,7 +67,7 @@ RoleParser.filterRolesByEntityModes = (
       ) {
         return role;
       }
-    };
+    }
   });
 
   const stopPlaceIsMultiModal =
