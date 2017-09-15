@@ -144,9 +144,9 @@ class SaveDialog extends React.Component {
       userInput.timeTo = timeTo;
     }
 
-    /*this.setState({
+    this.setState({
       isSaving: true,
-    });*/
+    });
 
     handleConfirm(userInput);
   }
