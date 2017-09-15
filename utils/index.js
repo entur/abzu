@@ -52,6 +52,8 @@ export const createStopPlaceHref = stopPlaceId => {
 };
 
 export const toCamelCase = string => {
+  if (!string) return '';
+
   if (!(/\s/g.test(string))) {
     return string.toLowerCase();
   }

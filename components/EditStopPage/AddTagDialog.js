@@ -20,14 +20,22 @@ class AddTagDialog extends Component {
   }
 
   handleChooseTag(tagName, comment) {
+    if (!tagName) {
+      this.setState({
+        searchText: ''
+      });
+      return;
+    }
     if (comment) {
       this.setState({
         tagName,
-        comment
+        comment,
+        searchText: '',
       })
     } else {
       this.setState({
         tagName,
+        searchText: '',
       })
     }
   }
