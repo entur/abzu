@@ -141,6 +141,7 @@ class MarkerList extends React.Component {
       missingCoordinatesMap,
       handleSetCompassBearing,
       disabled,
+      disabledForSearch,
       intl,
       showExpiredStops,
       isEditingStop,
@@ -226,6 +227,7 @@ class MarkerList extends React.Component {
                   isMultimodal={false}
                   isMultimodalChild={true}
                   disabled={disabled}
+                  disabledForSearch={disabledForSearch}
                   handleDragEnd={handleDragEnd}
                   active={false}
                   stopType={child.stopPlaceType}
@@ -539,6 +541,7 @@ const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  disabledForSearch: !getIn(state.roles, ['allowanceInfoSearchResult', 'canEdit'], false),
   newStopIsMultiModal: state.user.newStopIsMultiModal,
   currentStopIsMultiModal: getIn(state.stopPlace, ['current', 'isParent'], false),
   tokenParsed: getIn(state.roles, ['kc', 'tokenParsed'], null)
