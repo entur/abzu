@@ -260,6 +260,17 @@ Fragments.parentStopPlace = {
               fromDate
               toDate
           }
+          topographicPlace {
+              name {
+                  value
+              }
+              parentTopographicPlace {
+                  name {
+                      value
+                  }
+              }
+              topographicPlaceType
+          }
       },
       ${Fragments.stopPlace.verbose},
   `,
