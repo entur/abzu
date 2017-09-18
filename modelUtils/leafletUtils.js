@@ -27,6 +27,9 @@ export const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
 
+
+export const isNotTooFar = (distance = 301) => distance <= 300;
+
 /* filters stopPlaces that elligible to be added to parent stop place
   (not parent or child of a multimodal stop place) and sorts them by distance asc
  */
@@ -59,7 +62,7 @@ export const getChildStopPlaceSuggestions = (
   }
 
   const legalSuggestions = suggestions
-    .filter( suggestion => isLegalChildStopPlace(suggestion, tokenParsed))
+    .filter( suggestion => isLegalChildStopPlace(suggestion, tokenParsed) && isNotTooFar(suggestion.distance))
 
   return legalSuggestions.slice(0, nFirst);
 };

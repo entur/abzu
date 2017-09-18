@@ -116,6 +116,7 @@
   "hide_quays" : "Skjul quayer",
   "is_missing_coordinates" : "Koordinater mangler",
   "is_missing_coordinates_help_text": "Du kan sette midlertidige koordinater før du redigerer.",
+  "is_missing_name": "<Mangler navn>",
   "key_already_exists": "Nøkkelen finnes allerede",
   "key_cannot_be_empty" : "Nøkkelen må ha en verdi",
   "key_values_hint": "Nøkkelverdier",
