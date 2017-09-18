@@ -177,7 +177,6 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
-      mergingQuay
     } = this.props;
 
     if (!position) return null;
@@ -221,8 +220,8 @@ class QuayMarker extends React.Component {
 
     let quayIcon = divIcon({
       html: divBody,
-      iconSize: [22, 35],
-      iconAnchor: [11, 35],
+      iconSize: [22, 34],
+      iconAnchor: [11, 34],
       popupAnchor: [5, 0]
     });
 

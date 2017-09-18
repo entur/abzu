@@ -12,7 +12,7 @@ class QuayMarkerIcon extends React.Component {
       compassBearing
     } = this.props;
 
-    let markerIconStyle = { transform: 'scale(0.7)' };
+    let markerIconStyle = { };
 
     if (belongsToNeighbourStop) {
       markerIconStyle.filter = 'grayscale(100%)';
@@ -25,7 +25,7 @@ class QuayMarkerIcon extends React.Component {
       <img
         src={markerIcon}
         style={markerIconStyle}
-        className={this._shouldBeFocused ? 'focused' : ''}
+        className={this._shouldBeFocused ? 'focused-quay' : ''}
       />
     );
     this._compassBearingIcon = (
@@ -33,9 +33,9 @@ class QuayMarkerIcon extends React.Component {
         style={{
           width: 20,
           height: 20,
-          marginLeft: 6,
+          marginLeft: 2,
           position: 'absolute',
-          marginTop: -12,
+          marginTop: -18,
           transform: `rotate(${compassBearing}deg) scale(0.7)`
         }}
         src={compassBearingIcon}
@@ -50,8 +50,8 @@ class QuayMarkerIcon extends React.Component {
     const quayStyle = {
       color: '#fff',
       position: 'absolute',
-      top: 12,
-      left: 1,
+      top: 4,
+      left: -4,
       zIndex: 9999
     };
 

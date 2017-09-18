@@ -20,6 +20,12 @@
     transform: translate(-13px,-29px);
 }
 
+.focused-quay {
+    -webkit-box-shadow:0 0 20px ;
+    -moz-box-shadow: 0 0 20px #2196f3;
+    box-shadow:0 0 20px #2196f3;
+}
+
 .padded-10 {
     padding: 10px;
 }
