@@ -193,7 +193,7 @@ class SearchBox extends React.Component {
 
     if (dataSource && dataSource.length) {
       this._menuItems = dataSource.map(element =>
-        createSearchMenuItem(element)
+        createSearchMenuItem(element, formatMessage)
       );
     } else {
       this._menuItems = [

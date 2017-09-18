@@ -274,6 +274,7 @@ helpers.mapSearchResultStopPlace = stop => {
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
     hasExpired: hasExpired(stop.validBetween),
+    validBetween: stop.validBetween,
     tags: stop.tags
   };
 

@@ -10,3 +10,17 @@ export const hasExpired = validBetween => {
 
   return toDate <= nowDate;
 };
+
+export const isFuture = validBetween => {
+
+  if (!validBetween) {
+    return false;
+  };
+
+  if (validBetween.fromDate === null) return false;
+
+  let fromDate = new Date(validBetween.fromDate);
+  let nowDate = new Date();
+
+  return fromDate >= nowDate;
+};

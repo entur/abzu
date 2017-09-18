@@ -222,6 +222,8 @@
   "save_first_path_link": "This is a new quay. You need to save your changes before this quay can be a part of a path link",
   "save_new_version": "Save new version",
   "search": "Search",
+  "search_result_future": "Valid in future",
+  "search_result_expired": "Expired",
   "second": "second",
   "seconds": "seconds",
   "set_coordinates_prompt": "Set coordinates for stop",

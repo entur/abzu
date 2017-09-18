@@ -17,18 +17,21 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
+        ...state,
         kc: state.kc,
         allowanceInfoSearchResult: getAllowanceSearchInfo(action.payLoad, state.kc.tokenParsed)
       });
 
     case types.USE_NEW_STOP_AS_CURENT:
       return Object.assign(({}, state, {
+        ...state,
         kc: state.kc,
         allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
       }))
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       return Object.assign(({}, state, {
+        ...state,
         kc: state.kc,
         allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
       }))

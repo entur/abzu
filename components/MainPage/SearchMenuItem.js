@@ -2,15 +2,27 @@ import React from 'react';
 import ModalityIcon from './ModalityIcon';
 import MenuItem from 'material-ui/MenuItem';
 import ModalityIconTray from '../ReportPage/ModalityIconTray';
+import { hasExpired, isFuture } from '../../modelUtils/validBetween';
 
-export const createSearchMenuItem = element => {
+export const createSearchMenuItem = (element, formatMessage) => {
   if (element.isParent) {
-    return createParentStopPlaceMenuItem(element);
+    return createParentStopPlaceMenuItem(element, formatMessage);
   }
-  return createStopPlaceMenuItem(element);
+  return createStopPlaceMenuItem(element, formatMessage);
 };
 
-const createParentStopPlaceMenuItem = element => {
+const getFutureOrExpiredLabel = stopPlace => {
+  if (hasExpired(stopPlace.validBetween)) {
+    return 'search_result_expired';
+  }
+  if (isFuture(stopPlace.validBetween)) {
+    return 'search_result_future';
+  }
+  return null;
+};
+
+const createParentStopPlaceMenuItem = (element, formatMessage) => {
+  const futureOrExpiredLabel = getFutureOrExpiredLabel(element);
   return {
     element: element,
     text: element.name,
@@ -20,19 +32,56 @@ const createParentStopPlaceMenuItem = element => {
         key={element.id}
         innerDivStyle={{ padding: '0px 16px 0px 0px' }}
         primaryText={
-          <div style={{display: 'flex'}}>
-            <div style={{marginLeft: 10, display: 'flex', flexDirection: 'column', minWidth: 280}}>
+          <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                marginLeft: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: 280
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: '0.9em' }}>{element.name}<span style={{fontWeight: 600, fontSize: '0.7em', marginLeft: 5}}>MM</span></div>
-                <div style={{ fontSize: '0.6em', color: 'grey' }}>{element.id}</div>
+                <div style={{ fontSize: '0.9em' }}>
+                  {element.name}
+                  <span
+                    style={{
+                      fontWeight: 600,
+                      fontSize: '0.7em',
+                      marginLeft: 5
+                    }}
+                  >
+                    MM
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.6em', color: 'grey' }}>
+                  {element.id}
+                </div>
               </div>
               <div
-                style={{ color: 'grey', marginTop: -20, marginBottom: -10, fontSize: '0.7em' }}
-              >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}
+                style={{
+                  color: 'grey',
+                  marginTop: -20,
+                  marginBottom: -10,
+                  fontSize: '0.7em',
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div
+                >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+                {futureOrExpiredLabel &&
+                  <div key={'valid-label' + element.id} style={{marginRight: 5}}>
+                    {formatMessage({ id: futureOrExpiredLabel})}
+                  </div>}
               </div>
             </div>
             <ModalityIconTray
-              style={{marginLeft: 7, display: 'flex', flexDirection: 'column'}}
+              style={{
+                marginLeft: 7,
+                display: 'flex',
+                flexDirection: 'column'
+              }}
               modalities={element.children.map(child => ({
                 submode: child.submode,
                 stopPlaceType: child.stopPlaceType
@@ -45,7 +94,8 @@ const createParentStopPlaceMenuItem = element => {
   };
 };
 
-const createStopPlaceMenuItem = element => {
+const createStopPlaceMenuItem = (element, formatMessage) => {
+  const futureOrExpiredLabel = getFutureOrExpiredLabel(element);
   return {
     element: element,
     text: element.name,
@@ -55,14 +105,36 @@ const createStopPlaceMenuItem = element => {
         key={element.id}
         innerDivStyle={{ padding: '0px 16px 0px 0px' }}
         primaryText={
-          <div style={{marginLeft: 10, display: 'flex', flexDirection: 'column', minWidth: 280}}>
+          <div
+            style={{
+              marginLeft: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              minWidth: 280
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div style={{ fontSize: '0.9em' }}>{element.name}</div>
-              <div style={{ fontSize: '0.6em', color: 'grey' }}>{element.id}</div>
+              <div style={{ fontSize: '0.6em', color: 'grey' }}>
+                {element.id}
+              </div>
             </div>
             <div
-              style={{ color: 'grey', marginTop: -20, marginBottom: -10, fontSize: '0.7em' }}
-            >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}
+              style={{
+                color: 'grey',
+                marginTop: -20,
+                marginBottom: -10,
+                fontSize: '0.7em',
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div
+              >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+              {futureOrExpiredLabel &&
+                <div key={'valid-label' + element.id} style={{marginRight: 5}}>
+                  {formatMessage({ id: futureOrExpiredLabel})}
+                </div>}
             </div>
           </div>
         }
