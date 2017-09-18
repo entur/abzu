@@ -80,6 +80,11 @@ UserActions.toggleIsCreatingNewStop = isMultiModal => (dispatch, getState) => {
   dispatch(sendData(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
 };
 
+UserActions.toggleMultimodalEdges = value => dispatch => {
+  Settings.setShowMultimodalEdges(value);
+  dispatch(sendData(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));
+}
+
 UserActions.togglePathLinksEnabled = value => dispatch => {
   Settings.setShowPathLinks(value);
   dispatch(sendData(types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value));

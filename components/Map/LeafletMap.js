@@ -10,7 +10,7 @@ import {
 import { GoogleLayer } from 'react-leaflet-google';
 import MultiPolylineList from './PathLink';
 import WMTSLayer from './WMTSLayer';
-import MultimodalStopVertices from './MultimodalStopVertices';
+import MultimodalStopEdges from './MultimodalStopEdges';
 
 export default class LeafLetMap extends React.Component {
   getCheckedBaseLayerByValue(value) {
@@ -146,7 +146,7 @@ export default class LeafLetMap extends React.Component {
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
         />
-        <MultimodalStopVertices
+        <MultimodalStopEdges
           stops={markers}
         />
         <MultiPolylineList/>

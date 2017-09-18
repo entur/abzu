@@ -379,6 +379,11 @@ const stopPlaceReducer = (state = {}, action) => {
         isCompassBearingEnabled: action.payLoad,
       });
 
+    case types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED:
+      return Object.assign({}, state, {
+        showMultimodalEdges: action.payLoad
+      });
+
     case types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT:
       return Object.assign({}, state, {
         current: limitationHelpers.updateCurrentWithLimitations(

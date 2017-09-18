@@ -231,6 +231,7 @@
   "set_coordinates_prompt" : "Sett koordinater for stopp",
   "settings": "Innstillinger",
   "show_compass_bearing" : "Vis kompassretninger",
+  "show_multimodal_edges": "Vis tilknytninger internt i multimodale stoppesteder",
   "show_path_links" : "Vis ganglenker",
   "show_expired_stops": "Vis nedlagte stoppesteder",
   "show_quays" : "Vis quayer",

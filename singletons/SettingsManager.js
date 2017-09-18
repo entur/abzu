@@ -3,7 +3,9 @@ const rootKey = 'ABZU::settings';
 const showExpiredKey = rootKey + '::showExpiredStops';
 const showPathLinksKey = rootKey + '::pathLinks';
 const showCompassBearingKey = rootKey + '::showCompassBearing';
+const showMultimodalEdges = rootKey + '::showMultimodalEdges';
 const mapLayerKey = rootKey + '::mapLayer';
+
 
 class SettingsManager {
   constructor() {
@@ -41,6 +43,14 @@ class SettingsManager {
 
   setShowCompassBearing(value) {
     localStorage.setItem(showCompassBearingKey, value);
+  }
+
+  setShowMultimodalEdges(value) {
+    localStorage.setItem(showMultimodalEdges, value);
+  }
+
+  getShowMultimodalEdges() {
+    return this.parseBoolean(localStorage.getItem(showMultimodalEdges), true);
   }
 
   getMapLayer() {

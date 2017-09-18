@@ -92,13 +92,18 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleExpiredShowExpiredStops(value));
   }
 
+  handleToggleMultimodalEdges(value) {
+    this.props.dispatch(UserActions.toggleMultimodalEdges(value));
+  }
+
   render() {
     const {
       intl,
       kc,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
-      showExpiredStops
+      showExpiredStops,
+      showMultimodalEdges
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -115,6 +120,7 @@ class Header extends React.Component {
     const expiredStopLabel = formatMessage({ id: 'show_expired_stops' });
     const userGuide = formatMessage({ id: 'user_guide' });
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
+    const showMultimodalEdgesLabel = formatMessage({id: 'show_multimodal_edges'});
 
     const tiamatEnv = getTiamatEnv();
 
@@ -199,6 +205,16 @@ class Header extends React.Component {
                     multiple
                     checked={showExpiredStops}
                     primaryText={expiredStopLabel}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleMultimodalEdges(!showMultimodalEdges)}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showMultimodalEdges}
+                    primaryText={showMultimodalEdgesLabel}
                   />
                 ]}
               />
@@ -276,7 +292,8 @@ const mapStateToProps = state => ({
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
-  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/edit/') > -1
+  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/edit/') > -1,
+  showMultimodalEdges: state.stopPlace.showMultimodalEdges,
 });
 
 export default connect(mapStateToProps)(Header);

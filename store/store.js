@@ -67,7 +67,8 @@ export default function configureStore(kc) {
       isCompassBearingEnabled: Settings.getShowCompassBearing(),
       isCreatingPolylines: false,
       enablePolylines: Settings.getShowPathLinks(),
-      showExpiredStops: Settings.getShowExpiredStops()
+      showExpiredStops: Settings.getShowExpiredStops(),
+      showMultimodalEdges: Settings.getShowMultimodalEdges()
     },
     user: {
       path: '/',
