@@ -12,7 +12,7 @@
     "stats": "webpack --config ./webpack.prod.config.js --json > stats.json"
   },
   "author": "Sean Erik Scully",
-  "license": "MIT",
+  "license": "EUPL-1.2 with modifications",
   "dependencies": {
     "apollo-client": "1.9.0-1",
     "axios": "0.16.2",
