@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Polyline, FeatureGroup } from 'react-leaflet';
 import { connect } from 'react-redux';
-
+import { getCoordinatesFromGeometry } from '../../utils/';
 
 class MultimodalStopEdges extends Component {
 
@@ -20,9 +20,17 @@ class MultimodalStopEdges extends Component {
     if (!showMultimodalEdges) return null;
 
     stops.forEach( (marker, index) => {
-      if (marker.isParent) {
+      if (marker.isParent && marker.location) {
           if (marker.children) {
-            marker.children.forEach( (child, childIndex) => {
+            marker.children
+              .map( child => {
+                if (child.geometry && !child.location) {
+                  child.location = getCoordinatesFromGeometry(child.geometry);
+                }
+                return child;
+              })
+              .filter(child => child.location && child.location.length === 2)
+              .forEach( (child, childIndex) => {
               const markerIndex = marker.id + child.id;
               vertices.push(
                 <Polyline

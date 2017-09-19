@@ -21,6 +21,18 @@ export const getInTransform = (object, keys, defaultValue, transformater) => {
   return value !== null ? transformater(value) : defaultValue;
 };
 
+export const getCoordinatesFromGeometry = geometry => {
+  if (geometry && geometry.coordinates) {
+    let coordinates = geometry.coordinates[0].slice();
+    // Leaflet uses latLng, GeoJSON [long,lat]
+    return [
+      setDecimalPrecision(coordinates[1], 6),
+      setDecimalPrecision(coordinates[0], 6),
+    ];
+  }
+  return null;
+}
+
 export const extractCoordinates = latLngString => {
   if (!latLngString) return null;
 
