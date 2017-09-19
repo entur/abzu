@@ -111,6 +111,14 @@ class SearchBox extends React.Component {
   }
 
   toggleShowFutureAndExpired(value) {
+    const { searchText, topoiChips, stopTypeFilter } = this.props;
+    if (searchText) {
+      this.handleSearchUpdate(searchText, null, null, {
+        showFutureAndExpired: value,
+        topoiChips,
+        stopType: stopTypeFilter
+      });
+    }
     this.props.dispatch(UserActions.toggleShowFutureAndExpired(value));
   }
 
@@ -139,7 +147,15 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.closeLookupCoordinatesDialog());
   }
 
-  handleApplyFilters(filters) {
+  handleApplyModalityFilters(filters) {
+    const { searchText, showFutureAndExpired, topoiChips } = this.props;
+    if (searchText) {
+      this.handleSearchUpdate(searchText, null, null, {
+        showFutureAndExpired,
+        topoiChips,
+        stopType: filters
+      });
+    }
     this.props.dispatch(UserActions.applyStopTypeSearchFilter(filters));
   }
 
@@ -155,6 +171,16 @@ class SearchBox extends React.Component {
   }
 
   handleAddChip({ text, type, id }) {
+    const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } = this.props;
+    if (searchText) {
+      this.handleSearchUpdate(searchText, null, null, {
+        showFutureAndExpired,
+        topoiChips: topoiChips.concat({
+          text, type, value: id
+        }),
+        stopType: stopTypeFilters
+      });
+    }
     this.props.dispatch(
       UserActions.addToposChip({ text: text, type: type, value: id })
     );
@@ -162,6 +188,19 @@ class SearchBox extends React.Component {
       searchText: ''
     });
   }
+
+  handleDeleteChip(chipValue) {
+    const { dispatch, searchText, stopTypeFilters, showFutureAndExpired, topoiChips } = this.props;
+    if (searchText) {
+      this.handleSearchUpdate(searchText, null, null, {
+        showFutureAndExpired,
+        topoiChips: topoiChips.filter(chip => chip.value !== chipValue),
+        stopType: stopTypeFilters
+      });
+    }
+    dispatch(UserActions.deleteChip(chipValue));
+  }
+
   handleNewStop(isMultiModal) {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop(isMultiModal));
   }
@@ -338,6 +377,7 @@ class SearchBox extends React.Component {
           value: (
             <MenuItem
               primaryText={name}
+              style={{fontSize: '0.8em'}}
               secondaryText={formatMessage({ id: place.topographicPlaceType })}
             />
           ),
@@ -413,7 +453,7 @@ class SearchBox extends React.Component {
               <ModalityFilter
                 locale={locale}
                 stopTypeFilter={stopTypeFilter}
-                handleApplyFilters={this.handleApplyFilters.bind(this)}
+                handleApplyFilters={this.handleApplyModalityFilters.bind(this)}
               />
               {showMoreFilterOptions
                 ? <div>
@@ -425,7 +465,7 @@ class SearchBox extends React.Component {
                         {formatMessage({ id: 'filters_less' })}
                       </FlatButton>
                     </div>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <AutoComplete
                         floatingLabelText={formatMessage({
                           id: 'filter_by_topography'
@@ -439,7 +479,7 @@ class SearchBox extends React.Component {
                         style={{
                           margin: 'auto',
                           width: '100%',
-                          marginTop: -20
+                          marginTop: -20,
                         }}
                         maxSearchResults={5}
                         ref="topoFilter"
@@ -447,15 +487,15 @@ class SearchBox extends React.Component {
                       />
                       <CheckBox
                         checked={showFutureAndExpired}
-                        onCheck={ (e, value) => this.toggleShowFutureAndExpired(value)}
-                        label={formatMessage({id: 'show_future_and_expired'})}
-                        labelStyle={{fontSize: '0.8em'}}
+                        onCheck={(e, value) =>
+                          this.toggleShowFutureAndExpired(value)}
+                        label={formatMessage({ id: 'show_future_and_expired' })}
+                        labelStyle={{ fontSize: '0.8em' }}
                       />
                     </div>
                     <TopographicalFilter
                       topoiChips={topoiChips}
-                      handleDeleteChip={chipId =>
-                        this.props.dispatch(UserActions.deleteChip(chipId))}
+                      handleDeleteChip={this.handleDeleteChip.bind(this)}
                     />
                   </div>
                 : <div style={{ width: '100%', textAlign: 'center' }}>
@@ -503,9 +543,7 @@ class SearchBox extends React.Component {
             </div>
             <Divider />
           </div>
-          <div
-            style={{ marginBottom: 5, textAlign: 'right', marginRight: 10 }}
-          >
+          <div style={{ marginBottom: 5, textAlign: 'right', marginRight: 10 }}>
             <FlatButton
               style={{ marginLeft: 10, fontSize: 12 }}
               disabled={!!favorited}
@@ -638,7 +676,7 @@ const mapStateToProps = state => {
     isGuest: state.roles.isGuest,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
-    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired
   };
 };
 
