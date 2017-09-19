@@ -103,9 +103,11 @@ StopPlaceActions.createKeyValuesPair = (key, values) => (dispatch, getState) => 
 }
 
 StopPlaceActions.setMarkerOnMap = marker => dispatch => {
-  let activeMarker = JSON.parse(JSON.stringify(marker));
-  activeMarker.isActive = true;
-  dispatch(sendData(types.SET_ACTIVE_MARKER, activeMarker));
+  dispatch(sendData(types.SET_ACTIVE_MARKER, {
+    ...marker,
+    isActive: true
+  }));
+
 };
 
 StopPlaceActions.changeMapCenter = (position, zoom) => dispatch => {
