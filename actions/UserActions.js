@@ -29,6 +29,10 @@ UserActions.navigateTo = (path, id) => dispatch => {
   goToRoute(path, id);
 };
 
+UserActions.toggleShowFutureAndExpired = value => dispatch => {
+  dispatch(sendData(types.TOGGLE_SHOW_FUTURE_AND_EXPIRED, value));
+}
+
 UserActions.navigateToMainAfterDelete = () => dispatch => {
   dispatch(sendData(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
   goToRoute('/','');
@@ -158,7 +162,8 @@ UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
     title,
     searchFilters.text,
     searchFilters.stopType,
-    searchFilters.topoiChips
+    searchFilters.topoiChips,
+    searchFilters.showFutureAndExpired
   );
   favoriteManager.save(savableContent);
   dispatch(UserActions.closeFavoriteNameDialog());
@@ -187,6 +192,7 @@ UserActions.loadFavoriteSearch = favorite => dispatch => {
   dispatch(UserActions.setToposchips(favorite.topoiChips));
   dispatch(UserActions.setStopPlaceTypes(favorite.stopType));
   dispatch(UserActions.setSearchText(favorite.searchText));
+  dispatch(UserActions.toggleShowFutureAndExpired(favorite.showFutureAndExpired));
 };
 
 UserActions.openFavoriteNameDialog = () => dispatch => {

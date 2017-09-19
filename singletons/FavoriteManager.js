@@ -32,12 +32,13 @@ class FavoriteManager {
     return false;
   }
 
-  createSavableContent(title, searchText, stopType, topoiChips) {
+  createSavableContent(title, searchText, stopType, topoiChips, showFutureAndExpired) {
     return {
-      stopType: stopType,
-      topoiChips: topoiChips,
-      searchText: searchText,
-      title: title,
+      stopType,
+      topoiChips,
+      searchText,
+      title,
+      showFutureAndExpired
     };
   }
 
@@ -46,6 +47,7 @@ class FavoriteManager {
       searchText: content.searchText,
       stopType: content.stopType,
       topoiChips: content.topoiChips,
+      showFutureAndExpired: content.showFutureAndExpired
     };
   }
 

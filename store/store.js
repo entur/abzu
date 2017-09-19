@@ -77,7 +77,8 @@ export default function configureStore(kc) {
       searchFilters: {
         stopType: [],
         topoiChips: [],
-        text: ''
+        text: '',
+        showFutureAndExpired: false,
       },
       snackbarOptions: {
         isOpen: false,

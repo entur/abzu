@@ -141,6 +141,14 @@ const userReducer = (state = initialState, action) => {
         }
       });
 
+    case types.TOGGLE_SHOW_FUTURE_AND_EXPIRED:
+      return Object.assign({}, state, {
+        searchFilters: {
+          ...state.searchFilters,
+          showFutureAndExpired: action.payLoad
+        }
+      });
+
     case types.SET_SEARCH_TEXT:
       return Object.assign({}, state, {
         searchFilters: {

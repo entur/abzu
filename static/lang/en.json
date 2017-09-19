@@ -233,6 +233,7 @@
   "show_compass_bearing": "Show compass bearing",
   "show_path_links": "Show path links",
   "show_expired_stops": "Show expired stop places",
+  "show_future_and_expired": "Show expired and future",
   "show_multimodal_edges": "Show multimodal internal connections",
   "show_quays": "Show quays",
   "sign_out": "Sign out",

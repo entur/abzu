@@ -234,6 +234,7 @@
   "show_multimodal_edges": "Vis tilknytninger internt i multimodale stoppesteder",
   "show_path_links" : "Vis ganglenker",
   "show_expired_stops": "Vis nedlagte stoppesteder",
+  "show_future_and_expired": "Vis nedlagte og fremtidige",
   "show_quays" : "Vis quayer",
   "sign_out" : "Logg ut",
   "snackbar_message_failed" : "Lagring feilet",

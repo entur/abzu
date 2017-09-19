@@ -32,6 +32,7 @@ import MdSpinner from '../../static/icons/spinner';
 import { createSearchMenuItem } from './SearchMenuItem';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
+import CheckBox from 'material-ui/Checkbox';
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -45,6 +46,9 @@ class SearchBox extends React.Component {
 
     const searchStop = (searchText, dataSource, params, filter) => {
       const chips = filter ? filter.topoiChips : this.props.topoiChips;
+      const showFutureAndExpired = filter
+        ? filter.showFutureAndExpired
+        : this.props.showFutureAndExpired;
       const stopPlaceTypes = filter
         ? filter.stopType
         : this.props.stopTypeFilter;
@@ -55,7 +59,8 @@ class SearchBox extends React.Component {
         this.props.client,
         searchText,
         stopPlaceTypes,
-        chips
+        chips,
+        showFutureAndExpired
       ).then(response => {
         this.setState({ loading: false });
       });
@@ -103,6 +108,10 @@ class SearchBox extends React.Component {
 
   handlePopoverDismiss(filters) {
     this.props.dispatch(UserActions.applyStopTypeSearchFilter(filters));
+  }
+
+  toggleShowFutureAndExpired(value) {
+    this.props.dispatch(UserActions.toggleShowFutureAndExpired(value));
   }
 
   handleTopographicalPlaceInput(searchText) {
@@ -275,7 +284,8 @@ class SearchBox extends React.Component {
       isGuest,
       lookupCoordinatesOpen,
       newStopIsMultiModal,
-      dataSource
+      dataSource,
+      showFutureAndExpired
     } = this.props;
     const {
       coordinatesDialogOpen,
@@ -415,27 +425,33 @@ class SearchBox extends React.Component {
                         {formatMessage({ id: 'filters_less' })}
                       </FlatButton>
                     </div>
-                    <AutoComplete
-                      floatingLabelText={formatMessage({
-                        id: 'filter_by_topography'
-                      })}
-                      hintText={formatMessage({ id: 'filter_by_topography' })}
-                      dataSource={topographicalPlacesDataSource}
-                      onUpdateInput={this.handleTopographicalPlaceInput.bind(
-                        this
-                      )}
-                      filter={AutoComplete.caseInsensitiveFilter}
-                      style={{
-                        margin: 'auto',
-                        width: '100%',
-                        textAlign: 'center',
-                        marginTop: -20
-                      }}
-                      maxSearchResults={5}
-                      fullWidth={true}
-                      ref="topoFilter"
-                      onNewRequest={this.handleAddChip.bind(this)}
-                    />
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                      <AutoComplete
+                        floatingLabelText={formatMessage({
+                          id: 'filter_by_topography'
+                        })}
+                        hintText={formatMessage({ id: 'filter_by_topography' })}
+                        dataSource={topographicalPlacesDataSource}
+                        onUpdateInput={this.handleTopographicalPlaceInput.bind(
+                          this
+                        )}
+                        filter={AutoComplete.caseInsensitiveFilter}
+                        style={{
+                          margin: 'auto',
+                          width: '100%',
+                          marginTop: -20
+                        }}
+                        maxSearchResults={5}
+                        ref="topoFilter"
+                        onNewRequest={this.handleAddChip.bind(this)}
+                      />
+                      <CheckBox
+                        checked={showFutureAndExpired}
+                        onCheck={ (e, value) => this.toggleShowFutureAndExpired(value)}
+                        label={formatMessage({id: 'show_future_and_expired'})}
+                        labelStyle={{fontSize: '0.8em'}}
+                      />
+                    </div>
                     <TopographicalFilter
                       topoiChips={topoiChips}
                       handleDeleteChip={chipId =>
@@ -621,7 +637,8 @@ const mapStateToProps = state => {
     ),
     isGuest: state.roles.isGuest,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
-    newStopIsMultiModal: state.user.newStopIsMultiModal
+    newStopIsMultiModal: state.user.newStopIsMultiModal,
+    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
   };
 };
 

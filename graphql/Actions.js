@@ -260,7 +260,7 @@ export const getMergeInfoForStops = (client, stopPlaceId) => (
   })
 );
 
-export const findStopWithFilters = (client, query, stopPlaceType, chips) => {
+export const findStopWithFilters = (client, query, stopPlaceType, chips, ignorePointTime) => {
   const municipalityReference = chips
   .filter(topos => topos.type === 'town')
     .map(topos => topos.value);
@@ -275,7 +275,8 @@ export const findStopWithFilters = (client, query, stopPlaceType, chips) => {
       query,
       stopPlaceType,
       municipalityReference: municipalityReference ,
-      countyReference: countyReference
+      countyReference: countyReference,
+      pointInTime: ignorePointTime ? null : new Date().toISOString()
     },
   });
 };
