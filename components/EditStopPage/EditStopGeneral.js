@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from 'react-redux';
+
+import { connect } from 'react-redux';
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import { StopPlaceActions, UserActions } from '../../actions/';
@@ -613,6 +614,7 @@ class EditStopGeneral extends React.Component {
                 handleConfirm={this.handleSaveAllEntities.bind(this)}
                 errorMessage={this.state.errorMessage}
                 intl={intl}
+                currentValidBetween={stopPlace.validBetween}
               />
             : null}
           <MergeStopDialog

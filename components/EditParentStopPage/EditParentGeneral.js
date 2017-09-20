@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
@@ -344,6 +345,7 @@ class EditParentGeneral extends React.Component {
               handleConfirm={this.determineHowToSave.bind(this)}
               errorMessage={this.state.errorMessage}
               intl={intl}
+              currentValidBetween={stopPlace.validBetween}
             />
           : null}
       </div>
