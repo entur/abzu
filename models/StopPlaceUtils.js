@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const extractAlternativeNames = alternativeNames => {
+
+export const extractAlternativeNames = alternativeNames => {
   if (!alternativeNames) return [];
   return alternativeNames.filter(
     alt => alt.name && alt.name.value && alt.nameType,
@@ -20,6 +21,8 @@ limitations under the Licence. */
 };
 
 export const getImportedId = keyValues => {
+  if (!keyValues) return [];
+
   for (let i = 0; i < keyValues.length; i++) {
     if (keyValues[i].key === "imported-id") {
       return keyValues[i].values;

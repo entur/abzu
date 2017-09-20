@@ -12,10 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from './Types';
+
+import * as types from './Types';
 import { getCentroid } from '../utils/mapUtils';
 import { UserActions } from './';
 import { getIn } from '../utils/'
+import { updateURLWithId } from '../utils/URLhelpers';
 
 var StopPlaceActions = {};
 
@@ -121,7 +123,7 @@ StopPlaceActions.setMarkerOnMap = marker => dispatch => {
     ...marker,
     isActive: true
   }));
-
+  updateURLWithId(marker.id);
 };
 
 StopPlaceActions.changeMapCenter = (position, zoom) => dispatch => {

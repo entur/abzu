@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import gql from 'graphql-tag';
+
+import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
 
@@ -158,6 +159,79 @@ export const allEntities = gql`
     ${Fragments.parentStopPlace.verbose},
     ${Fragments.pathLink.verbose},
     ${Fragments.parking.verbose},
+`;
+
+export const getStopById = gql`
+    query getStopById($id: String!) {
+        stopPlace(id: $id) {
+            id
+            __typename
+            keyValues {
+                key
+                values
+            }
+            name {
+                value
+            }
+            tags {
+                name
+                comment
+                created
+                createdBy
+            }
+            geometry {
+                coordinates
+            }
+            validBetween {
+                fromDate
+                toDate
+            }
+            accessibilityAssessment {
+                limitations {
+                    wheelchairAccess
+                }
+            }
+            topographicPlace {
+                name {
+                    value
+                }
+                topographicPlaceType
+                parentTopographicPlace {
+                    name {
+                        value
+                    }
+                }
+            }
+            ... on StopPlace {
+                stopPlaceType
+                submode
+                transportMode
+                quays {
+                    id
+                    importedId
+                }
+            }
+            ... on ParentStopPlace {
+                geometry {
+                    coordinates
+                    type
+                }
+                children {
+                    name {
+                        value
+                    }
+                    id
+                    importedId
+                    stopPlaceType
+                    transportMode
+                    submode
+                    geometry {
+                        coordinates
+                    }
+                }
+            }
+        }
+    },
 `;
 
 export const findStop = gql`
