@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ModalityIcon from '../MainPage/ModalityIcon';
 import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
@@ -44,10 +45,10 @@ class ModalityIconTray extends Component {
 }
 
 ModalityIconTray.propTypes = {
-  modalities: PropTypes.shape({
+  modalities: PropTypes.arrayOf(PropTypes.shape({
     submode: PropTypes.string,
     stopPlaceType: PropTypes.string
-  }),
+  })),
   style: PropTypes.object
 };
 
