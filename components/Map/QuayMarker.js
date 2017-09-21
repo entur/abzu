@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
@@ -384,7 +385,7 @@ class QuayMarker extends React.Component {
                     onClick={() => this.handleMergeFrom()}
                     label={translations.mergeQuayFrom}
                   />
-                  {!disabled &&
+                  {!disabled && isEditingStop &&
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
