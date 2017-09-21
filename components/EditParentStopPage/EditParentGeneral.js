@@ -41,8 +41,7 @@ import { MutationErrorCodes } from '../../models/ErrorCodes';
 import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
 import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
 import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
-import { getIn } from '../../utils/';
-
+import { getIn, getIsCurrentVersionMax } from '../../utils/';
 
 class EditParentGeneral extends React.Component {
   constructor(props) {
@@ -253,6 +252,7 @@ class EditParentGeneral extends React.Component {
 
     const { formatMessage } = intl;
     const isAllowedToSave = this.getIsAllowedToSave();
+    const isCurrentVersionMax = getIsCurrentVersionMax(versions, stopPlace.version);
 
     const containerStyle = {
       border: '1px solid #511E12',
@@ -306,6 +306,7 @@ class EditParentGeneral extends React.Component {
           )}
           disabled={disabled}
         />
+        { isCurrentVersionMax &&
         <div
           style={{
             border: '1px solid #efeeef',
@@ -343,6 +344,7 @@ class EditParentGeneral extends React.Component {
             onClick={this.handleSave.bind(this)}
           />
         </div>
+        }
         <ConfirmDialog
           open={this.state.confirmUndoOpen}
           handleClose={() => {

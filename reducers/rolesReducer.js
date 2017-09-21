@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../actions/Types';
+
+import * as types from '../actions/Types';
 import { getAllowanceInfoForStop, getAllowanceSearchInfo, getAllowInfoNewStop } from './rolesReducerUtils';
 
 export const initialState = {};
@@ -36,7 +37,7 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfoSearchResult: getAllowanceSearchInfo(action.payLoad, state.kc.tokenParsed)
       });
 
-    case types.USE_NEW_STOP_AS_CURENT:
+    case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign(({}, state, {
         ...state,
         kc: state.kc,

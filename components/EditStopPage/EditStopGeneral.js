@@ -56,7 +56,7 @@ import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
 import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
-import { getIn } from '../../utils/';
+import { getIn, getIsCurrentVersionMax } from '../../utils/';
 import VersionsPopover from './VersionsPopover';
 
 class EditStopGeneral extends React.Component {
@@ -248,7 +248,7 @@ class EditStopGeneral extends React.Component {
         this.handleSaveSuccess(stopPlace.id);
         this.handleCloseDeleteStop();
       })
-    } 
+    }
   }
 
   handleSaveAllEntities(userInput) {
@@ -467,6 +467,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const stopPlaceLabel = this.getTitleText(stopPlace, formatMessage);
+    const isCurrentVersionMax = getIsCurrentVersionMax(versions, stopPlace.version, stopPlace.isChildOfParent);
 
     const style = {
       border: '1px solid #511E12',
@@ -685,11 +686,11 @@ class EditStopGeneral extends React.Component {
             border: '1px solid #efeeef',
             textAlign: 'right',
             width: '100%',
-            display: 'flex',
+            display: isCurrentVersionMax ? 'flex' : 'none',
             justifyContent: 'space-around'
           }}
         >
-          { !stopPlace.isChildOfParent &&
+          { !stopPlace.isChildOfParent && isCurrentVersionMax &&
               <FlatButton
                 disabled={disableTerminate}
                 label={formatMessage({ id: 'terminate_stop_place' })}

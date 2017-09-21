@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const setDecimalPrecision = (number, n) => {
+
+export const setDecimalPrecision = (number, n) => {
   if (isNaN(number) || isNaN(n)) {
     return number;
     //throw new Error('setDecimalPrecision, one of the arguments is not a number', number, n)
@@ -89,3 +90,20 @@ export const toCamelCase = string => {
     return p1.toLowerCase();
   });
 };
+
+export const getIsCurrentVersionMax = (versions, currentVersion, isChildOfParent) => {
+  /* versioning of child of parent is difficult task and error prone, so it is not supported to
+    to view older versions of a child in current state of Abzu
+   */
+  if (isChildOfParent) return true;
+
+  // no previous version => when creating a new stop place
+  if (versions && !versions.length) return true;
+
+  // also when creating a new stop place
+  if (!currentVersion) return true;
+
+  const versionsOfStop = versions.map(version => version.version);
+  const maxVersion = Math.max(...versionsOfStop);
+  return maxVersion == currentVersion;
+}

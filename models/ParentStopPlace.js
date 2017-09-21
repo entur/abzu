@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
+
+import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
@@ -61,7 +62,7 @@ class ParentStopPlace {
 
     try {
 
-      const { stop, isActive, parking, userDefinedCoordinates } = this;
+      const { stop, isActive, userDefinedCoordinates } = this;
 
       let clientStop = {
         id: stop.id,

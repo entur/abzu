@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import {
+
+import {
   getStateByOperation,
 } from './stopPlaceReducerUtils';
 import * as types from '../actions/Types';
@@ -240,13 +241,14 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.USE_NEW_STOP_AS_CURENT:
+    case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
         current: JSON.parse(JSON.stringify(state.newStop)),
         centerPosition: state.newStop.location,
         isCreatingPolylines: false,
         zoom: 14,
         stopHasBeenModified: false,
+        versions: []
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
@@ -256,6 +258,7 @@ const stopPlaceReducer = (state = {}, action) => {
         isCreatingPolylines: false,
         zoom: 14,
         stopHasBeenModified: true,
+        versions: [],
       });
 
     case types.SET_ACTIVE_MARKER:

@@ -63,7 +63,7 @@ StopPlaceActions.sortQuays = attribute => dispatch => {
 StopPlaceActions.useNewStopAsCurrent = () => (dispatch, getState) => {
   let state = getState();
   let location = getIn(state, ['stopPlace','newStop', 'location'], null);
-  dispatch(sendData(types.USE_NEW_STOP_AS_CURENT, location));
+  dispatch(sendData(types.USE_NEW_STOP_AS_CURRENT, location));
 };
 
 StopPlaceActions.changeStopName = name => dispatch => {

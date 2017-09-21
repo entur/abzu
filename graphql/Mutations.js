@@ -93,9 +93,11 @@ export const mutateTerminateStopPlace = gql`
   mutation mutateTerminateStopPlace($stopPlaceId: String!, $versionComment: String!, $toDate: DateTime!) {
       terminateStopPlace(stopPlaceId: $stopPlaceId, versionComment: $versionComment, toDate: $toDate) {
           ...VerboseStopPlace
+          ...VerboseParentStopPlace
       }
   },
   ${Fragments.stopPlace.verbose},
+  ${Fragments.parentStopPlace.verbose}
 `
 
 export const mutateAddToMultiModalStopPlace = gql`
