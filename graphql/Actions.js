@@ -27,7 +27,8 @@ import {
   mutateStopPlace,
   updateChildOfParentStop,
   mutateRemoveTag,
-  mutateCreateTag
+  mutateCreateTag,
+  mutateTerminateStopPlace
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -160,6 +161,16 @@ export const deleteStopPlace = (client, stopPlaceId) =>
     },
     fetchPolicy: 'network-only'
   });
+
+export const terminateStop = (client, stopPlaceId, versionComment, toDate) =>
+  client.mutate({
+    mutation: mutateTerminateStopPlace,
+    variables: {
+      stopPlaceId,
+      versionComment,
+      toDate
+    }
+  })
 
 export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
   client.mutate({

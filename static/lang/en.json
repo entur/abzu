@@ -255,6 +255,8 @@
   "target": "Target",
   "tariffZones": "Tariff zones",
   "terminate_path_link_here": "Terminate path link here",
+  "terminate_stop_place": "Terminate",
+  "terminate_stop_title": "Terminate stop place",
   "ticketMachine": "Ticket machine",
   "ticketMachine_no": "No ticket machine",
   "ticketMachine_quay_hint": "Is a ticket machine available for this quay?",

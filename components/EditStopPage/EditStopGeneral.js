@@ -49,16 +49,14 @@ import {
   moveQuaysToStop,
   getNeighbourStops,
   moveQuaysToNewStop,
-  saveStopPlaceBasedOnType
+  saveStopPlaceBasedOnType,
+  terminateStop
 } from '../../graphql/Actions';
-import IconButton from 'material-ui/IconButton';
-import MdDelete from 'material-ui/svg-icons/action/delete-forever';
-import DeleteStopPlaceDialog from '../Dialogs/DeleteStopPlaceDialog';
+import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
 import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
 import { getIn } from '../../utils/';
-import ToolTippable from './ToolTippable';
 import VersionsPopover from './VersionsPopover';
 
 class EditStopGeneral extends React.Component {
@@ -226,23 +224,31 @@ class EditStopGeneral extends React.Component {
       });
   }
 
-  handleDeleteStop() {
+  handleTerminateStop(shouldHardDelete, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
-    deleteStopPlace(client, stopPlace.id)
-      .then(response => {
-        dispatch(UserActions.hideDeleteStopDialog());
-        if (response.data.deleteStopPlace) {
-          dispatch(UserActions.navigateToMainAfterDelete());
-        } else {
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
-        }
+
+    if (shouldHardDelete) {
+      deleteStopPlace(client, stopPlace.id)
+        .then(response => {
+          dispatch(UserActions.hideDeleteStopDialog());
+          if (response.data.deleteStopPlace) {
+            dispatch(UserActions.navigateToMainAfterDelete());
+          } else {
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
+          }
+        })
+        .catch(err => {
+          dispatch(UserActions.hideDeleteStopDialog(true));
+          dispatch(
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+          );
+        });
+    } else {
+      terminateStop(client, stopPlace.id, comment, dateTime).then( result => {
+        this.handleSaveSuccess(stopPlace.id);
+        this.handleCloseDeleteStop();
       })
-      .catch(err => {
-        dispatch(UserActions.hideDeleteStopDialog(true));
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
-      });
+    } 
   }
 
   handleSaveAllEntities(userInput) {
@@ -493,6 +499,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 };
+    const disableTerminate = stopPlace.isNewStop || disabled || stopPlace.hasExpired;
 
     return (
       <div style={style}>
@@ -644,12 +651,14 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             deletingQuay={this.props.deletingQuay}
           />
-          <DeleteStopPlaceDialog
+          <TerminateStopPlaceDialog
             open={this.props.deleteStopDialogOpen}
             handleClose={this.handleCloseDeleteStop.bind(this)}
-            handleConfirm={this.handleDeleteStop.bind(this)}
+            handleConfirm={this.handleTerminateStop.bind(this)}
             intl={intl}
+            previousValidBetween={stopPlace.validBetween}
             stopPlace={stopPlace}
+            canDeleteStop={canDeleteStop}
           />
           <MoveQuayDialog
             open={this.props.moveQuayDialogOpen}
@@ -680,38 +689,35 @@ class EditStopGeneral extends React.Component {
             justifyContent: 'space-around'
           }}
         >
-          <ToolTippable
-            toolTipText={formatMessage({ id: 'delete_stop_place' })}
-            toolTipStyle={{ marginLeft: 50, marginTop: 5 }}
-          >
-            <IconButton
-              disabled={!canDeleteStop || stopPlace.isNewStop}
-              onClick={() => {
-                canDeleteStop &&
-                  this.props.dispatch(UserActions.requestDeleteStopPlace());
-              }}
-            >
-              <MdDelete />
-            </IconButton>
-          </ToolTippable>
+          { !stopPlace.isChildOfParent &&
+              <FlatButton
+                disabled={disableTerminate}
+                label={formatMessage({ id: 'terminate_stop_place' })}
+                style={{ margin: '8 5', zIndex: 999 }}
+                labelStyle={{ fontSize: '0.7em', color: disableTerminate ? 'rgba(0, 0, 0, 0.3)' : 'initial'}}
+                onClick={() => {
+                  this.props.dispatch(UserActions.requestTerminateStopPlace())
+                }}
+              />
+          }
           <FlatButton
-            icon={<MdUndo />}
+            icon={<MdUndo style={{height: '1.3em', width: '1.3em'}} />}
             disabled={!stopHasBeenModified}
             label={formatMessage({ id: 'undo_changes' })}
             style={{ margin: '8 5', zIndex: 999 }}
-            labelStyle={{ fontSize: '0.8em' }}
+            labelStyle={{ fontSize: '0.7em' }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
             }}
           />
           <FlatButton
-            icon={<MdSave />}
+            icon={<MdSave style={{height: '1.3em', width: '1.3em'}}/>}
             disabled={
               disabled || !stopHasBeenModified || !stopPlace.name.length
             }
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
-            labelStyle={{ fontSize: '0.8em' }}
+            labelStyle={{ fontSize: '0.7em' }}
             onClick={this.handleSave.bind(this)}
           />
         </div>

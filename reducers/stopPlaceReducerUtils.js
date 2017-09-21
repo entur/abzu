@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import formatHelpers from '../modelUtils/mapToClient';
+
+import formatHelpers from '../modelUtils/mapToClient';
 
 export const getStateByOperation = (state, action) => {
   switch (action.operationName) {
@@ -29,6 +30,9 @@ export const getStateByOperation = (state, action) => {
 
     case 'mutateDeleteQuay':
       return updateStopPlaceStateAfterMutate(state, action, 'deleteQuay');
+
+    case 'mutateTerminateStopPlace':
+      return updateStopPlaceStateAfterMutate(state, action, 'terminateStopPlace');
 
     case 'removeStopPlaceFromParent':
       return updateStopPlaceStateAfterMutate(state, action, 'removeFromMultiModalStopPlace');

@@ -255,6 +255,8 @@
   "tags": "Tagger",
   "target": "Mål",
   "terminate_path_link_here" : "Avslutt ganglenke her",
+  "terminate_stop_place": "Legg ned",
+  "terminate_stop_title": "Legg ned stoppested",
   "ticketMachine": "Billettautomat",
   "ticketMachine_no": "Ingen billettautomat",
   "ticketMachine_quay_hint": "Er en billettautomat tilgjengelig for denne quayen?",

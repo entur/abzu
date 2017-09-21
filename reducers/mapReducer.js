@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../actions/Types';
+
+import * as types from '../actions/Types';
 
 export const initialState = {
   focusedElement: {
@@ -127,7 +128,7 @@ const mapReducer = (state = initialState, action) => {
         movingQuayToNewStop: null
       });
 
-    case types.REQUESTED_DELETE_STOP_DIALOG:
+    case types.TERMINATE_DELETE_STOP_DIALOG:
       return Object.assign({}, state, {
         deleteStopDialogOpen: true
       });
