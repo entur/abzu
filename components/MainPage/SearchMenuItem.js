@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import ModalityIcon from './ModalityIcon';
 import MenuItem from 'material-ui/MenuItem';
 import ModalityIconTray from '../ReportPage/ModalityIconTray';
@@ -154,11 +155,11 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
         }
         rightIcon={
           <ModalityIcon
-            svgStyle={{ marginTop: 10, marginRight: 0 }}
+            svgStyle={{ marginTop: 10, marginRight: 0, transform: 'translate3d(0,0,0)' }}
             style={{ display: 'inline-block', position: 'relative' }}
             iconStyle={{
               float: 'right',
-              transform: 'translateY(2px) scale(0.8)'
+              transform: 'translateY(2px) scale(0.8) translate3d(0,0,0)'
             }}
             type={element.stopPlaceType}
             submode={element.submode}

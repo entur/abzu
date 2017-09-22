@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
 import PropTypes from 'prop-types';
 import styles from '../../styles/menu.css'
@@ -31,6 +32,10 @@ class ModalityIcon extends React.Component {
     }
 
     return true
+  }
+
+  componentDidMount() {
+    this.refs.svgIcon.forceUpdate();
   }
 
   render() {
@@ -54,7 +59,7 @@ class ModalityIcon extends React.Component {
 
     return (
       <span className={styles.clear} style={iconStyle}>
-        <SvgIcon style={{ ...style, ...svgStyle }}>
+        <SvgIcon style={{ ...style, ...svgStyle }} ref="svgIcon">
           <use
             xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}
           />
