@@ -49,21 +49,22 @@ export const isDateRangeLegal = (dateTo, dateFrom, expiraryExpanded, timeFrom, t
 /* Prevent validBetweeen overlap between versions */
 export const getEarliestFromDate = previousValidBetween => {
 
-  const now = new Date();
+  // Add 1 min offset to avoid conflicting time
+  const nowWithOffset = new Date(new Date().getTime() + 1000*60);
 
   if (!previousValidBetween) {
-    return now;
+    return nowWithOffset;
   }
 
   if (previousValidBetween.toDate) {
     const previousToDate = new Date(previousValidBetween.toDate);
-    let dateTimeWithOffset = new Date(previousToDate.getTime() + 1000);
-    return dateTimeWithOffset > now ? dateTimeWithOffset : now;
+    let dateTimeWithOffset = new Date(previousToDate.getTime() + 1000*60);
+    return dateTimeWithOffset > nowWithOffset ? dateTimeWithOffset : nowWithOffset;
   } else if (previousValidBetween.fromDate) {
     const previousFromDate = new Date(previousValidBetween.fromDate);
-    let dateTimeWithOffset = new Date(previousFromDate.getTime() + 1000);
-    return dateTimeWithOffset > now ? dateTimeWithOffset: now;
+    let dateTimeWithOffset = new Date(previousFromDate.getTime() + 1000*60);
+    return dateTimeWithOffset > nowWithOffset ? dateTimeWithOffset: nowWithOffset;
   } else {
-    return now;
+    return nowWithOffset;
   }
 };
