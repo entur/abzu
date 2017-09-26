@@ -184,17 +184,17 @@ class ReportPage extends React.Component {
     });
   }
 
-  handleAddChip(chip) {
-    let addedChipsIds = this.state.topoiChips.map(tc => tc.id);
-
-    if (addedChipsIds.indexOf(chip.id) === -1) {
-      this.setState({
-        topoiChips: this.state.topoiChips.concat(chip)
-      });
-
-      this.refs.topoFilter.setState({
-        searchText: ''
-      });
+  handleAddChip(chip, index) {
+    if (chip && index > -1) {
+      let addedChipsIds = this.state.topoiChips.map(tc => tc.id);
+      if (addedChipsIds.indexOf(chip.id) === -1) {
+        this.setState({
+          topoiChips: this.state.topoiChips.concat(chip)
+        });
+        this.refs.topoFilter.setState({
+          searchText: ''
+        });
+      }
     }
   }
 
