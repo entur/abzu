@@ -250,6 +250,7 @@ export const ColumnTransformersStopPlace = {
 };
 
 const getConflictTooltip = conflictMap => {
+  if (!conflictMap) return null;
   return (
     <div>
       {Object.keys(conflictMap).map(stopPlaceId => {
