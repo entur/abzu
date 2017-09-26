@@ -295,13 +295,13 @@ export const ColumnTransformerQuaysJsx = {
           return (
             <span
               style={{
-                color: isDuplicate ? '#cf1212' : 'initial',
-                fontWeight: isDuplicate ? 600 : 400,
-                cursor: isDuplicate ? 'pointer' : 'initial'
+                color: (isDuplicate && confictToolTip)? '#cf1212' : 'initial',
+                fontWeight: (isDuplicate && confictToolTip) ? 600 : 400,
+                cursor: (isDuplicate && confictToolTip) ? 'pointer' : 'initial'
               }}
               key={'importedId-' + quay.id + '-' + index}
             >
-              {isDuplicate
+              {isDuplicate && confictToolTip
                 ? <ToolTippable
                     showToolTip={isDuplicate}
                     toolTipText={confictToolTip}

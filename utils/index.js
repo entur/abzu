@@ -163,20 +163,17 @@ export const findDuplicateImportedIds = stopPlaces => {
     }
   });
 
+
   Object.keys(fullConflictMap).forEach(importedId => {
     let stopPlaces = fullConflictMap[importedId];
 
-    Object.keys(stopPlaces).forEach( stopPlace => {
-      if (stopPlaces[stopPlace].length === 1) {
-        delete stopPlaces[stopPlace];
+    let keys = Object.keys(stopPlaces);
+
+    keys.forEach( key => {
+      if (stopPlaces[key].length < 2 && keys.length < 2) {
+        delete fullConflictMap[importedId];
       }
     });
-
-    let keys = Object.keys(stopPlaces);
-    if (!keys.length) {
-      delete fullConflictMap[importedId];
-    }
-
   });
 
   return {
