@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 
 import React from 'react';
-import ModalityIcon from './ModalityIcon';
+import ModalityIconImg from './ModalityIconImg';
 import MenuItem from 'material-ui/MenuItem';
 import ModalityIconTray from '../ReportPage/ModalityIconTray';
 import { hasExpired, isFuture } from '../../modelUtils/validBetween';
@@ -120,50 +120,49 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
         key={element.id}
         innerDivStyle={{ padding: '0px 16px 0px 0px' }}
         primaryText={
-          <div
-            style={{
-              marginLeft: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              minWidth: 280
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div style={{ fontSize: '0.9em' }}>{element.name}</div>
-              <div style={{ fontSize: '0.6em', color: 'grey' }}>
-                {element.id}
-              </div>
-            </div>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div
               style={{
-                color: 'grey',
-                marginTop: -20,
-                marginBottom: -10,
-                fontSize: '0.7em',
+                marginLeft: 10,
                 display: 'flex',
-                justifyContent: 'space-between'
+                flexDirection: 'column',
+                minWidth: 280
               }}
             >
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ fontSize: '0.9em' }}>{element.name}</div>
+                <div style={{ fontSize: '0.6em', color: 'grey' }}>
+                  {element.id}
+                </div>
+              </div>
               <div
-              >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-              {futureOrExpiredLabel &&
+                style={{
+                  color: 'grey',
+                  marginTop: -20,
+                  marginBottom: -10,
+                  fontSize: '0.7em',
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div
+                >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+                {futureOrExpiredLabel &&
                 <div key={'valid-label' + element.id} style={{marginRight: 5}}>
                   {formatMessage({ id: futureOrExpiredLabel})}
                 </div>}
+              </div>
             </div>
+            <ModalityIconImg
+              svgStyle={{ marginTop: 10, marginRight: 0, transform: 'translate3d(0,0,0)' }}
+              style={{ display: 'inline-block', position: 'relative' }}
+              iconStyle={{
+                transform: 'scale(0.8)'
+              }}
+              type={element.stopPlaceType}
+              submode={element.submode}
+            />
           </div>
-        }
-        rightIcon={
-          <ModalityIcon
-            svgStyle={{ marginTop: 10, marginRight: 0, transform: 'translate3d(0,0,0)' }}
-            style={{ display: 'inline-block', position: 'relative' }}
-            iconStyle={{
-              float: 'right',
-              transform: 'translateY(2px) scale(0.8) translate3d(0,0,0)'
-            }}
-            type={element.stopPlaceType}
-            submode={element.submode}
-          />
         }
       />
     )

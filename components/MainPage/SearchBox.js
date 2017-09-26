@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from 'react-redux';
+
+import { connect } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -249,16 +250,17 @@ class SearchBox extends React.Component {
     return name;
   }
 
-  componentWillUpdate(nextProps) {
+  getMenuItems(nextProps) {
     const { dataSource, topoiChips, stopTypeFilter } = nextProps;
     const { formatMessage } = nextProps.intl;
+    let menuItems = [];
 
     if (dataSource && dataSource.length) {
-      this._menuItems = dataSource.map(element =>
+      menuItems = dataSource.map(element =>
         createSearchMenuItem(element, formatMessage)
       );
     } else {
-      this._menuItems = [
+      menuItems = [
         {
           text: '',
           value: (
@@ -315,12 +317,13 @@ class SearchBox extends React.Component {
         )
       };
 
-      if (this._menuItems.length > 6) {
-        this._menuItems[6] = filterNotification;
+      if (menuItems.length > 6) {
+        menuItems[6] = filterNotification;
       } else {
-        this._menuItems.push(filterNotification);
+        menuItems.push(filterNotification);
       }
     }
+    return menuItems;
   }
 
   render() {
@@ -345,7 +348,9 @@ class SearchBox extends React.Component {
       showMoreFilterOptions,
       loading
     } = this.state;
+
     const { formatMessage, locale } = intl;
+    const menuItems = this.getMenuItems(this.props);
 
     const Loading = loading &&
     !dataSource.length && [
@@ -535,7 +540,7 @@ class SearchBox extends React.Component {
               openOnFocus
               hintText={formatMessage({ id: 'filter_by_name' })}
               dataSource={
-                loading && !dataSource.length ? Loading : this._menuItems || []
+                loading && !dataSource.length ? Loading : menuItems || []
               }
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleSearchUpdate.bind(this)}

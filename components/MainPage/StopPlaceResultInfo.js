@@ -12,9 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import HasExpiredInfo from './HasExpiredInfo';
-import ModalityIcon from './ModalityIcon';
+import ModalityIconImg from './ModalityIconImg';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getIn } from '../../utils/';
@@ -42,7 +43,7 @@ class StopPlaceResultInfo extends Component {
           }}
         >
           <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
-          <ModalityIcon submode={result.submode} type={result.stopPlaceType} />
+          <ModalityIconImg submode={result.submode} type={result.stopPlaceType} />
         </div>
         <HasExpiredInfo show={result.hasExpired} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import ModalityIcon from '../MainPage/ModalityIcon';
+
+import React, { Component } from 'react';
+import ModalityIconImg from '../MainPage/ModalityIconImg';
 import Divider from 'material-ui/Divider';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
@@ -44,7 +45,7 @@ class StopPlaceListItem extends Component {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ModalityIcon
+            <ModalityIconImg
               type={stopPlace.stopPlaceType}
               submode={stopPlace.submode}
               svgStyle={{transform: 'scale(0.8)'}}

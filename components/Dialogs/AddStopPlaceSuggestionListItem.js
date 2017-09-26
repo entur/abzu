@@ -12,10 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from 'material-ui/Checkbox';
-import ModalityIcon from '../MainPage/ModalityIcon';
+import ModalityIconImg from '../MainPage/ModalityIconImg';
 import { injectIntl } from 'react-intl';
 
 class AddStopPlaceSuggestionListItem extends Component {
@@ -28,7 +29,7 @@ class AddStopPlaceSuggestionListItem extends Component {
       <div style={{display: 'flex', alignItems: 'center', padding: 4}}>
         <Checkbox checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
           <div style={{display: 'flex', alignItems: 'center'}}>
-            <ModalityIcon type={suggestion.stopPlaceType} submode={suggestion.submode} iconStyle={{marginTop: -1}}/>
+            <ModalityIconImg type={suggestion.stopPlaceType} submode={suggestion.submode} iconStyle={{marginTop: -1}}/>
             <div style={{fontSize: '0.9em', flex: 0.8}}>
               { suggestion.name
                 ? <span>{suggestion.name}</span>

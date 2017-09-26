@@ -12,9 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import StopPlaceLink from '../components/ReportPage/StopPlaceLink';
-import ModalityIcon from '../components/MainPage/ModalityIcon';
+import ModalityIconSvg from '../components/MainPage/ModalityIconSvg';
 import CarParkingIcon from '../static/icons/ParkingIcon';
 import BikeParkingIcon from '../static/icons/facilities/BikeParking';
 import { getIn, getInTransform } from '../utils/';
@@ -104,7 +105,7 @@ export const ColumnTransformerStopPlaceJsx = {
         ? 'red'
         : '#000';
       return (
-        <ModalityIcon
+        <ModalityIconSvg
           submode={stop.submode}
           svgStyle={{
             color: iconColor,

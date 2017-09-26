@@ -12,10 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import MenuItem from 'material-ui/MenuItem';
-import ModalityIcon from '../MainPage/ModalityIcon';
+import ModalityIconSvg from '../MainPage/ModalityIconSvg';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import {
   getStopPlacesForSubmodes,
@@ -77,7 +78,7 @@ class ModalitiesMenuItems extends React.Component {
               insetChildren={true}
               rightIcon={type.submodes && <ArrowDropRight />}
               leftIcon={
-                <ModalityIcon iconStyle={{ float: 'left' }} type={type.value} />
+                <ModalityIconSvg iconStyle={{ float: 'left' }} type={type.value} />
               }
               menuItems={
                 type.submodes &&
@@ -121,7 +122,7 @@ class ModalitiesMenuItems extends React.Component {
                         );
                       }}
                       leftIcon={
-                        <ModalityIcon
+                        <ModalityIconSvg
                           iconStyle={{ float: 'left' }}
                           type={type.value}
                           submode={submode.value}
