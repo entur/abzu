@@ -181,6 +181,7 @@
   "open_question": "Do you want to edit this now?",
   "optional_search_string": "Optional search string",
   "only_without_coordinates": "Only without coordinates",
+  "only_duplicate_importedIds": "Only with duplicate importedId on quays",
   "overwrite_alt_name_body": "An alternative name for this name type already exsists in chosen language. Do you want overwrite this with current?",
   "overwrite_alt_name_cancel": "Keep previous",
   "overwrite_alt_name_confirm": "Overwrite",

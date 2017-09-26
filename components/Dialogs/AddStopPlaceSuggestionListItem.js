@@ -20,6 +20,7 @@ import ModalityIconImg from '../MainPage/ModalityIconImg';
 import { injectIntl } from 'react-intl';
 
 class AddStopPlaceSuggestionListItem extends Component {
+
   render() {
 
     const { suggestion, checked, onCheck, intl } = this.props;

@@ -180,6 +180,7 @@
   "move_quay_new_stop_consequence_pl": "quayer vil bli flyttet",
   "move_quay_new_stop_info": "Valgte quayer vil bli fjernet fra nåværende stopp og lagt til et nytt stoppested. All informasjon tilhørende quayene vil bli overført.",
   "only_without_coordinates": "Kun uten koordinater",
+  "only_duplicate_importedIds": "Kun stopp med duplikate lokalID-er på quayer",
   "optional_search_string": "Valgfri søketekst",
   "overwrite_alt_name_body": "Et alternativt navn for denne navntypen finnes allrede for angitt språk. Ønsker du å overskrive den eksisterende med denne?",
   "overwrite_alt_name_cancel": "Behold forrige",

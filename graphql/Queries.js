@@ -308,8 +308,8 @@ export const findStop = gql`
 `;
 
 export const findStopForReport = gql`
-    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
-        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, size: 300) {
+    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!, $withDuplicateImportedIds: Boolean!) {
+        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, withDuplicatedQuayImportedIds: $withDuplicateImportedIds, size: 300) {
             ...on StopPlace {
                 ...ReportStopPlace
             }

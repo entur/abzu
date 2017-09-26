@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { injectIntl } from 'react-intl';
 import {
   ColumnTransformerQuaysJsx,
@@ -20,6 +21,7 @@ import {
 } from '../../models/columnTransformers';
 
 class ReportQuayRows extends React.Component {
+
   render() {
     const columnStyle = {
       flexBasis: '100%',
@@ -31,7 +33,7 @@ class ReportQuayRows extends React.Component {
       fontSize: 12
     };
 
-    const { columnOptions, intl, quays } = this.props;
+    const { columnOptions, intl, quays, duplicateInfo } = this.props;
     const { locale } = intl;
 
     const columns = columnOptions.filter(c => c.checked).map(c => c.id);
@@ -58,7 +60,7 @@ class ReportQuayRows extends React.Component {
           >
             {columns.map(column =>
               <div key={'column-quay-item-' + column} style={columnStyle}>
-                {ColumnTransformerQuaysJsx[column](quay)}
+                {ColumnTransformerQuaysJsx[column](quay, duplicateInfo)}
               </div>
             )}
           </div>

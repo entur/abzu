@@ -12,17 +12,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import {
   ColumnTransformerStopPlaceJsx,
-  ColumnTranslations,
+  ColumnTranslations
 } from '../../models/columnTransformers';
 import MakeExpandable from '../EditStopPage/MakeExpandable';
 import ReportQuayRows from './ReportQuayRows';
 
 class ReportResultView extends React.Component {
+
+  getContainsError(stopPlace) {
+    const { duplicateInfo } = this.props;
+    if (duplicateInfo.stopPlacesWithConflict) {
+      return duplicateInfo.stopPlacesWithConflict.indexOf(stopPlace.id) > -1;
+    }
+    return false;
+  }
+
   render() {
-    const { results, activePageIndex, stopPlaceColumnOptions, quaysColumnOptions, intl } = this.props;
+    const {
+      results,
+      activePageIndex,
+      stopPlaceColumnOptions,
+      quaysColumnOptions,
+      intl,
+      duplicateInfo
+    } = this.props;
     const { locale, formatMessage } = intl;
 
     const paginatedResults = getResultsPaginationMap(results);
@@ -38,21 +54,23 @@ class ReportResultView extends React.Component {
       fontSize: 12
     };
 
-    const columns = stopPlaceColumnOptions.filter(c => c.checked).map(c => c.id);
+    const columns = stopPlaceColumnOptions
+      .filter(c => c.checked)
+      .map(c => c.id);
     const pageSize = results.length <= 20 ? results.length : 20;
     const showingResultLabel = formatMessage({ id: 'showing_results' })
       .replace('$size', pageSize)
       .replace('$total', results.length);
 
     return (
-      <div style={{paddingBottom: 50}}>
+      <div style={{ paddingBottom: 50 }}>
         <div
           style={{
             fontWeight: 600,
             fontSize: 12,
             textAlign: 'center',
             marginBottom: 10,
-            marginTop: -15,
+            marginTop: -15
           }}
         >
           {showingResultLabel}
@@ -62,22 +80,27 @@ class ReportResultView extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            lineHeight: '1.4',
+            lineHeight: '1.4'
           }}
         >
-          <div
-            style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}
-          >
-            {columns.map( (column, i) =>
+          <div style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}>
+            {columns.map((column, i) =>
               <div key={'column-' + column} style={columnStyle}>
                 {ColumnTranslations[locale][column]}
               </div>
             )}
-            <div key={'column-expand'} style={columnStyle}></div>
+            <div key={'column-expand'} style={columnStyle} />
           </div>
 
           {resultItems.map((item, index) => {
-            const background = index % 2 ? 'rgba(213, 228, 236, 0.37)' : '#fff';
+
+            const containsError = this.getContainsError(item);
+            let background = index % 2 ? 'rgba(213, 228, 236, 0.37)' : '#fff';
+            const borderAround = containsError ? '1px solid red' : 'none';
+
+            if (containsError) {
+              background = '#ffcfcd';
+            }
 
             return (
               <MakeExpandable
@@ -87,6 +110,7 @@ class ReportResultView extends React.Component {
                   <ReportQuayRows
                     quays={item.quays}
                     columnOptions={quaysColumnOptions}
+                    duplicateInfo={duplicateInfo}
                   />
                 }
                 key={item.id}
@@ -94,13 +118,17 @@ class ReportResultView extends React.Component {
                   display: 'flex',
                   background: background,
                   padding: '0px 10px',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  border: borderAround,
                 }}
               >
-                {columns.map(column =>
-                  <div key={'column-item-' + column} style={columnStyle}>
-                    {ColumnTransformerStopPlaceJsx[column](item)}
-                  </div>,
+                {columns.map(column => {
+                    return (
+                      <div key={'column-item-' + column} style={columnStyle}>
+                        {ColumnTransformerStopPlaceJsx[column](item)}
+                      </div>
+                    );
+                  }
                 )}
               </MakeExpandable>
             );
