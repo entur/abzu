@@ -25,6 +25,7 @@ import StopPlaceLink from '../ReportPage/StopPlaceLink';
 
 class ParentStopPlaceResultInfo extends Component {
   render() {
+
     const { result, formatMessage } = this.props;
 
     const hasWheelchairAccess =

@@ -325,8 +325,10 @@ helpers.mapSearchResultParentStopPlace = stop => {
     children: stop.children
       .map(childStop => updateObjectWithLocation(childStop))
       .map(childStop => {
-        childStop.name = childStop.name ? childStop.name.value : stop.name.value;
-        return childStop;
+        let newChildStop = Object.assign({}, childStop);
+        newChildStop.name = newChildStop.name && newChildStop.name.value ?
+        childStop.name.value : stop.name.value;
+        return newChildStop;
       })
       .sort((a, b) => b.id.localeCompare(a.id)),
     importedId: getImportedId(stop.keyValues),

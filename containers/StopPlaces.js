@@ -35,7 +35,7 @@ class StopPlaces extends React.Component {
         if (data.stopPlace && data.stopPlace.length) {
           const stopPlaces = formatHelpers.mapSearchResultatToClientStops(data.stopPlace);
           if (stopPlaces.length) {
-            dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+            dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));;
           } else {
             removeIdParamFromURL();
           }

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const getMarkersForMap = ({ stopPlace, user }) => {
+
+export const getMarkersForMap = ({ stopPlace, user }) => {
   const {
     newStop,
     findCoordinates,
@@ -29,12 +30,7 @@ limitations under the Licence. */
     activeSearchResult.isParent &&
     activeSearchResult.children
   ) {
-    markers = markers.concat(
-      activeSearchResult.children.map(child => {
-        child.name = activeSearchResult.name;
-        return child;
-      })
-    );
+    markers = markers.concat(activeSearchResult.children);
   }
 
   if (newStop && isCreatingNewStop) {
