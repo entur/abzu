@@ -113,18 +113,17 @@ export const findDuplicateImportedIds = stopPlaces => {
   let fullConflictMap = {};
 
   stopPlaces.forEach(stopPlace => {
+
     if (stopPlace.quays && stopPlace.quays.length) {
       stopPlace.quays.forEach(quay => {
+
         if (quay.keyValues && quay.keyValues.length) {
           quay.keyValues.forEach(({ key, values }) => {
+
             if (key === 'imported-id') {
               values.forEach(value => {
 
-                if (foundImportedIds.indexOf(value) > -1) {
-                  stopPlacesWithConflict.add(stopPlace.id);
-                } else {
-                  foundImportedIds.push(value);
-                }
+                foundImportedIds.push(value);
 
                 if (!quaysWithDuplicateImportedIds[value]) {
                   quaysWithDuplicateImportedIds[value] = [quay.id];
@@ -147,7 +146,6 @@ export const findDuplicateImportedIds = stopPlaces => {
                     [stopPlace.id]: [quay.id]
                   };
                 }
-
               });
             }
           });
@@ -163,7 +161,6 @@ export const findDuplicateImportedIds = stopPlaces => {
     }
   });
 
-
   Object.keys(fullConflictMap).forEach(importedId => {
     let stopPlaces = fullConflictMap[importedId];
 
@@ -172,8 +169,15 @@ export const findDuplicateImportedIds = stopPlaces => {
     keys.forEach( key => {
       if (stopPlaces[key].length < 2 && keys.length < 2) {
         delete fullConflictMap[importedId];
+      } else {
+        stopPlacesWithConflict.add(key);
       }
     });
+
+  });
+
+  Object.keys(fullConflictMap).forEach( importedId => {
+      console.log(Object.keys(fullConflictMap[importedId]))
   });
 
   return {

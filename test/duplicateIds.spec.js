@@ -15,6 +15,7 @@
 import expect from 'expect';
 import StopWithDuplicateImportedIds from './mock/StopWithDuplicateImportedIds';
 import StopsWithDuplicateImportedIds from './mock/StopsWithSharedDupId';
+import DrammenOsloConflict from './mock/DrammenOsloConflict';
 import { findDuplicateImportedIds } from '../utils/';
 
 describe('duplicateIds', () => {
@@ -77,4 +78,11 @@ describe('duplicateIds', () => {
       }
     });
   });
+
+  it('should find conflicting importedIds for Drammen and Oslo S', () => {
+    const duplicationInfo = findDuplicateImportedIds(DrammenOsloConflict);
+    const { stopPlacesWithConflict } = duplicationInfo;
+    expect(stopPlacesWithConflict).toEqual(['NSR:StopPlace:2', 'NSR:StopPlace:21']);
+  })
+
 });
