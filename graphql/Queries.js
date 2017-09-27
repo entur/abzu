@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import gql from 'graphql-tag';
+
+import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
 
@@ -160,6 +161,79 @@ export const allEntities = gql`
     ${Fragments.parking.verbose},
 `;
 
+export const getStopById = gql`
+    query getStopById($id: String!) {
+        stopPlace(id: $id) {
+            id
+            __typename
+            keyValues {
+                key
+                values
+            }
+            name {
+                value
+            }
+            tags {
+                name
+                comment
+                created
+                createdBy
+            }
+            geometry {
+                coordinates
+            }
+            validBetween {
+                fromDate
+                toDate
+            }
+            accessibilityAssessment {
+                limitations {
+                    wheelchairAccess
+                }
+            }
+            topographicPlace {
+                name {
+                    value
+                }
+                topographicPlaceType
+                parentTopographicPlace {
+                    name {
+                        value
+                    }
+                }
+            }
+            ... on StopPlace {
+                stopPlaceType
+                submode
+                transportMode
+                quays {
+                    id
+                    importedId
+                }
+            }
+            ... on ParentStopPlace {
+                geometry {
+                    coordinates
+                    type
+                }
+                children {
+                    name {
+                        value
+                    }
+                    id
+                    importedId
+                    stopPlaceType
+                    transportMode
+                    submode
+                    geometry {
+                        coordinates
+                    }
+                }
+            }
+        }
+    },
+`;
+
 export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $pointInTime: DateTime) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7, pointInTime: $pointInTime) {
@@ -234,8 +308,8 @@ export const findStop = gql`
 `;
 
 export const findStopForReport = gql`
-    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!) {
-        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, size: 300) {
+    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $withoutLocationOnly: Boolean!, $withDuplicateImportedIds: Boolean!, $pointInTime: DateTime) {
+        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, withoutLocationOnly: $withoutLocationOnly, withDuplicatedQuayImportedIds: $withDuplicateImportedIds, pointInTime: $pointInTime, size: 300) {
             ...on StopPlace {
                 ...ReportStopPlace
             }

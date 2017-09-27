@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const setDecimalPrecision = (number, n) => {
+export const setDecimalPrecision = (number, n) => {
   if (isNaN(number) || isNaN(n)) {
     return number;
     //throw new Error('setDecimalPrecision, one of the arguments is not a number', number, n)
@@ -41,11 +41,11 @@ export const getCoordinatesFromGeometry = geometry => {
     // Leaflet uses latLng, GeoJSON [long,lat]
     return [
       setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6),
+      setDecimalPrecision(coordinates[0], 6)
     ];
   }
   return null;
-}
+};
 
 export const extractCoordinates = latLngString => {
   if (!latLngString) return null;
@@ -58,13 +58,8 @@ export const extractCoordinates = latLngString => {
     coords = latLngString.split(/\s*[\s,]\s*/);
   }
 
-  if (
-    coords &&
-    coords.length === 2 &&
-    !isNaN(coords[0]) &&
-    !isNaN(coords[1])
-  ) {
-    const result = coords.map( c => setDecimalPrecision(c, 6));
+  if (coords && coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+    const result = coords.map(c => setDecimalPrecision(c, 6));
     return result;
   }
   return null;
@@ -72,15 +67,15 @@ export const extractCoordinates = latLngString => {
 
 export const createStopPlaceHref = stopPlaceId => {
   const path = window.location.href;
-  const lastIndexOfSlash = path.lastIndexOf('/') +1;
-  const href = path.substr(0,lastIndexOfSlash) + stopPlaceId;
+  const lastIndexOfSlash = path.lastIndexOf('/') + 1;
+  const href = path.substr(0, lastIndexOfSlash) + stopPlaceId;
   return href;
 };
 
 export const toCamelCase = string => {
   if (!string) return '';
 
-  if (!(/\s/g.test(string))) {
+  if (!/\s/g.test(string)) {
     return string.toLowerCase();
   }
 
@@ -88,4 +83,109 @@ export const toCamelCase = string => {
     if (p2) return p2.toUpperCase();
     return p1.toLowerCase();
   });
+};
+
+export const getIsCurrentVersionMax = (
+  versions,
+  currentVersion,
+  isChildOfParent
+) => {
+  /* versioning of child of parent is difficult task and error prone, so it is not supported to
+    to view older versions of a child in current state of Abzu
+   */
+  if (isChildOfParent) return true;
+
+  // no previous version => when creating a new stop place
+  if (versions && !versions.length) return true;
+
+  // also when creating a new stop place
+  if (!currentVersion) return true;
+
+  const versionsOfStop = versions.map(version => version.version);
+  const maxVersion = Math.max(...versionsOfStop);
+  return maxVersion == currentVersion;
+};
+
+export const findDuplicateImportedIds = stopPlaces => {
+  const foundImportedIds = [];
+  const stopPlacesWithConflict = new Set();
+  let quaysWithDuplicateImportedIds = {};
+  let fullConflictMap = {};
+
+  stopPlaces.forEach(stopPlace => {
+
+    if (stopPlace.quays && stopPlace.quays.length) {
+      stopPlace.quays.forEach(quay => {
+
+        if (quay.keyValues && quay.keyValues.length) {
+          quay.keyValues.forEach(({ key, values }) => {
+
+            if (key === 'imported-id') {
+              values.forEach(value => {
+
+                foundImportedIds.push(value);
+
+                if (!quaysWithDuplicateImportedIds[value]) {
+                  quaysWithDuplicateImportedIds[value] = [quay.id];
+                } else {
+                  quaysWithDuplicateImportedIds[
+                    value
+                  ] = quaysWithDuplicateImportedIds[value].concat(quay.id);
+                }
+
+                if (fullConflictMap[value]) {
+                  let current = fullConflictMap[value];
+                  if (current[stopPlace.id]) {
+                    current[stopPlace.id] = current[stopPlace.id].concat([quay.id]);
+                  } else {
+                    current[stopPlace.id] = [quay.id];
+                  }
+                  fullConflictMap[value] = current;
+                } else {
+                  fullConflictMap[value] = {
+                    [stopPlace.id]: [quay.id]
+                  };
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  /* remove false duplicates */
+  Object.keys(quaysWithDuplicateImportedIds).forEach(id => {
+    if (quaysWithDuplicateImportedIds[id].length === 1) {
+      delete quaysWithDuplicateImportedIds[id];
+    }
+  });
+
+  Object.keys(fullConflictMap).forEach(importedId => {
+    let stopPlaces = fullConflictMap[importedId];
+
+    let keys = Object.keys(stopPlaces);
+
+    keys.forEach( key => {
+      if (stopPlaces[key].length < 2 && keys.length < 2) {
+        delete fullConflictMap[importedId];
+      } else {
+        stopPlacesWithConflict.add(key);
+      }
+    });
+
+  });
+
+  Object.keys(quaysWithDuplicateImportedIds).map( importedId => {
+    quaysWithDuplicateImportedIds[importedId] = Array.from(new Set(quaysWithDuplicateImportedIds[importedId]));
+    if (quaysWithDuplicateImportedIds[importedId].length < 2) {
+      delete quaysWithDuplicateImportedIds[importedId];
+    }
+  });
+
+  return {
+    quaysWithDuplicateImportedIds,
+    stopPlacesWithConflict: Array.from(stopPlacesWithConflict),
+    fullConflictMap,
+  };
 };

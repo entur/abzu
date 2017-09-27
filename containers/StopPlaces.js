@@ -12,18 +12,56 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
+import { connect } from 'react-redux';
 import SearchBox from '../components/MainPage/SearchBox';
 import StopPlacesMap from '../components/Map/StopPlacesMap';
+import { getIdFromURL } from '../utils/URLhelpers';
+import { getStopPlaceById } from '../graphql/Actions';
+import { withApollo } from 'react-apollo';
+import formatHelpers from '../modelUtils/mapToClient';
+import StopPlaceActions from '../actions/StopPlaceActions';
+import { removeIdParamFromURL, updateURLWithId } from '../utils/URLhelpers';
 import '../styles/main.css';
 
-const StopPlaces = () => {
-  return (
-    <div>
-      <SearchBox />
-      <StopPlacesMap />
-    </div>
-  );
+class StopPlaces extends React.Component {
+
+  componentDidMount() {
+    const { activeSearchResult, client, dispatch } = this.props;
+    const idFromURL = getIdFromURL();
+    if (!activeSearchResult && idFromURL) {
+      getStopPlaceById(client, idFromURL).then(({data}) => {
+        if (data.stopPlace && data.stopPlace.length) {
+          const stopPlaces = formatHelpers.mapSearchResultatToClientStops(data.stopPlace);
+          if (stopPlaces.length) {
+            dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+          } else {
+            removeIdParamFromURL();
+          }
+        } else {
+          removeIdParamFromURL();
+        }
+      }).catch( err => {
+        removeIdParamFromURL();
+      });
+    } else if (!idFromURL && activeSearchResult && activeSearchResult.id) {
+      updateURLWithId(activeSearchResult.id);
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <SearchBox />
+        <StopPlacesMap />
+      </div>
+    );
+  }
 };
 
-export default StopPlaces;
+const mapStateToProps = ({stopPlace}) => ({
+  activeSearchResult: stopPlace.activeSearchResult
+});
+
+export default withApollo(connect(mapStateToProps)(StopPlaces));

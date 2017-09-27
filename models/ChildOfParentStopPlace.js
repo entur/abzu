@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import ParentStopPlace from './ParentStopPlace';
+
+import ParentStopPlace from './ParentStopPlace';
 import StopPlace from './StopPlace';
 
 class ChildOfParentStopPlace {
@@ -54,6 +55,14 @@ class ChildOfParentStopPlace {
         this.parking,
         this.userDefinedCoordinates
       ).toClient();
+
+      if (!stopPlace.topographicPlace) {
+        stopPlace.topographicPlace = stopPlace.parentStop.topographicPlace;
+      }
+
+      if (!stopPlace.parentTopographicPlace) {
+        stopPlace.parentTopographicPlace = stopPlace.parentStop.parentTopographicPlace;
+      }
 
       stopPlace.name = stopPlace.parentStop.name;
       stopPlace.validBetween = { ... stopPlace.parentStop.validBetween };

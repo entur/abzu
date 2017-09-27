@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from './Types';
+
+import * as types from './Types';
 import { browserHistory } from 'react-router';
 import configureLocalization from '../localization/localization';
 import FavoriteManager from '../singletons/FavoriteManager';
@@ -356,8 +357,8 @@ UserActions.requestDeleteQuay = (stopPlaceId, quayId) => dispatch => {
   );
 };
 
-UserActions.requestDeleteStopPlace = () => dispatch => {
-  dispatch(sendData(types.REQUESTED_DELETE_STOP_DIALOG, null));
+UserActions.requestTerminateStopPlace = () => dispatch => {
+  dispatch(sendData(types.TERMINATE_DELETE_STOP_DIALOG, null));
 };
 
 UserActions.closeMoveQuayDialog = () => dispatch => {

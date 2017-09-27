@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -25,6 +26,7 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdSpinner from '../../static/icons/spinner';
 import { HumanReadableErrorCodes } from '../../models/ErrorCodes';
 import areIntlLocalesSupported from 'intl-locales-supported';
+import { isDateRangeLegal, getEarliestFromDate } from '../../utils/saveDialogUtils';
 
 let DateTimeFormat;
 
@@ -79,49 +81,12 @@ class SaveDialog extends React.Component {
     });
   }
 
-  isDateRangeLegal() {
-    const { dateTo, dateFrom, expiraryExpanded, timeFrom, timeTo } = this.state;
-    // No doing this computation
-    if (!expiraryExpanded) {
-      return {
-        dateLegal: true,
-        timeLegal: true
-      };
-    }
-
-    if (timeTo === null && timeFrom === null && dateTo !== null && dateFrom !== null) {
-      return {
-        dateLegal: dateTo > dateFrom,
-        timeLegal: true
-      };
-    }
-
-    if (timeTo !== null && timeFrom !== null && dateTo !== null && dateFrom !== null) {
-      if (dateTo.toDateString() === dateFrom.toDateString()) {
-        return {
-          dateLegal: true,
-          timeLegal: timeTo > timeFrom
-        };
-      } else {
-        return {
-          dateLegal: dateTo > dateFrom,
-          timeLegal: true
-        };
-      }
-    }
-    return {
-      dateLegal: dateTo < dateFrom,
-      timeLegal: true
-    };
-
-  }
-
   getInitialState() {
-    const now = new Date();
+    const earliestFrom = getEarliestFromDate(this.props.currentValidBetween);
     return {
-      timeFrom: now,
+      timeFrom: earliestFrom,
       timeTo: null,
-      dateFrom: now,
+      dateFrom: earliestFrom,
       dateTo: null,
       expiraryExpanded: false,
       isSaving: false,
@@ -166,7 +131,7 @@ class SaveDialog extends React.Component {
   }
 
   render() {
-    const { open, intl, handleClose, errorMessage } = this.props;
+    const { open, intl, handleClose, errorMessage, currentValidBetween } = this.props;
     const { formatMessage } = intl;
     const {
       timeFrom,
@@ -180,7 +145,7 @@ class SaveDialog extends React.Component {
 
     const errorMessageLabel = this.getErrorMessage();
 
-    const now = new Date();
+    const earliestFrom = getEarliestFromDate(currentValidBetween);
 
     const translations = {
       use: formatMessage({ id: 'use' }),
@@ -199,7 +164,10 @@ class SaveDialog extends React.Component {
       comment: formatMessage({ id: 'comment' }),
     };
 
-    const { timeLegal, dateLegal } = this.isDateRangeLegal();
+    const {
+      timeLegal,
+      dateLegal
+    } = isDateRangeLegal(dateTo, dateFrom, expiraryExpanded, timeFrom, timeTo);
 
     const actions = [
       <FlatButton
@@ -242,7 +210,7 @@ class SaveDialog extends React.Component {
             }).format}
             autoOk
             mode="landscape"
-            minDate={now}
+            minDate={earliestFrom}
             value={dateFrom}
             textFieldStyle={{ width: '80%' }}
             onChange={(event, value) => {
@@ -293,7 +261,7 @@ class SaveDialog extends React.Component {
                   }).format}
                   autoOk
                   mode="landscape"
-                  minDate={dateFrom ? new Date(dateFrom) : now}
+                  minDate={dateFrom ? new Date(dateFrom) : earliestFrom}
                   value={dateTo}
                   textFieldStyle={{
                     width: '80%',

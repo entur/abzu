@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import ModalityIcon from '../MainPage/ModalityIcon';
+
+import React from 'react';
+import ModalityIconSvg from '../MainPage/ModalityIconSvg';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
@@ -446,7 +447,7 @@ class StopPlaceDetails extends React.Component {
                       this.handleOpenStopPlaceTypePopover(e);
                     }}
                   >
-                    <ModalityIcon type={stopPlace.stopPlaceType} submode={stopPlace.submode}/>
+                    <ModalityIconSvg type={stopPlace.stopPlaceType} submode={stopPlace.submode}/>
                   </IconButton>
                 </ToolTippable>
                 <Popover

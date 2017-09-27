@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import {
+
+import {
   mutateDeleteQuay,
   mutateDeleteStopPlace,
   mutateMergeQuays,
@@ -26,7 +27,8 @@ limitations under the Licence. */
   mutateStopPlace,
   updateChildOfParentStop,
   mutateRemoveTag,
-  mutateCreateTag
+  mutateCreateTag,
+  mutateTerminateStopPlace
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -38,7 +40,8 @@ import {
   getStopPlacesById,
   getPolygons,
   getTagsQuery,
-  findTagByNameQuery
+  findTagByNameQuery,
+  getStopById
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -59,6 +62,15 @@ export const addTag = (client, idReference, name, comment) =>
       idReference,
       name,
       comment
+    }
+  });
+
+export const getStopPlaceById = (client, id) =>
+  client.query({
+    query: getStopById,
+    fetchPolicy: 'network-only',
+    variables: {
+      id
     }
   });
 
@@ -149,6 +161,16 @@ export const deleteStopPlace = (client, stopPlaceId) =>
     },
     fetchPolicy: 'network-only'
   });
+
+export const terminateStop = (client, stopPlaceId, versionComment, toDate) =>
+  client.mutate({
+    mutation: mutateTerminateStopPlace,
+    variables: {
+      stopPlaceId,
+      versionComment,
+      toDate
+    }
+  })
 
 export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
   client.mutate({

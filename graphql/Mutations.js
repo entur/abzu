@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import gql from 'graphql-tag';
+
+import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
 export const mutateParentStopPlace = gql`
@@ -87,7 +88,19 @@ export const mutateCreateMultiModalStopPlace = gql`
   ${Fragments.parentStopPlace.verbose}
 `
 
-export const mutateAddToMultiModalStopPlace  = gql`
+
+export const mutateTerminateStopPlace = gql`
+  mutation mutateTerminateStopPlace($stopPlaceId: String!, $versionComment: String!, $toDate: DateTime!) {
+      terminateStopPlace(stopPlaceId: $stopPlaceId, versionComment: $versionComment, toDate: $toDate) {
+          ...VerboseStopPlace
+          ...VerboseParentStopPlace
+      }
+  },
+  ${Fragments.stopPlace.verbose},
+  ${Fragments.parentStopPlace.verbose}
+`
+
+export const mutateAddToMultiModalStopPlace = gql`
   mutation mutateAddToMultiModalStopPlace($parentSiteRef: String!, $stopPlaceIds: [String]!) {
       addToMultiModalStopPlace(input: {
           parentSiteRef: $parentSiteRef, stopPlaceIds: $stopPlaceIds

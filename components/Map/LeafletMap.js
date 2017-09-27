@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MarkerList from './MarkerList';
 import {
   Map as Lmap,
@@ -106,7 +107,7 @@ export default class LeafLetMap extends React.Component {
           >
             <TileLayer
               attribution="&copy; <a href=&quot;https://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-              url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom="19"
             />
           </BaseLayer>
@@ -121,13 +122,23 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Kartverket kart')}
-            name="Kartverket kart"
+            checked={this.getCheckedBaseLayerByValue('Kartverket topografisk')}
+            name="Kartverket topografisk"
           >
             <TileLayer
               attribution="&copy; <a href=&quot;http://www.kartverket.no&quot;>Kartverket"
               url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}"
               maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={this.getCheckedBaseLayerByValue('Kartverket flyfoto')}
+            name="Kartverket flyfoto"
+          >
+            <WMTSLayer
+              gkt={this.getLocalGKTToken()}
+              baseURL="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
+              zoom={zoom}
             />
           </BaseLayer>
           <BaseLayer
@@ -138,16 +149,6 @@ export default class LeafLetMap extends React.Component {
               maxZoom="19"
               googlekey={googleApiKey}
               maptype="HYBRID"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Kartverket Flyfoto')}
-            name="Kartverket Flyfoto"
-          >
-            <WMTSLayer
-              gkt={this.getLocalGKTToken()}
-              baseURL="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
-              zoom={zoom}
             />
           </BaseLayer>
         </LayersControl>

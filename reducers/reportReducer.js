@@ -12,8 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../actions/Types';
+
+import * as types from '../actions/Types';
 import formatHelpers from '../modelUtils/mapToClient';
+import { findDuplicateImportedIds } from '../utils/';
 
 export const initialState = {
   topographicalPlaces: [],
@@ -46,10 +48,12 @@ const reduceTopopGraphicalPlacesForReport = (state, action) => {
 };
 
 const reduceSearchResultsForReport = (state, action) => {
+  const stops = formatHelpers.mapReportSearchResultsToClientStop(
+    action.result.data.stopPlace,
+  );
   return Object.assign({}, state, {
-    results: formatHelpers.mapReportSearchResultsToClientStop(
-      action.result.data.stopPlace,
-    ),
+    results: stops,
+    duplicateInfo: findDuplicateImportedIds(stops)
   });
 };
 

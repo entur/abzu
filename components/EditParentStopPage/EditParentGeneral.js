@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
@@ -31,12 +32,16 @@ import {
   getStopPlaceVersions,
   createParentStopPlace,
   addToMultiModalStopPlace,
-  removeStopPlaceFromMultiModalStop
+  removeStopPlaceFromMultiModalStop,
+  terminateStop,
+  deleteStopPlace
 } from '../../graphql/Actions';
 import * as types from '../../actions/Types';
 import { MutationErrorCodes } from '../../models/ErrorCodes';
 import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
 import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
+import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
+import { getIn, getIsCurrentVersionMax } from '../../utils/';
 
 class EditParentGeneral extends React.Component {
   constructor(props) {
@@ -71,6 +76,33 @@ class EditParentGeneral extends React.Component {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
   }
 
+  handleTerminateStop(shouldHardDelete, comment, dateTime) {
+    const { client, stopPlace, dispatch } = this.props;
+
+    if (shouldHardDelete) {
+      deleteStopPlace(client, stopPlace.id)
+        .then(response => {
+          dispatch(UserActions.hideDeleteStopDialog());
+          if (response.data.deleteStopPlace) {
+            dispatch(UserActions.navigateToMainAfterDelete());
+          } else {
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
+          }
+        })
+        .catch(err => {
+          dispatch(UserActions.hideDeleteStopDialog(true));
+          dispatch(
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+          );
+        });
+    } else {
+      terminateStop(client, stopPlace.id, comment, dateTime).then( result => {
+        this.handleSaveSuccess(stopPlace.id);
+        this.handleCloseDeleteStop();
+      })
+    }
+  }
+
   determineHowToSave(userInput) {
     const { stopPlace, client } = this.props;
 
@@ -101,6 +133,10 @@ class EditParentGeneral extends React.Component {
     } else {
       this.handleGoBack();
     }
+  }
+
+  handleCloseDeleteStop() {
+    this.props.dispatch(UserActions.hideDeleteStopDialog());
   }
 
   handleRemoveStopFromParent() {
@@ -216,6 +252,7 @@ class EditParentGeneral extends React.Component {
 
     const { formatMessage } = intl;
     const isAllowedToSave = this.getIsAllowedToSave();
+    const isCurrentVersionMax = getIsCurrentVersionMax(versions, stopPlace.version);
 
     const containerStyle = {
       border: '1px solid #511E12',
@@ -239,6 +276,7 @@ class EditParentGeneral extends React.Component {
     };
 
     const stopPlaceLabel = this.getTitleText(stopPlace, formatMessage);
+    const disableTerminate = stopPlace.isNewStop || disabled || stopPlace.hasExpired;
 
     return (
       <div style={containerStyle}>
@@ -268,6 +306,7 @@ class EditParentGeneral extends React.Component {
           )}
           disabled={disabled}
         />
+        { isCurrentVersionMax &&
         <div
           style={{
             border: '1px solid #efeeef',
@@ -278,24 +317,34 @@ class EditParentGeneral extends React.Component {
           }}
         >
           <FlatButton
-            icon={<MdUndo />}
+            disabled={disableTerminate}
+            label={formatMessage({ id: 'terminate_stop_place' })}
+            style={{ margin: '8 5', zIndex: 999 }}
+            labelStyle={{ fontSize: '0.7em', color: disableTerminate ? 'rgba(0, 0, 0, 0.3)' : 'initial'}}
+            onClick={() => {
+              this.props.dispatch(UserActions.requestTerminateStopPlace())
+            }}
+          />
+          <FlatButton
+            icon={<MdUndo style={{height: '1.3em', width: '1.3em'}} />}
             disabled={!stopHasBeenModified}
             label={formatMessage({ id: 'undo_changes' })}
             style={{ margin: '8 5', zIndex: 999 }}
-            labelStyle={{ fontSize: '0.8em' }}
+            labelStyle={{ fontSize: '0.7em' }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
             }}
           />
           <FlatButton
-            icon={<MdSave />}
+            icon={<MdSave style={{height: '1.3em', width: '1.3em'}}/>}
             disabled={!isAllowedToSave}
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
-            labelStyle={{ fontSize: '0.8em' }}
+            labelStyle={{ fontSize: '0.7em' }}
             onClick={this.handleSave.bind(this)}
           />
         </div>
+        }
         <ConfirmDialog
           open={this.state.confirmUndoOpen}
           handleClose={() => {
@@ -311,6 +360,15 @@ class EditParentGeneral extends React.Component {
             cancel: 'discard_changes_cancel'
           }}
           intl={intl}
+        />
+        <TerminateStopPlaceDialog
+          open={this.props.deleteStopDialogOpen}
+          handleClose={this.handleCloseDeleteStop.bind(this)}
+          handleConfirm={this.handleTerminateStop.bind(this)}
+          intl={intl}
+          previousValidBetween={stopPlace.validBetween}
+          stopPlace={stopPlace}
+          canDeleteStop={this.props.canDeleteStop}
         />
         <RemoveStopFromParentDialog
           open={removeStopPlaceFromParentOpen}
@@ -344,6 +402,7 @@ class EditParentGeneral extends React.Component {
               handleConfirm={this.determineHowToSave.bind(this)}
               errorMessage={this.state.errorMessage}
               intl={intl}
+              currentValidBetween={stopPlace.validBetween}
             />
           : null}
       </div>
@@ -351,12 +410,14 @@ class EditParentGeneral extends React.Component {
   }
 }
 
-const mapStateToProps = ({ stopPlace, mapUtils }) => ({
+const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
   stopPlace: stopPlace.current,
   versions: stopPlace.versions,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
   removeStopPlaceFromParentOpen: mapUtils.removeStopPlaceFromParentOpen,
-  removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId
+  removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
+  canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
+  deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
 });
 
 export default withApollo(

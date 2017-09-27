@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import ReportPageFooter from '../components/ReportPage/ReportPageFooter';
 import ReportResultView from '../components/ReportPage/ReportResultView';
@@ -54,6 +55,7 @@ class ReportPage extends React.Component {
       columnOptionsQuays: columnOptionsQuays,
       columnOptionsStopPlace: columnOptionsStopPlace,
       withoutLocationOnly: false,
+      withDuplicateImportedIds: false,
     };
   }
 
@@ -127,7 +129,7 @@ class ReportPage extends React.Component {
   }
 
   handleSearch() {
-    const { searchQuery, topoiChips, stopTypeFilter, withoutLocationOnly } = this.state;
+    const { searchQuery, topoiChips, stopTypeFilter, withoutLocationOnly, withDuplicateImportedIds } = this.state;
     const { client } = this.props;
 
     this.setState({
@@ -140,7 +142,9 @@ class ReportPage extends React.Component {
         fetchPolicy: 'network-only',
         variables: {
           query: searchQuery,
-          withoutLocationOnly: withoutLocationOnly,
+          withoutLocationOnly,
+          withDuplicateImportedIds,
+          pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
           stopPlaceType: stopTypeFilter,
           municipalityReference: topoiChips
             .filter(topos => topos.type === 'town')
@@ -181,17 +185,17 @@ class ReportPage extends React.Component {
     });
   }
 
-  handleAddChip(chip) {
-    let addedChipsIds = this.state.topoiChips.map(tc => tc.id);
-
-    if (addedChipsIds.indexOf(chip.id) === -1) {
-      this.setState({
-        topoiChips: this.state.topoiChips.concat(chip)
-      });
-
-      this.refs.topoFilter.setState({
-        searchText: ''
-      });
+  handleAddChip(chip, index) {
+    if (chip && index > -1) {
+      let addedChipsIds = this.state.topoiChips.map(tc => tc.id);
+      if (addedChipsIds.indexOf(chip.id) === -1) {
+        this.setState({
+          topoiChips: this.state.topoiChips.concat(chip)
+        });
+        this.refs.topoFilter.setState({
+          searchText: ''
+        });
+      }
     }
   }
 
@@ -223,9 +227,10 @@ class ReportPage extends React.Component {
       topoiChips,
       activePageIndex,
       isLoading,
-      withoutLocationOnly
+      withoutLocationOnly,
+      withDuplicateImportedIds
     } = this.state;
-    const { intl, topographicalPlaces, results } = this.props;
+    const { intl, topographicalPlaces, results, duplicateInfo } = this.props;
     const { locale, formatMessage } = intl;
 
     const topographicalPlacesDataSource = topographicalPlaces
@@ -305,9 +310,17 @@ class ReportPage extends React.Component {
                 <Checkbox
                   label={formatMessage({id: 'only_without_coordinates'})}
                   labelPosition="left"
-                  labelStyle={{width: 'auto'}}
+                  labelStyle={{width: 'auto', fontSize: '0.9em'}}
                   checked={withoutLocationOnly}
                   onCheck={ (e, value) => { this.setState({withoutLocationOnly: value})}}
+                />
+                <Checkbox
+                  label={formatMessage({id: 'only_duplicate_importedIds'})}
+                  labelPosition="left"
+                  labelStyle={{width: 'auto', fontSize: '0.9em'}}
+                  checked={withDuplicateImportedIds}
+                  onCheck={ (e, value) => { this.setState({withDuplicateImportedIds: value})}}
+                  style={{marginTop: 10}}
                 />
               </div>
               <div
@@ -370,6 +383,7 @@ class ReportPage extends React.Component {
           results={results}
           stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
           quaysColumnOptions={this.state.columnOptionsQuays}
+          duplicateInfo={duplicateInfo}
         />
         <ReportPageFooter
           results={results}
@@ -386,7 +400,8 @@ class ReportPage extends React.Component {
 
 const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
-  results: state.report.results
+  results: state.report.results,
+  duplicateInfo: state.report.duplicateInfo,
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));

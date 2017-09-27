@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import ModalityIcon from '../MainPage/ModalityIcon';
+
+import React from 'react';
+import ModalityIconSvg from '../MainPage/ModalityIconSvg';
 import stopTypes from '../../models/stopTypes';
 import Checkbox from 'material-ui/Checkbox';
 
@@ -61,14 +62,14 @@ class ModalityFilter extends React.Component {
             <div key={'item-' + item.value}>
               <Checkbox
                 checkedIcon={
-                  <ModalityIcon
+                  <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
                     type={item.value}
                     forceUpdate={true}
                   />
                 }
                 uncheckedIcon={
-                  <ModalityIcon
+                  <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
                     style={{ fill: '#8c8c8c', opacity: '0.8' }}
                     type={item.value}

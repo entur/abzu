@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import StopPlaceLink from '../components/ReportPage/StopPlaceLink';
-import ModalityIcon from '../components/MainPage/ModalityIcon';
+import ModalityIconSvg from '../components/MainPage/ModalityIconSvg';
 import CarParkingIcon from '../static/icons/ParkingIcon';
 import BikeParkingIcon from '../static/icons/facilities/BikeParking';
 import { getIn, getInTransform } from '../utils/';
@@ -26,6 +26,7 @@ import StairsIcon from '../static/icons/accessibility/Stairs';
 import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
 import { enturDark } from '../config/enturTheme';
 import TagTray from '../components/MainPage/TagTray';
+import ToolTippable from '../components/EditStopPage/ToolTippable';
 
 const getParkingElements = (parking = []) => {
   if (!parking || !parking.length) {
@@ -104,7 +105,7 @@ export const ColumnTransformerStopPlaceJsx = {
         ? 'red'
         : '#000';
       return (
-        <ModalityIcon
+        <ModalityIconSvg
           submode={stop.submode}
           svgStyle={{
             color: iconColor,
@@ -248,9 +249,72 @@ export const ColumnTransformersStopPlace = {
   tags: stop => stop.tags.map(tag => tag.name).join(',')
 };
 
+const getConflictTooltip = conflictMap => {
+  if (!conflictMap) return null;
+  return (
+    <div>
+      {Object.keys(conflictMap).map(stopPlaceId => {
+        return (
+          <div
+            key={'tooltip-' + stopPlaceId}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginBottom: 5
+            }}
+          >
+            {stopPlaceId}
+            <div style={{ textAlign: 'center', marginTop: 2 }}>
+              {conflictMap[stopPlaceId].map(quay =>
+                <div style={{ fontSize: '0.8em' }} key={'tooltip-' + quay}>
+                  {quay}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export const ColumnTransformerQuaysJsx = {
   id: quay => quay.id,
-  importedId: quay => quay.importedId.join('\r\n'),
+  importedId: (quay, duplicateInfo) => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {quay.importedId.map((importedId, index) => {
+          const isDuplicate = !!duplicateInfo.quaysWithDuplicateImportedIds[
+            importedId
+          ];
+
+          const confictToolTip = isDuplicate
+            ? getConflictTooltip(duplicateInfo.fullConflictMap[importedId])
+            : null;
+
+          return (
+            <span
+              style={{
+                color: (isDuplicate && confictToolTip)? '#cf1212' : 'initial',
+                fontWeight: (isDuplicate && confictToolTip) ? 600 : 400,
+                cursor: (isDuplicate && confictToolTip) ? 'pointer' : 'initial'
+              }}
+              key={'importedId-' + quay.id + '-' + index}
+            >
+              {isDuplicate && confictToolTip
+                ? <ToolTippable
+                    showToolTip={isDuplicate}
+                    toolTipText={confictToolTip}
+                  >
+                    {importedId}
+                  </ToolTippable>
+                : <span>{importedId}</span>}
+            </span>
+          );
+        })}
+      </div>
+    );
+  },
   position: quay => (quay.location ? quay.location.join(',') : 'N/A'),
   publicCode: quay => quay.publicCode,
   privateCode: quay => quay.privateCode,
