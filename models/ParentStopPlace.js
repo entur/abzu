@@ -18,6 +18,7 @@ import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
+import ChildOfParentStopPlace from './ChildOfParentStopPlace';
 
 
 class ParentStopPlace {

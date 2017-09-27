@@ -84,6 +84,11 @@ class SearchBox extends React.Component {
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
+
+    if (params && params.source === 'click') {
+      return;
+    }
+
     if (!searchText || !searchText.length) {
       this.props.dispatch(UserActions.clearSearchResults());
       this.props.dispatch(UserActions.setSearchText(''));
@@ -265,7 +270,7 @@ class SearchBox extends React.Component {
           text: '',
           value: (
             <MenuItem
-              style={{ paddingRight: 10, width: 'auto' }}
+              style={{ paddingLeft: 10, paddingRight: 10, width: 'auto' }}
               primaryText={
                 <div style={{ fontWeight: 600, fontSize: '0.8em' }}>
                   {formatMessage({ id: 'no_results_found' })}

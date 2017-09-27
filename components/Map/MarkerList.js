@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import StopPlaceMarker from './StopPlaceMarker';
 import NewStopMarker from './NewStopMarker';
@@ -232,7 +233,7 @@ class MarkerList extends React.Component {
                   id={child.id}
                   index={stopIndex}
                   position={child.location}
-                  name={stop.name}
+                  name={child.name || stop.name}
                   isShowingQuays={!!neighbourStopQuays[child.id]}
                   handleShowQuays={this.handleShowQuays.bind(this)}
                   handleHideQuays={this.handleHideQuays.bind(this)}

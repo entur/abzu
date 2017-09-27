@@ -39,7 +39,6 @@ const getFutureOrExpiredLabel = stopPlace => {
 const createParentStopPlaceMenuItem = (element, formatMessage) => {
   const futureOrExpiredLabel = getFutureOrExpiredLabel(element);
   return {
-    element: element,
     text: element.name,
     value: (
       <MenuItem

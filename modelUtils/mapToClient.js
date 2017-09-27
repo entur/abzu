@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
+
+import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
 import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
 import moment from 'moment';
@@ -245,7 +246,7 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
         // a parent stop place may contain active stop as a child, i.e. sibling
         .filter(child => child.id !== currentStopPlaceId)
         .map( child => {
-          child.name = stop.name;
+          child.name = child.name || stop.name;
           child.isChildOfParent = true;
           return child;
       });
@@ -322,7 +323,11 @@ helpers.mapSearchResultParentStopPlace = stop => {
     parentTopographicPlace: parentTopographicPlace,
     isActive: false,
     children: stop.children
-      .map(stop => updateObjectWithLocation(stop))
+      .map(childStop => updateObjectWithLocation(childStop))
+      .map(childStop => {
+        childStop.name = childStop.name ? childStop.name.value : stop.name.value;
+        return childStop;
+      })
       .sort((a, b) => b.id.localeCompare(a.id)),
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
@@ -332,7 +337,6 @@ helpers.mapSearchResultParentStopPlace = stop => {
   };
 
   clientParentStop = updateObjectWithLocation(clientParentStop);
-
   return clientParentStop;
 };
 
@@ -362,7 +366,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
     if (stopPlace.isParent && stopPlace.children) {
       // map all children to result list
       const children = stopPlace.children.map( child => {
-        child.name = stopPlace.name;
+        child.name = child.name || stopPlace.name;
         child.isChildOfParent = true;
         modesFromChildren.push({
           submode: child.submode,

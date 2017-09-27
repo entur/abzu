@@ -100,6 +100,9 @@ export const stopPlaceBBQuery = gql`
                         fromDate
                         toDate
                     }
+                    name {
+                        value
+                    }
                 }
                 name {
                     value
@@ -290,10 +293,10 @@ export const findStop = gql`
                    type 
                }
                children {
+                   id
                    name {
                        value
                    }
-                   id
                    importedId
                    stopPlaceType 
                    transportMode 

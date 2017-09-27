@@ -12,13 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import { getIn } from '../../utils/';
 import HasExpiredInfo from './HasExpiredInfo';
 import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import ModalityTray from '../ReportPage/ModalityIconTray';
 import TagTray from './TagTray';
+import StopPlaceLink from '../ReportPage/StopPlaceLink';
 
 
 class ParentStopPlaceResultInfo extends Component {
@@ -80,26 +82,32 @@ class ParentStopPlaceResultInfo extends Component {
             display: 'flex',
             flexDirection: 'column',
             fontSize: 10,
-            maxHeight: 120,
+            maxHeight: 150,
             overflow: 'auto',
             width: '95%',
             margin: '0px auto 20px auto'
           }}
         >
-          {result.children.map((quay, i) =>
+          {result.children.map((childStopPlace, i) =>
             <div
-              key={'q-importedID' + quay.id}
+              key={'q-importedID' + childStopPlace.id}
               style={{
                 borderBottom: '1px solid #0078a8',
                 background: i % 2 ? '#f8f8f8' : '#fff',
-                padding: 2
+                padding: 2,
+                marginBottom: 5,
               }}
             >
+              <div style={{display: 'flex', fontSize: '0.8rem'}}>
+                <div>{childStopPlace.name}</div>
+                <div style={{marginLeft: 5}}>
+                  <StopPlaceLink id={childStopPlace.id}/>
+                </div>
+              </div>
               <div style={{ fontWeight: 600 }}>
                 {formatMessage({ id: 'local_reference' }).replace(':', '')}
-                {' '}{` (${quay.id}):`}
               </div>
-              {quay.importedId ? quay.importedId.join(', ') : ''}
+              {childStopPlace.importedId ? childStopPlace.importedId.join(', ') : ''}
             </div>
           )}
         </div>
