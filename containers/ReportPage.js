@@ -144,6 +144,7 @@ class ReportPage extends React.Component {
           query: searchQuery,
           withoutLocationOnly,
           withDuplicateImportedIds,
+          pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
           stopPlaceType: stopTypeFilter,
           municipalityReference: topoiChips
             .filter(topos => topos.type === 'town')
