@@ -19,19 +19,12 @@ import Divider from 'material-ui/Divider';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import StopPlaceListItemDetails from './StopPlaceListItemDetails';
+import StopPlaceLink from '../ReportPage/StopPlaceLink';
 
 class StopPlaceListItem extends Component {
 
-  getStopPlaceHref(stopPlaceId) {
-    const path = window.location.href;
-    const lastIndexOfSlash = path.lastIndexOf('/') +1;
-    return path.substr(0,lastIndexOfSlash) + stopPlaceId;
-  }
-
   render() {
-
     const { stopPlace, expanded, handleExpand, handleCollapse, disabled} = this.props;
-    const stopPlaceHref = this.getStopPlaceHref(stopPlace.id);
 
     return (
       <div>
@@ -44,23 +37,17 @@ class StopPlaceListItem extends Component {
             justifyContent: 'space-between'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ModalityIconImg
-              type={stopPlace.stopPlaceType}
-              submode={stopPlace.submode}
-              svgStyle={{transform: 'scale(0.8)'}}
-              style={{ marginTop: -8, marginRight: 5 }}
-            />
-            <a
-              style={{
-                fontSize: '0.8em',
-                color: 'rgb(33, 150, 243)',
-              }}
-              target="_blank"
-              href={stopPlaceHref}
-            >
-              {stopPlace.id}
-            </a>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <ModalityIconImg
+                type={stopPlace.stopPlaceType}
+                submode={stopPlace.submode}
+                svgStyle={{transform: 'scale(0.8)'}}
+                style={{ marginTop: -8, marginRight: 5 }}
+              />
+              <div style={{fontSize: '0.8em'}}>{stopPlace.name}</div>
+            </div>
+            <StopPlaceLink style={{fontSize: '0.8em', marginRight: 5}} id={stopPlace.id}/>
           </div>
           <div style={{ marginRight: 5 }}>
             {expanded

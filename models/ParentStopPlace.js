@@ -139,7 +139,13 @@ class ParentStopPlace {
 
       if (stop.children) {
         clientStop.children = stop.children
-          .map(item => new StopPlace(item, isActive).toClient())
+          .map(item => {
+            let child = new StopPlace(item, isActive).toClient();
+            if (!child.name) {
+              child.name = clientStop.name;
+            }
+            return child;
+          })
       }
 
       return clientStop;

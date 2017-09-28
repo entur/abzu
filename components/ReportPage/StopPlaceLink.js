@@ -12,10 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
 
-export default ({ id }) => {
+import React from 'react';
+
+export default ({ id, style }) => {
   const url =
     window.location.origin + window.config.endpointBase + 'edit/' + id;
-  return <a target="_blank" href={url}>{id}</a>;
+  return <a style={{...style}} target="_blank" href={url}>{id}</a>;
 };

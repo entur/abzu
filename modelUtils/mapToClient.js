@@ -49,9 +49,14 @@ helpers.sortQuays = (current, attribute) => {
 };
 
 helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
-  const copy = JSON.parse(JSON.stringify(current));
-  copy.children = copy.children.concat(payLoad);
-  return copy;
+  const newStopPlace = Object.assign({}, current);
+  const newChildren = payLoad.map( child => {
+    const newChild = {...child};
+    newChild.name = (newChild.name && newChild.name.value) ? newChild.name.value : current.name;
+    return newChild;
+  })
+  newStopPlace.children = newStopPlace.children.concat(newChildren);
+  return newStopPlace;
 };
 
 helpers.updateStopWithTags = (current, payLoad) => {

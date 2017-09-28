@@ -56,8 +56,7 @@ class ParentStopDetails extends Component {
   }
 
   handleAddStopPlace(checkedItems) {
-    const { dispatch, stopPlace, client } = this.props;
-
+    const { dispatch, client } = this.props;
     this.setState({
       addStopPlaceOpen: false
     });
@@ -69,10 +68,8 @@ class ParentStopDetails extends Component {
 
   handleSubmitChangeCoordinates(position) {
     const { dispatch } = this.props;
-
     dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     dispatch(StopPlaceActions.changeMapCenter(position, 14));
-
     this.setState({
       changePositionOpen: false
     });
@@ -108,7 +105,7 @@ class ParentStopDetails extends Component {
             />
           </div>
         }
-        <div style={{}}>
+        <div>
           {!stopPlace.isNewStop &&
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span style={{ fontWeight: 600 }}>
