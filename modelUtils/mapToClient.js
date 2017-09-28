@@ -171,7 +171,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
 helpers.mapVersionToClientVersion = source => {
   if (source) {
-    const transformer = value => moment(value).format('YYYY-DD-MM HH:mm');
+    const transformer = value => moment(value).format('DD-MM-YYYY HH:mm');
 
     return source
       .sort((a, b) => Number(b.version) - Number(a.version))

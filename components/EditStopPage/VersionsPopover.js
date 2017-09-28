@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
@@ -28,7 +29,6 @@ class VersionsPopover extends Component {
       anchorEl: null
     }
   }
-
 
   handleOpen(event) {
     event.preventDefault();
