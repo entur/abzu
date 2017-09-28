@@ -12,13 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 const Loader = () => {
   const loadingStyle = {
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 9999,
     marginLeft: '45vw',
     marginTop: '42vh'
   };
