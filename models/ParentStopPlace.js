@@ -18,6 +18,7 @@ import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
+import ChildOfParentStopPlace from './ChildOfParentStopPlace';
 
 
 class ParentStopPlace {
@@ -138,7 +139,13 @@ class ParentStopPlace {
 
       if (stop.children) {
         clientStop.children = stop.children
-          .map(item => new StopPlace(item, isActive).toClient())
+          .map(item => {
+            let child = new StopPlace(item, isActive).toClient();
+            if (!child.name) {
+              child.name = clientStop.name;
+            }
+            return child;
+          })
       }
 
       return clientStop;

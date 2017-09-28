@@ -24,18 +24,29 @@ import formatHelpers from '../modelUtils/mapToClient';
 import StopPlaceActions from '../actions/StopPlaceActions';
 import { removeIdParamFromURL, updateURLWithId } from '../utils/URLhelpers';
 import '../styles/main.css';
+import Loader from '../components/Dialogs/Loader';
 
 class StopPlaces extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false
+    }
+  }
 
   componentDidMount() {
     const { activeSearchResult, client, dispatch } = this.props;
     const idFromURL = getIdFromURL();
     if (!activeSearchResult && idFromURL) {
+      this.setState({isLoading: true});
+
       getStopPlaceById(client, idFromURL).then(({data}) => {
+        this.setState({isLoading: false});
         if (data.stopPlace && data.stopPlace.length) {
           const stopPlaces = formatHelpers.mapSearchResultatToClientStops(data.stopPlace);
           if (stopPlaces.length) {
-            dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+            dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));;
           } else {
             removeIdParamFromURL();
           }
@@ -44,6 +55,7 @@ class StopPlaces extends React.Component {
         }
       }).catch( err => {
         removeIdParamFromURL();
+        this.setState({isLoading: false});
       });
     } else if (!idFromURL && activeSearchResult && activeSearchResult.id) {
       updateURLWithId(activeSearchResult.id);
@@ -51,8 +63,10 @@ class StopPlaces extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.state;
     return (
       <div>
+        {isLoading && <Loader/> }
         <SearchBox />
         <StopPlacesMap />
       </div>

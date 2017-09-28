@@ -118,12 +118,10 @@ StopPlaceActions.createKeyValuesPair = (key, values) => (dispatch, getState) => 
   }));
 }
 
-StopPlaceActions.setMarkerOnMap = marker => dispatch => {
-  dispatch(sendData(types.SET_ACTIVE_MARKER, {
-    ...marker,
-    isActive: true
-  }));
-  updateURLWithId(marker.id);
+StopPlaceActions.setMarkerOnMap = data => dispatch => {
+  dispatch(sendData(types.SET_ACTIVE_MARKER, Object.assign({},
+  data, {isActive: true})));
+  updateURLWithId(data.id);
 };
 
 StopPlaceActions.changeMapCenter = (position, zoom) => dispatch => {

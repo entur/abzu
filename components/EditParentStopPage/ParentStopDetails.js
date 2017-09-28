@@ -35,7 +35,8 @@ class ParentStopDetails extends Component {
     this.state = {
       changePositionOpen: false,
       addStopPlaceOpen: false,
-      tagsOpen: false
+      tagsOpen: false,
+      isLoading: false
     };
   }
 
@@ -56,23 +57,30 @@ class ParentStopDetails extends Component {
   }
 
   handleAddStopPlace(checkedItems) {
-    const { dispatch, stopPlace, client } = this.props;
-
+    const { dispatch, client } = this.props;
     this.setState({
       addStopPlaceOpen: false
     });
 
+    this.setState({
+      isLoading: true
+    });
     getAddStopPlaceInfo(client, checkedItems).then(result => {
       dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
+      this.setState({
+        isLoading: false
+      });
+    }).catch( err => {
+      this.setState({
+        isLoading: false
+      });
     });
   }
 
   handleSubmitChangeCoordinates(position) {
     const { dispatch } = this.props;
-
     dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     dispatch(StopPlaceActions.changeMapCenter(position, 14));
-
     this.setState({
       changePositionOpen: false
     });
@@ -108,7 +116,7 @@ class ParentStopDetails extends Component {
             />
           </div>
         }
-        <div style={{}}>
+        <div>
           {!stopPlace.isNewStop &&
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span style={{ fontWeight: 600 }}>
@@ -157,6 +165,7 @@ class ParentStopDetails extends Component {
           handleAddStopPlaceOpen={this.handleAddStopPlaceOpen.bind(this)}
           stopPlaces={stopPlace.children}
           disabled={disabled}
+          isLoading={this.state.isLoading}
         />
         {addStopPlaceOpen &&
           <AddStopPlaceToParent

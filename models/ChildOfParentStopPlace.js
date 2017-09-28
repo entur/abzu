@@ -64,7 +64,7 @@ class ChildOfParentStopPlace {
         stopPlace.parentTopographicPlace = stopPlace.parentStop.parentTopographicPlace;
       }
 
-      stopPlace.name = stopPlace.parentStop.name;
+      stopPlace.name = stopPlace.name || stopPlace.parentStop.name;
       stopPlace.validBetween = { ... stopPlace.parentStop.validBetween };
 
       return stopPlace;

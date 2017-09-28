@@ -480,7 +480,7 @@ class StopPlaceDetails extends React.Component {
             floatingLabelText={formatMessage({ id: 'name' })}
             style={{ marginTop: -10, width: 300 }}
             value={name}
-            disabled={isChildOfParent || disabled}
+            disabled={disabled}
             errorText={name ? '' : formatMessage({id: 'name_is_required'})}
             onChange={this.handleStopNameChange.bind(this)}
           />

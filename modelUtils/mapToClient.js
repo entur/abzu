@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
+
+import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
 import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
 import moment from 'moment';
@@ -48,9 +49,14 @@ helpers.sortQuays = (current, attribute) => {
 };
 
 helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
-  const copy = JSON.parse(JSON.stringify(current));
-  copy.children = copy.children.concat(payLoad);
-  return copy;
+  const newStopPlace = Object.assign({}, current);
+  const newChildren = payLoad.map( child => {
+    const newChild = {...child};
+    newChild.name = (newChild.name && newChild.name.value) ? newChild.name.value : current.name;
+    return newChild;
+  })
+  newStopPlace.children = newStopPlace.children.concat(newChildren);
+  return newStopPlace;
 };
 
 helpers.updateStopWithTags = (current, payLoad) => {
@@ -245,7 +251,7 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
         // a parent stop place may contain active stop as a child, i.e. sibling
         .filter(child => child.id !== currentStopPlaceId)
         .map( child => {
-          child.name = stop.name;
+          child.name = child.name || stop.name;
           child.isChildOfParent = true;
           return child;
       });
@@ -322,7 +328,13 @@ helpers.mapSearchResultParentStopPlace = stop => {
     parentTopographicPlace: parentTopographicPlace,
     isActive: false,
     children: stop.children
-      .map(stop => updateObjectWithLocation(stop))
+      .map(childStop => updateObjectWithLocation(childStop))
+      .map(childStop => {
+        let newChildStop = Object.assign({}, childStop);
+        newChildStop.name = newChildStop.name && newChildStop.name.value ?
+        childStop.name.value : stop.name.value;
+        return newChildStop;
+      })
       .sort((a, b) => b.id.localeCompare(a.id)),
     importedId: getImportedId(stop.keyValues),
     accessibilityAssessment: stop.accessibilityAssessment,
@@ -332,7 +344,6 @@ helpers.mapSearchResultParentStopPlace = stop => {
   };
 
   clientParentStop = updateObjectWithLocation(clientParentStop);
-
   return clientParentStop;
 };
 
@@ -362,7 +373,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
     if (stopPlace.isParent && stopPlace.children) {
       // map all children to result list
       const children = stopPlace.children.map( child => {
-        child.name = stopPlace.name;
+        child.name = child.name || stopPlace.name;
         child.isChildOfParent = true;
         modesFromChildren.push({
           submode: child.submode,
