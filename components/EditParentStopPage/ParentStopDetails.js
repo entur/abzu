@@ -35,7 +35,8 @@ class ParentStopDetails extends Component {
     this.state = {
       changePositionOpen: false,
       addStopPlaceOpen: false,
-      tagsOpen: false
+      tagsOpen: false,
+      isLoading: false
     };
   }
 
@@ -61,8 +62,18 @@ class ParentStopDetails extends Component {
       addStopPlaceOpen: false
     });
 
+    this.setState({
+      isLoading: true
+    });
     getAddStopPlaceInfo(client, checkedItems).then(result => {
       dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
+      this.setState({
+        isLoading: false
+      });
+    }).catch( err => {
+      this.setState({
+        isLoading: false
+      });
     });
   }
 
@@ -154,6 +165,7 @@ class ParentStopDetails extends Component {
           handleAddStopPlaceOpen={this.handleAddStopPlaceOpen.bind(this)}
           stopPlaces={stopPlace.children}
           disabled={disabled}
+          isLoading={this.state.isLoading}
         />
         {addStopPlaceOpen &&
           <AddStopPlaceToParent
