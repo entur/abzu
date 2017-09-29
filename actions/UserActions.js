@@ -405,7 +405,7 @@ UserActions.hideRemoveStopPlaceFromParent = () => dispatch => {
   dispatch(sendData(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
 };
 
-UserActions.createMultimodalWith = (client, stopPlaceId) => dispatch => {
+UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch => {
   getAddStopPlaceInfo(client, [stopPlaceId]).then( response => {
     if (response.data) {
       const foundStop = Object.values(response.data)[0][0];
@@ -414,8 +414,10 @@ UserActions.createMultimodalWith = (client, stopPlaceId) => dispatch => {
         foundStop
       );
       dispatch(
-        sendData(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING,
-          newStopPlace)
+        sendData(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING, {
+          newStopPlace,
+          fromMain
+        })
       );
       dispatch(UserActions.navigateTo('/edit/', 'new'));
     }

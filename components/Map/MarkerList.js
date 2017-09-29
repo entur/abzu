@@ -77,8 +77,8 @@ class MarkerList extends React.Component {
   }
 
   createNewMultimodalStopFrom(stopPlaceId) {
-    const { dispatch, client } = this.props;
-    dispatch(UserActions.createMultimodalWith(client, stopPlaceId));
+    const { dispatch, client, isEditingStop } = this.props;
+    dispatch(UserActions.createMultimodalWith(client, stopPlaceId, !isEditingStop));
   }
 
   handleDragEndNewStop(event) {

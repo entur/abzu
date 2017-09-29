@@ -252,12 +252,17 @@ const stopPlaceReducer = (state = {}, action) => {
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
-      return Object.assign({}, state, {
-        current: action.payLoad,
+      const { newStopPlace, fromMain } = action.payLoad;
+      let newState = Object.assign({}, state, {
+        current: newStopPlace,
         isCreatingPolylines: false,
         stopHasBeenModified: true,
         versions: [],
       });
+      if (!fromMain) {
+        newState.centerPosition = newStopPlace.location;
+      }
+      return newState;
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
