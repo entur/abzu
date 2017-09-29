@@ -32,10 +32,10 @@ class ParentStopPlace {
 
   // This creates a new dummy with a minimum of values set
   createNew(name, child) {
-
     const childToAdd = {
       ...child,
-      notSaved: true
+      notSaved: true,
+      name: name ? name.value : '',
     };
 
     let clientStop = {

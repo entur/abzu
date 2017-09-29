@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
@@ -27,7 +28,6 @@ class StopPlaceMarker extends React.Component {
     handleDragEnd: PropTypes.func.isRequired,
     handleOnClick: PropTypes.func.isRequired,
     handleChangeCoordinates: PropTypes.func,
-    name: PropTypes.string.isRequired,
     stopType: PropTypes.string,
     index: PropTypes.number.isRequired,
     draggable: PropTypes.bool.isRequired,
