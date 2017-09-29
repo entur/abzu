@@ -25,6 +25,9 @@ class StopPlaceListItem extends Component {
 
   render() {
     const { stopPlace, expanded, handleExpand, handleCollapse, disabled} = this.props;
+    const stopPlaceName = typeof stopPlace.name && stopPlace.name.value
+      ? stopPlace.name.value
+      : stopPlace.name;
 
     return (
       <div>
@@ -45,7 +48,7 @@ class StopPlaceListItem extends Component {
                 svgStyle={{transform: 'scale(0.8)'}}
                 style={{ marginTop: -8, marginRight: 5 }}
               />
-              <div style={{fontSize: '0.8em'}}>{stopPlace.name}</div>
+              <div style={{fontSize: '0.8em'}}>{stopPlaceName}</div>
             </div>
             <StopPlaceLink style={{fontSize: '0.8em', marginRight: 5}} id={stopPlace.id}/>
           </div>

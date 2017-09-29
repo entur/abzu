@@ -409,7 +409,10 @@ UserActions.createMultimodalWith = (client, stopPlaceId) => dispatch => {
   getAddStopPlaceInfo(client, [stopPlaceId]).then( response => {
     if (response.data) {
       const foundStop = Object.values(response.data)[0][0];
-      const newStopPlace = new ParentStopPlace().createNew(foundStop.name, foundStop);
+      const newStopPlace = new ParentStopPlace().createNew(
+        foundStop.name,
+        foundStop
+      );
       dispatch(
         sendData(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING,
           newStopPlace)

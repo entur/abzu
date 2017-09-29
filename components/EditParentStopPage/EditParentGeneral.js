@@ -229,7 +229,7 @@ class EditParentGeneral extends React.Component {
     const { disabled, stopHasBeenModified, stopPlace } = this.props;
     if (!stopPlace) return false;
     if (disabled) return false;
-    if (!stopPlace.name.length) return false;
+    if (!stopPlace.name || !stopPlace.name.length) return false;
     if (!stopPlace.id && !stopPlace.children.length){
       return false;
     }
