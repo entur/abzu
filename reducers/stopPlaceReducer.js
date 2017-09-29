@@ -254,9 +254,7 @@ const stopPlaceReducer = (state = {}, action) => {
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       return Object.assign({}, state, {
         current: action.payLoad,
-        centerPosition: action.payLoad.location,
         isCreatingPolylines: false,
-        zoom: 14,
         stopHasBeenModified: true,
         versions: [],
       });

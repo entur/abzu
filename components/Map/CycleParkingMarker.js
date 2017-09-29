@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
@@ -40,17 +41,27 @@ class CycleParkingMarker extends React.Component {
     const isFocused =
       focusedElement.type === type && index === focusedElement.index;
     if (isFocused) {
-      L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
+        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      }
     } else {
-      L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
+        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      }
     }
   }
 
   handleSetFocus() {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.setElementFocus(index, 'parking'));
-    document.querySelector(".pr-item-expanded").scrollIntoView(true);
-    document.querySelector("#scroll-body").scrollTop -= 50;
+    const item = document.querySelector(".pr-item-expanded");
+    if (item) {
+      item.scrollIntoView(true);
+    }
+    const body = document.querySelector("#scroll-body");
+    if (body) {
+      body.scrollTop -= 50;
+    }
   }
 
   shouldComponentUpdate(nextProps) {
