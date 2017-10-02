@@ -541,7 +541,7 @@ class MarkerList extends React.Component {
   }
 
   render() {
-    return <div>{this._popupMarkers}</div>;
+    return this._popupMarkers;
   }
 }
 
