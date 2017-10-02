@@ -49,7 +49,9 @@ class SaveDialog extends React.Component {
   }
 
   componentDidMount(){
-    this.commentInput.focus();
+    if (this.commentInput) {
+      this.commentInput.focus();
+    }
   }
 
   static propTypes = {

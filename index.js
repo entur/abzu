@@ -11,6 +11,7 @@ import { ApolloProvider } from 'react-apollo';
 import axios from 'axios';
 import Promise from 'promise-polyfill';
 import 'babel-polyfill';
+import ErrorBoundry from './containers/ErrorBoundry';
 
 if (!window.Promise) {
   window.Promise = Promise;
@@ -24,9 +25,12 @@ function renderIndex(path, kc) {
   const store = configureStore(kc);
   const history = syncHistoryWithStore(browserHistory, store.self);
   render(
-    <ApolloProvider store={store.self} client={store.client}>
-      <Root path={path} history={history} />
-    </ApolloProvider>,
+    <ErrorBoundry>
+      <ApolloProvider store={store.self} client={store.client}>
+        <Root path={path} history={history} />
+      </ApolloProvider>
+    </ErrorBoundry>
+    ,
     document.getElementById('root'),
   );
 }

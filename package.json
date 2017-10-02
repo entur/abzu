@@ -52,6 +52,8 @@
     "nightwatch": "0.9.16",
     "promise-polyfill": "6.0.2",
     "prop-types": "^15.5.10",
+    "raven": "^2.2.0",
+    "raven-js": "^3.18.1",
     "react": "16.0.0",
     "react-apollo": "1.4.15",
     "react-dom": "16.0.0",
