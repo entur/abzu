@@ -13,35 +13,30 @@
  limitations under the Licence. */
 
 import React from 'react';
-import Raven from 'raven-js';
 import '../styles/snap.css';
-const ravenConfig  = require('../config/sentry.json');
-const isProduction = process.env.NODE_ENV === 'production';
 
 class ErrorBoundry extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { error: null };
-    if (isProduction) {
-      Raven.config(
-        ravenConfig.publicKey, {
-          release: process.env.VERSION,
-          stacktrace: true,
-          environment: process.env.NODE_ENV
-        }).install();
-    }
+    this.state = {
+      error: null
+    };
   }
 
   componentDidCatch(error, errorInfo) {
-    if (isProduction) {
+    const { Raven } = this.props;
+    if (Raven) {
       this.setState({ error });
       Raven.captureException(error, { extra: errorInfo });
     }
   }
 
   render() {
-    if (this.state.error && isProduction) {
+
+    const { Raven } = this.props;
+
+    if (Raven && this.state.error) {
       return (
         <div
           className="snap"
@@ -52,6 +47,7 @@ class ErrorBoundry extends React.Component {
           </div>
           <p>Våre utviklere er blitt informert om problemet, men fyll gjerne ut en rapport her for å komme med tilleggsinformasjon ved å klikke her.</p>
           <p>Tusen takk for din hjelp!</p>
+          <a href={location.protocol + '//' + location.host}>Gå tilbake</a>
         </div>
       );
     } else {

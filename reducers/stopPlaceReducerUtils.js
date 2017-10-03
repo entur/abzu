@@ -137,7 +137,7 @@ const getStateWithEntitiesFromQuery = (state, action) => {
   }
   // no stop place found
   if (stopPlace === null) {
-    console.warning("Result contains no stop place data, ignored");
+    console.warn("Result contains no stop place data, ignored");
     return state;
   }
 

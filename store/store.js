@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
@@ -28,6 +28,9 @@ import PolygonManager from '../singletons/PolygonManager';
 import rolesParser from '../roles/rolesParser';
 import { IntrospectionFragmentMatcher } from 'react-apollo';
 import schema from '../graphql/schema.json';
+import Raven from 'raven-js';
+import createRavenMiddleware from 'redux-raven-middleware';
+const ravenConfig = require('../config/sentry.json');
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -48,8 +51,8 @@ export default function configureStore(kc) {
         const token = localStorage.getItem('ABZU::jwt');
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
         next();
-      },
-    } ,
+      }
+    }
   ]);
 
   const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -61,12 +64,24 @@ export default function configureStore(kc) {
     fragmentMatcher
   });
 
+  Raven.config(ravenConfig.publicKey, {
+    release: process.env.VERSION,
+    stacktrace: true,
+    environment: process.env.NODE_ENV
+  }).install();
+
   if (process.env.NODE_ENV === 'development') {
     enchancer = compose(
       applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware())
     );
   } else {
-    enchancer = compose(applyMiddleware(thunkMiddleware, client.middleware()));
+    enchancer = compose(
+      applyMiddleware(
+        thunkMiddleware,
+        createRavenMiddleware(Raven),
+        client.middleware()
+      )
+    );
   }
 
   new PolygonManager().fetch(client, kc.tokenParsed);
@@ -92,7 +107,7 @@ export default function configureStore(kc) {
         stopType: [],
         topoiChips: [],
         text: '',
-        showFutureAndExpired: false,
+        showFutureAndExpired: false
       },
       snackbarOptions: {
         isOpen: false,
@@ -135,6 +150,7 @@ export default function configureStore(kc) {
 
   return {
     self: createStore(combinedReducer, initialState, enchancer),
-    client: client
+    client: client,
+    Raven
   };
 }

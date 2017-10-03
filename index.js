@@ -25,7 +25,7 @@ function renderIndex(path, kc) {
   const store = configureStore(kc);
   const history = syncHistoryWithStore(browserHistory, store.self);
   render(
-    <ErrorBoundry>
+    <ErrorBoundry Raven={store.Raven}>
       <ApolloProvider store={store.self} client={store.client}>
         <Root path={path} history={history} />
       </ApolloProvider>
