@@ -201,6 +201,7 @@ export const ColumnTransformerStopPlaceJsx = {
 
 export const ColumnTransformersStopPlace = {
   ...ColumnTransformerStopPlaceJsx,
+  name: stop => stop.name,
   id: stop => stop.id,
   modality: stop => {
     if (stop.isParent)
