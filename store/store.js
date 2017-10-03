@@ -64,17 +64,18 @@ export default function configureStore(kc) {
     fragmentMatcher
   });
 
-  Raven.config(ravenConfig.publicKey, {
-    release: process.env.VERSION,
-    stacktrace: true,
-    environment: process.env.NODE_ENV
-  }).install();
-
   if (process.env.NODE_ENV === 'development') {
     enchancer = compose(
       applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware())
     );
   } else {
+
+    Raven.config(ravenConfig.publicKey, {
+      release: process.env.VERSION,
+      stacktrace: true,
+      environment: process.env.NODE_ENV
+    }).install();
+
     enchancer = compose(
       applyMiddleware(
         thunkMiddleware,
