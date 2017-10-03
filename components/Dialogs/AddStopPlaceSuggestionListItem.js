@@ -18,6 +18,7 @@ import PropTypes from 'prop-types';
 import Checkbox from 'material-ui/Checkbox';
 import ModalityIconImg from '../MainPage/ModalityIconImg';
 import { injectIntl } from 'react-intl';
+import HasExpiredInfo from '../MainPage/HasExpiredInfo';
 
 class AddStopPlaceSuggestionListItem extends Component {
 
@@ -28,7 +29,7 @@ class AddStopPlaceSuggestionListItem extends Component {
 
     return (
       <div style={{display: 'flex', alignItems: 'center', padding: 4}}>
-        <Checkbox checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
+        <Checkbox disabled={suggestion && suggestion.hasExpired} checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
           <div style={{display: 'flex', alignItems: 'center'}}>
             <ModalityIconImg type={suggestion.stopPlaceType} submode={suggestion.submode} iconStyle={{marginTop: -1}}/>
             <div style={{fontSize: '0.9em', flex: 0.8}}>
@@ -37,9 +38,15 @@ class AddStopPlaceSuggestionListItem extends Component {
                 : <span style={{fontStyle: 'italic', fontSize: '0.8em'}}>{formatMessage({id: 'is_missing_name'})}</span>
               }
               </div>
-            <div style={{fontSize: '0.8em', lineHeight: '1.2em', flex: 0.5}}>{suggestion.id}</div>
+            <div style={{fontSize: '0.8em', lineHeight: '1.2em', flex: 1.5, display: 'flex'}}>
+              <div style={{flex: 3}}>
+                <div>{suggestion.id}</div>
+              </div>
+              <HasExpiredInfo show={suggestion.hasExpired} formatMessage={formatMessage}/>
+            </div>
           </div>
-        }/>
+          }
+        />
       </div>
     );
   }

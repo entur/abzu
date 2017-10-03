@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { LatLng } from 'leaflet';
+
+import { LatLng } from 'leaflet';
 import { isLegalChildStopPlace } from '../reducers/rolesReducerUtils';
 
 export const getUniquePathLinks = (a, key) => {
@@ -75,7 +76,7 @@ export const getChildStopPlaceSuggestions = (
       .sort((a, b) => a.distance - b.distance);
   }
 
-  const legalSuggestions = suggestions
+  const legalSuggestions = (suggestions || [])
     .filter( suggestion => isLegalChildStopPlace(suggestion, tokenParsed) && isNotTooFar(suggestion.distance))
 
   return legalSuggestions.slice(0, nFirst);

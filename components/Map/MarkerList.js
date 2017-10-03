@@ -322,6 +322,7 @@ class MarkerList extends React.Component {
               isEditingStop={isEditingStop}
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={stop.isChildOfParent}
+              hasExpired={stop.hasExpired}
             />,
           );
 

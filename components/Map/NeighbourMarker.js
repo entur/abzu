@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
@@ -191,7 +192,7 @@ class NeighbourMarker extends React.Component {
                   label={translations.showQuays}
                 />}
             <PopupButton
-              hidden={isMultimodal || isChildOfParent || createMultimodalNotAllowed}
+              hidden={isMultimodal || isChildOfParent || createMultimodalNotAllowed || hasExpired}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

@@ -42,8 +42,7 @@ class StopPlaceMarker extends React.Component {
   }
 
   componentWillMount() {
-    const { props } = this;
-    this.createIcon(props);
+    this.createIcon(this.props);
   }
 
   componentWillUpdate(nextProps) {
@@ -97,7 +96,8 @@ class StopPlaceMarker extends React.Component {
       isMultimodal,
       id,
       disabled,
-      disabledForSearch
+      disabledForSearch,
+      hasExpired
     } = this.props;
 
     const markerLocation = position || missingCoordinatesMap[id];
@@ -181,7 +181,7 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={isMultimodalChild || isMultimodal || disabledForSearch}
+              hidden={isMultimodalChild || isMultimodal || disabledForSearch || hasExpired}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />
