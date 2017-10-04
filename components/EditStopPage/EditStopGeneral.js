@@ -58,6 +58,7 @@ import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
 import Settings from '../../singletons/SettingsManager';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
 import VersionsPopover from './VersionsPopover';
+import RequiredFieldsMissingDialog from '../Dialogs/RequiredFieldsMissingDialog';
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -66,15 +67,23 @@ class EditStopGeneral extends React.Component {
       confirmUndoOpen: false,
       confirmGoBack: false,
       saveDialogOpen: false,
-      errorMessage: ''
+      errorMessage: '',
+      requiredFieldsMissingOpen: false
     };
   }
 
   handleSave() {
-    this.setState({
-      saveDialogOpen: true,
-      errorMessage: ''
-    });
+    const { stopPlace } = this.props;
+    if (!stopPlace.name || !stopPlace.name.trim().length || !stopPlace.stopPlaceType) {
+      this.setState({
+        requiredFieldsMissingOpen: true
+      });
+    } else {
+      this.setState({
+        saveDialogOpen: true,
+        errorMessage: ''
+      });
+    }
   }
 
   handleCloseMergeStopDialog() {
@@ -680,6 +689,16 @@ class EditStopGeneral extends React.Component {
             quay={this.props.movingQuayToNewStop}
             hasStopBeenModified={stopHasBeenModified}
           />
+          <RequiredFieldsMissingDialog
+            open={this.state.requiredFieldsMissingOpen}
+            handleClose={() => { this.setState({requiredFieldsMissingOpen: false}) }}
+            requiredMissing={{
+              name: !stopPlace.name || !stopPlace.name.trim().length,
+              type: !stopPlace.stopPlaceType
+            }}
+            formatMessage={formatMessage}
+            isNewStop={stopPlace.isNewStop}
+          />
         </div>
         <div
           style={{
@@ -713,9 +732,7 @@ class EditStopGeneral extends React.Component {
           />
           <FlatButton
             icon={<MdSave style={{height: '1.3em', width: '1.3em'}}/>}
-            disabled={
-              disabled || !stopHasBeenModified || !stopPlace.name.length
-            }
+            disabled={disabled || !stopHasBeenModified}
             label={formatMessage({ id: 'save_new_version' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.7em' }}

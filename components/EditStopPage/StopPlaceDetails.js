@@ -481,7 +481,7 @@ class StopPlaceDetails extends React.Component {
             style={{ marginTop: -10, width: 300 }}
             value={name}
             disabled={disabled}
-            errorText={name ? '' : formatMessage({id: 'name_is_required'})}
+            errorText={(name && name.trim().length)? '' : formatMessage({id: 'name_is_required'})}
             onChange={this.handleStopNameChange.bind(this)}
           />
           <div style={{ display: 'flex', alignItems: 'center' }}>
