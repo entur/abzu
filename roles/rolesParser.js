@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const RoleParser = {};
+
+const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
 import stopTypes from '../models/stopTypes';
 import { getLegalSubmodes, getLegalStopPlaceTypes } from '../reducers/rolesReducerUtils';
@@ -105,7 +106,6 @@ RoleParser.filterRolesByEntityModes = (
 const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, roleSubmode, stopPlace) => {
 
   const submodeOptions = getRoleOptions(roleSubmode);
-  const stopPlaceTypeOptions = getRoleOptions(roleStopPlaceType);
   const forgiveSubmodeNotSet = false;
   const forgiveTransportmodeNotSet = false;
   const submodeValid = isModeOptionsValidForMode(submodeOptions, stopPlace.submode, forgiveSubmodeNotSet);
@@ -121,7 +121,7 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   const legalSubmodes = getLegalSubmodes(roles, true);
   const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
 
-  if (!stopPlace.stopPlaceType && stopPlaceTypeOptions.allowAll && submodeValid) {
+  if (!stopPlace.stopPlaceType) {
     return true;
   }
 

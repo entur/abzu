@@ -12,11 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import expect from 'expect';
+
+import expect from 'expect';
 import { getAllowanceInfoForStop} from '../reducers/rolesReducerUtils';
 import mockRailReplacementStop from './mock/mockRailReplacementStop';
 import mockRailStop from './mock/mockRailStop';
 import mockBusStop from './mock/mockBusStop';
+import mockStopWithoutModality from './mock/mockStopWithoutModality';
 
 
 describe('User and roles - scenarios', () => {
@@ -260,7 +262,7 @@ describe('User and roles - scenarios', () => {
 
   it('Administer all stops, StopPlaceType not defined', () => {
 
-    let token = {
+    const token = {
       roles: [
         JSON.stringify({
           "r": "editStops",
@@ -282,5 +284,30 @@ describe('User and roles - scenarios', () => {
     const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
+
+
+  it('should be able to edit stop place with no modality if other requirements are meet', () => {
+
+    const token = {
+      roles: [
+        JSON.stringify({
+          "r": "editStops",
+          "o": "ATB",
+          "z": "KVE:TopographicPlace:16",
+          "e": {
+            "EntityType": [
+              "*"
+            ],
+            "StopPlaceType": ["!railStation","!airport"],
+            "Submode": ["!railReplacementBus"]
+          }
+        })
+      ]
+    };
+
+    const allowanceStopWithNoModality = getAllowanceInfoForStop(mockStopWithoutModality, token);
+    expect(allowanceStopWithNoModality.canEdit).toEqual(true);
+
+  })
 
 });
