@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-// Used for altNamesDialog
+
+// Used for altNamesDialog
 
 export const supportedNameTypes = [
   {
@@ -77,7 +78,7 @@ export const languages = {
   },
   ru: {
     en: 'Russian',
-    nb: 'Russian',
+    nb: 'Russisk',
   },
   fi: {
     en: 'Kven language',
