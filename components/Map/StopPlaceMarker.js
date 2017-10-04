@@ -55,7 +55,8 @@ class StopPlaceMarker extends React.Component {
     submode,
     active,
     isMultimodal,
-    isMultimodalChild
+    isMultimodalChild,
+    hasExpired
   }) {
     let divIconBody = (
       <CustomMarkerIcon
@@ -65,6 +66,7 @@ class StopPlaceMarker extends React.Component {
         stopType={stopType}
         active={active}
         submode={submode}
+        hasExpired={hasExpired}
       />
     );
 

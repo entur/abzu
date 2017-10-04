@@ -247,6 +247,7 @@ class MarkerList extends React.Component {
                   active={false}
                   stopType={child.stopPlaceType}
                   handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
+                  hasExpired={stop.hasExpired}
                   draggable={false}
                   handleChangeCoordinates={changeCoordinates}
                   translations={CustomPopupMarkerText}
