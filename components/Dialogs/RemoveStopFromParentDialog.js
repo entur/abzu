@@ -12,24 +12,57 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
+import Checkbox from 'material-ui/Checkbox';
+import Spinner from '../../static/icons/spinner';
 
 class RemoveStopFromParentDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      changesUnderstood: false
+    };
+  }
+
   static propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired
   };
 
+  getConfirmDisabled() {
+    const { changesUnderstood, isLoading } = this.state;
+
+    if (isLoading) return true;
+
+    const { isLastChild } = this.props;
+    if (isLastChild) {
+      if (changesUnderstood) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+
   render() {
-    const { open = false, intl, handleClose, handleConfirm, stopPlaceId } = this.props;
+    const {
+      open = false,
+      intl,
+      handleClose,
+      handleConfirm,
+      stopPlaceId,
+      isLastChild,
+      isLoading
+    } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
@@ -37,9 +70,15 @@ class RemoveStopFromParentDialog extends React.Component {
       cancel: formatMessage({ id: 'cancel' }),
       title: formatMessage({ id: 'remove_stop_from_parent_title' }),
       info: formatMessage({ id: 'remove_stop_from_parent_info' }),
+      understood: formatMessage({id: 'changes_understood'}),
+      lastChildWarning1: formatMessage({id: 'last_child_warning_first'}),
+      lastChildWarning2: formatMessage({id: 'last_child_warning_second'}),
     };
 
-    const actions = [
+    const { changesUnderstood } = this.state;
+    const confirmDisabled = this.getConfirmDisabled();
+
+    let actions = [
       <FlatButton
         label={translations.cancel}
         onTouchTap={handleClose}
@@ -48,11 +87,13 @@ class RemoveStopFromParentDialog extends React.Component {
       <FlatButton
         label={translations.confirm}
         onTouchTap={handleConfirm}
+        disabled={confirmDisabled}
         primary={true}
         keyboardFocused={true}
-        icon={<MdDelete />}
-      />,
+        icon={isLoading ? <Spinner/> : <MdDelete/>}
+      />
     ];
+
 
     return (
       <Dialog
@@ -67,14 +108,36 @@ class RemoveStopFromParentDialog extends React.Component {
       >
         <div>
           <div style={{ marginBottom: 10, color: '#000' }}>
-            <span style={{fontWeight: 600}}>{stopPlaceId}</span>
+            <span style={{ fontWeight: 600 }}>{stopPlaceId}</span>
           </div>
-          <div style={{ marginLeft: 0, display: 'flex'}} >
-            <div style={{marginTop: 0, marginRight: 5}}>
-              <MdWarning color="orange"/>
+          <div style={{ marginLeft: 0, display: 'flex' }}>
+            <div style={{ marginTop: 0, marginRight: 5 }}>
+              <MdWarning color="orange" />
             </div>
             <span>{translations.info}</span>
           </div>
+          {isLastChild &&
+            <div style={{ marginTop: 10 }}>
+              <div style={{ marginLeft: 0, display: 'flex' }}>
+                <div style={{ marginTop: 0, marginRight: 5 }}>
+                  <MdWarning color="#de3e35" />
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <span>
+                    {translations.lastChildWarning1}
+                  </span>
+                  <span style={{marginTop: 5}}>
+                    {translations.lastChildWarning2}
+                  </span>
+                </div>
+              </div>
+              <Checkbox
+                style={{ marginLeft: 25, marginTop: 5 }}
+                label={translations.understood}
+                onCheck={(e, v) => this.setState({ changesUnderstood: v })}
+                checked={changesUnderstood}
+              />
+            </div>}
         </div>
       </Dialog>
     );

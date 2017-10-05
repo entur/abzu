@@ -343,7 +343,7 @@ class ReportPage extends React.Component {
                   disabled={isLoading}
                   icon={
                     isLoading
-                      ? <MdSpinner style={{ marginTop: -5, marginLeft: -5 }} />
+                      ? <MdSpinner/>
                       : <MdSearch />
                   }
                   label={formatMessage({ id: 'search' })}

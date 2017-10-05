@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from 'react-redux';
+
+import { connect } from 'react-redux';
 import React from 'react';
 import EditStopMap from '../components/Map/EditStopMap';
 import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
@@ -152,7 +153,7 @@ class EditPage extends React.Component {
               handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
             />
           }
-        { !stopPlace && <LoadingPage/> }
+        { (!stopPlace && !showErrorDialog) && <LoadingPage/> }
         {stopPlace && !stopPlace.isParent &&
           <div>
             <NewElementsBox disabled={disabled} />

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+
+import React, {Component} from 'react';
 import StopPlaceListItemQuays from './StopPlaceListItemQuays';
 import { injectIntl } from 'react-intl';
 import MdDelete from 'material-ui/svg-icons/action/delete';
@@ -50,12 +51,15 @@ class StopPlaceListItemDetails extends Component {
               </span>
             </div>
           }
-          <IconButton
-            disabled={disabled}
-            onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}
-          >
-            <MdDelete/>
-          </IconButton>
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{fontSize: '0.8em'}}>{formatMessage({id: 'remove_stop_place'})}</div>
+            <IconButton
+              disabled={disabled}
+              onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}
+            >
+              <MdDelete/>
+            </IconButton>
+          </div>
         </div>
       </div>
     );
