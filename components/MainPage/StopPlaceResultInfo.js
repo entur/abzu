@@ -46,7 +46,7 @@ class StopPlaceResultInfo extends Component {
           <ModalityIconImg submode={result.submode} type={result.stopPlaceType} />
         </div>
         <HasExpiredInfo show={result.hasExpired} />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
           {result.topographicPlace &&
             result.parentTopographicPlace &&
             <div
@@ -54,13 +54,13 @@ class StopPlaceResultInfo extends Component {
             >{`${result.topographicPlace}, ${result.parentTopographicPlace}`}</div>}
           <div style={{ fontSize: 14 }}>{result.id}</div>
         </div>
-        <div style={{ display: 'block', fontSize: 10 }}>
-          <span style={{ fontWeight: 600 }}>
+        <div style={{ display: 'block', fontSize: 10, marginLeft: 10 }}>
+          <span style={{ fontWeight: 600, marginRight: 5 }}>
             {formatMessage({ id: 'local_reference' })}
           </span>
           {result.importedId ? result.importedId.join(', ') : ''}
         </div>
-        <TagTray tags={result.tags}/>
+        <TagTray tags={result.tags} style={{marginLeft: 10}}/>
         <div style={{ display: 'flex', justifyItems: 'center', padding: 10 }}>
           <div style={{ fontSize: 16, textTransform: 'capitalize' }}>
             {formatMessage({ id: 'quays' })}
@@ -82,7 +82,7 @@ class StopPlaceResultInfo extends Component {
         >
           {result.quays.map((quay, i) =>
             <div
-              key={'q-importedID' + quay.id}
+              key={'quayId' + quay.id}
               style={{
                 borderBottom: '1px solid #0078a8',
                 background: i % 2 ? '#f8f8f8' : '#fff',

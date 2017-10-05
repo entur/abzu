@@ -12,17 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Tag from './Tag';
 
 class TagTray extends Component {
-
   render() {
-    const { tags, textSize, direction, align } = this.props;
+    const { tags, textSize, direction, align, style } = this.props;
+    const wrapperStyle = {
+      display: 'flex',
+      alignItems: align || 'center',
+      flexDirection: direction || 'row',
+      ...style
+    };
 
     return (
-      <div style={{display: 'flex', alignItems: align  || 'center', flexDirection: direction || 'row'}}>
-        { tags.map( (tag, i) => <Tag textSize={textSize} key={"tag-"+i} data={tag}/>) }
+      <div style={wrapperStyle}>
+        {tags.map((tag, i) =>
+          <Tag textSize={textSize} key={'tag-' + i} data={tag} />
+        )}
       </div>
     );
   }

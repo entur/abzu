@@ -56,21 +56,24 @@ class ParentStopPlaceResultInfo extends Component {
         </div>
         <HasExpiredInfo show={result.hasExpired} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {result.topographicPlace &&
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            {result.topographicPlace &&
             result.parentTopographicPlace &&
             <div
-              style={{ fontSize: 18 }}
+              style={{ fontSize: 18, marginLeft: 5 }}
             >{`${result.topographicPlace}, ${result.parentTopographicPlace}`}</div>}
-          <div style={{ fontSize: 14 }}>{result.id}</div>
+            <div style={{marginRight: 5}}>{formatMessage({id: 'multimodal'})}</div>
+          </div>
+          <div style={{ fontSize: 14, marginLeft: 5 }}>{result.id}</div>
         </div>
-        <div style={{ display: 'block', fontSize: 10 }}>
+        <div style={{ display: 'block', fontSize: 10, marginLeft: 5 }}>
           <span style={{ fontWeight: 600 }}>
-            {formatMessage({ id: 'local_reference' })}
+            {(result.importedId && !!result.importedId.length) && formatMessage({ id: 'local_reference' })}
           </span>
-          {result.importedId ? result.importedId.join(', ') : ''}
+          {result.importedId && !!result.importedId.length && result.importedId.join(', ')}
         </div>
-        <TagTray tags={result.tags}/>
-        <div style={{ display: 'flex', justifyItems: 'center', padding: 10 }}>
+        <TagTray tags={result.tags} style={{marginLeft: 5}}/>
+        <div style={{ display: 'flex', justifyItems: 'center', padding: '10px 5px', justifyContent: 'space-between' }}>
           <div style={{ fontSize: 16, textTransform: 'capitalize' }}>
             {formatMessage({ id: 'stop_places' })}
           </div>
