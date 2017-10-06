@@ -55,19 +55,22 @@ class VersionsPopover extends Component {
     return (
 
       <div>
-        <FlatButton
-          label={buttonLabel}
+        <div
           disabled={disabled}
-          labelStyle={{
+          style={{
+            marginRight: 10,
+            zIndex: 999,
             color: '#fff',
-            fontSize: 10,
+            cursor: 'pointer',
+            fontSize: '1em',
             borderBottom: '1px dotted #fff',
             color: '#fff',
-            padding: 0
+            padding: 0,
           }}
-          style={{ margin: 0, zIndex: 999 }}
           onTouchTap={this.handleOpen.bind(this)}
-        />
+        >
+          {buttonLabel}
+        </div>
         <Popover
           open={open}
           anchorEl={anchorEl}

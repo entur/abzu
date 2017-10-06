@@ -53,6 +53,7 @@ import ModalitiesMenuItems from './ModalitiesMenuItems';
 import { createStopPlaceHref } from '../../utils/';
 import FlatButton from 'material-ui/FlatButton';
 import TagsDialog from './TagsDialog';
+import TagTray from '../MainPage/TagTray';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -415,6 +416,13 @@ class StopPlaceDetails extends React.Component {
                   </div>}
                 <FlatButton onClick={this.handleOpenTags.bind(this)} style={{marginTop: -8}} label={formatMessage({id: 'tags'})}/>
               </div>}
+              <div style={{padding: 5}}>
+                <TagTray
+                  tags={stopPlace.tags}
+                  textSize={'0.7em'}
+                  style={{display: 'flex', flexWrap: 'wrap'}}
+                />
+              </div>
             <div style={{ display: 'flex'}}>
               <ImportedId
                 id={stopPlace.importedId}

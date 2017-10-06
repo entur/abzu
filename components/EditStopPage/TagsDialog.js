@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import { withApollo } from 'react-apollo';
@@ -20,20 +21,36 @@ import TagItem from './TagItem';
 import { removeTag, getTags } from '../../graphql/Actions';
 import AddTagDialog from './AddTagDialog';
 import { connect } from 'react-redux';
-
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 class TagsDialog extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false
+    };
+  }
+
+
   handleDeleteTag(name, idReference) {
     const { client } = this.props;
+    this.setState({isLoading: true});
     removeTag(client, name, idReference).then( result => {
-      getTags(client, idReference);
+      getTags(client, idReference).then( result => {
+        this.setState({isLoading: false});
+      }).catch(err => {
+        this.setState({isLoading: false});
+      });
+    }).catch( err => {
+      this.setState({isLoading: false})
     });
   }
 
   render() {
     const { open, tags, handleClose, intl, idReference } = this.props;
     const { formatMessage } = intl;
+    const { isLoading } = this.state;
 
     if (!open) return null;
 
@@ -61,12 +78,14 @@ class TagsDialog extends Component {
           <div
             style={{
               marginTop: 8,
-              fontWeight: 60,
               marginLeft: 10,
               fontWeight: 600
             }}
           >
-            {formatMessage({ id: 'tags' })}
+            <div>
+              <div>{formatMessage({ id: 'tags' })}</div>
+              { isLoading && <RefreshIndicator size={20} left={100} top={15} status="loading"/> }
+            </div>
           </div>
           <IconButton
             style={{ marginRight: 5 }}
@@ -80,11 +99,14 @@ class TagsDialog extends Component {
         <div>
           {tags && tags.length
             ? tags.map((tag, i) => (
-              <TagItem
-                key={'tag-item' + i}
-                handleDelete={this.handleDeleteTag.bind(this)}
-                tag={tag}
-              />
+              <div key={'divider-'+i}style={{borderBottom: '1px solid #eee'}}>
+                <TagItem
+                  key={'tag-item' + i}
+                  handleDelete={this.handleDeleteTag.bind(this)}
+                  tag={tag}
+                />
+                <div style={{fontSize: '0.8em', padding: '0 25px', color: '#4b4b4b', marginBottom: 2}}>{tag.comment}</div>
+              </div>
             ))
             : <span
                 style={{
@@ -95,10 +117,14 @@ class TagsDialog extends Component {
                   display: 'inline-block'
                 }}
               >
-                Ingen tagger
+              {formatMessage({id: 'no_tags'})}
               </span>}
         </div>
-        <AddTagDialog idReference={idReference}/>
+        <AddTagDialog idReference={idReference} handleLoading={isLoading => {
+          this.setState({
+            isLoading
+          });
+        }}/>
       </div>
     );
   }

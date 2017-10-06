@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+
+import React, {Component} from 'react';
 import { withApollo } from 'react-apollo';
 import AddTagAutoComplete from './AddTagAutoComplete';
 import TextField from 'material-ui/TextField';
@@ -56,7 +57,9 @@ class AddTagDialog extends Component {
 
   handleAddTag() {
     const { comment, tagName } = this.state;
-    const { client, idReference } = this.props;
+    const { client, idReference, handleLoading } = this.props;
+
+    handleLoading(true);
 
     addTag(client, idReference, tagName, comment).then( result => {
       this.setState({
@@ -64,7 +67,13 @@ class AddTagDialog extends Component {
         tagName: '',
         searchText: ''
       });
-      getTags(client, idReference);
+      getTags(client, idReference).then(response => {
+        handleLoading(false);
+      }).catch(err => {
+        handleLoading(false);
+      });
+    }).catch(err => {
+      handleLoading(false);
     });
   }
 

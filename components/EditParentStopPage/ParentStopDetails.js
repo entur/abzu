@@ -28,6 +28,7 @@ import AddStopPlaceToParent from '../Dialogs/AddStopPlaceToParent';
 import { getAddStopPlaceInfo } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import TagsDialog from '../EditStopPage/TagsDialog';
+import TagTray from '../MainPage/TagTray';
 
 class ParentStopDetails extends Component {
   constructor(props) {
@@ -133,6 +134,13 @@ class ParentStopDetails extends Component {
                   </span>
                 </div>}
             </div>}
+          <div style={{padding: 5}}>
+            <TagTray
+              tags={stopPlace.tags}
+              textSize={'0.7em'}
+              style={{display: 'flex', flexWrap: 'wrap'}}
+            />
+          </div>
           <ImportedId
             id={stopPlace.importedId}
             text={formatMessage({ id: 'local_reference' })}

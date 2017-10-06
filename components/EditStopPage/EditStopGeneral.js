@@ -494,7 +494,7 @@ class EditStopGeneral extends React.Component {
       overflowY: 'scroll',
       overflowX: 'hidden',
       width: '100%',
-      height: '78vh',
+      height: '82vh',
       position: 'relative',
       display: 'block',
       marginTop: 2
@@ -537,7 +537,7 @@ class EditStopGeneral extends React.Component {
           />
         </div>
         <div id="scroll-body" style={scrollable}>
-          <div style={{ padding: '10 5' }}>
+          <div style={{ padding: '5 5' }}>
             <StopPlaceDetails
               disabled={disabled}
               intl={intl}
