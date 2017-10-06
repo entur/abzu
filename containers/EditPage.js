@@ -43,7 +43,7 @@ class EditPage extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    const { stopPlace, intl } = nextProps;
+    const { stopPlace, intl, originalStopPlace } = nextProps;
     const { formatMessage } = intl;
 
     let title = '';
@@ -52,8 +52,8 @@ class EditPage extends React.Component {
       if (stopPlace.isNewStop) {
         title = formatMessage({ id: '_title_new_stop' });
       } else {
-        if (stopPlace.name) {
-          title = stopPlace.name;
+        if (originalStopPlace.name) {
+          title = originalStopPlace.name;
         }
         if (stopPlace.topographicPlace) {
           title += ', ' + stopPlace.topographicPlace;
@@ -176,7 +176,8 @@ const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   stopPlace: state.stopPlace.current || state.stopPlace.newStop,
   disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
-  newStopCreated: state.user.newStopCreated
+  newStopCreated: state.user.newStopCreated,
+  originalStopPlace: state.stopPlace.originalCurrent
 });
 
 const EditPlaceIntl = injectIntl(

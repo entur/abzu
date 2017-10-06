@@ -54,9 +54,9 @@ class EditParentGeneral extends React.Component {
     };
   }
 
-  getTitleText = (stopPlace, formatMessage) => {
+  getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
     return stopPlace && stopPlace.id
-      ? `${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
+      ? `${originalStopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
       : formatMessage({ id: 'new_stop_title' });
   };
 
@@ -274,7 +274,8 @@ class EditParentGeneral extends React.Component {
       stopHasBeenModified,
       disabled,
       removingStopPlaceFromParentId,
-      removeStopPlaceFromParentOpen
+      removeStopPlaceFromParentOpen,
+      originalStopPlace
     } = this.props;
 
     if (!stopPlace) return null;
@@ -308,7 +309,7 @@ class EditParentGeneral extends React.Component {
       justifyContent: 'space-between'
     };
 
-    const stopPlaceLabel = this.getTitleText(stopPlace, formatMessage);
+    const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
     const disableTerminate =
       stopPlace.isNewStop || disabled || stopPlace.hasExpired;
 
@@ -456,7 +457,8 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
   removeStopPlaceFromParentOpen: mapUtils.removeStopPlaceFromParentOpen,
   removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
   canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
-  deleteStopDialogOpen: mapUtils.deleteStopDialogOpen
+  deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
+  originalStopPlace: stopPlace.originalCurrent
 });
 
 export default withApollo(

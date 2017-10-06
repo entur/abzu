@@ -425,9 +425,10 @@ class EditStopGeneral extends React.Component {
     });
   };
 
-  getTitleText = (stopPlace, formatMessage) => {
+  getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
+    const stopPlaceName = originalStopPlace ? originalStopPlace.name : stopPlace.name;
     return stopPlace && stopPlace.id
-      ? `${stopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
+      ? `${stopPlaceName}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
       : formatMessage({ id: 'new_stop_title' });
   };
 
@@ -449,7 +450,8 @@ class EditStopGeneral extends React.Component {
       versions,
       disabled,
       canDeleteStop,
-      mergeStopDialogOpen
+      mergeStopDialogOpen,
+      originalStopPlace,
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -475,7 +477,7 @@ class EditStopGeneral extends React.Component {
       validBetween: formatMessage({ id: 'valid_between' })
     };
 
-    const stopPlaceLabel = this.getTitleText(stopPlace, formatMessage);
+    const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
     const isCurrentVersionMax = getIsCurrentVersionMax(versions, stopPlace.version, stopPlace.isChildOfParent);
 
     const style = {
@@ -768,7 +770,8 @@ const mapStateToProps = state => ({
   movingQuay: state.mapUtils.movingQuay,
   movingQuayToNewStop: state.mapUtils.movingQuayToNewStop,
   activeMap: state.mapUtils.activeMap,
-  canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false)
+  canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
+  originalStopPlace: state.stopPlace.originalCurrent,
 });
 
 export default withApollo(
