@@ -99,7 +99,7 @@ class TagsDialog extends Component {
         <div>
           {tags && tags.length
             ? tags.map((tag, i) => (
-              <div key={'divider-'+i}style={{borderBottom: '1px solid #eee'}}>
+              <div key={'divider-'+i} style={{borderBottom: '1px solid #eee'}}>
                 <TagItem
                   key={'tag-item' + i}
                   handleDelete={this.handleDeleteTag.bind(this)}

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ToolTippable from '../EditStopPage/ToolTippable';
 import { enturPrimary } from '../../config/enturTheme';
@@ -36,15 +37,15 @@ class Tag extends Component {
           display: 'inline-block',
           borderRadius: 3,
           height: 12,
-          background: enturPrimary,
+          background: 'orange',
           color: '#fff',
           width: 'auto',
           cursor: 'pointer',
           fontSize: textSize || '0.7em',
-          textTransform: 'uppercase'
+          textTransform: 'uppercase',
         }}
       >
-        {name}
+        <div style={{lineHeight: textSize || '0.7em', margin: 5, verticalAlign: 'middle'}}>{name}</div>
       </div>
     )
 

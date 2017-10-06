@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
 import debounce from 'lodash.debounce';
@@ -36,7 +37,7 @@ class AddTagAutoComplete extends Component {
           dataSource: response.data.tags
         });
       });
-    }, 200);
+    }, 500);
   }
 
 
@@ -48,13 +49,28 @@ class AddTagAutoComplete extends Component {
     });
   }
 
+  handleBlur(event) {
+    const value = event.target.value;
+    const { dataSource } = this.state;
+    const isFoundInDataSource = dataSource.find(item => item.name.toLowerCase() === value.toLowerCase());
+
+    if (value) {
+      if (isFoundInDataSource) {
+        this.handleSelectedTag({
+          text: isFoundInDataSource.name
+        });
+      } else {
+        this.handleSelectedTag({text: value});
+      }
+    }
+  }
 
   getMenuItems(dataSource = [], searchText) {
     let menuItems = [];
 
     if (!searchText) return menuItems;
 
-    const isFoundInDataSource = dataSource.some( item => item.name.toLowerCase() === searchText.toLowerCase());
+    const isFoundInDataSource = dataSource.some(item => item.name.toLowerCase() === searchText.toLowerCase());
 
     if (dataSource.length) {
 
@@ -128,6 +144,7 @@ class AddTagAutoComplete extends Component {
         maxSearchResults={7}
         style={style}
         onNewRequest={this.handleSelectedTag.bind(this)}
+        onBlur={(e,v) => this.handleBlur(e)}
         fullWidth={true}
         filter={() => true}
         onUpdateInput={this.handleUpdate.bind(this)}

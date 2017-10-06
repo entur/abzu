@@ -45,12 +45,12 @@ class AddTagDialog extends Component {
       this.setState({
         tagName,
         comment,
-        searchText: '',
+        searchText: tagName
       })
     } else {
       this.setState({
         tagName,
-        searchText: '',
+        searchText: tagName,
       })
     }
   }
@@ -96,15 +96,12 @@ class AddTagDialog extends Component {
       <div style={{borderTop: '1px dotted', display: 'flex', flexDirection: 'column', marginLeft: 5, paddingBottom: 5}}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <AddTagAutoComplete
-            style={{marginLeft: 10,flex: 3}}
+            style={{marginLeft: 10, width: 350}}
             tagName={tagName}
             searchText={searchText}
             handleInputChange={value => { this.setState({searchText: value})}}
             handleChooseTag={this.handleChooseTag.bind(this)}
           />
-          <div style={{flex: 1}}>
-            <Tag data={tagData}/>
-          </div>
         </div>
         <TextField
           value={comment}
