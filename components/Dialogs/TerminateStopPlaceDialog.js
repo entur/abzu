@@ -26,6 +26,7 @@ import { getEarliestFromDate } from '../../utils/saveDialogUtils';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import TextField from 'material-ui/TextField';
 import helpers from '../../modelUtils/mapToQueryVariables';
+import Spinner from '../../static/icons/spinner';
 
 let DateTimeFormat;
 
@@ -76,7 +77,8 @@ class TerminateStopPlaceDialog extends React.Component {
       handleConfirm,
       stopPlace,
       canDeleteStop,
-      previousValidBetween
+      previousValidBetween,
+      isLoading
     } = this.props;
     const { formatMessage } = intl;
     const { isChildOfParent } = stopPlace;
@@ -105,10 +107,10 @@ class TerminateStopPlaceDialog extends React.Component {
       <FlatButton
         label={translations.confirm}
         onTouchTap={() => handleConfirm(shouldHardDelete, comment, dateTime)}
-        disabled={!!isChildOfParent}
+        disabled={!!isChildOfParent || isLoading}
         primary={true}
         keyboardFocused={true}
-        icon={<MdMerge />}
+        icon={isLoading ? <Spinner/> : <MdMerge />}
       />
     ];
 

@@ -12,13 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
+import Spinner from '../../static/icons/spinner';
 
 class DeleteQuayDialog extends React.Component {
   static propTypes = {
@@ -29,7 +31,7 @@ class DeleteQuayDialog extends React.Component {
   };
 
   render() {
-    const { open, intl, handleClose, deletingQuay, handleConfirm } = this.props;
+    const { open, intl, handleClose, deletingQuay, handleConfirm, isLoading } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
@@ -50,8 +52,9 @@ class DeleteQuayDialog extends React.Component {
         label={translations.confirm}
         onTouchTap={handleConfirm}
         primary={true}
+        disabled={isLoading}
         keyboardFocused={true}
-        icon={<MdMerge />}
+        icon={isLoading ? <Spinner/> : <MdMerge />}
       />,
     ];
 

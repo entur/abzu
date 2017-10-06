@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -20,6 +21,7 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import AcceptChanges from '../EditStopPage/AcceptChanges';
 import QuayDetails from '../EditStopPage/QuayDetails';
+import Spinner from '../../static/icons/spinner';
 
 class MergeStopDialog extends React.Component {
   constructor(props) {
@@ -52,7 +54,8 @@ class MergeStopDialog extends React.Component {
       sourceElement,
       targetElement,
       handleConfirm,
-      hasStopBeenModified
+      hasStopBeenModified,
+      isLoading
     } = this.props;
     const { formatMessage } = intl;
     const { changesUnderstood } = this.state;
@@ -108,13 +111,13 @@ class MergeStopDialog extends React.Component {
       actions.push(
         <FlatButton
           label={translations.confirm}
-          disabled={!enableConfirm}
+          disabled={!enableConfirm || isLoading}
           onTouchTap={() => {
             handleConfirm(fromVersionComment, toVersionComment);
           }}
           primary={true}
           keyboardFocused={true}
-          icon={<MdMerge />}
+          icon={isLoading ? <Spinner/> : <MdMerge />}
         />
       );
     }

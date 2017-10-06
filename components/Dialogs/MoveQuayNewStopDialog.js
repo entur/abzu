@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -20,6 +21,7 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import AcceptChanges from '../EditStopPage/AcceptChanges';
 import ScrollableQuayList from './ScrollableQuayList';
+import Spinner from '../../static/icons/spinner';
 
 class MoveQuayNewStopDialog extends React.Component {
   constructor(props) {
@@ -69,7 +71,8 @@ class MoveQuayNewStopDialog extends React.Component {
       quay,
       quays,
       fromStopPlaceId,
-      hasStopBeenModified
+      hasStopBeenModified,
+      isLoading
     } = this.props;
     const { formatMessage } = intl;
     const { changesUnderstood, quayIds } = this.state;
@@ -100,13 +103,13 @@ class MoveQuayNewStopDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        disabled={!enableConfirm}
+        disabled={!enableConfirm || isLoading}
         onTouchTap={() => {
           handleConfirm(quayIds, fromVersionComment, toVersionComment);
         }}
         primary={true}
         keyboardFocused={true}
-        icon={<MdMerge />}
+        icon={isLoading ? <Spinner/> : <MdMerge />}
       />
     ];
 

@@ -68,7 +68,8 @@ class EditStopGeneral extends React.Component {
       confirmGoBack: false,
       saveDialogOpen: false,
       errorMessage: '',
-      requiredFieldsMissingOpen: false
+      requiredFieldsMissingOpen: false,
+      isLoading: false,
     };
   }
 
@@ -136,6 +137,7 @@ class EditStopGeneral extends React.Component {
 
   handleMergeQuaysFromStop(fromVersionComment, toVersionComment) {
     const { stopPlace, mergeSource, client, dispatch, activeMap } = this.props;
+    this.setState({isLoading: true});
 
     mergeAllQuaysFromStop(
       client,
@@ -150,6 +152,7 @@ class EditStopGeneral extends React.Component {
         );
         this.handleCloseMergeStopDialog();
         getStopPlaceWithAll(client, stopPlace.id).then(() => {
+          this.setState({isLoading: false});
           if (activeMap) {
             let includeExpired = new Settings().getShowExpiredStops();
             getNeighbourStops(
@@ -162,6 +165,7 @@ class EditStopGeneral extends React.Component {
         });
       })
       .catch(err => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
         );
@@ -171,6 +175,8 @@ class EditStopGeneral extends React.Component {
   handleMergeQuays(versionComment) {
     const { mergingQuay, client, stopPlace, dispatch } = this.props;
 
+    this.setState({isLoading: true});
+
     mergeQuays(
       client,
       stopPlace.id,
@@ -179,6 +185,7 @@ class EditStopGeneral extends React.Component {
       versionComment
     )
       .then(result => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
         );
@@ -186,6 +193,7 @@ class EditStopGeneral extends React.Component {
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
         );
@@ -194,8 +202,10 @@ class EditStopGeneral extends React.Component {
 
   handleDeleteQuay() {
     const { client, deletingQuay, dispatch, stopPlace } = this.props;
+    this.setState({isLoading: true});
     deleteQuay(client, deletingQuay)
       .then(response => {
+        this.setState({isLoading: false});
         dispatch(UserActions.hideDeleteQuayDialog());
         getStopPlaceWithAll(client, stopPlace.id).then(response => {
           dispatch(
@@ -207,6 +217,7 @@ class EditStopGeneral extends React.Component {
         });
       })
       .catch(err => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
         );
@@ -215,6 +226,7 @@ class EditStopGeneral extends React.Component {
 
   handleMoveQuay(fromVersionComment, toVersionComment) {
     const { client, movingQuay, dispatch, stopPlace } = this.props;
+    this.setState({isLoading: true});
     moveQuaysToStop(
       client,
       stopPlace.id,
@@ -223,10 +235,15 @@ class EditStopGeneral extends React.Component {
       toVersionComment
     )
       .then(response => {
+        this.setState({isLoading: false});
         dispatch(UserActions.closeMoveQuayDialog());
+        dispatch(
+          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+        );
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
         );
@@ -235,10 +252,12 @@ class EditStopGeneral extends React.Component {
 
   handleTerminateStop(shouldHardDelete, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
+    this.setState({isLoading: true});
 
     if (shouldHardDelete) {
       deleteStopPlace(client, stopPlace.id)
         .then(response => {
+          this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
@@ -247,6 +266,7 @@ class EditStopGeneral extends React.Component {
           }
         })
         .catch(err => {
+          this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog(true));
           dispatch(
             UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
@@ -254,8 +274,14 @@ class EditStopGeneral extends React.Component {
         });
     } else {
       terminateStop(client, stopPlace.id, comment, dateTime).then( result => {
+        this.setState({isLoading: false});
         this.handleSaveSuccess(stopPlace.id);
         this.handleCloseDeleteStop();
+      }).catch(err => {
+        this.setState({isLoading: false});
+        dispatch(
+          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+        );
       })
     }
   }
@@ -385,8 +411,11 @@ class EditStopGeneral extends React.Component {
     const { client, dispatch, stopPlace } = this.props;
     let newStopPlaceId = null;
 
+    this.setState({isLoading: true});
+
     moveQuaysToNewStop(client, quayIds, fromVersionComment, toVersionComment)
       .then(response => {
+        this.setState({isLoading: false});
         if (
           response.data &&
           response.data.moveQuaysToStop &&
@@ -407,6 +436,7 @@ class EditStopGeneral extends React.Component {
         });
       })
       .catch(err => {
+        this.setState({isLoading: false});
         dispatch(
           UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
         );
@@ -640,6 +670,7 @@ class EditStopGeneral extends React.Component {
             open={mergeStopDialogOpen}
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
             handleConfirm={this.handleMergeQuaysFromStop.bind(this)}
+            isLoading={this.state.isLoading}
             intl={intl}
             hasStopBeenModified={stopHasBeenModified}
             sourceElement={this.props.mergeSource}
@@ -655,6 +686,7 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             mergingQuays={this.props.mergingQuay}
             hasStopBeenModified={stopHasBeenModified}
+            isLoading={this.state.isLoading}
           />
           <DeleteQuayDialog
             open={this.props.deleteQuayDialogOpen}
@@ -662,6 +694,7 @@ class EditStopGeneral extends React.Component {
             handleConfirm={this.handleDeleteQuay.bind(this)}
             intl={intl}
             deletingQuay={this.props.deletingQuay}
+            isLoading={this.state.isLoading}
           />
           <TerminateStopPlaceDialog
             open={this.props.deleteStopDialogOpen}
@@ -671,6 +704,7 @@ class EditStopGeneral extends React.Component {
             previousValidBetween={stopPlace.validBetween}
             stopPlace={stopPlace}
             canDeleteStop={canDeleteStop}
+            isLoading={this.state.isLoading}
           />
           <MoveQuayDialog
             open={this.props.moveQuayDialogOpen}
@@ -680,6 +714,7 @@ class EditStopGeneral extends React.Component {
             stopPlaceId={stopPlace.id}
             quay={this.props.movingQuay}
             hasStopBeenModified={stopHasBeenModified}
+            isLoading={this.state.isLoading}
           />
           <MoveQuayNewStopDialog
             open={this.props.moveQuayToNewStopDialogOpen}
@@ -690,6 +725,7 @@ class EditStopGeneral extends React.Component {
             fromStopPlaceId={stopPlace.id}
             quay={this.props.movingQuayToNewStop}
             hasStopBeenModified={stopHasBeenModified}
+            isLoading={this.state.isLoading}
           />
           <RequiredFieldsMissingDialog
             open={this.state.requiredFieldsMissingOpen}

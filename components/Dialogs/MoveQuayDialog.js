@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -20,6 +21,7 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdMerge from 'material-ui/svg-icons/editor/merge-type';
 import Code from '../EditStopPage/Code';
 import AcceptChanges from '../EditStopPage/AcceptChanges';
+import Spinner from '../../static/icons/spinner';
 
 class MoveQuayDialog extends React.Component {
 
@@ -47,7 +49,7 @@ class MoveQuayDialog extends React.Component {
   };
 
   render() {
-    const { open, intl, handleClose, handleConfirm, stopPlaceId, quay, hasStopBeenModified } = this.props;
+    const { open, intl, handleClose, handleConfirm, stopPlaceId, quay, hasStopBeenModified, isLoading } = this.props;
     const { formatMessage } = intl;
     const { changesUnderstood } = this.state;
     let enableConfirm = !hasStopBeenModified || changesUnderstood;
@@ -72,11 +74,11 @@ class MoveQuayDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        disabled={!enableConfirm}
+        disabled={!enableConfirm || isLoading}
         onTouchTap={() => { handleConfirm(fromVersionComment,toVersionComment) }}
         primary={true}
         keyboardFocused={true}
-        icon={<MdMerge />}
+        icon={isLoading ? <Spinner/> : <MdMerge />}
       />,
     ];
 

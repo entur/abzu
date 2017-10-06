@@ -78,10 +78,11 @@ class EditParentGeneral extends React.Component {
 
   handleTerminateStop(shouldHardDelete, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
-
+    this.setState({isLoading: true});
     if (shouldHardDelete) {
       deleteStopPlace(client, stopPlace.id)
         .then(response => {
+          this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
@@ -90,6 +91,7 @@ class EditParentGeneral extends React.Component {
           }
         })
         .catch(err => {
+          this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog(true));
           dispatch(
             UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
@@ -99,6 +101,12 @@ class EditParentGeneral extends React.Component {
       terminateStop(client, stopPlace.id, comment, dateTime).then(result => {
         this.handleSaveSuccess(stopPlace.id);
         this.handleCloseDeleteStop();
+        this.setState({isLoading: false});
+      }).catch(err => {
+        this.setState({isLoading: false});
+        dispatch(
+          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+        );
       });
     }
   }
@@ -154,7 +162,7 @@ class EditParentGeneral extends React.Component {
   handleRemoveStopFromParent() {
     const { removingStopPlaceFromParentId, client, stopPlace } = this.props;
     this.setState({
-      isRemovingStopLoading: true
+      isLoading: true
     });
 
     removeStopPlaceFromMultiModalStop(
@@ -166,14 +174,14 @@ class EditParentGeneral extends React.Component {
         this.handleSaveSuccess(stopPlace.id);
         this.handleCloseRemoveStopFromParent();
         this.setState({
-          isRemovingStopLoading: false
+          isLoading: false
         });
       })
       .catch(err => {
         this.handleSaveError(err);
         this.handleCloseRemoveStopFromParent();
         this.setState({
-          isRemovingStopLoading: false
+          isLoading: false
         });
       });
   }
@@ -406,6 +414,7 @@ class EditParentGeneral extends React.Component {
           previousValidBetween={stopPlace.validBetween}
           stopPlace={stopPlace}
           canDeleteStop={this.props.canDeleteStop}
+          isLoading={this.state.isLoading}
         />
         {removeStopPlaceFromParentOpen &&
           <RemoveStopFromParentDialog
@@ -415,7 +424,7 @@ class EditParentGeneral extends React.Component {
             intl={intl}
             stopPlaceId={removingStopPlaceFromParentId}
             isLastChild={isLastChild}
-            isLoading={this.state.isRemovingStopLoading}
+            isLoading={this.state.isLoading}
           />}
         <ConfirmDialog
           open={this.state.confirmGoBack}

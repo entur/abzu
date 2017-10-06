@@ -77,20 +77,11 @@ class AddTagDialog extends Component {
     });
   }
 
-  getTagData() {
-    const { comment, tagName} = this.state;
-    return ({
-      name: tagName,
-      comment
-    })
-  }
-
   render() {
 
     const { comment, tagName, searchText } = this.state;
     const { intl } = this.props;
     const { formatMessage } = intl;
-    const tagData = this.getTagData();
 
     return (
       <div style={{borderTop: '1px dotted', display: 'flex', flexDirection: 'column', marginLeft: 5, paddingBottom: 5}}>
