@@ -12,14 +12,13 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import expect from 'expect';
 import StopWithDuplicateImportedIds from './mock/StopWithDuplicateImportedIds';
 import StopsWithDuplicateImportedIds from './mock/StopsWithSharedDupId';
 import DrammenOsloConflict from './mock/DrammenOsloConflict';
 import { findDuplicateImportedIds } from '../utils/';
 
 describe('duplicateIds', () => {
-  it('should find all duplicate Ids on quays within stopPlace', () => {
+  test('should find all duplicate Ids on quays within stopPlace', () => {
     const duplicationInfo = findDuplicateImportedIds([
       StopWithDuplicateImportedIds
     ]);
@@ -39,7 +38,7 @@ describe('duplicateIds', () => {
     });
   });
 
-  it('should find all duplicate Ids on quays between stopPlaces', () => {
+  test('should find all duplicate Ids on quays between stopPlaces', () => {
     const duplicationInfo = findDuplicateImportedIds(
       StopsWithDuplicateImportedIds
     );
@@ -79,7 +78,7 @@ describe('duplicateIds', () => {
     });
   });
 
-  it('should find conflicting importedIds for Drammen and Oslo S', () => {
+  test('should find conflicting importedIds for Drammen and Oslo S', () => {
     const duplicationInfo = findDuplicateImportedIds(DrammenOsloConflict);
     const { stopPlacesWithConflict } = duplicationInfo;
     expect(stopPlacesWithConflict).toEqual(['NSR:StopPlace:2', 'NSR:StopPlace:21']);

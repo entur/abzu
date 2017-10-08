@@ -49,10 +49,10 @@ OSM_URL=https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png port=9000 port=9000 N
 
 ### Testing
 
-Uses Mocha to test unit testing and reducers
+Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing 
 
 ```
-npm run test
+npm test
 ```
 
 ### Authentication

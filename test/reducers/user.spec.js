@@ -12,17 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../../actions/Types';
-import expect from 'expect';
+
+import * as types from '../../actions/Types';
 import { userReducer } from './../../reducers/';
 import { initialState } from './../../reducers/userReducer';
 
 describe('user reducer', () => {
-  it('Should return the initial state', () => {
+  test('Should return the initial state', () => {
     expect(userReducer(undefined, {})).toEqual(initialState);
   });
 
-  it('Should navigate to path', () => {
+  test('Should navigate to path', () => {
     const editPathChange = {
       type: types.NAVIGATE_TO,
       payLoad: '/edit/',
@@ -34,7 +34,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should toggle new stop form visibility', () => {
+  test('Should toggle new stop form visibility', () => {
     expect(
       userReducer(undefined, { type: types.TOGGLED_IS_CREATING_NEW_STOP, payLoad: false }),
     ).toEqual({
@@ -43,7 +43,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should apply search filters', () => {
+  test('Should apply search filters', () => {
     const filters = [];
 
     expect(
@@ -57,7 +57,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should display correct snackbar options', () => {
+  test('Should display correct snackbar options', () => {
     const snackbarOptions = {
       isOpen: true,
       message: 'This is some feedback to the user',
@@ -78,7 +78,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should dismiss snackbar', () => {
+  test('Should dismiss snackbar', () => {
     const snackbarOptions = {
       isOpen: false,
     };
@@ -93,7 +93,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should change localization', () => {
+  test('Should change localization', () => {
     const localization = {
       locale: 'nb',
       message: [],
@@ -110,7 +110,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should apply language change', () => {
+  test('Should apply language change', () => {
     const locale = 'nb';
 
     expect(
@@ -124,7 +124,7 @@ describe('user reducer', () => {
     });
   });
 
-  it('Should set active baselayer for maps', () => {
+  test('Should set active baselayer for maps', () => {
     let newBaselayer = 'OpenStreetMap';
 
     expect(

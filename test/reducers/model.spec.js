@@ -12,17 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import expect from 'expect';
+
 import { stopPlaceReducer } from './../../reducers/';
 import stopPlaceMock from './json/stopPlace.json';
 import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json';
 import clientStop from './json/clientStop.json';
 import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables';
-import { describe, before, it } from 'mocha';
 import { hasExpired } from '../../modelUtils/validBetween';
 
 describe('Model: map format from server to expected client model', () => {
-  it('should let server response stop map to client model correctly', () => {
+  test('should let server response stop map to client model correctly', () => {
     const action = {
       type: 'APOLLO_QUERY_RESULT',
       result: stopPlaceMock,
@@ -215,7 +214,7 @@ describe('Model: map format from server to expected client model', () => {
 describe('Changes correct properties', () => {
   var state = {};
 
-  before(done => {
+  beforeAll(done => {
     const action = {
       type: 'APOLLO_QUERY_RESULT',
       result: stopPlaceMock10Quays,
@@ -253,7 +252,7 @@ describe('Changes correct properties', () => {
     }
   });
 
-  describe('Should correctly determine if a stop has expired or not based on validBetween', () => {
+  it('Should correctly determine if a stop has expired or not based on validBetween', () => {
     const expiredDate = {
       fromDate: '2017-05-31T11:03:01.770+0200',
       toDate: '2017-05-31T11:03:01.842+0200'

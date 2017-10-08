@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import expect from 'expect'
-import nb_lang from '../../static/lang/nb.json'
+
+import nb_lang from '../../static/lang/nb.json';
 import en_lang from '../../static/lang/en.json'
 
 describe('language support', () => {
 
-  it('should support translations for all strings in all languages', () => {
+  test('should support translations for all strings in all languages', () => {
 
     const norwegianKeys = Object.keys(nb_lang).sort()
     const englishKeys = Object.keys(en_lang).sort()

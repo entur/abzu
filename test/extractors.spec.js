@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { extractCoordinates } from '../utils/'
-import expect from 'expect';
+
+import { extractCoordinates } from '../utils/'
 
 describe('extractors', () => {
 
-  it('should extract latlng from user provided string', () => {
+  test('should extract latlng from user provided string', () => {
 
     const latLngStringComma = "59.927582, 10.698881";
     const latLngFromComma = extractCoordinates(latLngStringComma);
