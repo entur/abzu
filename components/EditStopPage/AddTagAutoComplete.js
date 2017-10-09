@@ -40,7 +40,6 @@ class AddTagAutoComplete extends Component {
     }, 500);
   }
 
-
   handleSelectedTag({text, comment}) {
     const tagInCamelCase = toCamelCase(text);
     this.props.handleChooseTag(tagInCamelCase, comment);
@@ -129,6 +128,7 @@ class AddTagAutoComplete extends Component {
     this.props.handleInputChange(searchText);
     this.findTag(searchText);
   }
+
 
   render() {
     const { dataSource } = this.state;

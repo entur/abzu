@@ -53,6 +53,10 @@ class AddTagDialog extends Component {
         searchText: tagName,
       })
     }
+
+    if (this.refs.comment) {
+      this.refs.comment.focus();
+    }
   }
 
   handleAddTag() {
@@ -99,6 +103,7 @@ class AddTagDialog extends Component {
           floatingLabelText={formatMessage({id: 'comment'})}
           hintText={formatMessage({id: 'comment'})}
           style={{marginLeft: 10, width: 350}}
+          ref="comment"
           id={"comment-text"}
           onChange={(e,v) => this.setState({comment: v || ''})}
         />
