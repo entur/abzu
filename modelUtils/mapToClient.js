@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
 import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
@@ -40,7 +39,11 @@ helpers.sortQuays = (current, attribute) => {
   let copy = JSON.parse(JSON.stringify(current));
   let quays = copy.quays;
   quays.sort((a, b) =>
-    (a[attribute] || 'ZZZZZ').localeCompare(b[attribute] || 'ZZZZZ')
+    (a[attribute] || 'ZZZZZ')
+      .localeCompare(b[attribute] || 'ZZZZZ', 'nb', {
+        numeric: true,
+        sensitivity: 'base'
+      })
   );
   return {
     ...copy,
@@ -50,11 +53,13 @@ helpers.sortQuays = (current, attribute) => {
 
 helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
   const newStopPlace = Object.assign({}, current);
-  const newChildren = payLoad.map( child => {
-    const newChild = {...child};
-    newChild.name = (newChild.name && newChild.name.value) ? newChild.name.value : current.name;
+  const newChildren = payLoad.map(child => {
+    const newChild = { ...child };
+    newChild.name = newChild.name && newChild.name.value
+      ? newChild.name.value
+      : current.name;
     return newChild;
-  })
+  });
   newStopPlace.children = newStopPlace.children.concat(newChildren);
   return newStopPlace;
 };
@@ -63,13 +68,18 @@ helpers.updateStopWithTags = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
   const { result } = payLoad;
 
-  if (result.data && result.data.stopPlace && result.data && result.data.stopPlace.length) {
+  if (
+    result.data &&
+    result.data.stopPlace &&
+    result.data &&
+    result.data.stopPlace.length
+  ) {
     const tags = result.data.stopPlace[0].tags;
     copy.tags = tags;
     return copy;
   }
   return current;
-}
+};
 
 helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
@@ -245,16 +255,16 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
   const currentStopPlaceId = currentStopPlace ? currentStopPlace.id : null;
 
   // extract all children of potential parent stop places
-  allStops.forEach( stop => {
+  allStops.forEach(stop => {
     if (stop.isParent && stop.children) {
       const children = stop.children
         // a parent stop place may contain active stop as a child, i.e. sibling
         .filter(child => child.id !== currentStopPlaceId)
-        .map( child => {
+        .map(child => {
           child.name = child.name || stop.name;
           child.isChildOfParent = true;
           return child;
-      });
+        });
       extractedChildren = extractedChildren.concat(children);
     }
   });
@@ -331,8 +341,9 @@ helpers.mapSearchResultParentStopPlace = stop => {
       .map(childStop => updateObjectWithLocation(childStop))
       .map(childStop => {
         let newChildStop = Object.assign({}, childStop);
-        newChildStop.name = newChildStop.name && newChildStop.name.value ?
-        childStop.name.value : stop.name.value;
+        newChildStop.name = newChildStop.name && newChildStop.name.value
+          ? childStop.name.value
+          : stop.name.value;
         return newChildStop;
       })
       .sort((a, b) => b.id.localeCompare(a.id)),
@@ -358,21 +369,22 @@ const updateObjectWithLocation = stop => {
     return newStop;
   }
   return stop;
-}
+};
 
 helpers.mapReportSearchResultsToClientStop = stops => {
   let result = [];
 
-  const stopPlacesAndParents = stops.map(stop => helpers.mapStopToClientStop(stop, true, null, null, null));
+  const stopPlacesAndParents = stops.map(stop =>
+    helpers.mapStopToClientStop(stop, true, null, null, null)
+  );
 
-  stopPlacesAndParents.map( stopPlace => {
-
+  stopPlacesAndParents.map(stopPlace => {
     if (!stopPlace) return null;
 
     let modesFromChildren = [];
     if (stopPlace.isParent && stopPlace.children) {
       // map all children to result list
-      const children = stopPlace.children.map( child => {
+      const children = stopPlace.children.map(child => {
         child.name = child.name || stopPlace.name;
         child.isChildOfParent = true;
         modesFromChildren.push({
@@ -390,8 +402,7 @@ helpers.mapReportSearchResultsToClientStop = stops => {
     result.push(stopPlace);
   });
   return result;
-}
-
+};
 
 helpers.createNewStopFromLocation = location => ({
   id: null,
@@ -728,7 +739,6 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
 };
 
 helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
-
   let neighbourQuaysMap = { ...original } || {};
 
   if (!payLoad || !payLoad.length) return neighbourQuaysMap;
@@ -743,7 +753,7 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
     // find child with resourceId and its quays
     stopPlace = rootStopPlace.children.find(stop => stop.id === resourceId);
   } else {
-    console.info("StopPlace is not found, ignoring getting quays");
+    console.info('StopPlace is not found, ignoring getting quays');
     return original;
   }
 
