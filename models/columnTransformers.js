@@ -24,7 +24,7 @@ import MdCheck from 'material-ui/svg-icons/action/check-circle';
 import MdNotChecked from 'material-ui/svg-icons/action/highlight-off';
 import StairsIcon from '../static/icons/accessibility/Stairs';
 import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
-import { enturDark } from '../config/enturTheme';
+import { darkColor } from '../config/themes/default/defaultTheme';
 import TagTray from '../components/MainPage/TagTray';
 import ToolTippable from '../components/EditStopPage/ToolTippable';
 
@@ -73,7 +73,7 @@ export const ColumnTransformerStopPlaceJsx = {
       fontWeight: 600,
       textTransform: 'uppercase',
       marginLeft: 2,
-      color: enturDark,
+      color: darkColor,
       fontSize: '0.6em',
       lineHeight: '1em',
       top: '-0.4em',

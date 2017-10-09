@@ -37,7 +37,7 @@ import WheelChairPopover from './WheelChairPopover';
 import { getIn } from '../../utils';
 import equipmentHelpers from '../../modelUtils/equipmentHelpers';
 import MdLanguage from 'material-ui/svg-icons/action/language';
-import { enturPrimaryDarker } from '../../config/enturTheme';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import AltNamesDialog from '../Dialogs/AltNamesDialog';
 import TariffZonesDialog from '../Dialogs/TariffZonesDialog';
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
@@ -278,7 +278,7 @@ class StopPlaceDetails extends React.Component {
     const { dispatch } = this.props;
     dispatch(StopPlaceActions.changeWeightingForStop(value));
     this.setState({
-      weightingOpen: false
+      weightingOpen: false,
     });
   }
 
@@ -388,6 +388,7 @@ class StopPlaceDetails extends React.Component {
     const belongsToParent = formatMessage({id: 'belongs_to_parent'});
 
     const parentStopHref = belongsToParent ? createStopPlaceHref(getIn(stopPlace, ['parentStop', 'id'], null)) : '';
+    const primaryDarker = getPrimaryDarkerColor();
 
     return (
       <div style={fixedHeader}>
@@ -439,7 +440,7 @@ class StopPlaceDetails extends React.Component {
                     <MdKey
                       color={
                         (stopPlace.keyValues || []).length
-                          ? enturPrimaryDarker
+                          ? primaryDarker
                           : '#000'
                       }
                     />
@@ -451,7 +452,7 @@ class StopPlaceDetails extends React.Component {
                       borderBottom: disabled ? 'none' : '1px dotted grey',
                       marginLeft: 5
                     }}
-                    onClick={e => {
+                    onTouchTap={e => {
                       this.handleOpenStopPlaceTypePopover(e);
                     }}
                   >
@@ -508,7 +509,7 @@ class StopPlaceDetails extends React.Component {
                   style={{
                     fontSize: 18,
                     color: (stopPlace.tariffZones || []).length
-                      ? enturPrimaryDarker
+                      ? primaryDarker
                       : '#000'
                   }}
                 >
@@ -526,7 +527,7 @@ class StopPlaceDetails extends React.Component {
               <ToolTippable toolTipText={altNamesHint}>
                 <IconButton onClick={this.handleOpenAltNames.bind(this)}>
                   <MdLanguage
-                    color={hasAltNames ? enturPrimaryDarker : '#000'}
+                    color={hasAltNames ? primaryDarker : '#000'}
                   />
                 </IconButton>
               </ToolTippable>
@@ -547,7 +548,7 @@ class StopPlaceDetails extends React.Component {
             style={{ marginLeft: 6, borderBottom: '1px dotted', marginTop: -3 }}
           >
             <IconButton
-              onClick={e => {
+              onTouchTap={e => {
                 this.handleOpenWeightPopover(e);
               }}
             >
@@ -555,7 +556,7 @@ class StopPlaceDetails extends React.Component {
             </IconButton>
             <WeightingPopover
               open={!disabled && weightingOpen}
-              anchorEl={weightingAnchorEl}
+              anchorEl={this.state.weightingAnchorEl}
               handleChange={v => this.handleWeightChange(v)}
               locale={locale}
               handleClose={() => {

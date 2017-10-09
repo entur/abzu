@@ -41,7 +41,7 @@ import TopographicalFilter from './TopographicalFilter';
 import Divider from 'material-ui/Divider';
 import debounce from 'lodash.debounce';
 import { getIn } from '../../utils/';
-import { enturPrimaryDarker } from '../../config/enturTheme';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import MdLocationSearching from 'material-ui/svg-icons/device/location-searching';
 import MdSpinner from '../../static/icons/spinner';
 import { createSearchMenuItem } from './SearchMenuItem';
@@ -309,7 +309,7 @@ class SearchBox extends React.Component {
                   onClick={() => this.removeFiltersAndSearch()}
                   style={{
                     fontSize: '0.8em',
-                    color: enturPrimaryDarker,
+                    color: getPrimaryDarkerColor(),
                     marginRight: 5,
                     cursor: 'pointer'
                   }}
@@ -571,7 +571,6 @@ class SearchBox extends React.Component {
             <FlatButton
               style={{ marginLeft: 10, fontSize: 12 }}
               disabled={!!favorited}
-              secondary={true}
               onClick={() => {
                 this.handleSaveAsFavorite(!!favorited);
               }}

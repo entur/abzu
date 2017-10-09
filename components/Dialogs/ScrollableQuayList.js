@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import ScrollableQuayItem from './ScrollableQuayItem';
-import { enturPrimary } from '../../config/enturTheme';
+import { getPrimaryColor } from '../../config/themeConfig';
 
 class ScrollableQuayList extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class ScrollableQuayList extends React.Component {
     const { checkedQuays } = this.state;
     let newcheckedQuays = value
       ? checkedQuays.concat(id)
-      : checkedQuays.filter( quayId => quayId !== id )
+      : checkedQuays.filter(quayId => quayId !== id);
 
     this.setState({
       checkedQuays: newcheckedQuays
@@ -45,7 +45,7 @@ class ScrollableQuayList extends React.Component {
   }
 
   render() {
-    const { style, quays } = this.props;
+    const { style, quays, formatMessage } = this.props;
     const { checkedQuays } = this.state;
     const innerDivStyle = {
       height: 300,
@@ -68,7 +68,18 @@ class ScrollableQuayList extends React.Component {
             />
           )}
         </div>
-        <div style={{textAlign: 'center', background: enturPrimary, color: '#fff', padding: 2}}>{checkedQuays.length} valgt</div>
+        <div
+          style={{
+            background: getPrimaryColor(),
+            color: '#fff',
+            padding: 2,
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <div>{checkedQuays.length}</div>
+          <div style={{marginLeft: 5}}>{formatMessage({id: 'chosen'})}</div>
+        </div>
       </div>
     );
   }

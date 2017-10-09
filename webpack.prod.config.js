@@ -43,6 +43,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
         BABEL_ENV: JSON.stringify('production'),
         VERSION: JSON.stringify(require('./package.json').version),
+        THEME: JSON.stringify(process.env.THEME)
       },
     }),
     new webpack.optimize.AggressiveMergingPlugin({ minSizeReduce: 1.2 }),

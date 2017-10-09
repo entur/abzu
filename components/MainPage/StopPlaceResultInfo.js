@@ -20,11 +20,13 @@ import CircularNumber from './CircularNumber';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getIn } from '../../utils/';
 import TagTray from './TagTray';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 
 class StopPlaceResultInfo extends Component {
 
   render() {
     const { result, formatMessage } = this.props;
+    const primaryDarker = getPrimaryDarkerColor();
 
     const hasWheelchairAccess =
       getIn(
@@ -66,7 +68,7 @@ class StopPlaceResultInfo extends Component {
             {formatMessage({ id: 'quays' })}
           </div>
           <div style={{ marginLeft: 5 }}>
-            <CircularNumber number={result.quays.length} color="#0097a7" />
+            <CircularNumber number={result.quays.length} color={primaryDarker} />
           </div>
         </div>
         <div
@@ -106,7 +108,7 @@ class StopPlaceResultInfo extends Component {
                 fontSize: 12
               }}
             >
-              <WheelChair color="#0097a7" />
+              <WheelChair color={primaryDarker} />
               <span style={{ marginLeft: 5 }}>
                 {formatMessage({ id: 'wheelchairAccess' })}
               </span>

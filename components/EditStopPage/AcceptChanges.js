@@ -12,23 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import Checkbox from 'material-ui/Checkbox';
 import { injectIntl } from 'react-intl';
-import { enturPrimary } from '../../config/enturTheme';
+import { getPrimaryColor } from '../../config/themeConfig';
 
 class AcceptChanges extends React.Component {
+
   render() {
     const { checked, onChange, intl } = this.props;
     const infoLabel = intl.formatMessage({ id: 'accept_changes_info' });
     const checkboxLabel = intl.formatMessage({ id: 'accept_changes' });
+    const primary = getPrimaryColor();
 
     return (
       <div
         style={{
           border: '1px solid',
-          borderColor: checked ? enturPrimary : '#de3e35',
+          borderColor: checked ? primary : '#de3e35',
           padding: 10,
           marginTop: 10
         }}

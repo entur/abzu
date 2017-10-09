@@ -133,6 +133,7 @@ class MoveQuayNewStopDialog extends React.Component {
             quays={quays}
             handleUpdate={this.handleUpdate.bind(this)}
             defaultQuayId={quay.id}
+            formatMessage={formatMessage}
           />
           <div style={{fontSize: '0.9em'}}>{translations.info}</div>
           {hasStopBeenModified &&

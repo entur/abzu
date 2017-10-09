@@ -21,6 +21,7 @@ import WheelChair from 'material-ui/svg-icons/action/accessible';
 import ModalityTray from '../ReportPage/ModalityIconTray';
 import TagTray from './TagTray';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 
 
 class ParentStopPlaceResultInfo extends Component {
@@ -78,7 +79,7 @@ class ParentStopPlaceResultInfo extends Component {
             {formatMessage({ id: 'stop_places' })}
           </div>
           <div style={{ marginLeft: 5 }}>
-            <CircularNumber number={result.children.length} color="#0097a7" />
+            <CircularNumber number={result.children.length} color={getPrimaryDarkerColor()} />
           </div>
         </div>
         <div

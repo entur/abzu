@@ -12,11 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { injectIntl } from 'react-intl';
 import InformationIcon from 'material-ui/svg-icons/action/info';
 import FlatButton from 'material-ui/FlatButton';
-import { enturPrimaryDarker } from '../../config/enturTheme';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import { connect } from 'react-redux';
 import { UserActions } from '../../actions/';
 import { createStopPlaceHref } from '../../utils/';
@@ -87,7 +88,7 @@ class NewStopPlaceInfo extends React.Component {
       marginRight: 10,
       marginLeft: 10,
       cursor: 'pointer',
-      color: enturPrimaryDarker,
+      color: getPrimaryDarkerColor(),
       textDecoration: 'none'
     };
 

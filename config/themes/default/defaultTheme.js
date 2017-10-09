@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { fade } from 'material-ui/utils/colorManipulator';
-import { getIn } from '../utils';
+import { fade } from 'material-ui/utils/colorManipulator';
+import { getTiamatEnv } from '../../themeConfig';
 
-export const enturPrimary = '#41c0c4';
-export const enturPrimaryDarker = '#37abaf';
-export const enturDark = 'rgb(39, 58, 70)';
-const cyan700 = '#0097a7';
+export const primary = '#5AC39A';
+export const primaryDarker = '#51af8a';
+export const darkColor = '#181C56';
+const cyan700 = '#5AC39A';
 const grey100 = '#f5f5f5';
 const grey300 = '#e0e0e0';
 const grey400 = '#bdbdbd';
@@ -27,27 +27,27 @@ const white = '#ffffff';
 const darkBlack = 'rgba(0, 0, 0, 0.87)';
 const fullBlack = 'rgba(0, 0, 0, 1)';
 
-export const getTiamatEnv = () => {
-  return getIn(window, ['config', 'tiamatEnv'], 'development');
-};
-
 export const getEnvColor = env => {
   let currentEnv = env || getTiamatEnv();
   switch (currentEnv.toLowerCase()) {
-    case 'development': return '#d18e25';
-    case 'test': return '#457645';
-    case 'prod': return enturDark;
-    default: return enturDark;
+    case 'development':
+      return '#d18e25';
+    case 'test':
+      return '#457645';
+    case 'prod':
+      return darkColor;
+    default:
+      return darkColor;
   }
-}
+};
 
-export default {
+export const getTheme = () => ({
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: enturPrimary,
+    primary1Color: primary,
     primary2Color: cyan700,
     primary3Color: grey400,
-    accent1Color: enturPrimary,
+    accent1Color: primary,
     accent2Color: grey100,
     accent3Color: grey500,
     textColor: darkBlack,
@@ -55,18 +55,18 @@ export default {
     canvasColor: white,
     borderColor: grey300,
     disabledColor: fade(darkBlack, 0.3),
-    pickerHeaderColor: enturPrimary,
+    pickerHeaderColor: primary,
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: fullBlack
   },
   datePicker: {
-    selectColor: enturPrimary,
+    selectColor: primary,
     selectTextColor: white
   },
   checkbox: {
-    checkedColor: enturPrimaryDarker
+    checkedColor: primaryDarker
   },
   appBar: {
-    color: enturDark
+    color: darkColor
   }
-};
+});

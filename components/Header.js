@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -20,7 +21,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-import Logo from '../static/logo/logo_entur.png';
+import { getLogo } from '../config/themeConfig';
 import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import MdLanguage from 'material-ui/svg-icons/action/language';
 import MdSettings from 'material-ui/svg-icons/action/settings';
@@ -28,7 +29,7 @@ import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
 import MdHelp from 'material-ui/svg-icons/action/help';
-import { getTiamatEnv, getEnvColor } from '../config/enturTheme';
+import { getTiamatEnv, getEnvColor } from '../config/themeConfig';
 import ConfirmDialog from './Dialogs/ConfirmDialog';
 
 class Header extends React.Component {
@@ -137,6 +138,7 @@ class Header extends React.Component {
     const showMultimodalEdgesLabel = formatMessage({id: 'show_multimodal_edges'});
 
     const tiamatEnv = getTiamatEnv();
+    const logo = getLogo();
 
     return (
       <div>
@@ -157,7 +159,7 @@ class Header extends React.Component {
           showMenuIconButton={true}
           iconElementLeft={
             <img
-              src={Logo}
+              src={logo}
               style={{ width: 40, height: 'auto', cursor: 'pointer' }}
               onClick={() =>
                 this.handleConfirmChangeRoute(

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Header from '../components/Header';
@@ -23,7 +24,7 @@ import { injectIntl } from 'react-intl';
 import * as types from '../actions/Types';
 import MdCheck from 'material-ui/svg-icons/navigation/check';
 import MdError from 'material-ui/svg-icons/alert/error';
-import enturTheme from '../config/enturTheme';
+import { getTheme } from '../config/themeConfig';
 
 class App extends React.Component {
 
@@ -52,7 +53,7 @@ class App extends React.Component {
     let { message, isOpen, status } = snackbarOptions;
     let snackBarMessage = formatMessage({ id: message || '_empty' });
 
-    const muiTheme = getMuiTheme(enturTheme);
+    const muiTheme = getMuiTheme(getTheme());
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>

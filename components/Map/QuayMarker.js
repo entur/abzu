@@ -138,6 +138,7 @@ class QuayMarker extends React.Component {
       id,
       currentStopIsMultimodal
     } = this.props;
+
     return (
       isEditingStop &&
       !disabled &&
@@ -385,7 +386,7 @@ class QuayMarker extends React.Component {
                     onClick={() => this.handleMergeFrom()}
                     label={translations.mergeQuayFrom}
                   />
-                  {!disabled && isEditingStop &&
+                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal &&
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"

@@ -19,7 +19,7 @@ import { Marker, Popup } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
 import CycleParkingIcon from '../../static/icons/cycle-parking-icon.png';
 import { connect } from 'react-redux';
-import { enturPrimaryDarker } from '../../config/enturTheme';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import { StopPlaceActions } from '../../actions/';
 import { shallowCycleParkingMarker as shallowCompare } from './shallowCompare/';
 
@@ -110,7 +110,7 @@ class CycleParkingMarker extends React.Component {
                 textAlign: 'center',
                 margin: '5 0',
                 fontSize: '1.1em',
-                color: enturPrimaryDarker,
+                color: getPrimaryDarkerColor(),
               }}
             >
               {name}

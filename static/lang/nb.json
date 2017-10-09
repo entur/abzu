@@ -48,6 +48,7 @@
   "change_walking_distance_help_text": "Oppgi estimert tid denne ganglenken tar i sekunder",
   "change_walking_distance_invalid": "Ugyldig format. Må være et tall",
   "children_of_parent_stop_place": "Underordnede stoppested",
+  "chosen": "valgt",
   "close": "Lukk",
   "comment": "Kommentar",
   "comment_missing": "<Mangler kommentar>",

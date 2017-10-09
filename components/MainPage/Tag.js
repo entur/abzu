@@ -16,7 +16,6 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ToolTippable from '../EditStopPage/ToolTippable';
-import { enturPrimary } from '../../config/enturTheme';
 import { injectIntl } from 'react-intl';
 
 class Tag extends Component {
@@ -45,7 +44,9 @@ class Tag extends Component {
           textTransform: 'uppercase',
         }}
       >
-        <div style={{lineHeight: textSize || '0.7em', margin: 5, verticalAlign: 'middle'}}>{name}</div>
+        <div style={{lineHeight: textSize || '0.7em', margin: 5, verticalAlign: 'middle'}}>
+          {name}
+        </div>
       </div>
     )
 

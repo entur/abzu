@@ -48,6 +48,7 @@
   "change_walking_distance_help_text": "Set the estimate walking distance in seconds",
   "change_walking_distance_invalid": "Invalid format. Must be a number",
   "children_of_parent_stop_place": "Children stop places",
+  "chosen": "chosen",
   "close": "Close",
   "comment": "Comment",
   "comment_missing": "<Comment missing>",

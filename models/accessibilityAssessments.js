@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const accessibilityAssements = {
+
+const accessibilityAssements = {
   wheelchairAccess: {
     options: ['TRUE', 'FALSE', 'UNKNOWN'],
     values: {
@@ -49,7 +50,7 @@ limitations under the Licence. */
   },
   colors: {
     UNKNOWN: '#bfbfbf',
-    TRUE: '#37abaf',
+    TRUE: '#51af8a',
     FALSE: '#F44336',
     PARTIAL: '#FF9800',
   },

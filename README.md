@@ -63,6 +63,18 @@ Uses Keycloak to authenticate user and read JWT, set `auth-server-url`:
 AUTH_SERVER_URL=https://www-test.entur.org/auth port=9000 NODE_ENV=development node server.js
 ```
 
+### Themes
+
+Default theme is found in `./config/default`. 
+
+#### Add custom theme
+
+* Create new directory: `./config/themes/{YOUR_THEME_NAME}`
+* Add `logo.png` to `./config/themes/{YOUR_THEME_NAME}`
+* Add `index.js` with custom fyles (cf. `defaultTheme.js`)
+* Set `process.env.THEME={YOUR_THEME_NAME}`
+
+This is WIP.
 
 ## Webpack
 

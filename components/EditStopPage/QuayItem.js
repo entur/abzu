@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import {
@@ -46,7 +47,7 @@ import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
-import { enturPrimaryDarker } from '../../config/enturTheme';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import Code from './Code';
 
 
@@ -447,7 +448,7 @@ class QuayItem extends React.Component {
                   <IconButton
                     onClick={this.props.handleOpenKeyValuesDialog}
                   >
-                    <MdKey color={quay.keyValues.length ? enturPrimaryDarker : '#000'}/>
+                    <MdKey color={quay.keyValues.length ? getPrimaryDarkerColor() : '#000'}/>
                   </IconButton>
                 </ToolTippable>
                 <ToolTippable toolTipText={formatMessage({id: 'delete_quay'})} toolTipStyle={{marginLeft: 10}}>

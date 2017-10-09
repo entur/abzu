@@ -12,13 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import MdRemove from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
-import { enturPrimary } from '../../config/enturTheme';
+import { getPrimaryColor } from '../../config/themeConfig';
 import EditKeyValuePair from '../EditStopPage/EditKeyValuePair';
 import CreateKeyValuePair from '../EditStopPage/CreateKeyValuePair';
 import { StopPlaceActions, UserActions } from '../../actions/';
@@ -187,7 +188,7 @@ class KeyValuesDialog extends React.Component {
                               style={{
                                 height: 14,
                                 width: 14,
-                                color: enturPrimary,
+                                color: getPrimaryColor(),
                                 marginTop: -2,
                                 marginLeft: 5,
                                 cursor: 'pointer'
