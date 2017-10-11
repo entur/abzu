@@ -27,7 +27,7 @@ class TagTray extends Component {
 
     return (
       <div style={wrapperStyle}>
-        {tags.map((tag, i) =>
+        {tags && tags.map((tag, i) =>
           <Tag textSize={textSize} key={'tag-' + i} data={tag} />
         )}
       </div>
