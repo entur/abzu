@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-/* Column options for report page, intial state */
+
+/* Column options for report page, intial state */
 export const columnOptionsQuays = [
   {
     id: 'id',
@@ -28,11 +29,11 @@ export const columnOptionsQuays = [
   },
   {
     id: 'privateCode',
-    checked: false
+    checked: true
   },
   {
     id: 'publicCode',
-    checked: false
+    checked: true
   },
   {
     id: 'wheelchairAccess',
@@ -75,23 +76,23 @@ export const columnOptionsStopPlace = [
   },
   {
     id: 'county',
-    checked: false
+    checked: true
   },
   {
     id: 'muncipality',
-    checked: false
+    checked: true
   },
   {
     id: 'importedId',
-    checked: true
+    checked: false
   },
   {
     id: 'position',
-    checked: true
+    checked: false
   },
   {
     id: 'parking',
-    checked: true
+    checked: false
   },
   {
     id: 'wheelchairAccess',
@@ -119,6 +120,6 @@ export const columnOptionsStopPlace = [
   },
   {
     id: 'tags',
-    checked: false
+    checked: true
   }
 ];
