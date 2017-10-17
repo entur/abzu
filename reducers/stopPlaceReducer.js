@@ -482,6 +482,12 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.EDITED_ALT_NAME:
+      return Object.assign({}, state, {
+        current: formatHelpers.editAltName(state.current, action.payLoad),
+        stopHasBeenModified: true,
+      });
+
     case types.REMOVED_ALT_NAME:
       return Object.assign({}, state, {
         current: formatHelpers.removeAltName(state.current, action.payLoad),

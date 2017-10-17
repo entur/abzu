@@ -135,6 +135,10 @@ StopPlaceActions.addAltName = payLoad => dispatch => {
   dispatch(sendData(types.ADDED_ALT_NAME, payLoad));
 };
 
+StopPlaceActions.editAltName = payLoad => dispatch => {
+  dispatch(sendData(types.EDITED_ALT_NAME, payLoad));
+};
+
 StopPlaceActions.removeAltName = index => dispatch => {
   dispatch(sendData(types.REMOVED_ALT_NAME, index));
 };

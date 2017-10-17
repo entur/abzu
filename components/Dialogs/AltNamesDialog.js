@@ -12,18 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
 import MdDelete from 'material-ui/svg-icons/action/delete';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import * as altNameConfig from '../../config/altNamesConfig';
-import TextField from 'material-ui/TextField';
 import MdClose from 'material-ui/svg-icons/navigation/close';
+import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import IconButton from 'material-ui/IconButton';
 import { StopPlaceActions } from '../../actions/';
 import ConfirmDialog from './ConfirmDialog';
+import { getPrimaryColor } from '../../config/themeConfig';
+import NewAltName from './NewAltName';
+import EditAltName from './EditAltName';
 
 class AltNamesDialog extends React.Component {
   constructor(props) {
@@ -33,6 +34,8 @@ class AltNamesDialog extends React.Component {
       value: '',
       type: 0,
       confirmDialogOpen: false,
+      isEditing: false,
+      editingId: null,
     };
   }
 
@@ -53,14 +56,31 @@ class AltNamesDialog extends React.Component {
     });
   }
 
-  handleAddAltName() {
-    const { lang, value, type } = this.state;
-    const { dispatch, altNames } = this.props;
-
+  handleEditAltName(lang, value, type, id) {
     const languageString = Object.keys(altNameConfig.languages)[lang];
     const nameTypeString = Object.keys(altNameConfig.allNameTypes)[type];
+    const payLoad = {
+      nameType: nameTypeString,
+      lang: languageString,
+      value,
+      id
+    };
 
-    let alreadyInSet = false;
+    const conflictFoundIndex = this.getConflictingIndex(languageString, nameTypeString);
+
+    if (conflictFoundIndex > -1 && conflictFoundIndex !== id) {
+      this.setState({
+        confirmDialogOpen: true,
+        pendingPayLoad: payLoad,
+        pendingRemoveAltNameIndex: conflictFoundIndex,
+      });
+    } else {
+      this.props.dispatch(StopPlaceActions.editAltName(payLoad));
+    }
+  }
+
+  getConflictingIndex(languageString, nameTypeString) {
+    const { altNames } = this.props;
     let conflictFoundIndex = -1;
 
     for (let i = 0; i < altNames.length; i++) {
@@ -70,11 +90,19 @@ class AltNamesDialog extends React.Component {
         altName.name.lang === languageString &&
         altName.nameType === nameTypeString
       ) {
-        alreadyInSet = true;
         conflictFoundIndex = i;
         break;
       }
     }
+    return conflictFoundIndex;
+  }
+
+  handleAddAltName() {
+    const { lang, value, type } = this.state;
+    const { dispatch } = this.props;
+
+    const languageString = Object.keys(altNameConfig.languages)[lang];
+    const nameTypeString = Object.keys(altNameConfig.allNameTypes)[type];
 
     const payLoad = {
       nameType: nameTypeString,
@@ -82,7 +110,9 @@ class AltNamesDialog extends React.Component {
       value: value,
     };
 
-    if (alreadyInSet) {
+    const conflictFoundIndex = this.getConflictingIndex(languageString, nameTypeString);
+
+    if (conflictFoundIndex > -1) {
       this.setState({
         confirmDialogOpen: true,
         pendingPayLoad: payLoad,
@@ -104,10 +134,25 @@ class AltNamesDialog extends React.Component {
     this.props.dispatch(StopPlaceActions.removeAltName(index));
   }
 
+  handleEdit(index) {
+    this.setState({
+      isEditing: true,
+      editingId: index
+    });
+  }
+
+  getAltNameById() {
+    const { editingId } = this.state;
+    const { altNames = [] } = this.props;
+    if (editingId !== null) {
+      return altNames[editingId];
+    }
+  }
+
   render() {
     const { open, intl, altNames = [], handleClose, disabled } = this.props;
     const { formatMessage, locale } = intl;
-    const { lang, value, type, confirmDialogOpen } = this.state;
+    const { isEditing, lang, type, value, confirmDialogOpen, editingId } = this.state;
 
     const translations = {
       alternativeNames: formatMessage({ id: 'alternative_names' }),
@@ -117,14 +162,16 @@ class AltNamesDialog extends React.Component {
       language: formatMessage({ id: 'language' }),
       value: formatMessage({ id: 'name' }),
       add: formatMessage({ id: 'add' }),
+      editing: formatMessage({ id: 'editing'}),
+      update: formatMessage({id: 'update'})
     };
 
     if (!open) return null;
 
     const style = {
       position: 'fixed',
-      left: 400,
-      top: 190,
+      left: 408,
+      top: 92,
       background: '#fff',
       border: '1px solid black',
       width: 350,
@@ -166,7 +213,6 @@ class AltNamesDialog extends React.Component {
           <div
             style={{
               marginTop: 8,
-              fontWeight: 60,
               marginLeft: 10,
               fontWeight: 600,
             }}
@@ -210,14 +256,21 @@ class AltNamesDialog extends React.Component {
                 {altNameConfig.languages[an.name.lang][locale]}
               </div>
               {!disabled
-                ? <div>
+                ? <div style={{display: 'flex'}}>
                     <IconButton
-                      width="10"
+                      onTouchTap={() => {
+                        this.handleEdit(i);
+                      }}
+                    >
+                      <MdEdit color={getPrimaryColor()}
+                      />
+                    </IconButton>
+                    <IconButton
                       onTouchTap={() => {
                         this.handleRemoveName(i);
                       }}
                     >
-                      <MdDelete />
+                      <MdDelete color="rgb(223, 84, 74)"/>
                     </IconButton>
                   </div>
                 : null}
@@ -231,77 +284,37 @@ class AltNamesDialog extends React.Component {
               </div>
             : null}
         </div>
-        {!disabled
-          ? <div
-              style={{
-                background: 'rgba(33, 150, 243, 0)',
-                border: '1px dotted',
-                padding: 20,
-                marginTop: 10,
-              }}
-            >
-              <div
-                style={{
-                  fontWeight: 600,
-                  fontSize: 12,
-                  textAlign: 'center',
-                  width: '100%',
-                }}
-              >
-                {translations.addAltName}
-              </div>
-              <SelectField
-                style={{ marginTop: -10 }}
-                fullWidth={true}
-                floatingLabelText={translations.nameType}
-                value={type}
-                onChange={(e, value) => {
-                  this.setState({ type: value });
-                }}
-              >
-                {altNameConfig.supportedNameTypes.map((type, index) =>
-                  <MenuItem
-                    key={'type-' + type.value}
-                    value={index}
-                    primaryText={type.name[locale]}
-                  />,
-                )}
-              </SelectField>
-              <SelectField
-                style={{ marginTop: -10 }}
-                fullWidth={true}
-                floatingLabelText={translations.language}
-                value={lang}
-                onChange={(e, value) => {
-                  this.setState({ lang: value });
-                }}
-              >
-                {Object.keys(altNameConfig.languages).map((key, index) =>
-                  <MenuItem
-                    key={'lang-' + index}
-                    value={index}
-                    primaryText={altNameConfig.languages[key][locale]}
-                  />,
-                )}
-              </SelectField>
-              <TextField
-                fullWidth={true}
-                hintText={translations.value}
-                value={value}
-                onChange={(event, value) => {
-                  this.setState({ value: value });
-                }}
-              />
-              <FlatButton
-                style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
-                disabled={!value}
-                primary={true}
-                onTouchTap={this.handleAddAltName.bind(this)}
-              >
-                {translations.add}
-              </FlatButton>
-            </div>
-          : null}
+        {!disabled && isEditing ?
+          <EditAltName
+            translations={translations}
+            handleEditAltName={this.handleEditAltName.bind(this)}
+            data={this.getAltNameById()}
+            locale={locale}
+            editingId={editingId}
+            handleClose={() => { this.setState({
+              isEditing: false,
+              editingId: null
+            })}}
+          />
+          :
+          <NewAltName
+            translations={translations}
+            handleAddAltName={this.handleAddAltName.bind(this)}
+            handleTypeChange={(e, value) => {
+              this.setState({ type: value });
+            }}
+            onLanguageChange={(e, value) => {
+              this.setState({ lang: value });
+            }}
+            onValueChange={(e, value) => {
+              this.setState({ value: value });
+            }}
+            lang={lang}
+            type={type}
+            locale={locale}
+            value={value}
+          />
+        }
       </div>
     );
   }

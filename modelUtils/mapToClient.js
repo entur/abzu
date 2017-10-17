@@ -801,6 +801,23 @@ helpers.addAltName = (original, payLoad) => {
   return copy;
 };
 
+helpers.editAltName = (original, payLoad) => {
+  const { nameType, lang, value, id } = payLoad;
+  const copy = JSON.parse(JSON.stringify(original));
+
+  if (!copy.alternativeNames) {
+    copy.alternativeNames = [];
+  }
+  copy.alternativeNames[id] = {
+    nameType: nameType,
+    name: {
+      lang: lang,
+      value: value
+    }
+  };
+  return copy;
+};
+
 helpers.changeParkingName = (original, payLoad) => {
   const { index, name } = payLoad;
   const copy = JSON.parse(JSON.stringify(original));
