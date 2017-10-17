@@ -122,6 +122,16 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
+            checked={this.getCheckedBaseLayerByValue('OpenStreetMap Transport')}
+            name="OpenStreetMap Transport"
+          >
+            <TileLayer
+              attribution="&copy; OpenStreetMap contributors"
+              url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
             checked={this.getCheckedBaseLayerByValue('Kartverket topografisk')}
             name="Kartverket topografisk"
           >
