@@ -79,7 +79,7 @@ const getIconIdByTypeOrSubmode = (submode, type) => {
     railReplacementBus: 'railReplacement',
   };
   return submodeMap[submode] || getIconIdByModality(type);
-}
+};
 
 const getIconIdByModality = type => {
   const modalityMap = {

@@ -535,7 +535,8 @@ helpers.createKeyValuesPair = (original, key, newValues, origin) => {
 
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {
-    stopPlaceType: type
+    stopPlaceType: type,
+    submode: null,
   });
 };
 
