@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import QuayItem from './QuayItem';
 import PathJunctionItem from './PathJunctionItem';
 import EntranceItem from './EntranceItem';
@@ -33,7 +34,8 @@ class EditStopBoxTabs extends React.Component {
     if (!quayId) {
       dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
     } else {
-      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId));
+      const quayImportedId = activeStopPlace.quays.find(quay => quay.id == quayId).importedId;
+      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId, quayImportedId));
     }
   }
 

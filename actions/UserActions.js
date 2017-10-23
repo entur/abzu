@@ -348,11 +348,16 @@ UserActions.hideDeleteStopDialog = () => dispatch => {
   dispatch(sendData(types.CANCELLED_DELETE_STOP_DIALOG, null));
 };
 
-UserActions.requestDeleteQuay = (stopPlaceId, quayId) => dispatch => {
+UserActions.requestDeleteQuay = (stopPlaceId, quayId, importedId) => dispatch => {
+
+  const source = {
+    stopPlaceId,
+    quayId
+  };
+
   dispatch(
     sendData(types.REQUESTED_DELETE_QUAY, {
-      stopPlaceId,
-      quayId
+      source, importedId
     })
   );
 };

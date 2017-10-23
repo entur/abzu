@@ -482,6 +482,7 @@ class EditStopGeneral extends React.Component {
       canDeleteStop,
       mergeStopDialogOpen,
       originalStopPlace,
+      deleteQuayImportedId
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -695,6 +696,7 @@ class EditStopGeneral extends React.Component {
             intl={intl}
             deletingQuay={this.props.deletingQuay}
             isLoading={this.state.isLoading}
+            importedId={deleteQuayImportedId}
           />
           <TerminateStopPlaceDialog
             open={this.props.deleteStopDialogOpen}
@@ -797,6 +799,7 @@ const mapStateToProps = state => ({
   mergingQuay: state.mapUtils.mergingQuay,
   mergingQuayDialogOpen: state.mapUtils.mergingQuayDialogOpen,
   deleteQuayDialogOpen: state.mapUtils.deleteQuayDialogOpen,
+  deleteQuayImportedId: state.mapUtils.deleteQuayImportedId,
   deleteStopDialogOpen: state.mapUtils.deleteStopDialogOpen,
   deletingQuay: state.mapUtils.deletingQuay,
   versions: state.stopPlace.versions,

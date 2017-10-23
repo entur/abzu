@@ -33,6 +33,7 @@ export const initialState = {
   movingQuayToNewStop: null,
   deletingQuay: null,
   movingQuay: null,
+  deleteQuayImportedId: [],
 };
 
 const mapReducer = (state = initialState, action) => {
@@ -113,7 +114,8 @@ const mapReducer = (state = initialState, action) => {
     case types.REQUESTED_DELETE_QUAY:
       return Object.assign({}, state, {
         deleteQuayDialogOpen: true,
-        deletingQuay: action.payLoad
+        deletingQuay: action.payLoad.source,
+        deleteQuayImportedId: action.payLoad.importedId
       });
 
     case types.REQUESTED_MOVE_QUAY_NEW_STOP:
@@ -141,7 +143,8 @@ const mapReducer = (state = initialState, action) => {
     case types.CANCELLED_DELETE_QUAY_DIALOG:
       return Object.assign({}, state, {
         deleteQuayDialogOpen: false,
-        deletingQuay: null
+        deletingQuay: null,
+        deleteQuayImportedId: [],
       });
 
     case types.CANCELLED_MOVE_QUAY_DIALOG:
