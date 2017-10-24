@@ -562,3 +562,32 @@ export const getPolygons = ids => {
       }
   `;
 };
+
+export const getQueryTopographicPlaces = ids => {
+  let queryContent = '';
+
+  ids.forEach(id => {
+    let alias = id.replace(':', '').replace(':', '');
+
+    queryContent += `
+        ${alias}: topographicPlace(id: "${id}") {
+           id
+           name {
+            value
+           }
+           topographicPlaceType
+           parentTopographicPlace {
+            name {
+              value
+            }
+          }
+       }
+    `;
+  });
+
+  return gql`
+      query {
+          ${queryContent}
+      }
+  `;
+};

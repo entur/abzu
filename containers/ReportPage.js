@@ -27,6 +27,7 @@ import {
   topopGraphicalPlacesReportQuery,
   findStopForReport
 } from '../graphql/Queries';
+import { getTopographicPlaces } from '../graphql/Actions';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -40,6 +41,7 @@ import {
   columnOptionsQuays,
   columnOptionsStopPlace
 } from '../config/columnOptions';
+import { buildReportSearchQuery, extractQueryParamsFromUrl } from '../utils/URLhelpers';
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -78,6 +80,14 @@ class ReportPage extends React.Component {
         checked: true
       }))
     });
+  }
+
+  handleApplyModalityFilters(filters) {
+    this.setState({ stopTypeFilter: filters });
+  }
+
+  handleSearchQueryChange(searchQuery) {
+    this.setState({searchQuery});
   }
 
   handleCheckAllColumnStops() {
@@ -125,7 +135,49 @@ class ReportPage extends React.Component {
 
   componentDidMount() {
     const { formatMessage } = this.props.intl;
+    const { client } = this.props;
     document.title = formatMessage({ id: '_report_page' });
+    const fromURL = extractQueryParamsFromUrl();
+    this.setState({
+      searchQuery: fromURL.query || '',
+      withoutLocationOnly: (fromURL.withoutLocationOnly == "true"),
+      withDuplicateImportedIds: (fromURL.withDuplicateImportedIds == "true"),
+      stopTypeFilter: fromURL.stopPlaceType ? fromURL.stopPlaceType.split(',') : []
+    });
+
+    let topographicalPlaceIds = [];
+    if (fromURL.municipalityReference) {
+      topographicalPlaceIds = topographicalPlaceIds.concat(fromURL.municipalityReference.split(','));
+    }
+
+    if (fromURL.countyReference) {
+      topographicalPlaceIds = topographicalPlaceIds.concat(fromURL.countyReference.split(','));
+    }
+
+    if (topographicalPlaceIds.length) {
+      getTopographicPlaces(client, topographicalPlaceIds)
+        .then(response => {
+          if (response.data && Object.keys(response.data).length) {
+
+            let menuItems = [];
+
+            Object.keys(response.data).forEach(result  => {
+              const place = response.data[result] && response.data[result].length ?
+                response.data[result][0] : null;
+
+              if (place) {
+                const menuItem = this.createTopographicPlaceMenuItem(place, formatMessage);
+                menuItems.push(menuItem);
+              }
+            });
+
+            this.setState({
+              topoiChips: menuItems
+            });
+          }
+        });
+    }
+
   }
 
   handleSearch() {
@@ -136,28 +188,30 @@ class ReportPage extends React.Component {
       isLoading: true
     });
 
+    const variables = {
+      query: searchQuery,
+      withoutLocationOnly,
+      withDuplicateImportedIds,
+      pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
+      stopPlaceType: stopTypeFilter,
+      municipalityReference: topoiChips
+        .filter(topos => topos.type === 'town')
+        .map(topos => topos.id),
+      countyReference: topoiChips
+        .filter(topos => topos.type === 'county')
+        .map(topos => topos.id)
+    };
+
     client
       .query({
         query: findStopForReport,
         fetchPolicy: 'network-only',
-        variables: {
-          query: searchQuery,
-          withoutLocationOnly,
-          withDuplicateImportedIds,
-          pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
-          stopPlaceType: stopTypeFilter,
-          municipalityReference: topoiChips
-            .filter(topos => topos.type === 'town')
-            .map(topos => topos.id),
-          countyReference: topoiChips
-            .filter(topos => topos.type === 'county')
-            .map(topos => topos.id)
-        }
+        variables,
       })
       .then(response => {
         const stopPlaces = response.data.stopPlace;
         const stopPlaceIds = stopPlaces.map(stopPlace => stopPlace.id);
-
+        buildReportSearchQuery(variables);
         client
           .query({
             query: getParkingForMultipleStopPlaces(stopPlaceIds),
@@ -209,6 +263,21 @@ class ReportPage extends React.Component {
     });
   }
 
+  createTopographicPlaceMenuItem(place, formatMessage) {
+    let name = this.getTopographicalNames(place);
+    return {
+      text: name,
+      id: place.id,
+      value: (
+        <MenuItem
+          primaryText={name}
+          secondaryText={formatMessage({ id: place.topographicPlaceType })}
+        />
+      ),
+      type: place.topographicPlaceType
+    };
+  }
+
   getTopographicalNames(topographicalPlace) {
     let name = topographicalPlace.name.value;
 
@@ -242,20 +311,7 @@ class ReportPage extends React.Component {
       .filter(
         place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
       )
-      .map(place => {
-        let name = this.getTopographicalNames(place);
-        return {
-          text: name,
-          id: place.id,
-          value: (
-            <MenuItem
-              primaryText={name}
-              secondaryText={formatMessage({ id: place.topographicPlaceType })}
-            />
-          ),
-          type: place.topographicPlaceType
-        };
-      });
+      .map(place => this.createTopographicPlaceMenuItem(place, formatMessage));
 
     return (
       <div>
@@ -276,8 +332,7 @@ class ReportPage extends React.Component {
               <ModalityFilter
                 locale={locale}
                 stopTypeFilter={stopTypeFilter}
-                handleApplyFilters={filters =>
-                  this.setState({ stopTypeFilter: filters })}
+                handleApplyFilters={filters => this.handleApplyModalityFilters(filters)}
               />
               <div style={{ padding: 5, marginLeft: 5 }}>
                 <div style={{ fontWeight: 600, marginBottom: 5, fontSize: 12 }}>
@@ -336,7 +391,9 @@ class ReportPage extends React.Component {
                   })}
                   value={this.state.searchQuery}
                   onKeyDown={this.handleOnKeyDown.bind(this)}
-                  onChange={(e, v) => this.setState({ searchQuery: v })}
+                  onChange={(e, v) => {
+                    this.handleSearchQueryChange(v);
+                  }}
                 />
                 <RaisedButton
                   style={{ marginTop: 10, marginLeft: 5 }}

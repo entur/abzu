@@ -41,7 +41,8 @@ import {
   getPolygons,
   getTagsQuery,
   findTagByNameQuery,
-  getStopById
+  getStopById,
+  getQueryTopographicPlaces
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -285,6 +286,13 @@ export const getPolygon = (client, ids) => (
     operationName: 'getPolygons',
   })
 );
+
+export const getTopographicPlaces = (client, ids) =>
+  client.query({
+    fetchPolicy: 'network-only',
+    query: getQueryTopographicPlaces(ids),
+    operationName: 'topographicPlacesForQuery'
+  });
 
 export const getMergeInfoForStops = (client, stopPlaceId) => (
   client.query({

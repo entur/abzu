@@ -12,13 +12,34 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-const getURLWithParam = (key, value) => {
-  let baseUrl = [
+const getBaseUrl = () => {
+  return [
     location.protocol,
     '//',
     location.host,
     location.pathname
   ].join('');
+};
+
+const createParamforUrl = (key, value, isFirst) => {
+  if (!key) { return '' }
+
+  const paramStart = isFirst ? '?' : '&';
+
+  switch (typeof value) {
+    case "string":
+      if (!value) return '';
+    case "object":
+      if (Array.isArray(value) && !value.length) return '';
+      if (value === null) return '';
+    default: break;
+  }
+
+  return paramStart + `${key}=${value}`;
+};
+
+const getURLWithParam = (key, value) => {
+  let baseUrl = getBaseUrl();
   let urlQueryString = document.location.search;
   let params = key + '=' + value;
   let newParams = '?' + params;
@@ -75,6 +96,20 @@ export const updateURLWithId = id => {
 
 export const removeIdParamFromURL = () => {
   updateURL(getURLWithParam("id", null));
+};
+
+export const buildReportSearchQuery = params => {
+  const baseUrl = getBaseUrl();
+  let queryString = '';
+  Object.keys(params).forEach((key) => {
+    queryString += createParamforUrl(key, params[key], queryString === '')
+  });
+  updateURL(baseUrl + encodeURI(queryString));
+};
+
+export const extractQueryParamsFromUrl = () => {
+  const urlQueryString = document.location.search;
+  return getParamsFromURL(urlQueryString);
 };
 
 export const getIdFromURL = () => getParamsFromURL(window.location.search).id;

@@ -68,7 +68,7 @@
   "delete_quay": "Slett quay",
   "delete_quay_are_you_sure": "Er du sikker på at du vil utføre denne operasjonen?",
   "delete_quay_title": "Du er i ferd med å slette en quay",
-  "delete_quay_info": "Quayer som er referert i innsendte rutedata skal ikke slettes før det er sendt inn et nytt datasett hvor quay-en ikke lenger er referert. Verifiser at quay-en ikke er i bruk i rutadata før du går videre.",
+  "delete_quay_info": "Quayer som er referert til i innsendte rutedata skal ikke slettes før det er sendt inn et nytt datasett hvor quay-en ikke lenger er referert. Verifiser at quay-en ikke er i bruk i rutadata før du går videre.",
   "delete_quay_warning": "Alle ulagrede endringer vil bli forkastet!",
   "delete_stop_title": "Du er i ferd med å slette dette stoppestedet",
   "delete_stop_info": "Denne operasjonen vil permanent slette dette stoppestedet med all data og historikk. Bruk med varsomhet.",
