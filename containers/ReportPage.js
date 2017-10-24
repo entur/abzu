@@ -210,7 +210,7 @@ class ReportPage extends React.Component {
       query: searchQuery,
       withoutLocationOnly,
       withDuplicateImportedIds,
-      pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
+      pointInTime: (withDuplicateImportedIds || withNearbySimilarDuplicates) ? new Date().toISOString() : null,
       stopPlaceType: stopTypeFilter,
       withNearbySimilarDuplicates,
       municipalityReference: topoiChips
