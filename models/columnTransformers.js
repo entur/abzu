@@ -386,5 +386,25 @@ export const ColumnTranslations = {
     sanitaryEquipment: 'WC',
     generalSign: 'Transport sign',
     tags: 'Tags'
+  },
+  fr: {
+    name: 'Nom',
+    modality: 'Modalité',
+    id: 'Id',
+    muncipality: 'Municipalité',
+    county: 'Département',
+    importedId: 'ID local',
+    position: 'Position',
+    quays: 'Quais',
+    parking: 'Parking',
+    privateCode: 'Code privé',
+    publicCode: 'Code public',
+    wheelchairAccess: 'Accessibilité PMR',
+    stepFreeAccess: 'Accès sans escalier',
+    shelterEquipment: 'Abri',
+    waitingRoomEquipment: 'Salle d\'attente',
+    sanitaryEquipment: 'WC',
+    generalSign: 'Panneau de transport',
+    tags: 'Tags'
   }
 };

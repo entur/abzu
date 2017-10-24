@@ -253,6 +253,13 @@ class Header extends React.Component {
                     insetChildren
                     primaryText={english}
                     checked={locale === 'en'}
+                  />,
+                  <MenuItem
+                  style={{ fontSize: 12, padding: 0 }}
+                  onClick={() => this.handleSetLanguage('fr')}
+                  insetChildren
+                  primaryText={english}
+                  checked={locale === 'fr'}
                   />
                 ]}
               />

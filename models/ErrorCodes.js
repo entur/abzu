@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const MutationErrorCodes = {
+
+export const MutationErrorCodes = {
   ERROR_STOP_PLACE: 'ERROR_STOP_PLACE',
   ERROR_PATH_LINKS: 'ERROR_PATH_LINKS',
   ERROR_PARKING: 'ERROR_PARKING',
@@ -28,5 +29,10 @@ export const HumanReadableErrorCodes = {
     ERROR_STOP_PLACE: 'Failed to save stop place',
     ERROR_PATH_LINKS: 'Failed to save path links',
     ERROR_PARKING: 'Failed to save parking',
+  },
+  fr: {
+    ERROR_STOP_PLACE: 'Erreur lors de la sauvegarde du point d\'arrêt',
+    ERROR_PATH_LINKS: 'Erreur lors de la sauvegarde du cheminement',
+    ERROR_PARKING: 'Erreur lors de la sauvegarde du parking',
   },
 };

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const weightTypes = {
+
+const weightTypes = {
   nb: [
     {
       name: 'Foretrukket overgang',
@@ -50,6 +51,24 @@ limitations under the Licence. */
       value: 'noInterchange',
     },
   ],
+  fr: [
+    {
+      name: 'Point de tranfert préferré',
+      value: 'preferredInterchange',
+    },
+    {
+      name: 'Point de transfert recommandé',
+      value: 'recommendedInterchange',
+    },
+    {
+      name: 'Transfert autorisé',
+      value: 'interchangeAllowed',
+    },
+    {
+      name: 'Pas de transfert',
+      value: 'noInterchange',
+    },
+  ],
 };
 
 export const weightColors = {
@@ -62,6 +81,7 @@ export const weightColors = {
 export const noValue = {
   nb: 'Overgang ikke satt',
   en: 'No interchange set',
+  fr: 'Aucun transfert défini',
 };
 
 export default weightTypes;
