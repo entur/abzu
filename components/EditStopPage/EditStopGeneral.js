@@ -664,6 +664,7 @@ class EditStopGeneral extends React.Component {
                 handleConfirm={this.handleSaveAllEntities.bind(this)}
                 errorMessage={this.state.errorMessage}
                 intl={intl}
+                serverTimeDiff={this.props.serverTimeDiff}
                 currentValidBetween={stopPlace.validBetween}
               />
             : null}
@@ -707,6 +708,7 @@ class EditStopGeneral extends React.Component {
             stopPlace={stopPlace}
             canDeleteStop={canDeleteStop}
             isLoading={this.state.isLoading}
+            serverTimeDiff={this.props.serverTimeDiff}
           />
           <MoveQuayDialog
             open={this.props.moveQuayDialogOpen}
@@ -811,6 +813,7 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
   originalStopPlace: state.stopPlace.originalCurrent,
+  serverTimeDiff: state.user.serverTimeDiff
 });
 
 export default withApollo(

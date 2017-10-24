@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../actions/Types';
+
+import * as types from '../actions/Types';
 
 export const initialState = {
   path: '/',
@@ -44,6 +45,7 @@ export const initialState = {
   lookupCoordinatesOpen: false,
   newStopIsMultiModal: false,
   isCreatingNewStop: false,
+  serverTimeDiff: 0,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -260,6 +262,11 @@ const userReducer = (state = initialState, action) => {
     case types.CLOSED_KEY_VALUES_DIALOG:
       return Object.assign({}, state, {
         keyValuesDialogOpen: false,
+      });
+
+    case types.SET_SERVER_DIFF_TIME:
+      return Object.assign({}, state, {
+        serverTimeDiff: action.payLoad,
       });
 
     case types.SORTED_QUAYS:

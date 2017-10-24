@@ -39,10 +39,8 @@ if (areIntlLocalesSupported(['nb'])) {
 }
 
 class TerminateStopPlaceDialog extends React.Component {
-
   constructor(props) {
     super(props);
-    const earliestFrom = getEarliestFromDate(props.previousValidBetween);
     this.state = this.getInitialState(props);
   }
 
@@ -53,13 +51,16 @@ class TerminateStopPlaceDialog extends React.Component {
   }
 
   getInitialState(props) {
-    const earliestFrom = getEarliestFromDate(props.previousValidBetween);
-    return ({
+    const earliestFrom = getEarliestFromDate(
+      props.previousValidBetween,
+      this.props.serverTimeDiff
+    );
+    return {
       shouldHardDelete: false,
       date: earliestFrom,
       time: earliestFrom,
       comment: ''
-    });
+    };
   }
 
   static propTypes = {
@@ -78,7 +79,8 @@ class TerminateStopPlaceDialog extends React.Component {
       stopPlace,
       canDeleteStop,
       previousValidBetween,
-      isLoading
+      isLoading,
+      serverTimeDiff
     } = this.props;
     const { formatMessage } = intl;
     const { isChildOfParent } = stopPlace;
@@ -91,9 +93,9 @@ class TerminateStopPlaceDialog extends React.Component {
       deleteLabel: formatMessage({ id: 'delete_stop_place' }),
       delete_warning: formatMessage({ id: 'delete_stop_info' }),
       cannotDelete: formatMessage({ id: 'delete_stop_not_allowed' }),
-      comment: formatMessage({id: 'comment'}),
+      comment: formatMessage({ id: 'comment' }),
       date: formatMessage({ id: 'date' }),
-      time: formatMessage({ id: 'time' }),
+      time: formatMessage({ id: 'time' })
     };
 
     const dateTime = helpers.getFullUTCString(time, date);
@@ -110,11 +112,11 @@ class TerminateStopPlaceDialog extends React.Component {
         disabled={!!isChildOfParent || isLoading}
         primary={true}
         keyboardFocused={true}
-        icon={isLoading ? <Spinner/> : <MdMerge />}
+        icon={isLoading ? <Spinner /> : <MdMerge />}
       />
     ];
 
-    const earliestFrom = getEarliestFromDate(previousValidBetween);
+    const earliestFrom = getEarliestFromDate(previousValidBetween, serverTimeDiff);
 
     return (
       <Dialog
@@ -122,7 +124,7 @@ class TerminateStopPlaceDialog extends React.Component {
         actions={actions}
         modal={true}
         open={open}
-        titleStyle={{padding: '24px 24px 0px'}}
+        titleStyle={{ padding: '24px 24px 0px' }}
         onRequestClose={() => {
           handleClose();
         }}
@@ -141,11 +143,13 @@ class TerminateStopPlaceDialog extends React.Component {
             floatingLabelText={translations.date}
             okLabel={translations.use}
             DateTimeFormat={DateTimeFormat}
-            formatDate={new DateTimeFormat('nb', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            }).format}
+            formatDate={
+              new DateTimeFormat('nb', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              }).format
+            }
             autoOk
             mode="landscape"
             minDate={earliestFrom}
@@ -167,7 +171,7 @@ class TerminateStopPlaceDialog extends React.Component {
             autoOk
             onChange={(event, value) => {
               this.setState({
-                time: value,
+                time: value
               });
             }}
           />
@@ -178,24 +182,22 @@ class TerminateStopPlaceDialog extends React.Component {
             floatingLabelText={translations.comment}
             hintText={translations.comment}
             id="terminate-comment"
-            onChange={(e,v) => this.setState({comment: v})}
-            />
-          { canDeleteStop &&
+            onChange={(e, v) => this.setState({ comment: v })}
+          />
+          {canDeleteStop &&
             <Checkbox
-              style={{marginTop: 5}}
+              style={{ marginTop: 5 }}
               checked={shouldHardDelete}
-              onCheck={(e,v) => this.setState({shouldHardDelete: v})}
+              onCheck={(e, v) => this.setState({ shouldHardDelete: v })}
               label={translations.deleteLabel}
-            />
-          }
-          { shouldHardDelete &&
+            />}
+          {shouldHardDelete &&
             <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>
               <span>{translations.delete_warning}</span>
-            </div>
-          }
+            </div>}
         </div>
       </Dialog>
     );

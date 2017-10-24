@@ -8,6 +8,7 @@ var path = require('path');
 var fs = require('fs');
 var axios = require('axios');
 var introspectionQuery = require('./graphql/introspection').introspectionQuery;
+var bodyParser = require('body-parser');
 
 convictPromise
   .then(convict => {
@@ -19,6 +20,8 @@ convictPromise
       [ENDPOINTBASE + 'public/', ENDPOINTBASE + 'edit/public/'],
       express.static(__dirname + '/public')
     );
+
+    app.use(bodyParser.json());
 
     app.get(ENDPOINTBASE + 'token', (req, res) => {
       const remoteAddress =
@@ -93,6 +96,16 @@ convictPromise
 
     app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
       res.sendFile(__dirname + '/config/keycloak.json');
+    });
+
+    app.post(ENDPOINTBASE + 'timeOffset', function(req, res) {
+      if (req.body.clientTime) {
+        res.send({
+          offset: new Date().getTime() - req.body.clientTime,
+        });
+      } else {
+        res.sendStatus(400);
+      }
     });
 
     app.get(

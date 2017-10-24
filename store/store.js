@@ -127,6 +127,7 @@ export default function configureStore(kc) {
       showEditStopAdditional: false,
       lookupCoordinatesOpen: false,
       newStopIsMultiModal: false,
+      serverTimeDiff: 0,
       newStopCreated: {
         open: false,
         stopPlaceId: null

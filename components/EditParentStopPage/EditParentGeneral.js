@@ -415,6 +415,7 @@ class EditParentGeneral extends React.Component {
           stopPlace={stopPlace}
           canDeleteStop={this.props.canDeleteStop}
           isLoading={this.state.isLoading}
+          serverTimeDiff={this.props.serverTimeDiff}
         />
         {removeStopPlaceFromParentOpen &&
           <RemoveStopFromParentDialog
@@ -452,6 +453,7 @@ class EditParentGeneral extends React.Component {
               errorMessage={this.state.errorMessage}
               intl={intl}
               currentValidBetween={stopPlace.validBetween}
+              serverTimeDiff={this.props.serverTimeDiff}
             />
           : null}
       </div>
@@ -459,7 +461,7 @@ class EditParentGeneral extends React.Component {
   }
 }
 
-const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
+const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   stopPlace: stopPlace.current,
   versions: stopPlace.versions,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
@@ -467,7 +469,8 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
   removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
   canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
   deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
-  originalStopPlace: stopPlace.originalCurrent
+  originalStopPlace: stopPlace.originalCurrent,
+  serverTimeDiff: user.serverTimeDiff
 });
 
 export default withApollo(

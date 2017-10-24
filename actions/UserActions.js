@@ -410,6 +410,10 @@ UserActions.hideRemoveStopPlaceFromParent = () => dispatch => {
   dispatch(sendData(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
 };
 
+UserActions.setServerDiffTime = diff => dispatch => {
+  dispatch(sendData(types.SET_SERVER_DIFF_TIME, diff));
+};
+
 UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch => {
   getAddStopPlaceInfo(client, [stopPlaceId]).then( response => {
     if (response.data) {
