@@ -151,7 +151,7 @@
   "move_quay_to_current": "Move to current",
   "move_quays_to_new_stop": "Move quay to new stop place",
   "move_quay_new_stop_title": "Create new stop with existing quays",
-  "move_quay_new_stop_consequence": "quay vil be moved",
+  "move_quay_new_stop_consequence": "quay will be moved",
   "move_quay_new_stop_consequence_pl": "quays will be moved",
   "move_quay_new_stop_info": "Selected quays will be removed from current stop place and added to a new stop place.",
   "move_quay_title": "You are about to move a quay to current stop place",
