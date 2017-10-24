@@ -314,5 +314,6 @@
   "wheelchairAccess": "Rullestolvennlig",
   "wheelchairAccess_no": "Ikke rullestolvennlig",
   "wheelchairAccess_hint": "Rullestolvennlighet",
+  "with_nearby_similar_duplicates": "Kun nærliggende stoppesteder med liknende navn",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer."
 }

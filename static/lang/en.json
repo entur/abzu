@@ -314,5 +314,6 @@
   "wheelchairAccess": "Wheelchair friendly",
   "wheelchairAccess_no": "Not wheelchair friendly",
   "wheelchairAccess_hint": "Wheelchair accessibility",
+  "with_nearby_similar_duplicates": "Only nearby stop places with similar name",
   "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted."
 }

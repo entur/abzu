@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import { connect } from 'react-redux';
 import ReportPageFooter from '../components/ReportPage/ReportPageFooter';
@@ -41,7 +40,10 @@ import {
   columnOptionsQuays,
   columnOptionsStopPlace
 } from '../config/columnOptions';
-import { buildReportSearchQuery, extractQueryParamsFromUrl } from '../utils/URLhelpers';
+import {
+  buildReportSearchQuery,
+  extractQueryParamsFromUrl
+} from '../utils/URLhelpers';
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -58,6 +60,7 @@ class ReportPage extends React.Component {
       columnOptionsStopPlace: columnOptionsStopPlace,
       withoutLocationOnly: false,
       withDuplicateImportedIds: false,
+      withNearbySimilarDuplicates: false
     };
   }
 
@@ -87,7 +90,7 @@ class ReportPage extends React.Component {
   }
 
   handleSearchQueryChange(searchQuery) {
-    this.setState({searchQuery});
+    this.setState({ searchQuery });
   }
 
   handleCheckAllColumnStops() {
@@ -140,48 +143,63 @@ class ReportPage extends React.Component {
     const fromURL = extractQueryParamsFromUrl();
     this.setState({
       searchQuery: fromURL.query || '',
-      withoutLocationOnly: (fromURL.withoutLocationOnly == "true"),
-      withDuplicateImportedIds: (fromURL.withDuplicateImportedIds == "true"),
-      stopTypeFilter: fromURL.stopPlaceType ? fromURL.stopPlaceType.split(',') : []
+      withoutLocationOnly: fromURL.withoutLocationOnly == 'true',
+      withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates == 'true',
+      withDuplicateImportedIds: fromURL.withDuplicateImportedIds == 'true',
+      stopTypeFilter: fromURL.stopPlaceType
+        ? fromURL.stopPlaceType.split(',')
+        : []
     });
 
     let topographicalPlaceIds = [];
     if (fromURL.municipalityReference) {
-      topographicalPlaceIds = topographicalPlaceIds.concat(fromURL.municipalityReference.split(','));
+      topographicalPlaceIds = topographicalPlaceIds.concat(
+        fromURL.municipalityReference.split(',')
+      );
     }
 
     if (fromURL.countyReference) {
-      topographicalPlaceIds = topographicalPlaceIds.concat(fromURL.countyReference.split(','));
+      topographicalPlaceIds = topographicalPlaceIds.concat(
+        fromURL.countyReference.split(',')
+      );
     }
 
     if (topographicalPlaceIds.length) {
-      getTopographicPlaces(client, topographicalPlaceIds)
-        .then(response => {
-          if (response.data && Object.keys(response.data).length) {
+      getTopographicPlaces(client, topographicalPlaceIds).then(response => {
+        if (response.data && Object.keys(response.data).length) {
+          let menuItems = [];
 
-            let menuItems = [];
+          Object.keys(response.data).forEach(result => {
+            const place = response.data[result] && response.data[result].length
+              ? response.data[result][0]
+              : null;
 
-            Object.keys(response.data).forEach(result  => {
-              const place = response.data[result] && response.data[result].length ?
-                response.data[result][0] : null;
+            if (place) {
+              const menuItem = this.createTopographicPlaceMenuItem(
+                place,
+                formatMessage
+              );
+              menuItems.push(menuItem);
+            }
+          });
 
-              if (place) {
-                const menuItem = this.createTopographicPlaceMenuItem(place, formatMessage);
-                menuItems.push(menuItem);
-              }
-            });
-
-            this.setState({
-              topoiChips: menuItems
-            });
-          }
-        });
+          this.setState({
+            topoiChips: menuItems
+          });
+        }
+      });
     }
-
   }
 
   handleSearch() {
-    const { searchQuery, topoiChips, stopTypeFilter, withoutLocationOnly, withDuplicateImportedIds } = this.state;
+    const {
+      searchQuery,
+      topoiChips,
+      stopTypeFilter,
+      withoutLocationOnly,
+      withDuplicateImportedIds,
+      withNearbySimilarDuplicates
+    } = this.state;
     const { client } = this.props;
 
     this.setState({
@@ -194,6 +212,7 @@ class ReportPage extends React.Component {
       withDuplicateImportedIds,
       pointInTime: withDuplicateImportedIds ? new Date().toISOString() : null,
       stopPlaceType: stopTypeFilter,
+      withNearbySimilarDuplicates,
       municipalityReference: topoiChips
         .filter(topos => topos.type === 'town')
         .map(topos => topos.id),
@@ -206,7 +225,7 @@ class ReportPage extends React.Component {
       .query({
         query: findStopForReport,
         fetchPolicy: 'network-only',
-        variables,
+        variables
       })
       .then(response => {
         const stopPlaces = response.data.stopPlace;
@@ -222,7 +241,7 @@ class ReportPage extends React.Component {
           .then(response => {
             this.setState({
               isLoading: false,
-              activePageIndex: 0,
+              activePageIndex: 0
             });
           });
       })
@@ -297,7 +316,8 @@ class ReportPage extends React.Component {
       activePageIndex,
       isLoading,
       withoutLocationOnly,
-      withDuplicateImportedIds
+      withDuplicateImportedIds,
+      withNearbySimilarDuplicates
     } = this.state;
     const { intl, topographicalPlaces, results, duplicateInfo } = this.props;
     const { locale, formatMessage } = intl;
@@ -332,7 +352,8 @@ class ReportPage extends React.Component {
               <ModalityFilter
                 locale={locale}
                 stopTypeFilter={stopTypeFilter}
-                handleApplyFilters={filters => this.handleApplyModalityFilters(filters)}
+                handleApplyFilters={filters =>
+                  this.handleApplyModalityFilters(filters)}
               />
               <div style={{ padding: 5, marginLeft: 5 }}>
                 <div style={{ fontWeight: 600, marginBottom: 5, fontSize: 12 }}>
@@ -361,21 +382,35 @@ class ReportPage extends React.Component {
               </div>
             </ReportFilterBox>
             <ReportFilterBox style={{ width: '50%' }}>
-              <div style={{marginLeft: 10, marginTop: 10}}>
+              <div style={{ marginLeft: 10, marginTop: 10 }}>
                 <Checkbox
-                  label={formatMessage({id: 'only_without_coordinates'})}
-                  labelPosition="left"
-                  labelStyle={{width: 'auto', fontSize: '0.9em'}}
+                  label={formatMessage({ id: 'only_without_coordinates' })}
+                  labelPosition="right"
+                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
                   checked={withoutLocationOnly}
-                  onCheck={ (e, value) => { this.setState({withoutLocationOnly: value})}}
+                  onCheck={(e, value) => {
+                    this.setState({ withoutLocationOnly: value });
+                  }}
                 />
                 <Checkbox
-                  label={formatMessage({id: 'only_duplicate_importedIds'})}
-                  labelPosition="left"
-                  labelStyle={{width: 'auto', fontSize: '0.9em'}}
+                  label={formatMessage({ id: 'only_duplicate_importedIds' })}
+                  labelPosition="right"
+                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
                   checked={withDuplicateImportedIds}
-                  onCheck={ (e, value) => { this.setState({withDuplicateImportedIds: value})}}
-                  style={{marginTop: 10}}
+                  onCheck={(e, value) => {
+                    this.setState({ withDuplicateImportedIds: value });
+                  }}
+                  style={{ marginTop: 10 }}
+                />
+                <Checkbox
+                  label={formatMessage({ id: 'with_nearby_similar_duplicates' })}
+                  labelPosition="right"
+                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                  checked={withNearbySimilarDuplicates}
+                  onCheck={(e, value) => {
+                    this.setState({ withNearbySimilarDuplicates: value });
+                  }}
+                  style={{ marginTop: 10 }}
                 />
               </div>
               <div
@@ -398,11 +433,7 @@ class ReportPage extends React.Component {
                 <RaisedButton
                   style={{ marginTop: 10, marginLeft: 5 }}
                   disabled={isLoading}
-                  icon={
-                    isLoading
-                      ? <MdSpinner/>
-                      : <MdSearch />
-                  }
+                  icon={isLoading ? <MdSpinner /> : <MdSearch />}
                   label={formatMessage({ id: 'search' })}
                   onClick={() => this.handleSearch()}
                 />
@@ -421,7 +452,7 @@ class ReportPage extends React.Component {
             captionLabel={formatMessage({ id: 'stop_place' })}
             locale={locale}
             handleCheckAll={this.handleCheckAllColumnStops.bind(this)}
-            selectAllLabel={formatMessage({id: 'all'})}
+            selectAllLabel={formatMessage({ id: 'all' })}
           />
           <ColumnFilterPopover
             style={{ marginLeft: 5, marginTop: 5 }}
@@ -431,7 +462,7 @@ class ReportPage extends React.Component {
             captionLabel={formatMessage({ id: 'quays' })}
             locale={locale}
             handleCheckAll={this.handleCheckAllColumnQuays.bind(this)}
-            selectAllLabel={formatMessage({id: 'all'})}
+            selectAllLabel={formatMessage({ id: 'all' })}
           />
         </div>
         <ReportResultView
@@ -458,7 +489,7 @@ class ReportPage extends React.Component {
 const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
   results: state.report.results,
-  duplicateInfo: state.report.duplicateInfo,
+  duplicateInfo: state.report.duplicateInfo
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));
