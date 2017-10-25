@@ -141,7 +141,7 @@ class TerminateStopPlaceDialog extends React.Component {
             floatingLabelText={translations.date}
             okLabel={translations.use}
             DateTimeFormat={DateTimeFormat}
-            formatDate={new DateTimeFormat('nb', {
+            formatDate={new DateTimeFormat(intl.locale, {
               day: 'numeric',
               month: 'long',
               year: 'numeric',
