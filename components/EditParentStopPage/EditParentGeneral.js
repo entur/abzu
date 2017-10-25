@@ -78,11 +78,11 @@ class EditParentGeneral extends React.Component {
 
   handleTerminateStop(shouldHardDelete, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     if (shouldHardDelete) {
       deleteStopPlace(client, stopPlace.id)
         .then(response => {
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
@@ -91,23 +91,25 @@ class EditParentGeneral extends React.Component {
           }
         })
         .catch(err => {
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog(true));
           dispatch(
             UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
           );
         });
     } else {
-      terminateStop(client, stopPlace.id, comment, dateTime).then(result => {
-        this.handleSaveSuccess(stopPlace.id);
-        this.handleCloseDeleteStop();
-        this.setState({isLoading: false});
-      }).catch(err => {
-        this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
-      });
+      terminateStop(client, stopPlace.id, comment, dateTime)
+        .then(result => {
+          this.handleSaveSuccess(stopPlace.id);
+          this.handleCloseDeleteStop();
+          this.setState({ isLoading: false });
+        })
+        .catch(err => {
+          this.setState({ isLoading: false });
+          dispatch(
+            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
+          );
+        });
     }
   }
 
@@ -121,20 +123,27 @@ class EditParentGeneral extends React.Component {
       );
       this.handleCreateNewParentStopPlace(stopPlaceVariables);
     } else {
+
       const childrenToAdd = stopPlace.children
         .filter(child => child.notSaved)
         .map(child => child.id);
-      addToMultiModalStopPlace(
-        client,
-        stopPlace.id,
-        childrenToAdd
-      ).then(response => {
-        const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace,
-          userInput
-        );
+
+      const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
+        stopPlace,
+        userInput
+      );
+
+      if (childrenToAdd.length) {
+        addToMultiModalStopPlace(
+          client,
+          stopPlace.id,
+          childrenToAdd
+        ).then(response => {
+          this.saveParentStop(stopPlaceVariables);
+        });
+      } else {
         this.saveParentStop(stopPlaceVariables);
-      });
+      }
     }
   }
 
@@ -317,7 +326,11 @@ class EditParentGeneral extends React.Component {
       justifyContent: 'space-between'
     };
 
-    const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
+    const stopPlaceLabel = this.getTitleText(
+      stopPlace,
+      originalStopPlace,
+      formatMessage
+    );
     const disableTerminate =
       stopPlace.isNewStop || disabled || stopPlace.hasExpired;
 

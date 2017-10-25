@@ -85,6 +85,6 @@ export const getEarliestFromDate = (previousValidBetween, serverDiff = 0) => {
       ? dateTimeWithOffset
       : nowWithOffset;
   } else {
-    return nowWithOffset; 
+    return nowWithOffset;
   }
 };
