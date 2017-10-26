@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export default {
+
+export default {
   nb: {
     path_links: {
       title: 'Ganglenker',
@@ -31,6 +32,16 @@ limitations under the Licence. */
       body:
         "You can define your own path from own point to another by clicking in the map. Path links may at all time be cancelled by clicking on the start point of the path link. As soon as a path link is made, you can remove it by clicking on the path link and click 'remove'",
       closeButtonTitle: 'Close',
+    },
+  },
+  fr: {
+    path_links: {
+      title: 'Tronçons de liaison',
+      ingress:
+        'Vous éditez des tronçons de liaison. Les tronçons peuvent relier des quais, entrées et des connecteurs de tronçons.',
+      body:
+        "Vous pouvez définir votre cheminement d'un point à un autre en cliquant sur la carte. L'édition du tronçon peut être annulée à tout moment en cliquant sur le premier point du tronçon. Une fois le tronçon défini, vous pouvez le supprimer en cliquant dessus puis en cliquant sur 'supprimer'",
+      closeButtonTitle: 'Fermer',
     },
   },
 };

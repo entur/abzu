@@ -127,6 +127,7 @@ class Header extends React.Component {
     const language = formatMessage({ id: 'language' });
     const english = formatMessage({ id: 'english' });
     const norwegian = formatMessage({ id: 'norwegian' });
+    const french = formatMessage({ id: 'french' });
     const logOut = formatMessage({ id: 'log_out' });
     const mapSettings = formatMessage({ id: 'map_settings' });
     const showPathLinks = formatMessage({ id: 'show_path_links' });
@@ -253,6 +254,13 @@ class Header extends React.Component {
                     insetChildren
                     primaryText={english}
                     checked={locale === 'en'}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage('fr')}
+                    insetChildren
+                    primaryText={french}
+                    checked={locale === 'fr'}
                   />
                 ]}
               />

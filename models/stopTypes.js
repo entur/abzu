@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const stopTypes = {
+
+const stopTypes = {
   nb: [
     {
       name: 'Busstopp',
@@ -470,12 +471,243 @@ limitations under the Licence. */
         }
       ]
     }
-  ]
+  ],
+
+  fr: [
+    {
+      name: 'Arrêt de bus',
+      value: 'onstreetBus',
+      quayItemName: 'platform',
+      transportMode: 'bus',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          name: "Bus express",
+          value: "expressBus"
+        },
+        {
+          name: "Remplacement de train",
+          value: "railReplacementBus"
+        },
+        {
+          name: "Navette aéroport",
+          value: "airportLinkBus"
+        },
+        {
+          name: "Bus local",
+          value: "localBus"
+        },
+        {
+          name: "Bus de nuit",
+          value: "nightBus"
+        },
+        {
+          name: "Bus régional",
+          value: "regionalBus"
+        },
+        {
+          name: "Navette",
+          value: "shuttleBus"
+        },
+        {
+          name: "Bus scolaire",
+          value: "schoolBus"
+        },
+        {
+          name: "Bus tourisme",
+          value: "sightseeingBus"
+        }
+      ]
+    },
+    {
+      name: 'Station de bus',
+      value: 'busStation',
+      quayItemName: 'platform'
+    },
+    {
+      name: 'Port de plaisance',
+      value: 'harbourPort',
+      quayItemName: 'port',
+      transportMode: 'water',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          value: "highSpeedPassengerService",
+          name: "Navette passagers grande vitesse"
+        },
+        {
+          value: "nationalCarFerry",
+          name: "Service de ferry national"
+        },
+        {
+          value: "localCarFerry",
+          name: "Service de ferry local"
+        },
+        {
+          value: "internationalCarFerry",
+          name: "Service de ferry international"
+        },
+        {
+          value: "highSpeedVehicleService",
+          name: "Navette véhicules grande vitesse"
+        }
+      ]
+    },
+    {
+      name: 'Arrêt de ferry',
+      value: 'ferryStop',
+      quayItemName: 'port',
+      transportMode: 'water',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          value: "highSpeedPassengerService",
+          name: "Navette passagers grande vitesse"
+        },
+        {
+          value: "localPassengerFerry",
+          name: "Service local de ferry pour passagers"
+        },
+        {
+          value: "internationalPassengerFerry",
+          name: "Service international de ferry pour passagers"
+        },
+        {
+          value: "sightseeingService",
+          name: "Tourisme"
+        }
+      ]
+    },
+    {
+      name: 'Station ferroviaire',
+      value: 'railStation',
+      quayItemName: 'track',
+      transportMode: 'rail',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          value: "longDistance",
+          name: "Longue distance"
+        },
+        {
+          value: "internationalRail",
+          name: "International"
+        },
+        {
+          value: "local",
+          name: "Local"
+        },
+        {
+          value: "touristRailway",
+          name: "Tourisme"
+        },
+        {
+          value: "nightRail",
+          name: "Train de nuit"
+        },
+        {
+          value: "interregionalRail",
+          name: "Interregional"
+        },
+        {
+          value: "regionalRail",
+          name: "Régional (TER)"
+        }
+      ]
+    },
+    {
+      name: 'Tram',
+      value: 'onstreetTram',
+      quayItemName: 'platform',
+      transportMode: 'tram',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          value: 'localTram',
+          name: 'Tram local'
+        }
+      ]
+    },
+    {
+      name: 'Métro',
+      value: 'metroStation',
+      quayItemName: 'track',
+      transportMode: 'metro',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          name: 'Métro',
+          value: 'metro'
+        }
+      ]
+    },
+    {
+      name: 'Aéroport',
+      value: 'airport',
+      transportMode: 'air',
+      quayItemName: 'gate',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          value: 'domesticFlight',
+          name: 'Vol domestique'
+        },
+        {
+          value: 'internationalFlight',
+          name: 'Vol international'
+        },
+        {
+          value: 'helicopterService',
+          name: 'Héliport'
+        }
+      ]
+    },
+    {
+      name: 'Téléphérique',
+      value: 'liftStation',
+      quayItemName: 'platform',
+      transportMode: 'cableway',
+      submodes: [
+        {
+          name: 'Non spécifié',
+          value: null
+        },
+        {
+          name: 'Télécabine',
+          value: 'telecabin'
+        }
+      ]
+    }
+  ],
+
+
 };
 
 export const unknownStopPlaceType = {
   nb: 'Modalitet ikke satt',
-  en: 'Modality not defined'
+  en: 'Modality not defined',
+  fr: 'Modalité non définie'
 };
 
 export const submodes = [

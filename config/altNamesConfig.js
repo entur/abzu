@@ -21,6 +21,7 @@ export const supportedNameTypes = [
     name: {
       en: 'Alias',
       nb: 'Alias',
+      fr: 'Alias',
     },
   },
   {
@@ -28,6 +29,7 @@ export const supportedNameTypes = [
     name: {
       en: 'Translation',
       nb: 'Oversettelse',
+      fr: 'Traduction',
     },
   },
 ];
@@ -36,22 +38,27 @@ export const allNameTypes = {
   alias: {
     en: 'Alias',
     nb: 'Alias',
+    fr: 'Alias',
   },
   translation: {
     en: 'Translation',
     nb: 'Oversettelse',
+    fr: 'Traduction',
   },
   label: {
     en: 'Label',
     nb: 'Merkelapp',
+    fr: 'Libellé',
   },
   copy: {
     en: 'Copy',
     nb: 'Kopi',
+    fr: 'Copie',
   },
   other: {
     en: 'Other',
     nb: 'Annet',
+    fr: 'Autre',
   },
 };
 
@@ -59,29 +66,41 @@ export const languages = {
   no: {
     en: 'Norwegian',
     nb: 'Norsk',
+    fr: 'Norvégien',
   },
   nb: {
     en: 'Norwegian (bokmål)',
     nb: 'Norsk (bokmål)',
+    fr: 'Norvégien (bokmål)',
   },
   nn: {
     en: 'Norwegian (nynorsk)',
     nb: 'Norsk (nynorsk)',
+    fr: 'Norvégien (nynorsk)',
   },
   en: {
     en: 'English',
     nb: 'Engelsk',
+    fr: 'Anglais',
   },
   et: {
     en: 'Estonian',
     nb: 'Estisk',
+    fr: 'Estonien',
   },
   ru: {
     en: 'Russian',
     nb: 'Russisk',
+    fr: 'Russe',
   },
   fi: {
     en: 'Kven language',
     nb: 'Kvensk',
+    fr: 'Kven',
   },
+  fr: {
+    en: 'French',
+    nb: 'Fransk',
+    fr: 'Français',
+  }
 };
