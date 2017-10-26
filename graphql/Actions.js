@@ -42,7 +42,8 @@ import {
   getTagsQuery,
   findTagByNameQuery,
   getStopById,
-  getQueryTopographicPlaces
+  getQueryTopographicPlaces,
+  getTagsByNameQuery
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -340,6 +341,15 @@ export const getTags = (client, idReference) =>
     fetchPolicy: 'network-only',
     variables: {
       idReference,
+    },
+  });
+
+export const getTagsByName = (client, name) =>
+  client.query({
+    query: getTagsByNameQuery,
+    fetchPolicy: 'network-only',
+    variables: {
+      name,
     },
   });
 

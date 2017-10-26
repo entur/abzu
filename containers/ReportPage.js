@@ -21,7 +21,6 @@ import ModalityFilter from '../components/EditStopPage/ModalityFilter';
 import TopographicalFilter from '../components/MainPage/TopographicalFilter';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
-import Checkbox from 'material-ui/Checkbox';
 import {
   topopGraphicalPlacesReportQuery,
   findStopForReport
@@ -44,6 +43,8 @@ import {
   buildReportSearchQuery,
   extractQueryParamsFromUrl
 } from '../utils/URLhelpers';
+import TagFilterTray from '../components/ReportPage/TagFilterTray';
+import AdvancedReportFilters from '../components/ReportPage/AdvancedReportFilters';
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -60,7 +61,8 @@ class ReportPage extends React.Component {
       columnOptionsStopPlace: columnOptionsStopPlace,
       withoutLocationOnly: false,
       withDuplicateImportedIds: false,
-      withNearbySimilarDuplicates: false
+      withNearbySimilarDuplicates: false,
+      tags: [],
     };
   }
 
@@ -91,6 +93,18 @@ class ReportPage extends React.Component {
 
   handleSearchQueryChange(searchQuery) {
     this.setState({ searchQuery });
+  }
+
+  handleItemOnCheck(name, checked) {
+    let nextTags = this.state.tags.slice();
+    if (checked) {
+      nextTags.push(name);
+    } else {
+      nextTags = nextTags.filter(tag => tag !== name);
+    }
+    this.setState({
+      tags: nextTags
+    });
   }
 
   handleCheckAllColumnStops() {
@@ -146,6 +160,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly: fromURL.withoutLocationOnly == 'true',
       withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates == 'true',
       withDuplicateImportedIds: fromURL.withDuplicateImportedIds == 'true',
+      tags: fromURL.tags ? fromURL.tags.split(',') : [],
       stopTypeFilter: fromURL.stopPlaceType
         ? fromURL.stopPlaceType.split(',')
         : []
@@ -198,7 +213,8 @@ class ReportPage extends React.Component {
       stopTypeFilter,
       withoutLocationOnly,
       withDuplicateImportedIds,
-      withNearbySimilarDuplicates
+      withNearbySimilarDuplicates,
+      tags
     } = this.state;
     const { client } = this.props;
 
@@ -213,6 +229,7 @@ class ReportPage extends React.Component {
       pointInTime: (withDuplicateImportedIds || withNearbySimilarDuplicates) ? new Date().toISOString() : null,
       stopPlaceType: stopTypeFilter,
       withNearbySimilarDuplicates,
+      tags,
       municipalityReference: topoiChips
         .filter(topos => topos.type === 'town')
         .map(topos => topos.id),
@@ -382,35 +399,12 @@ class ReportPage extends React.Component {
               </div>
             </ReportFilterBox>
             <ReportFilterBox style={{ width: '50%' }}>
-              <div style={{ marginLeft: 10, marginTop: 10 }}>
-                <Checkbox
-                  label={formatMessage({ id: 'only_without_coordinates' })}
-                  labelPosition="right"
-                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
-                  checked={withoutLocationOnly}
-                  onCheck={(e, value) => {
-                    this.setState({ withoutLocationOnly: value });
-                  }}
-                />
-                <Checkbox
-                  label={formatMessage({ id: 'only_duplicate_importedIds' })}
-                  labelPosition="right"
-                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
-                  checked={withDuplicateImportedIds}
-                  onCheck={(e, value) => {
-                    this.setState({ withDuplicateImportedIds: value });
-                  }}
-                  style={{ marginTop: 10 }}
-                />
-                <Checkbox
-                  label={formatMessage({ id: 'with_nearby_similar_duplicates' })}
-                  labelPosition="right"
-                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
-                  checked={withNearbySimilarDuplicates}
-                  onCheck={(e, value) => {
-                    this.setState({ withNearbySimilarDuplicates: value });
-                  }}
-                  style={{ marginTop: 10 }}
+              <div style={{ marginLeft: 5, paddingTop: 5 }}>
+                <div style={{fontWeight: 600, fontSize: 12, marginBottom: 10}}>{formatMessage({id: 'filter_by_tags'})}</div>
+                <TagFilterTray
+                  tags={this.state.tags}
+                  formatMessage={formatMessage}
+                  handleItemOnCheck={this.handleItemOnCheck.bind(this)}
                 />
               </div>
               <div
@@ -430,20 +424,33 @@ class ReportPage extends React.Component {
                     this.handleSearchQueryChange(v);
                   }}
                 />
-                <RaisedButton
-                  style={{ marginTop: 10, marginLeft: 5 }}
-                  disabled={isLoading}
-                  icon={isLoading ? <MdSpinner /> : <MdSearch />}
-                  label={formatMessage({ id: 'search' })}
-                  onClick={() => this.handleSearch()}
-                />
+                <div style={{display: 'flex', alignItems: 'center', marginTop: 2}}>
+                  <RaisedButton
+                    style={{ marginTop: 10, marginLeft: 5, transform: 'scale(0.9)' }}
+                    disabled={isLoading}
+                    icon={isLoading ? <MdSpinner /> : <MdSearch />}
+                    label={formatMessage({ id: 'search' })}
+                    onClick={() => this.handleSearch()}
+                  />
+                  <AdvancedReportFilters
+                    formatMessage={formatMessage}
+                    withoutLocationOnly={withoutLocationOnly}
+                    withDuplicateImportedIds={withDuplicateImportedIds}
+                    withNearbySimilarDuplicates={withNearbySimilarDuplicates}
+                    handleCheckboxChange={(key, value) => {
+                      this.setState({
+                        [key]: value
+                      })
+                    }}
+                  />
+                </div>
               </div>
             </ReportFilterBox>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
           <ColumnFilterPopover
-            style={{ marginLeft: 5, marginTop: 5 }}
+            style={{ marginLeft: 2, marginTop: 5, transform: 'scale(0.9)' }}
             columnOptions={this.state.columnOptionsStopPlace}
             handleColumnCheck={this.handleColumnStopPlaceCheck.bind(this)}
             buttonLabel={formatMessage({
@@ -455,7 +462,7 @@ class ReportPage extends React.Component {
             selectAllLabel={formatMessage({ id: 'all' })}
           />
           <ColumnFilterPopover
-            style={{ marginLeft: 5, marginTop: 5 }}
+            style={{ marginLeft: 2, marginTop: 5, transform: 'scale(0.9)' }}
             columnOptions={this.state.columnOptionsQuays}
             handleColumnCheck={this.handleColumnQuaysCheck.bind(this)}
             buttonLabel={formatMessage({ id: 'column_filter_label_quays' })}

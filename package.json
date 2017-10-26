@@ -47,7 +47,7 @@
     "keycloak-js": "3.2.1",
     "leaflet": "1.2.0",
     "lodash.debounce": "4.0.8",
-    "material-ui": "0.19.3",
+    "material-ui": "0.19.4",
     "moment": "2.18.1",
     "promise-polyfill": "6.0.2",
     "prop-types": "^15.5.10",
