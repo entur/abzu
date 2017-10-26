@@ -23,7 +23,6 @@ import compassIcon from '../../static/icons/compass.png';
 import { UserActions, StopPlaceActions } from '../../actions/';
 import OSMIcon from '../../static/icons/osm_logo.png';
 import { getIn } from '../../utils/';
-import ToolTippable from '../EditStopPage/ToolTippable';
 import Code from '../EditStopPage/Code';
 import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
 import QuayMarkerIcon from './QuayMarkerIcon';
@@ -280,12 +279,8 @@ class QuayMarker extends React.Component {
               }}
             >
               <div>{formattedStopType}</div>
-              <ToolTippable toolTipText={translations.publicCode}>
                 <Code type="publicCode" value={publicCode} />
-              </ToolTippable>
-              <ToolTippable toolTipText={translations.privateCode}>
                 <Code type="privateCode" value={privateCode} />
-              </ToolTippable>
             </div>
             <div
               style={{
