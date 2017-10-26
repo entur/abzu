@@ -217,13 +217,11 @@ class SaveDialog extends React.Component {
             cancelLabel={translations.cancel}
             okLabel={translations.use}
             DateTimeFormat={DateTimeFormat}
-            formatDate={
-              new DateTimeFormat('nb', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              }).format
-            }
+            formatDate={new DateTimeFormat(intl.locale, {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }).format}
             autoOk
             mode="landscape"
             minDate={earliestFrom}
@@ -270,13 +268,11 @@ class SaveDialog extends React.Component {
                   cancelLabel={translations.cancel}
                   okLabel={translations.use}
                   DateTimeFormat={DateTimeFormat}
-                  formatDate={
-                    new DateTimeFormat('nb', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    }).format
-                  }
+                  formatDate={new DateTimeFormat(intl.locale, {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  }).format}
                   autoOk
                   mode="landscape"
                   minDate={dateFrom ? new Date(dateFrom) : earliestFrom}
