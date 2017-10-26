@@ -418,6 +418,7 @@ class ReportPage extends React.Component {
                   floatingLabelText={formatMessage({
                     id: 'optional_search_string'
                   })}
+                  style={{width: 330}}
                   value={this.state.searchQuery}
                   onKeyDown={this.handleOnKeyDown.bind(this)}
                   onChange={(e, v) => {
