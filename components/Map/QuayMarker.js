@@ -381,7 +381,7 @@ class QuayMarker extends React.Component {
                     onClick={() => this.handleMergeFrom()}
                     label={translations.mergeQuayFrom}
                   />
-                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal &&
+                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal && id &&
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
