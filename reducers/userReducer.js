@@ -25,10 +25,6 @@ export const initialState = {
     ],
     text: ''
   },
-  snackbarOptions: {
-    isOpen: false,
-    message: ''
-  },
   localization: {
     locale: null,
     messages: []
@@ -85,18 +81,6 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         lookupCoordinatesOpen: false
       });
-
-    case types.OPENED_SNACKBAR:
-      return Object.assign({}, state, {
-        snackbarOptions: {
-          isOpen: true,
-          message: action.payLoad.message,
-          status: action.payLoad.status
-        }
-      });
-
-    case types.DISMISSED_SNACKBAR:
-      return Object.assign({}, state, { snackbarOptions: { isOpen: false } });
 
     case types.CHANGED_LOCALIZATION:
       return Object.assign({}, state, { localization: action.payLoad });

@@ -123,8 +123,8 @@ UserActions.applyStopTypeSearchFilter = filters => dispatch => {
   dispatch(sendData(types.APPLIED_STOPTYPE_SEARCH_FILTER, filters));
 };
 
-UserActions.openSnackbar = (message, status) => dispatch => {
-  dispatch(sendData(types.OPENED_SNACKBAR, { message, status }));
+UserActions.openSnackbar = status => dispatch => {
+  dispatch(sendData(types.OPENED_SNACKBAR, { status}));
 };
 
 UserActions.dismissSnackbar = () => dispatch => {

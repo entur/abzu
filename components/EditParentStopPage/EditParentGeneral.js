@@ -86,16 +86,11 @@ class EditParentGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
-          } else {
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
           }
         })
         .catch(err => {
           this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog(true));
-          dispatch(
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-          );
         });
     } else {
       terminateStop(client, stopPlace.id, comment, dateTime)
@@ -106,9 +101,6 @@ class EditParentGeneral extends React.Component {
         })
         .catch(err => {
           this.setState({ isLoading: false });
-          dispatch(
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-          );
         });
     }
   }
@@ -205,15 +197,12 @@ class EditParentGeneral extends React.Component {
     getStopPlaceVersions(client, stopPlaceId).then(() => {
       dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
       dispatch(
-        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+        UserActions.openSnackbar(types.SUCCESS)
       );
     });
   }
 
   handleSaveError(errorCode) {
-    this.props.dispatch(
-      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR)
-    );
     this.setState({
       errorMessage: errorCode
     });

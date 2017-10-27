@@ -57,41 +57,6 @@ describe('user reducer', () => {
     });
   });
 
-  test('Should display correct snackbar options', () => {
-    const snackbarOptions = {
-      isOpen: true,
-      message: 'This is some feedback to the user',
-      status: 'SUCCESS',
-    };
-
-    expect(
-      userReducer(undefined, {
-        type: types.OPENED_SNACKBAR,
-        payLoad: {
-          message: snackbarOptions.message,
-          status: snackbarOptions.status,
-        },
-      }),
-    ).toEqual({
-      ...initialState,
-      snackbarOptions: snackbarOptions,
-    });
-  });
-
-  test('Should dismiss snackbar', () => {
-    const snackbarOptions = {
-      isOpen: false,
-    };
-    expect(
-      userReducer(undefined, {
-        type: types.DISMISSED_SNACKBAR,
-        payLoad: null,
-      }),
-    ).toEqual({
-      ...initialState,
-      snackbarOptions: snackbarOptions,
-    });
-  });
 
   test('Should change localization', () => {
     const localization = {

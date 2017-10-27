@@ -121,15 +121,12 @@ class EditStopGeneral extends React.Component {
     getStopPlaceVersions(client, stopPlaceId).then(() => {
       dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
       dispatch(
-        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+        UserActions.openSnackbar(types.SUCCESS)
       );
     });
   }
 
   handleSaveError(errorCode) {
-    this.props.dispatch(
-      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR)
-    );
     this.setState({
       errorMessage: errorCode
     });
@@ -148,7 +145,7 @@ class EditStopGeneral extends React.Component {
     )
       .then(result => {
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         this.handleCloseMergeStopDialog();
         getStopPlaceWithAll(client, stopPlace.id).then(() => {
@@ -166,9 +163,6 @@ class EditStopGeneral extends React.Component {
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -187,16 +181,13 @@ class EditStopGeneral extends React.Component {
       .then(result => {
         this.setState({isLoading: false});
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         this.handleCloseMergeQuaysDialog();
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -208,19 +199,11 @@ class EditStopGeneral extends React.Component {
         this.setState({isLoading: false});
         dispatch(UserActions.hideDeleteQuayDialog());
         getStopPlaceWithAll(client, stopPlace.id).then(response => {
-          dispatch(
-            UserActions.openSnackbar(
-              types.SNACKBAR_MESSAGE_SAVED,
-              types.SUCCESS
-            )
-          );
+          dispatch(UserActions.openSnackbar(types.SUCCESS));
         });
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -238,15 +221,12 @@ class EditStopGeneral extends React.Component {
         this.setState({isLoading: false});
         dispatch(UserActions.closeMoveQuayDialog());
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -261,16 +241,11 @@ class EditStopGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
-          } else {
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
           }
         })
         .catch(err => {
           this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog(true));
-          dispatch(
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-          );
         });
     } else {
       terminateStop(client, stopPlace.id, comment, dateTime).then( result => {
@@ -279,9 +254,6 @@ class EditStopGeneral extends React.Component {
         this.handleCloseDeleteStop();
       }).catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       })
     }
   }
@@ -425,7 +397,7 @@ class EditStopGeneral extends React.Component {
         }
         dispatch(UserActions.closeMoveQuayToNewStopDialog());
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         getStopPlaceWithAll(client, stopPlace.id).then(response => {
           if (newStopPlaceId) {
@@ -435,11 +407,8 @@ class EditStopGeneral extends React.Component {
           }
         });
       })
-      .catch(err => {
+      .catch((error) => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 

@@ -16,6 +16,7 @@ limitations under the Licence. */
 // Apollo-Client actions
 export const APOLLO_QUERY_RESULT = 'APOLLO_QUERY_RESULT';
 export const APOLLO_MUTATION_RESULT = 'APOLLO_MUTATION_RESULT';
+export const APOLLO_MUTATION_ERROR = 'APOLLO_MUTATION_ERROR';
 
 // StopPlaceActions
 export const CHANGED_MAP_CENTER = 'CHANGED_MAP_CENTER';
@@ -127,8 +128,6 @@ export const HIDE_REMOVE_STOP_PLACE_FROM_PARENT = 'HIDE_REMOVE_STOP_PLACE_FROM_P
 export const CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING = 'CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING';
 
 //Snackbar types
-export const SNACKBAR_MESSAGE_SAVED = 'snackbar_message_saved';
-export const SNACKBAR_MESSAGE_FAILED = 'snackbar_message_failed';
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';
 
