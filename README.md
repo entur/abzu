@@ -43,7 +43,7 @@ TIAMAT_BASE_URL=https://api-test.entur.org/stop_places/1.0/graphql port=9000 NOD
 To override OpenStreetMap URL, set `OSM_URL` as environment variables, e.g.
 
 ```
-OSM_URL=https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png port=9000 port=9000 NODE_ENV=development node server.js
+OSM_URL=https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png port=9000 NODE_ENV=development node server.js
 ```
 
 
