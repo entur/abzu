@@ -247,7 +247,7 @@ class SearchBox extends React.Component {
     let name = topographicalPlace.name.value;
 
     if (
-      topographicalPlace.topographicPlaceType === 'town' &&
+      topographicalPlace.topographicPlaceType === 'municipality' &&
       topographicalPlace.parentTopographicPlace
     ) {
       name += `, ${topographicalPlace.parentTopographicPlace.name.value}`;
@@ -388,7 +388,7 @@ class SearchBox extends React.Component {
       .filter(
         place =>
           place.topographicPlaceType === 'county' ||
-          place.topographicPlaceType === 'town'
+          place.topographicPlaceType === 'municipality'
       )
       .filter(
         place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1

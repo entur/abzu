@@ -289,7 +289,7 @@
   "title_for_favorite": "What do you want to remember your search as?",
   "total_capacity": "Total capacity",
   "total_capacity_unknown" : "Not set",
-  "town": "Municipality",
+  "municipality": "Municipality",
   "transport_sign": "Has transport sign",
   "transport_sign_hint": "Does this stop have a transport sign, such as a 512 sign?",
   "transport_sign_no": "No transport sign",

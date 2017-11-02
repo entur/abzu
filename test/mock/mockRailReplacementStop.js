@@ -79,7 +79,7 @@ const mockRailReplacementStop = {
             },
             __typename: 'TopographicPlace'
           },
-          topographicPlaceType: 'town',
+          topographicPlaceType: 'municipality',
           __typename: 'TopographicPlace'
         },
         accessibilityAssessment: {

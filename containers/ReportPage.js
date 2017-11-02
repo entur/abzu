@@ -231,7 +231,7 @@ class ReportPage extends React.Component {
       withNearbySimilarDuplicates,
       tags,
       municipalityReference: topoiChips
-        .filter(topos => topos.type === 'town')
+        .filter(topos => topos.type === 'municipality')
         .map(topos => topos.id),
       countyReference: topoiChips
         .filter(topos => topos.type === 'county')
@@ -318,7 +318,7 @@ class ReportPage extends React.Component {
     let name = topographicalPlace.name.value;
 
     if (
-      topographicalPlace.topographicPlaceType === 'town' &&
+      topographicalPlace.topographicPlaceType === 'municipality' &&
       topographicalPlace.parentTopographicPlace
     ) {
       name += `, ${topographicalPlace.parentTopographicPlace.name.value}`;
@@ -343,7 +343,7 @@ class ReportPage extends React.Component {
       .filter(
         place =>
           place.topographicPlaceType === 'county' ||
-          place.topographicPlaceType === 'town'
+          place.topographicPlaceType === 'municipality'
       )
       .filter(
         place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1

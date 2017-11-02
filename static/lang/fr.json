@@ -288,7 +288,7 @@
   "title_for_favorite": "Comment souhaitez-vous nommer votre recherche ?",
   "total_capacity": "Capacité totale",
   "total_capacity_unknown": "Non définie",
-  "town": "Ville",
+  "municipality": "Ville",
   "transport_sign": "Panneau de transport affiché",
   "transport_sign_hint": "Est-ce que ce point d'arrêt possède un panneau de transport affiché, comme un signe d'arrêt de bus par exemple ?",
   "transport_sign_no": "Aucun panneau de transport affiché",

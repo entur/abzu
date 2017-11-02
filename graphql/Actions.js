@@ -307,7 +307,7 @@ export const getMergeInfoForStops = (client, stopPlaceId) => (
 
 export const findStopWithFilters = (client, query, stopPlaceType, chips, ignorePointTime) => {
   const municipalityReference = chips
-  .filter(topos => topos.type === 'town')
+  .filter(topos => topos.type === 'municipality')
     .map(topos => topos.value);
   const countyReference = chips
     .filter(topos => topos.type === 'county')

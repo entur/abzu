@@ -289,7 +289,7 @@
   "title_for_favorite": "Hva vil du huske ditt favorittsøk som?",
   "total_capacity": "Kapasitet",
   "total_capacity_unknown" : "Ikke satt",
-  "town": "Kommune",
+  "municipality": "Kommune",
   "transport_sign": "Har transportskilt",
   "transport_sign_hint": "Har dette stoppet et transportskilt, som f.eks. 512-skilt?",
   "transport_sign_no": "Mangler transportskilt",
