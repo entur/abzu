@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { jsonArrayToCSV } from '../../utils/CSVHelper';
 import {
@@ -23,6 +24,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import moment from 'moment';
+
 
 class ReportPageFooter extends React.Component {
   constructor(props) {

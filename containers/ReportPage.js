@@ -62,6 +62,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly: false,
       withDuplicateImportedIds: false,
       withNearbySimilarDuplicates: false,
+      withTags: false,
       tags: [],
     };
   }
@@ -160,6 +161,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly: fromURL.withoutLocationOnly == 'true',
       withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates == 'true',
       withDuplicateImportedIds: fromURL.withDuplicateImportedIds == 'true',
+      withTags: fromURL.withTags == 'true',
       tags: fromURL.tags ? fromURL.tags.split(',') : [],
       stopTypeFilter: fromURL.stopPlaceType
         ? fromURL.stopPlaceType.split(',')
@@ -214,6 +216,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly,
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
+      withTags,
       tags
     } = this.state;
     const { client } = this.props;
@@ -229,6 +232,7 @@ class ReportPage extends React.Component {
       pointInTime: (withDuplicateImportedIds || withNearbySimilarDuplicates) ? new Date().toISOString() : null,
       stopPlaceType: stopTypeFilter,
       withNearbySimilarDuplicates,
+      withTags,
       tags,
       municipalityReference: topoiChips
         .filter(topos => topos.type === 'town')
@@ -334,7 +338,8 @@ class ReportPage extends React.Component {
       isLoading,
       withoutLocationOnly,
       withDuplicateImportedIds,
-      withNearbySimilarDuplicates
+      withNearbySimilarDuplicates,
+      withTags
     } = this.state;
     const { intl, topographicalPlaces, results, duplicateInfo } = this.props;
     const { locale, formatMessage } = intl;
@@ -438,6 +443,7 @@ class ReportPage extends React.Component {
                     withoutLocationOnly={withoutLocationOnly}
                     withDuplicateImportedIds={withDuplicateImportedIds}
                     withNearbySimilarDuplicates={withNearbySimilarDuplicates}
+                    withTags={withTags}
                     handleCheckboxChange={(key, value) => {
                       this.setState({
                         [key]: value

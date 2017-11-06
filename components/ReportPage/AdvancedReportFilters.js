@@ -34,7 +34,8 @@ class AdvancedReportFilters extends Component {
       withoutLocationOnly,
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
-      handleCheckboxChange
+      handleCheckboxChange,
+      withTags
     } = this.props;
 
     const { open, anchorEl } = this.state;
@@ -90,6 +91,18 @@ class AdvancedReportFilters extends Component {
                 checked={withNearbySimilarDuplicates}
                 onCheck={(e, value) => {
                   handleCheckboxChange('withNearbySimilarDuplicates', value);
+                }}
+                style={{ marginTop: 10 }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <Checkbox
+                label={formatMessage({ id: 'only_with_tags' })}
+                labelPosition="right"
+                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                checked={withTags}
+                onCheck={(e, value) => {
+                  handleCheckboxChange('withTags', value);
                 }}
                 style={{ marginTop: 10 }}
               />
