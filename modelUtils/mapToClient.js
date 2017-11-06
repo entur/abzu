@@ -123,7 +123,6 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
           ref: action.payLoad.id,
           addressablePlace: {
             id: action.payLoad.id,
-            version: 'any',
             geometry: {
               type: 'Point',
               coordinates: [action.payLoad.coordinates]
@@ -159,7 +158,6 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
     lastPathLink.to = {
       placeRef: {
         ref: action.payLoad.id,
-        version: 'any',
         addressablePlace: {
           id: action.payLoad.id,
           geometry: {
