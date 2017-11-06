@@ -24,7 +24,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import moment from 'moment';
-
+import { getDarkColor } from '../../config/themeConfig';
 
 class ReportPageFooter extends React.Component {
   constructor(props) {
@@ -119,7 +119,7 @@ class ReportPageFooter extends React.Component {
       display: 'flex',
       bottom: 0,
       padding: '10px 0px',
-      background: '#213a46',
+      background: getDarkColor(),
       justifyContent: 'space-between',
       position: 'fixed',
       height: 35,

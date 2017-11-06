@@ -17,7 +17,10 @@ import { getEnvColor as defaultEnvColor } from './themes/default/defaultTheme';
 import { getTheme as getDefaultTheme } from './themes/default/defaultTheme';
 import defaultLogo from './themes/default/logo.png';
 import { primary as defaultPrimary } from './themes/default/defaultTheme';
-import { primaryDarker as defaultPrimaryDarker } from './themes/default/defaultTheme';
+import {
+  primaryDarker as defaultPrimaryDarker,
+  darkColor as defaultDarkColor
+} from './themes/default/defaultTheme';
 
 export const getTiamatEnv = () => {
   return getIn(window, ['config', 'tiamatEnv'], 'development');
@@ -25,7 +28,9 @@ export const getTiamatEnv = () => {
 
 export const getEnvColor = env => {
   if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').getEnvColor(env);
+    return require('./themes/' + process.env.THEME + '/index.js').getEnvColor(
+      env
+    );
   } else {
     return defaultEnvColor(env);
   }
@@ -52,6 +57,14 @@ export const getPrimaryColor = () => {
     return require('./themes/' + process.env.THEME + '/index.js').primary;
   } else {
     return defaultPrimary;
+  }
+};
+
+export const getDarkColor = () => {
+  if (process.env.THEME) {
+    return require('./themes/' + process.env.THEME + '/index.js').darkColor;
+  } else {
+    return defaultDarkColor;
   }
 };
 
