@@ -12,8 +12,8 @@ var bodyParser = require('body-parser');
 
 convictPromise
   .then(convict => {
-    var ENDPOINTBASE = convict.get('endpointBase');
 
+    var ENDPOINTBASE = convict.get('endpointBase');
     console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
     app.use(
@@ -69,6 +69,7 @@ convictPromise
     app.get(
       [ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'],
       function(req, res) {
+
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),

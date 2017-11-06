@@ -271,7 +271,7 @@
   "stop_place": "stoppested",
   "stop_places": "Stoppesteder",
   "stopPlaceType": "Stoppestedstype / modalitet",
-  "stop_has_expired": "Denne versjonen har utløpt!",
+  "stop_has_expired": "Denne versjonen er utløpt!",
   "stop_has_expired_last_version": "Dette stoppestedet har utløpt!",
   "showing_results": "Viser $size av $total",
   "tariffZones": "Tariffsoner",
