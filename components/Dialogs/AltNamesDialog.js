@@ -87,6 +87,7 @@ class AltNamesDialog extends React.Component {
       let altName = altNames[i];
       if (
         altName.name &&
+        nameTypeString === 'translation' &&
         altName.name.lang === languageString &&
         altName.nameType === nameTypeString
       ) {
