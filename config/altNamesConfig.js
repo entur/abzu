@@ -63,42 +63,42 @@ export const allNameTypes = {
 };
 
 export const languages = {
-  no: {
+  nor: {
     en: 'Norwegian',
     nb: 'Norsk',
     fr: 'Norvégien',
   },
-  nb: {
-    en: 'Norwegian (bokmål)',
-    nb: 'Norsk (bokmål)',
-    fr: 'Norvégien (bokmål)',
-  },
-  nn: {
-    en: 'Norwegian (nynorsk)',
-    nb: 'Norsk (nynorsk)',
-    fr: 'Norvégien (nynorsk)',
-  },
-  en: {
+  eng: {
     en: 'English',
     nb: 'Engelsk',
     fr: 'Anglais',
   },
-  et: {
+  est: {
     en: 'Estonian',
     nb: 'Estisk',
     fr: 'Estonien',
   },
-  ru: {
+  fin: {
+    en: 'Finnish',
+    nb: 'Finsk',
+    fr: 'Finnois'
+  },
+  sme: {
+    en: 'Northern Sami',
+    nb: 'Nordsamisk',
+    fr: 'Sami du Nord'
+  },
+  rus: {
     en: 'Russian',
     nb: 'Russisk',
     fr: 'Russe',
   },
-  fi: {
+  fkv: {
     en: 'Kven language',
     nb: 'Kvensk',
     fr: 'Kven',
   },
-  fr: {
+  fra: {
     en: 'French',
     nb: 'Fransk',
     fr: 'Français',
