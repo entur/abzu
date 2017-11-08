@@ -49,7 +49,7 @@ class NeighbourMarker extends React.Component {
     if (this.state.createMultimodalNotAllowed !== nextState.createMultimodalNotAllowed) {
       return true;
     }
-    return shallowCompare(this, nextProps);
+    return shallowCompare(this.props, nextProps);
   }
 
   getIsMergingStopAllowed() {

@@ -38,7 +38,7 @@ class StopPlaceMarker extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return shallowCompare(this, nextProps);
+    return shallowCompare(this.props, nextProps);
   }
 
   componentWillMount() {
