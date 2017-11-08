@@ -17,7 +17,8 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
-import MdMerge from 'material-ui/svg-icons/editor/merge-type';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import MdDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import Checkbox from 'material-ui/Checkbox';
 import TimePicker from 'material-ui/TimePicker';
@@ -39,6 +40,14 @@ if (areIntlLocalesSupported(['nb'])) {
 }
 
 class TerminateStopPlaceDialog extends React.Component {
+
+  static propTypes = {
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleConfirm: PropTypes.func.isRequired,
+    intl: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = this.getInitialState(props);
@@ -48,6 +57,15 @@ class TerminateStopPlaceDialog extends React.Component {
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState(this.getInitialState(nextProps));
     }
+  }
+
+  getConfirmIsDisabled() {
+    const { stopPlace, isLoading } = this.props;
+    const { isChildOfParent, hasExpired } = stopPlace;
+    const { shouldHardDelete } = this.state;
+    // only possible to delete stop if stop has expired
+    const expiredNotDeleteCondition = hasExpired ? !(hasExpired && shouldHardDelete) : false;
+    return (!!isChildOfParent || isLoading || expiredNotDeleteCondition);
   }
 
   getInitialState(props) {
@@ -63,13 +81,6 @@ class TerminateStopPlaceDialog extends React.Component {
     };
   }
 
-  static propTypes = {
-    open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    handleConfirm: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired
-  };
-
   render() {
     const {
       open,
@@ -83,7 +94,6 @@ class TerminateStopPlaceDialog extends React.Component {
       serverTimeDiff
     } = this.props;
     const { formatMessage } = intl;
-    const { isChildOfParent } = stopPlace;
     const { shouldHardDelete, date, time, comment } = this.state;
 
     const translations = {
@@ -109,10 +119,16 @@ class TerminateStopPlaceDialog extends React.Component {
       <FlatButton
         label={translations.confirm}
         onTouchTap={() => handleConfirm(shouldHardDelete, comment, dateTime)}
-        disabled={!!isChildOfParent || isLoading}
+        disabled={this.getConfirmIsDisabled()}
         primary={true}
         keyboardFocused={true}
-        icon={isLoading ? <Spinner /> : <MdMerge />}
+        icon={
+          isLoading
+            ? <Spinner/>
+            : shouldHardDelete
+              ? <MdDeleteForever/>
+              : <MdDelete/>
+        }
       />
     ];
 
@@ -136,9 +152,12 @@ class TerminateStopPlaceDialog extends React.Component {
               style={{ fontWeight: 600 }}
             >{`${stopPlace.name} (${stopPlace.id})`}</span>
           </div>
+          <div style={{color: '#bb271c'}}>
+            {stopPlace.hasExpired && formatMessage({id: 'expired_can_only_be_deleted'})}
+          </div>
           <DatePicker
             hintText={translations.date}
-            disabled={shouldHardDelete}
+            disabled={shouldHardDelete || stopPlace.hasExpired}
             cancelLabel={translations.cancel}
             floatingLabelText={translations.date}
             okLabel={translations.use}
@@ -162,7 +181,7 @@ class TerminateStopPlaceDialog extends React.Component {
             cancelLabel={translations.cancel}
             hintText={translations.time}
             floatingLabelText={translations.time}
-            disabled={shouldHardDelete}
+            disabled={shouldHardDelete || stopPlace.hasExpired}
             value={time}
             fullWidth={true}
             okLabel={translations.use}
@@ -175,7 +194,7 @@ class TerminateStopPlaceDialog extends React.Component {
           />
           <TextField
             value={comment}
-            disabled={shouldHardDelete}
+            disabled={shouldHardDelete || stopPlace.hasExpired}
             fullWidth={true}
             floatingLabelText={translations.comment}
             hintText={translations.comment}

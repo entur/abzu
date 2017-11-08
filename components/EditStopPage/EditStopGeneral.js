@@ -511,7 +511,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 };
-    const disableTerminate = stopPlace.isNewStop || disabled || stopPlace.hasExpired;
+    const disableTerminate = stopPlace.isNewStop || disabled || (stopPlace.hasExpired && !isCurrentVersionMax);
 
     return (
       <div style={style}>

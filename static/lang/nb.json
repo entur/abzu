@@ -94,6 +94,7 @@
   "error_unable_to_load_stop": "Det har inntruffet en feil på serveren. Prøv igjen senere.",
   "estimated_path_length": "Hvor mange sekunder tar denne ganglenken normalt å spasere?",
   "expire_parking": "Sett parkingering til utløpt",
+  "expired_can_only_be_deleted": "Stoppet er utløpt i siste versjon, og kan kun slettes",
   "export_to_csv": "Eksporter ...",
   "export_to_csv_quays": "Eksporter quayer som CSV",
   "export_to_csv_stop_places": "Eksporter stoppesteder som CSV",

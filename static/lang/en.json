@@ -94,6 +94,7 @@
   "error_unable_to_load_stop": "An error has occured on the server. Please try again later.",
   "estimated_path_length": "How many seconds is your estimate of this path link by walking?",
   "expire_parking": "Set parking to expired",
+  "expired_can_only_be_deleted": "This stop place has expired in latest version, and can only be deleted",
   "export_to_csv": "Export ...",
   "export_to_csv_quays": "Export quays as CSV",
   "export_to_csv_stop_places": "Export stop places as CSV",
