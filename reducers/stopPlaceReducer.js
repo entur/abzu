@@ -88,6 +88,11 @@ const stopPlaceReducer = (state = {}, action) => {
         zoom: action.payLoad.zoom
       });
 
+    case types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS:
+      return Object.assign({}, state, {
+        lastMutatedStopPlaceId: []
+      });
+
     case types.NAVIGATE_TO:
       if (action.payLoad === '') {
         return Object.assign({}, state, {
@@ -96,7 +101,7 @@ const stopPlaceReducer = (state = {}, action) => {
           newStop: null
         });
       } else {
-        return state;
+        return state
       }
 
     case types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW:

@@ -310,6 +310,12 @@ StopPlaceActions.changeParkingName = (index, name) => dispatch => {
   );
 };
 
+StopPlaceActions.clearLastMutatedStopPlaceId = () => dispatch => {
+  dispatch(
+    sendData(types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS, null)
+  );
+};
+
 StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   const state = getState();
   const stopPlace = state.stopPlace.current;
