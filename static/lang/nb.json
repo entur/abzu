@@ -195,7 +195,7 @@
   "only_with_tags": "Kun stopp med tagger",
   "only_duplicate_importedIds": "Kun stopp med duplikate lokalID-er på quayer",
   "optional_search_string": "Valgfri søketekst",
-  "overwrite_alt_name_body": "Et alternativt navn for denne navntypen finnes allrede for angitt språk. Ønsker du å overskrive den eksisterende med denne?",
+  "overwrite_alt_name_body": "Et alternativt navn for denne navnetypen finnes allerede for angitt språk. Ønsker du å overskrive den eksisterende med denne?",
   "overwrite_alt_name_cancel": "Behold forrige",
   "overwrite_alt_name_confirm": "Overskriv",
   "overwrite_alt_name_title": "Konflikt i alternative navn",
