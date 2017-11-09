@@ -44,16 +44,18 @@ class ReportPageFooter extends React.Component {
 
   downloadCSV(items, columns, filename, transformer) {
     let csv = jsonArrayToCSV(items, columns, ';', transformer);
-    var element = document.createElement('a');
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const BOM = "\uFEFF";
+    const content = BOM + csv;
+    let element = document.createElement('a');
+    let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
     let dateNow = moment(new Date()).format('DD-MM-YYYY');
     let fullFilename = filename + '-' + dateNow + '.csv';
-    var url = URL.createObjectURL(blob);
+    let url = URL.createObjectURL(blob);
     element.href = url;
     element.setAttribute('target', '_blank');
     element.setAttribute('download', fullFilename);
 
-    let event = document.createEvent("MouseEvents")
+    let event = document.createEvent("MouseEvents");
     event.initMouseEvent(
       "click", true, false, window, 0, 0, 0, 0, 0
       , false, false, false, false, 0, null
