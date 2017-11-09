@@ -522,6 +522,16 @@ const stopPlaceReducer = (state = {}, action) => {
         },
       });
 
+    case types.REQUESTED_QUAYS_MERGE_INFO:
+      return Object.assign({}, state, {
+         isFetchingMergeInfo: true
+     });
+
+    case types.RECEIVED_QUAYS_MERGE_INFO:
+      return Object.assign({}, state, {
+        isFetchingMergeInfo: false
+      });
+
     case types.CLOSED_MERGE_STOP_DIALOG:
       return Object.assign({}, state, {
         mergeStopDialog: {

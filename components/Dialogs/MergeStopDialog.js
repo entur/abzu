@@ -55,7 +55,8 @@ class MergeStopDialog extends React.Component {
       targetElement,
       handleConfirm,
       hasStopBeenModified,
-      isLoading
+      isLoading,
+      isFetchingQuays
     } = this.props;
     const { formatMessage } = intl;
     const { changesUnderstood } = this.state;
@@ -84,18 +85,18 @@ class MergeStopDialog extends React.Component {
 
     // versionComment should be in Norwegian
 
-    let numberOfQuaysMerged = 'Ingen quayer flettet';
+    let quaysMergedLabel = 'Ingen quayer flettet';
 
     if (sourceElement && sourceElement.quays) {
       if (sourceElement.quays.length === 1) {
-        numberOfQuaysMerged = 'Én quay flettet.';
+        quaysMergedLabel = 'Én quay flettet.';
       } else if (sourceElement.quays.length > 1) {
-        numberOfQuaysMerged = `${sourceElement.quays.length} quayer flettet.`;
+        quaysMergedLabel = `${sourceElement.quays.length} quayer flettet.`;
       }
     }
 
-    const fromVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${numberOfQuaysMerged}`;
-    const toVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${numberOfQuaysMerged}`;
+    const fromVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${quaysMergedLabel}`;
+    const toVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${quaysMergedLabel}`;
 
     if (!sourceElement) return null;
 
@@ -111,7 +112,7 @@ class MergeStopDialog extends React.Component {
       actions.push(
         <FlatButton
           label={translations.confirm}
-          disabled={!enableConfirm || isLoading}
+          disabled={!enableConfirm || isLoading || isFetchingQuays}
           onTouchTap={() => {
             handleConfirm(fromVersionComment, toVersionComment);
           }}
@@ -134,37 +135,44 @@ class MergeStopDialog extends React.Component {
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         {canMerge
-          ? <div>
-              <div style={{ marginBottom: 20, color: '#000' }}>
-                {mergeResultText}
-              </div>
-              {sourceElement.quays && sourceElement.quays.length
-                ? <span style={{ fontWeight: 600 }}>{translations.result}</span>
-                : <span style={{ fontWeight: 600, borderBottom: '1px solid' }}>
+          ? (
+            isFetchingQuays
+              ? <div style={{textAlign: 'center'}}>
+                  <Spinner style={{height: 40, width: 40}}/>
+                </div>
+              :
+              <div>
+                <div style={{ marginBottom: 20, color: '#000' }}>
+                  {mergeResultText}
+                </div>
+                {sourceElement.quays && sourceElement.quays.length
+                  ? <span style={{ fontWeight: 600 }}>{translations.result}</span>
+                  : <span style={{ fontWeight: 600, borderBottom: '1px solid' }}>
                     {translations.result_empty}
                   </span>}
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  maxHeight: 300,
-                  overflowX: 'scroll',
-                  marginBottom: 10
-                }}
-              >
-                {(sourceElement.quays || []).map(quay =>
-                  <div style={{ padding: 10 }} key={'quay-details-' + quay.id}>
-                    <QuayDetails quay={quay} hideSourceOriginLabel={true} />
-                  </div>
-                )}
-              </div>
-              <div style={{ marginLeft: 0 }}>{translations.info}</div>
-              {hasStopBeenModified &&
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    maxHeight: 300,
+                    overflowX: 'scroll',
+                    marginBottom: 10
+                  }}
+                >
+                  {(sourceElement.quays || []).map(quay =>
+                    <div style={{ padding: 10 }} key={'quay-details-' + quay.id}>
+                      <QuayDetails quay={quay} hideSourceOriginLabel={true} />
+                    </div>
+                  )}
+                </div>
+                <div style={{ marginLeft: 0 }}>{translations.info}</div>
+                {hasStopBeenModified &&
                 <AcceptChanges
                   checked={changesUnderstood}
                   onChange={(e, v) => this.setState({ changesUnderstood: v })}
                 />}
-            </div>
+              </div>
+          )
           : <div>{translations.mergingNotAllowed}</div>}
       </Dialog>
     );

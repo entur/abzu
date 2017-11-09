@@ -100,7 +100,8 @@ export default function configureStore(kc) {
       enablePolylines: Settings.getShowPathLinks(),
       showExpiredStops: Settings.getShowExpiredStops(),
       showMultimodalEdges: Settings.getShowMultimodalEdges(),
-      lastMutatedStopPlaceId: []
+      lastMutatedStopPlaceId: [],
+      isFetchingMergeInfo: false
     },
     user: {
       path: '/',

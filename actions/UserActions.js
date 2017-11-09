@@ -302,7 +302,10 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch, getState
   );
 
   if (client) {
+    dispatch(sendData(types.REQUESTED_QUAYS_MERGE_INFO, null));
+
     getMergeInfoForStops(client, fromStopPlaceID).then( response => {
+      dispatch(sendData(types.RECEIVED_QUAYS_MERGE_INFO, null));
       dispatch(
         sendData(types.OPENED_MERGE_STOP_DIALOG, {
           id: fromStopPlaceID,
@@ -310,7 +313,10 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch, getState
           quays: getQuaysForMergeInfo(response.data.stopPlace)
         })
       );
-    }).catch( err => { console.log(err); });
+    }).catch( err => {
+      dispatch(sendData(types.RECEIVED_QUAYS_MERGE_INFO, null));
+      console.log(err);
+    });
   }
 };
 

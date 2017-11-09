@@ -641,6 +641,7 @@ class EditStopGeneral extends React.Component {
             open={mergeStopDialogOpen}
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
             handleConfirm={this.handleMergeQuaysFromStop.bind(this)}
+            isFetchingQuays={this.props.isFetchingMergeInfo}
             isLoading={this.state.isLoading}
             intl={intl}
             hasStopBeenModified={stopHasBeenModified}
@@ -782,7 +783,8 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
   originalStopPlace: state.stopPlace.originalCurrent,
-  serverTimeDiff: state.user.serverTimeDiff
+  serverTimeDiff: state.user.serverTimeDiff,
+  isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo
 });
 
 export default withApollo(
