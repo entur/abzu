@@ -62,6 +62,34 @@ export const allNameTypes = {
   },
 };
 
+export const getSupportedLocale = locale => {
+  const supportedLocales = ['nb', 'en', 'fr'];
+  if (supportedLocales.indexOf(locale) > -1) {
+    return locale;
+  }
+  return 'en';
+};
+
+/* used temporary for transition between ISO-0639-2 and ISO-0639-3 */
+export const getISO6393 = lang => {
+  switch (lang) {
+    case 'nb':
+    case 'nn':
+      return 'nor';
+    case 'en':
+      return 'eng';
+    case 'et':
+      return 'est';
+    case 'fi':
+      return 'fin';
+    case 'ru':
+      return 'rus';
+    case 'fr':
+      return 'fra';
+    default: return 'nor';
+  }
+};
+
 export const languages = {
   nor: {
     en: 'Norwegian',
