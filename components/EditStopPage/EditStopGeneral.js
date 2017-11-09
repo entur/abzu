@@ -491,7 +491,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const scrollable = {
-      overflowY: 'scroll',
+      overflowY: 'auto',
       overflowX: 'hidden',
       width: '100%',
       height: '82vh',

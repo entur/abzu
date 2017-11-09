@@ -155,7 +155,7 @@ class MergeStopDialog extends React.Component {
                     display: 'flex',
                     flexWrap: 'wrap',
                     maxHeight: 300,
-                    overflowX: 'scroll',
+                    overflowX: 'auto',
                     marginBottom: 10
                   }}
                 >
