@@ -150,11 +150,26 @@ class AltNamesDialog extends React.Component {
     }
   }
 
+  getNameTypeByLocale(nameType, locale) {
+    const localeNameType = altNameConfig.allNameTypes[nameType];
+    if (localeNameType) {
+      return localeNameType[locale];
+    }
+    return 'N/A';
+  };
+
+  getLangByLocale(lang, locale) {
+    const localeLang = altNameConfig.languages[lang];
+    if (localeLang) {
+      return localeLang[locale];
+    }
+    return 'N/A';
+  }
+
   render() {
     const { open, intl, altNames = [], handleClose, disabled } = this.props;
     const { formatMessage, locale } = intl;
     const { isEditing, lang, type, value, confirmDialogOpen, editingId } = this.state;
-    const supportedLocale = altNameConfig.getSupportedLocale(locale);
 
     if (!open) return null;
 
@@ -241,8 +256,6 @@ class AltNamesDialog extends React.Component {
         >
           {altNames.map((an, i) => {
 
-            const langISO6393 = altNameConfig.getISO6393(an.name.lang);
-
             return (
               <div
                 key={'altName-' + i}
@@ -255,11 +268,11 @@ class AltNamesDialog extends React.Component {
                 }}
               >
                 <div style={itemStyle}>
-                  {altNameConfig.allNameTypes[an.nameType][supportedLocale]}
+                  {this.getNameTypeByLocale(an.nameType, locale)}
                 </div>
                 <div style={itemStyle}>{an.name.value}</div>
                 <div style={itemStyle}>
-                  {altNameConfig.languages[langISO6393][supportedLocale]}
+                  {this.getLangByLocale(an.name.lang, locale)}
                 </div>
                 {!disabled
                   ? <div style={{display: 'flex'}}>
