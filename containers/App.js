@@ -19,6 +19,7 @@ import Header from '../components/Header';
 import { injectIntl } from 'react-intl';
 import { getTheme } from '../config/themeConfig';
 import SnackbarWrapper from '../components/SnackbarWrapper';
+import BrowserSupport from '../components/BrowserSupport';
 
 class App extends React.Component {
 
@@ -33,6 +34,7 @@ class App extends React.Component {
           <Header intl={intl} />
           {children}
           <SnackbarWrapper formatMessage={intl.formatMessage}/>
+          <BrowserSupport/>
         </div>
       </MuiThemeProvider>
     );
