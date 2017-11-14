@@ -64,7 +64,7 @@ class MarkerList extends React.Component {
           },
         })
         .then(result => {
-          dispatch(UserActions.navigateTo('/edit/', id));
+          dispatch(UserActions.navigateTo('/stop_place/', id));
         });
     }
   }
@@ -72,7 +72,7 @@ class MarkerList extends React.Component {
   handleNewStopClick() {
     const { dispatch, intl } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
-    dispatch(UserActions.navigateTo('/edit/', 'new'));
+    dispatch(UserActions.navigateTo('/stop_place/', 'new'));
     document.title = intl.formatMessage({ id: '_title_new_stop' });
   }
 
@@ -553,7 +553,7 @@ const mapStateToProps = state => ({
   currentIsNewStop: getIn(state.stopPlace, ['current', 'isNewStop'], false),
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
   isEditingStop:
-    state.routing.locationBeforeTransitions.pathname.indexOf('edit') > -1,
+    state.routing.locationBeforeTransitions.pathname.indexOf('stop_place') > -1,
   missingCoordinatesMap: state.user.missingCoordsMap,
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,

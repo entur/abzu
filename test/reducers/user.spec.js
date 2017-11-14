@@ -25,12 +25,12 @@ describe('user reducer', () => {
   test('Should navigate to path', () => {
     const editPathChange = {
       type: types.NAVIGATE_TO,
-      payLoad: '/edit/',
+      payLoad: '/stop_place/',
     };
 
     expect(userReducer(undefined, editPathChange)).toEqual({
       ...initialState,
-      path: '/edit/',
+      path: '/stop_place/',
     });
   });
 

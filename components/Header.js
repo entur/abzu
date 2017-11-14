@@ -310,7 +310,7 @@ const mapStateToProps = state => ({
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
-  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/edit/') > -1,
+  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
 });
 

@@ -119,7 +119,7 @@ class EditStopGeneral extends React.Component {
     });
 
     getStopPlaceVersions(client, stopPlaceId).then(() => {
-      dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
+      dispatch(UserActions.navigateTo('/stop_place/', stopPlaceId));
       dispatch(
         UserActions.openSnackbar(types.SUCCESS)
       );

@@ -434,7 +434,7 @@ UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch =
           fromMain
         })
       );
-      dispatch(UserActions.navigateTo('/edit/', 'new'));
+      dispatch(UserActions.navigateTo('/stop_place/', 'new'));
     }
   });
 }

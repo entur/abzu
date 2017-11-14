@@ -17,7 +17,7 @@ convictPromise
     console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
     app.use(
-      [ENDPOINTBASE + 'public/', ENDPOINTBASE + 'edit/public/'],
+      [ENDPOINTBASE + 'public/', ENDPOINTBASE + 'stop_place/public/'],
       express.static(__dirname + '/public')
     );
 
@@ -67,7 +67,7 @@ convictPromise
     }
 
     app.get(
-      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'],
+      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'stop_place/config.json'],
       function(req, res) {
 
         var cfg = {
@@ -83,7 +83,7 @@ convictPromise
       }
     );
 
-    app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
+    app.get(ENDPOINTBASE + 'stop_place/:id', function(req, res) {
       res.send(getPage());
     });
 
@@ -112,7 +112,7 @@ convictPromise
     app.get(
       [
         ENDPOINTBASE + 'translation.json',
-        ENDPOINTBASE + 'edit/translation.json'
+        ENDPOINTBASE + 'stop_place/translation.json'
       ],
       function(req, res) {
         let translations = getTranslations(req);

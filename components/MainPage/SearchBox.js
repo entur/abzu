@@ -101,7 +101,7 @@ class SearchBox extends React.Component {
   }
 
   handleEdit(id) {
-    this.props.dispatch(UserActions.navigateTo('/edit/', id));
+    this.props.dispatch(UserActions.navigateTo('/stop_place/', id));
   }
 
   handleSaveAsFavorite() {

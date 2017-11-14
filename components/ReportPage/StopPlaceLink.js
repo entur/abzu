@@ -17,6 +17,6 @@ import React from 'react';
 
 export default ({ id, style }) => {
   const url =
-    window.location.origin + window.config.endpointBase + 'edit/' + id;
+    window.location.origin + window.config.endpointBase + 'stop_place/' + id;
   return <a style={{...style}} target="_blank" href={url}>{id}</a>;
 };
