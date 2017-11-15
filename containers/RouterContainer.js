@@ -21,7 +21,6 @@ import StopPlace from './StopPlace';
 import ReportPage from './ReportPage';
 import Routes from '../routes/';
 
-
 class RouterContainer extends React.Component {
   render() {
     const { path, history } = this.props;

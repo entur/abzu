@@ -9,17 +9,20 @@ var fs = require('fs');
 var axios = require('axios');
 var introspectionQuery = require('./graphql/introspection').introspectionQuery;
 var bodyParser = require('body-parser');
-var Routes = require('./routes/');
+const Routes = require('./routes/');
+const getRouteEntries = require('./routes/entries').getRouteEntries;
 
 
 convictPromise
   .then(convict => {
 
-    var ENDPOINTBASE = convict.get('endpointBase');
+    const ENDPOINTBASE = convict.get('endpointBase');
     console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
+    const assetsEndpoints = getRouteEntries(ENDPOINTBASE, '/public/');
+
     app.use(
-      [ENDPOINTBASE + 'public/', ENDPOINTBASE + Routes.STOP_PLACE + '/public/'],
+      [ENDPOINTBASE + 'public/', ...assetsEndpoints],
       express.static(__dirname + '/public')
     );
 
@@ -68,8 +71,10 @@ convictPromise
       });
     }
 
+    const configEndpoints = getRouteEntries(ENDPOINTBASE, '/config.json');
+
     app.get(
-      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + Routes.STOP_PLACE + '/config.json'],
+      [ENDPOINTBASE + 'config.json', [...configEndpoints]],
       function(req, res) {
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
@@ -85,6 +90,10 @@ convictPromise
     );
 
     app.get(ENDPOINTBASE + Routes.STOP_PLACE + '/:id', function(req, res) {
+      res.send(getPage());
+    });
+
+    app.get(ENDPOINTBASE + Routes.GROUP_OF_STOP_PLACE + '/:id', function(req, res) {
       res.send(getPage());
     });
 
@@ -110,10 +119,12 @@ convictPromise
       }
     });
 
+    const translationEndpoints = getRouteEntries(ENDPOINTBASE, '/translation.json');
+
     app.get(
       [
         ENDPOINTBASE + 'translation.json',
-        ENDPOINTBASE + Routes.STOP_PLACE + '/translation.json'
+        [...translationEndpoints]
       ],
       function(req, res) {
         let translations = getTranslations(req);
@@ -242,3 +253,4 @@ convictPromise
   .catch(function(err) {
     console.error('Unable to load convict configuration', err);
   });
+
