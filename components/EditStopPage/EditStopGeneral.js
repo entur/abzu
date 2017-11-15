@@ -59,6 +59,8 @@ import Settings from '../../singletons/SettingsManager';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
 import VersionsPopover from './VersionsPopover';
 import RequiredFieldsMissingDialog from '../Dialogs/RequiredFieldsMissingDialog';
+import Routes from '../../routes/';
+
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -119,17 +121,14 @@ class EditStopGeneral extends React.Component {
     });
 
     getStopPlaceVersions(client, stopPlaceId).then(() => {
-      dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
       dispatch(
-        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+        UserActions.openSnackbar(types.SUCCESS)
       );
     });
   }
 
   handleSaveError(errorCode) {
-    this.props.dispatch(
-      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR)
-    );
     this.setState({
       errorMessage: errorCode
     });
@@ -148,7 +147,7 @@ class EditStopGeneral extends React.Component {
     )
       .then(result => {
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         this.handleCloseMergeStopDialog();
         getStopPlaceWithAll(client, stopPlace.id).then(() => {
@@ -166,9 +165,6 @@ class EditStopGeneral extends React.Component {
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -187,16 +183,13 @@ class EditStopGeneral extends React.Component {
       .then(result => {
         this.setState({isLoading: false});
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         this.handleCloseMergeQuaysDialog();
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -208,19 +201,11 @@ class EditStopGeneral extends React.Component {
         this.setState({isLoading: false});
         dispatch(UserActions.hideDeleteQuayDialog());
         getStopPlaceWithAll(client, stopPlace.id).then(response => {
-          dispatch(
-            UserActions.openSnackbar(
-              types.SNACKBAR_MESSAGE_SAVED,
-              types.SUCCESS
-            )
-          );
+          dispatch(UserActions.openSnackbar(types.SUCCESS));
         });
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -238,15 +223,12 @@ class EditStopGeneral extends React.Component {
         this.setState({isLoading: false});
         dispatch(UserActions.closeMoveQuayDialog());
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         getStopPlaceWithAll(client, stopPlace.id);
       })
       .catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -261,16 +243,11 @@ class EditStopGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
-          } else {
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
           }
         })
         .catch(err => {
           this.setState({isLoading: false});
           dispatch(UserActions.hideDeleteStopDialog(true));
-          dispatch(
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-          );
         });
     } else {
       terminateStop(client, stopPlace.id, comment, dateTime).then( result => {
@@ -279,9 +256,6 @@ class EditStopGeneral extends React.Component {
         this.handleCloseDeleteStop();
       }).catch(err => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       })
     }
   }
@@ -425,7 +399,7 @@ class EditStopGeneral extends React.Component {
         }
         dispatch(UserActions.closeMoveQuayToNewStopDialog());
         dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+          UserActions.openSnackbar(types.SUCCESS)
         );
         getStopPlaceWithAll(client, stopPlace.id).then(response => {
           if (newStopPlaceId) {
@@ -435,11 +409,8 @@ class EditStopGeneral extends React.Component {
           }
         });
       })
-      .catch(err => {
+      .catch((error) => {
         this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
       });
   }
 
@@ -522,7 +493,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const scrollable = {
-      overflowY: 'scroll',
+      overflowY: 'auto',
       overflowX: 'hidden',
       width: '100%',
       height: '82vh',
@@ -542,7 +513,7 @@ class EditStopGeneral extends React.Component {
     };
 
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 };
-    const disableTerminate = stopPlace.isNewStop || disabled || stopPlace.hasExpired;
+    const disableTerminate = stopPlace.isNewStop || disabled || (stopPlace.hasExpired && !isCurrentVersionMax);
 
     return (
       <div style={style}>
@@ -664,6 +635,7 @@ class EditStopGeneral extends React.Component {
                 handleConfirm={this.handleSaveAllEntities.bind(this)}
                 errorMessage={this.state.errorMessage}
                 intl={intl}
+                serverTimeDiff={this.props.serverTimeDiff}
                 currentValidBetween={stopPlace.validBetween}
               />
             : null}
@@ -671,6 +643,7 @@ class EditStopGeneral extends React.Component {
             open={mergeStopDialogOpen}
             handleClose={this.handleCloseMergeStopDialog.bind(this)}
             handleConfirm={this.handleMergeQuaysFromStop.bind(this)}
+            isFetchingQuays={this.props.isFetchingMergeInfo}
             isLoading={this.state.isLoading}
             intl={intl}
             hasStopBeenModified={stopHasBeenModified}
@@ -707,6 +680,7 @@ class EditStopGeneral extends React.Component {
             stopPlace={stopPlace}
             canDeleteStop={canDeleteStop}
             isLoading={this.state.isLoading}
+            serverTimeDiff={this.props.serverTimeDiff}
           />
           <MoveQuayDialog
             open={this.props.moveQuayDialogOpen}
@@ -811,6 +785,8 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
   originalStopPlace: state.stopPlace.originalCurrent,
+  serverTimeDiff: state.user.serverTimeDiff,
+  isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo
 });
 
 export default withApollo(

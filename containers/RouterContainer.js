@@ -12,12 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 import App from './App';
 import StopPlaces from './StopPlaces';
-import EditPage from './EditPage';
+import StopPlace from './StopPlace';
 import ReportPage from './ReportPage';
+import Routes from '../routes/';
+
 
 class RouterContainer extends React.Component {
   render() {
@@ -26,7 +29,7 @@ class RouterContainer extends React.Component {
     const routes = (
       <Route path={path} component={App}>
         <IndexRoute component={StopPlaces} />
-        <Route path={path + 'edit/:stopId'} component={EditPage} />
+        <Route path={path + Routes.STOP_PLACE + '/:stopId'} component={StopPlace} />
         <Route path={path + 'reports'} component={ReportPage} />
       </Route>
     );

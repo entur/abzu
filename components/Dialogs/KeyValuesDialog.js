@@ -141,7 +141,7 @@ class KeyValuesDialog extends React.Component {
           style={{
             fontSize: 14,
             maxHeight: 300,
-            overflowY: 'scroll',
+            overflowY: 'auto',
             marginLeft: 15,
             marginBottom: 5
           }}

@@ -87,6 +87,7 @@ class AltNamesDialog extends React.Component {
       let altName = altNames[i];
       if (
         altName.name &&
+        nameTypeString === 'translation' &&
         altName.name.lang === languageString &&
         altName.nameType === nameTypeString
       ) {
@@ -149,10 +150,28 @@ class AltNamesDialog extends React.Component {
     }
   }
 
+  getNameTypeByLocale(nameType, locale) {
+    const localeNameType = altNameConfig.allNameTypes[nameType];
+    if (localeNameType) {
+      return localeNameType[locale];
+    }
+    return 'N/A';
+  };
+
+  getLangByLocale(lang, locale) {
+    const localeLang = altNameConfig.languages[lang];
+    if (localeLang) {
+      return localeLang[locale];
+    }
+    return 'N/A';
+  }
+
   render() {
     const { open, intl, altNames = [], handleClose, disabled } = this.props;
     const { formatMessage, locale } = intl;
     const { isEditing, lang, type, value, confirmDialogOpen, editingId } = this.state;
+
+    if (!open) return null;
 
     const translations = {
       alternativeNames: formatMessage({ id: 'alternative_names' }),
@@ -165,8 +184,6 @@ class AltNamesDialog extends React.Component {
       editing: formatMessage({ id: 'editing'}),
       update: formatMessage({id: 'update'})
     };
-
-    if (!open) return null;
 
     const style = {
       position: 'fixed',
@@ -237,26 +254,28 @@ class AltNamesDialog extends React.Component {
             marginLeft: 5,
           }}
         >
-          {altNames.map((an, i) =>
-            <div
-              key={'altName-' + i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: 10,
-                justifyContent: 'space-between',
-                lineHeight: 2,
-              }}
-            >
-              <div style={itemStyle}>
-                {altNameConfig.allNameTypes[an.nameType][locale]}
-              </div>
-              <div style={itemStyle}>{an.name.value}</div>
-              <div style={itemStyle}>
-                {altNameConfig.languages[an.name.lang][locale]}
-              </div>
-              {!disabled
-                ? <div style={{display: 'flex'}}>
+          {altNames.map((an, i) => {
+
+            return (
+              <div
+                key={'altName-' + i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: 10,
+                  justifyContent: 'space-between',
+                  lineHeight: 2,
+                }}
+              >
+                <div style={itemStyle}>
+                  {this.getNameTypeByLocale(an.nameType, locale)}
+                </div>
+                <div style={itemStyle}>{an.name.value}</div>
+                <div style={itemStyle}>
+                  {this.getLangByLocale(an.name.lang, locale)}
+                </div>
+                {!disabled
+                  ? <div style={{display: 'flex'}}>
                     <IconButton
                       onTouchTap={() => {
                         this.handleEdit(i);
@@ -273,9 +292,10 @@ class AltNamesDialog extends React.Component {
                       <MdDelete color="rgb(223, 84, 74)"/>
                     </IconButton>
                   </div>
-                : null}
-            </div>,
-          )}
+                  : null}
+              </div>
+            )
+          })}
           {!altNames.length
             ? <div
                 style={{ width: '100%', textAlign: 'center', marginBottom: 10 }}

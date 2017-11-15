@@ -12,8 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export userReducer from './userReducer';
+
+export userReducer from './userReducer';
 export mapReducer from './mapReducer';
 export stopPlaceReducer from './stopPlaceReducer';
 export reportReducer from './reportReducer';
 export rolesReducer from './rolesReducer';
+export snackbarReducer from './snackbarReducer';

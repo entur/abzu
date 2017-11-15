@@ -42,7 +42,8 @@ import {
   getTagsQuery,
   findTagByNameQuery,
   getStopById,
-  getQueryTopographicPlaces
+  getQueryTopographicPlaces,
+  getTagsByNameQuery
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -306,7 +307,7 @@ export const getMergeInfoForStops = (client, stopPlaceId) => (
 
 export const findStopWithFilters = (client, query, stopPlaceType, chips, ignorePointTime) => {
   const municipalityReference = chips
-  .filter(topos => topos.type === 'town')
+  .filter(topos => topos.type === 'municipality')
     .map(topos => topos.value);
   const countyReference = chips
     .filter(topos => topos.type === 'county')
@@ -340,6 +341,15 @@ export const getTags = (client, idReference) =>
     fetchPolicy: 'network-only',
     variables: {
       idReference,
+    },
+  });
+
+export const getTagsByName = (client, name) =>
+  client.query({
+    query: getTagsByNameQuery,
+    fetchPolicy: 'network-only',
+    variables: {
+      name,
     },
   });
 

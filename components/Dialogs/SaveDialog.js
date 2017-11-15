@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
@@ -26,7 +25,10 @@ import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdSpinner from '../../static/icons/spinner';
 import { HumanReadableErrorCodes } from '../../models/ErrorCodes';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import { isDateRangeLegal, getEarliestFromDate } from '../../utils/saveDialogUtils';
+import {
+  isDateRangeLegal,
+  getEarliestFromDate
+} from '../../utils/saveDialogUtils';
 
 let DateTimeFormat;
 
@@ -48,7 +50,7 @@ class SaveDialog extends React.Component {
     this.setState(this.getInitialState);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     if (this.commentInput) {
       this.commentInput.focus();
     }
@@ -58,11 +60,10 @@ class SaveDialog extends React.Component {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired
   };
 
   handleSetToDate(value) {
-
     const { timeFrom, timeTo } = this.state;
 
     let newTimeFrom = timeTo
@@ -71,9 +72,7 @@ class SaveDialog extends React.Component {
 
     if (timeTo === null) {
       if (timeTo === null && timeFrom !== null) {
-        newTimeFrom = newTimeFrom.setTime(
-          timeFrom.getTime() + 1000 * 60
-        );
+        newTimeFrom = newTimeFrom.setTime(timeFrom.getTime() + 1000 * 60);
       }
     }
 
@@ -84,7 +83,10 @@ class SaveDialog extends React.Component {
   }
 
   getInitialState() {
-    const earliestFrom = getEarliestFromDate(this.props.currentValidBetween);
+    const earliestFrom = getEarliestFromDate(
+      this.props.currentValidBetween,
+      this.props.serverTimeDiff
+    );
     return {
       timeFrom: earliestFrom,
       timeTo: null,
@@ -92,7 +94,7 @@ class SaveDialog extends React.Component {
       dateTo: null,
       expiraryExpanded: false,
       isSaving: false,
-      comment: '',
+      comment: ''
     };
   }
 
@@ -113,12 +115,12 @@ class SaveDialog extends React.Component {
       timeTo,
       dateFrom,
       dateTo,
-      comment,
+      comment
     } = this.state;
     let userInput = {
       dateFrom: dateFrom,
       timeFrom: timeFrom,
-      comment: comment,
+      comment: comment
     };
     if (expiraryExpanded) {
       userInput.dateTo = dateTo;
@@ -126,14 +128,21 @@ class SaveDialog extends React.Component {
     }
 
     this.setState({
-      isSaving: true,
+      isSaving: true
     });
 
     handleConfirm(userInput);
   }
 
   render() {
-    const { open, intl, handleClose, errorMessage, currentValidBetween } = this.props;
+    const {
+      open,
+      intl,
+      handleClose,
+      errorMessage,
+      currentValidBetween,
+      serverTimeDiff
+    } = this.props;
     const { formatMessage } = intl;
     const {
       timeFrom,
@@ -142,12 +151,12 @@ class SaveDialog extends React.Component {
       dateTo,
       expiraryExpanded,
       isSaving,
-      comment,
+      comment
     } = this.state;
 
     const errorMessageLabel = this.getErrorMessage();
 
-    const earliestFrom = getEarliestFromDate(currentValidBetween);
+    const earliestFrom = getEarliestFromDate(currentValidBetween, serverTimeDiff);
 
     const translations = {
       use: formatMessage({ id: 'use' }),
@@ -161,15 +170,18 @@ class SaveDialog extends React.Component {
       note: formatMessage({ id: 'save_dialog_note' }),
       error: formatMessage({ id: 'save_dialog_to_is_before_from' }),
       do_you_want_to_specify_expirary: formatMessage({
-        id: 'do_you_want_to_specify_expirary',
+        id: 'do_you_want_to_specify_expirary'
       }),
-      comment: formatMessage({ id: 'comment' }),
+      comment: formatMessage({ id: 'comment' })
     };
 
-    const {
-      timeLegal,
-      dateLegal
-    } = isDateRangeLegal(dateTo, dateFrom, expiraryExpanded, timeFrom, timeTo);
+    const { timeLegal, dateLegal } = isDateRangeLegal(
+      dateTo,
+      dateFrom,
+      expiraryExpanded,
+      timeFrom,
+      timeTo
+    );
 
     const actions = [
       <FlatButton
@@ -184,7 +196,7 @@ class SaveDialog extends React.Component {
         icon={isSaving && !errorMessage.length ? <MdSpinner /> : <MdSave />}
         disabled={!timeLegal || !dateLegal || isSaving}
         onTouchTap={() => this.handleSave()}
-      />,
+      />
     ];
 
     return (
@@ -205,7 +217,7 @@ class SaveDialog extends React.Component {
             cancelLabel={translations.cancel}
             okLabel={translations.use}
             DateTimeFormat={DateTimeFormat}
-            formatDate={new DateTimeFormat('nb', {
+            formatDate={new DateTimeFormat(intl.locale, {
               day: 'numeric',
               month: 'long',
               year: 'numeric',
@@ -229,7 +241,7 @@ class SaveDialog extends React.Component {
             textFieldStyle={{ width: '80%' }}
             onChange={(event, value) => {
               this.setState({
-                timeFrom: new Date(new Date(value).setSeconds(0)),
+                timeFrom: new Date(new Date(value).setSeconds(0))
               });
             }}
           />
@@ -256,7 +268,7 @@ class SaveDialog extends React.Component {
                   cancelLabel={translations.cancel}
                   okLabel={translations.use}
                   DateTimeFormat={DateTimeFormat}
-                  formatDate={new DateTimeFormat('nb', {
+                  formatDate={new DateTimeFormat(intl.locale, {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
@@ -267,9 +279,7 @@ class SaveDialog extends React.Component {
                   value={dateTo}
                   textFieldStyle={{
                     width: '80%',
-                    border: !dateLegal
-                      ? '1px solid #ff0d0d'
-                      : 'none',
+                    border: !dateLegal ? '1px solid #ff0d0d' : 'none'
                   }}
                   onChange={(event, value) => {
                     this.handleSetToDate(value);
@@ -286,13 +296,11 @@ class SaveDialog extends React.Component {
                   okLabel={translations.use}
                   textFieldStyle={{
                     width: '80%',
-                    border: !timeLegal
-                      ? '1px solid #ff0d0d'
-                      : 'none',
+                    border: !timeLegal ? '1px solid #ff0d0d' : 'none'
                   }}
                   onChange={(event, value) => {
                     this.setState({
-                      timeTo: new Date(new Date(value).setSeconds(0)),
+                      timeTo: new Date(new Date(value).setSeconds(0))
                     });
                   }}
                 />
@@ -305,7 +313,9 @@ class SaveDialog extends React.Component {
         <div style={{ width: '90%', margin: 'auto', marginBottom: 20 }}>
           <TextField
             floatingLabelText={translations.comment}
-            ref={(input) => { this.commentInput = input; }}
+            ref={input => {
+              this.commentInput = input;
+            }}
             fullWidth={true}
             multiLine={true}
             value={comment}

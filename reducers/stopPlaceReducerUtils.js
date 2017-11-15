@@ -197,7 +197,8 @@ const updateStopPlaceStateAfterMutate = (state, action, dataResource) => {
     minZoom: stopPlace.geometry ? 14 : 5,
     centerPosition:
     formatHelpers.getCenterPosition(stopPlace.geometry) ||
-    state.centerPosition
+    state.centerPosition,
+    lastMutatedStopPlaceId: state.lastMutatedStopPlaceId.concat(stopPlace.id)
   });
 }
 

@@ -78,36 +78,30 @@ class EditParentGeneral extends React.Component {
 
   handleTerminateStop(shouldHardDelete, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     if (shouldHardDelete) {
       deleteStopPlace(client, stopPlace.id)
         .then(response => {
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog());
           if (response.data.deleteStopPlace) {
             dispatch(UserActions.navigateToMainAfterDelete());
-          } else {
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR);
           }
         })
         .catch(err => {
-          this.setState({isLoading: false});
+          this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog(true));
-          dispatch(
-            UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-          );
         });
     } else {
-      terminateStop(client, stopPlace.id, comment, dateTime).then(result => {
-        this.handleSaveSuccess(stopPlace.id);
-        this.handleCloseDeleteStop();
-        this.setState({isLoading: false});
-      }).catch(err => {
-        this.setState({isLoading: false});
-        dispatch(
-          UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.ERROR)
-        );
-      });
+      terminateStop(client, stopPlace.id, comment, dateTime)
+        .then(result => {
+          this.handleSaveSuccess(stopPlace.id);
+          this.handleCloseDeleteStop();
+          this.setState({ isLoading: false });
+        })
+        .catch(err => {
+          this.setState({ isLoading: false });
+        });
     }
   }
 
@@ -121,20 +115,27 @@ class EditParentGeneral extends React.Component {
       );
       this.handleCreateNewParentStopPlace(stopPlaceVariables);
     } else {
+
       const childrenToAdd = stopPlace.children
         .filter(child => child.notSaved)
         .map(child => child.id);
-      addToMultiModalStopPlace(
-        client,
-        stopPlace.id,
-        childrenToAdd
-      ).then(response => {
-        const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace,
-          userInput
-        );
+
+      const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
+        stopPlace,
+        userInput
+      );
+
+      if (childrenToAdd.length) {
+        addToMultiModalStopPlace(
+          client,
+          stopPlace.id,
+          childrenToAdd
+        ).then(response => {
+          this.saveParentStop(stopPlaceVariables);
+        });
+      } else {
         this.saveParentStop(stopPlaceVariables);
-      });
+      }
     }
   }
 
@@ -196,15 +197,12 @@ class EditParentGeneral extends React.Component {
     getStopPlaceVersions(client, stopPlaceId).then(() => {
       dispatch(UserActions.navigateTo('/edit/', stopPlaceId));
       dispatch(
-        UserActions.openSnackbar(types.SNACKBAR_MESSAGE_SAVED, types.SUCCESS)
+        UserActions.openSnackbar(types.SUCCESS)
       );
     });
   }
 
   handleSaveError(errorCode) {
-    this.props.dispatch(
-      UserActions.openSnackbar(types.SNACKBAR_MESSAGE_FAILED, types.ERROR)
-    );
     this.setState({
       errorMessage: errorCode
     });
@@ -317,7 +315,11 @@ class EditParentGeneral extends React.Component {
       justifyContent: 'space-between'
     };
 
-    const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
+    const stopPlaceLabel = this.getTitleText(
+      stopPlace,
+      originalStopPlace,
+      formatMessage
+    );
     const disableTerminate =
       stopPlace.isNewStop || disabled || stopPlace.hasExpired;
 
@@ -415,6 +417,7 @@ class EditParentGeneral extends React.Component {
           stopPlace={stopPlace}
           canDeleteStop={this.props.canDeleteStop}
           isLoading={this.state.isLoading}
+          serverTimeDiff={this.props.serverTimeDiff}
         />
         {removeStopPlaceFromParentOpen &&
           <RemoveStopFromParentDialog
@@ -452,6 +455,7 @@ class EditParentGeneral extends React.Component {
               errorMessage={this.state.errorMessage}
               intl={intl}
               currentValidBetween={stopPlace.validBetween}
+              serverTimeDiff={this.props.serverTimeDiff}
             />
           : null}
       </div>
@@ -459,7 +463,7 @@ class EditParentGeneral extends React.Component {
   }
 }
 
-const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
+const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   stopPlace: stopPlace.current,
   versions: stopPlace.versions,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
@@ -467,7 +471,8 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles }) => ({
   removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
   canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
   deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
-  originalStopPlace: stopPlace.originalCurrent
+  originalStopPlace: stopPlace.originalCurrent,
+  serverTimeDiff: user.serverTimeDiff
 });
 
 export default withApollo(

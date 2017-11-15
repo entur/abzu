@@ -103,7 +103,7 @@ class MoveQuayNewStopDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        disabled={!enableConfirm || isLoading}
+        disabled={!enableConfirm || isLoading || !quayIds.length}
         onTouchTap={() => {
           handleConfirm(quayIds, fromVersionComment, toVersionComment);
         }}

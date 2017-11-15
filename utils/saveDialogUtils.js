@@ -12,7 +12,13 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-export const isDateRangeLegal = (dateTo, dateFrom, expiraryExpanded, timeFrom, timeTo) => {
+export const isDateRangeLegal = (
+  dateTo,
+  dateFrom,
+  expiraryExpanded,
+  timeFrom,
+  timeTo
+) => {
   if (!expiraryExpanded) {
     return {
       dateLegal: true,
@@ -20,14 +26,24 @@ export const isDateRangeLegal = (dateTo, dateFrom, expiraryExpanded, timeFrom, t
     };
   }
 
-  if (timeTo === null && timeFrom === null && dateTo !== null && dateFrom !== null) {
+  if (
+    timeTo === null &&
+    timeFrom === null &&
+    dateTo !== null &&
+    dateFrom !== null
+  ) {
     return {
       dateLegal: dateTo > dateFrom,
       timeLegal: true
     };
   }
 
-  if (timeTo !== null && timeFrom !== null && dateTo !== null && dateFrom !== null) {
+  if (
+    timeTo !== null &&
+    timeFrom !== null &&
+    dateTo !== null &&
+    dateFrom !== null
+  ) {
     if (dateTo.toDateString() === dateFrom.toDateString()) {
       return {
         dateLegal: true,
@@ -47,10 +63,10 @@ export const isDateRangeLegal = (dateTo, dateFrom, expiraryExpanded, timeFrom, t
 };
 
 /* Prevent validBetweeen overlap between versions */
-export const getEarliestFromDate = previousValidBetween => {
-
-  // Add 1 min offset to avoid conflicting time
-  const nowWithOffset = new Date(new Date().getTime() + 1000*60);
+export const getEarliestFromDate = (previousValidBetween, serverDiff = 0) => {
+  // Add 100 ms offset to avoid conflicting time
+  const msOffset = 100;
+  const nowWithOffset = new Date(new Date().getTime() + serverDiff + msOffset);
 
   if (!previousValidBetween) {
     return nowWithOffset;
@@ -58,12 +74,16 @@ export const getEarliestFromDate = previousValidBetween => {
 
   if (previousValidBetween.toDate) {
     const previousToDate = new Date(previousValidBetween.toDate);
-    let dateTimeWithOffset = new Date(previousToDate.getTime() + 1000*60);
-    return dateTimeWithOffset > nowWithOffset ? dateTimeWithOffset : nowWithOffset;
+    const dateTimeWithOffset = new Date(previousToDate.getTime() + msOffset);
+    return dateTimeWithOffset > nowWithOffset
+      ? dateTimeWithOffset
+      : nowWithOffset;
   } else if (previousValidBetween.fromDate) {
     const previousFromDate = new Date(previousValidBetween.fromDate);
-    let dateTimeWithOffset = new Date(previousFromDate.getTime() + 1000*60);
-    return dateTimeWithOffset > nowWithOffset ? dateTimeWithOffset: nowWithOffset;
+    const dateTimeWithOffset = new Date(previousFromDate.getTime() + msOffset);
+    return dateTimeWithOffset > nowWithOffset
+      ? dateTimeWithOffset
+      : nowWithOffset;
   } else {
     return nowWithOffset;
   }

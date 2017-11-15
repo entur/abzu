@@ -48,6 +48,8 @@ import { createSearchMenuItem } from './SearchMenuItem';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import CheckBox from 'material-ui/Checkbox';
+import Routes from '../../routes/';
+
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -101,7 +103,7 @@ class SearchBox extends React.Component {
   }
 
   handleEdit(id) {
-    this.props.dispatch(UserActions.navigateTo('/edit/', id));
+    this.props.dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
   }
 
   handleSaveAsFavorite() {
@@ -247,7 +249,7 @@ class SearchBox extends React.Component {
     let name = topographicalPlace.name.value;
 
     if (
-      topographicalPlace.topographicPlaceType === 'town' &&
+      topographicalPlace.topographicPlaceType === 'municipality' &&
       topographicalPlace.parentTopographicPlace
     ) {
       name += `, ${topographicalPlace.parentTopographicPlace.name.value}`;
@@ -388,7 +390,7 @@ class SearchBox extends React.Component {
       .filter(
         place =>
           place.topographicPlaceType === 'county' ||
-          place.topographicPlaceType === 'town'
+          place.topographicPlaceType === 'municipality'
       )
       .filter(
         place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1

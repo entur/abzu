@@ -23,7 +23,7 @@
             },
             "__typename": "TopographicPlaceType"
           },
-          "topographicPlaceType": "town",
+          "topographicPlaceType": "municipality",
           "__typename": "TopographicPlaceType"
         },
         "quays": [

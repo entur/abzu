@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { jsonArrayToCSV } from '../../utils/CSVHelper';
 import {
@@ -23,6 +24,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import moment from 'moment';
+import { getDarkColor } from '../../config/themeConfig';
 
 class ReportPageFooter extends React.Component {
   constructor(props) {
@@ -42,16 +44,18 @@ class ReportPageFooter extends React.Component {
 
   downloadCSV(items, columns, filename, transformer) {
     let csv = jsonArrayToCSV(items, columns, ';', transformer);
-    var element = document.createElement('a');
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const BOM = "\uFEFF";
+    const content = BOM + csv;
+    let element = document.createElement('a');
+    let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
     let dateNow = moment(new Date()).format('DD-MM-YYYY');
     let fullFilename = filename + '-' + dateNow + '.csv';
-    var url = URL.createObjectURL(blob);
+    let url = URL.createObjectURL(blob);
     element.href = url;
     element.setAttribute('target', '_blank');
     element.setAttribute('download', fullFilename);
 
-    let event = document.createEvent("MouseEvents")
+    let event = document.createEvent("MouseEvents");
     event.initMouseEvent(
       "click", true, false, window, 0, 0, 0, 0, 0
       , false, false, false, false, 0, null
@@ -117,7 +121,7 @@ class ReportPageFooter extends React.Component {
       display: 'flex',
       bottom: 0,
       padding: '10px 0px',
-      background: '#213a46',
+      background: getDarkColor(),
       justifyContent: 'space-between',
       position: 'fixed',
       height: 35,

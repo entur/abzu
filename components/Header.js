@@ -266,15 +266,9 @@ class Header extends React.Component {
               />
               <MenuItem
                 leftIcon={<MdHelp color="#41c0c4" />}
-                primaryText={
-                  <a
-                    target="_blank"
-                    style={{ textDecoration: 'none', color: '#000' }}
-                    href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
-                  >
-                    {userGuide}
-                  </a>
-                }
+                href="https://rutebanken.atlassian.net/wiki/pages/viewpage.action?pageId=69735716"
+                target="_blank"
+                primaryText={userGuide}
                 style={{ fontSize: 12, padding: 0 }}
               />
               <MenuItem
@@ -316,7 +310,7 @@ const mapStateToProps = state => ({
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showExpiredStops: state.stopPlace.showExpiredStops,
   isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
-  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/edit/') > -1,
+  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
 });
 

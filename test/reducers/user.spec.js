@@ -25,12 +25,12 @@ describe('user reducer', () => {
   test('Should navigate to path', () => {
     const editPathChange = {
       type: types.NAVIGATE_TO,
-      payLoad: '/edit/',
+      payLoad: '/stop_place/',
     };
 
     expect(userReducer(undefined, editPathChange)).toEqual({
       ...initialState,
-      path: '/edit/',
+      path: '/stop_place/',
     });
   });
 
@@ -57,41 +57,6 @@ describe('user reducer', () => {
     });
   });
 
-  test('Should display correct snackbar options', () => {
-    const snackbarOptions = {
-      isOpen: true,
-      message: 'This is some feedback to the user',
-      status: 'SUCCESS',
-    };
-
-    expect(
-      userReducer(undefined, {
-        type: types.OPENED_SNACKBAR,
-        payLoad: {
-          message: snackbarOptions.message,
-          status: snackbarOptions.status,
-        },
-      }),
-    ).toEqual({
-      ...initialState,
-      snackbarOptions: snackbarOptions,
-    });
-  });
-
-  test('Should dismiss snackbar', () => {
-    const snackbarOptions = {
-      isOpen: false,
-    };
-    expect(
-      userReducer(undefined, {
-        type: types.DISMISSED_SNACKBAR,
-        payLoad: null,
-      }),
-    ).toEqual({
-      ...initialState,
-      snackbarOptions: snackbarOptions,
-    });
-  });
 
   test('Should change localization', () => {
     const localization = {

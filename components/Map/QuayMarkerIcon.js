@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import compassBearingIcon from '../../static/icons/compass-bearing.png';
 const markerIcon = require('../../static/icons/quay-marker-background.png');
 
@@ -59,7 +60,8 @@ class QuayMarkerIcon extends React.Component {
 
   render() {
     const { publicCode, compassBearing, isCompassBearingEnabled } = this.props;
-    const quayShortName = getShortQuayName(publicCode);
+    const quayShortName = getShortQuayName(publicCode) || 'N/A';
+    const nameLen = quayShortName.length;
 
     const quayStyle = {
       color: '#fff',
@@ -79,11 +81,11 @@ class QuayMarkerIcon extends React.Component {
           <div
             style={{
               width: 30,
-              fontSize: quayShortName ? 12 : 10,
+              fontSize: nameLen > 2 ? 10 : 12,
               textAlign: 'center'
             }}
           >
-            {quayShortName || 'N/A'}
+            {quayShortName}
           </div>
         </div>
       </div>
@@ -95,5 +97,5 @@ export default QuayMarkerIcon;
 
 const getShortQuayName = quayName => {
   if (!isNaN(quayName)) return quayName;
-  return quayName.length > 1 ? quayName.substring(0, 1) : quayName;
+  return quayName.length > 3 ? quayName.substring(0, 3) : quayName;
 };

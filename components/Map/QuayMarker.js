@@ -23,7 +23,6 @@ import compassIcon from '../../static/icons/compass.png';
 import { UserActions, StopPlaceActions } from '../../actions/';
 import OSMIcon from '../../static/icons/osm_logo.png';
 import { getIn } from '../../utils/';
-import ToolTippable from '../EditStopPage/ToolTippable';
 import Code from '../EditStopPage/Code';
 import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
 import QuayMarkerIcon from './QuayMarkerIcon';
@@ -99,7 +98,7 @@ class QuayMarker extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shallowCompare(this, nextProps);
+    return shallowCompare(this.props, nextProps);
   }
 
   getShouldShowMergeQuay() {
@@ -280,12 +279,8 @@ class QuayMarker extends React.Component {
               }}
             >
               <div>{formattedStopType}</div>
-              <ToolTippable toolTipText={translations.publicCode}>
                 <Code type="publicCode" value={publicCode} />
-              </ToolTippable>
-              <ToolTippable toolTipText={translations.privateCode}>
                 <Code type="privateCode" value={privateCode} />
-              </ToolTippable>
             </div>
             <div
               style={{
@@ -386,7 +381,7 @@ class QuayMarker extends React.Component {
                     onClick={() => this.handleMergeFrom()}
                     label={translations.mergeQuayFrom}
                   />
-                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal &&
+                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal && id &&
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"

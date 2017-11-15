@@ -21,6 +21,7 @@ import stopPlaceReducer from '../reducers/stopPlaceReducer';
 import userReducer from '../reducers/userReducer';
 import rolesReducer from '../reducers/rolesReducer';
 import reportReducer from '../reducers/reportReducer';
+import snackbarReducer from '../reducers/snackbarReducer';
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
@@ -98,7 +99,9 @@ export default function configureStore(kc) {
       isCreatingPolylines: false,
       enablePolylines: Settings.getShowPathLinks(),
       showExpiredStops: Settings.getShowExpiredStops(),
-      showMultimodalEdges: Settings.getShowMultimodalEdges()
+      showMultimodalEdges: Settings.getShowMultimodalEdges(),
+      lastMutatedStopPlaceId: [],
+      isFetchingMergeInfo: false
     },
     user: {
       path: '/',
@@ -127,6 +130,7 @@ export default function configureStore(kc) {
       showEditStopAdditional: false,
       lookupCoordinatesOpen: false,
       newStopIsMultiModal: false,
+      serverTimeDiff: 0,
       newStopCreated: {
         open: false,
         stopPlaceId: null
@@ -146,7 +150,8 @@ export default function configureStore(kc) {
     stopPlace: stopPlaceReducer,
     report: reportReducer,
     apollo: client.reducer(),
-    roles: rolesReducer
+    roles: rolesReducer,
+    snackbar: snackbarReducer
   });
 
   return {

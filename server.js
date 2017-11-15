@@ -8,17 +8,22 @@ var path = require('path');
 var fs = require('fs');
 var axios = require('axios');
 var introspectionQuery = require('./graphql/introspection').introspectionQuery;
+var bodyParser = require('body-parser');
+var Routes = require('./routes/');
+
 
 convictPromise
   .then(convict => {
-    var ENDPOINTBASE = convict.get('endpointBase');
 
+    var ENDPOINTBASE = convict.get('endpointBase');
     console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
     app.use(
-      [ENDPOINTBASE + 'public/', ENDPOINTBASE + 'edit/public/'],
+      [ENDPOINTBASE + 'public/', ENDPOINTBASE + Routes.STOP_PLACE + '/public/'],
       express.static(__dirname + '/public')
     );
+
+    app.use(bodyParser.json());
 
     app.get(ENDPOINTBASE + 'token', (req, res) => {
       const remoteAddress =
@@ -64,7 +69,7 @@ convictPromise
     }
 
     app.get(
-      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'edit/config.json'],
+      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + Routes.STOP_PLACE + '/config.json'],
       function(req, res) {
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
@@ -79,7 +84,7 @@ convictPromise
       }
     );
 
-    app.get(ENDPOINTBASE + 'edit/:id', function(req, res) {
+    app.get(ENDPOINTBASE + Routes.STOP_PLACE + '/:id', function(req, res) {
       res.send(getPage());
     });
 
@@ -95,10 +100,20 @@ convictPromise
       res.sendFile(__dirname + '/config/keycloak.json');
     });
 
+    app.post(ENDPOINTBASE + 'timeOffset', function(req, res) {
+      if (req.body.clientTime) {
+        res.send({
+          offset: new Date().getTime() - req.body.clientTime,
+        });
+      } else {
+        res.sendStatus(400);
+      }
+    });
+
     app.get(
       [
         ENDPOINTBASE + 'translation.json',
-        ENDPOINTBASE + 'edit/translation.json'
+        ENDPOINTBASE + Routes.STOP_PLACE + '/translation.json'
       ],
       function(req, res) {
         let translations = getTranslations(req);

@@ -33,7 +33,7 @@ import NewElementsBox from '../components/EditStopPage/NewElementsBox';
 import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
 import LoadingPage from './LoadingPage';
 
-class EditPage extends React.Component {
+class StopPlace extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -181,7 +181,7 @@ const mapStateToProps = state => ({
 });
 
 const EditPlaceIntl = injectIntl(
-  connect(mapStateToProps)(EditPage),
+  connect(mapStateToProps)(StopPlace),
 );
 
 export default withApollo(EditPlaceIntl);
