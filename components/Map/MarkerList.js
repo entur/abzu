@@ -30,6 +30,8 @@ import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
 import { allEntities, neighbourStopPlaceQuays } from '../../graphql/Queries';
 import CoordinateMarker from './CoordinateMarker';
+import Routes from '../../routes/';
+
 
 class MarkerList extends React.Component {
   static PropTypes = {
@@ -64,7 +66,7 @@ class MarkerList extends React.Component {
           },
         })
         .then(result => {
-          dispatch(UserActions.navigateTo('/stop_place/', id));
+          dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
         });
     }
   }
@@ -72,7 +74,7 @@ class MarkerList extends React.Component {
   handleNewStopClick() {
     const { dispatch, intl } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
-    dispatch(UserActions.navigateTo('/stop_place/', 'new'));
+    dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
     document.title = intl.formatMessage({ id: '_title_new_stop' });
   }
 
@@ -553,7 +555,7 @@ const mapStateToProps = state => ({
   currentIsNewStop: getIn(state.stopPlace, ['current', 'isNewStop'], false),
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
   isEditingStop:
-    state.routing.locationBeforeTransitions.pathname.indexOf('stop_place') > -1,
+    state.routing.locationBeforeTransitions.pathname.indexOf(Routes.STOP_PLACE) > -1,
   missingCoordinatesMap: state.user.missingCoordsMap,
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,

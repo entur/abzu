@@ -19,6 +19,8 @@ import App from './App';
 import StopPlaces from './StopPlaces';
 import StopPlace from './StopPlace';
 import ReportPage from './ReportPage';
+import Routes from '../routes/';
+
 
 class RouterContainer extends React.Component {
   render() {
@@ -27,7 +29,7 @@ class RouterContainer extends React.Component {
     const routes = (
       <Route path={path} component={App}>
         <IndexRoute component={StopPlaces} />
-        <Route path={path + 'stop_place/:stopId'} component={StopPlace} />
+        <Route path={path + Routes.STOP_PLACE + '/:stopId'} component={StopPlace} />
         <Route path={path + 'reports'} component={ReportPage} />
       </Route>
     );

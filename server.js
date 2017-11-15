@@ -9,6 +9,8 @@ var fs = require('fs');
 var axios = require('axios');
 var introspectionQuery = require('./graphql/introspection').introspectionQuery;
 var bodyParser = require('body-parser');
+var Routes = require('./routes/');
+
 
 convictPromise
   .then(convict => {
@@ -17,7 +19,7 @@ convictPromise
     console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
     app.use(
-      [ENDPOINTBASE + 'public/', ENDPOINTBASE + 'stop_place/public/'],
+      [ENDPOINTBASE + 'public/', ENDPOINTBASE + Routes.STOP_PLACE + '/public/'],
       express.static(__dirname + '/public')
     );
 
@@ -67,9 +69,8 @@ convictPromise
     }
 
     app.get(
-      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + 'stop_place/config.json'],
+      [ENDPOINTBASE + 'config.json', ENDPOINTBASE + Routes.STOP_PLACE + '/config.json'],
       function(req, res) {
-
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),
@@ -83,7 +84,7 @@ convictPromise
       }
     );
 
-    app.get(ENDPOINTBASE + 'stop_place/:id', function(req, res) {
+    app.get(ENDPOINTBASE + Routes.STOP_PLACE + '/:id', function(req, res) {
       res.send(getPage());
     });
 
@@ -112,7 +113,7 @@ convictPromise
     app.get(
       [
         ENDPOINTBASE + 'translation.json',
-        ENDPOINTBASE + 'stop_place/translation.json'
+        ENDPOINTBASE + Routes.STOP_PLACE + '/translation.json'
       ],
       function(req, res) {
         let translations = getTranslations(req);

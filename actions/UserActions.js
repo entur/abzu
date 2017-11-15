@@ -21,6 +21,7 @@ import SettingsManager from '../singletons/SettingsManager';
 import { getMergeInfoForStops, getAddStopPlaceInfo } from '../graphql/Actions';
 import { getIn } from '../utils/';
 import ParentStopPlace from '../models/ParentStopPlace';
+import Routes from '../routes/';
 
 var UserActions = {};
 
@@ -434,7 +435,7 @@ UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch =
           fromMain
         })
       );
-      dispatch(UserActions.navigateTo('/stop_place/', 'new'));
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
     }
   });
 }

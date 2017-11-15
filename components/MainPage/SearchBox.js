@@ -48,6 +48,8 @@ import { createSearchMenuItem } from './SearchMenuItem';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import CheckBox from 'material-ui/Checkbox';
+import Routes from '../../routes/';
+
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -101,7 +103,7 @@ class SearchBox extends React.Component {
   }
 
   handleEdit(id) {
-    this.props.dispatch(UserActions.navigateTo('/stop_place/', id));
+    this.props.dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
   }
 
   handleSaveAsFavorite() {

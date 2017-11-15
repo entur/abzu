@@ -59,6 +59,8 @@ import Settings from '../../singletons/SettingsManager';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
 import VersionsPopover from './VersionsPopover';
 import RequiredFieldsMissingDialog from '../Dialogs/RequiredFieldsMissingDialog';
+import Routes from '../../routes/';
+
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -119,7 +121,7 @@ class EditStopGeneral extends React.Component {
     });
 
     getStopPlaceVersions(client, stopPlaceId).then(() => {
-      dispatch(UserActions.navigateTo('/stop_place/', stopPlaceId));
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
       dispatch(
         UserActions.openSnackbar(types.SUCCESS)
       );
