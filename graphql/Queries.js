@@ -599,3 +599,17 @@ export const getQueryTopographicPlaces = ids => {
       }
   `;
 };
+
+export const getGroupOfStopPlaceQuery = gql`
+    query getGroupOfStopPlaces($id: String!) {
+        groupOfStopPlaces(id: $id) {
+            id
+            members {
+                id
+            }
+            name {
+                value
+            }
+        }
+    }
+`;

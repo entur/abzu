@@ -22,6 +22,7 @@ import userReducer from '../reducers/userReducer';
 import rolesReducer from '../reducers/rolesReducer';
 import reportReducer from '../reducers/reportReducer';
 import snackbarReducer from '../reducers/snackbarReducer';
+import groupOfStopPlacesReducer from '../reducers/groupOfStopPlacesReducer';
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
@@ -151,7 +152,8 @@ export default function configureStore(kc) {
     report: reportReducer,
     apollo: client.reducer(),
     roles: rolesReducer,
-    snackbar: snackbarReducer
+    snackbar: snackbarReducer,
+    stopPlacesGroup: groupOfStopPlacesReducer
   });
 
   return {

@@ -43,7 +43,8 @@ import {
   findTagByNameQuery,
   getStopById,
   getQueryTopographicPlaces,
-  getTagsByNameQuery
+  getTagsByNameQuery,
+  getGroupOfStopPlaceQuery
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -359,6 +360,15 @@ export const removeTag = (client, name, idReference) =>
     variables: {
       name,
       idReference
+    },
+    fetchPolicy: 'network-only'
+  });
+
+export const getGroupOfStopPlaceBy = (client, id) =>
+  client.query({
+    query: getGroupOfStopPlaceQuery,
+    variables: {
+      id
     },
     fetchPolicy: 'network-only'
   });

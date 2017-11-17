@@ -12,19 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from './Types';
+
+import * as types from './Types';
 import * as limitations from '../models/Limitations';
+import { createThunk } from './';
 
 var AssessmentActions = {};
 
-const sendData = (type, payLoad) => ({
-  type: type,
-  payLoad: payLoad,
-});
-
 AssessmentActions.setStopWheelchairAccess = value => dispatch => {
   dispatch(
-    sendData(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
+    createThunk(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       limitationType: limitations.wheelchairAccess,
     }),
@@ -33,7 +30,7 @@ AssessmentActions.setStopWheelchairAccess = value => dispatch => {
 
 AssessmentActions.setStopStepFreeAccess = value => dispatch => {
   dispatch(
-    sendData(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
+    createThunk(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       limitationType: limitations.stepFreeAccess,
     }),
@@ -42,7 +39,7 @@ AssessmentActions.setStopStepFreeAccess = value => dispatch => {
 
 AssessmentActions.setQuayWheelchairAccess = (value, index) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
+    createThunk(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       index: index,
       limitationType: limitations.wheelchairAccess,
@@ -52,7 +49,7 @@ AssessmentActions.setQuayWheelchairAccess = (value, index) => dispatch => {
 
 AssessmentActions.setQuayStepFreeAccess = (value, index) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
+    createThunk(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       index: index,
       limitationType: limitations.stepFreeAccess,
