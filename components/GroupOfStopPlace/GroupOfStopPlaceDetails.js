@@ -38,7 +38,7 @@ class GroupOfStopPlaceDetails extends Component {
           onChange={this.handleChangeDescription.bind(this)}
         />
         <Divider/>
-        <GroupOfStopPlacesList/>
+        <GroupOfStopPlacesList stopPlaces={this.props.members}/>
       </div>
     );
   }
@@ -47,6 +47,7 @@ class GroupOfStopPlaceDetails extends Component {
 const mapStateToProps = ({stopPlacesGroup}) => ({
   name: stopPlacesGroup.current.name,
   description: stopPlacesGroup.current.description,
+  members: stopPlacesGroup.current.members,
 });
 
 export default connect(mapStateToProps)(GroupOfStopPlaceDetails);

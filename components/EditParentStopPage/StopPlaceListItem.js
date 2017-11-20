@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React, { Component } from 'react';
 import ModalityIconImg from '../MainPage/ModalityIconImg';
 import Divider from 'material-ui/Divider';
@@ -22,9 +21,15 @@ import StopPlaceListItemDetails from './StopPlaceListItemDetails';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
 
 class StopPlaceListItem extends Component {
-
   render() {
-    const { stopPlace, expanded, handleExpand, handleCollapse, disabled} = this.props;
+    const {
+      stopPlace,
+      expanded,
+      handleExpand,
+      handleCollapse,
+      disabled,
+      handleRemoveStopPlace
+    } = this.props;
 
     return (
       <div>
@@ -37,17 +42,27 @@ class StopPlaceListItem extends Component {
             justifyContent: 'space-between'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
-            <div style={{display: 'flex', alignItems: 'center'}}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <ModalityIconImg
                 type={stopPlace.stopPlaceType}
                 submode={stopPlace.submode}
-                svgStyle={{transform: 'scale(0.8)'}}
+                svgStyle={{ transform: 'scale(0.8)' }}
                 style={{ marginTop: -8, marginRight: 5 }}
               />
-              <div style={{fontSize: '0.8em'}}>{stopPlace.name}</div>
+              <div style={{ fontSize: '0.8em' }}>{stopPlace.name}</div>
             </div>
-            <StopPlaceLink style={{fontSize: '0.8em', marginRight: 5}} id={stopPlace.id}/>
+            <StopPlaceLink
+              style={{ fontSize: '0.8em', marginRight: 5 }}
+              id={stopPlace.id}
+            />
           </div>
           <div style={{ marginRight: 5 }}>
             {expanded
@@ -55,7 +70,12 @@ class StopPlaceListItem extends Component {
               : <NavigationExpandMore onClick={handleExpand} />}
           </div>
         </div>
-        {expanded && <StopPlaceListItemDetails stopPlace={stopPlace} disabled={disabled} />}
+        {expanded &&
+          <StopPlaceListItemDetails
+            handleRemoveStopPlace={handleRemoveStopPlace}
+            stopPlace={stopPlace}
+            disabled={disabled}
+          />}
         <Divider />
       </div>
     );

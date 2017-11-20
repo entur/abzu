@@ -51,6 +51,11 @@ class MarkerList extends React.Component {
     this.props.dispatch(StopPlaceActions.adjustCentroid());
   }
 
+  handleAddToGroup(stopPlaceId) {
+    const { client } = this.props;
+    this.props.dispatch(StopPlaceActions.addMemberToGroup(client, stopPlaceId))
+  }
+
   handleStopOnClick(id) {
     const { dispatch, client, path } = this.props;
 
@@ -190,7 +195,8 @@ class MarkerList extends React.Component {
       moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'}),
       moveQuaysToNewStop: formatMessage({id: 'move_quays_to_new_stop'}),
       adjustCentroid: formatMessage({id: 'adjust_centroid'}),
-      createMultimodal: formatMessage({id: 'new__multi_stop'})
+      createMultimodal: formatMessage({id: 'new__multi_stop'}),
+      addToGroup: formatMessage({id: 'add_to_group'})
     };
 
     const newStopMarkerText = {
@@ -484,6 +490,9 @@ class MarkerList extends React.Component {
                 }}
                 index={stopIndex}
                 isChildOfParent={stop.isChildOfParent}
+                handleAddToGroup={() => {
+                  this.handleAddToGroup(stop.id)
+                }}
                 submode={stop.submode}
                 translations={CustomPopupMarkerText}
                 isEditingStop={isEditingStop}
@@ -499,6 +508,7 @@ class MarkerList extends React.Component {
                 createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
                 stopPlace={stop}
                 tokenParsed={tokenParsed}
+                isEditingGroup={this.props.isEditingGroup}
               />,
             );
 
@@ -556,6 +566,8 @@ const mapStateToProps = state => ({
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
   isEditingStop:
     state.routing.locationBeforeTransitions.pathname.indexOf(Routes.STOP_PLACE) > -1,
+  isEditingGroup:
+  state.routing.locationBeforeTransitions.pathname.indexOf(Routes.GROUP_OF_STOP_PLACE) > -1,
   missingCoordinatesMap: state.user.missingCoordsMap,
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,

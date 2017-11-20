@@ -605,11 +605,38 @@ export const getGroupOfStopPlaceQuery = gql`
         groupOfStopPlaces(id: $id) {
             id
             members {
-                id
+                ...on StopPlace {
+                    id
+                    __typename
+                    name {
+                        value
+                    }
+                    stopPlaceType
+                    submode
+                    description {
+                        value
+                    }
+                    geometry {
+                        coordinates
+                        type 
+                    }
+                    quays {
+                        id
+                        privateCode { value }
+                        publicCode 
+                        geometry {
+                            coordinates
+                            type
+                        }
+                    }
+                }
             }
             name {
                 value
             }
+            description {
+                value
+            }
         }
-    }
+    },
 `;

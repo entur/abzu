@@ -85,6 +85,7 @@ export const toCamelCase = string => {
   });
 };
 
+
 export const getIsCurrentVersionMax = (
   versions,
   currentVersion,

@@ -3,7 +3,7 @@ import StopPlaceListItem from '../EditParentStopPage/StopPlaceListItem';
 import { injectIntl } from 'react-intl';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-
+import { connect } from 'react-redux';
 
 class GroupOfStopPlacesList extends Component {
 
@@ -14,10 +14,15 @@ class GroupOfStopPlacesList extends Component {
     }
   };
 
+  handleRemoveStopPlace(stopPlaceId) {
+    console.log("removing stopPlace", stopPlaceId);
+  }
+
   render() {
 
     const { stopPlaces } = this.props;
     const { formatMessage } = this.props.intl;
+    const { expanded } = this.state;
 
     return (
       <div>
@@ -46,10 +51,11 @@ class GroupOfStopPlacesList extends Component {
           <StopPlaceListItem
             key={'group-item-' + i}
             stopPlace={stopPlace}
-            expanded={false}
-            handleExpand={value => {
+            handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
+            expanded={expanded == i}
+            handleExpand={() => {
               this.setState({
-                expanded: value
+                expanded: i
               })
             }}
             handleCollapse={() => {
@@ -71,4 +77,4 @@ GroupOfStopPlacesList.defaultProps = {
   stopPlaces: []
 };
 
-export default injectIntl(GroupOfStopPlacesList);
+export default connect(null)(injectIntl(GroupOfStopPlacesList));

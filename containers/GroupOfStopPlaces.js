@@ -12,13 +12,13 @@ class GroupOfStopPlaces extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      isLoadingGroup: false
     };
   }
 
-  handleLoading(loading) {
+  handleLoading(isLoadingGroup) {
     this.setState({
-      loading
+      isLoadingGroup
     });
   };
 
@@ -29,10 +29,8 @@ class GroupOfStopPlaces extends Component {
     const { client } = this.props;
 
     if (idFromPath) {
-
       this.handleLoading(true);
       getGroupOfStopPlaceBy(client, idFromPath).then(response => {
-        console.log("response", response);
         this.handleLoading(false);
       });
     }
@@ -40,22 +38,36 @@ class GroupOfStopPlaces extends Component {
 
   render() {
 
-    const { loading } = this.state;
+    const { isLoadingGroup } = this.state;
+    const { isFetchingMember } = this.props;
 
     return (
       <div>
-        { loading
+        { isLoadingGroup
           ? <Loader/>
           : <EditGroupOfStopPlace/>
         }
-        <GroupOfStopPlaceMap/>
+        { isFetchingMember && <Loader/>}
+        <GroupOfStopPlaceMap
+          position={this.props.position}
+          zoom={this.props.zoom}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({stopPlace}) => ({
-  stopPlace
+const mapStateToProps = ({stopPlacesGroup}) => ({
+  position: getPositionFromMembers(stopPlacesGroup.current),
+  zoom: stopPlacesGroup.zoom,
+  isFetchingMember: stopPlacesGroup.isFetchingMember
 });
+
+const getPositionFromMembers = current => {
+  if (current.members && current.members.length) {
+    return current.members[0].location;
+  }
+  return null;
+};
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaces));

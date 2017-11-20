@@ -13,20 +13,39 @@
  limitations under the Licence. */
 
 import * as types from '../actions/Types';
+import { getGroupOfStopPlace, addMemberToGroup } from './groupReducerUtils';
 
 const newGroup = {
   name: '',
   description: '',
-  members: []
+  members: [],
 };
 
 export const initialState = {
-  current: newGroup,
-  isModified: false
+  current: Object.assign({}, newGroup),
+  original: Object.assign({}, newGroup),
+  isModified: false,
+  positions: [[]],
+  isFetchingMember: false,
 };
 
 const groupOfStopPlacesReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case types.APOLLO_QUERY_RESULT:
+      return getGroupOfStopPlace(state, action);
+
+    case types.REQUESTED_MEMBER_INFO:
+      return Object.assign({}, state, {
+        isFetchingMember: true
+      });
+
+    case types.RECEIVED_MEMBER_INFO:
+      return Object.assign({}, state, {
+        isFetchingMember: false,
+        current: addMemberToGroup(state.current, action.payLoad)
+      });
+
     case types.CHANGED_STOP_PLACE_GROUP_NAME:
       return Object.assign({}, state, {
         current: {

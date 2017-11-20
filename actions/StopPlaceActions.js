@@ -19,9 +19,9 @@ import { UserActions } from './';
 import { getIn } from '../utils/'
 import { updateURLWithId } from '../utils/URLhelpers';
 import { createThunk } from './';
+import { getAddStopPlaceInfo } from '../graphql/Actions';
 
 var StopPlaceActions = {};
-
 
 StopPlaceActions.removeChildFromParentStopPlace = stopPlaceId => dispatch => {
   dispatch(createThunk(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId))
@@ -328,5 +328,11 @@ StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   dispatch(UserActions.setCenterAndZoom(centroid, null));
 };
 
+StopPlaceActions.addMemberToGroup = (client, stopPlaceId) => dispatch => {
+  dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
+  getAddStopPlaceInfo(client, [stopPlaceId]).then(result => {
+    dispatch(createThunk(types.RECEIVED_MEMBER_INFO, result));
+  });
+};
 
 export default StopPlaceActions;

@@ -18,20 +18,9 @@ import StopPlaceListItemQuays from './StopPlaceListItemQuays';
 import { injectIntl } from 'react-intl';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
-import { UserActions, StopPlaceActions } from '../../actions/';
-import { connect } from 'react-redux';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 
 class StopPlaceListItemDetails extends Component {
-
-  handleRemoveStopPlace(stopPlaceId, notSaved) {
-    const { dispatch } = this.props;
-    if (notSaved) {
-      dispatch(StopPlaceActions.removeChildFromParentStopPlace(stopPlaceId));
-    } else {
-      dispatch(UserActions.showRemoveStopPlaceFromParent(stopPlaceId));
-    }
-  }
 
   render() {
 
@@ -55,7 +44,7 @@ class StopPlaceListItemDetails extends Component {
             <div style={{fontSize: '0.8em'}}>{formatMessage({id: 'remove_stop_place'})}</div>
             <IconButton
               disabled={disabled}
-              onClick={() => this.handleRemoveStopPlace(stopPlace.id, notSaved)}
+              onClick={() => this.props.handleRemoveStopPlace(stopPlace.id, notSaved)}
             >
               <MdDelete/>
             </IconButton>
@@ -65,4 +54,4 @@ class StopPlaceListItemDetails extends Component {
     );
   }
 }
-export default connect(null)(injectIntl(StopPlaceListItemDetails));
+export default injectIntl(StopPlaceListItemDetails);

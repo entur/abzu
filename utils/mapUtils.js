@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import L from 'leaflet';
-import { setDecimalPrecision } from './'
+
+import L from 'leaflet';
+import { setDecimalPrecision } from './';
 
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
 
@@ -47,4 +48,20 @@ export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
   }
 
   return inside;
-}
+};
+
+export const sortPolygonByAngles = (points) => {
+
+  if (!points.length || !points[0].length) return null;
+
+  const polygon = L.polygon(points);
+
+    const center = polygon.getBounds().getCenter();
+    const { lat, lng } = center;
+
+    return points[0].sort((posA, posB) => {
+      const angleA = Math.atan2(posA[1]-lng, posA[0]-lat);
+      const angleB = Math.atan2(posB[1]-lng, posB[0]-lat);
+      return angleB - angleA;
+    });
+};

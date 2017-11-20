@@ -20,13 +20,25 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { injectIntl } from 'react-intl';
 import Loader from '../Dialogs/Loader';
+import { StopPlaceActions, UserActions } from '../../actions/';
+import { connect } from 'react-redux';
 
 class StopPlaceList extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       expandedItem: -1
     };
+  }
+
+  handleRemoveStopPlace(stopPlaceId, notSaved) {
+    const { dispatch } = this.props;
+    if (notSaved) {
+      dispatch(StopPlaceActions.removeChildFromParentStopPlace(stopPlaceId));
+    } else {
+      dispatch(UserActions.showRemoveStopPlaceFromParent(stopPlaceId));
+    }
   }
 
   render() {
@@ -72,6 +84,7 @@ class StopPlaceList extends Component {
                   handleCollapse={() => this.setState({ expandedItem: -1 })}
                   expanded={expandedItem === i}
                   disabled={disabled}
+                  handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
                 />
               )
             : <div style={{ marginTop: 5 }}>
@@ -107,4 +120,4 @@ StopPlaceList.propTypes = {
   handleAddStopPlaceOpen: PropTypes.func.isRequired
 };
 
-export default injectIntl(StopPlaceList);
+export default connect(null)(injectIntl(StopPlaceList));

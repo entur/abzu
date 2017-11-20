@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import StopPlaceGroup from './StopPlaceGroup';
+import { connect } from 'react-redux';
 
 const StopPlaceGroupList = ({list}) => (
   list.map(({positions, name}, index) => (
@@ -7,17 +8,12 @@ const StopPlaceGroupList = ({list}) => (
   ))
 );
 
-StopPlaceGroupList.defaultProps = {
-  list: [
-    {
-      positions: [
-        [63.436256, 10.399359],
-        [63.432316, 10.407262],
-        [63.433291, 10.39806]
-      ],
-      name: 'Group of Stop Place'
-    }
-  ]
-};
 
-export default StopPlaceGroupList;
+const mapStateToProps = ({stopPlacesGroup}) => ({
+  list: [({
+    name: stopPlacesGroup.current.name,
+    positions: [stopPlacesGroup.current.members.map(member => member.location)]
+  })]
+});
+
+export default connect(mapStateToProps)(StopPlaceGroupList);
