@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL response to client model for Group of StopPlace 1`] = `
+Object {
+  "current": Object {
+    "description": "",
+    "id": "NSR:GroupOfStopPlaces:1",
+    "members": Array [
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:10",
+        "isActive": true,
+        "location": Array [
+          58.956267,
+          5.741593,
+        ],
+        "name": "Paradis",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:17",
+            "location": Array [
+              58.956267,
+              5.741593,
+            ],
+            "publicCode": null,
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": "railReplacementBus",
+        "tariffZones": Array [],
+      },
+    ],
+    "name": "Gruppe",
+  },
+  "isModified": false,
+  "notFound": false,
+  "original": Object {
+    "description": "",
+    "id": "NSR:GroupOfStopPlaces:1",
+    "members": Array [
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:10",
+        "isActive": true,
+        "location": Array [
+          58.956267,
+          5.741593,
+        ],
+        "name": "Paradis",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:17",
+            "location": Array [
+              58.956267,
+              5.741593,
+            ],
+            "publicCode": null,
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": "railReplacementBus",
+        "tariffZones": Array [],
+      },
+    ],
+    "name": "Gruppe",
+  },
+  "zoom": 15,
+}
+`;
