@@ -383,7 +383,7 @@ export const removeTag = (client, name, idReference) =>
     fetchPolicy: 'network-only'
   });
 
-export const getGroupOfStopPlaceBy = (client, id) =>
+export const getGroupOfStopPlacesBy = (client, id) =>
   client.query({
     query: getGroupOfStopPlaceQuery,
     variables: {

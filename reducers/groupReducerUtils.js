@@ -49,9 +49,8 @@ const updateStateByOperationName = (state, action, operation) => {
     operation
   );
 
-  if (groupOfStopPlace !== null) {
+  if (!isEmptyArray(groupOfStopPlace)) {
     const clientGroup = new GroupOfStopPlace(groupOfStopPlace).toClient();
-
     return Object.assign({}, state, {
       current: copy(clientGroup),
       original: copy(clientGroup),
@@ -59,14 +58,9 @@ const updateStateByOperationName = (state, action, operation) => {
       notFound: false,
       zoom: 15
     });
-  } else {
-    return Object.assign({}, state, {
-      current: null,
-      original: null,
-      isModified: false,
-      notFound: true
-    });
   }
+
+  return state;
 };
 
 const extractGroupOfStopPlace = (action, key) => {
@@ -79,3 +73,5 @@ const extractGroupOfStopPlace = (action, key) => {
 };
 
 const copy = data => JSON.parse(JSON.stringify(data));
+
+const isEmptyArray = a => (Array.isArray(a) && !a.length);
