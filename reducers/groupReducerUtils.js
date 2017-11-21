@@ -12,33 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import GrouOfStopPlace from '../models/GroupOfStopPlace';
+import GroupOfStopPlace from '../models/GroupOfStopPlace';
 import StopPlace from '../models/StopPlace';
 
 export const getGroupOfStopPlace = (state, action) => {
-  if (action.operationName === 'getGroupOfStopPlaces') {
-    const groupOfStopPlace = extractGroupOfStopPlace(
-      action,
-      'groupOfStopPlaces'
-    );
-    if (groupOfStopPlace !== null) {
-      const clientGroup = new GrouOfStopPlace(groupOfStopPlace).toClient();
 
-      return Object.assign({}, state, {
-        current: copy(clientGroup),
-        original: copy(clientGroup),
-        isModified: false,
-        notFound: false,
-        zoom: 15
-      });
-    } else {
-      return Object.assign({}, state, {
-        current: null,
-        original: null,
-        isModified: false,
-        notFound: true
-      });
-    }
+  if (action.operationName === 'getGroupOfStopPlaces') {
+    return updateStateByOperationName(state, action, 'groupOfStopPlaces');
+  } else if (action.operationName === 'mutateGroupOfStopPlaces') {
+    return updateStateByOperationName(state, action, 'mutateGroupOfStopPlaces')
   }
   return state;
 };
@@ -58,6 +40,33 @@ export const addMemberToGroup = (current, payLoad) => {
   newGroup.members = newGroup.members.concat(members);
 
   return newGroup;
+};
+
+const updateStateByOperationName = (state, action, operation) => {
+
+  const groupOfStopPlace = extractGroupOfStopPlace(
+    action,
+    operation
+  );
+
+  if (groupOfStopPlace !== null) {
+    const clientGroup = new GroupOfStopPlace(groupOfStopPlace).toClient();
+
+    return Object.assign({}, state, {
+      current: copy(clientGroup),
+      original: copy(clientGroup),
+      isModified: false,
+      notFound: false,
+      zoom: 15
+    });
+  } else {
+    return Object.assign({}, state, {
+      current: null,
+      original: null,
+      isModified: false,
+      notFound: true
+    });
+  }
 };
 
 const extractGroupOfStopPlace = (action, key) => {

@@ -1,6 +1,378 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL response to client model for Group of StopPlace 1`] = `
+exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL mutation result to client model for Group of StopPlace 1`] = `
+Object {
+  "current": Object {
+    "description": "",
+    "id": "NSR:GroupOfStopPlaces:1",
+    "members": Array [
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:27423",
+        "isActive": true,
+        "location": Array [
+          58.954075,
+          5.742027,
+        ],
+        "name": "Strømsbrua",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:47270",
+            "location": Array [
+              58.954487,
+              5.742127,
+            ],
+            "publicCode": "",
+          },
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:47271",
+            "location": Array [
+              58.953663,
+              5.741927,
+            ],
+            "publicCode": "",
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": null,
+        "tariffZones": Array [],
+      },
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:10",
+        "isActive": true,
+        "location": Array [
+          58.956267,
+          5.741593,
+        ],
+        "name": "Paradis",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:17",
+            "location": Array [
+              58.956267,
+              5.741593,
+            ],
+            "publicCode": null,
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": "railReplacementBus",
+        "tariffZones": Array [],
+      },
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "description": null,
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:26635",
+        "isActive": true,
+        "location": Array [
+          58.955028,
+          5.738058,
+        ],
+        "name": "Arne Garborgs vei",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:46027",
+            "location": Array [
+              58.95505,
+              5.738073,
+            ],
+            "publicCode": "",
+          },
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:46028",
+            "location": Array [
+              58.955006,
+              5.738042,
+            ],
+            "publicCode": "",
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": null,
+        "tariffZones": Array [],
+      },
+    ],
+    "name": "Gruppe2",
+  },
+  "isModified": false,
+  "notFound": false,
+  "original": Object {
+    "description": "",
+    "id": "NSR:GroupOfStopPlaces:1",
+    "members": Array [
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:27423",
+        "isActive": true,
+        "location": Array [
+          58.954075,
+          5.742027,
+        ],
+        "name": "Strømsbrua",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:47270",
+            "location": Array [
+              58.954487,
+              5.742127,
+            ],
+            "publicCode": "",
+          },
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:47271",
+            "location": Array [
+              58.953663,
+              5.741927,
+            ],
+            "publicCode": "",
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": null,
+        "tariffZones": Array [],
+      },
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:10",
+        "isActive": true,
+        "location": Array [
+          58.956267,
+          5.741593,
+        ],
+        "name": "Paradis",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:17",
+            "location": Array [
+              58.956267,
+              5.741593,
+            ],
+            "publicCode": null,
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": "railReplacementBus",
+        "tariffZones": Array [],
+      },
+      Object {
+        "accessibilityAssessment": Object {
+          "limitations": Object {
+            "audibleSignalsAvailable": "UNKNOWN",
+            "escalatorFreeAccess": "UNKNOWN",
+            "liftFreeAccess": "UNKNOWN",
+            "stepFreeAccess": "UNKNOWN",
+            "wheelchairAccess": "UNKNOWN",
+          },
+        },
+        "alternativeNames": Array [],
+        "description": null,
+        "entrances": Array [],
+        "hasExpired": false,
+        "id": "NSR:StopPlace:26635",
+        "isActive": true,
+        "location": Array [
+          58.955028,
+          5.738058,
+        ],
+        "name": "Arne Garborgs vei",
+        "parking": Array [],
+        "pathJunctions": Array [],
+        "quays": Array [
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:46027",
+            "location": Array [
+              58.95505,
+              5.738073,
+            ],
+            "publicCode": "",
+          },
+          Object {
+            "accessibilityAssessment": Object {
+              "limitations": Object {
+                "audibleSignalsAvailable": "UNKNOWN",
+                "escalatorFreeAccess": "UNKNOWN",
+                "liftFreeAccess": "UNKNOWN",
+                "stepFreeAccess": "UNKNOWN",
+                "wheelchairAccess": "UNKNOWN",
+              },
+            },
+            "description": "",
+            "id": "NSR:Quay:46028",
+            "location": Array [
+              58.955006,
+              5.738042,
+            ],
+            "publicCode": "",
+          },
+        ],
+        "stopPlaceType": "onstreetBus",
+        "submode": null,
+        "tariffZones": Array [],
+      },
+    ],
+    "name": "Gruppe2",
+  },
+  "zoom": 15,
+}
+`;
+
+exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL query result to client model for Group of StopPlace 1`] = `
 Object {
   "current": Object {
     "description": "",
@@ -111,5 +483,24 @@ Object {
     "name": "Gruppe",
   },
   "zoom": 15,
+}
+`;
+
+exports[`Model: map Group of Stop Place from server to expected client model should map client model for Group of StopPlace to schema 1`] = `
+Object {
+  "description": Object {
+    "lang": "nor",
+    "value": "",
+  },
+  "id": "NSR:GroupOfStopPlaces:1",
+  "members": Array [
+    Object {
+      "ref": "NSR:StopPlace:10",
+    },
+  ],
+  "name": Object {
+    "lang": "nor",
+    "value": "Gruppe",
+  },
 }
 `;

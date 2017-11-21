@@ -15,7 +15,7 @@ class GroupOfStopPlacesList extends Component {
   };
 
   handleRemoveStopPlace(stopPlaceId) {
-    console.log("removing stopPlace", stopPlaceId);
+    // TODO: Implement this
   }
 
   render() {

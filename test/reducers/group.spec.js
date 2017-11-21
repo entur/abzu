@@ -14,20 +14,48 @@
 
 
 import { groupOfStopPlaceReducer } from './../../reducers/';
-import groupOfStopPlaceMock from './json/groupOfStopPlace.json';
+import groupOfStopPlaceQuery from './json/groupOfStopPlace.json';
+import groupOfStopPlaceMutation from './json/groupOfStopPlaceMutation.json';
+import mapHelper from '../../modelUtils/mapToQueryVariables';
 
 describe('Model: map Group of Stop Place from server to expected client model', () => {
 
-  test('should map GraphQL response to client model for Group of StopPlace', () => {
+  test('should map GraphQL query result to client model for Group of StopPlace', () => {
 
     const action = {
       type: 'APOLLO_QUERY_RESULT',
-      result: groupOfStopPlaceMock,
+      result: groupOfStopPlaceQuery,
       operationName: 'getGroupOfStopPlaces'
     };
 
     const state = groupOfStopPlaceReducer({}, action);
     expect(state).toMatchSnapshot();
+  });
+
+  test('should map GraphQL mutation result to client model for Group of StopPlace', () => {
+
+    const action = {
+      type: 'APOLLO_MUTATION_RESULT',
+      result: groupOfStopPlaceMutation,
+      operationName: 'mutateGroupOfStopPlaces'
+    };
+
+    const state = groupOfStopPlaceReducer({}, action);
+    expect(state).toMatchSnapshot();
+  });
+
+  test('should map client model for Group of StopPlace to schema', () => {
+
+    const action = {
+      type: 'APOLLO_QUERY_RESULT',
+      result: groupOfStopPlaceQuery,
+      operationName: 'getGroupOfStopPlaces'
+    };
+    const state = groupOfStopPlaceReducer({}, action);
+    const clientGroupOfStopPlace = state.current;
+    const groupOfStopPlaceExample = mapHelper.mapGroupOfStopPlaceToVariables(clientGroupOfStopPlace);
+    expect(groupOfStopPlaceExample).toMatchSnapshot();
+
   });
 
 });

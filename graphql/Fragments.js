@@ -29,7 +29,48 @@ Fragments.accessibilityAssessment = {
           }
       }
   `
-}
+};
+
+Fragments.groupOfStopPlaces = {
+  verbose: gql`
+      fragment GroupOfStopPlaces on GroupOfStopPlaces {
+          id
+          members {
+              ...on StopPlace {
+                  id
+                  __typename
+                  name {
+                      value
+                  }
+                  stopPlaceType
+                  submode
+                  description {
+                      value
+                  }
+                  geometry {
+                      coordinates
+                      type
+                  }
+                  quays {
+                      id
+                      privateCode { value }
+                      publicCode
+                      geometry {
+                          coordinates
+                          type
+                      }
+                  }
+              }
+          }
+          name {
+              value
+          }
+          description {
+              value
+          }
+      }
+  `
+};
 
 Fragments.placeEquipments = {
   verbose: gql`

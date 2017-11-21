@@ -28,7 +28,8 @@ import {
   updateChildOfParentStop,
   mutateRemoveTag,
   mutateCreateTag,
-  mutateTerminateStopPlace
+  mutateTerminateStopPlace,
+  mutateGroupOfStopPlaces
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -195,7 +196,25 @@ export const createParentStopPlace = (client, {name, description, versionComment
       coordinates,
       validBetween,
       stopPlaceIds
-    }
+    },
+    fetchPolicy: 'network-only'
+  });
+
+
+export const mutateGroupOfStopPlace = (client, variables) =>
+  new Promise((resolve, reject) => {
+    client.mutate({
+      mutation: mutateGroupOfStopPlaces,
+      variables,
+      fetchPolicy: 'network-only'
+    }).then(({data}) =>{
+      const id = data['mutateGroupOfStopPlaces']
+        ? data['mutateGroupOfStopPlaces'].id
+        : null;
+      resolve(id);
+    }).catch(err => {
+      reject(null);
+    });
   });
 
 export const getStopPlaceVersions = (client, stopPlaceId) =>

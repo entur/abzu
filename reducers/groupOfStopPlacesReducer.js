@@ -33,6 +33,7 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case types.APOLLO_QUERY_RESULT:
+    case types.APOLLO_MUTATION_RESULT:
       return getGroupOfStopPlace(state, action);
 
     case types.REQUESTED_MEMBER_INFO:

@@ -20,8 +20,8 @@ export const mutateParentStopPlace = gql`
   mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {
       mutateParentStopPlace(ParentStopPlace: {
           id: $id
-          name: { value: $name, lang: "no" }
-          description: { value: $description, lang: "no" }
+          name: { value: $name, lang: "nor" }
+          description: { value: $description, lang: "nor" }
           versionComment: $versionComment
           validBetween: $validBetween
           geometry: {
@@ -222,3 +222,18 @@ export const mutateRemoveTag = gql`
       }
   }
 `;
+
+export const mutateGroupOfStopPlaces = gql`
+  mutation mutateGroupOfStopPlaces($id:String, $name: EmbeddableMultilingualStringInput!, $description: EmbeddableMultilingualStringInput, $members: [VersionLessEntityRefInput]) {
+      mutateGroupOfStopPlaces(GroupOfStopPlaces: {
+          id: $id,
+          name: $name,
+          description: $description,
+          members: $members
+      }) {
+          ...GroupOfStopPlaces
+      }
+  },
+  ${Fragments.groupOfStopPlaces.verbose}
+`;
+

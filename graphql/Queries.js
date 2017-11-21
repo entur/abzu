@@ -603,40 +603,8 @@ export const getQueryTopographicPlaces = ids => {
 export const getGroupOfStopPlaceQuery = gql`
     query getGroupOfStopPlaces($id: String!) {
         groupOfStopPlaces(id: $id) {
-            id
-            members {
-                ...on StopPlace {
-                    id
-                    __typename
-                    name {
-                        value
-                    }
-                    stopPlaceType
-                    submode
-                    description {
-                        value
-                    }
-                    geometry {
-                        coordinates
-                        type 
-                    }
-                    quays {
-                        id
-                        privateCode { value }
-                        publicCode 
-                        geometry {
-                            coordinates
-                            type
-                        }
-                    }
-                }
-            }
-            name {
-                value
-            }
-            description {
-                value
-            }
+        ...GroupOfStopPlaces
         }
     },
+   ${Fragments.groupOfStopPlaces.verbose}
 `;

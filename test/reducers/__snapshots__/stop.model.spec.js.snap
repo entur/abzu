@@ -113,7 +113,7 @@ Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 212,
       "description": Object {
-        "lang": "no",
+        "lang": "nor",
         "value": "",
       },
       "geometry": Object {
@@ -137,7 +137,7 @@ Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 38,
       "description": Object {
-        "lang": "no",
+        "lang": "nor",
         "value": "",
       },
       "geometry": Object {
@@ -178,7 +178,7 @@ Array [
       "type": "Point",
     },
     "name": Object {
-      "lang": "nb",
+      "lang": "nor",
       "value": "park&ride example",
     },
     "parentSiteRef": "NSR:StopPlace:1",
