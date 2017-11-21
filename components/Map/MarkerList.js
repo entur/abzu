@@ -17,7 +17,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StopPlaceMarker from './StopPlaceMarker';
 import NewStopMarker from './NewStopMarker';
-import { StopPlaceActions, UserActions } from '../../actions/';
+import { StopPlaceActions, UserActions, StopPlacesGroupActions } from '../../actions/';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import stopTypes from '../../models/stopTypes';
@@ -53,7 +53,9 @@ class MarkerList extends React.Component {
 
   handleAddToGroup(stopPlaceId) {
     const { client } = this.props;
-    this.props.dispatch(StopPlaceActions.addMemberToGroup(client, stopPlaceId))
+    this.props.dispatch(
+      StopPlacesGroupActions.addMemberToGroup(client, stopPlaceId)
+    );
   }
 
   handleStopOnClick(id) {
@@ -81,6 +83,12 @@ class MarkerList extends React.Component {
     dispatch(StopPlaceActions.useNewStopAsCurrent());
     dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
     document.title = intl.formatMessage({ id: '_title_new_stop' });
+  }
+
+  handleRemoveFromGroup(stopPlaceId) {
+    this.props.dispatch(
+      StopPlacesGroupActions.removeMemberFromGroup(stopPlaceId)
+    );
   }
 
   createNewMultimodalStopFrom(stopPlaceId) {
@@ -196,7 +204,8 @@ class MarkerList extends React.Component {
       moveQuaysToNewStop: formatMessage({id: 'move_quays_to_new_stop'}),
       adjustCentroid: formatMessage({id: 'adjust_centroid'}),
       createMultimodal: formatMessage({id: 'new__multi_stop'}),
-      addToGroup: formatMessage({id: 'add_to_group'})
+      addToGroup: formatMessage({id: 'add_to_group'}),
+      removeFromGroup: formatMessage({id: 'remove_from_group'})
     };
 
     const newStopMarkerText = {
@@ -329,6 +338,8 @@ class MarkerList extends React.Component {
                 this.handleStopOnClick(stop.id);
               }}
               isEditingStop={isEditingStop}
+              removeFromGroup={this.handleRemoveFromGroup.bind(this)}
+              isEditingGroup={this.props.isEditingGroup}
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={stop.isChildOfParent}
               hasExpired={stop.hasExpired}

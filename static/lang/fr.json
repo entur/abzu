@@ -199,7 +199,7 @@
   "overwrite_alt_name_title": "Nom alternatif en conflit",
   "page": "Page",
   "parentStopPlace": "Point d'arrêt multimodal",
-  "parent_stop_place__no_children": "Aucun point d'arrêt",
+  "no_stop_places": "Aucun point d'arrêt",
   "parent_stop_place_requires_children": "Un point d'arrêt multimodal doit contenir des points d'arrêts afin d'exister",
   "park_ride": "Parc relais",
   "parking": "Parking",

@@ -99,7 +99,8 @@ class StopPlaceMarker extends React.Component {
       id,
       disabled,
       disabledForSearch,
-      hasExpired
+      hasExpired,
+      isEditingGroup
     } = this.props;
 
     const markerLocation = position || missingCoordinatesMap[id];
@@ -181,6 +182,12 @@ class StopPlaceMarker extends React.Component {
               label={
                 isShowingQuays ? translations.hideQuays : translations.showQuays
               }
+            />
+            <PopupButton
+              hidden={!isEditingGroup}
+              labelStyle={{background: 'rgb(152,51,47)'}}
+              onClick={() => this.props.removeFromGroup(id)}
+              label={translations.removeFromGroup}
             />
             <PopupButton
               hidden={isMultimodalChild || isMultimodal || disabledForSearch || hasExpired}

@@ -12,27 +12,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class PopupButton extends Component {
-
   render() {
 
-    const { label, onClick, hidden, style } = this.props;
+    const { label, onClick, hidden, style, labelStyle } = this.props;
 
     if (hidden) return null;
 
     return (
       <div
-        style={Object.assign({
-          marginTop: 10,
-          cursor: 'pointer',
-          textAlign: 'center'
-        }, style)}
+        style={Object.assign(
+          {
+            marginTop: 10,
+            cursor: 'pointer',
+            textAlign: 'center'
+          },
+          style
+        )}
         onClick={onClick}
       >
-        <span className="marker-popup-button">
+        <span className="marker-popup-button" style={labelStyle}>
           {label}
         </span>
       </div>

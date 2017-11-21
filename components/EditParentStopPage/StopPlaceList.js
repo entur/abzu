@@ -95,7 +95,7 @@ class StopPlaceList extends Component {
                     fontSize: '0.9em'
                   }}
                 >
-                  {formatMessage({id: 'parent_stop_place__no_children'})}
+                  {formatMessage({id: 'no'})}
                 </div>
                 <div
                   style={{

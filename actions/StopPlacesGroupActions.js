@@ -15,9 +15,10 @@
 
 import * as types from './Types';
 import { createThunk } from './';
+import { getAddStopPlaceInfo } from '../graphql/Actions';
+
 
 var StopPlacesGroupActions = {};
-
 
 StopPlacesGroupActions.changeName = name => dispatch => {
   dispatch(createThunk(
@@ -31,6 +32,17 @@ StopPlacesGroupActions.changeDescription = description => dispatch => {
     types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION,
     description
   ));
+};
+
+StopPlacesGroupActions.removeMemberFromGroup = stopPlaceId => dispatch => {
+  dispatch(createThunk(types.REMOVED_GROUP_MEMBER, stopPlaceId));
+};
+
+StopPlacesGroupActions.addMemberToGroup = (client, stopPlaceId) => dispatch => {
+  dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
+  getAddStopPlaceInfo(client, [stopPlaceId]).then(result => {
+    dispatch(createThunk(types.RECEIVED_MEMBER_INFO, result));
+  });
 };
 
 

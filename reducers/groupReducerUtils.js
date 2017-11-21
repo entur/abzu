@@ -42,6 +42,11 @@ export const addMemberToGroup = (current, payLoad) => {
   return newGroup;
 };
 
+export const removeMemberFromGroup = (current, payLoad) => ({
+  ...current,
+  members: current.members.filter(member => member.id !== payLoad)
+});
+
 const updateStateByOperationName = (state, action, operation) => {
 
   const groupOfStopPlace = extractGroupOfStopPlace(
