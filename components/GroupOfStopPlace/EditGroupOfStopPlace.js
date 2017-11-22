@@ -27,14 +27,34 @@ import { withApollo } from 'react-apollo';
 import * as types from '../../actions/Types';
 import Routes from '../../routes/';
 import { UserActions } from '../../actions/';
+import ConfirmDialog from '../Dialogs/ConfirmDialog';
+
 
 class EditGroupOfStopPlace extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      confirmSaveDialogOpen: false
+      confirmSaveDialogOpen: false,
+      confirmGoBack: false,
     };
+  }
+
+  handleAllowUserToGoBack() {
+    if (this.props.isModified) {
+      this.setState({
+        confirmGoBack: true
+      });
+    } else {
+      this.handleGoBack();
+    }
+  }
+
+  handleGoBack() {
+    this.setState({
+      confirmGoBack: false
+    });
+    this.props.dispatch(UserActions.navigateTo('/', ''));
   }
 
   handleSaveSuccess(groupId) {
@@ -91,7 +111,7 @@ class EditGroupOfStopPlace extends Component {
                 marginRight: 2,
                 transform: 'scale(0.8)'
               }}
-              onClick={() => {}}
+              onClick={() => this.handleAllowUserToGoBack()}
             />
             <div>Group of StopPlace</div>
           </div>
@@ -134,6 +154,24 @@ class EditGroupOfStopPlace extends Component {
           handleClose={() => {
             this.setState({confirmSaveDialogOpen: false})
           }}
+        />
+        <ConfirmDialog
+          open={this.state.confirmGoBack}
+          handleClose={() => {
+            this.setState({
+              confirmGoBack: false
+            });
+          }}
+          handleConfirm={() => {
+            this.handleGoBack();
+          }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_group_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel'
+          }}
+          intl={this.props.intl}
         />
       </div>
     );

@@ -82,6 +82,7 @@
   "delete_stop_place": "Slett stoppested",
   "delete_stop_not_allowed": "Dette stoppested tilhører et multimodalt stoppested og kan derfor ikke slettes",
   "discard_changes_body" : "Du har gjort endringer på dette stoppet som ikke er lagret.",
+  "discard_changes_group_body" : "Du har gjort endringer på denne stoppestedsgruppen som ikke er lagret.",
   "discard_changes_cancel" : "Avbryt",
   "discard_changes_confirm": "Forkast endringer",
   "discard_changes_title" : "Er du sikker på at du vil forkaste dine endringer?",

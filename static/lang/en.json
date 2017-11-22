@@ -82,6 +82,7 @@
   "delete_stop_place": "Delete stop place",
   "delete_stop_info": "This will irreverisibly delete this stop place. Use with caution.",
   "discard_changes_body": "You have done modifications to this stop place that are unsaved.",
+  "discard_changes_group_body" : "You have done modifications to this group of stop places that are unsaved.",
   "discard_changes_cancel": "Cancel",
   "discard_changes_confirm": "Discard changes",
   "discard_changes_title": "Are you sure you want to discard your changes?",
