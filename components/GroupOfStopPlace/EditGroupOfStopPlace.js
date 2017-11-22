@@ -26,7 +26,7 @@ import { mutateGroupOfStopPlace } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import * as types from '../../actions/Types';
 import Routes from '../../routes/';
-import { UserActions } from '../../actions/';
+import { UserActions, StopPlacesGroupActions } from '../../actions/';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 
 
@@ -37,6 +37,7 @@ class EditGroupOfStopPlace extends Component {
     this.state = {
       confirmSaveDialogOpen: false,
       confirmGoBack: false,
+      confirmUndo: false,
     };
   }
 
@@ -48,6 +49,13 @@ class EditGroupOfStopPlace extends Component {
     } else {
       this.handleGoBack();
     }
+  }
+
+  handleDiscardChanges() {
+    this.setState({
+      confirmUndoOpen: false
+    });
+    this.props.dispatch(StopPlacesGroupActions.discardChanges());
   }
 
   handleGoBack() {
@@ -164,6 +172,24 @@ class EditGroupOfStopPlace extends Component {
           }}
           handleConfirm={() => {
             this.handleGoBack();
+          }}
+          messagesById={{
+            title: 'discard_changes_title',
+            body: 'discard_changes_group_body',
+            confirm: 'discard_changes_confirm',
+            cancel: 'discard_changes_cancel'
+          }}
+          intl={this.props.intl}
+        />
+        <ConfirmDialog
+          open={this.state.confirmUndoOpen}
+          handleClose={() => {
+            this.setState({
+              confirmUndoOpen: false
+            });
+          }}
+          handleConfirm={() => {
+            this.handleDiscardChanges();
           }}
           messagesById={{
             title: 'discard_changes_title',

@@ -44,6 +44,12 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
         isFetchingMember: true
       });
 
+    case types.DISCARDED_GOS_CHANGES:
+      return Object.assign({}, state, {
+        current: Object.assign({}, state.original),
+        isModified: false,
+      });
+
     case types.RECEIVED_MEMBER_INFO:
       return Object.assign({}, state, {
         isFetchingMember: false,

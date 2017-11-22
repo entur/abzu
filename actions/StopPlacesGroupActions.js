@@ -45,5 +45,8 @@ StopPlacesGroupActions.addMemberToGroup = (client, stopPlaceId) => dispatch => {
   });
 };
 
+StopPlacesGroupActions.discardChanges = () => dispatch => {
+  dispatch(createThunk(types.DISCARDED_GOS_CHANGES, null));
+};
 
 export default StopPlacesGroupActions;
