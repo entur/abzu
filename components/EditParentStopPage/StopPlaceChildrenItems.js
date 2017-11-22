@@ -18,16 +18,8 @@ import StopPlaceListChildItem from './StopPlaceListChildItem';
 
 class StopPlaceChildrenItems extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      expandedChild: -1
-    }
-  }
-
   render() {
     const { children, formatMessage } = this.props;
-    const { expandedChild } = this.state;
 
     return (
       <div style={{width: '90%', margin: 'auto'}}>
@@ -38,9 +30,6 @@ class StopPlaceChildrenItems extends Component {
           <StopPlaceListChildItem
             key={child.id}
             child={child}
-            expanded={expandedChild === i}
-            handleCollapse={() => this.setState({expandedChild: -1})}
-            handleExpand={() => this.setState({expandedChild: i})}
           />
         )}
       </div>
