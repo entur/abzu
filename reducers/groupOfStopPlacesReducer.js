@@ -30,7 +30,8 @@ export const initialState = {
   original: Object.assign({}, newGroup),
   isModified: false,
   positions: [[]],
-  isFetchingMember: false
+  isFetchingMember: false,
+  centerPosition: [64.349421, 16.809082]
 };
 
 const groupOfStopPlacesReducer = (state = initialState, action) => {

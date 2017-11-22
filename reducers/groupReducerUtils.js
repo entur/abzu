@@ -14,6 +14,8 @@
 
 import GroupOfStopPlace from '../models/GroupOfStopPlace';
 import StopPlace from '../models/StopPlace';
+import ParentStopPlace from '../models/ParentStopPlace';
+import { calculatePolygonCenter } from '../utils/mapUtils';
 
 export const getGroupOfStopPlace = (state, action) => {
 
@@ -34,9 +36,15 @@ export const addMemberToGroup = (current, payLoad) => {
 
   let newGroup = copy(current);
 
-  const members = Object.keys(membersJSON).map(key =>
-    new StopPlace(membersJSON[key][0], true).toClient()
-  );
+  const members = Object.keys(membersJSON).map(key => {
+    const isParent = membersJSON[key][0]['__typename'] === 'ParentStopPlace';
+    if (isParent) {
+      return new ParentStopPlace(membersJSON[key][0], true).toClient();
+    } else {
+      return new StopPlace(membersJSON[key][0], true).toClient();
+    }
+  });
+
   newGroup.members = newGroup.members.concat(members);
 
   return newGroup;
@@ -61,6 +69,7 @@ const updateStateByOperationName = (state, action, operation) => {
       original: copy(clientGroup),
       isModified: false,
       notFound: false,
+      centerPosition: calculatePolygonCenter(clientGroup.members),
       zoom: 15
     });
   }
