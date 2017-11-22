@@ -110,16 +110,9 @@ class GroupOfStopPlaces extends Component {
 }
 
 const mapStateToProps = ({stopPlacesGroup}) => ({
-  position: getPositionFromMembers(stopPlacesGroup.current),
+  position: stopPlacesGroup.centerPosition,
   zoom: stopPlacesGroup.zoom,
   isFetchingMember: stopPlacesGroup.isFetchingMember
 });
-
-const getPositionFromMembers = current => {
-  if (current && current.members && current.members.length) {
-    return current.members[0].location;
-  }
-  return [0,0];
-};
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaces));

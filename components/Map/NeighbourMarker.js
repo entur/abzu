@@ -178,9 +178,9 @@ class NeighbourMarker extends React.Component {
               </span>
             </div>
             <PopupButton
-              hidden={!isEditingGroup}
+              hidden={!isEditingGroup || isChildOfParent}
               onClick={() => handleAddToGroup(id)}
-              label={"Add to group"}
+              label={translations.addToGroup}
             />
             <PopupButton
               hidden={!isMergingStopAllowed}

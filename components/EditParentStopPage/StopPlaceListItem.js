@@ -19,6 +19,7 @@ import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import StopPlaceListItemDetails from './StopPlaceListItemDetails';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
+import ModalityIconTray from '../ReportPage/ModalityIconTray';
 
 class StopPlaceListItem extends Component {
   render() {
@@ -51,12 +52,20 @@ class StopPlaceListItem extends Component {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <ModalityIconImg
-                type={stopPlace.stopPlaceType}
-                submode={stopPlace.submode}
-                svgStyle={{ transform: 'scale(0.8)' }}
-                style={{ marginTop: -8, marginRight: 5 }}
-              />
+              {stopPlace.isParent
+                ? <ModalityIconTray
+                    modalities={stopPlace.children.map(child => ({
+                      stopPlaceType: child.stopPlaceType,
+                      submode: child.submode
+                    }))}
+                    style={{ marginTop: -8 }}
+                  />
+                : <ModalityIconImg
+                    type={stopPlace.stopPlaceType}
+                    submode={stopPlace.submode}
+                    svgStyle={{ transform: 'scale(0.8)' }}
+                    style={{ marginTop: -8, marginRight: 5 }}
+                  />}
               <div style={{ fontSize: '0.8em' }}>{stopPlace.name}</div>
             </div>
             <StopPlaceLink

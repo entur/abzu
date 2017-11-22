@@ -281,7 +281,8 @@ export const moveQuaysToNewStop = (client, quayIds, fromVersionComment, toVersio
       quayIds,
       fromVersionComment,
       toVersionComment
-    }
+    },
+    fetchPolicy: 'network-only',
   })
 );
 
@@ -391,3 +392,4 @@ export const getGroupOfStopPlacesBy = (client, id) =>
     },
     fetchPolicy: 'network-only'
   });
+

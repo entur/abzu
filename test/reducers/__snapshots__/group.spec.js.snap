@@ -2,6 +2,10 @@
 
 exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL mutation result to client model for Group of StopPlace 1`] = `
 Object {
+  "centerPosition": Array [
+    58.955171,
+    5.7400424999999995,
+  ],
   "current": Object {
     "description": "",
     "id": "NSR:GroupOfStopPlaces:1",
@@ -374,6 +378,10 @@ Object {
 
 exports[`Model: map Group of Stop Place from server to expected client model should map GraphQL query result to client model for Group of StopPlace 1`] = `
 Object {
+  "centerPosition": Array [
+    58.956267,
+    5.741593,
+  ],
   "current": Object {
     "description": "",
     "id": "NSR:GroupOfStopPlaces:1",

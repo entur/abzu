@@ -545,8 +545,8 @@ export const getStopPlacesById = stopPlaceIds => {
           ${queryContent}
       }
   `;
+};
 
-}
 
 export const getPolygons = ids => {
   let queryContent = '';
