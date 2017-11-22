@@ -161,6 +161,13 @@ class MarkerList extends React.Component {
     );
   }
 
+  handleCreateGroup(stopPlaceId) {
+    const { client, dispatch } = this.props;
+    dispatch(
+      StopPlacesGroupActions.useStopPlaceIdForNewGroup(client, stopPlaceId)
+    );
+  }
+
   createMarkerList(props) {
     const {
       stops,
@@ -205,7 +212,8 @@ class MarkerList extends React.Component {
       adjustCentroid: formatMessage({id: 'adjust_centroid'}),
       createMultimodal: formatMessage({id: 'new__multi_stop'}),
       addToGroup: formatMessage({id: 'add_to_group'}),
-      removeFromGroup: formatMessage({id: 'remove_from_group'})
+      removeFromGroup: formatMessage({id: 'remove_from_group'}),
+      createGOS: formatMessage({id: 'create_group_of_stop_places'})
     };
 
     const newStopMarkerText = {
@@ -343,6 +351,7 @@ class MarkerList extends React.Component {
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={stop.isChildOfParent}
               hasExpired={stop.hasExpired}
+              handleCreateGroup={this.handleCreateGroup.bind(this)}
             />,
           );
 
@@ -520,6 +529,7 @@ class MarkerList extends React.Component {
                 stopPlace={stop}
                 tokenParsed={tokenParsed}
                 isEditingGroup={this.props.isEditingGroup}
+                handleCreateGroup={this.handleCreateGroup.bind(this)}
               />,
             );
 

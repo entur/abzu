@@ -78,6 +78,13 @@ class EditGroupOfStopPlace extends Component {
     }
   }
 
+  getHeaderText(groupOfStopPlaces, formatMessage) {
+    if (groupOfStopPlaces.id) {
+      return `${groupOfStopPlaces.name} (${groupOfStopPlaces.id})`
+    }
+    return formatMessage({id: 'you_are_creating_group'})
+  }
+
   handleSave() {
     const { groupOfStopPlace, client } = this.props;
     const variables = mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlace);
@@ -107,7 +114,7 @@ class EditGroupOfStopPlace extends Component {
     };
 
     const { formatMessage } = this.props.intl;
-    const { groupOfStopPlace, originalGOS } = this.props;
+    const { originalGOS } = this.props;
 
     return (
       <div style={style}>
@@ -122,7 +129,7 @@ class EditGroupOfStopPlace extends Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{`${originalGOS.name} (${groupOfStopPlace.id})`}</div>
+            <div>{this.getHeaderText(originalGOS, formatMessage)}</div>
           </div>
         </div>
         <div style={{fontSize: '1em', fontWeight: 600, padding: 5}}>

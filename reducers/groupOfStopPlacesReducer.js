@@ -18,6 +18,7 @@ import {
   addMemberToGroup,
   removeMemberFromGroup
 } from './groupReducerUtils';
+import { calculatePolygonCenter } from '../utils/mapUtils';
 
 const newGroup = {
   name: '',
@@ -30,11 +31,14 @@ export const initialState = {
   original: Object.assign({}, newGroup),
   isModified: false,
   isFetchingMember: false,
-  centerPosition: [64.349421, 16.809082]
+  centerPosition: [64.349421, 16.809082],
+  sourceForNewGroup: null,
 };
 
 const groupOfStopPlacesReducer = (state = initialState, action) => {
+
   switch (action.type) {
+
     case types.APOLLO_QUERY_RESULT:
     case types.APOLLO_MUTATION_RESULT:
       return getGroupOfStopPlace(state, action);
@@ -80,6 +84,17 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
         isModified: true
       });
 
+    case types.SETUP_NEW_GROUP:
+      const newCreatedGroup = addMemberToGroup(newGroup, action.payLoad);
+      return Object.assign({}, state, {
+        current: newCreatedGroup,
+        original: Object.assign({}, newCreatedGroup),
+        isModified: false,
+        notFound: false,
+        centerPosition: calculatePolygonCenter(newCreatedGroup.members),
+        zoom: 16,
+      });
+
     case types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION:
       return Object.assign({}, state, {
         current: {
@@ -88,6 +103,26 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
         },
         isModified: true
       });
+
+    case types.CREATED_NEW_GROUP_OF_STOP_PLACES:
+      return Object.assign({}, state, {
+        sourceForNewGroup: action.payLoad
+      });
+
+    case types.ERROR_NEW_GROUP:
+      return Object.assign({}, state, {
+        sourceForNewGroup: null
+      });
+
+    case types.NAVIGATE_TO:
+      if (action.payLoad === '') {
+        return Object.assign({}, state, {
+          sourceForNewGroup: null,
+          current: newGroup
+        });
+      } else {
+        return state
+      }
 
     default:
       return state;

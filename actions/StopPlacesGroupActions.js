@@ -16,9 +16,24 @@
 import * as types from './Types';
 import { createThunk } from './';
 import { getStopPlaceById, getAddStopPlaceInfo } from '../graphql/Actions';
+import { UserActions } from './';
+import Routes from '../routes/';
 
 
 var StopPlacesGroupActions = {};
+
+StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => dispatch => {
+  dispatch(createThunk(
+    types.CREATED_NEW_GROUP_OF_STOP_PLACES,
+    stopPlaceId
+  ));
+  // i.e already creating a new group of stop place, update state instead
+  if (location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1) {
+    dispatch(StopPlacesGroupActions.createNewGroup(client, stopPlaceId));
+  } else {
+    dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`,  'new'));
+  }
+};
 
 StopPlacesGroupActions.changeName = name => dispatch => {
   dispatch(createThunk(
@@ -55,6 +70,22 @@ StopPlacesGroupActions.addMembersToGroup = (client, stopPlaceIds) => dispatch =>
 
 StopPlacesGroupActions.discardChanges = () => dispatch => {
   dispatch(createThunk(types.DISCARDED_GOS_CHANGES, null));
+};
+
+StopPlacesGroupActions.createNewGroup = (client, stopPlaceId) => dispatch => {
+  getStopPlaceById(client, stopPlaceId).then(result => {
+    if (result && result.data &&
+      result.data.stopPlace && result.data.stopPlace.length) {
+      dispatch(createThunk(types.SETUP_NEW_GROUP, result));
+    } else {
+      dispatch(createThunk(types.ERROR_NEW_GROUP, null));
+      dispatch(UserActions.navigateTo('/', ''));
+    }
+  }).catch(err => {
+    dispatch(createThunk(types.ERROR_NEW_GROUP, null));
+    dispatch(UserActions.navigateTo('/', ''));
+  });
+
 };
 
 export default StopPlacesGroupActions;

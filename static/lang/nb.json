@@ -67,6 +67,7 @@
   "county": "Fylke",
   "creating_new_key_values": "Lager nye nøkkelverdier",
   "create": "Lag",
+  "create_group_of_stop_places": "Opprett stoppestedsgruppe",
   "create_now" : "Opprett her",
   "create_not_allowed": "Denne posisjonen er utenfor ditt område.",
   "create_path_link_here" : "Opprett ganglenke her",
@@ -336,5 +337,6 @@
   "wheelchairAccess_no": "Ikke rullestolvennlig",
   "wheelchairAccess_hint": "Rullestolvennlighet",
   "with_nearby_similar_duplicates": "Kun nærliggende stoppesteder med liknende navn",
+  "you_are_creating_group": "Ny stoppestedsgruppe",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer."
 }

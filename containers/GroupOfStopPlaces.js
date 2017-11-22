@@ -12,19 +12,17 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
-import { getGroupOfStopPlacesBy } from '../graphql/Actions';
+import { getGroupOfStopPlacesBy, getAddStopPlaceInfo } from '../graphql/Actions';
 import GroupOfStopPlaceMap from '../components/GroupOfStopPlace/GroupOfStopPlaceMap';
 import EditGroupOfStopPlace from '../components/GroupOfStopPlace/EditGroupOfStopPlace';
 import Loader from '../components/Dialogs/Loader';
 import GroupErrorDialog from '../components/Dialogs/GroupErrorDialog';
-import { UserActions } from '../actions/';
+import { UserActions, StopPlacesGroupActions } from '../actions/';
 
 class GroupOfStopPlaces extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,29 +38,34 @@ class GroupOfStopPlaces extends Component {
     this.setState({
       isLoadingGroup
     });
-  };
+  }
 
   handleErrorDialogClose() {
-    this.props.dispatch(
-      UserActions.navigateTo('/','')
-    );
+    this.props.dispatch(UserActions.navigateTo('/', ''));
     this.setState({
       errorDialog: {
         open: false,
         type: 'NOT_FOUND'
       }
     });
-  };
+  }
 
-  componentDidMount() {
-    const idFromPath = window.location.pathname
-      .substring(window.location.pathname.lastIndexOf('/'))
-      .replace('/', '');
+  handleNewGroupOfStopPlace() {
+    const { sourceForNewGroup, dispatch, client } = this.props;
+    if (sourceForNewGroup) {
+      dispatch(StopPlacesGroupActions.createNewGroup(client, sourceForNewGroup));
+    } else {
+      dispatch(UserActions.navigateTo('/', ''));
+    }
+  }
+
+  handleFetchGroup(groupId) {
     const { client } = this.props;
 
-    if (idFromPath) {
-      this.handleLoading(true);
-      getGroupOfStopPlacesBy(client, idFromPath).then(({data}) => {
+    this.handleLoading(true);
+
+    getGroupOfStopPlacesBy(client, groupId)
+      .then(({ data }) => {
         this.handleLoading(false);
         if (data.groupOfStopPlaces && !data.groupOfStopPlaces.length) {
           this.setState({
@@ -72,7 +75,8 @@ class GroupOfStopPlaces extends Component {
             }
           });
         }
-      }).catch(err => {
+      })
+      .catch(err => {
         this.setState({
           errorDialog: {
             open: true,
@@ -80,21 +84,31 @@ class GroupOfStopPlaces extends Component {
           }
         });
       });
+  }
+
+  componentDidMount() {
+    const idFromPath = window.location.pathname
+      .substring(window.location.pathname.lastIndexOf('/'))
+      .replace('/', '');
+    const isNewGroup = idFromPath === 'new';
+
+    if (isNewGroup) {
+      this.handleNewGroupOfStopPlace();
+    } else if (idFromPath) {
+      this.handleFetchGroup(idFromPath);
     }
   }
 
   render() {
-
     const { isLoadingGroup, errorDialog } = this.state;
     const { isFetchingMember } = this.props;
 
     return (
       <div>
-        { (isLoadingGroup || errorDialog.open)
-          ? <Loader/>
-          : <EditGroupOfStopPlace/>
-        }
-        { isFetchingMember && <Loader/>}
+        {isLoadingGroup || errorDialog.open
+          ? <Loader />
+          : <EditGroupOfStopPlace />}
+        {isFetchingMember && <Loader />}
         <GroupOfStopPlaceMap
           position={this.props.position}
           zoom={this.props.zoom}
@@ -109,10 +123,11 @@ class GroupOfStopPlaces extends Component {
   }
 }
 
-const mapStateToProps = ({stopPlacesGroup}) => ({
+const mapStateToProps = ({ stopPlacesGroup }) => ({
   position: stopPlacesGroup.centerPosition,
   zoom: stopPlacesGroup.zoom,
-  isFetchingMember: stopPlacesGroup.isFetchingMember
+  isFetchingMember: stopPlacesGroup.isFetchingMember,
+  sourceForNewGroup: stopPlacesGroup.sourceForNewGroup
 });
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaces));

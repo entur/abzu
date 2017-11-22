@@ -68,6 +68,7 @@
   "creating_new_key_values": "Creating new key value-pair",
   "create": "Create",
   "create_not_allowed": "This position is outside your zone",
+  "create_group_of_stop_places": "Create group of stop places",
   "create_now": "Create here",
   "create_path_link_here": "Create path link here",
   "date": "Date",
@@ -336,5 +337,6 @@
   "wheelchairAccess_no": "Not wheelchair friendly",
   "wheelchairAccess_hint": "Wheelchair accessibility",
   "with_nearby_similar_duplicates": "Only nearby stop places with similar name",
+  "you_are_creating_group": "New Group of Stop Places",
   "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted."
 }

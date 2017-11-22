@@ -88,7 +88,8 @@ class NeighbourMarker extends React.Component {
       submode,
       stopPlace,
       tokenParsed,
-      isEditingGroup
+      isEditingGroup,
+      handleCreateGroup
     } = this.props;
 
     const { createMultimodalNotAllowed } = this.state;
@@ -181,6 +182,13 @@ class NeighbourMarker extends React.Component {
               hidden={!isEditingGroup || isChildOfParent}
               onClick={() => handleAddToGroup(id)}
               label={translations.addToGroup}
+            />
+            <PopupButton
+              hidden={isChildOfParent}
+              onClick={() => {
+                handleCreateGroup(id)
+              }}
+              label={translations.createGOS}
             />
             <PopupButton
               hidden={!isMergingStopAllowed}
