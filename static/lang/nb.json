@@ -125,6 +125,7 @@
   "gate" : "Gate",
   "go_back" : "Tilbake",
   "group_not_found": "Stoppestedsgruppen finnes ikke",
+  "group_of_stop_places": "Stoppestedsgruppe",
   "has_expired": "Utløpt",
   "heating": "Oppvarming",
   "heating_no": "Ingen oppvarming",

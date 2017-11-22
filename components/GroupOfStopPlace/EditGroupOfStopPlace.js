@@ -107,6 +107,7 @@ class EditGroupOfStopPlace extends Component {
     };
 
     const { formatMessage } = this.props.intl;
+    const { groupOfStopPlace, originalGOS } = this.props;
 
     return (
       <div style={style}>
@@ -121,11 +122,11 @@ class EditGroupOfStopPlace extends Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>Group of StopPlace</div>
+            <div>{`${originalGOS.name} (${groupOfStopPlace.id})`}</div>
           </div>
         </div>
         <div style={{fontSize: '1em', fontWeight: 600, padding: 5}}>
-          Group of Stop Place
+          {formatMessage({id: 'group_of_stop_places'})}
         </div>
         <GroupOfStopPlaceDetails/>
         <div
@@ -207,6 +208,7 @@ class EditGroupOfStopPlace extends Component {
 const mapStateToProps = ({stopPlacesGroup}) => ({
   isModified: stopPlacesGroup.isModified,
   groupOfStopPlace: stopPlacesGroup.current,
-})
+  originalGOS: stopPlacesGroup.original,
+});
 
 export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlace)));
