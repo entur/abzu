@@ -119,7 +119,7 @@ class ParentStopPlace {
 
       if (stop.geometry && stop.geometry.coordinates) {
         let coordinates = stop.geometry.coordinates[0].slice();
-        // Leaflet uses latLng, GeoJSON [long,lat]
+        // Leaflet uses latLng, GeoJSON is [long,lat]
         clientStop.location = [
           setDecimalPrecision(coordinates[1], 6),
           setDecimalPrecision(coordinates[0], 6),

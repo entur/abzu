@@ -13,6 +13,7 @@
  limitations under the Licence. */
 
 import StopPlace from './StopPlace';
+import ParentStopPlace from './ParentStopPlace';
 
 class GroupOfStopPlace {
   constructor(data) {
@@ -28,7 +29,14 @@ class GroupOfStopPlace {
         id: data.id,
         name: data.name ? data.name.value : '',
         description: data.description ? data.description.value : '',
-        members: data.members.map(member => new StopPlace(member, true).toClient())
+        members: data.members.map(member => {
+          const isParent = (member['__typename'] === 'ParentStopPlace');
+          if (isParent) {
+            return new ParentStopPlace(member, true).toClient();
+          } else {
+            return new StopPlace(member, true).toClient();
+          }
+        })
       };
 
       return clientGroup;

@@ -55,6 +55,7 @@
     "raven-js": "^3.18.1",
     "react": "16.0.0",
     "react-apollo": "1.4.15",
+    "react-delay": "^0.1.0",
     "react-dom": "16.0.0",
     "react-intl": "2.4.0",
     "react-leaflet": "1.7.0",

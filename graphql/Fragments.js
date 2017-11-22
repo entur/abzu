@@ -36,21 +36,21 @@ Fragments.groupOfStopPlaces = {
       fragment GroupOfStopPlaces on GroupOfStopPlaces {
           id
           members {
+              __typename
+              id
+              name {
+                  value
+              }
+              description {
+                  value
+              }
+              geometry {
+                  coordinates
+                  type
+              }
               ...on StopPlace {
-                  id
-                  __typename
-                  name {
-                      value
-                  }
                   stopPlaceType
                   submode
-                  description {
-                      value
-                  }
-                  geometry {
-                      coordinates
-                      type
-                  }
                   quays {
                       id
                       privateCode { value }
@@ -58,6 +58,21 @@ Fragments.groupOfStopPlaces = {
                       geometry {
                           coordinates
                           type
+                      }
+                  }
+              }
+              ...on ParentStopPlace {
+                  id
+                  children {
+                      id
+                      stopPlaceType
+                      submode
+                      geometry {
+                          coordinates
+                          type
+                      }
+                      name {
+                          value
                       }
                   }
               }

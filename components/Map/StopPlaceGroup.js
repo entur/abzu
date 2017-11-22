@@ -8,12 +8,12 @@ class StopPlaceGroup extends Component {
 
     const positions = sortPolygonByAngles(this.props.positions);
 
-    if (positions == null) return null;
+    if (!positions) return null;
 
     const polygonData = [positions];
 
     return (
-      <Polygon positions={polygonData}>
+      <Polygon positions={polygonData} ref="gosPolygon">
         <Popup>
           <div>{this.props.name}</div>
         </Popup>

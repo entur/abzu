@@ -29,7 +29,6 @@ export const initialState = {
   current: Object.assign({}, newGroup),
   original: Object.assign({}, newGroup),
   isModified: false,
-  positions: [[]],
   isFetchingMember: false,
   centerPosition: [64.349421, 16.809082]
 };

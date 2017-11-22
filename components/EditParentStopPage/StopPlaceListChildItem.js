@@ -14,7 +14,6 @@
 
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import Divider from 'material-ui/Divider';
 import ModalityIcon from '../MainPage/ModalityIconSvg';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
@@ -28,28 +27,23 @@ class StopPlaceListChildItem extends Component {
     return (
       <div>
         <Divider />
-        <div style={{ display: 'flex', alignItems: 'center', padding: 8}}>
-          <div style={{display: 'flex', alignItems: 'center', marginLeft: 5}}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: 8, justifyContent: 'space-between'}}>
             <ModalityIcon
               type={child.stopPlaceType}
               submode={child.submode}
               svgStyle={{ transform: 'scale(0.8)' }}
-              style={{ marginTop: -8, marginRight: 5, marginLeft: -5 }}
+              style={{ marginTop: -8, marginRight: 5, marginLeft: -5, flex: 1}}
             />
+            <div style={{fontSize: '0.8em', marginRight: 5, flex: 2}}>{child.name}</div>
             <StopPlaceLink
-              style={{ fontSize: '0.8em', marginRight: 5 }}
+              style={{ fontSize: '0.8em', marginRight: 5, flex: 2 }}
               id={child.id}
             />
-          </div>
         </div>
         <Divider />
       </div>
     );
   }
 }
-
-StopPlaceListChildItem.propTypes = {
-  expanded: PropTypes.bool.isRequired,
-};
 
 export default StopPlaceListChildItem;

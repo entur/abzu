@@ -70,8 +70,8 @@ class GroupOfStopPlaceMap extends Component {
 const mapStateToProps = ({stopPlace, user, stopPlacesGroup}) => ({
   activeBaselayer: user.activeBaselayer,
   enablePolylines: stopPlace.enablePolylines,
-  markers: stopPlacesGroup.current.members.concat(stopPlace.neighbourStops || []),
   ignoreStopId: stopPlacesGroup.current.id,
+  markers: stopPlacesGroup.current.members.concat(stopPlace.neighbourStops || []),
 });
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaceMap));

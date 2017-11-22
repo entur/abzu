@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+
+import React, {Component} from 'react';
 import { Polyline, FeatureGroup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import { getCoordinatesFromGeometry } from '../../utils/';
@@ -49,6 +50,7 @@ class MultimodalStopEdges extends Component {
               vertices.push(
                 <Polyline
                   key={'vertex-' + index + '-' + childIndex}
+                  ref="polyline"
                   positions={[marker.location, child.location]}
                   opacity={this.state.activeLine === markerIndex ? 1: 0.8}
                   color={"lime"}

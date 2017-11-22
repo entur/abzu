@@ -55,18 +55,22 @@ export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
 };
 
 export const sortPolygonByAngles = points => {
-  if (!points.length || !points[0].length) return null;
+  try {
+    if (!points.length || !points[0].length) return null;
 
-  const polygon = L.polygon(points);
+    const polygon = L.polygon(points);
 
-  const center = polygon.getBounds().getCenter();
-  const { lat, lng } = center;
+    const center = polygon.getBounds().getCenter();
+    const { lat, lng } = center;
 
-  return points[0].sort((posA, posB) => {
-    const angleA = Math.atan2(posA[1] - lng, posA[0] - lat);
-    const angleB = Math.atan2(posB[1] - lng, posB[0] - lat);
-    return angleB - angleA;
-  });
+    return points.slice()[0].sort((posA, posB) => {
+      const angleA = Math.atan2(posA[1] - lng, posA[0] - lat);
+      const angleB = Math.atan2(posB[1] - lng, posB[0] - lat);
+      return angleB - angleA;
+    });
+  } catch(exception) {
+    console.error("sortPolygonByAngles", exception);
+  }
 };
 
 export const calculatePolygonCenter = members => {
