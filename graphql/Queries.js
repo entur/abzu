@@ -518,6 +518,7 @@ export const getStopPlacesById = stopPlaceIds => {
     queryContent += `
         ${stopPlace.alias}: stopPlace(id: "${stopPlace.id}") {
             ...on StopPlace {
+                __typename
                 id
                 name {
                     value
@@ -534,6 +535,22 @@ export const getStopPlacesById = stopPlaceIds => {
                     privateCode {
                         value
                     }
+                }
+            }
+            ...on ParentStopPlace {
+                __typename
+                id
+                name {
+                    value
+                }       
+                geometry {
+                  coordinates
+                }
+                children {
+                    id
+                    transportMode
+                    stopPlaceType
+                    submode
                 }
             }
         }

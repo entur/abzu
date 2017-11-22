@@ -128,7 +128,7 @@ class EditGroupOfStopPlace extends Component {
         <div style={{fontSize: '1em', fontWeight: 600, padding: 5}}>
           {formatMessage({id: 'group_of_stop_places'})}
         </div>
-        <GroupOfStopPlaceDetails/>
+        <GroupOfStopPlaceDetails formatMessage={formatMessage}/>
         <div
           style={{
             border: '1px solid #efeeef',

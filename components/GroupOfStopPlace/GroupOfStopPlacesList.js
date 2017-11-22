@@ -19,13 +19,16 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { connect } from 'react-redux';
 import StopPlacesGroupActions from '../../actions/StopPlacesGroupActions';
+import AddMemberToGroup from '../Dialogs/AddMemberToGroup';
+import { withApollo } from 'react-apollo';
 
 class GroupOfStopPlacesList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      expanded: -1
+      expanded: -1,
+      addStopPlaceOpen: false,
     }
   };
 
@@ -35,11 +38,19 @@ class GroupOfStopPlacesList extends Component {
     );
   }
 
+  handleAddMembers(members) {
+    const { dispatch, client } = this.props;
+    this.setState({
+      addStopPlaceOpen: false
+    });
+    dispatch(StopPlacesGroupActions.addMembersToGroup(client, members));
+  }
+
   render() {
 
     const { stopPlaces } = this.props;
     const { formatMessage } = this.props.intl;
-    const { expanded } = this.state;
+    const { expanded, addStopPlaceOpen } = this.state;
 
     return (
       <div>
@@ -55,7 +66,9 @@ class GroupOfStopPlacesList extends Component {
             {formatMessage({id: 'stop_places'})}
           </div>
           <FloatingActionButton
-            onClick={() => {}}
+            onClick={() => {
+              this.setState({addStopPlaceOpen: true})
+            }}
             disabled={false}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
@@ -83,14 +96,21 @@ class GroupOfStopPlacesList extends Component {
           />
         ))}
         { !stopPlaces.length && <p>{formatMessage({id: 'no_stop_places'})}</p>}
+        {addStopPlaceOpen &&
+        <AddMemberToGroup
+          open={addStopPlaceOpen}
+          handleClose={() => {
+            this.setState({addStopPlaceOpen: false})
+          }}
+          handleConfirm={this.handleAddMembers.bind(this)}
+        />}
       </div>
     );
   }
 }
 
-GroupOfStopPlacesList.propTypes = {};
 GroupOfStopPlacesList.defaultProps = {
   stopPlaces: []
 };
 
-export default connect(null)(injectIntl(GroupOfStopPlacesList));
+export default withApollo(connect(null)(injectIntl(GroupOfStopPlacesList)));

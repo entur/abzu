@@ -21,18 +21,18 @@ class GroupOfStopPlaceDetails extends Component {
 
   render() {
 
-    const { name, description } = this.props;
+    const { name, description, formatMessage } = this.props;
 
     return (
       <div style={{padding: 5, minHeight: 400}}>
         <TextField
-          floatingLabelText={"Name"}
+          floatingLabelText={formatMessage({id: 'name'})}
           fullWidth={true}
           value={name}
           onChange={this.handleChangeName.bind(this)}
         />
         <TextField
-          floatingLabelText={"Description"}
+          floatingLabelText={formatMessage({id: 'description'})}
           fullWidth={true}
           value={description}
           onChange={this.handleChangeDescription.bind(this)}
