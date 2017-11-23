@@ -42,6 +42,7 @@ class StopPlaces extends React.Component {
       getStopPlaceById(client, stopPlaceId)
         .then(({ data }) => {
           this.setState({ isLoading: false });
+          console.log("DATA", data);
           if (data.stopPlace && data.stopPlace.length) {
             const stopPlaces = formatHelpers.mapSearchResultatToClientStops(
               data.stopPlace

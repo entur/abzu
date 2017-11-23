@@ -21,6 +21,7 @@ import WheelChair from 'material-ui/svg-icons/action/accessible';
 import { getIn } from '../../utils/';
 import TagTray from './TagTray';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
+import BelongsToGroup from './BelongsToGroup';
 
 class StopPlaceResultInfo extends Component {
 
@@ -51,9 +52,13 @@ class StopPlaceResultInfo extends Component {
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
           {result.topographicPlace &&
             result.parentTopographicPlace &&
-            <div
-              style={{ fontSize: 18 }}
-            >{`${result.topographicPlace}, ${result.parentTopographicPlace}`}</div>}
+            <div style={{ fontSize: 18 }}>
+              {`${result.topographicPlace}, ${result.parentTopographicPlace}`}
+            </div>
+          }
+          {result.belongsToGroup && (
+            <BelongsToGroup formatMessage={formatMessage} groups={result.groups}/>
+          )}
           <div style={{ fontSize: 14 }}>{result.id}</div>
         </div>
         <div style={{ display: 'block', fontSize: 10, marginLeft: 10 }}>

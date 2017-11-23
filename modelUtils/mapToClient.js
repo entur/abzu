@@ -280,80 +280,68 @@ helpers.mapSearchResultatToClientStops = stops => {
 };
 
 helpers.mapSearchResultStopPlace = stop => {
-  let parentTopographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    ''
-  );
-  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
-
-  const clientStop = {
-    isParent: false,
-    id: stop.id,
-    name: stop.name ? stop.name.value : '',
-    isMissingLocation: !stop.geometry,
-    stopPlaceType: stop.stopPlaceType,
-    submode: stop.submode,
-    transportMode: stop.transportMode,
-    topographicPlace: topographicPlace,
-    parentTopographicPlace: parentTopographicPlace,
-    isActive: false,
-    quays: stop.quays,
-    importedId: getImportedId(stop.keyValues),
-    accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
-    validBetween: stop.validBetween,
-    tags: stop.tags
-  };
-
-  if (stop.geometry && stop.geometry.coordinates) {
-    let coordinates = stop.geometry.coordinates[0].slice();
-    clientStop.location = [
-      setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6)
-    ];
-  }
-  return clientStop;
+  let searchResult = new StopPlace(stop, true).toClient();
+  searchResult.quays = stop.quays;
+  return searchResult;
 };
 
 helpers.mapSearchResultParentStopPlace = stop => {
-  let parentTopographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    ''
-  );
-  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
+  try {
+    // TODO: Refactor this to work with model class ParentStopPlace
+    let parentTopographicPlace = getIn(
+      stop,
+      ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
+      ''
+    );
+    let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
 
-  let clientParentStop = {
-    isParent: true,
-    id: stop.id,
-    name: stop.name.value,
-    isMissingLocation: !stop.geometry,
-    stopPlaceType: stop.stopPlaceType,
-    submode: stop.submode,
-    transportMode: stop.transportMode,
-    topographicPlace: topographicPlace,
-    parentTopographicPlace: parentTopographicPlace,
-    isActive: false,
-    children: stop.children
-      .map(childStop => updateObjectWithLocation(childStop))
-      .map(childStop => {
-        let newChildStop = Object.assign({}, childStop);
-        newChildStop.name = newChildStop.name && newChildStop.name.value
-          ? childStop.name.value
-          : stop.name.value;
-        return newChildStop;
-      })
-      .sort((a, b) => b.id.localeCompare(a.id)),
-    importedId: getImportedId(stop.keyValues),
-    accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
-    tags: stop.tags,
-    geometry: stop.geometry
-  };
+    let clientParentStop = {
+      isParent: true,
+      id: stop.id,
+      name: stop.name.value,
+      isMissingLocation: !stop.geometry,
+      stopPlaceType: stop.stopPlaceType,
+      submode: stop.submode,
+      transportMode: stop.transportMode,
+      topographicPlace: topographicPlace,
+      parentTopographicPlace: parentTopographicPlace,
+      isActive: false,
+      children: stop.children
+        .map(childStop => updateObjectWithLocation(childStop))
+        .map(childStop => {
+          let newChildStop = Object.assign({}, childStop);
+          newChildStop.name = newChildStop.name && newChildStop.name.value
+            ? childStop.name.value
+            : stop.name.value;
+          return newChildStop;
+        })
+        .sort((a, b) => b.id.localeCompare(a.id)),
+      importedId: getImportedId(stop.keyValues),
+      accessibilityAssessment: stop.accessibilityAssessment,
+      hasExpired: hasExpired(stop.validBetween),
+      tags: stop.tags,
+      geometry: stop.geometry,
+    };
 
-  clientParentStop = updateObjectWithLocation(clientParentStop);
-  return clientParentStop;
+    if (stop.groups && stop.groups.length) {
+      clientParentStop.groups = stop.groups.map(group => {
+        let newGroup = {...group};
+        newGroup.name = group.name && group.name.value
+          ? group.name.value : '';
+        return newGroup;
+      });
+      clientParentStop.belongsToGroup = true;
+    } else {
+      clientParentStop.groups = [];
+      clientParentStop.belongsToGroup = false;
+    }
+
+    clientParentStop = updateObjectWithLocation(clientParentStop);
+
+    return clientParentStop;
+  } catch (ex) {
+    console.error("Ex", ex);
+  }
 };
 
 const updateObjectWithLocation = stop => {

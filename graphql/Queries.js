@@ -16,11 +16,10 @@ limitations under the Licence. */
 import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
-
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
       stopPlace(id: $id) {
-          id 
+          id
           ...on ParentStopPlace {
               children {
                   id
@@ -120,6 +119,12 @@ export const allEntities = gql`
             ...VerbosePathLink
         },
         stopPlace(id: $id) {
+            groups {
+              id
+              name {
+                value
+              }
+            }
             ...VerboseStopPlace
             ...VerboseParentStopPlace
         }
@@ -175,6 +180,12 @@ export const getStopById = gql`
             }
             name {
                 value
+            }
+            groups {
+              id
+              name {
+                value
+              }
             }
             tags {
                 name
@@ -241,6 +252,12 @@ export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $pointInTime: DateTime) {
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7, pointInTime: $pointInTime) {
             id
+            groups {
+                id
+                name {
+                  value
+                }
+            }
             __typename
             keyValues {
                 key
@@ -289,8 +306,8 @@ export const findStop = gql`
             }
            ... on ParentStopPlace {
                geometry {
-                   coordinates 
-                   type 
+                   coordinates
+                   type
                }
                children {
                    id
@@ -298,8 +315,8 @@ export const findStop = gql`
                        value
                    }
                    importedId
-                   stopPlaceType 
-                   transportMode 
+                   stopPlaceType
+                   transportMode
                    submode
                    geometry {
                        coordinates
@@ -542,7 +559,7 @@ export const getStopPlacesById = stopPlaceIds => {
                 id
                 name {
                     value
-                }       
+                }
                 geometry {
                   coordinates
                 }

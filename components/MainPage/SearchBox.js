@@ -86,7 +86,7 @@ class SearchBox extends React.Component {
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
-
+    // prevents ghost clicks
     if (params && params.source === 'click') {
       return;
     }

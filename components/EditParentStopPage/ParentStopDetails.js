@@ -29,6 +29,8 @@ import { getAddStopPlaceInfo } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import TagsDialog from '../EditStopPage/TagsDialog';
 import TagTray from '../MainPage/TagTray';
+import BelongsToGroup from './../MainPage/BelongsToGroup';
+
 
 class ParentStopDetails extends Component {
   constructor(props) {
@@ -146,6 +148,13 @@ class ParentStopDetails extends Component {
             text={formatMessage({ id: 'local_reference' })}
           />
         </div>
+        {stopPlace.belongsToGroup && (
+          <BelongsToGroup
+            formatMessage={formatMessage}
+            groups={stopPlace.groups}
+            style={{marginTop: 5}}
+            />
+        )}
         <div style={{ width: '98%', margin: 'auto' }}>
           <TextField
             hintText={formatMessage({ id: 'name' })}

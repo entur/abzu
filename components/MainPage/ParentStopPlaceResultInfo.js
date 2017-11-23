@@ -22,7 +22,7 @@ import ModalityTray from '../ReportPage/ModalityIconTray';
 import TagTray from './TagTray';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
-
+import BelongsToGroup from './BelongsToGroup';
 
 class ParentStopPlaceResultInfo extends Component {
   render() {
@@ -66,6 +66,11 @@ class ParentStopPlaceResultInfo extends Component {
             <div style={{marginRight: 5}}>{formatMessage({id: 'multimodal'})}</div>
           </div>
           <div style={{ fontSize: 14, marginLeft: 5 }}>{result.id}</div>
+        </div>
+        <div style={{marginLeft: 5}}>
+          {result.belongsToGroup && (
+            <BelongsToGroup formatMessage={formatMessage} groups={result.groups}/>
+          )}
         </div>
         <div style={{ display: 'block', fontSize: 10, marginLeft: 5 }}>
           <span style={{ fontWeight: 600 }}>

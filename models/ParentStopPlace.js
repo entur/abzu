@@ -19,7 +19,7 @@ import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
 
-class ParentStopPlace {
+class   ParentStopPlace {
 
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;
@@ -90,6 +90,19 @@ class ParentStopPlace {
 
       if (stop.validBetween) {
         clientStop.validBetween = stop.validBetween;
+      }
+
+      if (stop.groups && stop.groups.length) {
+        clientStop.groups = stop.groups.map(group => {
+          let newGroup = {...group};
+          newGroup.name = group.name && group.name.value
+            ? group.name.value : '';
+          return newGroup;
+        });
+        clientStop.belongsToGroup = true;
+      } else {
+        clientStop.groups = [];
+        clientStop.belongsToGroup = false;
       }
 
       if (stop.tariffZones && stop.tariffZones.length) {
