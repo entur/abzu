@@ -19,7 +19,7 @@ import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
 
-class   ParentStopPlace {
+class ParentStopPlace {
 
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;

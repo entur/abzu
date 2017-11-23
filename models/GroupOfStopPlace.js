@@ -12,8 +12,8 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import StopPlace from './StopPlace';
-import ParentStopPlace from './ParentStopPlace';
+import StopPlace from "./StopPlace";
+import ParentStopPlace from "./ParentStopPlace";
 
 class GroupOfStopPlace {
   constructor(data) {
@@ -22,15 +22,14 @@ class GroupOfStopPlace {
 
   toClient() {
     try {
-
       const { data } = this;
 
       let clientGroup = {
         id: data.id,
-        name: data.name ? data.name.value : '',
-        description: data.description ? data.description.value : '',
+        name: data.name ? data.name.value : "",
+        description: data.description ? data.description.value : "",
         members: data.members.map(member => {
-          const isParent = (member['__typename'] === 'ParentStopPlace');
+          const isParent = member["__typename"] === "ParentStopPlace";
           if (isParent) {
             return new ParentStopPlace(member, true).toClient();
           } else {
@@ -41,7 +40,7 @@ class GroupOfStopPlace {
 
       return clientGroup;
     } catch (e) {
-      console.log('error', e);
+      console.log("error", e);
     }
   }
 }

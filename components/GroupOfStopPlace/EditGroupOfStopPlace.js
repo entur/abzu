@@ -22,7 +22,7 @@ import MdSave from 'material-ui/svg-icons/content/save';
 import { connect } from 'react-redux';
 import SaveGroupDialog from '../Dialogs/SaveGroupDialog';
 import mapHelper from '../../modelUtils/mapToQueryVariables';
-import { mutateGroupOfStopPlace } from '../../graphql/Actions';
+import { mutateGroupOfStopPlace, deleteGroupOfStopPlaces } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import * as types from '../../actions/Types';
 import Routes from '../../routes/';
@@ -38,6 +38,7 @@ class EditGroupOfStopPlace extends Component {
       confirmSaveDialogOpen: false,
       confirmGoBack: false,
       confirmUndo: false,
+      confirmDeleteDialogOpen: false,
     };
   }
 
@@ -78,6 +79,14 @@ class EditGroupOfStopPlace extends Component {
     }
   }
 
+  handleDeleteGroup() {
+    const { client, dispatch, groupOfStopPlace } = this.props;
+    deleteGroupOfStopPlaces(client, groupOfStopPlace.id)
+    .then(response => {
+      dispatch(UserActions.navigateTo('/', ''));
+    });
+  }
+
   getHeaderText(groupOfStopPlaces, formatMessage) {
     if (groupOfStopPlaces.id) {
       return `${groupOfStopPlaces.name} (${groupOfStopPlaces.id})`
@@ -114,7 +123,7 @@ class EditGroupOfStopPlace extends Component {
     };
 
     const { formatMessage } = this.props.intl;
-    const { originalGOS } = this.props;
+    const { originalGOS, groupOfStopPlace } = this.props;
 
     return (
       <div style={style}>
@@ -145,6 +154,15 @@ class EditGroupOfStopPlace extends Component {
             justifyContent: 'space-around'
           }}
         >
+          { groupOfStopPlace.id && (
+              <FlatButton
+                label={formatMessage({ id: 'remove' })}
+                style={{ margin: '8 5', zIndex: 999 }}
+                labelStyle={{ fontSize: '0.7em' }}
+                onClick={() => { this.setState({confirmDeleteDialogOpen: true})}}
+              />
+            )
+          }
           <FlatButton
             icon={<MdUndo style={{ height: '1.3em', width: '1.3em' }} />}
             disabled={!this.props.isModified}
@@ -204,6 +222,24 @@ class EditGroupOfStopPlace extends Component {
             body: 'discard_changes_group_body',
             confirm: 'discard_changes_confirm',
             cancel: 'discard_changes_cancel'
+          }}
+          intl={this.props.intl}
+        />
+        <ConfirmDialog
+          open={this.state.confirmDeleteDialogOpen}
+          handleClose={() => {
+            this.setState({
+              confirmDeleteDialogOpen: false
+            });
+          }}
+          handleConfirm={() => {
+            this.handleDeleteGroup();
+          }}
+          messagesById={{
+            title: 'delete_group_title',
+            body: 'delete_group_body',
+            confirm: 'delete_group_confirm',
+            cancel: 'delete_group_cancel'
           }}
           intl={this.props.intl}
         />

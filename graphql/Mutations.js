@@ -237,3 +237,8 @@ export const mutateGroupOfStopPlaces = gql`
   ${Fragments.groupOfStopPlaces.verbose}
 `;
 
+export const deleteGroupMutation = gql`
+  mutation deleteGroupOfStopPlaces($id: String!) {
+    deleteGroupOfStopPlaces(id: $id)
+  }
+`;

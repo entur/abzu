@@ -29,7 +29,8 @@ import {
   mutateRemoveTag,
   mutateCreateTag,
   mutateTerminateStopPlace,
-  mutateGroupOfStopPlaces
+  mutateGroupOfStopPlaces,
+  deleteGroupMutation
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -393,3 +394,11 @@ export const getGroupOfStopPlacesBy = (client, id) =>
     fetchPolicy: 'network-only'
   });
 
+export const deleteGroupOfStopPlaces = (client, id) =>
+  client.mutate({
+    mutation: deleteGroupMutation,
+    variables: {
+      id
+    },
+    fetchPolicy: 'network-only'
+  });
