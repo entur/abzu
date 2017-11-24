@@ -18,6 +18,7 @@ import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
+import { Entities } from './Entities';
 
 class ParentStopPlace {
 
@@ -44,6 +45,7 @@ class ParentStopPlace {
       tags: [],
       children: [childToAdd],
       versions: [],
+      entityType: Entities.STOP_PLACE
     };
 
     if (child.geometry && child.geometry.coordinates) {
@@ -64,15 +66,16 @@ class ParentStopPlace {
       const { stop, isActive, userDefinedCoordinates } = this;
 
       let clientStop = {
-        id: stop.id,
-        name: stop.name ? stop.name.value : '',
         alternativeNames: extractAlternativeNames(stop.alternativeNames),
-        isActive: isActive,
-        weighting: stop.weighting,
-        version: stop.version,
+        entityType: Entities.STOP_PLACE,
         hasExpired: hasExpired(stop.validBetween),
+        id: stop.id,
+        isActive: isActive,
         isParent: true,
+        name: stop.name ? stop.name.value : '',
         tags: stop.tags,
+        version: stop.version,
+        weighting: stop.weighting,
       };
 
       if (stop.topographicPlace) {

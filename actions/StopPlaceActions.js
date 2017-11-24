@@ -42,7 +42,7 @@ StopPlaceActions.addChildrenToParenStopPlace = ({data}) => (dispatch, getState) 
   dispatch(
     createThunk(types.ADDED_STOP_PLACES_TO_PARENT, toAdd)
   );
-}
+};
 
 StopPlaceActions.changeLocationNewStop = location => dispatch => {
   dispatch(

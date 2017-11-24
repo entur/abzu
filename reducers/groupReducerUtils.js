@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import GroupOfStopPlace from '../models/GroupOfStopPlace';
+import GroupOfStopPlace from '../models/GroupOfStopPlaces';
 import StopPlace from '../models/StopPlace';
 import ParentStopPlace from '../models/ParentStopPlace';
 import { calculatePolygonCenter } from '../utils/mapUtils';

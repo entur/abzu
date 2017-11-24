@@ -168,7 +168,7 @@ export default class LeafLetMap extends React.Component {
         <ZoomControl position="bottomright" />
         <MarkerList
           changeCoordinates={handleChangeCoordinates}
-          stops={markers}
+          markers={markers}
           handleDragEnd={handleDragEnd}
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}

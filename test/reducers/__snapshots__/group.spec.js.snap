@@ -8,7 +8,12 @@ Object {
   ],
   "current": Object {
     "description": "",
+    "entityType": "GROUP_OF_STOP_PLACE",
     "id": "NSR:GroupOfStopPlaces:1",
+    "location": Array [
+      58.955171,
+      5.7400424999999995,
+    ],
     "members": Array [
       Object {
         "accessibilityAssessment": Object {
@@ -22,6 +27,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -88,6 +94,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -137,6 +144,7 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "description": null,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -193,12 +201,18 @@ Object {
       },
     ],
     "name": "Gruppe2",
+    "topographicPlaces": Array [],
   },
   "isModified": false,
   "notFound": false,
   "original": Object {
     "description": "",
+    "entityType": "GROUP_OF_STOP_PLACE",
     "id": "NSR:GroupOfStopPlaces:1",
+    "location": Array [
+      58.955171,
+      5.7400424999999995,
+    ],
     "members": Array [
       Object {
         "accessibilityAssessment": Object {
@@ -212,6 +226,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -278,6 +293,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -327,6 +343,7 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "description": null,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -383,6 +400,7 @@ Object {
       },
     ],
     "name": "Gruppe2",
+    "topographicPlaces": Array [],
   },
   "zoom": 15,
 }
@@ -396,7 +414,12 @@ Object {
   ],
   "current": Object {
     "description": "",
+    "entityType": "GROUP_OF_STOP_PLACE",
     "id": "NSR:GroupOfStopPlaces:1",
+    "location": Array [
+      58.956267,
+      5.741593,
+    ],
     "members": Array [
       Object {
         "accessibilityAssessment": Object {
@@ -410,6 +433,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -448,12 +472,18 @@ Object {
       },
     ],
     "name": "Gruppe",
+    "topographicPlaces": Array [],
   },
   "isModified": false,
   "notFound": false,
   "original": Object {
     "description": "",
+    "entityType": "GROUP_OF_STOP_PLACE",
     "id": "NSR:GroupOfStopPlaces:1",
+    "location": Array [
+      58.956267,
+      5.741593,
+    ],
     "members": Array [
       Object {
         "accessibilityAssessment": Object {
@@ -467,6 +497,7 @@ Object {
         },
         "alternativeNames": Array [],
         "belongsToGroup": false,
+        "entityType": "STOP_PLACE",
         "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
@@ -505,6 +536,7 @@ Object {
       },
     ],
     "name": "Gruppe",
+    "topographicPlaces": Array [],
   },
   "zoom": 15,
 }

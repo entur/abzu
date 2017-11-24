@@ -73,9 +73,10 @@ export const getStateByOperation = (state, action) => {
 
     case 'findStop':
       return Object.assign({}, state, {
-        searchResults: formatHelpers.mapSearchResultatToClientStops(
-          action.result.data.stopPlace
-        )
+        searchResults: [
+          ...formatHelpers.mapSearchResultToStopPlaces(action.result.data.stopPlace),
+          ...formatHelpers.mapSearchResultatGroup(action.result.data.groupOfStopPlaces)
+          ]
       });
 
     case 'mutateParking':
