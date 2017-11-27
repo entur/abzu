@@ -39,7 +39,7 @@ export const addMemberToGroup = (current, payLoad) => {
   const members = Object.keys(membersJSON).map(key => {
     const isParent = membersJSON[key][0]['__typename'] == 'ParentStopPlace';
     if (isParent) {
-      let parentStopPlace = ParentStopPlace(membersJSON[key][0], true).toClient();
+      let parentStopPlace = new ParentStopPlace(membersJSON[key][0], true).toClient();
       parentStopPlace.isMemberOfGroup = true;
       return ParentStopPlace;
     } else {

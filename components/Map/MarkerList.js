@@ -194,8 +194,6 @@ class MarkerList extends React.Component {
     const CustomPopupMarkerText = MarkerStrings.popupMarkerText(formatMessage);
     const newStopMarkerText = MarkerStrings.newStopPlaceMarkerText(formatMessage);
 
-
-
     markers.forEach((marker, stopIndex) => {
 
       if (marker.entityType === Entities.GROUP_OF_STOP_PLACE) {

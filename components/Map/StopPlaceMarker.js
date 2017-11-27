@@ -178,7 +178,7 @@ class StopPlaceMarker extends React.Component {
               label={translations.adjustCentroid}
             />
             <PopupButton
-              hidden={isMultimodalChild || isGroupMember || disabled}
+              hidden={isMultimodalChild || isGroupMember}
               onClick={() => {
                 handleCreateGroup(id)
               }}

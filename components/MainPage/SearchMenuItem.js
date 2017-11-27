@@ -22,6 +22,9 @@ import { Entities } from '../../models/Entities';
 import MdGroup from 'material-ui/svg-icons/action/group-work';
 
 export const createSearchMenuItem = (element, formatMessage) => {
+
+  if (!element) return null;
+
   if (element.entityType === Entities.STOP_PLACE) {
     if (element.isParent) {
       return createParentStopPlaceMenuItem(element, formatMessage);
