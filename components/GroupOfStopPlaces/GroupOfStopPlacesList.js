@@ -76,25 +76,27 @@ class GroupOfStopPlacesList extends Component {
             <ContentAdd />
           </FloatingActionButton>
         </div>
-        { stopPlaces.map((stopPlace, i) => (
-          <StopPlaceListItem
-            key={'group-item-' + i}
-            stopPlace={stopPlace}
-            handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
-            expanded={expanded == i}
-            handleExpand={() => {
-              this.setState({
-                expanded: i
-              })
-            }}
-            handleCollapse={() => {
-              this.setState({
-                expanded: -1
-              });
-            }}
-            disabled={false}
-          />
-        ))}
+        <div style={{maxHeight: 500, overFlowX: 'auto'}}>
+          { stopPlaces.map((stopPlace, i) => (
+            <StopPlaceListItem
+              key={'group-item-' + i}
+              stopPlace={stopPlace}
+              handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
+              expanded={expanded == i}
+              handleExpand={() => {
+                this.setState({
+                  expanded: i
+                })
+              }}
+              handleCollapse={() => {
+                this.setState({
+                  expanded: -1
+                });
+              }}
+              disabled={false}
+            />
+          ))}
+        </div>
         { !stopPlaces.length && <p>{formatMessage({id: 'no_stop_places'})}</p>}
         {addStopPlaceOpen &&
         <AddMemberToGroup

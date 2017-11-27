@@ -30,7 +30,7 @@ import { UserActions, StopPlacesGroupActions } from '../../actions/';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 
 
-class EditGroupOfStopPlace extends Component {
+class EditGroupOfStopPlaces extends Component {
 
   constructor(props) {
     super(props);
@@ -254,4 +254,4 @@ const mapStateToProps = ({stopPlacesGroup}) => ({
   originalGOS: stopPlacesGroup.original,
 });
 
-export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlace)));
+export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces)));
