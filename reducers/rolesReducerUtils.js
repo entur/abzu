@@ -191,7 +191,7 @@ const restrictModeByRoles = (roles, modes, entityType) => {
   return [];
 };
 
-export const getAllowInfoNewStop = (latlng, tokenParsed) => {
+export const getAllowanceInfoNewStop = (latlng, tokenParsed) => {
   const token = { ... tokenParsed };
   let editStopRoles = roleParser.getEditStopRoles(token);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
@@ -201,13 +201,14 @@ export const getAllowInfoNewStop = (latlng, tokenParsed) => {
   return {
     legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
     legalSubmodes: getLegalSubmodes(rolesAllowingGeo),
-    canEdit: true,
+    canEdit: rolesAllowingGeo.length > 0,
   }
-}
+};
+
 
 export const getLegalSubmodes = (roles, restrict = false) => {
   return filterByLegalMode(roles, submodes, 'Submode', restrict);
-}
+};
 
 const filterByLegalMode = (roles, completeList, key, restrict = false) => {
   const typesFoundInRoles = new Set();

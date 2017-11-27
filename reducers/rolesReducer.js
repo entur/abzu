@@ -16,8 +16,9 @@ import * as types from '../actions/Types';
 import {
   getAllowanceInfoForGroup,
   getAllowanceSearchInfo,
-  getAllowInfoNewStop,
-  getAllowanceInfoForStop
+  getAllowanceInfoNewStop,
+  getAllowanceInfoForStop,
+  getLatLng
 } from './rolesReducerUtils';
 
 export const initialState = {};
@@ -55,11 +56,22 @@ const rolesReducer = (state = initialState, action) => {
         )
       });
 
+    case types.SETUP_NEW_GROUP:
+      return Object.assign({}, state, {
+          ...state,
+          kc: state.kc,
+          allowanceInfo: getAllowanceInfoNewStop(
+            getLatLng(action.payLoad.data.stopPlace[0]),
+            state.kc.tokenParsed
+          )
+        }
+      );
+
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
           ...state,
           kc: state.kc,
-          allowanceInfo: getAllowInfoNewStop(
+          allowanceInfo: getAllowanceInfoNewStop(
             action.payLoad,
             state.kc.tokenParsed
           )
@@ -72,7 +84,7 @@ const rolesReducer = (state = initialState, action) => {
           state, {
             ...state,
             kc: state.kc,
-            allowanceInfo: getAllowInfoNewStop(
+            allowanceInfo: getAllowanceInfoNewStop(
               newStopPlace,
               state.kc.tokenParsed
             )

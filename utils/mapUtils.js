@@ -78,6 +78,11 @@ export const calculatePolygonCenter = members => {
   if (!members || !members.length) {
     return defaultCenterPosition;
   }
+
+  if (members.length === 1) {
+    return members[0].location || defaultCenterPosition;
+  }
+
   const points = [members.map(member => member.location)];
   const polygon = L.polygon(points);
   const center = polygon.getBounds().getCenter();

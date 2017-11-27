@@ -62,7 +62,7 @@ RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
 
       let inside = false;
 
-      if (Array.isArray(latLngs)) {
+      if (isArrayOfLatLngs(latLngs)) {
         inside = latLngs.every(latlng => PManager.isPointInPolygon(latlng));
       } else {
         inside = PManager.isPointInPolygon(latLngs);
@@ -322,5 +322,9 @@ export const getInverseSubmodesWhitelist = whitelist => {
   return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
 };
 
+const isArrayOfLatLngs = data => {
+  if (!data || !Array.isArray(data)) return false;
+  return (data.length && Array.isArray(data[0]));
+};
 
 export default RoleParser;

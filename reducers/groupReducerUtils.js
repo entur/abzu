@@ -18,11 +18,10 @@ import ParentStopPlace from '../models/ParentStopPlace';
 import { calculatePolygonCenter } from '../utils/mapUtils';
 
 export const getGroupOfStopPlace = (state, action) => {
-
   if (action.operationName === 'getGroupOfStopPlaces') {
     return updateStateByOperationName(state, action, 'groupOfStopPlaces');
   } else if (action.operationName === 'mutateGroupOfStopPlaces') {
-    return updateStateByOperationName(state, action, 'mutateGroupOfStopPlaces')
+    return updateStateByOperationName(state, action, 'mutateGroupOfStopPlaces');
   }
   return state;
 };
@@ -38,15 +37,16 @@ export const addMemberToGroup = (current, payLoad) => {
 
   const members = Object.keys(membersJSON).map(key => {
     const isParent = membersJSON[key][0]['__typename'] == 'ParentStopPlace';
+
+    let memberStop = null;
     if (isParent) {
-      let parentStopPlace = new ParentStopPlace(membersJSON[key][0], true).toClient();
-      parentStopPlace.isMemberOfGroup = true;
-      return ParentStopPlace;
+      memberStop = new ParentStopPlace(membersJSON[key][0], true).toClient();
     } else {
-      let stopPlace = new StopPlace(membersJSON[key][0], true).toClient();
-      stopPlace.isMemberOfGroup = true;
-      return stopPlace;
+      memberStop = new StopPlace(membersJSON[key][0], true).toClient();
     }
+
+    memberStop.isMemberOfGroup = true;
+    return memberStop;
   });
 
   newGroup.members = newGroup.members.concat(members);
@@ -60,11 +60,7 @@ export const removeMemberFromGroup = (current, payLoad) => ({
 });
 
 const updateStateByOperationName = (state, action, operation) => {
-
-  const groupOfStopPlace = extractGroupOfStopPlace(
-    action,
-    operation
-  );
+  const groupOfStopPlace = extractGroupOfStopPlace(action, operation);
 
   if (!isEmptyArray(groupOfStopPlace)) {
     const clientGroup = new GroupOfStopPlace(groupOfStopPlace).toClient();
@@ -92,4 +88,4 @@ const extractGroupOfStopPlace = (action, key) => {
 
 const copy = data => JSON.parse(JSON.stringify(data));
 
-const isEmptyArray = a => (Array.isArray(a) && !a.length);
+const isEmptyArray = a => Array.isArray(a) && !a.length;
