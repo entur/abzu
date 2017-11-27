@@ -28,6 +28,7 @@ import * as types from '../../actions/Types';
 import Routes from '../../routes/';
 import { UserActions, StopPlacesGroupActions } from '../../actions/';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
+import { getIn } from '../../utils/';
 
 
 class EditGroupOfStopPlaces extends Component {
@@ -124,7 +125,7 @@ class EditGroupOfStopPlaces extends Component {
     };
 
     const { formatMessage } = this.props.intl;
-    const { originalGOS, groupOfStopPlaces } = this.props;
+    const { originalGOS, groupOfStopPlaces, canEdit, canDelete } = this.props;
 
     return (
       <div style={style}>
@@ -145,7 +146,7 @@ class EditGroupOfStopPlaces extends Component {
         <div style={{fontSize: '1em', fontWeight: 600, padding: 5}}>
           {formatMessage({id: 'group_of_stop_places'})}
         </div>
-        <GroupOfStopPlaceDetails formatMessage={formatMessage}/>
+        <GroupOfStopPlaceDetails formatMessage={formatMessage} canEdit={canEdit}/>
         <div
           style={{
             border: '1px solid #efeeef',
@@ -159,6 +160,7 @@ class EditGroupOfStopPlaces extends Component {
               <FlatButton
                 label={formatMessage({ id: 'remove' })}
                 style={{ margin: '8 5', zIndex: 999 }}
+                disabled={!canDelete}
                 labelStyle={{ fontSize: '0.7em' }}
                 onClick={() => { this.setState({confirmDeleteDialogOpen: true})}}
               />
@@ -176,7 +178,7 @@ class EditGroupOfStopPlaces extends Component {
           />
           <FlatButton
             icon={<MdSave style={{ height: '1.3em', width: '1.3em' }} />}
-            disabled={!this.props.isModified || !groupOfStopPlaces.name}
+            disabled={!this.props.isModified || !groupOfStopPlaces.name || !canEdit}
             label={formatMessage({ id: 'save' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.7em' }}
@@ -249,10 +251,12 @@ class EditGroupOfStopPlaces extends Component {
   }
 }
 
-const mapStateToProps = ({stopPlacesGroup}) => ({
+const mapStateToProps = ({stopPlacesGroup, roles}) => ({
   isModified: stopPlacesGroup.isModified,
   groupOfStopPlaces: stopPlacesGroup.current,
   originalGOS: stopPlacesGroup.original,
+  canEdit: getIn(roles, ['allowanceInfo', 'canEdit'], false),
+  canDelete: getIn(roles, ['allowanceInfo', 'canDelete'], false)
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces)));

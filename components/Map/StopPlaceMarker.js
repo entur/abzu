@@ -193,7 +193,7 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={!isEditingGroup || !isGroupMember}
+              hidden={!isEditingGroup || !isGroupMember || disabled}
               labelStyle={{background: 'rgb(152,51,47)'}}
               onClick={() => this.props.removeFromGroup(id)}
               label={translations.removeFromGroup}

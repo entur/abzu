@@ -48,7 +48,7 @@ class GroupOfStopPlacesList extends Component {
 
   render() {
 
-    const { stopPlaces } = this.props;
+    const { stopPlaces, canEdit } = this.props;
     const { formatMessage } = this.props.intl;
     const { expanded, addStopPlaceOpen } = this.state;
 
@@ -69,7 +69,7 @@ class GroupOfStopPlacesList extends Component {
             onClick={() => {
               this.setState({addStopPlaceOpen: true})
             }}
-            disabled={false}
+            disabled={!canEdit}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
