@@ -55,9 +55,13 @@ class GroupOfStopPlace {
         members: data.members.map(member => {
           const isParent = member['__typename'] === 'ParentStopPlace';
           if (isParent) {
-            return new ParentStopPlace(member, true).toClient();
+            let parentStopPlace = ParentStopPlace(member, true).toClient();
+            parentStopPlace.isMemberOfGroup = true;
+            return parentStopPlace;
           } else {
-            return new StopPlace(member, true).toClient();
+            let stopPlace = new StopPlace(member, true).toClient();
+            stopPlace.isMemberOfGroup = true;
+            return stopPlace;
           }
         })
       };

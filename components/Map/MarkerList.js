@@ -363,6 +363,7 @@ class MarkerList extends React.Component {
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={marker.isChildOfParent}
               hasExpired={marker.hasExpired}
+              isGroupMember={marker.isMemberOfGroup}
               handleCreateGroup={this.handleCreateGroup.bind(this)}
             />,
           );

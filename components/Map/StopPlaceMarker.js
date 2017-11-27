@@ -178,7 +178,7 @@ class StopPlaceMarker extends React.Component {
               label={translations.adjustCentroid}
             />
             <PopupButton
-              hidden={isMultimodalChild || isGroupMember}
+              hidden={isMultimodalChild || isGroupMember || disabled}
               onClick={() => {
                 handleCreateGroup(id)
               }}
@@ -193,7 +193,7 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={!isEditingGroup || !isGroupMember || disabled}
+              hidden={!isEditingGroup || !isGroupMember}
               labelStyle={{background: 'rgb(152,51,47)'}}
               onClick={() => this.props.removeFromGroup(id)}
               label={translations.removeFromGroup}
