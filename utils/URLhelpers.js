@@ -87,15 +87,19 @@ const getParamsFromURL = query => {
     }, {});
 };
 
-export const updateURLWithId = id => {
+export const updateURLWithId = (key, id) => {
   if (id) {
-    const url = getURLWithParam('id', id);
+    let url = getUrlWithOnlyParam(key, id);
     updateURL(url);
   }
 };
 
-export const removeIdParamFromURL = () => {
-  updateURL(getURLWithParam("id", null));
+export const getUrlWithOnlyParam = (key, id) => {
+  return getBaseUrl() + `?${key}=${id}`
+};
+
+export const removeIdParamFromURL = id => {
+  updateURL(getURLWithParam(id, null));
 };
 
 export const buildReportSearchQuery = params => {
@@ -112,4 +116,7 @@ export const extractQueryParamsFromUrl = () => {
   return getParamsFromURL(urlQueryString);
 };
 
-export const getIdFromURL = () => getParamsFromURL(window.location.search).id;
+export const getStopPlaceIdFromURL = () => getParamsFromURL(window.location.search).stopPlaceId;
+
+export const getGroupOfStopPlacesIdFromURL = () => getParamsFromURL(window.location.search).groupOfStopPlacesId;
+

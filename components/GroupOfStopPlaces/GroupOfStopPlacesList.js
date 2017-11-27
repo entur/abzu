@@ -76,7 +76,7 @@ class GroupOfStopPlacesList extends Component {
             <ContentAdd />
           </FloatingActionButton>
         </div>
-        <div style={{maxHeight: 500, overFlowX: 'auto'}}>
+        <div style={{maxHeight: 500, overflow: 'auto'}}>
           { stopPlaces.map((stopPlace, i) => (
             <StopPlaceListItem
               key={'group-item-' + i}

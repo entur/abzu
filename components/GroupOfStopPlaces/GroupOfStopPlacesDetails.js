@@ -5,7 +5,7 @@ import GroupOfStopPlacesList from './GroupOfStopPlacesList';
 import {StopPlacesGroupActions} from '../../actions/';
 import { connect } from 'react-redux';
 
-class GroupOfStopPlaceDetails extends Component {
+class GroupOfStopPlacesDetails extends Component {
 
   handleChangeName(e, name) {
     this.props.dispatch(
@@ -28,6 +28,7 @@ class GroupOfStopPlaceDetails extends Component {
         <TextField
           floatingLabelText={formatMessage({id: 'name'})}
           fullWidth={true}
+          errorText={name ? '' : formatMessage({id: 'name_is_required'})}
           value={name}
           onChange={this.handleChangeName.bind(this)}
         />
@@ -50,4 +51,4 @@ const mapStateToProps = ({stopPlacesGroup}) => ({
   members: stopPlacesGroup.current.members,
 });
 
-export default connect(mapStateToProps)(GroupOfStopPlaceDetails);
+export default connect(mapStateToProps)(GroupOfStopPlacesDetails);
