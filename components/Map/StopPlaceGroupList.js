@@ -16,15 +16,19 @@ import React, {Component} from 'react';
 import StopPlaceGroup from './StopPlaceGroup';
 import { connect } from 'react-redux';
 import { Entities } from '../../models/Entities';
+import { FeatureGroup } from 'react-leaflet';
 
 const StopPlaceGroupList = ({list}) => (
-  list.map(({positions, name}, index) => (
+  <FeatureGroup>
+    {list.map(({positions, name}, index) => (
     <StopPlaceGroup key={index} positions={positions} name={name}/>
-  ))
+  ))}
+  </FeatureGroup>
 );
 
 const getSearchPolygon = result => {
-  if (!result || result.entityType !== Entities.GROUP_OF_STOP_PLACE) {
+  if (!result || result.entityType !== Entities.GROUP_OF_STOP_PLACE
+    || !result.members.length) {
     return null;
   }
 
@@ -35,18 +39,26 @@ const getSearchPolygon = result => {
 };
 
 const mapStateToProps = ({stopPlace, stopPlacesGroup}) => {
-  let list = [{
-    name: stopPlacesGroup.current.name,
-    positions: [stopPlacesGroup.current.members.map(member => member.location)]
-  }];
+
+  let polygons = [];
+
+  if (stopPlacesGroup.current.members.length) {
+    polygons.push({
+        name: stopPlacesGroup.current.name,
+        positions: [stopPlacesGroup.current.members.map(member => member.location)]
+      }
+    );
+  }
 
   const searchPolygon = getSearchPolygon(stopPlace.activeSearchResult);
 
   if (searchPolygon) {
-    list = list.concat(searchPolygon);
+    polygons = polygons.concat(searchPolygon);
   }
 
-  return ({list});
+  return ({
+    list: polygons
+  });
 };
 
 

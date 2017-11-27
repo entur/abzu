@@ -10,10 +10,10 @@ class StopPlaceGroup extends Component {
 
     if (!positions) return null;
 
-    const polygonData = [positions];
-
     return (
-      <Polygon positions={polygonData} ref="gosPolygon">
+      <Polygon
+        positions={[positions]}
+      >
         <Popup>
           <div>{this.props.name}</div>
         </Popup>

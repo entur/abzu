@@ -12,20 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Polyline, FeatureGroup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import { getCoordinatesFromGeometry } from '../../utils/';
 
 class MultimodalStopEdges extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeLine: null
-    }
-  }
 
   render() {
 
@@ -34,60 +26,50 @@ class MultimodalStopEdges extends Component {
 
     if (!showMultimodalEdges) return null;
 
-    stops.forEach( (marker, index) => {
-      if (marker.isParent && marker.location) {
-          if (marker.children) {
-            marker.children
-              .map( child => {
-                if (child.geometry && !child.location) {
-                  child.location = getCoordinatesFromGeometry(child.geometry);
-                }
-                return child;
-              })
-              .filter(child => child.location && child.location.length === 2)
-              .forEach( (child, childIndex) => {
-              const markerIndex = marker.id + child.id;
-              vertices.push(
-                <Polyline
-                  key={'vertex-' + index + '-' + childIndex}
-                  ref="polyline"
-                  positions={[marker.location, child.location]}
-                  opacity={this.state.activeLine === markerIndex ? 1: 0.8}
-                  color={"lime"}
-                  dashArray="16,2"
-                  onMouseOver={ e => {
-                    if (this.state.activeLine !== markerIndex) {
-                      this.setState({
-                        activeLine: markerIndex
-                      });
-                      e.target.bringToFront();
-                    }
-                  }}
-                  onMouseOut={() => {
-                    if (this.state.activeLine === markerIndex) {
-                      this.setState({
-                        activeLine: null
-                      });
-                  }}}
-                  weight={this.state.activeLine === markerIndex ? 4: 2}
-                />
-              );
-            });
-          }
+    let foundMarkers = [];
+
+    let validParentStops = stops.filter(marker => marker.isParent
+      && marker.location && marker.children && marker.children.length);
+
+    validParentStops.forEach((marker, index) => {
+      if (foundMarkers.indexOf(marker.id) === -1 || !marker.id) {
+        marker.children
+          .filter(child => child.location && child.location.length === 2)
+          .map(child => {
+            let newChild = Object.assign({}, child);
+            if (child.geometry && !child.location) {
+              newChild.location = getCoordinatesFromGeometry(child.geometry);
+            }
+            return newChild;
+          })
+          .forEach((child, childIndex) => {
+            vertices.push(
+              <Polyline
+                key={'vertex-' + index + '-' + childIndex}
+                ref="polyline"
+                positions={[marker.location, child.location]}
+                opacity={0.9}
+                color={'lime'}
+                dashArray="16,2"
+                weight={3}
+              />
+            );
+        });
+        foundMarkers.push(marker.id);
       }
     });
 
     return (
       <FeatureGroup>
         <div>
-          {vertices.length ? vertices : null}
+          {(vertices && vertices.length) ? vertices : null}
         </div>
       </FeatureGroup>
     );
   }
 }
 
-const mapStateToProps = ({stopPlace}) => ({
+const mapStateToProps = ({ stopPlace }) => ({
   showMultimodalEdges: stopPlace.showMultimodalEdges
 });
 
