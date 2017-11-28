@@ -26,9 +26,11 @@ import {
 import Quay from '../models/Quay';
 import StopPlace from '../models/StopPlace';
 import ParentStopPlace from '../models/ParentStopPlace';
+import GroupOfStopPlaces from '../models/GroupOfStopPlaces';
 import PathLink from '../models/PathLink';
 import Parking from '../models/Parking';
 import ChildOfParentStopPlace from '../models/ChildOfParentStopPlace';
+import { Entities } from '../models/Entities';
 
 const helpers = {};
 
@@ -269,8 +271,8 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
   return allStops.concat(extractedChildren);
 };
 
-helpers.mapSearchResultatToClientStops = stops => {
-  return stops.map(stop => {
+helpers.mapSearchResultToStopPlaces = stopPlaces => {
+  return stopPlaces.map(stop => {
     if (stop.__typename === 'StopPlace') {
       return helpers.mapSearchResultStopPlace(stop);
     } else if (stop.__typename === 'ParentStopPlace') {
@@ -283,6 +285,12 @@ helpers.mapSearchResultStopPlace = stop => {
   let searchResult = new StopPlace(stop, true).toClient();
   searchResult.quays = stop.quays;
   return searchResult;
+};
+
+helpers.mapSearchResultatGroup = groupsOfStopPlaces => {
+  return groupsOfStopPlaces.map(group => (
+    new GroupOfStopPlaces(group).toClient()
+  ));
 };
 
 helpers.mapSearchResultParentStopPlace = stop => {
@@ -321,6 +329,7 @@ helpers.mapSearchResultParentStopPlace = stop => {
       hasExpired: hasExpired(stop.validBetween),
       tags: stop.tags,
       geometry: stop.geometry,
+      entityType: Entities.STOP_PLACE,
     };
 
     if (stop.groups && stop.groups.length) {

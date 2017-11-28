@@ -12,22 +12,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import roleParser, { getRoleOptions, isModeOptionsValidForMode, isInArrayIgnoreCase } from '../roles/rolesParser';
+
+import roleParser, { getRoleOptions, isModeOptionsValidForMode, isInArrayIgnoreCase } from '../roles/rolesParser';
 import { getIn } from '../utils/';
 import stopTypes, { submodes } from '../models/stopTypes';
+import { Entities } from '../models/Entities';
 
 export const getAllowanceInfoForStop = (result, tokenParsed) => {
   /* find all roles that allow editing of stop */
   const token = { ... tokenParsed };
   const editStopRoles = roleParser.getEditStopRoles(token);
   const deleteStopRoles = roleParser.getDeleteStopRoles(token);
-  const latlng = getLatLngFromResult(result);
+  const stopPlace = getStopPlace(result);
+  const latlng = getLatLng(stopPlace);
   const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
   );
-
-  const stopPlace = getStopPlace(result);
 
   if (!stopPlace) {
     return {
@@ -39,10 +40,62 @@ export const getAllowanceInfoForStop = (result, tokenParsed) => {
   }
 
   // retrieve all roles that allow editing a given stop
-  const responsibleEditRoles = roleParser.filterRolesByEntityModes(editStopRolesGeoFiltered, stopPlace);
+  const responsibleEditRoles = roleParser.filterByEntities(editStopRolesGeoFiltered, stopPlace);
 
   // retrieve all roles that allow hard-deleting a given stop
-  const responsibleDeleteRoles = roleParser.filterRolesByEntityModes(deleteStopRoles, stopPlace);
+  const responsibleDeleteRoles = roleParser.filterByEntities(deleteStopRoles, stopPlace);
+
+  const canEdit = responsibleEditRoles.length > 0;
+  const canDeleteStop = responsibleDeleteRoles.length > 0;
+
+  let legalStopPlaceTypes = [];
+  let legalSubmodes = [];
+
+  const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(editStopRolesGeoFiltered);
+  const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
+
+  if (canEdit) {
+    legalStopPlaceTypes = restrictModeByRoles(editStopRolesGeoFiltered, stopPlaceTypesFoundinRoles, 'StopPlaceType');
+    legalSubmodes = submodesFoundinRoles;
+  }
+
+  return {
+    roles: responsibleEditRoles,
+    legalStopPlaceTypes,
+    legalSubmodes,
+    blacklistedStopPlaceTypes: getBlacklistedStopPlaceTypes(responsibleEditRoles),
+    canEdit,
+    canDeleteStop
+  };
+};
+
+export const getAllowanceInfoForGroup = (result, tokenParsed) => {
+  /* find all roles that allow editing of group of stop places */
+  const token = { ... tokenParsed };
+  const editStopRoles = roleParser.getEditStopRoles(token);
+  const deleteStopRoles = roleParser.getDeleteStopRoles(token);
+  const groupOfStopPlaces = getGroupOfStopPlaces(result);
+  const latlngs = getLatLngFromMembers(groupOfStopPlaces);
+
+  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
+    editStopRoles,
+    latlngs
+  );
+
+  if (!groupOfStopPlaces) {
+    return {
+      roles: [],
+      legalStopPlaceTypes: [],
+      legalSubmodes: [],
+      canEdit: false
+    }
+  }
+
+  // retrieve all roles that allow editing a given stop
+  const responsibleEditRoles = roleParser.filterByEntities(editStopRolesGeoFiltered, groupOfStopPlaces);
+
+  // retrieve all roles that allow hard-deleting a given stop
+  const responsibleDeleteRoles = roleParser.filterByEntities(deleteStopRoles, groupOfStopPlaces);
 
   const canEdit = responsibleEditRoles.length > 0;
   const canDeleteStop = responsibleDeleteRoles.length > 0;
@@ -80,7 +133,7 @@ export const isLegalChildStopPlace = (stopPlace, tokenParsed) => {
     editStopRoles,
     stopPlace.location
   );
-  const responsibleEditRoles = roleParser.filterRolesByEntityModes(editStopRolesGeoFiltered, stopPlace);
+  const responsibleEditRoles = roleParser.filterByEntities(editStopRolesGeoFiltered, stopPlace);
   const isLegal = responsibleEditRoles.length > 0;
   return isLegal;
 }
@@ -138,7 +191,7 @@ const restrictModeByRoles = (roles, modes, entityType) => {
   return [];
 };
 
-export const getAllowInfoNewStop = (latlng, tokenParsed) => {
+export const getAllowanceInfoNewStop = (latlng, tokenParsed) => {
   const token = { ... tokenParsed };
   let editStopRoles = roleParser.getEditStopRoles(token);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
@@ -148,13 +201,14 @@ export const getAllowInfoNewStop = (latlng, tokenParsed) => {
   return {
     legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
     legalSubmodes: getLegalSubmodes(rolesAllowingGeo),
-    canEdit: true,
+    canEdit: rolesAllowingGeo.length > 0,
   }
-}
+};
+
 
 export const getLegalSubmodes = (roles, restrict = false) => {
   return filterByLegalMode(roles, submodes, 'Submode', restrict);
-}
+};
 
 const filterByLegalMode = (roles, completeList, key, restrict = false) => {
   const typesFoundInRoles = new Set();
@@ -228,18 +282,21 @@ const getBlacklistedStopPlaceTypes = roles => {
   });
 
   return Array.from(blacklistSet);
-}
+};
 
 export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
   const token = { ... tokenParsed };
   let editStopRoles = roleParser.getEditStopRoles(token);
-  let latlng = payLoad.location;
+  let latlng = payLoad.entityType === Entities.GROUP_OF_STOP_PLACE
+      ? payLoad.members.map(member => member.location)
+      : payLoad.location;
+
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
   );
 
-  let finalRoles = roleParser.filterRolesByEntityModes(rolesAllowingGeo, payLoad);
+  let finalRoles = roleParser.filterByEntities(rolesAllowingGeo, payLoad);
 
   return {
     roles: finalRoles,
@@ -247,30 +304,24 @@ export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
   };
 }
 
-export const getLatLngFromResult = result => {
-
-  let stopPlace = getStopPlace(result);
-
-  if (!stopPlace) {
-    return null;
-  }
-
-  let lngLat = getIn(stopPlace, ['geometry', 'coordinates'], null);
+export const getLatLng = entity => {
+  let lngLat = getIn(entity, ['geometry', 'coordinates'], null);
 
   if (!lngLat || !lngLat.length) return null;
 
-  let latLng = lngLat[0].slice().reverse();
-
-  return latLng;
+  return lngLat[0].slice().reverse();
 };
+
+export const getLatLngFromMembers = groupOfStopPlaces => {
+  if (!groupOfStopPlaces || !groupOfStopPlaces.members || !groupOfStopPlaces.members.length) {
+    return null;
+  }
+  return groupOfStopPlaces.members.map(member => getLatLng(member));
+}
 
 export const getStopPlace = result => {
 
-  if (!result || !result.data || !result.data.stopPlace) {
-    return null;
-  }
-
-  if (!result.data.stopPlace.length) {
+  if (!result || !result.data || !result.data.stopPlace || !result.data.stopPlace.length) {
     return null;
   }
 
@@ -281,4 +332,19 @@ export const getStopPlace = result => {
   }
 
   return null;
-}
+};
+
+export const getGroupOfStopPlaces = result => {
+
+  if (!result || !result.data || !result.data.groupOfStopPlaces || !result.data.groupOfStopPlaces.length) {
+    return null;
+  }
+
+  let groupOfStopPlaces = result.data.groupOfStopPlaces[0];
+
+  if (groupOfStopPlaces) {
+    return JSON.parse(JSON.stringify(groupOfStopPlaces));
+  }
+
+  return null;
+};

@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 
 import { isModeOptionsValidForMode, getRoleOptions } from '../../roles/rolesParser';
-import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
+import { getAllowanceInfoForStop , getLatLng, getLegalStopPlaceTypes, getLegalSubmodes, getStopPlace } from '../../reducers/rolesReducerUtils';
 import stopTypes, { submodes } from '../../models/stopTypes';
 import mockRailReplacementStop from '../mock/mockRailReplacementStop';
 import mockBusStop from '../mock/mockBusStop';
@@ -40,9 +40,9 @@ const stopPlaceResult = {
 
 describe('getAllowanceInfo', () => {
 
-
   test('should get latlng from stopPlaceResult', () => {
-    let latlng = getLatLngFromResult(stopPlaceResult);
+    const stopPlace = getStopPlace(stopPlaceResult);
+    const latlng = getLatLng(stopPlace);
     expect(latlng).toEqual([59.833343, 10.434486]);
   })
 

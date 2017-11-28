@@ -13,16 +13,16 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-import React, { Component } from 'react';
-import { getIn } from '../../utils/';
-import HasExpiredInfo from './HasExpiredInfo';
-import CircularNumber from './CircularNumber';
-import WheelChair from 'material-ui/svg-icons/action/accessible';
-import ModalityTray from '../ReportPage/ModalityIconTray';
-import TagTray from './TagTray';
-import StopPlaceLink from '../ReportPage/StopPlaceLink';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import BelongsToGroup from './BelongsToGroup';
+import CircularNumber from './CircularNumber';
+import HasExpiredInfo from './HasExpiredInfo';
+import ModalityTray from '../ReportPage/ModalityIconTray';
+import React, { Component } from 'react';
+import StopPlaceLink from '../ReportPage/StopPlaceLink';
+import TagTray from './TagTray';
+import WheelChair from 'material-ui/svg-icons/action/accessible';
+import { getIn } from '../../utils/';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 
 class ParentStopPlaceResultInfo extends Component {
   render() {

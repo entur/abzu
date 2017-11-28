@@ -13,6 +13,7 @@ Object {
   },
   "alternativeNames": Array [],
   "belongsToGroup": false,
+  "entityType": "STOP_PLACE",
   "entrances": Array [],
   "groups": Array [],
   "hasExpired": false,

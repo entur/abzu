@@ -15,9 +15,9 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
-import { getGroupOfStopPlacesBy, getAddStopPlaceInfo } from '../graphql/Actions';
-import GroupOfStopPlaceMap from '../components/GroupOfStopPlace/GroupOfStopPlaceMap';
-import EditGroupOfStopPlace from '../components/GroupOfStopPlace/EditGroupOfStopPlace';
+import { getGroupOfStopPlacesById } from '../graphql/Actions';
+import GroupOfStopPlaceMap from '../components/GroupOfStopPlaces/GroupOfStopPlacesMap';
+import EditGroupOfStopPlace from '../components/GroupOfStopPlaces/EditGroupOfStopPlaces';
 import Loader from '../components/Dialogs/Loader';
 import GroupErrorDialog from '../components/Dialogs/GroupErrorDialog';
 import { UserActions, StopPlacesGroupActions } from '../actions/';
@@ -64,7 +64,7 @@ class GroupOfStopPlaces extends Component {
 
     this.handleLoading(true);
 
-    getGroupOfStopPlacesBy(client, groupId)
+    getGroupOfStopPlacesById(client, groupId)
       .then(({ data }) => {
         this.handleLoading(false);
         if (data.groupOfStopPlaces && !data.groupOfStopPlaces.length) {

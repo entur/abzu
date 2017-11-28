@@ -12,12 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import SearchBoxEdit from './SearchBoxEditActions';
 import SearchBoxUsingTempGeo from './SearchBoxUsingTempGeo';
 import SearchBoxGeoWarning from './SearchBoxGeoWarning';
 import StopPlaceResultInfo from './StopPlaceResultInfo';
 import ParentStopPlaceResultInfo from './ParentStopPlaceResultInfo';
+import GroupResultInfo from './GroupResultInfo';
+import { Entities } from '../../models/Entities';
 
 const SearchBoxDetails = ({
   text,
@@ -34,16 +37,32 @@ const SearchBoxDetails = ({
     padding: 5
   };
 
-  const { isParent } = result;
+  const { entityType } = result;
+
+  let ResultInfo = null;
+
+  if (entityType === Entities.STOP_PLACE) {
+    if (result.isParent) {
+      ResultInfo = (
+        <ParentStopPlaceResultInfo
+          result={result}
+          formatMessage={formatMessage}
+        />
+      );
+    } else {
+      ResultInfo = (
+        <StopPlaceResultInfo result={result} formatMessage={formatMessage} />
+      )
+    }
+  } else if (entityType === Entities.GROUP_OF_STOP_PLACE) {
+    ResultInfo = (
+      <GroupResultInfo result={result} formatMessage={formatMessage}/>
+    )
+  }
 
   return (
     <div style={style}>
-      {isParent
-        ? <ParentStopPlaceResultInfo
-            result={result}
-            formatMessage={formatMessage}
-          />
-        : <StopPlaceResultInfo result={result} formatMessage={formatMessage} />}
+      {ResultInfo}
       <SearchBoxGeoWarning
         userSuppliedCoordinates={userSuppliedCoordinates}
         result={result}

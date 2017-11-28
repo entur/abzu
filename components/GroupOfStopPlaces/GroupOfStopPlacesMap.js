@@ -64,7 +64,6 @@ class GroupOfStopPlaceMap extends Component {
       />
     );
   }
-
 }
 
 const mapStateToProps = ({stopPlace, user, stopPlacesGroup}) => ({

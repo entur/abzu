@@ -18,6 +18,8 @@ import PolygonManager from '../singletons/PolygonManager';
 import stopTypes from '../models/stopTypes';
 import { getLegalSubmodes, getLegalStopPlaceTypes } from '../reducers/rolesReducerUtils';
 import { submodes as allSubmodes } from '../models/submodes';
+import { Entities } from '../models/Entities';
+
 
 const getRolesFromTokenByType = (tokenParsed, type) => {
   if (!tokenParsed || !tokenParsed.roles) return [];
@@ -47,7 +49,7 @@ RoleParser.isGuest = tokenParsed => {
   return RoleParser.getEditStopRoles(tokenParsed).length === 0;
 };
 
-RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
+RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
   if (!roles || !roles.length) return [];
 
   let result = [];
@@ -57,7 +59,15 @@ RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
     if (typeof role.z === 'undefined') {
       result.push(role);
     } else {
-      let inside = PManager.isPointInPolygon(latlng);
+
+      let inside = false;
+
+      if (isArrayOfLatLngs(latLngs)) {
+        inside = latLngs.every(latlng => PManager.isPointInPolygon(latlng));
+      } else {
+        inside = PManager.isPointInPolygon(latLngs);
+      }
+
       if (inside) {
         result.push(role);
       }
@@ -67,9 +77,9 @@ RoleParser.filterRolesByZoneRestriction = (roles, latlng) => {
 };
 
 
-RoleParser.filterRolesByEntityModes = (
+RoleParser.filterByEntities = (
   roles,
-  stopPlace
+  object
 ) => {
 
   if (!roles || !roles.length) return [];
@@ -85,21 +95,46 @@ RoleParser.filterRolesByEntityModes = (
     }
   });
 
-  const stopPlaceIsMultiModal =
-    stopPlace.__typename === 'ParentStopPlace' || stopPlace.isParent;
+  let validForStop = [];
 
-  const validForStop = stopPlaceRoles.filter( role => {
-    if (stopPlaceIsMultiModal) {
-      return stopPlace.children.map( child => doesRoleGrantAccessToStop(
-        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, child
-      )).reduce( (a,b) => a && b);
+  // recover entityType for object if not provided
+  let entityType = object.entityType;
+  if (!entityType) {
+    if (object.__typename === 'ParentStopPlace' || object.__typename === 'StopPlace') {
+      entityType = Entities.STOP_PLACE;
     } else {
-      return doesRoleGrantAccessToStop(
-        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, stopPlace
-      )
+      entityType = Entities.GROUP_OF_STOP_PLACE;
     }
-  });
+  }
 
+  if (entityType === Entities.STOP_PLACE) {
+
+    const stopPlaceIsMultiModal =
+      object.__typename === 'ParentStopPlace' || object.isParent;
+
+    validForStop = stopPlaceRoles.filter( role => {
+      if (stopPlaceIsMultiModal) {
+        return object.children.every( child => doesRoleGrantAccessToStop(
+          stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, child
+        ));
+      } else {
+        return doesRoleGrantAccessToStop(
+          stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, object
+        )
+      }
+    });
+
+  } else if (entityType === Entities.GROUP_OF_STOP_PLACE) {
+
+    validForStop = stopPlaceRoles.filter( role => {
+      // group of stop places without members cannot be restricted for edit
+      if (!object.members || !object.members.length) return role;
+
+      return object.members.every(member => doesRoleGrantAccessToStop(
+        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, member
+      ));
+    });
+  }
   return validForStop;
 };
 
@@ -287,5 +322,9 @@ export const getInverseSubmodesWhitelist = whitelist => {
   return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
 };
 
+const isArrayOfLatLngs = data => {
+  if (!data || !Array.isArray(data)) return false;
+  return (data.length && Array.isArray(data[0]));
+};
 
 export default RoleParser;

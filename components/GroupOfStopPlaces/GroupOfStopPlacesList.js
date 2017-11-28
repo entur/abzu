@@ -48,7 +48,7 @@ class GroupOfStopPlacesList extends Component {
 
   render() {
 
-    const { stopPlaces } = this.props;
+    const { stopPlaces, canEdit } = this.props;
     const { formatMessage } = this.props.intl;
     const { expanded, addStopPlaceOpen } = this.state;
 
@@ -69,32 +69,34 @@ class GroupOfStopPlacesList extends Component {
             onClick={() => {
               this.setState({addStopPlaceOpen: true})
             }}
-            disabled={false}
+            disabled={!canEdit}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
             <ContentAdd />
           </FloatingActionButton>
         </div>
-        { stopPlaces.map((stopPlace, i) => (
-          <StopPlaceListItem
-            key={'group-item-' + i}
-            stopPlace={stopPlace}
-            handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
-            expanded={expanded == i}
-            handleExpand={() => {
-              this.setState({
-                expanded: i
-              })
-            }}
-            handleCollapse={() => {
-              this.setState({
-                expanded: -1
-              });
-            }}
-            disabled={false}
-          />
-        ))}
+        <div style={{maxHeight: 500, overflow: 'auto'}}>
+          { stopPlaces.map((stopPlace, i) => (
+            <StopPlaceListItem
+              key={'group-item-' + i}
+              stopPlace={stopPlace}
+              handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
+              expanded={expanded == i}
+              handleExpand={() => {
+                this.setState({
+                  expanded: i
+                })
+              }}
+              handleCollapse={() => {
+                this.setState({
+                  expanded: -1
+                });
+              }}
+              disabled={false}
+            />
+          ))}
+        </div>
         { !stopPlaces.length && <p>{formatMessage({id: 'no_stop_places'})}</p>}
         {addStopPlaceOpen &&
         <AddMemberToGroup

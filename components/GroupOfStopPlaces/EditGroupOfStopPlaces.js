@@ -14,7 +14,7 @@
 
 import React, {Component} from 'react';
 import MdBack from 'material-ui/svg-icons/navigation/arrow-back';
-import GroupOfStopPlaceDetails from './GroupOfStopPlaceDetails';
+import GroupOfStopPlaceDetails from './GroupOfStopPlacesDetails';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
 import MdUndo from 'material-ui/svg-icons/content/undo';
@@ -28,9 +28,10 @@ import * as types from '../../actions/Types';
 import Routes from '../../routes/';
 import { UserActions, StopPlacesGroupActions } from '../../actions/';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
+import { getIn } from '../../utils/';
 
 
-class EditGroupOfStopPlace extends Component {
+class EditGroupOfStopPlaces extends Component {
 
   constructor(props) {
     super(props);
@@ -80,8 +81,8 @@ class EditGroupOfStopPlace extends Component {
   }
 
   handleDeleteGroup() {
-    const { client, dispatch, groupOfStopPlace } = this.props;
-    deleteGroupOfStopPlaces(client, groupOfStopPlace.id)
+    const { client, dispatch, groupOfStopPlaces } = this.props;
+    deleteGroupOfStopPlaces(client, groupOfStopPlaces.id)
     .then(response => {
       dispatch(UserActions.navigateTo('/', ''));
     });
@@ -95,14 +96,15 @@ class EditGroupOfStopPlace extends Component {
   }
 
   handleSave() {
-    const { groupOfStopPlace, client } = this.props;
-    const variables = mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlace);
+    const { groupOfStopPlaces, client } = this.props;
+    const variables = mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlaces);
     mutateGroupOfStopPlace(client, variables).then(groupId => {
       this.handleSaveSuccess(groupId);
     });
   }
 
   render() {
+
     const style = {
       position: 'absolute',
       zIndex: 999,
@@ -123,7 +125,7 @@ class EditGroupOfStopPlace extends Component {
     };
 
     const { formatMessage } = this.props.intl;
-    const { originalGOS, groupOfStopPlace } = this.props;
+    const { originalGOS, groupOfStopPlaces, canEdit, canDelete } = this.props;
 
     return (
       <div style={style}>
@@ -144,7 +146,7 @@ class EditGroupOfStopPlace extends Component {
         <div style={{fontSize: '1em', fontWeight: 600, padding: 5}}>
           {formatMessage({id: 'group_of_stop_places'})}
         </div>
-        <GroupOfStopPlaceDetails formatMessage={formatMessage}/>
+        <GroupOfStopPlaceDetails formatMessage={formatMessage} canEdit={canEdit}/>
         <div
           style={{
             border: '1px solid #efeeef',
@@ -154,10 +156,11 @@ class EditGroupOfStopPlace extends Component {
             justifyContent: 'space-around'
           }}
         >
-          { groupOfStopPlace.id && (
+          { groupOfStopPlaces.id && (
               <FlatButton
                 label={formatMessage({ id: 'remove' })}
                 style={{ margin: '8 5', zIndex: 999 }}
+                disabled={!canDelete}
                 labelStyle={{ fontSize: '0.7em' }}
                 onClick={() => { this.setState({confirmDeleteDialogOpen: true})}}
               />
@@ -175,7 +178,7 @@ class EditGroupOfStopPlace extends Component {
           />
           <FlatButton
             icon={<MdSave style={{ height: '1.3em', width: '1.3em' }} />}
-            disabled={!this.props.isModified}
+            disabled={!this.props.isModified || !groupOfStopPlaces.name || !canEdit}
             label={formatMessage({ id: 'save' })}
             style={{ margin: '8 5', zIndex: 999 }}
             labelStyle={{ fontSize: '0.7em' }}
@@ -248,10 +251,12 @@ class EditGroupOfStopPlace extends Component {
   }
 }
 
-const mapStateToProps = ({stopPlacesGroup}) => ({
+const mapStateToProps = ({stopPlacesGroup, roles}) => ({
   isModified: stopPlacesGroup.isModified,
-  groupOfStopPlace: stopPlacesGroup.current,
+  groupOfStopPlaces: stopPlacesGroup.current,
   originalGOS: stopPlacesGroup.original,
+  canEdit: getIn(roles, ['allowanceInfo', 'canEdit'], false),
+  canDelete: getIn(roles, ['allowanceInfo', 'canDelete'], false)
 });
 
-export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlace)));
+export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces)));

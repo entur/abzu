@@ -19,6 +19,7 @@ import { UserActions } from './';
 import { getIn } from '../utils/'
 import { updateURLWithId } from '../utils/URLhelpers';
 import { createThunk } from './';
+import { Entities } from '../models/Entities';
 
 var StopPlaceActions = {};
 
@@ -42,7 +43,7 @@ StopPlaceActions.addChildrenToParenStopPlace = ({data}) => (dispatch, getState) 
   dispatch(
     createThunk(types.ADDED_STOP_PLACES_TO_PARENT, toAdd)
   );
-}
+};
 
 StopPlaceActions.changeLocationNewStop = location => dispatch => {
   dispatch(
@@ -115,7 +116,13 @@ StopPlaceActions.createKeyValuesPair = (key, values) => (dispatch, getState) => 
 StopPlaceActions.setMarkerOnMap = data => dispatch => {
   dispatch(createThunk(types.SET_ACTIVE_MARKER, Object.assign({},
   data, {isActive: true})));
-  updateURLWithId(data.id);
+  if (data.entityType === Entities.STOP_PLACE) {
+    updateURLWithId('stopPlaceId', data.id);
+  } else if (data.entityType === Entities.GROUP_OF_STOP_PLACE) {
+    updateURLWithId('groupOfStopPlacesId', data.id);
+  } else {
+    console.error('entityType not found', data.entityType, ', will not update URL');
+  }
 };
 
 StopPlaceActions.changeMapCenter = (position, zoom) => dispatch => {

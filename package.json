@@ -1,6 +1,6 @@
 {
   "name": "Abzu",
-  "version": "0.9.12",
+  "version": "1.0.0",
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
@@ -55,10 +55,9 @@
     "raven-js": "^3.18.1",
     "react": "16.0.0",
     "react-apollo": "1.4.15",
-    "react-delay": "^0.1.0",
     "react-dom": "16.0.0",
     "react-intl": "2.4.0",
-    "react-leaflet": "1.7.0",
+    "react-leaflet": "1.7.6",
     "react-leaflet-google": "3.2.0",
     "react-redux": "5.0.6",
     "react-router": "3.0.5",

@@ -76,11 +76,14 @@ convictPromise
     app.get(
       [ENDPOINTBASE + 'config.json', [...configEndpoints]],
       function(req, res) {
+
         var cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),
           OSMUrl: convict.get('OSMUrl'),
-          tiamatEnv: convict.get('tiamatEnv')
+          tiamatEnv: convict.get('tiamatEnv'),
+          // Pod ID used in req header for Tiamat
+          hostname: process.env.HOSTNAME
         };
 
         createKeyCloakConfig(convict.get('authServerUrl'));

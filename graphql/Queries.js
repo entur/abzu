@@ -250,6 +250,37 @@ export const getStopById = gql`
 
 export const findStop = gql`
     query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $pointInTime: DateTime) {
+        groupOfStopPlaces(query: $query, size: 7) {
+            id
+            name {
+                value
+            }
+            members {
+                __typename
+                id
+                name {
+                    value
+                }
+                geometry {
+                    type 
+                    coordinates
+                }
+                topographicPlace {
+                    name {
+                        value
+                    }
+                    parentTopographicPlace {
+                        name {
+                            value
+                        }
+                    }
+                }
+                ...on StopPlace {
+                    submode
+                    stopPlaceType
+                }
+            }
+        }
         stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7, pointInTime: $pointInTime) {
             id
             groups {

@@ -89,6 +89,7 @@ class NeighbourMarker extends React.Component {
       stopPlace,
       tokenParsed,
       isEditingGroup,
+      disabled,
       handleCreateGroup
     } = this.props;
 
@@ -179,7 +180,7 @@ class NeighbourMarker extends React.Component {
               </span>
             </div>
             <PopupButton
-              hidden={!isEditingGroup || isChildOfParent}
+              hidden={!isEditingGroup || isChildOfParent || disabled}
               onClick={() => handleAddToGroup(id)}
               label={translations.addToGroup}
             />

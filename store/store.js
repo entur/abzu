@@ -52,6 +52,12 @@ export default function configureStore(kc) {
 
         const token = localStorage.getItem('ABZU::jwt');
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
+        req.options.headers['ET-Client-Name'] = 'abzu';
+
+        if (window.config.hostname) {
+          req.options.headers['ET-Client-Id'] = window.config.hostname;
+        }
+
         next();
       }
     }

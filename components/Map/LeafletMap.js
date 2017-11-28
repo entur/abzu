@@ -27,7 +27,6 @@ import MultiPolylineList from './PathLink';
 import WMTSLayer from './WMTSLayer';
 import MultimodalStopEdges from './MultimodalStopEdges';
 import StopPlaceGroupList from './StopPlaceGroupList';
-import Delay from 'react-delay';
 
 export default class LeafLetMap extends React.Component {
   getCheckedBaseLayerByValue(value) {
@@ -168,16 +167,14 @@ export default class LeafLetMap extends React.Component {
         <ZoomControl position="bottomright" />
         <MarkerList
           changeCoordinates={handleChangeCoordinates}
-          stops={markers}
+          markers={markers}
           handleDragEnd={handleDragEnd}
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
         />
-        <Delay wait={1000}>
-          <MultimodalStopEdges
-            stops={markers}
-          />
-        </Delay>
+        <MultimodalStopEdges
+          stops={markers}
+        />
         <MultiPolylineList/>
         <StopPlaceGroupList/>
       </Lmap>
