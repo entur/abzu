@@ -155,9 +155,19 @@ class ParentStopPlace {
         clientStop.children = stop.children
           .map(item => {
             let child = new StopPlace(item, isActive).toClient();
+
             if (!child.name) {
               child.name = clientStop.name;
             }
+
+            if (!child.topographicPlace) {
+              child.topographicPlace = clientStop.topographicPlace;
+            }
+
+            if (!child.parentTopographicPlace) {
+              child.parentTopographicPlace = clientStop.parentTopographicPlace;
+            }
+
             return child;
           })
       }
