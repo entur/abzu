@@ -16,7 +16,6 @@ import moment from 'moment';
 
 // determines whether an entity has expired based on validBetweens
 export const hasExpired = validBetween => {
-
   if (!validBetween) return false;
 
   if (validBetween.toDate === null) return false;
@@ -25,15 +24,11 @@ export const hasExpired = validBetween => {
 };
 
 export const isFuture = validBetween => {
-
   if (!validBetween) {
     return false;
   };
 
   if (validBetween.fromDate === null) return false;
 
-  let fromDate = new Date(validBetween.fromDate);
-  let nowDate = new Date();
-
-  return fromDate >= nowDate;
+  return moment().isBefore(moment(validBetween.fromDate));
 };
