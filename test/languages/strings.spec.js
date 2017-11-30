@@ -14,8 +14,7 @@ limitations under the Licence. */
 
 
 import nb_lang from '../../static/lang/nb.json';
-import en_lang from '../../static/lang/en.json';
-import fr_lang from '../../static/lang/fr.json';
+import en_lang from '../../static/lang/en.json'
 
 describe('language support', () => {
 
@@ -23,11 +22,9 @@ describe('language support', () => {
 
     const norwegianKeys = Object.keys(nb_lang).sort()
     const englishKeys = Object.keys(en_lang).sort()
-    const frenchKeys = Object.keys(fr_lang).sort()
 
-    let notInEnglish = norwegianKeys.filter(key => englishKeys.indexOf(key) === -1)
-    let notInNorwegian = englishKeys.filter(key => norwegianKeys.indexOf(key) === -1)
-    let notInFrench = norwegianKeys.filter(key => frenchKeys.indexOf(key) === -1)
+    let notInEnglish = norwegianKeys.filter( key => englishKeys.indexOf(key) === -1)
+    let notInNorwegian = englishKeys.filter( key => norwegianKeys.indexOf(key) === -1)
 
     if (notInEnglish.length) {
       console.info("Keys found in Norwegian not present in English: ", notInEnglish.join(','))
@@ -37,12 +34,7 @@ describe('language support', () => {
       console.info("Keys found in English not present in Norwegian: ", notInNorwegian.join(','))
     }
 
-    if (notInFrench.length) {
-      console.info("Keys found in Norwegian not present in French: ", notInFrench.join(','))
-    }
-
     expect(JSON.stringify(norwegianKeys)).toEqual(JSON.stringify(englishKeys))
-    expect(JSON.stringify(norwegianKeys)).toEqual(JSON.stringify(frenchKeys))
 
   })
 
