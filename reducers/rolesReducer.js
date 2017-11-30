@@ -16,7 +16,7 @@ import * as types from '../actions/Types';
 import {
   getAllowanceInfoForGroup,
   getAllowanceSearchInfo,
-  getAllowanceInfoNewStop,
+  getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
   getLatLng
 } from './rolesReducerUtils';
@@ -40,7 +40,7 @@ const rolesReducer = (state = initialState, action) => {
           allowanceInfo: getAllowanceInfoForGroup(
             action.result,
             state.kc.tokenParsed
-          )
+          ),
         });
       } else {
         return state;
@@ -53,14 +53,18 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payLoad,
           state.kc.tokenParsed
-        )
+        ),
+        allowanceInfo: {
+          ...state.allowanceInfo,
+          ...getAllowanceInfoFromPosition(action.payLoad.location)
+        }
       });
 
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
           ...state,
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoNewStop(
+          allowanceInfo: getAllowanceInfoFromPosition(
             getLatLng(action.payLoad.data.stopPlace[0]),
             state.kc.tokenParsed
           )
@@ -71,7 +75,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
           ...state,
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoNewStop(
+          allowanceInfo: getAllowanceInfoFromPosition(
             action.payLoad,
             state.kc.tokenParsed
           )
@@ -84,7 +88,7 @@ const rolesReducer = (state = initialState, action) => {
           state, {
             ...state,
             kc: state.kc,
-            allowanceInfo: getAllowanceInfoNewStop(
+            allowanceInfo: getAllowanceInfoFromPosition(
               newStopPlace,
               state.kc.tokenParsed
             )

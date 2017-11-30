@@ -322,6 +322,31 @@ export const getInverseSubmodesWhitelist = whitelist => {
   return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
 };
 
+export const doesStopTypeAllowEdit = (stopPlaceType, submode, legalStopPlaces, legalSubmodes) => {
+  if (stopPlaceType && (!legalStopPlaces || !legalStopPlaces.length)) {
+    return false;
+  }
+
+  if (submode && (!legalSubmodes || !legalSubmodes.length)) {
+    return false;
+  }
+
+  if (stopPlaceType && !submode) {
+    return legalStopPlaces.indexOf(stopPlaceType) > -1;
+  }
+
+  if (!stopPlaceType && submode) {
+    return legalSubmodes.indexOf(submode) > -1;
+  }
+
+  if (submode && stopPlaceType) {
+    return (legalStopPlaces.indexOf(stopPlaceType) > -1
+      && legalSubmodes.indexOf(submode) > -1);
+  }
+
+  return false;
+};
+
 const isArrayOfLatLngs = data => {
   if (!data || !Array.isArray(data)) return false;
   return (data.length && Array.isArray(data[0]));

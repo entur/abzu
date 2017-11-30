@@ -28,7 +28,7 @@ class NeighbourMarker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createMultimodalNotAllowed: false
+      isAllowedToCreateFrom: false
     }
   }
 
@@ -47,7 +47,7 @@ class NeighbourMarker extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.createMultimodalNotAllowed !== nextState.createMultimodalNotAllowed) {
+    if (this.state.isAllowedToCreateFrom !== nextState.isAllowedToCreateFrom) {
       return true;
     }
     return shallowCompare(this.props, nextProps);
@@ -60,7 +60,10 @@ class NeighbourMarker extends React.Component {
       disabled,
       isEditingStop
     } = this.props;
-    if (disabled) return false;
+
+    const { isAllowedToCreateFrom } = this.state;
+
+    if (disabled || !isAllowedToCreateFrom) return false;
 
     if (isMultimodal || currentStopIsMultiModal) {
       return false;
@@ -89,11 +92,10 @@ class NeighbourMarker extends React.Component {
       stopPlace,
       tokenParsed,
       isEditingGroup,
-      disabled,
-      handleCreateGroup
+      handleCreateGroup,
     } = this.props;
 
-    const { createMultimodalNotAllowed } = this.state;
+    const { isAllowedToCreateFrom } = this.state;
 
     if (!position) return null;
 
@@ -136,7 +138,7 @@ class NeighbourMarker extends React.Component {
         <Popup
           onOpen={() => {
             this.setState({
-              createMultimodalNotAllowed: !isLegalChildStopPlace(stopPlace, tokenParsed)
+              isAllowedToCreateFrom: isLegalChildStopPlace(stopPlace, tokenParsed)
             })
           }}
           autoPan={false}
@@ -180,12 +182,12 @@ class NeighbourMarker extends React.Component {
               </span>
             </div>
             <PopupButton
-              hidden={!isEditingGroup || isChildOfParent || disabled}
+              hidden={!isEditingGroup || isChildOfParent || !isAllowedToCreateFrom}
               onClick={() => handleAddToGroup(id)}
               label={translations.addToGroup}
             />
             <PopupButton
-              hidden={isChildOfParent}
+              hidden={isChildOfParent || !isAllowedToCreateFrom}
               onClick={() => {
                 handleCreateGroup(id)
               }}
@@ -208,7 +210,7 @@ class NeighbourMarker extends React.Component {
                   label={translations.showQuays}
                 />}
             <PopupButton
-              hidden={isMultimodal || isChildOfParent || createMultimodalNotAllowed || hasExpired}
+              hidden={isMultimodal || isChildOfParent || !isAllowedToCreateFrom || hasExpired}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

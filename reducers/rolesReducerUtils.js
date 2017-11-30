@@ -136,7 +136,7 @@ export const isLegalChildStopPlace = (stopPlace, tokenParsed) => {
   const responsibleEditRoles = roleParser.filterByEntities(editStopRolesGeoFiltered, stopPlace);
   const isLegal = responsibleEditRoles.length > 0;
   return isLegal;
-}
+};
 
 const restrictModeByRoles = (roles, modes, entityType) => {
 
@@ -191,7 +191,7 @@ const restrictModeByRoles = (roles, modes, entityType) => {
   return [];
 };
 
-export const getAllowanceInfoNewStop = (latlng, tokenParsed) => {
+export const getAllowanceInfoFromPosition = (latlng, tokenParsed) => {
   const token = { ... tokenParsed };
   let editStopRoles = roleParser.getEditStopRoles(token);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(

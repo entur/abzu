@@ -124,6 +124,10 @@ export const shallowCompareNeighbourMarker = (props, nextProps) => {
     return true;
   }
 
+  if (props.userHasEditAccess !== nextProps.userHasEditAccess) {
+    return true;
+  }
+
   return false;
 };
 
