@@ -41,6 +41,8 @@ class AdvancedReportFilters extends Component {
 
     const { open, anchorEl } = this.state;
 
+    const menuItemsStyle = {display: 'flex', alignItems: 'center'};
+
     return (
       <div style={{marginTop: 10, marginLeft: 5}}>
         <RaisedButton
@@ -60,10 +62,8 @@ class AdvancedReportFilters extends Component {
             this.setState({ open: false });
           }}
         >
-          <Menu
-             innerDivStyle={{ padding: '0px 16px 0px 0px' }}
-            >
-            <MenuItem>
+          <Menu>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'show_future_and_expired' })}
                 labelPosition="right"
@@ -74,7 +74,7 @@ class AdvancedReportFilters extends Component {
                 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_without_coordinates' })}
                 labelPosition="right"
@@ -85,7 +85,7 @@ class AdvancedReportFilters extends Component {
                 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_duplicate_importedIds' })}
                 labelPosition="right"
@@ -97,7 +97,7 @@ class AdvancedReportFilters extends Component {
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'with_nearby_similar_duplicates' })}
                 labelPosition="right"
@@ -109,7 +109,7 @@ class AdvancedReportFilters extends Component {
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_with_tags' })}
                 labelPosition="right"
