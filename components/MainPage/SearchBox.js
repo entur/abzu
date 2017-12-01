@@ -511,7 +511,7 @@ class SearchBox extends React.Component {
                           width: '100%',
                           marginTop: -20,
                         }}
-                        maxSearchResults={5}
+                        maxSearchResults={7}
                         ref="topoFilter"
                         onNewRequest={this.handleAddChip.bind(this)}
                       />
@@ -555,7 +555,7 @@ class SearchBox extends React.Component {
               }
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleSearchUpdate.bind(this)}
-              maxSearchResults={7}
+              maxSearchResults={10}
               searchText={this.props.searchText}
               ref="searchText"
               onNewRequest={this.handleNewRequest.bind(this)}
