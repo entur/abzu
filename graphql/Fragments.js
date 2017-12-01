@@ -181,6 +181,12 @@ Fragments.stopPlace = {
         quays {
             ...VerboseQuay
         }
+        groups {
+            id
+            name {
+                value
+            }
+        }
         tags {
             name
             comment
@@ -322,6 +328,12 @@ Fragments.parentStopPlace = {
           }
           description {
               value
+          }
+          groups {
+              id
+              name {
+                  value
+              }
           }
           children {
               ...VerboseStopPlace

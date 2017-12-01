@@ -119,12 +119,6 @@ export const allEntities = gql`
             ...VerbosePathLink
         },
         stopPlace(id: $id) {
-            groups {
-              id
-              name {
-                value
-              }
-            }
             ...VerboseStopPlace
             ...VerboseParentStopPlace
         }
