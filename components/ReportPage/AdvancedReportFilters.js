@@ -35,7 +35,8 @@ class AdvancedReportFilters extends Component {
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
       handleCheckboxChange,
-      withTags
+      withTags,
+      showFutureAndExpired
     } = this.props;
 
     const { open, anchorEl } = this.state;
@@ -59,7 +60,20 @@ class AdvancedReportFilters extends Component {
             this.setState({ open: false });
           }}
         >
-          <Menu>
+          <Menu
+             innerDivStyle={{ padding: '0px 16px 0px 0px' }}
+            >
+            <MenuItem>
+              <Checkbox
+                label={formatMessage({ id: 'show_future_and_expired' })}
+                labelPosition="right"
+                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                checked={showFutureAndExpired}
+                onCheck={(e, value) => {
+                  handleCheckboxChange('showFutureAndExpired', value);
+                }}
+              />
+            </MenuItem>
             <MenuItem>
               <Checkbox
                 label={formatMessage({ id: 'only_without_coordinates' })}
