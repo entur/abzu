@@ -125,7 +125,7 @@ class ReportResultView extends React.Component {
                 {columns.map(column => {
                     return (
                       <div key={'column-item-' + column} style={columnStyle}>
-                        {ColumnTransformerStopPlaceJsx[column](item)}
+                        {ColumnTransformerStopPlaceJsx[column](item, formatMessage)}
                       </div>
                     );
                   }

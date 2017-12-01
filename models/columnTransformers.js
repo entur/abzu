@@ -68,36 +68,34 @@ const getParkingType = parking => {
 
 export const ColumnTransformerStopPlaceJsx = {
   id: stop => <StopPlaceLink id={stop.id} />,
-  name: stop => {
-    const parentChildStyle = {
+  name: (stop, formatMessage) => {
+    const infoTextStyle = {
       fontWeight: 600,
       textTransform: 'uppercase',
-      marginLeft: 2,
       color: darkColor,
       fontSize: '0.6em',
-      lineHeight: '1em',
-      top: '-0.4em',
-      vericalAlign: 'baseline',
       position: 'relative'
     };
 
-    if (stop.isParent) {
-      return (
-        <div>
-          <span>{stop.name}</span>
-          <span style={parentChildStyle}>Parent</span>
+    const isParentOrChild = stop.isParent || stop.isChildOfParent;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <span>{stop.name}</span>
+        <div style={{ display: 'flex', marginTop: 3, marginLeft: 5 }}>
+          {stop.hasExpired &&
+            <span style={{ ...infoTextStyle, color: 'red', marginRight: 5 }}>
+              {formatMessage({ id: 'has_expired' })}
+            </span>}
+          {isParentOrChild &&
+            <span style={infoTextStyle}>
+              {stop.isParent
+                ? formatMessage({ id: 'parentStopPlace' })
+                : formatMessage({ id: 'childStopPlace' })}
+            </span>}
         </div>
-      );
-    } else if (stop.isChildOfParent) {
-      return (
-        <div>
-          <span>{stop.name}</span>
-          <span style={parentChildStyle}>Child</span>
-        </div>
-      );
-    } else {
-      return stop.name;
-    }
+      </div>
+    );
   },
   modality: stop => {
     if (!stop.isParent) {
@@ -296,9 +294,9 @@ export const ColumnTransformerQuaysJsx = {
           return (
             <span
               style={{
-                color: (isDuplicate && confictToolTip)? '#cf1212' : 'initial',
-                fontWeight: (isDuplicate && confictToolTip) ? 600 : 400,
-                cursor: (isDuplicate && confictToolTip) ? 'pointer' : 'initial'
+                color: isDuplicate && confictToolTip ? '#cf1212' : 'initial',
+                fontWeight: isDuplicate && confictToolTip ? 600 : 400,
+                cursor: isDuplicate && confictToolTip ? 'pointer' : 'initial'
               }}
               key={'importedId-' + quay.id + '-' + index}
             >
@@ -402,7 +400,7 @@ export const ColumnTranslations = {
     wheelchairAccess: 'Accessibilité PMR',
     stepFreeAccess: 'Accès sans escalier',
     shelterEquipment: 'Abri',
-    waitingRoomEquipment: 'Salle d\'attente',
+    waitingRoomEquipment: "Salle d'attente",
     sanitaryEquipment: 'WC',
     generalSign: 'Panneau de transport',
     tags: 'Tags'
