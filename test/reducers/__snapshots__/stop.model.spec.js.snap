@@ -20,6 +20,7 @@ Object {
   "id": "NSR:StopPlace:933",
   "importedId": Array [],
   "isActive": true,
+  "isFuture": false,
   "keyValues": Array [],
   "location": Array [
     60.260427,

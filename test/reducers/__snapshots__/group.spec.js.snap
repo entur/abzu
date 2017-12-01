@@ -33,6 +33,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:27423",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.954075,
@@ -101,6 +102,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.956267,
@@ -152,6 +154,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:26635",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.955028,
@@ -235,6 +238,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:27423",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.954075,
@@ -303,6 +307,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.956267,
@@ -354,6 +359,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:26635",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.955028,
@@ -445,6 +451,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.956267,
@@ -510,6 +517,7 @@ Object {
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
         "isActive": true,
+        "isFuture": false,
         "isMemberOfGroup": true,
         "location": Array [
           58.956267,

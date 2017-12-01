@@ -16,7 +16,7 @@ limitations under the Licence. */
 import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
-import { hasExpired } from '../modelUtils/validBetween';
+import { hasExpired, isFuture } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
 import { Entities } from './Entities';
 
@@ -69,6 +69,7 @@ class ParentStopPlace {
         alternativeNames: extractAlternativeNames(stop.alternativeNames),
         entityType: Entities.STOP_PLACE,
         hasExpired: hasExpired(stop.validBetween),
+        isFuture: isFuture(stop.validBetween),
         id: stop.id,
         isActive: isActive,
         isParent: true,
@@ -152,8 +153,10 @@ class ParentStopPlace {
       }
 
       if (stop.children) {
+
         clientStop.children = stop.children
           .map(item => {
+
             let child = new StopPlace(item, isActive).toClient();
 
             if (!child.name) {
@@ -168,11 +171,16 @@ class ParentStopPlace {
               child.parentTopographicPlace = clientStop.parentTopographicPlace;
             }
 
-            return child;
-          })
-      }
+            child.validBetween = clientStop.validBetween;
+            child.isFuture = isFuture(clientStop.validBetween);
+            child.hasExpired = hasExpired(clientStop.validBetween);
+            child.isChildOfParent = true;
 
+            return child;
+          });
+      }
       return clientStop;
+
     } catch (e) {
       console.log('error', e);
     }

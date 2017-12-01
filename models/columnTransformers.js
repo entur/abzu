@@ -27,6 +27,7 @@ import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
 import { darkColor } from '../config/themes/default/defaultTheme';
 import TagTray from '../components/MainPage/TagTray';
 import ToolTippable from '../components/EditStopPage/ToolTippable';
+import moment from 'moment';
 
 const getParkingElements = (parking = []) => {
   if (!parking || !parking.length) {
@@ -73,25 +74,34 @@ export const ColumnTransformerStopPlaceJsx = {
       fontWeight: 600,
       textTransform: 'uppercase',
       color: darkColor,
-      fontSize: '0.6em',
+      fontSize: '0.7em',
       position: 'relative'
     };
 
-    const isParentOrChild = stop.isParent || stop.isChildOfParent;
+    const isParentOrChild = (stop.isParent || stop.isChildOfParent);
+    const isFutureOrExpired = (stop.isFuture || stop.hasExpired);
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
         <span>{stop.name}</span>
-        <div style={{ display: 'flex', marginTop: 3, marginLeft: 5 }}>
-          {stop.hasExpired &&
-            <span style={{ ...infoTextStyle, color: 'red', marginRight: 5 }}>
-              {formatMessage({ id: 'has_expired' })}
+        <div style={{ display: 'flex', marginTop: 3, marginLeft: 5, flexDirection: 'column'}}>
+          {isFutureOrExpired &&
+            <span style={{ ...infoTextStyle, color: stop.hasExpired ? '#ae1d1d' : '#2f3526', marginRight: 5 }}>
+              {stop.hasExpired ? formatMessage({ id: 'search_result_expired' })
+                : <div style={{display: 'flex', color: '#ffa500'}}>
+                    <div>{formatMessage({id: 'valid_from'})}</div>
+                    <div style={{marginLeft: 5}}>{moment(stop.validBetween.fromDate).format('YYYY-MM-DD')}</div>
+                </div>}
             </span>}
           {isParentOrChild &&
-            <span style={infoTextStyle}>
+          <span style={{...infoTextStyle, marginRight: 5}}>
               {stop.isParent
                 ? formatMessage({ id: 'parentStopPlace' })
                 : formatMessage({ id: 'childStopPlace' })}
+            </span>}
+          {stop.validBetween && stop.validBetween.toDate && !isFutureOrExpired &&
+          <span style={{ ...infoTextStyle, color: '#ffa500'}}>
+            {formatMessage({id: 'expires'})} {moment(stop.validBetween.toDate).format('YYYY-MM-DD')}
             </span>}
         </div>
       </div>

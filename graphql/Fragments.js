@@ -377,6 +377,10 @@ Fragments.parentStopPlace = {
         geometry {
             coordinates
         }
+        validBetween {
+            fromDate
+            toDate
+        }
         children {
             ...ReportStopPlace
         }

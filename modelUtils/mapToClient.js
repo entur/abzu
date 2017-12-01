@@ -366,35 +366,23 @@ const updateObjectWithLocation = stop => {
   return stop;
 };
 
-helpers.mapReportSearchResultsToClientStop = stops => {
+helpers.mapReportSearchResultsToClientStop = data => {
   let result = [];
-
-  const stopPlacesAndParents = stops.map(stop =>
-    helpers.mapStopToClientStop(stop, true, null, null, null)
-  );
-
-  stopPlacesAndParents.map(stopPlace => {
-    if (!stopPlace) return null;
-
-    let modesFromChildren = [];
+  let stops = data.slice();
+  stops.forEach(stop => {
+    let stopPlace = helpers.mapStopToClientStop(stop, true, null, null, null);
+    stopPlace.quays = [];
+    stopPlace.parking = [];
     if (stopPlace.isParent && stopPlace.children) {
-      // map all children to result list
-      const children = stopPlace.children.map(child => {
-        child.name = child.name || stopPlace.name;
-        child.isChildOfParent = true;
-        modesFromChildren.push({
-          submode: child.submode,
-          stopPlaceType: child.stopPlaceType
-        });
-        return child;
-      });
-
-      stopPlace.modesFromChildren = modesFromChildren;
-      stopPlace.quays = [];
-      stopPlace.parking = [];
-      result = result.concat(children);
+      stopPlace.modesFromChildren = stopPlace.children.map(child => ({
+        submode: child.submode,
+        stopPlaceType: child.stopPlaceType
+      }));
+      result = result.concat(stopPlace, stopPlace.children);
+    } else {
+      result = result.concat(stopPlace);
     }
-    result.push(stopPlace);
+    return stopPlace;
   });
   return result;
 };

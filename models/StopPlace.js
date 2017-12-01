@@ -16,7 +16,7 @@ limitations under the Licence. */
 import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
-import { hasExpired } from '../modelUtils/validBetween';
+import { hasExpired, isFuture } from '../modelUtils/validBetween';
 import Quay from './Quay';
 import { Entities } from './Entities';
 
@@ -38,6 +38,7 @@ class StopPlace {
       let clientStop = {
         alternativeNames: extractAlternativeNames(stop.alternativeNames),
         hasExpired: hasExpired(stop.validBetween),
+        isFuture: isFuture(stop.validBetween),
         id: stop.id,
         isActive: isActive,
         name: stop.name ? stop.name.value : '',
