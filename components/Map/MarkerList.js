@@ -309,7 +309,6 @@ class MarkerList extends React.Component {
                   popupMarkers.push(
                     <QuayMarker
                       index={index}
-                      parentId={stopIndex}
                       id={quayOfChild.id}
                       position={quayOfChild.location}
                       key={'quay-neighbour-child' + quayOfChild.id}
@@ -322,8 +321,8 @@ class MarkerList extends React.Component {
                       compassBearing={quayOfChild.compassBearing}
                       publicCode={quayOfChild.publicCode || ''}
                       privateCode={quayOfChild.privateCode || ''}
-                      parentStopPlaceName={marker.name}
-                      parentStopPlaceId={child.id}
+                      stopPlaceName={marker.name}
+                      stopPlaceId={child.id}
                       formattedStopType={localeStopType}
                       handleUpdatePathLink={this.handleUpdatePathLink.bind(
                         this
@@ -441,7 +440,6 @@ class MarkerList extends React.Component {
               popupMarkers.push(
                 <QuayMarker
                   index={index}
-                  parentId={stopIndex}
                   id={quay.id}
                   position={quay.location}
                   key={'quay-' + (quay.id || index)}
@@ -454,7 +452,8 @@ class MarkerList extends React.Component {
                   compassBearing={quay.compassBearing}
                   publicCode={quay.publicCode || ''}
                   privateCode={quay.privateCode || ''}
-                  parentStopPlaceName={marker.name}
+                  stopPlaceName={marker.name}
+                  stopPlaceId={marker.id}
                   disabled={disabled}
                   formattedStopType={localeStopType}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
@@ -575,8 +574,8 @@ class MarkerList extends React.Component {
                     compassBearing={quay.compassBearing}
                     publicCode={quay.publicCode || ''}
                     privateCode={quay.privateCode || ''}
-                    parentStopPlaceName={marker.name}
-                    parentStopPlaceId={marker.id}
+                    stopPlaceName={marker.name}
+                    stopPlaceId={marker.id}
                     formattedStopType={localeStopType}
                     handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
                     handleChangeCoordinates={() => {}}

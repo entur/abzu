@@ -32,8 +32,8 @@ class QuayMarker extends React.Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
     id: PropTypes.string,
-    parentId: PropTypes.number.isRequired,
-    parentStopPlaceName: PropTypes.string.isRequired,
+    stopPlaceId: PropTypes.string.isRequired,
+    stopPlaceName: PropTypes.string.isRequired,
     position: PropTypes.arrayOf(Number),
     publicCode: PropTypes.string.isRequired,
     privateCode: PropTypes.string.isRequired,
@@ -92,7 +92,8 @@ class QuayMarker extends React.Component {
       UserActions.moveQuayToNewStopPlace({
         id: this.props.id,
         privateCode: this.props.privateCode,
-        publicCode: this.props.publicCode
+        publicCode: this.props.publicCode,
+        stopPlaceId: this.props.stopPlaceId
       })
     );
   }
@@ -179,7 +180,7 @@ class QuayMarker extends React.Component {
       publicCode,
       index,
       handleQuayDragEnd,
-      parentStopPlaceName,
+      stopPlaceName,
       formattedStopType,
       handleUpdatePathLink,
       translations,
@@ -192,11 +193,13 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
+      stopPlaceId,
     } = this.props;
 
     if (!position) return null;
 
     let isIncomplete = false;
+
 
     let pathLinkText = isCreatingPolylines
       ? translations.terminatePathLinkHere
@@ -264,7 +267,7 @@ class QuayMarker extends React.Component {
         >
           <div>
             <span className="quay-marker-title">
-              {parentStopPlaceName}
+              {stopPlaceName}
             </span>
             <div
               className="quay-marker-title"
@@ -385,7 +388,7 @@ class QuayMarker extends React.Component {
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
-                        onClick={() => this.handleMoveQuayToNewStop()}
+                        onClick={this.handleMoveQuayToNewStop.bind(this)}
                       >
                         {translations.moveQuaysToNewStop}
                       </span>

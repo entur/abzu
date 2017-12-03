@@ -441,6 +441,17 @@ class EditStopGeneral extends React.Component {
     });
   };
 
+  getQuaysForMoveQuayToNewStop(){
+    const { stopPlace, movingQuayToNewStop, neighbourStopQuays } = this.props;
+    if (!movingQuayToNewStop || !stopPlace) return [];
+    const { stopPlaceId } = movingQuayToNewStop;
+    if (stopPlaceId == stopPlace.id) {
+      return stopPlace.quays;
+    } else {
+      return neighbourStopQuays[stopPlaceId] || [];
+    }
+  }
+
   render() {
     const {
       stopPlace,
@@ -514,6 +525,7 @@ class EditStopGeneral extends React.Component {
 
     const tabStyle = { color: '#000', fontSize: 10, fontWeight: 600 };
     const disableTerminate = stopPlace.isNewStop || disabled || (stopPlace.hasExpired && !isCurrentVersionMax);
+    const quaysForMoveQuayToNewStop = this.getQuaysForMoveQuayToNewStop();
 
     return (
       <div style={style}>
@@ -695,10 +707,9 @@ class EditStopGeneral extends React.Component {
           <MoveQuayNewStopDialog
             open={this.props.moveQuayToNewStopDialogOpen}
             handleClose={this.handleCloseMoveQuayNewStop.bind(this)}
-            quays={stopPlace.quays}
+            quays={quaysForMoveQuayToNewStop}
             handleConfirm={this.handleMoveQuaysNewStop.bind(this)}
             intl={intl}
-            fromStopPlaceId={stopPlace.id}
             quay={this.props.movingQuayToNewStop}
             hasStopBeenModified={stopHasBeenModified}
             isLoading={this.state.isLoading}
@@ -786,7 +797,8 @@ const mapStateToProps = state => ({
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
   originalStopPlace: state.stopPlace.originalCurrent,
   serverTimeDiff: state.user.serverTimeDiff,
-  isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo
+  isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo,
+  neighbourStopQuays: state.stopPlace.neighbourStopQuays
 });
 
 export default withApollo(

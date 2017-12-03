@@ -92,15 +92,6 @@ class StopPlaceList extends Component {
                   style={{
                     fontStyle: 'italic',
                     marginLeft: 10,
-                    fontSize: '0.9em'
-                  }}
-                >
-                  {formatMessage({id: 'no'})}
-                </div>
-                <div
-                  style={{
-                    fontStyle: 'italic',
-                    marginLeft: 10,
                     fontSize: '0.8em',
                     width: '80%',
                     fontWeight: 600
