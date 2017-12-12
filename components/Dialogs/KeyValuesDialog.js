@@ -121,7 +121,6 @@ class KeyValuesDialog extends React.Component {
           <div
             style={{
               marginTop: 8,
-              fontWeight: 60,
               marginLeft: 10,
               fontWeight: 600
             }}

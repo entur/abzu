@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
@@ -25,7 +25,7 @@ class TariffZonesDialog extends React.Component {
     const translations = {
       value: formatMessage({ id: 'name' }),
       tariffZones: formatMessage({ id: 'tariffZones' }),
-      noTariffZones: formatMessage({ id: 'noTariffZones' }),
+      noTariffZones: formatMessage({ id: 'noTariffZones' })
     };
 
     if (!open) return null;
@@ -37,13 +37,13 @@ class TariffZonesDialog extends React.Component {
       background: '#fff',
       border: '1px solid black',
       width: 350,
-      zIndex: 999,
+      zIndex: 999
     };
 
     const itemStyle = {
       flexBasis: '100%',
       textAlign: 'left',
-      marginRight: 5,
+      marginRight: 5
     };
 
     return (
@@ -53,15 +53,14 @@ class TariffZonesDialog extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: 5,
+            marginBottom: 5
           }}
         >
           <div
             style={{
               marginTop: 8,
-              fontWeight: 60,
               marginLeft: 10,
-              fontWeight: 600,
+              fontWeight: 600
             }}
           >
             {translations.tariffZones}
@@ -82,7 +81,7 @@ class TariffZonesDialog extends React.Component {
             fontSize: 14,
             maxHeight: 400,
             marginLeft: 15,
-            marginBottom: 5,
+            marginBottom: 5
           }}
         >
           {!tariffZones.length
@@ -91,7 +90,7 @@ class TariffZonesDialog extends React.Component {
                   width: '100%',
                   textAlign: 'center',
                   marginBottom: 10,
-                  fontSize: 12,
+                  fontSize: 12
                 }}
               >
                 {' '}{translations.noTariffZones}
@@ -102,7 +101,7 @@ class TariffZonesDialog extends React.Component {
                   fontSize: 12,
                   overflowY: 'overlay',
                   maxHeight: 400,
-                  marginLeft: 5,
+                  marginLeft: 5
                 }}
               >
                 {tariffZones.map((tz, i) =>
@@ -113,12 +112,12 @@ class TariffZonesDialog extends React.Component {
                       alignItems: 'center',
                       padding: 10,
                       justifyContent: 'space-between',
-                      lineHeight: 2,
+                      lineHeight: 2
                     }}
                   >
                     <div style={itemStyle}>{tz.id}</div>
                     <div style={itemStyle}>{tz.name}</div>
-                  </div>,
+                  </div>
                 )}
               </div>}
         </div>
