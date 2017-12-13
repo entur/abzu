@@ -65,6 +65,10 @@ export const compareShallowQuayMarker = (props, nextProps) => {
     return true;
   }
 
+  if (props.showPublicCode !== nextProps.showPublicCode) {
+    return true;
+  }
+
   return false;
 };
 

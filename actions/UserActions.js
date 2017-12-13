@@ -434,7 +434,12 @@ UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch =
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
     }
   });
-}
+};
+
+UserActions.toggleShowPublicCode = value => dispatch => {
+  Settings.setShowPublicCode(value);
+  dispatch(createThunk(types.TOGGLE_SHOW_PUBLIC_CODE, value));
+};
 
 const getQuayById = (quays = [], quayId) => {
   for (let i = 0; quays.length; i++) {

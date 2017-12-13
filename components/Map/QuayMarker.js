@@ -32,7 +32,7 @@ class QuayMarker extends React.Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
     id: PropTypes.string,
-    stopPlaceId: PropTypes.string.isRequired,
+    stopPlaceId: PropTypes.string,
     stopPlaceName: PropTypes.string.isRequired,
     position: PropTypes.arrayOf(Number),
     publicCode: PropTypes.string.isRequired,
@@ -193,7 +193,7 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
-      stopPlaceId,
+      showPublicCode
     } = this.props;
 
     if (!position) return null;
@@ -223,12 +223,13 @@ class QuayMarker extends React.Component {
       }
     }
 
+    const displayCode = showPublicCode ? publicCode : privateCode;
+
     const divBody = ReactDOM.renderToStaticMarkup(
       <QuayMarkerIcon
         isEditingStop={isEditingStop}
         index={index}
-        publicCode={publicCode}
-        privateCode={privateCode}
+        displayCode={displayCode}
         focusedElement={this.props.focusedElement}
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
@@ -431,6 +432,7 @@ class QuayMarker extends React.Component {
 
 const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  showPublicCode: state.user.showPublicCode,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,

@@ -142,7 +142,8 @@ export default function configureStore(kc) {
         open: false,
         stopPlaceId: null
       },
-      client
+      client,
+      showPublicCode: Settings.getShowPublicCode()
     },
     roles: {
       kc,
