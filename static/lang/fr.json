@@ -264,7 +264,7 @@
   "save_dialog_to_is_before_from": "La version ne peut pas expirer avant d'avoir commencé.",
   "save_first_path_link": "Ceci est un nouveau quai. vous devez sauvegarder vos modifications afin que ce quai puisse être intégré à un tronçon de liaison",
   "save_group_of_stop_places": "Enregistrer le groupe de points d'arrêts",
-  "save_new_version": "Enregistrer la nouvelle version",
+  "save_new_version": "Enregistrer",
   "save": "Enregistrer",
   "search_result_expired": "Expiré",
   "search_result_future": "Valide à l'avenir",
