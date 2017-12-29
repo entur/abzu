@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -22,19 +21,19 @@ class ToolTippable extends React.Component {
     this.state = {
       showToolTip: false,
       top: 0,
-      left: 0,
+      left: 0
     };
   }
 
   static PropTypes = {
-    toolTipText: PropTypes.string.isRequired,
+    toolTipText: PropTypes.string.isRequired
   };
 
   handleShowToolTip() {
     const { showToolTip } = this.state;
     if (!showToolTip) {
       this.setState({
-        showToolTip: true,
+        showToolTip: true
       });
     }
   }
@@ -43,16 +42,20 @@ class ToolTippable extends React.Component {
     const { showToolTip } = this.state;
     if (showToolTip) {
       this.setState({
-        showToolTip: false,
+        showToolTip: false
       });
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentWillReceiveProps(prevProps, prevState) {
     if (this.refs.child) {
       const ignorePostRender = this.state.open === prevState.open;
-      const { top, left }  = this.refs.child.getBoundingClientRect();
-      if (!ignorePostRender || this.state.top !== top || this.state.left !== left) {
+      const { top, left } = this.refs.child.getBoundingClientRect();
+      if (
+        !ignorePostRender ||
+        this.state.top !== top ||
+        this.state.left !== left
+      ) {
         this.setState({
           left,
           top
@@ -61,22 +64,6 @@ class ToolTippable extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const nextLeft = nextState.left;
-    const nextTop = nextState.top;
-    const nextOpen = nextState.top;
-    const { top, left, open } = this.state;
-
-    if (nextOpen !== open) {
-      return true;
-    }
-
-    if (left === nextLeft && top === nextTop) {
-      return false;
-    }
-
-    return true;
-  }
 
   render() {
     const { children, toolTipText, toolTipStyle } = this.props;
@@ -92,15 +79,15 @@ class ToolTippable extends React.Component {
       padding: 5,
       fontSize: 12,
       zIndex: 999999,
-      color: '#fff',
+      color: '#fff'
     };
 
     const appliedStyle = { ...defaultStyle, ...toolTipStyle };
 
     return (
       <div
-        onMouseOver={this.handleShowToolTip.bind(this)}
-        onMouseOut={this.handleHideToolTip.bind(this)}
+        onMouseEnter={this.handleShowToolTip.bind(this)}
+        onMouseLeave={this.handleHideToolTip.bind(this)}
       >
         <div ref="child">{children}</div>
         {showToolTip && <span style={appliedStyle}>{toolTipText}</span>}
