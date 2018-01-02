@@ -183,7 +183,10 @@ helpers.mapStopToVariables = (original, userInput) => {
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,
-    transportMode: stop.transportMode
+    transportMode: stop.transportMode,
+    tariffZones: stop.tariffZones.map(tz => ({
+      ref: tz.id
+    }))
   };
 
   if (userInput) {

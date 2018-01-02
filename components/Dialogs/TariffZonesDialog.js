@@ -16,12 +16,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import DialogHeader from './DialogHeader';
+import TariffZonesItem from './TariffZonesItem';
+
+import AddTariffZone from './AddTariffZone';
 
 class TariffZonesDialog extends React.Component {
 
   render() {
 
-    const { open, intl, tariffZones = [], handleClose } = this.props;
+    const { open, intl, tariffZones = [], handleClose, disabled } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
@@ -42,10 +45,11 @@ class TariffZonesDialog extends React.Component {
       zIndex: 999
     };
 
-    const itemStyle = {
-      flexBasis: '100%',
-      textAlign: 'left',
-      marginRight: 5
+    const noItemsStyle = {
+      width: '100%',
+      textAlign: 'center',
+      marginBottom: 10,
+      fontSize: 12
     };
 
     return (
@@ -63,18 +67,8 @@ class TariffZonesDialog extends React.Component {
             marginBottom: 5
           }}
         >
-          {!tariffZones.length
+          {tariffZones.length
             ? <div
-                style={{
-                  width: '100%',
-                  textAlign: 'center',
-                  marginBottom: 10,
-                  fontSize: 12
-                }}
-              >
-                {' '}{translations.noTariffZones}
-              </div>
-            : <div
                 style={{
                   width: '100%',
                   fontSize: 12,
@@ -83,23 +77,20 @@ class TariffZonesDialog extends React.Component {
                   marginLeft: 5
                 }}
               >
-                {tariffZones.map((tz, i) =>
-                  <div
-                    key={'tariffZone-' + i}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: 10,
-                      justifyContent: 'space-between',
-                      lineHeight: 2
-                    }}
-                  >
-                    <div style={itemStyle}>{tz.id}</div>
-                    <div style={itemStyle}>{tz.name}</div>
-                  </div>
+                {tariffZones.map(tz =>
+                  <TariffZonesItem
+                    key={'tariffZone-' + tz.id}
+                    id={tz.id}
+                    name={tz.name}
+                  />
                 )}
+              </div>
+            : <div style={noItemsStyle}>
+                {translations.noTariffZones}
               </div>}
         </div>
+        {!disabled &&
+          <AddTariffZone/>}
       </div>
     );
   }

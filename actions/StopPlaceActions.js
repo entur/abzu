@@ -334,6 +334,12 @@ StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   dispatch(UserActions.setCenterAndZoom(centroid, null));
 };
 
-
+StopPlaceActions.addTariffZone = tariffZone => dispatch => {
+  dispatch(
+    createThunk(
+      types.ADDED_TARIFF_ZONE, tariffZone
+    )
+  );
+};
 
 export default StopPlaceActions;

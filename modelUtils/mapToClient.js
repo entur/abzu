@@ -861,6 +861,15 @@ helpers.updateCurrentOpenParking = (current, index) => {
   });
 };
 
+helpers.addTariffZone = (current, tariffZone) => {
+  return Object.assign({}, current, {
+    tariffZones: current.tariffZones.concat({
+      id: tariffZone.id,
+      name: tariffZone.name.value
+    })
+  });
+};
+
 const removeElementByIndex = (list, index) => [
   ...list.slice(0, index),
   ...list.slice(index + 1)

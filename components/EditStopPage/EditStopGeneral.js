@@ -271,7 +271,7 @@ class EditStopGeneral extends React.Component {
       pathLink
     );
 
-    const shouldMutatePathLinks = !!(
+    const shouldMutatePathLinks = (
       pathLinkVariables.length &&
       JSON.stringify(pathLink) !== JSON.stringify(originalPathLink)
     );

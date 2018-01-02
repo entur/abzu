@@ -46,7 +46,8 @@ import {
   getStopById,
   getQueryTopographicPlaces,
   getTagsByNameQuery,
-  getGroupOfStopPlaceQuery
+  getGroupOfStopPlaceQuery,
+  findTariffones
 } from '../graphql/Queries';
 import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
 
@@ -399,6 +400,15 @@ export const deleteGroupOfStopPlaces = (client, id) =>
     mutation: deleteGroupMutation,
     variables: {
       id
+    },
+    fetchPolicy: 'network-only'
+  });
+
+export const getTariffZones = (client, query) =>
+  client.query({
+    query: findTariffones,
+    variables: {
+      query
     },
     fetchPolicy: 'network-only'
   });

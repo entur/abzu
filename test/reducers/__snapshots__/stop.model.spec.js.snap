@@ -164,6 +164,7 @@ Object {
   ],
   "stopPlaceType": "onstreetBus",
   "submode": null,
+  "tariffZones": Array [],
   "transportMode": null,
   "weighting": null,
 }

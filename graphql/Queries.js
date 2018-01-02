@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import gql from 'graphql-tag';
 import Fragments from './Fragments';
 
@@ -402,7 +401,6 @@ export const allVersionsOfStopPlace = gql`
     },
 `;
 
-
 export const getTagsQuery = gql`
   query getTagsQuery($idReference: String!) {
       stopPlace(id: $idReference) {
@@ -548,8 +546,7 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
 };
 
 export const getStopPlacesById = stopPlaceIds => {
-
-    const stopPlaces = stopPlaceIds.map(id => ({
+  const stopPlaces = stopPlaceIds.map(id => ({
     id,
     alias: id.replace('NSR:StopPlace:', 'StopPlace')
   }));
@@ -605,7 +602,6 @@ export const getStopPlacesById = stopPlaceIds => {
       }
   `;
 };
-
 
 export const getPolygons = ids => {
   let queryContent = '';
@@ -667,3 +663,12 @@ export const getGroupOfStopPlaceQuery = gql`
     },
    ${Fragments.groupOfStopPlaces.verbose}
 `;
+
+export const findTariffones = gql`
+   query findTariffZones($query: String!) {
+      tariffZones(query: $query, size: 7) {
+        id
+        name {
+          value
+      }}
+}`;
