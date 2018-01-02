@@ -17,7 +17,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import * as altNameConfig from '../../config/altNamesConfig';
-import MdClose from 'material-ui/svg-icons/navigation/close';
 import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import IconButton from 'material-ui/IconButton';
 import { StopPlaceActions } from '../../actions/';
@@ -25,6 +24,8 @@ import ConfirmDialog from './ConfirmDialog';
 import { getPrimaryColor } from '../../config/themeConfig';
 import NewAltName from './NewAltName';
 import EditAltName from './EditAltName';
+import DialogHeader from './DialogHeader';
+
 
 class AltNamesDialog extends React.Component {
   constructor(props) {
@@ -219,32 +220,10 @@ class AltNamesDialog extends React.Component {
           intl={intl}
           messagesById={confirmDialogCaptions}
         />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 5,
-          }}
-        >
-          <div
-            style={{
-              marginTop: 8,
-              marginLeft: 10,
-              fontWeight: 600,
-            }}
-          >
-            {translations.alternativeNames}
-          </div>
-          <IconButton
-            style={{ marginRight: 5 }}
-            onTouchTap={() => {
-              handleClose();
-            }}
-          >
-            <MdClose />
-          </IconButton>
-        </div>
+        <DialogHeader
+          title={translations.alternativeNames}
+          handleClose={handleClose}
+          />
         <div
           style={{
             width: '100%',

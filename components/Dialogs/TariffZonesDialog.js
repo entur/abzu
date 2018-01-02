@@ -14,11 +14,13 @@ limitations under the Licence. */
 
 import React from 'react';
 import { connect } from 'react-redux';
-import MdClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
+
+import DialogHeader from './DialogHeader';
 
 class TariffZonesDialog extends React.Component {
+
   render() {
+
     const { open, intl, tariffZones = [], handleClose } = this.props;
     const { formatMessage } = intl;
 
@@ -48,33 +50,10 @@ class TariffZonesDialog extends React.Component {
 
     return (
       <div style={style}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 5
-          }}
-        >
-          <div
-            style={{
-              marginTop: 8,
-              marginLeft: 10,
-              fontWeight: 600
-            }}
-          >
-            {translations.tariffZones}
-            {' '}
-          </div>
-          <IconButton
-            style={{ marginRight: 5 }}
-            onTouchTap={() => {
-              handleClose();
-            }}
-          >
-            <MdClose />
-          </IconButton>
-        </div>
+        <DialogHeader
+          title={translations.tariffZones}
+          handleClose={handleClose}
+        />
         <div
           style={{
             width: '100%',
