@@ -17,10 +17,15 @@ import { connect } from 'react-redux';
 
 import DialogHeader from './DialogHeader';
 import TariffZonesItem from './TariffZonesItem';
-
 import AddTariffZone from './AddTariffZone';
 
+import StopPlaceActions from '../../actions/StopPlaceActions';
+
 class TariffZonesDialog extends React.Component {
+
+  handleRemoveTZ(id) {
+    this.props.dispatch(StopPlaceActions.removeTariffZone(id));
+  }
 
   render() {
 
@@ -63,7 +68,7 @@ class TariffZonesDialog extends React.Component {
             width: '100%',
             fontSize: 14,
             maxHeight: 400,
-            marginLeft: 15,
+            marginLeft: 5,
             marginBottom: 5
           }}
         >
@@ -74,12 +79,13 @@ class TariffZonesDialog extends React.Component {
                   fontSize: 12,
                   overflowY: 'overlay',
                   maxHeight: 400,
-                  marginLeft: 5
                 }}
               >
                 {tariffZones.map(tz =>
                   <TariffZonesItem
+                    handleRemove={this.handleRemoveTZ.bind(this)}
                     key={'tariffZone-' + tz.id}
+                    disabled={disabled}
                     id={tz.id}
                     name={tz.name}
                   />

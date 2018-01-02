@@ -558,6 +558,15 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.REMOVED_TARIFF_ZONE:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeTariffZone(
+          state.current,
+          action.payLoad,
+        ),
+        stopHasBeenModified: true,
+      });
+
     default:
       return state;
   }

@@ -342,4 +342,12 @@ StopPlaceActions.addTariffZone = tariffZone => dispatch => {
   );
 };
 
+StopPlaceActions.removeTariffZone = tariffZoneId => dispatch => {
+  dispatch(
+    createThunk(
+      types.REMOVED_TARIFF_ZONE, tariffZoneId
+    )
+  );
+};
+
 export default StopPlaceActions;

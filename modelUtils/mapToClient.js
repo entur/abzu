@@ -870,6 +870,12 @@ helpers.addTariffZone = (current, tariffZone) => {
   });
 };
 
+helpers.removeTariffZone = (current, tariffZoneId) => {
+  return Object.assign({}, current, {
+    tariffZones: current.tariffZones.filter(tz => tz.id !== tariffZoneId)
+  });
+};
+
 const removeElementByIndex = (list, index) => [
   ...list.slice(0, index),
   ...list.slice(index + 1)

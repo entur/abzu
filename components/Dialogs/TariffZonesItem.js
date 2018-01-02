@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
+import MdRemove from 'material-ui/svg-icons/action/delete';
 
 const itemStyle = {
   flexBasis: '100%',
@@ -21,24 +22,40 @@ const itemStyle = {
   marginRight: 5
 };
 
-const TariffZonesItem = ({id, name}) => (
+const TariffZonesItem = ({id, name, handleRemove}) => (
   <div
     style={{
       display: 'flex',
       alignItems: 'center',
-      padding: 10,
+      padding: 5,
       justifyContent: 'space-between',
       lineHeight: 2
     }}
   >
     <div style={itemStyle}>{id}</div>
     <div style={itemStyle}>{name}</div>
+    <div>
+      <MdRemove
+        style={{
+          height: 16,
+          width: 16,
+          color: '#df544a',
+          marginRight: 10,
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          handleRemove(id)
+        }}
+      />
+    </div>
   </div>
 );
 
 TariffZonesItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default TariffZonesItem;
