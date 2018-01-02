@@ -114,7 +114,9 @@ class AddTagAutoComplete extends Component {
             primaryText={
               <div style={{borderTop: '1px solid #eee', fontSize: '0.8em'}}>
                 <span style={{fontWeight: 600}}>{toCamelCase(searchText)}</span>
-                <span style={{marginLeft: 5}}>(Ny tagg)</span>
+                <span style={{marginLeft: 5}}>
+                  {this.props.intl.formatMessage({id: 'new_tag_hint'})}
+                </span>
               </div>
             }
           />

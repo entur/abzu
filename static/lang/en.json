@@ -201,6 +201,7 @@
   "new_stop_question": "Do you wish to create a new stop here?",
   "new_stop_title": "You are now creating a new stop place",
   "new_stop": "New stop place",
+  "new_tag_hint": "(New tag)",
   "no_favorites_found": "You have currenly no saved searches",
   "no_results_found": "No results with your search criteras.",
   "no_stop_places": "No stop places",
