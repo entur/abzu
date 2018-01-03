@@ -177,7 +177,7 @@ convictPromise
 
     const createKeyCloakConfig = authServerUrl => {
       let config = {
-        realm: 'rutebanken',
+        realm: convict.get('authRealmName'),
         'tokens-not-before': 1490857383,
         'public-client': true,
         'auth-server-url': authServerUrl,
