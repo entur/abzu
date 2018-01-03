@@ -35,10 +35,13 @@ class AdvancedReportFilters extends Component {
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
       handleCheckboxChange,
-      withTags
+      withTags,
+      showFutureAndExpired
     } = this.props;
 
     const { open, anchorEl } = this.state;
+
+    const menuItemsStyle = {display: 'flex', alignItems: 'center'};
 
     return (
       <div style={{marginTop: 10, marginLeft: 5}}>
@@ -60,7 +63,18 @@ class AdvancedReportFilters extends Component {
           }}
         >
           <Menu>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
+              <Checkbox
+                label={formatMessage({ id: 'show_future_and_expired' })}
+                labelPosition="right"
+                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                checked={showFutureAndExpired}
+                onCheck={(e, value) => {
+                  handleCheckboxChange('showFutureAndExpired', value);
+                }}
+              />
+            </MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_without_coordinates' })}
                 labelPosition="right"
@@ -71,7 +85,7 @@ class AdvancedReportFilters extends Component {
                 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_duplicate_importedIds' })}
                 labelPosition="right"
@@ -83,7 +97,7 @@ class AdvancedReportFilters extends Component {
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'with_nearby_similar_duplicates' })}
                 labelPosition="right"
@@ -95,7 +109,7 @@ class AdvancedReportFilters extends Component {
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
-            <MenuItem>
+            <MenuItem style={menuItemsStyle}>
               <Checkbox
                 label={formatMessage({ id: 'only_with_tags' })}
                 labelPosition="right"

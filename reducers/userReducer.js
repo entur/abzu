@@ -260,6 +260,11 @@ const userReducer = (state = initialState, action) => {
         showEditQuayAdditional: false,
       });
 
+    case types.TOGGLE_SHOW_PUBLIC_CODE:
+      return Object.assign({}, state, {
+        showPublicCode: action.payLoad
+      });
+
       break;
 
     default:

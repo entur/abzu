@@ -52,7 +52,6 @@ class MoveQuayNewStopDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    fromStopPlaceId: PropTypes.string.isRequired,
     quays: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
@@ -70,7 +69,6 @@ class MoveQuayNewStopDialog extends React.Component {
       handleConfirm,
       quay,
       quays,
-      fromStopPlaceId,
       hasStopBeenModified,
       isLoading
     } = this.props;
@@ -92,6 +90,7 @@ class MoveQuayNewStopDialog extends React.Component {
       })
     };
 
+    const fromStopPlaceId =  quay.stopPlaceId;
     const fromVersionComment = `Flyttet ${quayIds.join(', ')} til nytt stoppested`;
     const toVersionComment = `Flyttet ${quayIds.join(', ')} fra ${fromStopPlaceId}`;
 

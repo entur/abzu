@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 export const compareShallowQuayMarker = (props, nextProps) => {
   if (props.position !== nextProps.position) {
     return true;
@@ -63,6 +62,10 @@ export const compareShallowQuayMarker = (props, nextProps) => {
   }
 
   if (props.mergingQuay !== nextProps.mergingQuay) {
+    return true;
+  }
+
+  if (props.showPublicCode !== nextProps.showPublicCode) {
     return true;
   }
 
@@ -122,6 +125,10 @@ export const shallowCompareNeighbourMarker = (props, nextProps) => {
   }
 
   if (props.submode !== nextProps.submode) {
+    return true;
+  }
+
+  if (props.userHasEditAccess !== nextProps.userHasEditAccess) {
     return true;
   }
 

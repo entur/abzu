@@ -12,9 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import * as types from '../actions/Types';
-import { getAllowanceInfoForStop, getAllowanceSearchInfo, getAllowInfoNewStop } from './rolesReducerUtils';
+import {
+  getAllowanceInfoForGroup,
+  getAllowanceSearchInfo,
+  getAllowanceInfoFromPosition,
+  getAllowanceInfoForStop,
+  getLatLng
+} from './rolesReducerUtils';
 
 export const initialState = {};
 
@@ -24,7 +29,18 @@ const rolesReducer = (state = initialState, action) => {
       if (action.operationName === 'stopPlaceAndPathLink') {
         return Object.assign({}, state, {
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoForStop(action.result, state.kc.tokenParsed)
+          allowanceInfo: getAllowanceInfoForStop(
+            action.result,
+            state.kc.tokenParsed
+          )
+        });
+      } else if (action.operationName === 'getGroupOfStopPlaces') {
+        return Object.assign({}, state, {
+          kc: state.kc,
+          allowanceInfo: getAllowanceInfoForGroup(
+            action.result,
+            state.kc.tokenParsed
+          ),
         });
       } else {
         return state;
@@ -34,23 +50,50 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         ...state,
         kc: state.kc,
-        allowanceInfoSearchResult: getAllowanceSearchInfo(action.payLoad, state.kc.tokenParsed)
+        allowanceInfoSearchResult: getAllowanceSearchInfo(
+          action.payLoad,
+          state.kc.tokenParsed
+        ),
+        allowanceInfo: {
+          ...state.allowanceInfo,
+          ...getAllowanceInfoFromPosition(action.payLoad.location)
+        }
       });
 
+    case types.SETUP_NEW_GROUP:
+      return Object.assign({}, state, {
+          ...state,
+          kc: state.kc,
+          allowanceInfo: getAllowanceInfoFromPosition(
+            getLatLng(action.payLoad.data.stopPlace[0]),
+            state.kc.tokenParsed
+          )
+        }
+      );
+
     case types.USE_NEW_STOP_AS_CURRENT:
-      return Object.assign(({}, state, {
-        ...state,
-        kc: state.kc,
-        allowanceInfo: getAllowInfoNewStop(action.payLoad, state.kc.tokenParsed)
-      }))
+      return Object.assign({}, state, {
+          ...state,
+          kc: state.kc,
+          allowanceInfo: getAllowanceInfoFromPosition(
+            action.payLoad,
+            state.kc.tokenParsed
+          )
+        }
+      );
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       const { newStopPlace } = action.payLoad;
-      return Object.assign(({}, state, {
-        ...state,
-        kc: state.kc,
-        allowanceInfo: getAllowInfoNewStop(newStopPlace, state.kc.tokenParsed)
-      }));
+      return Object.assign({},
+          state, {
+            ...state,
+            kc: state.kc,
+            allowanceInfo: getAllowanceInfoFromPosition(
+              newStopPlace,
+              state.kc.tokenParsed
+            )
+          }
+      );
 
     default:
       return state;

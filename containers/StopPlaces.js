@@ -16,12 +16,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SearchBox from '../components/MainPage/SearchBox';
 import StopPlacesMap from '../components/Map/StopPlacesMap';
-import { getIdFromURL } from '../utils/URLhelpers';
-import { getStopPlaceById } from '../graphql/Actions';
+import { getStopPlaceById, getGroupOfStopPlacesById } from '../graphql/Actions';
 import { withApollo } from 'react-apollo';
 import formatHelpers from '../modelUtils/mapToClient';
 import StopPlaceActions from '../actions/StopPlaceActions';
-import { removeIdParamFromURL, updateURLWithId } from '../utils/URLhelpers';
+import { removeIdParamFromURL, updateURLWithId, getStopPlaceIdFromURL, getGroupOfStopPlacesIdFromURL } from '../utils/URLhelpers';
 import '../styles/main.css';
 import Loader from '../components/Dialogs/Loader';
 
@@ -33,6 +32,23 @@ class StopPlaces extends React.Component {
     };
   }
 
+  handleGroupOfStopPlace(groupOfStopPlaceId) {
+    this.setState({ isLoading: true });
+    const { client, dispatch } = this.props;
+    getGroupOfStopPlacesById(client, groupOfStopPlaceId).then(({data}) => {
+      if (data.groupOfStopPlaces && data.groupOfStopPlaces.length) {
+        const groupOfStopPlace = formatHelpers.mapSearchResultatGroup(data.groupOfStopPlaces);
+        dispatch(StopPlaceActions.setMarkerOnMap(groupOfStopPlace[0]));
+      } else {
+        removeIdParamFromURL('groupOfStopPlacesId');
+      }
+      this.setState({ isLoading: false });
+    }).catch(err => {
+      this.setState({ isLoading: false });
+    });
+  }
+
+
   handleLoadStopPlace(props, stopPlaceId, forceLoad) {
     const { activeSearchResult, client, dispatch } = props;
 
@@ -43,47 +59,54 @@ class StopPlaces extends React.Component {
         .then(({ data }) => {
           this.setState({ isLoading: false });
           if (data.stopPlace && data.stopPlace.length) {
-            const stopPlaces = formatHelpers.mapSearchResultatToClientStops(
+            const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
               data.stopPlace
             );
             if (stopPlaces.length) {
               dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
             } else {
-              removeIdParamFromURL();
+              removeIdParamFromURL('stopPlaceId');
             }
           } else {
-            removeIdParamFromURL();
+            removeIdParamFromURL('stopPlaceId');
           }
         })
         .catch(err => {
-          removeIdParamFromURL();
+          removeIdParamFromURL('stopPlaceId');
           this.setState({ isLoading: false });
         });
     } else if (!stopPlaceId && activeSearchResult && activeSearchResult.id) {
-      updateURLWithId(activeSearchResult.id);
+      updateURLWithId('stopPlaceId', activeSearchResult.id);
     }
   }
 
   componentDidMount() {
     const { lastMutatedStopPlaceId, activeSearchResult, dispatch } = this.props;
     const searchResultId = activeSearchResult ? activeSearchResult.id : null;
-    const shouldRefreshSearchResult =
+    const shouldRefreshStopPlace =
       (lastMutatedStopPlaceId.length && searchResultId !== null) &&
       (lastMutatedStopPlaceId.indexOf(searchResultId) > -1);
 
-    const stopPlaceId = shouldRefreshSearchResult
-      ? searchResultId
-      : getIdFromURL();
+    const stopPlaceIdFromURL = getStopPlaceIdFromURL();
+    const groupOfStopPlacesFromURL = getGroupOfStopPlacesIdFromURL();
 
-    if (shouldRefreshSearchResult) {
+    const stopPlaceId = shouldRefreshStopPlace
+      ? searchResultId
+      : stopPlaceIdFromURL;
+
+    if (shouldRefreshStopPlace) {
       dispatch(StopPlaceActions.clearLastMutatedStopPlaceId());
     }
 
-    this.handleLoadStopPlace(
-      this.props,
-      stopPlaceId,
-      shouldRefreshSearchResult
-    );
+    if (groupOfStopPlacesFromURL) {
+      this.handleGroupOfStopPlace(groupOfStopPlacesFromURL);
+    } else {
+      this.handleLoadStopPlace(
+        this.props,
+        stopPlaceId,
+        shouldRefreshStopPlace
+      );
+    }
   }
 
   render() {

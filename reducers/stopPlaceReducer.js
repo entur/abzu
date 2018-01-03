@@ -549,6 +549,24 @@ const stopPlaceReducer = (state = {}, action) => {
         zoom: action.payLoad
       });
 
+    case types.ADDED_TARIFF_ZONE:
+      return Object.assign({}, state, {
+        current: formatHelpers.addTariffZone(
+          state.current,
+          action.payLoad,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.REMOVED_TARIFF_ZONE:
+      return Object.assign({}, state, {
+        current: formatHelpers.removeTariffZone(
+          state.current,
+          action.payLoad,
+        ),
+        stopHasBeenModified: true,
+      });
+
     default:
       return state;
   }

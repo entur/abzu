@@ -31,7 +31,15 @@ class AddStopPlaceSuggestionListItem extends Component {
       <div style={{display: 'flex', alignItems: 'center', padding: 4}}>
         <Checkbox disabled={suggestion && suggestion.hasExpired} checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
           <div style={{display: 'flex', alignItems: 'center'}}>
-            <ModalityIconImg type={suggestion.stopPlaceType} submode={suggestion.submode} iconStyle={{marginTop: -1}}/>
+            {suggestion.isParent
+              ? <div style={{marginRight: 5, fontWeight: 600}}>MM</div>
+              : <ModalityIconImg
+                  type={suggestion.stopPlaceType}
+                  submode={suggestion.submode}
+                  style={{marginRight: 5}}
+                  iconStyle={{marginTop: -1}}
+              />
+            }
             <div style={{fontSize: '0.9em', flex: 0.8}}>
               { suggestion.name
                 ? <span>{suggestion.name}</span>

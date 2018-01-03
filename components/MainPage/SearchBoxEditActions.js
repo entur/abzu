@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
+
+import React, {Component} from 'react';
 import Edit from 'material-ui/svg-icons/editor/mode-edit';
 import FlatButton from 'material-ui/FlatButton';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
@@ -26,7 +27,7 @@ class SearchBoxEditAction extends Component {
     return (
       <div style={{ width: '100%', textAlign: 'right' }}>
         <FlatButton
-          onClick={() => handleEdit(result.id)}
+          onClick={() => handleEdit(result.id, result.entityType)}
           style={{ marginTop: 0 }}
         >
           {canEdit

@@ -15,10 +15,8 @@ limitations under the Licence. */
 
 import React from 'react';
 import { connect } from 'react-redux';
-import MdClose from 'material-ui/svg-icons/navigation/close';
 import MdEdit from 'material-ui/svg-icons/editor/mode-edit';
 import MdRemove from 'material-ui/svg-icons/action/delete';
-import IconButton from 'material-ui/IconButton';
 import { getPrimaryColor } from '../../config/themeConfig';
 import EditKeyValuePair from '../EditStopPage/EditKeyValuePair';
 import CreateKeyValuePair from '../EditStopPage/CreateKeyValuePair';
@@ -26,6 +24,7 @@ import { StopPlaceActions, UserActions } from '../../actions/';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { selectKeyValuesDataSource } from '../../reducers/selectors';
+import DialogHeader from './DialogHeader';
 
 class KeyValuesDialog extends React.Component {
   constructor(props) {
@@ -110,33 +109,10 @@ class KeyValuesDialog extends React.Component {
 
     return (
       <div style={style}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 5
-          }}
-        >
-          <div
-            style={{
-              marginTop: 8,
-              fontWeight: 60,
-              marginLeft: 10,
-              fontWeight: 600
-            }}
-          >
-            {translations.keyValuesTitle}
-          </div>
-          <IconButton
-            style={{ marginRight: 5 }}
-            onTouchTap={() => {
-              this.handleClose();
-            }}
-          >
-            <MdClose />
-          </IconButton>
-        </div>
+        <DialogHeader
+          title={translations.keyValuesTitle}
+          handleClose={this.handleClose.bind(this)}
+        />
         <div
           style={{
             fontSize: 14,

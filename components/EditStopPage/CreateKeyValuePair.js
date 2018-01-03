@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { injectIntl } from 'react-intl';
@@ -76,8 +77,8 @@ class CreateKeyValuePair extends React.Component {
               key: v
             })}}
             value={key}
-            hintText="Key"
-            floatingLabelText="Key"
+            hintText={formatMessage({id: 'key'})}
+            floatingLabelText={formatMessage({id: 'key'})}
             floatingLabelFixed={true}
             fullWidth={true}
           />
@@ -86,8 +87,8 @@ class CreateKeyValuePair extends React.Component {
             onChange={ (e, v) => { this.setState({
               values: v
             })}}
-            hintText="Values"
-            floatingLabelText="Values"
+            hintText={formatMessage({id: 'values'})}
+            floatingLabelText={formatMessage({id: 'values'})}
             floatingLabelFixed={true}
             value={values}
             fullWidth={true}

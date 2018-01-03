@@ -30,7 +30,7 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import FavoriteManager from '../../singletons/FavoriteManager';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import {
-  findStopWithFilters,
+  findEntitiesWithFilters,
   findTopographicalPlace
 } from '../../graphql/Actions';
 import { withApollo } from 'react-apollo';
@@ -49,6 +49,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import CheckBox from 'material-ui/Checkbox';
 import Routes from '../../routes/';
+import { Entities } from '../../models/Entities';
 
 
 class SearchBox extends React.Component {
@@ -72,7 +73,7 @@ class SearchBox extends React.Component {
 
       this.setState({ loading: true });
 
-      findStopWithFilters(
+      findEntitiesWithFilters(
         this.props.client,
         searchText,
         stopPlaceTypes,
@@ -86,7 +87,7 @@ class SearchBox extends React.Component {
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
-
+    // prevents ghost clicks
     if (params && params.source === 'click') {
       return;
     }
@@ -102,8 +103,11 @@ class SearchBox extends React.Component {
     }
   }
 
-  handleEdit(id) {
-    this.props.dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
+  handleEdit(id, entityType) {
+    const route = entityType === Entities.STOP_PLACE
+      ? Routes.STOP_PLACE
+      : Routes.GROUP_OF_STOP_PLACE;
+    this.props.dispatch(UserActions.navigateTo(`/${route}/`, id));
   }
 
   handleSaveAsFavorite() {
@@ -507,7 +511,7 @@ class SearchBox extends React.Component {
                           width: '100%',
                           marginTop: -20,
                         }}
-                        maxSearchResults={5}
+                        maxSearchResults={7}
                         ref="topoFilter"
                         onNewRequest={this.handleAddChip.bind(this)}
                       />
@@ -551,7 +555,7 @@ class SearchBox extends React.Component {
               }
               filter={(searchText, key) => searchText !== ''}
               onUpdateInput={this.handleSearchUpdate.bind(this)}
-              maxSearchResults={7}
+              maxSearchResults={10}
               searchText={this.props.searchText}
               ref="searchText"
               onNewRequest={this.handleNewRequest.bind(this)}
@@ -689,7 +693,7 @@ const mapStateToProps = state => {
     isCreatingNewStop: state.user.isCreatingNewStop,
     stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
-    favorited: favorited,
+    favorited,
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],

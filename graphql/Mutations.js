@@ -20,8 +20,8 @@ export const mutateParentStopPlace = gql`
   mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {
       mutateParentStopPlace(ParentStopPlace: {
           id: $id
-          name: { value: $name, lang: "no" }
-          description: { value: $description, lang: "no" }
+          name: { value: $name, lang: "nor" }
+          description: { value: $description, lang: "nor" }
           versionComment: $versionComment
           validBetween: $validBetween
           geometry: {
@@ -111,8 +111,8 @@ export const mutateAddToMultiModalStopPlace = gql`
 `;
 
 export const mutateStopPlace = gql`
-    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput], $submode: SubmodeType, $transportMode: TransportModeType) {
-        mutateStopPlace(StopPlace: {
+    mutation mutateStopPlace($id: String, $name: String, $description: String, $coordinates: Coordinates!, $stopPlaceType: StopPlaceType, $quays: [QuayInput], $validBetween: ValidBetweenInput, $accessibilityAssessment: AccessibilityAssessmentInput, $placeEquipments: PlaceEquipmentsInput, $alternativeNames: [AlternativeNameInput], $versionComment: String, $weighting: InterchangeWeightingType, $keyValues: [KeyValuesInput], $submode: SubmodeType, $transportMode: TransportModeType, $tariffZones: [VersionLessEntityRefInput]) {
+        mutateStopPlace(StopPlace: { 
             id: $id
             keyValues: $keyValues
             submode: $submode
@@ -130,6 +130,7 @@ export const mutateStopPlace = gql`
             validBetween: $validBetween
             accessibilityAssessment: $accessibilityAssessment
             placeEquipments: $placeEquipments
+            tariffZones: $tariffZones
             stopPlaceType: $stopPlaceType}) {
             ...VerboseStopPlace
         }
@@ -220,5 +221,25 @@ export const mutateRemoveTag = gql`
       removeTag: removeTag(name: $name, idReference: $idReference) {
           removed
       }
+  }
+`;
+
+export const mutateGroupOfStopPlaces = gql`
+  mutation mutateGroupOfStopPlaces($id:String, $name: EmbeddableMultilingualStringInput!, $description: EmbeddableMultilingualStringInput, $members: [VersionLessEntityRefInput]) {
+      mutateGroupOfStopPlaces(GroupOfStopPlaces: {
+          id: $id,
+          name: $name,
+          description: $description,
+          members: $members
+      }) {
+          ...GroupOfStopPlaces
+      }
+  },
+  ${Fragments.groupOfStopPlaces.verbose}
+`;
+
+export const deleteGroupMutation = gql`
+  mutation deleteGroupOfStopPlaces($id: String!) {
+    deleteGroupOfStopPlaces(id: $id)
   }
 `;

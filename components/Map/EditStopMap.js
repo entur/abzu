@@ -237,7 +237,7 @@ const mapStateToProps = state => {
     enablePolylines: state.stopPlace.enablePolylines,
     isCreatingPolylines: state.stopPlace.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,
-    markers: markers,
+    markers,
     ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,
     minZoom: state.stopPlace.minZoom,
   };

@@ -62,6 +62,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly: false,
       withDuplicateImportedIds: false,
       withNearbySimilarDuplicates: false,
+      showFutureAndExpired: false,
       withTags: false,
       tags: [],
     };
@@ -115,7 +116,13 @@ class ReportPage extends React.Component {
         checked: true
       }))
     });
-  }
+  };
+
+  handleFilterChange(key, value) {
+    this.setState({
+      [key]: value
+    });
+  };
 
   handleColumnStopPlaceCheck(id, checked) {
     const columnOptions = this.state.columnOptionsStopPlace.slice();
@@ -161,6 +168,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly: fromURL.withoutLocationOnly == 'true',
       withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates == 'true',
       withDuplicateImportedIds: fromURL.withDuplicateImportedIds == 'true',
+      showFutureAndExpired: fromURL.showFutureAndExpired == 'true',
       withTags: fromURL.withTags == 'true',
       tags: fromURL.tags ? fromURL.tags.split(',') : [],
       stopTypeFilter: fromURL.stopPlaceType
@@ -217,6 +225,7 @@ class ReportPage extends React.Component {
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
       withTags,
+      showFutureAndExpired,
       tags
     } = this.state;
     const { client } = this.props;
@@ -225,11 +234,13 @@ class ReportPage extends React.Component {
       isLoading: true
     });
 
-    const variables = {
+    const queryVariables = {
       query: searchQuery,
       withoutLocationOnly,
       withDuplicateImportedIds,
-      pointInTime: (withDuplicateImportedIds || withNearbySimilarDuplicates) ? new Date().toISOString() : null,
+      pointInTime: (withDuplicateImportedIds || withNearbySimilarDuplicates || !showFutureAndExpired)
+        ? new Date().toISOString()
+        : null,
       stopPlaceType: stopTypeFilter,
       withNearbySimilarDuplicates,
       withTags,
@@ -246,12 +257,15 @@ class ReportPage extends React.Component {
       .query({
         query: findStopForReport,
         fetchPolicy: 'network-only',
-        variables
+        variables: queryVariables
       })
       .then(response => {
         const stopPlaces = response.data.stopPlace;
         const stopPlaceIds = stopPlaces.map(stopPlace => stopPlace.id);
-        buildReportSearchQuery(variables);
+        buildReportSearchQuery({
+          ...queryVariables,
+          showFutureAndExpired
+        });
         client
           .query({
             query: getParkingForMultipleStopPlaces(stopPlaceIds),
@@ -339,6 +353,7 @@ class ReportPage extends React.Component {
       withoutLocationOnly,
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
+      showFutureAndExpired,
       withTags
     } = this.state;
     const { intl, topographicalPlaces, results, duplicateInfo } = this.props;
@@ -443,12 +458,9 @@ class ReportPage extends React.Component {
                     withoutLocationOnly={withoutLocationOnly}
                     withDuplicateImportedIds={withDuplicateImportedIds}
                     withNearbySimilarDuplicates={withNearbySimilarDuplicates}
+                    showFutureAndExpired={showFutureAndExpired}
                     withTags={withTags}
-                    handleCheckboxChange={(key, value) => {
-                      this.setState({
-                        [key]: value
-                      })
-                    }}
+                    handleCheckboxChange={this.handleFilterChange.bind(this)}
                   />
                 </div>
               </div>

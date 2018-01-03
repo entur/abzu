@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import { LatLng } from 'leaflet';
 import { isLegalChildStopPlace } from '../reducers/rolesReducerUtils';
 
@@ -42,8 +41,8 @@ export const calculateEstimate = distance => {
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
 
-
-export const isNotTooFar = (distance = 301) => distance <= 300;
+export const isChildTooFarAway = (distance = 301) => distance <= 300;
+export const isMemberTooFarAway = (distance = 601) => distance <= 600;
 
 /* filters stopPlaces that elligible to be added to parent stop place
   (not parent or child of a multimodal stop place) and sorts them by distance asc
@@ -55,11 +54,13 @@ export const getChildStopPlaceSuggestions = (
   tokenParsed,
   nFirst
 ) => {
-
   const alreadyAdded = children.map(child => child.id);
 
   let suggestions = neighbourStops.filter(
-    stop => !stop.isParent && !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
+    stop =>
+      !stop.isParent &&
+      !stop.isChildOfParent &&
+      alreadyAdded.indexOf(stop.id) === -1
   );
 
   if (stopPlaceCentroid) {
@@ -77,7 +78,48 @@ export const getChildStopPlaceSuggestions = (
   }
 
   const legalSuggestions = (suggestions || [])
-    .filter( suggestion => isLegalChildStopPlace(suggestion, tokenParsed) && isNotTooFar(suggestion.distance))
+    .filter(
+      suggestion =>
+        isLegalChildStopPlace(suggestion, tokenParsed) &&
+        isChildTooFarAway(suggestion.distance)
+    );
+
+  return legalSuggestions.slice(0, nFirst);
+};
+
+export const getGroupMemberSuggestions = (
+  exisitingMembers,
+  centroid,
+  neighbourStops,
+  tokenParsed,
+  nFirst
+) => {
+  const alreadyAdded = exisitingMembers.map(member => member.id);
+
+  let suggestions = neighbourStops.filter(
+    stop => !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
+  );
+
+  if (centroid) {
+    suggestions = (suggestions.map(stop => {
+      let distance = null;
+      if (stop.location) {
+        distance = calculateDistance([centroid, stop.location]);
+      }
+      return {
+        ...stop,
+        distance
+      };
+    }) || [])
+      .sort((a, b) => a.distance - b.distance);
+  }
+
+  const legalSuggestions = (suggestions || [])
+    .filter(
+      suggestion =>
+        isMemberTooFarAway(suggestion.distance) &&
+        isLegalChildStopPlace(suggestion, tokenParsed)
+    );
 
   return legalSuggestions.slice(0, nFirst);
 };

@@ -54,6 +54,7 @@ import { createStopPlaceHref } from '../../utils/';
 import FlatButton from 'material-ui/FlatButton';
 import TagsDialog from './TagsDialog';
 import TagTray from '../MainPage/TagTray';
+import BelongsToGroup from './../MainPage/BelongsToGroup';
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -483,6 +484,13 @@ class StopPlaceDetails extends React.Component {
             </div>
           </div>
         </div>
+        {stopPlace.belongsToGroup && (
+          <BelongsToGroup
+            formatMessage={formatMessage}
+            groups={stopPlace.groups}
+            style={{marginTop: 5}}
+            />
+        )}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
             hintText={formatMessage({ id: 'name' })}

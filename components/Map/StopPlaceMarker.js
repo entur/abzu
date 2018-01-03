@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
@@ -23,6 +22,7 @@ import { shallowCompareStopPlaceMarker as shallowCompare } from './shallowCompar
 import PopupButton from '../Map/PopupButton';
 
 class StopPlaceMarker extends React.Component {
+
   static propTypes = {
     position: PropTypes.arrayOf(Number),
     handleDragEnd: PropTypes.func.isRequired,
@@ -99,7 +99,10 @@ class StopPlaceMarker extends React.Component {
       id,
       disabled,
       disabledForSearch,
-      hasExpired
+      hasExpired,
+      isEditingGroup,
+      handleCreateGroup,
+      isGroupMember,
     } = this.props;
 
     const markerLocation = position || missingCoordinatesMap[id];
@@ -122,7 +125,9 @@ class StopPlaceMarker extends React.Component {
         }}
         draggable={draggable}
       >
-        <Popup autoPan={false}>
+        <Popup
+          autoPan={false}
+        >
           <div>
             <div
               style={{
@@ -175,6 +180,13 @@ class StopPlaceMarker extends React.Component {
               label={translations.adjustCentroid}
             />
             <PopupButton
+              hidden={isMultimodalChild || isGroupMember || disabledForSearch}
+              onClick={() => {
+                handleCreateGroup(id);
+              }}
+              label={translations.createGOS}
+            />
+            <PopupButton
               hidden={!isMultimodalChild}
               onClick={() =>
                 isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)}
@@ -183,7 +195,18 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={isMultimodalChild || isMultimodal || disabledForSearch || hasExpired}
+              hidden={!isEditingGroup || !isGroupMember}
+              labelStyle={{ background: 'rgb(152,51,47)' }}
+              onClick={() => this.props.removeFromGroup(id)}
+              label={translations.removeFromGroup}
+            />
+            <PopupButton
+              hidden={
+                isMultimodalChild ||
+                isMultimodal ||
+                disabledForSearch ||
+                hasExpired
+              }
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

@@ -28,7 +28,7 @@ class NeighbourMarker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createMultimodalNotAllowed: false
+      isAllowedToCreateFrom: false
     }
   }
 
@@ -42,11 +42,12 @@ class NeighbourMarker extends React.Component {
     id: PropTypes.string,
     handleHideQuaysForNeighbourStop: PropTypes.func,
     isShowingQuays: PropTypes.bool.isRequired,
-    isEditingStop: PropTypes.bool.isRequired
+    isEditingStop: PropTypes.bool.isRequired,
+    isEditingGroup: PropTypes.bool
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.createMultimodalNotAllowed !== nextState.createMultimodalNotAllowed) {
+    if (this.state.isAllowedToCreateFrom !== nextState.isAllowedToCreateFrom) {
       return true;
     }
     return shallowCompare(this.props, nextProps);
@@ -59,7 +60,10 @@ class NeighbourMarker extends React.Component {
       disabled,
       isEditingStop
     } = this.props;
-    if (disabled) return false;
+
+    const { isAllowedToCreateFrom } = this.state;
+
+    if (disabled || !isAllowedToCreateFrom) return false;
 
     if (isMultimodal || currentStopIsMultiModal) {
       return false;
@@ -80,15 +84,18 @@ class NeighbourMarker extends React.Component {
       handleHideQuays,
       isShowingQuays,
       handleMergeStopPlace,
+      handleAddToGroup,
       hasExpired,
       isMultimodal,
       isChildOfParent,
       submode,
       stopPlace,
-      tokenParsed
+      tokenParsed,
+      isEditingGroup,
+      handleCreateGroup,
     } = this.props;
 
-    const { createMultimodalNotAllowed } = this.state;
+    const { isAllowedToCreateFrom } = this.state;
 
     if (!position) return null;
 
@@ -131,7 +138,7 @@ class NeighbourMarker extends React.Component {
         <Popup
           onOpen={() => {
             this.setState({
-              createMultimodalNotAllowed: !isLegalChildStopPlace(stopPlace, tokenParsed)
+              isAllowedToCreateFrom: isLegalChildStopPlace(stopPlace, tokenParsed)
             })
           }}
           autoPan={false}
@@ -139,7 +146,6 @@ class NeighbourMarker extends React.Component {
           <div>
             <div
               style={{
-                marginBottom: 10,
                 display: 'inline-block',
                 width: '100%',
                 marginBottom: 15,
@@ -176,6 +182,18 @@ class NeighbourMarker extends React.Component {
               </span>
             </div>
             <PopupButton
+              hidden={!isEditingGroup || isChildOfParent || !isAllowedToCreateFrom}
+              onClick={() => handleAddToGroup(id)}
+              label={translations.addToGroup}
+            />
+            <PopupButton
+              hidden={isChildOfParent || !isAllowedToCreateFrom}
+              onClick={() => {
+                handleCreateGroup(id)
+              }}
+              label={translations.createGOS}
+            />
+            <PopupButton
               hidden={!isMergingStopAllowed}
               onClick={() => handleMergeStopPlace(id, name)}
               label={translations.mergeStopPlace}
@@ -192,7 +210,7 @@ class NeighbourMarker extends React.Component {
                   label={translations.showQuays}
                 />}
             <PopupButton
-              hidden={isMultimodal || isChildOfParent || createMultimodalNotAllowed || hasExpired}
+              hidden={isMultimodal || isChildOfParent || !isAllowedToCreateFrom || hasExpired}
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

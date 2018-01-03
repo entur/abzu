@@ -27,6 +27,7 @@ import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
 import { darkColor } from '../config/themes/default/defaultTheme';
 import TagTray from '../components/MainPage/TagTray';
 import ToolTippable from '../components/EditStopPage/ToolTippable';
+import moment from 'moment';
 
 const getParkingElements = (parking = []) => {
   if (!parking || !parking.length) {
@@ -68,36 +69,43 @@ const getParkingType = parking => {
 
 export const ColumnTransformerStopPlaceJsx = {
   id: stop => <StopPlaceLink id={stop.id} />,
-  name: stop => {
-    const parentChildStyle = {
+  name: (stop, formatMessage) => {
+    const infoTextStyle = {
       fontWeight: 600,
       textTransform: 'uppercase',
-      marginLeft: 2,
       color: darkColor,
-      fontSize: '0.6em',
-      lineHeight: '1em',
-      top: '-0.4em',
-      vericalAlign: 'baseline',
+      fontSize: '0.7em',
       position: 'relative'
     };
 
-    if (stop.isParent) {
-      return (
-        <div>
-          <span>{stop.name}</span>
-          <span style={parentChildStyle}>Parent</span>
+    const isParentOrChild = (stop.isParent || stop.isChildOfParent);
+    const isFutureOrExpired = (stop.isFuture || stop.hasExpired);
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+        <span>{stop.name}</span>
+        <div style={{ display: 'flex', marginTop: 3, marginLeft: 5, flexDirection: 'column'}}>
+          {isFutureOrExpired &&
+            <span style={{ ...infoTextStyle, color: stop.hasExpired ? '#ae1d1d' : '#2f3526', marginRight: 5 }}>
+              {stop.hasExpired ? formatMessage({ id: 'search_result_expired' })
+                : <div style={{display: 'flex', color: '#ffa500'}}>
+                    <div>{formatMessage({id: 'valid_from'})}</div>
+                    <div style={{marginLeft: 5}}>{moment(stop.validBetween.fromDate).format('YYYY-MM-DD')}</div>
+                </div>}
+            </span>}
+          {isParentOrChild &&
+          <span style={{...infoTextStyle, marginRight: 5}}>
+              {stop.isParent
+                ? formatMessage({ id: 'parentStopPlace' })
+                : formatMessage({ id: 'childStopPlace' })}
+            </span>}
+          {stop.validBetween && stop.validBetween.toDate && !isFutureOrExpired &&
+          <span style={{ ...infoTextStyle, color: '#ffa500'}}>
+            {formatMessage({id: 'expires'})} {moment(stop.validBetween.toDate).format('YYYY-MM-DD')}
+            </span>}
         </div>
-      );
-    } else if (stop.isChildOfParent) {
-      return (
-        <div>
-          <span>{stop.name}</span>
-          <span style={parentChildStyle}>Child</span>
-        </div>
-      );
-    } else {
-      return stop.name;
-    }
+      </div>
+    );
   },
   modality: stop => {
     if (!stop.isParent) {
@@ -296,9 +304,9 @@ export const ColumnTransformerQuaysJsx = {
           return (
             <span
               style={{
-                color: (isDuplicate && confictToolTip)? '#cf1212' : 'initial',
-                fontWeight: (isDuplicate && confictToolTip) ? 600 : 400,
-                cursor: (isDuplicate && confictToolTip) ? 'pointer' : 'initial'
+                color: isDuplicate && confictToolTip ? '#cf1212' : 'initial',
+                fontWeight: isDuplicate && confictToolTip ? 600 : 400,
+                cursor: isDuplicate && confictToolTip ? 'pointer' : 'initial'
               }}
               key={'importedId-' + quay.id + '-' + index}
             >
@@ -402,7 +410,7 @@ export const ColumnTranslations = {
     wheelchairAccess: 'Accessibilité PMR',
     stepFreeAccess: 'Accès sans escalier',
     shelterEquipment: 'Abri',
-    waitingRoomEquipment: 'Salle d\'attente',
+    waitingRoomEquipment: "Salle d'attente",
     sanitaryEquipment: 'WC',
     generalSign: 'Panneau de transport',
     tags: 'Tags'

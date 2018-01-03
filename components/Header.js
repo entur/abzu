@@ -111,6 +111,10 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleMultimodalEdges(value));
   }
 
+  handleToggleShowPublicCode(value) {
+    this.props.dispatch(UserActions.toggleShowPublicCode(value));
+  }
+
   render() {
     const {
       intl,
@@ -118,7 +122,8 @@ class Header extends React.Component {
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
       showExpiredStops,
-      showMultimodalEdges
+      showMultimodalEdges,
+      showPublicCode
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -137,6 +142,9 @@ class Header extends React.Component {
     const userGuide = formatMessage({ id: 'user_guide' });
     const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
     const showMultimodalEdgesLabel = formatMessage({id: 'show_multimodal_edges'});
+    const showPublicCodeLabel = formatMessage({id: 'show_public_code'});
+    const showPrivateCodeLabel = formatMessage({id: 'show_private_code'});
+    const quayCodeShowingLabel = formatMessage({id: 'quay_marker_label'});
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();
@@ -232,6 +240,27 @@ class Header extends React.Component {
                     multiple
                     checked={showMultimodalEdges}
                     primaryText={showMultimodalEdgesLabel}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    primaryText={quayCodeShowingLabel}
+                    rightIcon={<ArrowDropRight />}
+                    insetChildren
+                    menuItems={[
+                      <MenuItem
+                        style={{ fontSize: 12, padding: 0 }}
+                        onClick={() => this.handleToggleShowPublicCode(true)}
+                        insetChildren
+                        primaryText={showPublicCodeLabel}
+                        checked={showPublicCode}
+                      />,
+                      <MenuItem
+                        style={{ fontSize: 12, padding: 0 }}
+                        onClick={() => this.handleToggleShowPublicCode(false)}
+                        insetChildren
+                        primaryText={showPrivateCodeLabel}
+                        checked={!showPublicCode}
+                      />]}
                   />
                 ]}
               />
@@ -304,14 +333,15 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  kc: state.roles.kc,
-  isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
-  stopHasBeenModified: state.stopPlace.stopHasBeenModified,
-  showExpiredStops: state.stopPlace.showExpiredStops,
-  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
   isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
+  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
+  isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
+  kc: state.roles.kc,
+  showExpiredStops: state.stopPlace.showExpiredStops,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
+  showPublicCode: state.user.showPublicCode,
+  stopHasBeenModified: state.stopPlace.stopHasBeenModified,
 });
 
 export default connect(mapStateToProps)(Header);

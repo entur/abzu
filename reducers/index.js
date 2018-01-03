@@ -19,3 +19,4 @@ export stopPlaceReducer from './stopPlaceReducer';
 export reportReducer from './reportReducer';
 export rolesReducer from './rolesReducer';
 export snackbarReducer from './snackbarReducer';
+export groupOfStopPlaceReducer from './groupOfStopPlacesReducer';

@@ -73,9 +73,10 @@ export const getStateByOperation = (state, action) => {
 
     case 'findStop':
       return Object.assign({}, state, {
-        searchResults: formatHelpers.mapSearchResultatToClientStops(
-          action.result.data.stopPlace
-        )
+        searchResults: [
+          ...formatHelpers.mapSearchResultToStopPlaces(action.result.data.stopPlace),
+          ...formatHelpers.mapSearchResultatGroup(action.result.data.groupOfStopPlaces)
+          ]
       });
 
     case 'mutateParking':
@@ -103,6 +104,10 @@ export const getStateByOperation = (state, action) => {
       return Object.assign({}, state, {
         topographicalPlaces: action.result.data.topographicPlace
       });
+
+    case 'getGroupOfStopPlaces':
+      // TODO: Consider how this best should be kept in state
+      return state;
 
     default:
       return state;

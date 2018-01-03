@@ -22,6 +22,7 @@ import userReducer from '../reducers/userReducer';
 import rolesReducer from '../reducers/rolesReducer';
 import reportReducer from '../reducers/reportReducer';
 import snackbarReducer from '../reducers/snackbarReducer';
+import groupOfStopPlacesReducer from '../reducers/groupOfStopPlacesReducer';
 import { routerReducer } from 'react-router-redux';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
@@ -51,6 +52,12 @@ export default function configureStore(kc) {
 
         const token = localStorage.getItem('ABZU::jwt');
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
+        req.options.headers['ET-Client-Name'] = 'abzu';
+
+        if (window.config.hostname) {
+          req.options.headers['ET-Client-Id'] = window.config.hostname;
+        }
+
         next();
       }
     }
@@ -135,7 +142,8 @@ export default function configureStore(kc) {
         open: false,
         stopPlaceId: null
       },
-      client
+      client,
+      showPublicCode: Settings.getShowPublicCode()
     },
     roles: {
       kc,
@@ -151,7 +159,8 @@ export default function configureStore(kc) {
     report: reportReducer,
     apollo: client.reducer(),
     roles: rolesReducer,
-    snackbar: snackbarReducer
+    snackbar: snackbarReducer,
+    stopPlacesGroup: groupOfStopPlacesReducer
   });
 
   return {

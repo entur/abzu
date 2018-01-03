@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Model: map format from server to expected client model should map GraphQL response to client model for StopPlace 1`] = `
+Object {
+  "accessibilityAssessment": Object {
+    "limitations": Object {
+      "audibleSignalsAvailable": "UNKNOWN",
+      "escalatorFreeAccess": "UNKNOWN",
+      "liftFreeAccess": "UNKNOWN",
+      "stepFreeAccess": "UNKNOWN",
+      "wheelchairAccess": "UNKNOWN",
+    },
+  },
+  "alternativeNames": Array [],
+  "belongsToGroup": false,
+  "entityType": "STOP_PLACE",
+  "entrances": Array [],
+  "groups": Array [],
+  "hasExpired": false,
+  "id": "NSR:StopPlace:933",
+  "importedId": Array [],
+  "isActive": true,
+  "isFuture": false,
+  "keyValues": Array [],
+  "location": Array [
+    60.260427,
+    5.435734,
+  ],
+  "name": "Aspestrand",
+  "parentTopographicPlace": "Østfold",
+  "parking": Array [],
+  "pathJunctions": Array [],
+  "quays": Array [
+    Object {
+      "accessibilityAssessment": Object {
+        "limitations": Object {
+          "audibleSignalsAvailable": "UNKNOWN",
+          "escalatorFreeAccess": "UNKNOWN",
+          "liftFreeAccess": "UNKNOWN",
+          "stepFreeAccess": "UNKNOWN",
+          "wheelchairAccess": "UNKNOWN",
+        },
+      },
+      "compassBearing": 344,
+      "description": "",
+      "id": "NSR:Quay:1694",
+      "importedId": Array [],
+      "keyValues": Array [],
+      "location": Array [
+        60.260427,
+        5.435734,
+      ],
+      "publicCode": "1",
+    },
+    Object {
+      "accessibilityAssessment": Object {
+        "limitations": Object {
+          "audibleSignalsAvailable": "UNKNOWN",
+          "escalatorFreeAccess": "UNKNOWN",
+          "liftFreeAccess": "UNKNOWN",
+          "stepFreeAccess": "UNKNOWN",
+          "wheelchairAccess": "UNKNOWN",
+        },
+      },
+      "compassBearing": 164,
+      "description": "",
+      "id": "NSR:Quay:1695",
+      "importedId": Array [],
+      "keyValues": Array [],
+      "location": Array [
+        60.260427,
+        5.435734,
+      ],
+      "publicCode": "2",
+    },
+  ],
+  "stopPlaceType": "onstreetBus",
+  "submode": null,
+  "tags": Array [],
+  "tariffZones": Array [],
+  "topographicPlace": "Aremark",
+  "transportMode": null,
+  "validBetween": Object {
+    "fromDate": "2017-05-26T14:52:10.096+0200",
+    "toDate": null,
+  },
+  "version": 1,
+  "weighting": null,
+}
+`;
+
+exports[`Model: map format from server to expected client model should map client stop to schema correctly 1`] = `
+Object {
+  "accessibilityAssessment": Object {
+    "limitations": Object {
+      "audibleSignalsAvailable": "UNKNOWN",
+      "escalatorFreeAccess": "UNKNOWN",
+      "liftFreeAccess": "UNKNOWN",
+      "stepFreeAccess": "UNKNOWN",
+      "wheelchairAccess": "UNKNOWN",
+    },
+  },
+  "alternativeNames": Array [],
+  "coordinates": Array [
+    Array [
+      11.170963,
+      59.587427,
+    ],
+  ],
+  "description": "Beskrivelse",
+  "id": "NSR:StopPlace:19744",
+  "keyValues": Array [],
+  "name": "Aspelundsveien",
+  "placeEquipments": undefined,
+  "quays": Array [
+    Object {
+      "accessibilityAssessment": undefined,
+      "compassBearing": 212,
+      "description": Object {
+        "lang": "nor",
+        "value": "",
+      },
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            11.17094,
+            59.587486,
+          ],
+        ],
+        "type": "Point",
+      },
+      "id": "NSR:Quay:30025",
+      "keyValues": Array [],
+      "placeEquipments": undefined,
+      "privateCode": Object {
+        "value": "",
+      },
+      "publicCode": null,
+    },
+    Object {
+      "accessibilityAssessment": undefined,
+      "compassBearing": 38,
+      "description": Object {
+        "lang": "nor",
+        "value": "",
+      },
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            11.170986,
+            59.587368,
+          ],
+        ],
+        "type": "Point",
+      },
+      "id": "NSR:Quay:30026",
+      "keyValues": Array [],
+      "placeEquipments": undefined,
+      "privateCode": Object {
+        "value": "",
+      },
+      "publicCode": null,
+    },
+  ],
+  "stopPlaceType": "onstreetBus",
+  "submode": null,
+  "tariffZones": Array [],
+  "transportMode": null,
+  "weighting": null,
+}
+`;
+
+exports[`Model: map format from server to expected client model should map parking to schema validated query variables 1`] = `
+Array [
+  Object {
+    "geometry": Object {
+      "coordinates": Array [
+        Array [
+          11.088595,
+          63.207698,
+        ],
+      ],
+      "type": "Point",
+    },
+    "name": Object {
+      "lang": "nor",
+      "value": "park&ride example",
+    },
+    "parentSiteRef": "NSR:StopPlace:1",
+    "parkingVehicleTypes": Array [
+      "car",
+    ],
+    "totalCapacity": 100,
+    "validBetween": null,
+  },
+]
+`;

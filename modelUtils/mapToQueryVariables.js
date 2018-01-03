@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import moment from 'moment';
+
+import moment from 'moment';
 import { defaultLimitations } from '../models/Limitations';
 
 const helpers = {};
@@ -30,7 +31,7 @@ helpers.mapQuayToVariables = quay => {
     placeEquipments: quay.placeEquipments,
     description: {
       value: quay.description,
-      lang: 'no'
+      lang: 'nor'
     }
   };
 
@@ -56,6 +57,17 @@ helpers.getFullUTCString = (time, date) => {
       'YYYY-MM-DDTHH:mm:ss.SSS'
     ).toString() + 'Z'
   );
+};
+
+helpers.mapGroupOfStopPlaceToVariables = groupOfStopPlace => {
+  return ({
+    id: groupOfStopPlace.id,
+    name: createEmbeddableMultilingualString(groupOfStopPlace.name),
+    description: createEmbeddableMultilingualString(groupOfStopPlace.description),
+    members: groupOfStopPlace.members.map(member => ({
+      ref: member.id
+    }))
+  });
 };
 
 helpers.mapChildStopToVariables = (original, userInput) => {
@@ -135,7 +147,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
 
 const createEmbeddableMultilingualString = string => ({
   value: string || '',
-  lang: 'no'
+  lang: 'nor'
 });
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
@@ -148,7 +160,7 @@ helpers.mapDeepStopToVariables = original => {
     stopPlace.geometry = {
       coordinates: stopPlace.coordinates.slice(),
       type: 'Point'
-    }
+    };
     delete stopPlace.coordinates;
   }
   return stopPlace;
@@ -171,7 +183,10 @@ helpers.mapStopToVariables = (original, userInput) => {
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,
-    transportMode: stop.transportMode
+    transportMode: stop.transportMode,
+    tariffZones: stop.tariffZones.map(tz => ({
+      ref: tz.id
+    }))
   };
 
   if (userInput) {
@@ -245,7 +260,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     parking.name = {
       value: source.name,
-      lang: 'nb'
+      lang: 'nor'
     };
 
     if (source.location) {

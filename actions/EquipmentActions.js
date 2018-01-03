@@ -12,22 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from './Types';
 
-var EqupmentActions = {};
+import * as types from './Types';
+import { createThunk } from './';
 
-const sendData = (type, payLoad) => ({
-  type: type,
-  payLoad: payLoad,
-});
+var EquipmentActions = {};
 
-EqupmentActions.updateTicketMachineState = (
+
+EquipmentActions.updateTicketMachineState = (
   state,
   entityType,
   id,
 ) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_TICKET_MACHINE_STATE, {
+    createThunk(types.CHANGED_TICKET_MACHINE_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -35,13 +33,13 @@ EqupmentActions.updateTicketMachineState = (
   );
 };
 
-EqupmentActions.updateShelterEquipmentState = (
+EquipmentActions.updateShelterEquipmentState = (
   state,
   entityType,
   id,
 ) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_SHELTER_EQUIPMENT_STATE, {
+    createThunk(types.CHANGED_SHELTER_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -49,9 +47,9 @@ EqupmentActions.updateShelterEquipmentState = (
   );
 };
 
-EqupmentActions.updateSanitaryState = (state, entityType, id) => dispatch => {
+EquipmentActions.updateSanitaryState = (state, entityType, id) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
+    createThunk(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -59,13 +57,13 @@ EqupmentActions.updateSanitaryState = (state, entityType, id) => dispatch => {
   );
 };
 
-EqupmentActions.updateWaitingRoomState = (
+EquipmentActions.updateWaitingRoomState = (
   state,
   entityType,
   id,
 ) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_WAITING_ROOM_STATE, {
+    createThunk(types.CHANGED_WAITING_ROOM_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -73,13 +71,13 @@ EqupmentActions.updateWaitingRoomState = (
   );
 };
 
-EqupmentActions.updateCycleStorageState = (
+EquipmentActions.updateCycleStorageState = (
   state,
   entityType,
   id,
 ) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_CYCLE_STORAGE_STATE, {
+    createThunk(types.CHANGED_CYCLE_STORAGE_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -87,9 +85,9 @@ EqupmentActions.updateCycleStorageState = (
   );
 };
 
-EqupmentActions.update512SignState = (state, entityType, id) => dispatch => {
+EquipmentActions.update512SignState = (state, entityType, id) => dispatch => {
   dispatch(
-    sendData(types.CHANGED_TRANSPORT_SIGN_STATE, {
+    createThunk(types.CHANGED_TRANSPORT_SIGN_STATE, {
       state: state,
       type: entityType,
       id: id,
@@ -97,4 +95,4 @@ EqupmentActions.update512SignState = (state, entityType, id) => dispatch => {
   );
 };
 
-export default EqupmentActions;
+export default EquipmentActions;

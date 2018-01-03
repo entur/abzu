@@ -12,14 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-let instance = null;
+
+let instance = null;
+
 const rootKey = 'ABZU::settings';
 const showExpiredKey = rootKey + '::showExpiredStops';
 const showPathLinksKey = rootKey + '::pathLinks';
 const showCompassBearingKey = rootKey + '::showCompassBearing';
 const showMultimodalEdges = rootKey + '::showMultimodalEdges';
 const mapLayerKey = rootKey + '::mapLayer';
-
+const showPublicCodeKey = rootKey + '::showPublicCode';
 
 class SettingsManager {
   constructor() {
@@ -32,6 +34,7 @@ class SettingsManager {
   parseBoolean(value, defaultValue) {
     if (value === 'true') return true;
     if (value === 'false') return false;
+
     return defaultValue;
   }
 
@@ -73,6 +76,14 @@ class SettingsManager {
 
   setMapLayer(value) {
     localStorage.setItem(mapLayerKey, value);
+  }
+
+  getShowPublicCode() {
+    return this.parseBoolean(localStorage.getItem(showPublicCodeKey), true);
+  }
+
+  setShowPublicCode(value) {
+    localStorage.setItem(showPublicCodeKey, value);
   }
 
 }

@@ -26,6 +26,7 @@ import { GoogleLayer } from 'react-leaflet-google';
 import MultiPolylineList from './PathLink';
 import WMTSLayer from './WMTSLayer';
 import MultimodalStopEdges from './MultimodalStopEdges';
+import StopPlaceGroupList from './StopPlaceGroupList';
 
 export default class LeafLetMap extends React.Component {
   getCheckedBaseLayerByValue(value) {
@@ -166,7 +167,7 @@ export default class LeafLetMap extends React.Component {
         <ZoomControl position="bottomright" />
         <MarkerList
           changeCoordinates={handleChangeCoordinates}
-          stops={markers}
+          markers={markers}
           handleDragEnd={handleDragEnd}
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
@@ -175,6 +176,7 @@ export default class LeafLetMap extends React.Component {
           stops={markers}
         />
         <MultiPolylineList/>
+        <StopPlaceGroupList/>
       </Lmap>
     );
   }

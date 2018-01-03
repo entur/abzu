@@ -16,8 +16,9 @@ limitations under the Licence. */
 import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
-import { hasExpired } from '../modelUtils/validBetween';
+import { hasExpired, isFuture } from '../modelUtils/validBetween';
 import StopPlace from './StopPlace';
+import { Entities } from './Entities';
 
 class ParentStopPlace {
 
@@ -44,6 +45,7 @@ class ParentStopPlace {
       tags: [],
       children: [childToAdd],
       versions: [],
+      entityType: Entities.STOP_PLACE
     };
 
     if (child.geometry && child.geometry.coordinates) {
@@ -64,15 +66,17 @@ class ParentStopPlace {
       const { stop, isActive, userDefinedCoordinates } = this;
 
       let clientStop = {
-        id: stop.id,
-        name: stop.name ? stop.name.value : '',
         alternativeNames: extractAlternativeNames(stop.alternativeNames),
-        isActive: isActive,
-        weighting: stop.weighting,
-        version: stop.version,
+        entityType: Entities.STOP_PLACE,
         hasExpired: hasExpired(stop.validBetween),
+        isFuture: isFuture(stop.validBetween),
+        id: stop.id,
+        isActive: isActive,
         isParent: true,
+        name: stop.name ? stop.name.value : '',
         tags: stop.tags,
+        version: stop.version,
+        weighting: stop.weighting,
       };
 
       if (stop.topographicPlace) {
@@ -90,6 +94,19 @@ class ParentStopPlace {
 
       if (stop.validBetween) {
         clientStop.validBetween = stop.validBetween;
+      }
+
+      if (stop.groups && stop.groups.length) {
+        clientStop.groups = stop.groups.map(group => {
+          let newGroup = {...group};
+          newGroup.name = group.name && group.name.value
+            ? group.name.value : '';
+          return newGroup;
+        });
+        clientStop.belongsToGroup = true;
+      } else {
+        clientStop.groups = [];
+        clientStop.belongsToGroup = false;
       }
 
       if (stop.tariffZones && stop.tariffZones.length) {
@@ -119,7 +136,7 @@ class ParentStopPlace {
 
       if (stop.geometry && stop.geometry.coordinates) {
         let coordinates = stop.geometry.coordinates[0].slice();
-        // Leaflet uses latLng, GeoJSON [long,lat]
+        // Leaflet uses latLng, GeoJSON is [long,lat]
         clientStop.location = [
           setDecimalPrecision(coordinates[1], 6),
           setDecimalPrecision(coordinates[0], 6),
@@ -136,17 +153,34 @@ class ParentStopPlace {
       }
 
       if (stop.children) {
+
         clientStop.children = stop.children
           .map(item => {
+
             let child = new StopPlace(item, isActive).toClient();
+
             if (!child.name) {
               child.name = clientStop.name;
             }
-            return child;
-          })
-      }
 
+            if (!child.topographicPlace) {
+              child.topographicPlace = clientStop.topographicPlace;
+            }
+
+            if (!child.parentTopographicPlace) {
+              child.parentTopographicPlace = clientStop.parentTopographicPlace;
+            }
+
+            child.validBetween = clientStop.validBetween;
+            child.isFuture = isFuture(clientStop.validBetween);
+            child.hasExpired = hasExpired(clientStop.validBetween);
+            child.isChildOfParent = true;
+
+            return child;
+          });
+      }
       return clientStop;
+
     } catch (e) {
       console.log('error', e);
     }

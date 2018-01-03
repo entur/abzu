@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Group of stop places - models should retrive a unique list of topographic places for members of a group 1`] = `
+Array [
+  Object {
+    "parentTopographicPlace": "Buskerud",
+    "topographicPlace": "Hurum",
+  },
+]
+`;

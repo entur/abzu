@@ -12,11 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
+
+import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
-import { hasExpired } from '../modelUtils/validBetween';
+import { hasExpired, isFuture } from '../modelUtils/validBetween';
 import Quay from './Quay';
+import { Entities } from './Entities';
 
 class StopPlace {
 
@@ -34,18 +36,33 @@ class StopPlace {
       const { stop, isActive, parking, userDefinedCoordinates } = this;
 
       let clientStop = {
-        id: stop.id,
-        name: stop.name ? stop.name.value : '',
         alternativeNames: extractAlternativeNames(stop.alternativeNames),
-        stopPlaceType: stop.stopPlaceType,
-        isActive: isActive,
-        weighting: stop.weighting,
-        version: stop.version,
         hasExpired: hasExpired(stop.validBetween),
-        transportMode: stop.transportMode,
+        isFuture: isFuture(stop.validBetween),
+        id: stop.id,
+        isActive: isActive,
+        name: stop.name ? stop.name.value : '',
+        stopPlaceType: stop.stopPlaceType,
         submode: stop.submode,
-        tags: stop.tags
+        tags: stop.tags,
+        transportMode: stop.transportMode,
+        version: stop.version,
+        weighting: stop.weighting,
+        entityType: Entities.STOP_PLACE,
       };
+
+      if (stop.groups && stop.groups.length) {
+        clientStop.groups = stop.groups.map(group => {
+          let newGroup = {...group};
+          newGroup.name = group.name && group.name.value
+            ? group.name.value : '';
+          return newGroup;
+        });
+        clientStop.belongsToGroup = true;
+      } else {
+        clientStop.groups = [];
+        clientStop.belongsToGroup = false;
+      }
 
       if (stop.topographicPlace) {
         if (stop.topographicPlace.name) {

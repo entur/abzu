@@ -12,7 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export StopPlaceActions from './StopPlaceActions';
+
+export StopPlaceActions from './StopPlaceActions';
 export UserActions from './UserActions';
 export AssessmentActions from './AssessmentActions';
 export EquipmentActions from './EquipmentActions';
+export StopPlacesGroupActions from './StopPlacesGroupActions';
+
+export const createThunk = (type, payLoad) => ({
+  type,
+  payLoad,
+});

@@ -32,8 +32,8 @@ class QuayMarker extends React.Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
     id: PropTypes.string,
-    parentId: PropTypes.number.isRequired,
-    parentStopPlaceName: PropTypes.string.isRequired,
+    stopPlaceId: PropTypes.string,
+    stopPlaceName: PropTypes.string.isRequired,
     position: PropTypes.arrayOf(Number),
     publicCode: PropTypes.string.isRequired,
     privateCode: PropTypes.string.isRequired,
@@ -92,7 +92,8 @@ class QuayMarker extends React.Component {
       UserActions.moveQuayToNewStopPlace({
         id: this.props.id,
         privateCode: this.props.privateCode,
-        publicCode: this.props.publicCode
+        publicCode: this.props.publicCode,
+        stopPlaceId: this.props.stopPlaceId
       })
     );
   }
@@ -179,7 +180,7 @@ class QuayMarker extends React.Component {
       publicCode,
       index,
       handleQuayDragEnd,
-      parentStopPlaceName,
+      stopPlaceName,
       formattedStopType,
       handleUpdatePathLink,
       translations,
@@ -192,11 +193,13 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
+      showPublicCode
     } = this.props;
 
     if (!position) return null;
 
     let isIncomplete = false;
+
 
     let pathLinkText = isCreatingPolylines
       ? translations.terminatePathLinkHere
@@ -220,12 +223,13 @@ class QuayMarker extends React.Component {
       }
     }
 
+    const displayCode = showPublicCode ? publicCode : privateCode;
+
     const divBody = ReactDOM.renderToStaticMarkup(
       <QuayMarkerIcon
         isEditingStop={isEditingStop}
         index={index}
-        publicCode={publicCode}
-        privateCode={privateCode}
+        displayCode={displayCode}
         focusedElement={this.props.focusedElement}
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
@@ -264,7 +268,7 @@ class QuayMarker extends React.Component {
         >
           <div>
             <span className="quay-marker-title">
-              {parentStopPlaceName}
+              {stopPlaceName}
             </span>
             <div
               className="quay-marker-title"
@@ -385,7 +389,7 @@ class QuayMarker extends React.Component {
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
-                        onClick={() => this.handleMoveQuayToNewStop()}
+                        onClick={this.handleMoveQuayToNewStop.bind(this)}
                       >
                         {translations.moveQuaysToNewStop}
                       </span>
@@ -428,6 +432,7 @@ class QuayMarker extends React.Component {
 
 const mapStateToProps = state => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+  showPublicCode: state.user.showPublicCode,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   focusedElement: state.mapUtils.focusedElement,
   mergingQuay: state.mapUtils.mergingQuay,

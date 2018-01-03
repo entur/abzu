@@ -26,9 +26,11 @@ import {
 import Quay from '../models/Quay';
 import StopPlace from '../models/StopPlace';
 import ParentStopPlace from '../models/ParentStopPlace';
+import GroupOfStopPlaces from '../models/GroupOfStopPlaces';
 import PathLink from '../models/PathLink';
 import Parking from '../models/Parking';
 import ChildOfParentStopPlace from '../models/ChildOfParentStopPlace';
+import { Entities } from '../models/Entities';
 
 const helpers = {};
 
@@ -269,8 +271,8 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
   return allStops.concat(extractedChildren);
 };
 
-helpers.mapSearchResultatToClientStops = stops => {
-  return stops.map(stop => {
+helpers.mapSearchResultToStopPlaces = stopPlaces => {
+  return stopPlaces.map(stop => {
     if (stop.__typename === 'StopPlace') {
       return helpers.mapSearchResultStopPlace(stop);
     } else if (stop.__typename === 'ParentStopPlace') {
@@ -280,80 +282,75 @@ helpers.mapSearchResultatToClientStops = stops => {
 };
 
 helpers.mapSearchResultStopPlace = stop => {
-  let parentTopographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    ''
-  );
-  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
+  let searchResult = new StopPlace(stop, true).toClient();
+  searchResult.quays = stop.quays;
+  return searchResult;
+};
 
-  const clientStop = {
-    isParent: false,
-    id: stop.id,
-    name: stop.name ? stop.name.value : '',
-    isMissingLocation: !stop.geometry,
-    stopPlaceType: stop.stopPlaceType,
-    submode: stop.submode,
-    transportMode: stop.transportMode,
-    topographicPlace: topographicPlace,
-    parentTopographicPlace: parentTopographicPlace,
-    isActive: false,
-    quays: stop.quays,
-    importedId: getImportedId(stop.keyValues),
-    accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
-    validBetween: stop.validBetween,
-    tags: stop.tags
-  };
-
-  if (stop.geometry && stop.geometry.coordinates) {
-    let coordinates = stop.geometry.coordinates[0].slice();
-    clientStop.location = [
-      setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6)
-    ];
-  }
-  return clientStop;
+helpers.mapSearchResultatGroup = groupsOfStopPlaces => {
+  return groupsOfStopPlaces.map(group => (
+    new GroupOfStopPlaces(group).toClient()
+  ));
 };
 
 helpers.mapSearchResultParentStopPlace = stop => {
-  let parentTopographicPlace = getIn(
-    stop,
-    ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-    ''
-  );
-  let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
+  try {
+    // TODO: Refactor this to work with model class ParentStopPlace
+    let parentTopographicPlace = getIn(
+      stop,
+      ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
+      ''
+    );
+    let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
 
-  let clientParentStop = {
-    isParent: true,
-    id: stop.id,
-    name: stop.name.value,
-    isMissingLocation: !stop.geometry,
-    stopPlaceType: stop.stopPlaceType,
-    submode: stop.submode,
-    transportMode: stop.transportMode,
-    topographicPlace: topographicPlace,
-    parentTopographicPlace: parentTopographicPlace,
-    isActive: false,
-    children: stop.children
-      .map(childStop => updateObjectWithLocation(childStop))
-      .map(childStop => {
-        let newChildStop = Object.assign({}, childStop);
-        newChildStop.name = newChildStop.name && newChildStop.name.value
-          ? childStop.name.value
-          : stop.name.value;
-        return newChildStop;
-      })
-      .sort((a, b) => b.id.localeCompare(a.id)),
-    importedId: getImportedId(stop.keyValues),
-    accessibilityAssessment: stop.accessibilityAssessment,
-    hasExpired: hasExpired(stop.validBetween),
-    tags: stop.tags,
-    geometry: stop.geometry
-  };
+    let clientParentStop = {
+      isParent: true,
+      id: stop.id,
+      name: stop.name.value,
+      isMissingLocation: !stop.geometry,
+      stopPlaceType: stop.stopPlaceType,
+      submode: stop.submode,
+      transportMode: stop.transportMode,
+      topographicPlace: topographicPlace,
+      parentTopographicPlace: parentTopographicPlace,
+      isActive: false,
+      children: stop.children
+        .map(childStop => updateObjectWithLocation(childStop))
+        .map(childStop => {
+          let newChildStop = Object.assign({}, childStop);
+          newChildStop.name = newChildStop.name && newChildStop.name.value
+            ? childStop.name.value
+            : stop.name.value;
+          return newChildStop;
+        })
+        .sort((a, b) => b.id.localeCompare(a.id)),
+      importedId: getImportedId(stop.keyValues),
+      accessibilityAssessment: stop.accessibilityAssessment,
+      hasExpired: hasExpired(stop.validBetween),
+      tags: stop.tags,
+      geometry: stop.geometry,
+      entityType: Entities.STOP_PLACE,
+    };
 
-  clientParentStop = updateObjectWithLocation(clientParentStop);
-  return clientParentStop;
+    if (stop.groups && stop.groups.length) {
+      clientParentStop.groups = stop.groups.map(group => {
+        let newGroup = {...group};
+        newGroup.name = group.name && group.name.value
+          ? group.name.value : '';
+        return newGroup;
+      });
+      clientParentStop.belongsToGroup = true;
+    } else {
+      clientParentStop.groups = [];
+      clientParentStop.belongsToGroup = false;
+    }
+
+    clientParentStop = updateObjectWithLocation(clientParentStop);
+
+    return clientParentStop;
+  } catch (ex) {
+    console.error("Ex", ex);
+  }
 };
 
 const updateObjectWithLocation = stop => {
@@ -369,35 +366,23 @@ const updateObjectWithLocation = stop => {
   return stop;
 };
 
-helpers.mapReportSearchResultsToClientStop = stops => {
+helpers.mapReportSearchResultsToClientStop = data => {
   let result = [];
-
-  const stopPlacesAndParents = stops.map(stop =>
-    helpers.mapStopToClientStop(stop, true, null, null, null)
-  );
-
-  stopPlacesAndParents.map(stopPlace => {
-    if (!stopPlace) return null;
-
-    let modesFromChildren = [];
+  let stops = data.slice();
+  stops.forEach(stop => {
+    let stopPlace = helpers.mapStopToClientStop(stop, true, null, null, null);
+    stopPlace.quays = [];
+    stopPlace.parking = [];
     if (stopPlace.isParent && stopPlace.children) {
-      // map all children to result list
-      const children = stopPlace.children.map(child => {
-        child.name = child.name || stopPlace.name;
-        child.isChildOfParent = true;
-        modesFromChildren.push({
-          submode: child.submode,
-          stopPlaceType: child.stopPlaceType
-        });
-        return child;
-      });
-
-      stopPlace.modesFromChildren = modesFromChildren;
-      stopPlace.quays = [];
-      stopPlace.parking = [];
-      result = result.concat(children);
+      stopPlace.modesFromChildren = stopPlace.children.map(child => ({
+        submode: child.submode,
+        stopPlaceType: child.stopPlaceType
+      }));
+      result = result.concat(stopPlace, stopPlace.children);
+    } else {
+      result = result.concat(stopPlace);
     }
-    result.push(stopPlace);
+    return stopPlace;
   });
   return result;
 };
@@ -873,6 +858,21 @@ helpers.updateCurrentOpenParking = (current, index) => {
   parking.hasExpired = false;
   return Object.assign({}, current, {
     parking: parkingElements
+  });
+};
+
+helpers.addTariffZone = (current, tariffZone) => {
+  return Object.assign({}, current, {
+    tariffZones: current.tariffZones.concat({
+      id: tariffZone.id,
+      name: tariffZone.name.value
+    })
+  });
+};
+
+helpers.removeTariffZone = (current, tariffZoneId) => {
+  return Object.assign({}, current, {
+    tariffZones: current.tariffZones.filter(tz => tz.id !== tariffZoneId)
   });
 };
 

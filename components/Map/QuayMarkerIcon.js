@@ -59,8 +59,8 @@ class QuayMarkerIcon extends React.Component {
   }
 
   render() {
-    const { publicCode, compassBearing, isCompassBearingEnabled } = this.props;
-    const quayShortName = getShortQuayName(publicCode) || 'N/A';
+    const { displayCode, compassBearing, isCompassBearingEnabled } = this.props;
+    const quayShortName = getShortQuayName(displayCode) || 'N/A';
     const nameLen = quayShortName.length;
 
     const quayStyle = {

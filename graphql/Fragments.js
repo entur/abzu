@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import gql from 'graphql-tag';
+
+import gql from 'graphql-tag';
 
 const Fragments = {};
 
@@ -28,7 +29,63 @@ Fragments.accessibilityAssessment = {
           }
       }
   `
-}
+};
+
+Fragments.groupOfStopPlaces = {
+  verbose: gql`
+      fragment GroupOfStopPlaces on GroupOfStopPlaces {
+          id
+          members {
+              __typename
+              id
+              name {
+                  value
+              }
+              description {
+                  value
+              }
+              geometry {
+                  coordinates
+                  type
+              }
+              ...on StopPlace {
+                  stopPlaceType
+                  submode
+                  quays {
+                      id
+                      privateCode { value }
+                      publicCode
+                      geometry {
+                          coordinates
+                          type
+                      }
+                  }
+              }
+              ...on ParentStopPlace {
+                  id
+                  children {
+                      id
+                      stopPlaceType
+                      submode
+                      geometry {
+                          coordinates
+                          type
+                      }
+                      name {
+                          value
+                      }
+                  }
+              }
+          }
+          name {
+              value
+          }
+          description {
+              value
+          }
+      }
+  `
+};
 
 Fragments.placeEquipments = {
   verbose: gql`
@@ -123,6 +180,12 @@ Fragments.stopPlace = {
         }
         quays {
             ...VerboseQuay
+        }
+        groups {
+            id
+            name {
+                value
+            }
         }
         tags {
             name
@@ -266,6 +329,12 @@ Fragments.parentStopPlace = {
           description {
               value
           }
+          groups {
+              id
+              name {
+                  value
+              }
+          }
           children {
               ...VerboseStopPlace
           }
@@ -319,6 +388,10 @@ Fragments.parentStopPlace = {
         }
         geometry {
             coordinates
+        }
+        validBetween {
+            fromDate
+            toDate
         }
         children {
             ...ReportStopPlace
@@ -388,5 +461,6 @@ Fragments.parking = {
       }
     `
 };
+
 
 export default Fragments;

@@ -13,16 +13,16 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-import React, { Component } from 'react';
-import { getIn } from '../../utils/';
-import HasExpiredInfo from './HasExpiredInfo';
+import BelongsToGroup from './BelongsToGroup';
 import CircularNumber from './CircularNumber';
-import WheelChair from 'material-ui/svg-icons/action/accessible';
+import HasExpiredInfo from './HasExpiredInfo';
 import ModalityTray from '../ReportPage/ModalityIconTray';
-import TagTray from './TagTray';
+import React, { Component } from 'react';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
+import TagTray from './TagTray';
+import WheelChair from 'material-ui/svg-icons/action/accessible';
+import { getIn } from '../../utils/';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
-
 
 class ParentStopPlaceResultInfo extends Component {
   render() {
@@ -66,6 +66,11 @@ class ParentStopPlaceResultInfo extends Component {
             <div style={{marginRight: 5}}>{formatMessage({id: 'multimodal'})}</div>
           </div>
           <div style={{ fontSize: 14, marginLeft: 5 }}>{result.id}</div>
+        </div>
+        <div style={{marginLeft: 5}}>
+          {result.belongsToGroup && (
+            <BelongsToGroup formatMessage={formatMessage} groups={result.groups}/>
+          )}
         </div>
         <div style={{ display: 'block', fontSize: 10, marginLeft: 5 }}>
           <span style={{ fontWeight: 600 }}>

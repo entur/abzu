@@ -12,9 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { isModeOptionsValidForMode, getRoleOptions } from '../../roles/rolesParser';
-import { getAllowanceInfoForStop , getLatLngFromResult, getLegalStopPlaceTypes, getLegalSubmodes } from '../../reducers/rolesReducerUtils';
+import {
+  isModeOptionsValidForMode,
+  getRoleOptions,
+  doesStopTypeAllowEdit
+} from '../../roles/rolesParser';
+import {
+  getAllowanceInfoForStop,
+  getLatLng,
+  getLegalStopPlaceTypes,
+  getLegalSubmodes,
+  getStopPlace
+} from '../../reducers/rolesReducerUtils';
 import stopTypes, { submodes } from '../../models/stopTypes';
 import mockRailReplacementStop from '../mock/mockRailReplacementStop';
 import mockBusStop from '../mock/mockBusStop';
@@ -26,12 +35,7 @@ const stopPlaceResult = {
     stopPlace: [
       {
         geometry: {
-          coordinates: [
-            [
-              10.434486,
-              59.833343
-            ]
-          ]
+          coordinates: [[10.434486, 59.833343]]
         }
       }
     ]
@@ -39,346 +43,264 @@ const stopPlaceResult = {
 };
 
 describe('getAllowanceInfo', () => {
-
-
   test('should get latlng from stopPlaceResult', () => {
-    let latlng = getLatLngFromResult(stopPlaceResult);
+    const stopPlace = getStopPlace(stopPlaceResult);
+    const latlng = getLatLng(stopPlace);
+
     expect(latlng).toEqual([59.833343, 10.434486]);
-  })
+  });
 
   test('should get legal submode types when *', () => {
-
     let roles = [
       {
-        "r": "editStops",
-        "o": "OST",
-        "z": "01",
-        "e": {
-          "EntityType": [
-            "StopPlace"
-          ],
-          "Submode": [
-            "*",
-          ],
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          Submode: ['*']
         }
       }
     ];
 
     let legalSubmodes = getLegalSubmodes(roles);
     expect(legalSubmodes).toEqual(submodes);
-  })
+  });
 
   test('should get legal submode types when whitelisted', () => {
-
     let roles = [
       {
-        "r": "editStops",
-        "o": "OST",
-        "z": "01",
-        "e": {
-          "EntityType": [
-            "StopPlace"
-          ],
-          "Submode": [
-            "railReplacementBus",
-          ],
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          Submode: ['railReplacementBus']
         }
       }
     ];
 
     let legalSubmodes = getLegalSubmodes(roles);
-    expect(legalSubmodes).toEqual([
-      "railReplacementBus"
-    ]);
+    expect(legalSubmodes).toEqual(['railReplacementBus']);
   });
 
   test('should be able to edit railReplacementBus stop', () => {
-
     let token = {
       roles: [
         JSON.stringify({
-          "r": "editStops",
-          "o": "OST",
-          "z": "01",
-          "e": {
-            "EntityType": [
-              "StopPlace"
-            ],
-            "Submode": [
-              "railReplacementBus",
-            ],
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            Submode: ['railReplacementBus']
           }
         })
-        ]
+      ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    const allowanceInfo = getAllowanceInfoForStop(
+      mockRailReplacementStop,
+      token
+    );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 
+  test('should be able to edit railReplacementBus stop with only submode in role', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            Submode: ['railReplacementBus']
+          }
+        })
+      ]
+    };
 
-  test(
-    'should be able to edit railReplacementBus stop with only submode in role',
-    () => {
+    const allowanceInfo = getAllowanceInfoForStop(
+      mockRailReplacementStop,
+      token
+    );
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
 
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-              "Submode": [
-                "railReplacementBus",
-              ],
-            }
-          })
-        ]
-      };
+  test('should be able to edit railReplacementBus even if is stopPLaceType is not set in role', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            Submode: ['railReplacementBus']
+          }
+        })
+      ]
+    };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
-      expect(allowanceInfo.canEdit).toEqual(true);
-    }
-  );
+    const allowanceInfo = getAllowanceInfoForStop(
+      mockRailReplacementStop,
+      token
+    );
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
 
+  test('should not be able to edit trainStop if submode stopPlaceType is not set and submode is railReplacementBus', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            Submode: ['railReplacementBus']
+          }
+        })
+      ]
+    };
 
-  test(
-    'should be able to edit railReplacementBus even if is stopPLaceType is not set in role',
-    () => {
+    const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+    expect(allowanceInfo.canEdit).toEqual(false);
+  });
 
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-              "Submode": [
-                "railReplacementBus",
-              ],
-            }
-          })
-        ]
-      };
+  test('should not be able to edit stop without submode railReplacementBus if is relevant for stopPlace', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            Submode: ['railReplacementBus']
+          }
+        })
+      ]
+    };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
-      expect(allowanceInfo.canEdit).toEqual(true);
-    }
-  );
+    const allowanceInfo = getAllowanceInfoForStop(mockBusStop, token);
+    expect(allowanceInfo.canEdit).toEqual(false);
+  });
 
+  test('should be able to edit stop if stopPlace type is not set and StopPlaceType is *', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace'],
+            StopPlaceType: ['*']
+          }
+        })
+      ]
+    };
 
-  test(
-    'should not be able to edit trainStop if submode stopPlaceType is not set and submode is railReplacementBus',
-    () => {
+    const allowanceInfo = getAllowanceInfoForStop(
+      stopWithoutStopPlaceType,
+      token
+    );
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
 
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-              "Submode": [
-                "railReplacementBus",
-              ],
-            }
-          })
-        ]
-      };
+  test('should be able to edit stop if stopPlace type is not set and StopPlaceType is not defined', () => {
+    let token = {
+      roles: [
+        JSON.stringify({
+          r: 'editStops',
+          o: 'OST',
+          z: '01',
+          e: {
+            EntityType: ['StopPlace']
+          }
+        })
+      ]
+    };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
-      expect(allowanceInfo.canEdit).toEqual(false);
-
-    }
-  )
-
-  test(
-    'should not be able to edit stop without submode railReplacementBus if is relevant for stopPlace',
-    () => {
-
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-              "Submode": [
-                "railReplacementBus",
-              ],
-            }
-          })
-        ]
-      };
-
-      const allowanceInfo = getAllowanceInfoForStop(mockBusStop, token);
-      expect(allowanceInfo.canEdit).toEqual(false);
-    }
-  );
-
-  test(
-    'should be able to edit stop if stopPlace type is not set and StopPlaceType is *',
-    () => {
-
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-              "StopPlaceType": [
-                "*",
-              ],
-            }
-          })
-        ]
-      };
-
-      const allowanceInfo = getAllowanceInfoForStop(stopWithoutStopPlaceType, token);
-      expect(allowanceInfo.canEdit).toEqual(true);
-    }
-  );
-
-  test(
-    'should be able to edit stop if stopPlace type is not set and StopPlaceType is not defined',
-    () => {
-
-      let token = {
-        roles: [
-          JSON.stringify({
-            "r": "editStops",
-            "o": "OST",
-            "z": "01",
-            "e": {
-              "EntityType": [
-                "StopPlace"
-              ],
-            }
-          })
-        ]
-      };
-
-      const allowanceInfo = getAllowanceInfoForStop(stopWithoutStopPlaceType, token);
-      expect(allowanceInfo.canEdit).toEqual(true);
-    }
-  );
+    const allowanceInfo = getAllowanceInfoForStop(
+      stopWithoutStopPlaceType,
+      token
+    );
+    expect(allowanceInfo.canEdit).toEqual(true);
+  });
 
   test('should get legal stopPlace types when blacklisted', () => {
-
     let roles = [
       {
-        "r": "editStops",
-        "o": "OST",
-        "z": "01",
-        "e": {
-          "EntityType": [
-            "StopPlace"
-          ],
-          "StopPlaceType": [
-            "!airport",
-            "!railStation"
-          ],
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          StopPlaceType: ['!airport', '!railStation']
         }
       }
     ];
 
     let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    expect(legalStopPlaceTypes).toEqual(
-      [
-        "onstreetBus",
-        "busStation",
-        "harbourPort",
-        "ferryStop",
-        "onstreetTram",
-        "metroStation",
-        "liftStation"
-      ]
-    );
+    expect(legalStopPlaceTypes).toEqual([
+      'onstreetBus',
+      'busStation',
+      'harbourPort',
+      'ferryStop',
+      'onstreetTram',
+      'metroStation',
+      'liftStation'
+    ]);
   });
-
 
   test('should get legal stopPlace types that are whitelisted', () => {
-
     let roles = [
       {
-        "r": "editStops",
-        "o": "OST",
-        "z": "01",
-        "e": {
-          "EntityType": [
-            "StopPlace"
-          ],
-          "StopPlaceType": [
-            "airport",
-            "railStation"
-          ],
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          StopPlaceType: ['airport', 'railStation']
         }
       }
     ];
 
     let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    expect(legalStopPlaceTypes).toEqual(
-      [
-        "railStation",
-        "airport"
-      ]
-    );
+    expect(legalStopPlaceTypes).toEqual(['railStation', 'airport']);
   });
 
-
   test('should get all stopPlace types when * is used', () => {
-
     let roles = [
       {
-        "r": "editStops",
-        "o": "OST",
-        "z": "01",
-        "e": {
-          "EntityType": [
-            "StopPlace"
-          ],
-          "StopPlaceType": [
-            "*"
-          ],
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          StopPlaceType: ['*']
         }
       }
     ];
 
     let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    let allStopTypes = stopTypes.en.map( type => type.value);
+    let allStopTypes = stopTypes.en.map(type => type.value);
 
     expect(legalStopPlaceTypes).toEqual(allStopTypes);
   });
 
-
   test('should determine whether submode is valid based on options', () => {
-    const listedSubmodes = [
-      "!railReplacementBus"
-    ];
+    const listedSubmodes = ['!railReplacementBus'];
 
     let allSubmodes = [];
 
-    stopTypes.en.map( stopType => {
+    stopTypes.en.map(stopType => {
       if (stopType.submodes) {
-        stopType.submodes.forEach( submode => {
-          if(submode.value)
-            allSubmodes.push(submode.value)
+        stopType.submodes.forEach(submode => {
+          if (submode.value) allSubmodes.push(submode.value);
         });
       }
     });
@@ -387,18 +309,15 @@ describe('getAllowanceInfo', () => {
     let valid1 = isModeOptionsValidForMode(options1, 'sightseeingService');
 
     expect(valid1).toEqual(true);
-  })
+  });
 
   test('should determine whether stopType is valid based on options', () => {
-
-    const listedStopPlaceTypes1 = [
-      "!railStation",
-    ];
+    const listedStopPlaceTypes1 = ['!railStation'];
 
     const listedStopPlaceTypes2 = ['*'];
 
     const listedStopPlaceTypes3 = ['airport', 'ferryStop'];
-    const allStopTypes = stopTypes.en.map( stopType => stopType.value);
+    const allStopTypes = stopTypes.en.map(stopType => stopType.value);
 
     const options1 = getRoleOptions(listedStopPlaceTypes1, allStopTypes);
     const options2 = getRoleOptions(listedStopPlaceTypes2, allStopTypes);
@@ -418,5 +337,74 @@ describe('getAllowanceInfo', () => {
     expect(invalid2).toEqual(false);
   });
 
+  test('should determine whether user is allowed to edit stopPlace based on stopPlaceType and submode', () => {
+    let roles = [
+      {
+        r: 'editStops',
+        o: 'OST',
+        z: '01',
+        e: {
+          EntityType: ['StopPlace'],
+          Submode: ['!railReplacementBus'],
+          StopPlaceType: ['!airport', '!railStation']
+        }
+      }
+    ];
 
+    let legalSubmodes = getLegalSubmodes(roles);
+    let legalStopPlacesTypes = getLegalStopPlaceTypes(roles);
+
+    const blacklistedStopPlaceTypes = ['railStation', 'airport'];
+    const blacklistedSubmodes = ['railReplacementBus'];
+
+    blacklistedStopPlaceTypes.forEach(bspt => {
+      expect(legalStopPlacesTypes.indexOf(bspt)).toEqual(-1);
+    });
+
+    blacklistedSubmodes.forEach(bsps => {
+      expect(legalSubmodes.indexOf(bsps)).toEqual(-1);
+    });
+
+    blacklistedStopPlaceTypes.forEach(stopPlaceType => {
+      let canEditWithStopPlaceType = doesStopTypeAllowEdit(
+        stopPlaceType,
+        null,
+        legalStopPlacesTypes,
+        legalSubmodes
+      );
+      expect(canEditWithStopPlaceType).toEqual(false);
+
+      blacklistedSubmodes.forEach(submode => {
+        let canEditStopPlaceTypeAndSubmode = doesStopTypeAllowEdit(
+          stopPlaceType,
+          submode,
+          legalStopPlacesTypes,
+          legalSubmodes
+        );
+        expect(canEditStopPlaceTypeAndSubmode).toEqual(false);
+      });
+    });
+
+    legalStopPlacesTypes.forEach(stopPlaceType => {
+      let canEditWithStopPlaceType = doesStopTypeAllowEdit(
+        stopPlaceType,
+        null,
+        legalStopPlacesTypes,
+        legalSubmodes
+      );
+      expect(canEditWithStopPlaceType).toEqual(true);
+
+      legalSubmodes.forEach(submode => {
+        let canEditStopPlaceTypeAndSubmode = doesStopTypeAllowEdit(
+          stopPlaceType,
+          submode,
+          legalStopPlacesTypes,
+          legalSubmodes
+        );
+        expect(canEditStopPlaceTypeAndSubmode).toEqual(true);
+      });
+    });
+
+
+  });
 });
