@@ -17,17 +17,17 @@ var convict = require('convict');
 var request = require('request');
 var fs = require('fs');
 
-module.exports = new Promise(function(resolve, reject) {
+module.exports = new Promise(function (resolve, reject) {
   var conf = convict({
     env: {
       doc: 'The applicaton environment.',
-      format: ['production', 'development'],
+      format: [ 'production', 'development' ],
       default: 'development',
       env: 'NODE_ENV'
     },
     tiamatEnv: {
       doc: 'Back end applicaton environment.',
-      format: ['production', 'development', 'test'],
+      format: [ 'production', 'development', 'test' ],
       default: 'development',
       env: 'TIAMAT_ENV'
     },
@@ -60,6 +60,12 @@ module.exports = new Promise(function(resolve, reject) {
       format: String,
       default: 'https://www-test.entur.org/auth/',
       env: 'AUTH_SERVER_URL'
+    },
+    authRealmName: {
+      doc: 'Authentication realm name',
+      format: String,
+      default: 'rutebanken',
+      env: 'AUTH_REALM_NAME'
     }
   });
 
@@ -68,7 +74,7 @@ module.exports = new Promise(function(resolve, reject) {
 
   if (configUrl.indexOf('do_not_read') == -1) {
     // Read contents from configUrl if it is given
-    request(configUrl, function(error, response, body) {
+    request(configUrl, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         body = JSON.parse(body);
         conf.load(body);
