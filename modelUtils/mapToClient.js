@@ -394,6 +394,7 @@ helpers.createNewStopFromLocation = location => ({
   location: location.map(pos => setDecimalPrecision(pos, 6)),
   stopPlaceType: null,
   topographicPlace: '',
+  tariffZones: [],
   quays: [],
   entrances: [],
   pathJunctions: [],
