@@ -66,6 +66,12 @@ module.exports = new Promise(function (resolve, reject) {
       format: String,
       default: 'rutebanken',
       env: 'AUTH_REALM_NAME'
+    },
+    netexPrefix: {
+      doc: 'Netex Prefix to be used',
+      format: String,
+      default: 'NSR',
+      env: 'NETEX_PREFIX'
     }
   });
 
