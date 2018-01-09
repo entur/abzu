@@ -82,6 +82,7 @@ convictPromise
           endpointBase: convict.get('endpointBase'),
           OSMUrl: convict.get('OSMUrl'),
           tiamatEnv: convict.get('tiamatEnv'),
+          netexPrefix: convict.get('netexPrefix'),
           // Pod ID used in req header for Tiamat
           hostname: process.env.HOSTNAME
         };
