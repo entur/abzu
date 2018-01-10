@@ -60,7 +60,7 @@ const reduceSearchResultsForReport = (state, action) => {
 const populateStopPlacesWithParking = (state, results) => {
   const stopPlaces = state.results;
   let stopPlacesWithParking = stopPlaces.map(stopPlace => {
-    let aliasedId = stopPlace.id.replace('NSR:StopPlace:', 'StopPlace');
+    let aliasedId = stopPlace.id.replace(window.config.netexPrefix +':StopPlace:', 'StopPlace');
     return Object.assign({}, stopPlace, {
       parking: results[aliasedId],
     });

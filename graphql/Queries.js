@@ -524,7 +524,7 @@ export const getMergeInfoStopPlace = gql`
 export const getParkingForMultipleStopPlaces = stopPlaceIds => {
   const stopPlaces = stopPlaceIds.map(id => ({
     id,
-    alias: id.replace('NSR:StopPlace:', 'StopPlace')
+    alias: id.replace(window.config.netexPrefix + ':StopPlace:', 'StopPlace')
   }));
 
   let queryContent = '';
@@ -548,7 +548,7 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
 export const getStopPlacesById = stopPlaceIds => {
   const stopPlaces = stopPlaceIds.map(id => ({
     id,
-    alias: id.replace('NSR:StopPlace:', 'StopPlace')
+    alias: id.replace(window.config.netexPrefix + ':StopPlace:', 'StopPlace')
   }));
 
   let queryContent = '';
