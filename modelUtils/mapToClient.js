@@ -371,8 +371,15 @@ helpers.mapReportSearchResultsToClientStop = data => {
   let stops = data.slice();
   stops.forEach(stop => {
     let stopPlace = helpers.mapStopToClientStop(stop, true, null, null, null);
-    stopPlace.quays = [];
-    stopPlace.parking = [];
+
+    if (!stopPlace.quays) {
+      stopPlace.quays = [];
+    }
+
+    if (!stopPlace.parking) {
+      stopPlace.parking = [];
+    }
+
     if (stopPlace.isParent && stopPlace.children) {
       stopPlace.modesFromChildren = stopPlace.children.map(child => ({
         submode: child.submode,
