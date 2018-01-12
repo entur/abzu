@@ -53,15 +53,15 @@ const weightTypes = {
   ],
   fr: [
     {
-      name: 'Point de tranfert préferré',
+      name: 'Correspondance préférée',
       value: 'preferredInterchange',
     },
     {
-      name: 'Point de transfert recommandé',
+      name: 'Correspondance recommandée',
       value: 'recommendedInterchange',
     },
     {
-      name: 'Transfert autorisé',
+      name: 'Correspondance autorisée',
       value: 'interchangeAllowed',
     },
     {
@@ -81,7 +81,7 @@ export const weightColors = {
 export const noValue = {
   nb: 'Overgang ikke satt',
   en: 'No interchange set',
-  fr: 'Aucun transfert défini',
+  fr: 'Pas de correspondance',
 };
 
 export default weightTypes;
