@@ -477,7 +477,7 @@ const stopTypes = {
     {
       name: 'Arrêt de bus',
       value: 'onstreetBus',
-      quayItemName: 'platform',
+      quayItemName: 'quay',
       transportMode: 'bus',
       submodes: [
         {
@@ -523,14 +523,14 @@ const stopTypes = {
       ]
     },
     {
-      name: 'Station de bus',
+      name: 'Gare routière',
       value: 'busStation',
-      quayItemName: 'platform'
+      quayItemName: 'quay'
     },
     {
       name: 'Port de plaisance',
       value: 'harbourPort',
-      quayItemName: 'port',
+      quayItemName: 'quay',
       transportMode: 'water',
       submodes: [
         {
@@ -562,7 +562,7 @@ const stopTypes = {
     {
       name: 'Arrêt de ferry',
       value: 'ferryStop',
-      quayItemName: 'port',
+      quayItemName: 'quay',
       transportMode: 'water',
       submodes: [
         {
@@ -630,7 +630,7 @@ const stopTypes = {
     {
       name: 'Tram',
       value: 'onstreetTram',
-      quayItemName: 'platform',
+      quayItemName: 'quay',
       transportMode: 'tram',
       submodes: [
         {
@@ -646,7 +646,7 @@ const stopTypes = {
     {
       name: 'Métro',
       value: 'metroStation',
-      quayItemName: 'track',
+      quayItemName: 'quay',
       transportMode: 'metro',
       submodes: [
         {
@@ -686,7 +686,7 @@ const stopTypes = {
     {
       name: 'Téléphérique',
       value: 'liftStation',
-      quayItemName: 'platform',
+      quayItemName: 'quay',
       transportMode: 'cableway',
       submodes: [
         {
@@ -707,7 +707,7 @@ const stopTypes = {
 export const unknownStopPlaceType = {
   nb: 'Modalitet ikke satt',
   en: 'Modality not defined',
-  fr: 'Modalité non définie'
+  fr: 'Mode de transport non défini'
 };
 
 export const submodes = [
