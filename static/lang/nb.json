@@ -80,6 +80,8 @@
   "delete_group_body": "Er du sikker på at du ønsker å slette denne stoppestedsgruppen?",
   "delete_group_confirm": "Slett",
   "delete_group_cancel": "Avbryt",
+  "delete_parking": "Slett parkering",
+  "delete_parking_are_you_sure": "Er du sikker på at du vil slette denne parkeringen for godt?",
   "delete_quay_are_you_sure": "Er du sikker på at du vil utføre denne operasjonen?",
   "delete_quay_info": "Quayer som er referert til i innsendte rutedata skal ikke slettes før det er sendt inn et nytt datasett hvor quay-en ikke lenger er referert. Verifiser at quay-en ikke er i bruk i rutadata før du går videre.",
   "delete_quay_title": "Du er i ferd med å slette en quay",

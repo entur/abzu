@@ -153,12 +153,6 @@ StopPlaceActions.removeElementByType = (index, type) => dispatch => {
   );
 };
 
-StopPlaceActions.openParkingElement = index => dispatch => {
-  dispatch(
-    createThunk(types.OPEN_PARKING_ELEMENT, index)
-  );
-}
-
 StopPlaceActions.changePublicCodeName = (index, name, type) => dispatch => {
   dispatch(
     createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
