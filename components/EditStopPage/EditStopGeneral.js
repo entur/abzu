@@ -483,6 +483,8 @@ class EditStopGeneral extends React.Component {
       quayItemName: this.getQuayItemName(locale, stopPlace),
       capacity: formatMessage({ id: 'total_capacity' }),
       parking: formatMessage({ id: 'parking_general' }),
+      parkAndRide: formatMessage({ id: 'parking' }), 
+      bikeParking: formatMessage({ id: 'bike_parking' }),
       unknown: formatMessage({ id: 'uknown_parking_type' }),
       elements: formatMessage({ id: 'elements' }),
       versions: formatMessage({ id: 'versions' }),
