@@ -80,6 +80,8 @@
   "delete_group_body": "Etes-vous sûr de vouloir supprimer ce groupe de points d'arrêts ?",
   "delete_group_confirm": "Supprimer",
   "delete_group_cancel": "Abandonner",
+  "delete_parking": "Supprimer le parking",
+  "delete_parking_are_you_sure": "Etes-vous sûr de vouloir supprimer ce parking ?",
   "delete_quay_are_you_sure": "Etes-vous sûr de vouloir effectuer cette opération ?",
   "delete_quay_info": "Cette action effacera le quai de manière définitive. A utiliser avec précaution.",
   "delete_quay_title": "Vous vous apprêtez à supprimer un quai",
