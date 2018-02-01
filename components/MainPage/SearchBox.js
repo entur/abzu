@@ -401,15 +401,21 @@ class SearchBox extends React.Component {
       )
       .map(place => {
         let name = this.getTopographicalNames(place);
-        return {
-          text: name,
-          id: place.id,
-          value: (
-            <MenuItem
-              primaryText={name}
-              style={{fontSize: '0.8em'}}
-              secondaryText={formatMessage({ id: place.topographicPlaceType })}
-            />
+        let shortName = this.getTopographicalNames(place);
+
+          if(shortName.length > 35){
+              shortName = shortName.substring(0, 35) + "...";
+          }
+
+          return {
+              text: name,
+              id: place.id,
+              value: (
+                  <MenuItem
+                      primaryText={shortName}
+                      style={{fontSize: '0.8em'}}
+                      secondaryText={formatMessage({ id: place.topographicPlaceType })}
+                  />
           ),
           type: place.topographicPlaceType
         };
@@ -500,17 +506,19 @@ class SearchBox extends React.Component {
                         floatingLabelText={formatMessage({
                           id: 'filter_by_topography'
                         })}
-                        hintText={formatMessage({ id: 'filter_by_topography' })}
+                        floatingLabelStyle={{marginTop: -22, marginLeft: 5}}
                         dataSource={topographicalPlacesDataSource}
                         onUpdateInput={this.handleTopographicalPlaceInput.bind(
-                          this
+                            this
                         )}
                         filter={AutoComplete.caseInsensitiveFilter}
                         style={{
-                          margin: 'auto',
-                          width: '100%',
-                          marginTop: -20,
+                            margin: 'auto',
+                            width: '100%',
+                            marginTop: -20
                         }}
+                        menuStyle={{width: 450}}
+                        listStyle={{width: 450}}
                         maxSearchResults={7}
                         ref="topoFilter"
                         onNewRequest={this.handleAddChip.bind(this)}
