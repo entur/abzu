@@ -197,7 +197,7 @@ class EditStopBoxTabs extends React.Component {
             />
           );
         })
-      : <div style={noElementsStyle}>
+      : <div style={{...noElementsStyle, textTransform: 'lowercase'}}>
           {itemTranslation.none} {itemTranslation.parking}
         </div>;
   }

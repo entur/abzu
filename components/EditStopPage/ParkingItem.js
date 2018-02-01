@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
@@ -20,14 +20,22 @@ import TextField from 'material-ui/TextField';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
-import { StopPlaceActions } from '../../actions/';
+import { StopPlaceActions, UserActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
-import MdNotInterested from 'material-ui/svg-icons/av/not-interested';
-import MdRestore from 'material-ui/svg-icons/action/restore';
+import MdDeleteForver from 'material-ui/svg-icons/action/delete-forever';
 import ToolTippable from './ToolTippable';
 import { injectIntl } from 'react-intl';
+import ConfirmDialog from '../Dialogs/ConfirmDialog';
+import { withApollo } from 'react-apollo';
+import { deleteParking } from '../../graphql/Actions';
+import * as types from "../../actions/Types";
 
 class ParkingItem extends React.Component {
+
+  state = {
+    confirmDeleteDialogOpen: false
+  };
+
   static propTypes = {
     translations: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
@@ -45,12 +53,27 @@ class ParkingItem extends React.Component {
     dispatch(StopPlaceActions.changeParkingName(index, value));
   }
 
-  handleExpireParking(index) {
-    this.props.dispatch(StopPlaceActions.removeElementByType(index, 'parking'));
+  handleDeleteParking() {
+    this.setState({
+      confirmDeleteDialogOpen: true
+    });
   }
 
-  handleOpenParking(index) {
-    this.props.dispatch(StopPlaceActions.openParkingElement(index));
+  handleConfirmParking() {
+    const { parking, index, dispatch, client } = this.props;
+
+    if (parking.id) {
+      deleteParking(client, parking.id).then(() => {
+        dispatch(StopPlaceActions.removeElementByType(index, 'parking'));
+        dispatch(UserActions.openSnackbar(types.SUCCESS));
+      });
+    } else {
+      dispatch(StopPlaceActions.removeElementByType(index, 'parking'));
+    }
+
+    this.setState({
+      confirmDeleteDialogOpen: false
+    });
   }
 
   render() {
@@ -148,27 +171,31 @@ class ParkingItem extends React.Component {
               />
               <div style={{ width: '100%', textAlign: 'right' }}>
                 <IconButton disabled={disabled}>
-                  {parking.hasExpired
-                    ? <ToolTippable
-                        toolTipText={formatMessage({ id: 'restore_parking' })}
-                      >
-                        <MdRestore
-                          onClick={() => this.handleOpenParking(index)}
-                        />
-                      </ToolTippable>
-                    : <ToolTippable
-                        toolTipText={formatMessage({ id: 'expire_parking' })}
-                      >
-                        <MdNotInterested
-                          onClick={() => this.handleExpireParking(index)}
-                        />
-                      </ToolTippable>}
+                  <ToolTippable
+                    toolTipText={formatMessage({ id: 'delete_parking' })}
+                  >
+                    <MdDeleteForver
+                      onClick={this.handleDeleteParking.bind(this)}
+                    />
+                  </ToolTippable>
                 </IconButton>
               </div>
             </div>}
+            <ConfirmDialog
+              open={this.state.confirmDeleteDialogOpen}
+              handleClose={() => { this.setState({confirmDeleteDialogOpen: false});}}
+              handleConfirm={this.handleConfirmParking.bind(this)}
+              intl={intl}
+              messagesById={{
+                title: 'delete_parking',
+                body: 'delete_parking_are_you_sure',
+                confirm: 'delete_group_confirm',
+                cancel: 'delete_group_cancel'
+              }}
+            />
       </div>
     );
   }
 }
 
-export default injectIntl(connect(null)(ParkingItem));
+export default injectIntl(connect(null)(withApollo(ParkingItem)));

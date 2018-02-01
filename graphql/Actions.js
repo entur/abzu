@@ -30,7 +30,8 @@ import {
   mutateCreateTag,
   mutateTerminateStopPlace,
   mutateGroupOfStopPlaces,
-  deleteGroupMutation
+  deleteGroupMutation,
+  deleteParkingMutation
 } from './Mutations';
 import {
   allVersionsOfStopPlace,
@@ -409,6 +410,15 @@ export const getTariffZones = (client, query) =>
     query: findTariffones,
     variables: {
       query
+    },
+    fetchPolicy: 'network-only'
+  });
+
+export const deleteParking = (client, id) =>
+  client.mutate({
+    mutation: deleteParkingMutation,
+    variables: {
+      id
     },
     fetchPolicy: 'network-only'
   });

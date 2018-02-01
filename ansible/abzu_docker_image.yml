@@ -1,5 +1,5 @@
 ---
-- name: Create otp image
+- name: Create abzu image
   hosts: localhost
   vars_files:
     - vars/all.yml

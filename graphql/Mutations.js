@@ -243,3 +243,10 @@ export const deleteGroupMutation = gql`
     deleteGroupOfStopPlaces(id: $id)
   }
 `;
+
+export const deleteParkingMutation = gql`
+  mutation deleteParking($id: String!) {
+    deleteParking(parkingId: $id)
+  }
+`;
+

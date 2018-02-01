@@ -41,11 +41,10 @@ helpers.sortQuays = (current, attribute) => {
   let copy = JSON.parse(JSON.stringify(current));
   let quays = copy.quays;
   quays.sort((a, b) =>
-    (a[attribute] || 'ZZZZZ')
-      .localeCompare(b[attribute] || 'ZZZZZ', 'nb', {
-        numeric: true,
-        sensitivity: 'base'
-      })
+    (a[attribute] || 'ZZZZZ').localeCompare(b[attribute] || 'ZZZZZ', 'nb', {
+      numeric: true,
+      sensitivity: 'base'
+    })
   );
   return {
     ...copy,
@@ -288,9 +287,9 @@ helpers.mapSearchResultStopPlace = stop => {
 };
 
 helpers.mapSearchResultatGroup = groupsOfStopPlaces => {
-  return groupsOfStopPlaces.map(group => (
+  return groupsOfStopPlaces.map(group =>
     new GroupOfStopPlaces(group).toClient()
-  ));
+  );
 };
 
 helpers.mapSearchResultParentStopPlace = stop => {
@@ -301,7 +300,11 @@ helpers.mapSearchResultParentStopPlace = stop => {
       ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
       ''
     );
-    let topographicPlace = getIn(stop, ['topographicPlace', 'name', 'value'], '');
+    let topographicPlace = getIn(
+      stop,
+      ['topographicPlace', 'name', 'value'],
+      ''
+    );
 
     let clientParentStop = {
       isParent: true,
@@ -329,14 +332,13 @@ helpers.mapSearchResultParentStopPlace = stop => {
       hasExpired: hasExpired(stop.validBetween),
       tags: stop.tags,
       geometry: stop.geometry,
-      entityType: Entities.STOP_PLACE,
+      entityType: Entities.STOP_PLACE
     };
 
     if (stop.groups && stop.groups.length) {
       clientParentStop.groups = stop.groups.map(group => {
-        let newGroup = {...group};
-        newGroup.name = group.name && group.name.value
-          ? group.name.value : '';
+        let newGroup = { ...group };
+        newGroup.name = group.name && group.name.value ? group.name.value : '';
         return newGroup;
       });
       clientParentStop.belongsToGroup = true;
@@ -349,7 +351,7 @@ helpers.mapSearchResultParentStopPlace = stop => {
 
     return clientParentStop;
   } catch (ex) {
-    console.error("Ex", ex);
+    console.error('Ex', ex);
   }
 };
 
@@ -527,7 +529,7 @@ helpers.createKeyValuesPair = (original, key, newValues, origin) => {
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {
     stopPlaceType: type,
-    submode: null,
+    submode: null
   });
 };
 
@@ -612,7 +614,7 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
       copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index);
       break;
     case 'parking':
-      copy.parking = setExpirationToNowForParking(copy.parking, index);
+      copy.parking = removeElementByIndex(copy.parking, index);
       break;
     default:
       throw new Error('element not supported', type);
@@ -738,7 +740,7 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
   const rootStopPlace = payLoad[0];
   let stopPlace = null;
 
-  // root element in possible multimodal strcture is the one requested
+  // root element in possible multimodal structure is the one requested
   if (rootStopPlace && rootStopPlace.id === resourceId) {
     stopPlace = rootStopPlace;
   } else if (rootStopPlace.children) {
@@ -839,34 +841,6 @@ helpers.removeAltName = (original, index) => {
   copy.alternativeNames = removeElementByIndex(copy.alternativeNames, index);
 
   return copy;
-};
-
-const setExpirationToNowForParking = (list, index) => {
-  let parkinglist = list.slice();
-  let parking = parkinglist[index];
-  let nowDate = new Date();
-  let utcDateString =
-    moment(nowDate).utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
-  parking.validBetween = {
-    fromDate:
-      (parking.validBetween && parking.validBetween.fromDate) || utcDateString,
-    toDate: utcDateString
-  };
-  parking.hasExpired = true;
-  return parkinglist;
-};
-
-helpers.updateCurrentOpenParking = (current, index) => {
-  let parkingElements = current.parking.slice();
-  let parking = parkingElements[index];
-  parking.validBetween = {
-    ...parking.validBetween,
-    toDate: null
-  };
-  parking.hasExpired = false;
-  return Object.assign({}, current, {
-    parking: parkingElements
-  });
 };
 
 helpers.addTariffZone = (current, tariffZone) => {

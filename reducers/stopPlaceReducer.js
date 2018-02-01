@@ -340,14 +340,6 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.OPEN_PARKING_ELEMENT:
-      return Object.assign({}, state, {
-        current: formatHelpers.updateCurrentOpenParking(
-          state.current,
-          action.payLoad
-        ),
-        stopHasBeenModified: true
-      })
 
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, {
