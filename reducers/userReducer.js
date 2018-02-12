@@ -149,6 +149,14 @@ const userReducer = (state = initialState, action) => {
         }
       });
 
+      case types.TOGGLE_SEARCH_WITH_CODE:
+      return Object.assign({}, state, {
+          searchFilters: {
+            ...state.searchFilters,
+            searchWithCode: action.payLoad
+          }
+      });
+
     case types.SET_SEARCH_TEXT:
       return Object.assign({}, state, {
         searchFilters: {

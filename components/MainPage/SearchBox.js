@@ -70,7 +70,11 @@ class SearchBox extends React.Component {
       const stopPlaceTypes = filter
         ? filter.stopType
         : this.props.stopTypeFilter;
+      const searchWithCode = filter
+        ? filter.searchWithCode
+        : this.props.searchWithCode;
 
+      let code = this.getCode(searchWithCode);
       this.setState({ loading: true });
 
       findEntitiesWithFilters(
@@ -78,7 +82,8 @@ class SearchBox extends React.Component {
         searchText,
         stopPlaceTypes,
         chips,
-        showFutureAndExpired
+        showFutureAndExpired,
+        code
       ).then(() => {
         this.setState({ loading: false });
       });
@@ -148,6 +153,19 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.toggleShowFutureAndExpired(value));
   }
 
+  toggleSearchWithCode(value) {
+    const { searchText, topoiChips, stopTypeFilter, showFutureAndExpired } = this.props;
+    if (searchText) {
+        this.handleSearchUpdate(searchText, null, null, {
+           searchWithCode: value,
+           topoiChips,
+           stopType: stopTypeFilter,
+           showFutureAndExpired
+        });
+    }
+    this.props.dispatch(UserActions.toggleSearchWithCode(value));
+  }
+
   handleTopographicalPlaceInput(searchText) {
     const { client } = this.props;
     findTopographicalPlace(client, searchText);
@@ -174,12 +192,13 @@ class SearchBox extends React.Component {
   }
 
   handleApplyModalityFilters(filters) {
-    const { searchText, showFutureAndExpired, topoiChips } = this.props;
+    const { searchText, showFutureAndExpired, topoiChips, searchWithCode } = this.props;
     if (searchText) {
       this.handleSearchUpdate(searchText, null, null, {
         showFutureAndExpired,
         topoiChips,
-        stopType: filters
+        stopType: filters,
+        searchWithCode
       });
     }
     this.props.dispatch(UserActions.applyStopTypeSearchFilter(filters));
@@ -197,14 +216,15 @@ class SearchBox extends React.Component {
   }
 
   handleAddChip({ text, type, id }) {
-    const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } = this.props;
+    const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips, searchWithCode } = this.props;
     if (searchText) {
       this.handleSearchUpdate(searchText, null, null, {
         showFutureAndExpired,
         topoiChips: topoiChips.concat({
           text, type, value: id
         }),
-        stopType: stopTypeFilters
+        stopType: stopTypeFilters,
+        searchWithCode
       });
     }
     this.props.dispatch(
@@ -216,12 +236,13 @@ class SearchBox extends React.Component {
   }
 
   handleDeleteChip(chipValue) {
-    const { dispatch, searchText, stopTypeFilters, showFutureAndExpired, topoiChips } = this.props;
+    const { dispatch, searchText, stopTypeFilters, showFutureAndExpired, topoiChips, searchWithCode } = this.props;
     if (searchText) {
       this.handleSearchUpdate(searchText, null, null, {
         showFutureAndExpired,
         topoiChips: topoiChips.filter(chip => chip.value !== chipValue),
-        stopType: stopTypeFilters
+        stopType: stopTypeFilters,
+        searchWithCode
       });
     }
     dispatch(UserActions.deleteChip(chipValue));
@@ -337,6 +358,20 @@ class SearchBox extends React.Component {
     return menuItems;
   }
 
+  getCode(searchWithCode){
+      let code = null;
+      let codeJSON = JSON.parse(this.props.code);
+      codeJSON = codeJSON.o.toLowerCase();
+
+      if(searchWithCode && codeJSON !== "naq"){
+          code = codeJSON;
+      }
+      else{
+          code = null;
+      }
+      return code;
+  }
+
   render() {
     const {
       chosenResult,
@@ -352,7 +387,9 @@ class SearchBox extends React.Component {
       lookupCoordinatesOpen,
       newStopIsMultiModal,
       dataSource,
-      showFutureAndExpired
+      showFutureAndExpired,
+      searchWithCode,
+      code
     } = this.props;
     const {
       coordinatesDialogOpen,
@@ -524,6 +561,13 @@ class SearchBox extends React.Component {
                         labelStyle={{ fontSize: '0.8em' }}
                       />
                     </div>
+                      <CheckBox
+                          checked={searchWithCode}
+                          onCheck={(e, value) =>
+                              this.toggleSearchWithCode(value)}
+                          label={formatMessage({ id: 'search_with_code' })}
+                          labelStyle={{ fontSize: '0.8em' }}
+                      />
                     <TopographicalFilter
                       topoiChips={topoiChips}
                       handleDeleteChip={this.handleDeleteChip.bind(this)}
@@ -706,7 +750,9 @@ const mapStateToProps = state => {
     isGuest: state.roles.isGuest,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
-    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired
+    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    searchWithCode: state.user.searchFilters.searchWithCode,
+    code: state.user.searchFilters.code
   };
 };
 

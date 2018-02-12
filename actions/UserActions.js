@@ -43,7 +43,11 @@ UserActions.navigateTo = (path, id) => dispatch => {
 
 UserActions.toggleShowFutureAndExpired = value => dispatch => {
   dispatch(createThunk(types.TOGGLE_SHOW_FUTURE_AND_EXPIRED, value));
-}
+};
+
+UserActions.toggleSearchWithCode = value => dispatch => {
+  dispatch(createThunk(types.TOGGLE_SEARCH_WITH_CODE, value));
+};
 
 UserActions.navigateToMainAfterDelete = () => dispatch => {
   dispatch(createThunk(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
@@ -175,7 +179,8 @@ UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
     searchFilters.text,
     searchFilters.stopType,
     searchFilters.topoiChips,
-    searchFilters.showFutureAndExpired
+    searchFilters.showFutureAndExpired,
+    searchFilters.searchWithCode
   );
   favoriteManager.save(savableContent);
   dispatch(UserActions.closeFavoriteNameDialog());
