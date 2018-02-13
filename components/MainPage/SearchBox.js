@@ -388,8 +388,7 @@ class SearchBox extends React.Component {
       newStopIsMultiModal,
       dataSource,
       showFutureAndExpired,
-      searchWithCode,
-      code
+      searchWithCode
     } = this.props;
     const {
       coordinatesDialogOpen,

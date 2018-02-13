@@ -65,6 +65,7 @@ class ReportPage extends React.Component {
       showFutureAndExpired: false,
       withTags: false,
       tags: [],
+      searchWithCode: false
     };
   }
 
@@ -226,13 +227,16 @@ class ReportPage extends React.Component {
       withNearbySimilarDuplicates,
       withTags,
       showFutureAndExpired,
-      tags
+      tags,
+      searchWithCode
     } = this.state;
     const { client } = this.props;
 
     this.setState({
       isLoading: true
     });
+
+    let code = this.getCode(searchWithCode);
 
     const queryVariables = {
       query: searchQuery,
@@ -250,7 +254,8 @@ class ReportPage extends React.Component {
         .map(topos => topos.id),
       countyReference: topoiChips
         .filter(topos => topos.type === 'county')
-        .map(topos => topos.id)
+        .map(topos => topos.id),
+      code
     };
 
     client
@@ -344,6 +349,20 @@ class ReportPage extends React.Component {
     return name;
   }
 
+    getCode(searchWithCode){
+        let code = null;
+        let codeJSON = JSON.parse(this.props.code);
+        codeJSON = codeJSON.o.toLowerCase();
+
+        if(searchWithCode && codeJSON !== "naq"){
+            code = codeJSON;
+        }
+        else{
+            code = null;
+        }
+        return code;
+    }
+
   render() {
     const {
       stopTypeFilter,
@@ -354,7 +373,8 @@ class ReportPage extends React.Component {
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
       showFutureAndExpired,
-      withTags
+      withTags,
+      searchWithCode
     } = this.state;
     const { intl, topographicalPlaces, results, duplicateInfo } = this.props;
     const { locale, formatMessage } = intl;
@@ -459,6 +479,7 @@ class ReportPage extends React.Component {
                     withDuplicateImportedIds={withDuplicateImportedIds}
                     withNearbySimilarDuplicates={withNearbySimilarDuplicates}
                     showFutureAndExpired={showFutureAndExpired}
+                    searchWithCode={searchWithCode}
                     withTags={withTags}
                     handleCheckboxChange={this.handleFilterChange.bind(this)}
                   />
@@ -515,7 +536,9 @@ class ReportPage extends React.Component {
 const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
   results: state.report.results,
-  duplicateInfo: state.report.duplicateInfo
+  duplicateInfo: state.report.duplicateInfo,
+  code: state.user.searchFilters.code
+
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));

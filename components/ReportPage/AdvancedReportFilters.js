@@ -36,7 +36,8 @@ class AdvancedReportFilters extends Component {
       withNearbySimilarDuplicates,
       handleCheckboxChange,
       withTags,
-      showFutureAndExpired
+      showFutureAndExpired,
+      searchWithCode
     } = this.props;
 
     const { open, anchorEl } = this.state;
@@ -73,6 +74,17 @@ class AdvancedReportFilters extends Component {
                   handleCheckboxChange('showFutureAndExpired', value);
                 }}
               />
+            </MenuItem>
+            <MenuItem style={menuItemsStyle}>
+              <Checkbox
+                 label={formatMessage({ id: 'search_with_code' })}
+                 labelPosition="right"
+                 labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                 checked={searchWithCode}
+                 onCheck={(e, value) => {
+                   handleCheckboxChange('searchWithCode', value);
+                 }}
+               />
             </MenuItem>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
