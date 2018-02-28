@@ -1,6 +1,7 @@
 # Abzu
 
-Stop place register
+Stop place register frontend.
+Uses stop place register backend tiamat's graphQL API
 
 ## Production
 
@@ -49,7 +50,7 @@ OSM_URL=https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png port=9000 NODE_ENV=de
 
 ### Testing
 
-Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing 
+Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing
 
 ```
 npm test
@@ -65,7 +66,7 @@ AUTH_SERVER_URL=https://www-test.entur.org/auth port=9000 NODE_ENV=development n
 
 ### Themes
 
-Default theme is found in `./config/default`. 
+Default theme is found in `./config/default`.
 
 #### Add custom theme
 
