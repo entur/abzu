@@ -89,7 +89,7 @@ const rolesReducer = (state = initialState, action) => {
             ...state,
             kc: state.kc,
             allowanceInfo: getAllowanceInfoFromPosition(
-              newStopPlace,
+              newStopPlace.location,
               state.kc.tokenParsed
             )
           }
