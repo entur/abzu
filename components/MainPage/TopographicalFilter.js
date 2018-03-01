@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import Chip from 'material-ui/Chip';
 
 class TopographicalFilter extends React.Component {
@@ -25,18 +26,19 @@ class TopographicalFilter extends React.Component {
     const chipStyle = {
       margin: 4,
       backgroundColor: typeColor,
+      maxWidth: 440
     };
 
-    let id = data.id || data.value;
+      let id = data.id || data.value;
 
-    return (
-      <Chip
-        key={id}
-        onRequestDelete={() => this.props.handleDeleteChip(id)}
-        style={chipStyle}
-      >
-        <span style={{ color: typeTextColor, fontSize: '0.8em' }}>{data.text}</span>
-      </Chip>
+      return (
+          <Chip
+              key={id}
+              onRequestDelete={() => this.props.handleDeleteChip(id)}
+              style={chipStyle}
+          >
+              <span style={{ color: typeTextColor, fontSize: '0.8em', whiteSpace:'normal', lineHeight: data.text.length > 80 ? '22px' : '32px'}}>{data.text}</span>
+          </Chip>
     );
   }
 
