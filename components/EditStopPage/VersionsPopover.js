@@ -17,7 +17,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
-import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
 
 class VersionsPopover extends Component {
@@ -48,7 +47,9 @@ class VersionsPopover extends Component {
   render() {
 
     const { open, anchorEl } = this.state;
-    const { versions, buttonLabel, disabled, hide } = this.props;
+    const { versions, buttonLabel, disabled, hide, formatMessage } = this.props;
+    
+    const notAvailableMessage = formatMessage({ id: "n_a" });
 
     if (hide) return null;
 
@@ -76,7 +77,7 @@ class VersionsPopover extends Component {
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={() => this.setState({open: false})}
+          onRequestClose={() => this.setState({ open: false })}
           animation={PopoverAnimationVertical}
         >
           <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
@@ -92,16 +93,16 @@ class VersionsPopover extends Component {
                       <div>{version.name}</div>
                     </div>
                     <div style={{ marginTop: -10 }}>
-                      {version.changedBy || 'N/A'}:
-                      {' '}{version.versionComment || 'N/A'}
+                      {version.changedBy || notAvailableMessage}:
+                      {' '}{version.versionComment || notAvailableMessage}
                     </div>
                   </div>
                 }
                 secondaryText={
                   <div
                     style={{ transform: 'translateY(-14px)' }}
-                  >{`${version.fromDate || 'N/A'} - ${version.toDate ||
-                  'N/A'}`}</div>
+                  >{`${version.fromDate || notAvailableMessage} - ${version.toDate ||
+                  notAvailableMessage}`}</div>
                 }
                 onTouchTap={() => this.handleOnRequest(version)}
               />

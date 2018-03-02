@@ -549,6 +549,7 @@ class EditStopGeneral extends React.Component {
             disabled={!versions.length}
             hide={stopPlace.isChildOfParent}
             handleSelect={this.handleLoadVersion.bind(this)}
+            formatMessage={intl.formatMessage}
           />
         </div>
         <div id="scroll-body" style={scrollable}>
