@@ -12,25 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import icon from '../../static/icons/compass.png';
 
-const CompassBearingInfo = ({value}) => {
+const CompassBearingInfo = ({value}, {defaultValue}) => {
   return (
     <div style={{display: 'flex', alignItems: 'center'}}>
       <img
         style={{height: 20, width: 20, marginLeft: 10, marginRight: 5}}
         src={icon}/>
-      { getProperValue(value) }
+      { getProperValue(value, defaultValue) }
     </div>
   )
 };
 
-const getProperValue = value => {
+const getProperValue = (value, defaultValue) => {
   if (typeof value === 'number') {
     return <span>{value}<em>&deg;</em></span>
   }
-  return <span style={{fontSize: 12}}>N/A</span>;
+  return <span style={{fontSize: 12}}>{defaultValue}</span>;
 }
 
 export default CompassBearingInfo;

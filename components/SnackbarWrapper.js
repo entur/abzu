@@ -56,6 +56,7 @@ class SnackbarWrapper extends Component {
     const isError = (status === types.ERROR);
     const message = formatMessage({ id: isError ? 'snackbar_message_failed' : 'snackbar_message_saved'});
     const showExpanded = (expanded && isError);
+    const notAssign = formatMessage({ id: 'not_assign'});
 
     return (
       <Snackbar
@@ -74,7 +75,7 @@ class SnackbarWrapper extends Component {
                   minHeight: 85
                 }}
               >
-                {errorMsg || 'N/A'}
+                {errorMsg || notAssign}
               </div>}
             <div
               style={{

@@ -104,6 +104,7 @@ class TagsDialog extends Component {
                   key={'tag-item' + i}
                   handleDelete={this.handleDeleteTag.bind(this)}
                   tag={tag}
+                  intl={this.props.intl}
                 />
                 <div style={{fontSize: '0.8em', padding: '0 25px', color: '#4b4b4b', marginBottom: 2}}>{tag.comment}</div>
               </div>

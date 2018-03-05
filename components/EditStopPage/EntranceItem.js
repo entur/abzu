@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
@@ -30,6 +31,7 @@ class EntranceItem extends React.Component {
     handleRemoveEntrance: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
     expanded: PropTypes.bool.isRequired,
+    intl: PropTypes.object.isRequired
   };
 
   handleNameChange = event => {
@@ -62,6 +64,7 @@ class EntranceItem extends React.Component {
       handleToggleCollapse,
       index,
       disabled,
+      intl
     } = this.props;
 
     const description = entrance.description || '';
@@ -87,7 +90,7 @@ class EntranceItem extends React.Component {
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'entrance')}
             >
-              {entrance.name.length ? entrance.name : 'N/A'}
+              {entrance.name.length ? entrance.name : translations.notAssign}
             </div>
             <div
               style={{ display: 'inline-block' }}

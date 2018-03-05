@@ -47,9 +47,9 @@ class VersionsPopover extends Component {
   render() {
 
     const { open, anchorEl } = this.state;
-    const { versions, buttonLabel, disabled, hide, formatMessage } = this.props;
-    
-    const notAvailableMessage = formatMessage({ id: "n_a" });
+    const { versions, buttonLabel, disabled, hide, defaultValue } = this.props;
+
+    const notAvailableMessage = defaultValue;
 
     if (hide) return null;
 
@@ -119,7 +119,7 @@ VersionsPopover.propTypes = {
   versions: PropTypes.arrayOf(PropTypes.object).isRequired,
   disabled: PropTypes.bool,
   handleSelect: PropTypes.func.isRequired,
-  buttonLabel: PropTypes.string.isRequired,
+  buttonLabel: PropTypes.string.isRequired
 };
 
 export default VersionsPopover;

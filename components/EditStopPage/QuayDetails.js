@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import Code from './Code';
 import CompassBearingInfo from './CompassBearingInfo';
 import { injectIntl } from 'react-intl';
@@ -22,6 +23,7 @@ class QuayDetails extends React.Component {
 
     const { quay, isSource, intl, hideSourceOriginLabel } = this.props;
     const { formatMessage } = intl;
+    const notAssign = formatMessage({id: 'not_assign'});
 
     if (!quay) return null;
 
@@ -39,7 +41,7 @@ class QuayDetails extends React.Component {
             <Code type="publicCode" value={quay.publicCode}/>
             <Code type="privateCode" value={quay.privateCode}/>
           </div>
-        <CompassBearingInfo value={ quay.compassBearing }/>
+        <CompassBearingInfo value={ quay.compassBearing } defaultValue={notAssign}/>
       </div>
     )
   }

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
@@ -88,7 +89,7 @@ class PathJunctionItem extends React.Component {
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'pathJunction')}
             >
-              {pathJunction.name.length ? pathJunction.name : 'N/A'}
+              {pathJunction.name.length ? pathJunction.name : translations.notAssign}
             </div>
             <div
               style={{ display: 'inline-block' }}

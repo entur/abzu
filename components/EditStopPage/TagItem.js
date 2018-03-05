@@ -20,12 +20,15 @@ import IconButton from 'material-ui/IconButton';
 
 class TagItem extends Component {
   render() {
-    const { tag, handleDelete } = this.props;
+    const { tag, handleDelete, intl } = this.props;
     const columnStyle = {
       flex: 1,
       fontSize: '0.8em',
       padding: 5
     };
+
+    const {formatMessage} = intl;
+    const notAssign = formatMessage({ id: 'not_assign'});
 
     return (
       <div
@@ -40,7 +43,7 @@ class TagItem extends Component {
           <Tag hideHint={true} data={tag} />
         </div>
         <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
-          {tag.createdBy || 'N/A'}
+          {tag.createdBy || notAssign}
         </div>
         <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
           {moment(tag.created).locale('nb').format('DD-MM-YYYY HH:mm')}
