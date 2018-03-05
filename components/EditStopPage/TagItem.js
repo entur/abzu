@@ -28,7 +28,7 @@ class TagItem extends Component {
     };
 
     const {formatMessage} = intl;
-    const notAssign = formatMessage({ id: 'not_assign'});
+    const notAssigned = formatMessage({ id: 'not_assigned'});
 
     return (
       <div
@@ -43,7 +43,7 @@ class TagItem extends Component {
           <Tag hideHint={true} data={tag} />
         </div>
         <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
-          {tag.createdBy || notAssign}
+          {tag.createdBy || notAssigned}
         </div>
         <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
           {moment(tag.created).locale('nb').format('DD-MM-YYYY HH:mm')}

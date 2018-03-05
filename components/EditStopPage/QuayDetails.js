@@ -23,7 +23,7 @@ class QuayDetails extends React.Component {
 
     const { quay, isSource, intl, hideSourceOriginLabel } = this.props;
     const { formatMessage } = intl;
-    const notAssign = formatMessage({id: 'not_assign'});
+    const notAssigned = formatMessage({id: 'not_assigned'});
 
     if (!quay) return null;
 
@@ -41,7 +41,7 @@ class QuayDetails extends React.Component {
             <Code type="publicCode" value={quay.publicCode}/>
             <Code type="privateCode" value={quay.privateCode}/>
           </div>
-        <CompassBearingInfo value={ quay.compassBearing } defaultValue={notAssign}/>
+        <CompassBearingInfo value={ quay.compassBearing } defaultValue={notAssigned}/>
       </div>
     )
   }

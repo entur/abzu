@@ -215,7 +215,7 @@ class QuayItem extends React.Component {
       quayMissingLocation: formatMessage({ id: 'quay_is_missing_location' }),
       localReference: formatMessage({ id: 'local_reference' }),
       privateCode: formatMessage({ id: 'privateCode' }),
-      notAssign: formatMessage({ id: 'not_assign'})
+      notAssigned: formatMessage({ id: 'not_assigned'})
     };
 
     const iconButtonStyle = {
@@ -275,8 +275,8 @@ class QuayItem extends React.Component {
                 <span style={{ color: '#2196F3' }}>
                 {quayTitlePrefix}
               </span>
-                <Code type="publicCode" value={quay.publicCode} defaultValue={translations.notAssign} />
-                <Code type="privateCode" value={quay.privateCode} defaultValue={translations.notAssign}/>
+                <Code type="publicCode" value={quay.publicCode} defaultValue={translations.notAssigned} />
+                <Code type="privateCode" value={quay.privateCode} defaultValue={translations.notAssigned}/>
                 <span
                   style={{
                     fontSize: '0.8em',

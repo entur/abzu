@@ -489,7 +489,7 @@ class EditStopGeneral extends React.Component {
       elements: formatMessage({ id: 'elements' }),
       versions: formatMessage({ id: 'versions' }),
       validBetween: formatMessage({ id: 'valid_between' }),
-      notAssign: formatMessage({id: 'not_assign'})
+      notAssigned: formatMessage({id: 'not_assigned'})
     };
 
     const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
@@ -550,7 +550,7 @@ class EditStopGeneral extends React.Component {
             disabled={!versions.length}
             hide={stopPlace.isChildOfParent}
             handleSelect={this.handleLoadVersion.bind(this)}
-            defaultValue={translations.notAssign}
+            defaultValue={translations.notAssigned}
           />
         </div>
         <div id="scroll-body" style={scrollable}>

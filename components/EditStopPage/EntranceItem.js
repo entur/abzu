@@ -30,8 +30,7 @@ class EntranceItem extends React.Component {
     index: PropTypes.number.isRequired,
     handleRemoveEntrance: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
-    expanded: PropTypes.bool.isRequired,
-    intl: PropTypes.object.isRequired
+    expanded: PropTypes.bool.isRequired
   };
 
   handleNameChange = event => {
@@ -63,8 +62,7 @@ class EntranceItem extends React.Component {
       expanded,
       handleToggleCollapse,
       index,
-      disabled,
-      intl
+      disabled
     } = this.props;
 
     const description = entrance.description || '';
@@ -90,7 +88,7 @@ class EntranceItem extends React.Component {
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'entrance')}
             >
-              {entrance.name.length ? entrance.name : translations.notAssign}
+              {entrance.name.length ? entrance.name : translations.notAssigned}
             </div>
             <div
               style={{ display: 'inline-block' }}

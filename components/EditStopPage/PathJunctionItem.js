@@ -89,7 +89,7 @@ class PathJunctionItem extends React.Component {
               style={{ display: 'inline-block' }}
               onClick={() => handleToggleCollapse(index, 'pathJunction')}
             >
-              {pathJunction.name.length ? pathJunction.name : translations.notAssign}
+              {pathJunction.name.length ? pathJunction.name : translations.notAssigned}
             </div>
             <div
               style={{ display: 'inline-block' }}
