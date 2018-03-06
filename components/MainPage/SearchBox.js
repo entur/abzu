@@ -83,7 +83,7 @@ class SearchBox extends React.Component {
         this.setState({ loading: false });
       });
     };
-    this.debouncedSearch = debounce(searchStop, 200);
+    this.debouncedSearch = debounce(searchStop, 500);
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
