@@ -47,7 +47,6 @@ To override OpenStreetMap URL, set `OSM_URL` as environment variables, e.g.
 OSM_URL=https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png port=9000 NODE_ENV=development node server.js
 ```
 
-
 ### Testing
 
 Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing
@@ -82,3 +81,21 @@ This is WIP.
 Webpack uses `webpack.dev.config.js` for development and `webpack.prod.config.js` for production code. Correct config is chosen based on NODE_ENV.
 
 Webpack produces `public/bundle` which is the entire application rendered by the server. In development this file is emitted from webpack through [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) over a connect server. No file is written to disk. These facilities hot-reload.
+
+## Troubleshooting
+
+### Issues with pngquant on linux
+#### Error message:
+```
+error while loading shared libraries: libpng12.so.0
+```
+
+#### Cause
+Ubuntu has, at the time of writing, libpng 16, not libpng 12.
+
+#### Workaround:
+```
+wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
+  && sudo dpkg -i /tmp/libpng12.deb \
+  && rm /tmp/libpng12.deb
+```

@@ -79,11 +79,11 @@ class SearchBox extends React.Component {
         stopPlaceTypes,
         chips,
         showFutureAndExpired
-      ).then(response => {
+      ).then(() => {
         this.setState({ loading: false });
       });
     };
-    this.debouncedSearch = debounce(searchStop, 200);
+    this.debouncedSearch = debounce(searchStop, 500);
   }
 
   handleSearchUpdate(searchText, dataSource, params, filter) {
@@ -400,14 +400,14 @@ class SearchBox extends React.Component {
         place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
       )
       .map(place => {
-        let name = this.getTopographicalNames(place);
+        const name = this.getTopographicalNames(place);
         return {
           text: name,
           id: place.id,
           value: (
             <MenuItem
               primaryText={name}
-              style={{fontSize: '0.8em'}}
+              style={{fontSize: '0.8em', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis'}}
               secondaryText={formatMessage({ id: place.topographicPlaceType })}
             />
           ),
@@ -505,6 +505,7 @@ class SearchBox extends React.Component {
                         onUpdateInput={this.handleTopographicalPlaceInput.bind(
                           this
                         )}
+                        listStyle={{ width: 'auto', minWidth: 300 }}
                         filter={AutoComplete.caseInsensitiveFilter}
                         style={{
                           margin: 'auto',
