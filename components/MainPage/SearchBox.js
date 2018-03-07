@@ -363,7 +363,7 @@ class SearchBox extends React.Component {
       let codeJSON = JSON.parse(this.props.code);
       codeJSON = codeJSON.o.toLowerCase();
 
-      if(searchWithCode && codeJSON !== "naq"){
+      if(searchWithCode && codeJSON !== window.config.netexPrefix.toLowerCase()){
           code = codeJSON;
       }
       else{
