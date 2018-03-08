@@ -18,6 +18,8 @@ import {createNetworkInterface} from "apollo-client/index";
 import ApolloClient from "apollo-client/index";
 import schema from './Tiamat/schema.json';
 
+const CLIENT_NAME = 'abzu';
+
 export const createTiamatClient = () => {
   const networkInterface = createNetworkInterface({
     uri: window.config.tiamatBaseUrl
@@ -32,7 +34,7 @@ export const createTiamatClient = () => {
 
         const token = localStorage.getItem('ABZU::jwt');
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
-        req.options.headers['ET-Client-Name'] = 'abzu';
+        req.options.headers['ET-Client-Name'] = CLIENT_NAME;
 
         if (window.config.hostname) {
           req.options.headers['ET-Client-Id'] = window.config.hostname;
@@ -65,7 +67,7 @@ export const createOTPClient = () => {
           req.options.headers = {};
         }
 
-        req.options.headers['ET-Client-Name'] = 'abzu';
+        req.options.headers['ET-Client-Name'] = CLIENT_NAME;
 
         if (window.config.hostname) {
           req.options.headers['ET-Client-Id'] = window.config.hostname;
