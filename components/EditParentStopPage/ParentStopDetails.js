@@ -25,7 +25,7 @@ import StopPlaceList from './StopPlaceList';
 import FlatButton from 'material-ui/FlatButton';
 import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import AddStopPlaceToParent from '../Dialogs/AddStopPlaceToParent';
-import { getAddStopPlaceInfo } from '../../graphql/Actions';
+import { getAddStopPlaceInfo } from '../../graphql/Tiamat/actions';
 import { withApollo } from 'react-apollo';
 import TagsDialog from '../EditStopPage/TagsDialog';
 import TagTray from '../MainPage/TagTray';

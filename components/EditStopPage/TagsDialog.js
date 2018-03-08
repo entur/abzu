@@ -18,7 +18,7 @@ import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import { withApollo } from 'react-apollo';
 import TagItem from './TagItem';
-import { removeTag, getTags } from '../../graphql/Actions';
+import { removeTag, getTags } from '../../graphql/Tiamat/actions';
 import AddTagDialog from './AddTagDialog';
 import { connect } from 'react-redux';
 import RefreshIndicator from 'material-ui/RefreshIndicator';

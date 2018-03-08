@@ -18,7 +18,7 @@ import { withApollo } from 'react-apollo';
 import AddTagAutoComplete from './AddTagAutoComplete';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import { addTag, getTags } from '../../graphql/Actions';
+import { addTag, getTags } from '../../graphql/Tiamat/actions';
 import Tag from '../MainPage/Tag';
 import { injectIntl } from 'react-intl';
 

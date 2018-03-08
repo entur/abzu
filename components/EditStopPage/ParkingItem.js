@@ -27,7 +27,7 @@ import ToolTippable from './ToolTippable';
 import { injectIntl } from 'react-intl';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 import { withApollo } from 'react-apollo';
-import { deleteParking } from '../../graphql/Actions';
+import { deleteParking } from '../../graphql/Tiamat/actions';
 import * as types from "../../actions/Types";
 
 class ParkingItem extends React.Component {

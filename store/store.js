@@ -24,60 +24,33 @@ import reportReducer from '../reducers/reportReducer';
 import snackbarReducer from '../reducers/snackbarReducer';
 import groupOfStopPlacesReducer from '../reducers/groupOfStopPlacesReducer';
 import { routerReducer } from 'react-router-redux';
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import SettingsManager from '../singletons/SettingsManager';
 import PolygonManager from '../singletons/PolygonManager';
 import rolesParser from '../roles/rolesParser';
-import { IntrospectionFragmentMatcher } from 'react-apollo';
-import schema from '../graphql/schema.json';
 import Raven from 'raven-js';
 import createRavenMiddleware from 'redux-raven-middleware';
+import { createTiamatClient } from '../graphql/clients';
+
+
 const ravenConfig = require('../config/sentry.json');
+
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
 
-  var enchancer = {};
+  let enchancer = {};
 
-  const networkInterface = createNetworkInterface({
-    uri: window.config.tiamatBaseUrl
-  });
-
-  networkInterface.use([
-    {
-      applyMiddleware(req, next) {
-        if (!req.options.headers) {
-          req.options.headers = {};
-        }
-
-        const token = localStorage.getItem('ABZU::jwt');
-        req.options.headers.authorization = token ? `Bearer ${token}` : null;
-        req.options.headers['ET-Client-Name'] = 'abzu';
-
-        if (window.config.hostname) {
-          req.options.headers['ET-Client-Id'] = window.config.hostname;
-        }
-
-        next();
-      }
-    }
-  ]);
-
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: schema
-  });
-
-  const client = new ApolloClient({
-    networkInterface,
-    fragmentMatcher
-  });
+  const tiamatClient = createTiamatClient();
 
   if (process.env.NODE_ENV === 'development') {
     enchancer = compose(
-      applyMiddleware(thunkMiddleware, loggerMiddleware, client.middleware())
+      applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware,
+        tiamatClient.middleware()
+      )
     );
   } else {
-
     Raven.config(ravenConfig.publicKey, {
       release: process.env.VERSION,
       stacktrace: true,
@@ -88,12 +61,12 @@ export default function configureStore(kc) {
       applyMiddleware(
         thunkMiddleware,
         createRavenMiddleware(Raven),
-        client.middleware()
+        tiamatClient.middleware()
       )
     );
   }
 
-  new PolygonManager().fetch(client, kc.tokenParsed);
+  new PolygonManager().fetch(tiamatClient, kc.tokenParsed);
 
   const Settings = new SettingsManager();
 
@@ -142,7 +115,7 @@ export default function configureStore(kc) {
         open: false,
         stopPlaceId: null
       },
-      client,
+      client: tiamatClient,
       showPublicCode: Settings.getShowPublicCode()
     },
     roles: {
@@ -157,7 +130,7 @@ export default function configureStore(kc) {
     routing: routerReducer,
     stopPlace: stopPlaceReducer,
     report: reportReducer,
-    apollo: client.reducer(),
+    apollo: tiamatClient.reducer(),
     roles: rolesReducer,
     snackbar: snackbarReducer,
     stopPlacesGroup: groupOfStopPlacesReducer
@@ -165,7 +138,7 @@ export default function configureStore(kc) {
 
   return {
     self: createStore(combinedReducer, initialState, enchancer),
-    client: client,
+    client: tiamatClient,
     Raven
   };
 }

@@ -22,7 +22,7 @@ import InformationBanner from '../components/EditStopPage/InformationBanner';
 import Information from '../config/information';
 import { injectIntl } from 'react-intl';
 import InformationManager from '../singletons/InformationManager';
-import { allEntities } from '../graphql/Queries';
+import { allEntities } from '../graphql/Tiamat/queries';
 import { withApollo } from 'react-apollo';
 import '../styles/main.css';
 import Dialog from 'material-ui/Dialog';
@@ -32,6 +32,7 @@ import { getIn } from '../utils';
 import NewElementsBox from '../components/EditStopPage/NewElementsBox';
 import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
 import LoadingPage from './LoadingPage';
+
 
 class StopPlace extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class StopPlace extends React.Component {
     }
     document.title = title;
   }
-
+  
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false);
   }

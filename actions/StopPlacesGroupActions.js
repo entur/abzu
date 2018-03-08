@@ -15,7 +15,7 @@
 
 import * as types from './Types';
 import { createThunk } from './';
-import { getStopPlaceById, getAddStopPlaceInfo } from '../graphql/Actions';
+import { getStopPlaceById, getAddStopPlaceInfo } from '../graphql/Tiamat/actions';
 import { UserActions } from './';
 import Routes from '../routes/';
 

@@ -7,7 +7,7 @@ var globSync = require('glob').sync;
 var path = require('path');
 var fs = require('fs');
 var axios = require('axios');
-var introspectionQuery = require('./graphql/introspection').introspectionQuery;
+var introspectionQuery = require('./graphql/Tiamat/introspection').introspectionQuery;
 var bodyParser = require('body-parser');
 const Routes = require('./routes/');
 const getRouteEntries = require('./routes/entries').getRouteEntries;
@@ -154,7 +154,7 @@ convictPromise
     fetch(introspectionQuery).then(response => {
 
       fs.writeFileSync(
-        './graphql/schema.json',
+        './graphql/Tiamat/schema.json',
         JSON.stringify(response.data),
         'utf8'
       );

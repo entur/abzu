@@ -12,17 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import * as types from './Types';
 import { browserHistory } from 'react-router';
 import configureLocalization from '../localization/localization';
 import FavoriteManager from '../singletons/FavoriteManager';
 import SettingsManager from '../singletons/SettingsManager';
-import { getMergeInfoForStops, getAddStopPlaceInfo } from '../graphql/Actions';
+import {
+  getMergeInfoForStops,
+  getAddStopPlaceInfo
+} from '../graphql/Tiamat/actions';
 import { getIn } from '../utils/';
 import ParentStopPlace from '../models/ParentStopPlace';
 import Routes from '../routes/';
 import { createThunk } from './';
+import { checkStopPlaceUsage } from '../graphql/OTP/actions';
 
 var UserActions = {};
 
@@ -34,7 +37,7 @@ const goToRoute = (path, id) => {
     path = path.slice(1);
   }
   browserHistory.push(basePath + path + id);
-}
+};
 
 UserActions.navigateTo = (path, id) => dispatch => {
   dispatch(createThunk(types.NAVIGATE_TO, id));
@@ -43,11 +46,11 @@ UserActions.navigateTo = (path, id) => dispatch => {
 
 UserActions.toggleShowFutureAndExpired = value => dispatch => {
   dispatch(createThunk(types.TOGGLE_SHOW_FUTURE_AND_EXPIRED, value));
-}
+};
 
 UserActions.navigateToMainAfterDelete = () => dispatch => {
   dispatch(createThunk(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
-  goToRoute('/','');
+  goToRoute('/', '');
 };
 
 UserActions.closeLookupCoordinatesDialog = () => dispatch => {
@@ -99,7 +102,7 @@ UserActions.toggleIsCreatingNewStop = isMultiModal => (dispatch, getState) => {
 UserActions.toggleMultimodalEdges = value => dispatch => {
   Settings.setShowMultimodalEdges(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));
-}
+};
 
 UserActions.togglePathLinksEnabled = value => dispatch => {
   Settings.setShowPathLinks(value);
@@ -121,7 +124,7 @@ UserActions.applyStopTypeSearchFilter = filters => dispatch => {
 };
 
 UserActions.openSnackbar = status => dispatch => {
-  dispatch(createThunk(types.OPENED_SNACKBAR, { status}));
+  dispatch(createThunk(types.OPENED_SNACKBAR, { status }));
 };
 
 UserActions.dismissSnackbar = () => dispatch => {
@@ -204,7 +207,9 @@ UserActions.loadFavoriteSearch = favorite => dispatch => {
   dispatch(UserActions.setToposchips(favorite.topoiChips));
   dispatch(UserActions.setStopPlaceTypes(favorite.stopType));
   dispatch(UserActions.setSearchText(favorite.searchText));
-  dispatch(UserActions.toggleShowFutureAndExpired(favorite.showFutureAndExpired));
+  dispatch(
+    UserActions.toggleShowFutureAndExpired(favorite.showFutureAndExpired)
+  );
 };
 
 UserActions.openFavoriteNameDialog = () => dispatch => {
@@ -235,9 +240,7 @@ UserActions.startCreatingPolyline = (coordinates, id, type) => dispatch => {
 };
 
 UserActions.removeAllFilters = () => dispatch => {
-  dispatch(
-    createThunk(types.REMOVED_ALL_FILTERS, null)
-  )
+  dispatch(createThunk(types.REMOVED_ALL_FILTERS, null));
 };
 
 UserActions.addCoordinatesToPolylines = coords => dispatch => {
@@ -277,43 +280,47 @@ UserActions.changeElementTypeTab = value => dispatch => {
 
 UserActions.changeElementTypeTabByType = type => dispatch => {
   let typesMap = {
-    'quay': 0,
-    'entrance': 1,
-    'pathJunction': 1,
-    'parking': 2
+    quay: 0,
+    entrance: 1,
+    pathJunction: 1,
+    parking: 2
   };
   let value = typesMap[type] || 0;
   dispatch(UserActions.changeElementTypeTab(value));
-}
+};
 
-UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch, getState) => {
-
+UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
+  dispatch,
+  getState
+) => {
   let state = getState();
   let client = state.user.client;
 
   dispatch(
     createThunk(types.OPENED_MERGE_STOP_DIALOG, {
       id: fromStopPlaceID,
-      name: name,
+      name: name
     })
   );
 
   if (client) {
     dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
 
-    getMergeInfoForStops(client, fromStopPlaceID).then( response => {
-      dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-      dispatch(
-        createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-          id: fromStopPlaceID,
-          name: name,
-          quays: getQuaysForMergeInfo(response.data.stopPlace)
-        })
-      );
-    }).catch( err => {
-      dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-      console.log(err);
-    });
+    getMergeInfoForStops(client, fromStopPlaceID)
+      .then(response => {
+        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+        dispatch(
+          createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+            id: fromStopPlaceID,
+            name: name,
+            quays: getQuaysForMergeInfo(response.data.stopPlace)
+          })
+        );
+      })
+      .catch(err => {
+        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+        console.log(err);
+      });
   }
 };
 
@@ -351,8 +358,11 @@ UserActions.hideDeleteStopDialog = () => dispatch => {
   dispatch(createThunk(types.CANCELLED_DELETE_STOP_DIALOG, null));
 };
 
-UserActions.requestDeleteQuay = (stopPlaceId, quayId, importedId) => dispatch => {
-
+UserActions.requestDeleteQuay = (
+  stopPlaceId,
+  quayId,
+  importedId
+) => dispatch => {
   const source = {
     stopPlaceId,
     quayId
@@ -360,13 +370,87 @@ UserActions.requestDeleteQuay = (stopPlaceId, quayId, importedId) => dispatch =>
 
   dispatch(
     createThunk(types.REQUESTED_DELETE_QUAY, {
-      source, importedId
+      source,
+      importedId
     })
   );
 };
 
-UserActions.requestTerminateStopPlace = () => dispatch => {
+UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
   dispatch(createThunk(types.TERMINATE_DELETE_STOP_DIALOG, null));
+  if (stopPlaceId) {
+    dispatch(
+      createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
+        warning: 0,
+        loading: true,
+        error: false,
+        activeDatesSize: 0,
+        latestActiveDate: null,
+        stopPlaceId
+      })
+    );
+
+    checkStopPlaceUsage(stopPlaceId)
+      .then(({ data }) => {
+        if (data.stopPlace) {
+          let serviceJourneyActiveDates = new Set();
+          let latestActiveDate = null;
+
+          data.stopPlace.quays.forEach(quay => {
+            quay.lines.forEach(line => {
+              line.serviceJourneys.forEach(sj => {
+                sj.activeDates.forEach(activeDateString => {
+                  serviceJourneyActiveDates.add(activeDateString);
+                  const activeDateTime = new Date(activeDateString);
+                  if (latestActiveDate === null) {
+                    latestActiveDate = activeDateTime;
+                  } else {
+                    if (activeDateTime > latestActiveDate) {
+                      latestActiveDate = activeDateTime;
+                    }
+                  }
+                });
+              });
+            });
+          });
+
+          dispatch(
+            createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
+              warning: serviceJourneyActiveDates.size > 0,
+              loading: false,
+              error: false,
+              activeDatesSize: serviceJourneyActiveDates.size,
+              latestActiveDate,
+              stopPlaceId
+            })
+          );
+        } else {
+          // i.e. stop place is not in OTP, and returns null
+          dispatch(
+            createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
+              warning: false,
+              loading: false,
+              error: false,
+              activeDatesSize: null,
+              latestActiveDate: null,
+              stopPlaceId
+            })
+          );
+        }
+      })
+      .catch(() => {
+        dispatch(
+          createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
+            warning: false,
+            loading: false,
+            error: true,
+            activeDatesSize: 0,
+            latestActiveDate: null,
+            stopPlaceId
+          })
+        );
+      });
+  }
 };
 
 UserActions.closeMoveQuayDialog = () => dispatch => {
@@ -374,11 +458,13 @@ UserActions.closeMoveQuayDialog = () => dispatch => {
 };
 
 UserActions.openKeyValuesDialog = (keyValues, type, index) => dispatch => {
-  dispatch(createThunk(types.OPENED_KEY_VALUES_DIALOG, {
-    keyValues,
-    type,
-    index
-  }));
+  dispatch(
+    createThunk(types.OPENED_KEY_VALUES_DIALOG, {
+      keyValues,
+      type,
+      index
+    })
+  );
 };
 
 UserActions.closeKeyValuesDialog = () => dispatch => {
@@ -402,7 +488,9 @@ UserActions.setZoomLevel = zoomLevel => dispatch => {
 };
 
 UserActions.lookupCoordinates = (latLng, triggeredByDrag) => dispatch => {
-  dispatch(createThunk(types.LOOKUP_COORDINATES, {position: latLng, triggeredByDrag}));
+  dispatch(
+    createThunk(types.LOOKUP_COORDINATES, { position: latLng, triggeredByDrag })
+  );
 };
 
 UserActions.showRemoveStopPlaceFromParent = stopPlaceId => dispatch => {
@@ -417,8 +505,12 @@ UserActions.setServerDiffTime = diff => dispatch => {
   dispatch(createThunk(types.SET_SERVER_DIFF_TIME, diff));
 };
 
-UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => dispatch => {
-  getAddStopPlaceInfo(client, [stopPlaceId]).then( response => {
+UserActions.createMultimodalWith = (
+  client,
+  stopPlaceId,
+  fromMain
+) => dispatch => {
+  getAddStopPlaceInfo(client, [stopPlaceId]).then(response => {
     if (response.data) {
       const foundStop = Object.values(response.data)[0][0];
       const newStopPlace = new ParentStopPlace().createNew(
@@ -451,13 +543,12 @@ const getQuayById = (quays = [], quayId) => {
 const getQuaysForMergeInfo = stopPlace => {
   if (!stopPlace || !stopPlace.length) return [];
 
-  return stopPlace[0].quays.map( quay => ({
+  return stopPlace[0].quays.map(quay => ({
     publicCode: quay.publicCode,
     compassBearing: quay.compassBearing,
     privateCode: getIn(quay, ['privateCode', 'value'], null),
     id: quay.id
   }));
-}
-
+};
 
 export default UserActions;
