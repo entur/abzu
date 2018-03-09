@@ -488,7 +488,8 @@ class EditStopGeneral extends React.Component {
       unknown: formatMessage({ id: 'uknown_parking_type' }),
       elements: formatMessage({ id: 'elements' }),
       versions: formatMessage({ id: 'versions' }),
-      validBetween: formatMessage({ id: 'valid_between' })
+      validBetween: formatMessage({ id: 'valid_between' }),
+      notAssigned: formatMessage({id: 'not_assigned'})
     };
 
     const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
@@ -549,6 +550,7 @@ class EditStopGeneral extends React.Component {
             disabled={!versions.length}
             hide={stopPlace.isChildOfParent}
             handleSelect={this.handleLoadVersion.bind(this)}
+            defaultValue={translations.notAssigned}
           />
         </div>
         <div id="scroll-body" style={scrollable}>
@@ -605,6 +607,7 @@ class EditStopGeneral extends React.Component {
               disabled={disabled}
               activeStopPlace={stopPlace}
               itemTranslation={translations}
+              intl={intl}
             />
           </div>
           <ConfirmDialog

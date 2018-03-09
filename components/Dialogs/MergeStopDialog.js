@@ -69,7 +69,12 @@ class MergeStopDialog extends React.Component {
       result: formatMessage({ id: 'merge_stop_new_quays' }),
       result_empty: formatMessage({ id: 'merge_stop_no_new_quays' }),
       mergingNotAllowed: formatMessage({ id: 'merging_not_allowed' }),
-      error: formatMessage({ id: 'save_dialog_to_is_before_from' })
+      error: formatMessage({ id: 'save_dialog_to_is_before_from' }),
+      noMergedQuay: formatMessage({id: 'no_merged_quay'}),
+      oneMergeQuay: formatMessage({id: 'one_merged_quay'}),
+      mergedQuays: formatMessage({id: 'merged_quays'}),
+      merged: formatMessage({id: 'merged'}),
+      in: formatMessage({id: 'in'})
     };
 
     const fromStopPlace = sourceElement
@@ -85,20 +90,20 @@ class MergeStopDialog extends React.Component {
 
     // versionComment should be in Norwegian
 
-    let quaysMergedLabel = 'Ingen quayer flettet';
+    let quaysMergedLabel = translations.noMergedQuay;
 
     if (sourceElement && sourceElement.quays) {
       if (sourceElement.quays.length === 1) {
-        quaysMergedLabel = 'Én quay flettet.';
+        quaysMergedLabel = translations.oneMergeQuay
       } else if (sourceElement.quays.length > 1) {
-        quaysMergedLabel = `${sourceElement.quays.length} quayer flettet.`;
+        quaysMergedLabel = sourceElement.quays.length + ' ' + translations.mergedQuays;
       }
     }
+    const fromVersionComment = translations.merged + ' ' + fromStopPlace + ' ' + translations.in + ' ' + toStopPlace + '. ' + quaysMergedLabel;
+    const toVersionComment = translations.merged + ' ' + fromStopPlace + ' ' + translations.in + ' ' + toStopPlace + '. ' + quaysMergedLabel;
 
-    const fromVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${quaysMergedLabel}`;
-    const toVersionComment = `Flettet ${fromStopPlace} inn i ${toStopPlace}. ${quaysMergedLabel}`;
 
-    if (!sourceElement) return null;
+      if (!sourceElement) return null;
 
     const actions = [
       <FlatButton

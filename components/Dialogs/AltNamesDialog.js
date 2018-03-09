@@ -156,7 +156,6 @@ class AltNamesDialog extends React.Component {
     if (localeNameType) {
       return localeNameType[locale];
     }
-    return 'N/A';
   };
 
   getLangByLocale(lang, locale) {
@@ -164,7 +163,6 @@ class AltNamesDialog extends React.Component {
     if (localeLang) {
       return localeLang[locale];
     }
-    return 'N/A';
   }
 
   render() {
@@ -183,7 +181,8 @@ class AltNamesDialog extends React.Component {
       value: formatMessage({ id: 'name' }),
       add: formatMessage({ id: 'add' }),
       editing: formatMessage({ id: 'editing'}),
-      update: formatMessage({id: 'update'})
+      update: formatMessage({id: 'update'}),
+      notAssigned: formatMessage({id: 'not_assigned'})
     };
 
     const style = {
@@ -247,11 +246,11 @@ class AltNamesDialog extends React.Component {
                 }}
               >
                 <div style={itemStyle}>
-                  {this.getNameTypeByLocale(an.nameType, locale)}
+                  {this.getNameTypeByLocale(an.nameType, locale) || translations.notAssigned}
                 </div>
                 <div style={itemStyle}>{an.name.value}</div>
                 <div style={itemStyle}>
-                  {this.getLangByLocale(an.name.lang, locale)}
+                  {this.getLangByLocale(an.name.lang, locale) || translations.notAssigned}
                 </div>
                 {!disabled
                   ? <div style={{display: 'flex'}}>

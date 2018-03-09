@@ -335,6 +335,7 @@ class MarkerList extends React.Component {
                       isEditingStop={isEditingStop}
                       disabled={disabled}
                       currentIsNewStop={currentIsNewStop}
+                      defaultValue={formatMessage({ id: 'not_assigned'})}
                     />
                   );
                 });
@@ -464,6 +465,7 @@ class MarkerList extends React.Component {
                   showPathLink={!disabled}
                   isEditingStop={isEditingStop}
                   currentIsNewStop={currentIsNewStop}
+                  defaultValue={formatMessage({ id: 'not_assigned'})}
                 />
               );
             });
@@ -489,6 +491,7 @@ class MarkerList extends React.Component {
                     CustomPopupMarkerText
                   )}
                   name={entrance.name}
+                  defaultValue={formatMessage({ id: 'not_assigned'})}
                 />
               );
             });
@@ -514,6 +517,7 @@ class MarkerList extends React.Component {
                     CustomPopupMarkerText
                   )}
                   name={pathJunction.name}
+                  defaultValue={formatMessage({ id: 'not_assigned'})}
                 />
               );
             });
@@ -586,6 +590,7 @@ class MarkerList extends React.Component {
                     isEditingStop={isEditingStop}
                     disabled={disabled}
                     currentIsNewStop={currentIsNewStop}
+                    defaultValue={formatMessage({id: 'not_assigned'})}
                   />
                 );
               });

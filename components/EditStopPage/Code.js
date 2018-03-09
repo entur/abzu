@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import '../../styles/Code.css';
 
 export const CodeBadge = ({icon, type}) => {
@@ -23,7 +24,7 @@ export const CodeBadge = ({icon, type}) => {
   );
 }
 
-const Code = ({ type, value }) => {
+const Code = ({ type, value, defaultValue }) => {
   // As a tribute to PHP
   let valueIsSet = isSet(value);
 
@@ -31,7 +32,7 @@ const Code = ({ type, value }) => {
     <div className={type}>
       {valueIsSet
         ? <div style={{ marginTop: 2 }}>{value}</div>
-        : <div style={{ marginTop: 4, fontSize: 8 }}>N/A</div>}
+        : <div style={{ marginTop: 4, fontSize: 8 }}>{defaultValue}</div>}
     </div>
   );
 };

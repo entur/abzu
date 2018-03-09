@@ -44,7 +44,8 @@ class QuayMarker extends React.Component {
     isCreatingPolylines: PropTypes.bool.isRequired,
     handleChangeCoordinates: PropTypes.func,
     draggable: PropTypes.bool.isRequired,
-    handleSetCompassBearing: PropTypes.func
+    handleSetCompassBearing: PropTypes.func,
+    defaultValue: PropTypes.string.isRequired
   };
 
   getOSMURL() {
@@ -193,7 +194,8 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
-      showPublicCode
+      showPublicCode,
+      defaultValue
     } = this.props;
 
     if (!position) return null;
@@ -234,7 +236,8 @@ class QuayMarker extends React.Component {
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
-      />
+        defaultValueIcon={defaultValue}
+/>
     );
 
     let quayIcon = divIcon({
