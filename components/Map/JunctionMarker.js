@@ -26,8 +26,7 @@ class JunctionMarker extends React.Component {
     type: PropTypes.string.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     text: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired
   };
 
   componentDidUpdate() {
@@ -67,9 +66,9 @@ class JunctionMarker extends React.Component {
       position,
       index,
       type,
-      handleDragEnd,
+      handleDragEnd
     } = this.props;
-    const { text, name, defaultValue } = this.props;
+    const { text, name } = this.props;
 
     return (
       <Marker
@@ -92,7 +91,7 @@ class JunctionMarker extends React.Component {
                 fontSize: '1.1em',
               }}
             >
-              {name || defaultValue}
+              {name || text.notAssigned}
             </div>
             <div
               className="quay-marker-title"

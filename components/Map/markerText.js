@@ -21,7 +21,8 @@ export const popupMarkerText = formatMessage => ({
     createMultimodal: formatMessage({id: 'new__multi_stop'}),
     addToGroup: formatMessage({id: 'add_to_group'}),
     removeFromGroup: formatMessage({id: 'remove_from_group'}),
-    createGOS: formatMessage({id: 'create_group_of_stop_places'})
+    createGOS: formatMessage({id: 'create_group_of_stop_places'}),
+    notAssigned: formatMessage({id: 'not_assigned'})
   });
 
 export const newStopPlaceMarkerText = formatMessage => ({
