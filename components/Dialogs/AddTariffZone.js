@@ -21,7 +21,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { getTariffZones } from '../../graphql/Actions';
+import { getTariffZones } from '../../graphql/Tiamat/actions';
 import StopPlaceActions from '../../actions/StopPlaceActions';
 
 class AddTariffZone extends Component {

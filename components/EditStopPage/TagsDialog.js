@@ -18,7 +18,7 @@ import MdClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import { withApollo } from 'react-apollo';
 import TagItem from './TagItem';
-import { removeTag, getTags } from '../../graphql/Actions';
+import { removeTag, getTags } from '../../graphql/Tiamat/actions';
 import AddTagDialog from './AddTagDialog';
 import { connect } from 'react-redux';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
@@ -104,6 +104,7 @@ class TagsDialog extends Component {
                   key={'tag-item' + i}
                   handleDelete={this.handleDeleteTag.bind(this)}
                   tag={tag}
+                  intl={this.props.intl}
                 />
                 <div style={{fontSize: '0.8em', padding: '0 25px', color: '#4b4b4b', marginBottom: 2}}>{tag.comment}</div>
               </div>

@@ -43,6 +43,12 @@ module.exports = new Promise(function (resolve, reject) {
       default: 'https://api-test.entur.org/stop_places/1.0/graphql',
       env: 'TIAMAT_BASE_URL'
     },
+    OTPUrl: {
+      doc: 'URL for for OTP / Journey planner graphql endpoint',
+      format: 'url',
+      default: 'https://api-test.entur.org/journeyplanner/2.0/index/graphql',
+      env: 'OTP_URL'
+    },
     endpointBase: {
       doc: 'Base URL for for timat including slash',
       format: String,

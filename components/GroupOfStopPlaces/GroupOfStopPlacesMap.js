@@ -16,7 +16,7 @@ import React, {Component} from 'react';
 import LeafletMap from '../Map/LeafletMap';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { getNeighbourStops } from '../../graphql/Actions';
+import { getNeighbourStops } from '../../graphql/Tiamat/actions';
 import { withApollo } from 'react-apollo';
 import Settings from '../../singletons/SettingsManager';
 

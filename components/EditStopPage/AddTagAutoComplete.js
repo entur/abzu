@@ -17,7 +17,7 @@ import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
 import debounce from 'lodash.debounce';
-import { findTagByName } from '../../graphql/Actions';
+import { findTagByName } from '../../graphql/Tiamat/actions';
 import MenuItem from 'material-ui/MenuItem';
 import { toCamelCase } from '../../utils/';
 import { injectIntl } from 'react-intl';

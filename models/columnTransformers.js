@@ -47,7 +47,7 @@ const isEquipted = (stop, path) => {
 const getParkingType = parking => {
   const pedalCycle = 'pedalCycle';
   const carParking = 'car';
-  const unknownParking = 'N/A';
+  const unknownParking = ColumnTranslations.notAssigned;
   const iconStyle = {
     borderRadius: '50%',
     border: '1px solid #000',
@@ -130,7 +130,7 @@ export const ColumnTransformerStopPlaceJsx = {
   muncipality: stop => stop.topographicPlace,
   county: stop => stop.parentTopographicPlace,
   importedId: stop => stop.importedId.join('\r\n'),
-  position: stop => (stop.location ? stop.location.join(',') : 'N/A'),
+  position: stop => (stop.location ? stop.location.join(',') : ColumnTranslations.notAssigned),
   quays: stop => (stop.quays ? stop.quays.length : 0),
   parking: stop => getParkingElements(stop.parking),
   wheelchairAccess: stop => {
@@ -324,7 +324,7 @@ export const ColumnTransformerQuaysJsx = {
       </div>
     );
   },
-  position: quay => (quay.location ? quay.location.join(',') : 'N/A'),
+  position: quay => (quay.location ? quay.location.join(',') : ColumnTranslations.notAssigned),
   publicCode: quay => quay.publicCode,
   privateCode: quay => quay.privateCode,
   wheelchairAccess: quay =>
@@ -373,7 +373,8 @@ export const ColumnTranslations = {
     waitingRoomEquipment: 'Venterom',
     sanitaryEquipment: 'WC',
     generalSign: 'Transportskilt',
-    tags: 'Tagger'
+    tags: 'Tagger',
+    notAssigned: 'N/A'
   },
   en: {
     name: 'Name',
@@ -393,7 +394,8 @@ export const ColumnTranslations = {
     waitingRoomEquipment: 'Waiting room',
     sanitaryEquipment: 'WC',
     generalSign: 'Transport sign',
-    tags: 'Tags'
+    tags: 'Tags',
+    notAssigned: 'N/A'
   },
   fr: {
     name: 'Nom',
@@ -412,7 +414,8 @@ export const ColumnTranslations = {
     shelterEquipment: 'Abri',
     waitingRoomEquipment: "Salle d'attente",
     sanitaryEquipment: 'WC',
-    generalSign: 'Panneau de transport',
-    tags: 'Tags'
+    generalSign: 'Information voyageur à l\'arrêt',
+    tags: 'Tags',
+    notAssigned: 'N/R'
   }
 };

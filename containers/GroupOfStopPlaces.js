@@ -15,7 +15,7 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
-import { getGroupOfStopPlacesById } from '../graphql/Actions';
+import { getGroupOfStopPlacesById } from '../graphql/Tiamat/actions';
 import GroupOfStopPlaceMap from '../components/GroupOfStopPlaces/GroupOfStopPlacesMap';
 import EditGroupOfStopPlace from '../components/GroupOfStopPlaces/EditGroupOfStopPlaces';
 import Loader from '../components/Dialogs/Loader';

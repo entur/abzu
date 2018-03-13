@@ -40,11 +40,11 @@ if (areIntlLocalesSupported(['nb'])) {
 }
 
 class TerminateStopPlaceDialog extends React.Component {
-
   static propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
+    warningInfo: PropTypes.object,
     intl: PropTypes.object.isRequired
   };
 
@@ -64,8 +64,73 @@ class TerminateStopPlaceDialog extends React.Component {
     const { isChildOfParent, hasExpired } = stopPlace;
     const { shouldHardDelete } = this.state;
     // only possible to delete stop if stop has expired
-    const expiredNotDeleteCondition = hasExpired ? !(hasExpired && shouldHardDelete) : false;
-    return (!!isChildOfParent || isLoading || expiredNotDeleteCondition);
+    const expiredNotDeleteCondition = hasExpired
+      ? !(hasExpired && shouldHardDelete)
+      : false;
+    return !!isChildOfParent || isLoading || expiredNotDeleteCondition;
+  }
+
+  getUsageWarning() {
+    const { stopPlace, warningInfo, intl } = this.props;
+    const { formatMessage } = intl;
+    const { date } = this.state;
+
+    if (warningInfo) {
+      const {
+        stopPlaceId,
+        warning,
+        loading,
+        error,
+        activeDatesSize,
+        latestActiveDate
+      } = warningInfo;
+      const infoStyle = { fontSize: '1.1em' };
+      const alertStyle = { ...infoStyle, color: '#cc0000' };
+
+      if (loading) {
+        return (
+          <div style={infoStyle}>
+            {formatMessage({ id: 'checking_stop_place_usage' })}
+          </div>
+        );
+      }
+
+      if (error) {
+        return (
+          <div style={alertStyle}>
+            {formatMessage({ id: 'failed_checking_stop_place_usage' })}
+          </div>
+        );
+      }
+
+      if (
+        warning &&
+        stopPlaceId === stopPlace.id &&
+        (stopPlace && stopPlace.id)
+      ) {
+        const makeSomeNoise = activeDatesSize && latestActiveDate > date;
+        const panicStyle = {
+          color: '#000',
+          padding: 10,
+          border: '1px solid black',
+          background: 'rgb(252, 200, 197)'
+        };
+        const wrapperStyle = !makeSomeNoise ? alertStyle : panicStyle;
+        return (
+          <div style={wrapperStyle}>
+            <div>
+              {formatMessage({ id: 'stop_place_usages_found' })}
+            </div>
+            {makeSomeNoise && (
+              <div style={{ fontWeight: 600, marginTop: 5 }}>
+                {formatMessage({ id: 'important_stop_place_usages_found' })}
+              </div>
+            )}
+          </div>
+        );
+      }
+    }
+    return null;
   }
 
   getInitialState(props) {
@@ -109,6 +174,7 @@ class TerminateStopPlaceDialog extends React.Component {
     };
 
     const dateTime = helpers.getFullUTCString(time, date);
+    const warningUsage = this.getUsageWarning();
 
     const actions = [
       <FlatButton
@@ -123,16 +189,21 @@ class TerminateStopPlaceDialog extends React.Component {
         primary={true}
         keyboardFocused={true}
         icon={
-          isLoading
-            ? <Spinner/>
-            : shouldHardDelete
-              ? <MdDeleteForever/>
-              : <MdDelete/>
+          isLoading ? (
+            <Spinner />
+          ) : shouldHardDelete ? (
+            <MdDeleteForever />
+          ) : (
+            <MdDelete />
+          )
         }
       />
     ];
 
-    const earliestFrom = getEarliestFromDate(previousValidBetween, serverTimeDiff);
+    const earliestFrom = getEarliestFromDate(
+      previousValidBetween,
+      serverTimeDiff
+    );
 
     return (
       <Dialog
@@ -148,13 +219,15 @@ class TerminateStopPlaceDialog extends React.Component {
       >
         <div>
           <div style={{ marginBottom: 10, color: '#000' }}>
-            <span
-              style={{ fontWeight: 600 }}
-            >{`${stopPlace.name} (${stopPlace.id})`}</span>
+            <span style={{ fontWeight: 600 }}>{`${stopPlace.name} (${
+              stopPlace.id
+            })`}</span>
           </div>
-          <div style={{color: '#bb271c'}}>
-            {stopPlace.hasExpired && formatMessage({id: 'expired_can_only_be_deleted'})}
+          <div style={{ color: '#bb271c' }}>
+            {stopPlace.hasExpired &&
+              formatMessage({ id: 'expired_can_only_be_deleted' })}
           </div>
+          {warningUsage}
           <DatePicker
             hintText={translations.date}
             disabled={shouldHardDelete || stopPlace.hasExpired}
@@ -162,11 +235,13 @@ class TerminateStopPlaceDialog extends React.Component {
             floatingLabelText={translations.date}
             okLabel={translations.use}
             DateTimeFormat={DateTimeFormat}
-            formatDate={new DateTimeFormat(intl.locale, {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            }).format}
+            formatDate={
+              new DateTimeFormat(intl.locale, {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              }).format
+            }
             autoOk
             mode="landscape"
             minDate={earliestFrom}
@@ -201,20 +276,22 @@ class TerminateStopPlaceDialog extends React.Component {
             id="terminate-comment"
             onChange={(e, v) => this.setState({ comment: v })}
           />
-          {canDeleteStop &&
+          {canDeleteStop && (
             <Checkbox
               style={{ marginTop: 5 }}
               checked={shouldHardDelete}
               onCheck={(e, v) => this.setState({ shouldHardDelete: v })}
               label={translations.deleteLabel}
-            />}
-          {shouldHardDelete &&
+            />
+          )}
+          {shouldHardDelete && (
             <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>
               <span>{translations.delete_warning}</span>
-            </div>}
+            </div>
+          )}
         </div>
       </Dialog>
     );

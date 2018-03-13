@@ -34,10 +34,10 @@ import {
   removeStopPlaceFromMultiModalStop,
   terminateStop,
   deleteStopPlace
-} from '../../graphql/Actions';
+} from '../../graphql/Tiamat/actions';
 import * as types from '../../actions/Types';
 import { MutationErrorCodes } from '../../models/ErrorCodes';
-import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
+import { stopPlaceAndPathLinkByVersion } from '../../graphql/Tiamat/queries';
 import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
 import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
@@ -370,7 +370,7 @@ class EditParentGeneral extends React.Component {
                 color: disableTerminate ? 'rgba(0, 0, 0, 0.3)' : 'initial'
               }}
               onClick={() => {
-                this.props.dispatch(UserActions.requestTerminateStopPlace());
+                this.props.dispatch(UserActions.requestTerminateStopPlace(stopPlace.id));
               }}
             />
             <FlatButton
@@ -418,6 +418,7 @@ class EditParentGeneral extends React.Component {
           canDeleteStop={this.props.canDeleteStop}
           isLoading={this.state.isLoading}
           serverTimeDiff={this.props.serverTimeDiff}
+          warningInfo={this.props.deleteStopDialogWarning}
         />
         {removeStopPlaceFromParentOpen &&
           <RemoveStopFromParentDialog
@@ -472,7 +473,8 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
   deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
   originalStopPlace: stopPlace.originalCurrent,
-  serverTimeDiff: user.serverTimeDiff
+  serverTimeDiff: user.serverTimeDiff,
+  deleteStopDialogWarning: user.deleteStopDialogWarning
 });
 
 export default withApollo(

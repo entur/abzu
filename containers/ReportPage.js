@@ -24,15 +24,15 @@ import { withApollo } from 'react-apollo';
 import {
   topopGraphicalPlacesReportQuery,
   findStopForReport
-} from '../graphql/Queries';
-import { getTopographicPlaces } from '../graphql/Actions';
+} from '../graphql/Tiamat/queries';
+import { getTopographicPlaces } from '../graphql/Tiamat/actions';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MdSpinner from '../static/icons/spinner';
 import MdSearch from 'material-ui/svg-icons/action/search';
 import ColumnFilterPopover from '../components/EditStopPage/ColumnFilterPopover';
-import { getParkingForMultipleStopPlaces } from '../graphql/Queries';
+import { getParkingForMultipleStopPlaces } from '../graphql/Tiamat/queries';
 import { reportReducer } from '../reducers/';
 import { injectIntl } from 'react-intl';
 import {

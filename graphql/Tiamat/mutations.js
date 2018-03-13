@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 
 import gql from 'graphql-tag';
-import Fragments from './Fragments';
+import Fragments from './fragments';
 
 export const mutateParentStopPlace = gql`
   mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {

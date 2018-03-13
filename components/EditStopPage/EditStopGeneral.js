@@ -25,8 +25,8 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import StopPlaceDetails from './StopPlaceDetails';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
-import { mutatePathLink, mutateParking } from '../../graphql/Mutations';
-import { stopPlaceAndPathLinkByVersion } from '../../graphql/Queries';
+import { mutatePathLink, mutateParking } from '../../graphql/Tiamat/mutations';
+import { stopPlaceAndPathLinkByVersion } from '../../graphql/Tiamat/queries';
 import * as types from '../../actions/Types';
 import EditStopAdditional from './EditStopAdditional';
 import MdUndo from 'material-ui/svg-icons/content/undo';
@@ -51,7 +51,7 @@ import {
   moveQuaysToNewStop,
   saveStopPlaceBasedOnType,
   terminateStop
-} from '../../graphql/Actions';
+} from '../../graphql/Tiamat/actions';
 import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import MoveQuayDialog from '../Dialogs/MoveQuayDialog';
 import MoveQuayNewStopDialog from '../Dialogs/MoveQuayNewStopDialog';
@@ -488,7 +488,8 @@ class EditStopGeneral extends React.Component {
       unknown: formatMessage({ id: 'uknown_parking_type' }),
       elements: formatMessage({ id: 'elements' }),
       versions: formatMessage({ id: 'versions' }),
-      validBetween: formatMessage({ id: 'valid_between' })
+      validBetween: formatMessage({ id: 'valid_between' }),
+      notAssigned: formatMessage({id: 'not_assigned'})
     };
 
     const stopPlaceLabel = this.getTitleText(stopPlace, originalStopPlace, formatMessage);
@@ -549,6 +550,7 @@ class EditStopGeneral extends React.Component {
             disabled={!versions.length}
             hide={stopPlace.isChildOfParent}
             handleSelect={this.handleLoadVersion.bind(this)}
+            defaultValue={translations.notAssigned}
           />
         </div>
         <div id="scroll-body" style={scrollable}>
@@ -605,6 +607,7 @@ class EditStopGeneral extends React.Component {
               disabled={disabled}
               activeStopPlace={stopPlace}
               itemTranslation={translations}
+              intl={intl}
             />
           </div>
           <ConfirmDialog
@@ -694,6 +697,7 @@ class EditStopGeneral extends React.Component {
             canDeleteStop={canDeleteStop}
             isLoading={this.state.isLoading}
             serverTimeDiff={this.props.serverTimeDiff}
+            warningInfo={this.props.deleteStopDialogWarning}
           />
           <MoveQuayDialog
             open={this.props.moveQuayDialogOpen}
@@ -742,7 +746,7 @@ class EditStopGeneral extends React.Component {
                 style={{ margin: '8 5', zIndex: 999 }}
                 labelStyle={{ fontSize: '0.7em', color: disableTerminate ? 'rgba(0, 0, 0, 0.3)' : 'initial'}}
                 onClick={() => {
-                  this.props.dispatch(UserActions.requestTerminateStopPlace())
+                  this.props.dispatch(UserActions.requestTerminateStopPlace(stopPlace.id))
                 }}
               />
           }
@@ -799,7 +803,8 @@ const mapStateToProps = state => ({
   originalStopPlace: state.stopPlace.originalCurrent,
   serverTimeDiff: state.user.serverTimeDiff,
   isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo,
-  neighbourStopQuays: state.stopPlace.neighbourStopQuays
+  neighbourStopQuays: state.stopPlace.neighbourStopQuays,
+  deleteStopDialogWarning: state.user.deleteStopDialogWarning,
 });
 
 export default withApollo(
