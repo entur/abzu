@@ -60,9 +60,15 @@ class TerminateStopPlaceDialog extends React.Component {
   }
 
   getConfirmIsDisabled() {
-    const { stopPlace, isLoading } = this.props;
+    const { stopPlace, isLoading, warningInfo } = this.props;
     const { isChildOfParent, hasExpired } = stopPlace;
     const { shouldHardDelete } = this.state;
+
+    // complete OTP usage check first
+    if (warningInfo && warningInfo.loading) {
+      return true;
+    }
+
     // only possible to delete stop if stop has expired
     const expiredNotDeleteCondition = hasExpired
       ? !(hasExpired && shouldHardDelete)
@@ -89,8 +95,9 @@ class TerminateStopPlaceDialog extends React.Component {
 
       if (loading) {
         return (
-          <div style={infoStyle}>
-            {formatMessage({ id: 'checking_stop_place_usage' })}
+          <div style={{ ...infoStyle, display: 'flex', alignItems: 'center' }}>
+            <Spinner />
+            <div style={{marginLeft: 5}}>{formatMessage({ id: 'checking_stop_place_usage' })}</div>
           </div>
         );
       }
@@ -118,9 +125,7 @@ class TerminateStopPlaceDialog extends React.Component {
         const wrapperStyle = !makeSomeNoise ? alertStyle : panicStyle;
         return (
           <div style={wrapperStyle}>
-            <div>
-              {formatMessage({ id: 'stop_place_usages_found' })}
-            </div>
+            <div>{formatMessage({ id: 'stop_place_usages_found' })}</div>
             {makeSomeNoise && (
               <div style={{ fontWeight: 600, marginTop: 5 }}>
                 {formatMessage({ id: 'important_stop_place_usages_found' })}
