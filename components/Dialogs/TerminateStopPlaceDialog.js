@@ -184,7 +184,7 @@ class TerminateStopPlaceDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={() => handleConfirm(shouldHardDelete, comment, dateTime)}
+        onClick={() => handleConfirm(shouldHardDelete, comment, dateTime)}
         disabled={this.getConfirmIsDisabled()}
         primary={true}
         keyboardFocused={true}

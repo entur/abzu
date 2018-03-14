@@ -72,7 +72,7 @@ class DeleteQuayDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={handleConfirm}
+        onClick={handleConfirm}
         primary={true}
         disabled={isLoading || !changesUnderstood}
         keyboardFocused={true}
