@@ -88,7 +88,8 @@ class TerminateStopPlaceDialog extends React.Component {
         loading,
         error,
         activeDatesSize,
-        latestActiveDate
+        latestActiveDate,
+        authorities
       } = warningInfo;
       const infoStyle = { fontSize: '1.1em' };
       const alertStyle = { ...infoStyle, color: '#cc0000' };
@@ -127,8 +128,9 @@ class TerminateStopPlaceDialog extends React.Component {
           <div style={wrapperStyle}>
             <div>{formatMessage({ id: 'stop_place_usages_found' })}</div>
             {makeSomeNoise && (
-              <div style={{ fontWeight: 600, marginTop: 5 }}>
-                {formatMessage({ id: 'important_stop_place_usages_found' })}
+              <div style={{ fontWeight: 600, marginTop: 5, display: 'flex', flexDirection: 'column', lineHeight: '1.5' }}>
+                <div>{formatMessage({ id: 'important_stop_place_usages_found' })}</div>
+                <div style={{fontStyle: 'italic'}}>{ authorities && authorities.join(', ') }</div>
               </div>
             )}
           </div>

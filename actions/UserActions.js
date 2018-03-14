@@ -197,8 +197,8 @@ UserActions.setSearchText = text => dispatch => {
 UserActions.setMissingCoordinates = (position, stopPlaceId) => dispatch => {
   dispatch(
     createThunk(types.SET_MISSING_COORDINATES, {
-      stopPlaceId: stopPlaceId,
-      position: position
+      stopPlaceId,
+      position
     })
   );
 };
@@ -394,10 +394,16 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
       .then(({ data }) => {
         if (data.stopPlace) {
           let serviceJourneyActiveDates = new Set();
+          let authorities = new Set();
           let latestActiveDate = null;
 
           data.stopPlace.quays.forEach(quay => {
             quay.lines.forEach(line => {
+
+              if (line.authority && line.authority.name) {
+                authorities.add(line.authority.name);
+              }
+
               line.serviceJourneys.forEach(sj => {
                 sj.activeDates.forEach(activeDateString => {
                   serviceJourneyActiveDates.add(activeDateString);
@@ -417,6 +423,7 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
           dispatch(
             createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
               warning: serviceJourneyActiveDates.size > 0,
+              authorities: Array.from(authorities),
               loading: false,
               error: false,
               activeDatesSize: serviceJourneyActiveDates.size,

@@ -366,5 +366,5 @@
   "checking_stop_place_usage": "Checking usage of stop place",
   "failed_checking_stop_place_usage": "Failed to find usage of stop place.",
   "stop_place_usages_found": "Warning: This stop place is use",
-  "important_stop_place_usages_found": "The stop place has a scheduled journey after requested termination date"
+  "important_stop_place_usages_found": "The stop place has a scheduled journey after requested termination date. The Stop place is used by:"
 }

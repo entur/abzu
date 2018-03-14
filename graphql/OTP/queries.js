@@ -2,18 +2,21 @@ import gql from "graphql-tag";
 
 export const findStopPlaceUsage = gql`
   query findStopPlaceUsage($stopPlaceId:String!) {
-  stopPlace(id: $stopPlaceId) {
-    id
-    name
-    quays {
-      lines {
-        id
-        serviceJourneys {
+    stopPlace(id: $stopPlaceId) {
+      id
+      name
+      quays {
+        lines {
+          authority {
+            name
+          }
           id
-          activeDates
-          publicCode
+          serviceJourneys {
+            id
+            activeDates
+            publicCode
+          }
         }
       }
-    }
   }
 }`;
