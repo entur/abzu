@@ -35,6 +35,8 @@ export const initialState = {
   movingQuay: null,
   deleteQuayImportedId: [],
   fetchOTPInfoMergeLoading: false,
+  fetchOTPInfoDeleteLoading: false,
+  deleteQuayWarning: null,
 };
 
 const mapReducer = (state = initialState, action) => {
@@ -132,7 +134,20 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         deleteQuayDialogOpen: true,
         deletingQuay: action.payLoad.source,
-        deleteQuayImportedId: action.payLoad.importedId
+        deleteQuayImportedId: action.payLoad.importedId,
+        fetchOTPInfoDeleteLoading: true,
+      });
+
+    case types.GET_QUAY_DELETE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoDeleteLoading: false,
+        deleteQuayWarning: action.payLoad
+      });
+
+    case types.ERROR_QUAY_DELETE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoDeleteLoading: false,
+        deleteQuayWarning: null,
       });
 
     case types.REQUESTED_MOVE_QUAY_NEW_STOP:

@@ -347,36 +347,41 @@ UserActions.endMergingQuayTo = id => (dispatch, getState) => {
 
   const fromQuayId = state.mapUtils.mergingQuay.fromQuay.id;
 
-  checkQuayUsage(fromQuayId).then(({data}) => {
-    if (data.quay && data.quay.lines) {
+  checkQuayUsage(fromQuayId)
+    .then(({ data }) => {
+      if (data.quay && data.quay.lines) {
+        let authorities = new Set();
+        let serviceJourneyActiveDates = new Set();
 
-      let authorities = new Set();
-      let serviceJourneyActiveDates = new Set();
-
-      data.quay.lines.forEach(line => {
-        if (line.authority && line.authority.name) {
-          authorities.add(line.authority.name);
-        }
-        line.serviceJourneys.forEach(sj => {
-          sj.activeDates.forEach(activeDateString => {
-            serviceJourneyActiveDates.add(activeDateString);
+        data.quay.lines.forEach(line => {
+          if (line.authority && line.authority.name) {
+            authorities.add(line.authority.name);
+          }
+          line.serviceJourneys.forEach(sj => {
+            sj.activeDates.forEach(activeDateString => {
+              serviceJourneyActiveDates.add(activeDateString);
+            });
           });
         });
-      });
 
-      dispatch(createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
-        authorities: Array.from(authorities),
-        warning: serviceJourneyActiveDates.size > 0.
-      }));
-    } else {
-      dispatch(createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
-        authorities: [],
-        warning: 0
-      }));
-    }
-  }).catch(() => {
+        dispatch(
+          createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
+            authorities: Array.from(authorities),
+            warning: serviceJourneyActiveDates.size > 0
+          })
+        );
+      } else {
+        dispatch(
+          createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
+            authorities: [],
+            warning: 0
+          })
+        );
+      }
+    })
+    .catch(() => {
       dispatch(createThunk(types.ERROR_QUAY_MERGE_OTP_INFO, null));
-  });
+    });
 };
 
 UserActions.cancelMergingQuayFrom = () => dispatch => {
@@ -407,6 +412,42 @@ UserActions.requestDeleteQuay = (
       importedId
     })
   );
+
+  checkQuayUsage(quayId)
+    .then(({ data }) => {
+      if (data.quay && data.quay.lines) {
+        let authorities = new Set();
+        let serviceJourneyActiveDates = new Set();
+
+        data.quay.lines.forEach(line => {
+          if (line.authority && line.authority.name) {
+            authorities.add(line.authority.name);
+          }
+          line.serviceJourneys.forEach(sj => {
+            sj.activeDates.forEach(activeDateString => {
+              serviceJourneyActiveDates.add(activeDateString);
+            });
+          });
+        });
+
+        dispatch(
+          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+            authorities: Array.from(authorities),
+            warning: serviceJourneyActiveDates.size > 0
+          })
+        );
+      } else {
+        dispatch(
+          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+            authorities: [],
+            warning: 0
+          })
+        );
+      }
+    })
+    .catch(() => {
+      dispatch(createThunk(types.ERROR_QUAY_DELETE_OTP_INFO, null));
+    });
 };
 
 const formatStopPlaceUsageDetails = stopPlace => {

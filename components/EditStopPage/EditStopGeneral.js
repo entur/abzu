@@ -466,7 +466,9 @@ class EditStopGeneral extends React.Component {
       originalStopPlace,
       deleteQuayImportedId,
       fetchOTPInfoMergeLoading,
-      mergeQuayWarning
+      mergeQuayWarning,
+      fetchOTPInfoDeleteLoading,
+      deleteQuayWarning
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -690,6 +692,8 @@ class EditStopGeneral extends React.Component {
             deletingQuay={this.props.deletingQuay}
             isLoading={this.state.isLoading}
             importedId={deleteQuayImportedId}
+            warningInfo={deleteQuayWarning}
+            fetchingOTPInfoLoading={fetchOTPInfoDeleteLoading}
           />
           <TerminateStopPlaceDialog
             open={this.props.deleteStopDialogOpen}
@@ -811,6 +815,8 @@ const mapStateToProps = state => ({
   deleteStopDialogWarning: state.user.deleteStopDialogWarning,
   fetchOTPInfoMergeLoading: state.mapUtils.fetchOTPInfoMergeLoading,
   mergeQuayWarning: state.mapUtils.mergeQuayWarning,
+  fetchOTPInfoDeleteLoading: state.mapUtils.fetchOTPInfoDeleteLoading,
+  deleteQuayWarning: state.mapUtils.deleteQuayWarning,
 });
 
 export default withApollo(
