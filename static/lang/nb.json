@@ -366,5 +366,8 @@
   "checking_stop_place_usage": "Sjekker bruk av stoppested",
   "failed_checking_stop_place_usage": "Feilet å finne bruk.",
   "stop_place_usages_found": "Advarsel: Dette stoppestedet er i bruk!",
-  "important_stop_place_usages_found": "Det er trafikk på stoppestedet etter nedleggelsesdato. Stoppestedet benyttes av:"
+  "important_stop_place_usages_found": "Det er trafikk på stoppestedet etter nedleggelsesdato. Brukes av:",
+  "checking_quay_usage": "Sjekker bruk av kilde-quay",
+  "quay_usages_found": "Advarsel: Kildequayen er i bruk!",
+  "important_quay_usages_found": "Det er trafikk på kildequayen. Brukes av:"
 }

@@ -1,7 +1,7 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const findStopPlaceUsage = gql`
-  query findStopPlaceUsage($stopPlaceId:String!) {
+  query findStopPlaceUsage($stopPlaceId: String!) {
     stopPlace(id: $stopPlaceId) {
       id
       name
@@ -18,5 +18,26 @@ export const findStopPlaceUsage = gql`
           }
         }
       }
+    }
   }
-}`;
+`;
+
+export const findQuayUsage = gql`
+  query findStopPlaceUsage($quayId: String!) {
+    quay(id: $quayId) {
+      id
+      name
+      lines {
+        authority {
+          name
+        }
+        id
+        serviceJourneys {
+          id
+          activeDates
+          publicCode
+        }
+      }
+    }
+  }
+`;
