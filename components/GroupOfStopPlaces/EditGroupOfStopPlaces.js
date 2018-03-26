@@ -22,7 +22,7 @@ import MdSave from 'material-ui/svg-icons/content/save';
 import { connect } from 'react-redux';
 import SaveGroupDialog from '../Dialogs/SaveGroupDialog';
 import mapHelper from '../../modelUtils/mapToQueryVariables';
-import { mutateGroupOfStopPlace, deleteGroupOfStopPlaces } from '../../graphql/Actions';
+import { mutateGroupOfStopPlace, deleteGroupOfStopPlaces } from '../../graphql/Tiamat/actions';
 import { withApollo } from 'react-apollo';
 import * as types from '../../actions/Types';
 import Routes from '../../routes/';

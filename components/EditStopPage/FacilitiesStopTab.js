@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import TicketMachine from '../../static/icons/facilities/TicketMachine';
@@ -188,6 +189,8 @@ class FacilitiesStopTab extends React.Component {
     const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace);
     const WC = equiptmentHelpers.getSanitaryEquipmentState(stopPlace);
     const sign512 = equiptmentHelpers.get512SignEquipment(stopPlace);
+
+    console.log(stopPlace);
 
     const ticketMachineNumber = getIn(
       stopPlace,

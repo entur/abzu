@@ -7,7 +7,7 @@ var globSync = require('glob').sync;
 var path = require('path');
 var fs = require('fs');
 var axios = require('axios');
-var introspectionQuery = require('./graphql/introspection').introspectionQuery;
+var introspectionQuery = require('./graphql/Tiamat/introspection').introspectionQuery;
 var bodyParser = require('body-parser');
 const Routes = require('./routes/');
 const getRouteEntries = require('./routes/entries').getRouteEntries;
@@ -77,10 +77,11 @@ convictPromise
       [ENDPOINTBASE + 'config.json', [...configEndpoints]],
       function(req, res) {
 
-        var cfg = {
+        const cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),
           OSMUrl: convict.get('OSMUrl'),
+          OTPUrl: convict.get('OTPUrl'),
           tiamatEnv: convict.get('tiamatEnv'),
           netexPrefix: convict.get('netexPrefix'),
           // Pod ID used in req header for Tiamat
@@ -153,7 +154,7 @@ convictPromise
     fetch(introspectionQuery).then(response => {
 
       fs.writeFileSync(
-        './graphql/schema.json',
+        './graphql/Tiamat/schema.json',
         JSON.stringify(response.data),
         'utf8'
       );

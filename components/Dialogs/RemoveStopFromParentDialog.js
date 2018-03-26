@@ -86,7 +86,7 @@ class RemoveStopFromParentDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={handleConfirm}
+        onClick={handleConfirm}
         disabled={confirmDisabled}
         primary={true}
         keyboardFocused={true}

@@ -16,7 +16,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SearchBox from '../components/MainPage/SearchBox';
 import StopPlacesMap from '../components/Map/StopPlacesMap';
-import { getStopPlaceById, getGroupOfStopPlacesById } from '../graphql/Actions';
+import { getStopPlaceById, getGroupOfStopPlacesById } from '../graphql/Tiamat/actions';
 import { withApollo } from 'react-apollo';
 import formatHelpers from '../modelUtils/mapToClient';
 import StopPlaceActions from '../actions/StopPlaceActions';

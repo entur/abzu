@@ -32,7 +32,7 @@ import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import {
   findEntitiesWithFilters,
   findTopographicalPlace
-} from '../../graphql/Actions';
+} from '../../graphql/Tiamat/actions';
 import { withApollo } from 'react-apollo';
 import FavoritePopover from './FavoritePopover';
 import ModalityFilter from '../EditStopPage/ModalityFilter';

@@ -16,7 +16,7 @@ import React, { Component } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import { withApollo } from 'react-apollo';
-import { getTagsByName } from '../../graphql/Actions';
+import { getTagsByName } from '../../graphql/Tiamat/actions';
 import MenuItem from 'material-ui/MenuItem';
 import Menu from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';

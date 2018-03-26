@@ -34,6 +34,9 @@ export const initialState = {
   deletingQuay: null,
   movingQuay: null,
   deleteQuayImportedId: [],
+  fetchOTPInfoMergeLoading: false,
+  fetchOTPInfoDeleteLoading: false,
+  deleteQuayWarning: null,
 };
 
 const mapReducer = (state = initialState, action) => {
@@ -85,12 +88,26 @@ const mapReducer = (state = initialState, action) => {
     case types.ENDED_MERGING_QUAY_TO:
       return Object.assign({}, state, {
         mergingQuayDialogOpen: true,
+        fetchOTPInfoMergeLoading: true,
         mergingQuay: {
           ...state.mergingQuay,
         isMerging: false,
         toQuay: action.payLoad,
         },
       });
+
+    case types.GET_QUAY_MERGE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoMergeLoading: false,
+        mergeQuayWarning: action.payLoad
+      });
+
+    case types.ERROR_QUAY_MERGE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoMergeLoading: false,
+        mergeQuayWarning: null
+      });
+
 
     case types.CANCELLED_MERGING_QUAY_FROM:
       return Object.assign({}, state, {
@@ -104,6 +121,8 @@ const mapReducer = (state = initialState, action) => {
     case types.CLOSED_MERGE_QUAYS_DIALOG:
       return Object.assign({}, state, {
         mergingQuayDialogOpen: false,
+        mergeQuayWarning: null,
+        fetchOTPInfoMergeLoading: false,
         mergingQuay: {
           isMerging: false,
           fromQuay: null,
@@ -115,7 +134,20 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         deleteQuayDialogOpen: true,
         deletingQuay: action.payLoad.source,
-        deleteQuayImportedId: action.payLoad.importedId
+        deleteQuayImportedId: action.payLoad.importedId,
+        fetchOTPInfoDeleteLoading: true,
+      });
+
+    case types.GET_QUAY_DELETE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoDeleteLoading: false,
+        deleteQuayWarning: action.payLoad
+      });
+
+    case types.ERROR_QUAY_DELETE_OTP_INFO:
+      return Object.assign({}, state, {
+        fetchOTPInfoDeleteLoading: false,
+        deleteQuayWarning: null,
       });
 
     case types.REQUESTED_MOVE_QUAY_NEW_STOP:

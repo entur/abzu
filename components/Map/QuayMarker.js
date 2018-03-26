@@ -286,8 +286,8 @@ class QuayMarker extends React.Component {
               }}
             >
               <div>{formattedStopType}</div>
-                <Code type="publicCode" value={publicCode} />
-                <Code type="privateCode" value={privateCode} />
+                <Code type="publicCode" value={publicCode} defaultValue={defaultValue} />
+                <Code type="privateCode" value={privateCode} defaultValue={defaultValue} />
             </div>
             <div
               style={{

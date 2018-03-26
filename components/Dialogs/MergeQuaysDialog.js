@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
@@ -24,7 +23,6 @@ import AcceptChanges from '../EditStopPage/AcceptChanges';
 import Spinner from '../../static/icons/spinner';
 
 class MergeQuaysDialog extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -47,6 +45,63 @@ class MergeQuaysDialog extends React.Component {
     }
   }
 
+
+  getUsageWarning() {
+    const { OTPFetchIsLoading, mergeQuayWarning, intl } = this.props;
+    const { formatMessage } = intl;
+    const infoStyle = { fontSize: '1.1em', borderBottom: 10 };
+
+    if (OTPFetchIsLoading) {
+      return (
+        <div style={{ ...infoStyle, display: 'flex', alignItems: 'center' }}>
+          <Spinner />
+          <div style={{ marginLeft: 5 }}>
+            {formatMessage({ id: 'checking_quay_usage' })}
+          </div>
+        </div>
+      );
+    }
+
+
+    if (mergeQuayWarning) {
+      const { warning, authorities } = mergeQuayWarning;
+
+      if (warning) {
+        const panicStyle = {
+          color: '#000',
+          padding: 10,
+          marginBottom: 10,
+          border: '1px solid black',
+          background: 'rgb(252, 200, 197)'
+        };
+        return (
+          <div style={panicStyle}>
+            <div>{formatMessage({ id: 'quay_usages_found' })}</div>
+            {
+              <div
+                style={{
+                  fontWeight: 600,
+                  marginTop: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  lineHeight: '1.5'
+                }}
+              >
+                <div>
+                  {formatMessage({ id: 'important_quay_usages_found' })}
+                </div>
+                <div style={{ fontStyle: 'italic' }}>
+                  {authorities && authorities.join(', ')}
+                </div>
+              </div>
+            }
+          </div>
+        );
+      }
+    }
+    return null;
+  }
+
   render() {
     const {
       open,
@@ -55,8 +110,10 @@ class MergeQuaysDialog extends React.Component {
       mergingQuays,
       handleConfirm,
       hasStopBeenModified,
+      OTPFetchIsLoading,
       isLoading
     } = this.props;
+
     const { formatMessage } = intl;
     const { changesUnderstood } = this.state;
 
@@ -68,7 +125,7 @@ class MergeQuaysDialog extends React.Component {
       warning: formatMessage({ id: 'merge_quays_warning' })
     };
 
-    let enableConfirm = !hasStopBeenModified || changesUnderstood;
+    const enableConfirm = !hasStopBeenModified || changesUnderstood;
 
     const fromQuay = mergingQuays.fromQuay ? mergingQuays.fromQuay.id : '';
     const toQuay = mergingQuays.toQuay ? mergingQuays.toQuay.id : '';
@@ -83,13 +140,13 @@ class MergeQuaysDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onTouchTap={() => {
+        onClick={() => {
           handleConfirm(versionComment);
         }}
-        disabled={!enableConfirm || isLoading}
+        disabled={!enableConfirm || isLoading || OTPFetchIsLoading }
         primary={true}
         keyboardFocused={true}
-        icon={isLoading ? <Spinner/> : <MdMerge />}
+        icon={isLoading ? <Spinner /> : <MdMerge />}
       />
     ];
 
@@ -105,14 +162,15 @@ class MergeQuaysDialog extends React.Component {
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         <div>
+          {this.getUsageWarning()}
           <MergeQuaysDetails merginQuays={mergingQuays} />
           <div style={{ marginLeft: 0, fontSize: 14 }}>{translations.info}</div>
-          {hasStopBeenModified &&
+          {hasStopBeenModified && (
             <AcceptChanges
               checked={changesUnderstood}
               onChange={(e, v) => this.setState({ changesUnderstood: v })}
             />
-           }
+          )}
         </div>
       </Dialog>
     );

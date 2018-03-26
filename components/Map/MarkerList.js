@@ -31,7 +31,7 @@ import CycleParkingMarker from './CycleParkingMarker';
 import { setDecimalPrecision, getIn } from '../../utils';
 import QuayMarker from './QuayMarker';
 import { withApollo } from 'react-apollo';
-import { allEntities, neighbourStopPlaceQuays } from '../../graphql/Queries';
+import { allEntities, neighbourStopPlaceQuays } from '../../graphql/Tiamat/queries';
 import CoordinateMarker from './CoordinateMarker';
 import Routes from '../../routes/';
 import * as MarkerStrings from './markerText';

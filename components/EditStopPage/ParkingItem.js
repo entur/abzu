@@ -27,8 +27,9 @@ import ToolTippable from './ToolTippable';
 import { injectIntl } from 'react-intl';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 import { withApollo } from 'react-apollo';
-import { deleteParking } from '../../graphql/Actions';
+import { deleteParking } from '../../graphql/Tiamat/actions';
 import * as types from "../../actions/Types";
+import {FlatButton} from "material-ui";
 
 class ParkingItem extends React.Component {
 
@@ -170,15 +171,14 @@ class ParkingItem extends React.Component {
                 style={{ width: '95%', marginTop: -10 }}
               />
               <div style={{ width: '100%', textAlign: 'right' }}>
-                <IconButton disabled={disabled}>
                   <ToolTippable
-                    toolTipText={formatMessage({ id: 'delete_parking' })}
-                  >
-                    <MdDeleteForver
-                      onClick={this.handleDeleteParking.bind(this)}
-                    />
+                      toolTipText={formatMessage({ id: 'delete_parking' })}
+                      tootTipTextStyle={{ position: 'relative' }}>
+                      <FlatButton
+                          icon={<MdDeleteForver/>}
+                          onClick={this.handleDeleteParking.bind(this)}
+                          style={{ borderRadius: 25}}/>
                   </ToolTippable>
-                </IconButton>
               </div>
             </div>}
             <ConfirmDialog

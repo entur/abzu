@@ -38,8 +38,8 @@ class QuayDetails extends React.Component {
           <span>{ quay.id }</span>
           </div>
           <div style={{display: 'flex', padding: 5, textAlign: 'center', width: '100%'}}>
-            <Code type="publicCode" value={quay.publicCode}/>
-            <Code type="privateCode" value={quay.privateCode}/>
+            <Code type="publicCode" value={quay.publicCode} defaultValue={notAssigned}/>
+            <Code type="privateCode" value={quay.privateCode} defaultValue={notAssigned}/>
           </div>
         <CompassBearingInfo value={ quay.compassBearing } defaultValue={notAssigned}/>
       </div>

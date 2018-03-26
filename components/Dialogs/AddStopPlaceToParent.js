@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
+
+import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { injectIntl } from 'react-intl';
@@ -82,7 +83,7 @@ class AddStopPlaceToParent extends Component {
         primary={true}
         keyboardFocused={true}
         disabled={!canSave}
-        onTouchTap={() => handleConfirm(checkedItems)}
+        onClick={() => handleConfirm(checkedItems)}
       />
     ];
 

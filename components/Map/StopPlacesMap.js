@@ -20,7 +20,7 @@ import { StopPlaceActions, UserActions } from '../../actions/';
 import { withApollo } from 'react-apollo';
 import { getIn } from '../../utils/';
 import { injectIntl } from 'react-intl';
-import { getNeighbourStops } from '../../graphql/Actions';
+import { getNeighbourStops } from '../../graphql/Tiamat/actions';
 import Settings from '../../singletons/SettingsManager';
 import debounce from 'lodash.debounce';
 import { getMarkersForMap } from '../../selectors/StopPlaceMap';

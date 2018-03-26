@@ -362,5 +362,12 @@
   "wheelchairAccess": "Rullestolvennlig",
   "with_nearby_similar_duplicates": "Kun nærliggende stoppesteder med liknende navn",
   "you_are_creating_group": "Ny stoppestedsgruppe",
-  "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer."
+  "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
+  "checking_stop_place_usage": "Sjekker bruk av stoppested",
+  "failed_checking_stop_place_usage": "Feilet å finne bruk.",
+  "stop_place_usages_found": "Advarsel: Dette stoppestedet er i bruk!",
+  "important_stop_place_usages_found": "Det er trafikk på stoppestedet etter nedleggelsesdato. Brukes av:",
+  "checking_quay_usage": "Sjekker bruk av kilde-quay",
+  "quay_usages_found": "Advarsel: Kildequayen er i bruk!",
+  "important_quay_usages_found": "Det er trafikk på kildequayen. Brukes av:"
 }

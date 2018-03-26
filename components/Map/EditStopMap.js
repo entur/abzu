@@ -23,7 +23,7 @@ import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import CompassBearingDialog from '../Dialogs/CompassBearingDialog';
 import debounce from 'lodash.debounce';
 import { withApollo } from 'react-apollo';
-import { getNeighbourStops } from '../../graphql/Actions';
+import { getNeighbourStops } from '../../graphql/Tiamat/actions';
 import Settings from '../../singletons/SettingsManager';
 
 class EditStopMap extends React.Component {

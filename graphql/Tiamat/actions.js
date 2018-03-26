@@ -32,7 +32,7 @@ import {
   mutateGroupOfStopPlaces,
   deleteGroupMutation,
   deleteParkingMutation
-} from './Mutations';
+} from './mutations';
 import {
   allVersionsOfStopPlace,
   allEntities,
@@ -49,8 +49,8 @@ import {
   getTagsByNameQuery,
   getGroupOfStopPlaceQuery,
   findTariffones
-} from '../graphql/Queries';
-import mapToMutationVariables from '../modelUtils/mapToQueryVariables';
+} from './queries';
+import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
 
 export const findTagByName = (client, name) =>
   client.query({

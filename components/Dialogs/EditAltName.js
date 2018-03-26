@@ -142,7 +142,7 @@ class EditAltName extends Component {
           style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
           disabled={!value}
           primary={true}
-          onTouchTap={() => {
+          onClick={() => {
             handleEditAltName(lang, value, type, editingId);
           }}
         >
