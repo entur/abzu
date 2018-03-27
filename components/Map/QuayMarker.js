@@ -44,8 +44,7 @@ class QuayMarker extends React.Component {
     isCreatingPolylines: PropTypes.bool.isRequired,
     handleChangeCoordinates: PropTypes.func,
     draggable: PropTypes.bool.isRequired,
-    handleSetCompassBearing: PropTypes.func,
-    defaultValue: PropTypes.string.isRequired
+    handleSetCompassBearing: PropTypes.func
   };
 
   getOSMURL() {
@@ -194,8 +193,7 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
-      showPublicCode,
-      defaultValue
+      showPublicCode
     } = this.props;
 
     if (!position) return null;
@@ -236,7 +234,7 @@ class QuayMarker extends React.Component {
         compassBearing={this.props.compassBearing}
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
-        defaultValueIcon={defaultValue}
+        defaultValueIcon={translations.notAssigned}
 />
     );
 
@@ -286,8 +284,8 @@ class QuayMarker extends React.Component {
               }}
             >
               <div>{formattedStopType}</div>
-                <Code type="publicCode" value={publicCode} defaultValue={defaultValue} />
-                <Code type="privateCode" value={privateCode} defaultValue={defaultValue} />
+                <Code type="publicCode" value={publicCode} defaultValue={translations.notAssigned} />
+                <Code type="privateCode" value={privateCode} defaultValue={translations.notAssigned}/>
             </div>
             <div
               style={{
