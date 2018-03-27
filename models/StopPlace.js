@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-import { extractAlternativeNames, getImportedId } from './StopPlaceUtils';
+import { extractAlternativeNames, getImportedId, simplifyPlaceEquipment } from './StopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired, isFuture } from '../modelUtils/validBetween';
@@ -103,7 +103,7 @@ class StopPlace {
       }
 
       if (stop.placeEquipments) {
-        clientStop.placeEquipments = stop.placeEquipments;
+        clientStop.placeEquipments = simplifyPlaceEquipment(stop.placeEquipments);
       }
 
       if (stop.geometry && stop.geometry.coordinates) {

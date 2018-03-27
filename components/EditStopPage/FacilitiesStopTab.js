@@ -48,7 +48,7 @@ class FacilitiesStopTab extends React.Component {
     });
   }
 
-  handleCollapseIndex(value) {
+  handleCollapseIndex() {
     this.setState({
       expandedIndex: -1,
     });
@@ -66,23 +66,11 @@ class FacilitiesStopTab extends React.Component {
     }
   }
 
-  handleValueForTicketMachineChange(newValue) {
-    const { stopPlace } = this.props;
-    const oldValuesSet = {
-      seats: getIn(
-        stopPlace,
-        ['placeEquipments', 'shelterEquipment', 'seats'],
-        0,
-      ),
-      ticketMachines: newValue.numberOfMachines
-        ? newValue.numberOfMachines > 0
-        : false,
-      ticketOffice: newValue.numberOfMachines
-        ? newValue.numberOfMachines > 0
-        : false,
-    };
-    const newValuesSet = Object.assign({}, oldValuesSet, newValue);
-    this.handleTicketMachineChange(newValuesSet);
+  handleValueForTicketMachineChange(numberOfMachines) {
+    this.handleTicketMachineChange({
+      numberOfMachines,
+      ticketMachines: numberOfMachines > 0
+    });
   }
 
   handleBusShelterChange(value) {
@@ -296,9 +284,7 @@ class FacilitiesStopTab extends React.Component {
                   value={ticketMachineNumber}
                   disabled={disabled}
                   onChange={(event, value) => {
-                    this.handleValueForTicketMachineChange({
-                      numberOfMachines: value,
-                    });
+                    this.handleValueForTicketMachineChange(value);
                   }}
                   min="0"
                   fullWidth={true}
