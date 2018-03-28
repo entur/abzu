@@ -594,12 +594,15 @@ class EditStopGeneral extends React.Component {
                   : 0})`}
                 value={0}
               />
-              <Tab
-                style={tabStyle}
-                label={`${formatMessage({ id: 'navigation' })} (${stopPlace
-                  .pathJunctions.length + stopPlace.entrances.length})`}
-                value={1}
-              />
+              { /*
+                <Tab
+                  style={tabStyle}
+                  label={`${formatMessage({ id: 'navigation' })} (${stopPlace
+                    .pathJunctions.length + stopPlace.entrances.length})`}
+                  value={1}
+                />
+                */     // ROR-272: Hide this elements until they are supported by backend
+              }
               <Tab
                 style={tabStyle}
                 label={`${formatMessage({ id: 'parking_general' })} (${stopPlace
@@ -642,7 +645,7 @@ class EditStopGeneral extends React.Component {
               title: 'discard_changes_title',
               body: 'discard_changes_body',
               confirm: 'discard_changes_confirm',
-              cancel: 'discard_changes_cancel'
+              cancel: 'discard_changes_cancel/*'
             }}
             intl={intl}
           />

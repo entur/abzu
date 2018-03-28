@@ -227,7 +227,7 @@ class EditStopBoxTabs extends React.Component {
     return (
       <div style={tabContainerStyle}>
         {activeElementTab === 0 &&
-          <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div style={{display: 'flex', justifyContent: 'center', paddingTop: 10}}>
             <div
               style={{ cursor: 'pointer', marginLeft: 5 }}
               onClick={() => this.handleSortQuays('publicCode')}
