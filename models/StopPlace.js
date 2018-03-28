@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-import { extractAlternativeNames, getImportedId, simplifyPlaceEquipment } from './StopPlaceUtils';
+import { extractAlternativeNames, getImportedId, simplifyPlaceEquipment } from './stopPlaceUtils';
 import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
 import { setDecimalPrecision } from '../utils/';
 import { hasExpired, isFuture } from '../modelUtils/validBetween';

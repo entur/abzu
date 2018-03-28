@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 
 import { setDecimalPrecision } from '../utils/';
-import { getImportedId, simplifyPlaceEquipment } from './StopPlaceUtils';
+import { getImportedId, simplifyPlaceEquipment } from './stopPlaceUtils';
 
 class Quay {
   constructor(quay, accessibilityAssessment) {

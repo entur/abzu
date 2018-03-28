@@ -17,7 +17,7 @@ import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
 import moment from 'moment';
 import { hasExpired } from '../modelUtils/validBetween';
-import { getImportedId } from '../models/StopPlaceUtils';
+import { getImportedId } from '../models/stopPlaceUtils';
 import {
   getUniquePathLinks,
   calculateDistance,

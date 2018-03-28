@@ -42,6 +42,7 @@ export const getUniqueStopPlaceTypes = modalities => {
 export const simplifyPlaceEquipment = placeEquipments => {
   if (placeEquipments !== null) {
     let simpleRepresentation = {};
+    simpleRepresentation.id = placeEquipments.id;
     Object.keys(placeEquipments).forEach(key => {
       if (Array.isArray(placeEquipments[key]) && placeEquipments[key].length) {
         if (placeEquipments[key][0]) {
@@ -58,6 +59,7 @@ export const simplifyPlaceEquipment = placeEquipments => {
 export const netexifyPlaceEquipment = placeEquipments => {
   if (placeEquipments) {
     let netexRepresentation = {};
+    netexRepresentation.id = placeEquipments.id;
     Object.keys(placeEquipments).forEach(key => {
       if (placeEquipments[key]) {
         netexRepresentation[key] = [placeEquipments[key]]
