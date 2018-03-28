@@ -17,6 +17,11 @@ import helpers from '../modelUtils/equipmentHelpers';
 import equiptedStopPlace from './mock/equiptedStopPlace';
 import unequiptedStopPlace from './mock/unequiptedStopPlace';
 
+import { simplifyPlaceEquipment } from '../models/stopPlaceUtils';
+
+/* Simplify placeEquipment to client model */
+equiptedStopPlace.placeEquipments = simplifyPlaceEquipment(equiptedStopPlace.placeEquipments);
+
 describe('equipment helper', () => {
   test(
     'should give binary representation of ticket machine based on data',

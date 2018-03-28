@@ -12,44 +12,51 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const defaultEquipments = {
+export const defaultEquipments = {
   ticketingEquipment: {
     isChecked: {
       ticketOffice: true,
       ticketMachines: true,
-      numberOfMachines: 1,
+      numberOfMachines: 1
     },
-    isUnChecked: null,
+    isUnChecked: null
   },
   shelterEquipment: {
     isChecked: {
       seats: 1,
       stepFree: false,
-      enclosed: false,
+      enclosed: false
     },
-    isUnChecked: null,
+    isUnChecked: null
   },
   sanitaryEquipment: {
     isChecked: {
       gender: 'both',
-      numberOfToilets: 1,
+      numberOfToilets: 1
     },
-    isUnChecked: null,
+    isUnChecked: null
   },
   waitingRoomEquipment: {
     isChecked: {
       heated: false,
       seats: 1,
-      stepFree: false,
+      stepFree: false
     },
-    isUnChecked: null,
+    isUnChecked: null
   },
   cycleStorageEquipment: {
     isChecked: {
       cycleStorageType: 'racks',
-      numberOfSpaces: 1,
+      numberOfSpaces: 1
     },
-    isUnChecked: null,
+    isUnChecked: null
+  },
+  generalSign: {
+    isChecked: {
+      privateCode: { value: 512 },
+      signContentType: 'transportMode'
+    },
+    isUnChecked: null
   },
 };
 
@@ -59,5 +66,5 @@ export const types = {
   sanitaryEquipment: 'sanitaryEquipment',
   waitingRoomEquipment: 'waitingRoomEquipment',
   cycleStorageEquipment: 'cycleStorageEquipment',
-  generalSign: 'generalSign',
+  generalSign: 'generalSign'
 };

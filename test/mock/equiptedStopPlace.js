@@ -48,15 +48,19 @@ export default {
       }
     ],
     "generalSign": [
-      { "privateCode": {
-          value: 512
-      },
+      {
+        "id": "NSR:GeneralSign:45434",
+        "privateCode": {
+          "type": null,
+          "value": "512"
+        },
         "signContentType": "transportMode"
       },
       {
-        "privateCode": 404,
-        "signContentType": "emergencyExit"
+        "id": "NSR:GeneralSign:45435",
+        "privateCode": null,
+        "signContentType": null
       }
     ]
   }
-}
+};
