@@ -15,22 +15,23 @@ limitations under the Licence. */
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import Divider from 'material-ui/Divider';
 import Code from '../EditStopPage/Code';
+import { injectIntl } from 'react-intl';
 
 class StopPlaceListItemQuayItem extends Component {
-  render() {
 
+  render() {
     const { quay } = this.props;
+    const { formatMessage } = this.props.intl;
+    const defaultValue = formatMessage({id: 'not_assigned'});
 
     return (
       <div>
         <Divider />
         <div style={{ display: 'flex', alignItems: 'center', padding: 8}}>
-          <Code type="publicCode" value={quay.publicCode} />
-          <Code type="privateCode" value={quay.privateCode} />
+          <Code type="publicCode" value={quay.publicCode} defaultValue={defaultValue}/>
+          <Code type="privateCode" value={quay.privateCode} defaultValue={defaultValue} />
           <div style={{display: 'flex', alignItems: 'center', marginLeft: 5}}>
             <div style={{ fontSize: '0.7em' }}>{quay.id}</div>
           </div>
@@ -45,4 +46,4 @@ StopPlaceListItemQuayItem.propTypes = {
   quay: PropTypes.object.isRequired,
 };
 
-export default StopPlaceListItemQuayItem;
+export default injectIntl(StopPlaceListItemQuayItem);
