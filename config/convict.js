@@ -55,12 +55,6 @@ module.exports = new Promise(function (resolve, reject) {
       default: '/',
       env: 'ENDPOINTBASE'
     },
-    OSMUrl: {
-      doc: 'URL for OSM map',
-      format: String,
-      default: 'https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png',
-      env: 'OSM_URL'
-    },
     authServerUrl: {
       doc: 'URL to keycloak auth server',
       format: String,
