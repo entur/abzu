@@ -105,9 +105,6 @@ export const getStateByOperation = (state, action) => {
         topographicalPlaces: action.result.data.topographicPlace
       });
 
-    case 'getGroupOfStopPlaces':
-      // TODO: Consider how this best should be kept in state
-      return state;
 
     default:
       return state;
