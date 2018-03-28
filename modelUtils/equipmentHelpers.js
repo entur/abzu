@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getIn } from '../utils';
+
+import { getIn } from '../utils';
 import { defaultEquipments, types } from '../models/Equipments';
 
 const EquipmentHelpers = {};
@@ -46,31 +47,20 @@ EquipmentHelpers.getSanitaryEquipmentState = entity => {
 
 EquipmentHelpers.get512SignEquipment = entity => {
   const generalSign = getIn(entity, ['placeEquipments', 'generalSign'], null);
-
-  if (generalSign) {
-    for (let i = 0; i < generalSign.length; i++) {
-      let sign = generalSign[i];
-      if (
-        sign.privateCode &&
-        sign.privateCode.value == '512' &&
-        sign.signContentType === 'transportMode'
-      ) {
-        return true;
-      }
-    }
+  if (
+    generalSign &&
+    generalSign.privateCode &&
+    generalSign.privateCode.value == '512' &&
+    generalSign.signContentType === 'transportMode'
+  ) {
+    return true;
   }
   return false;
 };
 
 EquipmentHelpers.update512SignEquipment = (entity, payLoad) => {
-  // this maps to signContentType, privateCode = 512 && signContentType = 'TransportModePoint'
-  const props = {
-    privateCode: { value: 512 },
-    signContentType: 'transportMode',
-  };
   const copyOfEntity = JSON.parse(JSON.stringify(entity));
-
-  return updateEquipmentArray(copyOfEntity, payLoad, types.generalSign, props);
+  return updateEquipmentForEntitity(copyOfEntity, payLoad, types.generalSign);
 };
 
 EquipmentHelpers.getWaitingRoomState = entity => {
@@ -132,56 +122,6 @@ EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payLoad) => {
   );
 };
 
-const updateEquipmentArray = (entity, payLoad, typeOfEquipment, props) => {
-  const { state, type, id } = payLoad;
-
-  if (type === 'stopPlace') {
-    return updateEquipmentForEntityArray(entity, state, typeOfEquipment, props);
-  } else if (type === 'quay') {
-    entity.quays[id] = updateEquipmentForEntityArray(
-      entity.quays[id],
-      state,
-      typeOfEquipment,
-      props,
-    );
-  }
-  return entity;
-};
-
-const updateEquipmentForEntityArray = (
-  entity,
-  state,
-  typeOfEquipment,
-  props,
-) => {
-  if (!entity.placeEquipments) {
-    entity.placeEquipments = {};
-  }
-
-  let equipmentToModify = entity.placeEquipments[typeOfEquipment];
-  if (equipmentToModify) {
-    if (state && props) {
-      entity.placeEquipments[typeOfEquipment] = [
-        ...entity.placeEquipments[typeOfEquipment],
-        props,
-      ];
-    } else {
-      entity.placeEquipments[typeOfEquipment] = entity.placeEquipments[
-        typeOfEquipment
-      ].filter(
-        sign =>
-          sign.privateCode &&
-          sign.privateCode.value != props.privateCode &&
-          sign.signContentType != props.signContentType,
-      );
-    }
-  } else {
-    if (props) {
-      entity.placeEquipments[typeOfEquipment] = [props];
-    }
-  }
-  return entity;
-};
 
 const updateEquipmentForEntitity = (entity, payLoad, typeOfEquipment) => {
   const { state, type, id } = payLoad;
