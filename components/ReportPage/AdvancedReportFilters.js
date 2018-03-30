@@ -37,7 +37,7 @@ class AdvancedReportFilters extends Component {
       handleCheckboxChange,
       withTags,
       showFutureAndExpired,
-      searchWithCode
+      filterByOrg
     } = this.props;
 
     const { open, anchorEl } = this.state;
@@ -80,9 +80,9 @@ class AdvancedReportFilters extends Component {
                  label={formatMessage({ id: 'search_with_code' })}
                  labelPosition="right"
                  labelStyle={{ width: 'auto', fontSize: '0.9em' }}
-                 checked={searchWithCode}
+                 checked={filterByOrg}
                  onCheck={(e, value) => {
-                   handleCheckboxChange('searchWithCode', value);
+                   handleCheckboxChange('filterByOrg', value);
                  }}
                />
             </MenuItem>

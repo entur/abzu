@@ -92,8 +92,7 @@ export default function configureStore(kc) {
         topoiChips: [],
         text: '',
         showFutureAndExpired: false,
-        searchWithCode: false,
-        code: kc.tokenParsed.roles
+        filterByOrg: false
       },
       snackbarOptions: {
         isOpen: false,

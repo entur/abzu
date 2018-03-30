@@ -157,12 +157,12 @@ const userReducer = (state = initialState, action) => {
         }
       });
 
-      case types.TOGGLE_SEARCH_WITH_CODE:
+    case types.TOGGLE_SEARCH_WITH_ORG_CODE:
       return Object.assign({}, state, {
-          searchFilters: {
-            ...state.searchFilters,
-            searchWithCode: action.payLoad
-          }
+        searchFilters: {
+          ...state.searchFilters,
+          filterByOrg: action.payLoad
+        }
       });
 
     case types.SET_SEARCH_TEXT:
@@ -189,7 +189,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.SET_MISSING_COORDINATES:
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);
-      newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position;
+      newMissingCoordsMap[ action.payLoad.stopPlaceId ] = action.payLoad.position;
       return Object.assign({}, state, {
         missingCoordsMap: newMissingCoordsMap
       });
