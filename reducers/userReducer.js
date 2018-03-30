@@ -189,7 +189,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.SET_MISSING_COORDINATES:
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);
-      newMissingCoordsMap[ action.payLoad.stopPlaceId ] = action.payLoad.position;
+      newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position;
       return Object.assign({}, state, {
         missingCoordsMap: newMissingCoordsMap
       });

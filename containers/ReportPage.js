@@ -21,7 +21,10 @@ import ModalityFilter from '../components/EditStopPage/ModalityFilter';
 import TopographicalFilter from '../components/MainPage/TopographicalFilter';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
-import { findStopForReport, getParkingForMultipleStopPlaces, topopGraphicalPlacesReportQuery } from '../graphql/Tiamat/queries';
+import {
+  topopGraphicalPlacesReportQuery,
+  findStopForReport
+} from '../graphql/Tiamat/queries';
 import { getTopographicPlaces } from '../graphql/Tiamat/actions';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -29,6 +32,7 @@ import TextField from 'material-ui/TextField';
 import MdSpinner from '../static/icons/spinner';
 import MdSearch from 'material-ui/svg-icons/action/search';
 import ColumnFilterPopover from '../components/EditStopPage/ColumnFilterPopover';
+import { getParkingForMultipleStopPlaces } from '../graphql/Tiamat/queries';
 import { reportReducer } from '../reducers/';
 import { injectIntl } from 'react-intl';
 import { columnOptionsQuays, columnOptionsStopPlace } from '../config/columnOptions';
@@ -88,7 +92,7 @@ class ReportPage extends React.Component {
     this.setState({ searchQuery });
   }
 
-  handleItemOnCheck(name, checked) {
+  handleItemOnCheck(name, checked) {
     let nextTags = this.state.tags.slice();
     if (checked) {
       nextTags.push(name);
