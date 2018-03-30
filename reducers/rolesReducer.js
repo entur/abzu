@@ -40,7 +40,7 @@ const rolesReducer = (state = initialState, action) => {
           allowanceInfo: getAllowanceInfoForGroup(
             action.result,
             state.kc.tokenParsed
-          ),
+          )
         });
       } else {
         return state;
@@ -62,38 +62,34 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
-          ...state,
-          kc: state.kc,
-          allowanceInfo: getAllowanceInfoFromPosition(
-            getLatLng(action.payLoad.data.stopPlace[0]),
-            state.kc.tokenParsed
-          )
-        }
-      );
+        ...state,
+        kc: state.kc,
+        allowanceInfo: getAllowanceInfoFromPosition(
+          getLatLng(action.payLoad.data.stopPlace[0]),
+          state.kc.tokenParsed
+        )
+      });
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
-          ...state,
-          kc: state.kc,
-          allowanceInfo: getAllowanceInfoFromPosition(
-            action.payLoad,
-            state.kc.tokenParsed
-          )
-        }
-      );
+        ...state,
+        kc: state.kc,
+        allowanceInfo: getAllowanceInfoFromPosition(
+          action.payLoad,
+          state.kc.tokenParsed
+        )
+      });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       const { newStopPlace } = action.payLoad;
-      return Object.assign({},
-          state, {
-            ...state,
-            kc: state.kc,
-            allowanceInfo: getAllowanceInfoFromPosition(
-              newStopPlace.location,
-              state.kc.tokenParsed
-            )
-          }
-      );
+      return Object.assign({}, state, {
+        ...state,
+        kc: state.kc,
+        allowanceInfo: getAllowanceInfoFromPosition(
+          newStopPlace.location,
+          state.kc.tokenParsed
+        )
+      });
 
     default:
       return state;

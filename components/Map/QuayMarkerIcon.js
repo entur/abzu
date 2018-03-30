@@ -27,7 +27,7 @@ class QuayMarkerIcon extends React.Component {
       compassBearing
     } = this.props;
 
-    let markerIconStyle = { };
+    let markerIconStyle = {};
 
     if (belongsToNeighbourStop) {
       markerIconStyle.filter = 'grayscale(100%)';

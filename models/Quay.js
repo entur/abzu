@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { setDecimalPrecision } from '../utils/';
-import { getImportedId } from './StopPlaceUtils';
+
+import { setDecimalPrecision } from '../utils/';
+import { getImportedId, simplifyPlaceEquipment } from './stopPlaceUtils';
 
 class Quay {
   constructor(quay, accessibilityAssessment) {
@@ -54,7 +55,7 @@ class Quay {
     }
 
     if (quay.placeEquipments) {
-      clientQuay.placeEquipments = quay.placeEquipments;
+      clientQuay.placeEquipments = simplifyPlaceEquipment(quay.placeEquipments);
     }
 
     return clientQuay;

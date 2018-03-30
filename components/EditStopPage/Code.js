@@ -26,7 +26,7 @@ export const CodeBadge = ({icon, type}) => {
 
 const Code = ({ type, value, defaultValue }) => {
   // As a tribute to PHP
-  let valueIsSet = isSet(value);
+  const valueIsSet = isSet(value);
 
   return (
     <div className={type}>
@@ -38,7 +38,7 @@ const Code = ({ type, value, defaultValue }) => {
 };
 
 const isSet = type => {
-  if (typeof type === 'undefined' || type === null) {
+  if (typeof type === 'undefined' || type === null || !type.length) {
     return false;
   }
 

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { StopPlaceActions } from '../../actions';
@@ -52,7 +53,6 @@ class NewElementsBox extends React.Component {
     const { activeStopPlace, missingCoordsMap, disabled } = this.props;
 
     const boxWrapperStyle = {
-      width: 'auto',
       zIndex: 999,
       fontSize: 10,
       textAlign: 'center',
@@ -89,6 +89,9 @@ class NewElementsBox extends React.Component {
     ) {
       shouldShowNewStop = false;
     }
+
+    // ROR-272: Hide this elements until they are supported by backend
+    const temporaryHidden =  {...elementStyle, display: 'none'};
 
     return (
       <div style={boxWrapperStyle}>
@@ -134,7 +137,7 @@ class NewElementsBox extends React.Component {
             />
             <div style={titleStyle}>{quayText}</div>
           </div>
-          <div style={elementStyle}>
+          <div style={temporaryHidden}>
             <img
               ref="pathJunction"
               data-type="pathJunction"
@@ -145,7 +148,7 @@ class NewElementsBox extends React.Component {
             />
             <div style={titleStyle}>{pathJunctionText}</div>
           </div>
-          <div style={elementStyle}>
+          <div style={temporaryHidden}>
             <img
               ref="entrance"
               data-type="entrance"

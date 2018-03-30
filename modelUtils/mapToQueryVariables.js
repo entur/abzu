@@ -15,6 +15,7 @@ limitations under the Licence. */
 
 import moment from 'moment';
 import { defaultLimitations } from '../models/Limitations';
+import { netexifyPlaceEquipment } from '../models/stopPlaceUtils'
 
 const helpers = {};
 
@@ -28,7 +29,7 @@ helpers.mapQuayToVariables = quay => {
       quay.accessibilityAssessment
     ),
     keyValues: quay.keyValues,
-    placeEquipments: quay.placeEquipments,
+    placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
     description: {
       value: quay.description,
       lang: 'nor'

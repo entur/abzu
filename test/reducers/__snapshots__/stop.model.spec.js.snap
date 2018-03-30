@@ -131,7 +131,7 @@ Object {
       },
       "id": "NSR:Quay:30025",
       "keyValues": Array [],
-      "placeEquipments": undefined,
+      "placeEquipments": null,
       "privateCode": Object {
         "value": "",
       },
@@ -155,7 +155,7 @@ Object {
       },
       "id": "NSR:Quay:30026",
       "keyValues": Array [],
-      "placeEquipments": undefined,
+      "placeEquipments": null,
       "privateCode": Object {
         "value": "",
       },

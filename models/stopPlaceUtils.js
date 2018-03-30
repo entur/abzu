@@ -35,3 +35,37 @@ export const getUniqueStopPlaceTypes = modalities => {
   const stopPlaceTypes = modalities.map(child => JSON.stringify(child));
   return [...new Set(stopPlaceTypes)].map(child => JSON.parse(child));
 };
+
+/* Following the NeTEx placeEquipment model, all placeEquipment sub-items contains at least one item.
+  An abstraction of this concept in UI and in the client model (a clearly pragmatic approach) has been chosen in Abzu.
+*/
+export const simplifyPlaceEquipment = placeEquipments => {
+  if (placeEquipments !== null) {
+    let simpleRepresentation = {};
+    simpleRepresentation.id = placeEquipments.id;
+    Object.keys(placeEquipments).forEach(key => {
+      if (Array.isArray(placeEquipments[key]) && placeEquipments[key].length) {
+        if (placeEquipments[key][0]) {
+          simpleRepresentation[key] = placeEquipments[key][0]
+        }
+      }
+    });
+    return simpleRepresentation;
+  }
+  return null;
+};
+
+
+export const netexifyPlaceEquipment = placeEquipments => {
+  if (placeEquipments) {
+    let netexRepresentation = {};
+    netexRepresentation.id = placeEquipments.id;
+    Object.keys(placeEquipments).forEach(key => {
+      if (placeEquipments[key]) {
+        netexRepresentation[key] = [placeEquipments[key]]
+      }
+    });
+    return netexRepresentation;
+  }
+  return null;
+};

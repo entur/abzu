@@ -80,7 +80,6 @@ convictPromise
         const cfg = {
           tiamatBaseUrl: convict.get('tiamatBaseUrl'),
           endpointBase: convict.get('endpointBase'),
-          OSMUrl: convict.get('OSMUrl'),
           OTPUrl: convict.get('OTPUrl'),
           tiamatEnv: convict.get('tiamatEnv'),
           netexPrefix: convict.get('netexPrefix'),

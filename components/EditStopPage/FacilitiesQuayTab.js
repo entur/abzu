@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import TicketMachine from '../../static/icons/facilities/TicketMachine';
@@ -60,19 +61,12 @@ class FacilitiesQuayTab extends React.Component {
     }
   }
 
-  handleValueForTicketMachineChange(newValue) {
-    const { quay } = this.props;
-    const oldValuesSet = {
-      seats: getIn(quay, ['placeEquipments', 'shelterEquipment', 'seats'], 0),
-      ticketMachines: newValue.numberOfMachines
-        ? newValue.numberOfMachines > 0
-        : false,
-      ticketOffice: newValue.numberOfMachines
-        ? newValue.numberOfMachines > 0
-        : false,
-    };
-    const newValuesSet = Object.assign({}, oldValuesSet, newValue);
-    this.handleTicketMachineChange(newValuesSet);
+  handleValueForTicketMachineChange(numberOfMachines) {
+    this.handleTicketMachineChange({
+      numberOfMachines,
+      ticketOffice: numberOfMachines > 0,
+      ticketMachines: numberOfMachines > 0
+    });
   }
 
   handleBusShelterChange(value) {
@@ -271,9 +265,7 @@ class FacilitiesQuayTab extends React.Component {
                     id: 'number_of_ticket_machines',
                   })}
                   onChange={(event, value) => {
-                    this.handleValueForTicketMachineChange({
-                      numberOfMachines: value,
-                    });
+                    this.handleValueForTicketMachineChange(value);
                   }}
                 />
               </div>

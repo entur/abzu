@@ -256,7 +256,7 @@ const mapStateToProps = ({stopPlacesGroup, roles}) => ({
   groupOfStopPlaces: stopPlacesGroup.current,
   originalGOS: stopPlacesGroup.original,
   canEdit: getIn(roles, ['allowanceInfo', 'canEdit'], false),
-  canDelete: getIn(roles, ['allowanceInfo', 'canDelete'], false)
+  canDelete: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false)
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces)));

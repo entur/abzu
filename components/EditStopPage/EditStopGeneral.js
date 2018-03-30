@@ -464,7 +464,11 @@ class EditStopGeneral extends React.Component {
       canDeleteStop,
       mergeStopDialogOpen,
       originalStopPlace,
-      deleteQuayImportedId
+      deleteQuayImportedId,
+      fetchOTPInfoMergeLoading,
+      mergeQuayWarning,
+      fetchOTPInfoDeleteLoading,
+      deleteQuayWarning
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -590,12 +594,15 @@ class EditStopGeneral extends React.Component {
                   : 0})`}
                 value={0}
               />
-              <Tab
-                style={tabStyle}
-                label={`${formatMessage({ id: 'navigation' })} (${stopPlace
-                  .pathJunctions.length + stopPlace.entrances.length})`}
-                value={1}
-              />
+              { /*
+                <Tab
+                  style={tabStyle}
+                  label={`${formatMessage({ id: 'navigation' })} (${stopPlace
+                    .pathJunctions.length + stopPlace.entrances.length})`}
+                  value={1}
+                />
+                */     // ROR-272: Hide this elements until they are supported by backend
+              }
               <Tab
                 style={tabStyle}
                 label={`${formatMessage({ id: 'parking_general' })} (${stopPlace
@@ -638,7 +645,7 @@ class EditStopGeneral extends React.Component {
               title: 'discard_changes_title',
               body: 'discard_changes_body',
               confirm: 'discard_changes_confirm',
-              cancel: 'discard_changes_cancel'
+              cancel: 'discard_changes_cancel/*'
             }}
             intl={intl}
           />
@@ -677,7 +684,9 @@ class EditStopGeneral extends React.Component {
             mergingQuays={this.props.mergingQuay}
             hasStopBeenModified={stopHasBeenModified}
             isLoading={this.state.isLoading}
-          />
+            OTPFetchIsLoading={fetchOTPInfoMergeLoading}
+            mergeQuayWarning={mergeQuayWarning}
+        />
           <DeleteQuayDialog
             open={this.props.deleteQuayDialogOpen}
             handleClose={this.handleCloseDeleteQuay.bind(this)}
@@ -686,6 +695,8 @@ class EditStopGeneral extends React.Component {
             deletingQuay={this.props.deletingQuay}
             isLoading={this.state.isLoading}
             importedId={deleteQuayImportedId}
+            warningInfo={deleteQuayWarning}
+            fetchingOTPInfoLoading={fetchOTPInfoDeleteLoading}
           />
           <TerminateStopPlaceDialog
             open={this.props.deleteStopDialogOpen}
@@ -805,6 +816,10 @@ const mapStateToProps = state => ({
   isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo,
   neighbourStopQuays: state.stopPlace.neighbourStopQuays,
   deleteStopDialogWarning: state.user.deleteStopDialogWarning,
+  fetchOTPInfoMergeLoading: state.mapUtils.fetchOTPInfoMergeLoading,
+  mergeQuayWarning: state.mapUtils.mergeQuayWarning,
+  fetchOTPInfoDeleteLoading: state.mapUtils.fetchOTPInfoDeleteLoading,
+  deleteQuayWarning: state.mapUtils.deleteQuayWarning,
 });
 
 export default withApollo(

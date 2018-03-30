@@ -16,7 +16,7 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ModalityIconImg from '../MainPage/ModalityIconImg';
-import { getUniqueStopPlaceTypes } from '../../models/StopPlaceUtils';
+import { getUniqueStopPlaceTypes } from '../../models/stopPlaceUtils';
 
 class ModalityIconTray extends Component {
   render() {

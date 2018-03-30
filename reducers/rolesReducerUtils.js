@@ -87,7 +87,8 @@ export const getAllowanceInfoForGroup = (result, tokenParsed) => {
       roles: [],
       legalStopPlaceTypes: [],
       legalSubmodes: [],
-      canEdit: false
+      canEdit: false,
+      canDeleteStop: false,
     }
   }
 
@@ -194,6 +195,7 @@ const restrictModeByRoles = (roles, modes, entityType) => {
 export const getAllowanceInfoFromPosition = (latlng, tokenParsed) => {
   const token = { ... tokenParsed };
   let editStopRoles = roleParser.getEditStopRoles(token);
+  let deleteRoles = roleParser.getDeleteStopRoles(token);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
@@ -202,6 +204,7 @@ export const getAllowanceInfoFromPosition = (latlng, tokenParsed) => {
     legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
     legalSubmodes: getLegalSubmodes(rolesAllowingGeo),
     canEdit: rolesAllowingGeo.length > 0,
+    canDeleteStop: deleteRoles.length > 0
   }
 };
 

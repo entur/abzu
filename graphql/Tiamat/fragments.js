@@ -90,6 +90,7 @@ Fragments.groupOfStopPlaces = {
 Fragments.placeEquipments = {
   verbose: gql`
       fragment PlaceEquipments on PlaceEquipments {
+          id
           generalSign {
               id
               signContentType

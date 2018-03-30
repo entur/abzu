@@ -25,7 +25,7 @@ import { getIn } from '../utils/';
 import ParentStopPlace from '../models/ParentStopPlace';
 import Routes from '../routes/';
 import { createThunk } from './';
-import { checkStopPlaceUsage } from '../graphql/OTP/actions';
+import { checkStopPlaceUsage, checkQuayUsage } from '../graphql/OTP/actions';
 
 var UserActions = {};
 
@@ -202,8 +202,8 @@ UserActions.setSearchText = text => dispatch => {
 UserActions.setMissingCoordinates = (position, stopPlaceId) => dispatch => {
   dispatch(
     createThunk(types.SET_MISSING_COORDINATES, {
-      stopPlaceId: stopPlaceId,
-      position: position
+      stopPlaceId,
+      position
     })
   );
 };
@@ -317,7 +317,7 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
         dispatch(
           createThunk(types.OPENED_MERGE_STOP_DIALOG, {
             id: fromStopPlaceID,
-            name: name,
+            name,
             quays: getQuaysForMergeInfo(response.data.stopPlace)
           })
         );
@@ -338,17 +338,55 @@ UserActions.hideMergeQuaysDialog = () => dispatch => {
 };
 
 UserActions.startMergingQuayFrom = id => (dispatch, getState) => {
-  let state = getState();
-  let quays = state.stopPlace.current.quays;
-  let quay = getQuayById(quays, id);
+  const state = getState();
+  const quays = state.stopPlace.current.quays;
+  const quay = getQuayById(quays, id);
   dispatch(createThunk(types.STARTED_MERGING_QUAY_FROM, quay));
 };
 
 UserActions.endMergingQuayTo = id => (dispatch, getState) => {
-  let state = getState();
-  let quays = state.stopPlace.current.quays;
-  let quay = getQuayById(quays, id);
+  const state = getState();
+  const quays = state.stopPlace.current.quays;
+  const quay = getQuayById(quays, id);
   dispatch(createThunk(types.ENDED_MERGING_QUAY_TO, quay));
+
+  const fromQuayId = state.mapUtils.mergingQuay.fromQuay.id;
+
+  checkQuayUsage(fromQuayId)
+    .then(({ data }) => {
+      if (data.quay && data.quay.lines) {
+        let authorities = new Set();
+        let serviceJourneyActiveDates = new Set();
+
+        data.quay.lines.forEach(line => {
+          if (line.authority && line.authority.name) {
+            authorities.add(line.authority.name);
+          }
+          line.serviceJourneys.forEach(sj => {
+            sj.activeDates.forEach(activeDateString => {
+              serviceJourneyActiveDates.add(activeDateString);
+            });
+          });
+        });
+
+        dispatch(
+          createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
+            authorities: Array.from(authorities),
+            warning: serviceJourneyActiveDates.size > 0
+          })
+        );
+      } else {
+        dispatch(
+          createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
+            authorities: [],
+            warning: 0
+          })
+        );
+      }
+    })
+    .catch(() => {
+      dispatch(createThunk(types.ERROR_QUAY_MERGE_OTP_INFO, null));
+    });
 };
 
 UserActions.cancelMergingQuayFrom = () => dispatch => {
@@ -379,6 +417,78 @@ UserActions.requestDeleteQuay = (
       importedId
     })
   );
+
+  checkQuayUsage(quayId)
+    .then(({ data }) => {
+      if (data.quay && data.quay.lines) {
+        let authorities = new Set();
+        let serviceJourneyActiveDates = new Set();
+
+        data.quay.lines.forEach(line => {
+          if (line.authority && line.authority.name) {
+            authorities.add(line.authority.name);
+          }
+          line.serviceJourneys.forEach(sj => {
+            sj.activeDates.forEach(activeDateString => {
+              serviceJourneyActiveDates.add(activeDateString);
+            });
+          });
+        });
+
+        dispatch(
+          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+            authorities: Array.from(authorities),
+            warning: serviceJourneyActiveDates.size > 0
+          })
+        );
+      } else {
+        dispatch(
+          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+            authorities: [],
+            warning: 0
+          })
+        );
+      }
+    })
+    .catch(() => {
+      dispatch(createThunk(types.ERROR_QUAY_DELETE_OTP_INFO, null));
+    });
+};
+
+const formatStopPlaceUsageDetails = stopPlace => {
+  if (stopPlace) {
+    let serviceJourneyActiveDates = new Set();
+    let authorities = new Set();
+    let latestActiveDate = null;
+
+    stopPlace.quays.forEach(quay => {
+      quay.lines.forEach(line => {
+        if (line.authority && line.authority.name) {
+          authorities.add(line.authority.name);
+        }
+
+        line.serviceJourneys.forEach(sj => {
+          sj.activeDates.forEach(activeDateString => {
+            serviceJourneyActiveDates.add(activeDateString);
+            const activeDateTime = new Date(activeDateString);
+            if (latestActiveDate === null) {
+              latestActiveDate = activeDateTime;
+            } else {
+              if (activeDateTime > latestActiveDate) {
+                latestActiveDate = activeDateTime;
+              }
+            }
+          });
+        });
+      });
+    });
+    return {
+      serviceJourneyActiveDates,
+      authorities,
+      latestActiveDate
+    };
+  }
+  return null;
 };
 
 UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
@@ -398,30 +508,16 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
     checkStopPlaceUsage(stopPlaceId)
       .then(({ data }) => {
         if (data.stopPlace) {
-          let serviceJourneyActiveDates = new Set();
-          let latestActiveDate = null;
-
-          data.stopPlace.quays.forEach(quay => {
-            quay.lines.forEach(line => {
-              line.serviceJourneys.forEach(sj => {
-                sj.activeDates.forEach(activeDateString => {
-                  serviceJourneyActiveDates.add(activeDateString);
-                  const activeDateTime = new Date(activeDateString);
-                  if (latestActiveDate === null) {
-                    latestActiveDate = activeDateTime;
-                  } else {
-                    if (activeDateTime > latestActiveDate) {
-                      latestActiveDate = activeDateTime;
-                    }
-                  }
-                });
-              });
-            });
-          });
+          const {
+            serviceJourneyActiveDates,
+            authorities,
+            latestActiveDate
+          } = formatStopPlaceUsageDetails(data.stopPlace);
 
           dispatch(
             createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {
               warning: serviceJourneyActiveDates.size > 0,
+              authorities: Array.from(authorities),
               loading: false,
               error: false,
               activeDatesSize: serviceJourneyActiveDates.size,
