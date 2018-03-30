@@ -34,6 +34,8 @@ import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
 import LoadingPage from './LoadingPage';
 
 
+
+
 class StopPlace extends React.Component {
   constructor(props) {
     super(props);

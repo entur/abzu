@@ -249,7 +249,7 @@ class ReportPage extends React.Component {
       countyReference: topoiChips
         .filter(topos => topos.type === 'county')
         .map(topos => topos.id),
-      codeSpace: optionalOrgCodeFilter
+      code: optionalOrgCodeFilter
     };
 
     client
@@ -533,8 +533,8 @@ const mapStateToProps = state => ({
   topographicalPlaces: state.report.topographicalPlaces,
   results: state.report.results,
   duplicateInfo: state.report.duplicateInfo,
-  orgCode: state.user.searchFilters.orgCode
-
+  orgCode: state.user.searchFilters.orgCode,
+  roles: state.roles.kc.tokenParsed.roles
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));
