@@ -645,7 +645,7 @@ class EditStopGeneral extends React.Component {
               title: 'discard_changes_title',
               body: 'discard_changes_body',
               confirm: 'discard_changes_confirm',
-              cancel: 'discard_changes_cancel/*'
+              cancel: 'discard_changes_cancel'
             }}
             intl={intl}
           />
