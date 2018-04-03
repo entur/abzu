@@ -750,7 +750,8 @@ const mapStateToProps = state => {
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
     filterByOrg: state.user.searchFilters.filterByOrg,
-    orgCode: state.user.searchFilters.orgCode
+    orgCode: state.user.searchFilters.orgCode,
+    roles: state.roles.kc.tokenParsed.roles
   };
 };
 
