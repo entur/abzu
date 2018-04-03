@@ -72,7 +72,7 @@ class SearchBox extends React.Component {
         ? filter.filterByOrg
         : this.props.filterByOrg;
 
-      let optionalOrgCodeFilter = filterByOrg ? this.findOrgCodeFilter(filterByOrg) : null;
+      let optionalOrgCodeFilter = filterByOrg ? this.findOrgCodeFilter() : null;
       this.setState({ loading: true });
 
       findEntitiesWithFilters(
@@ -348,7 +348,7 @@ class SearchBox extends React.Component {
       };
 
       if (menuItems.length > 6) {
-        menuItems[ 6 ] = filterNotification;
+        menuItems[6] = filterNotification;
       } else {
         menuItems.push(filterNotification);
       }
@@ -357,16 +357,17 @@ class SearchBox extends React.Component {
   }
 
   findOrgCodeFilter() {
-    const rolesToSearchIn = [ 'editStops', '' ];
+    const rolesToSearchIn = ['editStops', ''];
     let orgCodeFilter = null;
-    let userRoles = JSON.parse(this.props.code);
+    if (this.props && this.props.orgCode) {
+      let userRoles = JSON.parse(this.props.orgCode);
+      let firstOrgFound = this.props.orgCode.find(userRole => rolesToSearchIn.includes(userRole.o));
 
-    let firstOrgFound = this.props.code.find(userRole => rolesToSearchIn.includes(userRole.o));
-
-    if (firstOrgFound !== undefined) {
-      userRoles = userRoles.o.toLowerCase();
-      if (userRoles !== window.config.netexPrefix.toLowerCase()) {
-        orgCodeFilter = userRoles;
+      if (firstOrgFound !== null && typeof firstOrgFound !== undefined) {
+        userRoles = userRoles.o.toLowerCase();
+        if (userRoles !== window.config.netexPrefix.toLowerCase()) {
+          orgCodeFilter = userRoles;
+        }
       }
     }
     return orgCodeFilter;
@@ -638,7 +639,7 @@ class SearchBox extends React.Component {
                 )}
                 userSuppliedCoordinates={
                   missingCoordinatesMap &&
-                  missingCoordinatesMap[ chosenResult.id ]
+                  missingCoordinatesMap[chosenResult.id]
                 }
                 text={text}
                 canEdit={canEdit}
@@ -743,7 +744,7 @@ const mapStateToProps = state => {
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
     canEdit: getIn(
       state.roles,
-      [ 'allowanceInfoSearchResult', 'canEdit' ],
+      ['allowanceInfoSearchResult', 'canEdit'],
       false
     ),
     isGuest: state.roles.isGuest,

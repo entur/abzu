@@ -21,10 +21,8 @@ import ModalityFilter from '../components/EditStopPage/ModalityFilter';
 import TopographicalFilter from '../components/MainPage/TopographicalFilter';
 import AutoComplete from 'material-ui/AutoComplete';
 import { withApollo } from 'react-apollo';
-import {
-  topopGraphicalPlacesReportQuery,
-  findStopForReport
-} from '../graphql/Tiamat/queries';
+import { topopGraphicalPlacesReportQuery, findStopForReport } from '../graphql/Tiamat/queries';
+import { getParkingForMultipleStopPlaces } from '../graphql/Tiamat/queries';
 import { getTopographicPlaces } from '../graphql/Tiamat/actions';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -32,7 +30,6 @@ import TextField from 'material-ui/TextField';
 import MdSpinner from '../static/icons/spinner';
 import MdSearch from 'material-ui/svg-icons/action/search';
 import ColumnFilterPopover from '../components/EditStopPage/ColumnFilterPopover';
-import { getParkingForMultipleStopPlaces } from '../graphql/Tiamat/queries';
 import { reportReducer } from '../reducers/';
 import { injectIntl } from 'react-intl';
 import { columnOptionsQuays, columnOptionsStopPlace } from '../config/columnOptions';
@@ -92,7 +89,7 @@ class ReportPage extends React.Component {
     this.setState({ searchQuery });
   }
 
-  handleItemOnCheck(name, checked) {
+  handleItemOnCheck(name, checked) {
     let nextTags = this.state.tags.slice();
     if (checked) {
       nextTags.push(name);
@@ -115,7 +112,7 @@ class ReportPage extends React.Component {
 
   handleFilterChange(key, value) {
     this.setState({
-      [ key ]: value
+      [key]: value
     });
   };
 
@@ -123,10 +120,10 @@ class ReportPage extends React.Component {
     const columnOptions = this.state.columnOptionsStopPlace.slice();
 
     for (let i = 0; columnOptions.length > i; i++) {
-      let option = columnOptions[ i ];
+      let option = columnOptions[i];
       if (option.id === id) {
         option.checked = checked;
-        columnOptions[ i ] = option;
+        columnOptions[i] = option;
         break;
       }
     }
@@ -140,10 +137,10 @@ class ReportPage extends React.Component {
     const columnOptions = this.state.columnOptionsQuays.slice();
 
     for (let i = 0; columnOptions.length > i; i++) {
-      let option = columnOptions[ i ];
+      let option = columnOptions[i];
       if (option.id === id) {
         option.checked = checked;
-        columnOptions[ i ] = option;
+        columnOptions[i] = option;
         break;
       }
     }
@@ -190,8 +187,8 @@ class ReportPage extends React.Component {
           let menuItems = [];
 
           Object.keys(response.data).forEach(result => {
-            const place = response.data[ result ] && response.data[ result ].length
-              ? response.data[ result ][ 0 ]
+            const place = response.data[result] && response.data[result].length
+              ? response.data[result][0]
               : null;
 
             if (place) {
@@ -230,7 +227,7 @@ class ReportPage extends React.Component {
       isLoading: true
     });
 
-    let optionalOrgCodeFilter = filterByOrg ? this.findOrgCodeFilter(filterByOrg) : null;
+    let optionalOrgCodeFilter = filterByOrg ? this.findOrgCodeFilter() : null;
 
     const queryVariables = {
       query: searchQuery,
@@ -344,16 +341,17 @@ class ReportPage extends React.Component {
   }
 
   findOrgCodeFilter() {
-    const rolesToSearchIn = [ 'editStops', '' ];
+    const rolesToSearchIn = ['editStops', ''];
     let orgCodeFilter = null;
-    let userRoles = JSON.parse(this.props.code);
+    if (this.props && this.props.orgCode) {
+      let userRoles = JSON.parse(this.props.orgCode);
+      let firstOrgFound = this.props.orgCode.find(userRole => rolesToSearchIn.includes(userRole.o));
 
-    let firstOrgFound = this.props.code.find(userRole => rolesToSearchIn.includes(userRole.o));
-
-    if (firstOrgFound !== undefined) {
-      userRoles = userRoles.o.toLowerCase();
-      if (userRoles !== window.config.netexPrefix.toLowerCase()) {
-        orgCodeFilter = userRoles;
+      if (firstOrgFound !== null && typeof firstOrgFound !== undefined) {
+        userRoles = userRoles.o.toLowerCase();
+        if (userRoles !== window.config.netexPrefix.toLowerCase()) {
+          orgCodeFilter = userRoles;
+        }
       }
     }
     return orgCodeFilter;
