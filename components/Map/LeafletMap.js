@@ -128,7 +128,7 @@ export default class LeafLetMap extends React.Component {
           >
             <TileLayer
               attribution="&copy; <a href=&quot;http://www.kartverket.no&quot;>Kartverket"
-              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}"
+              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
               maxZoom="19"
             />
           </BaseLayer>
