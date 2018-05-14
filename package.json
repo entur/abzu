@@ -41,7 +41,7 @@
     "image-webpack-loader": "3.4.2",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
-    "jest": "21.2.1",
+    "jest": "^22.4.3",
     "jsdom": "11.1.0",
     "jsdom-global": "3.0.2",
     "keycloak-js": "3.2.1",
