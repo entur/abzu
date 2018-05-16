@@ -47,6 +47,7 @@
     "keycloak-js": "3.2.1",
     "leaflet": "1.2.0",
     "lodash.debounce": "4.0.8",
+    "mapbox-gl-leaflet": "0.0.3",
     "material-ui": "0.19.4",
     "moment": "2.19.3",
     "promise-polyfill": "6.0.2",
