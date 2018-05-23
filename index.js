@@ -67,15 +67,14 @@ cfgreader.readConfig(
         .then(response => {
           let token = JSON.stringify(response.data);
           localStorage.setItem('ABZU::GKT_TOKEN', token);
-          authWithKeyCloak(config.endpointBase);
         })
         .catch(err => {
           console.warn(
             'Failed to get GK token, Kartverket Flyfoto will not work',
             err,
           );
-          authWithKeyCloak(config.endpointBase);
         });
+      authWithKeyCloak(config.endpointBase);
     }
   }.bind(this),
 );
