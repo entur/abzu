@@ -72,6 +72,18 @@ module.exports = new Promise(function (resolve, reject) {
       format: String,
       default: 'NSR',
       env: 'NETEX_PREFIX'
+    },
+    mapboxAccessToken: {
+      doc: 'Mapbox Access Token',
+      format: String,
+      default: undefined,
+      env: 'MAPBOX_ACCESS_TOKEN'
+    },
+    mapboxStyle: {
+      doc: 'Mapbox Style',
+      format: String,
+      default: undefined,
+      env: 'MAPBOX_STYLE'
     }
   });
 

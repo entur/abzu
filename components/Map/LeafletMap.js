@@ -25,6 +25,7 @@ import {
 import { GoogleLayer } from 'react-leaflet-google';
 import MultiPolylineList from './PathLink';
 import WMTSLayer from './WMTSLayer';
+import MapboxLayer from './MapboxLayer';
 import MultimodalStopEdges from './MultimodalStopEdges';
 import StopPlaceGroupList from './StopPlaceGroupList';
 
@@ -55,6 +56,14 @@ export default class LeafLetMap extends React.Component {
     return null;
   }
 
+  getMapboxAccessToken() {
+    return `${window.config.mapboxAccessToken}`;
+  }
+
+  getMapboxStyle() {
+    return `${window.config.mapboxStyle}`;
+  }
+
   render() {
     // NB: this key is owned by rutebanken.official
     const googleApiKey = 'AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E';
@@ -81,6 +90,8 @@ export default class LeafLetMap extends React.Component {
     };
 
     const centerPosition = this.getCenterPosition(position);
+    const mapboxAccessToken = this.getMapboxAccessToken();
+    const mapboxStyle = this.getMapboxStyle();
 
     return (
       <Lmap
@@ -152,6 +163,15 @@ export default class LeafLetMap extends React.Component {
               maptype="HYBRID"
             />
           </BaseLayer>
+          {mapboxAccessToken && mapboxStyle ? (<BaseLayer
+              checked={this.getCheckedBaseLayerByValue('Mapbox')}
+              name="Mapbox" >
+              <MapboxLayer
+                accessToken={mapboxAccessToken}
+                style={mapboxStyle}
+               />
+            </BaseLayer>
+        ) : ( null )}
         </LayersControl>
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
