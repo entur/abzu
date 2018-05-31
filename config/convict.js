@@ -79,11 +79,11 @@ module.exports = new Promise(function (resolve, reject) {
       default: undefined,
       env: 'MAPBOX_ACCESS_TOKEN'
     },
-    mapboxStyle: {
-      doc: 'Mapbox Style',
+    mapboxTariffZonesStyle: {
+      doc: 'Mapbox Style for Tariff Zones',
       format: String,
       default: undefined,
-      env: 'MAPBOX_STYLE'
+      env: 'MAPBOX_TARIFF_ZONES_STYLE'
     }
   });
 
