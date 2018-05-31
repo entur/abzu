@@ -80,8 +80,7 @@ module.exports = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         exclude: /node_modules/,
         loaders: [
-          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack-loader?' + JSON.stringify(imageLoaderQuery),
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]'
         ],
       },
     ],
