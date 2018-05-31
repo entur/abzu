@@ -60,8 +60,8 @@ export default class LeafLetMap extends React.Component {
     return `${window.config.mapboxAccessToken}`;
   }
 
-  getMapboxTariffZoneStyle() {
-    return `${window.config.mapboxTariffZonesStyle}`;
+  getMapboxStyle() {
+    return `${window.config.mapboxStyle}`;
   }
 
   render() {
@@ -91,7 +91,7 @@ export default class LeafLetMap extends React.Component {
 
     const centerPosition = this.getCenterPosition(position);
     const mapboxAccessToken = this.getMapboxAccessToken();
-    const mapboxTariffZonesStyle = this.getMapboxTariffZoneStyle();
+    const mapboxStyle = this.getMapboxStyle();
 
     return (
       <Lmap
@@ -163,12 +163,12 @@ export default class LeafLetMap extends React.Component {
               maptype="HYBRID"
             />
           </BaseLayer>
-          {mapboxAccessToken && mapboxTariffZonesStyle ? (<BaseLayer
+          {mapboxAccessToken && mapboxStyle ? (<BaseLayer
               checked={this.getCheckedBaseLayerByValue('Takstsoner')}
               name="Takstsoner" >
               <MapboxLayer
                 accessToken={mapboxAccessToken}
-                style={mapboxTariffZonesStyle}
+                style={mapboxStyle}
                />
             </BaseLayer>
         ) : ( null )}

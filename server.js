@@ -85,7 +85,7 @@ convictPromise
           netexPrefix: convict.get('netexPrefix'),
           // Pod ID used in req header for Tiamat
           hostname: process.env.HOSTNAME,
-          mapboxTariffZonesStyle: convict.get("mapboxTariffZonesStyle"),
+          mapboxStyle: convict.get("mapboxStyle"),
           mapboxAccessToken: convict.get("mapboxAccessToken")          
         };
 
