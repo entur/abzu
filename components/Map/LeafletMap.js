@@ -164,8 +164,8 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           {mapboxAccessToken && mapboxStyle ? (<BaseLayer
-              checked={this.getCheckedBaseLayerByValue('Mapbox')}
-              name="Mapbox" >
+              checked={this.getCheckedBaseLayerByValue('Takstsoner')}
+              name="Takstsoner" >
               <MapboxLayer
                 accessToken={mapboxAccessToken}
                 style={mapboxStyle}
