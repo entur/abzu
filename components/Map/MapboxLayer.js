@@ -16,7 +16,6 @@ import L from 'leaflet'
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GridLayer } from 'react-leaflet';
-import { mapboxgl } from 'mapbox-gl-leaflet';
 
 export default class MapboxLayer extends GridLayer {
 
@@ -26,7 +25,23 @@ export default class MapboxLayer extends GridLayer {
   };
 
   createLeafletElement() {
-    const { accessToken, style } = this.props;
-    return L.mapboxGL({accessToken, style});
-  };
+    const styleString = this.props.style;
+    const { user, styleId } = this.parseStyleString(styleString);
+
+    return L.tileLayer(
+      'https://api.mapbox.com/styles/v1/' + user + '/' + styleId + '/tiles/{z}/{x}/{y}?access_token=' + this.props.accessToken, {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      });
+  }
+
+  parseStyleString(style) {
+    // Assuming style is configured as mapbox://
+    let index = style.indexOf("mapbox://");
+    var fields = style.split("/");
+    const user = fields[3];
+    const styleId = fields[4];
+    return { user, styleId }
+  }
 }
