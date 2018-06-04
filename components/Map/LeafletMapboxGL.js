@@ -76,13 +76,13 @@ L.MapboxGL = L.Layer.extend({
   },
 
   onRemove: function (map) {
-    /* if (this._map.options.zoomAnimation) {
+    if (this._map.options.zoomAnimation && this._map._proxy) {
         L.DomEvent.off(this._map._proxy, L.DomUtil.TRANSITION_END, this._transitionEnd, this);
     }
 
     this.getPane().removeChild(this._glContainer);
     this._glMap.remove();
-    this._glMap = null; */
+    this._glMap = null;
   },
 
   getEvents: function () {

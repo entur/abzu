@@ -17,7 +17,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { GridLayer } from 'react-leaflet';
 import './LeafletMapboxGL.js'
-import { topopGraphicalPlacesQuery } from '../../graphql/Tiamat/queries';
 
 export default class MapboxLayer extends GridLayer {
 
