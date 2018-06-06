@@ -92,10 +92,10 @@ export const getAllowanceInfoForGroup = (result, tokenParsed) => {
     }
   }
 
-  // retrieve all roles that allow editing a given stop
+  // retrieve all roles that allow editing a given group of stop places
   const responsibleEditRoles = roleParser.filterByEntities(editStopRolesGeoFiltered, groupOfStopPlaces);
 
-  // retrieve all roles that allow hard-deleting a given stop
+  // retrieve all roles that allow hard-deleting a given group of stop places
   const responsibleDeleteRoles = roleParser.filterByEntities(deleteStopRoles, groupOfStopPlaces);
 
   const canEdit = responsibleEditRoles.length > 0;
