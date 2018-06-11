@@ -18,7 +18,7 @@ import mockRailReplacementStop from './mock/mockRailReplacementStop';
 import mockRailStop from './mock/mockRailStop';
 import mockBusStop from './mock/mockBusStop';
 import mockStopWithoutModality from './mock/mockStopWithoutModality';
-
+import { mockedAllowanceInfoAction } from './mock/mockedAllowanceInfoAction';
 
 describe('User and roles - scenarios', () => {
 
@@ -47,7 +47,7 @@ describe('User and roles - scenarios', () => {
         ]
       };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailReplacementStop, token);
+      const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
       expect(allowanceInfo.canEdit).toEqual(true);
     }
   );
@@ -77,7 +77,7 @@ describe('User and roles - scenarios', () => {
         ]
       };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+      const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
       expect(allowanceInfo.canEdit).toEqual(true);
     }
   );
@@ -107,9 +107,9 @@ describe('User and roles - scenarios', () => {
         ]
       };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+      const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
       expect(allowanceInfo.canEdit).toEqual(true);
-      const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+      const allowanceBusStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
       expect(allowanceBusStop.canEdit).toEqual(false);
     }
   );
@@ -149,7 +149,7 @@ describe('User and roles - scenarios', () => {
         ]
       };
 
-      const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+      const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
       expect(allowanceInfo.canEdit).toEqual(true);
     }
   );
@@ -177,9 +177,9 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceRailStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceRailStop.canEdit).toEqual(false);
-    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceRailReplacementBus.canEdit).toEqual(false);
   });
 
@@ -207,9 +207,9 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceRailStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceRailStop.canEdit).toEqual(false);
-    const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    const allowanceBusStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
 
@@ -237,9 +237,9 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceRailStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceRailStop.canEdit).toEqual(false);
-    const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    const allowanceBusStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
 
@@ -263,11 +263,11 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceRailStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceRailStop.canEdit).toEqual(true);
-    const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    const allowanceBusStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
     expect(allowanceBusStop.canEdit).toEqual(true);
-    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
 
@@ -288,11 +288,11 @@ describe('User and roles - scenarios', () => {
       ]
     };
 
-    const allowanceRailStop = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceRailStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceRailStop.canEdit).toEqual(true);
-    const allowanceBusStop = getAllowanceInfoForStop(mockBusStop, token);
+    const allowanceBusStop = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
     expect(allowanceBusStop.canEdit).toEqual(true);
-    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockRailReplacementStop, token);
+    const allowanceRailReplacementBus = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
 
@@ -318,7 +318,7 @@ describe('User and roles - scenarios', () => {
         ]
       };
 
-      const allowanceStopWithNoModality = getAllowanceInfoForStop(mockStopWithoutModality, token);
+      const allowanceStopWithNoModality = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockStopWithoutModality), token);
       expect(allowanceStopWithNoModality.canEdit).toEqual(true);
 
     }
