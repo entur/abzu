@@ -29,6 +29,7 @@ import mockRailReplacementStop from '../mock/mockRailReplacementStop';
 import mockBusStop from '../mock/mockBusStop';
 import stopWithoutStopPlaceType from '../mock/stopWithoutStopPlaceType';
 import mockRailStop from '../mock/mockRailStop';
+import { mockedAllowanceInfoAction } from '../mock/mockedAllowanceInfoAction';
 
 const stopPlaceResult = {
   data: {
@@ -99,10 +100,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(
-      mockRailReplacementStop,
-      token
-    );
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 
@@ -121,10 +119,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(
-      mockRailReplacementStop,
-      token
-    );
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 
@@ -143,10 +138,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(
-      mockRailReplacementStop,
-      token
-    );
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailReplacementStop), token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 
@@ -165,7 +157,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(mockRailStop, token);
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockRailStop), token);
     expect(allowanceInfo.canEdit).toEqual(false);
   });
 
@@ -184,7 +176,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(mockBusStop, token);
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(mockBusStop), token);
     expect(allowanceInfo.canEdit).toEqual(false);
   });
 
@@ -203,10 +195,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(
-      stopWithoutStopPlaceType,
-      token
-    );
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(stopWithoutStopPlaceType), token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 
@@ -224,10 +213,7 @@ describe('getAllowanceInfo', () => {
       ]
     };
 
-    const allowanceInfo = getAllowanceInfoForStop(
-      stopWithoutStopPlaceType,
-      token
-    );
+    const allowanceInfo = getAllowanceInfoForStop(mockedAllowanceInfoAction(stopWithoutStopPlaceType), token);
     expect(allowanceInfo.canEdit).toEqual(true);
   });
 

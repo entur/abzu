@@ -30,7 +30,7 @@ const rolesReducer = (state = initialState, action) => {
         return Object.assign({}, state, {
           kc: state.kc,
           allowanceInfo: getAllowanceInfoForStop(
-            action.result,
+            action,
             state.kc.tokenParsed
           )
         });
