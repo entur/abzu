@@ -30,6 +30,14 @@ export const supportedNameTypes = [
       nb: 'Oversettelse',
       fr: 'Traduction'
     }
+  },
+  {
+    value: 'label',
+    name: {
+      en: 'Label',
+      nb: 'Kallenavn',
+      fr: 'Libellé'
+    }
   }
 ];
 
@@ -46,7 +54,7 @@ export const allNameTypes = {
   },
   label: {
     en: 'Label',
-    nb: 'Merkelapp',
+    nb: 'Kallenavn',
     fr: 'Libellé'
   },
   copy: {
