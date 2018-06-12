@@ -36,6 +36,9 @@ export const getCentroid = (latlngs = [[]], originalCentroid) => {
 
 /* Polygon from Tiamat is formatted as [lng, lat], while Leaflet uses [lat, lng]*/
 export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
+  if(!coordinates) {
+    return false;
+  }
   const x = coordinates[0];
   const y = coordinates[1];
   let inside = false;
