@@ -182,18 +182,29 @@ class ParentStopDetails extends Component {
             />
         )}
         <div style={{ width: '98%', margin: 'auto' }}>
-          <TextField
-            hintText={formatMessage({ id: 'name' })}
-            floatingLabelText={formatMessage({ id: 'name' })}
-            fullWidth={true}
-            value={stopPlace.name}
-            disabled={disabled}
-            style={{ marginTop: -10 }}
-            errorText={
-              stopPlace.name ? '' : formatMessage({ id: 'name_is_required' })
-            }
-            onChange={this.handleChangeName.bind(this)}
-          />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <TextField
+              hintText={formatMessage({ id: 'name' })}
+              floatingLabelText={formatMessage({ id: 'name' })}
+              fullWidth={true}
+              value={stopPlace.name}
+              disabled={disabled}
+              style={{ marginTop: -10, width: 300 }}
+              errorText={
+                stopPlace.name ? '' : formatMessage({ id: 'name_is_required' })
+              }
+              onChange={this.handleChangeName.bind(this)}
+            />
+            <div style={{ display: 'flex', alignItems: 'right' }}>
+              <ToolTippable toolTipText={altNamesHint}>
+                <IconButton onClick={this.handleOpenAltNames.bind(this)}>
+                  <MdLanguage
+                    color={hasAltNames ? primaryDarker : '#000'}
+                  />
+                </IconButton>
+              </ToolTippable>
+            </div>
+          </div>
           <TextField
             hintText={formatMessage({ id: 'description' })}
             floatingLabelText={formatMessage({ id: 'description' })}
@@ -202,13 +213,6 @@ class ParentStopDetails extends Component {
             value={stopPlace.description || ''}
             onChange={this.handleChangeDescription.bind(this)}
           />
-          <ToolTippable toolTipText={altNamesHint}>
-                <IconButton onClick={this.handleOpenAltNames.bind(this)}>
-                  <MdLanguage
-                    color={hasAltNames ? primaryDarker : '#000'}
-                  />
-                </IconButton>
-              </ToolTippable>
           <Divider />
         </div>
         <StopPlaceList
