@@ -373,7 +373,10 @@ export const getStopPlace = (result, childId) => {
     Array.isArray(stopPlace.children) &&
     stopPlace.children.length
   ) {
-    stopPlace = stopPlace.children.find(child => child.id === childId);
+    let matchingChildStop = stopPlace.children.find(child => child.id === childId);
+    if(matchingChildStop) {
+      stopPlace = matchingChildStop;
+    }
   }
 
 
