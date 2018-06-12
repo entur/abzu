@@ -314,6 +314,15 @@ Fragments.parentStopPlace = {
           name {
               value
           }
+          alternativeNames {
+            nameType
+            name {
+              value
+              lang
+              __typename
+            }
+            __typename
+          }
           description {
               value
           }

@@ -113,6 +113,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   let parentStopVariables = {
     name: stop.name,
     description: stop.description || null,
+    alternativeNames: stop.alternativeNames || null
   };
 
   if (stop.id) {

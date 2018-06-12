@@ -17,7 +17,7 @@ import gql from 'graphql-tag';
 import Fragments from './fragments';
 
 export const mutateParentStopPlace = gql`
-  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!) {
+  mutation mutateParentStopPlace($id: String, $name: String, $description: String, $validBetween: ValidBetweenInput, $versionComment: String, $coordinates: Coordinates!, $alternativeNames: [AlternativeNameInput]) {
       mutateParentStopPlace(ParentStopPlace: {
           id: $id
           name: { value: $name, lang: "nor" }
@@ -28,6 +28,7 @@ export const mutateParentStopPlace = gql`
               type: Point
               coordinates: $coordinates
           }
+          alternativeNames: $alternativeNames
       }) {
           ...VerboseParentStopPlace
       }
