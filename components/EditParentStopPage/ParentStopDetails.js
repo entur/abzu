@@ -17,6 +17,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
+import IconButton from 'material-ui/IconButton';
+import MdLanguage from 'material-ui/svg-icons/action/language';
 import ImportedId from '../EditStopPage/ImportedId';
 import { StopPlaceActions } from '../../actions/';
 import TextField from 'material-ui/TextField';
@@ -30,6 +32,9 @@ import { withApollo } from 'react-apollo';
 import TagsDialog from '../EditStopPage/TagsDialog';
 import TagTray from '../MainPage/TagTray';
 import BelongsToGroup from './../MainPage/BelongsToGroup';
+import ToolTippable from '../EditStopPage/ToolTippable';
+import AltNamesDialog from '../Dialogs/AltNamesDialog';
+import { getPrimaryDarkerColor } from '../../config/themeConfig';
 
 
 class ParentStopDetails extends Component {
@@ -38,6 +43,7 @@ class ParentStopDetails extends Component {
     this.state = {
       changePositionOpen: false,
       addStopPlaceOpen: false,
+      altNamesDialogOpen: false,
       tagsOpen: false,
       isLoading: false
     };
@@ -49,20 +55,23 @@ class ParentStopDetails extends Component {
 
   handleAddStopPlaceClose() {
     this.setState({
-      addStopPlaceOpen: false
+      addStopPlaceOpen: false,
+      altNamesDialogOpen: false
     });
   }
 
   handleAddStopPlaceOpen() {
     this.setState({
-      addStopPlaceOpen: true
+      addStopPlaceOpen: true,
+      altNamesDialogOpen: false
     });
   }
 
   handleAddStopPlace(checkedItems) {
     const { dispatch, client } = this.props;
     this.setState({
-      addStopPlaceOpen: false
+      addStopPlaceOpen: false,
+      altNamesDialogOpen: false
     });
 
     this.setState({
@@ -80,6 +89,16 @@ class ParentStopDetails extends Component {
     });
   }
 
+  handleOpenAltNames() {
+    this.setState({
+      altNamesDialogOpen: true,
+      tagsOpen: false
+    });
+    if (this.props.keyValuesDialogOpen) {
+      this.props.dispatch(UserActions.closeKeyValuesDialog());
+    }
+  }
+
   handleSubmitChangeCoordinates(position) {
     const { dispatch } = this.props;
     dispatch(StopPlaceActions.changeCurrentStopPosition(position));
@@ -95,8 +114,15 @@ class ParentStopDetails extends Component {
 
   render() {
     const { stopPlace, intl, disabled } = this.props;
-    const { changePositionOpen, addStopPlaceOpen } = this.state;
+    const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } = this.state;
     const { formatMessage } = intl;
+
+    const hasAltNames = !!(
+      stopPlace.alternativeNames && stopPlace.alternativeNames.length
+    );
+
+    const altNamesHint = formatMessage({ id: 'alternative_names' });
+    const primaryDarker = getPrimaryDarkerColor();
 
     return (
       <div style={{ padding: '10px 5px', minHeight: 600 }}>
@@ -176,6 +202,13 @@ class ParentStopDetails extends Component {
             value={stopPlace.description || ''}
             onChange={this.handleChangeDescription.bind(this)}
           />
+          <ToolTippable toolTipText={altNamesHint}>
+                <IconButton onClick={this.handleOpenAltNames.bind(this)}>
+                  <MdLanguage
+                    color={hasAltNames ? primaryDarker : '#000'}
+                  />
+                </IconButton>
+              </ToolTippable>
           <Divider />
         </div>
         <StopPlaceList
@@ -196,6 +229,15 @@ class ParentStopDetails extends Component {
           coordinates={stopPlace.position}
           handleClose={() => this.setState({ changePositionOpen: false })}
           handleConfirm={this.handleSubmitChangeCoordinates.bind(this)}
+        />
+        <AltNamesDialog
+          open={altNamesDialogOpen}
+          altNames={stopPlace.alternativeNames}
+          intl={intl}
+          disabled={disabled}
+          handleClose={() => {
+            this.setState({ altNamesDialogOpen: false });
+          }}
         />
         <TagsDialog
           open={this.state.tagsOpen}
