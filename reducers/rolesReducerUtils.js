@@ -27,13 +27,8 @@ export const getAllowanceInfoForStop = ({result, variables}, tokenParsed) => {
   const editStopRoles = roleParser.getEditStopRoles(token);
   const deleteStopRoles = roleParser.getDeleteStopRoles(token);
   const requestedStopPlaceId = variables.id;
-  const stopPlace = getStopPlace(result, requestedStopPlaceId);
 
-  const latlng = getLatLng(stopPlace);
-  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    latlng
-  );
+  const stopPlace = getStopPlace(result);
 
   if (!stopPlace) {
     return {
@@ -43,6 +38,31 @@ export const getAllowanceInfoForStop = ({result, variables}, tokenParsed) => {
       canEdit: false
     };
   }
+
+  let allowanceInfoForStopPlace;
+  if(stopPlace.id !== requestedStopPlaceId) {
+    // Requested stop place ID seems to be a child
+    const childStopPlace = getStopPlace(result, requestedStopPlaceId);
+    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(childStopPlace, editStopRoles, deleteStopRoles);
+
+    // Check if the user is authorized to edit the parent stop place.
+    // It should be possible to edit a child of a multimodal stop place, of only authorized to edit that child.
+    // But it shall not be possible to set the termination date for the parent stop.
+    const allowanceInfoForParentStop = buildAllowanceInfoForStopPlace(stopPlace, editStopRoles, deleteStopRoles);
+    allowanceInfoForStopPlace.canEditParentStop = allowanceInfoForParentStop.canEdit;
+  } else {
+    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(stopPlace, editStopRoles, deleteStopRoles);
+  }
+  return allowanceInfoForStopPlace
+};
+
+const buildAllowanceInfoForStopPlace = (stopPlace, editStopRoles, deleteStopRoles) => {
+
+  const latlng = getLatLng(stopPlace);
+  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
+    editStopRoles,
+    latlng
+  );
 
   // retrieve all roles that allow editing a given stop
   const responsibleEditRoles = roleParser.filterByEntities(
@@ -86,7 +106,7 @@ export const getAllowanceInfoForStop = ({result, variables}, tokenParsed) => {
     canEdit,
     canDeleteStop
   };
-};
+}
 
 export const getAllowanceInfoForGroup = (result, tokenParsed) => {
   /* find all roles that allow editing of group of stop places */

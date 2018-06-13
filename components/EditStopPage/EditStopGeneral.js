@@ -668,6 +668,7 @@ class EditStopGeneral extends React.Component {
               intl={intl}
               serverTimeDiff={this.props.serverTimeDiff}
               currentValidBetween={stopPlace.validBetween}
+              canTerminateValidBetween={this.props.canEditParentStop}
             />
           ) : null}
           <MergeStopDialog
@@ -827,6 +828,7 @@ const mapStateToProps = state => ({
   movingQuayToNewStop: state.mapUtils.movingQuayToNewStop,
   activeMap: state.mapUtils.activeMap,
   canDeleteStop: getIn(state.roles, ['allowanceInfo', 'canDeleteStop'], false),
+  canEditParentStop: getIn(state.roles, ['allowanceInfo', 'canEditParentStop'], false),
   originalStopPlace: state.stopPlace.originalCurrent,
   serverTimeDiff: state.user.serverTimeDiff,
   isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo,

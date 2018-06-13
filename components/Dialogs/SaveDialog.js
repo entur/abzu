@@ -46,6 +46,10 @@ class SaveDialog extends React.Component {
     this.state = this.getInitialState();
   }
 
+  static defaultProps = {
+    canTerminateValidBetween: true
+  }
+
   componentWillUnmount() {
     this.setState(this.getInitialState);
   }
@@ -60,8 +64,11 @@ class SaveDialog extends React.Component {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
+    canTerminateValidBetween: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired
   };
+
+
 
   handleSetToDate(value) {
     const { timeFrom, timeTo } = this.state;
@@ -141,7 +148,8 @@ class SaveDialog extends React.Component {
       handleClose,
       errorMessage,
       currentValidBetween,
-      serverTimeDiff
+      serverTimeDiff,
+      canTerminateValidBetween
     } = this.props;
     const { formatMessage } = intl;
     const {
@@ -250,12 +258,13 @@ class SaveDialog extends React.Component {
           {translations.note}
         </div>
         <Checkbox
-          checked={expiraryExpanded}
-          label={translations.do_you_want_to_specify_expirary}
-          onCheck={(event, checked) => {
-            this.setState({ expiraryExpanded: checked });
-          }}
-          style={{ marginTop: 10, fontSize: 12 }}
+            checked={expiraryExpanded}
+            disabled={!canTerminateValidBetween}
+            label={translations.do_you_want_to_specify_expirary}
+            onCheck={(event, checked) => {
+              this.setState({ expiraryExpanded: checked });
+            }}
+            style={{ marginTop: 10, fontSize: 12 }}
         />
         {expiraryExpanded
           ? <div>
