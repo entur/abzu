@@ -41,7 +41,6 @@ To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environmen
 TIAMAT_BASE_URL=https://api-test.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
 ```
 
-```
 
 ### Testing
 
