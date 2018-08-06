@@ -168,6 +168,15 @@ helpers.mapDeepStopToVariables = original => {
   return stopPlace;
 }
 
+helpers.removeTypeNameRecursively = (variablesObject) => {
+  for(var property in variablesObject) {
+    if (property === '__typename')
+      delete variablesObject[property];
+    else if (typeof variablesObject[property] === 'object')
+      helpers.removeTypeNameRecursively(variablesObject[property]);
+  }
+}
+
 helpers.mapStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
 
@@ -212,6 +221,7 @@ helpers.mapStopToVariables = (original, userInput) => {
   if (stop.location) {
     stopVariables.coordinates = [[stop.location[1], stop.location[0]]];
   }
+  helpers.removeTypeNameRecursively(stopVariables);
   return stopVariables;
 };
 
