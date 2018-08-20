@@ -111,7 +111,7 @@ Object {
   "id": "NSR:StopPlace:19744",
   "keyValues": Array [],
   "name": "Aspelundsveien",
-  "placeEquipments": undefined,
+  "placeEquipments": null,
   "quays": Array [
     Object {
       "accessibilityAssessment": undefined,
