@@ -190,7 +190,7 @@ helpers.mapStopToVariables = (original, userInput) => {
       stop.accessibilityAssessment
     ),
     keyValues: stop.keyValues,
-    placeEquipments: stop.placeEquipments,
+    placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,
