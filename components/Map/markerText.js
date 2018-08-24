@@ -18,6 +18,7 @@ export const popupMarkerText = formatMessage => ({
     moveQuayToCurrent: formatMessage({id: 'move_quay_to_current'}),
     moveQuaysToNewStop: formatMessage({id: 'move_quays_to_new_stop'}),
     adjustCentroid: formatMessage({id: 'adjust_centroid'}),
+    connectToAdjacentStop: formatMessage({id: 'connect_to_adjacent_stop'}),
     createMultimodal: formatMessage({id: 'new__multi_stop'}),
     addToGroup: formatMessage({id: 'add_to_group'}),
     removeFromGroup: formatMessage({id: 'remove_from_group'}),
