@@ -624,6 +624,10 @@ UserActions.createMultimodalWith = (
   });
 };
 
+UserActions.connectToAdjacentStop = stopPlaceId => dispatch => {
+  console.log("attempt to dispatch connectToAdjacentStop", stopPlaceId);
+};
+
 UserActions.toggleShowPublicCode = value => dispatch => {
   Settings.setShowPublicCode(value);
   dispatch(createThunk(types.TOGGLE_SHOW_PUBLIC_CODE, value));

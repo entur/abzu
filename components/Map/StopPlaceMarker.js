@@ -210,6 +210,15 @@ class StopPlaceMarker extends React.Component {
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />
+            <PopupButton
+              hidden={
+                !isMultimodalChild ||
+                isMultimodal ||
+                hasExpired
+              }
+              onClick={() => this.props.connectToAdjacentStop(id)}
+              label={translations.connectToAdjacentStop}
+            />
           </div>
         </Popup>
       </Marker>

@@ -109,6 +109,12 @@ class MarkerList extends React.Component {
     );
   }
 
+  connectToAdjacentStop(stopPlaceId) {
+    this.props.dispatch(
+      UserActions.connectToAdjacentStop(stopPlaceId)
+    );
+  }
+
   handleShowQuays(id) {
     this.props.client.query({
       fetchPolicy: 'network-only',
@@ -301,6 +307,7 @@ class MarkerList extends React.Component {
                   createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
                     this
                   )}
+                  connectToAdjacentStop={this.connectToAdjacentStop.bind(this)}
                 />
               );
 
@@ -359,9 +366,8 @@ class MarkerList extends React.Component {
               handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
-              createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
-                this
-              )}
+              createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
+              connectToAdjacentStop={this.connectToAdjacentStop.bind(this)}
               translations={CustomPopupMarkerText}
               handleOnClick={() => {
                 this.handleStopOnClick(marker.id);
