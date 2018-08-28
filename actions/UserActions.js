@@ -624,7 +624,7 @@ UserActions.createMultimodalWith = (
   });
 };
 
-UserActions.connectToAdjacentStop = stopPlaceId => dispatch => {
+UserActions.showConnectToAdjacentStopDialog = stopPlaceId => dispatch => {
   console.log("attempt to dispatch connectToAdjacentStop", stopPlaceId);
 };
 
