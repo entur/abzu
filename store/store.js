@@ -116,7 +116,8 @@ export default function configureStore(kc) {
         stopPlaceId: null
       },
       client: tiamatClient,
-      showPublicCode: Settings.getShowPublicCode()
+      showPublicCode: Settings.getShowPublicCode(),
+      adjacentStopDialogOpen: false
     },
     roles: {
       kc,

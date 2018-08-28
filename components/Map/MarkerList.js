@@ -111,7 +111,7 @@ class MarkerList extends React.Component {
 
   connectToAdjacentStop(stopPlaceId) {
     this.props.dispatch(
-      UserActions.connectToAdjacentStop(stopPlaceId)
+      UserActions.showAddAdjacentStopDialog(stopPlaceId)
     );
   }
 

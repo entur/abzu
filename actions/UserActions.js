@@ -328,6 +328,15 @@ UserActions.hideMergeStopDialog = () => dispatch => {
   dispatch(createThunk(types.CLOSED_MERGE_STOP_DIALOG, null));
 };
 
+
+UserActions.showAddAdjacentStopDialog = stopPlaceId => dispatch => {
+  dispatch(createThunk(types.REQUESTED_ADJACENT_SITE_DIALOG, stopPlaceId));
+};
+
+UserActions.hideAddAdjacentStopDialog = () => dispatch => {
+  dispatch(createThunk(types.CLOSED_ADJACENT_SITE_DIALOG, null));
+}
+
 UserActions.hideMergeQuaysDialog = () => dispatch => {
   dispatch(createThunk(types.CLOSED_MERGE_QUAYS_DIALOG, null));
 };
@@ -622,10 +631,6 @@ UserActions.createMultimodalWith = (
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
     }
   });
-};
-
-UserActions.showConnectToAdjacentStopDialog = stopPlaceId => dispatch => {
-  console.log("attempt to dispatch connectToAdjacentStop", stopPlaceId);
 };
 
 UserActions.toggleShowPublicCode = value => dispatch => {

@@ -24,6 +24,7 @@ import MdSave from 'material-ui/svg-icons/content/save';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 import { StopPlaceActions, UserActions } from '../../actions/';
 import SaveDialog from '../Dialogs/SaveDialog';
+import AddAdjacentStopsDialog from '../Dialogs/AddAdjacentStopsDialog';
 import { withApollo } from 'react-apollo';
 import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
 import {
@@ -74,6 +75,10 @@ class EditParentGeneral extends React.Component {
 
   handleCloseRemoveStopFromParent() {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
+  }
+
+  handleCloseAddAdjacentStop() {
+    this.props.dispatch(UserActions.hideAddAdjacentStopDialog());
   }
 
   handleTerminateStop(shouldHardDelete, comment, dateTime) {
@@ -281,7 +286,8 @@ class EditParentGeneral extends React.Component {
       disabled,
       removingStopPlaceFromParentId,
       removeStopPlaceFromParentOpen,
-      originalStopPlace
+      originalStopPlace,
+      adjacentStopDialogOpen
     } = this.props;
 
     if (!stopPlace) return null;
@@ -430,6 +436,11 @@ class EditParentGeneral extends React.Component {
             isLastChild={isLastChild}
             isLoading={this.state.isLoading}
           />}
+        <AddAdjacentStopsDialog
+          open={adjacentStopDialogOpen}
+          handleClose={this.handleCloseAddAdjacentStop.bind(this)}
+        />
+
         <ConfirmDialog
           open={this.state.confirmGoBack}
           handleClose={() => {
@@ -470,6 +481,7 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   stopHasBeenModified: stopPlace.stopHasBeenModified,
   removeStopPlaceFromParentOpen: mapUtils.removeStopPlaceFromParentOpen,
   removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
+  adjacentStopDialogOpen: user.adjacentStopDialogOpen,
   canDeleteStop: getIn(roles, ['allowanceInfo', 'canDeleteStop'], false),
   deleteStopDialogOpen: mapUtils.deleteStopDialogOpen,
   originalStopPlace: stopPlace.originalCurrent,
