@@ -101,6 +101,7 @@ class StopPlaceMarker extends React.Component {
       disabledForSearch,
       hasExpired,
       isEditingGroup,
+      isEditingStop,
       handleCreateGroup,
       isGroupMember,
     } = this.props;
@@ -214,7 +215,8 @@ class StopPlaceMarker extends React.Component {
               hidden={
                 !isMultimodalChild ||
                 isMultimodal ||
-                hasExpired
+                hasExpired ||
+                !isEditingStop
               }
               onClick={() => this.props.connectToAdjacentStop(id)}
               label={translations.connectToAdjacentStop}
