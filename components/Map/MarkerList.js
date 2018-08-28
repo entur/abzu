@@ -367,7 +367,6 @@ class MarkerList extends React.Component {
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
               createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
-              connectToAdjacentStop={this.connectToAdjacentStop.bind(this)}
               translations={CustomPopupMarkerText}
               handleOnClick={() => {
                 this.handleStopOnClick(marker.id);
