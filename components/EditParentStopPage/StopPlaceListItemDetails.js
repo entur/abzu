@@ -45,7 +45,7 @@ class StopPlaceListItemDetails extends Component {
             </div>
           }
           <div style={{display: 'flex', alignItems: 'center'}}>
-            <div style={{fontSize: '0.8em'}}>{formatMessage({id: 'remove_stop_place'})}</div>
+            <div style={{fontSize: '0.8em'}}>{formatMessage({id: 'remove_stop_from_parent_title'})}</div>
             <IconButton
               disabled={disabled}
               onClick={() => this.props.handleRemoveStopPlace(stopPlace.id, notSaved)}
