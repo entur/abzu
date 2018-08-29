@@ -178,7 +178,8 @@ const userReducer = (state = initialState, action) => {
 
     case types.REQUESTED_ADJACENT_SITE_DIALOG:
       return Object.assign({}, state, {
-        adjacentStopDialogOpen: true
+        adjacentStopDialogOpen: true,
+        adjacentStopDialogStopPlace: action.payLoad
       });
 
     case types.CLOSED_ADJACENT_SITE_DIALOG:
