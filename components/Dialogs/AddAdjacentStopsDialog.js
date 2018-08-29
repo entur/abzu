@@ -42,6 +42,7 @@ class AddAdjacentStopDialog extends React.Component {
       open,
       intl,
       handleClose,
+      handleConfirm,
       stopPlaceChildren,
       parentStopPlace,
       currentStopPlaceId
@@ -80,6 +81,12 @@ class AddAdjacentStopDialog extends React.Component {
         label={formatMessage({ id: 'cancel' })}
         primary={true}
         onTouchTap={handleClose}
+      />,
+      <FlatButton
+        label={formatMessage({ id: 'confirm' })}
+        disabled={this.state.selectedAdjacentStopPlace === 'NONE'}
+        primary={true}
+        onClick={() => handleConfirm(currentStopPlaceId, this.state.selectedAdjacentStopPlace)}
       />];
 
     return (
