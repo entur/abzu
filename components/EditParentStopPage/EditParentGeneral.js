@@ -286,6 +286,7 @@ class EditParentGeneral extends React.Component {
       }
     });
     this.handleCloseAddAdjacentStop();
+    this.props.dispatch(StopPlaceActions.addedAdjacentConnection());
   }
 
   addAdjacentReferenceToStop(childStopPlace, adjacentRef) {
