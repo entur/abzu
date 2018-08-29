@@ -311,6 +311,12 @@ StopPlaceActions.clearLastMutatedStopPlaceId = () => dispatch => {
   );
 };
 
+StopPlaceActions.addedAdjacentConnection = () => dispatch => {
+  dispatch(
+    createThunk(types.ADDED_ADJACENT_CONNECTION, null)
+  );
+};
+
 StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   const state = getState();
   const stopPlace = state.stopPlace.current;

@@ -82,6 +82,11 @@ const stopPlaceReducer = (state = {}, action) => {
         pathLink: JSON.parse(JSON.stringify(state.originalPathLink)),
       });
 
+    case types.ADDED_ADJACENT_CONNECTION:
+      return Object.assign({}, state, {
+        stopHasBeenModified: true
+      });
+
     case types.SET_CENTER_AND_ZOOM:
       return Object.assign({}, state, {
         centerPosition: action.payLoad.position.slice(),
