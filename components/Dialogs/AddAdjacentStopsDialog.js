@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import RadioButton from 'material-ui/RadioButton';
 import Dialog from 'material-ui/Dialog';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
@@ -25,12 +26,45 @@ import TextField from 'material-ui/TextField';
 
 class AddAdjacentStopDialog extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedAdjacentStopPlace: 'NONE'
+    };
+  }
+
+  handleChange = event => {
+    this.setState({ selectedAdjacentStopPlace: event.target.value });
+  };
+
   render() {
     const {
       open,
       intl,
       handleClose,
+      stopPlaceChildren
     } = this.props;
+
+    const radioButtons = [];
+
+    stopPlaceChildren.forEach(function(childStop) {
+      radioButtons.push(
+        <RadioButton
+          key={childStop.id}
+          label={childStop.id}
+          checked={this.state.selectedAdjacentStopPlace === childStop.id}
+          value={childStop.id}
+          onCheck={this.handleChange.bind(this)}
+          />)
+    }, this);
+
+    radioButtons.push(
+      <RadioButton
+        label="None"
+        checked={this.state.selectedAdjacentStopPlace === 'NONE'}
+        value='NONE'
+        onCheck={this.handleChange.bind(this)}
+        />)
 
     const { formatMessage } = intl;
 
@@ -53,6 +87,7 @@ class AddAdjacentStopDialog extends React.Component {
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         <div>Connect adjacent sites</div>
+        {radioButtons}
       </Dialog>
     );
   }
