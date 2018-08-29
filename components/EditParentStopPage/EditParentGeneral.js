@@ -277,6 +277,24 @@ class EditParentGeneral extends React.Component {
     return stopHasBeenModified;
   }
 
+  addAdjacentStopReference(stopPlaceId1, stopPlaceId2) {
+    this.props.stopPlace.children.forEach(child => {
+      if(child.id == stopPlaceId1) {
+        this.addAdjacentReferenceToStop(child, stopPlaceId2);
+      } else if(child.id == stopPlaceId2) {
+        this.addAdjacentReferenceToStop(child, stopPlaceId1);
+      }
+    });
+    this.handleCloseAddAdjacentStop();
+  }
+
+  addAdjacentReferenceToStop(childStopPlace, adjacentRef) {
+    if(!childStopPlace.adjacentSites) {
+      childStopPlace.adjacentSites = [];
+    }
+    childStopPlace.adjacentSites.push({ref: adjacentRef});
+  }
+
   render() {
     const {
       stopPlace,
@@ -439,6 +457,7 @@ class EditParentGeneral extends React.Component {
         <AddAdjacentStopsDialog
           open={adjacentStopDialogOpen}
           handleClose={this.handleCloseAddAdjacentStop.bind(this)}
+          handleConfirm={this.addAdjacentStopReference.bind(this)}
         />
 
         <ConfirmDialog
