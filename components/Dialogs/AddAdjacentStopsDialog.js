@@ -42,12 +42,17 @@ class AddAdjacentStopDialog extends React.Component {
       open,
       intl,
       handleClose,
-      stopPlaceChildren
+      stopPlaceChildren,
+      parentStopPlace,
+      currentStopPlaceId
     } = this.props;
 
     const radioButtons = [];
 
+    // const selectedStop = stopPlaceChildren.find(child => child.id === currentStopPlaceId);
+
     stopPlaceChildren.forEach(function(childStop) {
+      if(childStop.id !== currentStopPlaceId) {
       radioButtons.push(
         <RadioButton
           key={childStop.id}
@@ -56,6 +61,7 @@ class AddAdjacentStopDialog extends React.Component {
           value={childStop.id}
           onCheck={this.handleChange.bind(this)}
           />)
+      }
     }, this);
 
     radioButtons.push(
@@ -87,14 +93,12 @@ class AddAdjacentStopDialog extends React.Component {
         }}
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
-        <div>Connect adjacent sites</div>
+        <div>Connect adjacent child stop {currentStopPlaceId} of {parentStopPlace.name} with:</div>
         {radioButtons}
       </Dialog>
     );
   }
 }
-
-
 
 AddAdjacentStopDialog.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -102,8 +106,10 @@ AddAdjacentStopDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stopPlace, roles }) => ({
+const mapStateToProps = ({ stopPlace, user, roles }) => ({
   stopPlaceChildren: stopPlace.current.children,
+  parentStopPlace: stopPlace.current,
+  currentStopPlaceId: user.adjacentStopDialogStopPlace
 });
 
 export default connect(mapStateToProps)(injectIntl(AddAdjacentStopDialog));
