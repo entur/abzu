@@ -60,6 +60,7 @@ class AddAdjacentStopDialog extends React.Component {
 
     radioButtons.push(
       <RadioButton
+        key="NONE"
         label="None"
         checked={this.state.selectedAdjacentStopPlace === 'NONE'}
         value='NONE'
