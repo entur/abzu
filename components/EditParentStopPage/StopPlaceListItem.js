@@ -17,6 +17,7 @@ import ModalityIconImg from '../MainPage/ModalityIconImg';
 import Divider from 'material-ui/Divider';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
+import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
 import StopPlaceListItemDetails from './StopPlaceListItemDetails';
 import StopPlaceLink from '../ReportPage/StopPlaceLink';
 import ModalityIconTray from '../ReportPage/ModalityIconTray';
@@ -66,6 +67,11 @@ class StopPlaceListItem extends Component {
                     svgStyle={{ transform: 'scale(0.8)' }}
                     style={{ marginTop: -8, marginRight: 5 }}
                   />}
+              {stopPlace.adjacentSites &&
+                 <EditorInsertLink
+                    style={{ marginLeft: -15, marginTop: -15, marginRight: 5, transform: 'scale(0.6)' }}
+                  />
+              }
               <div style={{ fontSize: '0.8em' }}>{stopPlace.name}</div>
             </div>
             <StopPlaceLink
