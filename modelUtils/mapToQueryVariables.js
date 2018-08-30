@@ -109,11 +109,13 @@ helpers.mapChildStopToVariables = (original, userInput) => {
 
 helpers.mapParentStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
+  const children = stop.children.map(child => helpers.mapDeepStopToVariables(child, null));
 
   let parentStopVariables = {
     name: stop.name,
     description: stop.description || null,
-    alternativeNames: stop.alternativeNames || null
+    alternativeNames: stop.alternativeNames || null,
+    children: children
   };
 
   if (stop.id) {
@@ -197,7 +199,8 @@ helpers.mapStopToVariables = (original, userInput) => {
     transportMode: stop.transportMode,
     tariffZones: (stop.tariffZones || []).map(tz => ({
       ref: tz.id
-    }))
+    })),
+    adjacentSites: stop.adjacentSites
   };
 
   if (userInput) {
