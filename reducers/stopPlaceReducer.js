@@ -91,12 +91,6 @@ const stopPlaceReducer = (state = {}, action) => {
     case types.REMOVE_ADJACENT_SITE:
       const adjacentStopPlaceRef = action.payLoad.adjacentStopPlaceRef;
       const stopPlaceIdForRemovingAdjacentSite = action.payLoad.stopPlaceId;
-
-
-      console.log(adjacentStopPlaceRef);
-
-      console.log(stopPlaceIdForRemovingAdjacentSite);
-
       const changedStopPlace = AdjacentStopRemover.removeAdjacentStop(state.current, adjacentStopPlaceRef, stopPlaceIdForRemovingAdjacentSite);
 
       return Object.assign({}, state, {
