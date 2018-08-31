@@ -113,7 +113,7 @@ AddAdjacentStopDialog.propTypes = {
   handleConfirm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stopPlace, user, roles }) => ({
+const mapStateToProps = ({ stopPlace, user }) => ({
   stopPlaceChildren: stopPlace.current.children,
   parentStopPlace: stopPlace.current,
   currentStopPlaceId: user.adjacentStopDialogStopPlace
