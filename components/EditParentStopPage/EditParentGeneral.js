@@ -277,6 +277,7 @@ class EditParentGeneral extends React.Component {
     return stopHasBeenModified;
   }
 
+  // Should be implemented somewhere else.
   addAdjacentStopReference(stopPlaceId1, stopPlaceId2) {
     this.props.stopPlace.children.forEach(child => {
       if(child.id == stopPlaceId1) {
