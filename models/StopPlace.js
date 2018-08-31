@@ -48,6 +48,7 @@ class StopPlace {
         transportMode: stop.transportMode,
         version: stop.version,
         weighting: stop.weighting,
+        adjacentSites: stop.adjacentSites,
         entityType: Entities.STOP_PLACE,
       };
 
