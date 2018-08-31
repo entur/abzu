@@ -17,8 +17,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
+import MdDelete from 'material-ui/svg-icons/action/delete';
+import IconButton from 'material-ui/IconButton';
 
 class AdjacentStopList extends React.Component {
+
+
+  removeAdjacentStop(adjacentRef) {
+    console.log("Remove ", adjacentRef);
+  }
 
   render() {
 
@@ -26,12 +33,19 @@ class AdjacentStopList extends React.Component {
       return null;
     }
 
-    const refs = this.props.stopPlace.adjacentSites.map(adjacentRef => 
-      <div style={{fontSize: 13 }} key={adjacentRef}>
-      <EditorInsertLink
-              style={{transform: 'scale(0.6)' }}
-            />
-        {adjacentRef.ref}
+    const refs = this.props.stopPlace.adjacentSites.map(adjacentRef =>
+      <div style={{fontSize: 13, textAlign: 'top'}} key={adjacentRef}>
+        <EditorInsertLink
+            style={{transform: 'scale(0.6)' }}
+        />
+        <span style={{marginTop: -20}}>{adjacentRef.ref}</span>
+        <IconButton
+          onClick={() => this.removeAdjacentStop({adjacentRef})}
+          style={{transform: 'scale(0.6)'}}
+          tooltip='remove link'
+          >
+          <MdDelete />
+        </IconButton>
       </div>
     );
 
