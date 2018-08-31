@@ -20,6 +20,7 @@ import IconButton from 'material-ui/IconButton';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import StopPlaceListItemQuays from './StopPlaceListItemQuays';
 import StopPlaceChildrenItems from './StopPlaceChildrenItems';
+import AdjacentStopList from './AdjacentStopList';
 
 class StopPlaceListItemDetails extends Component {
 
@@ -31,6 +32,12 @@ class StopPlaceListItemDetails extends Component {
 
     return (
       <div style={{marginTop: 10}}>
+        <div style={{width: '90%', margin: 'auto'}}>
+          <AdjacentStopList
+            stopPlace={stopPlace}
+          />
+        </div>
+
         { stopPlace.isParent
           ? <StopPlaceChildrenItems children={stopPlace.children} formatMessage={formatMessage}/>
           : <StopPlaceListItemQuays quays={stopPlace.quays} formatMessage={formatMessage}/>
