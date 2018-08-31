@@ -35,6 +35,7 @@ class StopPlaceListItemDetails extends Component {
         <div style={{width: '90%', margin: 'auto'}}>
           <AdjacentStopList
             stopPlace={stopPlace}
+            handleRemoveAdjacentStop={adjacentRef => this.props.handleRemoveAdjacentStop(adjacentRef)}
           />
         </div>
 

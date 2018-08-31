@@ -12,18 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { weightColors } from "../../models/weightTypes";
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
+import StopPlaceActions from '../../actions/StopPlaceActions';
 
 class AdjacentStopList extends React.Component {
 
-  removeAdjacentStop(adjacentRef) {
-    this.props.handleRemoveAdjacentStop(adjacentRef);
+  removeAdjacentConnection(adjacentRef) {
+    this.props.dispatch(
+      StopPlaceActions.removeAdjacentConnection(this.props.stopPlace.id, adjacentRef.ref)
+    );
   }
 
   render() {
@@ -32,27 +35,31 @@ class AdjacentStopList extends React.Component {
       return null;
     }
 
-    const refs = this.props.stopPlace.adjacentSites.map(adjacentRef =>
-      <div style={{fontSize: 13, textAlign: 'top'}} key={adjacentRef}>
+    const stopPlaceId = this.props.stopPlace.id;
+
+    const refs = this.props.stopPlace.adjacentSites.map(adjacentRef => {
+      const key = adjacentRef.ref + "-" + stopPlaceId;
+      return <div style={{fontSize: 13, textAlign: 'top'}} key={key}>
         <EditorInsertLink
             style={{transform: 'scale(0.6)' }}
         />
         <span style={{marginTop: -20}}>{adjacentRef.ref}</span>
         <IconButton
-          onClick={() => this.removeAdjacentStop({adjacentRef})}
+          onClick={() => this.removeAdjacentConnection(adjacentRef)}
           style={{transform: 'scale(0.6)'}}
           tooltip='remove link'
           >
-          <MdDelete />
+            <MdDelete />
         </IconButton>
       </div>
+      }
     );
 
     return (
       <div>
         {refs.length > 0 &&
         <span style={{fontWeight: 600, fontSize: '0.8em' }}>
-          This stop place is linked with adjancent stop places
+          This stop place is linked with adjacent stop places
         </span>}
         {refs}
       </div>
@@ -62,8 +69,10 @@ class AdjacentStopList extends React.Component {
 
 AdjacentStopList.propTypes = {
   stopPlace: PropTypes.object.isRequired,
-  handleRemoveAdjacentStop: PropTypes.func.isRequired
 };
 
-export default injectIntl(AdjacentStopList);
+const mapStateToProps = ({stopPlace}) => ({
+});
+
+export default connect(mapStateToProps)(injectIntl(AdjacentStopList));
 
