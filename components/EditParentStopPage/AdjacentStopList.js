@@ -22,9 +22,8 @@ import IconButton from 'material-ui/IconButton';
 
 class AdjacentStopList extends React.Component {
 
-
   removeAdjacentStop(adjacentRef) {
-    console.log("Remove ", adjacentRef);
+    this.props.handleRemoveAdjacentStop(adjacentRef);
   }
 
   render() {
@@ -49,13 +48,12 @@ class AdjacentStopList extends React.Component {
       </div>
     );
 
-    console.log(refs)
-
     return (
       <div>
+        {refs.length > 0 &&
         <span style={{fontWeight: 600, fontSize: '0.8em' }}>
           This stop place is linked with adjancent stop places
-        </span>
+        </span>}
         {refs}
       </div>
     );
@@ -63,7 +61,8 @@ class AdjacentStopList extends React.Component {
 }
 
 AdjacentStopList.propTypes = {
-  stopPlace: PropTypes.object.isRequired
+  stopPlace: PropTypes.object.isRequired,
+  handleRemoveAdjacentStop: PropTypes.func.isRequired
 };
 
 export default injectIntl(AdjacentStopList);
