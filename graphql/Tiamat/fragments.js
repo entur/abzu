@@ -51,6 +51,9 @@ Fragments.groupOfStopPlaces = {
               ...on StopPlace {
                   stopPlaceType
                   submode
+                  adjacentSites {
+                      ref
+                  }
                   quays {
                       id
                       privateCode { value }
@@ -178,6 +181,9 @@ Fragments.stopPlace = {
         }
         geometry {
             coordinates
+        }
+        adjacentSites {
+            ref
         }
         quays {
             ...VerboseQuay
