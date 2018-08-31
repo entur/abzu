@@ -20,6 +20,7 @@ import * as types from '../actions/Types';
 import formatHelpers from '../modelUtils/mapToClient';
 import limitationHelpers from '../modelUtils/limitationHelpers';
 import equipmentHelpers from '../modelUtils/equipmentHelpers';
+import AdjacentStopRemover from '../modelUtils/adjacentStopRemover';
 import { setDecimalPrecision } from '../utils/';
 
 const stopPlaceReducer = (state = {}, action) => {
@@ -85,6 +86,22 @@ const stopPlaceReducer = (state = {}, action) => {
     case types.ADDED_ADJACENT_CONNECTION:
       return Object.assign({}, state, {
         stopHasBeenModified: true
+      });
+
+    case types.REMOVE_ADJACENT_SITE:
+      const adjacentStopPlaceRef = action.payLoad.adjacentStopPlaceRef;
+      const stopPlaceIdForRemovingAdjacentSite = action.payLoad.stopPlaceId;
+
+
+      console.log(adjacentStopPlaceRef);
+
+      console.log(stopPlaceIdForRemovingAdjacentSite);
+
+      const changedStopPlace = AdjacentStopRemover.removeAdjacentStop(state.current, adjacentStopPlaceRef, stopPlaceIdForRemovingAdjacentSite);
+
+      return Object.assign({}, state, {
+        stopHasBeenModified: true,
+        current: changedStopPlace
       });
 
     case types.SET_CENTER_AND_ZOOM:
