@@ -22,6 +22,9 @@ export const neighbourStopPlaceQuays = gql`
           ...on ParentStopPlace {
               children {
                   id
+                  adjacentSites {
+                     ref
+                  }
                   quays {
                       id
                       version
@@ -38,6 +41,9 @@ export const neighbourStopPlaceQuays = gql`
           }
           ...on StopPlace {
               id
+              adjacentSites {
+                ref
+              }
               quays {
                   id
                   version
@@ -210,6 +216,9 @@ export const getStopById = gql`
                 }
             }
             ... on StopPlace {
+                adjacentSites {
+                    ref
+                }
                 stopPlaceType
                 submode
                 transportMode
@@ -568,6 +577,9 @@ export const getStopPlacesById = stopPlaceIds => {
                 }
                 transportMode
                 stopPlaceType
+                adjacentSites {
+                    ref
+                }
                 quays {
                     id
                     publicCode
