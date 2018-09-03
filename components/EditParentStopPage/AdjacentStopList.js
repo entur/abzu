@@ -18,7 +18,6 @@ import { injectIntl } from 'react-intl';
 import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
-import StopPlaceActions from '../../actions/StopPlaceActions';
 
 class AdjacentStopList extends Component {
 
