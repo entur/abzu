@@ -15,22 +15,18 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
 import MdDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import StopPlaceActions from '../../actions/StopPlaceActions';
 
-class AdjacentStopList extends React.Component {
+class AdjacentStopList extends Component {
 
-  removeAdjacentConnection(adjacentRef) {
-    this.props.dispatch(
-      StopPlaceActions.removeAdjacentConnection(this.props.stopPlace.id, adjacentRef.ref)
-    );
+  handleRemoveAdjacentConnection(adjacentRef) {
+    this.props.handleRemoveAdjacentConnection(this.props.stopPlace.id, adjacentRef);
   }
 
   render() {
-
     if(!this.props.stopPlace.adjacentSites) {
       return null;
     }
@@ -45,7 +41,7 @@ class AdjacentStopList extends React.Component {
         />
         <span style={{marginTop: -20}}>{adjacentRef.ref}</span>
         <IconButton
-          onClick={() => this.removeAdjacentConnection(adjacentRef)}
+          onClick={() => this.handleRemoveAdjacentConnection(adjacentRef)}
           style={{transform: 'scale(0.6)'}}
           tooltip='remove link'
           >
@@ -69,10 +65,8 @@ class AdjacentStopList extends React.Component {
 
 AdjacentStopList.propTypes = {
   stopPlace: PropTypes.object.isRequired,
+  handleRemoveAdjacentConnection: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({stopPlace}) => ({
-});
-
-export default connect(mapStateToProps)(injectIntl(AdjacentStopList));
+export default injectIntl(AdjacentStopList);
 

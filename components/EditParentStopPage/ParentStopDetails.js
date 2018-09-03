@@ -112,6 +112,12 @@ class ParentStopDetails extends Component {
     this.props.dispatch(StopPlaceActions.changeStopDescription(value));
   }
 
+  handleRemoveAdjacentConnection(stopPlaceId, adjacentRef) {
+    this.props.dispatch(
+      StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef.ref)
+    );
+  }
+
   render() {
     const { stopPlace, intl, disabled } = this.props;
     const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } = this.state;
@@ -217,6 +223,7 @@ class ParentStopDetails extends Component {
         </div>
         <StopPlaceList
           handleAddStopPlaceOpen={this.handleAddStopPlaceOpen.bind(this)}
+          handleRemoveAdjacentConnection={this.handleRemoveAdjacentConnection.bind(this)}
           stopPlaces={stopPlace.children}
           disabled={disabled}
           isLoading={this.state.isLoading}

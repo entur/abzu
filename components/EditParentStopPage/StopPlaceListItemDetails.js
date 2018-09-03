@@ -21,12 +21,13 @@ import MdWarning from 'material-ui/svg-icons/alert/warning';
 import StopPlaceListItemQuays from './StopPlaceListItemQuays';
 import StopPlaceChildrenItems from './StopPlaceChildrenItems';
 import AdjacentStopList from './AdjacentStopList';
+import PropTypes from 'prop-types';
 
 class StopPlaceListItemDetails extends Component {
 
   render() {
 
-    const { stopPlace, intl, disabled } = this.props;
+    const { stopPlace, intl, disabled, handleRemoveAdjacentConnection } = this.props;
     const { notSaved } = stopPlace;
     const { formatMessage } = intl;
 
@@ -34,6 +35,7 @@ class StopPlaceListItemDetails extends Component {
       <div style={{marginTop: 10}}>
         <div style={{width: '90%', margin: 'auto'}}>
           <AdjacentStopList
+            handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
             stopPlace={stopPlace}
           />
         </div>
@@ -65,4 +67,10 @@ class StopPlaceListItemDetails extends Component {
     );
   }
 }
+
+StopPlaceListItemDetails.propTypes = {
+  stopPlace: PropTypes.object.isRequired,
+  handleRemoveAdjacentConnection: PropTypes.func.isRequired
+};
+
 export default injectIntl(StopPlaceListItemDetails);
