@@ -33,12 +33,14 @@ class StopPlaceListItemDetails extends Component {
 
     return (
       <div style={{marginTop: 10}}>
+        {handleRemoveAdjacentConnection &&
         <div style={{width: '90%', margin: 'auto'}}>
           <AdjacentStopList
             handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
             stopPlace={stopPlace}
           />
         </div>
+        }
 
         { stopPlace.isParent
           ? <StopPlaceChildrenItems children={stopPlace.children} formatMessage={formatMessage}/>
@@ -69,8 +71,7 @@ class StopPlaceListItemDetails extends Component {
 }
 
 StopPlaceListItemDetails.propTypes = {
-  stopPlace: PropTypes.object.isRequired,
-  handleRemoveAdjacentConnection: PropTypes.func.isRequired
+  stopPlace: PropTypes.object.isRequired
 };
 
 export default injectIntl(StopPlaceListItemDetails);
