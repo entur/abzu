@@ -15,38 +15,24 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import IconButton from 'material-ui/IconButton';
+import AdjacentStopConnection from './AdjacentStopConnection';
 
 class AdjacentStopList extends Component {
-
-  handleRemoveAdjacentConnection(adjacentRef) {
-    this.props.handleRemoveAdjacentConnection(this.props.stopPlace.id, adjacentRef);
-  }
 
   render() {
     if(!this.props.stopPlace.adjacentSites) {
       return null;
     }
-
     const stopPlaceId = this.props.stopPlace.id;
 
     const refs = this.props.stopPlace.adjacentSites.map(adjacentRef => {
       const key = adjacentRef.ref + "-" + stopPlaceId;
-      return <div style={{fontSize: 13, textAlign: 'top'}} key={key}>
-        <EditorInsertLink
-            style={{transform: 'scale(0.6)' }}
+      return <AdjacentStopConnection
+        key={key}
+        stopPlace={this.props.stopPlace}
+        adjacentRef={adjacentRef.ref}
+        handleRemoveAdjacentConnection={this.props.handleRemoveAdjacentConnection}
         />
-        <span style={{marginTop: -20}}>{adjacentRef.ref}</span>
-        <IconButton
-          onClick={() => this.handleRemoveAdjacentConnection(adjacentRef)}
-          style={{transform: 'scale(0.6)'}}
-          tooltip='remove link'
-          >
-            <MdDelete />
-        </IconButton>
-      </div>
       }
     );
 
