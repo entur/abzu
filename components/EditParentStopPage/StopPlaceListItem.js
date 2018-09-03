@@ -30,7 +30,8 @@ class StopPlaceListItem extends Component {
       handleExpand,
       handleCollapse,
       disabled,
-      handleRemoveStopPlace
+      handleRemoveStopPlace,
+      handleRemoveAdjacentConnection
     } = this.props;
 
     return (
@@ -89,6 +90,7 @@ class StopPlaceListItem extends Component {
         {expanded &&
           <StopPlaceListItemDetails
             handleRemoveStopPlace={handleRemoveStopPlace}
+            handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
             stopPlace={stopPlace}
             disabled={disabled}
           />}

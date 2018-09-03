@@ -42,7 +42,7 @@ class StopPlaceList extends Component {
   }
 
   render() {
-    const { stopPlaces, handleAddStopPlaceOpen, intl, disabled, isLoading } = this.props;
+    const { stopPlaces, handleAddStopPlaceOpen, handleRemoveAdjacentConnection, intl, disabled, isLoading } = this.props;
     const { formatMessage } = intl;
     const { expandedItem } = this.state;
 
@@ -85,6 +85,7 @@ class StopPlaceList extends Component {
                   expanded={expandedItem === i}
                   disabled={disabled}
                   handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
+                  handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
                 />
               )
             : <div style={{ marginTop: 5 }}>
@@ -108,7 +109,8 @@ class StopPlaceList extends Component {
 
 StopPlaceList.propTypes = {
   stopPlaces: PropTypes.arrayOf(PropTypes.object),
-  handleAddStopPlaceOpen: PropTypes.func.isRequired
+  handleAddStopPlaceOpen: PropTypes.func.isRequired,
+  handleRemoveAdjacentConnection: PropTypes.func.isRequired
 };
 
 export default connect(null)(injectIntl(StopPlaceList));
