@@ -114,7 +114,7 @@ class ParentStopDetails extends Component {
 
   handleRemoveAdjacentConnection(stopPlaceId, adjacentRef) {
     this.props.dispatch(
-      StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef.ref)
+      StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef)
     );
   }
 
