@@ -21,6 +21,7 @@ import formatHelpers from '../modelUtils/mapToClient';
 import limitationHelpers from '../modelUtils/limitationHelpers';
 import equipmentHelpers from '../modelUtils/equipmentHelpers';
 import AdjacentStopRemover from '../modelUtils/adjacentStopRemover';
+import AdjacentStopAdder from '../modelUtils/adjacentStopAdder';
 import { setDecimalPrecision } from '../utils/';
 
 const stopPlaceReducer = (state = {}, action) => {
@@ -83,7 +84,11 @@ const stopPlaceReducer = (state = {}, action) => {
         pathLink: JSON.parse(JSON.stringify(state.originalPathLink)),
       });
 
-    case types.ADDED_ADJACENT_CONNECTION:
+    case types.ADD_ADJACENT_SITE:
+      const stopPlaceId1 = action.payLoad.stopPlaceId1;
+      const stopPlaceId2 = action.payLoad.stopPlaceId2;
+      AdjacentStopAdder.addAdjacentStopReference(state.current, stopPlaceId1, stopPlaceId2,)
+
       return Object.assign({}, state, {
         stopHasBeenModified: true
       });

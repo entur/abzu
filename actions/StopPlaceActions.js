@@ -311,9 +311,9 @@ StopPlaceActions.clearLastMutatedStopPlaceId = () => dispatch => {
   );
 };
 
-StopPlaceActions.addedAdjacentConnection = () => dispatch => {
+StopPlaceActions.addAdjacentConnection = (stopPlaceId1, stopPlaceId2) => dispatch => {
   dispatch(
-    createThunk(types.ADDED_ADJACENT_CONNECTION, null)
+    createThunk(types.ADD_ADJACENT_SITE, { stopPlaceId1, stopPlaceId2 })
   );
 };
 
