@@ -11,6 +11,7 @@ Object {
       "wheelchairAccess": "UNKNOWN",
     },
   },
+  "adjacentSites": undefined,
   "alternativeNames": Array [],
   "belongsToGroup": false,
   "entityType": "STOP_PLACE",
@@ -100,6 +101,7 @@ Object {
       "wheelchairAccess": "UNKNOWN",
     },
   },
+  "adjacentSites": undefined,
   "alternativeNames": Array [],
   "coordinates": Array [
     Array [
