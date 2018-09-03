@@ -20,7 +20,7 @@ import AdjacentStopConnection from './AdjacentStopConnection';
 class AdjacentStopList extends Component {
 
   render() {
-    if(!this.props.stopPlace.adjacentSites) {
+    if (!this.props.stopPlace.adjacentSites) {
       return null;
     }
     const stopPlaceId = this.props.stopPlace.id;
@@ -32,15 +32,15 @@ class AdjacentStopList extends Component {
         stopPlace={this.props.stopPlace}
         adjacentRef={adjacentRef.ref}
         handleRemoveAdjacentConnection={this.props.handleRemoveAdjacentConnection}
-        />
-      }
+      />
+    }
     );
 
     return (
       <div>
         {refs.length > 0 &&
-        <span style={{fontWeight: 600, fontSize: '0.8em' }}>
-          This stop place is linked with adjacent stop places
+          <span style={{ fontWeight: 600, fontSize: '0.8em' }}>
+            This stop place is linked with adjacent stop places
         </span>}
         {refs}
       </div>
