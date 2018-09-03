@@ -18,11 +18,7 @@ import RadioButton from 'material-ui/RadioButton';
 import Dialog from 'material-ui/Dialog';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-
 import FlatButton from 'material-ui/FlatButton';
-import Checkbox from 'material-ui/Checkbox';
-import TextField from 'material-ui/TextField';
-
 
 class AddAdjacentStopDialog extends React.Component {
 
@@ -37,6 +33,20 @@ class AddAdjacentStopDialog extends React.Component {
     this.setState({ selectedAdjacentStopPlace: event.target.value });
   };
 
+  isCurrentChildStop(childStop) {
+    return childStop.id === this.props.currentStopPlaceId;
+  };
+
+  alreadyConnected(childStop) {
+    const currentChild = this.props.stopPlaceChildren.find(child => child.id === this.props.currentStopPlaceId);
+
+    // Avoid displaying already existing adjacent site as an option:
+    if(currentChild && Array.isArray(currentChild.adjacentSites)) {
+      return currentChild.adjacentSites.some(adjacentRef => adjacentRef.ref === childStop.id);
+    }
+    return false;
+  }
+
   render() {
     const {
       open,
@@ -50,17 +60,15 @@ class AddAdjacentStopDialog extends React.Component {
 
     const radioButtons = [];
 
-    // const selectedStop = stopPlaceChildren.find(child => child.id === currentStopPlaceId);
-
-    stopPlaceChildren.forEach(function(childStop) {
-      if(childStop.id !== currentStopPlaceId) {
-      radioButtons.push(
-        <RadioButton
-          key={childStop.id}
-          label={childStop.id}
-          checked={this.state.selectedAdjacentStopPlace === childStop.id}
-          value={childStop.id}
-          onCheck={this.handleChange.bind(this)}
+    stopPlaceChildren.forEach(function (childStop) {
+      if (!this.isCurrentChildStop(childStop) && !this.alreadyConnected(childStop)) {
+        radioButtons.push(
+          <RadioButton
+            key={childStop.id}
+            label={childStop.id}
+            checked={this.state.selectedAdjacentStopPlace === childStop.id}
+            value={childStop.id}
+            onCheck={this.handleChange.bind(this)}
           />)
       }
     }, this);
@@ -72,7 +80,7 @@ class AddAdjacentStopDialog extends React.Component {
         checked={this.state.selectedAdjacentStopPlace === 'NONE'}
         value='NONE'
         onCheck={this.handleChange.bind(this)}
-        />)
+      />)
 
     const { formatMessage } = intl;
 
