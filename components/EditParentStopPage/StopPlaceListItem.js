@@ -68,6 +68,7 @@ class StopPlaceListItem extends Component {
                     style={{ marginTop: -8, marginRight: 5 }}
                   />}
               {stopPlace.adjacentSites &&
+                stopPlace.adjacentSites.length > 0 &&
                  <EditorInsertLink
                     style={{ marginLeft: -15, marginTop: -15, marginRight: 5, transform: 'scale(0.6)' }}
                   />
