@@ -318,8 +318,6 @@ StopPlaceActions.addedAdjacentConnection = () => dispatch => {
 };
 
 StopPlaceActions.removeAdjacentConnection = (stopPlaceId, adjacentStopPlaceRef) => dispatch => {
-  console.log("remove adjacent connection");
-
   dispatch(
     createThunk(types.REMOVE_ADJACENT_SITE, {stopPlaceId, adjacentStopPlaceRef})
   );
