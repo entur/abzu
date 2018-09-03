@@ -42,6 +42,7 @@ import { stopPlaceAndPathLinkByVersion } from '../../graphql/Tiamat/queries';
 import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
 import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
+import StopPlace from '../../models/StopPlace';
 
 class EditParentGeneral extends React.Component {
   constructor(props) {
@@ -277,24 +278,9 @@ class EditParentGeneral extends React.Component {
     return stopHasBeenModified;
   }
 
-  // Should be implemented somewhere else.
   addAdjacentStopReference(stopPlaceId1, stopPlaceId2) {
-    this.props.stopPlace.children.forEach(child => {
-      if(child.id == stopPlaceId1) {
-        this.addAdjacentReferenceToStop(child, stopPlaceId2);
-      } else if(child.id == stopPlaceId2) {
-        this.addAdjacentReferenceToStop(child, stopPlaceId1);
-      }
-    });
+    this.props.dispatch(StopPlaceActions.addAdjacentConnection(stopPlaceId1, stopPlaceId2));
     this.handleCloseAddAdjacentStop();
-    this.props.dispatch(StopPlaceActions.addedAdjacentConnection());
-  }
-
-  addAdjacentReferenceToStop(childStopPlace, adjacentRef) {
-    if(!childStopPlace.adjacentSites) {
-      childStopPlace.adjacentSites = [];
-    }
-    childStopPlace.adjacentSites.push({ref: adjacentRef});
   }
 
   render() {
