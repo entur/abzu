@@ -29,17 +29,17 @@ class AdjacentStopConnection extends Component {
     const adjacentRef = this.props.adjacentRef;
 
     return (
-      <div style={{fontSize: 13, textAlign: 'top'}}>
+      <div style={{ fontSize: 13, textAlign: 'top' }}>
         <EditorInsertLink
-            style={{transform: 'scale(0.6)' }}
+          style={{ transform: 'scale(0.6)' }}
         />
-        <span style={{marginTop: -20}}>{adjacentRef}</span>
+        <span style={{ marginTop: -20 }}>{adjacentRef}</span>
         <IconButton
           onClick={this.handleRemoveAdjacentConnection}
-          style={{transform: 'scale(0.6)'}}
+          style={{ transform: 'scale(0.6)' }}
           tooltip='remove link'
-          >
-            <MdDelete />
+        >
+          <MdDelete />
         </IconButton>
       </div>
     );
