@@ -18,22 +18,27 @@ const AdjacentStopRemover = {};
 AdjacentStopRemover.removeAdjacentStop = (currentStop, adjacentStopPlaceRef, stopPlaceIdForRemovingAdjacentSite) => {
 
     if(currentStop.isParent) {
-        currentStop.children.forEach(child => {
-          if(child.id == stopPlaceIdForRemovingAdjacentSite) {
-            AdjacentStopRemover.removeAdjacentStopFromChild(child, adjacentStopPlaceRef);
-          } else if(child.id == adjacentStopPlaceRef) {
-            AdjacentStopRemover.removeAdjacentStopFromChild(child, stopPlaceIdForRemovingAdjacentSite);
-          }
-        });
-      }
+
+      const childrenCopy = currentStop.children.slice();
+
+      childrenCopy.forEach(child => {
+        if(child.id == stopPlaceIdForRemovingAdjacentSite) {
+          AdjacentStopRemover.removeAdjacentStopFromChild(child, adjacentStopPlaceRef);
+        } else if(child.id == adjacentStopPlaceRef) {
+          AdjacentStopRemover.removeAdjacentStopFromChild(child, stopPlaceIdForRemovingAdjacentSite);
+        }
+      });
+      return {
+        ...currentStop,
+        childrenCopy
+     };
+    }
     return currentStop;
 }
 
-
 AdjacentStopRemover.removeAdjacentStopFromChild = (child, adjacentRefToRemove) => {
-    const result = child.adjacentSites.filter(adjacentSite => adjacentSite.ref !== adjacentRefToRemove);
-    child.adjacentSites = result;
-    return result;
+  const result = child.adjacentSites.filter(adjacentSite => adjacentSite.ref !== adjacentRefToRemove);
+  child.adjacentSites = result;
 }
 
 export default AdjacentStopRemover;
