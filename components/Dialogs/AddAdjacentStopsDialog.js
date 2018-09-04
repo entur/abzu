@@ -41,7 +41,7 @@ class AddAdjacentStopDialog extends React.Component {
     return childStop.id === this.props.currentStopPlaceId;
   };
 
-  alreadyConnected(childStop) {
+  isConnected(childStop) {
     const currentChild = this.props.stopPlaceChildren.find(child => child.id === this.props.currentStopPlaceId);
 
     // Avoid displaying already existing adjacent site as an option:
@@ -94,9 +94,9 @@ class AddAdjacentStopDialog extends React.Component {
           .map(child => (
             <AddStopPlaceSuggestionListItem
               key={child.id}
-              disabled={this.alreadyConnected(child)}
+              disabled={this.isConnected(child)}
               onCheck={this.handleChange.bind(this)}
-              checked={this.state.selectedAdjacentStopPlace === child.id}
+              checked={this.state.selectedAdjacentStopPlace === child.id || this.isConnected(child)}
               suggestion={child}
             />
           ))}
