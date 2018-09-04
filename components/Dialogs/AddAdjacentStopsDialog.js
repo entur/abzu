@@ -14,11 +14,11 @@ limitations under the Licence. */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
 import Dialog from 'material-ui/Dialog';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
+import AddStopPlaceSuggestionListItem from './AddStopPlaceSuggestionListItem';
 
 class AddAdjacentStopDialog extends React.Component {
 
@@ -30,7 +30,7 @@ class AddAdjacentStopDialog extends React.Component {
   }
 
   handleChange = event => {
-    this.setState({ selectedAdjacentStopPlace: event.target.value });
+    this.setState({ selectedAdjacentStopPlace: event });
   };
 
   isCurrentChildStop(childStop) {
@@ -41,7 +41,7 @@ class AddAdjacentStopDialog extends React.Component {
     const currentChild = this.props.stopPlaceChildren.find(child => child.id === this.props.currentStopPlaceId);
 
     // Avoid displaying already existing adjacent site as an option:
-    if(currentChild && Array.isArray(currentChild.adjacentSites)) {
+    if (currentChild && Array.isArray(currentChild.adjacentSites)) {
       return currentChild.adjacentSites.some(adjacentRef => adjacentRef.ref === childStop.id);
     }
     return false;
@@ -58,30 +58,7 @@ class AddAdjacentStopDialog extends React.Component {
       currentStopPlaceId
     } = this.props;
 
-    const radioButtons = [];
-
-    stopPlaceChildren.forEach(function (childStop) {
-      if (!this.isCurrentChildStop(childStop) && !this.alreadyConnected(childStop)) {
-        radioButtons.push(
-          <RadioButton
-            key={childStop.id}
-            label={childStop.id}
-            checked={this.state.selectedAdjacentStopPlace === childStop.id}
-            value={childStop.id}
-            onCheck={this.handleChange.bind(this)}
-          />)
-      }
-    }, this);
-
-    radioButtons.push(
-      <RadioButton
-        key="NONE"
-        label="None"
-        checked={this.state.selectedAdjacentStopPlace === 'NONE'}
-        value='NONE'
-        onCheck={this.handleChange.bind(this)}
-      />)
-
+    const suggestions = stopPlaceChildren.filter(childStop => (!this.isCurrentChildStop(childStop) && !this.alreadyConnected(childStop)));
     const { formatMessage } = intl;
 
     const actions = [
@@ -109,7 +86,16 @@ class AddAdjacentStopDialog extends React.Component {
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
         <div>Connect adjacent child stop {currentStopPlaceId} of {parentStopPlace.name} with:</div>
-        {radioButtons}
+        {suggestions.map(child => (
+          <AddStopPlaceSuggestionListItem
+            key={child.id}
+            disabled
+            onCheck={this.handleChange.bind(this)}
+            checked={this.state.selectedAdjacentStopPlace === child.id}
+            suggestion={child}
+          />
+        ))}
+
       </Dialog>
     );
   }
