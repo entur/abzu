@@ -24,14 +24,13 @@ AdjacentStopAdder.addAdjacentStopReference = (parentStopPlace, stopPlaceId1, sto
       AdjacentStopAdder.addAdjacentReferenceToStop(child, stopPlaceId1);
     }
   });
-
-  AdjacentStopAdder.addAdjacentReferenceToStop = (childStopPlace, adjacentRef) => {
-    if (!childStopPlace.adjacentSites) {
-      childStopPlace.adjacentSites = [];
-    }
-    childStopPlace.adjacentSites.push({ ref: adjacentRef });
-  }
 }
 
+AdjacentStopAdder.addAdjacentReferenceToStop = (childStopPlace, adjacentRef) => {
+  if (!childStopPlace.adjacentSites) {
+    childStopPlace.adjacentSites = [];
+  }
+  childStopPlace.adjacentSites.push({ ref: adjacentRef });
+}
 
 export default AdjacentStopAdder;
