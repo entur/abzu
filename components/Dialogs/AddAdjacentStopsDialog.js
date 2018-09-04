@@ -29,8 +29,12 @@ class AddAdjacentStopDialog extends React.Component {
     };
   }
 
-  handleChange = event => {
-    this.setState({ selectedAdjacentStopPlace: event });
+  handleChange = (event, checked) => {
+    if (checked) {
+      this.setState({ selectedAdjacentStopPlace: event });
+    } else {
+      this.setState({ selectedAdjacentStopPlace: 'NONE' });
+    }
   };
 
   isCurrentChildStop(childStop) {
@@ -97,7 +101,7 @@ class AddAdjacentStopDialog extends React.Component {
               checked={this.state.selectedAdjacentStopPlace === child.id}
               suggestion={child}
             />
-        ))}
+          ))}
 
       </Dialog>
     );
