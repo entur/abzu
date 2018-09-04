@@ -90,13 +90,11 @@ class AddAdjacentStopDialog extends React.Component {
       >
         <div>Connect adjacent child stop {currentStopPlaceId} of {parentStopPlace.name} with:</div>
         {stopPlaceChildren
-          .filter(childStop => (
-            !this.isCurrentChildStop(childStop) &&
-            !this.alreadyConnected(childStop)))
+          .filter(child => !this.isCurrentChildStop(child))
           .map(child => (
             <AddStopPlaceSuggestionListItem
               key={child.id}
-              disabled
+              disabled={this.alreadyConnected(child)}
               onCheck={this.handleChange.bind(this)}
               checked={this.state.selectedAdjacentStopPlace === child.id}
               suggestion={child}
