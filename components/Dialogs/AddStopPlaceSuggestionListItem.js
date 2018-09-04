@@ -24,12 +24,12 @@ class AddStopPlaceSuggestionListItem extends Component {
 
   render() {
 
-    const { suggestion, checked, onCheck, intl } = this.props;
+    const { suggestion, checked, onCheck, intl, disabled } = this.props;
     const { formatMessage } = intl;
 
     return (
       <div style={{display: 'flex', alignItems: 'center', padding: 4}}>
-        <Checkbox disabled={suggestion && suggestion.hasExpired} checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
+        <Checkbox disabled={suggestion && (suggestion.hasExpired || disabled)} checked={checked} onCheck={(e,v) => onCheck(suggestion.id, v)} label={
           <div style={{display: 'flex', alignItems: 'center'}}>
             {suggestion.isParent
               ? <div style={{marginRight: 5, fontWeight: 600}}>MM</div>
