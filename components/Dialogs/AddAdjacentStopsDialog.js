@@ -88,7 +88,7 @@ class AddAdjacentStopDialog extends React.Component {
         }}
         contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
       >
-        <div>Connect adjacent child stop {currentStopPlaceId} of {parentStopPlace.name} with:</div>
+        <div>{formatMessage({id:'connect_to_adjacent_stop_description'})}</div>
         {stopPlaceChildren
           .filter(child => !this.isCurrentChildStop(child))
           .map(child => (

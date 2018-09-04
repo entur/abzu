@@ -23,6 +23,9 @@ class AdjacentStopList extends Component {
     if (!this.props.stopPlace.adjacentSites) {
       return null;
     }
+
+    const { formatMessage } = this.props.intl;
+
     const stopPlaceId = this.props.stopPlace.id;
 
     const refs = this.props.stopPlace.adjacentSites.map(adjacentRef => {
@@ -40,7 +43,7 @@ class AdjacentStopList extends Component {
       <div>
         {refs.length > 0 &&
           <span style={{ fontWeight: 600, fontSize: '0.8em' }}>
-            This stop place is linked with adjacent stop places
+            {formatMessage({id:'connected_with_adjacent_stop_places'})}
         </span>}
         {refs}
       </div>

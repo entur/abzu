@@ -20,6 +20,8 @@
   "adjust_centroid": "Autokorriger tyngdepunkt",
   "connect_to_adjacent_stop": "Knytt sammen med nærliggende stopp",
   "connect_to_adjacent_stop_title": "Knytt sammen med nærliggende stopp",
+  "connect_to_adjacent_stop_description": "Koble til dette stoppestedet med et av følgende stoppesteder",
+  "connected_with_adjacent_stop_places": "Tilstøtende stoppesteder",
   "all": "Alle",
   "alternative_names_add": "Legg til alternativ navn",
   "alternative_names_no": "Ingen alternative navn",

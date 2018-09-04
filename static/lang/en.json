@@ -20,6 +20,8 @@
   "adjust_centroid": "Auto-adjust centroid",
   "connect_to_adjacent_stop": "Connect to adjacent stop",
   "connect_to_adjacent_stop_title": "Connect to adjacent stop",
+  "connect_to_adjacent_stop_description": "Connect this stop place with one of the following stop places",
+  "connected_with_adjacent_stop_places": "Adjacent stop places",
   "all": "All",
   "alternative_names_add": "Add alternative name",
   "alternative_names_no": "No alternative names",

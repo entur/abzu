@@ -20,6 +20,8 @@
   "adjust_centroid": "Centrer automatiquement",
   "connect_to_adjacent_stop": "Se connecter à l'arrêt adjacent",
   "connect_to_adjacent_stop_title": "Se connecter à l'arrêt adjacent",
+  "connect_to_adjacent_stop_description": "Reliez cet endroit d'arrêt à l'un des arrêts adjacents suivants",
+  "connected_with_adjacent_stop_places": "Places d'arrêt adjacentes",
   "all": "Tous",
   "alternative_names_add": "Ajouter un nom alternatif",
   "alternative_names_no": "Aucun nom alternatif",
