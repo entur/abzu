@@ -46,6 +46,7 @@ helpers.mapQuayToVariables = quay => {
       type: 'Point'
     };
   }
+  helpers.removeTypeNameRecursively(quayVariables);
   return quayVariables;
 };
 
@@ -103,7 +104,7 @@ helpers.mapChildStopToVariables = (original, userInput) => {
 
     variables.versionComment = comment;
   }
-
+  helpers.removeTypeNameRecursively(variables);
   return variables;
 }
 
@@ -145,7 +146,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
 
     parentStopVariables.versionComment = comment;
   }
-
+  helpers.removeTypeNameRecursively(parentStopVariables);
   return parentStopVariables;
 };
 
@@ -256,6 +257,7 @@ helpers.mapPathLinkToVariables = pathLinks => {
         coordinates: pathLink.inBetween.map(latlng => latlng.reverse())
       };
     }
+    helpers.removeTypeNameRecursively(pathLink);
     return stripRedundantFields(pathLink);
   });
 };
@@ -295,7 +297,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     } else {
       parking.geometry = null;
     }
-
+    helpers.removeTypeNameRecursively(parking);
     return parking;
   });
 };
