@@ -22,6 +22,15 @@ aliases:
       curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
       tar -xz -C /tmp -f /tmp/docker-$VER.tgz
       mv /tmp/docker/* /usr/bin
+  - &install-gcloud
+    name: Install gcloud
+    command: |
+      set -x
+      VER="218.0.0-linux-x86_64"
+      wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${VER}.tar.gz
+      tar -xvzf google-cloud-sdk-${VER}.tar.gz
+      ./google-cloud-sdk/install.sh -q
+      ./google-cloud-sdk/bin/gcloud components update
   - &docker-build-and-push
     name: Build and PUSH Docker Image
     command: |
@@ -60,6 +69,7 @@ jobs:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *build
+      - run: *install-gcloud
       - run: *GCP-auth
       - setup_remote_docker:
           docker_layer_caching: true
