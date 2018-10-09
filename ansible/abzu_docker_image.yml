@@ -1,7 +1,0 @@
----
-- name: Create abzu image
-  hosts: localhost
-  vars_files:
-    - vars/all.yml
-  tasks:
-    - include: tasks/main.yml

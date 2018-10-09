@@ -8,7 +8,7 @@ RUN npm set progress=false
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY source/ .
+COPY . .
 
 EXPOSE 8000
 ENV port 8000

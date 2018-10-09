@@ -25,7 +25,7 @@ aliases:
   - &docker-build-and-push
     name: Build and PUSH Docker Image
     command: |
-      IMAGE="eu.gcr.io/${CLOUDSDK_CORE_PROJECT}/java-base-image"
+      IMAGE="eu.gcr.io/${CLOUDSDK_CORE_PROJECT}/abzu"
       docker build -t $IMAGE .
       docker tag ${IMAGE} ${IMAGE}:$CIRCLE_SHA1
       cat ${HOME}/account-auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
@@ -60,6 +60,11 @@ jobs:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *build
+      - run: *GCP-auth
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: *install-docker-client
+      - run: *docker-build-and-push
 workflows:
   version: 2
   install-test-build-deploy:
