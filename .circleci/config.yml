@@ -34,7 +34,6 @@ aliases:
       IMAGE="eu.gcr.io/${CLOUDSDK_CORE_PROJECT}/${CIRCLE_PROJECT_REPONAME}"
       docker build -t $IMAGE .
       docker tag ${IMAGE} ${IMAGE}:$CIRCLE_SHA1
-      cat ${HOME}/account-auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
       docker push $IMAGE
   - &save-dependency-cache
     paths:
