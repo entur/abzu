@@ -14,14 +14,6 @@ aliases:
     command: |
       echo $GCLOUD_SERVICE_KEY > ${HOME}/account-auth.json
       ./google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
-  - &install-docker-client
-    name: Install Docker client
-    command: |
-      set -x
-      VER="17.03.0-ce"
-      curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-      tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-      mv /tmp/docker/* /usr/bin
   - &install-gcloud
     name: Install gcloud
     command: |
@@ -31,6 +23,10 @@ aliases:
       tar -xvzf google-cloud-sdk-${VER}.tar.gz
       ./google-cloud-sdk/install.sh -q
       ./google-cloud-sdk/bin/gcloud components update
+  - &docker-login
+    name: Docker login
+    command: |
+      cat ${HOME}/account-auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
   - &docker-build-and-push
     name: Build and PUSH Docker Image
     command: |
@@ -73,7 +69,7 @@ jobs:
       - run: *GCP-auth
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: *install-docker-client
+      - run: *docker-login
       - run: *docker-build-and-push
 workflows:
   version: 2
