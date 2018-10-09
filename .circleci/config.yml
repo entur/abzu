@@ -1,0 +1,80 @@
+version: 2
+aliases:
+  - &install-dependencies
+    name: Install Node Dependencies
+    command: npm install
+  - &test
+    name: Test
+    command: npm run test
+  - &build
+    name: Build
+    command: npm run build
+  - &GCP-auth
+    name: Authenticate with GCP SA credentials
+    command: |
+      echo $GCLOUD_SERVICE_KEY > ${HOME}/account-auth.json
+      gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
+  - &install-docker-client
+    name: Install Docker client
+    command: |
+      set -x
+      VER="17.03.0-ce"
+      curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+      tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+      mv /tmp/docker/* /usr/bin
+  - &docker-build-and-push
+    name: Build and PUSH Docker Image
+    command: |
+      IMAGE="eu.gcr.io/${CLOUDSDK_CORE_PROJECT}/java-base-image"
+      docker build -t $IMAGE .
+      docker tag ${IMAGE} ${IMAGE}:$CIRCLE_SHA1
+      cat ${HOME}/account-auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
+      docker push $IMAGE
+  - &save-dependency-cache
+    paths:
+      - node_modules
+    key: yarn-v2-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+  - &restore-dependency-cache
+    name: Restore dependency cache
+    keys:
+      - yarn-v2-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+jobs:
+  install:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run: *install-dependencies
+      - save-cache: *save-dependency-cache
+  test:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore-cache: *restore-dependency-cache
+      - run: *test
+  build:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore-cache: *restore-dependency-cache
+      - run: *build
+workflows:
+  version: 2
+  install-test-build-deploy:
+    jobs:
+      - install:
+          context: org-carbon
+      - test:
+          context: org-carbon
+          requires:
+            - install
+      - build:
+          context: org-carbon
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+              - master
