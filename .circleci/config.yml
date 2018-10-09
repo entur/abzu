@@ -42,11 +42,11 @@ aliases:
   - &save-dependency-cache
     paths:
       - node_modules
-    key: yarn-v2-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+    key: node-modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
   - &restore-dependency-cache
     name: Restore dependency cache
     keys:
-      - yarn-v2-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+      - node-modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
 jobs:
   install:
     docker:
