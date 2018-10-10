@@ -53,6 +53,9 @@ jobs:
   install:
     docker:
       - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
+        auth:
+          username: _json_key
+          password: $GCLOUD_SERVICE_KEY
     steps:
       - checkout
       - run: *install-dependencies
@@ -60,6 +63,9 @@ jobs:
   test:
     docker:
       - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
+        auth:
+          username: _json_key
+          password: $GCLOUD_SERVICE_KEY
     steps:
       - checkout
       - restore-cache: *restore-dependency-cache
@@ -67,6 +73,9 @@ jobs:
   build:
     docker:
       - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
+        auth:
+          username: _json_key
+          password: $GCLOUD_SERVICE_KEY
     steps:
       - checkout
       - restore-cache: *restore-dependency-cache
