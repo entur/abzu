@@ -52,21 +52,21 @@ aliases:
 jobs:
   install:
     docker:
-      - image: circleci/node:10
+      - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
     steps:
       - checkout
       - run: *install-dependencies
       - save-cache: *save-dependency-cache
   test:
     docker:
-      - image: circleci/node:10
+      - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
     steps:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *test
   build:
     docker:
-      - image: circleci/node:10
+      - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
     steps:
       - checkout
       - restore-cache: *restore-dependency-cache
