@@ -9,20 +9,6 @@ aliases:
   - &build
     name: Build
     command: npm run build
-  - &GCP-auth
-    name: Authenticate with GCP SA credentials
-    command: |
-      echo $GCLOUD_SERVICE_KEY > ${HOME}/account-auth.json
-      ./google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
-  - &install-gcloud
-    name: Install gcloud
-    command: |
-      set -x
-      VER="218.0.0-linux-x86_64"
-      wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${VER}.tar.gz
-      tar -xvzf google-cloud-sdk-${VER}.tar.gz
-      ./google-cloud-sdk/install.sh -q
-      ./google-cloud-sdk/bin/gcloud components update
   - &docker-login
     name: Docker login
     command: |
@@ -80,8 +66,11 @@ jobs:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *build
-      - run: *install-gcloud
-      - run: *GCP-auth
+      - run:
+          name: GCP Authenticate
+          command: |
+            echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+            tools/gcp_authenticate.sh
       - setup_remote_docker:
           docker_layer_caching: true
       - run: *docker-login
