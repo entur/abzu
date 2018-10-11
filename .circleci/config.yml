@@ -11,14 +11,14 @@ aliases:
     command: npm run build
   - &GCP-auth
     name: GCP Authenticate
-      command: |
-        echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
-        /tools/gcp_authenticate.sh
+    command: |
+      echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+      /tools/gcp_authenticate.sh
   - &docker-login
-      name: Docker login
-      command: |
-        echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
-        /tools/docker_login.sh
+    name: Docker login
+    command: |
+      echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+      /tools/docker_login.sh
   - &docker-build-and-push
       name: Docker build and push
       command: |
