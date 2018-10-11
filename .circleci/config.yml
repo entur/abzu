@@ -38,11 +38,11 @@ aliases:
   - &save-dependency-cache
     paths:
       - node_modules
-    key: node-modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+    key: node_modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
   - &restore-dependency-cache
     name: Restore dependency cache
     keys:
-      - node-modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+      - node_modules-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
   - &post-hook
     name: Notify about build and docker image pushed
     command: |
