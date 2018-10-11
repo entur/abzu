@@ -9,18 +9,22 @@ aliases:
   - &build
     name: Build
     command: npm run build
+  - &GCP-auth
+    name: GCP Authenticate
+      command: |
+        echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+        /tools/gcp_authenticate.sh
   - &docker-login
-    name: Docker login
-    command: |
-      cat ${HOME}/account-auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
+      name: Docker login
+      command: |
+        echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+        /tools/docker_login.sh
   - &docker-build-and-push
-    name: Build and PUSH Docker Image
-    command: |
-      CLOUDSDK_CORE_PROJECT="carbon-1287"
-      IMAGE="eu.gcr.io/${CLOUDSDK_CORE_PROJECT}/${CIRCLE_PROJECT_REPONAME}"
-      docker build -t $IMAGE .
-      docker tag ${IMAGE} ${IMAGE}:$CIRCLE_SHA1
-      docker push $IMAGE
+      name: Docker build and push
+      command: |
+        echo 'export CIRCLE_PROJECT_REPONAME="$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
+        echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
+        /tools/docker_build_push.sh
   - &save-dependency-cache
     paths:
       - node_modules
@@ -66,11 +70,7 @@ jobs:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *build
-      - run:
-          name: GCP Authenticate
-          command: |
-            echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
-            /tools/gcp_authenticate.sh
+      - run: *GCP-auth
       - setup_remote_docker:
           docker_layer_caching: true
       - run: *docker-login
