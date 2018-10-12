@@ -1,4 +1,4 @@
-# Abzu
+# Abzu [![CircleCI](https://circleci.com/gh/entur/abzu/tree/master.svg?style=svg)](https://circleci.com/gh/entur/abzu/tree/master)
 
 Stop place register frontend.
 Uses stop place register backend tiamat's graphQL API
