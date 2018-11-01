@@ -16,7 +16,7 @@ import { fade } from 'material-ui/utils/colorManipulator';
 import { getTiamatEnv } from '../../themeConfig';
 
 export const primary = '#5AC39A';
-export const primaryDarker = '#043320';
+export const primaryDarker = '#181C56';
 export const darkColor = '#181C56';
 const cyan700 = '#5AC39A';
 const grey100 = '#f5f5f5';

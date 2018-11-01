@@ -62,7 +62,7 @@ const accessibilityAssements = {
   },
   colors: {
     UNKNOWN: '#e8e3e3',
-    TRUE: '#043320',
+    TRUE: '#181C56',
     FALSE: '#F44336',
     PARTIAL: '#FF9800',
   },
