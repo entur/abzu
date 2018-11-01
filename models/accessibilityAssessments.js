@@ -61,8 +61,8 @@ const accessibilityAssements = {
     },
   },
   colors: {
-    UNKNOWN: '#bfbfbf',
-    TRUE: '#51af8a',
+    UNKNOWN: '#e8e3e3',
+    TRUE: '#043320',
     FALSE: '#F44336',
     PARTIAL: '#FF9800',
   },
