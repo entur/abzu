@@ -92,7 +92,7 @@ export const columnOptionsStopPlace = [
   },
   {
     id: 'parking',
-    checked: false
+    checked: true
   },
   {
     id: 'wheelchairAccess',

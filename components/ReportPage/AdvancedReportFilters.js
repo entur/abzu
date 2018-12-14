@@ -34,6 +34,7 @@ class AdvancedReportFilters extends Component {
       withoutLocationOnly,
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
+      hasParking,
       handleCheckboxChange,
       withTags,
       showFutureAndExpired

@@ -365,6 +365,7 @@
   "wheelchairAccess_no": "Ikke rullestolvennlig",
   "wheelchairAccess": "Rullestolvennlig",
   "with_nearby_similar_duplicates": "Kun nærliggende stoppesteder med liknende navn",
+  "has_parking": "Kun med registret parkering",
   "you_are_creating_group": "Ny stoppestedsgruppe",
   "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
   "checking_stop_place_usage": "Sjekker bruk av stoppested",

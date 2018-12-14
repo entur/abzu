@@ -372,6 +372,7 @@
   "wheelchairAccess_no": "Non accessible PMR",
   "wheelchairAccess": "Accessible PMR",
   "with_nearby_similar_duplicates": "Seulement les points d'arrêt proches avec un nom similaire",
+  "has_parking": "Seulement avec parking enregistré",
   "you_are_creating_group": "Nouveau groupe de points d'arrêt",
   "you_are_using_temporary_coordinates": "Vous utilisez des coordonnées temporaires. L'emplacement ne sera pas sauvegardé."
 }
