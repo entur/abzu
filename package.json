@@ -4,7 +4,7 @@
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
-    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
+    "build": "GENERATE_SOURCEMAPS=true BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
     "dev": "port=9000 NODE_ENV=development TIAMAT_ENV=test node server.js",
     "dev-local": "port=9000 NODE_ENV=development TIAMAT_ENV=development TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
