@@ -77,7 +77,6 @@ jobs:
           docker_layer_caching: true
       - run: *docker-login
       - run: *docker-build-and-push
-      - run: *persist-build-workspace
       - run: *post-hook
 workflows:
   version: 2
