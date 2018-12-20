@@ -18,7 +18,7 @@ import {createNetworkInterface} from "apollo-client/index";
 import ApolloClient from "apollo-client/index";
 import schema from './Tiamat/schema.json';
 
-const CLIENT_NAME = 'abzu';
+const CLIENT_NAME = 'entur-abzu';
 
 export const createTiamatClient = () => {
   const networkInterface = createNetworkInterface({
