@@ -256,7 +256,17 @@ class ReportPage extends React.Component {
             })
             .then(response => {
                 const stopPlaces = response.data.stopPlace;
-                const stopPlaceIds = stopPlaces.map(stopPlace => stopPlace.id);
+                const stopPlaceIds = [];
+                for (let i = 0; i<stopPlaces.length; i++) {
+                    if (stopPlaces[i].__typename == "ParentStopPlace") {
+                        const childStops = stopPlaces[i].children;
+                        for (let j = 0; j<childStops.length; j++) {
+                            stopPlaceIds.push(childStops[j].id);
+                        }
+                    } else {
+                        stopPlaceIds.push(stopPlaces[i].id);
+                    }
+                }
                 buildReportSearchQuery({
                     ...queryVariables,
                     showFutureAndExpired
