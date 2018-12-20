@@ -362,8 +362,9 @@ class ReportPage extends React.Component {
             showFutureAndExpired,
             withTags
         } = this.state;
-        const {intl, topographicalPlaces, results, duplicateInfo} = this.props;
+        const {intl, topographicalPlaces, results: dataSource, duplicateInfo} = this.props;
         const {locale, formatMessage} = intl;
+        const results = hasParking ? dataSource.filter(stopPlace => stopPlace.parking && stopPlace.parking.length) : dataSource;
 
         const topographicalPlacesDataSource = topographicalPlaces
             .filter(
