@@ -1,8 +1,21 @@
+const path = require('path');
 const webpack = require('webpack');
-const useSourceMap = process.env.GENERATE_SOURCEMAPS && process.env.GENERATE_SOURCEMAPS === "true";
+
+var imageLoaderQuery = {
+  mozjpeg: {
+    progressive: true,
+    quality: '55',
+  },
+  optipng: {
+    optimizationLevel: 7,
+  },
+  pngquant: {
+    quality: '55-80',
+    speed: 10,
+  },
+};
 
 module.exports = {
-  devtool: useSourceMap ? 'source-map' : false,
   entry: {
     app: ['babel-polyfill', './index'],
     vendor: [
@@ -19,7 +32,6 @@ module.exports = {
     path: __dirname + '/public/',
     filename: 'bundle.js',
     publicPath: './public/',
-    sourceMapFilename: '[name].bundle.[chunkhash].js.map',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
@@ -43,10 +55,10 @@ module.exports = {
         warnings: false,
         screw_ie8: true,
       },
-      sourceMap: !!useSourceMap
     }),
     new webpack.optimize.ModuleConcatenationPlugin()
   ],
+
   module: {
     loaders: [
       {
