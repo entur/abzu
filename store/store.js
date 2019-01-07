@@ -31,10 +31,6 @@ import Raven from 'raven-js';
 import createRavenMiddleware from 'redux-raven-middleware';
 import { createTiamatClient } from '../graphql/clients';
 
-
-const ravenConfig = require('../config/sentry.json');
-
-
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
 
@@ -51,7 +47,7 @@ export default function configureStore(kc) {
       )
     );
   } else {
-    Raven.config(ravenConfig.publicKey, {
+    Raven.config(window.config.sentryDSN, {
       release: process.env.VERSION,
       stacktrace: true,
       environment: process.env.NODE_ENV

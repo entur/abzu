@@ -25,6 +25,8 @@ aliases:
       echo 'export CIRCLE_PROJECT_REPONAME="$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
       echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       /tools/docker_build_push.sh
+      chmod u+x .circleci/sentry_upload_sourcemaps.sh
+      .circleci/sentry_upload_sourcemaps.sh $CIRCLE_BRANCH-v$VERSION $SENTRY_TOKEN abzu
   - &save-dependency-cache
     paths:
       - node_modules

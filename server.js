@@ -86,7 +86,8 @@ convictPromise
           // Pod ID used in req header for Tiamat
           hostname: process.env.HOSTNAME,
           mapboxTariffZonesStyle: convict.get("mapboxTariffZonesStyle"),
-          mapboxAccessToken: convict.get("mapboxAccessToken")          
+          mapboxAccessToken: convict.get("mapboxAccessToken"),
+          sentryDSN: convict.get('sentryDSN')
         };
 
         createKeyCloakConfig(convict.get('authServerUrl'));
