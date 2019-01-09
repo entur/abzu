@@ -58,7 +58,7 @@ module.exports = new Promise(function (resolve, reject) {
     authServerUrl: {
       doc: 'URL to keycloak auth server',
       format: String,
-      default: 'https://www-test.entur.org/auth/',
+      default: 'https://kc-dev.devstage.entur.io/auth',
       env: 'AUTH_SERVER_URL'
     },
     authRealmName: {
