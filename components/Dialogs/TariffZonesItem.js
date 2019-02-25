@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import MdRemove from 'material-ui/svg-icons/action/delete';
 
 const itemStyle = {
   flexBasis: '100%',
@@ -22,7 +21,7 @@ const itemStyle = {
   marginRight: 5
 };
 
-const TariffZonesItem = ({ id, name, handleRemove, disabled }) =>
+const TariffZonesItem = ({ id, name}) =>
   <div
     style={{
       display: 'flex',
@@ -34,21 +33,6 @@ const TariffZonesItem = ({ id, name, handleRemove, disabled }) =>
   >
     <div style={itemStyle}>{id}</div>
     <div style={itemStyle}>{name}</div>
-    {!disabled &&
-      <div>
-        <MdRemove
-          style={{
-            height: 16,
-            width: 16,
-            color: '#df544a',
-            marginRight: 10,
-            cursor: 'pointer'
-          }}
-          onClick={() => {
-            handleRemove(id);
-          }}
-        />
-      </div>}
   </div>;
 
 TariffZonesItem.propTypes = {

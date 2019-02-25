@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 
 import DialogHeader from './DialogHeader';
 import TariffZonesItem from './TariffZonesItem';
-import AddTariffZone from './AddTariffZone';
 
 import StopPlaceActions from '../../actions/StopPlaceActions';
 
@@ -83,9 +82,7 @@ class TariffZonesDialog extends React.Component {
               >
                 {tariffZones.map(tz =>
                   <TariffZonesItem
-                    handleRemove={this.handleRemoveTZ.bind(this)}
                     key={'tariffZone-' + tz.id}
-                    disabled={disabled}
                     id={tz.id}
                     name={tz.name}
                   />
@@ -95,8 +92,6 @@ class TariffZonesDialog extends React.Component {
                 {translations.noTariffZones}
               </div>}
         </div>
-        {!disabled &&
-          <AddTariffZone/>}
       </div>
     );
   }
