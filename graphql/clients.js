@@ -17,6 +17,7 @@ import {IntrospectionFragmentMatcher} from "react-apollo/index";
 import {createNetworkInterface} from "apollo-client/index";
 import ApolloClient from "apollo-client/index";
 import schema from './Tiamat/schema.json';
+import uuid from 'uuid/v4';
 
 const CLIENT_NAME = 'entur-abzu';
 
@@ -35,6 +36,7 @@ export const createTiamatClient = () => {
         const token = localStorage.getItem('ABZU::jwt');
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
         req.options.headers['ET-Client-Name'] = CLIENT_NAME;
+        req.options.headers['X-Correlation-Id'] = uuid();
 
         if (window.config.hostname) {
           req.options.headers['ET-Client-Id'] = window.config.hostname;
