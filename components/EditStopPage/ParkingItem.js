@@ -129,6 +129,17 @@ class ParkingItem extends React.Component {
                       style={{ width: 20, height: 20, marginLeft: 5 }}
                     />
                   </ToolTippable>}
+                <span
+                    style={{
+                      fontSize: '0.8em',
+                      marginLeft: 5,
+                      fontWeight: 600,
+                      color: '#464545',
+                    }}
+                >
+                 {parking.id}
+              </span>
+
               </div>
             </div>
             <div
