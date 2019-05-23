@@ -255,6 +255,7 @@
   "port" : "Kai",
   "privateCode": "Internkode",
   "publicCode": "Publikumskode",
+  "totalCapacity": "Total kapasitet",
   "quay_adjustments_body": "Du har gjort endringer av posisjonen til én eller flere quayer tilknyttet en ganglenke. Dette vil påvirke ganglenken",
   "quay_adjustments_cancel": "Avbryt",
   "quay_adjustments_confirm": "Endre likevel",

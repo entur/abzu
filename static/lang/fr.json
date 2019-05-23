@@ -260,6 +260,7 @@
   "port": "Port",
   "privateCode": "Code privé",
   "publicCode": "Code public",
+  "totalCapacity": "Total capacity",
   "quay_marker_label": "Marqueur du quai",
   "quay_adjustments_body": "Vous avez fait des ajustements à un ou plusieurs quais connectés à un tronçon de liaison. Ceci aura un impact sur le tronçon de liaison",
   "quay_adjustments_cancel": "Annuler",
