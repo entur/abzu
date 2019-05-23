@@ -139,13 +139,23 @@ class ParkingItem extends React.Component {
                 </span>
                 <span
                     style={{
-                      fontSize: '0.8em',
+                      fontSize: '0.7em',
                       marginLeft: 5,
                       fontWeight: 600,
                       color: '#464545',
                     }}
                 >
-                 {parking.id}
+                 {parking.name}
+                    <span
+                        style={{
+                            fontSize: '0.7em',
+                            marginLeft: 1,
+                            fontWeight: 600,
+                            color: '#464545',
+                        }}
+                    >
+                 ({parking.id})
+                    </span>
               </span>
 
               </div>
