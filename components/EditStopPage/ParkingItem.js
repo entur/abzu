@@ -30,6 +30,8 @@ import { withApollo } from 'react-apollo';
 import { deleteParking } from '../../graphql/Tiamat/actions';
 import * as types from "../../actions/Types";
 import {FlatButton} from "material-ui";
+import Code from "./Code";
+import InformationBanner from "./InformationBanner";
 
 class ParkingItem extends React.Component {
 
@@ -129,6 +131,12 @@ class ParkingItem extends React.Component {
                       style={{ width: 20, height: 20, marginLeft: 5 }}
                     />
                   </ToolTippable>}
+                <span style={{ width: 20, height: 20, marginLeft: 5 }}>
+                  <ToolTippable toolTipText={formatMessage({ id: 'totalCapacity' })}
+                                toolTipStyle={{ padding: '0 5' }}>
+                  {parking.totalCapacity}
+                  </ToolTippable>
+                </span>
                 <span
                     style={{
                       fontSize: '0.8em',

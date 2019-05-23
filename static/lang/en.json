@@ -255,6 +255,7 @@
   "port": "Port",
   "privateCode": "private code",
   "publicCode": "Public code",
+  "totalCapacity": "Total capacity",
   "quay_marker_label": "Quay marker label",
   "quay_adjustments_body": "You have done adjustments to one or more quays connected to a path link. This will have an impact to the path link",
   "quay_adjustments_cancel": "Cancel",
