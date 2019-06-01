@@ -15,7 +15,7 @@
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
     "apollo-client": "1.9.2",
-    "axios": "0.16.2",
+    "axios": "0.19.0",
     "babel-cli": "6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "7.1.2",
