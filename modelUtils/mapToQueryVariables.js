@@ -275,6 +275,10 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.id = source.id;
     }
 
+    if (source.parkingPaymentProcess) {
+      parking.parkingPaymentProcess = source.parkingPaymentProcess;
+    }
+
     parking.name = {
       value: source.name,
       lang: 'nor'

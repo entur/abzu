@@ -305,6 +305,15 @@ StopPlaceActions.changeParkingName = (index, name) => dispatch => {
   );
 };
 
+StopPlaceActions.changeParkingPaymentProcess = (index, parkingPaymentProcess) => dispatch => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_PAYMENT_PROCESS, {
+      index,
+      parkingPaymentProcess
+    }),
+  );
+}
+
 StopPlaceActions.clearLastMutatedStopPlaceId = () => dispatch => {
   dispatch(
     createThunk(types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS, null)

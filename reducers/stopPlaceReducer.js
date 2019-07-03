@@ -518,6 +518,12 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.CHANGED_PARKING_PAYMENT_PROCESS:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingPaymentProcess(state.current, action.payLoad),
+        stopHasBeenModified: true,
+      });
+
     case types.CHANGED_PARKING_TOTAL_CAPACITY:
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingTotalCapacity(

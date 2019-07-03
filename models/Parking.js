@@ -27,6 +27,7 @@ class Parking {
     let clientParking = {
       id: parking.id,
       name: getIn(parking, ['name', 'value'], ''),
+      parkingPaymentProcess: parking.parkingPaymentProcess,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
