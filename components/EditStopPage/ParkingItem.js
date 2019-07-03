@@ -16,9 +16,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
-import TextField from 'material-ui/TextField';
 import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
-import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { StopPlaceActions, UserActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
@@ -30,8 +28,8 @@ import { withApollo } from 'react-apollo';
 import { deleteParking } from '../../graphql/Tiamat/actions';
 import * as types from "../../actions/Types";
 import {FlatButton} from "material-ui";
-import Code from "./Code";
-import InformationBanner from "./InformationBanner";
+import ParkingItemExpandedFields from './ParkingItemExpandedFields';
+import TextField from 'material-ui/TextField';
 
 class ParkingItem extends React.Component {
 
@@ -45,6 +43,21 @@ class ParkingItem extends React.Component {
     expanded: PropTypes.bool.isRequired,
     parking: PropTypes.object.isRequired
   };
+
+  renderNameField() {
+    return (
+      <TextField
+        hintText={this.props.translations.name}
+        disabled={this.props.disabled || this.props.parking.hasExpired}
+        floatingLabelText={this.props.translations.name}
+        onChange={(e, v) => {
+          this.handleSetName(v);
+        }}
+        value={this.props.parking.name}
+        style={{ width: '95%', marginTop: -10 }}
+      />
+    );
+  }
 
   handleSetTotalCapacity(value) {
     const { dispatch, index } = this.props;
@@ -165,53 +178,38 @@ class ParkingItem extends React.Component {
                 />}
           </div>
         </div>
-        {!expanded
-          ? null
-          : <div className="pr-item-expanded">
-              <TextField
-                hintText={translations.name}
-                disabled={disabled || parking.hasExpired}
-                floatingLabelText={translations.name}
-                onChange={(e, v) => {
-                  this.handleSetName(v);
-                }}
-                value={parking.name}
-                style={{ width: '95%', marginTop: -10 }}
-              />
-              <TextField
-                hintText={translations.capacity}
-                disabled={disabled || parking.hasExpired}
-                floatingLabelText={translations.capacity}
-                onChange={(e, v) => {
-                  this.handleSetTotalCapacity(v);
-                }}
-                value={parking.totalCapacity}
-                type="number"
-                style={{ width: '95%', marginTop: -10 }}
-              />
-              <div style={{ width: '100%', textAlign: 'right' }}>
-                  <ToolTippable
-                      toolTipText={formatMessage({ id: 'delete_parking' })}
-                      tootTipTextStyle={{ position: 'relative' }}>
-                      <FlatButton
-                          icon={<MdDeleteForver/>}
-                          onClick={this.handleDeleteParking.bind(this)}
-                          style={{ borderRadius: 25}}/>
-                  </ToolTippable>
-              </div>
-            </div>}
-            <ConfirmDialog
-              open={this.state.confirmDeleteDialogOpen}
-              handleClose={() => { this.setState({confirmDeleteDialogOpen: false});}}
-              handleConfirm={this.handleConfirmParking.bind(this)}
-              intl={intl}
-              messagesById={{
-                title: 'delete_parking',
-                body: 'delete_parking_are_you_sure',
-                confirm: 'delete_group_confirm',
-                cancel: 'delete_group_cancel'
-              }}
-            />
+        {expanded && (
+          <div className="pr-item-expanded">
+            <ParkingItemExpandedFields
+              translations={translations}
+              disabled={disabled}
+              parking={parking}
+              renderNameField={this.renderNameField.bind(this)}
+              handleSetTotalCapacity={this.handleSetTotalCapacity.bind(this)} />
+            <div style={{ width: '100%', textAlign: 'right' }}>
+              <ToolTippable
+                toolTipText={formatMessage({ id: 'delete_parking' })}
+                tootTipTextStyle={{ position: 'relative' }}>
+                <FlatButton
+                  icon={<MdDeleteForver/>}
+                  onClick={this.handleDeleteParking.bind(this)}
+                  style={{ borderRadius: 25}}/>
+              </ToolTippable>
+            </div>
+          </div>
+        )}
+        <ConfirmDialog
+          open={this.state.confirmDeleteDialogOpen}
+          handleClose={() => { this.setState({confirmDeleteDialogOpen: false});}}
+          handleConfirm={this.handleConfirmParking.bind(this)}
+          intl={intl}
+          messagesById={{
+            title: 'delete_parking',
+            body: 'delete_parking_are_you_sure',
+            confirm: 'delete_group_confirm',
+            cancel: 'delete_group_cancel'
+          }}
+        />
       </div>
     );
   }
