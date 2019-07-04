@@ -18,6 +18,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import parkingPaymentProcess from '../../models/parkingPaymentProcess';
+import { TextField } from 'material-ui';
 
 const hasElements = list => list && list.length > 0;
 
@@ -76,6 +77,16 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         }}>
           {parkingPaymentProcessesMenuItems}
       </SelectField>
+      <TextField
+        hintText="numberOfSpaces"
+        disabled={disabled || parking.hasExpired}
+        floatingLabelText="numberOfSpaces"
+        onChange={(e, v) => {
+          console.log(v);
+        }}
+        value={0}
+        type="number"
+        style={{ width: '95%', marginTop: -10 }} />
       <SelectField
         disabled={disabled || parking.hasExpired}
         floatingLabelText={formatMessage({ id: 'parking_recharging_available' })}
@@ -85,6 +96,29 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         }}>
           {rechargingAvailableMenuItems}
       </SelectField>
+      {getRechargingAvailableValue(parking.rechargingAvailable && (
+        <TextField
+          hintText="numberOfSpacesWithRechargePoint"
+          disabled={disabled || parking.hasExpired}
+          floatingLabelText="numberOfSpacesWithRechargePoint"
+          onChange={(e, v) => {
+            console.log(v);
+          }}
+          value={0}
+          type="number"
+          style={{ width: '95%', marginTop: -10 }} />
+      ))}
+
+      <TextField
+        hintText="numberOfSpaces registeredDisabled"
+        disabled={disabled || parking.hasExpired}
+        floatingLabelText="numberOfSpaces registeredDisabled"
+        onChange={(e, v) => {
+          console.log(v);
+        }}
+        value={0}
+        type="number"
+        style={{ width: '95%', marginTop: -10 }} />
     </div>
   );
 }
