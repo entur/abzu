@@ -17,6 +17,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
 const parkingPaymentProcesses = [
   'free',
@@ -39,6 +40,7 @@ class ParkingItemPayAndRideExpandedFields extends React.Component {
     const menuItems = parkingPaymentProcesses.map(key => (
       <MenuItem
         insetChildren
+        leftIcon={parking.parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null}
         key={key}
         value={key}
         primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
