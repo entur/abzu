@@ -49,7 +49,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       leftIcon={hasValue(parking.rechargingAvailable) && getRechargingAvailableValue(parking.rechargingAvailable) === key ? <CheckIcon /> : null}
       key={`rechargingAvailable_${key}`}
       value={key}
-      primaryText={`${key}`} />
+      primaryText={formatMessage({ id: `parking_recharging_available_${key}`} )} />
   ));
 
   return (
@@ -66,7 +66,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       </SelectField>
       <SelectField
         disabled={disabled || parking.hasExpired}
-        floatingLabelText="rechargingAvailable"
+        floatingLabelText={formatMessage({ id: 'parking_recharging_available' })}
         value={getRechargingAvailableValue(parking.rechargingAvailable)}
         onChange={(_e,_i,value) => {
           handleSetRechargingAvailable(value);
