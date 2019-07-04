@@ -16,21 +16,17 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import { injectIntl } from 'react-intl';
 
 const parkingPaymentProcesses = [
   'free',
   'payAtBay'
 ];
 
-const localTranslations = {
-  free: 'Free',
-  payAtBay: 'Pay at bay'
-};
-
-
-export default class ParkingItemPayAndRideExpandedFields extends React.Component {
+class ParkingItemPayAndRideExpandedFields extends React.Component {
   render() {
     const {
+      intl: { formatMessage },
       translations,
       disabled,
       parking,
@@ -39,15 +35,19 @@ export default class ParkingItemPayAndRideExpandedFields extends React.Component
     } = this.props;
 
     const menuItems = parkingPaymentProcesses.map(key => (
-      <MenuItem insetChildren key={key} value={key} primaryText={localTranslations[key]} />
-    ))
+      <MenuItem
+        insetChildren
+        key={key}
+        value={key}
+        primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
+    ));
 
     return (
       <div>
         <SelectField
           multiple
           disabled={disabled || parking.hasExpired}
-          floatingLabelText="Payment process"
+          floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
           value={parking.parkingPaymentProcess.map(v => `${v}`)}
           onChange={(e,i,v) => {
             handleSetParkingPaymentProcess(v);
@@ -67,3 +67,5 @@ export default class ParkingItemPayAndRideExpandedFields extends React.Component
     );
   }
 }
+
+export default injectIntl(ParkingItemPayAndRideExpandedFields);
