@@ -9,7 +9,9 @@
     "dev-local": "port=9000 NODE_ENV=development TIAMAT_ENV=development TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql node server.js",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
     "test": "jest",
-    "stats": "webpack --config ./webpack.prod.config.js --json > stats.json"
+    "stats": "webpack --config ./webpack.prod.config.js --json > stats.json",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Sean Erik Scully",
   "license": "EUPL-1.2 with modifications",
@@ -72,9 +74,11 @@
     "webpack": "3.7.0",
     "webpack-dev-middleware": "1.12.0",
     "webpack-hot-middleware": "2.19.1",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.16"
-  }
+  },
+  "snyk": true
 }
