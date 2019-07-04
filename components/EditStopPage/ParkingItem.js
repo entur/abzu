@@ -30,6 +30,7 @@ import * as types from "../../actions/Types";
 import {FlatButton} from "material-ui";
 import ParkingItemExpandedFields from './ParkingItemExpandedFields';
 import TextField from 'material-ui/TextField';
+import ParkingItemPayAndRideExpandedFields from './ParkingItemPayAndRideExpandedFields';
 
 class ParkingItem extends React.Component {
 
@@ -67,6 +68,11 @@ class ParkingItem extends React.Component {
   handleSetName(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingName(index, value));
+  }
+
+  handleSetParkingPaymentProcess(value) {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingPaymentProcess(index, value));
   }
 
   handleDeleteParking() {
@@ -180,12 +186,22 @@ class ParkingItem extends React.Component {
         </div>
         {expanded && (
           <div className="pr-item-expanded">
-            <ParkingItemExpandedFields
-              translations={translations}
-              disabled={disabled}
-              parking={parking}
-              renderNameField={this.renderNameField.bind(this)}
-              handleSetTotalCapacity={this.handleSetTotalCapacity.bind(this)} />
+            {parkingType !== 'parkAndRide' && (
+              <ParkingItemExpandedFields
+                translations={translations}
+                disabled={disabled}
+                parking={parking}
+                renderNameField={this.renderNameField.bind(this)}
+                handleSetTotalCapacity={this.handleSetTotalCapacity.bind(this)} />
+            )}
+            {parkingType === 'parkAndRide' && (
+              <ParkingItemPayAndRideExpandedFields
+                translations={translations}
+                disabled={disabled}
+                parking={parking}
+                handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(this)}
+                renderNameField={this.renderNameField.bind(this)} />
+            )}
             <div style={{ width: '100%', textAlign: 'right' }}>
               <ToolTippable
                 toolTipText={formatMessage({ id: 'delete_parking' })}

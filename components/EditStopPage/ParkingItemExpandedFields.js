@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import { injectIntl } from 'react-intl';
 
 const ParkingItemExpandedFields = ({
   translations,
@@ -40,4 +39,4 @@ const ParkingItemExpandedFields = ({
     </div>
 );
 
-export default injectIntl(ParkingItemExpandedFields)
+export default ParkingItemExpandedFields;
