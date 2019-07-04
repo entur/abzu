@@ -20,7 +20,9 @@ import { injectIntl } from 'react-intl';
 
 const parkingPaymentProcesses = [
   'free',
-  'payAtBay'
+  'payAndDisplay',
+  'payByPrepaidToken',
+  'payByMobileDevice'
 ];
 
 class ParkingItemPayAndRideExpandedFields extends React.Component {
