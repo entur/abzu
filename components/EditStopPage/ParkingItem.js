@@ -60,9 +60,8 @@ class ParkingItem extends React.Component {
   }
 
   handleSetRechargingAvailable(value) {
-    //const { dispatch, index } = this.props;
-    //dispatch(StopPlaceActions.changeRechargingAvailable(index, value));
-    console.log(value);
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingRechargingAvailable(index, value));
   }
 
   handleDeleteParking() {

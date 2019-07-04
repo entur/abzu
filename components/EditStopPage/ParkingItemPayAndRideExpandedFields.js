@@ -68,7 +68,7 @@ class ParkingItemPayAndRideExpandedFields extends React.Component {
           floatingLabelText="rechargingAvailable"
           value={getRechargingAvailableValue(parking.rechargingAvailable)}
           onChange={(_e,_i,value) => {
-            handleSetRechargingAvailable(value);
+            handleSetRechargingAvailable(value === parking.rechargingAvailable ? null : value);
           }}>
             <MenuItem
               insetChildren

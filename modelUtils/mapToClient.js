@@ -826,6 +826,13 @@ helpers.changeParkingPaymentProcess = (original, payLoad) => {
   return copy;
 }
 
+helpers.changeParkingRechargingAvailable = (original, payload) => {
+  const { index, rechargingAvailable } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].rechargingAvailable = rechargingAvailable;
+  return copy;
+}
+
 helpers.changeParkingTotalCapacity = (original, payLoad) => {
   const { index, totalCapacity } = payLoad;
   const copy = JSON.parse(JSON.stringify(original));

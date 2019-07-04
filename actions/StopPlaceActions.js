@@ -312,7 +312,16 @@ StopPlaceActions.changeParkingPaymentProcess = (index, parkingPaymentProcess) =>
       parkingPaymentProcess
     }),
   );
-}
+};
+
+StopPlaceActions.changeParkingRechargingAvailable = (index, rechargingAvailable) => dispatch => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_RECHARGING_AVAILABLE, {
+      index,
+      rechargingAvailable
+    }),
+  );
+};
 
 StopPlaceActions.clearLastMutatedStopPlaceId = () => dispatch => {
   dispatch(
