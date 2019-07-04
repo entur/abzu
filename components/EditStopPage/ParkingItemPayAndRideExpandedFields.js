@@ -17,7 +17,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import parkingPaymentProcess from '../../models/parkingPaymentProcess';
+import parkingPaymentProcessKeys from '../../models/parkingPaymentProcess';
 import { TextField } from 'material-ui';
 
 const hasElements = list => list && list.length > 0;
@@ -42,15 +42,23 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
   const {
     intl: { formatMessage },
     disabled,
-    parking,
+    hasExpired,
+    parkingPaymentProcess,
+    rechargingAvailable,
+    numberOfSpaces,
+    numberOfSpacesWithRechargePoint,
+    numberOfSpacesForRegisteredDisabledUserType,
     handleSetParkingPaymentProcess,
     handleSetRechargingAvailable,
+    handleSetNumberOfSpaces,
+    handleSetNumberOfSpacesWithRechargePoint,
+    handleSetNumberOfSpacesForRegisteredDisabledUserType,
   } = props;
 
-  const parkingPaymentProcessesMenuItems = parkingPaymentProcess.map(key => (
+  const parkingPaymentProcessesMenuItems = parkingPaymentProcessKeys.map(key => (
     <MenuItem
       insetChildren
-      leftIcon={parkingPaymentProcessCheckIcon(key, parking.parkingPaymentProcess)}
+      leftIcon={parkingPaymentProcessCheckIcon(key, parkingPaymentProcess)}
       key={key}
       value={key}
       primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
@@ -59,7 +67,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
   const rechargingAvailableMenuItems = [true, false].map(key => (
     <MenuItem
       insetChildren
-      leftIcon={rechargingAvailableCheckIcon(key, parking.rechargingAvailable)}
+      leftIcon={rechargingAvailableCheckIcon(key, rechargingAvailable)}
       key={`rechargingAvailable_${key}`}
       value={key}
       primaryText={formatMessage({ id: `parking_recharging_available_${key}`} )} />
@@ -69,9 +77,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     <div>
       <SelectField
         multiple
-        disabled={disabled || parking.hasExpired}
+        disabled={disabled || hasExpired}
         floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
-        value={parkingPaymentProcessSelectFieldValue(parking.parkingPaymentProcess)}
+        value={parkingPaymentProcessSelectFieldValue(parkingPaymentProcess)}
         onChange={(_e,_i,value) => {
           handleSetParkingPaymentProcess(value);
         }}>
@@ -79,44 +87,44 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       </SelectField>
       <TextField
         hintText="numberOfSpaces"
-        disabled={disabled || parking.hasExpired}
+        disabled={disabled || hasExpired}
         floatingLabelText="numberOfSpaces"
-        onChange={(e, v) => {
-          console.log(v);
+        onChange={(_e, value) => {
+          handleSetNumberOfSpaces(value);
         }}
-        value={0}
+        value={numberOfSpaces}
         type="number"
         style={{ width: '95%', marginTop: -10 }} />
       <SelectField
-        disabled={disabled || parking.hasExpired}
+        disabled={disabled || hasExpired}
         floatingLabelText={formatMessage({ id: 'parking_recharging_available' })}
-        value={getRechargingAvailableValue(parking.rechargingAvailable)}
+        value={getRechargingAvailableValue(rechargingAvailable)}
         onChange={(_e,_i,value) => {
           handleSetRechargingAvailable(value);
         }}>
           {rechargingAvailableMenuItems}
       </SelectField>
-      {getRechargingAvailableValue(parking.rechargingAvailable && (
+      {getRechargingAvailableValue(rechargingAvailable && (
         <TextField
           hintText="numberOfSpacesWithRechargePoint"
-          disabled={disabled || parking.hasExpired}
+          disabled={disabled || hasExpired}
           floatingLabelText="numberOfSpacesWithRechargePoint"
-          onChange={(e, v) => {
-            console.log(v);
+          onChange={(_e, value) => {
+            handleSetNumberOfSpacesWithRechargePoint(value);
           }}
-          value={0}
+          value={numberOfSpacesWithRechargePoint}
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       ))}
 
       <TextField
         hintText="numberOfSpaces registeredDisabled"
-        disabled={disabled || parking.hasExpired}
+        disabled={disabled || hasExpired}
         floatingLabelText="numberOfSpaces registeredDisabled"
-        onChange={(e, v) => {
-          console.log(v);
+        onChange={(e, value) => {
+          handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
         }}
-        value={0}
+        value={numberOfSpacesForRegisteredDisabledUserType}
         type="number"
         style={{ width: '95%', marginTop: -10 }} />
     </div>

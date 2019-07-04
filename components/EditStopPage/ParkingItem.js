@@ -64,6 +64,18 @@ class ParkingItem extends React.Component {
     dispatch(StopPlaceActions.changeParkingRechargingAvailable(index, value));
   }
 
+  handleSetNumberOfSpaces(value) {
+    console.log(value);
+  }
+
+  handleSetNumberOfSpacesWithRechargePoint(value) {
+    console.log(value);
+  }
+
+  handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
+    console.log(value);
+  }
+
   handleDeleteParking() {
     this.setState({
       confirmDeleteDialogOpen: true
@@ -190,9 +202,17 @@ class ParkingItem extends React.Component {
               <ParkingItemPayAndRideExpandedFields
                 translations={translations}
                 disabled={disabled}
-                parking={parking}
+                hasExpired={parking.hasExpired}
+                parkingPaymentProcess={parking.parkingPaymentProcess}
+                rechargingAvailable={parking.rechargingAvailable}
+                numberOfSpaces={0}
+                numberOfSpacesWithRechargePoint={0}
+                numberOfSpacesForRegisteredDisabledUserType={0}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(this)}
-                handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(this)} />
+                handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(this)}
+                handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(this)}
+                handleSetNumberOfSpacesWithRechargePoint={this.handleSetNumberOfSpacesWithRechargePoint.bind(this)}
+                handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(this)} />
             )}
 
             <TextField
