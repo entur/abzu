@@ -19,11 +19,23 @@ import { injectIntl } from 'react-intl';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import parkingPaymentProcess from '../../models/parkingPaymentProcess';
 
-const hasElements = a => a && a.length > 0;
+const hasElements = list => list && list.length > 0;
 
-const hasValue = v => v !== null && v !== undefined;
+const hasValue = value => value !== null && value !== undefined;
 
-const getRechargingAvailableValue = v => hasValue(v) ? v : null;
+const getRechargingAvailableValue = value => hasValue(value) ? value : null;
+
+const parkingPaymentProcessCheckIcon = (key, parkingPaymentProcess) => {
+  return hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null;
+}
+
+const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
+  return hasElements(parkingPaymentProcess) ? parkingPaymentProcess.map(value => `${value}`) : null;
+}
+
+const rechargingAvailableCheckIcon = (key, rechargingAvailable) => {
+  hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key ? <CheckIcon /> : null;
+}
 
 const ParkingItemPayAndRideExpandedFields = (props) => {
   const {
@@ -37,7 +49,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
   const parkingPaymentProcessesMenuItems = parkingPaymentProcess.map(key => (
     <MenuItem
       insetChildren
-      leftIcon={hasElements(parking.parkingPaymentProcess) && parking.parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null}
+      leftIcon={parkingPaymentProcessCheckIcon(key, parking.parkingPaymentProcess)}
       key={key}
       value={key}
       primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
@@ -46,7 +58,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
   const rechargingAvailableMenuItems = [true, false].map(key => (
     <MenuItem
       insetChildren
-      leftIcon={hasValue(parking.rechargingAvailable) && getRechargingAvailableValue(parking.rechargingAvailable) === key ? <CheckIcon /> : null}
+      leftIcon={rechargingAvailableCheckIcon(key, parking.rechargingAvailable)}
       key={`rechargingAvailable_${key}`}
       value={key}
       primaryText={formatMessage({ id: `parking_recharging_available_${key}`} )} />
@@ -58,7 +70,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         multiple
         disabled={disabled || parking.hasExpired}
         floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
-        value={hasElements(parking.parkingPaymentProcess) ? parking.parkingPaymentProcess.map(v => `${v}`) : null}
+        value={parkingPaymentProcessSelectFieldValue(parking.parkingPaymentProcess)}
         onChange={(_e,_i,value) => {
           handleSetParkingPaymentProcess(value);
         }}>
