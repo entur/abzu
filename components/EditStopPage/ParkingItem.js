@@ -28,7 +28,6 @@ import { withApollo } from 'react-apollo';
 import { deleteParking } from '../../graphql/Tiamat/actions';
 import * as types from "../../actions/Types";
 import {FlatButton} from "material-ui";
-import ParkingItemExpandedFields from './ParkingItemExpandedFields';
 import TextField from 'material-ui/TextField';
 import ParkingItemPayAndRideExpandedFields from './ParkingItemPayAndRideExpandedFields';
 
@@ -45,21 +44,6 @@ class ParkingItem extends React.Component {
     parking: PropTypes.object.isRequired
   };
 
-  renderNameField() {
-    return (
-      <TextField
-        hintText={this.props.translations.name}
-        disabled={this.props.disabled || this.props.parking.hasExpired}
-        floatingLabelText={this.props.translations.name}
-        onChange={(e, v) => {
-          this.handleSetName(v);
-        }}
-        value={this.props.parking.name}
-        style={{ width: '95%', marginTop: -10 }}
-      />
-    );
-  }
-
   handleSetTotalCapacity(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value));
@@ -73,6 +57,12 @@ class ParkingItem extends React.Component {
   handleSetParkingPaymentProcess(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingPaymentProcess(index, value));
+  }
+
+  handleSetRechargingAvailable(value) {
+    //const { dispatch, index } = this.props;
+    //dispatch(StopPlaceActions.changeRechargingAvailable(index, value));
+    console.log(value);
   }
 
   handleDeleteParking() {
@@ -186,22 +176,36 @@ class ParkingItem extends React.Component {
         </div>
         {expanded && (
           <div className="pr-item-expanded">
-            {parkingType !== 'parkAndRide' && (
-              <ParkingItemExpandedFields
-                translations={translations}
-                disabled={disabled}
-                parking={parking}
-                renderNameField={this.renderNameField.bind(this)}
-                handleSetTotalCapacity={this.handleSetTotalCapacity.bind(this)} />
-            )}
+            <TextField
+              hintText={this.props.translations.name}
+              disabled={this.props.disabled || this.props.parking.hasExpired}
+              floatingLabelText={this.props.translations.name}
+              onChange={(e, v) => {
+                this.handleSetName(v);
+              }}
+              value={this.props.parking.name}
+              style={{ width: '95%', marginTop: -10 }}
+            />
+
             {parkingType === 'parkAndRide' && (
               <ParkingItemPayAndRideExpandedFields
                 translations={translations}
                 disabled={disabled}
                 parking={parking}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(this)}
-                renderNameField={this.renderNameField.bind(this)} />
+                handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(this)} />
             )}
+
+            <TextField
+              hintText={translations.capacity}
+              disabled={disabled || parking.hasExpired}
+              floatingLabelText={translations.capacity}
+              onChange={(e, v) => {
+                this.handleSetTotalCapacity(v);
+              }}
+              value={parking.totalCapacity}
+              type="number"
+              style={{ width: '95%', marginTop: -10 }} />
             <div style={{ width: '100%', textAlign: 'right' }}>
               <ToolTippable
                 toolTipText={formatMessage({ id: 'delete_parking' })}

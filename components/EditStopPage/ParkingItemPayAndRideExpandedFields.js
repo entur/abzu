@@ -26,21 +26,26 @@ const parkingPaymentProcesses = [
   'payByMobileDevice'
 ];
 
+const hasElements = a => a && a.length > 0;
+
+const hasValue = v => v !== null && v !== undefined;
+
+const getRechargingAvailableValue = v => hasValue(v) ? v : null;
+
 class ParkingItemPayAndRideExpandedFields extends React.Component {
   render() {
     const {
       intl: { formatMessage },
-      translations,
       disabled,
       parking,
       handleSetParkingPaymentProcess,
-      renderNameField,
+      handleSetRechargingAvailable,
     } = this.props;
 
-    const menuItems = parkingPaymentProcesses.map(key => (
+    const parkingPaymentProcessesMenuItems = parkingPaymentProcesses.map(key => (
       <MenuItem
         insetChildren
-        leftIcon={parking.parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null}
+        leftIcon={hasElements(parking.parkingPaymentProcess) && parking.parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null}
         key={key}
         value={key}
         primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
@@ -52,21 +57,32 @@ class ParkingItemPayAndRideExpandedFields extends React.Component {
           multiple
           disabled={disabled || parking.hasExpired}
           floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
-          value={parking.parkingPaymentProcess.map(v => `${v}`)}
-          onChange={(e,i,v) => {
-            handleSetParkingPaymentProcess(v);
+          value={hasElements(parking.parkingPaymentProcess) ? parking.parkingPaymentProcess.map(v => `${v}`) : null}
+          onChange={(_e,_i,value) => {
+            handleSetParkingPaymentProcess(value);
           }}>
-            {menuItems}
+            {parkingPaymentProcessesMenuItems}
         </SelectField>
-        {renderNameField()}
-        <TextField
-          hintText={translations.capacity}
-          disabled
-          floatingLabelText={translations.capacity}
-          value={parking.totalCapacity}
-          type="number"
-          style={{ width: '95%', marginTop: -10 }}
-        />
+        <SelectField
+          disabled={disabled || parking.hasExpired}
+          floatingLabelText="rechargingAvailable"
+          value={getRechargingAvailableValue(parking.rechargingAvailable)}
+          onChange={(_e,_i,value) => {
+            handleSetRechargingAvailable(value);
+          }}>
+            <MenuItem
+              insetChildren
+              leftIcon={hasValue(parking.rechargingAvailable) && getRechargingAvailableValue(parking.rechargingAvailable) ? <CheckIcon /> : null}
+              key="rechargingAvailable_true"
+              value={true}
+              primaryText="Yes" />
+            <MenuItem
+              insetChildren
+              leftIcon={hasValue(parking.rechargingAvailable) && !getRechargingAvailableValue(parking.rechargingAvailable) ? <CheckIcon /> : null}
+              key="rechargingAvailable_false"
+              value={false}
+              primaryText="No" />
+        </SelectField>
       </div>
     );
   }
