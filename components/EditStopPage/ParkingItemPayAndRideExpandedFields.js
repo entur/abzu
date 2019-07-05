@@ -86,9 +86,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           {parkingPaymentProcessesMenuItems}
       </SelectField>
       <TextField
-        hintText="numberOfSpaces"
+        hintText={formatMessage({ id: 'parking_number_of_spaces' })}
         disabled={disabled || hasExpired}
-        floatingLabelText="numberOfSpaces"
+        floatingLabelText={formatMessage({ id: 'parking_number_of_spaces' })}
         onChange={(_e, value) => {
           handleSetNumberOfSpaces(value);
         }}
@@ -106,9 +106,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       </SelectField>
       {getRechargingAvailableValue(rechargingAvailable && (
         <TextField
-          hintText="numberOfSpacesWithRechargePoint"
+          hintText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
           disabled={disabled || hasExpired}
-          floatingLabelText="numberOfSpacesWithRechargePoint"
+          floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
           onChange={(_e, value) => {
             handleSetNumberOfSpacesWithRechargePoint(value);
           }}
@@ -118,9 +118,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       ))}
 
       <TextField
-        hintText="numberOfSpaces registeredDisabled"
+        hintText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
         disabled={disabled || hasExpired}
-        floatingLabelText="numberOfSpaces registeredDisabled"
+        floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
         onChange={(e, value) => {
           handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
         }}
