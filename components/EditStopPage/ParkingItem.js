@@ -65,15 +65,18 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpaces(value) {
-    console.log(value);
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingNumberOfSpaces(index, value));
   }
 
   handleSetNumberOfSpacesWithRechargePoint(value) {
-    console.log(value);
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(index, value));
   }
 
   handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
-    console.log(value);
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(index, value));
   }
 
   handleDeleteParking() {
