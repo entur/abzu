@@ -35,7 +35,7 @@ const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
 }
 
 const rechargingAvailableCheckIcon = (key, rechargingAvailable) => {
-  hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key ? <CheckIcon /> : null;
+  return hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key ? <CheckIcon /> : null;
 }
 
 const ParkingItemPayAndRideExpandedFields = (props) => {
