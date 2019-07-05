@@ -21,6 +21,27 @@ class Parking {
     this.parking = parking;
   }
 
+  get numberOfSpaces() {
+    const { parking: { parkingProperties } } = this;
+    return parkingProperties.length > 0
+      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'allUsers').numberOfSpaces
+      : 0;
+  }
+
+  get numberOfSpacesWithRechargePoint() {
+    const { parking: { parkingProperties } } = this;
+    return parkingProperties.length > 0
+      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'allUsers').numberOfSpacesWithRechargePoint
+      : 0;
+  }
+
+  get numberOfSpacesForRegisteredDisabledUserType() {
+    const { parking: { parkingProperties } } = this;
+    return parkingProperties.length > 0
+      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'registeredDisabled').numberOfSpaces
+      : 0;
+  }
+
   toClient() {
 
     const { parking } = this;
@@ -30,6 +51,9 @@ class Parking {
       name: getIn(parking, ['name', 'value'], ''),
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
+      numberOfSpaces: this.numberOfSpaces,
+      numberOfSpacesWithRechargePoint: this.numberOfSpacesWithRechargePoint,
+      numberOfSpacesForRegisteredDisabledUserType: this.numberOfSpacesForRegisteredDisabledUserType,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

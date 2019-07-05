@@ -205,9 +205,9 @@ class ParkingItem extends React.Component {
                 hasExpired={parking.hasExpired}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
                 rechargingAvailable={parking.rechargingAvailable}
-                numberOfSpaces={0}
-                numberOfSpacesWithRechargePoint={0}
-                numberOfSpacesForRegisteredDisabledUserType={0}
+                numberOfSpaces={parking.numberOfSpaces}
+                numberOfSpacesWithRechargePoint={parking.numberOfSpacesWithRechargePoint}
+                numberOfSpacesForRegisteredDisabledUserType={parking.numberOfSpacesForRegisteredDisabledUserType}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(this)}
                 handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(this)}
                 handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(this)}

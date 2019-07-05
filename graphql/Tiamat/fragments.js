@@ -476,6 +476,13 @@ Fragments.parking = {
           }
           parkingPaymentProcess
           rechargingAvailable
+          parkingProperties {
+              spaces {
+                  parkingUserType
+                  numberOfSpaces
+                  numberOfSpacesWithRechargePoint
+              }
+          }
       }
     `
 };
