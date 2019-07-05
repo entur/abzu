@@ -16,34 +16,38 @@ limitations under the Licence. */
 import { getIn } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 
+const findNumberOfSpaces = (parkingProperties, userType, key) => {
+
+}
+
 class Parking {
   constructor(parking) {
     this.parking = parking;
   }
 
-  get numberOfSpaces() {
-    const { parking: { parkingProperties } } = this;
-    return parkingProperties.length > 0
-      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'allUsers').numberOfSpaces
+  findNumberOfSpaces(userType, lookupKey) {
+    return this.parking.parkingProperties.length > 0
+      ? this.parking.parkingProperties
+          .slice()
+          .shift()
+          .spaces
+          .find(v => v.parkingUserType === userType)[lookupKey]
       : 0;
+  }
+
+  get numberOfSpaces() {
+    return this.findNumberOfSpaces('allUsers', 'numberOfSpaces');
   }
 
   get numberOfSpacesWithRechargePoint() {
-    const { parking: { parkingProperties } } = this;
-    return parkingProperties.length > 0
-      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'allUsers').numberOfSpacesWithRechargePoint
-      : 0;
+    return this.findNumberOfSpaces('allUsers', 'numberOfSpacesWithRechargePoint');
   }
 
   get numberOfSpacesForRegisteredDisabledUserType() {
-    const { parking: { parkingProperties } } = this;
-    return parkingProperties.length > 0
-      ? parkingProperties.shift().spaces.find(v => v.parkingUserType === 'registeredDisabled').numberOfSpaces
-      : 0;
+    return this.findNumberOfSpaces('registeredDisabled', 'numberOfSpaces');
   }
 
   toClient() {
-
     const { parking } = this;
 
     let clientParking = {
