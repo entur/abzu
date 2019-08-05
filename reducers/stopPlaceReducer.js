@@ -548,15 +548,6 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true
       });
 
-    case types.CHANGED_PARKING_TOTAL_CAPACITY:
-      return Object.assign({}, state, {
-        current: formatHelpers.changeParkingTotalCapacity(
-          state.current,
-          action.payLoad,
-        ),
-        stopHasBeenModified: true,
-      });
-
     case types.OPENED_MERGE_STOP_DIALOG:
       return Object.assign({}, state, {
         mergeStopDialog: {
