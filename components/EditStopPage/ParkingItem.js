@@ -203,7 +203,6 @@ class ParkingItem extends React.Component {
 
             {parkingType === 'parkAndRide' ? (
               <ParkingItemPayAndRideExpandedFields
-                translations={translations}
                 disabled={disabled}
                 hasExpired={parking.hasExpired}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
