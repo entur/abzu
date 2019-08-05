@@ -44,6 +44,11 @@ class ParkingItem extends React.Component {
     parking: PropTypes.object.isRequired
   };
 
+  handleSetTotalCapacity(value) {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value));
+  }
+
   handleSetName(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingName(index, value));
@@ -196,9 +201,8 @@ class ParkingItem extends React.Component {
               style={{ width: '95%', marginTop: -10 }}
             />
 
-            {parkingType === 'parkAndRide' && (
+            {parkingType === 'parkAndRide' ? (
               <ParkingItemPayAndRideExpandedFields
-                translations={translations}
                 disabled={disabled}
                 hasExpired={parking.hasExpired}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
@@ -211,15 +215,20 @@ class ParkingItem extends React.Component {
                 handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(this)}
                 handleSetNumberOfSpacesWithRechargePoint={this.handleSetNumberOfSpacesWithRechargePoint.bind(this)}
                 handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(this)} />
+            ) : (
+              <TextField
+                hintText={translations.capacity}
+                disabled={disabled || parking.hasExpired}
+                floatingLabelText={translations.capacity}
+                onChange={(e, v) => {
+                  this.handleSetTotalCapacity(v);
+                }}
+                value={parking.totalCapacity}
+                type="number"
+                style={{ width: '95%', marginTop: -10 }} />
             )}
 
-            <TextField
-              hintText={translations.capacity}
-              disabled
-              floatingLabelText={translations.capacity}
-              value={Number(parking.numberOfSpaces) + Number(parking.numberOfSpacesForRegisteredDisabledUserType)}
-              type="number"
-              style={{ width: '95%', marginTop: -10 }} />
+
             <div style={{ width: '100%', textAlign: 'right' }}>
               <ToolTippable
                 toolTipText={formatMessage({ id: 'delete_parking' })}

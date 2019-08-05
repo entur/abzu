@@ -106,6 +106,13 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         value={numberOfSpacesForRegisteredDisabledUserType}
         type="number"
         style={{ width: '95%', marginTop: -10 }} />
+      <TextField
+        hintText={formatMessage({ id: 'totalCapacity_parkAndRide' })}
+        disabled
+        floatingLabelText={formatMessage({ id: 'totalCapacity_parkAndRide' })}
+        value={Number(numberOfSpaces) + Number(numberOfSpacesForRegisteredDisabledUserType)}
+        type="number"
+        style={{ width: '95%', marginTop: -10 }} />
     </div>
   );
 }
