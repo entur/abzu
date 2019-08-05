@@ -51,7 +51,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       checked={hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1}
       key={key}
       value={key}
-      primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
+      primaryText={formatMessage({ id: `parking_payment_process_${key}` })}
+      title={key === `payByPrepaidToken` ? formatMessage({ id: `parking_payment_process_${key}_hover`}) : null }/>
   ));
 
   const rechargingAvailableMenuItems = [true, false].map(key => (
