@@ -18,6 +18,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
 import parkingPaymentProcessKeys from '../../models/parkingPaymentProcess';
 import { TextField } from 'material-ui';
+import RechargingAvailablePopover from './RechargingAvailablePopover';
 
 const hasElements = list => list && list.length > 0;
 
@@ -55,14 +56,6 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       title={key === `payByPrepaidToken` ? formatMessage({ id: `parking_payment_process_${key}_hover`}) : null }/>
   ));
 
-  const rechargingAvailableMenuItems = [true, false].map(key => (
-    <MenuItem
-      checked={hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key}
-      key={`rechargingAvailable_${key}`}
-      value={key}
-      primaryText={formatMessage({ id: `parking_recharging_available_${key}`} )} />
-  ));
-
   return (
     <div>
       <SelectField
@@ -85,19 +78,16 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         value={numberOfSpaces}
         type="number"
         style={{ width: '95%', marginTop: -10 }} />
-      <SelectField
-        disabled={disabled || hasExpired}
-        floatingLabelText={formatMessage({ id: 'parking_recharging_available' })}
-        value={getRechargingAvailableValue(rechargingAvailable)}
-        onChange={(_e,_i,value) => {
-          handleSetRechargingAvailable(value);
-        }}>
-          {rechargingAvailableMenuItems}
-      </SelectField>
-      {getRechargingAvailableValue(rechargingAvailable && (
+      <div style={{display: 'flex', flexDirection: 'row', marginTop: '6px' }}>
+        <RechargingAvailablePopover
+          disabled={disabled}
+          hasExpired={hasExpired}
+          handleSetRechargingAvailable={handleSetRechargingAvailable}
+          handleSetNumberOfSpacesWithRechargePoint={handleSetNumberOfSpacesWithRechargePoint}
+          rechargingAvailableValue={getRechargingAvailableValue(rechargingAvailable)} />
         <TextField
           hintText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
-          disabled={disabled || hasExpired}
+          disabled={!rechargingAvailable || disabled || hasExpired}
           floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
           onChange={(_e, value) => {
             handleSetNumberOfSpacesWithRechargePoint(value);
@@ -105,8 +95,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           value={numberOfSpacesWithRechargePoint}
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
-      ))}
-
+      </div>
       <TextField
         hintText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
         disabled={disabled || hasExpired}

@@ -279,7 +279,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.parkingPaymentProcess = source.parkingPaymentProcess;
     }
 
-    if (source.rechargingAvailable) {
+    if (source.rechargingAvailable !== undefined) {
       parking.rechargingAvailable = source.rechargingAvailable;
     }
 
