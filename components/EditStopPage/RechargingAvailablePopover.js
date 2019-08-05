@@ -36,8 +36,8 @@ class RechargingAvailablePopover extends React.Component {
   }
 
   handleSelect(value) {
-    console.log(value);
     this.props.handleSetRechargingAvailable(value);
+    this.props.handleSetNumberOfSpacesWithRechargePoint(0);
     this.setState({
       open: false
     });
@@ -58,11 +58,6 @@ class RechargingAvailablePopover extends React.Component {
       return rechargingAvailable ? rechargingAvailableColors.RECHARGING_AVAILABLE : rechargingAvailableColors.RECHARGING_NOT_AVAILABLE;
     }
 
-    const rechargingAvailableLabel = rechargingAvailable => {
-      if (rechargingAvailable === null) return formatMessage({ id : 'parking_recharging_available_unknown'});
-      return formatMessage({ id: `parking_recharging_available_${rechargingAvailable}`});
-    }
-
     const rechargingAvailableMenuItems = [true, false].map(key => (
       <MenuItem
         leftIcon={<EvStation color={evStationIconColor(key)} />}
@@ -75,7 +70,7 @@ class RechargingAvailablePopover extends React.Component {
     return (
       <div>
         <div
-          style={{ margin: '6px 6px 0 0', height: '72px', lineHeight: '24px' }}
+          style={{ margin: '6px 6px 0 0', height: '56px' }}
         >
           <IconButton
             style={{ borderBottom: disabled || hasExpired  ? 'none' : '1px dotted grey' }}

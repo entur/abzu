@@ -83,19 +83,18 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           disabled={disabled}
           hasExpired={hasExpired}
           handleSetRechargingAvailable={handleSetRechargingAvailable}
+          handleSetNumberOfSpacesWithRechargePoint={handleSetNumberOfSpacesWithRechargePoint}
           rechargingAvailableValue={getRechargingAvailableValue(rechargingAvailable)} />
-        {getRechargingAvailableValue(rechargingAvailable && (
-          <TextField
-            hintText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
-            disabled={disabled || hasExpired}
-            floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
-            onChange={(_e, value) => {
-              handleSetNumberOfSpacesWithRechargePoint(value);
-            }}
-            value={numberOfSpacesWithRechargePoint}
-            type="number"
-            style={{ width: '95%', marginTop: -10 }} />
-        ))}
+        <TextField
+          hintText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
+          disabled={!rechargingAvailable || disabled || hasExpired}
+          floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_with_recharge_point' })}
+          onChange={(_e, value) => {
+            handleSetNumberOfSpacesWithRechargePoint(value);
+          }}
+          value={numberOfSpacesWithRechargePoint}
+          type="number"
+          style={{ width: '95%', marginTop: -10 }} />
       </div>
       <TextField
         hintText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
