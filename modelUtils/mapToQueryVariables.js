@@ -275,6 +275,30 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.id = source.id;
     }
 
+    if (source.parkingPaymentProcess) {
+      parking.parkingPaymentProcess = source.parkingPaymentProcess;
+    }
+
+    if (source.rechargingAvailable) {
+      parking.rechargingAvailable = source.rechargingAvailable;
+    }
+
+    if (source.numberOfSpaces || source.numberOfSpacesWithRechargePoint || source.numberOfSpacesForRegisteredDisabledUserType) {
+      parking.parkingProperties = [{
+        spaces: [
+          {
+            parkingUserType: 'allUsers',
+            numberOfSpaces: source.numberOfSpaces,
+            numberOfSpacesWithRechargePoint: source.numberOfSpacesWithRechargePoint
+          },
+          {
+            parkingUserType: 'registeredDisabled',
+            numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType
+          }
+        ]
+      }];
+    }
+
     parking.name = {
       value: source.name,
       lang: 'nor'

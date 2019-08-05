@@ -12,21 +12,52 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getIn } from '../utils/';
+
+import { getIn } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
+
+const findNumberOfSpaces = (parkingProperties, userType, key) => {
+
+}
 
 class Parking {
   constructor(parking) {
     this.parking = parking;
   }
 
-  toClient() {
+  findNumberOfSpaces(userType, lookupKey) {
+    return this.parking.parkingProperties.length > 0
+      ? this.parking.parkingProperties
+          .slice()
+          .shift()
+          .spaces
+          .find(v => v.parkingUserType === userType)[lookupKey]
+      : 0;
+  }
 
+  get numberOfSpaces() {
+    return this.findNumberOfSpaces('allUsers', 'numberOfSpaces');
+  }
+
+  get numberOfSpacesWithRechargePoint() {
+    return this.findNumberOfSpaces('allUsers', 'numberOfSpacesWithRechargePoint');
+  }
+
+  get numberOfSpacesForRegisteredDisabledUserType() {
+    return this.findNumberOfSpaces('registeredDisabled', 'numberOfSpaces');
+  }
+
+  toClient() {
     const { parking } = this;
 
     let clientParking = {
       id: parking.id,
       name: getIn(parking, ['name', 'value'], ''),
+      parkingPaymentProcess: parking.parkingPaymentProcess,
+      rechargingAvailable: parking.rechargingAvailable,
+      numberOfSpaces: this.numberOfSpaces,
+      numberOfSpacesWithRechargePoint: this.numberOfSpacesWithRechargePoint,
+      numberOfSpacesForRegisteredDisabledUserType: this.numberOfSpacesForRegisteredDisabledUserType,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),

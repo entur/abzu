@@ -214,7 +214,7 @@ Fragments.stopPlace = {
             name {
                 value
             }
-            id 
+            id
         }
         topographicPlace {
             name {
@@ -429,7 +429,7 @@ Fragments.pathLink = {
               coordinates
           }
           from {
-              placeRef {    
+              placeRef {
                   version
                   ref
                   addressablePlace {
@@ -465,7 +465,7 @@ Fragments.parking = {
           totalCapacity
           name {
               value
-          } 
+          }
           geometry {
               coordinates
           }
@@ -473,6 +473,15 @@ Fragments.parking = {
           validBetween {
               fromDate
               toDate
+          }
+          parkingPaymentProcess
+          rechargingAvailable
+          parkingProperties {
+              spaces {
+                  parkingUserType
+                  numberOfSpaces
+                  numberOfSpacesWithRechargePoint
+              }
           }
       }
     `
