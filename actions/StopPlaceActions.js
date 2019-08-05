@@ -284,18 +284,6 @@ StopPlaceActions.changeElementPosition = (
   );
 };
 
-StopPlaceActions.changeParkingTotalCapacity = (
-  index,
-  totalCapacity,
-) => dispatch => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_TOTAL_CAPACITY, {
-      index,
-      totalCapacity,
-    }),
-  );
-};
-
 StopPlaceActions.changeParkingName = (index, name) => dispatch => {
   dispatch(
     createThunk(types.CHANGED_PARKING_NAME, {

@@ -44,11 +44,6 @@ class ParkingItem extends React.Component {
     parking: PropTypes.object.isRequired
   };
 
-  handleSetTotalCapacity(value) {
-    const { dispatch, index } = this.props;
-    dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value));
-  }
-
   handleSetName(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingName(index, value));
@@ -220,12 +215,9 @@ class ParkingItem extends React.Component {
 
             <TextField
               hintText={translations.capacity}
-              disabled={disabled || parking.hasExpired}
+              disabled
               floatingLabelText={translations.capacity}
-              onChange={(e, v) => {
-                this.handleSetTotalCapacity(v);
-              }}
-              value={parking.totalCapacity}
+              value={Number(parking.numberOfSpaces) + Number(parking.numberOfSpacesForRegisteredDisabledUserType)}
               type="number"
               style={{ width: '95%', marginTop: -10 }} />
             <div style={{ width: '100%', textAlign: 'right' }}>

@@ -854,13 +854,6 @@ helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (original, pa
   return copy;
 }
 
-helpers.changeParkingTotalCapacity = (original, payLoad) => {
-  const { index, totalCapacity } = payLoad;
-  const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].totalCapacity = Number(totalCapacity);
-  return copy;
-};
-
 helpers.updateCurrentStopWithWeighting = (stopPlace, payLoad) => {
   const copy = JSON.parse(JSON.stringify(stopPlace));
   copy.weighting = payLoad;
