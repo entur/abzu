@@ -16,7 +16,6 @@ import React from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import parkingPaymentProcessKeys from '../../models/parkingPaymentProcess';
 import { TextField } from 'material-ui';
 
@@ -26,16 +25,8 @@ const hasValue = value => value !== null && value !== undefined;
 
 const getRechargingAvailableValue = value => hasValue(value) ? value : null;
 
-const parkingPaymentProcessCheckIcon = (key, parkingPaymentProcess) => {
-  return hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1 ? <CheckIcon /> : null;
-}
-
 const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
   return hasElements(parkingPaymentProcess) ? parkingPaymentProcess.map(value => `${value}`) : null;
-}
-
-const rechargingAvailableCheckIcon = (key, rechargingAvailable) => {
-  return hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key ? <CheckIcon /> : null;
 }
 
 const ParkingItemPayAndRideExpandedFields = (props) => {
@@ -57,8 +48,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
 
   const parkingPaymentProcessesMenuItems = parkingPaymentProcessKeys.map(key => (
     <MenuItem
-      insetChildren
-      leftIcon={parkingPaymentProcessCheckIcon(key, parkingPaymentProcess)}
+      checked={hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1}
       key={key}
       value={key}
       primaryText={formatMessage({ id: `parking_payment_process_${key}` })} />
@@ -66,8 +56,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
 
   const rechargingAvailableMenuItems = [true, false].map(key => (
     <MenuItem
-      insetChildren
-      leftIcon={rechargingAvailableCheckIcon(key, rechargingAvailable)}
+      checked={hasValue(rechargingAvailable) && getRechargingAvailableValue(rechargingAvailable) === key}
       key={`rechargingAvailable_${key}`}
       value={key}
       primaryText={formatMessage({ id: `parking_recharging_available_${key}`} )} />
