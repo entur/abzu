@@ -33,6 +33,7 @@ const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
 const ParkingItemPayAndRideExpandedFields = (props) => {
   const {
     intl: { formatMessage },
+    translations,
     disabled,
     hasExpired,
     parkingPaymentProcess,
@@ -104,6 +105,13 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
         }}
         value={numberOfSpacesForRegisteredDisabledUserType}
+        type="number"
+        style={{ width: '95%', marginTop: -10 }} />
+      <TextField
+        hintText={translations.capacity}
+        disabled
+        floatingLabelText={translations.capacity}
+        value={Number(numberOfSpaces) + Number(numberOfSpacesForRegisteredDisabledUserType)}
         type="number"
         style={{ width: '95%', marginTop: -10 }} />
     </div>

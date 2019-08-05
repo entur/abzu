@@ -201,7 +201,7 @@ class ParkingItem extends React.Component {
               style={{ width: '95%', marginTop: -10 }}
             />
 
-            {parkingType === 'parkAndRide' && (
+            {parkingType === 'parkAndRide' ? (
               <ParkingItemPayAndRideExpandedFields
                 translations={translations}
                 disabled={disabled}
@@ -216,18 +216,20 @@ class ParkingItem extends React.Component {
                 handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(this)}
                 handleSetNumberOfSpacesWithRechargePoint={this.handleSetNumberOfSpacesWithRechargePoint.bind(this)}
                 handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(this)} />
+            ) : (
+              <TextField
+                hintText={translations.capacity}
+                disabled={disabled || parking.hasExpired}
+                floatingLabelText={translations.capacity}
+                onChange={(e, v) => {
+                  this.handleSetTotalCapacity(v);
+                }}
+                value={parking.totalCapacity}
+                type="number"
+                style={{ width: '95%', marginTop: -10 }} />
             )}
 
-            <TextField
-              hintText={translations.capacity}
-              disabled={disabled || parking.hasExpired}
-              floatingLabelText={translations.capacity}
-              onChange={(e, v) => {
-                this.handleSetTotalCapacity(v);
-              }}
-              value={parking.totalCapacity}
-              type="number"
-              style={{ width: '95%', marginTop: -10 }} />
+
             <div style={{ width: '100%', textAlign: 'right' }}>
               <ToolTippable
                 toolTipText={formatMessage({ id: 'delete_parking' })}
