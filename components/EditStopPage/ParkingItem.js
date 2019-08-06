@@ -14,9 +14,6 @@ limitations under the Licence. */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
-import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
 import { connect } from 'react-redux';
 import { StopPlaceActions, UserActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
@@ -30,6 +27,9 @@ import * as types from "../../actions/Types";
 import {FlatButton} from "material-ui";
 import TextField from 'material-ui/TextField';
 import ParkingItemPayAndRideExpandedFields from './ParkingItemPayAndRideExpandedFields';
+import ItemHeader from './ItemHeader';
+import Item from './Item';
+import Code from './Code';
 
 class ParkingItem extends React.Component {
 
@@ -102,92 +102,78 @@ class ParkingItem extends React.Component {
     });
   }
 
+  handleChangeCoordinates(position) {
+    const { dispatch, index, handleLocateOnMap } = this.props;
+    dispatch(StopPlaceActions.changeElementPosition(index, 'quay', position));
+    handleLocateOnMap(position);
+  }
+
   render() {
     const {
       parking,
       translations,
       expanded,
       handleToggleCollapse,
+      handleLocateOnMap,
       index,
       disabled,
       parkingType,
-      intl
+      intl,
     } = this.props;
 
     const { formatMessage } = intl;
 
-    const locationStyle = {
-      marginRight: 5,
-      verticalAlign: 'text-top',
-      height: 16,
-      width: 16
-    };
+    let totalCapacity = parking.totalCapacity || 0;
+
+    if (parkingType === 'parkAndRide') {
+      const numberOfSpaces = Number(parking.numberOfSpaces);
+      const numberOfSpacesForRegisteredDisabledUserType = Number(parking.numberOfSpacesForRegisteredDisabledUserType);
+
+      if (!isNaN(numberOfSpaces) && !isNaN(numberOfSpacesForRegisteredDisabledUserType)) {
+        totalCapacity = numberOfSpaces + numberOfSpacesForRegisteredDisabledUserType;
+      } else if (!isNaN(numberOfSpaces)) {
+        totalCapacity = numberOfSpaces;
+      } else if (!isNaN(numberOfSpacesForRegisteredDisabledUserType)) {
+        totalCapacity = numberOfSpacesForRegisteredDisabledUserType;
+      }
+    }
 
     return (
-      <div>
-        <div className="tabItem">
-          <div
-            style={{ float: 'left', width: '95%', marginTop: 20, padding: 5 }}
-          >
-            <MapsMyLocation
-              style={locationStyle}
-              onClick={() =>
-                this.props.handleLocateOnMap(
-                  parking.location,
-                  index,
-                  'parking'
-                )}
-            />
-            <div
-              style={{ display: 'inline-block' }}
-              onClick={() => handleToggleCollapse(index, 'parking')}
-            >
-              <div style={{ display: 'flex', lineHeight: '28px' }}>
-                {translations[parkingType]}
-                {parking.hasExpired &&
-                  <ToolTippable
-                    toolTipText={formatMessage({ id: 'parking_expired' })}
-                    toolTipStyle={{ padding: '0 5' }}
-                  >
-                    <Warning
-                      color="orange"
-                      style={{ width: 20, height: 20, marginLeft: 5 }}
-                    />
-                  </ToolTippable>}
-                <span style={{ width: 20, height: 20, marginLeft: 5 }}>
-                  <ToolTippable toolTipText={formatMessage({ id: 'totalCapacity' })}
-                                toolTipStyle={{ padding: '0 5' }}>
-                  {parking.totalCapacity}
-                  </ToolTippable>
-                </span>
-                <span
-                    style={{
-                      fontSize: '0.8em',
-                      marginLeft: 5,
-                      fontWeight: 600,
-                      color: '#464545',
-                    }}
-                >
-                 {parking.id}
-              </span>
-
-              </div>
-            </div>
-            <div
-              style={{ display: 'inline-block' }}
-              onClick={() => handleToggleCollapse(index, 'parking')}
-            />
-            {!expanded
-              ? <NavigationExpandMore
-                  onClick={() => handleToggleCollapse(index, 'parking')}
-                  style={{ float: 'right' }}
+      <Item
+        handleChangeCoordinates={this.handleChangeCoordinates}>
+        <ItemHeader
+          translations={translations}
+          location={location}
+          expanded={expanded}
+          handleLocateOnMap={() => handleLocateOnMap(parking.location, index, 'parking')}
+          handleToggleCollapse={() => handleToggleCollapse(index, 'parking')}
+          handleMissingCoordinatesClick={() => this.setState({ coordinatesDialogOpen: true })}>
+            {translations[parkingType]}
+            {parking.hasExpired &&
+              <ToolTippable
+                toolTipText={formatMessage({ id: 'parking_expired' })}
+                toolTipStyle={{ padding: '0 5' }}
+              >
+                <Warning
+                  color="orange"
+                  style={{ width: 20, height: 20, marginLeft: 5 }}
                 />
-              : <NavigationExpandLess
-                  onClick={() => handleToggleCollapse(index, 'parking')}
-                  style={{ float: 'right' }}
-                />}
-          </div>
-        </div>
+              </ToolTippable>
+            }
+            <ToolTippable toolTipText={formatMessage({ id: 'totalCapacity' })} toolTipStyle={{ padding: '0 5' }}>
+              <Code type="privateCode" value={`${totalCapacity}`} defaultValue={translations.notAsssigned} />
+            </ToolTippable>
+            <span
+                style={{
+                  fontSize: '0.8em',
+                  marginLeft: 5,
+                  fontWeight: 600,
+                  color: '#464545',
+                }}
+            >
+              {parking.id}
+            </span>
+        </ItemHeader>
         {expanded && (
           <div className="pr-item-expanded">
             <TextField
@@ -207,6 +193,7 @@ class ParkingItem extends React.Component {
                 hasExpired={parking.hasExpired}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
                 rechargingAvailable={parking.rechargingAvailable}
+                totalCapacity={totalCapacity}
                 numberOfSpaces={parking.numberOfSpaces}
                 numberOfSpacesWithRechargePoint={parking.numberOfSpacesWithRechargePoint}
                 numberOfSpacesForRegisteredDisabledUserType={parking.numberOfSpacesForRegisteredDisabledUserType}
@@ -253,7 +240,7 @@ class ParkingItem extends React.Component {
             cancel: 'delete_group_cancel'
           }}
         />
-      </div>
+      </Item>
     );
   }
 }
