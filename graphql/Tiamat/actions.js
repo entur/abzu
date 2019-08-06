@@ -336,6 +336,9 @@ export const findEntitiesWithFilters = (client, query, stopPlaceType, chips, sho
   const countyReference = chips
     .filter(topos => topos.type === 'county')
     .map(topos => topos.value);
+  const countryReference = chips
+        .filter(topos => topos.type === 'country')
+        .map(topos => topos.value);
 
   return client.query({
     query: findStop,
@@ -345,6 +348,7 @@ export const findEntitiesWithFilters = (client, query, stopPlaceType, chips, sho
       stopPlaceType,
       municipalityReference: municipalityReference ,
       countyReference: countyReference,
+      countryReference: countryReference,
       pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
       versionValidity: showFutureAndExpired ? "MAX_VERSION" : null
     },

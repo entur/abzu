@@ -73,6 +73,7 @@
   "confirm": "Bekreft",
   "coordinates" : "Koordinater",
   "county": "Fylke",
+  "country": "Land",
   "create_group_of_stop_places": "Opprett stoppestedsgruppe",
   "create_not_allowed": "Denne posisjonen er utenfor ditt område.",
   "create_now" : "Opprett her",

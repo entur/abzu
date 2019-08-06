@@ -251,7 +251,7 @@ export const getStopById = gql`
 `;
 
 export const findStop = gql`
-    query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $pointInTime: DateTime, $versionValidity: VersionValidity) {
+    query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $countryReference: [String], $pointInTime: DateTime, $versionValidity: VersionValidity) {
         groupOfStopPlaces(query: $query, size: 7) {
             id
             name {
@@ -283,7 +283,7 @@ export const findStop = gql`
                 }
             }
         }
-        stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, size: 7, pointInTime: $pointInTime, versionValidity: $versionValidity) {
+        stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, countryReference: $countryReference, size: 7, pointInTime: $pointInTime, versionValidity: $versionValidity) {
             id
             groups {
                 id
