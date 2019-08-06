@@ -44,6 +44,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     hasExpired,
     parkingPaymentProcess,
     rechargingAvailable,
+    totalCapacity,
     numberOfSpaces,
     numberOfSpacesWithRechargePoint,
     numberOfSpacesForRegisteredDisabledUserType,
@@ -78,7 +79,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             {parkingPaymentProcessesMenuItems}
         </SelectField>
       </div>
-      <Subheader>Kapasitet ({`${Number(numberOfSpaces) + Number(numberOfSpacesForRegisteredDisabledUserType)}`})</Subheader>
+      <Subheader>Kapasitet ({`${totalCapacity}`})</Subheader>
       <div style={{display: 'flex', flexDirection: 'row' }}>
         <LocalParking style={parkingIconStyles()} />
         <TextField

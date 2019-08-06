@@ -123,6 +123,21 @@ class ParkingItem extends React.Component {
 
     const { formatMessage } = intl;
 
+    let totalCapacity = parking.totalCapacity || 0;
+
+    if (parkingType === 'parkAndRide') {
+      const numberOfSpaces = Number(parking.numberOfSpaces);
+      const numberOfSpacesForRegisteredDisabledUserType = Number(parking.numberOfSpacesForRegisteredDisabledUserType);
+
+      if (!isNaN(numberOfSpaces) && !isNaN(numberOfSpacesForRegisteredDisabledUserType)) {
+        totalCapacity = numberOfSpaces + numberOfSpacesForRegisteredDisabledUserType;
+      } else if (!isNaN(numberOfSpaces)) {
+        totalCapacity = numberOfSpaces;
+      } else if (!isNaN(numberOfSpacesForRegisteredDisabledUserType)) {
+        totalCapacity = numberOfSpacesForRegisteredDisabledUserType;
+      }
+    }
+
     return (
       <Item
         handleChangeCoordinates={this.handleChangeCoordinates}>
@@ -146,7 +161,7 @@ class ParkingItem extends React.Component {
               </ToolTippable>
             }
             <ToolTippable toolTipText={formatMessage({ id: 'totalCapacity' })} toolTipStyle={{ padding: '0 5' }}>
-              <Code type="privateCode" value={parkingType === 'parkAndRide' ? `${Number(parking.numberOfSpaces) + Number(parking.numberOfSpacesForRegisteredDisabledUserType)}` : `${parking.totalCapacity}`} defaultValue={translations.notAsssigned} />
+              <Code type="privateCode" value={`${totalCapacity}`} defaultValue={translations.notAsssigned} />
             </ToolTippable>
             <span
                 style={{
@@ -178,6 +193,7 @@ class ParkingItem extends React.Component {
                 hasExpired={parking.hasExpired}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
                 rechargingAvailable={parking.rechargingAvailable}
+                totalCapacity={totalCapacity}
                 numberOfSpaces={parking.numberOfSpaces}
                 numberOfSpacesWithRechargePoint={parking.numberOfSpacesWithRechargePoint}
                 numberOfSpacesForRegisteredDisabledUserType={parking.numberOfSpacesForRegisteredDisabledUserType}
