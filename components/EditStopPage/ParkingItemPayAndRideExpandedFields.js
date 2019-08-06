@@ -105,7 +105,16 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
-      <Subheader>Ladestasjon</Subheader>
+      <Subheader>Ladestasjoner</Subheader>
+      <p style={{
+        color: 'rgba(0, 0, 0, 0.54)',
+        fontSize: '12px',
+        paddingLeft: '16px',
+        width: '100%',
+        marginBlockStart: 0
+      }}>
+        {formatMessage({id: 'parking_recharging_available_info'})}
+      </p>
       <div style={{display: 'flex', flexDirection: 'row' }}>
         <RechargingAvailablePopover
           disabled={disabled}

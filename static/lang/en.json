@@ -254,6 +254,7 @@
   "parking_payment_process_payByMobileDevice": "Mobile device",
   "parking_recharging_available_true": "Recharging available",
   "parking_recharging_available_false": "Recharging not available",
+  "parking_recharging_available_info": "Number of spaces with recharge point is not in addition to number of spaces specified above. Spaces for registered disabled may also have recharge points. The type of recharge point is not specified.",
   "parking_number_of_spaces": "Number of spaces",
   "parking_number_of_spaces_with_recharge_point": "Number of spaces with recharge point",
   "parking_number_of_spaces_for_registered_disabled_user_type": "Number of spaces for registered disabled",
