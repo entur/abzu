@@ -17,8 +17,11 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { injectIntl } from 'react-intl';
 import parkingPaymentProcessKeys from '../../models/parkingPaymentProcess';
-import { TextField } from 'material-ui';
+import { TextField, Divider, Paper, Subheader } from 'material-ui';
 import RechargingAvailablePopover from './RechargingAvailablePopover';
+import LocalParking from 'material-ui/svg-icons/maps/local-parking';
+import { ActionAccessible } from 'material-ui/svg-icons';
+import Payment from 'material-ui/svg-icons/action/payment';
 
 const hasElements = list => list && list.length > 0;
 
@@ -29,6 +32,10 @@ const getRechargingAvailableValue = value => hasValue(value) ? value : null;
 const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
   return hasElements(parkingPaymentProcess) ? parkingPaymentProcess.map(value => `${value}`) : null;
 }
+
+const parkingIconStyles = (topMargin = 10) => ({
+  margin: `${topMargin}px 22px 18px 10px`
+});
 
 const ParkingItemPayAndRideExpandedFields = (props) => {
   const {
@@ -58,27 +65,47 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
 
   return (
     <div>
-      <SelectField
-        multiple
-        disabled={disabled || hasExpired}
-        floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
-        value={parkingPaymentProcessSelectFieldValue(parkingPaymentProcess)}
-        onChange={(_e,_i,value) => {
-          handleSetParkingPaymentProcess(value);
-        }}>
-          {parkingPaymentProcessesMenuItems}
-      </SelectField>
-      <TextField
-        hintText={formatMessage({ id: 'parking_number_of_spaces' })}
-        disabled={disabled || hasExpired}
-        floatingLabelText={formatMessage({ id: 'parking_number_of_spaces' })}
-        onChange={(_e, value) => {
-          handleSetNumberOfSpaces(value);
-        }}
-        value={numberOfSpaces}
-        type="number"
-        style={{ width: '95%', marginTop: -10 }} />
-      <div style={{display: 'flex', flexDirection: 'row', marginTop: '6px' }}>
+      <div style={{display: 'flex', flexDirection: 'row' }}>
+        <Payment style={parkingIconStyles(34)} />
+        <SelectField
+          multiple
+          disabled={disabled || hasExpired}
+          floatingLabelText={formatMessage({ id: 'parking_payment_process' })}
+          value={parkingPaymentProcessSelectFieldValue(parkingPaymentProcess)}
+          onChange={(_e,_i,value) => {
+            handleSetParkingPaymentProcess(value);
+          }}>
+            {parkingPaymentProcessesMenuItems}
+        </SelectField>
+      </div>
+      <Subheader>Kapasitet ({`${Number(numberOfSpaces) + Number(numberOfSpacesForRegisteredDisabledUserType)}`})</Subheader>
+      <div style={{display: 'flex', flexDirection: 'row' }}>
+        <LocalParking style={parkingIconStyles()} />
+        <TextField
+          disabled={disabled || hasExpired}
+          floatingLabelText={formatMessage({ id: 'parking_number_of_spaces' })}
+          onChange={(_e, value) => {
+            handleSetNumberOfSpaces(value);
+          }}
+          value={numberOfSpaces}
+          type="number"
+          style={{ width: '95%', marginTop: -10 }} />
+      </div>
+      <div style={{display: 'flex', flexDirection: 'row' }}>
+        <ActionAccessible style={parkingIconStyles()} />
+        <TextField
+          hintText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
+          disabled={disabled || hasExpired}
+          floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
+          onChange={(e, value) => {
+            handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
+          }}
+          value={numberOfSpacesForRegisteredDisabledUserType}
+          type="number"
+          style={{ width: '95%', marginTop: -10 }} />
+      </div>
+      <Subheader>Ladestasjon</Subheader>
+      <div style={{display: 'flex', flexDirection: 'row' }}>
         <RechargingAvailablePopover
           disabled={disabled}
           hasExpired={hasExpired}
@@ -96,23 +123,6 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
-      <TextField
-        hintText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
-        disabled={disabled || hasExpired}
-        floatingLabelText={formatMessage({ id: 'parking_number_of_spaces_for_registered_disabled_user_type' })}
-        onChange={(e, value) => {
-          handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
-        }}
-        value={numberOfSpacesForRegisteredDisabledUserType}
-        type="number"
-        style={{ width: '95%', marginTop: -10 }} />
-      <TextField
-        hintText={formatMessage({ id: 'totalCapacity_parkAndRide' })}
-        disabled
-        floatingLabelText={formatMessage({ id: 'totalCapacity_parkAndRide' })}
-        value={Number(numberOfSpaces) + Number(numberOfSpacesForRegisteredDisabledUserType)}
-        type="number"
-        style={{ width: '95%', marginTop: -10 }} />
     </div>
   );
 }

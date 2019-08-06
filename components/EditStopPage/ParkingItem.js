@@ -14,8 +14,6 @@ limitations under the Licence. */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Divider from 'material-ui/Divider';
-import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
 import { connect } from 'react-redux';
 import { StopPlaceActions, UserActions } from '../../actions/';
 import Warning from 'material-ui/svg-icons/alert/warning';
@@ -148,7 +146,7 @@ class ParkingItem extends React.Component {
               </ToolTippable>
             }
             <ToolTippable toolTipText={formatMessage({ id: 'totalCapacity' })} toolTipStyle={{ padding: '0 5' }}>
-              <Code type="privateCode" value={`${parking.totalCapacity}`} defaultValue={translations.notAsssigned} />
+              <Code type="privateCode" value={parkingType === 'parkAndRide' ? `${Number(parking.numberOfSpaces) + Number(parking.numberOfSpacesForRegisteredDisabledUserType)}` : `${parking.totalCapacity}`} defaultValue={translations.notAsssigned} />
             </ToolTippable>
             <span
                 style={{

@@ -12,11 +12,11 @@ class Item extends React.Component {
   }
 
   render() {
-    const {children, intl, handleChangeCoordinates } = this.props;
+    const {children, intl, handleChangeCoordinates, expanded } = this.props;
     return (
       <div>
         {children}
-        <Divider inset={true} style={{ marginTop: 2 }} />
+        <Divider style={{ marginTop: 2 }} />
         <CoordinatesDialog
           open={this.state.coordinatesDialogOpen}
           intl={intl}
