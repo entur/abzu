@@ -79,7 +79,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             {parkingPaymentProcessesMenuItems}
         </SelectField>
       </div>
-      <Subheader>Kapasitet ({`${totalCapacity}`})</Subheader>
+      <Subheader>{formatMessage({id: 'parking_parkAndRide_capacity_sub_header'})} ({`${totalCapacity}`})</Subheader>
       <div style={{display: 'flex', flexDirection: 'row' }}>
         <LocalParking style={parkingIconStyles()} />
         <TextField
@@ -105,7 +105,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
-      <Subheader>Ladestasjoner</Subheader>
+      <Subheader>{formatMessage({id: 'parking_recharging_sub_header'})}</Subheader>
       <p style={{
         color: 'rgba(0, 0, 0, 0.54)',
         fontSize: '12px',
