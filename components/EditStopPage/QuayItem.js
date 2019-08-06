@@ -24,16 +24,12 @@ import {
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
-import MapsMyLocation from 'material-ui/svg-icons/maps/my-location';
+
 import TicketMachine from '../../static/icons/facilities/TicketMachine';
 import BusShelter from '../../static/icons/facilities/BusShelter';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
 import stopTypes from '../../models/stopTypes';
-import Divider from 'material-ui/Divider';
-import MdError from 'material-ui/svg-icons/alert/error';
 import ImportedId from './ImportedId';
 import MdLess from 'material-ui/svg-icons/navigation/expand-less';
 import EditQuayAdditional from './EditQuayAdditional';
@@ -42,13 +38,15 @@ import StepFreePopover from './StepFreePopover';
 import { getIn } from '../../utils/';
 import equipmentHelpers from '../../modelUtils/equipmentHelpers';
 import Sign512 from '../../static/icons/TransportSign';
-import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
+
 import ToolTippable from './ToolTippable';
 import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import Code from './Code';
+import ItemHeader from './ItemHeader';
+import Item from './Item';
 
 
 class QuayItem extends React.Component {
@@ -134,9 +132,6 @@ class QuayItem extends React.Component {
 
   handleChangeCoordinates(position) {
     const { dispatch, index, handleLocateOnMap } = this.props;
-    this.setState({
-      coordinatesDialogOpen: false,
-    });
     dispatch(StopPlaceActions.changeElementPosition(index, 'quay', position));
     handleLocateOnMap(position);
   }
@@ -226,11 +221,6 @@ class QuayItem extends React.Component {
       justifyContent: 'flex-end'
     };
 
-    const locationStyle = {
-      marginRight: 5,
-      height: 16,
-      width: 16,
-    };
 
     const quayTitlePrefix = `${translations.quayItemName
       ? translations.quayItemName
@@ -238,68 +228,31 @@ class QuayItem extends React.Component {
     const idTitle = `${quay.id || '?'}`;
 
     return (
-      <div>
-        <div className="tabItem">
-          <div
-            style={{
-              float: 'flex',
-              alignItems: 'center',
-              width: '95%',
-              marginTop: 10,
-              padding: 3,
-            }}
-          >
-            {quay.location
-              ? <MapsMyLocation
-                  style={locationStyle}
-                  onClick={() => this.props.handleLocateOnMap(quay.location, index, 'quay')}
-                />
-              : <div
-                  className="tooltip"
-                  style={{ display: 'inline-block' }}
-                  title={translations.quayMissingLocation}
-                >
-                  <span className="tooltipText"> </span>
-                  <MdError
-                    style={{ ...locationStyle, color: '#bb271c' }}
-                    onClick={() => {
-                      this.setState({ coordinatesDialogOpen: true });
-                    }}
-                  />
-                </div>}
-            <div
-              style={{ display: 'inline-block'}}
-              onClick={() => handleToggleCollapse(index, 'quay')}
+      <Item
+        handleChangeCoordinates={this.handleChangeCoordinates}>
+        <ItemHeader
+          translations={translations}
+          location={location}
+          expanded={expanded}
+          handleLocateOnMap={() => handleLocateOnMap(quay.location, index, 'quay')}
+          handleToggleCollapse={() => handleToggleCollapse(index, 'quay')}
+          handleMissingCoordinatesClick={() => this.setState({ coordinatesDialogOpen: true })}>
+            <span style={{ color: '#2196F3' }}>
+              {quayTitlePrefix}
+            </span>
+            <Code type="publicCode" value={quay.publicCode} defaultValue={translations.notAssigned} />
+            <Code type="privateCode" value={quay.privateCode} defaultValue={translations.notAssigned}/>
+            <span
+              style={{
+                fontSize: '0.8em',
+                marginLeft: 5,
+                fontWeight: 600,
+                color: '#464545',
+              }}
             >
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <span style={{ color: '#2196F3' }}>
-                {quayTitlePrefix}
-              </span>
-                <Code type="publicCode" value={quay.publicCode} defaultValue={translations.notAssigned} />
-                <Code type="privateCode" value={quay.privateCode} defaultValue={translations.notAssigned}/>
-                <span
-                  style={{
-                    fontSize: '0.8em',
-                    marginLeft: 5,
-                    fontWeight: 600,
-                    color: '#464545',
-                  }}
-                >
-                  {idTitle}
-              </span>
-              </div>
-            </div>
-            {!expanded
-              ? <NavigationExpandMore
-                  onClick={() => handleToggleCollapse(index, 'quay')}
-                  style={{ float: 'right' }}
-                />
-              : <NavigationExpandLess
-                  onClick={() => handleToggleCollapse(index, 'quay')}
-                  style={{ float: 'right' }}
-                />}
-          </div>
-        </div>
+              {idTitle}
+            </span>
+        </ItemHeader>
         {!expanded
           ? null
           : <div className="quay-item-expanded">
@@ -462,16 +415,7 @@ class QuayItem extends React.Component {
                 </ToolTippable>
               </div>
             </div>}
-        <Divider inset={true} style={{ marginTop: 2 }} />
-        <CoordinatesDialog
-          open={coordinatesDialogOpen}
-          intl={intl}
-          handleConfirm={this.handleChangeCoordinates.bind(this)}
-          handleClose={() => {
-            this.setState({ coordinatesDialogOpen: false });
-          }}
-        />
-      </div>
+      </Item>
     );
   }
 }
