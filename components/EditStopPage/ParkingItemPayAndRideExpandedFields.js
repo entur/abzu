@@ -88,7 +88,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           onChange={(_e, value) => {
             handleSetNumberOfSpaces(value);
           }}
-          value={numberOfSpaces}
+          value={numberOfSpaces || ''}
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
@@ -101,7 +101,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           onChange={(e, value) => {
             handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
           }}
-          value={numberOfSpacesForRegisteredDisabledUserType}
+          value={numberOfSpacesForRegisteredDisabledUserType || ''}
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
@@ -129,7 +129,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           onChange={(_e, value) => {
             handleSetNumberOfSpacesWithRechargePoint(value);
           }}
-          value={numberOfSpacesWithRechargePoint}
+          value={numberOfSpacesWithRechargePoint || ''}
           type="number"
           style={{ width: '95%', marginTop: -10 }} />
       </div>
