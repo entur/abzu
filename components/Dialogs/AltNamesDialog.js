@@ -255,7 +255,7 @@ class AltNamesDialog extends React.Component {
                 {!disabled
                   ? <div style={{display: 'flex'}}>
                     <IconButton
-                      onTouchTap={() => {
+                      onClick={() => {
                         this.handleEdit(i);
                       }}
                     >
@@ -263,7 +263,7 @@ class AltNamesDialog extends React.Component {
                       />
                     </IconButton>
                     <IconButton
-                      onTouchTap={() => {
+                      onClick={() => {
                         this.handleRemoveName(i);
                       }}
                     >

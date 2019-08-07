@@ -77,7 +77,7 @@ class TagSuggestionPopover extends Component {
           label={formatMessage({id: 'add_tag'})}
           labelStyle={{fontSize: '0.8em'}}
           icon={<MdAdd style={{height: 20, width: 20}}/>}
-          onTouchTap={e => {
+          onClick={e => {
             e.preventDefault();
             this.setState({
               open: true,

@@ -43,7 +43,7 @@ class DialogHeader extends Component {
         </div>
         <IconButton
           style={{ marginRight: 5 }}
-          onTouchTap={handleClose}
+          onClick={handleClose}
         >
           <MdClose />
         </IconButton>

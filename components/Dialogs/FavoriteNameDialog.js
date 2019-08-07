@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -70,13 +71,13 @@ class FavoriteNameDialog extends React.Component {
       <FlatButton
         label={labelTexts.cancel}
         primary={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onClick={this.handleClose.bind(this)}
       />,
       <FlatButton
         label={labelTexts.use}
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleSubmit.bind(this)}
+        onClick={this.handleSubmit.bind(this)}
       />,
     ];
 

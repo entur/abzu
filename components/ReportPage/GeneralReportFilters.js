@@ -42,7 +42,7 @@ class GeneralReportFilters extends Component {
     return (
       <div style={{marginTop: 10, marginLeft: 5}}>
         <RaisedButton
-          onTouchTap={e => {
+          onClick={e => {
             this.setState({
               open: true,
               anchorEl: e.currentTarget

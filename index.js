@@ -31,9 +31,6 @@ if (!window.Promise) {
   window.Promise = Promise;
 }
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 function renderIndex(path, kc) {
   const configureStore = require('./store/store').default;
   const store = configureStore(kc);

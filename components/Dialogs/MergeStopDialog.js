@@ -108,7 +108,7 @@ class MergeStopDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />
     ];
@@ -118,7 +118,7 @@ class MergeStopDialog extends React.Component {
         <FlatButton
           label={translations.confirm}
           disabled={!enableConfirm || isLoading || isFetchingQuays}
-          onTouchTap={() => {
+          onClick={() => {
             handleConfirm(fromVersionComment, toVersionComment);
           }}
           primary={true}

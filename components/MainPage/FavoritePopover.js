@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 import Popover from 'material-ui/Popover';
 import MenuItem from 'material-ui/MenuItem';
@@ -64,7 +65,7 @@ class FilterPopover extends React.Component {
     return (
       <div>
         <FlatButton
-          onTouchTap={this.handleTouchTap.bind(this)}
+          onClick={this.handleTouchTap.bind(this)}
           icon={<StarIcon style={{ height: 20, width: 20, marginLeft: -1 }} />}
           label={caption}
           labelStyle={{ fontSize: 12 }}

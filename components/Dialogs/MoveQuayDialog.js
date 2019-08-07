@@ -69,13 +69,13 @@ class MoveQuayDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />,
       <FlatButton
         label={translations.confirm}
         disabled={!enableConfirm || isLoading}
-        onTouchTap={() => { handleConfirm(fromVersionComment,toVersionComment) }}
+        onClick={() => { handleConfirm(fromVersionComment,toVersionComment) }}
         primary={true}
         keyboardFocused={true}
         icon={isLoading ? <Spinner/> : <MdMerge />}

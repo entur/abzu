@@ -130,7 +130,7 @@ class DeleteQuayDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />,
       <FlatButton

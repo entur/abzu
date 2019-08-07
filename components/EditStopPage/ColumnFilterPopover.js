@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
@@ -48,7 +49,7 @@ class ColumnFilterPopover extends React.Component {
         <RaisedButton
           label={buttonLabel}
           labelStyle={{fontSize: 12}}
-          onTouchTap={this.handleTouchTap.bind(this)}
+          onClick={this.handleTouchTap.bind(this)}
         />
         <Popover
           open={this.state.open}

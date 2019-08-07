@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -41,13 +42,13 @@ class ConfirmDialog extends React.Component {
       <FlatButton
         label={confirmDialogTranslation.cancel}
         primary={true}
-        onTouchTap={handleClose}
+        onClick={handleClose}
       />,
       <FlatButton
         label={confirmDialogTranslation.confirm}
         primary={true}
         keyboardFocused={true}
-        onTouchTap={handleConfirm}
+        onClick={handleConfirm}
       />,
     ];
 
