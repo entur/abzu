@@ -72,7 +72,7 @@ class ModalitiesMenuItems extends React.Component {
                   {type.name}
                 </span>
               }
-              onTouchTap={() => {
+              onClick={() => {
                 !type.submodes && handleStopTypeChange(type.value);
               }}
               insetChildren={true}

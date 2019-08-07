@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -103,7 +104,7 @@ class CompassBearingDialog extends React.Component {
           label={compassBearingTranslation.cancel}
           primary={false}
           keyboardFocused={true}
-          onTouchTap={() => this.handleClose()}
+          onClick={() => this.handleClose()}
           style={{ marginRight: 5 }}
         />
         <FlatButton
@@ -111,7 +112,7 @@ class CompassBearingDialog extends React.Component {
           primary={true}
           disabled={!this.state.compassBearing}
           keyboardFocused={true}
-          onTouchTap={() => this.handleConfirm()}
+          onClick={() => this.handleConfirm()}
         />
       </div>,
     ];

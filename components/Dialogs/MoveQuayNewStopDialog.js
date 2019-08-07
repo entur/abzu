@@ -97,13 +97,13 @@ class MoveQuayNewStopDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />,
       <FlatButton
         label={translations.confirm}
         disabled={!enableConfirm || isLoading || !quayIds.length}
-        onTouchTap={() => {
+        onClick={() => {
           handleConfirm(quayIds, fromVersionComment, toVersionComment);
         }}
         primary={true}

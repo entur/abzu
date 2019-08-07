@@ -81,7 +81,7 @@ class RemoveStopFromParentDialog extends React.Component {
     let actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />,
       <FlatButton

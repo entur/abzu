@@ -453,7 +453,7 @@ class StopPlaceDetails extends React.Component {
                       borderBottom: disabled ? 'none' : '1px dotted grey',
                       marginLeft: 5
                     }}
-                    onTouchTap={e => {
+                    onClick={e => {
                       this.handleOpenStopPlaceTypePopover(e);
                     }}
                   >
@@ -556,7 +556,7 @@ class StopPlaceDetails extends React.Component {
             style={{ marginLeft: 6, borderBottom: '1px dotted', marginTop: -3 }}
           >
             <IconButton
-              onTouchTap={e => {
+              onClick={e => {
                 this.handleOpenWeightPopover(e);
               }}
             >

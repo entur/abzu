@@ -89,7 +89,7 @@ class TagsDialog extends Component {
           </div>
           <IconButton
             style={{ marginRight: 5 }}
-            onTouchTap={() => {
+            onClick={() => {
               handleClose();
             }}
           >

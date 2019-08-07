@@ -178,7 +178,7 @@ class ReportPageFooter extends React.Component {
         </div>
         <div style={{ marginRight: 20, display: 'flex' }}>
           <RaisedButton
-            onTouchTap={this.handleExportOpen.bind(this)}
+            onClick={this.handleExportOpen.bind(this)}
             label={formatMessage({ id: 'export_to_csv' })}
             disabled={!totalCount}
             primary={true}

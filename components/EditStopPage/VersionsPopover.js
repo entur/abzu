@@ -68,7 +68,7 @@ class VersionsPopover extends Component {
             color: '#fff',
             padding: 0,
           }}
-          onTouchTap={this.handleOpen.bind(this)}
+          onClick={this.handleOpen.bind(this)}
         >
           {buttonLabel}
         </div>
@@ -104,7 +104,7 @@ class VersionsPopover extends Component {
                   >{`${version.fromDate || notAvailableMessage} - ${version.toDate ||
                   notAvailableMessage}`}</div>
                 }
-                onTouchTap={() => this.handleOnRequest(version)}
+                onClick={() => this.handleOnRequest(version)}
               />
             )}
           </Menu>

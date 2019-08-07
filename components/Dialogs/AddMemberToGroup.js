@@ -76,14 +76,14 @@ class AddMemberToGroup extends Component {
       <FlatButton
         label={formatMessage({ id: 'change_coordinates_cancel' })}
         primary={true}
-        onTouchTap={handleClose}
+        onClick={handleClose}
       />,
       <FlatButton
         label={formatMessage({ id: 'add' })}
         primary={true}
         keyboardFocused={true}
         disabled={!canSave}
-        onTouchTap={() => handleConfirm(checkedItems)}
+        onClick={() => handleConfirm(checkedItems)}
       />
     ];
 

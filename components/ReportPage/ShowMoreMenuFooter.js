@@ -43,7 +43,7 @@ class ShowMoreMenuFooter extends Component {
           fullWidth={true}
           label={label}
           labelStyle={labelStyle}
-          onTouchTap={onClick}
+          onClick={onClick}
         />
       </div>
     );

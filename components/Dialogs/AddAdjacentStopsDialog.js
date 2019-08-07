@@ -68,7 +68,7 @@ class AddAdjacentStopDialog extends React.Component {
       <FlatButton
         label={formatMessage({ id: 'cancel' })}
         primary={true}
-        onTouchTap={handleClose}
+        onClick={handleClose}
       />,
       <FlatButton
         label={formatMessage({ id: 'confirm' })}

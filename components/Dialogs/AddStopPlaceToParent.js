@@ -76,7 +76,7 @@ class AddStopPlaceToParent extends Component {
       <FlatButton
         label={formatMessage({ id: 'change_coordinates_cancel' })}
         primary={true}
-        onTouchTap={handleClose}
+        onClick={handleClose}
       />,
       <FlatButton
         label={formatMessage({ id: 'add' })}

@@ -194,7 +194,7 @@ class SaveDialog extends React.Component {
     const actions = [
       <FlatButton
         label={translations.cancel}
-        onTouchTap={handleClose}
+        onClick={handleClose}
         icon={<MdCancel />}
       />,
       <FlatButton
@@ -203,7 +203,7 @@ class SaveDialog extends React.Component {
         keyboardFocused={true}
         icon={isSaving && !errorMessage.length ? <MdSpinner /> : <MdSave />}
         disabled={!timeLegal || !dateLegal || isSaving}
-        onTouchTap={() => this.handleSave()}
+        onClick={() => this.handleSave()}
       />
     ];
 

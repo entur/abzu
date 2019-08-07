@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MdExpand from 'material-ui/svg-icons/navigation/expand-more';
 import MdCollapse from 'material-ui/svg-icons/navigation/expand-less';
 import IconButton from 'material-ui/IconButton';
@@ -58,7 +59,7 @@ class MakeExpandable extends React.PureComponent {
         <div style={style}>
           {this.props.children}
           <div style={iconButtonStyle}>
-            <IconButton onTouchTap={this.handleToggle.bind(this)}>
+            <IconButton onClick={this.handleToggle.bind(this)}>
               {this.state.expanded ? <MdCollapse /> : <MdExpand />}
             </IconButton>
           </div>

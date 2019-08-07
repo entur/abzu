@@ -122,7 +122,7 @@ class StopPlace extends React.Component {
     const actions = [
       <FlatButton
         label={formatMessage({ id: 'cancel' })}
-        onTouchTap={this.handleCloseErrorDialog.bind(this)}
+        onClick={this.handleCloseErrorDialog.bind(this)}
       />,
     ];
 
