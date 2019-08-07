@@ -40,7 +40,6 @@ import { doesStopTypeAllowEdit } from '../../roles/rolesParser';
 
 class MarkerList extends React.Component {
   static propTypes = {
-    stops: PropTypes.array.isRequired,
     handleDragEnd: PropTypes.func.isRequired
   };
 
