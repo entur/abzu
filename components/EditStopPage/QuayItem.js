@@ -50,9 +50,8 @@ import Item from './Item';
 
 
 class QuayItem extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     publicCode: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     quay: PropTypes.object.isRequired,
     handleRemoveQuay: PropTypes.func.isRequired,
     handleLocateOnMap: PropTypes.func.isRequired,
