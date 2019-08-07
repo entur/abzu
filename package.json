@@ -14,6 +14,7 @@
   "author": "Sean Erik Scully",
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
+    "@material-ui/core": "^1.5.1",
     "apollo-client": "1.9.2",
     "axios": "0.16.2",
     "babel-cli": "6.26.0",
@@ -53,7 +54,7 @@
     "prop-types": "^15.7.2",
     "raven": "^2.6.4",
     "raven-js": "^3.27.2",
-    "react": "16.0.0",
+    "react": "^16.8.6",
     "react-apollo": "1.4.15",
     "react-dom": "16.0.1 ",
     "react-intl": "2.4.0",
