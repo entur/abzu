@@ -25,7 +25,7 @@ class ToolTippable extends React.Component {
     };
   }
 
-  static PropTypes = {
+  static propTypes = {
     toolTipText: PropTypes.string.isRequired
   };
 
