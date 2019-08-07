@@ -4,12 +4,17 @@
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
+    "prebuild": "npm run fetch-schema",
     "build": "GENERATE_SOURCEMAPS=true BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.prod.config.js",
+    "predev": "npm run fetch-schema",
     "dev": "port=9000 NODE_ENV=development TIAMAT_ENV=test node server.js",
+    "predev-local": "npm run fetch-schema",
     "dev-local": "port=9000 NODE_ENV=development TIAMAT_ENV=development TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql node server.js",
+    "preprod": "TIAMAT_BASE_URL=https://api.entur.io/stop-places/v1/graphql npm run fetch-schema",
     "prod": "BABEL_ENV=production NODE_ENV=production node server.js",
     "test": "jest",
-    "stats": "webpack --config ./webpack.prod.config.js --json > stats.json"
+    "stats": "webpack --config ./webpack.prod.config.js --json > stats.json",
+    "fetch-schema": "./fetchSchema.js"
   },
   "author": "Sean Erik Scully",
   "license": "EUPL-1.2 with modifications",

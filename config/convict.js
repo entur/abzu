@@ -40,7 +40,7 @@ module.exports = new Promise(function (resolve, reject) {
     tiamatBaseUrl: {
       doc: 'Base URL for for tiamat graphql endpoint',
       format: 'url',
-      default: 'https://api-test.entur.org/stop_places/1.0/graphql',
+      default: 'https://api.dev.entur.io/stop-places/v1/graphql',
       env: 'TIAMAT_BASE_URL'
     },
     OTPUrl: {
