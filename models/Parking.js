@@ -36,7 +36,11 @@ class Parking {
   }
 
   get numberOfSpaces() {
-    return this.findNumberOfSpaces('allUsers', 'numberOfSpaces');
+    if (this.parking.parkingProperties.length) {
+      return this.findNumberOfSpaces('allUsers', 'numberOfSpaces')
+    } else {
+      return this.parking.totalCapacity;
+    }
   }
 
   get numberOfSpacesWithRechargePoint() {
