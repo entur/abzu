@@ -16,10 +16,6 @@ limitations under the Licence. */
 import { getIn } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
 
-const findNumberOfSpaces = (parkingProperties, userType, key) => {
-
-}
-
 class Parking {
   constructor(parking) {
     this.parking = parking;
@@ -51,17 +47,29 @@ class Parking {
     return this.findNumberOfSpaces('registeredDisabled', 'numberOfSpaces');
   }
 
+  get parkingType() {
+    if (this.parking.parkingType) {
+      return this.parking.parkingType;
+    }
+
+    if (this.parking.parkingVehicleTypes.indexOf('car') > -1) return 'parkAndRide';
+    if (this.parking.parkingVehicleTypes.indexOf('pedalCycle') > -1)
+      return 'bikeParking';
+    return 'unknown';
+  }
+
   toClient() {
     const { parking } = this;
 
     let clientParking = {
       id: parking.id,
       name: getIn(parking, ['name', 'value'], ''),
+      parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.numberOfSpaces,
-      numberOfSpacesWithRechargePoint: this.numberOfSpacesWithRechargePoint,
-      numberOfSpacesForRegisteredDisabledUserType: this.numberOfSpacesForRegisteredDisabledUserType,
+      numberOfSpaces: this.parkingType === 'parkAndRide' ? this.numberOfSpaces : null,
+      numberOfSpacesWithRechargePoint: this.parkingType === 'parkAndRide' ? this.numberOfSpacesWithRechargePoint : null,
+      numberOfSpacesForRegisteredDisabledUserType: this.parkingType === 'parkAndRide' ? this.numberOfSpacesForRegisteredDisabledUserType : null,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
