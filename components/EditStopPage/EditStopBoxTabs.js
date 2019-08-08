@@ -68,13 +68,6 @@ class EditStopBoxTabs extends React.Component {
     dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type));
   }
 
-  getParkingType(parking) {
-    if (parking.parkingVehicleTypes.indexOf('car') > -1) return 'parkAndRide';
-    if (parking.parkingVehicleTypes.indexOf('pedalCycle') > -1)
-      return 'bikeParking';
-    return 'unknown';
-  }
-
   getQuayItems(
     activeStopPlace,
     expandedItem,
@@ -180,7 +173,7 @@ class EditStopBoxTabs extends React.Component {
   ) {
     return activeStopPlace.parking.length
       ? activeStopPlace.parking.map((parking, index) => {
-          const parkingType = this.getParkingType(parking);
+          const parkingType = parking.parkingType;
           return (
             <ParkingItem
               translations={itemTranslation}

@@ -252,7 +252,7 @@
   "parking_payment_process_free": "Gratis",
   "parking_payment_process_payAndDisplay": "Parkeringslapp",
   "parking_payment_process_payByPrepaidToken": "Forhåndsbetaling",
-  "parking_payment_process_payByPrepaidToken_hover": "Alle former for forhåndsbetaling, f.eks. inkludert i månedskort eller betalt for med Bane NORs parkeringsapp",
+  "parking_payment_process_payByPrepaidToken_hover": "Alle former for forhåndsbetaling, f.eks. inkludert i månedskort eller betalt for via tredjepartstjenester.",
   "parking_payment_process_payByMobileDevice": "Betaling med mobil",
   "parking_recharging_sub_header": "Ladestasjon",
   "parking_recharging_available_true": "Ladestasjon tilgjengelig",

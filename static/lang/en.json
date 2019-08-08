@@ -251,7 +251,7 @@
   "parking_payment_process_free": "Free",
   "parking_payment_process_payAndDisplay": "Pay and display",
   "parking_payment_process_payByPrepaidToken": "Prepaid token",
-  "parking_payment_process_payByPrepaidToken_hover": "All types prepaid tokens, e.g. tokens included in season ticket or paid for in Bane NOR's parking app",
+  "parking_payment_process_payByPrepaidToken_hover": "All types prepaid tokens, e.g. tokens included in season ticket or paid for via third-party services.",
   "parking_payment_process_payByMobileDevice": "Mobile device",
   "parking_recharging_sub_header": "Recharge point",
   "parking_recharging_available_true": "Recharging available",
