@@ -108,7 +108,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           disabled={disabled || hasExpired}
           value={parkingLayout}
           input={<Input className={classes.selectInput} id="select-parking-layout" />}
-          renderValue={selected => formatMessage({ id: `parking_layout_${selected}`}) || <em>{formatMessage({ id: 'parking_layout'})}</em>}
+          renderValue={selected => selected ? formatMessage({ id: `parking_layout_${selected}`}) : <em>{formatMessage({ id: 'parking_layout'})}</em>}
           onChange={(event) => {
             const { value } = event.target;
             handleSetParkingLayout(value);
