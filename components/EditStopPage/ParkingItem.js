@@ -32,14 +32,6 @@ import Item from './Item';
 import Code from './Code';
 import PARKING_TYPE from '../../models/parkingType';
 
-const itemHeaderTranslation = (parkingType, translations) => {
-  if (parkingType === PARKING_TYPE.PARK_AND_RIDE) {
-    return translations.parkAndRide;
-  } else if (parkingType === PARKING_TYPE.BIKE_PARKING) {
-    return translations.bikeParking;
-  }
-}
-
 class ParkingItem extends React.Component {
 
   state = {
@@ -157,7 +149,7 @@ class ParkingItem extends React.Component {
           handleLocateOnMap={() => handleLocateOnMap(parking.location, index, 'parking')}
           handleToggleCollapse={() => handleToggleCollapse(index, 'parking')}
           handleMissingCoordinatesClick={() => this.setState({ coordinatesDialogOpen: true })}>
-            {itemHeaderTranslation(parkingType, translations)}
+            {formatMessage({ id: `parking_item_title_${parkingType}` })}
             {parking.hasExpired &&
               <ToolTippable
                 toolTipText={formatMessage({ id: 'parking_expired' })}

@@ -78,8 +78,8 @@ class NewElementsBox extends React.Component {
     const pathJunctionText = formatMessage({ id: 'pathJunction' });
     const entranceText = formatMessage({ id: 'entrance' });
     const newStopText = formatMessage({ id: 'stop_place' });
-    const parkAndRideText = formatMessage({ id: 'park_ride' });
-    const bikeParkingText = formatMessage({ id: 'parking_bike' });
+    const parkAndRideText = formatMessage({ id: 'parking_item_title_short_parkAndRide' });
+    const bikeParkingText = formatMessage({ id: 'parking_item_title_bikeParking' });
 
     let shouldShowNewStop = true;
 
