@@ -31,6 +31,8 @@ import PathLink from '../models/PathLink';
 import Parking from '../models/Parking';
 import ChildOfParentStopPlace from '../models/ChildOfParentStopPlace';
 import { Entities } from '../models/Entities';
+import PARKING_TYPE from '../models/parkingType';
+import PARKING_VEHICLE_TYPE from '../models/parkingVehicleType';
 
 const helpers = {};
 
@@ -574,20 +576,22 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
     case 'pathJunction':
       copy.pathJunctions = copy.pathJunctions.concat(newElement);
       break;
-    case 'parkAndRide':
+    case PARKING_TYPE.PARK_AND_RIDE:
       copy.parking = copy.parking.concat({
         ...newElement,
         totalCapacity: null,
-        parkingVehicleTypes: ['car'],
+        parkingType: type,
+        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
         hasExpired: false,
         validBetween: null
       });
       break;
-    case 'bikeParking':
+    case PARKING_TYPE.BIKE_PARKING:
       copy.parking = copy.parking.concat({
         ...newElement,
         totalCapacity: null,
-        parkingVehicleTypes: ['pedalCycle'],
+        parkingType: type,
+        parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
         hasExpired: false,
         validBetween: null
       });

@@ -15,6 +15,8 @@ limitations under the Licence. */
 
 import { getIn } from '../utils/';
 import { hasExpired } from '../modelUtils/validBetween';
+import PARKING_TYPE from './parkingType';
+import PARKING_VEHICLE_TYPE from './parkingVehicleType';
 
 class Parking {
   constructor(parking) {
@@ -52,10 +54,19 @@ class Parking {
       return this.parking.parkingType;
     }
 
-    if (this.parking.parkingVehicleTypes.indexOf('car') > -1) return 'parkAndRide';
-    if (this.parking.parkingVehicleTypes.indexOf('pedalCycle') > -1)
-      return 'bikeParking';
-    return 'unknown';
+    if (this.parking.parkingVehicleTypes.includes(PARKING_VEHICLE_TYPE.CAR)) {
+      return PARKING_TYPE.PARK_AND_RIDE;
+    }
+
+    if (this.parking.parkingVehicleTypes.includes(PARKING_VEHICLE_TYPE.PEDAL_CYCLE)) {
+      return PARKING_TYPE.BIKE_PARKING;
+    }
+
+    return PARKING_TYPE.UNKNOWN;
+  }
+
+  get isParkAndRide() {
+    return this.parkingType === PARKING_TYPE.PARK_AND_RIDE;
   }
 
   toClient() {
@@ -67,9 +78,10 @@ class Parking {
       parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.parkingType === 'parkAndRide' ? this.numberOfSpaces : null,
-      numberOfSpacesWithRechargePoint: this.parkingType === 'parkAndRide' ? this.numberOfSpacesWithRechargePoint : null,
-      numberOfSpacesForRegisteredDisabledUserType: this.parkingType === 'parkAndRide' ? this.numberOfSpacesForRegisteredDisabledUserType : null,
+      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
+      numberOfSpacesWithRechargePoint: this.isParkAndRide ? this.numberOfSpacesWithRechargePoint : null,
+      numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide ? this.numberOfSpacesForRegisteredDisabledUserType : null,
+      parkingLayout: this.isParkAndRide ? this.parkingLayout : null,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
