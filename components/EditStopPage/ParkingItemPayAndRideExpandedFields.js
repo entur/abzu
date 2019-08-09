@@ -111,7 +111,11 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           renderValue={selected => selected ? formatMessage({ id: `parking_layout_${selected}`}) : <em>{formatMessage({ id: 'parking_layout'})}</em>}
           onChange={(event) => {
             const { value } = event.target;
-            handleSetParkingLayout(value);
+            if (value === parkingLayout) {
+              handleSetParkingLayout(null);
+            } else {
+              handleSetParkingLayout(value);
+            }
           }}>
             {parkingLayouts.map(key => (
               <MenuItem key={key} value={key}>
