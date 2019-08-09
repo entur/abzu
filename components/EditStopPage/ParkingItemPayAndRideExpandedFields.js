@@ -108,7 +108,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           disabled={disabled || hasExpired}
           value={parkingLayout}
           input={<Input className={classes.selectInput} id="select-parking-layout" />}
-          renderValue={selected => selected ? formatMessage({ id: `parking_layout_${selected}`}) : <em>{formatMessage({ id: 'parking_layout'})}</em>}
+          renderValue={selected => selected ? formatMessage({ id: `parking_layout_${selected}`}) : <em>{formatMessage({ id: 'parking_layout_undefined'})}</em>}
           onChange={(event) => {
             const { value } = event.target;
             if (value === parkingLayout) {
@@ -142,7 +142,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               value={parkingPaymentProcessSelectFieldValue(parkingPaymentProcess)}
               renderValue={selected => {
                 if (selected.length === 0) {
-                  return <em>{formatMessage({ id: 'parking_payment_process' })}</em>;
+                  return <em>{formatMessage({ id: 'parking_payment_process_undefined' })}</em>;
                 }
 
                 return selected.map(key => {
