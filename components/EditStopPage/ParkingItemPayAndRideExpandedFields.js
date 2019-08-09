@@ -101,14 +101,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     <Grid container alignItems="stretch" direction="column" spacing={2} className={classes.mainGrid}>
       <Grid item className={classes.gridItemMargin}>
         <InputLabel htmlFor="select-parking-layout">
-          Parking layout
+          {formatMessage({ id: 'parking_layout'})}
         </InputLabel>
         <Select
           displayEmpty
           disabled={disabled || hasExpired}
           value={parkingLayout}
           input={<Input className={classes.selectInput} id="select-parking-layout" />}
-          renderValue={selected => selected || <em>Parking layout</em>}
+          renderValue={selected => formatMessage({ id: `parking_layout_${selected}`}) || <em>{formatMessage({ id: 'parking_layout'})}</em>}
           onChange={(event) => {
             const { value } = event.target;
             handleSetParkingLayout(value);
@@ -117,7 +117,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               <MenuItem key={key} value={key}>
                 <Checkbox checked={key === parkingLayout} />
                 <ListItemText
-                  primary={key} />
+                  primary={formatMessage({ id: `parking_layout_${key}`})} />
               </MenuItem>
             ))}
         </Select>
