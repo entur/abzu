@@ -75,6 +75,14 @@ const parkingPaymentProcessSelectFieldValue = (parkingPaymentProcess) => {
   return hasElements(parkingPaymentProcess) ? parkingPaymentProcess.map(value => `${value}`) : [];
 }
 
+const parkingPaymentProcessChecked = (parkingPaymentProcess, key) => {
+  const parkingPaymentProcessHasElements = hasElements(parkingPaymentProcess);
+  if (!parkingPaymentProcessHasElements) {
+    return false;
+  }
+  return parkingPaymentProcess.indexOf(key) > -1;
+}
+
 const ParkingItemPayAndRideExpandedFields = (props) => {
   const {
     intl: { formatMessage },
@@ -156,7 +164,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               }}>
                 {parkingPaymentProcesses.map(key => (
                   <MenuItem key={key} value={key}>
-                    <Checkbox checked={hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1} />
+                    <Checkbox checked={parkingPaymentProcessChecked(parkingPaymentProcess, key)} />
                     <ListItemText
                       primary={formatMessage({ id: `parking_payment_process_${key}` })}
                       secondary={key === `payByPrepaidToken` ? formatMessage({ id: `parking_payment_process_${key}_hover`}) : null } />
