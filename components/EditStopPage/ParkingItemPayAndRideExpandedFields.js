@@ -20,7 +20,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { injectIntl } from 'react-intl';
-import parkingPaymentProcessKeys from '../../models/parkingPaymentProcess';
+import { parkingPaymentProcesses } from '../../models/parkingPaymentProcess';
 import { TextField, Subheader } from 'material-ui';
 import RechargingAvailablePopover from './RechargingAvailablePopover';
 import LocalParking from 'material-ui/svg-icons/maps/local-parking';
@@ -89,7 +89,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             const { value } = event.target;
             handleSetParkingPaymentProcess(value);
           }}>
-            {parkingPaymentProcessKeys.map(key => (
+            {parkingPaymentProcesses.map(key => (
               <MenuItem key={key} value={key}>
                 <Checkbox checked={hasElements(parkingPaymentProcess) && parkingPaymentProcess.indexOf(key) > -1} />
                 <ListItemText

@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const parkingPaymentProcess = Object.freeze({
-  free: 'free',
-  payAndDisplay: 'payAndDisplay',
-  payByPrepaidToken: 'payByPrepaidToken',
-  payByMobileDevice: 'payByMobileDevice'
+const parkingType = Object.freeze({
+  PARK_AND_RIDE: 'parkAndRide',
+  BIKE_PARKING: 'bikeParking',
+  UNKNOWN: 'unknown'
 });
 
-export const parkingPaymentProcesses = Object.values(parkingPaymentProcess);
+export const parkingTypes = Object.values(parkingType);
 
-export default parkingPaymentProcess;
+export default parkingType;

@@ -30,6 +30,7 @@ import ParkingItemPayAndRideExpandedFields from './ParkingItemPayAndRideExpanded
 import ItemHeader from './ItemHeader';
 import Item from './Item';
 import Code from './Code';
+import PARKING_TYPE from '../../models/parkingType';
 
 class ParkingItem extends React.Component {
 
@@ -125,7 +126,7 @@ class ParkingItem extends React.Component {
 
     let totalCapacity = parking.totalCapacity || 0;
 
-    if (parkingType === 'parkAndRide') {
+    if (parkingType === PARKING_TYPE.PARK_AND_RIDE) {
       const numberOfSpaces = Number(parking.numberOfSpaces);
       const numberOfSpacesForRegisteredDisabledUserType = Number(parking.numberOfSpacesForRegisteredDisabledUserType);
 
@@ -148,7 +149,7 @@ class ParkingItem extends React.Component {
           handleLocateOnMap={() => handleLocateOnMap(parking.location, index, 'parking')}
           handleToggleCollapse={() => handleToggleCollapse(index, 'parking')}
           handleMissingCoordinatesClick={() => this.setState({ coordinatesDialogOpen: true })}>
-            {translations[parkingType]}
+            {formatMessage({ id: `parking_item_title_${parkingType}` })}
             {parking.hasExpired &&
               <ToolTippable
                 toolTipText={formatMessage({ id: 'parking_expired' })}
@@ -187,7 +188,7 @@ class ParkingItem extends React.Component {
               style={{ width: '95%', marginTop: -10 }}
             />
 
-            {parkingType === 'parkAndRide' ? (
+            {parkingType === PARKING_TYPE.PARK_AND_RIDE ? (
               <ParkingItemPayAndRideExpandedFields
                 disabled={disabled}
                 hasExpired={parking.hasExpired}
@@ -214,7 +215,6 @@ class ParkingItem extends React.Component {
                 type="number"
                 style={{ width: '95%', marginTop: -10 }} />
             )}
-
 
             <div style={{ width: '100%', textAlign: 'right' }}>
               <ToolTippable
