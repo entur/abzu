@@ -21,6 +21,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { injectIntl } from 'react-intl';
 import { parkingPaymentProcesses } from '../../models/parkingPaymentProcess';
+import { parkingLayouts } from '../../models/parkingLayout';
 import { TextField, Subheader } from 'material-ui';
 import RechargingAvailablePopover from './RechargingAvailablePopover';
 import LocalParking from 'material-ui/svg-icons/maps/local-parking';
@@ -33,6 +34,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   mainGrid: {
     marginTop: '.5rem'
+  },
+  gridItemMargin: {
+    marginLeft: '55px'
   },
   boxFullWidth: {
     width: '100%'
@@ -76,12 +80,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     intl: { formatMessage },
     disabled,
     hasExpired,
+    parkingLayout,
     parkingPaymentProcess,
     rechargingAvailable,
     totalCapacity,
     numberOfSpaces,
     numberOfSpacesWithRechargePoint,
     numberOfSpacesForRegisteredDisabledUserType,
+    handleSetParkingLayout,
     handleSetParkingPaymentProcess,
     handleSetRechargingAvailable,
     handleSetNumberOfSpaces,
@@ -93,6 +99,29 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
 
   return (
     <Grid container alignItems="stretch" direction="column" spacing={2} className={classes.mainGrid}>
+      <Grid item className={classes.gridItemMargin}>
+        <InputLabel htmlFor="select-parking-layout">
+          Parking layout
+        </InputLabel>
+        <Select
+          displayEmpty
+          disabled={disabled || hasExpired}
+          value={parkingLayout}
+          input={<Input className={classes.selectInput} id="select-parking-layout" />}
+          renderValue={selected => selected || <em>Parking layout</em>}
+          onChange={(event) => {
+            const { value } = event.target;
+            handleSetParkingLayout(value);
+          }}>
+            {parkingLayouts.map(key => (
+              <MenuItem key={key} value={key}>
+                <Checkbox checked={key === parkingLayout} />
+                <ListItemText
+                  primary={key} />
+              </MenuItem>
+            ))}
+        </Select>
+      </Grid>
       <Grid item>
         <Box display="flex" flexDirection="row" className={classes.boxFullWidth}>
           <Box>

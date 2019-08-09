@@ -823,6 +823,13 @@ helpers.changeParkingName = (original, payLoad) => {
   return copy;
 };
 
+helpers.changeParkingLayout = (original, payLoad) => {
+  const { index, parkingLayout } = payLoad;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index].parkingLayout = parkingLayout;
+  return copy;
+}
+
 helpers.changeParkingPaymentProcess = (original, payLoad) => {
   const { index, parkingPaymentProcess } = payLoad;
   const copy = JSON.parse(JSON.stringify(original));

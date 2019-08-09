@@ -55,6 +55,11 @@ class ParkingItem extends React.Component {
     dispatch(StopPlaceActions.changeParkingName(index, value));
   }
 
+  handleSetParkingLayout(value) {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.changeParkingLayout(index, value));
+  }
+
   handleSetParkingPaymentProcess(value) {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingPaymentProcess(index, value));
@@ -192,12 +197,14 @@ class ParkingItem extends React.Component {
               <ParkingItemPayAndRideExpandedFields
                 disabled={disabled}
                 hasExpired={parking.hasExpired}
+                parkingLayout={parking.parkingLayout}
                 parkingPaymentProcess={parking.parkingPaymentProcess}
                 rechargingAvailable={parking.rechargingAvailable}
                 totalCapacity={totalCapacity}
                 numberOfSpaces={parking.numberOfSpaces}
                 numberOfSpacesWithRechargePoint={parking.numberOfSpacesWithRechargePoint}
                 numberOfSpacesForRegisteredDisabledUserType={parking.numberOfSpacesForRegisteredDisabledUserType}
+                handleSetParkingLayout={this.handleSetParkingLayout.bind(this)}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(this)}
                 handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(this)}
                 handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(this)}
