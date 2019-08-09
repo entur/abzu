@@ -474,6 +474,7 @@ Fragments.parking = {
               fromDate
               toDate
           }
+          parkingLayout
           parkingPaymentProcess
           rechargingAvailable
           parkingProperties {

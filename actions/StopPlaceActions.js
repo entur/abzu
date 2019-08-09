@@ -305,6 +305,15 @@ StopPlaceActions.changeParkingName = (index, name) => dispatch => {
   );
 };
 
+StopPlaceActions.changeParkingLayout = (index, parkingLayout) => dispatch => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_LAYOUT, {
+      index,
+      parkingLayout
+    }),
+  );
+};
+
 StopPlaceActions.changeParkingPaymentProcess = (index, parkingPaymentProcess) => dispatch => {
   dispatch(
     createThunk(types.CHANGED_PARKING_PAYMENT_PROCESS, {
