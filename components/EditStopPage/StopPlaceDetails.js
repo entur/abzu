@@ -76,11 +76,11 @@ class StopPlaceDetails extends React.Component {
     }, 200);
 
     this.updateStopPublicCode = debounce(value => {
-      console.log(value);
+      this.props.dispatch(StopPlaceActions.changeStopPublicCode(value));
     }, 200);
 
     this.updateStopPrivateCode = debounce(value => {
-      console.log(value);
+      this.props.dispatch(StopPlaceActions.changeStopPrivateCode(value));
     }, 200);
 
     this.updateStopDescription = debounce(value => {

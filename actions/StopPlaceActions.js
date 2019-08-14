@@ -65,6 +65,14 @@ StopPlaceActions.changeStopName = name => dispatch => {
   dispatch(createThunk(types.CHANGED_STOP_NAME, name));
 };
 
+StopPlaceActions.changeStopPublicCode = publicCode => dispatch => {
+  dispatch(createThunk(types.CHANGED_STOP_PUBLIC_CODE, publicCode));
+}
+
+StopPlaceActions.changeStopPrivateCode = privateCode => dispatch => {
+  dispatch(createThunk(types.CHANGED_STOP_PRIVATE_CODE, privateCode));
+}
+
 StopPlaceActions.changeStopDescription = description => dispatch => {
   dispatch(createThunk(types.CHANGED_STOP_DESCRIPTION, description));
 };
