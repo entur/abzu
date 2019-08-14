@@ -228,6 +228,26 @@ const stopPlaceReducer = (state = {}, action) => {
         stopHasBeenModified: true,
       };
 
+    case types.CHANGED_STOP_PUBLIC_CODE:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          publicCode: action.payLoad,
+        },
+        stopHasBeenModified: true,
+      }
+
+    case types.CHANGED_STOP_PRIVATE_CODE:
+        return {
+          ...state,
+          current: {
+            ...state.current,
+            privateCode: action.payLoad,
+          },
+          stopHasBeenModified: true,
+        }
+
     case types.CHANGED_STOP_DESCRIPTION:
       return {
         ...state,

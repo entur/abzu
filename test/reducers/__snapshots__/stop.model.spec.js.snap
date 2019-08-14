@@ -114,6 +114,10 @@ Object {
   "keyValues": Array [],
   "name": "Aspelundsveien",
   "placeEquipments": null,
+  "privateCode": Object {
+    "value": "private",
+  },
+  "publicCode": "public",
   "quays": Array [
     Object {
       "accessibilityAssessment": undefined,

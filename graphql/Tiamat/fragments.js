@@ -176,6 +176,10 @@ Fragments.stopPlace = {
                 lang
             }
         }
+        publicCode
+        privateCode {
+            value
+        }
         description {
             value
         }

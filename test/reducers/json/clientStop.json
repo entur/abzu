@@ -7,6 +7,8 @@
   "isActive": true,
   "topographicPlace": "Askim",
   "keyValues": [],
+  "publicCode": "public",
+  "privateCode": "private",
   "description": "Beskrivelse",
   "parentTopographicPlace": "Østfold",
   "tariffZones": [],

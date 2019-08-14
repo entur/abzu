@@ -99,6 +99,15 @@ class StopPlace {
         ? stop.accessibilityAssessment
         : getAssessmentSetBasedOnQuays(stop.quays);
 
+
+      if (stop.publicCode) {
+        clientStop.publicCode = stop.publicCode;
+      }
+
+      if (stop.privateCode) {
+        clientStop.privateCode = stop.privateCode.value;
+      }
+
       if (stop.description) {
         clientStop.description = stop.description.value;
       }

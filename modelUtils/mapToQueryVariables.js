@@ -182,10 +182,10 @@ helpers.removeTypeNameRecursively = (variablesObject) => {
 
 helpers.mapStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
-
   let stopVariables = {
     id: stop.id,
     name: stop.name,
+    publicCode: stop.publicCode,
     description: stop.description || null,
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
@@ -202,6 +202,10 @@ helpers.mapStopToVariables = (original, userInput) => {
       ref: tz.id
     })),
     adjacentSites: stop.adjacentSites
+  };
+
+  stopVariables.privateCode = {
+    value: stop.privateCode || '',
   };
 
   if (userInput) {
