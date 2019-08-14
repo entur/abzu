@@ -63,6 +63,8 @@ class StopPlaceDetails extends React.Component {
       stopTypeOpen: false,
       weightingOpen: false,
       name: props.stopPlace.name || '',
+      publicCode: props.stopPlace.publicCode || '',
+      privateCode: props.stopPlace.privateCode || '',
       description: props.stopPlace.description || '',
       altNamesDialogOpen: false,
       tariffZoneOpen: false,
@@ -71,6 +73,14 @@ class StopPlaceDetails extends React.Component {
 
     this.updateStopName = debounce(value => {
       this.props.dispatch(StopPlaceActions.changeStopName(value));
+    }, 200);
+
+    this.updateStopPublicCode = debounce(value => {
+      console.log(value);
+    }, 200);
+
+    this.updateStopPrivateCode = debounce(value => {
+      console.log(value);
     }, 200);
 
     this.updateStopDescription = debounce(value => {
@@ -93,8 +103,10 @@ class StopPlaceDetails extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      description: nextProps.stopPlace.description || '',
-      name: nextProps.stopPlace.name || ''
+      name: nextProps.stopPlace.name || '',
+      publicCode: nextProps.stopPlace.publicCode || '',
+      privateCode: nextProps.stopPlace.privateCode || '',
+      description: nextProps.stopPlace.description || ''
     });
     if (
       nextProps.keyValuesDialogOpen &&
@@ -201,6 +213,24 @@ class StopPlaceDetails extends React.Component {
     });
 
     this.updateStopName(name);
+  }
+
+  handleStopPublicCodeChange(event) {
+    const publicCode = event.target.value;
+    this.setState({
+      publicCode
+    });
+
+    this.updateStopPublicCode(publicCode);
+  }
+
+  handleStopPrivateCodeChange(event) {
+    const privateCode = event.target.value;
+    this.setState({
+      privateCode
+    });
+
+    this.updateStopPrivateCode(privateCode);
   }
 
   handleStopDescriptionChange(event) {
@@ -332,6 +362,8 @@ class StopPlaceDetails extends React.Component {
 
     const {
       name,
+      publicCode,
+      privateCode,
       description,
       altNamesDialogOpen,
       weightingOpen,
@@ -541,6 +573,22 @@ class StopPlaceDetails extends React.Component {
               </ToolTippable>
             </div>
           </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <TextField
+            hintText={formatMessage({ id: 'publicCode' })}
+            floatingLabelText={formatMessage({ id: 'publicCode' })}
+            style={{ width: 170, marginTop: -10, marginRight: 25 }}
+            disabled={disabled}
+            value={publicCode}
+            onChange={this.handleStopPublicCodeChange.bind(this)} />
+          <TextField
+            hintText={formatMessage({ id: 'privateCode' })}
+            floatingLabelText={formatMessage({ id: 'privateCode' })}
+            style={{ width: 170, marginTop: -10, marginRight: 25 }}
+            disabled={disabled}
+            value={privateCode}
+            onChange={this.handleStopPrivateCodeChange.bind(this)} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
