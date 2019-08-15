@@ -25,6 +25,7 @@ import { getLogo } from '../config/themeConfig';
 import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import MdLanguage from 'material-ui/svg-icons/action/language';
 import MdSettings from 'material-ui/svg-icons/action/settings';
+import MdMap from 'material-ui/svg-icons/maps/map';
 import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
@@ -95,6 +96,10 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.navigateTo('reports', ''));
   }
 
+  handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
+    this.props.dispatch(UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value));
+  }
+
   handleToggleMultiPolylines(value) {
     this.props.dispatch(UserActions.togglePathLinksEnabled(value));
   }
@@ -119,12 +124,14 @@ class Header extends React.Component {
     const {
       intl,
       kc,
+      isPublicCodePrivateCodeOnStopPlacesEnabled,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
       showExpiredStops,
       showMultimodalEdges,
       showPublicCode
     } = this.props;
+
     const { formatMessage, locale } = intl;
 
     const help = formatMessage({ id: 'help' });
@@ -134,6 +141,8 @@ class Header extends React.Component {
     const norwegian = formatMessage({ id: 'norwegian' });
     const french = formatMessage({ id: 'french' });
     const logOut = formatMessage({ id: 'log_out' });
+    const settings = formatMessage({ id: 'settings' });
+    const publicCodePrivateCodeSetting = formatMessage({ id: 'publicCode_privateCode_setting_label' });
     const mapSettings = formatMessage({ id: 'map_settings' });
     const showPathLinks = formatMessage({ id: 'show_path_links' });
     const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
@@ -194,9 +203,27 @@ class Header extends React.Component {
                 style={{ fontSize: 12, padding: 0 }}
               />
               <MenuItem
-                primaryText={mapSettings}
+                primaryText={settings}
                 rightIcon={<ArrowDropRight />}
                 leftIcon={<MdSettings color="#41c0c4" />}
+                style={{ fontSize: 12, padding: 0 }}
+                desktop={true}
+                multiple
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleTogglePublicCodePrivateCodeOnStopPlaces(!isPublicCodePrivateCodeOnStopPlacesEnabled)}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
+                    primaryText={publicCodePrivateCodeSetting}
+                  />
+                ]} />
+              <MenuItem
+                primaryText={mapSettings}
+                rightIcon={<ArrowDropRight />}
+                leftIcon={<MdMap color="#41c0c4" />}
                 style={{ fontSize: 12, padding: 0 }}
                 desktop={true}
                 multiple
@@ -336,6 +363,7 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
   isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
+  isPublicCodePrivateCodeOnStopPlacesEnabled: state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   kc: state.roles.kc,
   showExpiredStops: state.stopPlace.showExpiredStops,
