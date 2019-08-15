@@ -355,7 +355,7 @@ class StopPlaceDetails extends React.Component {
       display: 'block'
     };
 
-    const { stopPlace, intl, expanded, disabled } = this.props;
+    const { stopPlace, intl, expanded, disabled, isPublicCodePrivateCodeEnabled } = this.props;
     const { formatMessage, locale } = intl;
 
     const isChildOfParent = stopPlace.isChildOfParent;
@@ -367,7 +367,6 @@ class StopPlaceDetails extends React.Component {
       description,
       altNamesDialogOpen,
       weightingOpen,
-      weightingAnchorEl,
       tariffZoneOpen
     } = this.state;
 
@@ -574,22 +573,24 @@ class StopPlaceDetails extends React.Component {
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <TextField
-            hintText={formatMessage({ id: 'publicCode' })}
-            floatingLabelText={formatMessage({ id: 'publicCode' })}
-            style={{ width: 170, marginTop: -10, marginRight: 25 }}
-            disabled={disabled}
-            value={publicCode}
-            onChange={this.handleStopPublicCodeChange.bind(this)} />
-          <TextField
-            hintText={formatMessage({ id: 'privateCode' })}
-            floatingLabelText={formatMessage({ id: 'privateCode' })}
-            style={{ width: 170, marginTop: -10, marginRight: 25 }}
-            disabled={disabled}
-            value={privateCode}
-            onChange={this.handleStopPrivateCodeChange.bind(this)} />
-        </div>
+        {isPublicCodePrivateCodeEnabled && (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField
+              hintText={formatMessage({ id: 'publicCode' })}
+              floatingLabelText={formatMessage({ id: 'publicCode' })}
+              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              disabled={disabled}
+              value={publicCode}
+              onChange={this.handleStopPublicCodeChange.bind(this)} />
+            <TextField
+              hintText={formatMessage({ id: 'privateCode' })}
+              floatingLabelText={formatMessage({ id: 'privateCode' })}
+              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              disabled={disabled}
+              value={privateCode}
+              onChange={this.handleStopPrivateCodeChange.bind(this)} />
+          </div>
+        )}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
             hintText={formatMessage({ id: 'description' })}
@@ -760,6 +761,7 @@ class StopPlaceDetails extends React.Component {
 
 const mapStateToProps = state => ({
   stopPlace: state.stopPlace.current,
+  isPublicCodePrivateCodeEnabled: state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   keyValuesDialogOpen: state.user.keyValuesDialogOpen,
 });
 
