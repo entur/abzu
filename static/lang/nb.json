@@ -275,6 +275,7 @@
   "pathLink": "Ganglenke",
   "platform" : "Plattform",
   "port" : "Kai",
+  "publicCode_privateCode_setting_label": "Publikumskode og internkode på stoppesteder",
   "privateCode": "Internkode",
   "publicCode": "Publikumskode",
   "totalCapacity": "Total kapasitet",
