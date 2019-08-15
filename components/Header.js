@@ -25,6 +25,7 @@ import { getLogo } from '../config/themeConfig';
 import MdAccount from 'material-ui/svg-icons/action/account-circle';
 import MdLanguage from 'material-ui/svg-icons/action/language';
 import MdSettings from 'material-ui/svg-icons/action/settings';
+import MdMap from 'material-ui/svg-icons/maps/map';
 import { UserActions } from '../actions/';
 import { getIn } from '../utils';
 import MdReport from 'material-ui/svg-icons/content/report';
@@ -134,6 +135,8 @@ class Header extends React.Component {
     const norwegian = formatMessage({ id: 'norwegian' });
     const french = formatMessage({ id: 'french' });
     const logOut = formatMessage({ id: 'log_out' });
+    const settings = formatMessage({ id: 'settings' });
+    const publicCodePrivateCodeSetting = formatMessage({ id: 'publicCode_privateCode_setting_label' });
     const mapSettings = formatMessage({ id: 'map_settings' });
     const showPathLinks = formatMessage({ id: 'show_path_links' });
     const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
@@ -194,9 +197,27 @@ class Header extends React.Component {
                 style={{ fontSize: 12, padding: 0 }}
               />
               <MenuItem
-                primaryText={mapSettings}
+                primaryText={settings}
                 rightIcon={<ArrowDropRight />}
                 leftIcon={<MdSettings color="#41c0c4" />}
+                style={{ fontSize: 12, padding: 0 }}
+                desktop={true}
+                multiple
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={console.log}
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={false}
+                    primaryText={publicCodePrivateCodeSetting}
+                  />
+                ]} />
+              <MenuItem
+                primaryText={mapSettings}
+                rightIcon={<ArrowDropRight />}
+                leftIcon={<MdMap color="#41c0c4" />}
                 style={{ fontSize: 12, padding: 0 }}
                 desktop={true}
                 multiple
