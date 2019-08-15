@@ -96,6 +96,10 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.navigateTo('reports', ''));
   }
 
+  handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
+    this.props.dispatch(UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value));
+  }
+
   handleToggleMultiPolylines(value) {
     this.props.dispatch(UserActions.togglePathLinksEnabled(value));
   }
@@ -120,12 +124,14 @@ class Header extends React.Component {
     const {
       intl,
       kc,
+      isPublicCodePrivateCodeOnStopPlacesEnabled,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
       showExpiredStops,
       showMultimodalEdges,
       showPublicCode
     } = this.props;
+
     const { formatMessage, locale } = intl;
 
     const help = formatMessage({ id: 'help' });
@@ -206,11 +212,11 @@ class Header extends React.Component {
                 menuItems={[
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={console.log}
+                    onClick={() => this.handleTogglePublicCodePrivateCodeOnStopPlaces(!isPublicCodePrivateCodeOnStopPlacesEnabled)}
                     insetChildren
                     desktop={true}
                     multiple
-                    checked={false}
+                    checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
                     primaryText={publicCodePrivateCodeSetting}
                   />
                 ]} />
@@ -357,6 +363,7 @@ const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
   isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
+  isPublicCodePrivateCodeOnStopPlacesEnabled: state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   kc: state.roles.kc,
   showExpiredStops: state.stopPlace.showExpiredStops,

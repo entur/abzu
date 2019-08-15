@@ -73,6 +73,7 @@ export default function configureStore(kc) {
       minZoom: 14,
       isCompassBearingEnabled: Settings.getShowCompassBearing(),
       isCreatingPolylines: false,
+      enablePublicCodePrivateCodeOnStopPlaces: Settings.getEnablePublicCodePrivateCodeOnStopPlaces(),
       enablePolylines: Settings.getShowPathLinks(),
       showExpiredStops: Settings.getShowExpiredStops(),
       showMultimodalEdges: Settings.getShowMultimodalEdges(),

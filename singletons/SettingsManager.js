@@ -22,6 +22,7 @@ const showCompassBearingKey = rootKey + '::showCompassBearing';
 const showMultimodalEdges = rootKey + '::showMultimodalEdges';
 const mapLayerKey = rootKey + '::mapLayer';
 const showPublicCodeKey = rootKey + '::showPublicCode';
+const enablePublicCodePrivateCodeOnStopPlaces = rootKey + '::enablePublicCodePrivateCodeOnStopPlaces';
 
 class SettingsManager {
   constructor() {
@@ -86,6 +87,13 @@ class SettingsManager {
     localStorage.setItem(showPublicCodeKey, value);
   }
 
+  getEnablePublicCodePrivateCodeOnStopPlaces() {
+    return this.parseBoolean(localStorage.getItem(enablePublicCodePrivateCodeOnStopPlaces), false);
+  }
+
+  setEnablePublicCodePrivateCodeOnStopPlaces(value) {
+    localStorage.setItem(enablePublicCodePrivateCodeOnStopPlaces, value);
+  }
 }
 
 export default SettingsManager;

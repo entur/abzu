@@ -104,6 +104,11 @@ UserActions.toggleMultimodalEdges = value => dispatch => {
   dispatch(createThunk(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));
 };
 
+UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces = value => dispatch => {
+  Settings.setEnablePublicCodePrivateCodeOnStopPlaces(value);
+  dispatch(createThunk(types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES, value));
+}
+
 UserActions.togglePathLinksEnabled = value => dispatch => {
   Settings.setShowPathLinks(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value));

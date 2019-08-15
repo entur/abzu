@@ -429,6 +429,9 @@ const stopPlaceReducer = (state = {}, action) => {
         ),
       });
 
+    case types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES:
+      return Object.assign({}, state, { enablePublicCodePrivateCodeOnStopPlaces: action.payLoad });
+
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
       return Object.assign({}, state, { enablePolylines: action.payLoad });
 
