@@ -82,7 +82,7 @@ class EditParentGeneral extends React.Component {
     this.props.dispatch(UserActions.hideAddAdjacentStopDialog());
   }
 
-  handleTerminateStop(shouldHardDelete, comment, dateTime) {
+  handleTerminateStop(shouldHardDelete, shouldTerminatePermanently, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
     if (shouldHardDelete) {
@@ -99,7 +99,7 @@ class EditParentGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog(true));
         });
     } else {
-      terminateStop(client, stopPlace.id, comment, dateTime)
+      terminateStop(client, stopPlace.id, shouldTerminatePermanently, comment, dateTime)
         .then(result => {
           this.handleSaveSuccess(stopPlace.id);
           this.handleCloseDeleteStop();

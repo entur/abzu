@@ -227,7 +227,7 @@ class EditStopGeneral extends React.Component {
       });
   }
 
-  handleTerminateStop(shouldHardDelete, comment, dateTime) {
+  handleTerminateStop(shouldHardDelete, shouldTerminatePermanently, comment, dateTime) {
     const { client, stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
 
@@ -245,7 +245,7 @@ class EditStopGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog(true));
         });
     } else {
-      terminateStop(client, stopPlace.id, comment, dateTime)
+      terminateStop(client, stopPlace.id, shouldTerminatePermanently, comment, dateTime)
         .then(result => {
           this.setState({ isLoading: false });
           this.handleSaveSuccess(stopPlace.id);
@@ -761,7 +761,7 @@ class EditStopGeneral extends React.Component {
             justifyContent: 'space-around'
           }}
         >
-          {!stopPlace.isChildOfParent &&
+          {!stopPlace.permanentlyTerminated && !stopPlace.isChildOfParent &&
             isCurrentVersionMax && (
               <FlatButton
                 disabled={disableTerminate}

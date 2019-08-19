@@ -241,6 +241,7 @@ Fragments.stopPlace = {
             fromDate
             toDate
         }
+        modificationEnumeration
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},

@@ -147,6 +147,7 @@ class TerminateStopPlaceDialog extends React.Component {
     );
     return {
       shouldHardDelete: false,
+      shouldTerminatePermanently: false,
       date: earliestFrom,
       time: earliestFrom,
       comment: ''
@@ -166,7 +167,7 @@ class TerminateStopPlaceDialog extends React.Component {
       serverTimeDiff
     } = this.props;
     const { formatMessage } = intl;
-    const { shouldHardDelete, date, time, comment } = this.state;
+    const { shouldHardDelete, shouldTerminatePermanently, date, time, comment } = this.state;
 
     const translations = {
       confirm: formatMessage({ id: 'confirm' }),
@@ -191,7 +192,7 @@ class TerminateStopPlaceDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onClick={() => handleConfirm(shouldHardDelete, comment, dateTime)}
+        onClick={() => handleConfirm(shouldHardDelete, shouldTerminatePermanently, comment, dateTime)}
         disabled={this.getConfirmIsDisabled()}
         primary={true}
         keyboardFocused={true}
@@ -283,6 +284,11 @@ class TerminateStopPlaceDialog extends React.Component {
             id="terminate-comment"
             onChange={(e, v) => this.setState({ comment: v })}
           />
+          <Checkbox
+            style={{marginTop: 5}}
+            checked={shouldTerminatePermanently}
+            onCheck={(e, v) => this.setState({ shouldTerminatePermanently: v })}
+            label="Permanently terminate stop place" />
           {canDeleteStop && (
             <Checkbox
               style={{ marginTop: 5 }}

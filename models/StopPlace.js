@@ -50,6 +50,7 @@ class StopPlace {
         weighting: stop.weighting,
         adjacentSites: stop.adjacentSites,
         entityType: Entities.STOP_PLACE,
+        permanentlyTerminated: stop.modificationEnumeration === 'delete',
       };
 
       if (stop.groups && stop.groups.length) {
