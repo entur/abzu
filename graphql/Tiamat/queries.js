@@ -204,6 +204,7 @@ export const getStopById = gql`
                     wheelchairAccess
                 }
             }
+            modificationEnumeration
             topographicPlace {
                 name {
                     value
@@ -328,6 +329,7 @@ export const findStop = gql`
                     }
                 }
             }
+            modificationEnumeration
             ... on StopPlace {
               stopPlaceType
               submode

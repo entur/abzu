@@ -147,6 +147,7 @@ class TerminateStopPlaceDialog extends React.Component {
     );
     return {
       shouldHardDelete: false,
+      shouldTerminatePermanently: false,
       date: earliestFrom,
       time: earliestFrom,
       comment: ''
@@ -166,14 +167,16 @@ class TerminateStopPlaceDialog extends React.Component {
       serverTimeDiff
     } = this.props;
     const { formatMessage } = intl;
-    const { shouldHardDelete, date, time, comment } = this.state;
+    const { shouldHardDelete, shouldTerminatePermanently, date, time, comment } = this.state;
 
     const translations = {
       confirm: formatMessage({ id: 'confirm' }),
       cancel: formatMessage({ id: 'cancel' }),
       title: formatMessage({ id: 'terminate_stop_title' }),
+      permanentLabel: formatMessage({ id: 'permanently_terminate_stop_place' }),
       deleteLabel: formatMessage({ id: 'delete_stop_place' }),
-      delete_warning: formatMessage({ id: 'delete_stop_info' }),
+      deleteWarning: formatMessage({ id: 'delete_stop_info' }),
+      permanentWarning: formatMessage({ id: 'permanently_terminate_warning' }),
       cannotDelete: formatMessage({ id: 'delete_stop_not_allowed' }),
       comment: formatMessage({ id: 'comment' }),
       date: formatMessage({ id: 'date' }),
@@ -191,7 +194,7 @@ class TerminateStopPlaceDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onClick={() => handleConfirm(shouldHardDelete, comment, dateTime)}
+        onClick={() => handleConfirm(shouldHardDelete, shouldTerminatePermanently, comment, dateTime)}
         disabled={this.getConfirmIsDisabled()}
         primary={true}
         keyboardFocused={true}
@@ -283,6 +286,11 @@ class TerminateStopPlaceDialog extends React.Component {
             id="terminate-comment"
             onChange={(e, v) => this.setState({ comment: v })}
           />
+          <Checkbox
+            style={{marginTop: 5}}
+            checked={shouldTerminatePermanently}
+            onCheck={(e, v) => this.setState({ shouldTerminatePermanently: v })}
+            label={translations.permanentLabel} />
           {canDeleteStop && (
             <Checkbox
               style={{ marginTop: 5 }}
@@ -296,7 +304,15 @@ class TerminateStopPlaceDialog extends React.Component {
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>
-              <span>{translations.delete_warning}</span>
+              <span>{translations.deleteWarning}</span>
+            </div>
+          )}
+          {shouldTerminatePermanently && (
+            <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
+              <div style={{ marginTop: 0, marginRight: 5 }}>
+                <MdWarning color="orange" />
+              </div>
+              <span>{translations.permanentWarning}</span>
             </div>
           )}
         </div>
