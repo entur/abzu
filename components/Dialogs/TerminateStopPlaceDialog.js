@@ -173,8 +173,10 @@ class TerminateStopPlaceDialog extends React.Component {
       confirm: formatMessage({ id: 'confirm' }),
       cancel: formatMessage({ id: 'cancel' }),
       title: formatMessage({ id: 'terminate_stop_title' }),
+      permanentLabel: formatMessage({ id: 'permanently_terminate_stop_place' }),
       deleteLabel: formatMessage({ id: 'delete_stop_place' }),
-      delete_warning: formatMessage({ id: 'delete_stop_info' }),
+      deleteWarning: formatMessage({ id: 'delete_stop_info' }),
+      permanentWarning: formatMessage({ id: 'permanently_terminate_warning' }),
       cannotDelete: formatMessage({ id: 'delete_stop_not_allowed' }),
       comment: formatMessage({ id: 'comment' }),
       date: formatMessage({ id: 'date' }),
@@ -288,7 +290,7 @@ class TerminateStopPlaceDialog extends React.Component {
             style={{marginTop: 5}}
             checked={shouldTerminatePermanently}
             onCheck={(e, v) => this.setState({ shouldTerminatePermanently: v })}
-            label="Permanently terminate stop place" />
+            label={translations.permanentLabel} />
           {canDeleteStop && (
             <Checkbox
               style={{ marginTop: 5 }}
@@ -302,7 +304,15 @@ class TerminateStopPlaceDialog extends React.Component {
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>
-              <span>{translations.delete_warning}</span>
+              <span>{translations.deleteWarning}</span>
+            </div>
+          )}
+          {shouldTerminatePermanently && (
+            <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
+              <div style={{ marginTop: 0, marginRight: 5 }}>
+                <MdWarning color="orange" />
+              </div>
+              <span>{translations.permanentWarning}</span>
             </div>
           )}
         </div>
