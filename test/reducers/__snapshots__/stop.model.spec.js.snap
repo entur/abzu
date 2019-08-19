@@ -31,6 +31,7 @@ Object {
   "parentTopographicPlace": "Østfold",
   "parking": Array [],
   "pathJunctions": Array [],
+  "permanentlyTerminated": false,
   "quays": Array [
     Object {
       "accessibilityAssessment": Object {

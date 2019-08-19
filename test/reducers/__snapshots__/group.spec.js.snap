@@ -42,6 +42,7 @@ Object {
         "name": "Strømsbrua",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -111,6 +112,7 @@ Object {
         "name": "Paradis",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -163,6 +165,7 @@ Object {
         "name": "Arne Garborgs vei",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -247,6 +250,7 @@ Object {
         "name": "Strømsbrua",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -316,6 +320,7 @@ Object {
         "name": "Paradis",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -368,6 +373,7 @@ Object {
         "name": "Arne Garborgs vei",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -460,6 +466,7 @@ Object {
         "name": "Paradis",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
@@ -526,6 +533,7 @@ Object {
         "name": "Paradis",
         "parking": Array [],
         "pathJunctions": Array [],
+        "permanentlyTerminated": false,
         "quays": Array [
           Object {
             "accessibilityAssessment": Object {
