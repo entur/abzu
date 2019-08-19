@@ -280,6 +280,7 @@
   "pathLink": "Tronçon de cheminement d'arrêt",
   "platform": "Plateforme",
   "port": "Port",
+  "publicCode_privateCode_setting_label": "Code public et code privé pour les points d'arrêt",
   "privateCode": "Code privé",
   "publicCode": "Code public",
   "totalCapacity": "Total capacity",
