@@ -350,7 +350,7 @@
   "terminate_stop_place": "Deactivate",
   "terminate_stop_title": "Deactivate stop place",
   "permanently_terminate_stop_place": "Permanently terminate stop place",
-  "permanently_terminate_warning": "This will irreverisibly terminate this stop place. Use with caution.",
+  "permanently_terminate_warning": "This will irreversibly terminate this stop place. Use with caution.",
   "ticketMachine_no": "No ticket machine",
   "ticketMachine_quay_hint": "Is a ticket machine available for this quay?",
   "ticketMachine_stop_hint": "Is a ticket machine available for all quays for this stop place?",
