@@ -623,7 +623,7 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
-  disabled: !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  disabled: (state.stopPlace.current && state.stopPlace.current.permanentlyTerminated) || !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
   disabledForSearch: !getIn(
     state.roles,
     ['allowanceInfoSearchResult', 'canEdit'],
