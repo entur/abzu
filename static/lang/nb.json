@@ -338,6 +338,7 @@
   "step_free_access": "Trinnfri adgang",
   "stop_has_expired_last_version": "Dette stoppestedet har utløpt!",
   "stop_has_expired": "Denne versjonen er utløpt!",
+  "stop_has_been_permanently_terminated": "Stoppestedet er arkivert og eksisterer kun som historisk data",
   "stop_place": "stoppested",
   "stop_places": "Stoppesteder",
   "stopPlaceType": "Stoppestedstype / modalitet",

@@ -338,6 +338,7 @@
   "step_free_access": "Step free access",
   "stop_has_expired_last_version": "This stop has expired!",
   "stop_has_expired": "Current version has expired!",
+  "stop_has_been_permanently_terminated": "This stop has been archived and exists only for historical records.",
   "stop_place": "stop place",
   "stop_places": "Stop places",
   "stopPlaceType": "Stop place type / modality",
