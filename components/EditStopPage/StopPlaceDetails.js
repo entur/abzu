@@ -393,6 +393,7 @@ class StopPlaceDetails extends React.Component {
     );
     const weightingStateHint = this.getNameForWeightingState(stopPlace, locale);
     const expirationText = formatMessage({ id: 'stop_has_expired' });
+    const permanentlyTerminatedText = formatMessage({ id: 'stop_has_been_permanently_terminated' });
     const versionLabel = formatMessage({ id: 'version' });
     const keyValuesHint = formatMessage({ id: 'key_values_hint' });
 
@@ -444,7 +445,7 @@ class StopPlaceDetails extends React.Component {
                       style={{ marginTop: -5, marginLeft: 10 }}
                     />
                     <span style={{ color: '#bb271c', marginLeft: 5, fontSize: '0.8em' }}>
-                      {expirationText}
+                      {stopPlace.permanentlyTerminated ? permanentlyTerminatedText: expirationText}
                     </span>
                   </div>}
                 <FlatButton onClick={this.handleOpenTags.bind(this)} style={{marginTop: -8}} label={formatMessage({id: 'tags'})}/>

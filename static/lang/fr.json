@@ -344,6 +344,7 @@
   "stop_has_expired_last_version": "Ce point d'arrêt a expiré !",
   "stop_has_expired": "La version courante a expiré !",
   "stop_place": "point d'arrêt",
+  "stop_has_been_permanently_terminated": "Ce point d'arrêt a été archivé et existe seulement pour des raisons historiques.",
   "stop_place_usages_found": "Attention : ce point d'arrêt est en cours d'utilisation",
   "stop_places": "Points d'arrêt",
   "stopPlaceType": "Type de point d'arrêt / modalité",
