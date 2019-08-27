@@ -370,7 +370,8 @@ class ReportPage extends React.Component {
             .filter(
                 place =>
                     place.topographicPlaceType === 'county' ||
-                    place.topographicPlaceType === 'municipality'
+                    place.topographicPlaceType === 'municipality' ||
+                    place.topographicPlaceType === 'country'
             )
             .filter(
                 place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
