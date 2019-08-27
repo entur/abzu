@@ -245,6 +245,9 @@ class ReportPage extends React.Component {
                 .map(topos => topos.id),
             countyReference: topoiChips
                 .filter(topos => topos.type === 'county')
+                .map(topos => topos.id),
+            countryReference: topoiChips
+                .filter(topos => topos.type === 'country')
                 .map(topos => topos.id)
         };
 
