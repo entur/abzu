@@ -782,7 +782,7 @@ class EditStopGeneral extends React.Component {
             icon={<MdUndo style={{ height: '1.3em', width: '1.3em' }} />}
             disabled={!stopHasBeenModified}
             label={formatMessage({ id: 'undo_changes' })}
-            style={{ margin: '8 5', zIndex: 999 }}
+            style={{ margin: '8 5', zIndex: 999, minWidth: '120px' }}
             labelStyle={{ fontSize: '0.7em' }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
