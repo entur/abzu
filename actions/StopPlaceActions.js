@@ -78,7 +78,15 @@ StopPlaceActions.changeStopDescription = description => dispatch => {
 };
 
 StopPlaceActions.changeStopType = type => dispatch => {
-  dispatch(createThunk(types.CHANGED_STOP_TYPE, type));
+    if(type === "busStation"){
+        dispatch(createThunk(types.CHANGED_STOP_SUBMODE, {
+            stopPlaceType: type,
+            transportMode: "bus",
+            submode: null
+        }));
+    } else {
+        dispatch(createThunk(types.CHANGED_STOP_TYPE, type));
+    }
 };
 
 StopPlaceActions.changeSubmode = (stopPlaceType, transportMode, submode) => dispatch => {
