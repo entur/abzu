@@ -178,7 +178,7 @@ convictPromise
     };
 
     const getTranslations = req => {
-      const supportedLanguages = ['en', 'nb', 'fr'];
+      const supportedLanguages = ['en', 'nb', 'fr', 'sv'];
 
       const translations = globSync(__dirname + '/static/lang/*.json')
         .map(filename => [
