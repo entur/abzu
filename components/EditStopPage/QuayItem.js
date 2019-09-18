@@ -179,13 +179,7 @@ class QuayItem extends React.Component {
     const stepFreeHint =
       accessibilityAssessments.stepFreeAccess.values[locale][stepFreeAccess];
 
-    let quayItemName = null;
-
-    stopTypes[locale].forEach(stopType => {
-      if (stopType.value === stopPlaceType) {
-        quayItemName = stopType.quayItemName;
-      }
-    });
+    const quayItemName = formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName` });
 
     const translations = {
       name: formatMessage({ id: 'name' }),

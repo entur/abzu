@@ -184,16 +184,16 @@ class StopPlaceDetails extends React.Component {
     return weightColors[weightingValue] || 'grey';
   }
 
-  getNameForWeightingState(stopPlace, locale) {
+  getNameForWeightingState(stopPlace) {
     const weightingValue = stopPlace.weighting;
-    const types = weightTypes[locale];
 
-    for (let i = 0; i < types.length; i++) {
-      if (types[i].value === weightingValue) {
-        return types[i].name;
+    for (let i = 0; i < weightTypes.length; i++) {
+      if (weightTypes[i] === weightingValue) {
+        return this.props.intl.formatMessage({ id: `weightTypes.${weightingValue}` });
       }
     }
-    return noValue[locale];
+
+    return this.props.intl.formatMessage({ id: `weightTypes.novalue`});
   }
 
   handleOpenWeightPopover(event) {
@@ -325,27 +325,14 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
-  getStopTypeTranslation(locale, stopPlaceType, submode) {
-    let translations = stopTypes[locale].filter(
-      type => type.value === stopPlaceType
-    );
+  getStopTypeTranslation(stopPlaceType, submode) {
+    const { intl: { formatMessage } } = this.props;
 
-    if (translations && translations.length) {
-
-      let submodes = translations[0].submodes;
-
-      if (submode && submodes) {
-        for (let i = 0; i < submodes.length; i++) {
-          if (submodes[i].value === submode) {
-            return submodes[i].name;
-          }
-        }
-      }
-
-      return translations[0].name;
+    if (submode) {
+      return formatMessage({ id: `stopTypes.${stopPlaceType}.submodes.${submode}`});
     }
 
-    return unknownStopPlaceType[locale];
+    return formatMessage({ id: `stopTypes.${stopPlaceType}.name`});
   }
 
   render() {
@@ -387,11 +374,10 @@ class StopPlaceDetails extends React.Component {
     );
 
     const stopTypeHint = this.getStopTypeTranslation(
-      locale,
       stopPlace.stopPlaceType,
       stopPlace.submode
     );
-    const weightingStateHint = this.getNameForWeightingState(stopPlace, locale);
+    const weightingStateHint = this.getNameForWeightingState(stopPlace);
     const expirationText = formatMessage({ id: 'stop_has_expired' });
     const permanentlyTerminatedText = formatMessage({ id: 'stop_has_been_permanently_terminated' });
     const versionLabel = formatMessage({ id: 'version' });

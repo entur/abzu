@@ -23,7 +23,6 @@ import {
 } from '../../actions/';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import stopTypes from '../../models/stopTypes';
 import JunctionMarker from './JunctionMarker';
 import NeighbourMarker from './NeighbourMarker';
 import ParkAndRideMarker from './ParkAndRideMarker';
@@ -639,16 +638,12 @@ const mapStateToProps = state => ({
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {
-  const { formatMessage, locale } = intl;
-  let formattedStopTypeId = null;
-  stopTypes[locale].forEach(stopType => {
-    if (stopType.value === stopPlaceType) {
-      formattedStopTypeId = stopType.quayItemName;
-    }
-  });
-  return formattedStopTypeId
-    ? formatMessage({ id: formattedStopTypeId || 'name' })
-    : '';
+  if (stopPlaceType) {
+    const { formatMessage } = intl;
+    const formattedStopTypeId = formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName`});
+    return formatMessage({ id: formattedStopTypeId || 'name' });
+  }
+  return '';
 };
 
 export default withApollo(injectIntl(connect(mapStateToProps)(MarkerList)));

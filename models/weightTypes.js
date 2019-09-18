@@ -13,75 +13,18 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-const weightTypes = {
-  nb: [
-    {
-      name: 'Foretrukket overgang',
-      value: 'preferredInterchange',
-    },
-    {
-      name: 'Anbefalt overgang',
-      value: 'recommendedInterchange',
-    },
-    {
-      name: 'Normal overgang',
-      value: 'interchangeAllowed',
-    },
-    {
-      name: 'Ingen overgang',
-      value: 'noInterchange',
-    },
-  ],
-
-  en: [
-    {
-      name: 'Preferred interchange',
-      value: 'preferredInterchange',
-    },
-    {
-      name: 'Recommended interchange',
-      value: 'recommendedInterchange',
-    },
-    {
-      name: 'Interchange allowed',
-      value: 'interchangeAllowed',
-    },
-    {
-      name: 'No interchange',
-      value: 'noInterchange',
-    },
-  ],
-  fr: [
-    {
-      name: 'Correspondance préférée',
-      value: 'preferredInterchange',
-    },
-    {
-      name: 'Correspondance recommandée',
-      value: 'recommendedInterchange',
-    },
-    {
-      name: 'Correspondance autorisée',
-      value: 'interchangeAllowed',
-    },
-    {
-      name: 'Pas de transfert',
-      value: 'noInterchange',
-    },
-  ],
-};
+const weightTypes = [
+  'preferredInterchange',
+  'recommendedInterchange',
+  'interchangeAllowed',
+  'noInterchange'
+];
 
 export const weightColors = {
   preferredInterchange: '#3572b0',
   recommendedInterchange: '#1e6f4c',
   interchangeAllowed: '#2b9e43',
   noInterchange: '#d04437',
-};
-
-export const noValue = {
-  nb: 'Overgang ikke satt',
-  en: 'No interchange set',
-  fr: 'Pas de correspondance',
 };
 
 export default weightTypes;
