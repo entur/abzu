@@ -30,7 +30,7 @@ import TicketMachine from '../../static/icons/facilities/TicketMachine';
 import BusShelter from '../../static/icons/facilities/BusShelter';
 import debounce from 'lodash.debounce';
 import Checkbox from 'material-ui/Checkbox';
-import stopTypes, { unknownStopPlaceType } from '../../models/stopTypes';
+import stopTypes from '../../models/stopTypes';
 import MdWC from 'material-ui/svg-icons/notification/wc';
 import WaitingRoom from '../../static/icons/facilities/WaitingRoom';
 import WheelChairPopover from './WheelChairPopover';
@@ -42,7 +42,7 @@ import AltNamesDialog from '../Dialogs/AltNamesDialog';
 import TariffZonesDialog from '../Dialogs/TariffZonesDialog';
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
 import WeightingPopover from './WeightingPopover';
-import weightTypes, { weightColors, noValue } from '../../models/weightTypes';
+import weightTypes, { weightColors } from '../../models/weightTypes';
 import Sign512 from '../../static/icons/TransportSign';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ToolTippable from './ToolTippable';
@@ -495,7 +495,8 @@ class StopPlaceDetails extends React.Component {
                     handleStopTypeChange={this.handleStopTypeChange.bind(this)}
                     stopPlaceTypeChosen={stopPlace.stopPlaceType}
                     submodeChosen={stopPlace.submode}
-                    stopTypes={stopTypes[locale]}
+                    stopTypes={stopTypes}
+                    intl={intl}
                   />
                 </Popover>
               </div>

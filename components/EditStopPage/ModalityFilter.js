@@ -20,13 +20,13 @@ import Checkbox from 'material-ui/Checkbox';
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {
-    const { stopTypeFilter, locale } = this.props;
+    const { stopTypeFilter } = this.props;
     let newFilters = stopTypeFilter.slice();
 
     if (checked) {
       newFilters.push(value);
       // i.e. no filters: all modalities are selected
-      if (newFilters.length === stopTypes[locale].length) {
+      if (newFilters.length === Object.keys(stopTypes).length) {
         newFilters = [];
       }
     } else {
