@@ -54,7 +54,7 @@ class AdvancedReportFilters extends Component {
             })
           }}
           style={{transform: 'scale(0.9)'}}
-          label={formatMessage({id: 'filters_more'})}
+          label={formatMessage({id: 'filters_admin'})}
         />
         <Popover
           open={open}
