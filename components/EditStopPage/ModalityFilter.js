@@ -20,13 +20,13 @@ import Checkbox from 'material-ui/Checkbox';
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {
-    const { stopTypeFilter, locale } = this.props;
+    const { stopTypeFilter } = this.props;
     let newFilters = stopTypeFilter.slice();
 
     if (checked) {
       newFilters.push(value);
       // i.e. no filters: all modalities are selected
-      if (newFilters.length === stopTypes[locale].length) {
+      if (newFilters.length === Object.keys(stopTypes).length) {
         newFilters = [];
       }
     } else {
@@ -44,7 +44,7 @@ class ModalityFilter extends React.Component {
   }
 
   render() {
-    const { locale, stopTypeFilter } = this.props;
+    const { stopTypeFilter } = this.props;
 
     const wrapperStyle = {
       display: 'flex',
@@ -54,17 +54,17 @@ class ModalityFilter extends React.Component {
 
     return (
       <div style={wrapperStyle}>
-        {stopTypes[locale].map(item => {
+        {Object.keys(stopTypes).map(item => {
           const checked =
-            stopTypeFilter.indexOf(item.value) > -1 || !stopTypeFilter.length;
+            stopTypeFilter.indexOf(item) > -1 || !stopTypeFilter.length;
 
           return (
-            <div key={'item-' + item.value}>
+            <div key={'item-' + item}>
               <Checkbox
                 checkedIcon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    type={item.value}
+                    type={item}
                     forceUpdate={true}
                   />
                 }
@@ -72,14 +72,14 @@ class ModalityFilter extends React.Component {
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
                     style={{ fill: '#8c8c8c', opacity: '0.8' }}
-                    type={item.value}
+                    type={item}
                     forceUpdate={true}
                   />
                 }
                 style={{ width: 'auto' }}
                 checked={checked}
                 onCheck={(e, v) => {
-                  this.handleOnCheck(v, item.value);
+                  this.handleOnCheck(v, item);
                 }}
               />
             </div>

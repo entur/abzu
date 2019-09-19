@@ -23,7 +23,6 @@ import TextField from 'material-ui/TextField';
 import MdSave from 'material-ui/svg-icons/content/save';
 import MdCancel from 'material-ui/svg-icons/navigation/cancel';
 import MdSpinner from '../../static/icons/spinner';
-import { HumanReadableErrorCodes } from '../../models/ErrorCodes';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import {
   isDateRangeLegal,
@@ -107,9 +106,9 @@ class SaveDialog extends React.Component {
 
   getErrorMessage() {
     const { errorMessage, intl } = this.props;
-    const { locale } = intl;
+    const { formatMessage } = intl;
     if (errorMessage) {
-      return HumanReadableErrorCodes[locale][errorMessage];
+      return formatMessage({id: `humanReadableErrorCodes.${errorMessage}`});
     }
     return '';
   }

@@ -29,13 +29,13 @@ import TagTray from '../components/MainPage/TagTray';
 import ToolTippable from '../components/EditStopPage/ToolTippable';
 import moment from 'moment';
 
-const getParkingElements = (parking = []) => {
+const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {
     return <MdNotChecked color="#B71C1C" />;
   }
   return parking.map(p =>
     <div style={{ display: 'inline-block', marginLeft: 5 }}>
-      {getParkingType(p)}
+      {getParkingType(p, formatMessage)}
     </div>
   );
 };
@@ -44,10 +44,10 @@ const isEquipted = (stop, path) => {
   return getInTransform(stop, path, false, result => !!result.length);
 };
 
-const getParkingType = parking => {
+const getParkingType = (parking, formatMessage) => {
   const pedalCycle = 'pedalCycle';
   const carParking = 'car';
-  const unknownParking = ColumnTranslations.notAssigned;
+  const unknownParking = formatMessage({id: 'report.columnNames.notAssigned' });
   const iconStyle = {
     borderRadius: '50%',
     border: '1px solid #000',
@@ -130,9 +130,9 @@ export const ColumnTransformerStopPlaceJsx = {
   muncipality: stop => stop.topographicPlace,
   county: stop => stop.parentTopographicPlace,
   importedId: stop => stop.importedId.join('\r\n'),
-  position: stop => (stop.location ? stop.location.join(',') : ColumnTranslations.notAssigned),
+  position: (stop, formatMessage) => (stop.location ? stop.location.join(',') : formatMessage({ id: 'report.columNames.notAssigned' })),
   quays: stop => (stop.quays ? stop.quays.length : 0),
-  parking: stop => getParkingElements(stop.parking),
+  parking: (stop, formatMessage) => getParkingElements(stop.parking, formatMessage),
   wheelchairAccess: stop => {
     const wheelchairAccess = getIn(
       stop,
@@ -324,7 +324,7 @@ export const ColumnTransformerQuaysJsx = {
       </div>
     );
   },
-  position: quay => (quay.location ? quay.location.join(',') : ColumnTranslations.notAssigned),
+  position: (quay, duplicateInfo, formatMessage) => (quay.location ? quay.location.join(',') : formatMessage({ id: 'report.columnNames.notAssigned'})),
   publicCode: quay => quay.publicCode,
   privateCode: quay => quay.privateCode,
   wheelchairAccess: quay =>
@@ -352,70 +352,4 @@ export const ColumnTransformersQuays = {
   generalSign: quay => ColumnTransformersStopPlace.generalSign(quay),
   waitingRoomEquipment: quay =>
     ColumnTransformersStopPlace.waitingRoomEquipment(quay)
-};
-
-export const ColumnTranslations = {
-  nb: {
-    name: 'Navn',
-    modality: 'Modalitet',
-    id: 'Id',
-    muncipality: 'Kommune',
-    county: 'Fylke',
-    importedId: 'LokalID',
-    position: 'Plassering',
-    quays: 'Quayer',
-    parking: 'Parkering',
-    privateCode: 'Internkode',
-    publicCode: 'Publikumskode',
-    wheelchairAccess: 'Rullestolvennlighet',
-    stepFreeAccess: 'Adgang med trapper',
-    shelterEquipment: 'Leskur',
-    waitingRoomEquipment: 'Venterom',
-    sanitaryEquipment: 'WC',
-    generalSign: 'Transportskilt',
-    tags: 'Tagger',
-    notAssigned: 'N/A'
-  },
-  en: {
-    name: 'Name',
-    modality: 'Modality',
-    id: 'Id',
-    muncipality: 'Muncipality',
-    county: 'County',
-    importedId: 'ImportedId',
-    position: 'Position',
-    quays: 'Quays',
-    parking: 'Parking',
-    privateCode: 'Private code',
-    publicCode: 'Public code',
-    wheelchairAccess: 'Wheelchair access',
-    stepFreeAccess: 'Step free access',
-    shelterEquipment: 'Shelter equipment',
-    waitingRoomEquipment: 'Waiting room',
-    sanitaryEquipment: 'WC',
-    generalSign: 'Transport sign',
-    tags: 'Tags',
-    notAssigned: 'N/A'
-  },
-  fr: {
-    name: 'Nom',
-    modality: 'Modalité',
-    id: 'Id',
-    muncipality: 'Municipalité',
-    county: 'Département',
-    importedId: 'ID local',
-    position: 'Position',
-    quays: 'Quais',
-    parking: 'Parking',
-    privateCode: 'Code privé',
-    publicCode: 'Code public',
-    wheelchairAccess: 'Accessibilité PMR',
-    stepFreeAccess: 'Accès sans escalier',
-    shelterEquipment: 'Abri',
-    waitingRoomEquipment: "Salle d'attente",
-    sanitaryEquipment: 'WC',
-    generalSign: 'Information voyageur à l\'arrêt',
-    tags: 'Tags',
-    notAssigned: 'N/R'
-  }
 };

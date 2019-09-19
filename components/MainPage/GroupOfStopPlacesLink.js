@@ -28,7 +28,7 @@ const GroupOfStopPlacesLink = ({name, id, style}) => {
   );
 };
 
-GroupOfStopPlacesLink.PropTypes = {
+GroupOfStopPlacesLink.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired
 };

@@ -205,12 +205,15 @@ export const getSubModeRelevance = (submode, stopPlaceType) => {
 
   if (!submode) return false;
 
-  for (let i = 0; i < stopTypes.nb.length; i++) {
-    const stopType = stopTypes.nb[i];
-    if (stopType.value === stopPlaceType && stopType.submodes) {
+  const stopTypeKeys = Object.keys(stopTypes);
+
+  for (let i = 0; i < stopTypeKeys.length; i++) {
+    const stopTypeKey = stopTypeKeys[i];
+    const stopType = stopTypes[stopTypeKey];
+    if (stopTypeKey === stopPlaceType && stopType.submodes) {
       for (let y = 0; i < stopType.submodes.length; y++) {
         const _submode = stopType.submodes[y];
-        if (_submode && submode === _submode.value) {
+        if (_submode && submode === _submode) {
           return true;
         }
       }
@@ -304,13 +307,15 @@ export const getStopPlacesForSubmodes = legalSubmodes => {
 
   if (!legalSubmodes || !legalSubmodes.length) return result;
 
-  for (let i = 0; i < stopTypes.en.length; i++) {
-    const submodes = stopTypes.en[i].submodes || [];
-    const submodesValues = submodes.map( submode => submode.value );
+  const stopTypeKeys = Object.keys(stopTypes);
+
+  for (let i = 0; i < stopTypeKeys.length; i++) {
+    const stopType = stopTypes[stopTypeKey];
+    const submodes = stopType.submodes || [];
     legalSubmodes.forEach( legalSubmode => {
-      if (submodesValues.indexOf(legalSubmode) > -1) {
-        if (result.indexOf(stopTypes.en[i].value) === -1 && legalSubmode !== null) {
-          result.push(stopTypes.en[i].value);
+      if (submodes.indexOf(legalSubmode) > -1) {
+        if (result.indexOf(stopTypeKeys[i]) === -1 && legalSubmode !== null) {
+          result.push(stopTypeKeys[i]);
         }
       }
     });

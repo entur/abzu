@@ -306,7 +306,7 @@ const filterByLegalMode = (roles, completeList, key, restrict = false) => {
 };
 
 export const getLegalStopPlaceTypes = roles => {
-  let allStopTypes = stopTypes.en.map(stopType => stopType.value);
+  let allStopTypes = Object.keys(stopTypes);
   return filterByLegalMode(roles, allStopTypes, 'StopPlaceType');
 };
 

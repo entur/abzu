@@ -425,14 +425,6 @@ class EditStopGeneral extends React.Component {
       : formatMessage({ id: 'new_stop_title' });
   };
 
-  getQuayItemName = (locale, stopPlace) => {
-    stopTypes[locale].forEach(stopType => {
-      if (stopType.value === stopPlace.stopPlaceType) {
-        return stopType.quayItemName;
-      }
-    });
-  };
-
   getQuaysForMoveQuayToNewStop() {
     const { stopPlace, movingQuayToNewStop, neighbourStopQuays } = this.props;
     if (!movingQuayToNewStop || !stopPlace) return [];
@@ -476,7 +468,7 @@ class EditStopGeneral extends React.Component {
       quays: formatMessage({ id: 'quays' }),
       pathJunctions: formatMessage({ id: 'pathJunctions' }),
       entrances: formatMessage({ id: 'entrances' }),
-      quayItemName: this.getQuayItemName(locale, stopPlace),
+      quayItemName: formatMessage({ id: `stopTypes.${stopPlace.stopPlaceType}.quayItemName`}),
       capacity: formatMessage({ id: 'total_capacity' }),
       parking: formatMessage({ id: 'parking_general' }),
       parkAndRide: formatMessage({ id: 'parking_item_title_parkAndRide' }),

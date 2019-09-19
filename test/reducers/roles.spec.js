@@ -273,7 +273,7 @@ describe('getAllowanceInfo', () => {
     ];
 
     let legalStopPlaceTypes = getLegalStopPlaceTypes(roles);
-    let allStopTypes = stopTypes.en.map(type => type.value);
+    let allStopTypes = Object.keys(stopTypes);
 
     expect(legalStopPlaceTypes).toEqual(allStopTypes);
   });
@@ -283,7 +283,8 @@ describe('getAllowanceInfo', () => {
 
     let allSubmodes = [];
 
-    stopTypes.en.map(stopType => {
+    Object.keys(stopTypes).map(stopTypeKey => {
+      const stopType = stopTypes[stopTypeKey];
       if (stopType.submodes) {
         stopType.submodes.forEach(submode => {
           if (submode.value) allSubmodes.push(submode.value);
@@ -303,7 +304,7 @@ describe('getAllowanceInfo', () => {
     const listedStopPlaceTypes2 = ['*'];
 
     const listedStopPlaceTypes3 = ['airport', 'ferryStop'];
-    const allStopTypes = stopTypes.en.map(stopType => stopType.value);
+    const allStopTypes = Object.keys(stopTypes);
 
     const options1 = getRoleOptions(listedStopPlaceTypes1, allStopTypes);
     const options2 = getRoleOptions(listedStopPlaceTypes2, allStopTypes);

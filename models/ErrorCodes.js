@@ -18,21 +18,3 @@ export const MutationErrorCodes = {
   ERROR_PATH_LINKS: 'ERROR_PATH_LINKS',
   ERROR_PARKING: 'ERROR_PARKING',
 };
-
-export const HumanReadableErrorCodes = {
-  nb: {
-    ERROR_STOP_PLACE: 'Feilet å lagre stoppested',
-    ERROR_PATH_LINKS: 'Feilet å lagre ganglenker',
-    ERROR_PARKING: 'Feilet å lagre parkering',
-  },
-  en: {
-    ERROR_STOP_PLACE: 'Failed to save stop place',
-    ERROR_PATH_LINKS: 'Failed to save path links',
-    ERROR_PARKING: 'Failed to save parking',
-  },
-  fr: {
-    ERROR_STOP_PLACE: 'Erreur lors de la sauvegarde du point d\'arrêt',
-    ERROR_PATH_LINKS: 'Erreur lors de la sauvegarde du cheminement',
-    ERROR_PARKING: 'Erreur lors de la sauvegarde du parking',
-  },
-};

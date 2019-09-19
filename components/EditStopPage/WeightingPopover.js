@@ -18,11 +18,11 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import MenuItem from 'material-ui/MenuItem';
 import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
 import weightTypes, { weightColors } from '../../models/weightTypes';
-
+import { injectIntl } from 'react-intl';
 class WeightingPopover extends React.Component {
 
   render() {
-    const { handleClose, handleChange, open, anchorEl, locale } = this.props;
+    const { handleClose, handleChange, open, anchorEl, intl: { formatMessage } } = this.props;
 
     return (
       <Popover
@@ -32,16 +32,16 @@ class WeightingPopover extends React.Component {
         animation={PopoverAnimationVertical}
         animated={true}
       >
-        {weightTypes[locale].map((type, index) =>
+        {weightTypes.map((type, index) =>
           <MenuItem
             key={'weightType' + index}
-            value={type.value}
+            value={type}
             style={{ padding: '0px 10px' }}
-            primaryText={type.name}
+            primaryText={formatMessage({ id: `weightTypes.${type}` })}
             onClick={() => {
-              handleChange(type.value);
+              handleChange(type);
             }}
-            leftIcon={<MdTransfer color={weightColors[type.value] || 'grey'} />}
+            leftIcon={<MdTransfer color={weightColors[type] || 'grey'} />}
           />,
         )}
       </Popover>
@@ -49,4 +49,4 @@ class WeightingPopover extends React.Component {
   }
 }
 
-export default WeightingPopover;
+export default injectIntl(WeightingPopover);

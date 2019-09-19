@@ -18,7 +18,6 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';
-import { ColumnTranslations } from '../../models/columnTransformers';
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {
@@ -37,7 +36,7 @@ class ColumnFilterPopover extends React.Component {
   }
 
   render() {
-    const { columnOptions, buttonLabel, captionLabel, selectAllLabel, locale } = this.props;
+    const { columnOptions, buttonLabel, captionLabel, selectAllLabel, formatMessage } = this.props;
     const optionStyle = {
       padding: 5,
     };
@@ -68,7 +67,7 @@ class ColumnFilterPopover extends React.Component {
             {columnOptions.map(option =>
               <div style={optionStyle} key={'option-' + option.id}>
                 <Checkbox
-                  label={ColumnTranslations[locale][option.id]}
+                  label={formatMessage({ id: `report.columnNames.${option.id}`})}
                   checked={option.checked}
                   onCheck={(e, checked) => {
                     this.props.handleColumnCheck(option.id, checked);
