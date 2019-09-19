@@ -35,20 +35,10 @@ class EditAltName extends Component {
 
   getInitialState(props) {
     if (props.data) {
-      const type = altNameConfig.supportedNameTypes.findIndex( nameType => {
-        return (props.data.nameType === nameType.value);
-      });
-
-      const langKey = getIn(props.data, ['name', 'lang'], '');
-
-      const lang = Object.keys(altNameConfig.languages).findIndex( key => {
-        return (key === langKey);
-      });
-
       return({
         value: getIn(props.data, ['name', 'value'], ''),
-        type,
-        lang,
+        type: getIn(props.data, ['nameType'], ''),
+        lang: getIn(props.data, ['name', 'lang'], ''),
       });
     } else {
       return ({
@@ -63,7 +53,7 @@ class EditAltName extends Component {
     const {
       translations,
       handleEditAltName,
-      locale,
+      formatMessage,
       editingId,
       handleClose
     } = this.props;
@@ -95,17 +85,17 @@ class EditAltName extends Component {
           fullWidth={true}
           floatingLabelText={translations.nameType}
           value={type}
-          onChange={(e, type) => {
+          onChange={(event, key, type) => {
             this.setState({
               type
             });
           }}
         >
-          {altNameConfig.supportedNameTypes.map((type, index) =>
+          {altNameConfig.supportedNameTypes.map((type) =>
             <MenuItem
-              key={'type-' + type.value}
-              value={index}
-              primaryText={type.name[locale]}
+              key={'type-' + type}
+              value={type}
+              primaryText={formatMessage({id: `altNamesDialog.nameTypes.${type}`})}
             />
           )}
         </SelectField>
@@ -114,17 +104,17 @@ class EditAltName extends Component {
           fullWidth={true}
           floatingLabelText={translations.language}
           value={lang}
-          onChange={(e, lang) => {
+          onChange={(event, key, lang) => {
             this.setState({
               lang
             });
           }}
         >
-          {Object.keys(altNameConfig.languages).map((key, index) =>
+          {altNameConfig.languages.map((key) =>
             <MenuItem
-              key={'lang-' + index}
-              value={index}
-              primaryText={altNameConfig.languages[key][locale]}
+              key={'lang-' + key}
+              value={key}
+              primaryText={formatMessage({id: `altNamesDialog.languages.${key}`})}
             />
           )}
         </SelectField>

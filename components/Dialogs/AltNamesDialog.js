@@ -31,9 +31,9 @@ class AltNamesDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lang: 0,
+      lang: '',
       value: '',
-      type: 0,
+      type: '',
       confirmDialogOpen: false,
       isEditing: false,
       editingId: null,
@@ -48,9 +48,9 @@ class AltNamesDialog extends React.Component {
     dispatch(StopPlaceActions.removeAltName(pendingRemoveAltNameIndex));
 
     this.setState({
-      lang: 0,
+      lang: '',
       value: '',
-      type: 0,
+      type: '',
       confirmDialogOpen: false,
       pendingRemoveAltNameIndex: -1,
       pendingPayLoad: null,
@@ -58,16 +58,14 @@ class AltNamesDialog extends React.Component {
   }
 
   handleEditAltName(lang, value, type, id) {
-    const languageString = Object.keys(altNameConfig.languages)[lang];
-    const nameTypeString = Object.keys(altNameConfig.allNameTypes)[type];
     const payLoad = {
-      nameType: nameTypeString,
-      lang: languageString,
+      nameType: type,
+      lang,
       value,
       id
     };
 
-    const conflictFoundIndex = this.getConflictingIndex(languageString, nameTypeString);
+    const conflictFoundIndex = this.getConflictingIndex(lang, type);
 
     if (conflictFoundIndex > -1 && conflictFoundIndex !== id) {
       this.setState({
@@ -103,16 +101,13 @@ class AltNamesDialog extends React.Component {
     const { lang, value, type } = this.state;
     const { dispatch } = this.props;
 
-    const languageString = Object.keys(altNameConfig.languages)[lang];
-    const nameTypeString = Object.keys(altNameConfig.allNameTypes)[type];
-
     const payLoad = {
-      nameType: nameTypeString,
-      lang: languageString,
+      nameType: type,
+      lang: lang,
       value: value,
     };
 
-    const conflictFoundIndex = this.getConflictingIndex(languageString, nameTypeString);
+    const conflictFoundIndex = this.getConflictingIndex(lang, type);
 
     if (conflictFoundIndex > -1) {
       this.setState({
@@ -124,9 +119,9 @@ class AltNamesDialog extends React.Component {
       dispatch(StopPlaceActions.addAltName(payLoad));
 
       this.setState({
-        lang: 0,
+        lang: '',
         value: '',
-        type: 0,
+        type: '',
         confirmDialogOpen: false,
       });
     }
@@ -151,23 +146,21 @@ class AltNamesDialog extends React.Component {
     }
   }
 
-  getNameTypeByLocale(nameType, locale) {
-    const localeNameType = altNameConfig.allNameTypes[nameType];
-    if (localeNameType) {
-      return localeNameType[locale];
+  getNameTypeByLocale(nameType) {
+    if (altNameConfig.allNameTypes.includes(nameType)) {
+      return this.props.intl.formatMessage({ id: `altNamesDialog.nameTypes.${nameType}` })
     }
   };
 
-  getLangByLocale(lang, locale) {
-    const localeLang = altNameConfig.languages[lang];
-    if (localeLang) {
-      return localeLang[locale];
+  getLangByLocale(lang) {
+    if (altNameConfig.languages.includes(lang)) {
+      return this.props.intl.formatMessage({ id: `altNamesDialog.languages.${lang}` });
     }
   }
 
   render() {
     const { open, intl, altNames = [], handleClose, disabled } = this.props;
-    const { formatMessage, locale } = intl;
+    const { formatMessage } = intl;
     const { isEditing, lang, type, value, confirmDialogOpen, editingId } = this.state;
 
     if (!open) return null;
@@ -233,7 +226,6 @@ class AltNamesDialog extends React.Component {
           }}
         >
           {altNames.map((an, i) => {
-
             return (
               <div
                 key={'altName-' + i}
@@ -246,11 +238,11 @@ class AltNamesDialog extends React.Component {
                 }}
               >
                 <div style={itemStyle}>
-                  {this.getNameTypeByLocale(an.nameType, locale) || translations.notAssigned}
+                  {this.getNameTypeByLocale(an.nameType) || translations.notAssigned}
                 </div>
                 <div style={itemStyle}>{an.name.value}</div>
                 <div style={itemStyle}>
-                  {this.getLangByLocale(an.name.lang, locale) || translations.notAssigned}
+                  {this.getLangByLocale(an.name.lang) || translations.notAssigned}
                 </div>
                 {!disabled
                   ? <div style={{display: 'flex'}}>
@@ -287,7 +279,7 @@ class AltNamesDialog extends React.Component {
             translations={translations}
             handleEditAltName={this.handleEditAltName.bind(this)}
             data={this.getAltNameById()}
-            locale={locale}
+            formatMessage={formatMessage}
             editingId={editingId}
             handleClose={() => { this.setState({
               isEditing: false,
@@ -298,18 +290,18 @@ class AltNamesDialog extends React.Component {
           <NewAltName
             translations={translations}
             handleAddAltName={this.handleAddAltName.bind(this)}
-            handleTypeChange={(e, value) => {
-              this.setState({ type: value });
+            handleTypeChange={(event, key, type) => {
+              this.setState({ type });
             }}
-            onLanguageChange={(e, value) => {
-              this.setState({ lang: value });
+            onLanguageChange={(event, key, lang) => {
+              this.setState({ lang });
             }}
-            onValueChange={(e, value) => {
-              this.setState({ value: value });
+            onValueChange={(event, value) => {
+              this.setState({ value });
             }}
             lang={lang}
             type={type}
-            locale={locale}
+            formatMessage={formatMessage}
             value={value}
           />
         }

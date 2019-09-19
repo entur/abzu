@@ -30,7 +30,7 @@ class NewAltName extends Component {
       lang,
       type,
       value,
-      locale
+      formatMessage
     } = this.props;
 
     return (
@@ -60,9 +60,9 @@ class NewAltName extends Component {
         >
           {altNameConfig.supportedNameTypes.map((type, index) =>
             <MenuItem
-              key={'type-' + type.value}
+              key={'type-' + type}
               value={index}
-              primaryText={type.name[locale]}
+              primaryText={formatMessage({ id: `altNamesDialog.nameTypes.${type}`})}
             />
           )}
         </SelectField>
@@ -73,18 +73,18 @@ class NewAltName extends Component {
           value={lang}
           onChange={onLanguageChange}
         >
-          {Object.keys(altNameConfig.languages).map((key, index) =>
+          {altNameConfig.languages.map((key, index) =>
             <MenuItem
               key={'lang-' + index}
               value={index}
-              primaryText={altNameConfig.languages[key][locale]}
+              primaryText={formatMessage({ id: `altNamesDialog.languages.${key}` })}
             />
           )}
         </SelectField>
         <TextField
           fullWidth={true}
           hintText={translations.value}
-          value={value}
+          value={value || ''}
           onChange={onValueChange}
         />
         <FlatButton
