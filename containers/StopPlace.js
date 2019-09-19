@@ -19,7 +19,6 @@ import EditStopMap from '../components/Map/EditStopMap';
 import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
 import EditParentGeneral from '../components/EditParentStopPage/EditParentGeneral';
 import InformationBanner from '../components/EditStopPage/InformationBanner';
-import Information from '../config/information';
 import { injectIntl } from 'react-intl';
 import InformationManager from '../singletons/InformationManager';
 import { allEntities } from '../graphql/Tiamat/queries';
@@ -63,7 +62,7 @@ class StopPlace extends React.Component {
     }
     document.title = title;
   }
-  
+
   handleOnClickPathLinkInfo() {
     new InformationManager().setShouldPathLinkBeDisplayed(false);
   }
@@ -147,10 +146,10 @@ class StopPlace extends React.Component {
         <NewStopPlaceInfo open={newStopCreated.open} stopPlaceId={newStopCreated.stopPlaceId}/>
         {shouldDisplayMessage &&
           <InformationBanner
-              title={Information[locale].path_links.title}
-              ingress={Information[locale].path_links.ingress}
-              body={Information[locale].path_links.body}
-              closeButtonTitle={Information[locale].path_links.closeButtonTitle}
+              title={formatMessage({id: `pathLinks.title`})}
+              ingress={formatMessage({id: `pathLinks.ingress`})}
+              body={formatMessage({id: `pathLinks.body`})}
+              closeButtonTitle={formatMessage({id: `pathLinks.closeButtonTitle`})}
               handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
             />
           }
