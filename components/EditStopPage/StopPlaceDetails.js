@@ -46,7 +46,6 @@ import weightTypes, { weightColors } from '../../models/weightTypes';
 import Sign512 from '../../static/icons/TransportSign';
 import MdWarning from 'material-ui/svg-icons/alert/warning';
 import ToolTippable from './ToolTippable';
-import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import KeyValuesDialog from '../Dialogs/KeyValuesDialog';
 import ModalitiesMenuItems from './ModalitiesMenuItems';
@@ -382,11 +381,7 @@ class StopPlaceDetails extends React.Component {
     const permanentlyTerminatedText = formatMessage({ id: 'stop_has_been_permanently_terminated' });
     const versionLabel = formatMessage({ id: 'version' });
     const keyValuesHint = formatMessage({ id: 'key_values_hint' });
-
-    const wheelChairHint =
-      accessibilityAssessments.wheelchairAccess.values[locale][
-        wheelchairAccess
-      ];
+    const wheelChairHint = formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}` });
     const ticketMachineHint = ticketMachine
       ? formatMessage({ id: 'ticketMachine' })
       : formatMessage({ id: 'ticketMachine_no' });

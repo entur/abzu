@@ -16,49 +16,9 @@ limitations under the Licence. */
 const accessibilityAssements = {
   wheelchairAccess: {
     options: ['TRUE', 'FALSE', 'UNKNOWN'],
-    values: {
-      nb: {
-        UNKNOWN: 'Ukjent rullestolvennlighet',
-        TRUE: 'Rullestolvennlig',
-        FALSE: 'Ikke rullestolvennlig',
-        PARTIAL: 'Delvis rullestolvennlig',
-      },
-      en: {
-        UNKNOWN: 'Unknown wheelchair accessibility',
-        TRUE: 'Wheelchair friendly',
-        FALSE: 'Not wheelchair friendly',
-        PARTIAL: 'Partial wheelchair friendly',
-      },
-      fr: {
-        UNKNOWN: 'Accessibilité PMR inconnue',
-        TRUE: 'Accessible PMR',
-        FALSE: 'Non accessible PMR',
-        PARTIAL: 'Partiellement accessible PMR',
-      },
-    },
   },
   stepFreeAccess: {
     options: ['TRUE', 'FALSE', 'UNKNOWN'],
-    values: {
-      nb: {
-        UNKNOWN: 'Ukjent trinnadgang',
-        TRUE: 'Trinnfri adgang',
-        FALSE: 'Adgang kun med trapper',
-        PARTIAL: 'Delvis trinnfri adgang',
-      },
-      en: {
-        UNKNOWN: 'Unknown step access',
-        TRUE: 'Step free access',
-        FALSE: 'Accessable only by steps',
-        PARTIAL: 'Partial Step free access',
-      },
-      fr: {
-        UNKNOWN: 'Accès plain-pied inconnu',
-        TRUE: 'Accès de plain-pied',
-        FALSE: 'Accessible uniquement par des marches',
-        PARTIAL: 'Accès plain-pied partiel',
-      },
-    },
   },
   colors: {
     UNKNOWN: '#e8e3e3',

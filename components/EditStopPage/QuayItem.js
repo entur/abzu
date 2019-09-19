@@ -29,7 +29,6 @@ import TicketMachine from '../../static/icons/facilities/TicketMachine';
 import BusShelter from '../../static/icons/facilities/BusShelter';
 import { injectIntl } from 'react-intl';
 import FlatButton from 'material-ui/FlatButton';
-import stopTypes from '../../models/stopTypes';
 import ImportedId from './ImportedId';
 import MdLess from 'material-ui/svg-icons/navigation/expand-less';
 import EditQuayAdditional from './EditQuayAdditional';
@@ -163,10 +162,7 @@ class QuayItem extends React.Component {
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay);
     const sign512 = equipmentHelpers.get512SignEquipment(quay);
 
-    const wheelChairHint =
-      accessibilityAssessments.wheelchairAccess.values[locale][
-        wheelchairAccess
-      ];
+    const wheelChairHint = formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}` });
     const ticketMachineHint = ticketMachine
       ? formatMessage({ id: 'ticketMachine' })
       : formatMessage({ id: 'ticketMachine_no' });
@@ -176,9 +172,7 @@ class QuayItem extends React.Component {
     const transportSignHint = sign512
       ? formatMessage({ id: 'transport_sign' })
       : formatMessage({ id: 'transport_sign_no' });
-    const stepFreeHint =
-      accessibilityAssessments.stepFreeAccess.values[locale][stepFreeAccess];
-
+    const stepFreeHint = formatMessage({ id: `accessibilityAssessments.stepFreeAccess.${stepFreeAccess.toLowerCase()}` });
     const quayItemName = formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName` });
 
     const translations = {

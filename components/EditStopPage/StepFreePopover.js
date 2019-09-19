@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import accessibilityAssessments from '../../models/accessibilityAssessments';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
@@ -50,7 +51,7 @@ class StepFreePopover extends React.Component {
 
   render() {
     const { intl, displayLabel, stepFreeAccess, disabled } = this.props;
-    const { locale } = intl;
+    const { locale, formatMessage } = intl;
     const { open, anchorEl } = this.state;
 
     return (
@@ -71,9 +72,7 @@ class StepFreePopover extends React.Component {
           {displayLabel
             ? <div style={{ maginLeft: 5 }}>
                 {
-                  accessibilityAssessments.stepFreeAccess.values[locale][
-                    stepFreeAccess
-                  ]
+                  formatMessage({id: `accessibilityAssessments.stepFreeAccess.${stepFreeAccess.toLowerCase()}`})
                 }
               </div>
             : ''}
@@ -96,7 +95,7 @@ class StepFreePopover extends React.Component {
                   this.handleChange(option);
                 }}
                 primaryText={
-                  accessibilityAssessments.stepFreeAccess.values[locale][option]
+                  formatMessage({id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`})
                 }
                 secondaryText={
                   <StairsIcon

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import WheelChair from 'material-ui/svg-icons/action/accessible';
@@ -50,7 +51,7 @@ class WheelChairPopover extends React.Component {
 
   render() {
     const { intl, displayLabel, wheelchairAccess, disabled } = this.props;
-    const { locale } = intl;
+    const { formatMessage } = intl;
     const { open, anchorEl } = this.state;
 
     return (
@@ -71,9 +72,7 @@ class WheelChairPopover extends React.Component {
           {displayLabel
             ? <div style={{ maginLeft: 5 }}>
                 {
-                  accessibilityAssessments.wheelchairAccess.values[locale][
-                    wheelchairAccess
-                  ]
+                  formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}` })
                 }
               </div>
             : ''}
@@ -96,9 +95,7 @@ class WheelChairPopover extends React.Component {
                   this.handleChange(option);
                 }}
                 primaryText={
-                  accessibilityAssessments.wheelchairAccess.values[locale][
-                    option
-                  ]
+                  formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}` })
                 }
                 secondaryText={
                   <WheelChair
