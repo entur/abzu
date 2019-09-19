@@ -310,7 +310,7 @@ export const getStopPlacesForSubmodes = legalSubmodes => {
   const stopTypeKeys = Object.keys(stopTypes);
 
   for (let i = 0; i < stopTypeKeys.length; i++) {
-    const stopType = stopTypes[stopTypeKey];
+    const stopType = stopTypes[stopTypeKeys[i]];
     const submodes = stopType.submodes || [];
     legalSubmodes.forEach( legalSubmode => {
       if (submodes.indexOf(legalSubmode) > -1) {
