@@ -492,7 +492,7 @@ class ReportPage extends React.Component {
                             id: 'column_filter_label_stop_place'
                         })}
                         captionLabel={formatMessage({id: 'stop_place'})}
-                        locale={locale}
+                        formatMessage={formatMessage}
                         handleCheckAll={this.handleCheckAllColumnStops.bind(this)}
                         selectAllLabel={formatMessage({id: 'all'})}
                     />
@@ -502,7 +502,7 @@ class ReportPage extends React.Component {
                         handleColumnCheck={this.handleColumnQuaysCheck.bind(this)}
                         buttonLabel={formatMessage({id: 'column_filter_label_quays'})}
                         captionLabel={formatMessage({id: 'quays'})}
-                        locale={locale}
+                        formatMessage={formatMessage}
                         handleCheckAll={this.handleCheckAllColumnQuays.bind(this)}
                         selectAllLabel={formatMessage({id: 'all'})}
                     />

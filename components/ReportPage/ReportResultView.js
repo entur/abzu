@@ -14,8 +14,7 @@ limitations under the Licence. */
 
 import React from 'react';
 import {
-  ColumnTransformerStopPlaceJsx,
-  ColumnTranslations
+  ColumnTransformerStopPlaceJsx
 } from '../../models/columnTransformers';
 import MakeExpandable from '../EditStopPage/MakeExpandable';
 import ReportQuayRows from './ReportQuayRows';
@@ -86,7 +85,7 @@ class ReportResultView extends React.Component {
           <div style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}>
             {columns.map((column, i) =>
               <div key={'column-' + column} style={columnStyle}>
-                {ColumnTranslations[locale][column]}
+                {formatMessage({id: `report.columnNames.${column}`})}
               </div>
             )}
             <div key={'column-expand'} style={columnStyle} />

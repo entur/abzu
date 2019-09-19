@@ -16,8 +16,7 @@ limitations under the Licence. */
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import {
-  ColumnTransformerQuaysJsx,
-  ColumnTranslations
+  ColumnTransformerQuaysJsx
 } from '../../models/columnTransformers';
 
 class ReportQuayRows extends React.Component {
@@ -34,7 +33,7 @@ class ReportQuayRows extends React.Component {
     };
 
     const { columnOptions, intl, quays, duplicateInfo } = this.props;
-    const { locale } = intl;
+    const { formatMessage } = intl;
 
     const columns = columnOptions.filter(c => c.checked).map(c => c.id);
 
@@ -45,7 +44,7 @@ class ReportQuayRows extends React.Component {
         <div style={{ display: 'flex', fontWeight: 600, paddingLeft: 10 }}>
           {columns.map((column, i) =>
             <div key={'quay-column-' + i} style={columnStyle}>
-              {ColumnTranslations[locale][column]}
+              {formatMessage({ id: `report.columnNames.${column}`})}
             </div>
           )}
         </div>
@@ -60,7 +59,7 @@ class ReportQuayRows extends React.Component {
           >
             {columns.map(column =>
               <div key={'column-quay-item-' + column} style={columnStyle}>
-                {ColumnTransformerQuaysJsx[column](quay, duplicateInfo)}
+                {ColumnTransformerQuaysJsx[column](quay, duplicateInfo, formatMessage)}
               </div>
             )}
           </div>
