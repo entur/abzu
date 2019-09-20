@@ -81,6 +81,7 @@ export const stopPlaceBBQuery = gql`
                 fromDate
                 toDate
             }
+            modificationEnumeration
             ...on StopPlace {
                 __typename
                 stopPlaceType
@@ -265,7 +266,7 @@ export const findStop = gql`
                     value
                 }
                 geometry {
-                    type 
+                    type
                     coordinates
                 }
                 topographicPlace {

@@ -70,8 +70,7 @@ const mapStateToProps = ({stopPlace, user, stopPlacesGroup}) => ({
   activeBaselayer: user.activeBaselayer,
   enablePolylines: stopPlace.enablePolylines,
   ignoreStopId: stopPlacesGroup.current.id,
-  markers: stopPlacesGroup.current.members.concat(stopPlace.neighbourStops || []),
+  markers: stopPlacesGroup.current.members.concat(stopPlace.neighbourStops || []).filter(m => !m.permanentlyTerminated),
 });
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaceMap));
-

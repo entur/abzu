@@ -265,7 +265,6 @@ class SearchBox extends React.Component {
     const { dataSource, topoiChips, stopTypeFilter } = nextProps;
     const { formatMessage } = nextProps.intl;
     let menuItems = [];
-console.log({ dataSource });
     if (dataSource && dataSource.length) {
       menuItems = dataSource.filter(v => !v.permanentlyTerminated).map(element =>
         createSearchMenuItem(element, formatMessage)

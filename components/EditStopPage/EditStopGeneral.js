@@ -468,7 +468,7 @@ class EditStopGeneral extends React.Component {
       quays: formatMessage({ id: 'quays' }),
       pathJunctions: formatMessage({ id: 'pathJunctions' }),
       entrances: formatMessage({ id: 'entrances' }),
-      quayItemName: formatMessage({ id: `stopTypes.${stopPlace.stopPlaceType}.quayItemName`}),
+      quayItemName: stopPlace.stopPlaceType ? formatMessage({ id: `stopTypes.${stopPlace.stopPlaceType}.quayItemName`}) : null,
       capacity: formatMessage({ id: 'total_capacity' }),
       parking: formatMessage({ id: 'parking_general' }),
       parkAndRide: formatMessage({ id: 'parking_item_title_parkAndRide' }),

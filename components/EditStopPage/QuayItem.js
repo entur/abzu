@@ -173,7 +173,7 @@ class QuayItem extends React.Component {
       ? formatMessage({ id: 'transport_sign' })
       : formatMessage({ id: 'transport_sign_no' });
     const stepFreeHint = formatMessage({ id: `accessibilityAssessments.stepFreeAccess.${stepFreeAccess.toLowerCase()}` });
-    const quayItemName = formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName` });
+    const quayItemName = stopPlaceType ? formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName` }) : null;
 
     const translations = {
       name: formatMessage({ id: 'name' }),
