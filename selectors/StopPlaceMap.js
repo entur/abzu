@@ -45,5 +45,7 @@ export const getMarkersForMap = ({ stopPlace, user }) => {
     markers = markers.concat(findCoordinates);
   }
 
+  markers = markers.filter(m => !m.permanentlyTerminated);
+
   return markers;
 };
