@@ -58,7 +58,26 @@ class ModalitiesMenuItems extends React.Component {
 
           const stopTypeMatchingChosen = stopPlaceTypeChosen === type;
           const transportMode = stopTypes[type].transportMode;
-          const submodes = stopTypes[type].submodes;
+          let submodes = stopTypes[type].submodes;
+
+          if (submodes) {
+
+            // Add "unspeficied" submode option, corresponding to null value,
+            // and sort according to the localized formatted version, with
+            // unspecified always on top
+            submodes = [null].concat(submodes).map(submode => {
+              return {
+                submode,
+                formatted: formatMessage({ id: `stopTypes.${type}.submodes.${submode || 'unspecified'}`})
+              }
+            }).sort((a,b) => {
+              if (a.submode === null) return -1;
+              if (b.submode === null) return 1;
+              if (a.formatted < b.formatted) return -1;
+              if (a.formatted > b.formatted) return 1;
+              return 0;
+            })
+          }
 
           return (
             <MenuItem
@@ -85,7 +104,7 @@ class ModalitiesMenuItems extends React.Component {
               }
               menuItems={
                 submodes &&
-                submodes.map(submode => {
+                submodes.map(({submode,formatted}) => {
                   // make all submodes legal if stopPlace is legal
                   let isLegal =
                     illegalSubmodes.indexOf(submode) !== -1 &&
@@ -114,7 +133,7 @@ class ModalitiesMenuItems extends React.Component {
                       style={{ padding: '0px 10px' }}
                       primaryText={
                         <span style={isMatchingChosen ? chosenStyle : {}}>
-                          {formatMessage({ id: `stopTypes.${type}.submodes.${submode}` })}
+                          {formatted}
                         </span>
                       }
                       onClick={() => {
