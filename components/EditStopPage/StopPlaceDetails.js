@@ -192,7 +192,7 @@ class StopPlaceDetails extends React.Component {
       }
     }
 
-    return this.props.intl.formatMessage({ id: `weightTypes.novalue`});
+    return this.props.intl.formatMessage({ id: `weightTypes.noValue`});
   }
 
   handleOpenWeightPopover(event) {
