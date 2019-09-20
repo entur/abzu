@@ -331,7 +331,11 @@ class StopPlaceDetails extends React.Component {
       return formatMessage({ id: `stopTypes.${stopPlaceType}.submodes.${submode}`});
     }
 
-    return formatMessage({ id: `stopTypes.${stopPlaceType}.name`});
+    if (stopPlaceType) {
+      return formatMessage({ id: `stopTypes.${stopPlaceType}.name`});
+    }
+
+    return formatMessage({ id: `stopTypes.unknown`});
   }
 
   render() {
