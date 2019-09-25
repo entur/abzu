@@ -23,7 +23,7 @@ aliases:
     command: |
       echo 'export CIRCLE_PROJECT_REPONAME="$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
       echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
-      RUN chmod u+x .circleci/docker_build_push.sh
+      chmod u+x .circleci/docker_build_push.sh
       .circleci/docker_build_push.sh
       chmod u+x .circleci/sentry_upload_sourcemaps.sh
       .circleci/sentry_upload_sourcemaps.sh $CIRCLE_BRANCH-v$VERSION $SENTRY_TOKEN abzu
