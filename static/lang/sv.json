@@ -204,7 +204,7 @@
 	"making_stop_place_title": "Du skapar nu en ny hållplats",
 	"map_settings": "Kartval",
 	"merge_quay_cancel": "Avbryt ..",
-	"merge_quay_from": "Sammanfogar från (källa)",
+	"merge_quay_from": "Sammanfoga från (källa)",
 	"merge_quay_to": "Sammanfoga till (mål)",
 	"merge_quays_info": "Du sammanfogar nu en quay med en annan. All data och historik från käll-quayen kommer överföras till mål-quayen. Käll-quayen kommer att tas bort.",
 	"merge_quays_title": "Du sammanfogar nu två quays",
