@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import compassIcon from '../../static/icons/compass.png';
 import { UserActions, StopPlaceActions } from '../../actions/';
 import OSMIcon from '../../static/icons/osm_logo.png';
+import StreetViewIcon from '../../static/icons/street_view_logo.png';
 import { getIn } from '../../utils/';
 import Code from '../EditStopPage/Code';
 import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
@@ -50,6 +51,11 @@ class QuayMarker extends React.Component {
   getOSMURL() {
     const { position } = this.props;
     return `https://www.openstreetmap.org/edit#map=18/${position[0]}/${position[1]}`;
+  }
+
+  getStreetViewURL() {
+    const { position } = this.props;
+    return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${position[0]},${position[1]}`;
   }
 
   handleMergeFrom() {
@@ -246,6 +252,7 @@ class QuayMarker extends React.Component {
     });
 
     const osmURL = this.getOSMURL();
+    const streetViewURL = this.getStreetViewURL();
     const shouldShowMoveQuay = this.getShouldShowMoveQuay();
     const hideMergingTo = this.getHideMergingTo();
     const hideMergingFrom = this.getHideMergingFrom();
@@ -360,6 +367,24 @@ class QuayMarker extends React.Component {
                       borderRadius: 50
                     }}
                     src={OSMIcon}
+                  />
+                </a>
+              </div>
+              <div
+                style={{
+                  marginLeft: belongsToNeighbourStop ? 0 : 10,
+                  cursor: 'pointer'
+                }}
+              >
+                <a href={streetViewURL} target="_blank">
+                  <img
+                    style={{
+                      width: 20,
+                      height: 22,
+                      border: '1px solid grey',
+                      borderRadius: 50
+                    }}
+                    src={StreetViewIcon}
                   />
                 </a>
               </div>
