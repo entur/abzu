@@ -42,7 +42,7 @@ class JunctionMarker extends React.Component {
       }
     } else {
       if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
-        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');¨
+        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
       }
     }
   }
