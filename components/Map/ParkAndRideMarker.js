@@ -41,9 +41,13 @@ class ParkingAndRideMarker extends React.Component {
     const isFocused =
       focusedElement.type === type && index === focusedElement.index;
     if (isFocused) {
-      L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
+        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      }
     } else {
-      L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
+        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      }
     }
   }
 
