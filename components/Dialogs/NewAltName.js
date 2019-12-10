@@ -30,7 +30,8 @@ class NewAltName extends Component {
       lang,
       type,
       value,
-      formatMessage
+      formatMessage,
+      valid
     } = this.props;
 
     return (
@@ -61,7 +62,7 @@ class NewAltName extends Component {
           {altNameConfig.supportedNameTypes.map((type, index) =>
             <MenuItem
               key={'type-' + type}
-              value={index}
+              value={type}
               primaryText={formatMessage({ id: `altNamesDialog.nameTypes.${type}`})}
             />
           )}
@@ -76,7 +77,7 @@ class NewAltName extends Component {
           {altNameConfig.languages.map((key, index) =>
             <MenuItem
               key={'lang-' + index}
-              value={index}
+              value={key}
               primaryText={formatMessage({ id: `altNamesDialog.languages.${key}` })}
             />
           )}
@@ -89,7 +90,7 @@ class NewAltName extends Component {
         />
         <FlatButton
           style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
-          disabled={!value}
+          disabled={!valid}
           primary={true}
           onClick={() => {
             handleAddAltName();

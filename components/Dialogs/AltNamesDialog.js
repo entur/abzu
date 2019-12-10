@@ -303,6 +303,7 @@ class AltNamesDialog extends React.Component {
             type={type}
             formatMessage={formatMessage}
             value={value}
+            valid={!!lang && !!type && !!value}
           />
         }
       </div>
