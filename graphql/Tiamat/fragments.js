@@ -309,6 +309,7 @@ Fragments.stopPlace = {
               fromDate
               toDate
           }
+          modificationEnumeration
       }
       ${Fragments.quay.verbose},
       ${Fragments.placeEquipments.verbose},
@@ -417,6 +418,7 @@ Fragments.parentStopPlace = {
         children {
             ...ReportStopPlace
         }
+        modificationEnumeration
     },
     ${Fragments.stopPlace.reportView}
   `
