@@ -79,7 +79,7 @@ export const ColumnTransformerStopPlaceJsx = {
     };
 
     const isParentOrChild = (stop.isParent || stop.isChildOfParent);
-    const isFutureOrExpired = (stop.isFuture || stop.hasExpired);
+    const isFutureOrExpired = (stop.isFuture || stop.hasExpired || stop.permanentlyTerminated);
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
@@ -87,7 +87,7 @@ export const ColumnTransformerStopPlaceJsx = {
         <div style={{ display: 'flex', marginTop: 3, marginLeft: 5, flexDirection: 'column'}}>
           {isFutureOrExpired &&
             <span style={{ ...infoTextStyle, color: stop.hasExpired ? '#ae1d1d' : '#2f3526', marginRight: 5 }}>
-              {stop.hasExpired ? formatMessage({ id: 'search_result_expired' })
+              {stop.permanentlyTerminated ? formatMessage({ id: 'search_result_permanently_terminated' }) : stop.hasExpired ? formatMessage({ id: 'search_result_expired' })
                 : <div style={{display: 'flex', color: '#ffa500'}}>
                     <div>{formatMessage({id: 'valid_from'})}</div>
                     <div style={{marginLeft: 5}}>{moment(stop.validBetween.fromDate).format('YYYY-MM-DD')}</div>

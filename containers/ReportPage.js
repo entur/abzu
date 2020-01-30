@@ -240,6 +240,7 @@ class ReportPage extends React.Component {
             hasParking,
             withTags,
             tags,
+            versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
             municipalityReference: topoiChips
                 .filter(topos => topos.type === 'municipality')
                 .map(topos => topos.id),
