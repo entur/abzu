@@ -66,7 +66,7 @@ class AdvancedReportFilters extends Component {
           <Menu>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'show_future_and_expired' })}
+                label={formatMessage({ id: 'show_future_expired_and_terminated' })}
                 labelPosition="right"
                 labelStyle={{ width: 'auto', fontSize: '0.9em' }}
                 checked={showFutureAndExpired}

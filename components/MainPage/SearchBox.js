@@ -266,7 +266,7 @@ class SearchBox extends React.Component {
     const { formatMessage } = nextProps.intl;
     let menuItems = [];
     if (dataSource && dataSource.length) {
-      menuItems = dataSource.filter(v => !v.permanentlyTerminated).map(element =>
+      menuItems = dataSource.map(element =>
         createSearchMenuItem(element, formatMessage)
       );
     } else {
@@ -520,7 +520,7 @@ class SearchBox extends React.Component {
                         checked={showFutureAndExpired}
                         onCheck={(e, value) =>
                           this.toggleShowFutureAndExpired(value)}
-                        label={formatMessage({ id: 'show_future_and_expired' })}
+                        label={formatMessage({ id: 'show_future_expired_and_terminated' })}
                         labelStyle={{ fontSize: '0.8em' }}
                       />
                     </div>

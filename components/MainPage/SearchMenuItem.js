@@ -39,6 +39,9 @@ export const createSearchMenuItem = (element, formatMessage) => {
 };
 
 const getFutureOrExpiredLabel = stopPlace => {
+  if (stopPlace.permanentlyTerminated) {
+    return 'search_result_permanently_terminated';
+  }
   if (hasExpired(stopPlace.validBetween)) {
     return 'search_result_expired';
   }
