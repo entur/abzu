@@ -8,15 +8,15 @@ metadata:
 data:
   config.json: |
     {
-      "tiamatBaseUrl": {{ .Values.configMap.tiamatBaseUrl }},
-      "authServerUrl": {{ .Values.configMap.authServerUrl }},
-      "OSMUrl": {{ .Values.configMap.OSMUrl }},
+      "tiamatBaseUrl": "{{ .Values.configMap.tiamatBaseUrl }}",
+      "authServerUrl": "{{ .Values.configMap.authServerUrl }}",
+      "OSMUrl": "{{ .Values.configMap.OSMUrl }}",
       "endpointBase": "/",
-      "tiamatEnv": {{ .Values.configMap.tiamatEnv }},
-      "OTPUrl":  {{ .Values.configMap.OTPUrl }},
-      "mapboxTariffZonesStyle": "${MAPBOX_TARIFF_ZONES_STYLE}",
-      "mapboxAccessToken": "${MAPBOX_ACCESS_TOKEN}",
-      "sentryDSN": "${SENTRY_DSN}"
+      "tiamatEnv": "{{ .Values.configMap.tiamatEnv }}",
+      "OTPUrl":  "{{ .Values.configMap.OTPUrl }}",
+      "mapboxTariffZonesStyle": ""${MAPBOX_TARIFF_ZONES_STYLE}"",
+      "mapboxAccessToken": ""${MAPBOX_ACCESS_TOKEN}"",
+      "sentryDSN": ""${SENTRY_DSN}""
     }
 
 
