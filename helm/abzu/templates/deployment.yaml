@@ -35,17 +35,17 @@ spec:
             - name: MAPBOX_TARIFF_ZONES_STYLE
                 valueFrom:
                   secretKeyRef:
-                    key: mapbox_tariff_zones_style
+                    key: mapbox-tariff-zones-style
                     name: ror-abzu-secrets
             - name: MAPBOX_ACCESS_TOKEN
                 valueFrom:
                   secretKeyRef:
-                      key: mapbox_access_token
+                      key: mapbox-access-token
                     name: ror-abzu-secrets
             - name: SENTRY_DSN
                 valueFrom:
                   secretKeyRef:
-                      key: sentry_dsn
+                      key: sentry-dsn
                     name: ror-abzu-secrets
           resources:
             limits:

@@ -18,15 +18,15 @@ variable "labels" {
      }
 }
 
-variable ror_mapbox_tariff_zones_style {
+variable ror-mapbox-tariff-zones-style {
   description = "Mapbox tariffzone styles"
 }
 
-variable ror_mapbox_access_token {
+variable ror-mapbox-access-token {
   description = "Mapbox access token"
 }
 
-variable ror_sentry_dsn {
+variable ror-sentry-dsn {
   description = "Sentry DSN"
 }
 
