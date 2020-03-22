@@ -50,7 +50,7 @@ aliases:
 jobs:
   install:
     docker:
-      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image
+      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image-java11
         auth:
           username: _json_key
           password: $DOCKER_PASSWORD
@@ -60,7 +60,7 @@ jobs:
       - save-cache: *save-dependency-cache
   test:
     docker:
-      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image
+      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image-java11
         auth:
           username: _json_key
           password: $DOCKER_PASSWORD
@@ -70,7 +70,7 @@ jobs:
       - run: *test
   build:
     docker:
-      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image
+      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image-java11
         auth:
           username: _json_key
           password: $DOCKER_PASSWORD
