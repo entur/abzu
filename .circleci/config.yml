@@ -53,6 +53,8 @@ executors:
           auth:
             username: _json_key
             password: $DOCKER_PASSWORD
+      environment:
+        DEBIAN_FRONTEND: "noninteractive"
 
 jobs:
   install:
