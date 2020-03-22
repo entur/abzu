@@ -13,7 +13,7 @@ provider "kubernetes" {
 
 resource "kubernetes_secret" "ror-abzu-secrets" {
   metadata {
-  name      = "${var.labels.team}-${var.labels.app}-abzu-secrets"
+  name      = "${var.labels.team}-${var.labels.app}-secrets"
   namespace = var.kube_namespace
   }
 
