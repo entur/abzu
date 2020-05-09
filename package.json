@@ -16,25 +16,19 @@
     "axios": "^0.18.1",
     "body-parser": "1.18.2",
     "convict": "^4.4.1",
-    "css-loader": "^1.0.1",
     "detect-browser": "^2.5.1",
     "express": "^4.17.1",
-    "file-loader": "^0.11.1",
     "glob": "7.1.2",
     "google-maps": "^3.3.0",
     "graphql-fetch": "1.0.1",
     "graphql-tag": "2.4.2",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
-    "jest": "^23.6.0",
-    "jsdom": "11.1.0",
-    "jsdom-global": "3.0.2",
     "keycloak-js": "3.2.1",
     "leaflet": "1.2.0",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.19.4",
     "moment": "2.19.3",
-    "promise-polyfill": "6.0.2",
     "prop-types": "^15.7.2",
     "raven": "^2.6.4",
     "raven-js": "^3.27.2",
@@ -53,7 +47,18 @@
     "redux-raven-middleware": "1.2.0",
     "redux-thunk": "2.2.0",
     "request": "2.88.0",
-    "style-loader": "0.18.2",
     "uuid": "^3.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

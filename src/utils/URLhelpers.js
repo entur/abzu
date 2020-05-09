@@ -14,10 +14,10 @@
 
 const getBaseUrl = () => {
   return [
-    location.protocol,
+    window.location.protocol,
     '//',
-    location.host,
-    location.pathname
+    window.location.host,
+    window.location.pathname
   ].join('');
 };
 
@@ -70,7 +70,7 @@ const getURLWithParam = (key, value) => {
 };
 
 const updateURL = url => {
-  history.pushState({}, null, url);
+  window.history.pushState({}, null, url);
 };
 
 const getParamsFromURL = query => {
@@ -119,4 +119,3 @@ export const extractQueryParamsFromUrl = () => {
 export const getStopPlaceIdFromURL = () => getParamsFromURL(window.location.search).stopPlaceId;
 
 export const getGroupOfStopPlacesIdFromURL = () => getParamsFromURL(window.location.search).groupOfStopPlacesId;
-

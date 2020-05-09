@@ -79,9 +79,7 @@ class Header extends React.Component {
         this.goToReports();
         break;
       default:
-        () => {
-          console.info('Invalid action', actionOnDone, ' ignored');
-        };
+        console.info('Invalid action', actionOnDone, ' ignored');
         break;
     }
   }

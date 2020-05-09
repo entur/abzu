@@ -17,9 +17,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
+import PManager from '../../singletons/PolygonManager';
+
 const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
 const markerShadow = require('../../static/icons/marker-shadow.png');
-import PManager from '../../singletons/PolygonManager';
 
 class NewStopMarker extends React.Component {
   static propTypes = {

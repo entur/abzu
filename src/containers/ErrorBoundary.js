@@ -15,7 +15,7 @@
 import React from 'react';
 import '../styles/snap.css';
 
-class ErrorBoundry extends React.Component {
+class ErrorBoundary extends React.Component {
 
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ class ErrorBoundry extends React.Component {
           </div>
           <p>Våre utviklere er blitt informert om problemet, men fyll gjerne ut en rapport her for å komme med tilleggsinformasjon ved å klikke her.</p>
           <p>Tusen takk for din hjelp!</p>
-          <a href={location.protocol + '//' + location.host}>Gå tilbake</a>
+          <a href={window.location.protocol + '//' + window.location.host}>Gå tilbake</a>
         </div>
       );
     } else {
@@ -56,4 +56,4 @@ class ErrorBoundry extends React.Component {
   }
 }
 
-export default ErrorBoundry;
+export default ErrorBoundary;

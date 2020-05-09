@@ -12,7 +12,6 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Keycloak from 'keycloak-js';
@@ -23,24 +22,18 @@ import cfgreader from './config/readConfig';
 import 'intl';
 import { ApolloProvider } from 'react-apollo';
 import axios from 'axios';
-import Promise from 'promise-polyfill';
-import 'babel-polyfill';
-import ErrorBoundry from './containers/ErrorBoundry';
-
-if (!window.Promise) {
-  window.Promise = Promise;
-}
+import ErrorBoundary from './containers/ErrorBoundary';
 
 function renderIndex(path, kc) {
   const configureStore = require('./store/store').default;
   const store = configureStore(kc);
   const history = syncHistoryWithStore(browserHistory, store.self);
   render(
-    <ErrorBoundry Raven={store.Raven}>
+    <ErrorBoundary Raven={store.Raven}>
       <ApolloProvider store={store.self} client={store.client}>
         <Root path={path} history={history} />
       </ApolloProvider>
-    </ErrorBoundry>
+    </ErrorBoundary>
     ,
     document.getElementById('root'),
   );
@@ -77,7 +70,7 @@ cfgreader.readConfig(
 );
 
 function authWithKeyCloak(path) {
-  let kc = new Keycloak(config.endpointBase + 'config/keycloak.json');
+  let kc = new Keycloak(window.config.endpointBase + 'config/keycloak.json');
 
   kc
     .init({ onLoad: 'login-required', checkLoginIframe: false })

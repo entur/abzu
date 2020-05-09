@@ -149,7 +149,7 @@ class ParkingItem extends React.Component {
         handleChangeCoordinates={this.handleChangeCoordinates}>
         <ItemHeader
           translations={translations}
-          location={location}
+          location={parking.location}
           expanded={expanded}
           handleLocateOnMap={() => handleLocateOnMap(parking.location, index, 'parking')}
           handleToggleCollapse={() => handleToggleCollapse(index, 'parking')}

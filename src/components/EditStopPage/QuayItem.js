@@ -141,6 +141,7 @@ class QuayItem extends React.Component {
       expanded,
       index,
       handleToggleCollapse,
+      handleLocateOnMap,
       intl,
       stopPlaceType,
       disabled,
@@ -219,7 +220,7 @@ class QuayItem extends React.Component {
         handleChangeCoordinates={this.handleChangeCoordinates}>
         <ItemHeader
           translations={translations}
-          location={location}
+          location={quay.location}
           expanded={expanded}
           handleLocateOnMap={() => handleLocateOnMap(quay.location, index, 'quay')}
           handleToggleCollapse={() => handleToggleCollapse(index, 'quay')}

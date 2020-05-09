@@ -13,10 +13,20 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-export userReducer from './userReducer';
-export mapReducer from './mapReducer';
-export stopPlaceReducer from './stopPlaceReducer';
-export reportReducer from './reportReducer';
-export rolesReducer from './rolesReducer';
-export snackbarReducer from './snackbarReducer';
-export groupOfStopPlaceReducer from './groupOfStopPlacesReducer';
+import userReducer from './userReducer';
+import mapReducer from './mapReducer';
+import stopPlaceReducer from './stopPlaceReducer';
+import reportReducer from './reportReducer';
+import rolesReducer from './rolesReducer';
+import snackbarReducer from './snackbarReducer';
+import groupOfStopPlaceReducer from './groupOfStopPlacesReducer';
+
+export {
+  userReducer,
+  mapReducer,
+  stopPlaceReducer,
+  reportReducer,
+  rolesReducer,
+  snackbarReducer,
+  groupOfStopPlaceReducer
+};

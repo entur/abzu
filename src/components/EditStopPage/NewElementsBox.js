@@ -193,12 +193,12 @@ class NewElementsBox extends React.Component {
         const type = ref.getAttribute('data-type');
 
         if (ref.draggable) {
-          const draggable = new L.Draggable(ref);
+          const draggable = new window.L.Draggable(ref);
 
           draggable.addEventListener('dragend', event => {
             // prevent adding to map if distance is too short (i.e. a mistake)
             if (event.distance < 50) {
-              L.DomUtil.setPosition(ref, L.point(0, 0));
+              window.L.DomUtil.setPosition(ref, window.L.point(0, 0));
               return;
             }
 
@@ -219,7 +219,7 @@ class NewElementsBox extends React.Component {
               target._startPos.y +
               heightOffset;
 
-            const absolutePosition = new L.Point(xPos, yPos);
+            const absolutePosition = new window.L.Point(xPos, yPos);
 
             const { lat, lng } = activeMap.containerPointToLatLng(
               absolutePosition,
@@ -238,7 +238,7 @@ class NewElementsBox extends React.Component {
               },
             });
 
-            L.DomUtil.setPosition(ref, L.point(0, 0));
+            window.L.DomUtil.setPosition(ref, window.L.point(0, 0));
           });
           draggable.enable();
         }

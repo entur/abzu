@@ -28,7 +28,7 @@ StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => disp
     stopPlaceId
   ));
   // i.e already creating a new group of stop place, update state instead
-  if (location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1) {
+  if (window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1) {
     dispatch(StopPlacesGroupActions.createNewGroup(client, stopPlaceId));
   } else {
     dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`,  'new'));

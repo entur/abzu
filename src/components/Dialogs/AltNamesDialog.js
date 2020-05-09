@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import React from 'react';
 import { connect } from 'react-redux';
 import MdDelete from 'material-ui/svg-icons/action/delete';

@@ -32,7 +32,7 @@ class Root extends React.Component {
 
     setTimeout(() => {
       const timeBeforeRequest = new Date().getTime();
-      axios.post(config.endpointBase + 'timeOffset', {
+      axios.post(window.config.endpointBase + 'timeOffset', {
         "clientTime": timeBeforeRequest
       }).then(response => {
         const resolvedTime = new Date().getTime();

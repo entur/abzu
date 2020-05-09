@@ -13,11 +13,19 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-export StopPlaceActions from './StopPlaceActions';
-export UserActions from './UserActions';
-export AssessmentActions from './AssessmentActions';
-export EquipmentActions from './EquipmentActions';
-export StopPlacesGroupActions from './StopPlacesGroupActions';
+import StopPlaceActions from './StopPlaceActions';
+import UserActions from './UserActions';
+import AssessmentActions from './AssessmentActions';
+import EquipmentActions from './EquipmentActions';
+import StopPlacesGroupActions from './StopPlacesGroupActions';
+
+export {
+  StopPlaceActions,
+  UserActions,
+  AssessmentActions,
+  EquipmentActions,
+  StopPlacesGroupActions
+};
 
 export const createThunk = (type, payLoad) => ({
   type,

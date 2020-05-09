@@ -13,13 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 
-const RoleParser = {};
 import PolygonManager from '../singletons/PolygonManager';
 import stopTypes from '../models/stopTypes';
 import { getLegalSubmodes, getLegalStopPlaceTypes } from '../reducers/rolesReducerUtils';
 import { submodes as allSubmodes } from '../models/submodes';
 import { Entities } from '../models/Entities';
 
+const RoleParser = {};
 
 const getRolesFromTokenByType = (tokenParsed, type) => {
   if (!tokenParsed || !tokenParsed.roles) return [];

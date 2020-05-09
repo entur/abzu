@@ -35,7 +35,7 @@ import BelongsToGroup from './../MainPage/BelongsToGroup';
 import ToolTippable from '../EditStopPage/ToolTippable';
 import AltNamesDialog from '../Dialogs/AltNamesDialog';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
-
+import UserActions from '../../actions/UserActions';
 
 class ParentStopDetails extends Component {
   constructor(props) {

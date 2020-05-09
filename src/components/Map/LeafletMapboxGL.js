@@ -12,7 +12,7 @@ L.MapboxGL = L.Layer.extend({
     L.setOptions(this, options);
 
     if (options.accessToken) {
-      mapboxgl.accessToken = options.accessToken;
+      window.mapboxgl.accessToken = options.accessToken;
     } else {
       throw new Error('You should provide a Mapbox GL access token as a token option.');
     }
@@ -114,7 +114,7 @@ L.MapboxGL = L.Layer.extend({
       attributionControl: false
     });
 
-    this._glMap = new mapboxgl.Map(options);
+    this._glMap = new window.mapboxgl.Map(options);
 
     // allow GL base map to pan beyond min/max latitudes
     this._glMap.transform.latRange = null;
@@ -153,7 +153,7 @@ L.MapboxGL = L.Layer.extend({
     // calling setView directly causes sync issues because it uses requestAnimFrame
 
     var tr = gl.transform;
-    tr.center = mapboxgl.LngLat.convert([center.lng, center.lat]);
+    tr.center = window.mapboxgl.LngLat.convert([center.lng, center.lat]);
     tr.zoom = this._map.getZoom() - 1;
 
     if (gl.transform.width !== size.x || gl.transform.height !== size.y) {
@@ -229,4 +229,3 @@ L.MapboxGL = L.Layer.extend({
 L.mapboxGL = function (options) {
   return new L.MapboxGL(options);
 };
-

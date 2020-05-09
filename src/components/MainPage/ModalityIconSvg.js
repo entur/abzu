@@ -57,7 +57,7 @@ class ModalityIconSvg extends React.Component {
       <span className={styles.clear} style={iconStyle}>
         <SvgIcon style={{ ...style, ...svgStyle }}>
           <use
-            xlinkHref={`${config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}
+            xlinkHref={`${window.config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}
           />
         </SvgIcon>
       </span>
