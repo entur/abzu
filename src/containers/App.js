@@ -34,7 +34,6 @@ class App extends React.Component {
       <MuiThemeProvider theme={muiTheme}>
         <V0MuiThemeProvider muiTheme={muiThemeV0}>
           <div>
-            <div className="version">v{process.env.VERSION}</div>
             <Header intl={intl} />
             {children}
             <SnackbarWrapper formatMessage={intl.formatMessage}/>

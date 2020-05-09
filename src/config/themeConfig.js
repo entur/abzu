@@ -27,8 +27,8 @@ export const getTiamatEnv = () => {
 };
 
 export const getEnvColor = env => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').getEnvColor(
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').getEnvColor(
       env
     );
   } else {
@@ -37,40 +37,40 @@ export const getEnvColor = env => {
 };
 
 export const getTheme = () => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').getTheme();
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').getTheme();
   } else {
     return getDefaultTheme();
   }
 };
 
 export const getLogo = () => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/logo.png');
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/logo.png');
   } else {
     return defaultLogo;
   }
 };
 
 export const getPrimaryColor = () => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').primary;
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').primary;
   } else {
     return defaultPrimary;
   }
 };
 
 export const getDarkColor = () => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').darkColor;
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').darkColor;
   } else {
     return defaultDarkColor;
   }
 };
 
 export const getPrimaryDarkerColor = () => {
-  if (process.env.THEME) {
-    return require('./themes/' + process.env.THEME + '/index.js').primaryDarker;
+  if (process.env.REACT_APP_THEME) {
+    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').primaryDarker;
   } else {
     return defaultPrimaryDarker;
   }
