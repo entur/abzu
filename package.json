@@ -35,7 +35,7 @@
     "babel-register": "6.26.0",
     "babel-runtime": "6.26.0",
     "body-parser": "1.18.2",
-    "convict": "^4.4.1",
+    "convict": "^6.0.0",
     "css-loader": "^1.0.1",
     "detect-browser": "^2.5.1",
     "express": "^4.17.1",
