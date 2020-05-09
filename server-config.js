@@ -1,10 +1,29 @@
+/*
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ *
+ */
+
 const fs = require('fs');
-var globSync = require('glob').sync;
-var path = require('path');
+const globSync = require('glob').sync;
+const path = require('path');
+const express = require('express');
 const axios = require('axios');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const convictConfig = require('./src/config/convict.js');
 const getRouteEntries = require('./src/routes/entries').getRouteEntries;
+
+const contentRoot = path.resolve(process.env.CONTENT_BASE || './build');
 
 const configureApp = async (app) => {
   const convict = await convictConfig;
@@ -138,6 +157,17 @@ const configureApp = async (app) => {
     }
   );
 
+  app.use(ENDPOINTBASE, express.static(contentRoot))
+
+  app.use(ENDPOINTBASE, (err, req, res, next) => {
+    res.status(500);
+    res.send({
+      code: 'INTERNAL_ERROR',
+      message: 'Ooops. Something broke back here. Sorry!'
+    });
+  });
+
+  return app;
 };
 
 
