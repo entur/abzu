@@ -4,7 +4,7 @@
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
-    "start": "PORT=9000 TIAMAT_ENV=test react-scripts start",
+    "start": "PORT=9000 TIAMAT_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "dev-local": "port=9000 TIAMAT_ENV=development TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql react-scripts start",
