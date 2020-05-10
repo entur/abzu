@@ -22,6 +22,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const convictConfig = require('./src/config/convict.js');
 const getRouteEntries = require('./src/routes/entries').getRouteEntries;
+const fallback = require('express-history-api-fallback');
 
 const contentRoot = path.resolve(process.env.CONTENT_BASE || './build');
 
@@ -158,6 +159,12 @@ const configureApp = async (app) => {
   );
 
   app.use(ENDPOINTBASE, express.static(contentRoot))
+
+  app.use(ENDPOINTBASE, fallback('index.html', { root: contentRoot }))
+  .use((err, req, res, next) => {
+    console.log(`Request to ${req.url} failed: ${err.stack}`);
+    next(err);
+  });
 
   app.use(ENDPOINTBASE, (err, req, res, next) => {
     res.status(500);
