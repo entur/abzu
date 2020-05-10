@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-const { detect } = require('detect-browser');
+const { detect } = require("detect-browser");
 
 export const isBrowserSupported = () => {
   const browser = detect();
@@ -22,11 +22,15 @@ export const isBrowserSupported = () => {
   }
 
   switch (browser.name) {
-    case 'chrome': return true;
-    case 'safari': return true;
-    case 'firefox': return true;
-    case 'edge': return true;
-    default: return false;
-  };
-
+    case "chrome":
+      return true;
+    case "safari":
+      return true;
+    case "firefox":
+      return true;
+    case "edge":
+      return true;
+    default:
+      return false;
+  }
 };

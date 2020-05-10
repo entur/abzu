@@ -12,86 +12,78 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import * as types from './Types';
-import { createThunk } from './';
+import * as types from "./Types";
+import { createThunk } from "./";
 
 var EquipmentActions = {};
 
-
-EquipmentActions.updateTicketMachineState = (
-  state,
-  entityType,
-  id,
-) => dispatch => {
+EquipmentActions.updateTicketMachineState = (state, entityType, id) => (
+  dispatch
+) => {
   dispatch(
     createThunk(types.CHANGED_TICKET_MACHINE_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 
-EquipmentActions.updateShelterEquipmentState = (
-  state,
-  entityType,
-  id,
-) => dispatch => {
+EquipmentActions.updateShelterEquipmentState = (state, entityType, id) => (
+  dispatch
+) => {
   dispatch(
     createThunk(types.CHANGED_SHELTER_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 
-EquipmentActions.updateSanitaryState = (state, entityType, id) => dispatch => {
+EquipmentActions.updateSanitaryState = (state, entityType, id) => (
+  dispatch
+) => {
   dispatch(
     createThunk(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 
-EquipmentActions.updateWaitingRoomState = (
-  state,
-  entityType,
-  id,
-) => dispatch => {
+EquipmentActions.updateWaitingRoomState = (state, entityType, id) => (
+  dispatch
+) => {
   dispatch(
     createThunk(types.CHANGED_WAITING_ROOM_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 
-EquipmentActions.updateCycleStorageState = (
-  state,
-  entityType,
-  id,
-) => dispatch => {
+EquipmentActions.updateCycleStorageState = (state, entityType, id) => (
+  dispatch
+) => {
   dispatch(
     createThunk(types.CHANGED_CYCLE_STORAGE_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 
-EquipmentActions.update512SignState = (state, entityType, id) => dispatch => {
+EquipmentActions.update512SignState = (state, entityType, id) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGED_TRANSPORT_SIGN_STATE, {
       state: state,
       type: entityType,
       id: id,
-    }),
+    })
   );
 };
 

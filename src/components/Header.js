@@ -12,49 +12,52 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-import { getLogo } from '../config/themeConfig';
-import MdAccount from 'material-ui/svg-icons/action/account-circle';
-import MdLanguage from 'material-ui/svg-icons/action/language';
-import MdSettings from 'material-ui/svg-icons/action/settings';
-import MdMap from 'material-ui/svg-icons/maps/map';
-import { UserActions } from '../actions/';
-import { getIn } from '../utils';
-import MdReport from 'material-ui/svg-icons/content/report';
-import MdHelp from 'material-ui/svg-icons/action/help';
-import { getTiamatEnv, getEnvColor } from '../config/themeConfig';
-import ConfirmDialog from './Dialogs/ConfirmDialog';
+import React from "react";
+import { connect } from "react-redux";
+import AppBar from "material-ui/AppBar";
+import IconButton from "material-ui/IconButton";
+import IconMenu from "material-ui/IconMenu";
+import MenuItem from "material-ui/MenuItem";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
+import { getLogo } from "../config/themeConfig";
+import MdAccount from "material-ui/svg-icons/action/account-circle";
+import MdLanguage from "material-ui/svg-icons/action/language";
+import MdSettings from "material-ui/svg-icons/action/settings";
+import MdMap from "material-ui/svg-icons/maps/map";
+import { UserActions } from "../actions/";
+import { getIn } from "../utils";
+import MdReport from "material-ui/svg-icons/content/report";
+import MdHelp from "material-ui/svg-icons/action/help";
+import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isConfirmDialogOpen: false,
-      actionOnDone: 'GoToMain'
+      actionOnDone: "GoToMain",
     };
   }
 
   goToMain() {
-    this.props.dispatch(UserActions.navigateTo('/', ''));
+    this.props.dispatch(UserActions.navigateTo("/", ""));
   }
 
   handleConfirmChangeRoute(next, action) {
-    const { stopHasBeenModified, isDisplayingReports, isDisplayingEditStopPlace } = this.props;
+    const {
+      stopHasBeenModified,
+      isDisplayingReports,
+      isDisplayingEditStopPlace,
+    } = this.props;
 
     if (isDisplayingReports) {
       next();
     } else if (stopHasBeenModified && isDisplayingEditStopPlace) {
       this.setState({
         isConfirmDialogOpen: true,
-        actionOnDone: action
+        actionOnDone: action,
       });
     } else {
       next();
@@ -67,19 +70,19 @@ class Header extends React.Component {
 
   handleConfirm() {
     this.setState({
-      isConfirmDialogOpen: false
+      isConfirmDialogOpen: false,
     });
 
     const { actionOnDone } = this.state;
     switch (actionOnDone) {
-      case 'GoToMain':
+      case "GoToMain":
         this.goToMain();
         break;
-      case 'GoToReports':
+      case "GoToReports":
         this.goToReports();
         break;
       default:
-        console.info('Invalid action', actionOnDone, ' ignored');
+        console.info("Invalid action", actionOnDone, " ignored");
         break;
     }
   }
@@ -91,11 +94,13 @@ class Header extends React.Component {
   }
 
   goToReports() {
-    this.props.dispatch(UserActions.navigateTo('reports', ''));
+    this.props.dispatch(UserActions.navigateTo("reports", ""));
   }
 
   handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
-    this.props.dispatch(UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value));
+    this.props.dispatch(
+      UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value)
+    );
   }
 
   handleToggleMultiPolylines(value) {
@@ -127,32 +132,35 @@ class Header extends React.Component {
       isCompassBearingEnabled,
       showExpiredStops,
       showMultimodalEdges,
-      showPublicCode
+      showPublicCode,
     } = this.props;
 
     const { formatMessage, locale } = intl;
 
-    const help = formatMessage({ id: 'help' });
-    const title = formatMessage({ id: '_title' });
-    const language = formatMessage({ id: 'language' });
-    const english = formatMessage({ id: 'english' });
-    const norwegian = formatMessage({ id: 'norwegian' });
-    const swedish = formatMessage({ id: 'swedish' });
-    const french = formatMessage({ id: 'french' });
-    const logOut = formatMessage({ id: 'log_out' });
-    const settings = formatMessage({ id: 'settings' });
-    const publicCodePrivateCodeSetting = formatMessage({ id: 'publicCode_privateCode_setting_label' });
-    const mapSettings = formatMessage({ id: 'map_settings' });
-    const showPathLinks = formatMessage({ id: 'show_path_links' });
-    const showCompassBearing = formatMessage({ id: 'show_compass_bearing' });
-    const reportSite = formatMessage({ id: 'report_site' });
-    const expiredStopLabel = formatMessage({ id: 'show_expired_stops' });
-    const userGuide = formatMessage({ id: 'user_guide' });
-    const username = getIn(kc, ['tokenParsed', 'preferred_username'], '');
-    const showMultimodalEdgesLabel = formatMessage({id: 'show_multimodal_edges'});
-    const showPublicCodeLabel = formatMessage({id: 'show_public_code'});
-    const showPrivateCodeLabel = formatMessage({id: 'show_private_code'});
-    const quayCodeShowingLabel = formatMessage({id: 'quay_marker_label'});
+    const title = formatMessage({ id: "_title" });
+    const language = formatMessage({ id: "language" });
+    const english = formatMessage({ id: "english" });
+    const norwegian = formatMessage({ id: "norwegian" });
+    const swedish = formatMessage({ id: "swedish" });
+    const french = formatMessage({ id: "french" });
+    const logOut = formatMessage({ id: "log_out" });
+    const settings = formatMessage({ id: "settings" });
+    const publicCodePrivateCodeSetting = formatMessage({
+      id: "publicCode_privateCode_setting_label",
+    });
+    const mapSettings = formatMessage({ id: "map_settings" });
+    const showPathLinks = formatMessage({ id: "show_path_links" });
+    const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
+    const reportSite = formatMessage({ id: "report_site" });
+    const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
+    const userGuide = formatMessage({ id: "user_guide" });
+    const username = getIn(kc, ["tokenParsed", "preferred_username"], "");
+    const showMultimodalEdgesLabel = formatMessage({
+      id: "show_multimodal_edges",
+    });
+    const showPublicCodeLabel = formatMessage({ id: "show_public_code" });
+    const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
+    const quayCodeShowingLabel = formatMessage({ id: "quay_marker_label" });
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();
@@ -162,34 +170,41 @@ class Header extends React.Component {
         <AppBar
           style={{
             zIndex: 999,
-            background: getEnvColor(tiamatEnv)
+            background: getEnvColor(tiamatEnv),
           }}
           title={
             <div>
               {title}
-              {(tiamatEnv === 'test' || tiamatEnv === 'development') &&
-                <span style={{ fontSize: 18, marginLeft: 8, color: '#ddffa5' }}>
+              {(tiamatEnv === "test" || tiamatEnv === "development") && (
+                <span style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}>
                   {tiamatEnv}
-                </span>}
+                </span>
+              )}
             </div>
           }
           showMenuIconButton={true}
           iconElementLeft={
             <img
+              alt=""
               src={logo}
-              style={{ width: 40, height: 'auto', cursor: 'pointer' }}
+              style={{ width: 40, height: "auto", cursor: "pointer" }}
               onClick={() =>
                 this.handleConfirmChangeRoute(
                   this.goToMain.bind(this),
-                  'GoToMain'
-                )}
+                  "GoToMain"
+                )
+              }
             />
           }
           iconElementRight={
             <IconMenu
-              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+              iconButtonElement={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              targetOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "top" }}
             >
               <MenuItem
                 leftIcon={<MdReport color="#41c0c4" />}
@@ -197,8 +212,9 @@ class Header extends React.Component {
                 onClick={() =>
                   this.handleConfirmChangeRoute(
                     this.goToReports.bind(this),
-                    'GoToReports'
-                  )}
+                    "GoToReports"
+                  )
+                }
                 style={{ fontSize: 12, padding: 0 }}
               />
               <MenuItem
@@ -211,14 +227,19 @@ class Header extends React.Component {
                 menuItems={[
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleTogglePublicCodePrivateCodeOnStopPlaces(!isPublicCodePrivateCodeOnStopPlacesEnabled)}
+                    onClick={() =>
+                      this.handleTogglePublicCodePrivateCodeOnStopPlaces(
+                        !isPublicCodePrivateCodeOnStopPlacesEnabled
+                      )
+                    }
                     insetChildren
                     desktop={true}
                     multiple
                     checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
                     primaryText={publicCodePrivateCodeSetting}
-                  />
-                ]} />
+                  />,
+                ]}
+              />
               <MenuItem
                 primaryText={mapSettings}
                 rightIcon={<ArrowDropRight />}
@@ -230,7 +251,8 @@ class Header extends React.Component {
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
-                      this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)}
+                      this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
+                    }
                     insetChildren
                     desktop={true}
                     multiple
@@ -240,7 +262,8 @@ class Header extends React.Component {
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
-                      this.handleToggleCompassBearing(!isCompassBearingEnabled)}
+                      this.handleToggleCompassBearing(!isCompassBearingEnabled)
+                    }
                     insetChildren
                     desktop={true}
                     multiple
@@ -250,7 +273,8 @@ class Header extends React.Component {
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
-                      this.handleToggleShowExpiredStops(!showExpiredStops)}
+                      this.handleToggleShowExpiredStops(!showExpiredStops)
+                    }
                     insetChildren
                     desktop={true}
                     multiple
@@ -260,7 +284,8 @@ class Header extends React.Component {
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
-                      this.handleToggleMultimodalEdges(!showMultimodalEdges)}
+                      this.handleToggleMultimodalEdges(!showMultimodalEdges)
+                    }
                     insetChildren
                     desktop={true}
                     multiple
@@ -286,8 +311,9 @@ class Header extends React.Component {
                         insetChildren
                         primaryText={showPrivateCodeLabel}
                         checked={!showPublicCode}
-                      />]}
-                  />
+                      />,
+                    ]}
+                  />,
                 ]}
               />
               <MenuItem
@@ -298,32 +324,32 @@ class Header extends React.Component {
                 menuItems={[
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage('nb')}
+                    onClick={() => this.handleSetLanguage("nb")}
                     insetChildren
                     primaryText={norwegian}
-                    checked={locale === 'nb'}
+                    checked={locale === "nb"}
                   />,
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage('en')}
+                    onClick={() => this.handleSetLanguage("en")}
                     insetChildren
                     primaryText={english}
-                    checked={locale === 'en'}
+                    checked={locale === "en"}
                   />,
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage('fr')}
+                    onClick={() => this.handleSetLanguage("fr")}
                     insetChildren
                     primaryText={french}
-                    checked={locale === 'fr'}
+                    checked={locale === "fr"}
                   />,
                   <MenuItem
                     style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage('sv')}
+                    onClick={() => this.handleSetLanguage("sv")}
                     insetChildren
                     primaryText={swedish}
-                    checked={locale === 'sv'}
-                  />
+                    checked={locale === "sv"}
+                  />,
                 ]}
               />
               <MenuItem
@@ -346,17 +372,17 @@ class Header extends React.Component {
           open={this.state.isConfirmDialogOpen}
           handleClose={() => {
             this.setState({
-              isConfirmDialogOpen: false
+              isConfirmDialogOpen: false,
             });
           }}
           handleConfirm={() => {
             this.handleConfirm();
           }}
           messagesById={{
-            title: 'discard_changes_title',
-            body: 'discard_changes_body',
-            confirm: 'discard_changes_confirm',
-            cancel: 'discard_changes_cancel'
+            title: "discard_changes_title",
+            body: "discard_changes_body",
+            confirm: "discard_changes_confirm",
+            cancel: "discard_changes_cancel",
           }}
           intl={intl}
         />
@@ -365,11 +391,15 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
-  isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
-  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
-  isPublicCodePrivateCodeOnStopPlacesEnabled: state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
+  isDisplayingEditStopPlace:
+    state.routing.locationBeforeTransitions.pathname.indexOf("/stop_place/") >
+    -1,
+  isDisplayingReports:
+    state.routing.locationBeforeTransitions.pathname === "/reports",
+  isPublicCodePrivateCodeOnStopPlacesEnabled:
+    state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   kc: state.roles.kc,
   showExpiredStops: state.stopPlace.showExpiredStops,

@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import AdjacentStopConnection from './AdjacentStopConnection';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
+import AdjacentStopConnection from "./AdjacentStopConnection";
 
 class AdjacentStopList extends Component {
-
   render() {
     if (!this.props.stopPlace.adjacentSites) {
       return null;
@@ -28,23 +27,27 @@ class AdjacentStopList extends Component {
 
     const stopPlaceId = this.props.stopPlace.id;
 
-    const refs = this.props.stopPlace.adjacentSites.map(adjacentRef => {
+    const refs = this.props.stopPlace.adjacentSites.map((adjacentRef) => {
       const key = adjacentRef.ref + "-" + stopPlaceId;
-      return <AdjacentStopConnection
-        key={key}
-        stopPlace={this.props.stopPlace}
-        adjacentRef={adjacentRef.ref}
-        handleRemoveAdjacentConnection={this.props.handleRemoveAdjacentConnection}
-      />
-    }
-    );
+      return (
+        <AdjacentStopConnection
+          key={key}
+          stopPlace={this.props.stopPlace}
+          adjacentRef={adjacentRef.ref}
+          handleRemoveAdjacentConnection={
+            this.props.handleRemoveAdjacentConnection
+          }
+        />
+      );
+    });
 
     return (
       <div>
-        {refs.length > 0 &&
-          <span style={{ fontWeight: 600, fontSize: '0.8em' }}>
-            {formatMessage({id:'connected_with_adjacent_stop_places'})}
-        </span>}
+        {refs.length > 0 && (
+          <span style={{ fontWeight: 600, fontSize: "0.8em" }}>
+            {formatMessage({ id: "connected_with_adjacent_stop_places" })}
+          </span>
+        )}
         {refs}
       </div>
     );
@@ -53,8 +56,7 @@ class AdjacentStopList extends Component {
 
 AdjacentStopList.propTypes = {
   stopPlace: PropTypes.object.isRequired,
-  handleRemoveAdjacentConnection: PropTypes.func.isRequired
+  handleRemoveAdjacentConnection: PropTypes.func.isRequired,
 };
 
 export default injectIntl(AdjacentStopList);
-

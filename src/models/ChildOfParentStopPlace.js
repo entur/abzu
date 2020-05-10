@@ -12,12 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import ParentStopPlace from './ParentStopPlace';
-import StopPlace from './StopPlace';
+import ParentStopPlace from "./ParentStopPlace";
+import StopPlace from "./StopPlace";
 
 class ChildOfParentStopPlace {
-
   constructor(stop, isActive, parking, userDefinedCoordinates, resourceId) {
     this.stop = stop;
     this.isActive = isActive;
@@ -61,14 +59,15 @@ class ChildOfParentStopPlace {
       }
 
       if (!stopPlace.parentTopographicPlace) {
-        stopPlace.parentTopographicPlace = stopPlace.parentStop.parentTopographicPlace;
+        stopPlace.parentTopographicPlace =
+          stopPlace.parentStop.parentTopographicPlace;
       }
 
       stopPlace.name = stopPlace.name || stopPlace.parentStop.name;
-      stopPlace.validBetween = { ... stopPlace.parentStop.validBetween };
+      stopPlace.validBetween = { ...stopPlace.parentStop.validBetween };
 
       return stopPlace;
-  } catch (e) {
+    } catch (e) {
       console.log("Unable to map childOfParentStopPlace", e);
       return null;
     }

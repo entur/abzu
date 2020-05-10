@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 const accessibilityAssements = {
   wheelchairAccess: {
-    options: ['TRUE', 'FALSE', 'UNKNOWN'],
+    options: ["TRUE", "FALSE", "UNKNOWN"],
   },
   stepFreeAccess: {
-    options: ['TRUE', 'FALSE', 'UNKNOWN'],
+    options: ["TRUE", "FALSE", "UNKNOWN"],
   },
   colors: {
-    UNKNOWN: '#e8e3e3',
-    TRUE: '#181C56',
-    FALSE: '#F44336',
-    PARTIAL: '#FF9800',
+    UNKNOWN: "#e8e3e3",
+    TRUE: "#181C56",
+    FALSE: "#F44336",
+    PARTIAL: "#FF9800",
   },
 };
 

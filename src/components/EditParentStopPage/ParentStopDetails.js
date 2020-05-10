@@ -12,30 +12,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
-import IconButton from 'material-ui/IconButton';
-import MdLanguage from 'material-ui/svg-icons/action/language';
-import ImportedId from '../EditStopPage/ImportedId';
-import { StopPlaceActions } from '../../actions/';
-import TextField from 'material-ui/TextField';
-import Divider from 'material-ui/Divider';
-import StopPlaceList from './StopPlaceList';
-import FlatButton from 'material-ui/FlatButton';
-import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
-import AddStopPlaceToParent from '../Dialogs/AddStopPlaceToParent';
-import { getAddStopPlaceInfo } from '../../graphql/Tiamat/actions';
-import { withApollo } from 'react-apollo';
-import TagsDialog from '../EditStopPage/TagsDialog';
-import TagTray from '../MainPage/TagTray';
-import BelongsToGroup from './../MainPage/BelongsToGroup';
-import ToolTippable from '../EditStopPage/ToolTippable';
-import AltNamesDialog from '../Dialogs/AltNamesDialog';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
-import UserActions from '../../actions/UserActions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import MdWarning from "material-ui/svg-icons/alert/warning";
+import IconButton from "material-ui/IconButton";
+import MdLanguage from "material-ui/svg-icons/action/language";
+import ImportedId from "../EditStopPage/ImportedId";
+import { StopPlaceActions } from "../../actions/";
+import TextField from "material-ui/TextField";
+import Divider from "material-ui/Divider";
+import StopPlaceList from "./StopPlaceList";
+import FlatButton from "material-ui/FlatButton";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
+import { getAddStopPlaceInfo } from "../../graphql/Tiamat/actions";
+import { withApollo } from "react-apollo";
+import TagsDialog from "../EditStopPage/TagsDialog";
+import TagTray from "../MainPage/TagTray";
+import BelongsToGroup from "./../MainPage/BelongsToGroup";
+import ToolTippable from "../EditStopPage/ToolTippable";
+import AltNamesDialog from "../Dialogs/AltNamesDialog";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import UserActions from "../../actions/UserActions";
 
 class ParentStopDetails extends Component {
   constructor(props) {
@@ -45,7 +44,7 @@ class ParentStopDetails extends Component {
       addStopPlaceOpen: false,
       altNamesDialogOpen: false,
       tagsOpen: false,
-      isLoading: false
+      isLoading: false,
     };
   }
 
@@ -56,14 +55,14 @@ class ParentStopDetails extends Component {
   handleAddStopPlaceClose() {
     this.setState({
       addStopPlaceOpen: false,
-      altNamesDialogOpen: false
+      altNamesDialogOpen: false,
     });
   }
 
   handleAddStopPlaceOpen() {
     this.setState({
       addStopPlaceOpen: true,
-      altNamesDialogOpen: false
+      altNamesDialogOpen: false,
     });
   }
 
@@ -71,28 +70,30 @@ class ParentStopDetails extends Component {
     const { dispatch, client } = this.props;
     this.setState({
       addStopPlaceOpen: false,
-      altNamesDialogOpen: false
+      altNamesDialogOpen: false,
     });
 
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
-    getAddStopPlaceInfo(client, checkedItems).then(result => {
-      dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
-      this.setState({
-        isLoading: false
+    getAddStopPlaceInfo(client, checkedItems)
+      .then((result) => {
+        dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
+        this.setState({
+          isLoading: false,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          isLoading: false,
+        });
       });
-    }).catch( err => {
-      this.setState({
-        isLoading: false
-      });
-    });
   }
 
   handleOpenAltNames() {
     this.setState({
       altNamesDialogOpen: true,
-      tagsOpen: false
+      tagsOpen: false,
     });
     if (this.props.keyValuesDialogOpen) {
       this.props.dispatch(UserActions.closeKeyValuesDialog());
@@ -104,7 +105,7 @@ class ParentStopDetails extends Component {
     dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     dispatch(StopPlaceActions.changeMapCenter(position, 14));
     this.setState({
-      changePositionOpen: false
+      changePositionOpen: false,
     });
   }
 
@@ -120,120 +121,134 @@ class ParentStopDetails extends Component {
 
   render() {
     const { stopPlace, intl, disabled } = this.props;
-    const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } = this.state;
+    const {
+      changePositionOpen,
+      addStopPlaceOpen,
+      altNamesDialogOpen,
+    } = this.state;
     const { formatMessage } = intl;
 
     const hasAltNames = !!(
       stopPlace.alternativeNames && stopPlace.alternativeNames.length
     );
 
-    const altNamesHint = formatMessage({ id: 'alternative_names' });
+    const altNamesHint = formatMessage({ id: "alternative_names" });
     const primaryDarker = getPrimaryDarkerColor();
 
     return (
-      <div style={{ padding: '10px 5px', minHeight: 600 }}>
-        <div style={{ fontWeight: 600, fontSize: '1.1em', display: 'flex', justifyContent: 'space-between'}}>
-          <div>{formatMessage({ id: 'parentStopPlace' })}</div>
+      <div style={{ padding: "10px 5px", minHeight: 600 }}>
+        <div
+          style={{
+            fontWeight: 600,
+            fontSize: "1.1em",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>{formatMessage({ id: "parentStopPlace" })}</div>
           <FlatButton
             onClick={() => this.setState({ tagsOpen: true })}
             style={{ marginTop: -8 }}
-            label={formatMessage({ id: 'tags' })}
+            label={formatMessage({ id: "tags" })}
             disabled={!stopPlace.id}
           />
         </div>
-        { !stopPlace.location &&
-          <div style={{ textAlign: 'right' }}>
+        {!stopPlace.location && (
+          <div style={{ textAlign: "right" }}>
             <FlatButton
-              label={formatMessage({ id: 'set_centroid' })}
-              labelStyle={{ fontSize: '0.7em' }}
+              label={formatMessage({ id: "set_centroid" })}
+              labelStyle={{ fontSize: "0.7em" }}
               disabled={disabled}
               onClick={() => this.setState({ changePositionOpen: true })}
             />
           </div>
-        }
+        )}
         <div>
-          {!stopPlace.isNewStop &&
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+          {!stopPlace.isNewStop && (
+            <div style={{ display: "flex", alignItems: "center" }}>
               <span style={{ fontWeight: 600 }}>
-                {formatMessage({ id: 'version' })} {stopPlace.version}
+                {formatMessage({ id: "version" })} {stopPlace.version}
               </span>
-              {stopPlace.hasExpired &&
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+              {stopPlace.hasExpired && (
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <MdWarning
                     color="orange"
                     style={{ marginTop: -5, marginLeft: 10 }}
                   />
-                  <span style={{ color: '#bb271c', marginLeft: 5 }}>
-                    {formatMessage({ id: 'stop_has_expired' })}
+                  <span style={{ color: "#bb271c", marginLeft: 5 }}>
+                    {formatMessage({ id: "stop_has_expired" })}
                   </span>
-                </div>}
-            </div>}
-          <div style={{padding: 5}}>
+                </div>
+              )}
+            </div>
+          )}
+          <div style={{ padding: 5 }}>
             <TagTray
               tags={stopPlace.tags}
-              textSize={'0.7em'}
-              style={{display: 'flex', flexWrap: 'wrap'}}
+              textSize={"0.7em"}
+              style={{ display: "flex", flexWrap: "wrap" }}
             />
           </div>
           <ImportedId
             id={stopPlace.importedId}
-            text={formatMessage({ id: 'local_reference' })}
+            text={formatMessage({ id: "local_reference" })}
           />
         </div>
         {stopPlace.belongsToGroup && (
           <BelongsToGroup
             formatMessage={formatMessage}
             groups={stopPlace.groups}
-            style={{marginTop: 5}}
-            />
+            style={{ marginTop: 5 }}
+          />
         )}
-        <div style={{ width: '98%', margin: 'auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ width: "98%", margin: "auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
-              hintText={formatMessage({ id: 'name' })}
-              floatingLabelText={formatMessage({ id: 'name' })}
+              hintText={formatMessage({ id: "name" })}
+              floatingLabelText={formatMessage({ id: "name" })}
               fullWidth={true}
               value={stopPlace.name}
               disabled={disabled}
               style={{ marginTop: -10, width: 300 }}
               errorText={
-                stopPlace.name ? '' : formatMessage({ id: 'name_is_required' })
+                stopPlace.name ? "" : formatMessage({ id: "name_is_required" })
               }
               onChange={this.handleChangeName.bind(this)}
             />
-            <div style={{ display: 'flex', alignItems: 'right' }}>
+            <div style={{ display: "flex", alignItems: "right" }}>
               <ToolTippable toolTipText={altNamesHint}>
                 <IconButton onClick={this.handleOpenAltNames.bind(this)}>
-                  <MdLanguage
-                    color={hasAltNames ? primaryDarker : '#000'}
-                  />
+                  <MdLanguage color={hasAltNames ? primaryDarker : "#000"} />
                 </IconButton>
               </ToolTippable>
             </div>
           </div>
           <TextField
-            hintText={formatMessage({ id: 'description' })}
-            floatingLabelText={formatMessage({ id: 'description' })}
+            hintText={formatMessage({ id: "description" })}
+            floatingLabelText={formatMessage({ id: "description" })}
             fullWidth={true}
             disabled={disabled}
-            value={stopPlace.description || ''}
+            value={stopPlace.description || ""}
             onChange={this.handleChangeDescription.bind(this)}
           />
           <Divider />
         </div>
         <StopPlaceList
           handleAddStopPlaceOpen={this.handleAddStopPlaceOpen.bind(this)}
-          handleRemoveAdjacentConnection={this.handleRemoveAdjacentConnection.bind(this)}
+          handleRemoveAdjacentConnection={this.handleRemoveAdjacentConnection.bind(
+            this
+          )}
           stopPlaces={stopPlace.children}
           disabled={disabled}
           isLoading={this.state.isLoading}
         />
-        {addStopPlaceOpen &&
+        {addStopPlaceOpen && (
           <AddStopPlaceToParent
             open={addStopPlaceOpen}
             handleClose={this.handleAddStopPlaceClose.bind(this)}
             handleConfirm={this.handleAddStopPlace.bind(this)}
-          />}
+          />
+        )}
         <CoordinatesDialog
           intl={this.props.intl}
           open={changePositionOpen}
@@ -264,7 +279,7 @@ class ParentStopDetails extends Component {
 }
 
 const mapStateToProps = ({ stopPlace }) => ({
-  stopPlace: stopPlace.current
+  stopPlace: stopPlace.current,
 });
 
 export default withApollo(

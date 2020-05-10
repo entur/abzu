@@ -28,13 +28,16 @@
     "google-maps": "^3.3.0",
     "graphql-fetch": "1.0.1",
     "graphql-tag": "2.4.2",
+    "husky": "^4.2.5",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
     "keycloak-js": "3.2.1",
     "leaflet": "1.2.0",
+    "lint-staged": "^10.2.2",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.19.4",
     "moment": "2.19.3",
+    "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "raven": "^2.6.4",
     "raven-js": "^3.27.2",
@@ -65,6 +68,16 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
     ]
   }
 }

@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import FacilitiesStopTab from './FacilitiesStopTab';
-import AcessibilityStopTab from './AcessibilityStopTab';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import { Tabs, Tab } from "material-ui/Tabs";
+import FacilitiesStopTab from "./FacilitiesStopTab";
+import AcessibilityStopTab from "./AcessibilityStopTab";
+import { injectIntl } from "react-intl";
 
 class EditStopAdditional extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class EditStopAdditional extends React.Component {
     };
   }
 
-  handleTabOnChange = value => {
+  handleTabOnChange = (value) => {
     this.setState({
       activeTabIndex: value,
     });
@@ -37,12 +37,12 @@ class EditStopAdditional extends React.Component {
     const { formatMessage } = intl;
 
     const style = {
-      background: '#fff',
+      background: "#fff",
     };
 
     const tabStyle = {
-      color: '#000',
-      fontSize: '0.7em',
+      color: "#000",
+      fontSize: "0.7em",
       fontWeight: 600,
     };
 
@@ -53,18 +53,18 @@ class EditStopAdditional extends React.Component {
         <Tabs
           onChange={this.handleTabOnChange.bind(this)}
           value={activeTabIndex}
-          tabItemContainerStyle={{ backgroundColor: '#fff', marginTop: -5 }}
+          tabItemContainerStyle={{ backgroundColor: "#fff", marginTop: -5 }}
         >
           <Tab
             style={tabStyle}
-            label={formatMessage({ id: 'accessibility' })}
+            label={formatMessage({ id: "accessibility" })}
             value={0}
           >
             <AcessibilityStopTab intl={intl} disabled={disabled} />
           </Tab>
           <Tab
             style={tabStyle}
-            label={formatMessage({ id: 'facilities' })}
+            label={formatMessage({ id: "facilities" })}
             value={1}
           >
             <FacilitiesStopTab intl={intl} disabled={disabled} />

@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import SvgIcon from 'material-ui/SvgIcon';
+import React from "react";
+import SvgIcon from "material-ui/SvgIcon";
 
-const NoTicketMachine = props =>
+const NoTicketMachine = (props) => (
   <SvgIcon {...props} viewBox="0 0 41.94 125">
     <rect x="26.543" y="56.41" width="6.045" height="1.626" id="rect4" />
     <path
@@ -23,7 +23,7 @@ const NoTicketMachine = props =>
       id="path6"
     />
     <text
-      style={{ fontSize: 80.5, lineHeight: '125%' }}
+      style={{ fontSize: 80.5, lineHeight: "125%" }}
       x="1.0593219"
       y="84.216103"
       id="text3652"
@@ -32,10 +32,11 @@ const NoTicketMachine = props =>
         id="tspan3654"
         x="-15.0593219"
         y="98.216103"
-        style={{ fontSize: 120, fill: '#a30000', opacity: 0.5 }}
+        style={{ fontSize: 120, fill: "#a30000", opacity: 0.5 }}
       >
         X
       </tspan>
     </text>
-  </SvgIcon>;
+  </SvgIcon>
+);
 export default NoTicketMachine;

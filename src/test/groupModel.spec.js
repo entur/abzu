@@ -12,16 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
+import mockGroupOfStopPlaces from "./mock/mockGroupOfStopPlaces";
 
-import GroupOfStopPlaces from '../models/GroupOfStopPlaces';
-import mockGroupOfStopPlaces from './mock/mockGroupOfStopPlaces';
-
-describe('Group of stop places - models', () => {
-
-  test('should retrive a unique list of topographic places for members of a group', () => {
-    const clientGOS = new GroupOfStopPlaces(mockGroupOfStopPlaces, true).toClient();
+describe("Group of stop places - models", () => {
+  test("should retrive a unique list of topographic places for members of a group", () => {
+    const clientGOS = new GroupOfStopPlaces(
+      mockGroupOfStopPlaces,
+      true
+    ).toClient();
     expect(clientGOS.topographicPlaces).toMatchSnapshot();
   });
-
 });
-

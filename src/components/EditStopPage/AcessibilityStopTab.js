@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import ToolTipIcon from './ToolTipIcon';
-import Divider from 'material-ui/Divider';
-import WheelChairPopover from './WheelChairPopover';
-import StepFreePopover from './StepFreePopover';
-import { connect } from 'react-redux';
-import { getIn } from '../../utils';
-import { AssessmentActions } from '../../actions/';
+import React from "react";
+import ToolTipIcon from "./ToolTipIcon";
+import Divider from "material-ui/Divider";
+import WheelChairPopover from "./WheelChairPopover";
+import StepFreePopover from "./StepFreePopover";
+import { connect } from "react-redux";
+import { getIn } from "../../utils";
+import { AssessmentActions } from "../../actions/";
 
 class AcessibilityStopTab extends React.Component {
   handleWheelChairChange(value) {
@@ -36,19 +36,19 @@ class AcessibilityStopTab extends React.Component {
 
     const wheelchairAccess = getIn(
       stopPlace,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UNKNOWN',
+      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      "UNKNOWN"
     );
     const stepFreeAccess = getIn(
       stopPlace,
-      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
-      'UNKNOWN',
+      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      "UNKNOWN"
     );
 
     return (
       <div style={{ padding: 10 }}>
         <div style={{ marginTop: 10 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <WheelChairPopover
               disabled={disabled}
               displayLabel={true}
@@ -57,13 +57,13 @@ class AcessibilityStopTab extends React.Component {
               handleChange={this.handleWheelChairChange.bind(this)}
             />
             <ToolTipIcon
-              title={formatMessage({ id: 'wheelchair_stop_hint' })}
+              title={formatMessage({ id: "wheelchair_stop_hint" })}
             />
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />
         </div>
         <div style={{ marginTop: 10 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <StepFreePopover
               disabled={disabled}
               displayLabel={true}
@@ -72,7 +72,7 @@ class AcessibilityStopTab extends React.Component {
               handleChange={this.handleStepFreeChange.bind(this)}
             />
             <ToolTipIcon
-              title={formatMessage({ id: 'step_free_access_hint' })}
+              title={formatMessage({ id: "step_free_access_hint" })}
             />
           </div>
         </div>
@@ -81,7 +81,7 @@ class AcessibilityStopTab extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   stopPlace: state.stopPlace.current,
 });
 

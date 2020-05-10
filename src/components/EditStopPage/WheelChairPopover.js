@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import MenuItem from 'material-ui/MenuItem';
-import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
-import WheelChair from 'material-ui/svg-icons/action/accessible';
-import IconButton from 'material-ui/IconButton';
-import accessibilityAssessments from '../../models/accessibilityAssessments';
+import React from "react";
+import MenuItem from "material-ui/MenuItem";
+import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
+import WheelChair from "material-ui/svg-icons/action/accessible";
+import IconButton from "material-ui/IconButton";
+import accessibilityAssessments from "../../models/accessibilityAssessments";
 
 class WheelChairPopover extends React.Component {
   constructor(props) {
@@ -57,11 +56,11 @@ class WheelChairPopover extends React.Component {
     return (
       <div>
         <div
-          style={{ display: 'flex', alignItems: 'center', fontSize: '0.8em' }}
+          style={{ display: "flex", alignItems: "center", fontSize: "0.8em" }}
         >
           <IconButton
-            style={{ borderBottom: disabled ? 'none' : '1px dotted grey' }}
-            onClick={e => {
+            style={{ borderBottom: disabled ? "none" : "1px dotted grey" }}
+            onClick={(e) => {
               if (!disabled) this.handleOpenPopover(e);
             }}
           >
@@ -69,38 +68,40 @@ class WheelChairPopover extends React.Component {
               color={accessibilityAssessments.colors[wheelchairAccess]}
             />
           </IconButton>
-          {displayLabel
-            ? <div style={{ maginLeft: 5 }}>
-                {
-                  formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}` })
-                }
-              </div>
-            : ''}
+          {displayLabel ? (
+            <div style={{ maginLeft: 5 }}>
+              {formatMessage({
+                id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}`,
+              })}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <Popover
           open={open}
           anchorEl={anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "left", vertical: "top" }}
           onRequestClose={this.handleClosePopover.bind(this)}
           animation={PopoverAnimationVertical}
         >
           {accessibilityAssessments.wheelchairAccess.options.map(
-            (option, index) =>
+            (option, index) => (
               <MenuItem
-                key={'wheelChairItem' + index}
+                key={"wheelChairItem" + index}
                 value={option}
-                style={{ padding: '0px 10px' }}
+                style={{ padding: "0px 10px" }}
                 onClick={() => {
                   this.handleChange(option);
                 }}
-                primaryText={
-                  formatMessage({ id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}` })
-                }
+                primaryText={formatMessage({
+                  id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}`,
+                })}
                 secondaryText={
                   <WheelChair
                     style={{
-                      float: 'left',
+                      float: "left",
                       marginLeft: -18,
                       marginTop: 9,
                       marginRight: 5,
@@ -108,7 +109,8 @@ class WheelChairPopover extends React.Component {
                     }}
                   />
                 }
-              />,
+              />
+            )
           )}
         </Popover>
       </div>

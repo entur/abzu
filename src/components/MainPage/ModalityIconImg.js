@@ -12,29 +12,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from '../../styles/menu.css';
+import React from "react";
+import PropTypes from "prop-types";
+import styles from "../../styles/menu.css";
 
 class ModalityIconImg extends React.Component {
-
   shouldComponentUpdate(nextProps) {
-
     if (nextProps.forceUpdate) {
       return true;
     }
 
-    if (this.props.type === nextProps.type
-        && this.props.submode === nextProps.submode) {
-      return false
+    if (
+      this.props.type === nextProps.type &&
+      this.props.submode === nextProps.submode
+    ) {
+      return false;
     }
 
-    return true
+    return true;
   }
 
   render() {
-
     let svgStyle = {
       width: 30,
       height: 25,
@@ -42,11 +40,14 @@ class ModalityIconImg extends React.Component {
     };
 
     const iconStyle = this.props.iconStyle || {
-      float: 'left',
-      transform: 'translateY(2px)',
+      float: "left",
+      transform: "translateY(2px)",
     };
 
-    const iconId = getIconIdByTypeOrSubmode(this.props.submode, this.props.type);
+    const iconId = getIconIdByTypeOrSubmode(
+      this.props.submode,
+      this.props.type
+    );
 
     let style = {
       ...(this.props.style || {}),
@@ -54,8 +55,11 @@ class ModalityIconImg extends React.Component {
 
     return (
       <span className={styles.clear} style={iconStyle}>
-        <img style={{ ...style, ...svgStyle }}
-          src={require('../../static/icons/modalities/svg/' + iconId + '.svg')}/>
+        <img
+          alt=""
+          style={{ ...style, ...svgStyle }}
+          src={require("../../static/icons/modalities/svg/" + iconId + ".svg")}
+        />
       </span>
     );
   }
@@ -66,31 +70,30 @@ ModalityIconImg.propTypes = {
   submode: PropTypes.string,
   iconStyle: PropTypes.object,
   style: PropTypes.object,
-  forceUpdate: PropTypes.bool
+  forceUpdate: PropTypes.bool,
 };
-
 
 const getIconIdByTypeOrSubmode = (submode, type) => {
   const submodeMap = {
-    railReplacementBus: 'railReplacement',
+    railReplacementBus: "railReplacement",
   };
   return submodeMap[submode] || getIconIdByModality(type);
-}
+};
 
-const getIconIdByModality = type => {
+const getIconIdByModality = (type) => {
   const modalityMap = {
-    onstreetBus: 'bus-withoutBox',
-    onstreetTram: 'tram-withoutBox',
-    railStation: 'rail-withoutBox',
-    metroStation: 'subway-withoutBox',
-    busStation: 'busstation-withoutBox',
-    ferryStop: 'ferry-withoutBox',
-    airport: 'airplane-withoutBox',
-    harbourPort: 'harbour_port',
-    liftStation: 'lift',
-    other: 'no-information',
+    onstreetBus: "bus-withoutBox",
+    onstreetTram: "tram-withoutBox",
+    railStation: "rail-withoutBox",
+    metroStation: "subway-withoutBox",
+    busStation: "busstation-withoutBox",
+    ferryStop: "ferry-withoutBox",
+    airport: "airplane-withoutBox",
+    harbourPort: "harbour_port",
+    liftStation: "lift",
+    other: "no-information",
   };
-  return modalityMap[type] || 'no-information';
+  return modalityMap[type] || "no-information";
 };
 
 export default ModalityIconImg;

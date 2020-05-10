@@ -12,14 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import userReducer from './userReducer';
-import mapReducer from './mapReducer';
-import stopPlaceReducer from './stopPlaceReducer';
-import reportReducer from './reportReducer';
-import rolesReducer from './rolesReducer';
-import snackbarReducer from './snackbarReducer';
-import groupOfStopPlaceReducer from './groupOfStopPlacesReducer';
+import userReducer from "./userReducer";
+import mapReducer from "./mapReducer";
+import stopPlaceReducer from "./stopPlaceReducer";
+import reportReducer from "./reportReducer";
+import rolesReducer from "./rolesReducer";
+import snackbarReducer from "./snackbarReducer";
+import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
 
 export {
   userReducer,
@@ -28,5 +27,5 @@ export {
   reportReducer,
   rolesReducer,
   snackbarReducer,
-  groupOfStopPlaceReducer
+  groupOfStopPlaceReducer,
 };

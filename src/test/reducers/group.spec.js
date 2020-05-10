@@ -12,50 +12,45 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+import { groupOfStopPlaceReducer } from "./../../reducers/";
+import groupOfStopPlaceQuery from "./json/groupOfStopPlace.json";
+import groupOfStopPlaceMutation from "./json/groupOfStopPlaceMutation.json";
+import mapHelper from "../../modelUtils/mapToQueryVariables";
 
-import { groupOfStopPlaceReducer } from './../../reducers/';
-import groupOfStopPlaceQuery from './json/groupOfStopPlace.json';
-import groupOfStopPlaceMutation from './json/groupOfStopPlaceMutation.json';
-import mapHelper from '../../modelUtils/mapToQueryVariables';
-
-describe('Model: map Group of Stop Place from server to expected client model', () => {
-
-  test('should map GraphQL query result to client model for Group of StopPlace', () => {
-
+describe("Model: map Group of Stop Place from server to expected client model", () => {
+  test("should map GraphQL query result to client model for Group of StopPlace", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: groupOfStopPlaceQuery,
-      operationName: 'getGroupOfStopPlaces'
+      operationName: "getGroupOfStopPlaces",
     };
 
     const state = groupOfStopPlaceReducer({}, action);
     expect(state).toMatchSnapshot();
   });
 
-  test('should map GraphQL mutation result to client model for Group of StopPlace', () => {
-
+  test("should map GraphQL mutation result to client model for Group of StopPlace", () => {
     const action = {
-      type: 'APOLLO_MUTATION_RESULT',
+      type: "APOLLO_MUTATION_RESULT",
       result: groupOfStopPlaceMutation,
-      operationName: 'mutateGroupOfStopPlaces'
+      operationName: "mutateGroupOfStopPlaces",
     };
 
     const state = groupOfStopPlaceReducer({}, action);
     expect(state).toMatchSnapshot();
   });
 
-  test('should map client model for Group of StopPlace to schema', () => {
-
+  test("should map client model for Group of StopPlace to schema", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: groupOfStopPlaceQuery,
-      operationName: 'getGroupOfStopPlaces'
+      operationName: "getGroupOfStopPlaces",
     };
     const state = groupOfStopPlaceReducer({}, action);
     const clientGroupOfStopPlace = state.current;
-    const groupOfStopPlaceExample = mapHelper.mapGroupOfStopPlaceToVariables(clientGroupOfStopPlace);
+    const groupOfStopPlaceExample = mapHelper.mapGroupOfStopPlaceToVariables(
+      clientGroupOfStopPlace
+    );
     expect(groupOfStopPlaceExample).toMatchSnapshot();
-
   });
-
 });

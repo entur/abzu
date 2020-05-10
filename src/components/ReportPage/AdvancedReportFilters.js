@@ -12,19 +12,19 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import Checkbox from 'material-ui/Checkbox';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import React, { Component } from "react";
+import Checkbox from "material-ui/Checkbox";
+import RaisedButton from "material-ui/RaisedButton";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
 
 class AdvancedReportFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
@@ -34,27 +34,26 @@ class AdvancedReportFilters extends Component {
       withoutLocationOnly,
       withDuplicateImportedIds,
       withNearbySimilarDuplicates,
-      hasParking,
       handleCheckboxChange,
       withTags,
-      showFutureAndExpired
+      showFutureAndExpired,
     } = this.props;
 
     const { open, anchorEl } = this.state;
 
-    const menuItemsStyle = {display: 'flex', alignItems: 'center'};
+    const menuItemsStyle = { display: "flex", alignItems: "center" };
 
     return (
-      <div style={{marginTop: 10, marginLeft: 5}}>
+      <div style={{ marginTop: 10, marginLeft: 5 }}>
         <RaisedButton
-          onClick={e => {
+          onClick={(e) => {
             this.setState({
               open: true,
-              anchorEl: e.currentTarget
-            })
+              anchorEl: e.currentTarget,
+            });
           }}
-          style={{transform: 'scale(0.9)'}}
-          label={formatMessage({id: 'filters_admin'})}
+          style={{ transform: "scale(0.9)" }}
+          label={formatMessage({ id: "filters_admin" })}
         />
         <Popover
           open={open}
@@ -66,58 +65,60 @@ class AdvancedReportFilters extends Component {
           <Menu>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'show_future_expired_and_terminated' })}
+                label={formatMessage({
+                  id: "show_future_expired_and_terminated",
+                })}
                 labelPosition="right"
-                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
                 checked={showFutureAndExpired}
                 onCheck={(e, value) => {
-                  handleCheckboxChange('showFutureAndExpired', value);
+                  handleCheckboxChange("showFutureAndExpired", value);
                 }}
               />
             </MenuItem>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'only_without_coordinates' })}
+                label={formatMessage({ id: "only_without_coordinates" })}
                 labelPosition="right"
-                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
                 checked={withoutLocationOnly}
                 onCheck={(e, value) => {
-                  handleCheckboxChange('withoutLocationOnly', value);
+                  handleCheckboxChange("withoutLocationOnly", value);
                 }}
               />
             </MenuItem>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'only_duplicate_importedIds' })}
+                label={formatMessage({ id: "only_duplicate_importedIds" })}
                 labelPosition="right"
-                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
                 checked={withDuplicateImportedIds}
                 onCheck={(e, value) => {
-                  handleCheckboxChange('withDuplicateImportedIds', value);
+                  handleCheckboxChange("withDuplicateImportedIds", value);
                 }}
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'with_nearby_similar_duplicates' })}
+                label={formatMessage({ id: "with_nearby_similar_duplicates" })}
                 labelPosition="right"
-                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
                 checked={withNearbySimilarDuplicates}
                 onCheck={(e, value) => {
-                  handleCheckboxChange('withNearbySimilarDuplicates', value);
+                  handleCheckboxChange("withNearbySimilarDuplicates", value);
                 }}
                 style={{ marginTop: 10 }}
               />
             </MenuItem>
             <MenuItem style={menuItemsStyle}>
               <Checkbox
-                label={formatMessage({ id: 'only_with_tags' })}
+                label={formatMessage({ id: "only_with_tags" })}
                 labelPosition="right"
-                labelStyle={{ width: 'auto', fontSize: '0.9em' }}
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
                 checked={withTags}
                 onCheck={(e, value) => {
-                  handleCheckboxChange('withTags', value);
+                  handleCheckboxChange("withTags", value);
                 }}
                 style={{ marginTop: 10 }}
               />

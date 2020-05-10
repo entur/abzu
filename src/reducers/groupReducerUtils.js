@@ -12,16 +12,16 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import GroupOfStopPlace from '../models/GroupOfStopPlaces';
-import StopPlace from '../models/StopPlace';
-import ParentStopPlace from '../models/ParentStopPlace';
-import { calculatePolygonCenter } from '../utils/mapUtils';
+import GroupOfStopPlace from "../models/GroupOfStopPlaces";
+import StopPlace from "../models/StopPlace";
+import ParentStopPlace from "../models/ParentStopPlace";
+import { calculatePolygonCenter } from "../utils/mapUtils";
 
 export const getGroupOfStopPlace = (state, action) => {
-  if (action.operationName === 'getGroupOfStopPlaces') {
-    return updateStateByOperationName(state, action, 'groupOfStopPlaces');
-  } else if (action.operationName === 'mutateGroupOfStopPlaces') {
-    return updateStateByOperationName(state, action, 'mutateGroupOfStopPlaces');
+  if (action.operationName === "getGroupOfStopPlaces") {
+    return updateStateByOperationName(state, action, "groupOfStopPlaces");
+  } else if (action.operationName === "mutateGroupOfStopPlaces") {
+    return updateStateByOperationName(state, action, "mutateGroupOfStopPlaces");
   }
   return state;
 };
@@ -35,8 +35,8 @@ export const addMemberToGroup = (current, payLoad) => {
 
   let newGroup = copy(current);
 
-  const members = Object.keys(membersJSON).map(key => {
-    const isParent = membersJSON[key][0]['__typename'] == 'ParentStopPlace';
+  const members = Object.keys(membersJSON).map((key) => {
+    const isParent = membersJSON[key][0]["__typename"] === "ParentStopPlace";
 
     let memberStop = null;
     if (isParent) {
@@ -56,7 +56,7 @@ export const addMemberToGroup = (current, payLoad) => {
 
 export const removeMemberFromGroup = (current, payLoad) => ({
   ...current,
-  members: current.members.filter(member => member.id !== payLoad)
+  members: current.members.filter((member) => member.id !== payLoad),
 });
 
 const updateStateByOperationName = (state, action, operation) => {
@@ -70,7 +70,7 @@ const updateStateByOperationName = (state, action, operation) => {
       isModified: false,
       notFound: false,
       centerPosition: calculatePolygonCenter(clientGroup.members),
-      zoom: 15
+      zoom: 15,
     });
   }
 
@@ -86,6 +86,6 @@ const extractGroupOfStopPlace = (action, key) => {
   }
 };
 
-const copy = data => JSON.parse(JSON.stringify(data));
+const copy = (data) => JSON.parse(JSON.stringify(data));
 
-const isEmptyArray = a => Array.isArray(a) && !a.length;
+const isEmptyArray = (a) => Array.isArray(a) && !a.length;

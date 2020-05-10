@@ -12,10 +12,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .menu-item--not-legal {
-    opacity: 0.5;
-    pointer-events: none;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .clear:after {
-    clear: both;
+  clear: both;
 }

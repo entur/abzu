@@ -12,17 +12,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React from "react";
+import SvgIcon from "material-ui/SvgIcon";
+import "../../styles/spinner.css";
 
-import React from 'react'
-import SvgIcon from 'material-ui/SvgIcon'
-import "../../styles/spinner.css"
-
-const spinner = props => (
+const spinner = (props) => (
   <SvgIcon {...props}>
-    <svg className="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-      <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
+    <svg
+      className="spinner"
+      width="20px"
+      height="20px"
+      viewBox="0 0 66 66"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        className="path"
+        fill="none"
+        strokeWidth="6"
+        strokeLinecap="round"
+        cx="33"
+        cy="33"
+        r="30"
+      ></circle>
     </svg>
   </SvgIcon>
-)
+);
 
-export default spinner
+export default spinner;

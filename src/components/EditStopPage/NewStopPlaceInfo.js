@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { injectIntl } from 'react-intl';
-import InformationIcon from 'material-ui/svg-icons/action/info';
-import FlatButton from 'material-ui/FlatButton';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
-import { connect } from 'react-redux';
-import { UserActions } from '../../actions/';
-import { createStopPlaceHref } from '../../utils/';
+import React from "react";
+import { injectIntl } from "react-intl";
+import InformationIcon from "material-ui/svg-icons/action/info";
+import FlatButton from "material-ui/FlatButton";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
+import { createStopPlaceHref } from "../../utils/";
 
 class NewStopPlaceInfo extends React.Component {
   handleClose() {
@@ -31,65 +30,65 @@ class NewStopPlaceInfo extends React.Component {
     const { open, stopPlaceId, intl } = this.props;
     const { formatMessage } = intl;
     const translations = {
-      close: formatMessage({ id: 'close' }),
-      newStopCreated: formatMessage({ id: 'new_stop_created' }),
-      newStopCreatedMore: formatMessage({ id: 'new_stop_created_more' }),
-      openQuestion: formatMessage({ id: 'open_question' }),
-      open: formatMessage({ id: 'open' }),
-      openTab: formatMessage({ id: 'open_tab' })
+      close: formatMessage({ id: "close" }),
+      newStopCreated: formatMessage({ id: "new_stop_created" }),
+      newStopCreatedMore: formatMessage({ id: "new_stop_created_more" }),
+      openQuestion: formatMessage({ id: "open_question" }),
+      open: formatMessage({ id: "open" }),
+      openTab: formatMessage({ id: "open_tab" }),
     };
 
     if (!open) return null;
 
     const informationBannerStyle = {
       zIndex: 10001,
-      position: 'absolute',
-      background: '#fff',
-      width: '99.5%',
-      height: 'auto',
-      color: '#191919',
-      borderBottom: '1px solid'
+      position: "absolute",
+      background: "#fff",
+      width: "99.5%",
+      height: "auto",
+      color: "#191919",
+      borderBottom: "1px solid",
     };
 
     const titleStyle = {
       fontWeight: 600,
       marginTop: 20,
-      fontSize: '2.2em',
-      textAlign: 'center'
+      fontSize: "2.2em",
+      textAlign: "center",
     };
 
     const ingressStyle = {
-      fontSize: '1.1em',
+      fontSize: "1.1em",
       margin: 20,
-      textAlign: 'center'
+      textAlign: "center",
     };
 
     const bodyStyle = {
-      width: '70%',
-      margin: 'auto',
-      textAlign: 'center',
+      width: "70%",
+      margin: "auto",
+      textAlign: "center",
       marginBottom: 20,
-      fontWeight: 600
+      fontWeight: 600,
     };
 
     const closeStyle = {
       marginTop: 5,
-      textAlign: 'centre',
-      width: '100%',
-      textDecoration: 'underline'
+      textAlign: "centre",
+      width: "100%",
+      textDecoration: "underline",
     };
 
     const goToStyle = {
-      display: 'flex',
-      justifyContent: 'center'
+      display: "flex",
+      justifyContent: "center",
     };
 
     const goToItem = {
       marginRight: 10,
       marginLeft: 10,
-      cursor: 'pointer',
+      cursor: "pointer",
       color: getPrimaryDarkerColor(),
-      textDecoration: 'none'
+      textDecoration: "none",
     };
 
     const href = createStopPlaceHref(stopPlaceId);
@@ -100,21 +99,30 @@ class NewStopPlaceInfo extends React.Component {
           <InformationIcon
             style={{
               height: 44,
-              width: 'auto',
-              color: '#ffae19',
-              verticalAlign: 'middle',
+              width: "auto",
+              color: "#ffae19",
+              verticalAlign: "middle",
               marginBottom: 7,
-              paddingRight: 2
+              paddingRight: 2,
             }}
           />
           {translations.newStopCreated}
         </div>
-        <div style={bodyStyle}>{'ID: ' + stopPlaceId}</div>
+        <div style={bodyStyle}>{"ID: " + stopPlaceId}</div>
         <div style={ingressStyle}>{translations.newStopCreatedMore}</div>
         <div style={bodyStyle}>{translations.openQuestion}</div>
         <div style={goToStyle}>
-          <a style={goToItem} href={href}>{translations.open}</a>
-          <a style={goToItem} target="_blank" href={href}>{translations.openTab}</a>
+          <a style={goToItem} href={href}>
+            {translations.open}
+          </a>
+          <a
+            style={goToItem}
+            target="_blank"
+            rel="noopener noreferrer"
+            href={href}
+          >
+            {translations.openTab}
+          </a>
         </div>
         <FlatButton style={closeStyle} onClick={this.handleClose.bind(this)}>
           {translations.close}

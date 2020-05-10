@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import L from 'leaflet';
-import { setDecimalPrecision } from './';
+import L from "leaflet";
+import { setDecimalPrecision } from "./";
 const defaultCenterPosition = [64.349421, 16.809082];
 
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
@@ -27,7 +27,7 @@ export const getCentroid = (latlngs = [[]], originalCentroid) => {
   if (center.lat && center.lng) {
     return [
       setDecimalPrecision(center.lat, 6),
-      setDecimalPrecision(center.lng, 6)
+      setDecimalPrecision(center.lng, 6),
     ];
   }
 
@@ -36,7 +36,7 @@ export const getCentroid = (latlngs = [[]], originalCentroid) => {
 
 /* Polygon from Tiamat is formatted as [lng, lat], while Leaflet uses [lat, lng]*/
 export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
-  if(!coordinates) {
+  if (!coordinates) {
     return false;
   }
   const x = coordinates[0];
@@ -49,17 +49,18 @@ export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
     let xj = polyPoints[j][1],
       yj = polyPoints[j][0];
 
+    /* eslint-disable */
     let intersect =
-      yi > y != yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
+      yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    /* eslint-enable */
     if (intersect) inside = !inside;
   }
 
   return inside;
 };
 
-export const sortPolygonByAngles = points => {
+export const sortPolygonByAngles = (points) => {
   try {
-
     if (!points || !points.length || !points[0].length) return null;
 
     const polygon = L.polygon(points);
@@ -72,12 +73,12 @@ export const sortPolygonByAngles = points => {
       const angleB = Math.atan2(posB[1] - lng, posB[0] - lat);
       return angleB - angleA;
     });
-  } catch(exception) {
+  } catch (exception) {
     console.error("sortPolygonByAngles", exception);
   }
 };
 
-export const calculatePolygonCenter = members => {
+export const calculatePolygonCenter = (members) => {
   if (!members || !members.length) {
     return defaultCenterPosition;
   }
@@ -86,7 +87,7 @@ export const calculatePolygonCenter = members => {
     return members[0].location || defaultCenterPosition;
   }
 
-  const points = [members.map(member => member.location)];
+  const points = [members.map((member) => member.location)];
   const polygon = L.polygon(points);
   const center = polygon.getBounds().getCenter();
   return [center.lat, center.lng];

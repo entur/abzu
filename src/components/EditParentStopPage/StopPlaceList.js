@@ -12,23 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import StopPlaceListItem from './StopPlaceListItem';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { injectIntl } from 'react-intl';
-import Loader from '../Dialogs/Loader';
-import { StopPlaceActions, UserActions } from '../../actions/';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import StopPlaceListItem from "./StopPlaceListItem";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import { injectIntl } from "react-intl";
+import Loader from "../Dialogs/Loader";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { connect } from "react-redux";
 
 class StopPlaceList extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      expandedItem: -1
+      expandedItem: -1,
     };
   }
 
@@ -42,7 +40,14 @@ class StopPlaceList extends Component {
   }
 
   render() {
-    const { stopPlaces, handleAddStopPlaceOpen, handleRemoveAdjacentConnection, intl, disabled, isLoading } = this.props;
+    const {
+      stopPlaces,
+      handleAddStopPlaceOpen,
+      handleRemoveAdjacentConnection,
+      intl,
+      disabled,
+      isLoading,
+    } = this.props;
     const { formatMessage } = intl;
     const { expandedItem } = this.state;
 
@@ -51,14 +56,14 @@ class StopPlaceList extends Component {
         <div
           style={{
             padding: 5,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <div style={{ fontWeight: 600, fontSize: '.9em' }}>
-            {formatMessage({id: 'children_of_parent_stop_place'})}
-            {isLoading ? <Loader/> : null}
+          <div style={{ fontWeight: 600, fontSize: ".9em" }}>
+            {formatMessage({ id: "children_of_parent_stop_place" })}
+            {isLoading ? <Loader /> : null}
           </div>
           <FloatingActionButton
             onClick={handleAddStopPlaceOpen}
@@ -72,35 +77,37 @@ class StopPlaceList extends Component {
         <div
           style={{
             maxHeight: 320,
-            overflowX: 'auto'
+            overflowX: "auto",
           }}
         >
-          {stopPlaces && stopPlaces.length
-            ? stopPlaces.map((stopPlace, i) =>
-                <StopPlaceListItem
-                  key={'stopPlaceItem-' + stopPlace.id}
-                  stopPlace={stopPlace}
-                  handleExpand={() => this.setState({ expandedItem: i })}
-                  handleCollapse={() => this.setState({ expandedItem: -1 })}
-                  expanded={expandedItem === i}
-                  disabled={disabled}
-                  handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
-                  handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
-                />
-              )
-            : <div style={{ marginTop: 5 }}>
-                <div
-                  style={{
-                    fontStyle: 'italic',
-                    marginLeft: 10,
-                    fontSize: '0.8em',
-                    width: '80%',
-                    fontWeight: 600
-                  }}
-                >
-                  {formatMessage({id: 'parent_stop_place_requires_children'})}
-                </div>
-              </div>}
+          {stopPlaces && stopPlaces.length ? (
+            stopPlaces.map((stopPlace, i) => (
+              <StopPlaceListItem
+                key={"stopPlaceItem-" + stopPlace.id}
+                stopPlace={stopPlace}
+                handleExpand={() => this.setState({ expandedItem: i })}
+                handleCollapse={() => this.setState({ expandedItem: -1 })}
+                expanded={expandedItem === i}
+                disabled={disabled}
+                handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
+                handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
+              />
+            ))
+          ) : (
+            <div style={{ marginTop: 5 }}>
+              <div
+                style={{
+                  fontStyle: "italic",
+                  marginLeft: 10,
+                  fontSize: "0.8em",
+                  width: "80%",
+                  fontWeight: 600,
+                }}
+              >
+                {formatMessage({ id: "parent_stop_place_requires_children" })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -110,7 +117,7 @@ class StopPlaceList extends Component {
 StopPlaceList.propTypes = {
   stopPlaces: PropTypes.arrayOf(PropTypes.object),
   handleAddStopPlaceOpen: PropTypes.func.isRequired,
-  handleRemoveAdjacentConnection: PropTypes.func.isRequired
+  handleRemoveAdjacentConnection: PropTypes.func.isRequired,
 };
 
 export default connect(null)(injectIntl(StopPlaceList));

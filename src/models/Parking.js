@@ -12,11 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { getIn } from '../utils/';
-import { hasExpired } from '../modelUtils/validBetween';
-import PARKING_TYPE from './parkingType';
-import PARKING_VEHICLE_TYPE from './parkingVehicleType';
+import { getIn } from "../utils/";
+import { hasExpired } from "../modelUtils/validBetween";
+import PARKING_TYPE from "./parkingType";
+import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 
 class Parking {
   constructor(parking) {
@@ -28,25 +27,27 @@ class Parking {
       ? this.parking.parkingProperties
           .slice()
           .shift()
-          .spaces
-          .find(v => v.parkingUserType === userType)[lookupKey]
+          .spaces.find((v) => v.parkingUserType === userType)[lookupKey]
       : 0;
   }
 
   get numberOfSpaces() {
     if (this.parking.parkingProperties.length) {
-      return this.findNumberOfSpaces('allUsers', 'numberOfSpaces')
+      return this.findNumberOfSpaces("allUsers", "numberOfSpaces");
     } else {
       return this.parking.totalCapacity;
     }
   }
 
   get numberOfSpacesWithRechargePoint() {
-    return this.findNumberOfSpaces('allUsers', 'numberOfSpacesWithRechargePoint');
+    return this.findNumberOfSpaces(
+      "allUsers",
+      "numberOfSpacesWithRechargePoint"
+    );
   }
 
   get numberOfSpacesForRegisteredDisabledUserType() {
-    return this.findNumberOfSpaces('registeredDisabled', 'numberOfSpaces');
+    return this.findNumberOfSpaces("registeredDisabled", "numberOfSpaces");
   }
 
   get parkingType() {
@@ -58,7 +59,11 @@ class Parking {
       return PARKING_TYPE.PARK_AND_RIDE;
     }
 
-    if (this.parking.parkingVehicleTypes.includes(PARKING_VEHICLE_TYPE.PEDAL_CYCLE)) {
+    if (
+      this.parking.parkingVehicleTypes.includes(
+        PARKING_VEHICLE_TYPE.PEDAL_CYCLE
+      )
+    ) {
       return PARKING_TYPE.BIKE_PARKING;
     }
 
@@ -74,20 +79,24 @@ class Parking {
 
     let clientParking = {
       id: parking.id,
-      name: getIn(parking, ['name', 'value'], ''),
+      name: getIn(parking, ["name", "value"], ""),
       parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
       numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
-      numberOfSpacesWithRechargePoint: this.isParkAndRide ? this.numberOfSpacesWithRechargePoint : null,
-      numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide ? this.numberOfSpacesForRegisteredDisabledUserType : null,
+      numberOfSpacesWithRechargePoint: this.isParkAndRide
+        ? this.numberOfSpacesWithRechargePoint
+        : null,
+      numberOfSpacesForRegisteredDisabledUserType: this.isParkAndRide
+        ? this.numberOfSpacesForRegisteredDisabledUserType
+        : null,
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
       totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
-      validBetween: parking.validBetween
+      validBetween: parking.validBetween,
     };
-    let coordinates = getIn(parking, ['geometry', 'coordinates'], null);
+    let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 
     if (coordinates && coordinates.length) {
       clientParking.location = [coordinates[0][1], coordinates[0][0]];

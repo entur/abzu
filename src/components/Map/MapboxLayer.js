@@ -12,14 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import L from 'leaflet'
-import React from 'react';
-import PropTypes from 'prop-types';
-import { GridLayer } from 'react-leaflet';
-import './LeafletMapboxGL.js'
+import L from "leaflet";
+import PropTypes from "prop-types";
+import { GridLayer } from "react-leaflet";
+import "./LeafletMapboxGL.js";
 
 export default class MapboxLayer extends GridLayer {
-
   static propTypes = {
     accessToken: PropTypes.string.isRequired,
     style: PropTypes.string.isRequired,
@@ -28,5 +26,5 @@ export default class MapboxLayer extends GridLayer {
   createLeafletElement() {
     const { accessToken, style } = this.props;
     return L.mapboxGL({ accessToken, style });
-  };
+  }
 }

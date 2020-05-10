@@ -12,11 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import ModalityIconSvg from '../MainPage/ModalityIconSvg';
-import stopTypes from '../../models/stopTypes';
-import Checkbox from 'material-ui/Checkbox';
+import React from "react";
+import ModalityIconSvg from "../MainPage/ModalityIconSvg";
+import stopTypes from "../../models/stopTypes";
+import Checkbox from "material-ui/Checkbox";
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {
@@ -47,19 +46,19 @@ class ModalityFilter extends React.Component {
     const { stopTypeFilter } = this.props;
 
     const wrapperStyle = {
-      display: 'flex',
+      display: "flex",
       padding: 8,
-      justifyContent: 'space-between'
+      justifyContent: "space-between",
     };
 
     return (
       <div style={wrapperStyle}>
-        {Object.keys(stopTypes).map(item => {
+        {Object.keys(stopTypes).map((item) => {
           const checked =
             stopTypeFilter.indexOf(item) > -1 || !stopTypeFilter.length;
 
           return (
-            <div key={'item-' + item}>
+            <div key={"item-" + item}>
               <Checkbox
                 checkedIcon={
                   <ModalityIconSvg
@@ -71,12 +70,12 @@ class ModalityFilter extends React.Component {
                 uncheckedIcon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    style={{ fill: '#8c8c8c', opacity: '0.8' }}
+                    style={{ fill: "#8c8c8c", opacity: "0.8" }}
                     type={item}
                     forceUpdate={true}
                   />
                 }
-                style={{ width: 'auto' }}
+                style={{ width: "auto" }}
                 checked={checked}
                 onCheck={(e, v) => {
                   this.handleOnCheck(v, item);

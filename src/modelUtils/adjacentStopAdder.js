@@ -12,25 +12,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 const AdjacentStopAdder = {};
 
-
-AdjacentStopAdder.addAdjacentStopReference = (parentStopPlace, stopPlaceId1, stopPlaceId2) => {
-  parentStopPlace.children.forEach(child => {
-    if (child.id == stopPlaceId1) {
+AdjacentStopAdder.addAdjacentStopReference = (
+  parentStopPlace,
+  stopPlaceId1,
+  stopPlaceId2
+) => {
+  parentStopPlace.children.forEach((child) => {
+    if (child.id === stopPlaceId1) {
       AdjacentStopAdder.addAdjacentReferenceToStop(child, stopPlaceId2);
-    } else if (child.id == stopPlaceId2) {
+    } else if (child.id === stopPlaceId2) {
       AdjacentStopAdder.addAdjacentReferenceToStop(child, stopPlaceId1);
     }
   });
-}
+};
 
-AdjacentStopAdder.addAdjacentReferenceToStop = (childStopPlace, adjacentRef) => {
+AdjacentStopAdder.addAdjacentReferenceToStop = (
+  childStopPlace,
+  adjacentRef
+) => {
   if (!childStopPlace.adjacentSites) {
     childStopPlace.adjacentSites = [];
   }
   childStopPlace.adjacentSites.push({ ref: adjacentRef });
-}
+};
 
 export default AdjacentStopAdder;

@@ -12,20 +12,20 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React from 'react';
-import { render } from 'react-dom';
-import Keycloak from 'keycloak-js';
-import Root from './containers/Root';
-import { browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import cfgreader from './config/readConfig';
-import 'intl';
-import { ApolloProvider } from 'react-apollo';
-import axios from 'axios';
-import ErrorBoundary from './containers/ErrorBoundary';
+import React from "react";
+import { render } from "react-dom";
+import Keycloak from "keycloak-js";
+import Root from "./containers/Root";
+import { browserHistory } from "react-router";
+import { syncHistoryWithStore } from "react-router-redux";
+import cfgreader from "./config/readConfig";
+import "intl";
+import { ApolloProvider } from "react-apollo";
+import axios from "axios";
+import ErrorBoundary from "./containers/ErrorBoundary";
 
 function renderIndex(path, kc) {
-  const configureStore = require('./store/store').default;
+  const configureStore = require("./store/store").default;
   const store = configureStore(kc);
   const history = syncHistoryWithStore(browserHistory, store.self);
   render(
@@ -33,59 +33,56 @@ function renderIndex(path, kc) {
       <ApolloProvider store={store.self} client={store.client}>
         <Root path={path} history={history} />
       </ApolloProvider>
-    </ErrorBoundary>
-    ,
-    document.getElementById('root'),
+    </ErrorBoundary>,
+    document.getElementById("root")
   );
 }
 
-cfgreader.readConfig(
-  function(config) {
-    window.config = config;
+cfgreader.readConfig(function (config) {
+  window.config = config;
 
-    let token = JSON.parse(localStorage.getItem('ABZU::GKT_TOKEN'));
+  let token = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
 
-    /* Renews token if it expires within 30 minutes to be on the safer side*/
-    if (
-      token != null &&
-      token.expires > new Date(Date.now() + 60 * 1000 * 30).getTime()
-    ) {
-      authWithKeyCloak(config.endpointBase);
-    } else {
-      axios
-        .get(config.endpointBase + 'token')
-        .then(response => {
-          let token = JSON.stringify(response.data);
-          localStorage.setItem('ABZU::GKT_TOKEN', token);
-        })
-        .catch(err => {
-          console.warn(
-            'Failed to get GK token, Kartverket Flyfoto will not work',
-            err,
-          );
-        });
-      authWithKeyCloak(config.endpointBase);
-    }
-  }.bind(this),
-);
+  /* Renews token if it expires within 30 minutes to be on the safer side*/
+  if (
+    token != null &&
+    token.expires > new Date(Date.now() + 60 * 1000 * 30).getTime()
+  ) {
+    authWithKeyCloak(config.endpointBase);
+  } else {
+    axios
+      .get(config.endpointBase + "token")
+      .then((response) => {
+        let token = JSON.stringify(response.data);
+        localStorage.setItem("ABZU::GKT_TOKEN", token);
+      })
+      .catch((err) => {
+        console.warn(
+          "Failed to get GK token, Kartverket Flyfoto will not work",
+          err
+        );
+      });
+    authWithKeyCloak(config.endpointBase);
+  }
+});
 
 function authWithKeyCloak(path) {
-  let kc = new Keycloak(window.config.endpointBase + 'config/keycloak.json');
+  let kc = new Keycloak(window.config.endpointBase + "config/keycloak.json");
 
-  kc
-    .init({ onLoad: 'login-required', checkLoginIframe: false })
-    .success(authenticated => {
+  kc.init({ onLoad: "login-required", checkLoginIframe: false }).success(
+    (authenticated) => {
       if (authenticated) {
-        localStorage.setItem('ABZU::jwt', kc.token);
+        localStorage.setItem("ABZU::jwt", kc.token);
 
         setInterval(() => {
           kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem('ABZU::jwt', kc.token);
+          localStorage.setItem("ABZU::jwt", kc.token);
         }, 10000);
 
         renderIndex(path, kc);
       } else {
         kc.login();
       }
-    });
+    }
+  );
 }

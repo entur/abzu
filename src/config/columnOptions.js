@@ -12,114 +12,113 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 /* Column options for report page, intial state */
 export const columnOptionsQuays = [
   {
-    id: 'id',
-    checked: true
+    id: "id",
+    checked: true,
   },
   {
-    id: 'importedId',
-    checked: true
+    id: "importedId",
+    checked: true,
   },
   {
-    id: 'position',
-    checked: true
+    id: "position",
+    checked: true,
   },
   {
-    id: 'privateCode',
-    checked: true
+    id: "privateCode",
+    checked: true,
   },
   {
-    id: 'publicCode',
-    checked: true
+    id: "publicCode",
+    checked: true,
   },
   {
-    id: 'wheelchairAccess',
-    checked: false
+    id: "wheelchairAccess",
+    checked: false,
   },
   {
-    id: 'stepFreeAccess',
-    checked: false
+    id: "stepFreeAccess",
+    checked: false,
   },
   {
-    id: 'shelterEquipment',
-    checked: false
+    id: "shelterEquipment",
+    checked: false,
   },
   {
-    id: 'waitingRoomEquipment',
-    checked: false
+    id: "waitingRoomEquipment",
+    checked: false,
   },
   {
-    id: 'sanitaryEquipment',
-    checked: false
+    id: "sanitaryEquipment",
+    checked: false,
   },
   {
-    id: 'generalSign',
-    checked: false
-  }
+    id: "generalSign",
+    checked: false,
+  },
 ];
 
 export const columnOptionsStopPlace = [
   {
-    id: 'name',
-    checked: true
+    id: "name",
+    checked: true,
   },
   {
-    id: 'modality',
-    checked: true
+    id: "modality",
+    checked: true,
   },
   {
-    id: 'id',
-    checked: true
+    id: "id",
+    checked: true,
   },
   {
-    id: 'county',
-    checked: true
+    id: "county",
+    checked: true,
   },
   {
-    id: 'muncipality',
-    checked: true
+    id: "muncipality",
+    checked: true,
   },
   {
-    id: 'importedId',
-    checked: false
+    id: "importedId",
+    checked: false,
   },
   {
-    id: 'position',
-    checked: false
+    id: "position",
+    checked: false,
   },
   {
-    id: 'parking',
-    checked: true
+    id: "parking",
+    checked: true,
   },
   {
-    id: 'wheelchairAccess',
-    checked: false
+    id: "wheelchairAccess",
+    checked: false,
   },
   {
-    id: 'stepFreeAccess',
-    checked: false
+    id: "stepFreeAccess",
+    checked: false,
   },
   {
-    id: 'shelterEquipment',
-    checked: false
+    id: "shelterEquipment",
+    checked: false,
   },
   {
-    id: 'waitingRoomEquipment',
-    checked: false
+    id: "waitingRoomEquipment",
+    checked: false,
   },
   {
-    id: 'sanitaryEquipment',
-    checked: false
+    id: "sanitaryEquipment",
+    checked: false,
   },
   {
-    id: 'generalSign',
-    checked: false
+    id: "generalSign",
+    checked: false,
   },
   {
-    id: 'tags',
-    checked: true
-  }
+    id: "tags",
+    checked: true,
+  },
 ];

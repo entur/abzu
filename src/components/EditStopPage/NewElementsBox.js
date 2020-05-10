@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { StopPlaceActions } from '../../actions';
-import { setDecimalPrecision } from '../../utils';
-import ConfirmDialog from '../Dialogs/ConfirmDialog';
-const entranceIcon = require('../../static/icons/entrance-icon-2x.png');
-const junctionIcon = require('../../static/icons/junction-icon-2x.png');
-const quayIcon = require('../../static/icons/quay-marker.png');
-const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
-const parkAndRideIcon = require('../../static/icons/parking-icon.png');
-const bikeParkingIcon = require('../../static/icons/cycle-parking-icon.png');
+import React from "react";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import { StopPlaceActions } from "../../actions";
+import { setDecimalPrecision } from "../../utils";
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+const entranceIcon = require("../../static/icons/entrance-icon-2x.png");
+const junctionIcon = require("../../static/icons/junction-icon-2x.png");
+const quayIcon = require("../../static/icons/quay-marker.png");
+const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
+const parkAndRideIcon = require("../../static/icons/parking-icon.png");
+const bikeParkingIcon = require("../../static/icons/cycle-parking-icon.png");
 
 class NewElementsBox extends React.Component {
   constructor(props) {
@@ -44,7 +43,7 @@ class NewElementsBox extends React.Component {
   handleConfirmSubmit() {
     const { owner } = this.state;
     this.props.dispatch(
-      StopPlaceActions.addElementToStop(owner.key, owner.latlng),
+      StopPlaceActions.addElementToStop(owner.key, owner.latlng)
     );
     this.handleDialogClose();
   }
@@ -55,31 +54,35 @@ class NewElementsBox extends React.Component {
     const boxWrapperStyle = {
       zIndex: 999,
       fontSize: 10,
-      textAlign: 'center',
-      position: 'fixed',
-      width: 'auto',
-      marginLeft: '41%',
+      textAlign: "center",
+      position: "fixed",
+      width: "auto",
+      marginLeft: "41%",
       top: 5,
-      color: '#fff',
+      color: "#fff",
     };
 
     const elementStyle = {
-      display: 'inline-block',
-      cursor: disabled ? 'not-allowed' : 'move',
-      margin: '10 15',
+      display: "inline-block",
+      cursor: disabled ? "not-allowed" : "move",
+      margin: "10 15",
     };
 
     const titleStyle = {
-      textTransform: 'capitalize',
+      textTransform: "capitalize",
       marginTop: 5,
     };
 
-    const quayText = formatMessage({ id: 'quay' });
-    const pathJunctionText = formatMessage({ id: 'pathJunction' });
-    const entranceText = formatMessage({ id: 'entrance' });
-    const newStopText = formatMessage({ id: 'stop_place' });
-    const parkAndRideText = formatMessage({ id: 'parking_item_title_short_parkAndRide' });
-    const bikeParkingText = formatMessage({ id: 'parking_item_title_bikeParking' });
+    const quayText = formatMessage({ id: "quay" });
+    const pathJunctionText = formatMessage({ id: "pathJunction" });
+    const entranceText = formatMessage({ id: "entrance" });
+    const newStopText = formatMessage({ id: "stop_place" });
+    const parkAndRideText = formatMessage({
+      id: "parking_item_title_short_parkAndRide",
+    });
+    const bikeParkingText = formatMessage({
+      id: "parking_item_title_bikeParking",
+    });
 
     let shouldShowNewStop = true;
 
@@ -91,7 +94,7 @@ class NewElementsBox extends React.Component {
     }
 
     // ROR-272: Hide this elements until they are supported by backend
-    const temporaryHidden =  {...elementStyle, display: 'none'};
+    const temporaryHidden = { ...elementStyle, display: "none" };
 
     return (
       <div style={boxWrapperStyle}>
@@ -99,84 +102,90 @@ class NewElementsBox extends React.Component {
           open={this.state.confirmDialogOpen}
           intl={this.props.intl}
           messagesById={{
-            title: 'add_new_element_title',
-            body: 'add_new_element_body',
-            confirm: 'add_new_element_confirm',
-            cancel: 'add_new_element_cancel',
+            title: "add_new_element_title",
+            body: "add_new_element_body",
+            confirm: "add_new_element_confirm",
+            cancel: "add_new_element_cancel",
           }}
           handleClose={this.handleDialogClose.bind(this)}
           handleConfirm={this.handleConfirmSubmit.bind(this)}
         />
 
         <div style={{ marginTop: 0, marginBottom: 0 }}>
-          {shouldShowNewStop
-            ? <div style={elementStyle}>
-                <img
-                  ref="stop_place"
-                  id="stop_place"
-                  data-type="stop_place"
-                  draggable
-                  style={{
-                    height: 25,
-                    width: 'auto',
-                    marginLeft: newStopText.length,
-                  }}
-                  src={newStopIcon}
-                />
-                <div style={titleStyle}>{newStopText}</div>
-              </div>
-            : null}
+          {shouldShowNewStop ? (
+            <div style={elementStyle}>
+              <img
+                alt=""
+                ref="stop_place"
+                id="stop_place"
+                data-type="stop_place"
+                draggable
+                style={{
+                  height: 25,
+                  width: "auto",
+                  marginLeft: newStopText.length,
+                }}
+                src={newStopIcon}
+              />
+              <div style={titleStyle}>{newStopText}</div>
+            </div>
+          ) : null}
           <div style={elementStyle}>
             <img
+              alt=""
               id="drag1"
               data-type="quay"
               ref="quay"
               draggable="true"
-              style={{ height: 25, width: 'auto', marginLeft: 0 }}
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={quayIcon}
             />
             <div style={titleStyle}>{quayText}</div>
           </div>
           <div style={temporaryHidden}>
             <img
+              alt=""
               ref="pathJunction"
               data-type="pathJunction"
               id="drag2"
               draggable
-              style={{ height: 25, width: 'auto', marginLeft: 0 }}
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={junctionIcon}
             />
             <div style={titleStyle}>{pathJunctionText}</div>
           </div>
           <div style={temporaryHidden}>
             <img
+              alt=""
               ref="entrance"
               data-type="entrance"
               id="drag3"
               draggable
-              style={{ height: 25, width: 'auto', marginLeft: 0 }}
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={entranceIcon}
             />
             <div style={titleStyle}>{entranceText}</div>
           </div>
           <div style={elementStyle}>
             <img
+              alt=""
               ref="parkAndRide"
               data-type="parkAndRide"
               id="drag4"
               draggable
-              style={{ height: 25, width: 'auto', marginLeft: 0 }}
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={parkAndRideIcon}
             />
             <div style={titleStyle}>{parkAndRideText}</div>
           </div>
           <div style={elementStyle}>
             <img
+              alt=""
               ref="bikeParking"
               data-type="bikeParking"
               id="drag5"
               draggable
-              style={{ height: 25, width: 'auto', marginLeft: 0 }}
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={bikeParkingIcon}
             />
             <div style={titleStyle}>{bikeParkingText}</div>
@@ -188,14 +197,14 @@ class NewElementsBox extends React.Component {
 
   componentDidMount() {
     if (!this.props.disabled) {
-      Object.keys(this.refs).forEach(key => {
+      Object.keys(this.refs).forEach((key) => {
         const ref = this.refs[key];
-        const type = ref.getAttribute('data-type');
+        const type = ref.getAttribute("data-type");
 
         if (ref.draggable) {
           const draggable = new window.L.Draggable(ref);
 
-          draggable.addEventListener('dragend', event => {
+          draggable.addEventListener("dragend", (event) => {
             // prevent adding to map if distance is too short (i.e. a mistake)
             if (event.distance < 50) {
               window.L.DomUtil.setPosition(ref, window.L.point(0, 0));
@@ -222,7 +231,7 @@ class NewElementsBox extends React.Component {
             const absolutePosition = new window.L.Point(xPos, yPos);
 
             const { lat, lng } = activeMap.containerPointToLatLng(
-              absolutePosition,
+              absolutePosition
             );
 
             const latlng = [
@@ -247,7 +256,7 @@ class NewElementsBox extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   activeMap: state.mapUtils.activeMap,

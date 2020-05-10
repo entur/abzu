@@ -12,76 +12,78 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import StopWithDuplicateImportedIds from './mock/StopWithDuplicateImportedIds';
-import StopsWithDuplicateImportedIds from './mock/StopsWithSharedDupId';
-import DrammenOsloConflict from './mock/DrammenOsloConflict';
-import { findDuplicateImportedIds } from '../utils/';
+import StopWithDuplicateImportedIds from "./mock/StopWithDuplicateImportedIds";
+import StopsWithDuplicateImportedIds from "./mock/StopsWithSharedDupId";
+import DrammenOsloConflict from "./mock/DrammenOsloConflict";
+import { findDuplicateImportedIds } from "../utils/";
 
-describe('duplicateIds', () => {
-  test('should find all duplicate Ids on quays within stopPlace', () => {
+describe("duplicateIds", () => {
+  test("should find all duplicate Ids on quays within stopPlace", () => {
     const duplicationInfo = findDuplicateImportedIds([
-      StopWithDuplicateImportedIds
+      StopWithDuplicateImportedIds,
     ]);
     const {
       quaysWithDuplicateImportedIds,
       stopPlacesWithConflict,
-      fullConflictMap
+      fullConflictMap,
     } = duplicationInfo;
     expect(quaysWithDuplicateImportedIds).toEqual({
-      'BRA:Quay:0220050101': ['NSR:Quay:5735', 'NSR:Quay:5736']
+      "BRA:Quay:0220050101": ["NSR:Quay:5735", "NSR:Quay:5736"],
     });
-    expect(stopPlacesWithConflict).toEqual(['NSR:StopPlace:3247']);
+    expect(stopPlacesWithConflict).toEqual(["NSR:StopPlace:3247"]);
     expect(fullConflictMap).toEqual({
-      'BRA:Quay:0220050101': {
-        'NSR:StopPlace:3247': ['NSR:Quay:5735', 'NSR:Quay:5736']
-      }
+      "BRA:Quay:0220050101": {
+        "NSR:StopPlace:3247": ["NSR:Quay:5735", "NSR:Quay:5736"],
+      },
     });
   });
 
-  test('should find all duplicate Ids on quays between stopPlaces', () => {
+  test("should find all duplicate Ids on quays between stopPlaces", () => {
     const duplicationInfo = findDuplicateImportedIds(
       StopsWithDuplicateImportedIds
     );
     const {
       stopPlacesWithConflict,
       fullConflictMap,
-      quaysWithDuplicateImportedIds
+      quaysWithDuplicateImportedIds,
     } = duplicationInfo;
 
     expect(stopPlacesWithConflict).toEqual([
-      'NSR:StopPlace:10000',
-      'NSR:StopPlace:10002'
+      "NSR:StopPlace:10000",
+      "NSR:StopPlace:10002",
     ]);
     expect(quaysWithDuplicateImportedIds).toEqual({
-      'HED:Quay:0412162401': [
-        'NSR:Quay:17061',
-        'NSR:Quay:17062',
-        'NSR:Quay:17064'
+      "HED:Quay:0412162401": [
+        "NSR:Quay:17061",
+        "NSR:Quay:17062",
+        "NSR:Quay:17064",
       ],
-      'HED:Quay:412162401': ['NSR:Quay:17061', 'NSR:Quay:17064'],
-      'OPP:Quay:412162401': ['NSR:Quay:17061', 'NSR:Quay:17064']
+      "HED:Quay:412162401": ["NSR:Quay:17061", "NSR:Quay:17064"],
+      "OPP:Quay:412162401": ["NSR:Quay:17061", "NSR:Quay:17064"],
     });
 
     expect(fullConflictMap).toEqual({
-      'HED:Quay:0412162401': {
-        'NSR:StopPlace:10000': ['NSR:Quay:17061', 'NSR:Quay:17062'],
-        'NSR:StopPlace:10002': ['NSR:Quay:17064']
+      "HED:Quay:0412162401": {
+        "NSR:StopPlace:10000": ["NSR:Quay:17061", "NSR:Quay:17062"],
+        "NSR:StopPlace:10002": ["NSR:Quay:17064"],
       },
-      'HED:Quay:412162401': {
-        'NSR:StopPlace:10000': ['NSR:Quay:17061'],
-        'NSR:StopPlace:10002': ['NSR:Quay:17064']
+      "HED:Quay:412162401": {
+        "NSR:StopPlace:10000": ["NSR:Quay:17061"],
+        "NSR:StopPlace:10002": ["NSR:Quay:17064"],
       },
-      'OPP:Quay:412162401': {
-        'NSR:StopPlace:10000': ['NSR:Quay:17061'],
-        'NSR:StopPlace:10002': ['NSR:Quay:17064']
-      }
+      "OPP:Quay:412162401": {
+        "NSR:StopPlace:10000": ["NSR:Quay:17061"],
+        "NSR:StopPlace:10002": ["NSR:Quay:17064"],
+      },
     });
   });
 
-  test('should find conflicting importedIds for Drammen and Oslo S', () => {
+  test("should find conflicting importedIds for Drammen and Oslo S", () => {
     const duplicationInfo = findDuplicateImportedIds(DrammenOsloConflict);
     const { stopPlacesWithConflict } = duplicationInfo;
-    expect(stopPlacesWithConflict).toEqual(['NSR:StopPlace:2', 'NSR:StopPlace:21']);
-  })
-
+    expect(stopPlacesWithConflict).toEqual([
+      "NSR:StopPlace:2",
+      "NSR:StopPlace:21",
+    ]);
+  });
 });

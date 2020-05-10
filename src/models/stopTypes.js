@@ -12,61 +12,60 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 const stopTypes = {
   onstreetBus: {
-    transportMode: 'bus',
+    transportMode: "bus",
     submodes: [
-      'expressBus',
-      'railReplacementBus',
-      'airportLinkBus',
-      'localBus',
-      'nightBus',
-      'regionalBus',
-      'shuttleBus',
-      'schoolBus',
-      'sightseeingBus'
-    ]
+      "expressBus",
+      "railReplacementBus",
+      "airportLinkBus",
+      "localBus",
+      "nightBus",
+      "regionalBus",
+      "shuttleBus",
+      "schoolBus",
+      "sightseeingBus",
+    ],
   },
-  busStation: { transportMode: 'bus' },
+  busStation: { transportMode: "bus" },
   harbourPort: {
-    transportMode: 'water',
+    transportMode: "water",
     submodes: [
-      'highSpeedPassengerService',
-      'nationalCarFerry',
-      'localCarFerry',
-      'internationalCarFerry',
-      'highSpeedVehicleService'
-    ]
+      "highSpeedPassengerService",
+      "nationalCarFerry",
+      "localCarFerry",
+      "internationalCarFerry",
+      "highSpeedVehicleService",
+    ],
   },
   ferryStop: {
-    transportMode: 'water',
+    transportMode: "water",
     submodes: [
-      'highSpeedPassengerService',
-      'localPassengerFerry',
-      'internationalPassengerFerry',
-      'sightseeingService'
-    ]
+      "highSpeedPassengerService",
+      "localPassengerFerry",
+      "internationalPassengerFerry",
+      "sightseeingService",
+    ],
   },
   railStation: {
-    transportMode: 'rail',
+    transportMode: "rail",
     submodes: [
-      'longDistance',
-      'internationalRail',
-      'local',
-      'touristRailway',
-      'nightRail',
-      'interregionalRail',
-      'regionalRail'
-    ]
+      "longDistance",
+      "internationalRail",
+      "local",
+      "touristRailway",
+      "nightRail",
+      "interregionalRail",
+      "regionalRail",
+    ],
   },
-  onstreetTram: { transportMode: 'tram', submodes: [ 'localTram' ] },
-  metroStation: { transportMode: 'metro', submodes: [ 'metro' ] },
+  onstreetTram: { transportMode: "tram", submodes: ["localTram"] },
+  metroStation: { transportMode: "metro", submodes: ["metro"] },
   airport: {
-    transportMode: 'air',
-    submodes: [ 'domesticFlight', 'internationalFlight', 'helicopterService' ]
+    transportMode: "air",
+    submodes: ["domesticFlight", "internationalFlight", "helicopterService"],
   },
-  liftStation: { transportMode: 'cableway', submodes: [ 'telecabin' ] }
+  liftStation: { transportMode: "cableway", submodes: ["telecabin"] },
 };
 
 export const submodes = [
@@ -100,7 +99,7 @@ export const submodes = [
   "nationalCarFerry",
   "sightseeingService",
   "telecabin",
-  "funicular"
+  "funicular",
 ];
 
 export default stopTypes;

@@ -12,18 +12,17 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { injectIntl } from 'react-intl';
+import React, { Component } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import { injectIntl } from "react-intl";
 
 class GroupErrorDialog extends Component {
-
   getErrorText(type, formatMessage) {
-    if (type === 'NOT_FOUND') {
-      return formatMessage({ id: 'group_not_found' });
+    if (type === "NOT_FOUND") {
+      return formatMessage({ id: "group_not_found" });
     } else {
-      return formatMessage({ id: 'error_unable_to_load_stop' });
+      return formatMessage({ id: "error_unable_to_load_stop" });
     }
   }
 
@@ -34,18 +33,18 @@ class GroupErrorDialog extends Component {
 
     const actions = [
       <FlatButton
-        label={formatMessage({ id: 'ok' })}
+        label={formatMessage({ id: "ok" })}
         primary={true}
         onClick={handleOK}
-      />
+      />,
     ];
 
     return (
       <Dialog
-        style={{zIndex: 10000}}
+        style={{ zIndex: 10000 }}
         actions={actions}
         open={open}
-        title={formatMessage({ id: 'error_has_occurred' })}
+        title={formatMessage({ id: "error_has_occurred" })}
       >
         {errorText}
       </Dialog>

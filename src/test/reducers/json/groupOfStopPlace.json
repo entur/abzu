@@ -1,1 +1,46 @@
-{"data":{"groupOfStopPlaces":[{"id":"NSR:GroupOfStopPlaces:1","members":[{"id":"NSR:StopPlace:10","__typename":"StopPlace","name":{"value":"Paradis","__typename":"EmbeddableMultilingualString"},"stopPlaceType":"onstreetBus","submode":"railReplacementBus","description":null,"geometry":{"coordinates":[[5.741593,58.956267]],"type":"Point","__typename":"GeoJSON"},"quays":[{"id":"NSR:Quay:17","privateCode":null,"publicCode":null,"geometry":{"coordinates":[[5.741593,58.956267]],"type":"Point","__typename":"GeoJSON"},"__typename":"Quay"}]}],"name":{"value":"Gruppe","__typename":"EmbeddableMultilingualString"},"description":null,"__typename":"GroupOfStopPlaces"}]}}
+{
+  "data": {
+    "groupOfStopPlaces": [
+      {
+        "id": "NSR:GroupOfStopPlaces:1",
+        "members": [
+          {
+            "id": "NSR:StopPlace:10",
+            "__typename": "StopPlace",
+            "name": {
+              "value": "Paradis",
+              "__typename": "EmbeddableMultilingualString"
+            },
+            "stopPlaceType": "onstreetBus",
+            "submode": "railReplacementBus",
+            "description": null,
+            "geometry": {
+              "coordinates": [[5.741593, 58.956267]],
+              "type": "Point",
+              "__typename": "GeoJSON"
+            },
+            "quays": [
+              {
+                "id": "NSR:Quay:17",
+                "privateCode": null,
+                "publicCode": null,
+                "geometry": {
+                  "coordinates": [[5.741593, 58.956267]],
+                  "type": "Point",
+                  "__typename": "GeoJSON"
+                },
+                "__typename": "Quay"
+              }
+            ]
+          }
+        ],
+        "name": {
+          "value": "Gruppe",
+          "__typename": "EmbeddableMultilingualString"
+        },
+        "description": null,
+        "__typename": "GroupOfStopPlaces"
+      }
+    ]
+  }
+}

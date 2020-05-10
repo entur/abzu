@@ -12,49 +12,51 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import StopPlaceLink from '../components/ReportPage/StopPlaceLink';
-import ModalityIconSvg from '../components/MainPage/ModalityIconSvg';
-import CarParkingIcon from '../static/icons/ParkingIcon';
-import BikeParkingIcon from '../static/icons/facilities/BikeParking';
-import { getIn, getInTransform } from '../utils/';
-import accessibilityAssessments from '../models/accessibilityAssessments';
-import WheelChair from 'material-ui/svg-icons/action/accessible';
-import MdCheck from 'material-ui/svg-icons/action/check-circle';
-import MdNotChecked from 'material-ui/svg-icons/action/highlight-off';
-import StairsIcon from '../static/icons/accessibility/Stairs';
-import ModalityIconTray from '../components/ReportPage/ModalityIconTray';
-import { darkColor } from '../config/themes/default/defaultTheme';
-import TagTray from '../components/MainPage/TagTray';
-import ToolTippable from '../components/EditStopPage/ToolTippable';
-import moment from 'moment';
+import React from "react";
+import StopPlaceLink from "../components/ReportPage/StopPlaceLink";
+import ModalityIconSvg from "../components/MainPage/ModalityIconSvg";
+import CarParkingIcon from "../static/icons/ParkingIcon";
+import BikeParkingIcon from "../static/icons/facilities/BikeParking";
+import { getIn, getInTransform } from "../utils/";
+import accessibilityAssessments from "../models/accessibilityAssessments";
+import WheelChair from "material-ui/svg-icons/action/accessible";
+import MdCheck from "material-ui/svg-icons/action/check-circle";
+import MdNotChecked from "material-ui/svg-icons/action/highlight-off";
+import StairsIcon from "../static/icons/accessibility/Stairs";
+import ModalityIconTray from "../components/ReportPage/ModalityIconTray";
+import { darkColor } from "../config/themes/default/defaultTheme";
+import TagTray from "../components/MainPage/TagTray";
+import ToolTippable from "../components/EditStopPage/ToolTippable";
+import moment from "moment";
 
 const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {
     return <MdNotChecked color="#B71C1C" />;
   }
-  return parking.map(p =>
-    <div style={{ display: 'inline-block', marginLeft: 5 }}>
+  return parking.map((p) => (
+    <div style={{ display: "inline-block", marginLeft: 5 }}>
       {getParkingType(p, formatMessage)}
     </div>
-  );
+  ));
 };
 
 const isEquipted = (stop, path) => {
-  return getInTransform(stop, path, false, result => !!result.length);
+  return getInTransform(stop, path, false, (result) => !!result.length);
 };
 
 const getParkingType = (parking, formatMessage) => {
-  const pedalCycle = 'pedalCycle';
-  const carParking = 'car';
-  const unknownParking = formatMessage({id: 'report.columnNames.notAssigned' });
+  const pedalCycle = "pedalCycle";
+  const carParking = "car";
+  const unknownParking = formatMessage({
+    id: "report.columnNames.notAssigned",
+  });
   const iconStyle = {
-    borderRadius: '50%',
-    border: '1px solid #000',
+    borderRadius: "50%",
+    border: "1px solid #000",
     padding: 3,
     height: 20,
     width: 20,
-    color: 'rgb(39, 58, 70)'
+    color: "rgb(39, 58, 70)",
   };
 
   if (parking.parkingVehicleTypes.indexOf(pedalCycle) > -1) {
@@ -68,57 +70,83 @@ const getParkingType = (parking, formatMessage) => {
 };
 
 export const ColumnTransformerStopPlaceJsx = {
-  id: stop => <StopPlaceLink id={stop.id} />,
+  id: (stop) => <StopPlaceLink id={stop.id} />,
   name: (stop, formatMessage) => {
     const infoTextStyle = {
       fontWeight: 600,
-      textTransform: 'uppercase',
+      textTransform: "uppercase",
       color: darkColor,
-      fontSize: '0.7em',
-      position: 'relative'
+      fontSize: "0.7em",
+      position: "relative",
     };
 
-    const isParentOrChild = (stop.isParent || stop.isChildOfParent);
-    const isFutureOrExpired = (stop.isFuture || stop.hasExpired || stop.permanentlyTerminated);
+    const isParentOrChild = stop.isParent || stop.isChildOfParent;
+    const isFutureOrExpired =
+      stop.isFuture || stop.hasExpired || stop.permanentlyTerminated;
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+      <div
+        style={{ display: "flex", flexDirection: "column", flexWrap: "wrap" }}
+      >
         <span>{stop.name}</span>
-        <div style={{ display: 'flex', marginTop: 3, marginLeft: 5, flexDirection: 'column'}}>
-          {isFutureOrExpired &&
-            <span style={{ ...infoTextStyle, color: stop.hasExpired ? '#ae1d1d' : '#2f3526', marginRight: 5 }}>
-              {stop.permanentlyTerminated ? formatMessage({ id: 'search_result_permanently_terminated' }) : stop.hasExpired ? formatMessage({ id: 'search_result_expired' })
-                : <div style={{display: 'flex', color: '#ffa500'}}>
-                    <div>{formatMessage({id: 'valid_from'})}</div>
-                    <div style={{marginLeft: 5}}>{moment(stop.validBetween.fromDate).format('YYYY-MM-DD')}</div>
-                </div>}
-            </span>}
-          {isParentOrChild &&
-          <span style={{...infoTextStyle, marginRight: 5}}>
+        <div
+          style={{
+            display: "flex",
+            marginTop: 3,
+            marginLeft: 5,
+            flexDirection: "column",
+          }}
+        >
+          {isFutureOrExpired && (
+            <span
+              style={{
+                ...infoTextStyle,
+                color: stop.hasExpired ? "#ae1d1d" : "#2f3526",
+                marginRight: 5,
+              }}
+            >
+              {stop.permanentlyTerminated ? (
+                formatMessage({ id: "search_result_permanently_terminated" })
+              ) : stop.hasExpired ? (
+                formatMessage({ id: "search_result_expired" })
+              ) : (
+                <div style={{ display: "flex", color: "#ffa500" }}>
+                  <div>{formatMessage({ id: "valid_from" })}</div>
+                  <div style={{ marginLeft: 5 }}>
+                    {moment(stop.validBetween.fromDate).format("YYYY-MM-DD")}
+                  </div>
+                </div>
+              )}
+            </span>
+          )}
+          {isParentOrChild && (
+            <span style={{ ...infoTextStyle, marginRight: 5 }}>
               {stop.isParent
-                ? formatMessage({ id: 'parentStopPlace' })
-                : formatMessage({ id: 'childStopPlace' })}
-            </span>}
-          {stop.validBetween && stop.validBetween.toDate && !isFutureOrExpired &&
-          <span style={{ ...infoTextStyle, color: '#ffa500'}}>
-            {formatMessage({id: 'expires'})} {moment(stop.validBetween.toDate).format('YYYY-MM-DD')}
-            </span>}
+                ? formatMessage({ id: "parentStopPlace" })
+                : formatMessage({ id: "childStopPlace" })}
+            </span>
+          )}
+          {stop.validBetween && stop.validBetween.toDate && !isFutureOrExpired && (
+            <span style={{ ...infoTextStyle, color: "#ffa500" }}>
+              {formatMessage({ id: "expires" })}{" "}
+              {moment(stop.validBetween.toDate).format("YYYY-MM-DD")}
+            </span>
+          )}
         </div>
       </div>
     );
   },
-  modality: stop => {
+  modality: (stop) => {
     if (!stop.isParent) {
-      const iconColor = !stop.stopPlaceType || stop.stopPlaceType === 'other'
-        ? 'red'
-        : '#000';
+      const iconColor =
+        !stop.stopPlaceType || stop.stopPlaceType === "other" ? "red" : "#000";
       return (
         <ModalityIconSvg
           submode={stop.submode}
           svgStyle={{
             color: iconColor,
             marginTop: -5,
-            transform: 'scale(0.8)'
+            transform: "scale(0.8)",
           }}
           type={stop.stopPlaceType}
         />
@@ -127,65 +155,75 @@ export const ColumnTransformerStopPlaceJsx = {
       return <ModalityIconTray modalities={stop.modesFromChildren} />;
     }
   },
-  muncipality: stop => stop.topographicPlace,
-  county: stop => stop.parentTopographicPlace,
-  importedId: stop => stop.importedId.join('\r\n'),
-  position: (stop, formatMessage) => (stop.location ? stop.location.join(',') : formatMessage({ id: 'report.columNames.notAssigned' })),
-  quays: stop => (stop.quays ? stop.quays.length : 0),
-  parking: (stop, formatMessage) => getParkingElements(stop.parking, formatMessage),
-  wheelchairAccess: stop => {
+  muncipality: (stop) => stop.topographicPlace,
+  county: (stop) => stop.parentTopographicPlace,
+  importedId: (stop) => stop.importedId.join("\r\n"),
+  position: (stop, formatMessage) =>
+    stop.location
+      ? stop.location.join(",")
+      : formatMessage({ id: "report.columNames.notAssigned" }),
+  quays: (stop) => (stop.quays ? stop.quays.length : 0),
+  parking: (stop, formatMessage) =>
+    getParkingElements(stop.parking, formatMessage),
+  wheelchairAccess: (stop) => {
     const wheelchairAccess = getIn(
       stop,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UNKNOWN'
+      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      "UNKNOWN"
     );
     return (
       <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
     );
   },
-  stepFreeAccess: stop => {
+  stepFreeAccess: (stop) => {
     const stepFreeAccess = getIn(
       stop,
-      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
-      'UNKNOWN'
+      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      "UNKNOWN"
     );
     return (
       <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]} />
     );
   },
-  shelterEquipment: stop => {
-    return isEquipted(stop, ['placeEquipments', 'shelterEquipment'])
-      ? <MdCheck color="#1B5E20" />
-      : <MdNotChecked color="#B71C1C" />;
+  shelterEquipment: (stop) => {
+    return isEquipted(stop, ["placeEquipments", "shelterEquipment"]) ? (
+      <MdCheck color="#1B5E20" />
+    ) : (
+      <MdNotChecked color="#B71C1C" />
+    );
   },
-  waitingRoomEquipment: stop => {
-    return isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment'])
-      ? <MdCheck color="#1B5E20" />
-      : <MdNotChecked color="#B71C1C" />;
+  waitingRoomEquipment: (stop) => {
+    return isEquipted(stop, ["placeEquipments", "waitingRoomEquipment"]) ? (
+      <MdCheck color="#1B5E20" />
+    ) : (
+      <MdNotChecked color="#B71C1C" />
+    );
   },
-  sanitaryEquipment: stop => {
-    return isEquipted(stop, ['placeEquipments', 'sanitaryEquipment'])
-      ? <MdCheck color="#1B5E20" />
-      : <MdNotChecked color="#B71C1C" />;
+  sanitaryEquipment: (stop) => {
+    return isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]) ? (
+      <MdCheck color="#1B5E20" />
+    ) : (
+      <MdNotChecked color="#B71C1C" />
+    );
   },
-  generalSign: stop => {
-    let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
+  generalSign: (stop) => {
+    let signs = getIn(stop, ["placeEquipments", "generalSign"], null);
     if (signs && signs.length) {
       let transportModeSigns = [];
       signs.forEach((sign, i) => {
         const { signContentType } = sign;
-        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null);
-        if (signContentType === 'transportMode' && privateCodeValue) {
+        const privateCodeValue = getIn(sign, ["privateCode", "value"], null);
+        if (signContentType === "transportMode" && privateCodeValue) {
           transportModeSigns.push(
-            <div key={'sign-' + stop.id + '-' + i}>
+            <div key={"sign-" + stop.id + "-" + i}>
               <span
                 style={{
-                  borderRadius: '50%',
+                  borderRadius: "50%",
                   padding: 5,
-                  position: 'absolute',
+                  position: "absolute",
                   fontWeight: 600,
                   marginTop: -5,
-                  border: '1px solid black'
+                  border: "1px solid black",
                 }}
               >
                 {privateCodeValue}
@@ -198,54 +236,56 @@ export const ColumnTransformerStopPlaceJsx = {
     }
     return <MdNotChecked color="#B71C1C" />;
   },
-  tags: stop =>
+  tags: (stop) => (
     <TagTray
       tags={stop.tags}
       textSize="0.9em"
       direction="column"
       align="left"
     />
+  ),
 };
 
 export const ColumnTransformersStopPlace = {
   ...ColumnTransformerStopPlaceJsx,
-  name: stop => stop.name,
-  id: stop => stop.id,
-  modality: stop => {
+  name: (stop) => stop.name,
+  id: (stop) => stop.id,
+  modality: (stop) => {
     if (stop.isParent)
-      return stop.modesFromChildren.map(mode => mode.stopPlaceType).join(',');
+      return stop.modesFromChildren.map((mode) => mode.stopPlaceType).join(",");
     return stop.stopPlaceType;
   },
-  importedId: stop => stop.importedId.join(','),
-  quays: stop => (stop.quays ? stop.quays.map(quay => quay.id).join(',') : ''),
-  parking: stop =>
-    stop.parking ? stop.parking.map(parking => parking.id).join(',') : '',
-  wheelchairAccess: stop =>
+  importedId: (stop) => stop.importedId.join(","),
+  quays: (stop) =>
+    stop.quays ? stop.quays.map((quay) => quay.id).join(",") : "",
+  parking: (stop) =>
+    stop.parking ? stop.parking.map((parking) => parking.id).join(",") : "",
+  wheelchairAccess: (stop) =>
     getIn(
       stop,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UKNOWN'
+      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      "UKNOWN"
     ),
-  sanitaryEquipment: stop =>
-    isEquipted(stop, ['placeEquipments', 'sanitaryEquipment']),
-  waitingRoomEquipment: stop =>
-    isEquipted(stop, ['placeEquipments', 'waitingRoomEquipment']),
-  shelterEquipment: stop =>
-    isEquipted(stop, ['placeEquipments', 'shelterEquipment']),
-  stepFreeAccess: stop =>
+  sanitaryEquipment: (stop) =>
+    isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]),
+  waitingRoomEquipment: (stop) =>
+    isEquipted(stop, ["placeEquipments", "waitingRoomEquipment"]),
+  shelterEquipment: (stop) =>
+    isEquipted(stop, ["placeEquipments", "shelterEquipment"]),
+  stepFreeAccess: (stop) =>
     getIn(
       stop,
-      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
-      'UNKNOWN'
+      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      "UNKNOWN"
     ),
-  generalSign: stop => {
-    let signs = getIn(stop, ['placeEquipments', 'generalSign'], null);
+  generalSign: (stop) => {
+    let signs = getIn(stop, ["placeEquipments", "generalSign"], null);
     if (signs && signs.length) {
-      let signString = '';
-      signs.forEach(sign => {
-        const privateCodeValue = getIn(sign, ['privateCode', 'value'], null);
-        if (sign.signContentType === 'transportMode' && privateCodeValue) {
-          signString += privateCodeValue + ';';
+      let signString = "";
+      signs.forEach((sign) => {
+        const privateCodeValue = getIn(sign, ["privateCode", "value"], null);
+        if (sign.signContentType === "transportMode" && privateCodeValue) {
+          signString += privateCodeValue + ";";
         }
       });
 
@@ -253,32 +293,32 @@ export const ColumnTransformersStopPlace = {
         ? signString.substring(0, signString.length - 1)
         : signString;
     }
-    return '';
+    return "";
   },
-  tags: stop => stop.tags.map(tag => tag.name).join(',')
+  tags: (stop) => stop.tags.map((tag) => tag.name).join(","),
 };
 
-const getConflictTooltip = conflictMap => {
+const getConflictTooltip = (conflictMap) => {
   if (!conflictMap) return null;
   return (
     <div>
-      {Object.keys(conflictMap).map(stopPlaceId => {
+      {Object.keys(conflictMap).map((stopPlaceId) => {
         return (
           <div
-            key={'tooltip-' + stopPlaceId}
+            key={"tooltip-" + stopPlaceId}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              marginBottom: 5
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 5,
             }}
           >
             {stopPlaceId}
-            <div style={{ textAlign: 'center', marginTop: 2 }}>
-              {conflictMap[stopPlaceId].map(quay =>
-                <div style={{ fontSize: '0.8em' }} key={'tooltip-' + quay}>
+            <div style={{ textAlign: "center", marginTop: 2 }}>
+              {conflictMap[stopPlaceId].map((quay) => (
+                <div style={{ fontSize: "0.8em" }} key={"tooltip-" + quay}>
                   {quay}
                 </div>
-              )}
+              ))}
             </div>
           </div>
         );
@@ -288,10 +328,10 @@ const getConflictTooltip = conflictMap => {
 };
 
 export const ColumnTransformerQuaysJsx = {
-  id: quay => quay.id,
+  id: (quay) => quay.id,
   importedId: (quay, duplicateInfo) => {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         {quay.importedId.map((importedId, index) => {
           const isDuplicate = !!duplicateInfo.quaysWithDuplicateImportedIds[
             importedId
@@ -304,52 +344,59 @@ export const ColumnTransformerQuaysJsx = {
           return (
             <span
               style={{
-                color: isDuplicate && confictToolTip ? '#cf1212' : 'initial',
+                color: isDuplicate && confictToolTip ? "#cf1212" : "initial",
                 fontWeight: isDuplicate && confictToolTip ? 600 : 400,
-                cursor: isDuplicate && confictToolTip ? 'pointer' : 'initial'
+                cursor: isDuplicate && confictToolTip ? "pointer" : "initial",
               }}
-              key={'importedId-' + quay.id + '-' + index}
+              key={"importedId-" + quay.id + "-" + index}
             >
-              {isDuplicate && confictToolTip
-                ? <ToolTippable
-                    showToolTip={isDuplicate}
-                    toolTipText={confictToolTip}
-                  >
-                    {importedId}
-                  </ToolTippable>
-                : <span>{importedId}</span>}
+              {isDuplicate && confictToolTip ? (
+                <ToolTippable
+                  showToolTip={isDuplicate}
+                  toolTipText={confictToolTip}
+                >
+                  {importedId}
+                </ToolTippable>
+              ) : (
+                <span>{importedId}</span>
+              )}
             </span>
           );
         })}
       </div>
     );
   },
-  position: (quay, duplicateInfo, formatMessage) => (quay.location ? quay.location.join(',') : formatMessage({ id: 'report.columnNames.notAssigned'})),
-  publicCode: quay => quay.publicCode,
-  privateCode: quay => quay.privateCode,
-  wheelchairAccess: quay =>
+  position: (quay, duplicateInfo, formatMessage) =>
+    quay.location
+      ? quay.location.join(",")
+      : formatMessage({ id: "report.columnNames.notAssigned" }),
+  publicCode: (quay) => quay.publicCode,
+  privateCode: (quay) => quay.privateCode,
+  wheelchairAccess: (quay) =>
     ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
-  sanitaryEquipment: quay =>
+  sanitaryEquipment: (quay) =>
     ColumnTransformerStopPlaceJsx.sanitaryEquipment(quay),
-  shelterEquipment: quay =>
+  shelterEquipment: (quay) =>
     ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
-  stepFreeAccess: quay => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
-  generalSign: quay => ColumnTransformerStopPlaceJsx.generalSign(quay),
-  waitingRoomEquipment: quay =>
-    ColumnTransformerStopPlaceJsx.waitingRoomEquipment(quay)
+  stepFreeAccess: (quay) => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
+  generalSign: (quay) => ColumnTransformerStopPlaceJsx.generalSign(quay),
+  waitingRoomEquipment: (quay) =>
+    ColumnTransformerStopPlaceJsx.waitingRoomEquipment(quay),
 };
 
 export const ColumnTransformersQuays = {
   ...ColumnTransformerQuaysJsx,
-  stopPlaceId: quay => quay.stopPlaceId,
-  stopPlaceName: quay => quay.stopPlaceName,
-  importedId: quay => quay.importedId.join(','),
-  wheelchairAccess: quay => ColumnTransformersStopPlace.wheelchairAccess(quay),
-  sanitaryEquipment: quay =>
+  stopPlaceId: (quay) => quay.stopPlaceId,
+  stopPlaceName: (quay) => quay.stopPlaceName,
+  importedId: (quay) => quay.importedId.join(","),
+  wheelchairAccess: (quay) =>
+    ColumnTransformersStopPlace.wheelchairAccess(quay),
+  sanitaryEquipment: (quay) =>
     ColumnTransformersStopPlace.sanitaryEquipment(quay),
-  shelterEquipment: quay => ColumnTransformersStopPlace.shelterEquipment(quay),
-  stepFreeAccess: quay => ColumnTransformersStopPlace.stepFreeAccess(quay),
-  generalSign: quay => ColumnTransformersStopPlace.generalSign(quay),
-  waitingRoomEquipment: quay =>
-    ColumnTransformersStopPlace.waitingRoomEquipment(quay)
+  shelterEquipment: (quay) =>
+    ColumnTransformersStopPlace.shelterEquipment(quay),
+  stepFreeAccess: (quay) => ColumnTransformersStopPlace.stepFreeAccess(quay),
+  generalSign: (quay) => ColumnTransformersStopPlace.generalSign(quay),
+  waitingRoomEquipment: (quay) =>
+    ColumnTransformersStopPlace.waitingRoomEquipment(quay),
 };

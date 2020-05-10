@@ -12,21 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { UserActions } from '../../actions/';
+import React from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import { UserActions } from "../../actions/";
 
 class FavoriteNameDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleText: '',
-      errorText: '',
+      titleText: "",
+      errorText: "",
     };
   }
 
@@ -42,14 +41,14 @@ class FavoriteNameDialog extends React.Component {
 
       this.setState({
         ...this.state,
-        errorText: formatMessage({ id: 'field_is_required' }),
+        errorText: formatMessage({ id: "field_is_required" }),
       });
     } else {
       this.props.dispatch(UserActions.saveSearchAsFavorite(titleText));
     }
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       ...this.state,
       titleText: event.target.value,
@@ -62,9 +61,9 @@ class FavoriteNameDialog extends React.Component {
     const { errorText } = this.state;
 
     const labelTexts = {
-      cancel: formatMessage({ id: 'cancel' }),
-      use: formatMessage({ id: 'use' }),
-      title_for_favorite: formatMessage({ id: 'title_for_favorite' }),
+      cancel: formatMessage({ id: "cancel" }),
+      use: formatMessage({ id: "use" }),
+      title_for_favorite: formatMessage({ id: "title_for_favorite" }),
     };
 
     const actions = [
@@ -102,7 +101,7 @@ class FavoriteNameDialog extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isOpen: state.user.favoriteNameDialogIsOpen,
 });
 

@@ -12,18 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
 
 class CompassBearingDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorText: '',
+      errorText: "",
     };
   }
 
@@ -36,14 +35,14 @@ class CompassBearingDialog extends React.Component {
 
   handleInputChange(event, compassBearing) {
     this.setState({
-      compassBearing
+      compassBearing,
     });
   }
 
   handleClose() {
     this.setState({
       compassBearing: null,
-      errorText: '',
+      errorText: "",
     });
     this.props.handleClose();
   }
@@ -53,19 +52,19 @@ class CompassBearingDialog extends React.Component {
       ? this.state.compassBearing
       : this.props.compassBearing;
 
-    if (typeof compassBearing === 'undefined') return;
+    if (typeof compassBearing === "undefined") return;
 
     if (!isNaN(compassBearing)) {
       this.props.handleConfirm(Number(compassBearing));
 
       this.setState({
         compassBearing: null,
-        errorText: '',
+        errorText: "",
       });
     } else {
       this.setState({
         errorText: this.props.intl.formatMessage({
-          id: 'change_compass_bearing_invalid',
+          id: "change_compass_bearing_invalid",
         }),
       });
     }
@@ -74,27 +73,30 @@ class CompassBearingDialog extends React.Component {
   render() {
     const { open, intl } = this.props;
     const { formatMessage } = intl;
-    const compassBearing = this.state.compassBearing !== null ? this.state.compassBearing : this.props.compassBearing;
+    const compassBearing =
+      this.state.compassBearing !== null
+        ? this.state.compassBearing
+        : this.props.compassBearing;
 
     const compassBearingTranslation = {
-      title: formatMessage({ id: 'change_compass_bearing' }),
-      body: formatMessage({ id: 'change_compass_bearing_help_text' }),
-      confirm: formatMessage({ id: 'change_compass_bearing_confirm' }),
-      cancel: formatMessage({ id: 'change_compass_bearing_cancel' }),
+      title: formatMessage({ id: "change_compass_bearing" }),
+      body: formatMessage({ id: "change_compass_bearing_help_text" }),
+      confirm: formatMessage({ id: "change_compass_bearing_confirm" }),
+      cancel: formatMessage({ id: "change_compass_bearing_cancel" }),
     };
 
     const buttonWrapperStyle = {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
       marginTop: 20,
     };
 
     const actions = [
       <TextField
         hintText="lat,lng"
-        floatingLabelText={formatMessage({ id: 'compass_bearing' })}
-        style={{ display: 'block', margin: 'auto', width: '90%' }}
+        floatingLabelText={formatMessage({ id: "compass_bearing" })}
+        style={{ display: "block", margin: "auto", width: "90%" }}
         value={compassBearing}
         onChange={this.handleInputChange.bind(this)}
         errorText={this.state.errorText}
@@ -124,7 +126,7 @@ class CompassBearingDialog extends React.Component {
           actions={actions}
           modal={false}
           open={open}
-          contentStyle={{ width: '45vw' }}
+          contentStyle={{ width: "45vw" }}
         >
           {compassBearingTranslation.body}
         </Dialog>

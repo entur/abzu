@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React from "react";
+import MdInfo from "material-ui/svg-icons/action/info";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
 
-import React from 'react';
-import MdInfo from 'material-ui/svg-icons/action/info';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
-
-const ToolTipIcon = ({ title }) =>
+const ToolTipIcon = ({ title }) => (
   <div className="tooltip">
     <MdInfo color={getPrimaryDarkerColor()} />
     <span className="tooltiptext"> {title} </span>
-  </div>;
+  </div>
+);
 
 export default ToolTipIcon;

@@ -12,20 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { LatLng } from 'leaflet';
-import { isLegalChildStopPlace } from '../reducers/rolesReducerUtils';
+import { LatLng } from "leaflet";
+import { isLegalChildStopPlace } from "../reducers/rolesReducerUtils";
 
 export const getUniquePathLinks = (a, key) => {
   var seen = {};
-  return a.filter(function(item) {
+  return a.filter(function (item) {
     let k = key(item);
     return seen.hasOwnProperty(k) ? false : (seen[k] = true);
   });
 };
 
-export const calculateDistance = coords => {
+export const calculateDistance = (coords) => {
   let latlngDistances = coords.map(
-    position => new LatLng(position[0], position[1])
+    (position) => new LatLng(position[0], position[1])
   );
   let totalDistance = 0;
 
@@ -36,7 +36,7 @@ export const calculateDistance = coords => {
   return totalDistance;
 };
 
-export const calculateEstimate = distance => {
+export const calculateEstimate = (distance) => {
   const walkingSpeed = 1.34112; // i.e. 3 mph / 3.6
   return Math.max(Math.floor(distance / walkingSpeed), 1);
 };
@@ -54,35 +54,35 @@ export const getChildStopPlaceSuggestions = (
   tokenParsed,
   nFirst
 ) => {
-  const alreadyAdded = children.map(child => child.id);
+  const alreadyAdded = children.map((child) => child.id);
 
   let suggestions = neighbourStops.filter(
-    stop =>
+    (stop) =>
       !stop.isParent &&
       !stop.isChildOfParent &&
       alreadyAdded.indexOf(stop.id) === -1
   );
 
   if (stopPlaceCentroid) {
-    suggestions = (suggestions.map(stop => {
-      let distance = null;
-      if (stop.location) {
-        distance = calculateDistance([stopPlaceCentroid, stop.location]);
-      }
-      return {
-        ...stop,
-        distance
-      };
-    }) || [])
-      .sort((a, b) => a.distance - b.distance);
+    suggestions = (
+      suggestions.map((stop) => {
+        let distance = null;
+        if (stop.location) {
+          distance = calculateDistance([stopPlaceCentroid, stop.location]);
+        }
+        return {
+          ...stop,
+          distance,
+        };
+      }) || []
+    ).sort((a, b) => a.distance - b.distance);
   }
 
-  const legalSuggestions = (suggestions || [])
-    .filter(
-      suggestion =>
-        isLegalChildStopPlace(suggestion, tokenParsed) &&
-        isChildTooFarAway(suggestion.distance)
-    );
+  const legalSuggestions = (suggestions || []).filter(
+    (suggestion) =>
+      isLegalChildStopPlace(suggestion, tokenParsed) &&
+      isChildTooFarAway(suggestion.distance)
+  );
 
   return legalSuggestions.slice(0, nFirst);
 };
@@ -94,32 +94,32 @@ export const getGroupMemberSuggestions = (
   tokenParsed,
   nFirst
 ) => {
-  const alreadyAdded = exisitingMembers.map(member => member.id);
+  const alreadyAdded = exisitingMembers.map((member) => member.id);
 
   let suggestions = neighbourStops.filter(
-    stop => !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
+    (stop) => !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
   );
 
   if (centroid) {
-    suggestions = (suggestions.map(stop => {
-      let distance = null;
-      if (stop.location) {
-        distance = calculateDistance([centroid, stop.location]);
-      }
-      return {
-        ...stop,
-        distance
-      };
-    }) || [])
-      .sort((a, b) => a.distance - b.distance);
+    suggestions = (
+      suggestions.map((stop) => {
+        let distance = null;
+        if (stop.location) {
+          distance = calculateDistance([centroid, stop.location]);
+        }
+        return {
+          ...stop,
+          distance,
+        };
+      }) || []
+    ).sort((a, b) => a.distance - b.distance);
   }
 
-  const legalSuggestions = (suggestions || [])
-    .filter(
-      suggestion =>
-        isMemberTooFarAway(suggestion.distance) &&
-        isLegalChildStopPlace(suggestion, tokenParsed)
-    );
+  const legalSuggestions = (suggestions || []).filter(
+    (suggestion) =>
+      isMemberTooFarAway(suggestion.distance) &&
+      isLegalChildStopPlace(suggestion, tokenParsed)
+  );
 
   return legalSuggestions.slice(0, nFirst);
 };

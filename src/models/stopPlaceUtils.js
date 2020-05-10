@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-export const extractAlternativeNames = alternativeNames => {
+export const extractAlternativeNames = (alternativeNames) => {
   if (!alternativeNames) return [];
   return alternativeNames.filter(
-    alt => alt.name && alt.name.value && alt.nameType,
+    (alt) => alt.name && alt.name.value && alt.nameType
   );
 };
 
-export const getImportedId = keyValues => {
+export const getImportedId = (keyValues) => {
   if (!keyValues) return [];
 
   for (let i = 0; i < keyValues.length; i++) {
@@ -31,22 +30,22 @@ export const getImportedId = keyValues => {
   return [];
 };
 
-export const getUniqueStopPlaceTypes = modalities => {
-  const stopPlaceTypes = modalities.map(child => JSON.stringify(child));
-  return [...new Set(stopPlaceTypes)].map(child => JSON.parse(child));
+export const getUniqueStopPlaceTypes = (modalities) => {
+  const stopPlaceTypes = modalities.map((child) => JSON.stringify(child));
+  return [...new Set(stopPlaceTypes)].map((child) => JSON.parse(child));
 };
 
 /* Following the NeTEx placeEquipment model, all placeEquipment sub-items contains at least one item.
  *  An abstraction of this concept in UI and in the client model (a clearly pragmatic approach) has been chosen in Abzu.
  */
-export const simplifyPlaceEquipment = placeEquipments => {
+export const simplifyPlaceEquipment = (placeEquipments) => {
   if (placeEquipments !== null) {
     let simpleRepresentation = {};
     simpleRepresentation.id = placeEquipments.id;
-    Object.keys(placeEquipments).forEach(key => {
+    Object.keys(placeEquipments).forEach((key) => {
       if (Array.isArray(placeEquipments[key]) && placeEquipments[key].length) {
         if (placeEquipments[key][0]) {
-          simpleRepresentation[key] = placeEquipments[key][0]
+          simpleRepresentation[key] = placeEquipments[key][0];
         }
       }
     });
@@ -60,16 +59,19 @@ export const simplifyPlaceEquipment = placeEquipments => {
  * Please note that the GraphQL API is not strictly Netex, so the method name is misleading.
  * This method removes id fields from place equipments, as this is not supported by the GraphQL APIs input type. (ROR-467)
  */
-export const netexifyPlaceEquipment = placeEquipments => {
+export const netexifyPlaceEquipment = (placeEquipments) => {
   if (placeEquipments) {
     let netexRepresentation = {};
 
-    Object.keys(placeEquipments).forEach(key => {
-      if (placeEquipments[key] && key !== 'id') {
-        netexRepresentation[key] = [placeEquipments[key]]
+    Object.keys(placeEquipments).forEach((key) => {
+      if (placeEquipments[key] && key !== "id") {
+        netexRepresentation[key] = [placeEquipments[key]];
 
         // Do not send ID as the Graphql API Input type does not accept this.
-        if(Array.isArray(netexRepresentation[key]) && netexRepresentation[key].length > 0) {
+        if (
+          Array.isArray(netexRepresentation[key]) &&
+          netexRepresentation[key].length > 0
+        ) {
           delete netexRepresentation[key][0].id;
         }
       }

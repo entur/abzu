@@ -12,10 +12,10 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import StopPlace from './StopPlace';
-import ParentStopPlace from './ParentStopPlace';
-import { Entities } from './Entities';
-import { calculatePolygonCenter } from '../utils/mapUtils';
+import StopPlace from "./StopPlace";
+import ParentStopPlace from "./ParentStopPlace";
+import { Entities } from "./Entities";
+import { calculatePolygonCenter } from "../utils/mapUtils";
 
 class GroupOfStopPlace {
   constructor(data) {
@@ -35,25 +35,24 @@ class GroupOfStopPlace {
           .map(({ topographicPlace, parentTopographicPlace }) =>
             JSON.stringify({
               topographicPlace,
-              parentTopographicPlace
+              parentTopographicPlace,
             })
           )
-      )
-    ].map(member => JSON.parse(member));
+      ),
+    ].map((member) => JSON.parse(member));
   }
 
   toClient() {
-
     try {
       const { data } = this;
 
       let clientGroup = {
-        description: data.description ? data.description.value : '',
+        description: data.description ? data.description.value : "",
         entityType: Entities.GROUP_OF_STOP_PLACE,
         id: data.id,
-        name: data.name ? data.name.value : '',
-        members: data.members.map(member => {
-          const isParent = member['__typename'] === 'ParentStopPlace';
+        name: data.name ? data.name.value : "",
+        members: data.members.map((member) => {
+          const isParent = member["__typename"] === "ParentStopPlace";
           if (isParent) {
             let parentStopPlace = new ParentStopPlace(member, true).toClient();
             parentStopPlace.isMemberOfGroup = true;
@@ -63,7 +62,7 @@ class GroupOfStopPlace {
             stopPlace.isMemberOfGroup = true;
             return stopPlace;
           }
-        })
+        }),
       };
 
       clientGroup.topographicPlaces = this.getTopographicPlacesFromMembers(
@@ -74,7 +73,7 @@ class GroupOfStopPlace {
 
       return clientGroup;
     } catch (e) {
-      console.log('error', e);
+      console.log("error", e);
     }
   }
 }

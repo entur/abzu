@@ -12,17 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getIn } from '../utils/';
-import { calculateDistance, calculateEstimate } from '../modelUtils/leafletUtils';
+import { getIn } from "../utils/";
+import {
+  calculateDistance,
+  calculateEstimate,
+} from "../modelUtils/leafletUtils";
 
 class PathLink {
-
   constructor(pathLink) {
     this.pathLink = pathLink;
   }
 
   toClient() {
-
     const { pathLink } = this;
     let clientPathLink = JSON.parse(JSON.stringify(pathLink));
 
@@ -30,16 +31,16 @@ class PathLink {
 
     let startCoordinates = getIn(
       clientPathLink,
-      ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
+      ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
       null
     );
     let inBetweenCoordinates = getIn(clientPathLink, [
-      'geometry',
-      'coordinates'
+      "geometry",
+      "coordinates",
     ]);
     let endCoordinates = getIn(
       clientPathLink,
-      ['to', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
+      ["to", "placeRef", "addressablePlace", "geometry", "coordinates"],
       null
     );
 
@@ -49,7 +50,7 @@ class PathLink {
     }
 
     if (inBetweenCoordinates) {
-      inBetweenCoordinates.map(lngLat => lngLat.reverse());
+      inBetweenCoordinates.map((lngLat) => lngLat.reverse());
       clientPathLink.inBetween = inBetweenCoordinates;
       latlngCoordinates.push.apply(latlngCoordinates, clientPathLink.inBetween);
     }
@@ -71,7 +72,6 @@ class PathLink {
     }
     return clientPathLink;
   }
-
 }
 
 export default PathLink;

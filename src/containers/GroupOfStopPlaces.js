@@ -12,15 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import { withApollo } from 'react-apollo';
-import { connect } from 'react-redux';
-import { getGroupOfStopPlacesById } from '../graphql/Tiamat/actions';
-import GroupOfStopPlaceMap from '../components/GroupOfStopPlaces/GroupOfStopPlacesMap';
-import EditGroupOfStopPlace from '../components/GroupOfStopPlaces/EditGroupOfStopPlaces';
-import Loader from '../components/Dialogs/Loader';
-import GroupErrorDialog from '../components/Dialogs/GroupErrorDialog';
-import { UserActions, StopPlacesGroupActions } from '../actions/';
+import React, { Component } from "react";
+import { withApollo } from "react-apollo";
+import { connect } from "react-redux";
+import { getGroupOfStopPlacesById } from "../graphql/Tiamat/actions";
+import GroupOfStopPlaceMap from "../components/GroupOfStopPlaces/GroupOfStopPlacesMap";
+import EditGroupOfStopPlace from "../components/GroupOfStopPlaces/EditGroupOfStopPlaces";
+import Loader from "../components/Dialogs/Loader";
+import GroupErrorDialog from "../components/Dialogs/GroupErrorDialog";
+import { UserActions, StopPlacesGroupActions } from "../actions/";
 
 class GroupOfStopPlaces extends Component {
   constructor(props) {
@@ -29,33 +29,35 @@ class GroupOfStopPlaces extends Component {
       isLoadingGroup: false,
       errorDialog: {
         open: false,
-        type: 'NOT_FOUND'
-      }
+        type: "NOT_FOUND",
+      },
     };
   }
 
   handleLoading(isLoadingGroup) {
     this.setState({
-      isLoadingGroup
+      isLoadingGroup,
     });
   }
 
   handleErrorDialogClose() {
-    this.props.dispatch(UserActions.navigateTo('/', ''));
+    this.props.dispatch(UserActions.navigateTo("/", ""));
     this.setState({
       errorDialog: {
         open: false,
-        type: 'NOT_FOUND'
-      }
+        type: "NOT_FOUND",
+      },
     });
   }
 
   handleNewGroupOfStopPlace() {
     const { sourceForNewGroup, dispatch, client } = this.props;
     if (sourceForNewGroup) {
-      dispatch(StopPlacesGroupActions.createNewGroup(client, sourceForNewGroup));
+      dispatch(
+        StopPlacesGroupActions.createNewGroup(client, sourceForNewGroup)
+      );
     } else {
-      dispatch(UserActions.navigateTo('/', ''));
+      dispatch(UserActions.navigateTo("/", ""));
     }
   }
 
@@ -71,26 +73,26 @@ class GroupOfStopPlaces extends Component {
           this.setState({
             errorDialog: {
               open: true,
-              type: 'NOT_FOUND'
-            }
+              type: "NOT_FOUND",
+            },
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           errorDialog: {
             open: true,
-            type: 'SERVER_ERROR'
-          }
+            type: "SERVER_ERROR",
+          },
         });
       });
   }
 
   componentDidMount() {
     const idFromPath = window.location.pathname
-      .substring(window.location.pathname.lastIndexOf('/'))
-      .replace('/', '');
-    const isNewGroup = idFromPath === 'new';
+      .substring(window.location.pathname.lastIndexOf("/"))
+      .replace("/", "");
+    const isNewGroup = idFromPath === "new";
 
     if (isNewGroup) {
       this.handleNewGroupOfStopPlace();
@@ -105,9 +107,11 @@ class GroupOfStopPlaces extends Component {
 
     return (
       <div>
-        {isLoadingGroup || errorDialog.open
-          ? <Loader />
-          : <EditGroupOfStopPlace />}
+        {isLoadingGroup || errorDialog.open ? (
+          <Loader />
+        ) : (
+          <EditGroupOfStopPlace />
+        )}
         {isFetchingMember && <Loader />}
         <GroupOfStopPlaceMap
           position={this.props.position}
@@ -127,7 +131,7 @@ const mapStateToProps = ({ stopPlacesGroup }) => ({
   position: stopPlacesGroup.centerPosition,
   zoom: stopPlacesGroup.zoom,
   isFetchingMember: stopPlacesGroup.isFetchingMember,
-  sourceForNewGroup: stopPlacesGroup.sourceForNewGroup
+  sourceForNewGroup: stopPlacesGroup.sourceForNewGroup,
 });
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaces));

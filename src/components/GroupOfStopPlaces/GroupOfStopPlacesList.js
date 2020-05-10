@@ -12,25 +12,24 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import StopPlaceListItem from '../EditParentStopPage/StopPlaceListItem';
-import { injectIntl } from 'react-intl';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { connect } from 'react-redux';
-import StopPlacesGroupActions from '../../actions/StopPlacesGroupActions';
-import AddMemberToGroup from '../Dialogs/AddMemberToGroup';
-import { withApollo } from 'react-apollo';
+import React, { Component } from "react";
+import StopPlaceListItem from "../EditParentStopPage/StopPlaceListItem";
+import { injectIntl } from "react-intl";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import { connect } from "react-redux";
+import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
+import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
+import { withApollo } from "react-apollo";
 
 class GroupOfStopPlacesList extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       expanded: -1,
       addStopPlaceOpen: false,
-    }
-  };
+    };
+  }
 
   handleRemoveStopPlace(stopPlaceId) {
     this.props.dispatch(
@@ -41,13 +40,12 @@ class GroupOfStopPlacesList extends Component {
   handleAddMembers(members) {
     const { dispatch, client } = this.props;
     this.setState({
-      addStopPlaceOpen: false
+      addStopPlaceOpen: false,
     });
     dispatch(StopPlacesGroupActions.addMembersToGroup(client, members));
   }
 
   render() {
-
     const { stopPlaces, canEdit } = this.props;
     const { formatMessage } = this.props.intl;
     const { expanded, addStopPlaceOpen } = this.state;
@@ -57,17 +55,17 @@ class GroupOfStopPlacesList extends Component {
         <div
           style={{
             padding: 5,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <div style={{ fontWeight: 600, fontSize: '.9em' }}>
-            {formatMessage({id: 'stop_places'})}
+          <div style={{ fontWeight: 600, fontSize: ".9em" }}>
+            {formatMessage({ id: "stop_places" })}
           </div>
           <FloatingActionButton
             onClick={() => {
-              this.setState({addStopPlaceOpen: true})
+              this.setState({ addStopPlaceOpen: true });
             }}
             disabled={!canEdit}
             mini={true}
@@ -76,43 +74,44 @@ class GroupOfStopPlacesList extends Component {
             <ContentAdd />
           </FloatingActionButton>
         </div>
-        <div style={{maxHeight: 500, overflow: 'auto'}}>
-          { stopPlaces.map((stopPlace, i) => (
+        <div style={{ maxHeight: 500, overflow: "auto" }}>
+          {stopPlaces.map((stopPlace, i) => (
             <StopPlaceListItem
-              key={'group-item-' + i}
+              key={"group-item-" + i}
               stopPlace={stopPlace}
               handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
-              expanded={expanded == i}
+              expanded={expanded === i}
               handleExpand={() => {
                 this.setState({
-                  expanded: i
-                })
+                  expanded: i,
+                });
               }}
               handleCollapse={() => {
                 this.setState({
-                  expanded: -1
+                  expanded: -1,
                 });
               }}
               disabled={false}
             />
           ))}
         </div>
-        { !stopPlaces.length && <p>{formatMessage({id: 'no_stop_places'})}</p>}
-        {addStopPlaceOpen &&
-        <AddMemberToGroup
-          open={addStopPlaceOpen}
-          handleClose={() => {
-            this.setState({addStopPlaceOpen: false})
-          }}
-          handleConfirm={this.handleAddMembers.bind(this)}
-        />}
+        {!stopPlaces.length && <p>{formatMessage({ id: "no_stop_places" })}</p>}
+        {addStopPlaceOpen && (
+          <AddMemberToGroup
+            open={addStopPlaceOpen}
+            handleClose={() => {
+              this.setState({ addStopPlaceOpen: false });
+            }}
+            handleConfirm={this.handleAddMembers.bind(this)}
+          />
+        )}
       </div>
     );
   }
 }
 
 GroupOfStopPlacesList.defaultProps = {
-  stopPlaces: []
+  stopPlaces: [],
 };
 
 export default withApollo(connect(null)(injectIntl(GroupOfStopPlacesList)));

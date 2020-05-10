@@ -12,21 +12,21 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import snackbarReducer, { initialState } from '../reducers/snackbarReducer';
+import snackbarReducer, { initialState } from "../reducers/snackbarReducer";
 import {
   APOLLO_MUTATION_ERROR,
   ERROR,
-  OPENED_SNACKBAR
-} from '../actions/Types';
+  OPENED_SNACKBAR,
+} from "../actions/Types";
 
-describe('snackbar', () => {
-  test('Should open snackbar on Apollo error', () => {
-    const errorMsg = 'Something went wrong';
+describe("snackbar", () => {
+  test("Should open snackbar on Apollo error", () => {
+    const errorMsg = "Something went wrong";
 
     const snackbarOptions = {
       isOpen: true,
       status: ERROR,
-      errorMsg
+      errorMsg,
     };
 
     expect(
@@ -35,34 +35,34 @@ describe('snackbar', () => {
         error: {
           graphQLErrors: [
             {
-              message: errorMsg
-            }
-          ]
-        }
+              message: errorMsg,
+            },
+          ],
+        },
       })
     ).toEqual({
       ...initialState,
-      snackbarOptions: snackbarOptions
+      snackbarOptions: snackbarOptions,
     });
   });
 
-  test('Should open snackbar upon success', () => {
+  test("Should open snackbar upon success", () => {
     const snackbarOptions = {
       isOpen: true,
       errorMsg: null,
-      status: 'SUCCESS'
+      status: "SUCCESS",
     };
 
     expect(
       snackbarReducer(undefined, {
         type: OPENED_SNACKBAR,
         payLoad: {
-          status: snackbarOptions.status
-        }
+          status: snackbarOptions.status,
+        },
       })
     ).toEqual({
       ...initialState,
-      snackbarOptions
+      snackbarOptions,
     });
   });
 });

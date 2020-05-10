@@ -12,14 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import moment from 'moment';
-import { defaultLimitations } from '../models/Limitations';
-import { netexifyPlaceEquipment } from '../models/stopPlaceUtils'
+import moment from "moment";
+import { defaultLimitations } from "../models/Limitations";
+import { netexifyPlaceEquipment } from "../models/stopPlaceUtils";
 
 const helpers = {};
 
-helpers.mapQuayToVariables = quay => {
+helpers.mapQuayToVariables = (quay) => {
   let quayVariables = {
     id: quay.id,
     geometry: null,
@@ -32,18 +31,18 @@ helpers.mapQuayToVariables = quay => {
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
     description: {
       value: quay.description,
-      lang: 'nor'
-    }
+      lang: "nor",
+    },
   };
 
   quayVariables.privateCode = {
-    value: quay.privateCode || '',
+    value: quay.privateCode || "",
   };
 
   if (quay.location) {
     quayVariables.geometry = {
       coordinates: [[quay.location[1], quay.location[0]]],
-      type: 'Point'
+      type: "Point",
     };
   }
   helpers.removeTypeNameRecursively(quayVariables);
@@ -51,25 +50,27 @@ helpers.mapQuayToVariables = quay => {
 };
 
 helpers.getFullUTCString = (time, date) => {
-  const timeString = moment(time).utc().format('HH:mm:ss');
+  const timeString = moment(time).utc().format("HH:mm:ss");
   // Do not format this to UTC in order to retain correct date, 2017-09-1500:02+GMT will be 2017-08... in UTC
-  const dateString = moment(date).format('YYYY-MM-DD');
+  const dateString = moment(date).format("YYYY-MM-DD");
   return (
-    moment(`${dateString} ${timeString}`).format(
-      'YYYY-MM-DDTHH:mm:ss.SSS'
-    ).toString() + 'Z'
+    moment(`${dateString} ${timeString}`)
+      .format("YYYY-MM-DDTHH:mm:ss.SSS")
+      .toString() + "Z"
   );
 };
 
-helpers.mapGroupOfStopPlaceToVariables = groupOfStopPlace => {
-  return ({
+helpers.mapGroupOfStopPlaceToVariables = (groupOfStopPlace) => {
+  return {
     id: groupOfStopPlace.id,
     name: createEmbeddableMultilingualString(groupOfStopPlace.name),
-    description: createEmbeddableMultilingualString(groupOfStopPlace.description),
-    members: groupOfStopPlace.members.map(member => ({
-      ref: member.id
-    }))
-  });
+    description: createEmbeddableMultilingualString(
+      groupOfStopPlace.description
+    ),
+    members: groupOfStopPlace.members.map((member) => ({
+      ref: member.id,
+    })),
+  };
 };
 
 helpers.mapChildStopToVariables = (original, userInput) => {
@@ -80,11 +81,13 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   let variables = {
     id: stop.parentStop.id,
     children: [child],
-    name: stop.parentStop.name
+    name: stop.parentStop.name,
   };
 
   if (stop.parentStop.location) {
-    variables.coordinates = [[stop.parentStop.location[1], stop.parentStop.location[0]]];
+    variables.coordinates = [
+      [stop.parentStop.location[1], stop.parentStop.location[0]],
+    ];
   }
 
   if (userInput) {
@@ -106,23 +109,25 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   }
   helpers.removeTypeNameRecursively(variables);
   return variables;
-}
+};
 
 helpers.mapParentStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
-  const children = stop.children.map(child => helpers.mapDeepStopToVariables(child, null));
+  const children = stop.children.map((child) =>
+    helpers.mapDeepStopToVariables(child, null)
+  );
 
   let parentStopVariables = {
     name: stop.name,
     description: stop.description || null,
     alternativeNames: stop.alternativeNames || null,
-    children: children
+    children: children,
   };
 
   if (stop.id) {
     parentStopVariables.id = stop.id;
   } else {
-    parentStopVariables.stopPlaceIds = stop.children.map( child => child.id )
+    parentStopVariables.stopPlaceIds = stop.children.map((child) => child.id);
   }
 
   if (stop.location) {
@@ -150,35 +155,36 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   return parentStopVariables;
 };
 
-const createEmbeddableMultilingualString = string => ({
-  value: string || '',
-  lang: 'nor'
+const createEmbeddableMultilingualString = (string) => ({
+  value: string || "",
+  lang: "nor",
 });
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
-helpers.mapDeepStopToVariables = original => {
+helpers.mapDeepStopToVariables = (original) => {
   let stopPlace = helpers.mapStopToVariables(original, null);
   stopPlace.name = createEmbeddableMultilingualString(stopPlace.name);
-  stopPlace.description = createEmbeddableMultilingualString(stopPlace.description);
+  stopPlace.description = createEmbeddableMultilingualString(
+    stopPlace.description
+  );
 
   if (stopPlace.coordinates) {
     stopPlace.geometry = {
       coordinates: stopPlace.coordinates.slice(),
-      type: 'Point'
+      type: "Point",
     };
     delete stopPlace.coordinates;
   }
   return stopPlace;
-}
+};
 
 helpers.removeTypeNameRecursively = (variablesObject) => {
-  for(var property in variablesObject) {
-    if (property === '__typename')
-      delete variablesObject[property];
-    else if (typeof variablesObject[property] === 'object')
+  for (var property in variablesObject) {
+    if (property === "__typename") delete variablesObject[property];
+    else if (typeof variablesObject[property] === "object")
       helpers.removeTypeNameRecursively(variablesObject[property]);
   }
-}
+};
 
 helpers.mapStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
@@ -188,7 +194,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     publicCode: stop.publicCode,
     description: stop.description || null,
     stopPlaceType: stop.stopPlaceType,
-    quays: stop.quays.map(quay => helpers.mapQuayToVariables(quay)),
+    quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(
       stop.accessibilityAssessment
     ),
@@ -198,14 +204,14 @@ helpers.mapStopToVariables = (original, userInput) => {
     weighting: stop.weighting,
     submode: stop.submode,
     transportMode: stop.transportMode,
-    tariffZones: (stop.tariffZones || []).map(tz => ({
-      ref: tz.id
+    tariffZones: (stop.tariffZones || []).map((tz) => ({
+      ref: tz.id,
     })),
-    adjacentSites: stop.adjacentSites
+    adjacentSites: stop.adjacentSites,
   };
 
   stopVariables.privateCode = {
-    value: stop.privateCode || '',
+    value: stop.privateCode || "",
   };
 
   if (userInput) {
@@ -233,8 +239,8 @@ helpers.mapStopToVariables = (original, userInput) => {
   return stopVariables;
 };
 
-helpers.mapPathLinkToVariables = pathLinks => {
-  return pathLinks.map(source => {
+helpers.mapPathLinkToVariables = (pathLinks) => {
+  return pathLinks.map((source) => {
     let pathLink = JSON.parse(JSON.stringify(source));
 
     // TODO : Move these to stripRedundantFields, write test for this
@@ -252,13 +258,13 @@ helpers.mapPathLinkToVariables = pathLinks => {
     }
 
     pathLink.transferDuration = {
-      defaultDuration: source.estimate
+      defaultDuration: source.estimate,
     };
 
     if (pathLink.inBetween && pathLink.inBetween.length) {
       pathLink.geometry = {
-        type: 'LineString',
-        coordinates: pathLink.inBetween.map(latlng => latlng.reverse())
+        type: "LineString",
+        coordinates: pathLink.inBetween.map((latlng) => latlng.reverse()),
       };
     }
     helpers.removeTypeNameRecursively(pathLink);
@@ -267,12 +273,12 @@ helpers.mapPathLinkToVariables = pathLinks => {
 };
 
 helpers.mapParkingToVariables = (parkingArr, parentRef) => {
-  return parkingArr.map(source => {
+  return parkingArr.map((source) => {
     let parking = {
       totalCapacity: Number(source.totalCapacity) || 0,
       parentSiteRef: parentRef,
       parkingVehicleTypes: source.parkingVehicleTypes,
-      validBetween: source.validBetween
+      validBetween: source.validBetween,
     };
 
     if (source.id) {
@@ -291,40 +297,48 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
       parking.rechargingAvailable = source.rechargingAvailable;
     }
 
-    if (source.numberOfSpaces || source.numberOfSpacesWithRechargePoint || source.numberOfSpacesForRegisteredDisabledUserType) {
-      parking.parkingProperties = [{
-        spaces: [
-          {
-            parkingUserType: 'allUsers',
-            numberOfSpaces: source.numberOfSpaces,
-            numberOfSpacesWithRechargePoint: source.numberOfSpacesWithRechargePoint
-          },
-          {
-            parkingUserType: 'registeredDisabled',
-            numberOfSpaces: source.numberOfSpacesForRegisteredDisabledUserType
-          }
-        ]
-      }];
+    if (
+      source.numberOfSpaces ||
+      source.numberOfSpacesWithRechargePoint ||
+      source.numberOfSpacesForRegisteredDisabledUserType
+    ) {
+      parking.parkingProperties = [
+        {
+          spaces: [
+            {
+              parkingUserType: "allUsers",
+              numberOfSpaces: source.numberOfSpaces,
+              numberOfSpacesWithRechargePoint:
+                source.numberOfSpacesWithRechargePoint,
+            },
+            {
+              parkingUserType: "registeredDisabled",
+              numberOfSpaces:
+                source.numberOfSpacesForRegisteredDisabledUserType,
+            },
+          ],
+        },
+      ];
     }
 
     parking.name = {
       value: source.name,
-      lang: 'nor'
+      lang: "nor",
     };
 
     if (source.location) {
       let coordinates = source.location
-        .map(c => {
+        .map((c) => {
           if (!isFloat(c)) {
-            return parseFloat(c + '.0000001');
+            return parseFloat(c + ".0000001");
           }
           return c;
         })
         .reverse();
 
       parking.geometry = {
-        type: 'Point',
-        coordinates: [coordinates]
+        type: "Point",
+        coordinates: [coordinates],
       };
     } else {
       parking.geometry = null;
@@ -334,7 +348,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
   });
 };
 
-const stripRedundantFields = pathLink => {
+const stripRedundantFields = (pathLink) => {
   delete pathLink.estimate;
   delete pathLink.duration;
   delete pathLink.inBetween;
@@ -350,17 +364,17 @@ const stripRedundantFields = pathLink => {
   return pathLink;
 };
 
-const formatAccessibilityAssements = assements => {
+const formatAccessibilityAssements = (assements) => {
   if (assements && assements.limitations) {
-    Object.keys(defaultLimitations).map(key => {
+    Object.keys(defaultLimitations).forEach((key) => {
       if (!assements.limitations[key]) {
-        assements.limitations[key] = 'UNKNOWN';
+        assements.limitations[key] = "UNKNOWN";
       }
     });
   }
   return assements;
 };
 
-const isFloat = n => Number(n) === n && n % 1 !== 0;
+const isFloat = (n) => Number(n) === n && n % 1 !== 0;
 
 export default helpers;

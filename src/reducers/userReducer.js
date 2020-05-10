@@ -12,22 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import * as types from '../actions/Types';
+import * as types from "../actions/Types";
 
 export const initialState = {
-  path: '/',
+  path: "/",
   missingCoordsMap: {},
   searchFilters: {
     stopType: [],
     topoiChips: [
       // e.g. {key: 0, text: 'Nordland', type: 'county', value: 2},
     ],
-    text: ''
+    text: "",
   },
   localization: {
     locale: null,
-    messages: []
+    messages: [],
   },
   appliedLocale: null,
   favoriteNameDialogIsOpen: false,
@@ -44,12 +43,11 @@ export const initialState = {
   serverTimeDiff: 0,
   deleteStopDialogWarning: {
     warning: false,
-    stopPlaceId: null
-  }
+    stopPlaceId: null,
+  },
 };
 
 const userReducer = (state = initialState, action) => {
-
   switch (action.type) {
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
@@ -60,8 +58,8 @@ const userReducer = (state = initialState, action) => {
         keyValuesDialogOpen: false,
         deleteStopDialogWarning: {
           warning: false,
-          stopPlaceId: null
-        }
+          stopPlaceId: null,
+        },
       });
 
     case types.TOGGLED_IS_CREATING_NEW_STOP:
@@ -72,22 +70,22 @@ const userReducer = (state = initialState, action) => {
 
     case types.APPLIED_STOPTYPE_SEARCH_FILTER:
       return Object.assign({}, state, {
-        searchFilters: { ...state.searchFilters, stopType: action.payLoad }
+        searchFilters: { ...state.searchFilters, stopType: action.payLoad },
       });
 
     case types.REMOVED_ALL_FILTERS:
       return Object.assign({}, state, {
-        searchFilters: { topoiChips: [], stopType: [] }
+        searchFilters: { topoiChips: [], stopType: [] },
       });
 
     case types.OPEN_LOOKUP_COORDINATES_DIALOG:
       return Object.assign({}, state, {
-        lookupCoordinatesOpen: true
+        lookupCoordinatesOpen: true,
       });
 
     case types.CLOSED_LOOKUP_COORDINATES_DIALOG:
       return Object.assign({}, state, {
-        lookupCoordinatesOpen: false
+        lookupCoordinatesOpen: false,
       });
 
     case types.CHANGED_LOCALIZATION:
@@ -103,66 +101,67 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: newChipList
-        }
+          topoiChips: newChipList,
+        },
       });
 
     case types.DELETED_TOPOS_CHIP:
-      let chips = state.searchFilters.topoiChips
-        .filter(chip => chip.value !== action.payLoad);
+      let chips = state.searchFilters.topoiChips.filter(
+        (chip) => chip.value !== action.payLoad
+      );
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: chips
-        }
+          topoiChips: chips,
+        },
       });
 
     case types.SHOW_CREATED_NEW_STOP_INFO:
       return Object.assign({}, state, {
         newStopCreated: {
           open: true,
-          stopPlaceId: action.payLoad
-        }
+          stopPlaceId: action.payLoad,
+        },
       });
 
     case types.HIDE_CREATED_NEW_STOP_INFO:
       return Object.assign({}, state, {
         newStopCreated: {
           open: false,
-          stopPlaceId: null
-        }
+          stopPlaceId: null,
+        },
       });
 
     case types.SET_TOPOS_CHIPS:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: action.payLoad
-        }
+          topoiChips: action.payLoad,
+        },
       });
 
     case types.SET_STOP_PLACE_TYPES:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          stopType: action.payLoad
-        }
+          stopType: action.payLoad,
+        },
       });
 
     case types.TOGGLE_SHOW_FUTURE_AND_EXPIRED:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          showFutureAndExpired: action.payLoad
-        }
+          showFutureAndExpired: action.payLoad,
+        },
       });
 
     case types.SET_SEARCH_TEXT:
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          text: action.payLoad
-        }
+          text: action.payLoad,
+        },
       });
 
     case types.OPENED_FAVORITE_NAME_DIALOG:
@@ -173,18 +172,18 @@ const userReducer = (state = initialState, action) => {
 
     case types.REMOVE_SEARCH_AS_FAVORITE:
       return Object.assign({}, state, {
-        removedFavorites: state.removedFavorites.concat(action.payLoad)
+        removedFavorites: state.removedFavorites.concat(action.payLoad),
       });
 
     case types.REQUESTED_ADJACENT_SITE_DIALOG:
       return Object.assign({}, state, {
         adjacentStopDialogOpen: true,
-        adjacentStopDialogStopPlace: action.payLoad
+        adjacentStopDialogStopPlace: action.payLoad,
       });
 
     case types.CLOSED_ADJACENT_SITE_DIALOG:
       return Object.assign({}, state, {
-        adjacentStopDialogOpen: false
+        adjacentStopDialogOpen: false,
       });
 
     case types.CHANGED_ACTIVE_BASELAYER:
@@ -194,7 +193,7 @@ const userReducer = (state = initialState, action) => {
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);
       newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position;
       return Object.assign({}, state, {
-        missingCoordsMap: newMissingCoordsMap
+        missingCoordsMap: newMissingCoordsMap,
       });
 
     case types.CHANGED_ELEMENT_TYPE_TAB:
@@ -203,46 +202,46 @@ const userReducer = (state = initialState, action) => {
     case types.ADDED_JUNCTION_ELEMENT:
       let activeElementTabIndex = -1;
 
-      if (action.payLoad.type === 'quay') {
+      if (action.payLoad.type === "quay") {
         activeElementTabIndex = 0;
       } else if (
-        action.payLoad.type === 'pathJunction' ||
-        action.payLoad.type === 'entrance'
+        action.payLoad.type === "pathJunction" ||
+        action.payLoad.type === "entrance"
       ) {
         activeElementTabIndex = 1;
       } else if (
-        action.payLoad.type === 'parkAndRide' ||
-        action.payLoad.type === 'bikeParking'
+        action.payLoad.type === "parkAndRide" ||
+        action.payLoad.type === "bikeParking"
       ) {
         activeElementTabIndex = 2;
       } else {
-        console.warn('type is not supported', action.payLoad.type);
+        console.warn("type is not supported", action.payLoad.type);
         activeElementTabIndex = -1;
       }
 
       return Object.assign({}, state, {
-        activeElementTab: activeElementTabIndex
+        activeElementTab: activeElementTabIndex,
       });
 
     case types.SHOW_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditQuayAdditional: true
+        showEditQuayAdditional: true,
       });
 
     case types.HID_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditQuayAdditional: false
+        showEditQuayAdditional: false,
       });
 
     case types.SHOW_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditStopAdditional: true
+        showEditStopAdditional: true,
       });
 
     case types.SET_FOCUS_ON_ELEMENT:
       if (action.payLoad.index > -1) {
         return Object.assign({}, state, {
-          showEditStopAdditional: false
+          showEditStopAdditional: false,
         });
       }
 
@@ -250,7 +249,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.HID_EDIT_STOP_ADDITIONAL:
       return Object.assign({}, state, {
-        showEditStopAdditional: false
+        showEditStopAdditional: false,
       });
 
     case types.OPENED_KEY_VALUES_DIALOG:
@@ -258,8 +257,8 @@ const userReducer = (state = initialState, action) => {
         keyValuesDialogOpen: true,
         keyValuesOrigin: {
           type: action.payLoad.type,
-          index: action.payLoad.index
-        }
+          index: action.payLoad.index,
+        },
       });
 
     case types.CLOSED_KEY_VALUES_DIALOG:
@@ -281,12 +280,12 @@ const userReducer = (state = initialState, action) => {
 
     case types.TOGGLE_SHOW_PUBLIC_CODE:
       return Object.assign({}, state, {
-        showPublicCode: action.payLoad
+        showPublicCode: action.payLoad,
       });
 
     case types.TERMINATE_DELETE_STOP_DIALOG_WARNING:
       return Object.assign({}, state, {
-        deleteStopDialogWarning: action.payLoad
+        deleteStopDialogWarning: action.payLoad,
       });
 
     default:

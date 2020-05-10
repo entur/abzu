@@ -12,20 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+import React from "react";
 
 class ReportFilterBox extends React.Component {
   render() {
     const style = {
-      border: '1px solid black',
+      border: "1px solid black",
       ...this.props.style,
     };
 
-    return (
-      <div style={style}>
-        {this.props.children}
-      </div>
-    );
+    return <div style={style}>{this.props.children}</div>;
   }
 }
 

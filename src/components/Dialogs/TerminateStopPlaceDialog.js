@@ -12,31 +12,31 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import MdCancel from 'material-ui/svg-icons/navigation/cancel';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import MdDeleteForever from 'material-ui/svg-icons/action/delete-forever';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
-import Checkbox from 'material-ui/Checkbox';
-import TimePicker from 'material-ui/TimePicker';
-import DatePicker from 'material-ui/DatePicker';
-import { getEarliestFromDate } from '../../utils/saveDialogUtils';
-import areIntlLocalesSupported from 'intl-locales-supported';
-import TextField from 'material-ui/TextField';
-import helpers from '../../modelUtils/mapToQueryVariables';
-import Spinner from '../../static/icons/spinner';
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import MdCancel from "material-ui/svg-icons/navigation/cancel";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import MdDeleteForever from "material-ui/svg-icons/action/delete-forever";
+import MdWarning from "material-ui/svg-icons/alert/warning";
+import Checkbox from "material-ui/Checkbox";
+import TimePicker from "material-ui/TimePicker";
+import DatePicker from "material-ui/DatePicker";
+import { getEarliestFromDate } from "../../utils/saveDialogUtils";
+import areIntlLocalesSupported from "intl-locales-supported";
+import TextField from "material-ui/TextField";
+import helpers from "../../modelUtils/mapToQueryVariables";
+import Spinner from "../../static/icons/spinner";
 
 let DateTimeFormat;
 
-if (areIntlLocalesSupported(['nb'])) {
+if (areIntlLocalesSupported(["nb"])) {
   DateTimeFormat = global.Intl.DateTimeFormat;
 } else {
-  const IntlPolyfill = require('intl');
+  const IntlPolyfill = require("intl");
   DateTimeFormat = IntlPolyfill.DateTimeFormat;
-  require('intl/locale-data/jsonp/nb');
+  require("intl/locale-data/jsonp/nb");
 }
 
 class TerminateStopPlaceDialog extends React.Component {
@@ -45,7 +45,7 @@ class TerminateStopPlaceDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     warningInfo: PropTypes.object,
-    intl: PropTypes.object.isRequired
+    intl: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -89,16 +89,18 @@ class TerminateStopPlaceDialog extends React.Component {
         error,
         activeDatesSize,
         latestActiveDate,
-        authorities
+        authorities,
       } = warningInfo;
-      const infoStyle = { fontSize: '1.1em' };
-      const alertStyle = { ...infoStyle, color: '#cc0000' };
+      const infoStyle = { fontSize: "1.1em" };
+      const alertStyle = { ...infoStyle, color: "#cc0000" };
 
       if (loading) {
         return (
-          <div style={{ ...infoStyle, display: 'flex', alignItems: 'center' }}>
+          <div style={{ ...infoStyle, display: "flex", alignItems: "center" }}>
             <Spinner />
-            <div style={{marginLeft: 5}}>{formatMessage({ id: 'checking_stop_place_usage' })}</div>
+            <div style={{ marginLeft: 5 }}>
+              {formatMessage({ id: "checking_stop_place_usage" })}
+            </div>
           </div>
         );
       }
@@ -106,7 +108,7 @@ class TerminateStopPlaceDialog extends React.Component {
       if (error) {
         return (
           <div style={alertStyle}>
-            {formatMessage({ id: 'failed_checking_stop_place_usage' })}
+            {formatMessage({ id: "failed_checking_stop_place_usage" })}
           </div>
         );
       }
@@ -114,23 +116,36 @@ class TerminateStopPlaceDialog extends React.Component {
       if (
         warning &&
         stopPlaceId === stopPlace.id &&
-        (stopPlace && stopPlace.id)
+        stopPlace &&
+        stopPlace.id
       ) {
         const makeSomeNoise = activeDatesSize && latestActiveDate > date;
         const panicStyle = {
-          color: '#000',
+          color: "#000",
           padding: 10,
-          border: '1px solid black',
-          background: 'rgb(252, 200, 197)'
+          border: "1px solid black",
+          background: "rgb(252, 200, 197)",
         };
         const wrapperStyle = !makeSomeNoise ? alertStyle : panicStyle;
         return (
           <div style={wrapperStyle}>
-            <div>{formatMessage({ id: 'stop_place_usages_found' })}</div>
+            <div>{formatMessage({ id: "stop_place_usages_found" })}</div>
             {makeSomeNoise && (
-              <div style={{ fontWeight: 600, marginTop: 5, display: 'flex', flexDirection: 'column', lineHeight: '1.5' }}>
-                <div>{formatMessage({ id: 'important_stop_place_usages_found' })}</div>
-                <div style={{fontStyle: 'italic'}}>{ authorities && authorities.join(', ') }</div>
+              <div
+                style={{
+                  fontWeight: 600,
+                  marginTop: 5,
+                  display: "flex",
+                  flexDirection: "column",
+                  lineHeight: "1.5",
+                }}
+              >
+                <div>
+                  {formatMessage({ id: "important_stop_place_usages_found" })}
+                </div>
+                <div style={{ fontStyle: "italic" }}>
+                  {authorities && authorities.join(", ")}
+                </div>
               </div>
             )}
           </div>
@@ -150,7 +165,7 @@ class TerminateStopPlaceDialog extends React.Component {
       shouldTerminatePermanently: false,
       date: earliestFrom,
       time: earliestFrom,
-      comment: ''
+      comment: "",
     };
   }
 
@@ -164,23 +179,29 @@ class TerminateStopPlaceDialog extends React.Component {
       canDeleteStop,
       previousValidBetween,
       isLoading,
-      serverTimeDiff
+      serverTimeDiff,
     } = this.props;
     const { formatMessage } = intl;
-    const { shouldHardDelete, shouldTerminatePermanently, date, time, comment } = this.state;
+    const {
+      shouldHardDelete,
+      shouldTerminatePermanently,
+      date,
+      time,
+      comment,
+    } = this.state;
 
     const translations = {
-      confirm: formatMessage({ id: 'confirm' }),
-      cancel: formatMessage({ id: 'cancel' }),
-      title: formatMessage({ id: 'terminate_stop_title' }),
-      permanentLabel: formatMessage({ id: 'permanently_terminate_stop_place' }),
-      deleteLabel: formatMessage({ id: 'delete_stop_place' }),
-      deleteWarning: formatMessage({ id: 'delete_stop_info' }),
-      permanentWarning: formatMessage({ id: 'permanently_terminate_warning' }),
-      cannotDelete: formatMessage({ id: 'delete_stop_not_allowed' }),
-      comment: formatMessage({ id: 'comment' }),
-      date: formatMessage({ id: 'date' }),
-      time: formatMessage({ id: 'time' })
+      confirm: formatMessage({ id: "confirm" }),
+      cancel: formatMessage({ id: "cancel" }),
+      title: formatMessage({ id: "terminate_stop_title" }),
+      permanentLabel: formatMessage({ id: "permanently_terminate_stop_place" }),
+      deleteLabel: formatMessage({ id: "delete_stop_place" }),
+      deleteWarning: formatMessage({ id: "delete_stop_info" }),
+      permanentWarning: formatMessage({ id: "permanently_terminate_warning" }),
+      cannotDelete: formatMessage({ id: "delete_stop_not_allowed" }),
+      comment: formatMessage({ id: "comment" }),
+      date: formatMessage({ id: "date" }),
+      time: formatMessage({ id: "time" }),
     };
 
     const dateTime = helpers.getFullUTCString(time, date);
@@ -194,7 +215,14 @@ class TerminateStopPlaceDialog extends React.Component {
       />,
       <FlatButton
         label={translations.confirm}
-        onClick={() => handleConfirm(shouldHardDelete, shouldTerminatePermanently, comment, dateTime)}
+        onClick={() =>
+          handleConfirm(
+            shouldHardDelete,
+            shouldTerminatePermanently,
+            comment,
+            dateTime
+          )
+        }
         disabled={this.getConfirmIsDisabled()}
         primary={true}
         keyboardFocused={true}
@@ -207,7 +235,7 @@ class TerminateStopPlaceDialog extends React.Component {
             <MdDelete />
           )
         }
-      />
+      />,
     ];
 
     const earliestFrom = getEarliestFromDate(
@@ -221,21 +249,21 @@ class TerminateStopPlaceDialog extends React.Component {
         actions={actions}
         modal={true}
         open={open}
-        titleStyle={{ padding: '24px 24px 0px' }}
+        titleStyle={{ padding: "24px 24px 0px" }}
         onRequestClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
+        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <div>
-          <div style={{ marginBottom: 10, color: '#000' }}>
-            <span style={{ fontWeight: 600 }}>{`${stopPlace.name} (${
-              stopPlace.id
-            })`}</span>
+          <div style={{ marginBottom: 10, color: "#000" }}>
+            <span
+              style={{ fontWeight: 600 }}
+            >{`${stopPlace.name} (${stopPlace.id})`}</span>
           </div>
-          <div style={{ color: '#bb271c' }}>
+          <div style={{ color: "#bb271c" }}>
             {stopPlace.hasExpired &&
-              formatMessage({ id: 'expired_can_only_be_deleted' })}
+              formatMessage({ id: "expired_can_only_be_deleted" })}
           </div>
           {warningUsage}
           <DatePicker
@@ -247,9 +275,9 @@ class TerminateStopPlaceDialog extends React.Component {
             DateTimeFormat={DateTimeFormat}
             formatDate={
               new DateTimeFormat(intl.locale, {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
+                day: "numeric",
+                month: "long",
+                year: "numeric",
               }).format
             }
             autoOk
@@ -273,7 +301,7 @@ class TerminateStopPlaceDialog extends React.Component {
             autoOk
             onChange={(event, value) => {
               this.setState({
-                time: value
+                time: value,
               });
             }}
           />
@@ -287,10 +315,11 @@ class TerminateStopPlaceDialog extends React.Component {
             onChange={(e, v) => this.setState({ comment: v })}
           />
           <Checkbox
-            style={{marginTop: 5}}
+            style={{ marginTop: 5 }}
             checked={shouldTerminatePermanently}
             onCheck={(e, v) => this.setState({ shouldTerminatePermanently: v })}
-            label={translations.permanentLabel} />
+            label={translations.permanentLabel}
+          />
           {canDeleteStop && (
             <Checkbox
               style={{ marginTop: 5 }}
@@ -300,7 +329,7 @@ class TerminateStopPlaceDialog extends React.Component {
             />
           )}
           {shouldHardDelete && (
-            <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
+            <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>
@@ -308,7 +337,7 @@ class TerminateStopPlaceDialog extends React.Component {
             </div>
           )}
           {shouldTerminatePermanently && (
-            <div style={{ marginLeft: 10, display: 'flex', marginTop: 10 }}>
+            <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
               <div style={{ marginTop: 0, marginRight: 5 }}>
                 <MdWarning color="orange" />
               </div>

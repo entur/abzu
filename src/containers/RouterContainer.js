@@ -12,23 +12,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { Router, Route, IndexRoute } from 'react-router';
-import App from './App';
-import StopPlaces from './StopPlaces';
-import StopPlace from './StopPlace';
-import ReportPage from './ReportPage';
-import Routes from '../routes/';
-import GroupOfStopPlaces from './GroupOfStopPlaces';
+import React from "react";
+import { Router, Route, IndexRoute } from "react-router";
+import App from "./App";
+import StopPlaces from "./StopPlaces";
+import StopPlace from "./StopPlace";
+import ReportPage from "./ReportPage";
+import Routes from "../routes/";
+import GroupOfStopPlaces from "./GroupOfStopPlaces";
 
 class RouterContainer extends React.Component {
   routes = (
     <Route path={this.props.path} component={App}>
       <IndexRoute component={StopPlaces} />
-      <Route path={this.props.path + Routes.STOP_PLACE + '/:stopId'} component={StopPlace} />
-      <Route path={this.props.path + Routes.GROUP_OF_STOP_PLACE + '/:groupId'} component={GroupOfStopPlaces} />
-      <Route path={this.props.path + 'reports'} component={ReportPage} />
+      <Route
+        path={this.props.path + Routes.STOP_PLACE + "/:stopId"}
+        component={StopPlace}
+      />
+      <Route
+        path={this.props.path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
+        component={GroupOfStopPlaces}
+      />
+      <Route path={this.props.path + "reports"} component={ReportPage} />
     </Route>
   );
 

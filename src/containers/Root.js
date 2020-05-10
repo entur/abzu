@@ -12,37 +12,36 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { connect } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-import { UserActions } from '../actions/';
-import configureLocalization from '../localization/localization';
-import RouterContainer from './RouterContainer';
-import axios from 'axios';
+import React from "react";
+import { connect } from "react-redux";
+import { IntlProvider } from "react-intl";
+import { UserActions } from "../actions/";
+import configureLocalization from "../localization/localization";
+import RouterContainer from "./RouterContainer";
+import axios from "axios";
 
 class Root extends React.Component {
-
   componentDidMount() {
     const { dispatch, appliedLocale } = this.props;
 
-    configureLocalization(appliedLocale).then(localization => {
+    configureLocalization(appliedLocale).then((localization) => {
       dispatch(UserActions.changeLocalization(localization));
     });
 
     setTimeout(() => {
       const timeBeforeRequest = new Date().getTime();
-      axios.post(window.config.endpointBase + 'timeOffset', {
-        "clientTime": timeBeforeRequest
-      }).then(response => {
-        const resolvedTime = new Date().getTime();
-        const serverClientOffset = response.data.offset;
-        const timeSpentOnRequest = resolvedTime - timeBeforeRequest;
-        const diff = (serverClientOffset - timeSpentOnRequest)/2;
-        dispatch(UserActions.setServerDiffTime(diff));
-      });
+      axios
+        .post(window.config.endpointBase + "timeOffset", {
+          clientTime: timeBeforeRequest,
+        })
+        .then((response) => {
+          const resolvedTime = new Date().getTime();
+          const serverClientOffset = response.data.offset;
+          const timeSpentOnRequest = resolvedTime - timeBeforeRequest;
+          const diff = (serverClientOffset - timeSpentOnRequest) / 2;
+          dispatch(UserActions.setServerDiffTime(diff));
+        });
     }, 5000);
-
   }
 
   render() {
@@ -62,7 +61,7 @@ class Root extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   localization: state.user.localization,
   appliedLocale: state.user.appliedLocale,
 });

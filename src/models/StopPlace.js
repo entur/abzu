@@ -12,16 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { extractAlternativeNames, getImportedId, simplifyPlaceEquipment } from './stopPlaceUtils';
-import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
-import { setDecimalPrecision } from '../utils/';
-import { hasExpired, isFuture } from '../modelUtils/validBetween';
-import Quay from './Quay';
-import { Entities } from './Entities';
+import {
+  extractAlternativeNames,
+  getImportedId,
+  simplifyPlaceEquipment,
+} from "./stopPlaceUtils";
+import { getAssessmentSetBasedOnQuays } from "../modelUtils/limitationHelpers";
+import { setDecimalPrecision } from "../utils/";
+import { hasExpired, isFuture } from "../modelUtils/validBetween";
+import Quay from "./Quay";
+import { Entities } from "./Entities";
 
 class StopPlace {
-
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;
     this.isActive = isActive;
@@ -30,9 +32,7 @@ class StopPlace {
   }
 
   toClient() {
-
     try {
-
       const { stop, isActive, parking, userDefinedCoordinates } = this;
 
       let clientStop = {
@@ -41,7 +41,7 @@ class StopPlace {
         isFuture: isFuture(stop.validBetween),
         id: stop.id,
         isActive: isActive,
-        name: stop.name ? stop.name.value : '',
+        name: stop.name ? stop.name.value : "",
         stopPlaceType: stop.stopPlaceType,
         submode: stop.submode,
         tags: stop.tags,
@@ -50,14 +50,14 @@ class StopPlace {
         weighting: stop.weighting,
         adjacentSites: stop.adjacentSites,
         entityType: Entities.STOP_PLACE,
-        permanentlyTerminated: stop.modificationEnumeration === 'delete',
+        permanentlyTerminated: stop.modificationEnumeration === "delete",
       };
 
       if (stop.groups && stop.groups.length) {
-        clientStop.groups = stop.groups.map(group => {
-          let newGroup = {...group};
-          newGroup.name = group.name && group.name.value
-            ? group.name.value : '';
+        clientStop.groups = stop.groups.map((group) => {
+          let newGroup = { ...group };
+          newGroup.name =
+            group.name && group.name.value ? group.name.value : "";
           return newGroup;
         });
         clientStop.belongsToGroup = true;
@@ -84,13 +84,14 @@ class StopPlace {
       }
 
       if (stop.tariffZones && stop.tariffZones.length) {
-        clientStop.tariffZones = stop.tariffZones.map(zone => {
+        clientStop.tariffZones = stop.tariffZones.map((zone) => {
           if (zone.name && zone.name.value) {
             return {
               name: zone.name.value,
               id: zone.id,
             };
           }
+          return undefined;
         });
       } else {
         clientStop.tariffZones = [];
@@ -99,7 +100,6 @@ class StopPlace {
       clientStop.accessibilityAssessment = stop.accessibilityAssessment
         ? stop.accessibilityAssessment
         : getAssessmentSetBasedOnQuays(stop.quays);
-
 
       if (stop.publicCode) {
         clientStop.publicCode = stop.publicCode;
@@ -114,7 +114,9 @@ class StopPlace {
       }
 
       if (stop.placeEquipments) {
-        clientStop.placeEquipments = simplifyPlaceEquipment(stop.placeEquipments);
+        clientStop.placeEquipments = simplifyPlaceEquipment(
+          stop.placeEquipments
+        );
       }
 
       if (stop.geometry && stop.geometry.coordinates) {
@@ -125,7 +127,11 @@ class StopPlace {
           setDecimalPrecision(coordinates[0], 6),
         ];
       } else {
-        if (userDefinedCoordinates && stop.id === userDefinedCoordinates.stopPlaceId && userDefinedCoordinates.position) {
+        if (
+          userDefinedCoordinates &&
+          stop.id === userDefinedCoordinates.stopPlaceId &&
+          userDefinedCoordinates.position
+        ) {
           clientStop.location = userDefinedCoordinates.position.slice();
         }
       }
@@ -143,13 +149,15 @@ class StopPlace {
 
         if (stop.quays) {
           clientStop.quays = stop.quays
-            .map(item => new Quay(item, clientStop.accessibilityAssessment).toClient())
-            .sort((a, b) => (a.publicCode || '') - b.publicCode || '');
+            .map((item) =>
+              new Quay(item, clientStop.accessibilityAssessment).toClient()
+            )
+            .sort((a, b) => (a.publicCode || "") - b.publicCode || "");
         }
       }
       return clientStop;
     } catch (e) {
-      console.log('error', e);
+      console.log("error", e);
     }
   }
 }

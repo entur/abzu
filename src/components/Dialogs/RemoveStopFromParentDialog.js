@@ -12,21 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import MdCancel from 'material-ui/svg-icons/navigation/cancel';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import MdWarning from 'material-ui/svg-icons/alert/warning';
-import Checkbox from 'material-ui/Checkbox';
-import Spinner from '../../static/icons/spinner';
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import MdCancel from "material-ui/svg-icons/navigation/cancel";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import MdWarning from "material-ui/svg-icons/alert/warning";
+import Checkbox from "material-ui/Checkbox";
+import Spinner from "../../static/icons/spinner";
 
 class RemoveStopFromParentDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      changesUnderstood: false
+      changesUnderstood: false,
     };
   }
 
@@ -34,7 +34,7 @@ class RemoveStopFromParentDialog extends React.Component {
     open: PropTypes.bool,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired
+    intl: PropTypes.object.isRequired,
   };
 
   getConfirmDisabled() {
@@ -44,14 +44,13 @@ class RemoveStopFromParentDialog extends React.Component {
 
     const { isLastChild } = this.props;
     if (isLastChild) {
-      if (changesUnderstood) {
+      if (changesUnderstood) {
         return false;
       }
       return true;
     }
     return false;
   }
-
 
   render() {
     const {
@@ -61,18 +60,18 @@ class RemoveStopFromParentDialog extends React.Component {
       handleConfirm,
       stopPlaceId,
       isLastChild,
-      isLoading
+      isLoading,
     } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
-      confirm: formatMessage({ id: 'confirm' }),
-      cancel: formatMessage({ id: 'cancel' }),
-      title: formatMessage({ id: 'remove_stop_from_parent_title' }),
-      info: formatMessage({ id: 'remove_stop_from_parent_info' }),
-      understood: formatMessage({id: 'changes_understood'}),
-      lastChildWarning1: formatMessage({id: 'last_child_warning_first'}),
-      lastChildWarning2: formatMessage({id: 'last_child_warning_second'}),
+      confirm: formatMessage({ id: "confirm" }),
+      cancel: formatMessage({ id: "cancel" }),
+      title: formatMessage({ id: "remove_stop_from_parent_title" }),
+      info: formatMessage({ id: "remove_stop_from_parent_info" }),
+      understood: formatMessage({ id: "changes_understood" }),
+      lastChildWarning1: formatMessage({ id: "last_child_warning_first" }),
+      lastChildWarning2: formatMessage({ id: "last_child_warning_second" }),
     };
 
     const { changesUnderstood } = this.state;
@@ -90,10 +89,9 @@ class RemoveStopFromParentDialog extends React.Component {
         disabled={confirmDisabled}
         primary={true}
         keyboardFocused={true}
-        icon={isLoading ? <Spinner/> : <MdDelete/>}
-      />
+        icon={isLoading ? <Spinner /> : <MdDelete />}
+      />,
     ];
-
 
     return (
       <Dialog
@@ -104,29 +102,27 @@ class RemoveStopFromParentDialog extends React.Component {
         onRequestClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
+        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <div>
-          <div style={{ marginBottom: 10, color: '#000' }}>
+          <div style={{ marginBottom: 10, color: "#000" }}>
             <span style={{ fontWeight: 600 }}>{stopPlaceId}</span>
           </div>
-          <div style={{ marginLeft: 0, display: 'flex' }}>
+          <div style={{ marginLeft: 0, display: "flex" }}>
             <div style={{ marginTop: 0, marginRight: 5 }}>
               <MdWarning color="orange" />
             </div>
             <span>{translations.info}</span>
           </div>
-          {isLastChild &&
+          {isLastChild && (
             <div style={{ marginTop: 10 }}>
-              <div style={{ marginLeft: 0, display: 'flex' }}>
+              <div style={{ marginLeft: 0, display: "flex" }}>
                 <div style={{ marginTop: 0, marginRight: 5 }}>
                   <MdWarning color="#de3e35" />
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <span>
-                    {translations.lastChildWarning1}
-                  </span>
-                  <span style={{marginTop: 5}}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span>{translations.lastChildWarning1}</span>
+                  <span style={{ marginTop: 5 }}>
                     {translations.lastChildWarning2}
                   </span>
                 </div>
@@ -137,7 +133,8 @@ class RemoveStopFromParentDialog extends React.Component {
                 onCheck={(e, v) => this.setState({ changesUnderstood: v })}
                 checked={changesUnderstood}
               />
-            </div>}
+            </div>
+          )}
         </div>
       </Dialog>
     );

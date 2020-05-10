@@ -12,39 +12,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import MdClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MdClose from "material-ui/svg-icons/navigation/close";
+import IconButton from "material-ui/IconButton";
 
 class DialogHeader extends Component {
   render() {
-
     const { title, handleClose } = this.props;
 
     return (
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 5
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 5,
         }}
       >
         <div
           style={{
             marginTop: 8,
             marginLeft: 10,
-            fontWeight: 600
+            fontWeight: 600,
           }}
         >
-          {title}
-          {' '}
+          {title}{" "}
         </div>
-        <IconButton
-          style={{ marginRight: 5 }}
-          onClick={handleClose}
-        >
+        <IconButton style={{ marginRight: 5 }} onClick={handleClose}>
           <MdClose />
         </IconButton>
       </div>
@@ -54,7 +49,7 @@ class DialogHeader extends Component {
 
 DialogHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  handleClose: PropTypes.func.isRequired
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default DialogHeader;

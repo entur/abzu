@@ -12,11 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import Routes from '../../routes/';
+import React from "react";
+import Routes from "../../routes/";
 
 export default ({ id, style }) => {
   const url = `${window.location.origin}${window.config.endpointBase}${Routes.STOP_PLACE}/${id}`;
-  return <a style={{...style}} target="_blank" href={url}>{id}</a>;
+  return (
+    <a
+      style={{ ...style }}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={url}
+    >
+      {id}
+    </a>
+  );
 };

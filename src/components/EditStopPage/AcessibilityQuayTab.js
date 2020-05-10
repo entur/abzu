@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import WheelChairPopover from './WheelChairPopover';
-import StepFreePopover from './StepFreePopover';
-import ToolTipIcon from './ToolTipIcon';
-import Divider from 'material-ui/Divider';
-import { getIn } from '../../utils/';
-import { connect } from 'react-redux';
-import { AssessmentActions } from '../../actions/';
+import React from "react";
+import WheelChairPopover from "./WheelChairPopover";
+import StepFreePopover from "./StepFreePopover";
+import ToolTipIcon from "./ToolTipIcon";
+import Divider from "material-ui/Divider";
+import { getIn } from "../../utils/";
+import { connect } from "react-redux";
+import { AssessmentActions } from "../../actions/";
 
 class AcessibilityQuayTab extends React.Component {
   constructor(props) {
@@ -31,13 +31,13 @@ class AcessibilityQuayTab extends React.Component {
 
   handleWheelChairChange(value) {
     this.props.dispatch(
-      AssessmentActions.setQuayWheelchairAccess(value, this.props.index),
+      AssessmentActions.setQuayWheelchairAccess(value, this.props.index)
     );
   }
 
   handleStepFreeChange(value) {
     this.props.dispatch(
-      AssessmentActions.setQuayStepFreeAccess(value, this.props.index),
+      AssessmentActions.setQuayStepFreeAccess(value, this.props.index)
     );
   }
 
@@ -47,19 +47,19 @@ class AcessibilityQuayTab extends React.Component {
 
     const wheelchairAccess = getIn(
       quay,
-      ['accessibilityAssessment', 'limitations', 'wheelchairAccess'],
-      'UNKNOWN',
+      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      "UNKNOWN"
     );
     const stepFreeAccess = getIn(
       quay,
-      ['accessibilityAssessment', 'limitations', 'stepFreeAccess'],
-      'UNKNOWN',
+      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      "UNKNOWN"
     );
 
     return (
       <div style={{ padding: 10 }}>
         <div style={{ marginTop: 10 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <WheelChairPopover
               disabled={disabled}
               displayLabel={true}
@@ -68,13 +68,13 @@ class AcessibilityQuayTab extends React.Component {
               handleChange={this.handleWheelChairChange.bind(this)}
             />
             <ToolTipIcon
-              title={formatMessage({ id: 'wheelChair_quay_hint' })}
+              title={formatMessage({ id: "wheelChair_quay_hint" })}
             />
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />
         </div>
         <div style={{ marginTop: 10 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <StepFreePopover
               disabled={disabled}
               displayLabel={true}
@@ -83,7 +83,7 @@ class AcessibilityQuayTab extends React.Component {
               handleChange={this.handleStepFreeChange.bind(this)}
             />
             <ToolTipIcon
-              title={formatMessage({ id: 'step_free_access_quay_hint' })}
+              title={formatMessage({ id: "step_free_access_quay_hint" })}
             />
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />

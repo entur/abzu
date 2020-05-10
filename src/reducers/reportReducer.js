@@ -12,10 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import * as types from '../actions/Types';
-import formatHelpers from '../modelUtils/mapToClient';
-import { findDuplicateImportedIds } from '../utils/';
+import * as types from "../actions/Types";
+import formatHelpers from "../modelUtils/mapToClient";
+import { findDuplicateImportedIds } from "../utils/";
 
 export const initialState = {
   topographicalPlaces: [],
@@ -25,9 +24,9 @@ export const initialState = {
 const reportReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.APOLLO_QUERY_RESULT:
-      if (action.operationName === 'TopopGraphicalPlacesForReport') {
+      if (action.operationName === "TopopGraphicalPlacesForReport") {
         return reduceTopopGraphicalPlacesForReport(state, action);
-      } else if (action.operationName === 'findStopForReport') {
+      } else if (action.operationName === "findStopForReport") {
         return reduceSearchResultsForReport(state, action);
         // Used for adding parking elements to stopPlaces
       } else if (!action.operationName) {
@@ -49,18 +48,21 @@ const reduceTopopGraphicalPlacesForReport = (state, action) => {
 
 const reduceSearchResultsForReport = (state, action) => {
   const stops = formatHelpers.mapReportSearchResultsToClientStop(
-    action.result.data.stopPlace,
+    action.result.data.stopPlace
   );
   return Object.assign({}, state, {
     results: stops,
-    duplicateInfo: findDuplicateImportedIds(stops)
+    duplicateInfo: findDuplicateImportedIds(stops),
   });
 };
 
 const populateStopPlacesWithParking = (state, results) => {
   const stopPlaces = state.results;
-  let stopPlacesWithParking = stopPlaces.map(stopPlace => {
-    let aliasedId = stopPlace.id.replace(window.config.netexPrefix +':StopPlace:', 'StopPlace');
+  let stopPlacesWithParking = stopPlaces.map((stopPlace) => {
+    let aliasedId = stopPlace.id.replace(
+      window.config.netexPrefix + ":StopPlace:",
+      "StopPlace"
+    );
     return Object.assign({}, stopPlace, {
       parking: results[aliasedId],
     });

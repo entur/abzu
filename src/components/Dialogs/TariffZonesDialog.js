@@ -12,48 +12,46 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import DialogHeader from './DialogHeader';
-import TariffZonesItem from './TariffZonesItem';
+import DialogHeader from "./DialogHeader";
+import TariffZonesItem from "./TariffZonesItem";
 
-import StopPlaceActions from '../../actions/StopPlaceActions';
+import StopPlaceActions from "../../actions/StopPlaceActions";
 
 class TariffZonesDialog extends React.Component {
-
   handleRemoveTZ(id) {
     this.props.dispatch(StopPlaceActions.removeTariffZone(id));
   }
 
   render() {
-
-    const { open, intl, tariffZones = [], handleClose, disabled } = this.props;
+    const { open, intl, tariffZones = [], handleClose } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
-      value: formatMessage({ id: 'name' }),
-      tariffZones: formatMessage({ id: 'tariffZones' }),
-      noTariffZones: formatMessage({ id: 'noTariffZones' })
+      value: formatMessage({ id: "name" }),
+      tariffZones: formatMessage({ id: "tariffZones" }),
+      noTariffZones: formatMessage({ id: "noTariffZones" }),
     };
 
     if (!open) return null;
 
     const style = {
-      position: 'fixed',
+      position: "fixed",
       left: 400,
       top: 190,
-      background: '#fff',
-      border: '1px solid black',
+      background: "#fff",
+      border: "1px solid black",
       width: 350,
-      zIndex: 999
+      zIndex: 999,
     };
 
     const noItemsStyle = {
-      width: '100%',
-      textAlign: 'center',
+      width: "100%",
+      textAlign: "center",
       marginBottom: 10,
-      fontSize: 12
+      fontSize: 12,
     };
 
     return (
@@ -64,33 +62,33 @@ class TariffZonesDialog extends React.Component {
         />
         <div
           style={{
-            width: '100%',
+            width: "100%",
             fontSize: 14,
             maxHeight: 400,
             marginLeft: 5,
-            marginBottom: 5
+            marginBottom: 5,
           }}
         >
-          {tariffZones.length
-            ? <div
-                style={{
-                  width: '100%',
-                  fontSize: 12,
-                  overflowY: 'overlay',
-                  maxHeight: 400,
-                }}
-              >
-                {tariffZones.map(tz =>
-                  <TariffZonesItem
-                    key={'tariffZone-' + tz.id}
-                    id={tz.id}
-                    name={tz.name}
-                  />
-                )}
-              </div>
-            : <div style={noItemsStyle}>
-                {translations.noTariffZones}
-              </div>}
+          {tariffZones.length ? (
+            <div
+              style={{
+                width: "100%",
+                fontSize: 12,
+                overflowY: "overlay",
+                maxHeight: 400,
+              }}
+            >
+              {tariffZones.map((tz) => (
+                <TariffZonesItem
+                  key={"tariffZone-" + tz.id}
+                  id={tz.id}
+                  name={tz.name}
+                />
+              ))}
+            </div>
+          ) : (
+            <div style={noItemsStyle}>{translations.noTariffZones}</div>
+          )}
         </div>
       </div>
     );

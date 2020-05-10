@@ -12,27 +12,25 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import { isBrowserSupported } from '../utils/browserSupport';
-import { injectIntl } from 'react-intl';
+import React, { Component } from "react";
+import { isBrowserSupported } from "../utils/browserSupport";
+import { injectIntl } from "react-intl";
 
 class BrowserSupport extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      showWarning: !isBrowserSupported()
+      showWarning: !isBrowserSupported(),
     };
   }
 
   handleClose() {
     this.setState({
-      showWarning: false
+      showWarning: false,
     });
   }
 
   render() {
-
     const { intl } = this.props;
     const { formatMessage } = intl;
     const { showWarning } = this.state;
@@ -40,36 +38,42 @@ class BrowserSupport extends Component {
     if (!showWarning) return null;
 
     const wrapperStyle = {
-      position: 'absolute',
+      position: "absolute",
       bottom: 0,
       height: 300,
-      width: '100%',
+      width: "100%",
       zIndex: 9999,
-      background: '#fff',
-      border: '1px solid black',
+      background: "#fff",
+      border: "1px solid black",
       padding: 20,
     };
 
     const innerDivStyle = {
-      width: '95%',
-      margin: 'auto'
+      width: "95%",
+      margin: "auto",
     };
     return (
       <div style={wrapperStyle}>
         <div style={innerDivStyle}>
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <h1>{formatMessage({id: 'browser_unsupported_title'})}</h1>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h1>{formatMessage({ id: "browser_unsupported_title" })}</h1>
             <div
               onClick={this.handleClose.bind(this)}
-              style={{fontSize: '1.5em', marginRight: 20, cursor: 'pointer'}}
+              style={{ fontSize: "1.5em", marginRight: 20, cursor: "pointer" }}
             >
               X
             </div>
           </div>
-          <p>{formatMessage({id: 'browser_explanation'})}</p>
-          <p>{formatMessage({id: 'browser_recommendation'})}</p>
-          <p>{formatMessage({id: 'browser_supported_browsers'})}</p>
-          <ul style={{listStyle: 'none'}}>
+          <p>{formatMessage({ id: "browser_explanation" })}</p>
+          <p>{formatMessage({ id: "browser_recommendation" })}</p>
+          <p>{formatMessage({ id: "browser_supported_browsers" })}</p>
+          <ul style={{ listStyle: "none" }}>
             <li>Chrome</li>
             <li>Firefox</li>
             <li>Safari</li>
@@ -82,4 +86,3 @@ class BrowserSupport extends Component {
 }
 
 export default injectIntl(BrowserSupport);
-

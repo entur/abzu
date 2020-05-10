@@ -12,33 +12,45 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 const AdjacentStopRemover = {};
 
-AdjacentStopRemover.removeAdjacentStop = (currentStop, adjacentStopPlaceRef, stopPlaceIdForRemovingAdjacentSite) => {
+AdjacentStopRemover.removeAdjacentStop = (
+  currentStop,
+  adjacentStopPlaceRef,
+  stopPlaceIdForRemovingAdjacentSite
+) => {
+  if (currentStop.isParent) {
+    const childrenCopy = currentStop.children.slice();
 
-    if(currentStop.isParent) {
+    childrenCopy.forEach((child) => {
+      if (child.id === stopPlaceIdForRemovingAdjacentSite) {
+        AdjacentStopRemover.removeAdjacentStopFromChild(
+          child,
+          adjacentStopPlaceRef
+        );
+      } else if (child.id === adjacentStopPlaceRef) {
+        AdjacentStopRemover.removeAdjacentStopFromChild(
+          child,
+          stopPlaceIdForRemovingAdjacentSite
+        );
+      }
+    });
+    return {
+      ...currentStop,
+      childrenCopy,
+    };
+  }
+  return currentStop;
+};
 
-      const childrenCopy = currentStop.children.slice();
-
-      childrenCopy.forEach(child => {
-        if(child.id == stopPlaceIdForRemovingAdjacentSite) {
-          AdjacentStopRemover.removeAdjacentStopFromChild(child, adjacentStopPlaceRef);
-        } else if(child.id == adjacentStopPlaceRef) {
-          AdjacentStopRemover.removeAdjacentStopFromChild(child, stopPlaceIdForRemovingAdjacentSite);
-        }
-      });
-      return {
-        ...currentStop,
-        childrenCopy
-     };
-    }
-    return currentStop;
-}
-
-AdjacentStopRemover.removeAdjacentStopFromChild = (child, adjacentRefToRemove) => {
-  const result = child.adjacentSites.filter(adjacentSite => adjacentSite.ref !== adjacentRefToRemove);
+AdjacentStopRemover.removeAdjacentStopFromChild = (
+  child,
+  adjacentRefToRemove
+) => {
+  const result = child.adjacentSites.filter(
+    (adjacentSite) => adjacentSite.ref !== adjacentRefToRemove
+  );
   child.adjacentSites = result;
-}
+};
 
 export default AdjacentStopRemover;

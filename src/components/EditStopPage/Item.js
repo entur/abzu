@@ -1,7 +1,7 @@
-import React from 'react';
-import { injectIntl } from 'react-intl';
-import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
-import Divider from 'material-ui/Divider';
+import React from "react";
+import { injectIntl } from "react-intl";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import Divider from "material-ui/Divider";
 
 class Item extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class Item extends React.Component {
   }
 
   render() {
-    const {children, intl, handleChangeCoordinates, expanded } = this.props;
+    const { children, intl, handleChangeCoordinates } = this.props;
     return (
       <div>
         {children}

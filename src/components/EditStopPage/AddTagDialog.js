@@ -12,32 +12,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, {Component} from 'react';
-import { withApollo } from 'react-apollo';
-import AddTagAutoComplete from './AddTagAutoComplete';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import { addTag, getTags } from '../../graphql/Tiamat/actions';
-import Tag from '../MainPage/Tag';
-import { injectIntl } from 'react-intl';
-
+import React, { Component } from "react";
+import { withApollo } from "react-apollo";
+import AddTagAutoComplete from "./AddTagAutoComplete";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import { addTag, getTags } from "../../graphql/Tiamat/actions";
+import { injectIntl } from "react-intl";
 
 class AddTagDialog extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      comment: '',
-      tagName: '',
-      searchText: '',
-    }
+      comment: "",
+      tagName: "",
+      searchText: "",
+    };
   }
 
   handleChooseTag(tagName, comment) {
     if (!tagName) {
       this.setState({
-        searchText: ''
+        searchText: "",
       });
       return;
     }
@@ -45,13 +41,13 @@ class AddTagDialog extends Component {
       this.setState({
         tagName,
         comment,
-        searchText: tagName
-      })
+        searchText: tagName,
+      });
     } else {
       this.setState({
         tagName,
         searchText: tagName,
-      })
+      });
     }
 
     if (this.refs.comment) {
@@ -65,51 +61,64 @@ class AddTagDialog extends Component {
 
     handleLoading(true);
 
-    addTag(client, idReference, tagName, comment).then( result => {
-      this.setState({
-        comment: '',
-        tagName: '',
-        searchText: ''
-      });
-      getTags(client, idReference).then(response => {
+    addTag(client, idReference, tagName, comment)
+      .then((result) => {
+        this.setState({
+          comment: "",
+          tagName: "",
+          searchText: "",
+        });
+        getTags(client, idReference)
+          .then((response) => {
+            handleLoading(false);
+          })
+          .catch((err) => {
+            handleLoading(false);
+          });
+      })
+      .catch((err) => {
         handleLoading(false);
-      }).catch(err => {
-        handleLoading(false);
       });
-    }).catch(err => {
-      handleLoading(false);
-    });
   }
 
   render() {
-
     const { comment, tagName, searchText } = this.state;
     const { intl } = this.props;
     const { formatMessage } = intl;
 
     return (
-      <div style={{borderTop: '1px dotted', display: 'flex', flexDirection: 'column', marginLeft: 5, paddingBottom: 5}}>
-        <div style={{display: 'flex', alignItems: 'center'}}>
+      <div
+        style={{
+          borderTop: "1px dotted",
+          display: "flex",
+          flexDirection: "column",
+          marginLeft: 5,
+          paddingBottom: 5,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
           <AddTagAutoComplete
-            style={{marginLeft: 10, width: 350}}
+            style={{ marginLeft: 10, width: 350 }}
             tagName={tagName}
             searchText={searchText}
-            handleInputChange={value => { this.setState({searchText: value})}}
+            handleInputChange={(value) => {
+              this.setState({ searchText: value });
+            }}
             handleChooseTag={this.handleChooseTag.bind(this)}
           />
         </div>
         <TextField
           value={comment}
-          floatingLabelText={formatMessage({id: 'comment'})}
-          hintText={formatMessage({id: 'comment'})}
-          style={{marginLeft: 10, width: 350}}
+          floatingLabelText={formatMessage({ id: "comment" })}
+          hintText={formatMessage({ id: "comment" })}
+          style={{ marginLeft: 10, width: 350 }}
           ref="comment"
           id={"comment-text"}
-          onChange={(e,v) => this.setState({comment: v || ''})}
+          onChange={(e, v) => this.setState({ comment: v || "" })}
         />
         <FlatButton
-          label={formatMessage({id: 'add'})}
-          style={{width: '30%', margin: 'auto'}}
+          label={formatMessage({ id: "add" })}
+          style={{ width: "30%", margin: "auto" }}
           disabled={!tagName}
           onClick={this.handleAddTag.bind(this)}
         />
@@ -117,6 +126,5 @@ class AddTagDialog extends Component {
     );
   }
 }
-
 
 export default withApollo(injectIntl(AddTagDialog));

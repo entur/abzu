@@ -12,18 +12,17 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import * as altNameConfig from '../../config/altNamesConfig';
-import { getIn } from '../../utils/';
-import MdClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
+import React, { Component } from "react";
+import FlatButton from "material-ui/FlatButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import TextField from "material-ui/TextField";
+import * as altNameConfig from "../../config/altNamesConfig";
+import { getIn } from "../../utils/";
+import MdClose from "material-ui/svg-icons/navigation/close";
+import IconButton from "material-ui/IconButton";
 
 class EditAltName extends Component {
-
   constructor(props) {
     super(props);
     this.state = this.getInitialState(props);
@@ -35,17 +34,17 @@ class EditAltName extends Component {
 
   getInitialState(props) {
     if (props.data) {
-      return({
-        value: getIn(props.data, ['name', 'value'], ''),
-        type: getIn(props.data, ['nameType'], ''),
-        lang: getIn(props.data, ['name', 'lang'], ''),
-      });
+      return {
+        value: getIn(props.data, ["name", "value"], ""),
+        type: getIn(props.data, ["nameType"], ""),
+        lang: getIn(props.data, ["name", "lang"], ""),
+      };
     } else {
-      return ({
-        value: '',
+      return {
+        value: "",
         type: 0,
         lang: 0,
-      });
+      };
     }
   }
 
@@ -55,7 +54,7 @@ class EditAltName extends Component {
       handleEditAltName,
       formatMessage,
       editingId,
-      handleClose
+      handleClose,
     } = this.props;
 
     const { value, lang, type } = this.state;
@@ -63,20 +62,30 @@ class EditAltName extends Component {
     return (
       <div
         style={{
-          background: 'rgba(33, 150, 243, 0)',
-          border: '1px dotted',
-          padding: 10
+          background: "rgba(33, 150, 243, 0)",
+          border: "1px dotted",
+          padding: 10,
         }}
       >
         <div>
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <div style={{
-              fontWeight: 600,
-              fontSize: '0.9em',
-              width: '100%',
-            }}>{translations.editing}</div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                fontSize: "0.9em",
+                width: "100%",
+              }}
+            >
+              {translations.editing}
+            </div>
             <IconButton onClick={handleClose}>
-              <MdClose/>
+              <MdClose />
             </IconButton>
           </div>
         </div>
@@ -87,17 +96,19 @@ class EditAltName extends Component {
           value={type}
           onChange={(event, key, type) => {
             this.setState({
-              type
+              type,
             });
           }}
         >
-          {altNameConfig.supportedNameTypes.map((type) =>
+          {altNameConfig.supportedNameTypes.map((type) => (
             <MenuItem
-              key={'type-' + type}
+              key={"type-" + type}
               value={type}
-              primaryText={formatMessage({id: `altNamesDialog.nameTypes.${type}`})}
+              primaryText={formatMessage({
+                id: `altNamesDialog.nameTypes.${type}`,
+              })}
             />
-          )}
+          ))}
         </SelectField>
         <SelectField
           style={{ marginTop: -10 }}
@@ -106,17 +117,19 @@ class EditAltName extends Component {
           value={lang}
           onChange={(event, key, lang) => {
             this.setState({
-              lang
+              lang,
             });
           }}
         >
-          {altNameConfig.languages.map((key) =>
+          {altNameConfig.languages.map((key) => (
             <MenuItem
-              key={'lang-' + key}
+              key={"lang-" + key}
               value={key}
-              primaryText={formatMessage({id: `altNamesDialog.languages.${key}`})}
+              primaryText={formatMessage({
+                id: `altNamesDialog.languages.${key}`,
+              })}
             />
-          )}
+          ))}
         </SelectField>
         <TextField
           fullWidth={true}
@@ -124,12 +137,12 @@ class EditAltName extends Component {
           value={value}
           onChange={(e, value) => {
             this.setState({
-              value
+              value,
             });
           }}
         />
         <FlatButton
-          style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
+          style={{ marginTop: 10, width: "100%", textAlign: "center" }}
           disabled={!value}
           primary={true}
           onClick={() => {

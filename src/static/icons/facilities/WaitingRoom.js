@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import SvgIcon from 'material-ui/SvgIcon';
+import React from "react";
+import SvgIcon from "material-ui/SvgIcon";
 
-const WaitingRoom = props =>
+const WaitingRoom = (props) => (
   <SvgIcon
     {...props}
     x="0px"
@@ -32,5 +32,6 @@ const WaitingRoom = props =>
         <path d="M45.047,76.912H34.22c-9.818,0-20.178-8.22-22.624-17.948L6.463,38.537c-0.442-1.759-2.229-2.832-3.981-2.382    c-1.757,0.44-2.824,2.224-2.382,3.981l5.134,20.428C8.406,73.196,21.411,83.474,34.22,83.474h10.827    c1.812,0,3.281-1.469,3.281-3.28C48.328,78.381,46.859,76.912,45.047,76.912z" />
       </g>
     </g>
-  </SvgIcon>;
+  </SvgIcon>
+);
 export default WaitingRoom;

@@ -12,27 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 export default {
-  "realm_access": {
-    "roles": [
-      "editStops",
-    ]
+  realm_access: {
+    roles: ["editStops"],
   },
-  "resource_access": {
-    "account": {
-      "roles": [
-        "manage-account",
-        "view-profile"
-      ]
-    }
+  resource_access: {
+    account: {
+      roles: ["manage-account", "view-profile"],
+    },
   },
-  "roles": [
-    "{\"r\":\"editStops\",\"o\":\"OPP\",\"z\":\"05\",\"e\":{\"StopPlace\":[\"*\"]}}"
-  ],
-  "name": "Test Testesen",
-  "preferred_username": "test",
-  "given_name": "Test ",
-  "family_name": "Testesen",
-  "email": "test@rutebanken.org"
-}
+  roles: ['{"r":"editStops","o":"OPP","z":"05","e":{"StopPlace":["*"]}}'],
+  name: "Test Testesen",
+  preferred_username: "test",
+  given_name: "Test ",
+  family_name: "Testesen",
+  email: "test@rutebanken.org",
+};

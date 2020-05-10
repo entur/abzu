@@ -12,12 +12,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .leaflet-map {
-   height: calc(100vh - 68px);
+  height: calc(100vh - 68px);
 }
 
 .leaflet-control-scale-line {
-   background: none;
-   text-align: right;
-   margin-top: 5px;
-   cursor: -webkit-grab;
+  background: none;
+  text-align: right;
+  margin-top: 5px;
+  cursor: -webkit-grab;
 }

@@ -13,99 +13,99 @@
  limitations under the Licence. */
 
 export default {
-  id: 'NSR:GroupOfStopPlaces:1',
+  id: "NSR:GroupOfStopPlaces:1",
   name: {
-    value: 'Downtown Sætre',
-    __typename: 'EmbeddableMultilingualString'
+    value: "Downtown Sætre",
+    __typename: "EmbeddableMultilingualString",
   },
   members: [
     {
-      __typename: 'StopPlace',
-      id: 'NSR:StopPlace:15348',
+      __typename: "StopPlace",
+      id: "NSR:StopPlace:15348",
       name: {
-        value: 'Gunnaråsen',
-        __typename: 'EmbeddableMultilingualString'
+        value: "Gunnaråsen",
+        __typename: "EmbeddableMultilingualString",
       },
       geometry: {
-        type: 'Point',
+        type: "Point",
         coordinates: [[10.522878, 59.677607]],
-        __typename: 'GeoJSON'
+        __typename: "GeoJSON",
       },
       topographicPlace: {
         name: {
-          value: 'Hurum',
-          __typename: 'EmbeddableMultilingualString'
+          value: "Hurum",
+          __typename: "EmbeddableMultilingualString",
         },
         parentTopographicPlace: {
           name: {
-            value: 'Buskerud',
-            __typename: 'EmbeddableMultilingualString'
+            value: "Buskerud",
+            __typename: "EmbeddableMultilingualString",
           },
-          __typename: 'TopographicPlace'
+          __typename: "TopographicPlace",
         },
-        __typename: 'TopographicPlace'
+        __typename: "TopographicPlace",
       },
       submode: null,
-      stopPlaceType: 'onstreetBus'
+      stopPlaceType: "onstreetBus",
     },
     {
-      __typename: 'StopPlace',
-      id: 'NSR:StopPlace:15342',
+      __typename: "StopPlace",
+      id: "NSR:StopPlace:15342",
       name: {
-        value: 'Sætre sentrum',
-        __typename: 'EmbeddableMultilingualString'
+        value: "Sætre sentrum",
+        __typename: "EmbeddableMultilingualString",
       },
       geometry: {
-        type: 'Point',
+        type: "Point",
         coordinates: [[10.526195, 59.682017]],
-        __typename: 'GeoJSON'
+        __typename: "GeoJSON",
       },
       topographicPlace: {
         name: {
-          value: 'Hurum',
-          __typename: 'EmbeddableMultilingualString'
+          value: "Hurum",
+          __typename: "EmbeddableMultilingualString",
         },
         parentTopographicPlace: {
           name: {
-            value: 'Buskerud',
-            __typename: 'EmbeddableMultilingualString'
+            value: "Buskerud",
+            __typename: "EmbeddableMultilingualString",
           },
-          __typename: 'TopographicPlace'
+          __typename: "TopographicPlace",
         },
-        __typename: 'TopographicPlace'
+        __typename: "TopographicPlace",
       },
       submode: null,
-      stopPlaceType: 'onstreetBus'
+      stopPlaceType: "onstreetBus",
     },
     {
-      __typename: 'StopPlace',
-      id: 'NSR:StopPlace:15338',
+      __typename: "StopPlace",
+      id: "NSR:StopPlace:15338",
       name: {
-        value: 'Sætre bussterminal',
-        __typename: 'EmbeddableMultilingualString'
+        value: "Sætre bussterminal",
+        __typename: "EmbeddableMultilingualString",
       },
       geometry: {
-        type: 'Point',
+        type: "Point",
         coordinates: [[10.53034, 59.680506]],
-        __typename: 'GeoJSON'
+        __typename: "GeoJSON",
       },
       topographicPlace: {
         name: {
-          value: 'Hurum',
-          __typename: 'EmbeddableMultilingualString'
+          value: "Hurum",
+          __typename: "EmbeddableMultilingualString",
         },
         parentTopographicPlace: {
           name: {
-            value: 'Buskerud',
-            __typename: 'EmbeddableMultilingualString'
+            value: "Buskerud",
+            __typename: "EmbeddableMultilingualString",
           },
-          __typename: 'TopographicPlace'
+          __typename: "TopographicPlace",
         },
-        __typename: 'TopographicPlace'
+        __typename: "TopographicPlace",
       },
       submode: null,
-      stopPlaceType: 'onstreetBus'
-    }
+      stopPlaceType: "onstreetBus",
+    },
   ],
-  __typename: 'GroupOfStopPlaces'
+  __typename: "GroupOfStopPlaces",
 };

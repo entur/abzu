@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 const parkingVehicleType = Object.freeze({
-  CAR: 'car',
-  PEDAL_CYCLE: 'pedalCycle'
+  CAR: "car",
+  PEDAL_CYCLE: "pedalCycle",
 });
 
 export const parkingVehicleTypes = Object.values(parkingVehicleType);

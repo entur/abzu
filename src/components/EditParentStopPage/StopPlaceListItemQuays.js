@@ -12,17 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import StopPlaceListItemQuayItem from './StopPlaceListItemQuayItem';
+import React, { Component } from "react";
+import StopPlaceListItemQuayItem from "./StopPlaceListItemQuayItem";
 
 class StopPlaceListItemQuays extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      expandedQuay: -1
-    }
+      expandedQuay: -1,
+    };
   }
 
   render() {
@@ -30,19 +28,25 @@ class StopPlaceListItemQuays extends Component {
     const { expandedQuay } = this.state;
 
     return (
-      <div style={{width: '90%', margin: 'auto'}}>
-        <span style={{fontWeight: 600, fontSize: '0.8em', textTransform: 'capitalize'}}>
-          {formatMessage({id: 'quays'})}
+      <div style={{ width: "90%", margin: "auto" }}>
+        <span
+          style={{
+            fontWeight: 600,
+            fontSize: "0.8em",
+            textTransform: "capitalize",
+          }}
+        >
+          {formatMessage({ id: "quays" })}
         </span>
-        {quays.map( (quay, i) =>
+        {quays.map((quay, i) => (
           <StopPlaceListItemQuayItem
             key={quay.id}
             quay={quay}
             expanded={expandedQuay === i}
-            handleCollapse={() => this.setState({expandedQuay: -1})}
-            handleExpand={() => this.setState({expandedQuay: i})}
+            handleCollapse={() => this.setState({ expandedQuay: -1 })}
+            handleExpand={() => this.setState({ expandedQuay: i })}
           />
-        )}
+        ))}
       </div>
     );
   }

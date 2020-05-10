@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 const parkingLayout = Object.freeze({
-  OPEN_SPACE: 'openSpace',
-  MULTISTOREY: 'multistorey',
-  UNDERGROUND: 'underground',
-  ROADSIDE: 'roadside'
+  OPEN_SPACE: "openSpace",
+  MULTISTOREY: "multistorey",
+  UNDERGROUND: "underground",
+  ROADSIDE: "roadside",
 });
 
 export const parkingLayouts = Object.values(parkingLayout);

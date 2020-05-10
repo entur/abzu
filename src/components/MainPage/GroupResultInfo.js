@@ -12,70 +12,83 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import MdGroup from 'material-ui/svg-icons/action/group-work';
-import CircularNumber from './CircularNumber';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
-import StopPlaceLink from '../ReportPage/StopPlaceLink';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MdGroup from "material-ui/svg-icons/action/group-work";
+import CircularNumber from "./CircularNumber";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import StopPlaceLink from "../ReportPage/StopPlaceLink";
 
 class GroupResultInfo extends Component {
-
   render() {
-
     const { result, formatMessage } = this.props;
 
     return (
       <div>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: 0
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 0,
           }}
         >
           <div style={{ fontSize: 28, fontWeight: 600 }}>{result.name}</div>
-          <MdGroup style={{margin: 5}}/>
+          <MdGroup style={{ margin: 5 }} />
         </div>
-        <div>{formatMessage({id: 'group_of_stop_places'})}</div>
-        <div style={{ display: 'flex', justifyItems: 'center', padding: '10px 5px', justifyContent: 'space-between' }}>
-          <div style={{ fontSize: 16, textTransform: 'capitalize' }}>
-            {formatMessage({ id: 'stop_places' })}
+        <div>{formatMessage({ id: "group_of_stop_places" })}</div>
+        <div
+          style={{
+            display: "flex",
+            justifyItems: "center",
+            padding: "10px 5px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ fontSize: 16, textTransform: "capitalize" }}>
+            {formatMessage({ id: "stop_places" })}
           </div>
           <div style={{ marginLeft: 5 }}>
-            <CircularNumber number={result.members.length} color={getPrimaryDarkerColor()} />
+            <CircularNumber
+              number={result.members.length}
+              color={getPrimaryDarkerColor()}
+            />
           </div>
         </div>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             fontSize: 10,
             maxHeight: 150,
-            overflow: 'auto',
-            width: '95%',
-            margin: '0px auto 20px auto'
+            overflow: "auto",
+            width: "95%",
+            margin: "0px auto 20px auto",
           }}
         >
-          {result.members.map((member, i) =>
+          {result.members.map((member, i) => (
             <div
-              key={'q-importedID' + member.id}
+              key={"q-importedID" + member.id}
               style={{
-                borderBottom: '1px solid #0078a8',
-                background: i % 2 ? '#f8f8f8' : '#fff',
+                borderBottom: "1px solid #0078a8",
+                background: i % 2 ? "#f8f8f8" : "#fff",
                 padding: 2,
                 marginBottom: 5,
               }}
             >
-              <div style={{display: 'flex', fontSize: '0.8rem', justifyContent: 'space-between'}}>
+              <div
+                style={{
+                  display: "flex",
+                  fontSize: "0.8rem",
+                  justifyContent: "space-between",
+                }}
+              >
                 <div>{member.name}</div>
-                <div style={{marginLeft: 5}}>
-                  <StopPlaceLink id={member.id}/>
+                <div style={{ marginLeft: 5 }}>
+                  <StopPlaceLink id={member.id} />
                 </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     );
@@ -84,7 +97,7 @@ class GroupResultInfo extends Component {
 
 GroupResultInfo.propTypes = {
   result: PropTypes.object.isRequired,
-  formatMessage: PropTypes.func.isRequired
+  formatMessage: PropTypes.func.isRequired,
 };
 
 export default GroupResultInfo;

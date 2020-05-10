@@ -12,8 +12,8 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component } from "react";
+import FlatButton from "material-ui/FlatButton";
 
 class ShowMoreMenuFooter extends Component {
   render() {
@@ -21,21 +21,21 @@ class ShowMoreMenuFooter extends Component {
     const style = {
       textAlign: "center",
       padding: 5,
-      background: '#fff',
-      border: '1px solid #eee',
-      textTransform: 'uppercase',
+      background: "#fff",
+      border: "1px solid #eee",
+      textTransform: "uppercase",
     };
 
     const labelStyle = {
       fontWeight: 600,
-      fontSize: '0.8em',
-      color: '#333',
-      textDecoration: 'underline'
-    }
+      fontSize: "0.8em",
+      color: "#333",
+      textDecoration: "underline",
+    };
 
     const label = showMore
-      ? formatMessage({id: 'show_less'})
-      : formatMessage({id: 'show_more'});
+      ? formatMessage({ id: "show_less" })
+      : formatMessage({ id: "show_more" });
 
     return (
       <div style={style}>

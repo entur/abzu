@@ -12,16 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import QuayItem from './QuayItem';
-import PathJunctionItem from './PathJunctionItem';
-import EntranceItem from './EntranceItem';
-import ParkingItem from './ParkingItem';
-import { connect } from 'react-redux';
-import { StopPlaceActions, UserActions } from '../../actions/';
-import { CodeBadge } from './Code';
-import MdSortByAlpha from 'material-ui/svg-icons/av/sort-by-alpha';
+import React from "react";
+import QuayItem from "./QuayItem";
+import PathJunctionItem from "./PathJunctionItem";
+import EntranceItem from "./EntranceItem";
+import ParkingItem from "./ParkingItem";
+import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { CodeBadge } from "./Code";
+import MdSortByAlpha from "material-ui/svg-icons/av/sort-by-alpha";
 
 class EditStopBoxTabs extends React.Component {
   handleLocateOnMap(position, index, type) {
@@ -32,10 +31,18 @@ class EditStopBoxTabs extends React.Component {
   handleRemoveQuay(index, quayId) {
     const { dispatch, activeStopPlace } = this.props;
     if (!quayId) {
-      dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
+      dispatch(StopPlaceActions.removeElementByType(index, "quay"));
     } else {
-      const quayImportedId = activeStopPlace.quays.find(quay => quay.id == quayId).importedId;
-      dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId, quayImportedId));
+      const quayImportedId = activeStopPlace.quays.find(
+        (quay) => quay.id === quayId
+      ).importedId;
+      dispatch(
+        UserActions.requestDeleteQuay(
+          activeStopPlace.id,
+          quayId,
+          quayImportedId
+        )
+      );
     }
   }
 
@@ -47,13 +54,13 @@ class EditStopBoxTabs extends React.Component {
 
   handleRemoveEntrance(index) {
     this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, 'entrance')
+      StopPlaceActions.removeElementByType(index, "entrance")
     );
   }
 
   handleRemovePathJunction(index) {
     this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, 'pathJunction')
+      StopPlaceActions.removeElementByType(index, "pathJunction")
     );
   }
 
@@ -64,7 +71,7 @@ class EditStopBoxTabs extends React.Component {
   handleToggleCollapse(index, type) {
     const { dispatch, expandedItem } = this.props;
     const isExpanded =
-      expandedItem.type === type && expandedItem.index == index;
+      expandedItem.type === type && expandedItem.index === index;
     dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type));
   }
 
@@ -75,28 +82,31 @@ class EditStopBoxTabs extends React.Component {
     noElementsStyle,
     disabled
   ) {
-    return activeStopPlace.quays.length
-      ? activeStopPlace.quays.map((quay, index) =>
-          <QuayItem
-            key={'quay-' + index}
-            quay={quay}
-            disabled={disabled}
-            index={index}
-            publicCode={quay.publicCode}
-            handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
-            handleOpenKeyValuesDialog={() =>
-              this.handleOpenKeyValuesDialog(quay.keyValues, 'quay', index)}
-            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-            stopPlaceType={activeStopPlace.stopPlaceType}
-            expanded={
-              expandedItem.type === 'quay' && index === expandedItem.index
-            }
-          />
-        )
-      : <div style={noElementsStyle}>
-          {itemTranslation.none} {itemTranslation.quays}
-        </div>;
+    return activeStopPlace.quays.length ? (
+      activeStopPlace.quays.map((quay, index) => (
+        <QuayItem
+          key={"quay-" + index}
+          quay={quay}
+          disabled={disabled}
+          index={index}
+          publicCode={quay.publicCode}
+          handleRemoveQuay={() => this.handleRemoveQuay(index, quay.id)}
+          handleOpenKeyValuesDialog={() =>
+            this.handleOpenKeyValuesDialog(quay.keyValues, "quay", index)
+          }
+          handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+          handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+          stopPlaceType={activeStopPlace.stopPlaceType}
+          expanded={
+            expandedItem.type === "quay" && index === expandedItem.index
+          }
+        />
+      ))
+    ) : (
+      <div style={noElementsStyle}>
+        {itemTranslation.none} {itemTranslation.quays}
+      </div>
+    );
   }
 
   getNavigationItems(
@@ -108,60 +118,61 @@ class EditStopBoxTabs extends React.Component {
   ) {
     const elementsHeaderStyle = {
       fontWeight: 600,
-      textTransform: 'capitalize',
-      fontSize: '0.8em',
+      textTransform: "capitalize",
+      fontSize: "0.8em",
       marginTop: 30,
-      textAlign: 'center',
+      textAlign: "center",
       marginBottom: 10,
-      color: '#2196F3'
+      color: "#2196F3",
     };
 
     const hasElements =
       activeStopPlace.pathJunctions.length || activeStopPlace.entrances.length;
 
-    return hasElements
-      ? <div>
-          <div style={elementsHeaderStyle}>
-            {itemTranslation.pathJunctions}
-          </div>
-          {activeStopPlace.pathJunctions.map((pathJunction, index) =>
-            <PathJunctionItem
-              translations={itemTranslation}
-              pathJunction={pathJunction}
-              disabled={disabled}
-              key={'pathJunction-' + index}
-              index={index}
-              handleRemovePathJunction={() =>
-                this.handleRemovePathJunction(index)}
-              handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-              expanded={
-                expandedItem.type === 'pathJunction' &&
-                index === expandedItem.index
-              }
-            />
-          )}
+    return hasElements ? (
+      <div>
+        <div style={elementsHeaderStyle}>{itemTranslation.pathJunctions}</div>
+        {activeStopPlace.pathJunctions.map((pathJunction, index) => (
+          <PathJunctionItem
+            translations={itemTranslation}
+            pathJunction={pathJunction}
+            disabled={disabled}
+            key={"pathJunction-" + index}
+            index={index}
+            handleRemovePathJunction={() =>
+              this.handleRemovePathJunction(index)
+            }
+            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+            expanded={
+              expandedItem.type === "pathJunction" &&
+              index === expandedItem.index
+            }
+          />
+        ))}
 
-          <div style={elementsHeaderStyle}> {itemTranslation.entrances} </div>
-          {activeStopPlace.entrances.map((entrance, index) =>
-            <EntranceItem
-              translations={itemTranslation}
-              key={'entrance-' + index}
-              disabled={disabled}
-              entrance={entrance}
-              index={index}
-              handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
-              handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-              expanded={
-                expandedItem.type === 'entrance' && index === expandedItem.index
-              }
-            />
-          )}
-        </div>
-      : <div style={noElementsStyle}>
-          {itemTranslation.none} {itemTranslation.elements}
-        </div>;
+        <div style={elementsHeaderStyle}> {itemTranslation.entrances} </div>
+        {activeStopPlace.entrances.map((entrance, index) => (
+          <EntranceItem
+            translations={itemTranslation}
+            key={"entrance-" + index}
+            disabled={disabled}
+            entrance={entrance}
+            index={index}
+            handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
+            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+            expanded={
+              expandedItem.type === "entrance" && index === expandedItem.index
+            }
+          />
+        ))}
+      </div>
+    ) : (
+      <div style={noElementsStyle}>
+        {itemTranslation.none} {itemTranslation.elements}
+      </div>
+    );
   }
 
   getParkingElements(
@@ -171,42 +182,44 @@ class EditStopBoxTabs extends React.Component {
     noElementsStyle,
     disabled
   ) {
-    return activeStopPlace.parking.length
-      ? activeStopPlace.parking.map((parking, index) => {
-          const parkingType = parking.parkingType;
-          return (
-            <ParkingItem
-              translations={itemTranslation}
-              key={'parking-' + index}
-              disabled={disabled}
-              index={index}
-              parking={parking}
-              parkingType={parkingType}
-              handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-              handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-              expanded={
-                expandedItem.type === 'parking' && index === expandedItem.index
-              }
-            />
-          );
-        })
-      : <div style={{...noElementsStyle, textTransform: 'lowercase'}}>
-          {itemTranslation.none} {itemTranslation.parking}
-        </div>;
+    return activeStopPlace.parking.length ? (
+      activeStopPlace.parking.map((parking, index) => {
+        const parkingType = parking.parkingType;
+        return (
+          <ParkingItem
+            translations={itemTranslation}
+            key={"parking-" + index}
+            disabled={disabled}
+            index={index}
+            parking={parking}
+            parkingType={parkingType}
+            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
+            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
+            expanded={
+              expandedItem.type === "parking" && index === expandedItem.index
+            }
+          />
+        );
+      })
+    ) : (
+      <div style={{ ...noElementsStyle, textTransform: "lowercase" }}>
+        {itemTranslation.none} {itemTranslation.parking}
+      </div>
+    );
   }
 
   render() {
     const noElementsStyle = {
-      fontStyle: 'italic',
+      fontStyle: "italic",
       marginTop: 100,
-      textAlign: 'center',
-      fontSize: '0.8em'
+      textAlign: "center",
+      fontSize: "0.8em",
     };
 
     const tabContainerStyle = {
       height: 220,
-      position: 'relative',
-      display: 'block'
+      position: "relative",
+      display: "block",
     };
 
     const {
@@ -214,27 +227,43 @@ class EditStopBoxTabs extends React.Component {
       itemTranslation,
       activeStopPlace,
       expandedItem,
-      disabled
+      disabled,
     } = this.props;
 
     return (
       <div style={tabContainerStyle}>
-        {activeElementTab === 0 &&
-          <div style={{display: 'flex', justifyContent: 'center', paddingTop: 10}}>
+        {activeElementTab === 0 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: 10,
+            }}
+          >
             <div
-              style={{ cursor: 'pointer', marginLeft: 5 }}
-              onClick={() => this.handleSortQuays('publicCode')}
+              style={{ cursor: "pointer", marginLeft: 5 }}
+              onClick={() => this.handleSortQuays("publicCode")}
             >
-              <CodeBadge icon={<MdSortByAlpha style={{width: 14, height: 14}}/>} type="publicCode"/>
+              <CodeBadge
+                icon={<MdSortByAlpha style={{ width: 14, height: 14 }} />}
+                type="publicCode"
+              />
             </div>
             <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => this.handleSortQuays('privateCode')}
+              style={{ cursor: "pointer" }}
+              onClick={() => this.handleSortQuays("privateCode")}
             >
-              <CodeBadge icon={<MdSortByAlpha style={{width: 14, height: 14, color: '#fff'}}/>} type="privateCode"/>
+              <CodeBadge
+                icon={
+                  <MdSortByAlpha
+                    style={{ width: 14, height: 14, color: "#fff" }}
+                  />
+                }
+                type="privateCode"
+              />
             </div>
           </div>
-        }
+        )}
         {activeElementTab === 0
           ? this.getQuayItems(
               activeStopPlace,
@@ -267,9 +296,9 @@ class EditStopBoxTabs extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeElementTab: state.user.activeElementTab,
-  expandedItem: state.mapUtils.focusedElement
+  expandedItem: state.mapUtils.focusedElement,
 });
 
 export default connect(mapStateToProps)(EditStopBoxTabs);

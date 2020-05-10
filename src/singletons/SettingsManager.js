@@ -12,17 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 let instance = null;
 
-const rootKey = 'ABZU::settings';
-const showExpiredKey = rootKey + '::showExpiredStops';
-const showPathLinksKey = rootKey + '::pathLinks';
-const showCompassBearingKey = rootKey + '::showCompassBearing';
-const showMultimodalEdges = rootKey + '::showMultimodalEdges';
-const mapLayerKey = rootKey + '::mapLayer';
-const showPublicCodeKey = rootKey + '::showPublicCode';
-const enablePublicCodePrivateCodeOnStopPlaces = rootKey + '::enablePublicCodePrivateCodeOnStopPlaces';
+const rootKey = "ABZU::settings";
+const showExpiredKey = rootKey + "::showExpiredStops";
+const showPathLinksKey = rootKey + "::pathLinks";
+const showCompassBearingKey = rootKey + "::showCompassBearing";
+const showMultimodalEdges = rootKey + "::showMultimodalEdges";
+const mapLayerKey = rootKey + "::mapLayer";
+const showPublicCodeKey = rootKey + "::showPublicCode";
+const enablePublicCodePrivateCodeOnStopPlaces =
+  rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
 
 class SettingsManager {
   constructor() {
@@ -33,8 +33,8 @@ class SettingsManager {
   }
 
   parseBoolean(value, defaultValue) {
-    if (value === 'true') return true;
-    if (value === 'false') return false;
+    if (value === "true") return true;
+    if (value === "false") return false;
 
     return defaultValue;
   }
@@ -72,7 +72,7 @@ class SettingsManager {
   }
 
   getMapLayer() {
-    return localStorage.getItem(mapLayerKey) || 'OpenStreetMap';
+    return localStorage.getItem(mapLayerKey) || "OpenStreetMap";
   }
 
   setMapLayer(value) {
@@ -88,7 +88,10 @@ class SettingsManager {
   }
 
   getEnablePublicCodePrivateCodeOnStopPlaces() {
-    return this.parseBoolean(localStorage.getItem(enablePublicCodePrivateCodeOnStopPlaces), false);
+    return this.parseBoolean(
+      localStorage.getItem(enablePublicCodePrivateCodeOnStopPlaces),
+      false
+    );
   }
 
   setEnablePublicCodePrivateCodeOnStopPlaces(value) {

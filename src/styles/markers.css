@@ -12,109 +12,109 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .stop-marker-parent {
-    height: 46px;
-    width: 46px;
-    z-index: 999;
-    fill: #132E40;
-    transform: translate(-18px,-40px);
+  height: 46px;
+  width: 46px;
+  z-index: 999;
+  fill: #132e40;
+  transform: translate(-18px, -40px);
 }
 
 .quay {
-    fill: #9A332C;
-    height: 38px;
-    transform: translate(-13px,-31px);
-    width: 38px;
+  fill: #9a332c;
+  height: 38px;
+  transform: translate(-13px, -31px);
+  width: 38px;
 }
 
 .focused {
-    -webkit-box-shadow:0 0 20px ;
-    -moz-box-shadow: 0 0 20px #2196f3;
-    box-shadow:0 0 20px #2196f3;
-    transform: translate(-13px,-29px);
+  -webkit-box-shadow: 0 0 20px;
+  -moz-box-shadow: 0 0 20px #2196f3;
+  box-shadow: 0 0 20px #2196f3;
+  transform: translate(-13px, -29px);
 }
 
 .focused-quay {
-    -webkit-box-shadow:0 0 20px ;
-    -moz-box-shadow: 0 0 20px #2196f3;
-    box-shadow:0 0 20px #2196f3;
+  -webkit-box-shadow: 0 0 20px;
+  -moz-box-shadow: 0 0 20px #2196f3;
+  box-shadow: 0 0 20px #2196f3;
 }
 
 .padded-10 {
-    padding: 10px;
+  padding: 10px;
 }
 
 .neighbour-stop {
-    fill: grey;
+  fill: grey;
 }
 
 .stop-marker-svg {
-    height: 24px;
-    width: 24px;
-    left: 32px !important;
-    top: 50px !important;
-    fill: #fff;
-    z-index: 999;
-    position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 32px !important;
+  top: 50px !important;
+  fill: #fff;
+  z-index: 999;
+  position: absolute;
 }
 
 .stop-marker-shadow {
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    z-index: 998;
-    top: 22px;
-    left: 8px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  z-index: 998;
+  top: 22px;
+  left: 8px;
 }
 
 .leaflet-popup {
-    bottom: 38px !important;
+  bottom: 38px !important;
 }
 
 .leaflet-div-icon {
-    background: none;
-    border: none;
+  background: none;
+  border: none;
 }
 
 .quay-marker-title {
-    font-weight: 600;
-    color: #41c0c4;
-    font-size: 1.2em;
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 15px;
+  font-weight: 600;
+  color: #41c0c4;
+  font-size: 1.2em;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .marker-popup-button {
-    margin-top:5px;
-    cursor: pointer;
-    padding: 2px;
-    color: #fff;
-    background: rgba(18, 112, 149, 0.86);
-    font-size: 11px;
-    border-radius: 5px;
-    width: 100%;
-    display: inline-block;
-    text-align: center;
+  margin-top: 5px;
+  cursor: pointer;
+  padding: 2px;
+  color: #fff;
+  background: rgba(18, 112, 149, 0.86);
+  font-size: 11px;
+  border-radius: 5px;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
 }
 
 .marker-popup-button.incomplete {
-    color: #fff;
-    pointer-events:none;
-    background: #777777;
-    border-radius: 0px;
+  color: #fff;
+  pointer-events: none;
+  background: #777777;
+  border-radius: 0px;
 }
 
 .marker-popup-not-legal {
-    color: #fff;
-    pointer-events:none;
-    background: #777777;
-    border-radius: 0px;
-    font-size: 11px;
-    padding: 5px;
-    text-align: center;
+  color: #fff;
+  pointer-events: none;
+  background: #777777;
+  border-radius: 0px;
+  font-size: 11px;
+  padding: 5px;
+  text-align: center;
 }
 
 .expired {
-    opacity: 0.6;
+  opacity: 0.6;
 }

@@ -12,55 +12,56 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import * as types from "../../actions/Types";
+import { userReducer } from "./../../reducers/";
+import { initialState } from "./../../reducers/userReducer";
 
-import * as types from '../../actions/Types';
-import { userReducer } from './../../reducers/';
-import { initialState } from './../../reducers/userReducer';
-
-describe('user reducer', () => {
-  test('Should return the initial state', () => {
+describe("user reducer", () => {
+  test("Should return the initial state", () => {
     expect(userReducer(undefined, {})).toEqual(initialState);
   });
 
-  test('Should navigate to path', () => {
+  test("Should navigate to path", () => {
     const editPathChange = {
       type: types.NAVIGATE_TO,
-      payLoad: '/stop_place/',
+      payLoad: "/stop_place/",
     };
 
     expect(userReducer(undefined, editPathChange)).toEqual({
       ...initialState,
-      path: '/stop_place/',
+      path: "/stop_place/",
     });
   });
 
-  test('Should toggle new stop form visibility', () => {
+  test("Should toggle new stop form visibility", () => {
     expect(
-      userReducer(undefined, { type: types.TOGGLED_IS_CREATING_NEW_STOP, payLoad: false }),
+      userReducer(undefined, {
+        type: types.TOGGLED_IS_CREATING_NEW_STOP,
+        payLoad: false,
+      })
     ).toEqual({
       ...initialState,
       isCreatingNewStop: true,
     });
   });
 
-  test('Should apply search filters', () => {
+  test("Should apply search filters", () => {
     const filters = [];
 
     expect(
       userReducer(undefined, {
         type: types.APPLIED_STOPTYPE_SEARCH_FILTER,
         payLoad: filters,
-      }),
+      })
     ).toEqual({
       ...initialState,
       searchFilters: { ...initialState.searchFilters, stopType: filters },
     });
   });
 
-
-  test('Should change localization', () => {
+  test("Should change localization", () => {
     const localization = {
-      locale: 'nb',
+      locale: "nb",
       message: [],
     };
 
@@ -68,35 +69,35 @@ describe('user reducer', () => {
       userReducer(undefined, {
         type: types.CHANGED_LOCALIZATION,
         payLoad: localization,
-      }),
+      })
     ).toEqual({
       ...initialState,
       localization: localization,
     });
   });
 
-  test('Should apply language change', () => {
-    const locale = 'nb';
+  test("Should apply language change", () => {
+    const locale = "nb";
 
     expect(
       userReducer(undefined, {
         type: types.APPLIED_LOCALE,
         payLoad: locale,
-      }),
+      })
     ).toEqual({
       ...initialState,
       appliedLocale: locale,
     });
   });
 
-  test('Should set active baselayer for maps', () => {
-    let newBaselayer = 'OpenStreetMap';
+  test("Should set active baselayer for maps", () => {
+    let newBaselayer = "OpenStreetMap";
 
     expect(
       userReducer(undefined, {
         type: types.CHANGED_ACTIVE_BASELAYER,
         payLoad: newBaselayer,
-      }),
+      })
     ).toEqual({
       ...initialState,
       activeBaselayer: newBaselayer,

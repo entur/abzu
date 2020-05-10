@@ -12,34 +12,35 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const itemStyle = {
-  flexBasis: '100%',
-  textAlign: 'left',
-  marginRight: 5
+  flexBasis: "100%",
+  textAlign: "left",
+  marginRight: 5,
 };
 
-const TariffZonesItem = ({ id, name}) =>
+const TariffZonesItem = ({ id, name }) => (
   <div
     style={{
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
       padding: 5,
-      justifyContent: 'space-between',
-      lineHeight: 2
+      justifyContent: "space-between",
+      lineHeight: 2,
     }}
   >
     <div style={itemStyle}>{id}</div>
     <div style={itemStyle}>{name}</div>
-  </div>;
+  </div>
+);
 
 TariffZonesItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   handleRemove: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default TariffZonesItem;

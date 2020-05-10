@@ -12,28 +12,26 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-
-import React, {Component} from 'react';
-import Dialog from 'material-ui/Dialog';
-import { injectIntl } from 'react-intl';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component } from "react";
+import Dialog from "material-ui/Dialog";
+import { injectIntl } from "react-intl";
+import FlatButton from "material-ui/FlatButton";
 
 class SaveGroupDialog extends Component {
   render() {
-
     const { open, handleClose, handleSave, intl } = this.props;
     const { formatMessage } = intl;
 
     const actions = [
       <FlatButton
-        label={formatMessage({id: 'cancel'})}
+        label={formatMessage({ id: "cancel" })}
         onClick={handleClose}
       />,
       <FlatButton
         onClick={handleSave}
-        label={formatMessage({id: 'save'})}
+        label={formatMessage({ id: "save" })}
         primary={true}
-      />
+      />,
     ];
 
     return (
@@ -41,13 +39,12 @@ class SaveGroupDialog extends Component {
         onRequestClose={handleClose}
         open={open}
         actions={actions}
-        title={formatMessage({id: 'save_group_of_stop_places'})}
+        title={formatMessage({ id: "save_group_of_stop_places" })}
       >
-        <p>{formatMessage({id: 'are_you_sure_save_group_of_stop_places'})}</p>
+        <p>{formatMessage({ id: "are_you_sure_save_group_of_stop_places" })}</p>
       </Dialog>
     );
   }
 }
 
 export default injectIntl(SaveGroupDialog);
-

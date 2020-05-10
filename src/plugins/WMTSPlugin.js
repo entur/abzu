@@ -12,21 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import L from 'leaflet';
+import L from "leaflet";
 
 const WMTSPlugin = L.TileLayer.extend({
   defaultWmtsParams: {
-    service: 'WMTS',
-    request: 'GetTile',
-    version: '1.1.1',
-    style: 'default',
-    format: 'image/png',
-    transparent: 'false',
-    tilematrixSet: 'default028mm',
-    layers: 'toporaster2',
+    service: "WMTS",
+    request: "GetTile",
+    version: "1.1.1",
+    style: "default",
+    format: "image/png",
+    transparent: "false",
+    tilematrixSet: "default028mm",
+    layers: "toporaster2",
   },
 
-  initialize: function(url, options) {
+  initialize: function (url, options) {
     this._url = url;
     var wmtsParams = L.extend({}, this.defaultWmtsParams);
     var tileSize = options.tileSize || this.options.tileSize;
@@ -34,7 +34,7 @@ const WMTSPlugin = L.TileLayer.extend({
     wmtsParams.width = wmtsParams.height = tileSize;
 
     for (var i in options) {
-      if (!this.options.hasOwnProperty(i) && i != 'matrixIds') {
+      if (!this.options.hasOwnProperty(i) && i !== "matrixIds") {
         wmtsParams[i] = options[i];
       }
     }
@@ -44,13 +44,12 @@ const WMTSPlugin = L.TileLayer.extend({
     L.setOptions(this, options);
   },
 
-  onAdd: function(map) {
+  onAdd: function (map) {
     this._crs = this.options.crs || map.options.crs;
     L.TileLayer.prototype.onAdd.call(this, map);
   },
 
-  getTileUrl: function(startPoint) {
-    let map = this._map;
+  getTileUrl: function (startPoint) {
     let tileSize = this.options.tileSize;
     let nwPoint = startPoint.multiplyBy(tileSize);
 
@@ -74,16 +73,16 @@ const WMTSPlugin = L.TileLayer.extend({
     return (
       url +
       L.Util.getParamString(this.wmtsParams, url) +
-      '&tilematrix=' +
+      "&tilematrix=" +
       identifier +
-      '&tilerow=' +
+      "&tilerow=" +
       tilerow +
-      '&tilecol=' +
+      "&tilecol=" +
       tilecol
     );
   },
 
-  setParams: function(params, noRedraw) {
+  setParams: function (params, noRedraw) {
     L.extend(this.wmtsParams, params);
     if (!noRedraw) {
       this.redraw();
@@ -91,11 +90,11 @@ const WMTSPlugin = L.TileLayer.extend({
     return this;
   },
 
-  getDefaultMatrix: function(zoom) {
+  getDefaultMatrix: function (zoom) {
     var matrixIds3857 = new Array(22);
     for (var i = 0; i < 22; i++) {
       matrixIds3857[i] = {
-        identifier: '' + i,
+        identifier: "" + i,
         topLeftCorner: new L.LatLng(20037508.34, -20037508.34),
       };
     }

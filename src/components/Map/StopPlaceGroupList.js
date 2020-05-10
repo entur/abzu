@@ -12,42 +12,45 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import StopPlaceGroup from './StopPlaceGroup';
-import { connect } from 'react-redux';
-import { Entities } from '../../models/Entities';
-import { FeatureGroup } from 'react-leaflet';
+import React from "react";
+import StopPlaceGroup from "./StopPlaceGroup";
+import { connect } from "react-redux";
+import { Entities } from "../../models/Entities";
+import { FeatureGroup } from "react-leaflet";
 
-const StopPlaceGroupList = ({list}) => (
+const StopPlaceGroupList = ({ list }) => (
   <FeatureGroup>
-    {list.map(({positions, name}, index) => (
-    <StopPlaceGroup key={index} positions={positions} name={name}/>
-  ))}
+    {list.map(({ positions, name }, index) => (
+      <StopPlaceGroup key={index} positions={positions} name={name} />
+    ))}
   </FeatureGroup>
 );
 
-const getSearchPolygon = result => {
-  if (!result || result.entityType !== Entities.GROUP_OF_STOP_PLACE
-    || !result.members.length) {
+const getSearchPolygon = (result) => {
+  if (
+    !result ||
+    result.entityType !== Entities.GROUP_OF_STOP_PLACE ||
+    !result.members.length
+  ) {
     return null;
   }
 
-  return ({
+  return {
     name: result.name,
-    positions: [result.members.map(member => member.location)]
-  });
+    positions: [result.members.map((member) => member.location)],
+  };
 };
 
-const mapStateToProps = ({stopPlace, stopPlacesGroup}) => {
-
+const mapStateToProps = ({ stopPlace, stopPlacesGroup }) => {
   let polygons = [];
 
   if (stopPlacesGroup.current.members.length) {
     polygons.push({
-        name: stopPlacesGroup.current.name,
-        positions: [stopPlacesGroup.current.members.map(member => member.location)]
-      }
-    );
+      name: stopPlacesGroup.current.name,
+      positions: [
+        stopPlacesGroup.current.members.map((member) => member.location),
+      ],
+    });
   }
 
   const searchPolygon = getSearchPolygon(stopPlace.activeSearchResult);
@@ -56,10 +59,9 @@ const mapStateToProps = ({stopPlace, stopPlacesGroup}) => {
     polygons = polygons.concat(searchPolygon);
   }
 
-  return ({
-    list: polygons
-  });
+  return {
+    list: polygons,
+  };
 };
-
 
 export default connect(mapStateToProps)(StopPlaceGroupList);

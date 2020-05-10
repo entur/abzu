@@ -12,16 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { extractAlternativeNames, getImportedId } from './stopPlaceUtils';
-import { getAssessmentSetBasedOnQuays } from '../modelUtils/limitationHelpers';
-import { setDecimalPrecision } from '../utils/';
-import { hasExpired, isFuture } from '../modelUtils/validBetween';
-import StopPlace from './StopPlace';
-import { Entities } from './Entities';
+import { extractAlternativeNames, getImportedId } from "./stopPlaceUtils";
+import { getAssessmentSetBasedOnQuays } from "../modelUtils/limitationHelpers";
+import { setDecimalPrecision } from "../utils/";
+import { hasExpired, isFuture } from "../modelUtils/validBetween";
+import StopPlace from "./StopPlace";
+import { Entities } from "./Entities";
 
 class ParentStopPlace {
-
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;
     this.isActive = isActive;
@@ -34,18 +32,18 @@ class ParentStopPlace {
     const childToAdd = {
       ...child,
       notSaved: true,
-      name: name ? name.value : '',
+      name: name ? name.value : "",
     };
 
     let clientStop = {
       isNewStop: true,
-      name: name ? name.value : '',
+      name: name ? name.value : "",
       isParent: true,
       isActive: true,
       tags: [],
       children: [childToAdd],
       versions: [],
-      entityType: Entities.STOP_PLACE
+      entityType: Entities.STOP_PLACE,
     };
 
     if (child.geometry && child.geometry.coordinates) {
@@ -60,9 +58,7 @@ class ParentStopPlace {
   }
 
   toClient() {
-
     try {
-
       const { stop, isActive, userDefinedCoordinates } = this;
 
       let clientStop = {
@@ -73,7 +69,7 @@ class ParentStopPlace {
         id: stop.id,
         isActive: isActive,
         isParent: true,
-        name: stop.name ? stop.name.value : '',
+        name: stop.name ? stop.name.value : "",
         tags: stop.tags,
         version: stop.version,
         weighting: stop.weighting,
@@ -97,10 +93,10 @@ class ParentStopPlace {
       }
 
       if (stop.groups && stop.groups.length) {
-        clientStop.groups = stop.groups.map(group => {
-          let newGroup = {...group};
-          newGroup.name = group.name && group.name.value
-            ? group.name.value : '';
+        clientStop.groups = stop.groups.map((group) => {
+          let newGroup = { ...group };
+          newGroup.name =
+            group.name && group.name.value ? group.name.value : "";
           return newGroup;
         });
         clientStop.belongsToGroup = true;
@@ -110,13 +106,14 @@ class ParentStopPlace {
       }
 
       if (stop.tariffZones && stop.tariffZones.length) {
-        clientStop.tariffZones = stop.tariffZones.map(zone => {
+        clientStop.tariffZones = stop.tariffZones.map((zone) => {
           if (zone.name && zone.name.value) {
             return {
               name: zone.name.value,
               id: zone.id,
             };
           }
+          return undefined;
         });
       } else {
         clientStop.tariffZones = [];
@@ -142,7 +139,10 @@ class ParentStopPlace {
           setDecimalPrecision(coordinates[0], 6),
         ];
       } else {
-        if (stop.id === userDefinedCoordinates.stopPlaceId && userDefinedCoordinates.position) {
+        if (
+          stop.id === userDefinedCoordinates.stopPlaceId &&
+          userDefinedCoordinates.position
+        ) {
           clientStop.location = userDefinedCoordinates.position.slice();
         }
       }
@@ -153,36 +153,32 @@ class ParentStopPlace {
       }
 
       if (stop.children) {
+        clientStop.children = stop.children.map((item) => {
+          let child = new StopPlace(item, isActive).toClient();
 
-        clientStop.children = stop.children
-          .map(item => {
+          if (!child.name) {
+            child.name = clientStop.name;
+          }
 
-            let child = new StopPlace(item, isActive).toClient();
+          if (!child.topographicPlace) {
+            child.topographicPlace = clientStop.topographicPlace;
+          }
 
-            if (!child.name) {
-              child.name = clientStop.name;
-            }
+          if (!child.parentTopographicPlace) {
+            child.parentTopographicPlace = clientStop.parentTopographicPlace;
+          }
 
-            if (!child.topographicPlace) {
-              child.topographicPlace = clientStop.topographicPlace;
-            }
+          child.validBetween = clientStop.validBetween;
+          child.isFuture = isFuture(clientStop.validBetween);
+          child.hasExpired = hasExpired(clientStop.validBetween);
+          child.isChildOfParent = true;
 
-            if (!child.parentTopographicPlace) {
-              child.parentTopographicPlace = clientStop.parentTopographicPlace;
-            }
-
-            child.validBetween = clientStop.validBetween;
-            child.isFuture = isFuture(clientStop.validBetween);
-            child.hasExpired = hasExpired(clientStop.validBetween);
-            child.isChildOfParent = true;
-
-            return child;
-          });
+          return child;
+        });
       }
       return clientStop;
-
     } catch (e) {
-      console.log('error', e);
+      console.log("error", e);
     }
   }
 }

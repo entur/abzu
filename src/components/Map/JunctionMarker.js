@@ -12,21 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import { connect } from "react-redux";
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
-import { connect } from 'react-redux';
-
-class JunctionMarker extends React.Component {
+class JunctionMarker extends Component {
   static propTypes = {
     position: PropTypes.arrayOf(PropTypes.number).isRequired,
     index: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
     text: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
   };
 
   componentDidUpdate() {
@@ -37,12 +36,20 @@ class JunctionMarker extends React.Component {
     const isFocused =
       focusedElement.type === type && index === focusedElement.index;
     if (isFocused) {
-      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
-        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (
+        this.refs.marker &&
+        this.refs.marker.leafletElement &&
+        this.refs.marker.leafletElement._icon
+      ) {
+        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, "focused");
       }
     } else {
-      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
-        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (
+        this.refs.marker &&
+        this.refs.marker.leafletElement &&
+        this.refs.marker.leafletElement._icon
+      ) {
+        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, "focused");
       }
     }
   }
@@ -53,9 +60,10 @@ class JunctionMarker extends React.Component {
 
   createIcon(props) {
     const { type } = props;
-    const iconURL = type === 'entrance'
-      ? require('../../static/icons/entrance-icon-2x.png')
-      : require('../../static/icons/junction-icon-2x.png');
+    const iconURL =
+      type === "entrance"
+        ? require("../../static/icons/entrance-icon-2x.png")
+        : require("../../static/icons/junction-icon-2x.png");
 
     this._icon = L.icon({
       iconUrl: iconURL,
@@ -66,12 +74,7 @@ class JunctionMarker extends React.Component {
   }
 
   render() {
-    const {
-      position,
-      index,
-      type,
-      handleDragEnd
-    } = this.props;
+    const { position, index, type, handleDragEnd } = this.props;
     const { text, name } = this.props;
 
     return (
@@ -79,7 +82,7 @@ class JunctionMarker extends React.Component {
         draggable={true}
         position={position}
         icon={this._icon}
-        onDragend={event => {
+        onDragend={(event) => {
           handleDragEnd(index, type, event);
         }}
         ref="marker"
@@ -90,9 +93,9 @@ class JunctionMarker extends React.Component {
             <div
               style={{
                 fontWeight: 600,
-                textAlign: 'center',
-                margin: '5 0',
-                fontSize: '1.1em',
+                textAlign: "center",
+                margin: "5 0",
+                fontSize: "1.1em",
               }}
             >
               {name || text.notAssigned}
@@ -102,8 +105,8 @@ class JunctionMarker extends React.Component {
               style={{
                 marginTop: -2,
                 marginBottom: 5,
-                fontSize: '1em',
-                color: '#191919',
+                fontSize: "1em",
+                color: "#191919",
               }}
             >
               {text.junctionTitle}
@@ -115,7 +118,7 @@ class JunctionMarker extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   focusedElement: state.mapUtils.focusedElement,
 });
 

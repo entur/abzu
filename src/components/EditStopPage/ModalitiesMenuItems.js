@@ -12,28 +12,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { connect } from 'react-redux';
-import MenuItem from 'material-ui/MenuItem';
-import ModalityIconSvg from '../MainPage/ModalityIconSvg';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+import React from "react";
+import { connect } from "react-redux";
+import MenuItem from "material-ui/MenuItem";
+import ModalityIconSvg from "../MainPage/ModalityIconSvg";
+import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
 import {
   getStopPlacesForSubmodes,
-  getInverseSubmodesWhitelist
-} from '../../roles/rolesParser';
-import Menu from 'material-ui/Menu';
+  getInverseSubmodesWhitelist,
+} from "../../roles/rolesParser";
+import Menu from "material-ui/Menu";
 
 class ModalitiesMenuItems extends React.Component {
   render() {
     const {
-      intl: {formatMessage},
+      intl: { formatMessage },
       stopTypes,
       handleStopTypeChange,
       handleSubModeTypeChange,
       allowsInfo,
       stopPlaceTypeChosen,
-      submodeChosen
+      submodeChosen,
     } = this.props;
 
     const legalStopPlaceTypes = allowsInfo.legalStopPlaceTypes || [];
@@ -46,7 +45,6 @@ class ModalitiesMenuItems extends React.Component {
 
     return (
       <Menu>
-
         {Object.keys(stopTypes).map((type, index) => {
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||
@@ -61,35 +59,39 @@ class ModalitiesMenuItems extends React.Component {
           let submodes = stopTypes[type].submodes;
 
           if (submodes) {
-
             // Add "unspeficied" submode option, corresponding to null value,
             // and sort according to the localized formatted version, with
             // unspecified always on top
-            submodes = [null].concat(submodes).map(submode => {
-              return {
-                submode,
-                formatted: formatMessage({ id: `stopTypes.${type}.submodes.${submode || 'unspecified'}`})
-              }
-            }).sort((a,b) => {
-              if (a.submode === null) return -1;
-              if (b.submode === null) return 1;
-              if (a.formatted < b.formatted) return -1;
-              if (a.formatted > b.formatted) return 1;
-              return 0;
-            })
+            submodes = [null]
+              .concat(submodes)
+              .map((submode) => {
+                return {
+                  submode,
+                  formatted: formatMessage({
+                    id: `stopTypes.${type}.submodes.${
+                      submode || "unspecified"
+                    }`,
+                  }),
+                };
+              })
+              .sort((a, b) => {
+                if (a.submode === null) return -1;
+                if (b.submode === null) return 1;
+                if (a.formatted < b.formatted) return -1;
+                if (a.formatted > b.formatted) return 1;
+                return 0;
+              });
           }
 
           return (
             <MenuItem
-              key={'stopType' + index}
-              className={isLegal ? '' : 'menu-item--not-legal'}
+              key={"stopType" + index}
+              className={isLegal ? "" : "menu-item--not-legal"}
               value={type}
-              style={{ padding: '0px 10px' }}
+              style={{ padding: "0px 10px" }}
               primaryText={
                 <span
-                  style={
-                    stopTypeMatchingChosen && !submodes ? chosenStyle : {}
-                  }
+                  style={stopTypeMatchingChosen && !submodes ? chosenStyle : {}}
                 >
                   {formatMessage({ id: `stopTypes.${type}.name` })}
                 </span>
@@ -100,11 +102,11 @@ class ModalitiesMenuItems extends React.Component {
               insetChildren={true}
               rightIcon={submodes && <ArrowDropRight />}
               leftIcon={
-                <ModalityIconSvg iconStyle={{ float: 'left' }} type={type} />
+                <ModalityIconSvg iconStyle={{ float: "left" }} type={type} />
               }
               menuItems={
                 submodes &&
-                submodes.map(({submode,formatted}) => {
+                submodes.map(({ submode, formatted }) => {
                   // make all submodes legal if stopPlace is legal
                   let isLegal =
                     illegalSubmodes.indexOf(submode) !== -1 &&
@@ -127,25 +129,21 @@ class ModalitiesMenuItems extends React.Component {
 
                   return (
                     <MenuItem
-                      key={'stopType-sub' + submode + '-' + index}
+                      key={"stopType-sub" + submode + "-" + index}
                       value={submode}
-                      className={isLegal ? '' : 'menu-item--not-legal'}
-                      style={{ padding: '0px 10px' }}
+                      className={isLegal ? "" : "menu-item--not-legal"}
+                      style={{ padding: "0px 10px" }}
                       primaryText={
                         <span style={isMatchingChosen ? chosenStyle : {}}>
                           {formatted}
                         </span>
                       }
                       onClick={() => {
-                        handleSubModeTypeChange(
-                          type,
-                          transportMode,
-                          submode
-                        );
+                        handleSubModeTypeChange(type, transportMode, submode);
                       }}
                       leftIcon={
                         <ModalityIconSvg
-                          iconStyle={{ float: 'left' }}
+                          iconStyle={{ float: "left" }}
                           type={type}
                           submode={submode}
                         />
@@ -163,8 +161,8 @@ class ModalitiesMenuItems extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  allowsInfo: state.roles.allowanceInfo
+const mapStateToProps = (state) => ({
+  allowsInfo: state.roles.allowanceInfo,
 });
 
 export default connect(mapStateToProps)(ModalitiesMenuItems);

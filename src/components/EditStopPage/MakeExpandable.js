@@ -12,29 +12,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import MdExpand from 'material-ui/svg-icons/navigation/expand-more';
-import MdCollapse from 'material-ui/svg-icons/navigation/expand-less';
-import IconButton from 'material-ui/IconButton';
+import React from "react";
+import MdExpand from "material-ui/svg-icons/navigation/expand-more";
+import MdCollapse from "material-ui/svg-icons/navigation/expand-less";
+import IconButton from "material-ui/IconButton";
 
 class MakeExpandable extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
     };
   }
 
   handleToggle() {
-    this.setState(prevState => ({ expanded: !prevState.expanded }));
+    this.setState((prevState) => ({ expanded: !prevState.expanded }));
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.ownerId && nextProps.ownerId) {
       if (this.props.ownerId !== nextProps.ownerId) {
         this.setState({
-          expanded: false
+          expanded: false,
         });
       }
     }
@@ -44,14 +43,14 @@ class MakeExpandable extends React.PureComponent {
     const { hideToggle, style } = this.props;
 
     let iconButtonStyle = {
-      flexBasis: '100%',
-      textAlign: 'right',
+      flexBasis: "100%",
+      textAlign: "right",
       marginBottom: 5,
       marginTop: -10,
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
+      overflow: "hidden",
+      textOverflow: "ellipsis",
       fontSize: 12,
-      visibility: hideToggle ? 'hidden' : ''
+      visibility: hideToggle ? "hidden" : "",
     };
 
     return (

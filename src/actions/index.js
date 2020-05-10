@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import StopPlaceActions from './StopPlaceActions';
-import UserActions from './UserActions';
-import AssessmentActions from './AssessmentActions';
-import EquipmentActions from './EquipmentActions';
-import StopPlacesGroupActions from './StopPlacesGroupActions';
+import StopPlaceActions from "./StopPlaceActions";
+import UserActions from "./UserActions";
+import AssessmentActions from "./AssessmentActions";
+import EquipmentActions from "./EquipmentActions";
+import StopPlacesGroupActions from "./StopPlacesGroupActions";
 
 export {
   StopPlaceActions,
   UserActions,
   AssessmentActions,
   EquipmentActions,
-  StopPlacesGroupActions
+  StopPlacesGroupActions,
 };
 
 export const createThunk = (type, payLoad) => ({
