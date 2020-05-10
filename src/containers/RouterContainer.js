@@ -23,19 +23,19 @@ import Routes from '../routes/';
 import GroupOfStopPlaces from './GroupOfStopPlaces';
 
 class RouterContainer extends React.Component {
+  routes = (
+    <Route path={this.props.path} component={App}>
+      <IndexRoute component={StopPlaces} />
+      <Route path={this.props.path + Routes.STOP_PLACE + '/:stopId'} component={StopPlace} />
+      <Route path={this.props.path + Routes.GROUP_OF_STOP_PLACE + '/:groupId'} component={GroupOfStopPlaces} />
+      <Route path={this.props.path + 'reports'} component={ReportPage} />
+    </Route>
+  );
+
   render() {
-    const { path, history } = this.props;
+    const { history } = this.props;
 
-    const routes = (
-      <Route path={path} component={App}>
-        <IndexRoute component={StopPlaces} />
-        <Route path={path + Routes.STOP_PLACE + '/:stopId'} component={StopPlace} />
-        <Route path={path + Routes.GROUP_OF_STOP_PLACE + '/:groupId'} component={GroupOfStopPlaces} />
-        <Route path={path + 'reports'} component={ReportPage} />
-      </Route>
-    );
-
-    return <Router history={history} routes={routes} />;
+    return <Router history={history} routes={this.routes} />;
   }
 }
 
