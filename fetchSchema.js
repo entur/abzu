@@ -2,15 +2,15 @@
 
 var fs = require('fs');
 const graphqlFetch = require('graphql-fetch');
-const convictPromise = require('./config/convict.js');
-const introspectionQuery = require('./graphql/Tiamat/introspection').introspectionQuery;
+const convictPromise = require('./src/config/convict.js');
+const introspectionQuery = require('./src/graphql/Tiamat/introspection').introspectionQuery;
 
 convictPromise.then(convict => {
   const url = convict.get('tiamatBaseUrl');
   return graphqlFetch(url)(introspectionQuery);
 }).then(response => {
   fs.writeFileSync(
-    './graphql/Tiamat/schema.json',
+    './src/graphql/Tiamat/schema.json',
     JSON.stringify(response.data),
     'utf8'
   );
