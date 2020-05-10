@@ -3,6 +3,8 @@
 Stop place register frontend.
 Uses stop place register backend tiamat's graphQL API
 
+The app is built on top of [Create React App](https://create-react-app.dev/docs/getting-started).
+
 ## Production
 
 In order to build the webpack bundle and run the application, use
@@ -27,18 +29,18 @@ To run Abzu for development, simply do:
 
 ```
 npm install
-npm run dev
+npm start
 ```
 
 Note: This will launch the application with hot reload enabled.
 
-Default port is _8988_. This can be overrided by setting the environment
+Default port in development is _9000_. This can be overrided by setting the environment
 variable `port` (notice lower case).
 
 To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
 
 ```
-TIAMAT_BASE_URL=https://api-test.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
+TIAMAT_BASE_URL=https://api.dev.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
 ```
 
 
@@ -70,27 +72,3 @@ Default theme is found in `./config/default`.
 * Set `process.env.REACT_APP_THEME={YOUR_THEME_NAME}`
 
 This is WIP.
-
-## Webpack
-
-Webpack uses `webpack.dev.config.js` for development and `webpack.prod.config.js` for production code. Correct config is chosen based on NODE_ENV.
-
-Webpack produces `public/bundle` which is the entire application rendered by the server. In development this file is emitted from webpack through [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) over a connect server. No file is written to disk. These facilities hot-reload.
-
-## Troubleshooting
-
-### Issues with pngquant on linux
-#### Error message:
-```
-error while loading shared libraries: libpng12.so.0
-```
-
-#### Cause
-Ubuntu has, at the time of writing, libpng 16, not libpng 12.
-
-#### Workaround:
-```
-wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
-  && sudo dpkg -i /tmp/libpng12.deb \
-  && rm /tmp/libpng12.deb
-```
