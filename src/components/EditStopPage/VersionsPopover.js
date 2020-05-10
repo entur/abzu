@@ -65,7 +65,6 @@ class VersionsPopover extends Component {
             cursor: 'pointer',
             fontSize: '1em',
             borderBottom: '1px dotted #fff',
-            color: '#fff',
             padding: 0,
           }}
           onClick={this.handleOpen.bind(this)}

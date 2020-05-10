@@ -22,7 +22,7 @@ const GroupOfStopPlacesLink = ({name, id, style}) => {
     .endpointBase}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
-    <a style={{ fontSize: '0.9em', ...style }} target='_blank' href={url}>
+    <a style={{ fontSize: '0.9em', ...style }} target='_blank' rel="noopener noreferrer" href={url}>
       {name}
     </a>
   );

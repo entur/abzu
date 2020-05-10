@@ -223,7 +223,7 @@ class QuayMarker extends React.Component {
         pathLinkText = translations.cancelPathLink;
       } else {
         // LineString should either have 0 or >= 2 [long,lat] according to GeoJSON spec
-        if (lastPathLink.inBetween && lastPathLink.inBetween.length == 1) {
+        if (lastPathLink.inBetween && lastPathLink.inBetween.length === 1) {
           isIncomplete = true;
         }
       }
@@ -348,6 +348,7 @@ class QuayMarker extends React.Component {
                     }}
                   >
                     <img
+                      alt=""
                       style={{ width: 20, height: 22, cursor: 'pointer' }}
                       src={compassIcon}
                     />
@@ -358,8 +359,9 @@ class QuayMarker extends React.Component {
                   cursor: 'pointer'
                 }}
               >
-                <a href={osmURL} target="_blank">
+                <a href={osmURL} target="_blank" rel="noopener noreferrer">
                   <img
+                    alt=""
                     style={{
                       width: 20,
                       height: 22,
@@ -376,8 +378,9 @@ class QuayMarker extends React.Component {
                   cursor: 'pointer'
                 }}
               >
-                <a href={streetViewURL} target="_blank">
+                <a href={streetViewURL} target="_blank" rel="noopener noreferrer">
                   <img
+                    alt=""
                     style={{
                       width: 20,
                       height: 22,

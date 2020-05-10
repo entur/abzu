@@ -91,6 +91,7 @@ class StopPlace {
               id: zone.id,
             };
           }
+          return undefined;
         });
       } else {
         clientStop.tariffZones = [];

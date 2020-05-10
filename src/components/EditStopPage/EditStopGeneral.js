@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import { StopPlaceActions, UserActions } from '../../actions/';
-import stopTypes from '../../models/stopTypes';
 import { injectIntl } from 'react-intl';
 import ConfirmDialog from '../Dialogs/ConfirmDialog';
 import EditStopBoxTabs from './EditStopBoxTabs';
@@ -429,7 +428,7 @@ class EditStopGeneral extends React.Component {
     const { stopPlace, movingQuayToNewStop, neighbourStopQuays } = this.props;
     if (!movingQuayToNewStop || !stopPlace) return [];
     const { stopPlaceId } = movingQuayToNewStop;
-    if (stopPlaceId == stopPlace.id) {
+    if (stopPlaceId === stopPlace.id) {
       return stopPlace.quays;
     } else {
       return neighbourStopQuays[stopPlaceId] || [];
@@ -454,7 +453,7 @@ class EditStopGeneral extends React.Component {
       fetchOTPInfoDeleteLoading,
       deleteQuayWarning
     } = this.props;
-    const { formatMessage, locale } = intl;
+    const { formatMessage } = intl;
 
     if (!stopPlace) return null;
 

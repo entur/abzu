@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import React from 'react';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import mapReducer from '../reducers/mapReducer';

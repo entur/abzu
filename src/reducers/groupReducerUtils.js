@@ -36,7 +36,7 @@ export const addMemberToGroup = (current, payLoad) => {
   let newGroup = copy(current);
 
   const members = Object.keys(membersJSON).map(key => {
-    const isParent = membersJSON[key][0]['__typename'] == 'ParentStopPlace';
+    const isParent = membersJSON[key][0]['__typename'] === 'ParentStopPlace';
 
     let memberStop = null;
     if (isParent) {

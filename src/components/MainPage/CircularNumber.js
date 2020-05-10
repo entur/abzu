@@ -28,7 +28,7 @@ export default ({ number, color }) => {
     fontSize: 12,
   };
 
-  const offSet = (!isNaN(number) && String(number).length == 2) ? -2 : 0;
+  const offSet = (!isNaN(number) && String(number).length === 2) ? -2 : 0;
 
   return (
     <div style={numberCircleStyle}>

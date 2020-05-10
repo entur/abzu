@@ -42,7 +42,6 @@ import { stopPlaceAndPathLinkByVersion } from '../../graphql/Tiamat/queries';
 import RemoveStopFromParentDialog from '../Dialogs/RemoveStopFromParentDialog';
 import TerminateStopPlaceDialog from '../Dialogs/TerminateStopPlaceDialog';
 import { getIn, getIsCurrentVersionMax } from '../../utils/';
-import StopPlace from '../../models/StopPlace';
 
 class EditParentGeneral extends React.Component {
   constructor(props) {

@@ -415,7 +415,7 @@ class StopPlaceDetails extends React.Component {
             {isChildOfParent &&
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
               <span style={{fontWeight: 600, fontSize: '0.9em'}}>{belongsToParent}</span>
-              <a target="_blank" style={{fontSize: '0.8em'}} href={parentStopHref}>{stopPlace.parentStop.id}</a>
+              <a target="_blank" rel="noopener noreferrer" style={{fontSize: '0.8em'}} href={parentStopHref}>{stopPlace.parentStop.id}</a>
             </div>
             }
             {!stopPlace.isNewStop &&

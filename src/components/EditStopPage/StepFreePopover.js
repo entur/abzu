@@ -51,7 +51,7 @@ class StepFreePopover extends React.Component {
 
   render() {
     const { intl, displayLabel, stepFreeAccess, disabled } = this.props;
-    const { locale, formatMessage } = intl;
+    const { formatMessage } = intl;
     const { open, anchorEl } = this.state;
 
     return (

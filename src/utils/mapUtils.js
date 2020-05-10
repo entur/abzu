@@ -49,8 +49,8 @@ export const isCoordinatesInsidePolygon = (coordinates, polyPoints) => {
     let xj = polyPoints[j][1],
       yj = polyPoints[j][0];
 
-    let intersect =
-      yi > y != yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
+    /* eslint-disable-next-line */
+    let intersect = yi > y != yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
     if (intersect) inside = !inside;
   }
 

@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import { UserActions } from '../../actions/';
@@ -87,8 +88,8 @@ class CoordinateMarker extends React.Component {
               <span style={{borderBottom: '1px dotted'}}>{ position.join(',')}</span>
             </div>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
-              <img onClick={this.handleAutoPan.bind(this)} src={mapCenterIcon} style={imageStyle}/>
-              <img onClick={this.handleZoomIn.bind(this)} src={mapZoomIn} style={imageStyle}/>
+              <img alt="" onClick={this.handleAutoPan.bind(this)} src={mapCenterIcon} style={imageStyle}/>
+              <img alt="" onClick={this.handleZoomIn.bind(this)} src={mapZoomIn} style={imageStyle}/>
             </div>
           </div>
         </Popup>

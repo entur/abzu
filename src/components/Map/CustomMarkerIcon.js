@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 
 class CustomMarkerIcon extends React.Component {
@@ -40,7 +41,7 @@ class CustomMarkerIcon extends React.Component {
     const icon = getIconIdByTypeOrSubmode(submode, stopType, isMultimodal);
 
     this._stopTypeIcon = (
-      <img style={{ width: 20, height: 20, ...imageStyle }} src={icon} />
+      <img alt="" style={{ width: 20, height: 20, ...imageStyle }} src={icon} />
     );
   }
 
@@ -55,7 +56,7 @@ class CustomMarkerIcon extends React.Component {
 
 const getIconIdByTypeOrSubmode = (submode, type, isMultimodal) => {
   const submodeMap = {
-    railReplacementBus: require('../../static/icons/modalities/' + 'railReplacement' + '.png')
+    railReplacementBus: require('../../static/icons/modalities/railReplacement.png')
   };
   return submodeMap[submode] || getIconIdByModality(type, isMultimodal);
 

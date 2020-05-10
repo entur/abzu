@@ -82,7 +82,7 @@ class GroupOfStopPlacesList extends Component {
               key={'group-item-' + i}
               stopPlace={stopPlace}
               handleRemoveStopPlace={this.handleRemoveStopPlace.bind(this)}
-              expanded={expanded == i}
+              expanded={expanded === i}
               handleExpand={() => {
                 this.setState({
                   expanded: i

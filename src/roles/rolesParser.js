@@ -92,7 +92,9 @@ RoleParser.filterByEntities = (
       ) {
         return role;
       }
+      return false;
     }
+    return false;
   });
 
   let validForStop = [];
@@ -324,7 +326,7 @@ export const getStopPlacesForSubmodes = legalSubmodes => {
 };
 
 export const getInverseSubmodesWhitelist = whitelist => {
-  return allSubmodes.filter( submode => whitelist.indexOf(submode) == -1);
+  return allSubmodes.filter( submode => whitelist.indexOf(submode) === -1);
 };
 
 export const doesStopTypeAllowEdit = (stopPlaceType, submode, legalStopPlaces, legalSubmodes) => {

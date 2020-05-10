@@ -35,7 +35,6 @@ import CoordinateMarker from './CoordinateMarker';
 import Routes from '../../routes/';
 import * as MarkerStrings from './markerText';
 import { Entities } from '../../models/Entities';
-import { doesStopTypeAllowEdit } from '../../roles/rolesParser';
 
 class MarkerList extends React.Component {
   static propTypes = {
@@ -64,7 +63,7 @@ class MarkerList extends React.Component {
   handleStopOnClick(id) {
     const { dispatch, client, path } = this.props;
 
-    const isAlreadyActive = id == path;
+    const isAlreadyActive = id === path;
 
     if (!isAlreadyActive) {
       client

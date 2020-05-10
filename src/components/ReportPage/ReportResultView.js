@@ -38,7 +38,7 @@ class ReportResultView extends React.Component {
       intl,
       duplicateInfo
     } = this.props;
-    const { locale, formatMessage } = intl;
+    const { formatMessage } = intl;
 
     const paginatedResults = getResultsPaginationMap(results);
     const resultItems = paginatedResults[activePageIndex] || [];

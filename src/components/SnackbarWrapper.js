@@ -39,7 +39,7 @@ class SnackbarWrapper extends Component {
       return (
         <MdCheck style={{ fill: '#088f17', color: '#fff', marginRight: 10 }} />
       );
-    } else if (status == types.ERROR) {
+    } else if (status === types.ERROR) {
       return (
         <MdError style={{ fill: '#cc0000', color: '#fff', marginRight: 10 }} />
       );

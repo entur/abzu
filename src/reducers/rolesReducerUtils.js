@@ -321,7 +321,9 @@ const getBlacklistedStopPlaceTypes = roles => {
       ) {
         return getRoleOptions(role.e.StopPlaceType);
       }
+      return undefined;
     }
+    return undefined;
   });
 
   stopPlaceRoles.forEach(role => {

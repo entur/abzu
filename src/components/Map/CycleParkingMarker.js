@@ -16,14 +16,14 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
+import L from 'leaflet';
 import CycleParkingIcon from '../../static/icons/cycle-parking-icon.png';
 import { connect } from 'react-redux';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
 import { StopPlaceActions } from '../../actions/';
 import { shallowCycleParkingMarker as shallowCompare } from './shallowCompare/';
 
-class CycleParkingMarker extends React.Component {
+class CycleParkingMarker extends Component {
   static propTypes = {
     position: PropTypes.arrayOf(PropTypes.number),
     index: PropTypes.number.isRequired,

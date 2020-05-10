@@ -29,9 +29,11 @@ const createParamforUrl = (key, value, isFirst) => {
   switch (typeof value) {
     case "string":
       if (!value) return '';
+      break;
     case "object":
       if (Array.isArray(value) && !value.length) return '';
       if (value === null) return '';
+      break;
     default: break;
   }
 

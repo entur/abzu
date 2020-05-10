@@ -38,6 +38,7 @@ class QuayMarkerIcon extends React.Component {
       focusedElement.type === 'quay' && index === focusedElement.index;
     this._markerIcon = (
       <img
+        alt=""
         src={markerIcon}
         style={markerIconStyle}
         className={this._shouldBeFocused ? 'focused-quay' : ''}
@@ -45,6 +46,7 @@ class QuayMarkerIcon extends React.Component {
     );
     this._compassBearingIcon = (
       <img
+        alt=""
         style={{
           width: 20,
           height: 20,

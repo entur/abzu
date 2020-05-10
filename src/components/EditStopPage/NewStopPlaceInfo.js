@@ -114,7 +114,7 @@ class NewStopPlaceInfo extends React.Component {
         <div style={bodyStyle}>{translations.openQuestion}</div>
         <div style={goToStyle}>
           <a style={goToItem} href={href}>{translations.open}</a>
-          <a style={goToItem} target="_blank" href={href}>{translations.openTab}</a>
+          <a style={goToItem} target="_blank" rel="noopener noreferrer" href={href}>{translations.openTab}</a>
         </div>
         <FlatButton style={closeStyle} onClick={this.handleClose.bind(this)}>
           {translations.close}

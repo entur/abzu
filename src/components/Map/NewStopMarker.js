@@ -16,7 +16,7 @@ limitations under the Licence. */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
+import L from 'leaflet';
 import PManager from '../../singletons/PolygonManager';
 
 const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');

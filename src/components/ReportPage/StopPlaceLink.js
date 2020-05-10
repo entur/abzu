@@ -18,5 +18,5 @@ import Routes from '../../routes/';
 
 export default ({ id, style }) => {
   const url = `${window.location.origin}${window.config.endpointBase}${Routes.STOP_PLACE}/${id}`;
-  return <a style={{...style}} target="_blank" href={url}>{id}</a>;
+  return <a style={{...style}} target="_blank" rel="noopener noreferrer" href={url}>{id}</a>;
 };

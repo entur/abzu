@@ -117,6 +117,7 @@ class ParentStopPlace {
               id: zone.id,
             };
           }
+          return undefined;
         });
       } else {
         clientStop.tariffZones = [];

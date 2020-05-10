@@ -112,7 +112,7 @@ class StopPlace extends React.Component {
   render() {
     const { isCreatingPolylines, stopPlace, disabled, newStopCreated } = this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
-    const { locale, formatMessage } = this.props.intl;
+    const { formatMessage } = this.props.intl;
 
     const idFromPath = window.location.pathname
       .substring(window.location.pathname.lastIndexOf('/'))

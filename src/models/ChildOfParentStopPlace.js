@@ -65,7 +65,7 @@ class ChildOfParentStopPlace {
       }
 
       stopPlace.name = stopPlace.name || stopPlace.parentStop.name;
-      stopPlace.validBetween = { ... stopPlace.parentStop.validBetween };
+      stopPlace.validBetween = { ...stopPlace.parentStop.validBetween };
 
       return stopPlace;
   } catch (e) {

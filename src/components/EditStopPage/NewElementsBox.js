@@ -112,6 +112,7 @@ class NewElementsBox extends React.Component {
           {shouldShowNewStop
             ? <div style={elementStyle}>
                 <img
+                  alt=""
                   ref="stop_place"
                   id="stop_place"
                   data-type="stop_place"
@@ -128,6 +129,7 @@ class NewElementsBox extends React.Component {
             : null}
           <div style={elementStyle}>
             <img
+              alt=""
               id="drag1"
               data-type="quay"
               ref="quay"
@@ -139,6 +141,7 @@ class NewElementsBox extends React.Component {
           </div>
           <div style={temporaryHidden}>
             <img
+              alt=""
               ref="pathJunction"
               data-type="pathJunction"
               id="drag2"
@@ -150,6 +153,7 @@ class NewElementsBox extends React.Component {
           </div>
           <div style={temporaryHidden}>
             <img
+              alt=""
               ref="entrance"
               data-type="entrance"
               id="drag3"
@@ -161,6 +165,7 @@ class NewElementsBox extends React.Component {
           </div>
           <div style={elementStyle}>
             <img
+              alt=""
               ref="parkAndRide"
               data-type="parkAndRide"
               id="drag4"
@@ -172,6 +177,7 @@ class NewElementsBox extends React.Component {
           </div>
           <div style={elementStyle}>
             <img
+              alt=""
               ref="bikeParking"
               data-type="bikeParking"
               id="drag5"

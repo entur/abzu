@@ -54,7 +54,7 @@ class ModalityIconImg extends React.Component {
 
     return (
       <span className={styles.clear} style={iconStyle}>
-        <img style={{ ...style, ...svgStyle }}
+        <img alt="" style={{ ...style, ...svgStyle }}
           src={require('../../static/icons/modalities/svg/' + iconId + '.svg')}/>
       </span>
     );

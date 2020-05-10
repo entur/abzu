@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
+import React from 'react';
 import StopPlaceGroup from './StopPlaceGroup';
 import { connect } from 'react-redux';
 import { Entities } from '../../models/Entities';

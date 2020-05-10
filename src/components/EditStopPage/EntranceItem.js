@@ -23,7 +23,7 @@ import IconButton from 'material-ui/IconButton';
 import { StopPlaceActions } from '../../actions/';
 import { connect } from 'react-redux';
 
-class EntranceItem extends React.Component {
+class EntranceItem extends Component {
   static propTypes = {
     translations: PropTypes.object.isRequired,
     entrance: PropTypes.object.isRequired,

@@ -352,7 +352,7 @@ const stripRedundantFields = pathLink => {
 
 const formatAccessibilityAssements = assements => {
   if (assements && assements.limitations) {
-    Object.keys(defaultLimitations).map(key => {
+    Object.keys(defaultLimitations).forEach(key => {
       if (!assements.limitations[key]) {
         assements.limitations[key] = 'UNKNOWN';
       }

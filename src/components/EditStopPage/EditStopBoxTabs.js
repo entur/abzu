@@ -34,7 +34,7 @@ class EditStopBoxTabs extends React.Component {
     if (!quayId) {
       dispatch(StopPlaceActions.removeElementByType(index, 'quay'));
     } else {
-      const quayImportedId = activeStopPlace.quays.find(quay => quay.id == quayId).importedId;
+      const quayImportedId = activeStopPlace.quays.find(quay => quay.id === quayId).importedId;
       dispatch(UserActions.requestDeleteQuay(activeStopPlace.id, quayId, quayImportedId));
     }
   }
@@ -64,7 +64,7 @@ class EditStopBoxTabs extends React.Component {
   handleToggleCollapse(index, type) {
     const { dispatch, expandedItem } = this.props;
     const isExpanded =
-      expandedItem.type === type && expandedItem.index == index;
+      expandedItem.type === type && expandedItem.index === index;
     dispatch(StopPlaceActions.setElementFocus(isExpanded ? -1 : index, type));
   }
 

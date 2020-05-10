@@ -50,7 +50,7 @@ EquipmentHelpers.get512SignEquipment = entity => {
   if (
     generalSign &&
     generalSign.privateCode &&
-    generalSign.privateCode.value == '512' &&
+    generalSign.privateCode.value === '512' &&
     generalSign.signContentType === 'transportMode'
   ) {
     return true;

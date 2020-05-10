@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import L from 'leaflet'
-import React from 'react';
 import PropTypes from 'prop-types';
 import { GridLayer } from 'react-leaflet';
 import './LeafletMapboxGL.js'

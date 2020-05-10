@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
-import { LatLng } from 'leaflet';
 import * as types from '../actions/Types';
 import moment from 'moment';
 import { hasExpired } from '../modelUtils/validBetween';
@@ -279,6 +278,7 @@ helpers.mapSearchResultToStopPlaces = stopPlaces => {
     } else if (stop.__typename === 'ParentStopPlace') {
       return helpers.mapSearchResultParentStopPlace(stop);
     }
+    return undefined;
   });
 };
 

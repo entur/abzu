@@ -157,12 +157,12 @@ class ReportPage extends React.Component {
         const fromURL = extractQueryParamsFromUrl();
         this.setState({
             searchQuery: fromURL.query || '',
-            withoutLocationOnly: fromURL.withoutLocationOnly == 'true',
-            withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates == 'true',
-            hasParking: fromURL.hasParking == 'true',
-            withDuplicateImportedIds: fromURL.withDuplicateImportedIds == 'true',
-            showFutureAndExpired: fromURL.showFutureAndExpired == 'true',
-            withTags: fromURL.withTags == 'true',
+            withoutLocationOnly: fromURL.withoutLocationOnly === 'true',
+            withNearbySimilarDuplicates: fromURL.withNearbySimilarDuplicates === 'true',
+            hasParking: fromURL.hasParking === 'true',
+            withDuplicateImportedIds: fromURL.withDuplicateImportedIds === 'true',
+            showFutureAndExpired: fromURL.showFutureAndExpired === 'true',
+            withTags: fromURL.withTags === 'true',
             tags: fromURL.tags ? fromURL.tags.split(',') : [],
             stopTypeFilter: fromURL.stopPlaceType
                 ? fromURL.stopPlaceType.split(',')
@@ -262,7 +262,7 @@ class ReportPage extends React.Component {
                 const stopPlaces = response.data.stopPlace;
                 const stopPlaceIds = [];
                 for (let i = 0; i<stopPlaces.length; i++) {
-                    if (stopPlaces[i].__typename == "ParentStopPlace") {
+                    if (stopPlaces[i].__typename === "ParentStopPlace") {
                         const childStops = stopPlaces[i].children;
                         for (let j = 0; j<childStops.length; j++) {
                             stopPlaceIds.push(childStops[j].id);
@@ -378,7 +378,7 @@ class ReportPage extends React.Component {
                     place.topographicPlaceType === 'country'
             )
             .filter(
-                place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
+                place => topoiChips.map(chip => chip.value).indexOf(place.id) === -1
             )
             .map(place => this.createTopographicPlaceMenuItem(place, formatMessage));
 

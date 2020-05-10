@@ -66,7 +66,7 @@ cfgreader.readConfig(
         });
       authWithKeyCloak(config.endpointBase);
     }
-  }.bind(this),
+  },
 );
 
 function authWithKeyCloak(path) {

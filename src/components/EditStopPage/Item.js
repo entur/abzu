@@ -12,7 +12,7 @@ class Item extends React.Component {
   }
 
   render() {
-    const {children, intl, handleChangeCoordinates, expanded } = this.props;
+    const {children, intl, handleChangeCoordinates } = this.props;
     return (
       <div>
         {children}

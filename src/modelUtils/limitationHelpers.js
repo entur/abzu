@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as Limitations from '../models/Limitations';
+
+import * as Limitations from '../models/Limitations';
 import { getIn } from '../utils';
 
 const LimitationHelpers = {};
@@ -55,7 +56,7 @@ LimitationHelpers.updateCurrentWithQuayLimitations = (current, payLoad) => {
 export const getAssessmentSetBasedOnQuays = quays => {
   const limitations = {};
 
-  Object.keys(Limitations.defaultLimitations).map(limitation => {
+  Object.keys(Limitations.defaultLimitations).forEach(limitation => {
     let value = getLimitationForStopBasedOnQuays(quays, limitation);
     limitations[limitation] = value;
   });
@@ -95,11 +96,11 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
 
     if (limitation === Limitations.availableTypes.UNKNOWN) {
       isUnknown = true;
-    } else if (limitation == Limitations.availableTypes.PARTIAL) {
+    } else if (limitation === Limitations.availableTypes.PARTIAL) {
       isPartial = true;
-    } else if (limitation == Limitations.availableTypes.TRUE) {
+    } else if (limitation === Limitations.availableTypes.TRUE) {
       trueCount += 1;
-    } else if (limitation == Limitations.availableTypes.FALSE) {
+    } else if (limitation === Limitations.availableTypes.FALSE) {
       falseCount += 1;
     }
   });
@@ -108,9 +109,9 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
 
   if (isPartial) return Limitations.availableTypes.PARTIAL;
 
-  if (trueCount == quays.length) return Limitations.availableTypes.TRUE;
+  if (trueCount === quays.length) return Limitations.availableTypes.TRUE;
 
-  if (falseCount == quays.length) return Limitations.availableTypes.FALSE;
+  if (falseCount === quays.length) return Limitations.availableTypes.FALSE;
 
   if (trueCount > 0 && falseCount > 0)
     return Limitations.availableTypes.PARTIAL;

@@ -22,9 +22,9 @@ AdjacentStopRemover.removeAdjacentStop = (currentStop, adjacentStopPlaceRef, sto
       const childrenCopy = currentStop.children.slice();
 
       childrenCopy.forEach(child => {
-        if(child.id == stopPlaceIdForRemovingAdjacentSite) {
+        if(child.id === stopPlaceIdForRemovingAdjacentSite) {
           AdjacentStopRemover.removeAdjacentStopFromChild(child, adjacentStopPlaceRef);
-        } else if(child.id == adjacentStopPlaceRef) {
+        } else if(child.id === adjacentStopPlaceRef) {
           AdjacentStopRemover.removeAdjacentStopFromChild(child, stopPlaceIdForRemovingAdjacentSite);
         }
       });

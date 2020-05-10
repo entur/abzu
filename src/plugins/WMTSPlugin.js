@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import L from 'leaflet';
+
+import L from 'leaflet';
 
 const WMTSPlugin = L.TileLayer.extend({
   defaultWmtsParams: {
@@ -34,7 +35,7 @@ const WMTSPlugin = L.TileLayer.extend({
     wmtsParams.width = wmtsParams.height = tileSize;
 
     for (var i in options) {
-      if (!this.options.hasOwnProperty(i) && i != 'matrixIds') {
+      if (!this.options.hasOwnProperty(i) && i !== 'matrixIds') {
         wmtsParams[i] = options[i];
       }
     }
@@ -50,7 +51,6 @@ const WMTSPlugin = L.TileLayer.extend({
   },
 
   getTileUrl: function(startPoint) {
-    let map = this._map;
     let tileSize = this.options.tileSize;
     let nwPoint = startPoint.multiplyBy(tileSize);
 

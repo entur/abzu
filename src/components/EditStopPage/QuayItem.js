@@ -39,7 +39,6 @@ import equipmentHelpers from '../../modelUtils/equipmentHelpers';
 import Sign512 from '../../static/icons/TransportSign';
 
 import ToolTippable from './ToolTippable';
-import accessibilityAssessments from '../../models/accessibilityAssessments';
 import MdDelete from 'material-ui/svg-icons/action/delete-forever';
 import MdKey from 'material-ui/svg-icons/communication/vpn-key';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';
@@ -137,7 +136,6 @@ class QuayItem extends React.Component {
   render() {
     const {
       quay,
-      publicCode,
       expanded,
       index,
       handleToggleCollapse,
@@ -146,8 +144,8 @@ class QuayItem extends React.Component {
       stopPlaceType,
       disabled,
     } = this.props;
-    const { formatMessage, locale } = intl;
-    const { additionalExpanded, coordinatesDialogOpen } = this.state;
+    const { formatMessage } = intl;
+    const { additionalExpanded } = this.state;
 
     const wheelchairAccess = getIn(
       quay,

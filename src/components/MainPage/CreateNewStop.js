@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
+
+import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { UserActions } from '../../actions/';
@@ -48,6 +49,7 @@ class CreateNewStop extends React.Component {
           </IconButton>
           <h4>
             <img
+              alt=""
               style={{
                 height: 25,
                 width: 'auto',

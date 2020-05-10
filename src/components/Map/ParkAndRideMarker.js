@@ -16,7 +16,7 @@ limitations under the Licence. */
 import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import PropTypes from 'prop-types';
-import L, { divIcon } from 'leaflet';
+import L from 'leaflet';
 import ParkingIcon from '../../static/icons/parking-icon.png';
 import { connect } from 'react-redux';
 import { getPrimaryDarkerColor } from '../../config/themeConfig';

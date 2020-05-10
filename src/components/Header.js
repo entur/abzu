@@ -132,7 +132,6 @@ class Header extends React.Component {
 
     const { formatMessage, locale } = intl;
 
-    const help = formatMessage({ id: 'help' });
     const title = formatMessage({ id: '_title' });
     const language = formatMessage({ id: 'language' });
     const english = formatMessage({ id: 'english' });
@@ -176,6 +175,7 @@ class Header extends React.Component {
           showMenuIconButton={true}
           iconElementLeft={
             <img
+              alt=""
               src={logo}
               style={{ width: 40, height: 'auto', cursor: 'pointer' }}
               onClick={() =>
@@ -368,7 +368,7 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace: state.routing.locationBeforeTransitions.pathname.indexOf('/stop_place/') > -1,
-  isDisplayingReports: state.routing.locationBeforeTransitions.pathname == '/reports',
+  isDisplayingReports: state.routing.locationBeforeTransitions.pathname === '/reports',
   isPublicCodePrivateCodeOnStopPlacesEnabled: state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
   kc: state.roles.kc,

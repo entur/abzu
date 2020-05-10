@@ -104,7 +104,7 @@ export const getIsCurrentVersionMax = (
 
   const versionsOfStop = versions.map(version => version.version);
   const maxVersion = Math.max(...versionsOfStop);
-  return maxVersion == currentVersion;
+  return maxVersion === currentVersion;
 };
 
 export const findDuplicateImportedIds = stopPlaces => {
@@ -177,7 +177,7 @@ export const findDuplicateImportedIds = stopPlaces => {
 
   });
 
-  Object.keys(quaysWithDuplicateImportedIds).map( importedId => {
+  Object.keys(quaysWithDuplicateImportedIds).forEach( importedId => {
     quaysWithDuplicateImportedIds[importedId] = Array.from(new Set(quaysWithDuplicateImportedIds[importedId]));
     if (quaysWithDuplicateImportedIds[importedId].length < 2) {
       delete quaysWithDuplicateImportedIds[importedId];

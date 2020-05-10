@@ -16,10 +16,10 @@ limitations under the Licence. */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Marker, Popup } from 'react-leaflet';
-import L, { divIcon } from 'leaflet';
+import L from 'leaflet';
 import { connect } from 'react-redux';
 
-class JunctionMarker extends React.Component {
+class JunctionMarker extends Component {
   static propTypes = {
     position: PropTypes.arrayOf(PropTypes.number).isRequired,
     index: PropTypes.number.isRequired,

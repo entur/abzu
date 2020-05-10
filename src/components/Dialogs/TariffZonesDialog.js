@@ -28,7 +28,7 @@ class TariffZonesDialog extends React.Component {
 
   render() {
 
-    const { open, intl, tariffZones = [], handleClose, disabled } = this.props;
+    const { open, intl, tariffZones = [], handleClose } = this.props;
     const { formatMessage } = intl;
 
     const translations = {

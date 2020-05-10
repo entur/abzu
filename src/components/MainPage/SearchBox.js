@@ -397,7 +397,7 @@ class SearchBox extends React.Component {
           place.topographicPlaceType === 'country'
       )
       .filter(
-        place => topoiChips.map(chip => chip.value).indexOf(place.id) == -1
+        place => topoiChips.map(chip => chip.value).indexOf(place.id) === -1
       )
       .map(place => {
         const name = this.getTopographicalNames(place);

@@ -58,7 +58,6 @@ class AddAdjacentStopDialog extends React.Component {
       handleClose,
       handleConfirm,
       stopPlaceChildren,
-      parentStopPlace,
       currentStopPlaceId
     } = this.props;
 
