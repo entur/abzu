@@ -46,7 +46,7 @@ module.exports = new Promise(function (resolve, reject) {
     OTPUrl: {
       doc: 'URL for for OTP / Journey planner graphql endpoint',
       format: 'url',
-      default: 'https://api-test.entur.org/journeyplanner/2.0/index/graphql',
+      default: 'https://api.dev.entur.io/journey-planner/v2/graphql',
       env: 'OTP_URL'
     },
     endpointBase: {
