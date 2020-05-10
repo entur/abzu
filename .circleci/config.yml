@@ -68,6 +68,18 @@ jobs:
       - checkout
       - restore-cache: *restore-dependency-cache
       - run: *test
+  branch-build:
+    docker:
+      - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image-java11
+        auth:
+          username: _json_key
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout
+      - restore-cache: *restore-dependency-cache
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: *build
   build:
     docker:
       - image: eu.gcr.io/entur-system-1287/circleci-toolbox-image-java11
@@ -95,6 +107,14 @@ workflows:
           context: org-carbon
           requires:
             - install
+      - branch-build:
+          context: org-carbon
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+              - master
       - build:
           context: org-carbon
           requires:
