@@ -12,46 +12,45 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { getIn } from '../utils';
-import { defaultEquipments, types } from '../models/Equipments';
+import { getIn } from "../utils";
+import { defaultEquipments, types } from "../models/Equipments";
 
 const EquipmentHelpers = {};
 
-EquipmentHelpers.getTicketMachineState = entity => {
+EquipmentHelpers.getTicketMachineState = (entity) => {
   const equipmentState = getIn(
     entity,
-    ['placeEquipments', 'ticketingEquipment'],
-    null,
+    ["placeEquipments", "ticketingEquipment"],
+    null
   );
   return equipmentState !== null;
 };
 
-EquipmentHelpers.getShelterEquipmentState = entity => {
+EquipmentHelpers.getShelterEquipmentState = (entity) => {
   const equipmentState = getIn(
     entity,
-    ['placeEquipments', 'shelterEquipment'],
-    null,
+    ["placeEquipments", "shelterEquipment"],
+    null
   );
   return equipmentState !== null;
 };
 
-EquipmentHelpers.getSanitaryEquipmentState = entity => {
+EquipmentHelpers.getSanitaryEquipmentState = (entity) => {
   const sanitaryState = getIn(
     entity,
-    ['placeEquipments', 'sanitaryEquipment'],
-    null,
+    ["placeEquipments", "sanitaryEquipment"],
+    null
   );
   return sanitaryState !== null;
 };
 
-EquipmentHelpers.get512SignEquipment = entity => {
-  const generalSign = getIn(entity, ['placeEquipments', 'generalSign'], null);
+EquipmentHelpers.get512SignEquipment = (entity) => {
+  const generalSign = getIn(entity, ["placeEquipments", "generalSign"], null);
   if (
     generalSign &&
     generalSign.privateCode &&
-    generalSign.privateCode.value === '512' &&
-    generalSign.signContentType === 'transportMode'
+    generalSign.privateCode.value === "512" &&
+    generalSign.signContentType === "transportMode"
   ) {
     return true;
   }
@@ -63,20 +62,20 @@ EquipmentHelpers.update512SignEquipment = (entity, payLoad) => {
   return updateEquipmentForEntitity(copyOfEntity, payLoad, types.generalSign);
 };
 
-EquipmentHelpers.getWaitingRoomState = entity => {
+EquipmentHelpers.getWaitingRoomState = (entity) => {
   const waitingRoomState = getIn(
     entity,
-    ['placeEquipments', 'waitingRoomEquipment'],
-    null,
+    ["placeEquipments", "waitingRoomEquipment"],
+    null
   );
   return waitingRoomState !== null;
 };
 
-EquipmentHelpers.getCycleStorageEquipment = entity => {
+EquipmentHelpers.getCycleStorageEquipment = (entity) => {
   const cycleStorageState = getIn(
     entity,
-    ['placeEquipments', 'cycleStorageEquipment'],
-    null,
+    ["placeEquipments", "cycleStorageEquipment"],
+    null
   );
   return cycleStorageState !== null;
 };
@@ -91,7 +90,7 @@ EquipmentHelpers.updateShelterEquipmentState = (stopPlace, payLoad) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payLoad,
-    types.shelterEquipment,
+    types.shelterEquipment
   );
 };
 
@@ -100,7 +99,7 @@ EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payLoad) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payLoad,
-    types.sanitaryEquipment,
+    types.sanitaryEquipment
   );
 };
 
@@ -109,7 +108,7 @@ EquipmentHelpers.updateWaitingRoomState = (stopPlace, payLoad) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payLoad,
-    types.waitingRoomEquipment,
+    types.waitingRoomEquipment
   );
 };
 
@@ -118,15 +117,14 @@ EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payLoad) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payLoad,
-    types.cycleStorageEquipment,
+    types.cycleStorageEquipment
   );
 };
-
 
 const updateEquipmentForEntitity = (entity, payLoad, typeOfEquipment) => {
   const { state, type, id } = payLoad;
 
-  let stateFromCheckbox = typeof state === 'boolean';
+  let stateFromCheckbox = typeof state === "boolean";
 
   let overrideState = null;
 
@@ -140,13 +138,13 @@ const updateEquipmentForEntitity = (entity, payLoad, typeOfEquipment) => {
     overrideState = state;
   }
 
-  if (type === 'stopPlace') {
+  if (type === "stopPlace") {
     if (!entity.placeEquipments) {
       entity.placeEquipments = {};
     }
 
     entity.placeEquipments[typeOfEquipment] = overrideState;
-  } else if (type === 'quay') {
+  } else if (type === "quay") {
     if (entity.quays && entity.quays[id]) {
       if (!entity.quays[id].placeEquipments) {
         entity.quays[id].placeEquipments = {};

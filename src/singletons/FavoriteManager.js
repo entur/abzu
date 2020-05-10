@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-let instance = null;
-const key = 'ABZU::favorites';
+let instance = null;
+const key = "ABZU::favorites";
 
 class FavoriteManager {
   constructor() {
@@ -46,13 +46,19 @@ class FavoriteManager {
     return false;
   }
 
-  createSavableContent(title, searchText, stopType, topoiChips, showFutureAndExpired) {
+  createSavableContent(
+    title,
+    searchText,
+    stopType,
+    topoiChips,
+    showFutureAndExpired
+  ) {
     return {
       stopType,
       topoiChips,
       searchText,
       title,
-      showFutureAndExpired
+      showFutureAndExpired,
     };
   }
 
@@ -61,7 +67,7 @@ class FavoriteManager {
       searchText: content.searchText,
       stopType: content.stopType,
       topoiChips: content.topoiChips,
-      showFutureAndExpired: content.showFutureAndExpired
+      showFutureAndExpired: content.showFutureAndExpired,
     };
   }
 
@@ -87,7 +93,7 @@ class FavoriteManager {
         this.saveFavorites(favorites);
       }
     } catch (e) {
-      console.error('error saving content in localStorage', e);
+      console.error("error saving content in localStorage", e);
     }
   }
 
@@ -101,9 +107,9 @@ class FavoriteManager {
       return [];
     } catch (e) {
       console.error(
-        'Invalid data in localStorage for key',
+        "Invalid data in localStorage for key",
         key,
-        'returning []',
+        "returning []"
       );
       localStorage.removeItem(key);
       return [];

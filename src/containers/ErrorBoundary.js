@@ -12,15 +12,14 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React from 'react';
-import '../styles/snap.css';
+import React from "react";
+import "../styles/snap.css";
 
 class ErrorBoundary extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      error: null
+      error: null,
     };
   }
 
@@ -33,7 +32,6 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-
     const { Raven } = this.props;
 
     if (Raven && this.state.error) {
@@ -43,11 +41,18 @@ class ErrorBoundary extends React.Component {
           onClick={() => Raven.lastEventId() && Raven.showReportDialog()}
         >
           <div>
-            <h3>Noe har gått galt, og vi beklager ulempene dette måtte medføre!</h3>
+            <h3>
+              Noe har gått galt, og vi beklager ulempene dette måtte medføre!
+            </h3>
           </div>
-          <p>Våre utviklere er blitt informert om problemet, men fyll gjerne ut en rapport her for å komme med tilleggsinformasjon ved å klikke her.</p>
+          <p>
+            Våre utviklere er blitt informert om problemet, men fyll gjerne ut
+            en rapport her for å komme med tilleggsinformasjon ved å klikke her.
+          </p>
           <p>Tusen takk for din hjelp!</p>
-          <a href={window.location.protocol + '//' + window.location.host}>Gå tilbake</a>
+          <a href={window.location.protocol + "//" + window.location.host}>
+            Gå tilbake
+          </a>
         </div>
       );
     } else {

@@ -12,44 +12,40 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import Checkbox from 'material-ui/Checkbox';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import React, { Component } from "react";
+import Checkbox from "material-ui/Checkbox";
+import RaisedButton from "material-ui/RaisedButton";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
 
 class GeneralReportFilters extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      anchorEl: null
+      anchorEl: null,
     };
   }
 
   render() {
-    const {
-      formatMessage,
-      hasParking,
-      handleCheckboxChange
-    } = this.props;
+    const { formatMessage, hasParking, handleCheckboxChange } = this.props;
 
     const { open, anchorEl } = this.state;
 
-    const menuItemsStyle = {display: 'flex', alignItems: 'center'};
+    const menuItemsStyle = { display: "flex", alignItems: "center" };
 
     return (
-      <div style={{marginTop: 10, marginLeft: 5}}>
+      <div style={{ marginTop: 10, marginLeft: 5 }}>
         <RaisedButton
-          onClick={e => {
+          onClick={(e) => {
             this.setState({
               open: true,
-              anchorEl: e.currentTarget
-            })
+              anchorEl: e.currentTarget,
+            });
           }}
-          style={{transform: 'scale(0.9)'}}
-          label={formatMessage({id: 'filters_general'})}
+          style={{ transform: "scale(0.9)" }}
+          label={formatMessage({ id: "filters_general" })}
         />
         <Popover
           open={open}
@@ -59,18 +55,18 @@ class GeneralReportFilters extends Component {
           }}
         >
           <Menu>
-              <MenuItem style={menuItemsStyle}>
-                  <Checkbox
-                      label={formatMessage({ id: 'has_parking' })}
-                      labelPosition="right"
-                      labelStyle={{ width: 'auto', fontSize: '0.9em' }}
-                      checked={hasParking}
-                      onCheck={(e, value) => {
-                          handleCheckboxChange('hasParking', value);
-                      }}
-                      style={{ marginTop: 10 }}
-                  />
-              </MenuItem>
+            <MenuItem style={menuItemsStyle}>
+              <Checkbox
+                label={formatMessage({ id: "has_parking" })}
+                labelPosition="right"
+                labelStyle={{ width: "auto", fontSize: "0.9em" }}
+                checked={hasParking}
+                onCheck={(e, value) => {
+                  handleCheckboxChange("hasParking", value);
+                }}
+                style={{ marginTop: 10 }}
+              />
+            </MenuItem>
           </Menu>
         </Popover>
       </div>

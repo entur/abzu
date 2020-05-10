@@ -12,29 +12,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { fade } from 'material-ui/utils/colorManipulator';
-import { getTiamatEnv } from '../../themeConfig';
+import { fade } from "material-ui/utils/colorManipulator";
+import { getTiamatEnv } from "../../themeConfig";
 
-export const primary = '#5AC39A';
-export const primaryDarker = '#181C56';
-export const darkColor = '#181C56';
-const cyan700 = '#5AC39A';
-const grey100 = '#f5f5f5';
-const grey300 = '#e0e0e0';
-const grey400 = '#bdbdbd';
-const grey500 = '#9e9e9e';
-const white = '#ffffff';
-const darkBlack = 'rgba(0, 0, 0, 0.87)';
-const fullBlack = 'rgba(0, 0, 0, 1)';
+export const primary = "#5AC39A";
+export const primaryDarker = "#181C56";
+export const darkColor = "#181C56";
+const cyan700 = "#5AC39A";
+const grey100 = "#f5f5f5";
+const grey300 = "#e0e0e0";
+const grey400 = "#bdbdbd";
+const grey500 = "#9e9e9e";
+const white = "#ffffff";
+const darkBlack = "rgba(0, 0, 0, 0.87)";
+const fullBlack = "rgba(0, 0, 0, 1)";
 
-export const getEnvColor = env => {
+export const getEnvColor = (env) => {
   let currentEnv = env || getTiamatEnv();
   switch (currentEnv.toLowerCase()) {
-    case 'development':
-      return '#d18e25';
-    case 'test':
-      return '#457645';
-    case 'prod':
+    case "development":
+      return "#d18e25";
+    case "test":
+      return "#457645";
+    case "prod":
       return darkColor;
     default:
       return darkColor;
@@ -42,7 +42,7 @@ export const getEnvColor = env => {
 };
 
 export const getTheme = () => ({
-  fontFamily: 'Roboto, sans-serif',
+  fontFamily: "Roboto, sans-serif",
   palette: {
     primary1Color: primary,
     primary2Color: cyan700,
@@ -57,16 +57,16 @@ export const getTheme = () => ({
     disabledColor: fade(darkBlack, 0.3),
     pickerHeaderColor: primary,
     clockCircleColor: fade(darkBlack, 0.07),
-    shadowColor: fullBlack
+    shadowColor: fullBlack,
   },
   datePicker: {
     selectColor: primary,
-    selectTextColor: white
+    selectTextColor: white,
   },
   checkbox: {
-    checkedColor: primaryDarker
+    checkedColor: primaryDarker,
   },
   appBar: {
-    color: darkColor
-  }
+    color: darkColor,
+  },
 });

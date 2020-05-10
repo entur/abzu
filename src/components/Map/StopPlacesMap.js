@@ -12,21 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { connect } from 'react-redux';
-import React from 'react';
-import LeafletMap from './LeafletMap';
-import { StopPlaceActions, UserActions } from '../../actions/';
-import { withApollo } from 'react-apollo';
-import { getIn } from '../../utils/';
-import { injectIntl } from 'react-intl';
-import { getNeighbourStops } from '../../graphql/Tiamat/actions';
-import Settings from '../../singletons/SettingsManager';
-import debounce from 'lodash.debounce';
-import { getMarkersForMap } from '../../selectors/StopPlaceMap';
+import { connect } from "react-redux";
+import React from "react";
+import LeafletMap from "./LeafletMap";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { withApollo } from "react-apollo";
+import { getIn } from "../../utils/";
+import { injectIntl } from "react-intl";
+import { getNeighbourStops } from "../../graphql/Tiamat/actions";
+import Settings from "../../singletons/SettingsManager";
+import debounce from "lodash.debounce";
+import { getMarkersForMap } from "../../selectors/StopPlaceMap";
 
 class StopPlacesMap extends React.Component {
-
   constructor(props) {
     super(props);
     this.getNearbyStops = debounce(getNeighbourStops, 500);
@@ -34,13 +32,13 @@ class StopPlacesMap extends React.Component {
 
   componentDidMount() {
     const { formatMessage } = this.props.intl;
-    document.title = formatMessage({ id: '_title' });
+    document.title = formatMessage({ id: "_title" });
   }
 
   componentWillUpdate(nextProps) {
     if (this.props.intl.locale !== nextProps.intl.locale) {
       const { formatMessage } = nextProps.intl;
-      document.title = formatMessage({ id: '_title' });
+      document.title = formatMessage({ id: "_title" });
     }
   }
 
@@ -106,10 +104,12 @@ class StopPlacesMap extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     position: state.stopPlace.centerPosition,
-    neighbourMarkersCount: state.stopPlace.neighbourStops ? state.stopPlace.neighbourStops.length : 0,
+    neighbourMarkersCount: state.stopPlace.neighbourStops
+      ? state.stopPlace.neighbourStops.length
+      : 0,
     markers: getMarkersForMap(state),
     kc: state.roles.kc,
     zoom: state.stopPlace.zoom,
@@ -117,8 +117,8 @@ const mapStateToProps = state => {
     activeBaselayer: state.user.activeBaselayer,
     ignoreStopId: getIn(
       state.stopPlace,
-      ['activeSearchResult', 'id'],
-      undefined,
+      ["activeSearchResult", "id"],
+      undefined
     ),
   };
 };

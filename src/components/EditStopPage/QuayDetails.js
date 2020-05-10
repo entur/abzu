@@ -12,38 +12,56 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import Code from './Code';
-import CompassBearingInfo from './CompassBearingInfo';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import Code from "./Code";
+import CompassBearingInfo from "./CompassBearingInfo";
+import { injectIntl } from "react-intl";
 
 class QuayDetails extends React.Component {
   render() {
-
     const { quay, isSource, intl, hideSourceOriginLabel } = this.props;
     const { formatMessage } = intl;
-    const notAssigned = formatMessage({id: 'not_assigned'});
+    const notAssigned = formatMessage({ id: "not_assigned" });
 
     if (!quay) return null;
 
     let message = isSource
-      ? formatMessage({id: 'source'})
-      : formatMessage({id: 'target'});
+      ? formatMessage({ id: "source" })
+      : formatMessage({ id: "target" });
 
     return (
       <div>
         <div>
-          {!hideSourceOriginLabel && <span style={{fontWeight: 600, marginRight: 5}}>{message}:</span>}
-          <span>{ quay.id }</span>
-          </div>
-          <div style={{display: 'flex', padding: 5, textAlign: 'center', width: '100%'}}>
-            <Code type="publicCode" value={quay.publicCode} defaultValue={notAssigned}/>
-            <Code type="privateCode" value={quay.privateCode} defaultValue={notAssigned}/>
-          </div>
-        <CompassBearingInfo value={ quay.compassBearing } defaultValue={notAssigned}/>
+          {!hideSourceOriginLabel && (
+            <span style={{ fontWeight: 600, marginRight: 5 }}>{message}:</span>
+          )}
+          <span>{quay.id}</span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            padding: 5,
+            textAlign: "center",
+            width: "100%",
+          }}
+        >
+          <Code
+            type="publicCode"
+            value={quay.publicCode}
+            defaultValue={notAssigned}
+          />
+          <Code
+            type="privateCode"
+            value={quay.privateCode}
+            defaultValue={notAssigned}
+          />
+        </div>
+        <CompassBearingInfo
+          value={quay.compassBearing}
+          defaultValue={notAssigned}
+        />
       </div>
-    )
+    );
   }
 }
 

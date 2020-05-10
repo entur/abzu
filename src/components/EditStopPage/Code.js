@@ -12,17 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React from "react";
+import "../../styles/Code.css";
 
-import React from 'react';
-import '../../styles/Code.css';
-
-export const CodeBadge = ({icon, type}) => {
+export const CodeBadge = ({ icon, type }) => {
   return (
     <div className={type}>
       <div style={{ marginTop: 2 }}>{icon}</div>
     </div>
   );
-}
+};
 
 const Code = ({ type, value, defaultValue }) => {
   // As a tribute to PHP
@@ -30,27 +29,28 @@ const Code = ({ type, value, defaultValue }) => {
 
   return (
     <div className={type}>
-      {valueIsSet
-        ? <div style={{ marginTop: 2 }}>{value}</div>
-        : <div style={{ marginTop: 4, fontSize: 8 }}>{defaultValue}</div>}
+      {valueIsSet ? (
+        <div style={{ marginTop: 2 }}>{value}</div>
+      ) : (
+        <div style={{ marginTop: 4, fontSize: 8 }}>{defaultValue}</div>
+      )}
     </div>
   );
 };
 
-const isSet = type => {
-  if (typeof type === 'undefined' || type === null || !type.length) {
+const isSet = (type) => {
+  if (typeof type === "undefined" || type === null || !type.length) {
     return false;
   }
 
-  if (typeof type === 'string') {
+  if (typeof type === "string") {
     return type.length > 0;
   }
 
-  if (typeof type === 'number') {
+  if (typeof type === "number") {
     return true;
   }
   return false;
 };
-
 
 export default Code;

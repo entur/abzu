@@ -13,6 +13,6 @@
  limitations under the Licence. */
 
 export const Entities = {
-  GROUP_OF_STOP_PLACE: 'GROUP_OF_STOP_PLACE',
-  STOP_PLACE: 'STOP_PLACE'
+  GROUP_OF_STOP_PLACE: "GROUP_OF_STOP_PLACE",
+  STOP_PLACE: "STOP_PLACE",
 };

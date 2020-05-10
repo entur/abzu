@@ -12,23 +12,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import mapReducer from '../reducers/mapReducer';
-import stopPlaceReducer from '../reducers/stopPlaceReducer';
-import userReducer from '../reducers/userReducer';
-import rolesReducer from '../reducers/rolesReducer';
-import reportReducer from '../reducers/reportReducer';
-import snackbarReducer from '../reducers/snackbarReducer';
-import groupOfStopPlacesReducer from '../reducers/groupOfStopPlacesReducer';
-import { routerReducer } from 'react-router-redux';
-import SettingsManager from '../singletons/SettingsManager';
-import PolygonManager from '../singletons/PolygonManager';
-import rolesParser from '../roles/rolesParser';
-import Raven from 'raven-js';
-import createRavenMiddleware from 'redux-raven-middleware';
-import { createTiamatClient } from '../graphql/clients';
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import thunkMiddleware from "redux-thunk";
+import { createLogger } from "redux-logger";
+import mapReducer from "../reducers/mapReducer";
+import stopPlaceReducer from "../reducers/stopPlaceReducer";
+import userReducer from "../reducers/userReducer";
+import rolesReducer from "../reducers/rolesReducer";
+import reportReducer from "../reducers/reportReducer";
+import snackbarReducer from "../reducers/snackbarReducer";
+import groupOfStopPlacesReducer from "../reducers/groupOfStopPlacesReducer";
+import { routerReducer } from "react-router-redux";
+import SettingsManager from "../singletons/SettingsManager";
+import PolygonManager from "../singletons/PolygonManager";
+import rolesParser from "../roles/rolesParser";
+import Raven from "raven-js";
+import createRavenMiddleware from "redux-raven-middleware";
+import { createTiamatClient } from "../graphql/clients";
 
 export default function configureStore(kc) {
   const loggerMiddleware = createLogger();
@@ -37,7 +37,7 @@ export default function configureStore(kc) {
 
   const tiamatClient = createTiamatClient();
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     enchancer = compose(
       applyMiddleware(
         thunkMiddleware,
@@ -49,7 +49,7 @@ export default function configureStore(kc) {
     Raven.config(window.config.sentryDSN, {
       release: process.env.VERSION,
       stacktrace: true,
-      environment: process.env.NODE_ENV
+      environment: process.env.NODE_ENV,
     }).install();
 
     enchancer = compose(
@@ -77,25 +77,25 @@ export default function configureStore(kc) {
       showExpiredStops: Settings.getShowExpiredStops(),
       showMultimodalEdges: Settings.getShowMultimodalEdges(),
       lastMutatedStopPlaceId: [],
-      isFetchingMergeInfo: false
+      isFetchingMergeInfo: false,
     },
     user: {
-      path: '/',
+      path: "/",
       isCreatingNewStop: false,
       missingCoordsMap: {},
       searchFilters: {
         stopType: [],
         topoiChips: [],
-        text: '',
-        showFutureAndExpired: false
+        text: "",
+        showFutureAndExpired: false,
       },
       snackbarOptions: {
         isOpen: false,
-        message: ''
+        message: "",
       },
       localization: {
         locale: null,
-        messages: []
+        messages: [],
       },
       appliedLocale: null,
       favoriteNameDialogIsOpen: false,
@@ -109,16 +109,16 @@ export default function configureStore(kc) {
       serverTimeDiff: 0,
       newStopCreated: {
         open: false,
-        stopPlaceId: null
+        stopPlaceId: null,
       },
       client: tiamatClient,
       showPublicCode: Settings.getShowPublicCode(),
-      adjacentStopDialogOpen: false
+      adjacentStopDialogOpen: false,
     },
     roles: {
       kc,
-      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true
-    }
+      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true,
+    },
   };
 
   const combinedReducer = combineReducers({
@@ -130,12 +130,12 @@ export default function configureStore(kc) {
     apollo: tiamatClient.reducer(),
     roles: rolesReducer,
     snackbar: snackbarReducer,
-    stopPlacesGroup: groupOfStopPlacesReducer
+    stopPlacesGroup: groupOfStopPlacesReducer,
   });
 
   return {
     self: createStore(combinedReducer, initialState, enchancer),
     client: tiamatClient,
-    Raven
+    Raven,
   };
 }

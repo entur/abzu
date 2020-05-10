@@ -12,26 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { connect } from 'react-redux';
-import React from 'react';
-import EditStopMap from '../components/Map/EditStopMap';
-import EditStopGeneral from '../components/EditStopPage/EditStopGeneral';
-import EditParentGeneral from '../components/EditParentStopPage/EditParentGeneral';
-import InformationBanner from '../components/EditStopPage/InformationBanner';
-import { injectIntl } from 'react-intl';
-import InformationManager from '../singletons/InformationManager';
-import { allEntities } from '../graphql/Tiamat/queries';
-import { withApollo } from 'react-apollo';
-import '../styles/main.css';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { UserActions } from '../actions/';
-import { getIn } from '../utils';
-import NewElementsBox from '../components/EditStopPage/NewElementsBox';
-import NewStopPlaceInfo from '../components/EditStopPage/NewStopPlaceInfo';
-import LoadingPage from './LoadingPage';
-
+import { connect } from "react-redux";
+import React from "react";
+import EditStopMap from "../components/Map/EditStopMap";
+import EditStopGeneral from "../components/EditStopPage/EditStopGeneral";
+import EditParentGeneral from "../components/EditParentStopPage/EditParentGeneral";
+import InformationBanner from "../components/EditStopPage/InformationBanner";
+import { injectIntl } from "react-intl";
+import InformationManager from "../singletons/InformationManager";
+import { allEntities } from "../graphql/Tiamat/queries";
+import { withApollo } from "react-apollo";
+import "../styles/main.css";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import { UserActions } from "../actions/";
+import { getIn } from "../utils";
+import NewElementsBox from "../components/EditStopPage/NewElementsBox";
+import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
+import LoadingPage from "./LoadingPage";
 
 class StopPlace extends React.Component {
   constructor(props) {
@@ -46,17 +44,17 @@ class StopPlace extends React.Component {
     const { stopPlace, intl, originalStopPlace } = nextProps;
     const { formatMessage } = intl;
 
-    let title = '';
+    let title = "";
 
     if (stopPlace) {
       if (stopPlace.isNewStop) {
-        title = formatMessage({ id: '_title_new_stop' });
+        title = formatMessage({ id: "_title_new_stop" });
       } else {
         if (originalStopPlace.name) {
           title = originalStopPlace.name;
         }
         if (stopPlace.topographicPlace) {
-          title += ', ' + stopPlace.topographicPlace;
+          title += ", " + stopPlace.topographicPlace;
         }
       }
     }
@@ -70,23 +68,23 @@ class StopPlace extends React.Component {
   componentDidMount() {
     const { client, dispatch } = this.props;
     const idFromPath = window.location.pathname
-      .substring(window.location.pathname.lastIndexOf('/'))
-      .replace('/', '');
+      .substring(window.location.pathname.lastIndexOf("/"))
+      .replace("/", "");
 
-    if (idFromPath === 'new' && !this.props.stopPlace) {
-      dispatch(UserActions.navigateTo('/', ''));
+    if (idFromPath === "new" && !this.props.stopPlace) {
+      dispatch(UserActions.navigateTo("/", ""));
     }
 
-    if (idFromPath && idFromPath.length && idFromPath && idFromPath !== 'new') {
+    if (idFromPath && idFromPath.length && idFromPath && idFromPath !== "new") {
       client
         .query({
-          fetchPolicy: 'network-only',
+          fetchPolicy: "network-only",
           query: allEntities,
           variables: {
             id: idFromPath,
           },
         })
-        .then(response => {
+        .then((response) => {
           if (!response.data.stopPlace.length) {
             this.setState({
               showErrorDialog: true,
@@ -94,7 +92,7 @@ class StopPlace extends React.Component {
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("error fetching stopPlace", err);
           this.setState({
             showErrorDialog: true,
@@ -105,22 +103,27 @@ class StopPlace extends React.Component {
   }
 
   handleCloseErrorDialog() {
-    this.props.dispatch(UserActions.navigateTo('/', ''));
+    this.props.dispatch(UserActions.navigateTo("/", ""));
     this.setState({ showErrorDialog: false });
   }
 
   render() {
-    const { isCreatingPolylines, stopPlace, disabled, newStopCreated } = this.props;
+    const {
+      isCreatingPolylines,
+      stopPlace,
+      disabled,
+      newStopCreated,
+    } = this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
     const { formatMessage } = this.props.intl;
 
     const idFromPath = window.location.pathname
-      .substring(window.location.pathname.lastIndexOf('/'))
-      .replace('/', '');
+      .substring(window.location.pathname.lastIndexOf("/"))
+      .replace("/", "");
 
     const actions = [
       <FlatButton
-        label={formatMessage({ id: 'cancel' })}
+        label={formatMessage({ id: "cancel" })}
         onClick={this.handleCloseErrorDialog.bind(this)}
       />,
     ];
@@ -140,48 +143,54 @@ class StopPlace extends React.Component {
           }}
         >
           {resourceNotFound
-            ? formatMessage({ id: 'error_stopPlace_404' }) + idFromPath
-            : formatMessage({ id: 'error_unable_to_load_stop' })}
+            ? formatMessage({ id: "error_stopPlace_404" }) + idFromPath
+            : formatMessage({ id: "error_unable_to_load_stop" })}
         </Dialog>
-        <NewStopPlaceInfo open={newStopCreated.open} stopPlaceId={newStopCreated.stopPlaceId}/>
-        {shouldDisplayMessage &&
+        <NewStopPlaceInfo
+          open={newStopCreated.open}
+          stopPlaceId={newStopCreated.stopPlaceId}
+        />
+        {shouldDisplayMessage && (
           <InformationBanner
-              title={formatMessage({id: `pathLinks.title`})}
-              ingress={formatMessage({id: `pathLinks.ingress`})}
-              body={formatMessage({id: `pathLinks.body`})}
-              closeButtonTitle={formatMessage({id: `pathLinks.closeButtonTitle`})}
-              handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
-            />
-          }
-        { (!stopPlace && !showErrorDialog) && <LoadingPage/> }
-        {stopPlace && !stopPlace.isParent &&
+            title={formatMessage({ id: `pathLinks.title` })}
+            ingress={formatMessage({ id: `pathLinks.ingress` })}
+            body={formatMessage({ id: `pathLinks.body` })}
+            closeButtonTitle={formatMessage({
+              id: `pathLinks.closeButtonTitle`,
+            })}
+            handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
+          />
+        )}
+        {!stopPlace && !showErrorDialog && <LoadingPage />}
+        {stopPlace && !stopPlace.isParent && (
           <div>
             <NewElementsBox disabled={disabled} />
             <EditStopGeneral disabled={disabled} />
             <EditStopMap disabled={disabled} />
           </div>
-        }
-        {stopPlace && stopPlace.isParent &&
-        <div>
-          <EditParentGeneral disabled={disabled}/>
-          <EditStopMap disabled={disabled} />
-        </div>
-        }
+        )}
+        {stopPlace && stopPlace.isParent && (
+          <div>
+            <EditParentGeneral disabled={disabled} />
+            <EditStopMap disabled={disabled} />
+          </div>
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   stopPlace: state.stopPlace.current || state.stopPlace.newStop,
-  disabled: (state.stopPlace.current && state.stopPlace.current.permanentlyTerminated) || !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  disabled:
+    (state.stopPlace.current &&
+      state.stopPlace.current.permanentlyTerminated) ||
+    !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
   newStopCreated: state.user.newStopCreated,
-  originalStopPlace: state.stopPlace.originalCurrent
+  originalStopPlace: state.stopPlace.originalCurrent,
 });
 
-const EditPlaceIntl = injectIntl(
-  connect(mapStateToProps)(StopPlace),
-);
+const EditPlaceIntl = injectIntl(connect(mapStateToProps)(StopPlace));
 
 export default withApollo(EditPlaceIntl);

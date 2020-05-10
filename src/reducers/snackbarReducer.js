@@ -17,14 +17,14 @@ import {
   ERROR,
   OPENED_SNACKBAR,
   DISMISSED_SNACKBAR,
-} from '../actions/Types';
+} from "../actions/Types";
 
 export const initialState = {
   snackbarOptions: {
     isOpen: false,
-    message: '',
-    status: null
-  }
+    message: "",
+    status: null,
+  },
 };
 
 const rolesReducer = (state = initialState, action) => {
@@ -34,8 +34,8 @@ const rolesReducer = (state = initialState, action) => {
         snackbarOptions: {
           isOpen: true,
           status: ERROR,
-          errorMsg: getErrorMsg(action.error)
-        }
+          errorMsg: getErrorMsg(action.error),
+        },
       });
 
     case OPENED_SNACKBAR:
@@ -43,8 +43,8 @@ const rolesReducer = (state = initialState, action) => {
         snackbarOptions: {
           isOpen: true,
           status: action.payLoad.status,
-          errorMsg: null
-        }
+          errorMsg: null,
+        },
       });
 
     case DISMISSED_SNACKBAR:
@@ -55,7 +55,7 @@ const rolesReducer = (state = initialState, action) => {
   }
 };
 
-const getErrorMsg = error => {
+const getErrorMsg = (error) => {
   if (error && error.graphQLErrors && error.graphQLErrors.length) {
     return error.graphQLErrors[0].message;
   }

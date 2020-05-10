@@ -14,10 +14,7 @@
   "tariffZones": [],
   "submode": null,
   "transportMode": null,
-  "location": [
-    59.587427,
-    11.170963
-  ],
+  "location": [59.587427, 11.170963],
   "accessibilityAssessment": {
     "limitations": {
       "wheelchairAccess": "UNKNOWN",
@@ -34,10 +31,7 @@
       "publicCode": null,
       "description": "",
       "keyValues": [],
-      "location": [
-        59.587486,
-        11.17094
-      ]
+      "location": [59.587486, 11.17094]
     },
     {
       "id": "NSR:Quay:30026",
@@ -45,10 +39,7 @@
       "publicCode": null,
       "keyValues": [],
       "description": "",
-      "location": [
-        59.587368,
-        11.170986
-      ]
+      "location": [59.587368, 11.170986]
     }
   ],
   "entrances": [],

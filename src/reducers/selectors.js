@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const selectKeyValuesDataSource = (keyValuesOrigin, stopPlace) => {
+export const selectKeyValuesDataSource = (keyValuesOrigin, stopPlace) => {
   if (!keyValuesOrigin || !keyValuesOrigin.type) return [];
 
   let keyValues = [];
 
-  if (keyValuesOrigin.type === 'stopPlace') {
+  if (keyValuesOrigin.type === "stopPlace") {
     keyValues = stopPlace.keyValues;
-  } else if (keyValuesOrigin.type === 'quay') {
+  } else if (keyValuesOrigin.type === "quay") {
     let quay = stopPlace.quays[keyValuesOrigin.index];
     if (quay) {
       keyValues = stopPlace.quays[keyValuesOrigin.index].keyValues;

@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import InformationIcon from 'material-ui/svg-icons/action/info';
+import React from "react";
+import PropTypes from "prop-types";
+import FlatButton from "material-ui/FlatButton";
+import InformationIcon from "material-ui/svg-icons/action/info";
 
 class InformationBanner extends React.Component {
   constructor(props) {
@@ -47,39 +47,39 @@ class InformationBanner extends React.Component {
 
     const informationBannerStyle = {
       zIndex: 10001,
-      position: 'absolute',
-      background: '#fff',
-      width: '99.5%',
-      height: 'auto',
-      color: '#191919',
+      position: "absolute",
+      background: "#fff",
+      width: "99.5%",
+      height: "auto",
+      color: "#191919",
     };
 
     const titleStyle = {
       fontWeight: 600,
       marginTop: 20,
-      fontSize: '2.2em',
-      textAlign: 'center',
+      fontSize: "2.2em",
+      textAlign: "center",
     };
 
     const ingressStyle = {
-      fontSize: '1.1em',
+      fontSize: "1.1em",
       margin: 20,
-      textAlign: 'center',
+      textAlign: "center",
     };
 
     const bodyStyle = {
-      width: '70%',
-      margin: 'auto',
-      textAlign: 'center',
-      fontSize: '0.9em',
+      width: "70%",
+      margin: "auto",
+      textAlign: "center",
+      fontSize: "0.9em",
       marginBottom: 20,
     };
 
     const closeStyle = {
       marginTop: 5,
-      textAlign: 'centre',
-      width: '100%',
-      textDecoration: 'underline',
+      textAlign: "centre",
+      width: "100%",
+      textDecoration: "underline",
     };
 
     return (
@@ -88,9 +88,9 @@ class InformationBanner extends React.Component {
           <InformationIcon
             style={{
               height: 44,
-              width: 'auto',
-              color: '#ffae19',
-              verticalAlign: 'middle',
+              width: "auto",
+              color: "#ffae19",
+              verticalAlign: "middle",
               marginBottom: 7,
               paddingRight: 2,
             }}

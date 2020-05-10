@@ -12,12 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import PolygonManager from '../singletons/PolygonManager';
-import stopTypes from '../models/stopTypes';
-import { getLegalSubmodes, getLegalStopPlaceTypes } from '../reducers/rolesReducerUtils';
-import { submodes as allSubmodes } from '../models/submodes';
-import { Entities } from '../models/Entities';
+import PolygonManager from "../singletons/PolygonManager";
+import stopTypes from "../models/stopTypes";
+import {
+  getLegalSubmodes,
+  getLegalStopPlaceTypes,
+} from "../reducers/rolesReducerUtils";
+import { submodes as allSubmodes } from "../models/submodes";
+import { Entities } from "../models/Entities";
 
 const RoleParser = {};
 
@@ -26,7 +28,7 @@ const getRolesFromTokenByType = (tokenParsed, type) => {
 
   let roles = [];
 
-  tokenParsed.roles.forEach(roleString => {
+  tokenParsed.roles.forEach((roleString) => {
     let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === type) {
       roles.push(roleJSON);
@@ -36,16 +38,15 @@ const getRolesFromTokenByType = (tokenParsed, type) => {
   return roles;
 };
 
-RoleParser.getEditStopRoles = tokenParsed => {
-  return getRolesFromTokenByType(tokenParsed, 'editStops');
+RoleParser.getEditStopRoles = (tokenParsed) => {
+  return getRolesFromTokenByType(tokenParsed, "editStops");
 };
 
-RoleParser.getDeleteStopRoles = tokenParsed => {
-  return getRolesFromTokenByType(tokenParsed, 'deleteStops');
+RoleParser.getDeleteStopRoles = (tokenParsed) => {
+  return getRolesFromTokenByType(tokenParsed, "deleteStops");
 };
 
-
-RoleParser.isGuest = tokenParsed => {
+RoleParser.isGuest = (tokenParsed) => {
   return RoleParser.getEditStopRoles(tokenParsed).length === 0;
 };
 
@@ -55,15 +56,14 @@ RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
   let result = [];
   let PManager = new PolygonManager();
 
-  roles.forEach(role => {
-    if (typeof role.z === 'undefined') {
+  roles.forEach((role) => {
+    if (typeof role.z === "undefined") {
       result.push(role);
     } else {
-
       let inside = false;
 
       if (isArrayOfLatLngs(latLngs)) {
-        inside = latLngs.every(latlng => PManager.isPointInPolygon(latlng));
+        inside = latLngs.every((latlng) => PManager.isPointInPolygon(latlng));
       } else {
         inside = PManager.isPointInPolygon(latLngs);
       }
@@ -76,19 +76,14 @@ RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
   return result;
 };
 
-
-RoleParser.filterByEntities = (
-  roles,
-  object
-) => {
-
+RoleParser.filterByEntities = (roles, object) => {
   if (!roles || !roles.length) return [];
 
-  const stopPlaceRoles = roles.filter(role => {
+  const stopPlaceRoles = roles.filter((role) => {
     if (role.e && role.e.EntityType) {
       if (
-        isInArrayIgnoreCase(role.e.EntityType, 'stopPlace') ||
-        isInArrayIgnoreCase(role.e.EntityType, '*')
+        isInArrayIgnoreCase(role.e.EntityType, "stopPlace") ||
+        isInArrayIgnoreCase(role.e.EntityType, "*")
       ) {
         return role;
       }
@@ -102,7 +97,10 @@ RoleParser.filterByEntities = (
   // recover entityType for object if not provided
   let entityType = object.entityType;
   if (!entityType) {
-    if (object.__typename === 'ParentStopPlace' || object.__typename === 'StopPlace') {
+    if (
+      object.__typename === "ParentStopPlace" ||
+      object.__typename === "StopPlace"
+    ) {
       entityType = Entities.STOP_PLACE;
     } else {
       entityType = Entities.GROUP_OF_STOP_PLACE;
@@ -110,42 +108,64 @@ RoleParser.filterByEntities = (
   }
 
   if (entityType === Entities.STOP_PLACE) {
-
     const stopPlaceIsMultiModal =
-      object.__typename === 'ParentStopPlace' || object.isParent;
+      object.__typename === "ParentStopPlace" || object.isParent;
 
-    validForStop = stopPlaceRoles.filter( role => {
+    validForStop = stopPlaceRoles.filter((role) => {
       if (stopPlaceIsMultiModal) {
-        return object.children.every( child => doesRoleGrantAccessToStop(
-          stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, child
-        ));
+        return object.children.every((child) =>
+          doesRoleGrantAccessToStop(
+            stopPlaceRoles,
+            role.e.StopPlaceType,
+            role.e.TransportMode,
+            role.e.Submode,
+            child
+          )
+        );
       } else {
         return doesRoleGrantAccessToStop(
-          stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, object
-        )
+          stopPlaceRoles,
+          role.e.StopPlaceType,
+          role.e.TransportMode,
+          role.e.Submode,
+          object
+        );
       }
     });
-
   } else if (entityType === Entities.GROUP_OF_STOP_PLACE) {
-
-    validForStop = stopPlaceRoles.filter( role => {
+    validForStop = stopPlaceRoles.filter((role) => {
       // group of stop places without members cannot be restricted for edit
       if (!object.members || !object.members.length) return role;
 
-      return object.members.every(member => doesRoleGrantAccessToStop(
-        stopPlaceRoles, role.e.StopPlaceType, role.e.TransportMode, role.e.Submode, member
-      ));
+      return object.members.every((member) =>
+        doesRoleGrantAccessToStop(
+          stopPlaceRoles,
+          role.e.StopPlaceType,
+          role.e.TransportMode,
+          role.e.Submode,
+          member
+        )
+      );
     });
   }
   return validForStop;
 };
 
-const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, roleSubmode, stopPlace) => {
-
+const doesRoleGrantAccessToStop = (
+  roles,
+  roleStopPlaceType,
+  roleTransportMode,
+  roleSubmode,
+  stopPlace
+) => {
   const submodeOptions = getRoleOptions(roleSubmode);
   const forgiveSubmodeNotSet = false;
   const forgiveTransportmodeNotSet = false;
-  const submodeValid = isModeOptionsValidForMode(submodeOptions, stopPlace.submode, forgiveSubmodeNotSet);
+  const submodeValid = isModeOptionsValidForMode(
+    submodeOptions,
+    stopPlace.submode,
+    forgiveSubmodeNotSet
+  );
   const transportModeOptions = getRoleOptions(roleTransportMode);
   const transportModeValid = isModeOptionsValidForMode(
     transportModeOptions,
@@ -153,10 +173,13 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
     forgiveTransportmodeNotSet
   );
   const legalStopPlaceTypes = getLegalStopPlaceTypes(roles, true);
-  const stopPlaceTypeValid =  legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1;
+  const stopPlaceTypeValid =
+    legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1;
 
   const legalSubmodes = getLegalSubmodes(roles, true);
-  const isSubModeRestrictionRelevant = legalSubmodes.some( submode => getSubModeRelevance(submode, stopPlace.stopPlaceType));
+  const isSubModeRestrictionRelevant = legalSubmodes.some((submode) =>
+    getSubModeRelevance(submode, stopPlace.stopPlaceType)
+  );
 
   if (!stopPlace.stopPlaceType) {
     return true;
@@ -168,8 +191,10 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   }
 
   // if stopPlace is valid and listed as whitelisted
-  if (stopPlaceTypeValid && legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1) {
-
+  if (
+    stopPlaceTypeValid &&
+    legalStopPlaceTypes.indexOf(stopPlace.stopPlaceType) > -1
+  ) {
     // if submode is legal
     if (legalSubmodes.indexOf(stopPlace.submode) > -1 && stopPlace.submode) {
       return true;
@@ -181,7 +206,6 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   }
 
   if (!stopPlaceTypeValid && !isSubModeRestrictionRelevant) {
-
     if (!stopPlace.submode) {
       return false;
     }
@@ -202,9 +226,7 @@ const doesRoleGrantAccessToStop = (roles, roleStopPlaceType, roleTransportMode, 
   return false;
 };
 
-
 export const getSubModeRelevance = (submode, stopPlaceType) => {
-
   if (!submode) return false;
 
   const stopTypeKeys = Object.keys(stopTypes);
@@ -221,7 +243,7 @@ export const getSubModeRelevance = (submode, stopPlaceType) => {
       }
     }
     return false;
-  };
+  }
   return false;
 };
 
@@ -231,11 +253,15 @@ export const isInArrayIgnoreCase = (array, value) => {
   if (!value) return true;
 
   return (
-    array.map(item => item.toUpperCase()).indexOf(value.toUpperCase()) > -1
+    array.map((item) => item.toUpperCase()).indexOf(value.toUpperCase()) > -1
   );
 };
 
-export const isModeOptionsValidForMode = (options, mode, forgiveNotSet = true) => {
+export const isModeOptionsValidForMode = (
+  options,
+  mode,
+  forgiveNotSet = true
+) => {
   const { blacklisted, whitelisted, allowAll } = options;
 
   if (allowAll) {
@@ -254,7 +280,7 @@ export const isModeOptionsValidForMode = (options, mode, forgiveNotSet = true) =
     return true;
   }
 
-  if (!whitelisted.length) {
+  if (!whitelisted.length) {
     return true;
   }
 
@@ -270,14 +296,14 @@ export const getRoleOptions = (list, allOptions = []) => {
     return {
       allowAll: true,
       blacklisted,
-      whitelisted
+      whitelisted,
     };
   }
 
-  list.forEach(type => {
-    if (type.indexOf('!') === 0) {
+  list.forEach((type) => {
+    if (type.indexOf("!") === 0) {
       blacklisted.push(type.substring(1));
-    } else if (type === '*') {
+    } else if (type === "*") {
       allowAll = true;
     } else {
       whitelisted.push(type);
@@ -289,8 +315,12 @@ export const getRoleOptions = (list, allOptions = []) => {
 
   // add inverse of blacklist to whitelist
   if (allOptions.length) {
-    allOptions.forEach( option => {
-      if (!whiteListIsLocked && whitelisted.indexOf(option) === -1 && blacklisted.indexOf(option) === -1) {
+    allOptions.forEach((option) => {
+      if (
+        !whiteListIsLocked &&
+        whitelisted.indexOf(option) === -1 &&
+        blacklisted.indexOf(option) === -1
+      ) {
         whitelisted.push(option);
       }
     });
@@ -300,11 +330,11 @@ export const getRoleOptions = (list, allOptions = []) => {
     blacklisted,
     whitelisted,
     allowAll,
-    whiteListIsLocked
+    whiteListIsLocked,
   };
 };
 
-export const getStopPlacesForSubmodes = legalSubmodes => {
+export const getStopPlacesForSubmodes = (legalSubmodes) => {
   let result = [];
 
   if (!legalSubmodes || !legalSubmodes.length) return result;
@@ -314,22 +344,27 @@ export const getStopPlacesForSubmodes = legalSubmodes => {
   for (let i = 0; i < stopTypeKeys.length; i++) {
     const stopType = stopTypes[stopTypeKeys[i]];
     const submodes = stopType.submodes || [];
-    legalSubmodes.forEach( legalSubmode => {
+    legalSubmodes.forEach((legalSubmode) => {
       if (submodes.indexOf(legalSubmode) > -1) {
         if (result.indexOf(stopTypeKeys[i]) === -1 && legalSubmode !== null) {
           result.push(stopTypeKeys[i]);
         }
       }
     });
-  };
+  }
   return result;
 };
 
-export const getInverseSubmodesWhitelist = whitelist => {
-  return allSubmodes.filter( submode => whitelist.indexOf(submode) === -1);
+export const getInverseSubmodesWhitelist = (whitelist) => {
+  return allSubmodes.filter((submode) => whitelist.indexOf(submode) === -1);
 };
 
-export const doesStopTypeAllowEdit = (stopPlaceType, submode, legalStopPlaces, legalSubmodes) => {
+export const doesStopTypeAllowEdit = (
+  stopPlaceType,
+  submode,
+  legalStopPlaces,
+  legalSubmodes
+) => {
   if (stopPlaceType && (!legalStopPlaces || !legalStopPlaces.length)) {
     return false;
   }
@@ -347,16 +382,18 @@ export const doesStopTypeAllowEdit = (stopPlaceType, submode, legalStopPlaces, l
   }
 
   if (submode && stopPlaceType) {
-    return (legalStopPlaces.indexOf(stopPlaceType) > -1
-      && legalSubmodes.indexOf(submode) > -1);
+    return (
+      legalStopPlaces.indexOf(stopPlaceType) > -1 &&
+      legalSubmodes.indexOf(submode) > -1
+    );
   }
 
   return false;
 };
 
-const isArrayOfLatLngs = data => {
+const isArrayOfLatLngs = (data) => {
   if (!data || !Array.isArray(data)) return false;
-  return (data.length && Array.isArray(data[0]));
+  return data.length && Array.isArray(data[0]);
 };
 
 export default RoleParser;

@@ -22,7 +22,7 @@ export const isDateRangeLegal = (
   if (!expiraryExpanded) {
     return {
       dateLegal: true,
-      timeLegal: true
+      timeLegal: true,
     };
   }
 
@@ -34,7 +34,7 @@ export const isDateRangeLegal = (
   ) {
     return {
       dateLegal: dateTo > dateFrom,
-      timeLegal: true
+      timeLegal: true,
     };
   }
 
@@ -47,18 +47,18 @@ export const isDateRangeLegal = (
     if (dateTo.toDateString() === dateFrom.toDateString()) {
       return {
         dateLegal: true,
-        timeLegal: timeTo > timeFrom
+        timeLegal: timeTo > timeFrom,
       };
     } else {
       return {
         dateLegal: dateTo > dateFrom,
-        timeLegal: true
+        timeLegal: true,
       };
     }
   }
   return {
     dateLegal: dateTo < dateFrom,
-    timeLegal: true
+    timeLegal: true,
   };
 };
 

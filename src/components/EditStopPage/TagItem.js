@@ -12,41 +12,41 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import Tag from '../MainPage/Tag';
-import moment from 'moment';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import IconButton from 'material-ui/IconButton';
+import React, { Component } from "react";
+import Tag from "../MainPage/Tag";
+import moment from "moment";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import IconButton from "material-ui/IconButton";
 
 class TagItem extends Component {
   render() {
     const { tag, handleDelete, intl } = this.props;
     const columnStyle = {
       flex: 1,
-      fontSize: '0.8em',
-      padding: 5
+      fontSize: "0.8em",
+      padding: 5,
     };
 
-    const {formatMessage} = intl;
-    const notAssigned = formatMessage({ id: 'not_assigned'});
+    const { formatMessage } = intl;
+    const notAssigned = formatMessage({ id: "not_assigned" });
 
     return (
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '95%',
-          margin: 'auto'
+          display: "flex",
+          alignItems: "center",
+          width: "95%",
+          margin: "auto",
         }}
       >
         <div style={{ ...columnStyle, flex: 3.5 }}>
           <Tag hideHint={true} data={tag} />
         </div>
-        <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
+        <div style={{ ...columnStyle, flex: 3, fontSize: "0.7em" }}>
           {tag.createdBy || notAssigned}
         </div>
-        <div style={{ ...columnStyle, flex: 3, fontSize: '0.7em' }}>
-          {moment(tag.created).locale('nb').format('DD-MM-YYYY HH:mm')}
+        <div style={{ ...columnStyle, flex: 3, fontSize: "0.7em" }}>
+          {moment(tag.created).locale("nb").format("DD-MM-YYYY HH:mm")}
         </div>
         <div style={{ ...columnStyle, flex: 1, padding: 0 }}>
           <IconButton onClick={() => handleDelete(tag.name, tag.idReference)}>

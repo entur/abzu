@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import { connect } from 'react-redux';
-import FacilitiesQuayTab from './FacilitiesQuayTab';
-import AccessiblityQuayTab from './AcessibilityQuayTab';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import { Tabs, Tab } from "material-ui/Tabs";
+import { connect } from "react-redux";
+import FacilitiesQuayTab from "./FacilitiesQuayTab";
+import AccessiblityQuayTab from "./AcessibilityQuayTab";
+import { injectIntl } from "react-intl";
 
 class EditQuayAdditional extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class EditQuayAdditional extends React.Component {
     };
   }
 
-  handleTabOnChange = value => {
+  handleTabOnChange = (value) => {
     this.setState({
       activeTabIndex: value,
     });
@@ -38,13 +38,13 @@ class EditQuayAdditional extends React.Component {
     const { formatMessage } = intl;
 
     const style = {
-      background: '#fff',
-      overflowX: 'hidden',
+      background: "#fff",
+      overflowX: "hidden",
     };
 
     const tabStyle = {
-      color: '#000',
-      fontSize: '0.7em',
+      color: "#000",
+      fontSize: "0.7em",
       fontWeight: 600,
       marginTop: -10,
     };
@@ -56,11 +56,11 @@ class EditQuayAdditional extends React.Component {
         <Tabs
           onChange={this.handleTabOnChange.bind(this)}
           value={activeTabIndex}
-          tabItemContainerStyle={{ backgroundColor: '#fff', marginTop: -5 }}
+          tabItemContainerStyle={{ backgroundColor: "#fff", marginTop: -5 }}
         >
           <Tab
             style={tabStyle}
-            label={formatMessage({ id: 'accessibility' })}
+            label={formatMessage({ id: "accessibility" })}
             value={0}
           >
             <AccessiblityQuayTab
@@ -72,7 +72,7 @@ class EditQuayAdditional extends React.Component {
           </Tab>
           <Tab
             style={tabStyle}
-            label={formatMessage({ id: 'facilities' })}
+            label={formatMessage({ id: "facilities" })}
             value={1}
           >
             <FacilitiesQuayTab
@@ -88,7 +88,7 @@ class EditQuayAdditional extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   focusedElement: state.mapUtils.focusedElement,
   stopPlace: state.stopPlace.current,
 });

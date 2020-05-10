@@ -12,15 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import IconButton from 'material-ui/IconButton';
-import { connect } from 'react-redux';
-import { UserActions } from '../../actions/';
-const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
+import React from "react";
+import IconButton from "material-ui/IconButton";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
+const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
 
 class CreateNewStop extends React.Component {
-
   handleOnClick(e) {
     this.props.dispatch(UserActions.toggleIsCreatingNewStop());
     if (this.props.onClose) {
@@ -34,14 +32,14 @@ class CreateNewStop extends React.Component {
     return (
       <div
         style={{
-          background: '#fefefe',
-          border: '1px dotted #191919',
+          background: "#fefefe",
+          border: "1px dotted #191919",
           padding: 5,
         }}
       >
         <div style={{ marginLeft: 10 }}>
           <IconButton
-            style={{ float: 'right' }}
+            style={{ float: "right" }}
             onClick={this.handleOnClick.bind(this)}
             iconClassName="material-icons"
           >
@@ -52,24 +50,22 @@ class CreateNewStop extends React.Component {
               alt=""
               style={{
                 height: 25,
-                width: 'auto',
+                width: "auto",
                 marginRight: 10,
-                verticalAlign: 'middle',
+                verticalAlign: "middle",
               }}
               src={newStopIcon}
             />
             {headerText}
           </h4>
-          <span style={{ fontSize: '0.9em' }}>
-            {bodyText}
-          </span>
+          <span style={{ fontSize: "0.9em" }}>{bodyText}</span>
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isCreatingNewStop: state.user.isCreatingNewStop,
 });
 

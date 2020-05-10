@@ -12,18 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ToolTippable from '../EditStopPage/ToolTippable';
-import { injectIntl } from 'react-intl';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ToolTippable from "../EditStopPage/ToolTippable";
+import { injectIntl } from "react-intl";
 
 class Tag extends Component {
   render() {
     const { data, intl, textSize } = this.props;
     const { name, comment } = data;
     const { formatMessage } = intl;
-    const noComment = formatMessage({id: 'comment_missing'});
+    const noComment = formatMessage({ id: "comment_missing" });
     const tagComment = comment || noComment;
 
     if (!name) return null;
@@ -32,30 +31,35 @@ class Tag extends Component {
       <div
         style={{
           padding: 5,
-          margin: '0 5px 5px 0',
-          display: 'inline-block',
+          margin: "0 5px 5px 0",
+          display: "inline-block",
           borderRadius: 3,
           height: 12,
-          background: 'orange',
-          color: '#fff',
-          width: 'auto',
-          cursor: 'pointer',
-          fontSize: textSize || '0.7em',
-          textTransform: 'uppercase',
+          background: "orange",
+          color: "#fff",
+          width: "auto",
+          cursor: "pointer",
+          fontSize: textSize || "0.7em",
+          textTransform: "uppercase",
         }}
       >
-        <div style={{lineHeight: textSize || '0.7em', margin: 5, verticalAlign: 'middle'}}>
+        <div
+          style={{
+            lineHeight: textSize || "0.7em",
+            margin: 5,
+            verticalAlign: "middle",
+          }}
+        >
           {name}
         </div>
       </div>
-    )
+    );
 
     return (
       <ToolTippable toolTipText={tagComment}>
         <span>{content}</span>
       </ToolTippable>
     );
-
   }
 }
 
@@ -63,8 +67,8 @@ Tag.propTypes = {
   data: PropTypes.shape({
     created: PropTypes.string,
     name: PropTypes.string.isRequired,
-    comment: PropTypes.string
-  })
+    comment: PropTypes.string,
+  }),
 };
 
 export default injectIntl(Tag);

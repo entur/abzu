@@ -14,26 +14,18 @@ limitations under the Licence. */
 
 // Used for altNamesDialog
 
-export const supportedNameTypes = [
-  'alias',
-  'translation',
-  'label'
-];
+export const supportedNameTypes = ["alias", "translation", "label"];
 
-export const allNameTypes = [
-  ...supportedNameTypes,
-  'copy',
-  'other'
-];
+export const allNameTypes = [...supportedNameTypes, "copy", "other"];
 
 export const languages = [
-  'nor',
-  'swe',
-  'eng',
-  'est',
-  'fin',
-  'sme',
-  'rus',
-  'fkv',
-  'fra'
+  "nor",
+  "swe",
+  "eng",
+  "est",
+  "fin",
+  "sme",
+  "rus",
+  "fkv",
+  "fra",
 ];

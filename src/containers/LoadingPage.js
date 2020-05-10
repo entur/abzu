@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import Loader from '../components/Dialogs/Loader';
+import React from "react";
+import Loader from "../components/Dialogs/Loader";
 
 class LoadingPage extends React.Component {
   render() {
     return (
-      <div style={{ height: '100%', width: '100%', background: '#aaaaaa'}}>
+      <div style={{ height: "100%", width: "100%", background: "#aaaaaa" }}>
         <Loader />
       </div>
     );

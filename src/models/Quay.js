@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { setDecimalPrecision } from '../utils/';
-import { getImportedId, simplifyPlaceEquipment } from './stopPlaceUtils';
+import { setDecimalPrecision } from "../utils/";
+import { getImportedId, simplifyPlaceEquipment } from "./stopPlaceUtils";
 
 class Quay {
   constructor(quay, accessibilityAssessment) {
@@ -23,14 +22,13 @@ class Quay {
   }
 
   toClient() {
-
     const { quay, accessibilityAssessment } = this;
 
     const clientQuay = {
       id: quay.id,
       compassBearing: quay.compassBearing,
       publicCode: quay.publicCode,
-      description: quay.description ? quay.description.value : ''
+      description: quay.description ? quay.description.value : "",
     };
 
     clientQuay.accessibilityAssessment =
@@ -50,7 +48,7 @@ class Quay {
 
       clientQuay.location = [
         setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6)
+        setDecimalPrecision(coordinates[0], 6),
       ];
     }
 

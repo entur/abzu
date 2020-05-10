@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 import {
   mutateDeleteQuay,
   mutateDeleteStopPlace,
@@ -31,8 +30,8 @@ import {
   mutateTerminateStopPlace,
   mutateGroupOfStopPlaces,
   deleteGroupMutation,
-  deleteParkingMutation
-} from './mutations';
+  deleteParkingMutation,
+} from "./mutations";
 import {
   allVersionsOfStopPlace,
   allEntities,
@@ -48,149 +47,164 @@ import {
   getQueryTopographicPlaces,
   getTagsByNameQuery,
   getGroupOfStopPlaceQuery,
-  findTariffones
-} from './queries';
-import mapToMutationVariables from '../../modelUtils/mapToQueryVariables';
+  findTariffones,
+} from "./queries";
+import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 
 export const findTagByName = (client, name) =>
   client.query({
     query: findTagByNameQuery,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
-      name
-    }
+      name,
+    },
   });
 
 export const addTag = (client, idReference, name, comment) =>
   client.mutate({
     mutation: mutateCreateTag,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
       idReference,
       name,
-      comment
-    }
+      comment,
+    },
   });
 
 export const getStopPlaceById = (client, id) =>
   client.query({
     query: getStopById,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
-      id
-    }
+      id,
+    },
   });
 
 export const getAddStopPlaceInfo = (client, stopPlaceIds) =>
   client.query({
     query: getStopPlacesById(stopPlaceIds),
-    operationName: 'getAddStopPlaceInfo',
-    fetchPolicy: 'network-only'
+    operationName: "getAddStopPlaceInfo",
+    fetchPolicy: "network-only",
   });
 
 export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
-
   const { isChildOfParent } = stopPlace;
 
   if (!isChildOfParent) {
-
     const variables = mapToMutationVariables.mapStopToVariables(
       stopPlace,
       userInput
     );
 
     return new Promise((resolve, reject) => {
-      client.mutate({
-        mutation: mutateStopPlace,
-        variables,
-        fetchPolicy: 'network-only'
-      }).then( result => {
-        if (result.data.mutateStopPlace[0].id) {
-          resolve(result.data.mutateStopPlace[0].id);
-        } else {
-          reject("Id not returned");
-        }
-      }).catch( err => {
-        reject(err);
-      });
+      client
+        .mutate({
+          mutation: mutateStopPlace,
+          variables,
+          fetchPolicy: "network-only",
+        })
+        .then((result) => {
+          if (result.data.mutateStopPlace[0].id) {
+            resolve(result.data.mutateStopPlace[0].id);
+          } else {
+            reject("Id not returned");
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   } else {
-
     return new Promise((resolve, reject) => {
-
       const variables = mapToMutationVariables.mapChildStopToVariables(
         stopPlace,
         userInput
       );
 
-      client.mutate({
-        mutation: updateChildOfParentStop,
-        variables,
-        fetchPolicy: 'network-only'
-      }).then( result => {
-        resolve(stopPlace.id);
-      }).catch( err => {
-        reject(err);
-      });
+      client
+        .mutate({
+          mutation: updateChildOfParentStop,
+          variables,
+          fetchPolicy: "network-only",
+        })
+        .then((result) => {
+          resolve(stopPlace.id);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
-}
+};
 
 export const saveParentStopPlace = (client, variables) =>
   client.mutate({
     mutation: mutateParentStopPlace,
     variables,
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-export const removeStopPlaceFromMultiModalStop = (client, parentSiteRef, stopPlaceId) =>
+export const removeStopPlaceFromMultiModalStop = (
+  client,
+  parentSiteRef,
+  stopPlaceId
+) =>
   client.mutate({
     mutation: removeStopPlaceFromParent,
     variables: {
       stopPlaceId,
-      parentSiteRef
+      parentSiteRef,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const deleteQuay = (client, variables) =>
   client.mutate({
     mutation: mutateDeleteQuay,
     variables,
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const deleteStopPlace = (client, stopPlaceId) =>
   client.mutate({
     mutation: mutateDeleteStopPlace,
     variables: {
-      stopPlaceId
+      stopPlaceId,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-export const terminateStop = (client, stopPlaceId, shouldTerminatePermanently, versionComment, toDate) =>
+export const terminateStop = (
+  client,
+  stopPlaceId,
+  shouldTerminatePermanently,
+  versionComment,
+  toDate
+) =>
   client.mutate({
     mutation: mutateTerminateStopPlace,
     variables: {
       stopPlaceId,
       versionComment,
       toDate,
-      modificationEnumeration: shouldTerminatePermanently ? 'delete' : null
-    }
-  })
+      modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
+    },
+  });
 
 export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
   client.mutate({
     mutation: mutateAddToMultiModalStopPlace,
     variables: {
       stopPlaceIds,
-      parentSiteRef
+      parentSiteRef,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-export const createParentStopPlace = (client, {name, description, versionComment, coordinates, validBetween, stopPlaceIds}) =>
+export const createParentStopPlace = (
+  client,
+  { name, description, versionComment, coordinates, validBetween, stopPlaceIds }
+) =>
   client.mutate({
     mutation: mutateCreateMultiModalStopPlace,
     variables: {
@@ -199,73 +213,91 @@ export const createParentStopPlace = (client, {name, description, versionComment
       versionComment,
       coordinates,
       validBetween,
-      stopPlaceIds
+      stopPlaceIds,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
-
 
 export const mutateGroupOfStopPlace = (client, variables) =>
   new Promise((resolve, reject) => {
-    client.mutate({
-      mutation: mutateGroupOfStopPlaces,
-      variables,
-      fetchPolicy: 'network-only'
-    }).then(({data}) =>{
-      const id = data['mutateGroupOfStopPlaces']
-        ? data['mutateGroupOfStopPlaces'].id
-        : null;
-      resolve(id);
-    }).catch(err => {
-      reject(null);
-    });
+    client
+      .mutate({
+        mutation: mutateGroupOfStopPlaces,
+        variables,
+        fetchPolicy: "network-only",
+      })
+      .then(({ data }) => {
+        const id = data["mutateGroupOfStopPlaces"]
+          ? data["mutateGroupOfStopPlaces"].id
+          : null;
+        resolve(id);
+      })
+      .catch((err) => {
+        reject(null);
+      });
   });
 
 export const getStopPlaceVersions = (client, stopPlaceId) =>
   client.query({
     query: allVersionsOfStopPlace,
     variables: {
-      id: stopPlaceId
+      id: stopPlaceId,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-export const mergeQuays = (client, stopPlaceId, fromQuayId, toQuayId, versionComment) =>
+export const mergeQuays = (
+  client,
+  stopPlaceId,
+  fromQuayId,
+  toQuayId,
+  versionComment
+) =>
   client.mutate({
     mutation: mutateMergeQuays,
     variables: {
       stopPlaceId,
       fromQuayId,
       toQuayId,
-      versionComment
+      versionComment,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-export const getStopPlaceWithAll = (client, id) => (
+export const getStopPlaceWithAll = (client, id) =>
   client.query({
     query: allEntities,
     variables: {
-      id
+      id,
     },
-    fetchPolicy: 'network-only'
-  })
-);
+    fetchPolicy: "network-only",
+  });
 
-export const mergeAllQuaysFromStop = (client, fromStopPlaceId, toStopPlaceId, fromVersionComment, toVersionComment) => (
+export const mergeAllQuaysFromStop = (
+  client,
+  fromStopPlaceId,
+  toStopPlaceId,
+  fromVersionComment,
+  toVersionComment
+) =>
   client.mutate({
     mutation: mutateMergeStopPlaces,
     variables: {
       fromStopPlaceId,
       toStopPlaceId,
       fromVersionComment,
-      toVersionComment
+      toVersionComment,
     },
-    fetchPolicy: 'network-only'
-  })
-);
+    fetchPolicy: "network-only",
+  });
 
-export const moveQuaysToStop = (client, toStopPlaceId, quayId, fromVersionComment, toVersionComment) => (
+export const moveQuaysToStop = (
+  client,
+  toStopPlaceId,
+  quayId,
+  fromVersionComment,
+  toVersionComment
+) =>
   client.mutate({
     mutation: mutateMoveQuaysToStop,
     variables: {
@@ -274,25 +306,33 @@ export const moveQuaysToStop = (client, toStopPlaceId, quayId, fromVersionCommen
       fromVersionComment,
       toVersionComment,
     },
-    fetchPolicy: 'network-only'
-  })
-);
+    fetchPolicy: "network-only",
+  });
 
-export const moveQuaysToNewStop = (client, quayIds, fromVersionComment, toVersionComment) => (
+export const moveQuaysToNewStop = (
+  client,
+  quayIds,
+  fromVersionComment,
+  toVersionComment
+) =>
   client.mutate({
     mutation: mutateMoveQuaysToNewStop,
     variables: {
       quayIds,
       fromVersionComment,
-      toVersionComment
+      toVersionComment,
     },
-    fetchPolicy: 'network-only',
-  })
-);
+    fetchPolicy: "network-only",
+  });
 
-export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpired) => (
+export const getNeighbourStops = (
+  client,
+  ignoreStopPlaceId,
+  bounds,
+  includeExpired
+) =>
   client.query({
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     query: stopPlaceBBQuery,
     variables: {
       includeExpired: includeExpired,
@@ -301,74 +341,77 @@ export const getNeighbourStops = (client, ignoreStopPlaceId, bounds, includeExpi
       latMax: bounds.getNorthEast().lat,
       lonMin: bounds.getSouthWest().lng,
       lonMax: bounds.getNorthEast().lng,
-    }
-  })
-);
+    },
+  });
 
-export const getPolygon = (client, ids) => (
+export const getPolygon = (client, ids) =>
   client.query({
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     query: getPolygons(ids),
-    operationName: 'getPolygons',
-  })
-);
+    operationName: "getPolygons",
+  });
 
 export const getTopographicPlaces = (client, ids) =>
   client.query({
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     query: getQueryTopographicPlaces(ids),
-    operationName: 'topographicPlacesForQuery'
+    operationName: "topographicPlacesForQuery",
   });
 
-export const getMergeInfoForStops = (client, stopPlaceId) => (
+export const getMergeInfoForStops = (client, stopPlaceId) =>
   client.query({
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     query: getMergeInfoStopPlace,
     variables: {
-     stopPlaceId
-    }
-  })
-);
+      stopPlaceId,
+    },
+  });
 
-export const findEntitiesWithFilters = (client, query, stopPlaceType, chips, showFutureAndExpired) => {
+export const findEntitiesWithFilters = (
+  client,
+  query,
+  stopPlaceType,
+  chips,
+  showFutureAndExpired
+) => {
   const municipalityReference = chips
-  .filter(topos => topos.type === 'municipality')
-    .map(topos => topos.value);
+    .filter((topos) => topos.type === "municipality")
+    .map((topos) => topos.value);
   const countyReference = chips
-    .filter(topos => topos.type === 'county')
-    .map(topos => topos.value);
+    .filter((topos) => topos.type === "county")
+    .map((topos) => topos.value);
   const countryReference = chips
-        .filter(topos => topos.type === 'country')
-        .map(topos => topos.value);
+    .filter((topos) => topos.type === "country")
+    .map((topos) => topos.value);
 
   return client.query({
     query: findStop,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
       query,
       stopPlaceType,
-      municipalityReference: municipalityReference ,
+      municipalityReference: municipalityReference,
       countyReference: countyReference,
       countryReference: countryReference,
       pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
-      versionValidity: showFutureAndExpired ? "MAX_VERSION" : null
+      versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
     },
   });
 };
 
 export const findTopographicalPlace = (client, query) =>
   client.query({
-  query: topopGraphicalPlacesQuery,
-  fetchPolicy: 'network-only',
-  variables: {
-    query,
-  },
-});
+    query: topopGraphicalPlacesQuery,
+    fetchPolicy: "network-only",
+    variables: {
+      query,
+    },
+  });
 
 export const getTags = (client, idReference) =>
   client.query({
     query: getTagsQuery,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
       idReference,
     },
@@ -377,7 +420,7 @@ export const getTags = (client, idReference) =>
 export const getTagsByName = (client, name) =>
   client.query({
     query: getTagsByNameQuery,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     variables: {
       name,
     },
@@ -388,43 +431,43 @@ export const removeTag = (client, name, idReference) =>
     mutation: mutateRemoveTag,
     variables: {
       name,
-      idReference
+      idReference,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const getGroupOfStopPlacesById = (client, id) =>
   client.query({
     query: getGroupOfStopPlaceQuery,
     variables: {
-      id
+      id,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const deleteGroupOfStopPlaces = (client, id) =>
   client.mutate({
     mutation: deleteGroupMutation,
     variables: {
-      id
+      id,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const getTariffZones = (client, query) =>
   client.query({
     query: findTariffones,
     variables: {
-      query
+      query,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
 export const deleteParking = (client, id) =>
   client.mutate({
     mutation: deleteParkingMutation,
     variables: {
-      id
+      id,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });

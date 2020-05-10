@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 const parkingType = Object.freeze({
-  PARK_AND_RIDE: 'parkAndRide',
-  BIKE_PARKING: 'bikeParking',
-  UNKNOWN: 'unknown'
+  PARK_AND_RIDE: "parkAndRide",
+  BIKE_PARKING: "bikeParking",
+  UNKNOWN: "unknown",
 });
 
 export const parkingTypes = Object.values(parkingType);

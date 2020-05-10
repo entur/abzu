@@ -12,25 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import { jsonArrayToCSV } from '../../utils/CSVHelper';
+import React from "react";
+import RaisedButton from "material-ui/RaisedButton";
+import { jsonArrayToCSV } from "../../utils/CSVHelper";
 import {
   ColumnTransformersStopPlace,
-  ColumnTransformersQuays
-} from '../../models/columnTransformers';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import moment from 'moment';
-import { getDarkColor } from '../../config/themeConfig';
+  ColumnTransformersQuays,
+} from "../../models/columnTransformers";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
+import moment from "moment";
+import { getDarkColor } from "../../config/themeConfig";
 
 class ReportPageFooter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
     };
   }
 
@@ -38,27 +37,40 @@ class ReportPageFooter extends React.Component {
     event.preventDefault();
     this.setState({
       open: true,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   }
 
   downloadCSV(items, columns, filename, transformer) {
-    let csv = jsonArrayToCSV(items, columns, ';', transformer);
+    let csv = jsonArrayToCSV(items, columns, ";", transformer);
     const BOM = "\uFEFF";
     const content = BOM + csv;
-    let element = document.createElement('a');
-    let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-    let dateNow = moment(new Date()).format('DD-MM-YYYY');
-    let fullFilename = filename + '-' + dateNow + '.csv';
+    let element = document.createElement("a");
+    let blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+    let dateNow = moment(new Date()).format("DD-MM-YYYY");
+    let fullFilename = filename + "-" + dateNow + ".csv";
     let url = URL.createObjectURL(blob);
     element.href = url;
-    element.setAttribute('target', '_blank');
-    element.setAttribute('download', fullFilename);
+    element.setAttribute("target", "_blank");
+    element.setAttribute("download", fullFilename);
 
     let event = document.createEvent("MouseEvents");
     event.initMouseEvent(
-      "click", true, false, window, 0, 0, 0, 0, 0
-      , false, false, false, false, 0, null
+      "click",
+      true,
+      false,
+      window,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      false,
+      false,
+      false,
+      0,
+      null
     );
 
     element.dispatchEvent(event);
@@ -69,32 +81,32 @@ class ReportPageFooter extends React.Component {
     this.downloadCSV(
       results,
       stopPlaceColumnOptions,
-      'results-stop-places',
+      "results-stop-places",
       ColumnTransformersStopPlace
     );
     this.setState({
-      open: false
+      open: false,
     });
   }
 
   handleGetCSVQuays() {
     const { results, quaysColumnOptions } = this.props;
     let items = [];
-    let finalColumns = quaysColumnOptions.slice()
-    let prependedColumns = ['stopPlaceId', 'stopPlaceName'];
+    let finalColumns = quaysColumnOptions.slice();
+    let prependedColumns = ["stopPlaceId", "stopPlaceName"];
 
-    prependedColumns.forEach( pc => {
+    prependedColumns.forEach((pc) => {
       finalColumns.unshift({
         id: pc,
-        checked: true
-      })
-    })
+        checked: true,
+      });
+    });
 
-    results.forEach(result => {
-      const quays = result.quays.map(quay => ({
+    results.forEach((result) => {
+      const quays = result.quays.map((quay) => ({
         ...quay,
         stopPlaceId: result.id,
-        stopPlaceName: result.name
+        stopPlaceName: result.name,
       }));
       items = items.concat.apply(items, quays);
     });
@@ -102,11 +114,11 @@ class ReportPageFooter extends React.Component {
     this.downloadCSV(
       items,
       finalColumns,
-      'results-quays',
+      "results-quays",
       ColumnTransformersQuays
     );
     this.setState({
-      open: false
+      open: false,
     });
   }
 
@@ -117,35 +129,35 @@ class ReportPageFooter extends React.Component {
     const totalCount = results.length;
 
     const style = {
-      width: '100%',
-      display: 'flex',
+      width: "100%",
+      display: "flex",
       bottom: 0,
-      padding: '10px 0px',
+      padding: "10px 0px",
       background: getDarkColor(),
-      justifyContent: 'space-between',
-      position: 'fixed',
+      justifyContent: "space-between",
+      position: "fixed",
       height: 35,
-      zIndex: 100
+      zIndex: 100,
     };
 
     const pageWrapperStyle = {
-      color: '#fff',
+      color: "#fff",
       fontSize: 16,
-      display: 'flex',
-      alignItems: 'center',
-      padding: 10
+      display: "flex",
+      alignItems: "center",
+      padding: 10,
     };
 
     const pageItemStyle = {
       fontSize: 14,
-      cursor: 'pointer',
+      cursor: "pointer",
       paddingLeft: 5,
-      paddingRight: 5
+      paddingRight: 5,
     };
 
     const activePageStyle = {
       fontWeight: 600,
-      borderBottom: '1px solid #41c0c4'
+      borderBottom: "1px solid #41c0c4",
     };
 
     let pages = [];
@@ -160,9 +172,9 @@ class ReportPageFooter extends React.Component {
       <div style={style}>
         <div style={pageWrapperStyle}>
           <div style={{ marginRight: 10 }}>
-            {formatMessage({ id: 'page' })}:
+            {formatMessage({ id: "page" })}:
           </div>
-          {pages.map(page =>
+          {pages.map((page) => (
             <div
               onClick={() => handleSelectPage(page)}
               style={
@@ -170,24 +182,24 @@ class ReportPageFooter extends React.Component {
                   ? { ...pageItemStyle, ...activePageStyle }
                   : pageItemStyle
               }
-              key={'page-' + page}
+              key={"page-" + page}
             >
               {page + 1}
             </div>
-          )}
+          ))}
         </div>
-        <div style={{ marginRight: 20, display: 'flex' }}>
+        <div style={{ marginRight: 20, display: "flex" }}>
           <RaisedButton
             onClick={this.handleExportOpen.bind(this)}
-            label={formatMessage({ id: 'export_to_csv' })}
+            label={formatMessage({ id: "export_to_csv" })}
             disabled={!totalCount}
             primary={true}
           />
           <Popover
             open={this.state.open}
             anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+            anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+            targetOrigin={{ horizontal: "left", vertical: "top" }}
             onRequestClose={() => {
               this.setState({ open: false });
             }}
@@ -195,11 +207,11 @@ class ReportPageFooter extends React.Component {
             <Menu>
               <MenuItem
                 onClick={this.handleGetCSVStopPlace.bind(this)}
-                primaryText={formatMessage({ id: 'export_to_csv_stop_places' })}
+                primaryText={formatMessage({ id: "export_to_csv_stop_places" })}
               />
               <MenuItem
                 onClick={this.handleGetCSVQuays.bind(this)}
-                primaryText={formatMessage({ id: 'export_to_csv_quays' })}
+                primaryText={formatMessage({ id: "export_to_csv_quays" })}
               />
             </Menu>
           </Popover>

@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { getPolygon } from '../graphql/Tiamat/actions';
-import { isCoordinatesInsidePolygon } from '../utils/mapUtils';
+import { getPolygon } from "../graphql/Tiamat/actions";
+import { isCoordinatesInsidePolygon } from "../utils/mapUtils";
 
 let instance = null;
 let fetchedPolygons = null;
@@ -33,9 +32,9 @@ class PolygonManager {
 
     if (!tokenParsed || !tokenParsed.roles) return [];
 
-    tokenParsed.roles.forEach(roleString => {
+    tokenParsed.roles.forEach((roleString) => {
       let roleJSON = JSON.parse(roleString);
-      if (roleJSON.r === 'editStops') {
+      if (roleJSON.r === "editStops") {
         if (!!roleJSON.z) {
           administrativeZoneIds.push(roleJSON.z);
         } else {
@@ -52,7 +51,7 @@ class PolygonManager {
 
     if (!fetchedPolygons || allowNewStopEverywhere) return true;
 
-    Object.keys(fetchedPolygons).forEach(k => {
+    Object.keys(fetchedPolygons).forEach((k) => {
       let polygon = fetchedPolygons[k];
       let found = isCoordinatesInsidePolygon(point, polygon);
       if (found) {
@@ -65,7 +64,7 @@ class PolygonManager {
 
   fetch(client, tokenParsed) {
     if (!client) {
-      console.error('Client is not provided');
+      console.error("Client is not provided");
       return;
     }
 
@@ -79,22 +78,24 @@ class PolygonManager {
   fetchByIds(client, ids) {
     if (fetchedPolygons === null) {
       getPolygon(client, ids)
-        .then(response => {
+        .then((response) => {
           let data = response.data;
 
           if (data) {
             fetchedPolygons = {};
 
-            Object.keys(data).forEach(key => {
+            Object.keys(data).forEach((key) => {
               let resultItem = data[key][0];
 
               if (resultItem) {
-                fetchedPolygons[resultItem.id] = resultItem.polygon ? resultItem.polygon.coordinates : [[]];
+                fetchedPolygons[resultItem.id] = resultItem.polygon
+                  ? resultItem.polygon.coordinates
+                  : [[]];
               }
             });
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     }
   }
 }

@@ -12,21 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { MuiThemeProvider as V0MuiThemeProvider} from 'material-ui';
-import Header from '../components/Header';
-import { injectIntl } from 'react-intl';
-import { getTheme } from '../config/themeConfig';
-import SnackbarWrapper from '../components/SnackbarWrapper';
-import BrowserSupport from '../components/BrowserSupport';
+import React from "react";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
+import Header from "../components/Header";
+import { injectIntl } from "react-intl";
+import { getTheme } from "../config/themeConfig";
+import SnackbarWrapper from "../components/SnackbarWrapper";
+import BrowserSupport from "../components/BrowserSupport";
 
 const muiThemeV0 = getMuiTheme(getTheme());
 const muiTheme = createMuiTheme(getTheme());
 
 class App extends React.Component {
-
   render() {
     const { children, intl } = this.props;
 
@@ -36,14 +35,13 @@ class App extends React.Component {
           <div>
             <Header intl={intl} />
             {children}
-            <SnackbarWrapper formatMessage={intl.formatMessage}/>
-            <BrowserSupport/>
+            <SnackbarWrapper formatMessage={intl.formatMessage} />
+            <BrowserSupport />
           </div>
         </V0MuiThemeProvider>
       </MuiThemeProvider>
     );
   }
 }
-
 
 export default injectIntl(App);

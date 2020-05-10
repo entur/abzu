@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import SearchBoxEdit from './SearchBoxEditActions';
-import SearchBoxUsingTempGeo from './SearchBoxUsingTempGeo';
-import SearchBoxGeoWarning from './SearchBoxGeoWarning';
-import StopPlaceResultInfo from './StopPlaceResultInfo';
-import ParentStopPlaceResultInfo from './ParentStopPlaceResultInfo';
-import GroupResultInfo from './GroupResultInfo';
-import { Entities } from '../../models/Entities';
+import React from "react";
+import SearchBoxEdit from "./SearchBoxEditActions";
+import SearchBoxUsingTempGeo from "./SearchBoxUsingTempGeo";
+import SearchBoxGeoWarning from "./SearchBoxGeoWarning";
+import StopPlaceResultInfo from "./StopPlaceResultInfo";
+import ParentStopPlaceResultInfo from "./ParentStopPlaceResultInfo";
+import GroupResultInfo from "./GroupResultInfo";
+import { Entities } from "../../models/Entities";
 
 const SearchBoxDetails = ({
   text,
@@ -29,12 +28,12 @@ const SearchBoxDetails = ({
   formatMessage,
   handleChangeCoordinates,
   userSuppliedCoordinates,
-  canEdit
+  canEdit,
 }) => {
   const style = {
-    background: '#fefefe',
-    border: '1px dotted #add8e6',
-    padding: 5
+    background: "#fefefe",
+    border: "1px dotted #add8e6",
+    padding: 5,
   };
 
   const { entityType } = result;
@@ -52,12 +51,12 @@ const SearchBoxDetails = ({
     } else {
       ResultInfo = (
         <StopPlaceResultInfo result={result} formatMessage={formatMessage} />
-      )
+      );
     }
   } else if (entityType === Entities.GROUP_OF_STOP_PLACE) {
     ResultInfo = (
-      <GroupResultInfo result={result} formatMessage={formatMessage}/>
-    )
+      <GroupResultInfo result={result} formatMessage={formatMessage} />
+    );
   }
 
   return (

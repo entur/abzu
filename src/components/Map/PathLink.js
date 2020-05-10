@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import { Polyline, Popup, FeatureGroup } from 'react-leaflet';
-import { connect } from 'react-redux';
-import GenerateColor from '../../models/Colors';
-import { UserActions } from '../../actions';
-import { injectIntl } from 'react-intl';
-import WalkingDistanceDialog from '../Dialogs/WalkingDistanceDialog';
-import { getIn } from '../../utils';
+import React from "react";
+import { Polyline, Popup, FeatureGroup } from "react-leaflet";
+import { connect } from "react-redux";
+import GenerateColor from "../../models/Colors";
+import { UserActions } from "../../actions";
+import { injectIntl } from "react-intl";
+import WalkingDistanceDialog from "../Dialogs/WalkingDistanceDialog";
+import { getIn } from "../../utils";
 
 class PathLink extends React.Component {
   constructor(props) {
@@ -27,18 +27,18 @@ class PathLink extends React.Component {
     this.state = {
       openDialog: false,
       index: -1,
-      defaultEstimate: -0
+      defaultEstimate: -0,
     };
   }
   handleEditTimeEstimate(index, estimate) {
     if (estimate && !isNaN(estimate)) {
       this.props.dispatch(
-        UserActions.editPolylineTimeEstimate(index, parseInt(estimate)),
+        UserActions.editPolylineTimeEstimate(index, parseInt(estimate))
       );
 
       this.setState({
         defaultEstimate: estimate,
-        index: index
+        index: index,
       });
     }
 
@@ -56,15 +56,15 @@ class PathLink extends React.Component {
     const { openDialog } = this.state;
     const { formatMessage } = intl;
 
-    if (!isEnabled || (!pathLink || !pathLink.length)) return null;
+    if (!isEnabled || !pathLink || !pathLink.length) return null;
 
     const polylinePopupStyle = {
-      cursor: 'pointer',
-      width: '100%',
-      display: 'inline-block',
+      cursor: "pointer",
+      width: "100%",
+      display: "inline-block",
       marginTop: 10,
-      textAlign: 'center',
-      textDecoration: 'underline',
+      textAlign: "center",
+      textDecoration: "underline",
       fontWeight: 600,
     };
 
@@ -78,48 +78,54 @@ class PathLink extends React.Component {
       return (
         <Polyline
           weight={8}
-          key={'pl' + index}
+          key={"pl" + index}
           color={color}
           positions={position}
           opacity={isCompleted ? 1 : 0.8}
           dashArray="8,2"
         >
-          <Popup key={'pl' + index}>
+          <Popup key={"pl" + index}>
             <div>
               <div
                 style={{
                   fontWeight: 600,
-                  width: '100%',
-                  textAlign: 'center',
+                  width: "100%",
+                  textAlign: "center",
                   margin: 0,
                   color: color,
-                  display: 'inline-block',
+                  display: "inline-block",
                 }}
               >
-                {formatMessage({ id: 'pathLink' })} {index + 1}
+                {formatMessage({ id: "pathLink" })} {index + 1}
               </div>
               <div>
-                {polyline.distance
-                  ? <span
-                      style={{
-                        width: '100%',
-                        textAlign: 'center',
-                        marginTop: 10,
-                        fontWeight: 600,
-                        display: 'inline-block',
-                      }}
-                    >
-                     {parseFloat(polyline.distance.toFixed(2))} m
-                    </span>
-                  : null}
+                {polyline.distance ? (
+                  <span
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: 10,
+                      fontWeight: 600,
+                      display: "inline-block",
+                    }}
+                  >
+                    {parseFloat(polyline.distance.toFixed(2))} m
+                  </span>
+                ) : null}
                 <span
                   style={polylinePopupStyle}
-                  onClick={() => this.setState({ openDialog: true, defaultEstimate: polyline.estimate, index: index })}
+                  onClick={() =>
+                    this.setState({
+                      openDialog: true,
+                      defaultEstimate: polyline.estimate,
+                      index: index,
+                    })
+                  }
                 >
-                  {polyline.estimate}{' '}
+                  {polyline.estimate}{" "}
                   {Number(polyline.estimate) === 1
-                    ? formatMessage({ id: 'second' })
-                    : formatMessage({ id: 'seconds' })}
+                    ? formatMessage({ id: "second" })
+                    : formatMessage({ id: "seconds" })}
                 </span>
               </div>
             </div>
@@ -146,22 +152,22 @@ class PathLink extends React.Component {
   }
 }
 
-const arrayOfPolylinesFromPolyline = line => {
+const arrayOfPolylinesFromPolyline = (line) => {
   let arrayOfPolylines = [];
 
   let startPosition = getIn(line, [
-    'from',
-    'placeRef',
-    'addressablePlace',
-    'geometry',
-    'coordinates',
+    "from",
+    "placeRef",
+    "addressablePlace",
+    "geometry",
+    "coordinates",
   ]);
   let endPosition = getIn(line, [
-    'to',
-    'placeRef',
-    'addressablePlace',
-    'geometry',
-    'coordinates',
+    "to",
+    "placeRef",
+    "addressablePlace",
+    "geometry",
+    "coordinates",
   ]);
 
   if (startPosition) {
@@ -179,7 +185,7 @@ const arrayOfPolylinesFromPolyline = line => {
   return arrayOfPolylines;
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   pathLink: state.stopPlace.pathLink || [],
   isEnabled: state.stopPlace.enablePolylines,
 });

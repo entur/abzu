@@ -8,7 +8,7 @@
           "__typename": "EmbeddableMultilingualStringType"
         },
         "geometry": {
-          "coordinates": [ [5.435734, 60.260427] ]
+          "coordinates": [[5.435734, 60.260427]]
         },
         "stopPlaceType": "onstreetBus",
         "topographicPlace": {
@@ -30,7 +30,7 @@
           {
             "id": "NSR:Quay:1",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "1",
             "compassBearing": 344,
@@ -39,7 +39,7 @@
           {
             "id": "NSR:Quay:2",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -48,7 +48,7 @@
           {
             "id": "NSR:Quay:3",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -57,7 +57,7 @@
           {
             "id": "NSR:Quay:4",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -66,7 +66,7 @@
           {
             "id": "NSR:Quay:5",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -75,7 +75,7 @@
           {
             "id": "NSR:Quay:6",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -84,7 +84,7 @@
           {
             "id": "NSR:Quay:7",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -93,7 +93,7 @@
           {
             "id": "NSR:Quay:8",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -102,7 +102,7 @@
           {
             "id": "NSR:Quay:9",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,
@@ -111,7 +111,7 @@
           {
             "id": "NSR:Quay:10",
             "geometry": {
-              "coordinates": [ [5.435734, 60.260427] ]
+              "coordinates": [[5.435734, 60.260427]]
             },
             "publicCode": "2",
             "compassBearing": 164,

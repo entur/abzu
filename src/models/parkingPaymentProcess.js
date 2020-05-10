@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 const parkingPaymentProcess = Object.freeze({
-  free: 'free',
-  payAndDisplay: 'payAndDisplay',
-  payByPrepaidToken: 'payByPrepaidToken',
-  payByMobileDevice: 'payByMobileDevice'
+  free: "free",
+  payAndDisplay: "payAndDisplay",
+  payByPrepaidToken: "payByPrepaidToken",
+  payByMobileDevice: "payByMobileDevice",
 });
 
 export const parkingPaymentProcesses = Object.values(parkingPaymentProcess);

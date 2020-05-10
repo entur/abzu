@@ -12,17 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import MenuItem from 'material-ui/MenuItem';
-import MdTransfer from 'material-ui/svg-icons/maps/transfer-within-a-station';
-import weightTypes, { weightColors } from '../../models/weightTypes';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
+import MenuItem from "material-ui/MenuItem";
+import MdTransfer from "material-ui/svg-icons/maps/transfer-within-a-station";
+import weightTypes, { weightColors } from "../../models/weightTypes";
+import { injectIntl } from "react-intl";
 class WeightingPopover extends React.Component {
-
   render() {
-    const { handleClose, handleChange, open, anchorEl, intl: { formatMessage } } = this.props;
+    const {
+      handleClose,
+      handleChange,
+      open,
+      anchorEl,
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Popover
@@ -32,18 +36,18 @@ class WeightingPopover extends React.Component {
         animation={PopoverAnimationVertical}
         animated={true}
       >
-        {weightTypes.map((type, index) =>
+        {weightTypes.map((type, index) => (
           <MenuItem
-            key={'weightType' + index}
+            key={"weightType" + index}
             value={type}
-            style={{ padding: '0px 10px' }}
+            style={{ padding: "0px 10px" }}
             primaryText={formatMessage({ id: `weightTypes.${type}` })}
             onClick={() => {
               handleChange(type);
             }}
-            leftIcon={<MdTransfer color={weightColors[type] || 'grey'} />}
-          />,
-        )}
+            leftIcon={<MdTransfer color={weightColors[type] || "grey"} />}
+          />
+        ))}
       </Popover>
     );
   }

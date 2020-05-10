@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import { connect } from 'react-redux';
-import React from 'react';
-import LeafletMap from './LeafletMap';
-import { StopPlaceActions, UserActions } from '../../actions/';
-import { injectIntl } from 'react-intl';
-import { setDecimalPrecision } from '../../utils';
-import CoordinatesDialog from '../Dialogs/CoordinatesDialog';
-import CompassBearingDialog from '../Dialogs/CompassBearingDialog';
-import debounce from 'lodash.debounce';
-import { withApollo } from 'react-apollo';
-import { getNeighbourStops } from '../../graphql/Tiamat/actions';
-import Settings from '../../singletons/SettingsManager';
+import { connect } from "react-redux";
+import React from "react";
+import LeafletMap from "./LeafletMap";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { injectIntl } from "react-intl";
+import { setDecimalPrecision } from "../../utils";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import CompassBearingDialog from "../Dialogs/CompassBearingDialog";
+import debounce from "lodash.debounce";
+import { withApollo } from "react-apollo";
+import { getNeighbourStops } from "../../graphql/Tiamat/actions";
+import Settings from "../../singletons/SettingsManager";
 
 class EditStopMap extends React.Component {
   constructor(props) {
@@ -70,9 +69,9 @@ class EditStopMap extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.isCreatingPolylines) {
-      document.querySelector('.leaflet-container').style.cursor = 'crosshair';
+      document.querySelector(".leaflet-container").style.cursor = "crosshair";
     } else {
-      document.querySelector('.leaflet-container').style.cursor = '';
+      document.querySelector(".leaflet-container").style.cursor = "";
     }
 
     return true;
@@ -89,11 +88,7 @@ class EditStopMap extends React.Component {
 
     if (isQuay) {
       dispatch(
-        StopPlaceActions.changeElementPosition(
-          index,
-          'quay',
-          formattedPosition,
-        ),
+        StopPlaceActions.changeElementPosition(index, "quay", formattedPosition)
       );
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition));
@@ -119,7 +114,7 @@ class EditStopMap extends React.Component {
   handleChangeCoordinates(isQuay, markerIndex, position) {
     this.setState({
       coordinatesDialogOpen: true,
-      coordinates: position.join(','),
+      coordinates: position.join(","),
       coordinatesOwner: {
         isQuay: isQuay,
         markerIndex: markerIndex,
@@ -135,9 +130,9 @@ class EditStopMap extends React.Component {
       dispatch(
         StopPlaceActions.changeElementPosition(
           coordinatesOwner.markerIndex,
-          'quay',
-          position,
-        ),
+          "quay",
+          position
+        )
       );
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position));
@@ -155,8 +150,8 @@ class EditStopMap extends React.Component {
     this.props.dispatch(
       StopPlaceActions.changeQuayCompassBearing(
         compassBearingOwner,
-        compassBearing,
-      ),
+        compassBearing
+      )
     );
     this.setState({
       compassBearingDialogOpen: false,
@@ -216,7 +211,7 @@ class EditStopMap extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const currentStopPlace = state.stopPlace.current;
   const neighbourStops = state.stopPlace.neighbourStops;
 
@@ -227,8 +222,10 @@ const mapStateToProps = state => {
   }
 
   if (neighbourStops && neighbourStops.length) {
-    console.log({neighbourStops});
-    markers = markers.concat(neighbourStops.filter(m => !m.permanentlyTerminated));
+    console.log({ neighbourStops });
+    markers = markers.concat(
+      neighbourStops.filter((m) => !m.permanentlyTerminated)
+    );
   }
 
   return {

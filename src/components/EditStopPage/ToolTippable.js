@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class ToolTippable extends React.Component {
   constructor(props) {
@@ -21,19 +21,19 @@ class ToolTippable extends React.Component {
     this.state = {
       showToolTip: false,
       top: 0,
-      left: 0
+      left: 0,
     };
   }
 
   static propTypes = {
-    toolTipText: PropTypes.string.isRequired
+    toolTipText: PropTypes.string.isRequired,
   };
 
   handleShowToolTip() {
     const { showToolTip } = this.state;
     if (!showToolTip) {
       this.setState({
-        showToolTip: true
+        showToolTip: true,
       });
     }
   }
@@ -42,7 +42,7 @@ class ToolTippable extends React.Component {
     const { showToolTip } = this.state;
     if (showToolTip) {
       this.setState({
-        showToolTip: false
+        showToolTip: false,
       });
     }
   }
@@ -58,20 +58,19 @@ class ToolTippable extends React.Component {
       ) {
         this.setState({
           left,
-          top
+          top,
         });
       }
     }
   }
-
 
   render() {
     const { children, toolTipText, toolTipStyle } = this.props;
     const { showToolTip, top, left } = this.state;
 
     const defaultStyle = {
-      background: '#595959',
-      position: 'fixed',
+      background: "#595959",
+      position: "fixed",
       marginTop: 40,
       marginLeft: -20,
       top,
@@ -79,7 +78,7 @@ class ToolTippable extends React.Component {
       padding: 5,
       fontSize: 12,
       zIndex: 999999,
-      color: '#fff'
+      color: "#fff",
     };
 
     const appliedStyle = { ...defaultStyle, ...toolTipStyle };

@@ -12,35 +12,35 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { addLocaleData } from 'react-intl';
-import axios from 'axios';
+import { addLocaleData } from "react-intl";
+import axios from "axios";
 
-const localization = locale => {
-  const localStorageKey = 'ABZU::settings::locale';
+const localization = (locale) => {
+  const localStorageKey = "ABZU::settings::locale";
 
   return new Promise((resolve, reject) => {
     let preferredLocale = locale || localStorage.getItem(localStorageKey);
 
-    let queryParams = '';
+    let queryParams = "";
 
     if (preferredLocale) {
-      queryParams = '?locale=' + preferredLocale;
+      queryParams = "?locale=" + preferredLocale;
     }
 
     axios
-      .get(window.config.endpointBase + 'translation.json' + queryParams)
+      .get(window.config.endpointBase + "translation.json" + queryParams)
       .then(({ data }) => {
         const locale = data.locale;
         const messages = JSON.parse(data.messages);
 
-        var lang = require('react-intl/locale-data/' + locale);
+        var lang = require("react-intl/locale-data/" + locale);
         addLocaleData(lang);
 
         localStorage.setItem(localStorageKey, locale);
 
         resolve({ locale, messages });
       })
-      .catch(response => {
+      .catch((response) => {
         reject(response);
       });
   });

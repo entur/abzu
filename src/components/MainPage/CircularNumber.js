@@ -12,27 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
+import React from "react";
 
 export default ({ number, color }) => {
   let numberCircleStyle = {
-    display: 'block',
+    display: "block",
     height: 20,
     width: 20,
-    lineHeight: '25px',
+    lineHeight: "25px",
     borderRadius: 10,
-    backgroundColor: color || '#000',
-    color: '#fff',
-    textAlign: 'center',
+    backgroundColor: color || "#000",
+    color: "#fff",
+    textAlign: "center",
     fontSize: 12,
   };
 
-  const offSet = (!isNaN(number) && String(number).length === 2) ? -2 : 0;
+  const offSet = !isNaN(number) && String(number).length === 2 ? -2 : 0;
 
   return (
     <div style={numberCircleStyle}>
-      <div style={{marginLeft: offSet}}>{number}</div>
+      <div style={{ marginLeft: offSet }}>{number}</div>
     </div>
   );
 };

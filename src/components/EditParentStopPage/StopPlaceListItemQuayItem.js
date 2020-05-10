@@ -12,28 +12,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Divider from 'material-ui/Divider';
-import Code from '../EditStopPage/Code';
-import { injectIntl } from 'react-intl';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Divider from "material-ui/Divider";
+import Code from "../EditStopPage/Code";
+import { injectIntl } from "react-intl";
 
 class StopPlaceListItemQuayItem extends Component {
-
   render() {
     const { quay } = this.props;
     const { formatMessage } = this.props.intl;
-    const defaultValue = formatMessage({id: 'not_assigned'});
+    const defaultValue = formatMessage({ id: "not_assigned" });
 
     return (
       <div>
         <Divider />
-        <div style={{ display: 'flex', alignItems: 'center', padding: 8}}>
-          <Code type="publicCode" value={quay.publicCode} defaultValue={defaultValue}/>
-          <Code type="privateCode" value={quay.privateCode} defaultValue={defaultValue} />
-          <div style={{display: 'flex', alignItems: 'center', marginLeft: 5}}>
-            <div style={{ fontSize: '0.7em' }}>{quay.id}</div>
+        <div style={{ display: "flex", alignItems: "center", padding: 8 }}>
+          <Code
+            type="publicCode"
+            value={quay.publicCode}
+            defaultValue={defaultValue}
+          />
+          <Code
+            type="privateCode"
+            value={quay.privateCode}
+            defaultValue={defaultValue}
+          />
+          <div style={{ display: "flex", alignItems: "center", marginLeft: 5 }}>
+            <div style={{ fontSize: "0.7em" }}>{quay.id}</div>
           </div>
         </div>
         <Divider />

@@ -12,32 +12,31 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .publicCode {
-    margin-left: 5px;
-    background: #f5e527;
-    text-align: center;
-    border-radius: 50%;
-    color: #000;
-    height: 17px;
-    padding: 2px 3px 2px 3px;
-    text-align: center;
-    min-width: 16px;
-    cursor: pointer;
-    font-size: 12px;
-    display: inline-block;
+  margin-left: 5px;
+  background: #f5e527;
+  text-align: center;
+  border-radius: 50%;
+  color: #000;
+  height: 17px;
+  padding: 2px 3px 2px 3px;
+  text-align: center;
+  min-width: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-block;
 }
 
 .privateCode {
-    background: #777;
-    color: #fff;
-    margin-left: 5px;
-    text-align: center;
-    border-radius: 50%;
-    height: 17px;
-    padding: 2px 3px 2px 3px;
-    text-align: center;
-    min-width: 16px;
-    cursor: pointer;
-    font-size: 12px;
-    display: inline-block;
+  background: #777;
+  color: #fff;
+  margin-left: 5px;
+  text-align: center;
+  border-radius: 50%;
+  height: 17px;
+  padding: 2px 3px 2px 3px;
+  text-align: center;
+  min-width: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-block;
 }
-

@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import * as Limitations from '../models/Limitations';
-import { getIn } from '../utils';
+import * as Limitations from "../models/Limitations";
+import { getIn } from "../utils";
 
 const LimitationHelpers = {};
 
@@ -26,8 +25,8 @@ LimitationHelpers.updateCurrentWithLimitations = (current, payLoad) => {
   copy = setLimitationForEntity(copy, limitationType, value);
 
   if (copy.quays) {
-    copy.quays = copy.quays.map(quay =>
-      setLimitationForEntity(quay, limitationType, value),
+    copy.quays = copy.quays.map((quay) =>
+      setLimitationForEntity(quay, limitationType, value)
     );
   }
   return copy;
@@ -41,11 +40,11 @@ LimitationHelpers.updateCurrentWithQuayLimitations = (current, payLoad) => {
     copy.quays[index] = setLimitationForEntity(
       copy.quays[index],
       limitationType,
-      value,
+      value
     );
     const correctLimitationValue = getLimitationForStopBasedOnQuays(
       copy.quays,
-      limitationType,
+      limitationType
     );
     return setLimitationForEntity(copy, limitationType, correctLimitationValue);
   }
@@ -53,10 +52,10 @@ LimitationHelpers.updateCurrentWithQuayLimitations = (current, payLoad) => {
   return copy;
 };
 
-export const getAssessmentSetBasedOnQuays = quays => {
+export const getAssessmentSetBasedOnQuays = (quays) => {
   const limitations = {};
 
-  Object.keys(Limitations.defaultLimitations).forEach(limitation => {
+  Object.keys(Limitations.defaultLimitations).forEach((limitation) => {
     let value = getLimitationForStopBasedOnQuays(quays, limitation);
     limitations[limitation] = value;
   });
@@ -87,11 +86,11 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
   let trueCount = 0;
   let falseCount = 0;
 
-  quays.forEach(q => {
+  quays.forEach((q) => {
     let limitation = getIn(
       q,
-      ['accessibilityAssessment', 'limitations', limitationType],
-      null,
+      ["accessibilityAssessment", "limitations", limitationType],
+      null
     );
 
     if (limitation === Limitations.availableTypes.UNKNOWN) {

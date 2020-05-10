@@ -12,24 +12,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import { divIcon } from 'leaflet';
-import ReactDOM from 'react-dom/server';
-import CustomMarkerIcon from './CustomMarkerIcon';
-import { shallowCompareNeighbourMarker as shallowCompare } from './shallowCompare/';
-import PopupButton from './PopupButton';
-import { isLegalChildStopPlace } from '../../reducers/rolesReducerUtils';
+import React from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
+import ReactDOM from "react-dom/server";
+import CustomMarkerIcon from "./CustomMarkerIcon";
+import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
+import PopupButton from "./PopupButton";
+import { isLegalChildStopPlace } from "../../reducers/rolesReducerUtils";
 
 class NeighbourMarker extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      isAllowedToCreateFrom: false
-    }
+      isAllowedToCreateFrom: false,
+    };
   }
 
   static propTypes = {
@@ -43,7 +41,7 @@ class NeighbourMarker extends React.Component {
     handleHideQuaysForNeighbourStop: PropTypes.func,
     isShowingQuays: PropTypes.bool.isRequired,
     isEditingStop: PropTypes.bool.isRequired,
-    isEditingGroup: PropTypes.bool
+    isEditingGroup: PropTypes.bool,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -58,7 +56,7 @@ class NeighbourMarker extends React.Component {
       currentStopIsMultiModal,
       isMultimodal,
       disabled,
-      isEditingStop
+      isEditingStop,
     } = this.props;
 
     const { isAllowedToCreateFrom } = this.state;
@@ -116,20 +114,20 @@ class NeighbourMarker extends React.Component {
       html: divIconBodyMarkup,
       iconAnchor: [10, 20],
       iconSize: [20, 20],
-      popupAnchor: [5, 17]
+      popupAnchor: [5, 17],
     });
 
     let titleStyle = {
       fontWeight: 600,
-      color: '#41c0c4',
-      fontSize: '1.2em',
-      borderBottom: '1px dotted',
-      cursor: 'pointer'
+      color: "#41c0c4",
+      fontSize: "1.2em",
+      borderBottom: "1px dotted",
+      cursor: "pointer",
     };
 
     return (
       <Marker
-        key={'neighbour-stop' + id}
+        key={"neighbour-stop" + id}
         keyboard={false}
         icon={icon}
         position={position}
@@ -138,58 +136,64 @@ class NeighbourMarker extends React.Component {
         <Popup
           onOpen={() => {
             this.setState({
-              isAllowedToCreateFrom: isLegalChildStopPlace(stopPlace, tokenParsed)
-            })
+              isAllowedToCreateFrom: isLegalChildStopPlace(
+                stopPlace,
+                tokenParsed
+              ),
+            });
           }}
           autoPan={false}
         >
           <div>
             <div
               style={{
-                display: 'inline-block',
-                width: '100%',
+                display: "inline-block",
+                width: "100%",
                 marginBottom: 15,
-                textAlign: 'center'
+                textAlign: "center",
               }}
               onClick={handleOnClick}
             >
-              <div style={{ display: 'inline-block' }}>
+              <div style={{ display: "inline-block" }}>
                 <div>
                   <span style={titleStyle}>{name || id}</span>
-                  {hasExpired &&
+                  {hasExpired && (
                     <div
                       style={{
                         marginTop: 4,
                         fontWeight: 600,
-                        padding: '0px 5px',
-                        color: '#fff',
-                        background: 'rgb(187, 39, 28)'
+                        padding: "0px 5px",
+                        color: "#fff",
+                        background: "rgb(187, 39, 28)",
                       }}
                     >
                       {translations.expired}
-                    </div>}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <div
-              style={{ display: 'block', width: 'auto', textAlign: 'center' }}
+              style={{ display: "block", width: "auto", textAlign: "center" }}
             >
-              <span style={{ display: 'inline-block', textAlign: 'center' }}>
+              <span style={{ display: "inline-block", textAlign: "center" }}>
                 {position[0]}
               </span>
-              <span style={{ display: 'inline-block', marginLeft: 3 }}>
+              <span style={{ display: "inline-block", marginLeft: 3 }}>
                 {position[1]}
               </span>
             </div>
             <PopupButton
-              hidden={!isEditingGroup || isChildOfParent || !isAllowedToCreateFrom}
+              hidden={
+                !isEditingGroup || isChildOfParent || !isAllowedToCreateFrom
+              }
               onClick={() => handleAddToGroup(id)}
               label={translations.addToGroup}
             />
             <PopupButton
               hidden={isChildOfParent || !isAllowedToCreateFrom}
               onClick={() => {
-                handleCreateGroup(id)
+                handleCreateGroup(id);
               }}
               label={translations.createGOS}
             />
@@ -198,19 +202,26 @@ class NeighbourMarker extends React.Component {
               onClick={() => handleMergeStopPlace(id, name)}
               label={translations.mergeStopPlace}
             />
-            {isShowingQuays
-              ? <PopupButton
-                  hidden={isMultimodal}
-                  onClick={() => handleHideQuays(id)}
-                  label={translations.hideQuays}
-                />
-              : <PopupButton
-                  hidden={isMultimodal}
-                  onClick={() => handleShowQuays(id)}
-                  label={translations.showQuays}
-                />}
+            {isShowingQuays ? (
+              <PopupButton
+                hidden={isMultimodal}
+                onClick={() => handleHideQuays(id)}
+                label={translations.hideQuays}
+              />
+            ) : (
+              <PopupButton
+                hidden={isMultimodal}
+                onClick={() => handleShowQuays(id)}
+                label={translations.showQuays}
+              />
+            )}
             <PopupButton
-              hidden={isMultimodal || isChildOfParent || !isAllowedToCreateFrom || hasExpired}
+              hidden={
+                isMultimodal ||
+                isChildOfParent ||
+                !isAllowedToCreateFrom ||
+                hasExpired
+              }
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}
             />

@@ -12,18 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import {IntrospectionFragmentMatcher} from "react-apollo/index";
-import {createNetworkInterface} from "apollo-client/index";
+import { IntrospectionFragmentMatcher } from "react-apollo/index";
+import { createNetworkInterface } from "apollo-client/index";
 import ApolloClient from "apollo-client/index";
-import schema from './Tiamat/schema.json';
-import uuid from 'uuid/v4';
+import schema from "./Tiamat/schema.json";
+import uuid from "uuid/v4";
 
-const CLIENT_NAME = 'entur-abzu';
+const CLIENT_NAME = "entur-abzu";
 
 export const createTiamatClient = () => {
   const networkInterface = createNetworkInterface({
-    uri: window.config.tiamatBaseUrl
+    uri: window.config.tiamatBaseUrl,
   });
 
   networkInterface.use([
@@ -33,33 +32,33 @@ export const createTiamatClient = () => {
           req.options.headers = {};
         }
 
-        const token = localStorage.getItem('ABZU::jwt');
+        const token = localStorage.getItem("ABZU::jwt");
         req.options.headers.authorization = token ? `Bearer ${token}` : null;
-        req.options.headers['ET-Client-Name'] = CLIENT_NAME;
-        req.options.headers['X-Correlation-Id'] = uuid();
+        req.options.headers["ET-Client-Name"] = CLIENT_NAME;
+        req.options.headers["X-Correlation-Id"] = uuid();
 
         if (window.config.hostname) {
-          req.options.headers['ET-Client-Id'] = window.config.hostname;
+          req.options.headers["ET-Client-Id"] = window.config.hostname;
         }
 
         next();
-      }
-    }
+      },
+    },
   ]);
 
   const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: schema
+    introspectionQueryResultData: schema,
   });
 
   return new ApolloClient({
     networkInterface,
-    fragmentMatcher
+    fragmentMatcher,
   });
 };
 
 export const createOTPClient = () => {
   const networkInterface = createNetworkInterface({
-    uri: window.config.OTPUrl
+    uri: window.config.OTPUrl,
   });
 
   networkInterface.use([
@@ -69,15 +68,15 @@ export const createOTPClient = () => {
           req.options.headers = {};
         }
 
-        req.options.headers['ET-Client-Name'] = CLIENT_NAME;
+        req.options.headers["ET-Client-Name"] = CLIENT_NAME;
 
         if (window.config.hostname) {
-          req.options.headers['ET-Client-Id'] = window.config.hostname;
+          req.options.headers["ET-Client-Id"] = window.config.hostname;
         }
 
         next();
-      }
-    }
+      },
+    },
   ]);
 
   return new ApolloClient({

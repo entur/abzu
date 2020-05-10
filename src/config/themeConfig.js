@@ -12,25 +12,25 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import { getIn } from '../utils';
-import { getEnvColor as defaultEnvColor } from './themes/default/defaultTheme';
-import { getTheme as getDefaultTheme } from './themes/default/defaultTheme';
-import defaultLogo from './themes/default/logo.png';
-import { primary as defaultPrimary } from './themes/default/defaultTheme';
+import { getIn } from "../utils";
+import { getEnvColor as defaultEnvColor } from "./themes/default/defaultTheme";
+import { getTheme as getDefaultTheme } from "./themes/default/defaultTheme";
+import defaultLogo from "./themes/default/logo.png";
+import { primary as defaultPrimary } from "./themes/default/defaultTheme";
 import {
   primaryDarker as defaultPrimaryDarker,
-  darkColor as defaultDarkColor
-} from './themes/default/defaultTheme';
+  darkColor as defaultDarkColor,
+} from "./themes/default/defaultTheme";
 
 export const getTiamatEnv = () => {
-  return getIn(window, ['config', 'tiamatEnv'], 'development');
+  return getIn(window, ["config", "tiamatEnv"], "development");
 };
 
-export const getEnvColor = env => {
+export const getEnvColor = (env) => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').getEnvColor(
-      env
-    );
+    return require("./themes/" +
+      process.env.REACT_APP_THEME +
+      "/index.js").getEnvColor(env);
   } else {
     return defaultEnvColor(env);
   }
@@ -38,7 +38,9 @@ export const getEnvColor = env => {
 
 export const getTheme = () => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').getTheme();
+    return require("./themes/" +
+      process.env.REACT_APP_THEME +
+      "/index.js").getTheme();
   } else {
     return getDefaultTheme();
   }
@@ -46,7 +48,7 @@ export const getTheme = () => {
 
 export const getLogo = () => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/logo.png');
+    return require("./themes/" + process.env.REACT_APP_THEME + "/logo.png");
   } else {
     return defaultLogo;
   }
@@ -54,7 +56,8 @@ export const getLogo = () => {
 
 export const getPrimaryColor = () => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').primary;
+    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+      .primary;
   } else {
     return defaultPrimary;
   }
@@ -62,7 +65,8 @@ export const getPrimaryColor = () => {
 
 export const getDarkColor = () => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').darkColor;
+    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+      .darkColor;
   } else {
     return defaultDarkColor;
   }
@@ -70,7 +74,8 @@ export const getDarkColor = () => {
 
 export const getPrimaryDarkerColor = () => {
   if (process.env.REACT_APP_THEME) {
-    return require('./themes/' + process.env.REACT_APP_THEME + '/index.js').primaryDarker;
+    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+      .primaryDarker;
   } else {
     return defaultPrimaryDarker;
   }

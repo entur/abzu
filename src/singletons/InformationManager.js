@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-let instance = null;
-const key = 'ABZU::displayPathLinksHelp';
+let instance = null;
+const key = "ABZU::displayPathLinksHelp";
 
 class InformationManager {
   constructor() {
@@ -30,7 +30,7 @@ class InformationManager {
       }
       return true;
     } catch (e) {
-      console.error('Unable to fetch information from localStorage', e);
+      console.error("Unable to fetch information from localStorage", e);
     }
   }
 
@@ -40,10 +40,10 @@ class InformationManager {
         key,
         JSON.stringify({
           shouldBeDisplayed: shouldBeDisplayed,
-        }),
+        })
       );
     } catch (e) {
-      console.error('Unable to update information to localStorage', e);
+      console.error("Unable to update information to localStorage", e);
     }
   }
 }

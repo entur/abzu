@@ -12,54 +12,53 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { setDecimalPrecision, getIn, getInTransform } from '../utils/';
-import * as types from '../actions/Types';
-import moment from 'moment';
-import { hasExpired } from '../modelUtils/validBetween';
-import { getImportedId } from '../models/stopPlaceUtils';
+import { setDecimalPrecision, getIn, getInTransform } from "../utils/";
+import * as types from "../actions/Types";
+import moment from "moment";
+import { hasExpired } from "../modelUtils/validBetween";
+import { getImportedId } from "../models/stopPlaceUtils";
 import {
   getUniquePathLinks,
   calculateDistance,
-  calculateEstimate
-} from '../modelUtils/leafletUtils';
-import Quay from '../models/Quay';
-import StopPlace from '../models/StopPlace';
-import ParentStopPlace from '../models/ParentStopPlace';
-import GroupOfStopPlaces from '../models/GroupOfStopPlaces';
-import PathLink from '../models/PathLink';
-import Parking from '../models/Parking';
-import ChildOfParentStopPlace from '../models/ChildOfParentStopPlace';
-import { Entities } from '../models/Entities';
-import PARKING_TYPE from '../models/parkingType';
-import PARKING_VEHICLE_TYPE from '../models/parkingVehicleType';
+  calculateEstimate,
+} from "../modelUtils/leafletUtils";
+import Quay from "../models/Quay";
+import StopPlace from "../models/StopPlace";
+import ParentStopPlace from "../models/ParentStopPlace";
+import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
+import PathLink from "../models/PathLink";
+import Parking from "../models/Parking";
+import ChildOfParentStopPlace from "../models/ChildOfParentStopPlace";
+import { Entities } from "../models/Entities";
+import PARKING_TYPE from "../models/parkingType";
+import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
 
 const helpers = {};
 
 helpers.mapParkingToClient = (parkingObjs = []) =>
-  parkingObjs.map(parking => new Parking(parking).toClient());
+  parkingObjs.map((parking) => new Parking(parking).toClient());
 
 helpers.sortQuays = (current, attribute) => {
   let copy = JSON.parse(JSON.stringify(current));
   let quays = copy.quays;
   quays.sort((a, b) =>
-    (a[attribute] || 'ZZZZZ').localeCompare(b[attribute] || 'ZZZZZ', 'nb', {
+    (a[attribute] || "ZZZZZ").localeCompare(b[attribute] || "ZZZZZ", "nb", {
       numeric: true,
-      sensitivity: 'base'
+      sensitivity: "base",
     })
   );
   return {
     ...copy,
-    quays
+    quays,
   };
 };
 
 helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
   const newStopPlace = Object.assign({}, current);
-  const newChildren = payLoad.map(child => {
+  const newChildren = payLoad.map((child) => {
     const newChild = { ...child };
-    newChild.name = newChild.name && newChild.name.value
-      ? newChild.name.value
-      : current.name;
+    newChild.name =
+      newChild.name && newChild.name.value ? newChild.name.value : current.name;
     return newChild;
   });
   newStopPlace.children = newStopPlace.children.concat(newChildren);
@@ -85,14 +84,17 @@ helpers.updateStopWithTags = (current, payLoad) => {
 
 helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
-  copy.children = copy.children.filter(child => child.id !== payLoad);
+  copy.children = copy.children.filter((child) => child.id !== payLoad);
   return copy;
 };
 
 helpers.mapPathLinkToClient = (pathLinks = []) => {
   // NRP-1675, this is a temporary solution until pathLinks(stopPLaceId: $id) returns a unique list
-  let uniquePathLinks = getUniquePathLinks(pathLinks, pathLink => pathLink.id);
-  return uniquePathLinks.map(data => new PathLink(data).toClient());
+  let uniquePathLinks = getUniquePathLinks(
+    pathLinks,
+    (pathLink) => pathLink.id
+  );
+  return uniquePathLinks.map((data) => new PathLink(data).toClient());
 };
 
 helpers.updateEstimateForPathLink = (action, pathLink) => {
@@ -126,12 +128,12 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
           addressablePlace: {
             id: action.payLoad.id,
             geometry: {
-              type: 'Point',
-              coordinates: [action.payLoad.coordinates]
-            }
-          }
-        }
-      }
+              type: "Point",
+              coordinates: [action.payLoad.coordinates],
+            },
+          },
+        },
+      },
     };
     return pathLink.concat(newPathLink);
   }
@@ -145,7 +147,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     let startCoordinates = getIn(
       lastPathLink,
-      ['from', 'placeRef', 'addressablePlace', 'geometry', 'coordinates'],
+      ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
       null
     );
 
@@ -163,11 +165,11 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
         addressablePlace: {
           id: action.payLoad.id,
           geometry: {
-            type: 'Point',
-            coordinates: [action.payLoad.coordinates]
-          }
-        }
-      }
+            type: "Point",
+            coordinates: [action.payLoad.coordinates],
+          },
+        },
+      },
     };
 
     latlngCoordinates.push(action.payLoad.coordinates);
@@ -179,31 +181,31 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
   }
 };
 
-helpers.mapVersionToClientVersion = source => {
+helpers.mapVersionToClientVersion = (source) => {
   if (source) {
-    const transformer = value => moment(value).format('DD-MM-YYYY HH:mm');
+    const transformer = (value) => moment(value).format("DD-MM-YYYY HH:mm");
 
     return source
       .sort((a, b) => Number(b.version) - Number(a.version))
-      .map(data => {
+      .map((data) => {
         let version = {
           id: data.id,
           version: data.version,
-          name: getIn(data, ['name', 'value'], ''),
+          name: getIn(data, ["name", "value"], ""),
           fromDate: getInTransform(
             data.validBetween,
-            ['fromDate'],
-            '',
+            ["fromDate"],
+            "",
             transformer
           ),
           toDate: getInTransform(
             data.validBetween,
-            ['toDate'],
-            '',
+            ["toDate"],
+            "",
             transformer
           ),
           versionComment: data.versionComment,
-          changedBy: data.changedBy ? data.changedBy : ''
+          changedBy: data.changedBy ? data.changedBy : "",
         };
         return version;
       });
@@ -218,7 +220,7 @@ helpers.mapStopToClientStop = (
   userDefinedCoordinates = {},
   resourceId
 ) => {
-  if (stop.__typename === 'ParentStopPlace') {
+  if (stop.__typename === "ParentStopPlace") {
     if (resourceId && stop.id !== resourceId) {
       return new ChildOfParentStopPlace(
         stop,
@@ -250,17 +252,19 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
 };
 
 helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
-  const allStops = stops.map(stop => helpers.mapStopToClientStop(stop, false));
+  const allStops = stops.map((stop) =>
+    helpers.mapStopToClientStop(stop, false)
+  );
   let extractedChildren = [];
   const currentStopPlaceId = currentStopPlace ? currentStopPlace.id : null;
 
   // extract all children of potential parent stop places
-  allStops.forEach(stop => {
+  allStops.forEach((stop) => {
     if (stop.isParent && stop.children) {
       const children = stop.children
         // a parent stop place may contain active stop as a child, i.e. sibling
-        .filter(child => child.id !== currentStopPlaceId)
-        .map(child => {
+        .filter((child) => child.id !== currentStopPlaceId)
+        .map((child) => {
           child.name = child.name || stop.name;
           child.isChildOfParent = true;
           return child;
@@ -271,41 +275,41 @@ helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
   return allStops.concat(extractedChildren);
 };
 
-helpers.mapSearchResultToStopPlaces = stopPlaces => {
-  return stopPlaces.map(stop => {
-    if (stop.__typename === 'StopPlace') {
+helpers.mapSearchResultToStopPlaces = (stopPlaces) => {
+  return stopPlaces.map((stop) => {
+    if (stop.__typename === "StopPlace") {
       return helpers.mapSearchResultStopPlace(stop);
-    } else if (stop.__typename === 'ParentStopPlace') {
+    } else if (stop.__typename === "ParentStopPlace") {
       return helpers.mapSearchResultParentStopPlace(stop);
     }
     return undefined;
   });
 };
 
-helpers.mapSearchResultStopPlace = stop => {
+helpers.mapSearchResultStopPlace = (stop) => {
   let searchResult = new StopPlace(stop, true).toClient();
   searchResult.quays = stop.quays;
   return searchResult;
 };
 
-helpers.mapSearchResultatGroup = groupsOfStopPlaces => {
-  return groupsOfStopPlaces.map(group =>
+helpers.mapSearchResultatGroup = (groupsOfStopPlaces) => {
+  return groupsOfStopPlaces.map((group) =>
     new GroupOfStopPlaces(group).toClient()
   );
 };
 
-helpers.mapSearchResultParentStopPlace = stop => {
+helpers.mapSearchResultParentStopPlace = (stop) => {
   try {
     // TODO: Refactor this to work with model class ParentStopPlace
     let parentTopographicPlace = getIn(
       stop,
-      ['topographicPlace', 'parentTopographicPlace', 'name', 'value'],
-      ''
+      ["topographicPlace", "parentTopographicPlace", "name", "value"],
+      ""
     );
     let topographicPlace = getIn(
       stop,
-      ['topographicPlace', 'name', 'value'],
-      ''
+      ["topographicPlace", "name", "value"],
+      ""
     );
 
     let clientParentStop = {
@@ -320,12 +324,13 @@ helpers.mapSearchResultParentStopPlace = stop => {
       parentTopographicPlace: parentTopographicPlace,
       isActive: false,
       children: stop.children
-        .map(childStop => updateObjectWithLocation(childStop))
-        .map(childStop => {
+        .map((childStop) => updateObjectWithLocation(childStop))
+        .map((childStop) => {
           let newChildStop = Object.assign({}, childStop);
-          newChildStop.name = newChildStop.name && newChildStop.name.value
-            ? childStop.name.value
-            : stop.name.value;
+          newChildStop.name =
+            newChildStop.name && newChildStop.name.value
+              ? childStop.name.value
+              : stop.name.value;
           return newChildStop;
         })
         .sort((a, b) => b.id.localeCompare(a.id)),
@@ -334,13 +339,13 @@ helpers.mapSearchResultParentStopPlace = stop => {
       hasExpired: hasExpired(stop.validBetween),
       tags: stop.tags,
       geometry: stop.geometry,
-      entityType: Entities.STOP_PLACE
+      entityType: Entities.STOP_PLACE,
     };
 
     if (stop.groups && stop.groups.length) {
-      clientParentStop.groups = stop.groups.map(group => {
+      clientParentStop.groups = stop.groups.map((group) => {
         let newGroup = { ...group };
-        newGroup.name = group.name && group.name.value ? group.name.value : '';
+        newGroup.name = group.name && group.name.value ? group.name.value : "";
         return newGroup;
       });
       clientParentStop.belongsToGroup = true;
@@ -353,27 +358,27 @@ helpers.mapSearchResultParentStopPlace = stop => {
 
     return clientParentStop;
   } catch (ex) {
-    console.error('Ex', ex);
+    console.error("Ex", ex);
   }
 };
 
-const updateObjectWithLocation = stop => {
+const updateObjectWithLocation = (stop) => {
   let newStop = Object.assign({}, stop);
   if (stop.geometry && stop.geometry.coordinates) {
     let coordinates = stop.geometry.coordinates[0].slice();
     newStop.location = [
       setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6)
+      setDecimalPrecision(coordinates[0], 6),
     ];
     return newStop;
   }
   return stop;
 };
 
-helpers.mapReportSearchResultsToClientStop = data => {
+helpers.mapReportSearchResultsToClientStop = (data) => {
   let result = [];
   let stops = data.slice();
-  stops.forEach(stop => {
+  stops.forEach((stop) => {
     let stopPlace = helpers.mapStopToClientStop(stop, true, null, null, null);
 
     if (!stopPlace.quays) {
@@ -385,9 +390,9 @@ helpers.mapReportSearchResultsToClientStop = data => {
     }
 
     if (stopPlace.isParent && stopPlace.children) {
-      stopPlace.modesFromChildren = stopPlace.children.map(child => ({
+      stopPlace.modesFromChildren = stopPlace.children.map((child) => ({
         submode: child.submode,
-        stopPlaceType: child.stopPlaceType
+        stopPlaceType: child.stopPlaceType,
       }));
       result = result.concat(stopPlace, stopPlace.children);
     } else {
@@ -398,13 +403,13 @@ helpers.mapReportSearchResultsToClientStop = data => {
   return result;
 };
 
-helpers.createNewStopFromLocation = location => ({
+helpers.createNewStopFromLocation = (location) => ({
   id: null,
-  name: '',
-  description: '',
-  location: location.map(pos => setDecimalPrecision(pos, 6)),
+  name: "",
+  description: "",
+  location: location.map((pos) => setDecimalPrecision(pos, 6)),
   stopPlaceType: null,
-  topographicPlace: '',
+  topographicPlace: "",
   tariffZones: [],
   quays: [],
   entrances: [],
@@ -412,54 +417,54 @@ helpers.createNewStopFromLocation = location => ({
   parking: [],
   isNewStop: true,
   isActive: true,
-  keyValues: []
+  keyValues: [],
 });
 
-helpers.createNewParentStopFromLocation = location => ({
+helpers.createNewParentStopFromLocation = (location) => ({
   id: null,
-  name: '',
-  description: '',
-  location: location.map(pos => setDecimalPrecision(pos, 6)),
+  name: "",
+  description: "",
+  location: location.map((pos) => setDecimalPrecision(pos, 6)),
   isParent: true,
   children: [],
   isNewStop: true,
   isActive: true,
-  keyValues: []
+  keyValues: [],
 });
 
-helpers.getCenterPosition = geometry => {
+helpers.getCenterPosition = (geometry) => {
   if (!geometry) return null;
   return [
     setDecimalPrecision(geometry.coordinates[0][1], 6),
-    setDecimalPrecision(geometry.coordinates[0][0], 6)
+    setDecimalPrecision(geometry.coordinates[0][0], 6),
   ];
 };
 
 helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
   const { index, type } = origin;
 
-  if (type === 'stopPlace') {
+  if (type === "stopPlace") {
     return Object.assign({
       ...original,
-      importedId: key === 'imported-id' ? newValues : original.importedId,
-      keyValues: original.keyValues.map(kv => {
+      importedId: key === "imported-id" ? newValues : original.importedId,
+      keyValues: original.keyValues.map((kv) => {
         if (kv.key === key) {
           kv.values = newValues;
         }
         return kv;
-      })
+      }),
     });
   }
 
-  if (type === 'quay') {
+  if (type === "quay") {
     return Object.assign({
       ...original,
       quays: original.quays.map((quay, quayIndex) => {
         if (quayIndex === index) {
-          if (key === 'imported-id') {
+          if (key === "imported-id") {
             quay.importedId = newValues;
           }
-          quay.keyValues = quay.keyValues.map(kv => {
+          quay.keyValues = quay.keyValues.map((kv) => {
             if (kv.key === key) {
               kv.values = newValues;
             }
@@ -467,7 +472,7 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
           });
         }
         return quay;
-      })
+      }),
     });
   }
 };
@@ -475,26 +480,26 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
 helpers.deleteKeyValuesByKey = (original, key, origin) => {
   const { index, type } = origin;
 
-  if (type === 'stopPlace') {
+  if (type === "stopPlace") {
     return Object.assign({
       ...original,
-      importedId: key === 'imported-id' ? [] : original.importedId,
-      keyValues: original.keyValues.filter(kv => kv.key !== key)
+      importedId: key === "imported-id" ? [] : original.importedId,
+      keyValues: original.keyValues.filter((kv) => kv.key !== key),
     });
   }
 
-  if (type === 'quay') {
+  if (type === "quay") {
     return Object.assign({
       ...original,
       quays: original.quays.map((quay, quayIndex) => {
         if (quayIndex === index) {
-          if (key === 'imported-id') {
+          if (key === "imported-id") {
             quay.importedId = [];
           }
-          quay.keyValues = quay.keyValues.filter(kv => kv.key !== key);
+          quay.keyValues = quay.keyValues.filter((kv) => kv.key !== key);
         }
         return quay;
-      })
+      }),
     });
   }
 };
@@ -502,28 +507,28 @@ helpers.deleteKeyValuesByKey = (original, key, origin) => {
 helpers.createKeyValuesPair = (original, key, newValues, origin) => {
   const { index, type } = origin;
 
-  if (type === 'stopPlace') {
+  if (type === "stopPlace") {
     return Object.assign({
       ...original,
       keyValues: (original.keyValues || []).concat({
         key,
-        values: newValues
-      })
+        values: newValues,
+      }),
     });
   }
 
-  if (type === 'quay') {
+  if (type === "quay") {
     return Object.assign({
       ...original,
       quays: original.quays.map((quay, quayIndex) => {
         if (quayIndex === index) {
           quay.keyValues = (quay.keyValues || []).concat({
             key,
-            values: newValues
+            values: newValues,
           });
         }
         return quay;
-      })
+      }),
     });
   }
 };
@@ -531,7 +536,7 @@ helpers.createKeyValuesPair = (original, key, newValues, origin) => {
 helpers.updateCurrentStopWithType = (current, type) => {
   return Object.assign({}, current, {
     stopPlaceType: type,
-    submode: null
+    submode: null,
   });
 };
 
@@ -544,13 +549,13 @@ helpers.updateCurrentStopWithSubMode = (
   return Object.assign({}, current, {
     stopPlaceType,
     transportMode,
-    submode
+    submode,
   });
 };
 
 helpers.updateCurrentStopWithPosition = (current, location) => {
   return Object.assign({}, current, {
-    location: location
+    location: location,
   });
 };
 
@@ -560,20 +565,20 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
 
   const newElement = {
     location: position.slice(),
-    name: ''
+    name: "",
   };
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays = copy.quays.concat({
         ...newElement,
-        keyValues: []
+        keyValues: [],
       });
       break;
-    case 'entrance':
+    case "entrance":
       copy.entrances = copy.entrances.concat(newElement);
       break;
-    case 'pathJunction':
+    case "pathJunction":
       copy.pathJunctions = copy.pathJunctions.concat(newElement);
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
@@ -583,7 +588,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         parkingType: type,
         parkingVehicleTypes: [PARKING_VEHICLE_TYPE.CAR],
         hasExpired: false,
-        validBetween: null
+        validBetween: null,
       });
       break;
     case PARKING_TYPE.BIKE_PARKING:
@@ -593,12 +598,12 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         parkingType: type,
         parkingVehicleTypes: [PARKING_VEHICLE_TYPE.PEDAL_CYCLE],
         hasExpired: false,
-        validBetween: null
+        validBetween: null,
       });
       break;
 
     default:
-      throw new Error('element not supported', type);
+      throw new Error("element not supported", type);
   }
   return copy;
 };
@@ -608,20 +613,20 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays = removeElementByIndex(copy.quays, index);
       break;
-    case 'entrance':
+    case "entrance":
       copy.entrances = removeElementByIndex(copy.entrances, index);
       break;
-    case 'pathJunction':
+    case "pathJunction":
       copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index);
       break;
-    case 'parking':
+    case "parking":
       copy.parking = removeElementByIndex(copy.parking, index);
       break;
     default:
-      throw new Error('element not supported', type);
+      throw new Error("element not supported", type);
   }
   return copy;
 };
@@ -631,28 +636,28 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        location: position
+        location: position,
       });
       break;
-    case 'entrance':
+    case "entrance":
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        location: position
+        location: position,
       });
       break;
-    case 'pathJunction':
+    case "pathJunction":
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        location: position
+        location: position,
       });
       break;
-    case 'parking':
+    case "parking":
       copy.parking[index] = Object.assign({}, copy.parking[index], {
-        location: position
+        location: position,
       });
       break;
     default:
-      console.log('element not supported', type);
+      console.log("element not supported", type);
   }
 
   return copy;
@@ -663,23 +668,23 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        publicCode: name
+        publicCode: name,
       });
       break;
-    case 'entrance':
+    case "entrance":
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        name: name
+        name: name,
       });
       break;
-    case 'pathJunction':
+    case "pathJunction":
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        name: name
+        name: name,
       });
       break;
     default:
-      throw new Error('element not supported', type);
+      throw new Error("element not supported", type);
   }
   return copy;
 };
@@ -689,13 +694,13 @@ helpers.updateCurrentWithPrivateCode = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        privateCode: name
+        privateCode: name,
       });
       break;
     default:
-      throw new Error('element not supported', type);
+      throw new Error("element not supported", type);
   }
   return copy;
 };
@@ -706,7 +711,7 @@ helpers.updateCompassBearing = (current, payLoad) => {
   quaysCopy[index].compassBearing = compassBearing;
   return {
     ...current,
-    quays: quaysCopy
+    quays: quaysCopy,
   };
 };
 
@@ -715,23 +720,23 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
-    case 'quay':
+    case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        description: description
+        description: description,
       });
       break;
-    case 'entrance':
+    case "entrance":
       copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        description: description
+        description: description,
       });
       break;
-    case 'pathJunction':
+    case "pathJunction":
       copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        description: description
+        description: description,
       });
       break;
     default:
-      throw new Error('element not supported', type);
+      throw new Error("element not supported", type);
   }
   return copy;
 };
@@ -749,13 +754,13 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
     stopPlace = rootStopPlace;
   } else if (rootStopPlace.children) {
     // find child with resourceId and its quays
-    stopPlace = rootStopPlace.children.find(stop => stop.id === resourceId);
+    stopPlace = rootStopPlace.children.find((stop) => stop.id === resourceId);
   } else {
-    console.info('StopPlace is not found, ignoring getting quays');
+    console.info("StopPlace is not found, ignoring getting quays");
     return original;
   }
 
-  neighbourQuaysMap[stopPlace.id] = stopPlace.quays.map(quay => {
+  neighbourQuaysMap[stopPlace.id] = stopPlace.quays.map((quay) => {
     let clientQuay = {};
 
     clientQuay.id = quay.id;
@@ -764,7 +769,7 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
       let coordinates = quay.geometry.coordinates[0].slice();
       clientQuay.location = [
         setDecimalPrecision(coordinates[1], 6),
-        setDecimalPrecision(coordinates[0], 6)
+        setDecimalPrecision(coordinates[0], 6),
       ];
     }
 
@@ -793,8 +798,8 @@ helpers.addAltName = (original, payLoad) => {
     nameType: nameType,
     name: {
       lang: lang,
-      value: value
-    }
+      value: value,
+    },
   });
   return copy;
 };
@@ -810,8 +815,8 @@ helpers.editAltName = (original, payLoad) => {
     nameType: nameType,
     name: {
       lang: lang,
-      value: value
-    }
+      value: value,
+    },
   };
   return copy;
 };
@@ -828,42 +833,49 @@ helpers.changeParkingLayout = (original, payLoad) => {
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].parkingLayout = parkingLayout;
   return copy;
-}
+};
 
 helpers.changeParkingPaymentProcess = (original, payLoad) => {
   const { index, parkingPaymentProcess } = payLoad;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].parkingPaymentProcess = parkingPaymentProcess;
   return copy;
-}
+};
 
 helpers.changeParkingRechargingAvailable = (original, payload) => {
   const { index, rechargingAvailable } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].rechargingAvailable = rechargingAvailable;
   return copy;
-}
+};
 
 helpers.changeParkingNumberOfSpaces = (original, payload) => {
   const { index, numberOfSpaces } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].numberOfSpaces = numberOfSpaces;
   return copy;
-}
+};
 
 helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
   const { index, numberOfSpacesWithRechargePoint } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesWithRechargePoint = numberOfSpacesWithRechargePoint;
+  copy.parking[
+    index
+  ].numberOfSpacesWithRechargePoint = numberOfSpacesWithRechargePoint;
   return copy;
-}
+};
 
-helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (original, payload) => {
+helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
+  original,
+  payload
+) => {
   const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[index].numberOfSpacesForRegisteredDisabledUserType = numberOfSpacesForRegisteredDisabledUserType;
+  copy.parking[
+    index
+  ].numberOfSpacesForRegisteredDisabledUserType = numberOfSpacesForRegisteredDisabledUserType;
   return copy;
-}
+};
 
 helpers.changeParkingTotalCapacity = (original, payLoad) => {
   const { index, totalCapacity } = payLoad;
@@ -893,20 +905,20 @@ helpers.addTariffZone = (current, tariffZone) => {
   return Object.assign({}, current, {
     tariffZones: current.tariffZones.concat({
       id: tariffZone.id,
-      name: tariffZone.name.value
-    })
+      name: tariffZone.name.value,
+    }),
   });
 };
 
 helpers.removeTariffZone = (current, tariffZoneId) => {
   return Object.assign({}, current, {
-    tariffZones: current.tariffZones.filter(tz => tz.id !== tariffZoneId)
+    tariffZones: current.tariffZones.filter((tz) => tz.id !== tariffZoneId),
   });
 };
 
 const removeElementByIndex = (list, index) => [
   ...list.slice(0, index),
-  ...list.slice(index + 1)
+  ...list.slice(index + 1),
 ];
 
 export default helpers;

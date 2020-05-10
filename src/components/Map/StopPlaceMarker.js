@@ -12,17 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import { divIcon } from 'leaflet';
-import ReactDOM from 'react-dom/server';
-import CustomMarkerIcon from './CustomMarkerIcon';
-import { shallowCompareStopPlaceMarker as shallowCompare } from './shallowCompare/';
-import PopupButton from '../Map/PopupButton';
+import React from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
+import ReactDOM from "react-dom/server";
+import CustomMarkerIcon from "./CustomMarkerIcon";
+import { shallowCompareStopPlaceMarker as shallowCompare } from "./shallowCompare/";
+import PopupButton from "../Map/PopupButton";
 
 class StopPlaceMarker extends React.Component {
-
   static propTypes = {
     position: PropTypes.arrayOf(Number),
     handleDragEnd: PropTypes.func.isRequired,
@@ -34,7 +33,7 @@ class StopPlaceMarker extends React.Component {
     translations: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
     id: PropTypes.string,
-    isEditingStop: PropTypes.bool.isRequired
+    isEditingStop: PropTypes.bool.isRequired,
   };
 
   shouldComponentUpdate(nextProps) {
@@ -56,7 +55,7 @@ class StopPlaceMarker extends React.Component {
     active,
     isMultimodal,
     isMultimodalChild,
-    hasExpired
+    hasExpired,
   }) {
     let divIconBody = (
       <CustomMarkerIcon
@@ -76,7 +75,7 @@ class StopPlaceMarker extends React.Component {
       html: divIconBodyMarkup,
       iconAnchor: [10, 20],
       iconSize: [20, 20],
-      popupAnchor: [0, 17]
+      popupAnchor: [0, 17],
     });
   }
 
@@ -116,60 +115,59 @@ class StopPlaceMarker extends React.Component {
 
     return (
       <Marker
-        key={'stop-place' + id}
+        key={"stop-place" + id}
         keyboard={false}
         icon={icon}
         position={markerLocation}
         zIndexOffset={isMultimodal ? 150 : 100}
-        onDragend={event => {
+        onDragend={(event) => {
           handleDragEnd(false, index, event);
         }}
         draggable={draggable}
       >
-        <Popup
-          autoPan={false}
-        >
+        <Popup autoPan={false}>
           <div>
             <div
               style={{
                 fontWeight: 600,
-                color: '#41c0c4',
-                fontSize: '1.2em',
-                cursor: 'pointer',
-                display: 'inline-block',
-                width: '100%',
+                color: "#41c0c4",
+                fontSize: "1.2em",
+                cursor: "pointer",
+                display: "inline-block",
+                width: "100%",
                 marginBottom: 15,
-                textAlign: 'center'
+                textAlign: "center",
               }}
               onClick={handleOnClick}
             >
-              <div style={{ display: 'inline-block' }}>{name}</div>
+              <div style={{ display: "inline-block" }}>{name}</div>
             </div>
             <div
               style={{
-                display: 'block',
-                cursor: 'pointer',
-                width: 'auto',
-                textAlign: 'center'
+                display: "block",
+                cursor: "pointer",
+                width: "auto",
+                textAlign: "center",
               }}
               onClick={() =>
                 handleChangeCoordinates &&
-                handleChangeCoordinates(false, index, markerLocation)}
+                handleChangeCoordinates(false, index, markerLocation)
+              }
             >
               <span
                 style={{
-                  display: 'inline-block',
-                  textAlign: 'center',
-                  borderBottom: '1px dotted black'
+                  display: "inline-block",
+                  textAlign: "center",
+                  borderBottom: "1px dotted black",
                 }}
               >
                 {markerLocation[0]}
               </span>
               <span
                 style={{
-                  display: 'inline-block',
+                  display: "inline-block",
                   marginLeft: 3,
-                  borderBottom: '1px dotted black'
+                  borderBottom: "1px dotted black",
                 }}
               >
                 {markerLocation[1]}
@@ -190,14 +188,15 @@ class StopPlaceMarker extends React.Component {
             <PopupButton
               hidden={!isMultimodalChild}
               onClick={() =>
-                isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)}
+                isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)
+              }
               label={
                 isShowingQuays ? translations.hideQuays : translations.showQuays
               }
             />
             <PopupButton
               hidden={!isEditingGroup || !isGroupMember}
-              labelStyle={{ background: 'rgb(152,51,47)' }}
+              labelStyle={{ background: "rgb(152,51,47)" }}
               onClick={() => this.props.removeFromGroup(id)}
               label={translations.removeFromGroup}
             />

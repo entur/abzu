@@ -12,35 +12,32 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from '../actions/Types';
+import * as types from "../actions/Types";
 import {
   getAllowanceInfoForGroup,
   getAllowanceSearchInfo,
   getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
-  getLatLng
-} from './rolesReducerUtils';
+  getLatLng,
+} from "./rolesReducerUtils";
 
 export const initialState = {};
 
 const rolesReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.APOLLO_QUERY_RESULT:
-      if (action.operationName === 'stopPlaceAndPathLink') {
+      if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoForStop(
-            action,
-            state.kc.tokenParsed
-          )
+          allowanceInfo: getAllowanceInfoForStop(action, state.kc.tokenParsed),
         });
-      } else if (action.operationName === 'getGroupOfStopPlaces') {
+      } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
           kc: state.kc,
           allowanceInfo: getAllowanceInfoForGroup(
             action.result,
             state.kc.tokenParsed
-          )
+          ),
         });
       } else {
         return state;
@@ -56,8 +53,8 @@ const rolesReducer = (state = initialState, action) => {
         ),
         allowanceInfo: {
           ...state.allowanceInfo,
-          ...getAllowanceInfoFromPosition(action.payLoad.location)
-        }
+          ...getAllowanceInfoFromPosition(action.payLoad.location),
+        },
       });
 
     case types.SETUP_NEW_GROUP:
@@ -67,7 +64,7 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payLoad.data.stopPlace[0]),
           state.kc.tokenParsed
-        )
+        ),
       });
 
     case types.USE_NEW_STOP_AS_CURRENT:
@@ -77,7 +74,7 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payLoad,
           state.kc.tokenParsed
-        )
+        ),
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
@@ -88,7 +85,7 @@ const rolesReducer = (state = initialState, action) => {
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
           state.kc.tokenParsed
-        )
+        ),
       });
 
     default:

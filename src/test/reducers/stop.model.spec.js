@@ -12,78 +12,75 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { stopPlaceReducer } from "./../../reducers/";
+import stopPlaceMock from "./json/stopPlace.json";
+import stopPlaceMock10Quays from "./json/stopPlaceWith10Quays.json";
+import clientStop from "./json/clientStop.json";
+import QueryVariablesMapper from "../../modelUtils/mapToQueryVariables";
+import { hasExpired } from "../../modelUtils/validBetween";
 
-import { stopPlaceReducer } from './../../reducers/';
-import stopPlaceMock from './json/stopPlace.json';
-import stopPlaceMock10Quays from './json/stopPlaceWith10Quays.json';
-import clientStop from './json/clientStop.json';
-import QueryVariablesMapper from '../../modelUtils/mapToQueryVariables';
-import { hasExpired } from '../../modelUtils/validBetween';
-
-describe('Model: map format from server to expected client model', () => {
-
-  test('should map GraphQL response to client model for StopPlace', () => {
+describe("Model: map format from server to expected client model", () => {
+  test("should map GraphQL response to client model for StopPlace", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceMock,
-      operationName: 'stopPlace'
+      operationName: "stopPlace",
     };
     const state = stopPlaceReducer({}, action);
 
     expect(state.current).toMatchSnapshot();
   });
 
-  test('should map parking to schema validated query variables', () => {
+  test("should map parking to schema validated query variables", () => {
     const parking = [
       {
-        name: 'park&ride example',
+        name: "park&ride example",
         location: [63.207698, 11.088595],
-        totalCapacity: '100',
-        parkingVehicleTypes: ['car'],
+        totalCapacity: "100",
+        parkingVehicleTypes: ["car"],
         validBetween: null,
-      }
+      },
     ];
-
 
     let result = QueryVariablesMapper.mapParkingToVariables(
       parking,
-      'NSR:StopPlace:1'
+      "NSR:StopPlace:1"
     );
 
     expect(result).toMatchSnapshot();
   });
 
-  test('should map client stop to schema correctly', () => {
+  test("should map client stop to schema correctly", () => {
     const schemaValidStop = QueryVariablesMapper.mapStopToVariables(clientStop);
     expect(schemaValidStop).toMatchSnapshot();
   });
 });
 
-describe('Changes correct properties', () => {
+describe("Changes correct properties", () => {
   var state = {};
 
-  beforeAll(done => {
+  beforeAll((done) => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceMock10Quays,
-      operationName: 'stopPlace'
+      operationName: "stopPlace",
     };
     state = stopPlaceReducer({}, action);
     expect(state.current.quays.length).toEqual(10);
     done();
   });
 
-  test('should change property of correct quay', () => {
+  test("should change property of correct quay", () => {
     for (let quayIndex = 0; quayIndex < 10; quayIndex++) {
       const newPublicCode = `new public code ${quayIndex}`;
 
       const changePublicCode = {
-        type: 'CHANGE_PUBLIC_CODE_NAME',
+        type: "CHANGE_PUBLIC_CODE_NAME",
         payLoad: {
-          type: 'quay',
+          type: "quay",
           name: newPublicCode,
-          index: quayIndex
-        }
+          index: quayIndex,
+        },
       };
 
       state = stopPlaceReducer(state, changePublicCode);
@@ -100,10 +97,10 @@ describe('Changes correct properties', () => {
     }
   });
 
-  test('Should correctly determine if a stop has expired or not based on validBetween', () => {
+  test("Should correctly determine if a stop has expired or not based on validBetween", () => {
     const expiredDate = {
-      fromDate: '2017-05-31T11:03:01.770+0200',
-      toDate: '2017-05-31T11:03:01.842+0200'
+      fromDate: "2017-05-31T11:03:01.770+0200",
+      toDate: "2017-05-31T11:03:01.842+0200",
     };
 
     const hasStopExpired = hasExpired(expiredDate);
@@ -111,8 +108,8 @@ describe('Changes correct properties', () => {
     expect(hasStopExpired).toEqual(true);
 
     const validDate = {
-      fromDate: '2017-05-31T11:03:01.770+0200',
-      toDate: null
+      fromDate: "2017-05-31T11:03:01.770+0200",
+      toDate: null,
     };
 
     const hasStopExpired2 = hasExpired(validDate);

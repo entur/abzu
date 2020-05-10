@@ -12,13 +12,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .editStopSideBar {
-    position: absolute;
-    border: 1px solid #777;
-    top: 95px;
-    z-index: 1400;
-    left: 416px;
-    background: #fff;
-    -moz-box-shadow:    1px 1px 1px 1px #ccc;
-    -webkit-box-shadow: 1px 1px 1px 1px #ccc;
-    box-shadow:         1px 1px 1px 1px #ccc;
+  position: absolute;
+  border: 1px solid #777;
+  top: 95px;
+  z-index: 1400;
+  left: 416px;
+  background: #fff;
+  -moz-box-shadow: 1px 1px 1px 1px #ccc;
+  -webkit-box-shadow: 1px 1px 1px 1px #ccc;
+  box-shadow: 1px 1px 1px 1px #ccc;
 }

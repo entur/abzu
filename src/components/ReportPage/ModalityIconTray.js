@@ -12,11 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ModalityIconImg from '../MainPage/ModalityIconImg';
-import { getUniqueStopPlaceTypes } from '../../models/stopPlaceUtils';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
+import { getUniqueStopPlaceTypes } from "../../models/stopPlaceUtils";
 
 class ModalityIconTray extends Component {
   render() {
@@ -27,29 +26,31 @@ class ModalityIconTray extends Component {
     const uniqueModalities = getUniqueStopPlaceTypes(modalities);
 
     return (
-      <div style={style || { display: 'flex', alignItems: 'center' }}>
-        {uniqueModalities.map((modality, i) =>
+      <div style={style || { display: "flex", alignItems: "center" }}>
+        {uniqueModalities.map((modality, i) => (
           <ModalityIconImg
-            key={'modality-' + i}
+            key={"modality-" + i}
             submode={modality.submode}
             iconStyle={{
-              float: 'right',
-              transform: 'translateY(2px) scale(0.8)'
+              float: "right",
+              transform: "translateY(2px) scale(0.8)",
             }}
             type={modality.stopPlaceType}
           />
-        )}
+        ))}
       </div>
     );
   }
 }
 
 ModalityIconTray.propTypes = {
-  modalities: PropTypes.arrayOf(PropTypes.shape({
-    submode: PropTypes.string,
-    stopPlaceType: PropTypes.string
-  })),
-  style: PropTypes.object
+  modalities: PropTypes.arrayOf(
+    PropTypes.shape({
+      submode: PropTypes.string,
+      stopPlaceType: PropTypes.string,
+    })
+  ),
+  style: PropTypes.object,
 };
 
 export default ModalityIconTray;

@@ -12,20 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import { injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
-import AddStopPlaceSuggestionListItem from './AddStopPlaceSuggestionListItem';
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import FlatButton from "material-ui/FlatButton";
+import AddStopPlaceSuggestionListItem from "./AddStopPlaceSuggestionListItem";
 
 class AddAdjacentStopDialog extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      selectedAdjacentStopPlace: 'NONE'
+      selectedAdjacentStopPlace: "NONE",
     };
   }
 
@@ -33,20 +32,24 @@ class AddAdjacentStopDialog extends React.Component {
     if (checked) {
       this.setState({ selectedAdjacentStopPlace: event });
     } else {
-      this.setState({ selectedAdjacentStopPlace: 'NONE' });
+      this.setState({ selectedAdjacentStopPlace: "NONE" });
     }
   };
 
   isCurrentChildStop(childStop) {
     return childStop.id === this.props.currentStopPlaceId;
-  };
+  }
 
   isConnected(childStop) {
-    const currentChild = this.props.stopPlaceChildren.find(child => child.id === this.props.currentStopPlaceId);
+    const currentChild = this.props.stopPlaceChildren.find(
+      (child) => child.id === this.props.currentStopPlaceId
+    );
 
     // Avoid displaying already existing adjacent site as an option:
     if (currentChild && Array.isArray(currentChild.adjacentSites)) {
-      return currentChild.adjacentSites.some(adjacentRef => adjacentRef.ref === childStop.id);
+      return currentChild.adjacentSites.some(
+        (adjacentRef) => adjacentRef.ref === childStop.id
+      );
     }
     return false;
   }
@@ -58,48 +61,59 @@ class AddAdjacentStopDialog extends React.Component {
       handleClose,
       handleConfirm,
       stopPlaceChildren,
-      currentStopPlaceId
+      currentStopPlaceId,
     } = this.props;
 
     const { formatMessage } = intl;
 
     const actions = [
       <FlatButton
-        label={formatMessage({ id: 'cancel' })}
+        label={formatMessage({ id: "cancel" })}
         primary={true}
         onClick={handleClose}
       />,
       <FlatButton
-        label={formatMessage({ id: 'confirm' })}
-        disabled={this.state.selectedAdjacentStopPlace === 'NONE'}
+        label={formatMessage({ id: "confirm" })}
+        disabled={this.state.selectedAdjacentStopPlace === "NONE"}
         primary={true}
-        onClick={() => handleConfirm(currentStopPlaceId, this.state.selectedAdjacentStopPlace)}
-      />];
+        onClick={() =>
+          handleConfirm(
+            currentStopPlaceId,
+            this.state.selectedAdjacentStopPlace
+          )
+        }
+      />,
+    ];
 
     return (
       <Dialog
-        title={formatMessage({ id: 'connect_to_adjacent_stop_title' })}
+        title={formatMessage({ id: "connect_to_adjacent_stop_title" })}
         actions={actions}
         modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
+        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div style={{margin: 10}}>{formatMessage({id:'connect_to_adjacent_stop_description'})}</div>
-        {stopPlaceChildren && stopPlaceChildren
-          .filter(child => !this.isCurrentChildStop(child))
-          .map(child => (
-            <AddStopPlaceSuggestionListItem
-              key={child.id}
-              disabled={this.isConnected(child)}
-              onCheck={this.handleChange.bind(this)}
-              checked={this.state.selectedAdjacentStopPlace === child.id || this.isConnected(child)}
-              suggestion={child}
-            />
-          ))}
-
+        <div style={{ margin: 10 }}>
+          {formatMessage({ id: "connect_to_adjacent_stop_description" })}
+        </div>
+        {stopPlaceChildren &&
+          stopPlaceChildren
+            .filter((child) => !this.isCurrentChildStop(child))
+            .map((child) => (
+              <AddStopPlaceSuggestionListItem
+                key={child.id}
+                disabled={this.isConnected(child)}
+                onCheck={this.handleChange.bind(this)}
+                checked={
+                  this.state.selectedAdjacentStopPlace === child.id ||
+                  this.isConnected(child)
+                }
+                suggestion={child}
+              />
+            ))}
       </Dialog>
     );
   }
@@ -114,7 +128,7 @@ AddAdjacentStopDialog.propTypes = {
 const mapStateToProps = ({ stopPlace, user }) => ({
   stopPlaceChildren: stopPlace.current.children,
   parentStopPlace: stopPlace.current,
-  currentStopPlaceId: user.adjacentStopDialogStopPlace
+  currentStopPlaceId: user.adjacentStopDialogStopPlace,
 });
 
 export default connect(mapStateToProps)(injectIntl(AddAdjacentStopDialog));

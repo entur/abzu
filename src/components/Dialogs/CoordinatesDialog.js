@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import { extractCoordinates } from '../../utils/'
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
+import { extractCoordinates } from "../../utils/";
 
 class CoordinatesDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorText: '',
+      errorText: "",
     };
   }
 
@@ -45,7 +44,7 @@ class CoordinatesDialog extends React.Component {
   handleClose() {
     this.setState({
       coordinates: null,
-      errorText: '',
+      errorText: "",
     });
     this.props.handleClose();
   }
@@ -55,22 +54,21 @@ class CoordinatesDialog extends React.Component {
       ? this.state.coordinates
       : this.props.coordinates;
 
-    if (typeof coordinatesString === 'undefined') return;
+    if (typeof coordinatesString === "undefined") return;
 
     const position = extractCoordinates(coordinatesString);
 
     if (position) {
-
       this.props.handleConfirm(position);
 
       this.setState({
         coordinates: null,
-        errorText: '',
+        errorText: "",
       });
     } else {
       this.setState({
         errorText: this.props.intl.formatMessage({
-          id: 'change_coordinates_invalid',
+          id: "change_coordinates_invalid",
         }),
       });
     }
@@ -82,24 +80,24 @@ class CoordinatesDialog extends React.Component {
     const coordinates = this.state.coordinates || this.props.coordinates;
 
     const confirmDialogTranslation = {
-      title: formatMessage({ id: titleId || 'change_coordinates' }),
-      body: formatMessage({ id: 'change_coordinates_help_text' }),
-      confirm: formatMessage({ id: 'change_coordinates_confirm' }),
-      cancel: formatMessage({ id: 'change_coordinates_cancel' }),
+      title: formatMessage({ id: titleId || "change_coordinates" }),
+      body: formatMessage({ id: "change_coordinates_help_text" }),
+      confirm: formatMessage({ id: "change_coordinates_confirm" }),
+      cancel: formatMessage({ id: "change_coordinates_cancel" }),
     };
 
     const buttonWrapperStyle = {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
       marginTop: 20,
     };
 
     const actions = [
       <TextField
         hintText="lat,lng"
-        floatingLabelText={formatMessage({ id: 'coordinates' })}
-        style={{ display: 'block', margin: 'auto', width: '90%' }}
+        floatingLabelText={formatMessage({ id: "coordinates" })}
+        style={{ display: "block", margin: "auto", width: "90%" }}
         value={coordinates}
         onChange={this.handleInputChange.bind(this)}
         errorText={this.state.errorText}
@@ -128,7 +126,7 @@ class CoordinatesDialog extends React.Component {
           actions={actions}
           modal={false}
           open={open}
-          contentStyle={{ width: '45vw' }}
+          contentStyle={{ width: "45vw" }}
         >
           {confirmDialogTranslation.body}
         </Dialog>

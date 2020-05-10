@@ -12,70 +12,69 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import * as types from "../../actions/Types";
+import { stopPlaceReducer } from "./../../reducers/";
+import stopPlaceData from "./json/stopPlace.json";
 
-import * as types from '../../actions/Types';
-import { stopPlaceReducer } from './../../reducers/';
-import stopPlaceData from './json/stopPlace.json';
-
-describe('stop place reducer', () => {
-  test('should create new stop with coordinates', () => {
+describe("stop place reducer", () => {
+  test("should create new stop with coordinates", () => {
     const location = [40, 10];
 
     const action = {
       type: types.CREATED_NEW_STOP,
       payLoad: {
         location,
-        isMultimodal: false
-      }
+        isMultimodal: false,
+      },
     };
 
     const state = stopPlaceReducer({}, action);
     expect(state.newStop.location).toEqual(location);
   });
 
-  test('update stop name should not mutate state', () => {
+  test("update stop name should not mutate state", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceData,
-      operationName: 'stopPlace',
+      operationName: "stopPlace",
     };
     const stateBefore = stopPlaceReducer({}, action);
 
     const changeNameAction = {
       type: types.CHANGED_STOP_NAME,
-      payLoad: 'new stop name',
+      payLoad: "new stop name",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
     expect(stateAfter).not.toEqual(stateBefore);
     expect(stateAfter.current).not.toEqual(stateBefore.current);
-    expect(stateAfter.current.name).toEqual('new stop name');
+    expect(stateAfter.current.name).toEqual("new stop name");
   });
 
-  test('update to stop description should not mutate state', () => {
+  test("update to stop description should not mutate state", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceData,
-      operationName: 'stopPlace',
+      operationName: "stopPlace",
     };
     const stateBefore = stopPlaceReducer({}, action);
 
     const changeNameAction = {
       type: types.CHANGED_STOP_DESCRIPTION,
-      payLoad: 'new description',
+      payLoad: "new description",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
     expect(stateAfter).not.toEqual(stateBefore);
     expect(stateAfter.current).not.toEqual(stateBefore.current);
-    expect(stateAfter.current.description).toEqual('new description');
+    expect(stateAfter.current.description).toEqual("new description");
   });
 
-  test('update to stop location should not mutate state', () => {
+  test("update to stop location should not mutate state", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceData,
-      operationName: 'stopPlace',
+      operationName: "stopPlace",
     };
 
     const newDehli = [28.6448, 77.216721];
@@ -93,11 +92,11 @@ describe('stop place reducer', () => {
     expect(stateAfter.current.location).toEqual(newDehli);
   });
 
-  test('should restore stop upon discarding changes', () => {
+  test("should restore stop upon discarding changes", () => {
     const action = {
-      type: 'APOLLO_QUERY_RESULT',
+      type: "APOLLO_QUERY_RESULT",
       result: stopPlaceData,
-      operationName: 'stopPlace',
+      operationName: "stopPlace",
     };
     const stateBefore = stopPlaceReducer({}, action);
 
@@ -105,7 +104,7 @@ describe('stop place reducer', () => {
 
     const changeNameAction = {
       type: types.CHANGED_STOP_DESCRIPTION,
-      payLoad: 'awesome description',
+      payLoad: "awesome description",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 

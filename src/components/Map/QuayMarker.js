@@ -12,22 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import { divIcon } from 'leaflet';
-import ReactDOM from 'react-dom/server';
-import { connect } from 'react-redux';
-import compassIcon from '../../static/icons/compass.png';
-import { UserActions, StopPlaceActions } from '../../actions/';
-import OSMIcon from '../../static/icons/osm_logo.png';
-import StreetViewIcon from '../../static/icons/street_view_logo.png';
-import { getIn } from '../../utils/';
-import Code from '../EditStopPage/Code';
-import { compareShallowQuayMarker as shallowCompare } from './shallowCompare/';
-import QuayMarkerIcon from './QuayMarkerIcon';
-import PopupButton from './PopupButton';
+import React from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import { divIcon } from "leaflet";
+import ReactDOM from "react-dom/server";
+import { connect } from "react-redux";
+import compassIcon from "../../static/icons/compass.png";
+import { UserActions, StopPlaceActions } from "../../actions/";
+import OSMIcon from "../../static/icons/osm_logo.png";
+import StreetViewIcon from "../../static/icons/street_view_logo.png";
+import { getIn } from "../../utils/";
+import Code from "../EditStopPage/Code";
+import { compareShallowQuayMarker as shallowCompare } from "./shallowCompare/";
+import QuayMarkerIcon from "./QuayMarkerIcon";
+import PopupButton from "./PopupButton";
 
 class QuayMarker extends React.Component {
   static propTypes = {
@@ -45,7 +44,7 @@ class QuayMarker extends React.Component {
     isCreatingPolylines: PropTypes.bool.isRequired,
     handleChangeCoordinates: PropTypes.func,
     draggable: PropTypes.bool.isRequired,
-    handleSetCompassBearing: PropTypes.func
+    handleSetCompassBearing: PropTypes.func,
   };
 
   getOSMURL() {
@@ -74,9 +73,9 @@ class QuayMarker extends React.Component {
 
   handleSetFocus() {
     const { dispatch, index } = this.props;
-    dispatch(StopPlaceActions.setElementFocus(index, 'quay'));
-    const expandedQuayEl = document.querySelector('.quay-item-expanded');
-    const scrollBodyEl = document.querySelector('#scroll-body');
+    dispatch(StopPlaceActions.setElementFocus(index, "quay"));
+    const expandedQuayEl = document.querySelector(".quay-item-expanded");
+    const scrollBodyEl = document.querySelector("#scroll-body");
     if (expandedQuayEl && scrollBodyEl) {
       expandedQuayEl.scrollIntoView(true);
       scrollBodyEl.scrollTop -= 50;
@@ -88,7 +87,7 @@ class QuayMarker extends React.Component {
       UserActions.moveQuay({
         id: this.props.id,
         privateCode: this.props.privateCode,
-        publicCode: this.props.publicCode
+        publicCode: this.props.publicCode,
       })
     );
   }
@@ -99,7 +98,7 @@ class QuayMarker extends React.Component {
         id: this.props.id,
         privateCode: this.props.privateCode,
         publicCode: this.props.publicCode,
-        stopPlaceId: this.props.stopPlaceId
+        stopPlaceId: this.props.stopPlaceId,
       })
     );
   }
@@ -114,7 +113,7 @@ class QuayMarker extends React.Component {
       disabled,
       belongsToNeighbourStop,
       currentIsNewStop,
-      id
+      id,
     } = this.props;
     return (
       isEditingStop &&
@@ -142,7 +141,7 @@ class QuayMarker extends React.Component {
       belongsToNeighbourStop,
       currentIsNewStop,
       id,
-      currentStopIsMultimodal
+      currentStopIsMultimodal,
     } = this.props;
 
     return (
@@ -159,7 +158,8 @@ class QuayMarker extends React.Component {
     const isMergingFromThis = this.getIsMergingFromThis();
     const shouldShowMergeQuay = this.getShouldShowMergeQuay();
     const { mergingQuay } = this.props;
-    const isAllowed = !isMergingFromThis && shouldShowMergeQuay && mergingQuay.isMerging;
+    const isAllowed =
+      !isMergingFromThis && shouldShowMergeQuay && mergingQuay.isMerging;
     return !isAllowed;
   }
 
@@ -167,7 +167,8 @@ class QuayMarker extends React.Component {
     const isMergingFromThis = this.getIsMergingFromThis();
     const shouldShowMergeQuay = this.getShouldShowMergeQuay();
     const { mergingQuay } = this.props;
-    const isAllowed = shouldShowMergeQuay && !isMergingFromThis && !mergingQuay.isMerging;
+    const isAllowed =
+      shouldShowMergeQuay && !isMergingFromThis && !mergingQuay.isMerging;
     return !isAllowed;
   }
 
@@ -175,7 +176,8 @@ class QuayMarker extends React.Component {
     const isMergingFromThis = this.getIsMergingFromThis();
     const shouldShowMergeQuay = this.getShouldShowMergeQuay();
     const { mergingQuay } = this.props;
-    const isAllowed = shouldShowMergeQuay && isMergingFromThis && mergingQuay.isMerging;
+    const isAllowed =
+      shouldShowMergeQuay && isMergingFromThis && mergingQuay.isMerging;
     return !isAllowed;
   }
 
@@ -199,13 +201,12 @@ class QuayMarker extends React.Component {
       pathLink,
       showPathLink,
       disabled,
-      showPublicCode
+      showPublicCode,
     } = this.props;
 
     if (!position) return null;
 
     let isIncomplete = false;
-
 
     let pathLinkText = isCreatingPolylines
       ? translations.terminatePathLinkHere
@@ -215,7 +216,7 @@ class QuayMarker extends React.Component {
       let lastPathLink = pathLink[pathLink.length - 1];
       let fromId = getIn(
         lastPathLink,
-        ['from', 'placeRef', 'addressablePlace', 'id'],
+        ["from", "placeRef", "addressablePlace", "id"],
         null
       );
 
@@ -241,14 +242,14 @@ class QuayMarker extends React.Component {
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
         defaultValueIcon={translations.notAssigned}
-/>
+      />
     );
 
     let quayIcon = divIcon({
       html: divBody,
       iconSize: [22, 34],
       iconAnchor: [11, 34],
-      popupAnchor: [5, 0]
+      popupAnchor: [5, 0],
     });
 
     const osmURL = this.getOSMURL();
@@ -263,8 +264,8 @@ class QuayMarker extends React.Component {
         position={position}
         icon={quayIcon}
         draggable={this.props.draggable}
-        onDragend={event => {
-          handleQuayDragEnd(index, 'quay', event);
+        onDragend={(event) => {
+          handleQuayDragEnd(index, "quay", event);
         }}
         keyboard={false}
       >
@@ -275,55 +276,62 @@ class QuayMarker extends React.Component {
           }}
         >
           <div>
-            <span className="quay-marker-title">
-              {stopPlaceName}
-            </span>
+            <span className="quay-marker-title">{stopPlaceName}</span>
             <div
               className="quay-marker-title"
               style={{
                 marginTop: -2,
                 marginBottom: 5,
-                fontSize: '1em',
-                color: '#191919',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                fontSize: "1em",
+                color: "#191919",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div>{formattedStopType}</div>
-                <Code type="publicCode" value={publicCode} defaultValue={translations.notAssigned} />
-                <Code type="privateCode" value={privateCode} defaultValue={translations.notAssigned}/>
+              <Code
+                type="publicCode"
+                value={publicCode}
+                defaultValue={translations.notAssigned}
+              />
+              <Code
+                type="privateCode"
+                value={privateCode}
+                defaultValue={translations.notAssigned}
+              />
             </div>
             <div
               style={{
-                display: 'block',
-                cursor: 'pointer',
-                width: 'auto',
-                textAlign: 'center',
-                fontSize: 10
+                display: "block",
+                cursor: "pointer",
+                width: "auto",
+                textAlign: "center",
+                fontSize: 10,
               }}
               onClick={() =>
                 !belongsToNeighbourStop &&
-                handleChangeCoordinates(true, index, position)}
+                handleChangeCoordinates(true, index, position)
+              }
             >
               <span
                 style={{
-                  display: 'inline-block',
-                  textAlign: 'center',
+                  display: "inline-block",
+                  textAlign: "center",
                   borderBottom: !belongsToNeighbourStop
-                    ? '1px dotted black'
-                    : 'none'
+                    ? "1px dotted black"
+                    : "none",
                 }}
               >
                 {position[0]}
               </span>
               <span
                 style={{
-                  display: 'inline-block',
+                  display: "inline-block",
                   marginLeft: 3,
                   borderBottom: !belongsToNeighbourStop
-                    ? '1px dotted black'
-                    : 'none'
+                    ? "1px dotted black"
+                    : "none",
                 }}
               >
                 {position[1]}
@@ -331,32 +339,32 @@ class QuayMarker extends React.Component {
             </div>
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 10
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 10,
               }}
             >
-              {belongsToNeighbourStop || !this.props.draggable
-                ? null
-                : <div
-                    onClick={() => {
-                      this.props.handleSetCompassBearing(
-                        this.props.compassBearing,
-                        index
-                      );
-                    }}
-                  >
-                    <img
-                      alt=""
-                      style={{ width: 20, height: 22, cursor: 'pointer' }}
-                      src={compassIcon}
-                    />
-                  </div>}
+              {belongsToNeighbourStop || !this.props.draggable ? null : (
+                <div
+                  onClick={() => {
+                    this.props.handleSetCompassBearing(
+                      this.props.compassBearing,
+                      index
+                    );
+                  }}
+                >
+                  <img
+                    alt=""
+                    style={{ width: 20, height: 22, cursor: "pointer" }}
+                    src={compassIcon}
+                  />
+                </div>
+              )}
               <div
                 style={{
                   marginLeft: belongsToNeighbourStop ? 0 : 10,
-                  cursor: 'pointer'
+                  cursor: "pointer",
                 }}
               >
                 <a href={osmURL} target="_blank" rel="noopener noreferrer">
@@ -365,8 +373,8 @@ class QuayMarker extends React.Component {
                     style={{
                       width: 20,
                       height: 22,
-                      border: '1px solid grey',
-                      borderRadius: 50
+                      border: "1px solid grey",
+                      borderRadius: 50,
                     }}
                     src={OSMIcon}
                   />
@@ -375,17 +383,21 @@ class QuayMarker extends React.Component {
               <div
                 style={{
                   marginLeft: belongsToNeighbourStop ? 0 : 10,
-                  cursor: 'pointer'
+                  cursor: "pointer",
                 }}
               >
-                <a href={streetViewURL} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={streetViewURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img
                     alt=""
                     style={{
                       width: 20,
                       height: 22,
-                      border: '1px solid grey',
-                      borderRadius: 50
+                      border: "1px solid grey",
+                      borderRadius: 50,
                     }}
                     src={StreetViewIcon}
                   />
@@ -398,23 +410,26 @@ class QuayMarker extends React.Component {
                 onClick={() => this.handleMoveQuay()}
                 label={translations.moveQuayToCurrent}
               />
-                <div style={{ textAlign: 'center' }}>
-                  <PopupButton
-                      hidden={hideCancelMergingFromThis}
-                      onClick={() => this.handleCancelMerge()}
-                      label={translations.mergeQuayCancel}
-                    />
-                  <PopupButton
-                    hidden={hideMergingTo}
-                    onClick={() => this.handleMergeTo()}
-                    label={translations.mergeQuayTo}
-                  />
-                  <PopupButton
-                    hidden={hideMergingFrom}
-                    onClick={() => this.handleMergeFrom()}
-                    label={translations.mergeQuayFrom}
-                  />
-                  {!disabled && isEditingStop && !this.props.currentStopIsMultimodal && id &&
+              <div style={{ textAlign: "center" }}>
+                <PopupButton
+                  hidden={hideCancelMergingFromThis}
+                  onClick={() => this.handleCancelMerge()}
+                  label={translations.mergeQuayCancel}
+                />
+                <PopupButton
+                  hidden={hideMergingTo}
+                  onClick={() => this.handleMergeTo()}
+                  label={translations.mergeQuayTo}
+                />
+                <PopupButton
+                  hidden={hideMergingFrom}
+                  onClick={() => this.handleMergeFrom()}
+                  label={translations.mergeQuayFrom}
+                />
+                {!disabled &&
+                  isEditingStop &&
+                  !this.props.currentStopIsMultimodal &&
+                  id && (
                     <div style={{ marginTop: 10 }}>
                       <span
                         className="marker-popup-button"
@@ -422,35 +437,38 @@ class QuayMarker extends React.Component {
                       >
                         {translations.moveQuaysToNewStop}
                       </span>
-                    </div>}
-                </div>
+                    </div>
+                  )}
+              </div>
             </div>
             <div style={{ marginTop: 10 }}>
-              {showPathLink && isEditingStop && !currentIsNewStop
-                ? <div>
-                    {id
-                      ? <div
-                          className={`marker-popup-button ${isIncomplete
-                            ? 'incomplete'
-                            : ''}`}
-                          onClick={() => {
-                            handleUpdatePathLink(position, id, 'quay');
-                          }}
-                        >
-                          {pathLinkText}
-                          {isIncomplete && <div>{translations.inComplete}</div>}
-                        </div>
-                      : <div
-                          style={{
-                            textAlign: 'center',
-                            padding: 10,
-                            border: '1px solid #9E9E9E'
-                          }}
-                        >
-                          {translations.saveFirstPathLink}
-                        </div>}
-                  </div>
-                : null}
+              {showPathLink && isEditingStop && !currentIsNewStop ? (
+                <div>
+                  {id ? (
+                    <div
+                      className={`marker-popup-button ${
+                        isIncomplete ? "incomplete" : ""
+                      }`}
+                      onClick={() => {
+                        handleUpdatePathLink(position, id, "quay");
+                      }}
+                    >
+                      {pathLinkText}
+                      {isIncomplete && <div>{translations.inComplete}</div>}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        padding: 10,
+                        border: "1px solid #9E9E9E",
+                      }}
+                    >
+                      {translations.saveFirstPathLink}
+                    </div>
+                  )}
+                </div>
+              ) : null}
             </div>
           </div>
         </Popup>
@@ -459,7 +477,7 @@ class QuayMarker extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   showPublicCode: state.user.showPublicCode,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
@@ -468,9 +486,9 @@ const mapStateToProps = state => ({
   pathLink: state.stopPlace.pathLink,
   currentStopIsMultimodal: getIn(
     state,
-    ['stopPlace', 'current', 'isParent'],
+    ["stopPlace", "current", "isParent"],
     false
-  )
+  ),
 });
 
 export default connect(mapStateToProps)(QuayMarker);

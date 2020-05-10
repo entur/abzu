@@ -12,19 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 const weightTypes = [
-  'preferredInterchange',
-  'recommendedInterchange',
-  'interchangeAllowed',
-  'noInterchange'
+  "preferredInterchange",
+  "recommendedInterchange",
+  "interchangeAllowed",
+  "noInterchange",
 ];
 
 export const weightColors = {
-  preferredInterchange: '#3572b0',
-  recommendedInterchange: '#1e6f4c',
-  interchangeAllowed: '#2b9e43',
-  noInterchange: '#d04437',
+  preferredInterchange: "#3572b0",
+  recommendedInterchange: "#1e6f4c",
+  interchangeAllowed: "#2b9e43",
+  noInterchange: "#d04437",
 };
 
 export default weightTypes;

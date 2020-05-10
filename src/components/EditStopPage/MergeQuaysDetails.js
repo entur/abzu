@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import QuayDetails from './QuayDetails';
+import React from "react";
+import QuayDetails from "./QuayDetails";
 
 class MergeQuaysDetails extends React.Component {
   render() {
@@ -24,11 +24,11 @@ class MergeQuaysDetails extends React.Component {
     return (
       <div
         style={{
-          color: '#000',
+          color: "#000",
           padding: 10,
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: 5
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 5,
         }}
       >
         <QuayDetails

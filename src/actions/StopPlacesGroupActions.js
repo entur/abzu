@@ -12,80 +12,86 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-
-import * as types from './Types';
-import { createThunk } from './';
-import { getStopPlaceById, getAddStopPlaceInfo } from '../graphql/Tiamat/actions';
-import { UserActions } from './';
-import Routes from '../routes/';
-
+import * as types from "./Types";
+import { createThunk } from "./";
+import {
+  getStopPlaceById,
+  getAddStopPlaceInfo,
+} from "../graphql/Tiamat/actions";
+import { UserActions } from "./";
+import Routes from "../routes/";
 
 var StopPlacesGroupActions = {};
 
-StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => dispatch => {
-  dispatch(createThunk(
-    types.CREATED_NEW_GROUP_OF_STOP_PLACES,
-    stopPlaceId
-  ));
+StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => (
+  dispatch
+) => {
+  dispatch(createThunk(types.CREATED_NEW_GROUP_OF_STOP_PLACES, stopPlaceId));
   // i.e already creating a new group of stop place, update state instead
-  if (window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1) {
+  if (
+    window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1
+  ) {
     dispatch(StopPlacesGroupActions.createNewGroup(client, stopPlaceId));
   } else {
-    dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`,  'new'));
+    dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new"));
   }
 };
 
-StopPlacesGroupActions.changeName = name => dispatch => {
-  dispatch(createThunk(
-    types.CHANGED_STOP_PLACE_GROUP_NAME,
-    name
-  ));
+StopPlacesGroupActions.changeName = (name) => (dispatch) => {
+  dispatch(createThunk(types.CHANGED_STOP_PLACE_GROUP_NAME, name));
 };
 
-StopPlacesGroupActions.changeDescription = description => dispatch => {
-  dispatch(createThunk(
-    types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION,
-    description
-  ));
+StopPlacesGroupActions.changeDescription = (description) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION, description)
+  );
 };
 
-StopPlacesGroupActions.removeMemberFromGroup = stopPlaceId => dispatch => {
+StopPlacesGroupActions.removeMemberFromGroup = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.REMOVED_GROUP_MEMBER, stopPlaceId));
 };
 
-StopPlacesGroupActions.addMemberToGroup = (client, stopPlaceId) => dispatch => {
+StopPlacesGroupActions.addMemberToGroup = (client, stopPlaceId) => (
+  dispatch
+) => {
   dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
-  getStopPlaceById(client, stopPlaceId).then(result => {
+  getStopPlaceById(client, stopPlaceId).then((result) => {
     dispatch(createThunk(types.RECEIVED_MEMBER_INFO, result));
   });
 };
 
-StopPlacesGroupActions.addMembersToGroup = (client, stopPlaceIds) => dispatch => {
+StopPlacesGroupActions.addMembersToGroup = (client, stopPlaceIds) => (
+  dispatch
+) => {
   dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
-  getAddStopPlaceInfo(client, stopPlaceIds).then(result => {
+  getAddStopPlaceInfo(client, stopPlaceIds).then((result) => {
     dispatch(createThunk(types.RECEIVED_MEMBERS_INFO, result));
   });
 };
 
-
-StopPlacesGroupActions.discardChanges = () => dispatch => {
+StopPlacesGroupActions.discardChanges = () => (dispatch) => {
   dispatch(createThunk(types.DISCARDED_GOS_CHANGES, null));
 };
 
-StopPlacesGroupActions.createNewGroup = (client, stopPlaceId) => dispatch => {
-  getStopPlaceById(client, stopPlaceId).then(result => {
-    if (result && result.data &&
-      result.data.stopPlace && result.data.stopPlace.length) {
-      dispatch(createThunk(types.SETUP_NEW_GROUP, result));
-    } else {
+StopPlacesGroupActions.createNewGroup = (client, stopPlaceId) => (dispatch) => {
+  getStopPlaceById(client, stopPlaceId)
+    .then((result) => {
+      if (
+        result &&
+        result.data &&
+        result.data.stopPlace &&
+        result.data.stopPlace.length
+      ) {
+        dispatch(createThunk(types.SETUP_NEW_GROUP, result));
+      } else {
+        dispatch(createThunk(types.ERROR_NEW_GROUP, null));
+        dispatch(UserActions.navigateTo("/", ""));
+      }
+    })
+    .catch((err) => {
       dispatch(createThunk(types.ERROR_NEW_GROUP, null));
-      dispatch(UserActions.navigateTo('/', ''));
-    }
-  }).catch(err => {
-    dispatch(createThunk(types.ERROR_NEW_GROUP, null));
-    dispatch(UserActions.navigateTo('/', ''));
-  });
-
+      dispatch(UserActions.navigateTo("/", ""));
+    });
 };
 
 export default StopPlacesGroupActions;

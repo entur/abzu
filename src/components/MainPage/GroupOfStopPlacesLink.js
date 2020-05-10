@@ -12,17 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React from "react";
+import Routes from "../../routes/";
+import PropTypes from "prop-types";
 
-import React from 'react';
-import Routes from '../../routes/';
-import PropTypes from 'prop-types';
-
-const GroupOfStopPlacesLink = ({name, id, style}) => {
-  const url = `${window.location.origin}${window.config
-    .endpointBase}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+const GroupOfStopPlacesLink = ({ name, id, style }) => {
+  const url = `${window.location.origin}${window.config.endpointBase}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
-    <a style={{ fontSize: '0.9em', ...style }} target='_blank' rel="noopener noreferrer" href={url}>
+    <a
+      style={{ fontSize: "0.9em", ...style }}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={url}
+    >
       {name}
     </a>
   );
@@ -30,7 +33,7 @@ const GroupOfStopPlacesLink = ({name, id, style}) => {
 
 GroupOfStopPlacesLink.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
 };
 
 export default GroupOfStopPlacesLink;

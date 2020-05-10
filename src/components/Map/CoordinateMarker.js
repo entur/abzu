@@ -12,19 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { Marker, Popup } from 'react-leaflet';
-import { connect } from 'react-redux';
-import { UserActions } from '../../actions/';
-import L from 'leaflet';
-import coordinatesIcon from '../../static/icons/coordinates-marker.png';
-import { injectIntl } from 'react-intl';
-import mapCenterIcon from '../../static/icons/map-center.png';
-import mapZoomIn from '../../static/icons/map-zoom-in.png';
+import React from "react";
+import { Marker, Popup } from "react-leaflet";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
+import L from "leaflet";
+import coordinatesIcon from "../../static/icons/coordinates-marker.png";
+import { injectIntl } from "react-intl";
+import mapCenterIcon from "../../static/icons/map-center.png";
+import mapZoomIn from "../../static/icons/map-zoom-in.png";
 
 class CoordinateMarker extends React.Component {
-
   handleDragEnd(e) {
     const latLng = e.target.getLatLng();
     if (latLng) {
@@ -48,7 +46,6 @@ class CoordinateMarker extends React.Component {
   }
 
   render() {
-
     const { position, intl } = this.props;
     const { formatMessage } = intl;
 
@@ -62,10 +59,10 @@ class CoordinateMarker extends React.Component {
     const imageStyle = {
       height: 18,
       width: 18,
-      border: '1px solid',
-      borderRadius: '50%',
+      border: "1px solid",
+      borderRadius: "50%",
       padding: 3,
-      cursor: 'pointer',
+      cursor: "pointer",
       marginLeft: 5,
       marginRight: 5,
     };
@@ -75,21 +72,48 @@ class CoordinateMarker extends React.Component {
         draggable={true}
         position={position}
         icon={icon}
-        onDragend={e => {
+        onDragend={(e) => {
           this.handleDragEnd(e);
         }}
       >
         <Popup autoPan={false}>
           <div>
-            <div style={{fontWeight: 600, textAlign: 'center'}}>{formatMessage({id: 'lookup_coordinates'})}</div>
-            <div
-              style={{marginTop: 10, cursor: 'pointer', display: 'flex', justifyContent: 'center'}}
-              onClick={this.handleChangeCoordinates.bind(this)}>
-              <span style={{borderBottom: '1px dotted'}}>{ position.join(',')}</span>
+            <div style={{ fontWeight: 600, textAlign: "center" }}>
+              {formatMessage({ id: "lookup_coordinates" })}
             </div>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
-              <img alt="" onClick={this.handleAutoPan.bind(this)} src={mapCenterIcon} style={imageStyle}/>
-              <img alt="" onClick={this.handleZoomIn.bind(this)} src={mapZoomIn} style={imageStyle}/>
+            <div
+              style={{
+                marginTop: 10,
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              onClick={this.handleChangeCoordinates.bind(this)}
+            >
+              <span style={{ borderBottom: "1px dotted" }}>
+                {position.join(",")}
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+            >
+              <img
+                alt=""
+                onClick={this.handleAutoPan.bind(this)}
+                src={mapCenterIcon}
+                style={imageStyle}
+              />
+              <img
+                alt=""
+                onClick={this.handleZoomIn.bind(this)}
+                src={mapZoomIn}
+                style={imageStyle}
+              />
             </div>
           </div>
         </Popup>

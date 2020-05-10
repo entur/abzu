@@ -12,16 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, {Component} from 'react';
-import LeafletMap from '../Map/LeafletMap';
-import { connect } from 'react-redux';
-import debounce from 'lodash.debounce';
-import { getNeighbourStops } from '../../graphql/Tiamat/actions';
-import { withApollo } from 'react-apollo';
-import Settings from '../../singletons/SettingsManager';
+import React, { Component } from "react";
+import LeafletMap from "../Map/LeafletMap";
+import { connect } from "react-redux";
+import debounce from "lodash.debounce";
+import { getNeighbourStops } from "../../graphql/Tiamat/actions";
+import { withApollo } from "react-apollo";
+import Settings from "../../singletons/SettingsManager";
 
 class GroupOfStopPlaceMap extends Component {
-
   constructor(props) {
     super(props);
 
@@ -40,8 +39,13 @@ class GroupOfStopPlaceMap extends Component {
   }
 
   render() {
-
-    const { position, activeBaselayer, enablePolylines, zoom, markers } = this.props;
+    const {
+      position,
+      activeBaselayer,
+      enablePolylines,
+      zoom,
+      markers,
+    } = this.props;
 
     return (
       <LeafletMap
@@ -51,26 +55,28 @@ class GroupOfStopPlaceMap extends Component {
         boundsOptions={{ padding: [50, 50] }}
         ref="leafletMap"
         key="leafletmap-edit"
-        handleOnClick={()=> {}}
-        handleDragEnd={()=>{}}
+        handleOnClick={() => {}}
+        handleDragEnd={() => {}}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
-        handleChangeCoordinates={()=> {}}
+        handleChangeCoordinates={() => {}}
         dragableMarkers={false}
         activeBaselayer={activeBaselayer}
-        handleBaselayerChanged={()=> {}}
+        handleBaselayerChanged={() => {}}
         enablePolylines={enablePolylines}
-        handleZoomEnd={()=> {}}
-        handleSetCompassBearing={()=> {}}
+        handleZoomEnd={() => {}}
+        handleSetCompassBearing={() => {}}
       />
     );
   }
 }
 
-const mapStateToProps = ({stopPlace, user, stopPlacesGroup}) => ({
+const mapStateToProps = ({ stopPlace, user, stopPlacesGroup }) => ({
   activeBaselayer: user.activeBaselayer,
   enablePolylines: stopPlace.enablePolylines,
   ignoreStopId: stopPlacesGroup.current.id,
-  markers: stopPlacesGroup.current.members.concat(stopPlace.neighbourStops || []).filter(m => !m.permanentlyTerminated),
+  markers: stopPlacesGroup.current.members
+    .concat(stopPlace.neighbourStops || [])
+    .filter((m) => !m.permanentlyTerminated),
 });
 
 export default withApollo(connect(mapStateToProps)(GroupOfStopPlaceMap));

@@ -12,12 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import * as types from '../actions/Types';
+import * as types from "../actions/Types";
 
 export const initialState = {
   focusedElement: {
-    type: 'quay',
+    type: "quay",
     index: -1,
   },
   mergingQuay: {
@@ -44,7 +43,7 @@ const mapReducer = (state = initialState, action) => {
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         focusedElement: {
-          type: 'quay',
+          type: "quay",
           index: -1,
         },
       });
@@ -64,7 +63,7 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         focusedElement: {
           index: -1,
-          type: 'quay',
+          type: "quay",
         },
       });
 
@@ -72,7 +71,7 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         focusedElement: {
           index: -1,
-          type: 'quay',
+          type: "quay",
         },
       });
 
@@ -91,23 +90,22 @@ const mapReducer = (state = initialState, action) => {
         fetchOTPInfoMergeLoading: true,
         mergingQuay: {
           ...state.mergingQuay,
-        isMerging: false,
-        toQuay: action.payLoad,
+          isMerging: false,
+          toQuay: action.payLoad,
         },
       });
 
     case types.GET_QUAY_MERGE_OTP_INFO:
       return Object.assign({}, state, {
         fetchOTPInfoMergeLoading: false,
-        mergeQuayWarning: action.payLoad
+        mergeQuayWarning: action.payLoad,
       });
 
     case types.ERROR_QUAY_MERGE_OTP_INFO:
       return Object.assign({}, state, {
         fetchOTPInfoMergeLoading: false,
-        mergeQuayWarning: null
+        mergeQuayWarning: null,
       });
-
 
     case types.CANCELLED_MERGING_QUAY_FROM:
       return Object.assign({}, state, {
@@ -141,7 +139,7 @@ const mapReducer = (state = initialState, action) => {
     case types.GET_QUAY_DELETE_OTP_INFO:
       return Object.assign({}, state, {
         fetchOTPInfoDeleteLoading: false,
-        deleteQuayWarning: action.payLoad
+        deleteQuayWarning: action.payLoad,
       });
 
     case types.ERROR_QUAY_DELETE_OTP_INFO:
@@ -153,23 +151,23 @@ const mapReducer = (state = initialState, action) => {
     case types.REQUESTED_MOVE_QUAY_NEW_STOP:
       return Object.assign({}, state, {
         moveQuayToNewStopDialogOpen: true,
-        movingQuayToNewStop: action.payLoad
+        movingQuayToNewStop: action.payLoad,
       });
 
     case types.CANCELLED_MOVE_QUAY_NEW_STOP:
       return Object.assign({}, state, {
         moveQuayToNewStopDialogOpen: false,
-        movingQuayToNewStop: null
+        movingQuayToNewStop: null,
       });
 
     case types.TERMINATE_DELETE_STOP_DIALOG:
       return Object.assign({}, state, {
-        deleteStopDialogOpen: true
+        deleteStopDialogOpen: true,
       });
 
     case types.CANCELLED_DELETE_STOP_DIALOG:
       return Object.assign({}, state, {
-        deleteStopDialogOpen: false
+        deleteStopDialogOpen: false,
       });
 
     case types.CANCELLED_DELETE_QUAY_DIALOG:
@@ -182,27 +180,26 @@ const mapReducer = (state = initialState, action) => {
     case types.CANCELLED_MOVE_QUAY_DIALOG:
       return Object.assign({}, state, {
         moveQuayDialogOpen: false,
-        movingQuay: null
+        movingQuay: null,
       });
 
     case types.REQUESTED_MOVE_QUAY:
       return Object.assign({}, state, {
         moveQuayDialogOpen: true,
-        movingQuay: action.payLoad
+        movingQuay: action.payLoad,
       });
 
     case types.SHOW_REMOVE_STOP_PLACE_FROM_PARENT:
       return Object.assign({}, state, {
         removeStopPlaceFromParentOpen: true,
-        removingStopPlaceFromParentId: action.payLoad
+        removingStopPlaceFromParentId: action.payLoad,
       });
 
     case types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT:
       return Object.assign({}, state, {
         removeStopPlaceFromParentOpen: false,
-        removingStopPlaceFromParentId: null
+        removingStopPlaceFromParentId: null,
       });
-
 
     default:
       return state;

@@ -12,22 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import MarkerList from './MarkerList';
+import React from "react";
+import MarkerList from "./MarkerList";
 import {
   Map as Lmap,
   TileLayer,
   ZoomControl,
   LayersControl,
   ScaleControl,
-} from 'react-leaflet';
-import { GoogleLayer } from 'react-leaflet-google';
-import MultiPolylineList from './PathLink';
-import WMTSLayer from './WMTSLayer';
-import MapboxLayer from './MapboxLayer';
-import MultimodalStopEdges from './MultimodalStopEdges';
-import StopPlaceGroupList from './StopPlaceGroupList';
+} from "react-leaflet";
+import { GoogleLayer } from "react-leaflet-google";
+import MultiPolylineList from "./PathLink";
+import WMTSLayer from "./WMTSLayer";
+import MapboxLayer from "./MapboxLayer";
+import MultimodalStopEdges from "./MultimodalStopEdges";
+import StopPlaceGroupList from "./StopPlaceGroupList";
 
 export default class LeafLetMap extends React.Component {
   getCheckedBaseLayerByValue(value) {
@@ -43,12 +42,12 @@ export default class LeafLetMap extends React.Component {
       return [64.349421, 16.809082];
     }
     return Array.isArray(position)
-      ? position.map(pos => Number(pos))
+      ? position.map((pos) => Number(pos))
       : [Number(position.lat), Number(position.lng)];
   }
 
   getLocalGKTToken() {
-    let localToken = JSON.parse(localStorage.getItem('ABZU::GKT_TOKEN'));
+    let localToken = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
 
     if (localToken && localToken.gkt) {
       return localToken.gkt;
@@ -66,7 +65,7 @@ export default class LeafLetMap extends React.Component {
 
   render() {
     // NB: this key is owned by rutebanken.official
-    const googleApiKey = 'AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E';
+    const googleApiKey = "AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E";
 
     const {
       position,
@@ -80,13 +79,13 @@ export default class LeafLetMap extends React.Component {
       dragableMarkers,
       handleMapMoveEnd,
       onDoubleClick,
-      handleZoomEnd
+      handleZoomEnd,
     } = this.props;
 
     const { BaseLayer } = LayersControl;
 
     const lmapStyle = {
-      border: '2px solid #eee',
+      border: "2px solid #eee",
     };
 
     const centerPosition = this.getCenterPosition(position);
@@ -99,32 +98,32 @@ export default class LeafLetMap extends React.Component {
         style={lmapStyle}
         center={centerPosition}
         className="leaflet-map"
-        onZoomEnd={e => handleZoomEnd && handleZoomEnd(e)}
+        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
         zoom={zoom}
         zoomControl={false}
         minZoom={minZoom || null}
-        onDblclick={e => onDoubleClick && onDoubleClick(e, this.refs.map)}
-        onMoveEnd={event => {
+        onDblclick={(e) => onDoubleClick && onDoubleClick(e, this.refs.map)}
+        onMoveEnd={(event) => {
           handleMapMoveEnd(event, this.refs.map);
         }}
         OnBaselayerChange={this.handleBaselayerChanged.bind(this)}
-        onclick={event => {
+        onclick={(event) => {
           handleOnClick && handleOnClick(event, this.refs.map);
         }}
       >
         <LayersControl position="topright">
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('OpenStreetMap')}
+            checked={this.getCheckedBaseLayerByValue("OpenStreetMap")}
             name="OpenStreetMap"
           >
             <TileLayer
-              attribution="&copy; <a href=&quot;https://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
               url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom="19"
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('OpenStreetMap Transport')}
+            checked={this.getCheckedBaseLayerByValue("OpenStreetMap Transport")}
             name="OpenStreetMap Transport"
           >
             <TileLayer
@@ -134,17 +133,17 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Kartverket topografisk')}
+            checked={this.getCheckedBaseLayerByValue("Kartverket topografisk")}
             name="Kartverket topografisk"
           >
             <TileLayer
-              attribution="&copy; <a href=&quot;http://www.kartverket.no&quot;>Kartverket"
+              attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
               url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
               maxZoom="19"
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Kartverket flyfoto')}
+            checked={this.getCheckedBaseLayerByValue("Kartverket flyfoto")}
             name="Kartverket flyfoto"
           >
             <WMTSLayer
@@ -154,7 +153,7 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue('Google Maps Hydrid')}
+            checked={this.getCheckedBaseLayerByValue("Google Maps Hydrid")}
             name="Google Maps Hydrid"
           >
             <GoogleLayer
@@ -163,15 +162,17 @@ export default class LeafLetMap extends React.Component {
               maptype="HYBRID"
             />
           </BaseLayer>
-          {mapboxAccessToken && mapboxTariffZonesStyle ? (<BaseLayer
-              checked={this.getCheckedBaseLayerByValue('Takstsoner')}
-              name="Takstsoner" >
+          {mapboxAccessToken && mapboxTariffZonesStyle ? (
+            <BaseLayer
+              checked={this.getCheckedBaseLayerByValue("Takstsoner")}
+              name="Takstsoner"
+            >
               <MapboxLayer
                 accessToken={mapboxAccessToken}
                 style={mapboxTariffZonesStyle}
-               />
+              />
             </BaseLayer>
-        ) : ( null )}
+          ) : null}
         </LayersControl>
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
@@ -182,11 +183,9 @@ export default class LeafLetMap extends React.Component {
           dragableMarkers={dragableMarkers}
           handleSetCompassBearing={handleSetCompassBearing}
         />
-        <MultimodalStopEdges
-          stops={markers}
-        />
-        <MultiPolylineList/>
-        <StopPlaceGroupList/>
+        <MultimodalStopEdges stops={markers} />
+        <MultiPolylineList />
+        <StopPlaceGroupList />
       </Lmap>
     );
   }

@@ -12,16 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import CycleParkingIcon from '../../static/icons/cycle-parking-icon.png';
-import { connect } from 'react-redux';
-import { getPrimaryDarkerColor } from '../../config/themeConfig';
-import { StopPlaceActions } from '../../actions/';
-import { shallowCycleParkingMarker as shallowCompare } from './shallowCompare/';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import CycleParkingIcon from "../../static/icons/cycle-parking-icon.png";
+import { connect } from "react-redux";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { StopPlaceActions } from "../../actions/";
+import { shallowCycleParkingMarker as shallowCompare } from "./shallowCompare/";
 
 class CycleParkingMarker extends Component {
   static propTypes = {
@@ -41,19 +40,27 @@ class CycleParkingMarker extends Component {
     const isFocused =
       focusedElement.type === type && index === focusedElement.index;
     if (isFocused) {
-      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
-        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (
+        this.refs.marker &&
+        this.refs.marker.leafletElement &&
+        this.refs.marker.leafletElement._icon
+      ) {
+        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, "focused");
       }
     } else {
-      if (this.refs.marker && this.refs.marker.leafletElement && this.refs.marker.leafletElement._icon) {
-        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, 'focused');
+      if (
+        this.refs.marker &&
+        this.refs.marker.leafletElement &&
+        this.refs.marker.leafletElement._icon
+      ) {
+        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, "focused");
       }
     }
   }
 
   handleSetFocus() {
     const { dispatch, index } = this.props;
-    dispatch(StopPlaceActions.setElementFocus(index, 'parking'));
+    dispatch(StopPlaceActions.setElementFocus(index, "parking"));
     const item = document.querySelector(".pr-item-expanded");
     if (item) {
       item.scrollIntoView(true);
@@ -87,7 +94,7 @@ class CycleParkingMarker extends Component {
       iconSize: [20, 30],
       iconAnchor: [10, 30],
       popupAnchor: [0, 15],
-      className: hasExpired ? 'expired' : ''
+      className: hasExpired ? "expired" : "",
     });
 
     return (
@@ -95,21 +102,36 @@ class CycleParkingMarker extends Component {
         draggable={draggable}
         position={position}
         icon={icon}
-        key={'parking-marker' + index}
-        onDragend={event => {
-          handleDragEnd(index, 'parking', event);
+        key={"parking-marker" + index}
+        onDragend={(event) => {
+          handleDragEnd(index, "parking", event);
         }}
         ref="marker"
       >
-        <Popup autoPan={false} onOpen={() => { this.handleSetFocus() }}>
+        <Popup
+          autoPan={false}
+          onOpen={() => {
+            this.handleSetFocus();
+          }}
+        >
           <div>
-            <div style={{marginTop: 10, fontWeight: 600, color: 'red', marginBottom: 10, textAlign: 'center'}}>{hasExpired && translations.parkingExpired}</div>
+            <div
+              style={{
+                marginTop: 10,
+                fontWeight: 600,
+                color: "red",
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
+              {hasExpired && translations.parkingExpired}
+            </div>
             <div
               style={{
                 fontWeight: 600,
-                textAlign: 'center',
-                margin: '5 0',
-                fontSize: '1.1em',
+                textAlign: "center",
+                margin: "5 0",
+                fontSize: "1.1em",
                 color: getPrimaryDarkerColor(),
               }}
             >
@@ -118,33 +140,31 @@ class CycleParkingMarker extends Component {
             <div
               style={{
                 marginTop: -2,
-                textAlign: 'center',
+                textAlign: "center",
                 marginBottom: 5,
                 fontWeight: 600,
-                fontSize: '1em',
+                fontSize: "1em",
               }}
             >
-              {translations.title}
-              {' '}
+              {translations.title}{" "}
             </div>
             <div
               style={{
                 marginTop: -2,
                 marginBottom: 5,
-                fontSize: '1em',
-                color: '#191919',
+                fontSize: "1em",
+                color: "#191919",
               }}
             >
               {translations.totalCapacity}:
               <span
                 style={{
-                  fontStyle: typeof totalCapacity === 'number'
-                    ? 'normal'
-                    : 'italic',
+                  fontStyle:
+                    typeof totalCapacity === "number" ? "normal" : "italic",
                   marginLeft: 1,
                 }}
               >
-                {typeof totalCapacity === 'number'
+                {typeof totalCapacity === "number"
                   ? totalCapacity
                   : translations.totalCapacityUnknown}
               </span>
@@ -156,7 +176,7 @@ class CycleParkingMarker extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   focusedElement: state.mapUtils.focusedElement,
 });
 

@@ -12,12 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import RaisedButton from 'material-ui/RaisedButton';
-import Menu from 'material-ui/Menu';
-import Checkbox from 'material-ui/Checkbox';
+import React from "react";
+import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
+import RaisedButton from "material-ui/RaisedButton";
+import Menu from "material-ui/Menu";
+import Checkbox from "material-ui/Checkbox";
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {
@@ -36,46 +35,69 @@ class ColumnFilterPopover extends React.Component {
   }
 
   render() {
-    const { columnOptions, buttonLabel, captionLabel, selectAllLabel, formatMessage } = this.props;
+    const {
+      columnOptions,
+      buttonLabel,
+      captionLabel,
+      selectAllLabel,
+      formatMessage,
+    } = this.props;
     const optionStyle = {
       padding: 5,
     };
 
-    const allIsChecked = columnOptions.filter( opt => opt.checked ).length === columnOptions.length
+    const allIsChecked =
+      columnOptions.filter((opt) => opt.checked).length ===
+      columnOptions.length;
 
     return (
       <div style={this.props.style}>
         <RaisedButton
           label={buttonLabel}
-          labelStyle={{fontSize: 12}}
+          labelStyle={{ fontSize: 12 }}
           onClick={this.handleTouchTap.bind(this)}
         />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "left", vertical: "top" }}
           onRequestClose={() => {
             this.setState({ open: false });
           }}
           animation={PopoverAnimationVertical}
         >
           <Menu>
-            <div style={{width: '100%', fontSize: 12, padding: 5, background: '#000', marginTop: -8}}>
-              <span style={{color: '#fff', textTransform: 'capitalize'}}>{ captionLabel }</span>
+            <div
+              style={{
+                width: "100%",
+                fontSize: 12,
+                padding: 5,
+                background: "#000",
+                marginTop: -8,
+              }}
+            >
+              <span style={{ color: "#fff", textTransform: "capitalize" }}>
+                {captionLabel}
+              </span>
             </div>
-            {columnOptions.map(option =>
-              <div style={optionStyle} key={'option-' + option.id}>
+            {columnOptions.map((option) => (
+              <div style={optionStyle} key={"option-" + option.id}>
                 <Checkbox
-                  label={formatMessage({ id: `report.columnNames.${option.id}`})}
+                  label={formatMessage({
+                    id: `report.columnNames.${option.id}`,
+                  })}
                   checked={option.checked}
                   onCheck={(e, checked) => {
                     this.props.handleColumnCheck(option.id, checked);
                   }}
                 />
-              </div>,
-            )}
-            <div style={{...optionStyle, borderTop: '1px solid black'}} key={'option-all'}>
+              </div>
+            ))}
+            <div
+              style={{ ...optionStyle, borderTop: "1px solid black" }}
+              key={"option-all"}
+            >
               <Checkbox
                 label={selectAllLabel}
                 checked={allIsChecked}

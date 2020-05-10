@@ -12,10 +12,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .version {
-    position: absolute;
-    top: 5px;
-    right: 8px;
-    z-index: 2000;
-    color: white;
-    font-size: 0.5em;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  z-index: 2000;
+  color: white;
+  font-size: 0.5em;
 }

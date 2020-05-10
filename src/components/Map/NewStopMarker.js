@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import React from "react";
+import PropTypes from "prop-types";
+import { Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import PManager from "../../singletons/PolygonManager";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import PManager from '../../singletons/PolygonManager';
-
-const newStopIcon = require('../../static/icons/new-stop-icon-2x.png');
-const markerShadow = require('../../static/icons/marker-shadow.png');
+const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
+const markerShadow = require("../../static/icons/marker-shadow.png");
 
 class NewStopMarker extends React.Component {
   static propTypes = {
@@ -30,8 +29,14 @@ class NewStopMarker extends React.Component {
   };
 
   render() {
-
-    let { children, position, handleOnClick, handleDragEnd, text, newStopIsMultiModal } = this.props;
+    let {
+      children,
+      position,
+      handleOnClick,
+      handleDragEnd,
+      text,
+      newStopIsMultiModal,
+    } = this.props;
 
     var icon = L.icon({
       iconUrl: newStopIcon,
@@ -49,7 +54,7 @@ class NewStopMarker extends React.Component {
       <Marker
         ref="newstopMarker"
         key="newstop-key"
-        onDragend={e => {
+        onDragend={(e) => {
           handleDragEnd(e);
         }}
         draggable={true}
@@ -59,16 +64,23 @@ class NewStopMarker extends React.Component {
         <Popup>
           <div>
             <span onClick={handleOnClick}>{children}</span>
-            { latlngInside ?
+            {latlngInside ? (
               <div>
-                <p style={{ fontWeight: '600' }}>
-                  {newStopIsMultiModal ? text.newParentStopTitle : text.newStopTitle}
+                <p style={{ fontWeight: "600" }}>
+                  {newStopIsMultiModal
+                    ? text.newParentStopTitle
+                    : text.newStopTitle}
                 </p>
-                <p> {newStopIsMultiModal ? text.newParentStopQuestion : text.newStopQuestion}</p>
-                <div style={{textAlign: 'center'}}>
+                <p>
+                  {" "}
+                  {newStopIsMultiModal
+                    ? text.newParentStopQuestion
+                    : text.newStopQuestion}
+                </p>
+                <div style={{ textAlign: "center" }}>
                   <div
                     className="marker-popup-button"
-                    style={{maxWidth: 180}}
+                    style={{ maxWidth: 180 }}
                     onClick={() => {
                       handleOnClick(position);
                     }}
@@ -77,17 +89,20 @@ class NewStopMarker extends React.Component {
                   </div>
                 </div>
               </div>
-              : <div>
-                <p style={{fontWeight: 600, textAlign: 'center'}}>
-                  {newStopIsMultiModal ? text.newParentStopTitle : text.newStopTitle}
-                  </p>
-                <div style={{textAlign: 'center'}}>
+            ) : (
+              <div>
+                <p style={{ fontWeight: 600, textAlign: "center" }}>
+                  {newStopIsMultiModal
+                    ? text.newParentStopTitle
+                    : text.newStopTitle}
+                </p>
+                <div style={{ textAlign: "center" }}>
                   <div className="marker-popup-not-legal">
                     {text.createNotAllowed}
                   </div>
                 </div>
               </div>
-            }
+            )}
           </div>
         </Popup>
       </Marker>

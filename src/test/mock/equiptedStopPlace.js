@@ -12,55 +12,54 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 export default {
-  "placeEquipments": {
-    "waitingRoomEquipment": [
+  placeEquipments: {
+    waitingRoomEquipment: [
       {
-        "seats": 4,
-        "heated": true,
-        "stepFree": true
-      }
+        seats: 4,
+        heated: true,
+        stepFree: true,
+      },
     ],
-    "sanitaryEquipment": [
+    sanitaryEquipment: [
       {
-        "numberOfToilets": 8,
-        "gender": "both"
-      }
+        numberOfToilets: 8,
+        gender: "both",
+      },
     ],
-    "ticketingEquipment": [
+    ticketingEquipment: [
       {
-        "ticketOffice": true,
-        "ticketMachines": true,
-        "numberOfMachines": 7
-      }
+        ticketOffice: true,
+        ticketMachines: true,
+        numberOfMachines: 7,
+      },
     ],
-    "cycleStorageEquipment": [
+    cycleStorageEquipment: [
       {
-        "numberOfSpaces": 25,
-        "cycleStorageType": "racks"
-      }
+        numberOfSpaces: 25,
+        cycleStorageType: "racks",
+      },
     ],
-    "shelterEquipment": [
+    shelterEquipment: [
       {
-        "seats": 4,
-        "stepFree": true
-      }
+        seats: 4,
+        stepFree: true,
+      },
     ],
-    "generalSign": [
+    generalSign: [
       {
-        "id": "NSR:GeneralSign:45434",
-        "privateCode": {
-          "type": null,
-          "value": "512"
+        id: "NSR:GeneralSign:45434",
+        privateCode: {
+          type: null,
+          value: "512",
         },
-        "signContentType": "transportMode"
+        signContentType: "transportMode",
       },
       {
-        "id": "NSR:GeneralSign:45435",
-        "privateCode": null,
-        "signContentType": null
-      }
-    ]
-  }
+        id: "NSR:GeneralSign:45435",
+        privateCode: null,
+        signContentType: null,
+      },
+    ],
+  },
 };

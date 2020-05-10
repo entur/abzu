@@ -12,110 +12,125 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import gql from 'graphql-tag';
-import Fragments from './fragments';
+import gql from "graphql-tag";
+import Fragments from "./fragments";
 
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
-      stopPlace(id: $id) {
+    stopPlace(id: $id) {
+      id
+      ... on ParentStopPlace {
+        children {
           id
-          ...on ParentStopPlace {
-              children {
-                  id
-                  adjacentSites {
-                     ref
-                  }
-                  quays {
-                      id
-                      version
-                      geometry {
-                          coordinates
-                      }
-                      compassBearing
-                      publicCode
-                      privateCode {
-                          value
-                      }
-                  }
-              }
+          adjacentSites {
+            ref
           }
-          ...on StopPlace {
-              id
-              adjacentSites {
-                ref
-              }
-              quays {
-                  id
-                  version
-                  geometry {
-                      coordinates
-                  }
-                  compassBearing
-                  publicCode
-                  privateCode {
-                      value
-                  }
-              }
+          quays {
+            id
+            version
+            geometry {
+              coordinates
+            }
+            compassBearing
+            publicCode
+            privateCode {
+              value
+            }
           }
+        }
       }
+      ... on StopPlace {
+        id
+        adjacentSites {
+          ref
+        }
+        quays {
+          id
+          version
+          geometry {
+            coordinates
+          }
+          compassBearing
+          publicCode
+          privateCode {
+            value
+          }
+        }
+      }
+    }
   }
 `;
 
 export const stopPlaceBBQuery = gql`
-    query stopPlaceBBox($ignoreStopPlaceId: String, $lonMin: BigDecimal!, $lonMax: BigDecimal!, $latMin: BigDecimal!, $latMax: BigDecimal!, $includeExpired: Boolean) {
-        stopPlaceBBox(ignoreStopPlaceId: $ignoreStopPlaceId, latMin: $latMin, latMax: $latMax, lonMin: $lonMin, lonMax: $lonMax, size: 500, includeExpired: $includeExpired) {
-            id
-            geometry {
-                coordinates
-            }
-            name {
-                value
-            }
-            topographicPlace {
-                name {
-                    value
-                }
-                topographicPlaceType
-            }
-            validBetween {
-                fromDate
-                toDate
-            }
-            modificationEnumeration
-            ...on StopPlace {
-                __typename
-                stopPlaceType
-                submode
-            }
-            ...on ParentStopPlace {
-                children {
-                    id
-                    stopPlaceType
-                    submode
-                    geometry {
-                        coordinates
-                    }
-                    topographicPlace {
-                        name {
-                            value
-                        }
-                        topographicPlaceType
-                    }
-                    validBetween {
-                        fromDate
-                        toDate
-                    }
-                    name {
-                        value
-                    }
-                }
-                name {
-                    value
-                }
-                __typename
-            }
+  query stopPlaceBBox(
+    $ignoreStopPlaceId: String
+    $lonMin: BigDecimal!
+    $lonMax: BigDecimal!
+    $latMin: BigDecimal!
+    $latMax: BigDecimal!
+    $includeExpired: Boolean
+  ) {
+    stopPlaceBBox(
+      ignoreStopPlaceId: $ignoreStopPlaceId
+      latMin: $latMin
+      latMax: $latMax
+      lonMin: $lonMin
+      lonMax: $lonMax
+      size: 500
+      includeExpired: $includeExpired
+    ) {
+      id
+      geometry {
+        coordinates
+      }
+      name {
+        value
+      }
+      topographicPlace {
+        name {
+          value
         }
-    },
+        topographicPlaceType
+      }
+      validBetween {
+        fromDate
+        toDate
+      }
+      modificationEnumeration
+      ... on StopPlace {
+        __typename
+        stopPlaceType
+        submode
+      }
+      ... on ParentStopPlace {
+        children {
+          id
+          stopPlaceType
+          submode
+          geometry {
+            coordinates
+          }
+          topographicPlace {
+            name {
+              value
+            }
+            topographicPlaceType
+          }
+          validBetween {
+            fromDate
+            toDate
+          }
+          name {
+            value
+          }
+        }
+        name {
+          value
+        }
+        __typename
+      }
+    }
+  }
 `;
 
 export const allEntities = gql`
@@ -170,197 +185,214 @@ export const allEntities = gql`
 `;
 
 export const getStopById = gql`
-    query getStopById($id: String!) {
-        stopPlace(id: $id) {
-            id
-            __typename
-            keyValues {
-                key
-                values
-            }
-            name {
-                value
-            }
-            groups {
-              id
-              name {
-                value
-              }
-            }
-            tags {
-                name
-                comment
-                created
-                createdBy
-            }
-            geometry {
-                coordinates
-            }
-            validBetween {
-                fromDate
-                toDate
-            }
-            accessibilityAssessment {
-                limitations {
-                    wheelchairAccess
-                }
-            }
-            modificationEnumeration
-            topographicPlace {
-                name {
-                    value
-                }
-                topographicPlaceType
-                parentTopographicPlace {
-                    name {
-                        value
-                    }
-                }
-            }
-            ... on StopPlace {
-                adjacentSites {
-                    ref
-                }
-                stopPlaceType
-                submode
-                transportMode
-                quays {
-                    id
-                    importedId
-                }
-            }
-            ... on ParentStopPlace {
-                geometry {
-                    coordinates
-                    type
-                }
-                children {
-                    name {
-                        value
-                    }
-                    id
-                    importedId
-                    stopPlaceType
-                    transportMode
-                    submode
-                    geometry {
-                        coordinates
-                    }
-                }
-            }
+  query getStopById($id: String!) {
+    stopPlace(id: $id) {
+      id
+      __typename
+      keyValues {
+        key
+        values
+      }
+      name {
+        value
+      }
+      groups {
+        id
+        name {
+          value
         }
-    },
+      }
+      tags {
+        name
+        comment
+        created
+        createdBy
+      }
+      geometry {
+        coordinates
+      }
+      validBetween {
+        fromDate
+        toDate
+      }
+      accessibilityAssessment {
+        limitations {
+          wheelchairAccess
+        }
+      }
+      modificationEnumeration
+      topographicPlace {
+        name {
+          value
+        }
+        topographicPlaceType
+        parentTopographicPlace {
+          name {
+            value
+          }
+        }
+      }
+      ... on StopPlace {
+        adjacentSites {
+          ref
+        }
+        stopPlaceType
+        submode
+        transportMode
+        quays {
+          id
+          importedId
+        }
+      }
+      ... on ParentStopPlace {
+        geometry {
+          coordinates
+          type
+        }
+        children {
+          name {
+            value
+          }
+          id
+          importedId
+          stopPlaceType
+          transportMode
+          submode
+          geometry {
+            coordinates
+          }
+        }
+      }
+    }
+  }
 `;
 
 export const findStop = gql`
-    query findStop($query: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $countryReference: [String], $pointInTime: DateTime, $versionValidity: VersionValidity) {
-        groupOfStopPlaces(query: $query, size: 7) {
-            id
-            name {
-                value
-            }
-            members {
-                __typename
-                id
-                name {
-                    value
-                }
-                geometry {
-                    type
-                    coordinates
-                }
-                topographicPlace {
-                    name {
-                        value
-                    }
-                    parentTopographicPlace {
-                        name {
-                            value
-                        }
-                    }
-                }
-                ...on StopPlace {
-                    submode
-                    stopPlaceType
-                }
-            }
+  query findStop(
+    $query: String
+    $municipalityReference: [String]
+    $stopPlaceType: [StopPlaceType]
+    $countyReference: [String]
+    $countryReference: [String]
+    $pointInTime: DateTime
+    $versionValidity: VersionValidity
+  ) {
+    groupOfStopPlaces(query: $query, size: 7) {
+      id
+      name {
+        value
+      }
+      members {
+        __typename
+        id
+        name {
+          value
         }
-        stopPlace(query: $query, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, countryReference: $countryReference, size: 7, pointInTime: $pointInTime, versionValidity: $versionValidity) {
-            id
-            groups {
-                id
-                name {
-                  value
-                }
-            }
-            __typename
-            keyValues {
-                key
-                values
-            }
-            name {
-                value
-            }
-            tags {
-                name
-                comment
-                created
-                createdBy
-            }
-            geometry {
-                coordinates
-            }
-            validBetween {
-                fromDate
-                toDate
-            }
-            accessibilityAssessment {
-                limitations {
-                    wheelchairAccess
-                }
-            }
-            topographicPlace {
-                name {
-                    value
-                }
-                topographicPlaceType
-                parentTopographicPlace {
-                    name {
-                        value
-                    }
-                }
-            }
-            modificationEnumeration
-            ... on StopPlace {
-              stopPlaceType
-              submode
-              transportMode
-              quays {
-                  id
-                  importedId
-              }
-            }
-           ... on ParentStopPlace {
-               geometry {
-                   coordinates
-                   type
-               }
-               children {
-                   id
-                   name {
-                       value
-                   }
-                   importedId
-                   stopPlaceType
-                   transportMode
-                   submode
-                   geometry {
-                       coordinates
-                   }
-               }
-           }
+        geometry {
+          type
+          coordinates
         }
-    },
+        topographicPlace {
+          name {
+            value
+          }
+          parentTopographicPlace {
+            name {
+              value
+            }
+          }
+        }
+        ... on StopPlace {
+          submode
+          stopPlaceType
+        }
+      }
+    }
+    stopPlace(
+      query: $query
+      municipalityReference: $municipalityReference
+      stopPlaceType: $stopPlaceType
+      countyReference: $countyReference
+      countryReference: $countryReference
+      size: 7
+      pointInTime: $pointInTime
+      versionValidity: $versionValidity
+    ) {
+      id
+      groups {
+        id
+        name {
+          value
+        }
+      }
+      __typename
+      keyValues {
+        key
+        values
+      }
+      name {
+        value
+      }
+      tags {
+        name
+        comment
+        created
+        createdBy
+      }
+      geometry {
+        coordinates
+      }
+      validBetween {
+        fromDate
+        toDate
+      }
+      accessibilityAssessment {
+        limitations {
+          wheelchairAccess
+        }
+      }
+      topographicPlace {
+        name {
+          value
+        }
+        topographicPlaceType
+        parentTopographicPlace {
+          name {
+            value
+          }
+        }
+      }
+      modificationEnumeration
+      ... on StopPlace {
+        stopPlaceType
+        submode
+        transportMode
+        quays {
+          id
+          importedId
+        }
+      }
+      ... on ParentStopPlace {
+        geometry {
+          coordinates
+          type
+        }
+        children {
+          id
+          name {
+            value
+          }
+          importedId
+          stopPlaceType
+          transportMode
+          submode
+          geometry {
+            coordinates
+          }
+        }
+      }
+    }
+  }
 `;
 
 export const findStopForReport = gql`
@@ -379,72 +411,71 @@ export const findStopForReport = gql`
 `;
 
 export const allVersionsOfStopPlace = gql`
-    query stopPlaceAllVersions($id: String!) {
-        versions:
-        stopPlace(id: $id, allVersions: true, size: 100) {
-            id
-            ...on StopPlace {
-                validBetween {
-                    fromDate
-                    toDate
-                }
-                name {
-                    value
-                    lang
-                }
-                changedBy
-                version
-                versionComment
-            }
-            ...on ParentStopPlace {
-                validBetween {
-                    fromDate
-                    toDate
-                }
-                name {
-                    value
-                    lang
-                }
-                changedBy
-                version
-                versionComment
-            }
+  query stopPlaceAllVersions($id: String!) {
+    versions: stopPlace(id: $id, allVersions: true, size: 100) {
+      id
+      ... on StopPlace {
+        validBetween {
+          fromDate
+          toDate
         }
-    },
+        name {
+          value
+          lang
+        }
+        changedBy
+        version
+        versionComment
+      }
+      ... on ParentStopPlace {
+        validBetween {
+          fromDate
+          toDate
+        }
+        name {
+          value
+          lang
+        }
+        changedBy
+        version
+        versionComment
+      }
+    }
+  }
 `;
 
 export const getTagsQuery = gql`
   query getTagsQuery($idReference: String!) {
-      stopPlace(id: $idReference) {
-          __typename
-          tags {
-              name
-              comment
-              created
-              createdBy
-              idReference
-          }
+    stopPlace(id: $idReference) {
+      __typename
+      tags {
+        name
+        comment
+        created
+        createdBy
+        idReference
       }
+    }
   }
 `;
 
 export const getTagsByNameQuery = gql`
-    query getTagsByNameQuery($name: String!) {
-        tags(name: $name) {
-            name
-        }
+  query getTagsByNameQuery($name: String!) {
+    tags(name: $name) {
+      name
     }
+  }
 `;
 
 export const findTagByNameQuery = gql`
   query findTagByName($name: String!) {
-      tags(name: $name) {
-          name
-          comment
-          created
-          createdBy
-          idReference
-      }
+    tags(name: $name) {
+      name
+      comment
+      created
+      createdBy
+      idReference
+    }
   }
 `;
 
@@ -483,65 +514,65 @@ export const stopPlaceAndPathLinkByVersion = gql`
 `;
 
 export const topopGraphicalPlacesQuery = gql`
-    query TopopGraphicalPlaces($query: String!) {
-        topographicPlace(query: $query) {
-            id
-            name {
-                value
-            }
-            topographicPlaceType
-            parentTopographicPlace {
-                name {
-                    value
-                }
-            }
+  query TopopGraphicalPlaces($query: String!) {
+    topographicPlace(query: $query) {
+      id
+      name {
+        value
+      }
+      topographicPlaceType
+      parentTopographicPlace {
+        name {
+          value
         }
+      }
     }
+  }
 `;
 
 export const topopGraphicalPlacesReportQuery = gql`
-    query TopopGraphicalPlacesForReport($query: String!) {
-        topographicPlace(query: $query) {
-            id
-            name {
-                value
-            }
-            topographicPlaceType
-            parentTopographicPlace {
-                name {
-                    value
-                }
-            }
+  query TopopGraphicalPlacesForReport($query: String!) {
+    topographicPlace(query: $query) {
+      id
+      name {
+        value
+      }
+      topographicPlaceType
+      parentTopographicPlace {
+        name {
+          value
         }
+      }
     }
+  }
 `;
 
 export const getMergeInfoStopPlace = gql`
-    query MergeInfoStopPlace($stopPlaceId: String!) {
-        stopPlace(id: $stopPlaceId) {
-            ...on StopPlace {
-                quays {
-                    id
-                    privateCode {
-                        value
-                    }
-                    compassBearing
-                    publicCode
-                }
-            }
+  query MergeInfoStopPlace($stopPlaceId: String!) {
+    stopPlace(id: $stopPlaceId) {
+      ... on StopPlace {
+        quays {
+          id
+          privateCode {
+            value
+          }
+          compassBearing
+          publicCode
         }
+      }
     }
+  }
 `;
 
-export const getParkingForMultipleStopPlaces = stopPlaceIds => {
-  const stopPlaces = stopPlaceIds.map(id => ({
+export const getParkingForMultipleStopPlaces = (stopPlaceIds) => {
+  const stopPlaces = stopPlaceIds.map((id) => ({
     id,
-    alias: id.replace(window.config.netexPrefix + ':StopPlace:', 'StopPlace')
+    alias: id.replace(window.config.netexPrefix + ":StopPlace:", "StopPlace"),
   }));
 
-  let queryContent = '';
+  let queryContent = "";
 
-  stopPlaces.forEach(stopPlace => {
+  stopPlaces.forEach((stopPlace) => {
     queryContent += `
         ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
             id
@@ -557,15 +588,15 @@ export const getParkingForMultipleStopPlaces = stopPlaceIds => {
   `;
 };
 
-export const getStopPlacesById = stopPlaceIds => {
-  const stopPlaces = stopPlaceIds.map(id => ({
+export const getStopPlacesById = (stopPlaceIds) => {
+  const stopPlaces = stopPlaceIds.map((id) => ({
     id,
-    alias: id.replace(window.config.netexPrefix + ':StopPlace:', 'StopPlace')
+    alias: id.replace(window.config.netexPrefix + ":StopPlace:", "StopPlace"),
   }));
 
-  let queryContent = '';
+  let queryContent = "";
 
-  stopPlaces.forEach(stopPlace => {
+  stopPlaces.forEach((stopPlace) => {
     queryContent += `
         ${stopPlace.alias}: stopPlace(id: "${stopPlace.id}") {
             ...on StopPlace {
@@ -618,11 +649,11 @@ export const getStopPlacesById = stopPlaceIds => {
   `;
 };
 
-export const getPolygons = ids => {
-  let queryContent = '';
+export const getPolygons = (ids) => {
+  let queryContent = "";
 
-  ids.forEach(id => {
-    let alias = id.replace(':', '').replace(':', '');
+  ids.forEach((id) => {
+    let alias = id.replace(":", "").replace(":", "");
 
     queryContent += `
         ${alias}: topographicPlace(id: "${id}") {
@@ -641,11 +672,11 @@ export const getPolygons = ids => {
   `;
 };
 
-export const getQueryTopographicPlaces = ids => {
-  let queryContent = '';
+export const getQueryTopographicPlaces = (ids) => {
+  let queryContent = "";
 
-  ids.forEach(id => {
-    let alias = id.replace(':', '').replace(':', '');
+  ids.forEach((id) => {
+    let alias = id.replace(":", "").replace(":", "");
 
     queryContent += `
         ${alias}: topographicPlace(id: "${id}") {
@@ -671,19 +702,21 @@ export const getQueryTopographicPlaces = ids => {
 };
 
 export const getGroupOfStopPlaceQuery = gql`
-    query getGroupOfStopPlaces($id: String!) {
-        groupOfStopPlaces(id: $id) {
-        ...GroupOfStopPlaces
-        }
-    },
-   ${Fragments.groupOfStopPlaces.verbose}
+  query getGroupOfStopPlaces($id: String!) {
+    groupOfStopPlaces(id: $id) {
+      ...GroupOfStopPlaces
+    }
+  }
+  ${Fragments.groupOfStopPlaces.verbose}
 `;
 
 export const findTariffones = gql`
-   query findTariffZones($query: String!) {
-      tariffZones(query: $query, size: 7) {
-        id
-        name {
-          value
-      }}
-}`;
+  query findTariffZones($query: String!) {
+    tariffZones(query: $query, size: 7) {
+      id
+      name {
+        value
+      }
+    }
+  }
+`;

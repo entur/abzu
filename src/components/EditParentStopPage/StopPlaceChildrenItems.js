@@ -12,26 +12,27 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import StopPlaceListChildItem from './StopPlaceListChildItem';
+import React, { Component } from "react";
+import StopPlaceListChildItem from "./StopPlaceListChildItem";
 
 class StopPlaceChildrenItems extends Component {
-
   render() {
     const { children, formatMessage } = this.props;
 
     return (
-      <div style={{width: '90%', margin: 'auto'}}>
-        <span style={{fontWeight: 600, fontSize: '0.8em', textTransform: 'capitalize'}}>
-          {formatMessage({id: 'children_of_parent_stop_place'})}
+      <div style={{ width: "90%", margin: "auto" }}>
+        <span
+          style={{
+            fontWeight: 600,
+            fontSize: "0.8em",
+            textTransform: "capitalize",
+          }}
+        >
+          {formatMessage({ id: "children_of_parent_stop_place" })}
         </span>
-        {children.map((child, i) =>
-          <StopPlaceListChildItem
-            key={child.id}
-            child={child}
-          />
-        )}
+        {children.map((child, i) => (
+          <StopPlaceListChildItem key={child.id} child={child} />
+        ))}
       </div>
     );
   }

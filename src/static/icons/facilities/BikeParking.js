@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import SvgIcon from 'material-ui/SvgIcon';
+import React from "react";
+import SvgIcon from "material-ui/SvgIcon";
 
-const BikeParking = props =>
+const BikeParking = (props) => (
   <SvgIcon
     {...props}
     width="225.000000pt"
@@ -29,5 +29,6 @@ const BikeParking = props =>
       <path d="M60.236,7.959H40.285c-0.779,0-1.411,0.632-1.411,1.411v24.445c0,0.779,0.632,1.411,1.411,1.411h19.951   c0.779,0,1.412-0.632,1.412-1.411V9.37C61.648,8.591,61.016,7.959,60.236,7.959z M55.581,22.386   c-1.091,0.962-2.589,1.444-4.491,1.444h-3.273v6.003h-3.32V13.278h6.594c1.902,0,3.4,0.485,4.491,1.456   c1.092,0.97,1.638,2.248,1.638,3.832S56.673,21.423,55.581,22.386z" />
       <path d="M51.09,15.837h-3.273v5.435h3.273c0.926,0,1.626-0.252,2.104-0.756c0.478-0.504,0.717-1.146,0.717-1.927   c0-0.795-0.237-1.453-0.711-1.972S52.022,15.837,51.09,15.837z" />
     </g>
-  </SvgIcon>;
+  </SvgIcon>
+);
 export default BikeParking;

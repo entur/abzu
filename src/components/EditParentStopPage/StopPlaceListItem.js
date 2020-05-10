@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import ModalityIconImg from '../MainPage/ModalityIconImg';
-import Divider from 'material-ui/Divider';
-import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
-import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
-import EditorInsertLink from 'material-ui/svg-icons/editor/insert-link';
-import StopPlaceListItemDetails from './StopPlaceListItemDetails';
-import StopPlaceLink from '../ReportPage/StopPlaceLink';
-import ModalityIconTray from '../ReportPage/ModalityIconTray';
+import React, { Component } from "react";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
+import Divider from "material-ui/Divider";
+import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
+import NavigationExpandLess from "material-ui/svg-icons/navigation/expand-less";
+import EditorInsertLink from "material-ui/svg-icons/editor/insert-link";
+import StopPlaceListItemDetails from "./StopPlaceListItemDetails";
+import StopPlaceLink from "../ReportPage/StopPlaceLink";
+import ModalityIconTray from "../ReportPage/ModalityIconTray";
 
 class StopPlaceListItem extends Component {
   render() {
@@ -31,7 +31,7 @@ class StopPlaceListItem extends Component {
       handleCollapse,
       disabled,
       handleRemoveStopPlace,
-      handleRemoveAdjacentConnection
+      handleRemoveAdjacentConnection,
     } = this.props;
 
     return (
@@ -39,61 +39,70 @@ class StopPlaceListItem extends Component {
         <Divider />
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
             padding: 5,
-            justifyContent: 'space-between'
+            justifyContent: "space-between",
           }}
         >
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%'
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {stopPlace.isParent
-                ? <ModalityIconTray
-                    modalities={stopPlace.children.map(child => ({
-                      stopPlaceType: child.stopPlaceType,
-                      submode: child.submode
-                    }))}
-                    style={{ marginTop: -8 }}
-                  />
-                : <ModalityIconImg
-                    type={stopPlace.stopPlaceType}
-                    submode={stopPlace.submode}
-                    svgStyle={{ transform: 'scale(0.8)' }}
-                    style={{ marginTop: -8, marginRight: 5 }}
-                  />}
-              {stopPlace.adjacentSites &&
-                stopPlace.adjacentSites.length > 0 &&
-                 <EditorInsertLink
-                    style={{ marginLeft: -15, marginTop: -15, marginRight: 5, transform: 'scale(0.6)' }}
-                  />
-              }
-              <div style={{ fontSize: '0.8em' }}>{stopPlace.name}</div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {stopPlace.isParent ? (
+                <ModalityIconTray
+                  modalities={stopPlace.children.map((child) => ({
+                    stopPlaceType: child.stopPlaceType,
+                    submode: child.submode,
+                  }))}
+                  style={{ marginTop: -8 }}
+                />
+              ) : (
+                <ModalityIconImg
+                  type={stopPlace.stopPlaceType}
+                  submode={stopPlace.submode}
+                  svgStyle={{ transform: "scale(0.8)" }}
+                  style={{ marginTop: -8, marginRight: 5 }}
+                />
+              )}
+              {stopPlace.adjacentSites && stopPlace.adjacentSites.length > 0 && (
+                <EditorInsertLink
+                  style={{
+                    marginLeft: -15,
+                    marginTop: -15,
+                    marginRight: 5,
+                    transform: "scale(0.6)",
+                  }}
+                />
+              )}
+              <div style={{ fontSize: "0.8em" }}>{stopPlace.name}</div>
             </div>
             <StopPlaceLink
-              style={{ fontSize: '0.8em', marginRight: 5 }}
+              style={{ fontSize: "0.8em", marginRight: 5 }}
               id={stopPlace.id}
             />
           </div>
           <div style={{ marginRight: 5 }}>
-            {expanded
-              ? <NavigationExpandLess onClick={handleCollapse} />
-              : <NavigationExpandMore onClick={handleExpand} />}
+            {expanded ? (
+              <NavigationExpandLess onClick={handleCollapse} />
+            ) : (
+              <NavigationExpandMore onClick={handleExpand} />
+            )}
           </div>
         </div>
-        {expanded &&
+        {expanded && (
           <StopPlaceListItemDetails
             handleRemoveStopPlace={handleRemoveStopPlace}
             handleRemoveAdjacentConnection={handleRemoveAdjacentConnection}
             stopPlace={stopPlace}
             disabled={disabled}
-          />}
+          />
+        )}
         <Divider />
       </div>
     );

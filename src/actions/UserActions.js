@@ -12,20 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from './Types';
-import { browserHistory } from 'react-router';
-import configureLocalization from '../localization/localization';
-import FavoriteManager from '../singletons/FavoriteManager';
-import SettingsManager from '../singletons/SettingsManager';
+import * as types from "./Types";
+import { browserHistory } from "react-router";
+import configureLocalization from "../localization/localization";
+import FavoriteManager from "../singletons/FavoriteManager";
+import SettingsManager from "../singletons/SettingsManager";
 import {
   getMergeInfoForStops,
-  getAddStopPlaceInfo
-} from '../graphql/Tiamat/actions';
-import { getIn } from '../utils/';
-import ParentStopPlace from '../models/ParentStopPlace';
-import Routes from '../routes/';
-import { createThunk } from './';
-import { checkStopPlaceUsage, checkQuayUsage } from '../graphql/OTP/actions';
+  getAddStopPlaceInfo,
+} from "../graphql/Tiamat/actions";
+import { getIn } from "../utils/";
+import ParentStopPlace from "../models/ParentStopPlace";
+import Routes from "../routes/";
+import { createThunk } from "./";
+import { checkStopPlaceUsage, checkQuayUsage } from "../graphql/OTP/actions";
 
 var UserActions = {};
 
@@ -33,63 +33,66 @@ let Settings = new SettingsManager();
 
 const goToRoute = (path, id) => {
   const basePath = window.config.endpointBase;
-  if (path.length && path[0] === '/') {
+  if (path.length && path[0] === "/") {
     path = path.slice(1);
   }
   browserHistory.push(basePath + path + id);
 };
 
-UserActions.navigateTo = (path, id) => dispatch => {
+UserActions.navigateTo = (path, id) => (dispatch) => {
   dispatch(createThunk(types.NAVIGATE_TO, id));
   goToRoute(path, id);
 };
 
-UserActions.toggleShowFutureAndExpired = value => dispatch => {
+UserActions.toggleShowFutureAndExpired = (value) => (dispatch) => {
   dispatch(createThunk(types.TOGGLE_SHOW_FUTURE_AND_EXPIRED, value));
 };
 
-UserActions.navigateToMainAfterDelete = () => dispatch => {
+UserActions.navigateToMainAfterDelete = () => (dispatch) => {
   dispatch(createThunk(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
-  goToRoute('/', '');
+  goToRoute("/", "");
 };
 
-UserActions.closeLookupCoordinatesDialog = () => dispatch => {
+UserActions.closeLookupCoordinatesDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_LOOKUP_COORDINATES_DIALOG, null));
 };
 
-UserActions.openLookupCoordinatesDialog = () => dispatch => {
+UserActions.openLookupCoordinatesDialog = () => (dispatch) => {
   dispatch(createThunk(types.OPEN_LOOKUP_COORDINATES_DIALOG, null));
 };
 
-UserActions.openSuccessfullyCreatedNewStop = stopPlaceId => dispatch => {
+UserActions.openSuccessfullyCreatedNewStop = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.SHOW_CREATED_NEW_STOP_INFO, stopPlaceId));
 };
 
-UserActions.closeSuccessfullyCreatedNewStop = () => dispatch => {
+UserActions.closeSuccessfullyCreatedNewStop = () => (dispatch) => {
   dispatch(createThunk(types.HIDE_CREATED_NEW_STOP_INFO, null));
 };
 
-UserActions.clearSearchResults = () => dispatch => {
+UserActions.clearSearchResults = () => (dispatch) => {
   dispatch(createThunk(types.CLEAR_SEARCH_RESULTS, null));
 };
 
-UserActions.hideEditStopAdditional = () => dispatch => {
+UserActions.hideEditStopAdditional = () => (dispatch) => {
   dispatch(createThunk(types.HID_EDIT_STOP_ADDITIONAL, null));
 };
 
-UserActions.showEditStopAdditional = () => dispatch => {
+UserActions.showEditStopAdditional = () => (dispatch) => {
   dispatch(createThunk(types.SHOW_EDIT_STOP_ADDITIONAL, null));
 };
 
-UserActions.hideEditQuayAdditional = () => dispatch => {
+UserActions.hideEditQuayAdditional = () => (dispatch) => {
   dispatch(createThunk(types.HID_EDIT_QUAY_ADDITIONAL, null));
 };
 
-UserActions.showEditQuayAdditional = () => dispatch => {
+UserActions.showEditQuayAdditional = () => (dispatch) => {
   dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
 };
 
-UserActions.toggleIsCreatingNewStop = isMultiModal => (dispatch, getState) => {
+UserActions.toggleIsCreatingNewStop = (isMultiModal) => (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const isCreatingNewStop = state.user.isCreatingNewStop;
 
@@ -99,72 +102,79 @@ UserActions.toggleIsCreatingNewStop = isMultiModal => (dispatch, getState) => {
   dispatch(createThunk(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
 };
 
-UserActions.toggleMultimodalEdges = value => dispatch => {
+UserActions.toggleMultimodalEdges = (value) => (dispatch) => {
   Settings.setShowMultimodalEdges(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));
 };
 
-UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces = value => dispatch => {
+UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces = (value) => (
+  dispatch
+) => {
   Settings.setEnablePublicCodePrivateCodeOnStopPlaces(value);
-  dispatch(createThunk(types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES, value));
-}
+  dispatch(
+    createThunk(
+      types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES,
+      value
+    )
+  );
+};
 
-UserActions.togglePathLinksEnabled = value => dispatch => {
+UserActions.togglePathLinksEnabled = (value) => (dispatch) => {
   Settings.setShowPathLinks(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIPOLYLINES_ENABLED, value));
 };
 
-UserActions.toggleCompassBearingEnabled = value => dispatch => {
+UserActions.toggleCompassBearingEnabled = (value) => (dispatch) => {
   Settings.setShowCompassBearing(value);
   dispatch(createThunk(types.TOGGLED_IS_COMPASS_BEARING_ENABLED, value));
 };
 
-UserActions.toggleExpiredShowExpiredStops = value => dispatch => {
+UserActions.toggleExpiredShowExpiredStops = (value) => (dispatch) => {
   Settings.setShowExpiredStops(value);
   dispatch(createThunk(types.TOGGLED_IS_SHOW_EXPIRED_STOPS, value));
 };
 
-UserActions.applyStopTypeSearchFilter = filters => dispatch => {
+UserActions.applyStopTypeSearchFilter = (filters) => (dispatch) => {
   dispatch(createThunk(types.APPLIED_STOPTYPE_SEARCH_FILTER, filters));
 };
 
-UserActions.openSnackbar = status => dispatch => {
+UserActions.openSnackbar = (status) => (dispatch) => {
   dispatch(createThunk(types.OPENED_SNACKBAR, { status }));
 };
 
-UserActions.dismissSnackbar = () => dispatch => {
+UserActions.dismissSnackbar = () => (dispatch) => {
   dispatch(createThunk(types.DISMISSED_SNACKBAR, null));
 };
 
-UserActions.applyLocale = locale => dispatch => {
+UserActions.applyLocale = (locale) => (dispatch) => {
   dispatch(createThunk(types.APPLIED_LOCALE, locale));
-  configureLocalization(locale).then(localization => {
+  configureLocalization(locale).then((localization) => {
     dispatch(UserActions.changeLocalization(localization));
   });
 };
 
-UserActions.changeLocalization = localization => dispatch => {
+UserActions.changeLocalization = (localization) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_LOCALIZATION, localization));
 };
 
-UserActions.hideQuaysForNeighbourStop = id => dispatch => {
+UserActions.hideQuaysForNeighbourStop = (id) => (dispatch) => {
   dispatch(createThunk(types.HID_QUAYS_FOR_NEIGHBOUR_STOP, id));
 };
 
-UserActions.addToposChip = chip => dispatch => {
-  if (typeof chip.text !== 'undefined' && typeof chip.type !== 'undefined')
+UserActions.addToposChip = (chip) => (dispatch) => {
+  if (typeof chip.text !== "undefined" && typeof chip.type !== "undefined")
     dispatch(createThunk(types.ADDED_TOPOS_CHIP, chip));
 };
 
-UserActions.setToposchips = chips => dispatch => {
+UserActions.setToposchips = (chips) => (dispatch) => {
   dispatch(createThunk(types.SET_TOPOS_CHIPS, chips));
 };
 
-UserActions.setStopPlaceTypes = stopPlaces => dispatch => {
+UserActions.setStopPlaceTypes = (stopPlaces) => (dispatch) => {
   dispatch(createThunk(types.SET_STOP_PLACE_TYPES, stopPlaces));
 };
 
-UserActions.deleteChip = key => dispatch => {
+UserActions.deleteChip = (key) => (dispatch) => {
   dispatch(createThunk(types.DELETED_TOPOS_CHIP, key));
 };
 
@@ -174,7 +184,7 @@ UserActions.setCenterAndZoom = (position, zoom) => (dispatch, getState) => {
   dispatch(createThunk(types.SET_CENTER_AND_ZOOM, { position, zoom: newZoom }));
 };
 
-UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
+UserActions.saveSearchAsFavorite = (title) => (dispatch, getState) => {
   const state = getState();
   const searchFilters = state.user.searchFilters;
   let favoriteManager = new FavoriteManager();
@@ -189,26 +199,26 @@ UserActions.saveSearchAsFavorite = title => (dispatch, getState) => {
   dispatch(UserActions.closeFavoriteNameDialog());
 };
 
-UserActions.removeSearchAsFavorite = item => dispatch => {
+UserActions.removeSearchAsFavorite = (item) => (dispatch) => {
   let favoriteManager = new FavoriteManager();
   favoriteManager.remove(item);
   dispatch(createThunk(types.REMOVE_SEARCH_AS_FAVORITE, item));
 };
 
-UserActions.setSearchText = text => dispatch => {
+UserActions.setSearchText = (text) => (dispatch) => {
   dispatch(createThunk(types.SET_SEARCH_TEXT, text));
 };
 
-UserActions.setMissingCoordinates = (position, stopPlaceId) => dispatch => {
+UserActions.setMissingCoordinates = (position, stopPlaceId) => (dispatch) => {
   dispatch(
     createThunk(types.SET_MISSING_COORDINATES, {
       stopPlaceId,
-      position
+      position,
     })
   );
 };
 
-UserActions.loadFavoriteSearch = favorite => dispatch => {
+UserActions.loadFavoriteSearch = (favorite) => (dispatch) => {
   dispatch(UserActions.setToposchips(favorite.topoiChips));
   dispatch(UserActions.setStopPlaceTypes(favorite.stopType));
   dispatch(UserActions.setSearchText(favorite.searchText));
@@ -217,78 +227,78 @@ UserActions.loadFavoriteSearch = favorite => dispatch => {
   );
 };
 
-UserActions.openFavoriteNameDialog = () => dispatch => {
+UserActions.openFavoriteNameDialog = () => (dispatch) => {
   dispatch(createThunk(types.OPENED_FAVORITE_NAME_DIALOG, null));
 };
 
-UserActions.closeFavoriteNameDialog = () => dispatch => {
+UserActions.closeFavoriteNameDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_FAVORITE_NAME_DIALOG, null));
 };
 
-UserActions.changeActiveBaselayer = layer => dispatch => {
+UserActions.changeActiveBaselayer = (layer) => (dispatch) => {
   Settings.setMapLayer(layer);
   dispatch(createThunk(types.CHANGED_ACTIVE_BASELAYER, layer));
 };
 
-UserActions.removeStopsNearbyForOverview = () => dispatch => {
+UserActions.removeStopsNearbyForOverview = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null));
 };
 
-UserActions.startCreatingPolyline = (coordinates, id, type) => dispatch => {
+UserActions.startCreatingPolyline = (coordinates, id, type) => (dispatch) => {
   dispatch(
     createThunk(types.STARTED_CREATING_POLYLINE, {
       coordinates: coordinates,
       id: id,
-      type: type
+      type: type,
     })
   );
 };
 
-UserActions.removeAllFilters = () => dispatch => {
+UserActions.removeAllFilters = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_ALL_FILTERS, null));
 };
 
-UserActions.addCoordinatesToPolylines = coords => dispatch => {
+UserActions.addCoordinatesToPolylines = (coords) => (dispatch) => {
   dispatch(createThunk(types.ADDED_COORDINATES_TO_POLYLINE, coords));
 };
 
-UserActions.addFinalCoordinesToPolylines = (coords, id, type) => dispatch => {
+UserActions.addFinalCoordinesToPolylines = (coords, id, type) => (dispatch) => {
   dispatch(
     createThunk(types.ADDED_FINAL_COORDINATES_TO_POLYLINE, {
       coordinates: coords,
       id: id,
-      type: type
+      type: type,
     })
   );
 };
 
-UserActions.removePolylineFromIndex = index => dispatch => {
+UserActions.removePolylineFromIndex = (index) => (dispatch) => {
   dispatch(createThunk(types.REMOVED_POLYLINE_FROM_INDEX, index));
 };
 
-UserActions.removeLastPolyline = () => dispatch => {
+UserActions.removeLastPolyline = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_LAST_POLYLINE, null));
 };
 
-UserActions.editPolylineTimeEstimate = (index, seconds) => dispatch => {
+UserActions.editPolylineTimeEstimate = (index, seconds) => (dispatch) => {
   dispatch(
     createThunk(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {
       index: index,
-      estimate: seconds
+      estimate: seconds,
     })
   );
 };
 
-UserActions.changeElementTypeTab = value => dispatch => {
+UserActions.changeElementTypeTab = (value) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_ELEMENT_TYPE_TAB, value));
 };
 
-UserActions.changeElementTypeTabByType = type => dispatch => {
+UserActions.changeElementTypeTabByType = (type) => (dispatch) => {
   let typesMap = {
     quay: 0,
     entrance: 1,
     pathJunction: 1,
-    parking: 2
+    parking: 2,
   };
   let value = typesMap[type] || 0;
   dispatch(UserActions.changeElementTypeTab(value));
@@ -304,7 +314,7 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
   dispatch(
     createThunk(types.OPENED_MERGE_STOP_DIALOG, {
       id: fromStopPlaceID,
-      name: name
+      name: name,
     })
   );
 
@@ -312,48 +322,47 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
     dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
 
     getMergeInfoForStops(client, fromStopPlaceID)
-      .then(response => {
+      .then((response) => {
         dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
         dispatch(
           createThunk(types.OPENED_MERGE_STOP_DIALOG, {
             id: fromStopPlaceID,
             name,
-            quays: getQuaysForMergeInfo(response.data.stopPlace)
+            quays: getQuaysForMergeInfo(response.data.stopPlace),
           })
         );
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
         console.log(err);
       });
   }
 };
 
-UserActions.hideMergeStopDialog = () => dispatch => {
+UserActions.hideMergeStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_MERGE_STOP_DIALOG, null));
 };
 
-
-UserActions.showAddAdjacentStopDialog = stopPlaceId => dispatch => {
+UserActions.showAddAdjacentStopDialog = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_ADJACENT_SITE_DIALOG, stopPlaceId));
 };
 
-UserActions.hideAddAdjacentStopDialog = () => dispatch => {
+UserActions.hideAddAdjacentStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_ADJACENT_SITE_DIALOG, null));
-}
+};
 
-UserActions.hideMergeQuaysDialog = () => dispatch => {
+UserActions.hideMergeQuaysDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_MERGE_QUAYS_DIALOG, null));
 };
 
-UserActions.startMergingQuayFrom = id => (dispatch, getState) => {
+UserActions.startMergingQuayFrom = (id) => (dispatch, getState) => {
   const state = getState();
   const quays = state.stopPlace.current.quays;
   const quay = getQuayById(quays, id);
   dispatch(createThunk(types.STARTED_MERGING_QUAY_FROM, quay));
 };
 
-UserActions.endMergingQuayTo = id => (dispatch, getState) => {
+UserActions.endMergingQuayTo = (id) => (dispatch, getState) => {
   const state = getState();
   const quays = state.stopPlace.current.quays;
   const quay = getQuayById(quays, id);
@@ -367,12 +376,12 @@ UserActions.endMergingQuayTo = id => (dispatch, getState) => {
         let authorities = new Set();
         let serviceJourneyActiveDates = new Set();
 
-        data.quay.lines.forEach(line => {
+        data.quay.lines.forEach((line) => {
           if (line.authority && line.authority.name) {
             authorities.add(line.authority.name);
           }
-          line.serviceJourneys.forEach(sj => {
-            sj.activeDates.forEach(activeDateString => {
+          line.serviceJourneys.forEach((sj) => {
+            sj.activeDates.forEach((activeDateString) => {
               serviceJourneyActiveDates.add(activeDateString);
             });
           });
@@ -381,14 +390,14 @@ UserActions.endMergingQuayTo = id => (dispatch, getState) => {
         dispatch(
           createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
             authorities: Array.from(authorities),
-            warning: serviceJourneyActiveDates.size > 0
+            warning: serviceJourneyActiveDates.size > 0,
           })
         );
       } else {
         dispatch(
           createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
             authorities: [],
-            warning: 0
+            warning: 0,
           })
         );
       }
@@ -398,32 +407,30 @@ UserActions.endMergingQuayTo = id => (dispatch, getState) => {
     });
 };
 
-UserActions.cancelMergingQuayFrom = () => dispatch => {
+UserActions.cancelMergingQuayFrom = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_MERGING_QUAY_FROM, null));
 };
 
-UserActions.hideDeleteQuayDialog = () => dispatch => {
+UserActions.hideDeleteQuayDialog = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_DELETE_QUAY_DIALOG, null));
 };
 
-UserActions.hideDeleteStopDialog = () => dispatch => {
+UserActions.hideDeleteStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_DELETE_STOP_DIALOG, null));
 };
 
-UserActions.requestDeleteQuay = (
-  stopPlaceId,
-  quayId,
-  importedId
-) => dispatch => {
+UserActions.requestDeleteQuay = (stopPlaceId, quayId, importedId) => (
+  dispatch
+) => {
   const source = {
     stopPlaceId,
-    quayId
+    quayId,
   };
 
   dispatch(
     createThunk(types.REQUESTED_DELETE_QUAY, {
       source,
-      importedId
+      importedId,
     })
   );
 
@@ -433,12 +440,12 @@ UserActions.requestDeleteQuay = (
         let authorities = new Set();
         let serviceJourneyActiveDates = new Set();
 
-        data.quay.lines.forEach(line => {
+        data.quay.lines.forEach((line) => {
           if (line.authority && line.authority.name) {
             authorities.add(line.authority.name);
           }
-          line.serviceJourneys.forEach(sj => {
-            sj.activeDates.forEach(activeDateString => {
+          line.serviceJourneys.forEach((sj) => {
+            sj.activeDates.forEach((activeDateString) => {
               serviceJourneyActiveDates.add(activeDateString);
             });
           });
@@ -447,14 +454,14 @@ UserActions.requestDeleteQuay = (
         dispatch(
           createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
             authorities: Array.from(authorities),
-            warning: serviceJourneyActiveDates.size > 0
+            warning: serviceJourneyActiveDates.size > 0,
           })
         );
       } else {
         dispatch(
           createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
             authorities: [],
-            warning: 0
+            warning: 0,
           })
         );
       }
@@ -464,20 +471,20 @@ UserActions.requestDeleteQuay = (
     });
 };
 
-const formatStopPlaceUsageDetails = stopPlace => {
+const formatStopPlaceUsageDetails = (stopPlace) => {
   if (stopPlace) {
     let serviceJourneyActiveDates = new Set();
     let authorities = new Set();
     let latestActiveDate = null;
 
-    stopPlace.quays.forEach(quay => {
-      quay.lines.forEach(line => {
+    stopPlace.quays.forEach((quay) => {
+      quay.lines.forEach((line) => {
         if (line.authority && line.authority.name) {
           authorities.add(line.authority.name);
         }
 
-        line.serviceJourneys.forEach(sj => {
-          sj.activeDates.forEach(activeDateString => {
+        line.serviceJourneys.forEach((sj) => {
+          sj.activeDates.forEach((activeDateString) => {
             serviceJourneyActiveDates.add(activeDateString);
             const activeDateTime = new Date(activeDateString);
             if (latestActiveDate === null) {
@@ -494,13 +501,13 @@ const formatStopPlaceUsageDetails = stopPlace => {
     return {
       serviceJourneyActiveDates,
       authorities,
-      latestActiveDate
+      latestActiveDate,
     };
   }
   return null;
 };
 
-UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
+UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.TERMINATE_DELETE_STOP_DIALOG, null));
   if (stopPlaceId) {
     dispatch(
@@ -510,7 +517,7 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
         error: false,
         activeDatesSize: 0,
         latestActiveDate: null,
-        stopPlaceId
+        stopPlaceId,
       })
     );
 
@@ -520,7 +527,7 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
           const {
             serviceJourneyActiveDates,
             authorities,
-            latestActiveDate
+            latestActiveDate,
           } = formatStopPlaceUsageDetails(data.stopPlace);
 
           dispatch(
@@ -531,7 +538,7 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
               error: false,
               activeDatesSize: serviceJourneyActiveDates.size,
               latestActiveDate,
-              stopPlaceId
+              stopPlaceId,
             })
           );
         } else {
@@ -543,7 +550,7 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
               error: false,
               activeDatesSize: null,
               latestActiveDate: null,
-              stopPlaceId
+              stopPlaceId,
             })
           );
         }
@@ -556,71 +563,69 @@ UserActions.requestTerminateStopPlace = stopPlaceId => dispatch => {
             error: true,
             activeDatesSize: 0,
             latestActiveDate: null,
-            stopPlaceId
+            stopPlaceId,
           })
         );
       });
   }
 };
 
-UserActions.closeMoveQuayDialog = () => dispatch => {
+UserActions.closeMoveQuayDialog = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_MOVE_QUAY_DIALOG, null));
 };
 
-UserActions.openKeyValuesDialog = (keyValues, type, index) => dispatch => {
+UserActions.openKeyValuesDialog = (keyValues, type, index) => (dispatch) => {
   dispatch(
     createThunk(types.OPENED_KEY_VALUES_DIALOG, {
       keyValues,
       type,
-      index
+      index,
     })
   );
 };
 
-UserActions.closeKeyValuesDialog = () => dispatch => {
+UserActions.closeKeyValuesDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_KEY_VALUES_DIALOG, null));
 };
 
-UserActions.moveQuay = quayProps => dispatch => {
+UserActions.moveQuay = (quayProps) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MOVE_QUAY, quayProps));
 };
 
-UserActions.closeMoveQuayToNewStopDialog = () => dispatch => {
+UserActions.closeMoveQuayToNewStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_MOVE_QUAY_NEW_STOP, null));
 };
 
-UserActions.moveQuayToNewStopPlace = quayProps => dispatch => {
+UserActions.moveQuayToNewStopPlace = (quayProps) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MOVE_QUAY_NEW_STOP, quayProps));
 };
 
-UserActions.setZoomLevel = zoomLevel => dispatch => {
+UserActions.setZoomLevel = (zoomLevel) => (dispatch) => {
   dispatch(createThunk(types.SET_ZOOM_LEVEL, zoomLevel));
 };
 
-UserActions.lookupCoordinates = (latLng, triggeredByDrag) => dispatch => {
+UserActions.lookupCoordinates = (latLng, triggeredByDrag) => (dispatch) => {
   dispatch(
     createThunk(types.LOOKUP_COORDINATES, { position: latLng, triggeredByDrag })
   );
 };
 
-UserActions.showRemoveStopPlaceFromParent = stopPlaceId => dispatch => {
+UserActions.showRemoveStopPlaceFromParent = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.SHOW_REMOVE_STOP_PLACE_FROM_PARENT, stopPlaceId));
 };
 
-UserActions.hideRemoveStopPlaceFromParent = () => dispatch => {
+UserActions.hideRemoveStopPlaceFromParent = () => (dispatch) => {
   dispatch(createThunk(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
 };
 
-UserActions.setServerDiffTime = diff => dispatch => {
+UserActions.setServerDiffTime = (diff) => (dispatch) => {
   dispatch(createThunk(types.SET_SERVER_DIFF_TIME, diff));
 };
 
-UserActions.createMultimodalWith = (
-  client,
-  stopPlaceId,
-  fromMain
-) => dispatch => {
-  getAddStopPlaceInfo(client, [stopPlaceId]).then(response => {
+UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => (
+  dispatch
+) => {
+  getAddStopPlaceInfo(client, [stopPlaceId]).then((response) => {
     if (response.data) {
       const foundStop = Object.values(response.data)[0][0];
       const newStopPlace = new ParentStopPlace().createNew(
@@ -630,15 +635,15 @@ UserActions.createMultimodalWith = (
       dispatch(
         createThunk(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING, {
           newStopPlace,
-          fromMain
+          fromMain,
         })
       );
-      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
     }
   });
 };
 
-UserActions.toggleShowPublicCode = value => dispatch => {
+UserActions.toggleShowPublicCode = (value) => (dispatch) => {
   Settings.setShowPublicCode(value);
   dispatch(createThunk(types.TOGGLE_SHOW_PUBLIC_CODE, value));
 };
@@ -650,14 +655,14 @@ const getQuayById = (quays = [], quayId) => {
   return null;
 };
 
-const getQuaysForMergeInfo = stopPlace => {
+const getQuaysForMergeInfo = (stopPlace) => {
   if (!stopPlace || !stopPlace.length) return [];
 
-  return stopPlace[0].quays.map(quay => ({
+  return stopPlace[0].quays.map((quay) => ({
     publicCode: quay.publicCode,
     compassBearing: quay.compassBearing,
-    privateCode: getIn(quay, ['privateCode', 'value'], null),
-    id: quay.id
+    privateCode: getIn(quay, ["privateCode", "value"], null),
+    id: quay.id,
   }));
 };
 

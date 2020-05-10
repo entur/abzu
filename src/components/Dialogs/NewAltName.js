@@ -12,12 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from 'react';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import * as altNameConfig from '../../config/altNamesConfig';
+import React, { Component } from "react";
+import FlatButton from "material-ui/FlatButton";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+import TextField from "material-ui/TextField";
+import * as altNameConfig from "../../config/altNamesConfig";
 
 class NewAltName extends Component {
   render() {
@@ -31,23 +31,23 @@ class NewAltName extends Component {
       type,
       value,
       formatMessage,
-      valid
+      valid,
     } = this.props;
 
     return (
       <div
         style={{
-          background: 'rgba(33, 150, 243, 0)',
-          border: '1px dotted',
+          background: "rgba(33, 150, 243, 0)",
+          border: "1px dotted",
           padding: 10,
         }}
       >
         <div
           style={{
             fontWeight: 600,
-            fontSize: '0.9em',
-            width: '100%',
-            marginTop: 10
+            fontSize: "0.9em",
+            width: "100%",
+            marginTop: 10,
           }}
         >
           {translations.addAltName}
@@ -59,13 +59,15 @@ class NewAltName extends Component {
           value={type}
           onChange={handleTypeChange}
         >
-          {altNameConfig.supportedNameTypes.map((type, index) =>
+          {altNameConfig.supportedNameTypes.map((type, index) => (
             <MenuItem
-              key={'type-' + type}
+              key={"type-" + type}
               value={type}
-              primaryText={formatMessage({ id: `altNamesDialog.nameTypes.${type}`})}
+              primaryText={formatMessage({
+                id: `altNamesDialog.nameTypes.${type}`,
+              })}
             />
-          )}
+          ))}
         </SelectField>
         <SelectField
           style={{ marginTop: -10 }}
@@ -74,22 +76,24 @@ class NewAltName extends Component {
           value={lang}
           onChange={onLanguageChange}
         >
-          {altNameConfig.languages.map((key, index) =>
+          {altNameConfig.languages.map((key, index) => (
             <MenuItem
-              key={'lang-' + index}
+              key={"lang-" + index}
               value={key}
-              primaryText={formatMessage({ id: `altNamesDialog.languages.${key}` })}
+              primaryText={formatMessage({
+                id: `altNamesDialog.languages.${key}`,
+              })}
             />
-          )}
+          ))}
         </SelectField>
         <TextField
           fullWidth={true}
           hintText={translations.value}
-          value={value || ''}
+          value={value || ""}
           onChange={onValueChange}
         />
         <FlatButton
-          style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
+          style={{ marginTop: 10, width: "100%", textAlign: "center" }}
           disabled={!valid}
           primary={true}
           onClick={() => {

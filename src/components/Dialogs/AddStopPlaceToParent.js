@@ -12,23 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getChildStopPlaceSuggestions } from '../../modelUtils/leafletUtils';
-import AddStopPlaceSuggestionList from './AddStopPlaceSuggestionList';
+import React, { Component } from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import { injectIntl } from "react-intl";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getChildStopPlaceSuggestions } from "../../modelUtils/leafletUtils";
+import AddStopPlaceSuggestionList from "./AddStopPlaceSuggestionList";
 
 class AddStopPlaceToParent extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       checkedItems: [],
-    }
+    };
   }
 
   handleOnItemCheck(id, value) {
@@ -38,16 +36,15 @@ class AddStopPlaceToParent extends Component {
     if (value) {
       newCheckedItems = checkedItems.concat(id);
     } else {
-      newCheckedItems = newCheckedItems.filter( item => item !== id);
+      newCheckedItems = newCheckedItems.filter((item) => item !== id);
     }
 
     this.setState({
-      checkedItems: newCheckedItems
+      checkedItems: newCheckedItems,
     });
   }
 
   render() {
-
     const {
       open,
       handleClose,
@@ -56,7 +53,7 @@ class AddStopPlaceToParent extends Component {
       neighbourStops,
       stopPlaceCentroid,
       stopPlaceChildren,
-      tokenParsed
+      tokenParsed,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -74,21 +71,25 @@ class AddStopPlaceToParent extends Component {
 
     const actions = [
       <FlatButton
-        label={formatMessage({ id: 'change_coordinates_cancel' })}
+        label={formatMessage({ id: "change_coordinates_cancel" })}
         primary={true}
         onClick={handleClose}
       />,
       <FlatButton
-        label={formatMessage({ id: 'add' })}
+        label={formatMessage({ id: "add" })}
         primary={true}
         keyboardFocused={true}
         disabled={!canSave}
         onClick={() => handleConfirm(checkedItems)}
-      />
+      />,
     ];
 
     return (
-      <Dialog actions={actions} open={open} title={formatMessage({id: 'add_stop_place'})}>
+      <Dialog
+        actions={actions}
+        open={open}
+        title={formatMessage({ id: "add_stop_place" })}
+      >
         <AddStopPlaceSuggestionList
           suggestions={suggestions}
           checkedItems={checkedItems}

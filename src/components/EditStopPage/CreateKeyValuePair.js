@@ -12,24 +12,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import { injectIntl } from 'react-intl';
+import React from "react";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import { injectIntl } from "react-intl";
 
 class CreateKeyValuePair extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = this.getInitialValues();
   }
 
   getInitialValues = () => ({
-    values: '',
-    key: '',
-    errorMsg: ''
-  })
+    values: "",
+    key: "",
+    errorMsg: "",
+  });
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isOpen !== nextProps.isOpen) {
@@ -41,24 +39,25 @@ class CreateKeyValuePair extends React.Component {
     const { handleCreateValues, keyValues, intl } = this.props;
     const { key, values } = this.state;
 
-    let keyAlreadyExists = keyValues.some(kv => kv.key.toLowerCase() === key.toLowerCase());
+    let keyAlreadyExists = keyValues.some(
+      (kv) => kv.key.toLowerCase() === key.toLowerCase()
+    );
 
     if (keyAlreadyExists) {
       this.setState({
-        errorMsg: `${intl.formatMessage({id: 'key_already_exists'})}: ${key}`
-      })
+        errorMsg: `${intl.formatMessage({ id: "key_already_exists" })}: ${key}`,
+      });
     } else if (!key) {
       this.setState({
-        errorMsg: `${intl.formatMessage({id: 'key_cannot_be_empty'})}`
+        errorMsg: `${intl.formatMessage({ id: "key_cannot_be_empty" })}`,
       });
     } else {
-      handleCreateValues(key, values.split('\n'));
+      handleCreateValues(key, values.split("\n"));
       this.setState(this.getInitialValues);
     }
   }
 
   render() {
-
     const { isOpen, intl } = this.props;
     const { formatMessage } = intl;
     const { values, key, errorMsg } = this.state;
@@ -66,47 +65,58 @@ class CreateKeyValuePair extends React.Component {
     if (!isOpen) return null;
 
     return (
-      <div style={{background: '#fff', border: '1px solid #777'}}>
-        <div style={{marginLeft: 5, marginTop: 5}}>
-            <span style={{fontSize: 12, fontWeight: 600}}>
-              { formatMessage({id: 'creating_new_key_values'}) }
-            </span>
+      <div style={{ background: "#fff", border: "1px solid #777" }}>
+        <div style={{ marginLeft: 5, marginTop: 5 }}>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>
+            {formatMessage({ id: "creating_new_key_values" })}
+          </span>
           <TextField
             id="new-key"
-            onChange={ (e, v) => { this.setState({
-              key: v
-            })}}
+            onChange={(e, v) => {
+              this.setState({
+                key: v,
+              });
+            }}
             value={key}
-            hintText={formatMessage({id: 'key'})}
-            floatingLabelText={formatMessage({id: 'key'})}
+            hintText={formatMessage({ id: "key" })}
+            floatingLabelText={formatMessage({ id: "key" })}
             floatingLabelFixed={true}
             fullWidth={true}
           />
           <TextField
             id="new-values"
-            onChange={ (e, v) => { this.setState({
-              values: v
-            })}}
-            hintText={formatMessage({id: 'values'})}
-            floatingLabelText={formatMessage({id: 'values'})}
+            onChange={(e, v) => {
+              this.setState({
+                values: v,
+              });
+            }}
+            hintText={formatMessage({ id: "values" })}
+            floatingLabelText={formatMessage({ id: "values" })}
             floatingLabelFixed={true}
             value={values}
             fullWidth={true}
             multiLine={true}
           />
         </div>
-        <div style={{color: 'red', fontSize: 11, textAlign: 'right', marginRight: 20}}>
+        <div
+          style={{
+            color: "red",
+            fontSize: 11,
+            textAlign: "right",
+            marginRight: 20,
+          }}
+        >
           {errorMsg}
         </div>
         <FlatButton
-          style={{ marginTop: 10, width: '100%', textAlign: 'center' }}
+          style={{ marginTop: 10, width: "100%", textAlign: "center" }}
           onClick={this.handleUpdate.bind(this)}
           primary={true}
         >
-          {formatMessage({id: 'create'})}
+          {formatMessage({ id: "create" })}
         </FlatButton>
       </div>
-    )
+    );
   }
 }
 

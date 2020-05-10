@@ -18,15 +18,15 @@ export const setDecimalPrecision = (number, n) => {
     //throw new Error('setDecimalPrecision, one of the arguments is not a number', number, n)
   }
 
-  let splittedNumbers = String(number).split('.');
+  let splittedNumbers = String(number).split(".");
   let paddedLength = splittedNumbers[0].length;
 
   return Number(Number(number).toPrecision(paddedLength + n));
 };
 
 export const getIn = (object, keys, defaultValue) => {
-  return keys.reduce(function(o, k) {
-    return o && typeof o === 'object' && k in o ? o[k] : defaultValue;
+  return keys.reduce(function (o, k) {
+    return o && typeof o === "object" && k in o ? o[k] : defaultValue;
   }, object);
 };
 
@@ -35,45 +35,45 @@ export const getInTransform = (object, keys, defaultValue, transformater) => {
   return value !== null ? transformater(value) : defaultValue;
 };
 
-export const getCoordinatesFromGeometry = geometry => {
+export const getCoordinatesFromGeometry = (geometry) => {
   if (geometry && geometry.coordinates) {
     let coordinates = geometry.coordinates[0].slice();
     // Leaflet uses latLng, GeoJSON [long,lat]
     return [
       setDecimalPrecision(coordinates[1], 6),
-      setDecimalPrecision(coordinates[0], 6)
+      setDecimalPrecision(coordinates[0], 6),
     ];
   }
   return null;
 };
 
-export const extractCoordinates = latLngString => {
+export const extractCoordinates = (latLngString) => {
   if (!latLngString) return null;
 
   let coords = null;
 
-  if (latLngString.indexOf(',') > 1) {
-    coords = latLngString.split(',');
+  if (latLngString.indexOf(",") > 1) {
+    coords = latLngString.split(",");
   } else {
     coords = latLngString.split(/\s*[\s,]\s*/);
   }
 
   if (coords && coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-    const result = coords.map(c => setDecimalPrecision(c, 6));
+    const result = coords.map((c) => setDecimalPrecision(c, 6));
     return result;
   }
   return null;
 };
 
-export const createStopPlaceHref = stopPlaceId => {
+export const createStopPlaceHref = (stopPlaceId) => {
   const path = window.location.href;
-  const lastIndexOfSlash = path.lastIndexOf('/') + 1;
+  const lastIndexOfSlash = path.lastIndexOf("/") + 1;
   const href = path.substr(0, lastIndexOfSlash) + stopPlaceId;
   return href;
 };
 
-export const toCamelCase = string => {
-  if (!string) return '';
+export const toCamelCase = (string) => {
+  if (!string) return "";
 
   if (!/\s/g.test(string)) {
     return string.toLowerCase();
@@ -84,7 +84,6 @@ export const toCamelCase = string => {
     return p1.toLowerCase();
   });
 };
-
 
 export const getIsCurrentVersionMax = (
   versions,
@@ -102,28 +101,24 @@ export const getIsCurrentVersionMax = (
   // also when creating a new stop place
   if (!currentVersion) return true;
 
-  const versionsOfStop = versions.map(version => version.version);
+  const versionsOfStop = versions.map((version) => version.version);
   const maxVersion = Math.max(...versionsOfStop);
   return maxVersion === currentVersion;
 };
 
-export const findDuplicateImportedIds = stopPlaces => {
+export const findDuplicateImportedIds = (stopPlaces) => {
   const foundImportedIds = [];
   const stopPlacesWithConflict = new Set();
   let quaysWithDuplicateImportedIds = {};
   let fullConflictMap = {};
 
-  stopPlaces.forEach(stopPlace => {
-
+  stopPlaces.forEach((stopPlace) => {
     if (stopPlace.quays && stopPlace.quays.length) {
-      stopPlace.quays.forEach(quay => {
-
+      stopPlace.quays.forEach((quay) => {
         if (quay.keyValues && quay.keyValues.length) {
           quay.keyValues.forEach(({ key, values }) => {
-
-            if (key === 'imported-id') {
-              values.forEach(value => {
-
+            if (key === "imported-id") {
+              values.forEach((value) => {
                 foundImportedIds.push(value);
 
                 if (!quaysWithDuplicateImportedIds[value]) {
@@ -137,14 +132,16 @@ export const findDuplicateImportedIds = stopPlaces => {
                 if (fullConflictMap[value]) {
                   let current = fullConflictMap[value];
                   if (current[stopPlace.id]) {
-                    current[stopPlace.id] = current[stopPlace.id].concat([quay.id]);
+                    current[stopPlace.id] = current[stopPlace.id].concat([
+                      quay.id,
+                    ]);
                   } else {
                     current[stopPlace.id] = [quay.id];
                   }
                   fullConflictMap[value] = current;
                 } else {
                   fullConflictMap[value] = {
-                    [stopPlace.id]: [quay.id]
+                    [stopPlace.id]: [quay.id],
                   };
                 }
               });
@@ -156,29 +153,30 @@ export const findDuplicateImportedIds = stopPlaces => {
   });
 
   /* remove false duplicates */
-  Object.keys(quaysWithDuplicateImportedIds).forEach(id => {
+  Object.keys(quaysWithDuplicateImportedIds).forEach((id) => {
     if (quaysWithDuplicateImportedIds[id].length === 1) {
       delete quaysWithDuplicateImportedIds[id];
     }
   });
 
-  Object.keys(fullConflictMap).forEach(importedId => {
+  Object.keys(fullConflictMap).forEach((importedId) => {
     let stopPlaces = fullConflictMap[importedId];
 
     let keys = Object.keys(stopPlaces);
 
-    keys.forEach( key => {
+    keys.forEach((key) => {
       if (stopPlaces[key].length < 2 && keys.length < 2) {
         delete fullConflictMap[importedId];
       } else {
         stopPlacesWithConflict.add(key);
       }
     });
-
   });
 
-  Object.keys(quaysWithDuplicateImportedIds).forEach( importedId => {
-    quaysWithDuplicateImportedIds[importedId] = Array.from(new Set(quaysWithDuplicateImportedIds[importedId]));
+  Object.keys(quaysWithDuplicateImportedIds).forEach((importedId) => {
+    quaysWithDuplicateImportedIds[importedId] = Array.from(
+      new Set(quaysWithDuplicateImportedIds[importedId])
+    );
     if (quaysWithDuplicateImportedIds[importedId].length < 2) {
       delete quaysWithDuplicateImportedIds[importedId];
     }

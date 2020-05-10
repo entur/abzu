@@ -12,16 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import { connect } from 'react-redux';
-import Popover from 'material-ui/Popover';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import FavoriteManager from '../../singletons/FavoriteManager';
-import StarIcon from 'material-ui/svg-icons/toggle/star';
-import MdDelete from 'material-ui/svg-icons/action/delete';
-import { UserActions } from '../../actions/';
+import React from "react";
+import { connect } from "react-redux";
+import Popover from "material-ui/Popover";
+import MenuItem from "material-ui/MenuItem";
+import FlatButton from "material-ui/FlatButton";
+import FavoriteManager from "../../singletons/FavoriteManager";
+import StarIcon from "material-ui/svg-icons/toggle/star";
+import MdDelete from "material-ui/svg-icons/action/delete";
+import { UserActions } from "../../actions/";
 
 class FilterPopover extends React.Component {
   constructor(props) {
@@ -58,8 +57,8 @@ class FilterPopover extends React.Component {
     let favorites = new FavoriteManager().getFavorites();
 
     let popoverstyle = {
-      width: 'auto',
-      overflowY: 'hidden',
+      width: "auto",
+      overflowY: "hidden",
     };
 
     return (
@@ -73,60 +72,61 @@ class FilterPopover extends React.Component {
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "left", vertical: "top" }}
           onRequestClose={() => this.handleRequestClose(this.refs)}
           style={popoverstyle}
         >
-
           <div
             style={{
               fontWeight: 600,
               minWidth: 300,
-              width: 'auto',
-              fontSize: '1em',
+              width: "auto",
+              fontSize: "1em",
               padding: 15,
             }}
           >
             {text.title}
           </div>
-          {favorites.length
-            ? favorites.map((item, index) => {
-                return (
-                  <MenuItem
-                    rightIcon={
-                      <MdDelete
-                        onClick={e => {
-                          e.stopPropagation();
-                          this.handleDeleteFavorite(item);
-                        }}
-                      />
-                    }
-                    key={'favorite' + index}
-                    style={{
-                      cursor: 'pointer',
-                      background: '#fff',
-                    }}
-                    onClick={() => {
-                      this.handleRequestClose();
-                      onItemClick(item);
-                    }}
-                  >
-                    {`${item.title}`}
-                  </MenuItem>
-                );
-              })
-            : <div
-                style={{
-                  padding: 10,
-                  margin: 'auto',
-                  lineHeight: 1.5,
-                  width: 300,
-                  fontSize: 14,
-                }}
-              >
-                {text.noFavoritesFoundText}
-              </div>}
+          {favorites.length ? (
+            favorites.map((item, index) => {
+              return (
+                <MenuItem
+                  rightIcon={
+                    <MdDelete
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.handleDeleteFavorite(item);
+                      }}
+                    />
+                  }
+                  key={"favorite" + index}
+                  style={{
+                    cursor: "pointer",
+                    background: "#fff",
+                  }}
+                  onClick={() => {
+                    this.handleRequestClose();
+                    onItemClick(item);
+                  }}
+                >
+                  {`${item.title}`}
+                </MenuItem>
+              );
+            })
+          ) : (
+            <div
+              style={{
+                padding: 10,
+                margin: "auto",
+                lineHeight: 1.5,
+                width: 300,
+                fontSize: 14,
+              }}
+            >
+              {text.noFavoritesFoundText}
+            </div>
+          )}
         </Popover>
       </div>
     );

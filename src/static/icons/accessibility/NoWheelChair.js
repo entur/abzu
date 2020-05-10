@@ -12,21 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import SvgIcon from 'material-ui/SvgIcon';
+import React from "react";
+import SvgIcon from "material-ui/SvgIcon";
 
-const NoWheelChair = props =>
+const NoWheelChair = (props) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
     <defs id="defs3365">
       <lineargradient id="linearGradient4822">
         <stop
           id="stop4824"
-          style={{ stopColor: '#000000', stopOpacity: '1' }}
+          style={{ stopColor: "#000000", stopOpacity: "1" }}
           offset="0"
         />
         <stop
           id="stop4826"
-          style={{ stopColor: '#000000', stopOpacity: '0' }}
+          style={{ stopColor: "#000000", stopOpacity: "0" }}
           offset="1"
         />
       </lineargradient>
@@ -41,13 +41,13 @@ const NoWheelChair = props =>
       <ellipse
         id="path4280"
         style={{
-          fill: '#aa0000',
-          fillOpacity: '0',
-          stroke: '#aa0000',
-          strokeWidth: '1.04965484',
-          strokeMiterlimit: '4',
-          strokeDasharray: 'none',
-          strokeOpacity: '1',
+          fill: "#aa0000",
+          fillOpacity: "0",
+          stroke: "#aa0000",
+          strokeWidth: "1.04965484",
+          strokeMiterlimit: "4",
+          strokeDasharray: "none",
+          strokeOpacity: "1",
         }}
         cx="12"
         cy="12"
@@ -57,25 +57,25 @@ const NoWheelChair = props =>
       <text
         id="text4834"
         style={{
-          fontStyle: 'normal',
-          fontVariant: 'normal',
-          fontWeight: 'normal',
-          fontStretch: 'normal',
-          fontSize: '19.36895561px',
-          lineHeight: '122.00000286%',
-          fontFamily: 'sans-serif',
-          InkscapeFontSpecification: 'sans-serif',
-          letterSpacing: '0px',
-          wordSpacing: '0px',
-          fill: '#aa0000',
-          fillOpacity: '1',
-          stroke: 'none',
-          strokeWidth: '0.99921256',
-          strokeLinecap: 'butt',
-          strokeLinejoin: 'miter',
-          strokeMiterlimit: '4',
-          strokeDasharray: 'none',
-          strokeOpacity: '1',
+          fontStyle: "normal",
+          fontVariant: "normal",
+          fontWeight: "normal",
+          fontStretch: "normal",
+          fontSize: "19.36895561px",
+          lineHeight: "122.00000286%",
+          fontFamily: "sans-serif",
+          InkscapeFontSpecification: "sans-serif",
+          letterSpacing: "0px",
+          wordSpacing: "0px",
+          fill: "#aa0000",
+          fillOpacity: "1",
+          stroke: "none",
+          strokeWidth: "0.99921256",
+          strokeLinecap: "butt",
+          strokeLinejoin: "miter",
+          strokeMiterlimit: "4",
+          strokeDasharray: "none",
+          strokeOpacity: "1",
         }}
         transform="scale(1.1440056,0.87412161)"
         x="4.8304801"
@@ -85,20 +85,20 @@ const NoWheelChair = props =>
         <tspan
           id="tspan4836"
           style={{
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            fontWeight: 'normal',
-            fontStretch: 'normal',
-            fontSize: '19.36895561px',
-            lineHeight: '122.00000286%',
-            fontFamily: 'monospace',
-            InkscapeFontSpecification: 'monospace',
-            fill: '#aa0000',
-            stroke: 'none',
-            strokeWidth: '0.99921256',
-            strokeMiterlimit: '4',
-            strokeDasharray: 'none',
-            strokeOpacity: '1',
+            fontStyle: "normal",
+            fontVariant: "normal",
+            fontWeight: "normal",
+            fontStretch: "normal",
+            fontSize: "19.36895561px",
+            lineHeight: "122.00000286%",
+            fontFamily: "monospace",
+            InkscapeFontSpecification: "monospace",
+            fill: "#aa0000",
+            stroke: "none",
+            strokeWidth: "0.99921256",
+            strokeMiterlimit: "4",
+            strokeDasharray: "none",
+            strokeOpacity: "1",
           }}
           x="4.8304801"
           y="21.222178"
@@ -107,6 +107,7 @@ const NoWheelChair = props =>
         </tspan>
       </text>
     </g>
-  </SvgIcon>;
+  </SvgIcon>
+);
 
 export default NoWheelChair;

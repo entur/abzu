@@ -12,99 +12,115 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import formatHelpers from '../modelUtils/mapToClient';
+import formatHelpers from "../modelUtils/mapToClient";
 
 export const getStateByOperation = (state, action) => {
   switch (action.operationName) {
-    case 'stopPlace':
-    case 'updateChildOfParentStop':
-    case 'stopPlaceAndPathLink':
+    case "stopPlace":
+    case "updateChildOfParentStop":
+    case "stopPlaceAndPathLink":
       return getStateWithEntitiesFromQuery(state, action);
 
-    case 'stopPlaceAllVersions':
+    case "stopPlaceAllVersions":
       return Object.assign({}, state, {
         versions: getAllVersionFromResult(state, action),
-        stopHasBeenModified: false
+        stopHasBeenModified: false,
       });
 
-    case 'mutateDeleteQuay':
-      return updateStopPlaceStateAfterMutate(state, action, 'deleteQuay');
+    case "mutateDeleteQuay":
+      return updateStopPlaceStateAfterMutate(state, action, "deleteQuay");
 
-    case 'mutateTerminateStopPlace':
-      return updateStopPlaceStateAfterMutate(state, action, 'terminateStopPlace');
+    case "mutateTerminateStopPlace":
+      return updateStopPlaceStateAfterMutate(
+        state,
+        action,
+        "terminateStopPlace"
+      );
 
-    case 'removeStopPlaceFromParent':
-      return updateStopPlaceStateAfterMutate(state, action, 'removeFromMultiModalStopPlace');
+    case "removeStopPlaceFromParent":
+      return updateStopPlaceStateAfterMutate(
+        state,
+        action,
+        "removeFromMultiModalStopPlace"
+      );
 
-    case 'mutateStopPlace':
-      return updateStopPlaceStateAfterMutate(state, action, 'mutateStopPlace');
+    case "mutateStopPlace":
+      return updateStopPlaceStateAfterMutate(state, action, "mutateStopPlace");
 
-    case 'mutateCreateMultiModalStopPlace':
-      return updateStopPlaceStateAfterMutate(state, action, 'createMultiModalStopPlace');
+    case "mutateCreateMultiModalStopPlace":
+      return updateStopPlaceStateAfterMutate(
+        state,
+        action,
+        "createMultiModalStopPlace"
+      );
 
-    case 'mutateParentStopPlace':
-      return updateStopPlaceStateAfterMutate(state, action, 'mutateParentStopPlace');
+    case "mutateParentStopPlace":
+      return updateStopPlaceStateAfterMutate(
+        state,
+        action,
+        "mutateParentStopPlace"
+      );
 
-    case 'getTagsQuery':
+    case "getTagsQuery":
       return Object.assign({}, state, {
-        current: formatHelpers.updateStopWithTags(
-          state.current, action
-        )
+        current: formatHelpers.updateStopWithTags(state.current, action),
       });
 
-    case 'stopPlaceBBox':
+    case "stopPlaceBBox":
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
           action.result.data.stopPlaceBBox,
           state.current
-        )
+        ),
       });
 
-    case 'mutatePathLink':
+    case "mutatePathLink":
       return Object.assign({}, state, {
         pathLink: formatHelpers.mapPathLinkToClient(
           action.result.data.mutatePathlink
         ),
         originalPathLink: formatHelpers.mapPathLinkToClient(
           action.result.data.mutatePathlink
-        )
+        ),
       });
 
-    case 'findStop':
+    case "findStop":
       return Object.assign({}, state, {
         searchResults: [
-          ...formatHelpers.mapSearchResultToStopPlaces(action.result.data.stopPlace),
-          ...formatHelpers.mapSearchResultatGroup(action.result.data.groupOfStopPlaces)
-          ]
+          ...formatHelpers.mapSearchResultToStopPlaces(
+            action.result.data.stopPlace
+          ),
+          ...formatHelpers.mapSearchResultatGroup(
+            action.result.data.groupOfStopPlaces
+          ),
+        ],
       });
 
-    case 'mutateParking':
+    case "mutateParking":
       let stopPlaceWithParking = Object.assign({}, state.current, {
         parking: formatHelpers.mapParkingToClient(
           action.result.data.mutateParking
-        )
+        ),
       });
 
       return Object.assign({}, state, {
-        current: stopPlaceWithParking
+        current: stopPlaceWithParking,
       });
 
-    case 'neighbourStopPlaceQuays':
-      const resourceId = extractResourceId(action, 'neighbourStopPlaceQuays');
+    case "neighbourStopPlaceQuays":
+      const resourceId = extractResourceId(action, "neighbourStopPlaceQuays");
       return Object.assign({}, state, {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(
           state.neighbourStopQuays,
           action.result.data.stopPlace,
           resourceId
-        )
+        ),
       });
 
-    case 'TopopGraphicalPlaces':
+    case "TopopGraphicalPlaces":
       return Object.assign({}, state, {
-        topographicalPlaces: action.result.data.topographicPlace
+        topographicalPlaces: action.result.data.topographicPlace,
       });
-
 
     default:
       return state;
@@ -123,10 +139,10 @@ const getStateWithEntitiesFromQuery = (state, action) => {
   }
 
   // result extracted from query
-  let stopPlace = action.result.data.stopPlace &&
-    action.result.data.stopPlace.length
-    ? action.result.data.stopPlace[0]
-    : null;
+  let stopPlace =
+    action.result.data.stopPlace && action.result.data.stopPlace.length
+      ? action.result.data.stopPlace[0]
+      : null;
 
   if (!stopPlace) {
     // result extracted from result from mutation
@@ -149,7 +165,7 @@ const getStateWithEntitiesFromQuery = (state, action) => {
 
   const parking = action.result.data.parking ? action.result.data.parking : [];
 
-  const resourceId = extractResourceId(action, 'updateChildOfParentStop');
+  const resourceId = extractResourceId(action, "updateChildOfParentStop");
 
   const currentStop = formatHelpers.mapStopToClientStop(
     stopPlace,
@@ -171,14 +187,15 @@ const getStateWithEntitiesFromQuery = (state, action) => {
     neighbourStopQuays: {},
     centerPosition: currentStop.location,
     stopHasBeenModified: false,
-    isCreatingPolylines: false
+    isCreatingPolylines: false,
   });
 };
 
-const getAllVersionFromResult = (state, action)   => {
-  const data = action.result.data.versions && action.result.data.versions.length
-    ? action.result.data.versions
-    : null;
+const getAllVersionFromResult = (state, action) => {
+  const data =
+    action.result.data.versions && action.result.data.versions.length
+      ? action.result.data.versions
+      : null;
 
   return formatHelpers.mapVersionToClientVersion(data);
 };
@@ -187,22 +204,21 @@ const updateStopPlaceStateAfterMutate = (state, action, dataResource) => {
   if (!action.result.data[dataResource]) return state;
 
   const isArray = Array.isArray(action.result.data[dataResource]);
-  const stopPlace = isArray ? action.result.data[dataResource][0] : action.result.data[dataResource];
+  const stopPlace = isArray
+    ? action.result.data[dataResource][0]
+    : action.result.data[dataResource];
 
   return Object.assign({}, state, {
     current: formatHelpers.mapStopToClientStop(stopPlace, true),
-    originalCurrent: formatHelpers.mapStopToClientStop(
-      stopPlace,
-      true
-    ),
+    originalCurrent: formatHelpers.mapStopToClientStop(stopPlace, true),
     isCreatingPolylines: false,
     minZoom: stopPlace.geometry ? 14 : 5,
     centerPosition:
-    formatHelpers.getCenterPosition(stopPlace.geometry) ||
-    state.centerPosition,
-    lastMutatedStopPlaceId: state.lastMutatedStopPlaceId.concat(stopPlace.id)
+      formatHelpers.getCenterPosition(stopPlace.geometry) ||
+      state.centerPosition,
+    lastMutatedStopPlaceId: state.lastMutatedStopPlaceId.concat(stopPlace.id),
   });
-}
+};
 
 /* determine whether mutation result was intended for a parentStopPlace or child of a parentStopPlace
 since body always will be full parentStopPlace */

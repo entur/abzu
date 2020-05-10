@@ -12,32 +12,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 export default {
-  "realm_access": {
-    "roles": [
+  realm_access: {
+    roles: [
       "editOrganisation",
       "rutebanken",
       "editRouteData",
       "editStops",
-      "uma_authorization"
-    ]
+      "uma_authorization",
+    ],
   },
-  "resource_access": {
-    "account": {
-      "roles": [
-        "manage-account",
-        "view-profile"
-      ]
-    }
+  resource_access: {
+    account: {
+      roles: ["manage-account", "view-profile"],
+    },
   },
-  "roles": [
-    "{\"r\":\"editRouteData\",\"o\":\"RUT\"}",
-    "{\"r\":\"editOrganisation\",\"o\":\"RB\"}"
+  roles: [
+    '{"r":"editRouteData","o":"RUT"}',
+    '{"r":"editOrganisation","o":"RB"}',
   ],
-  "name": "Test Testesen",
-  "preferred_username": "test",
-  "given_name": "Test ",
-  "family_name": "Testesen",
-  "email": "test@rutebanken.org"
-}
+  name: "Test Testesen",
+  preferred_username: "test",
+  given_name: "Test ",
+  family_name: "Testesen",
+  email: "test@rutebanken.org",
+};

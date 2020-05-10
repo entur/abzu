@@ -12,54 +12,54 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React, { Component } from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
-import { withApollo } from 'react-apollo';
-import debounce from 'lodash.debounce';
-import { findTagByName } from '../../graphql/Tiamat/actions';
-import MenuItem from 'material-ui/MenuItem';
-import { toCamelCase } from '../../utils/';
-import { injectIntl } from 'react-intl';
+import React, { Component } from "react";
+import AutoComplete from "material-ui/AutoComplete";
+import { withApollo } from "react-apollo";
+import debounce from "lodash.debounce";
+import { findTagByName } from "../../graphql/Tiamat/actions";
+import MenuItem from "material-ui/MenuItem";
+import { toCamelCase } from "../../utils/";
+import { injectIntl } from "react-intl";
 
 class AddTagAutoComplete extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       dataSource: [],
-      chosen: '',
+      chosen: "",
     };
 
-    this.findTag = debounce(name => {
-      findTagByName(props.client, name.toLowerCase()).then(response => {
+    this.findTag = debounce((name) => {
+      findTagByName(props.client, name.toLowerCase()).then((response) => {
         this.setState({
-          dataSource: response.data.tags
+          dataSource: response.data.tags,
         });
       });
     }, 500);
   }
 
-  handleSelectedTag({text, comment}) {
+  handleSelectedTag({ text, comment }) {
     const tagInCamelCase = toCamelCase(text);
     this.props.handleChooseTag(tagInCamelCase, comment);
     this.setState({
-      chosen: text
+      chosen: text,
     });
   }
 
   handleBlur(event) {
     const value = event.target.value;
     const { dataSource } = this.state;
-    const isFoundInDataSource = dataSource.find(item => item.name.toLowerCase() === value.toLowerCase());
+    const isFoundInDataSource = dataSource.find(
+      (item) => item.name.toLowerCase() === value.toLowerCase()
+    );
 
     if (value) {
       if (isFoundInDataSource) {
         this.handleSelectedTag({
-          text: isFoundInDataSource.name
+          text: isFoundInDataSource.name,
         });
       } else {
-        this.handleSelectedTag({text: value});
+        this.handleSelectedTag({ text: value });
       }
     }
   }
@@ -69,58 +69,64 @@ class AddTagAutoComplete extends Component {
 
     if (!searchText) return menuItems;
 
-    const isFoundInDataSource = dataSource.some(item => item.name.toLowerCase() === searchText.toLowerCase());
+    const isFoundInDataSource = dataSource.some(
+      (item) => item.name.toLowerCase() === searchText.toLowerCase()
+    );
 
     if (dataSource.length) {
-
       const suggestion = {
-        text: 'TAG_SUGGESTION',
+        text: "TAG_SUGGESTION",
         value: (
           <MenuItem
             disabled={true}
-            key={'tag-menu-suggestion'}
-            innerDivStyle={{margin: '-12px 0px'}}
+            key={"tag-menu-suggestion"}
+            innerDivStyle={{ margin: "-12px 0px" }}
             primaryText={
-              <div style={{fontWeight: 600, fontSize: '0.8em'}}>Forslag:</div>
+              <div style={{ fontWeight: 600, fontSize: "0.8em" }}>Forslag:</div>
             }
           />
-        )
+        ),
       };
 
-       menuItems = menuItems.concat(suggestion, dataSource.map((tag, i) => {
-        return {
-          text: tag.name,
-          comment: tag.comment,
-          value: (
-            <MenuItem
-              key={'tag-menu-item' + i}
-              style={{ paddingRight: 10, width: 'auto' }}
-              innerDivStyle={{margin: '-5px 0px'}}
-              primaryText={tag.name}
-            />
-          )
-        };
-      }));
+      menuItems = menuItems.concat(
+        suggestion,
+        dataSource.map((tag, i) => {
+          return {
+            text: tag.name,
+            comment: tag.comment,
+            value: (
+              <MenuItem
+                key={"tag-menu-item" + i}
+                style={{ paddingRight: 10, width: "auto" }}
+                innerDivStyle={{ margin: "-5px 0px" }}
+                primaryText={tag.name}
+              />
+            ),
+          };
+        })
+      );
     }
 
     if (!isFoundInDataSource) {
       menuItems.push({
         text: searchText.toLowerCase(),
-        comment: '',
+        comment: "",
         value: (
           <MenuItem
-            key={'tag-menu-create'}
-            style={{ paddingRight: 10, width: 'auto' }}
+            key={"tag-menu-create"}
+            style={{ paddingRight: 10, width: "auto" }}
             primaryText={
-              <div style={{borderTop: '1px solid #eee', fontSize: '0.8em'}}>
-                <span style={{fontWeight: 600}}>{toCamelCase(searchText)}</span>
-                <span style={{marginLeft: 5}}>
-                  {this.props.intl.formatMessage({id: 'new_tag_hint'})}
+              <div style={{ borderTop: "1px solid #eee", fontSize: "0.8em" }}>
+                <span style={{ fontWeight: 600 }}>
+                  {toCamelCase(searchText)}
+                </span>
+                <span style={{ marginLeft: 5 }}>
+                  {this.props.intl.formatMessage({ id: "new_tag_hint" })}
                 </span>
               </div>
             }
           />
-        )
+        ),
       });
     }
     return menuItems;
@@ -131,7 +137,6 @@ class AddTagAutoComplete extends Component {
     this.findTag(searchText);
   }
 
-
   render() {
     const { dataSource } = this.state;
     const { style, searchText, intl } = this.props;
@@ -141,12 +146,12 @@ class AddTagAutoComplete extends Component {
     return (
       <AutoComplete
         searchText={searchText}
-        floatingLabelText={formatMessage({id: 'tag'})}
+        floatingLabelText={formatMessage({ id: "tag" })}
         dataSource={menuItems}
         maxSearchResults={7}
         style={style}
         onNewRequest={this.handleSelectedTag.bind(this)}
-        onBlur={(e,v) => this.handleBlur(e)}
+        onBlur={(e, v) => this.handleBlur(e)}
         fullWidth={true}
         filter={() => true}
         onUpdateInput={this.handleUpdate.bind(this)}

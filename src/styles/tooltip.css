@@ -12,27 +12,27 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 .tooltip {
-    position: relative;
-    display: block;
+  position: relative;
+  display: block;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 130px;
-    color: #fff;
-    padding: 4px 8px;
-    position: absolute;
-    font-size: 11px;
-    text-align: center;
-    z-index: 1;
-    line-height: 19px;
-    background: #494949;
-    color: #fff;
-    border-radius: 2px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    margin-left: -180px;
+  visibility: hidden;
+  width: 130px;
+  color: #fff;
+  padding: 4px 8px;
+  position: absolute;
+  font-size: 11px;
+  text-align: center;
+  z-index: 1;
+  line-height: 19px;
+  background: #494949;
+  color: #fff;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  margin-left: -180px;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }

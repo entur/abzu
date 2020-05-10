@@ -12,33 +12,36 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import StopPlaceMarker from './StopPlaceMarker';
-import NewStopMarker from './NewStopMarker';
+import React from "react";
+import PropTypes from "prop-types";
+import StopPlaceMarker from "./StopPlaceMarker";
+import NewStopMarker from "./NewStopMarker";
 import {
   StopPlaceActions,
   UserActions,
-  StopPlacesGroupActions
-} from '../../actions/';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import JunctionMarker from './JunctionMarker';
-import NeighbourMarker from './NeighbourMarker';
-import ParkAndRideMarker from './ParkAndRideMarker';
-import CycleParkingMarker from './CycleParkingMarker';
-import { setDecimalPrecision, getIn } from '../../utils';
-import QuayMarker from './QuayMarker';
-import { withApollo } from 'react-apollo';
-import { allEntities, neighbourStopPlaceQuays } from '../../graphql/Tiamat/queries';
-import CoordinateMarker from './CoordinateMarker';
-import Routes from '../../routes/';
-import * as MarkerStrings from './markerText';
-import { Entities } from '../../models/Entities';
+  StopPlacesGroupActions,
+} from "../../actions/";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import JunctionMarker from "./JunctionMarker";
+import NeighbourMarker from "./NeighbourMarker";
+import ParkAndRideMarker from "./ParkAndRideMarker";
+import CycleParkingMarker from "./CycleParkingMarker";
+import { setDecimalPrecision, getIn } from "../../utils";
+import QuayMarker from "./QuayMarker";
+import { withApollo } from "react-apollo";
+import {
+  allEntities,
+  neighbourStopPlaceQuays,
+} from "../../graphql/Tiamat/queries";
+import CoordinateMarker from "./CoordinateMarker";
+import Routes from "../../routes/";
+import * as MarkerStrings from "./markerText";
+import { Entities } from "../../models/Entities";
 
 class MarkerList extends React.Component {
   static propTypes = {
-    handleDragEnd: PropTypes.func.isRequired
+    handleDragEnd: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -68,13 +71,13 @@ class MarkerList extends React.Component {
     if (!isAlreadyActive) {
       client
         .query({
-          fetchPolicy: 'network-only',
+          fetchPolicy: "network-only",
           query: allEntities,
           variables: {
-            id: id
-          }
+            id: id,
+          },
         })
-        .then(result => {
+        .then((result) => {
           dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
         });
     }
@@ -83,8 +86,8 @@ class MarkerList extends React.Component {
   handleNewStopClick() {
     const { dispatch, intl } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
-    dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, 'new'));
-    document.title = intl.formatMessage({ id: '_title_new_stop' });
+    dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
+    document.title = intl.formatMessage({ id: "_title_new_stop" });
   }
 
   handleRemoveFromGroup(stopPlaceId) {
@@ -107,18 +110,16 @@ class MarkerList extends React.Component {
   }
 
   connectToAdjacentStop(stopPlaceId) {
-    this.props.dispatch(
-      UserActions.showAddAdjacentStopDialog(stopPlaceId)
-    );
+    this.props.dispatch(UserActions.showAddAdjacentStopDialog(stopPlaceId));
   }
 
   handleShowQuays(id) {
     this.props.client.query({
-      fetchPolicy: 'network-only',
+      fetchPolicy: "network-only",
       query: neighbourStopPlaceQuays,
       variables: {
-        id: id
-      }
+        id: id,
+      },
     });
   }
 
@@ -140,7 +141,7 @@ class MarkerList extends React.Component {
 
       const lastPathLinkFromId = getIn(
         lastPathLink,
-        ['from', 'placeRef', 'addressablePlace', 'id'],
+        ["from", "placeRef", "addressablePlace", "id"],
         null
       );
 
@@ -166,7 +167,7 @@ class MarkerList extends React.Component {
     dispatch(
       StopPlaceActions.changeElementPosition(index, type, [
         setDecimalPrecision(position.lat, 6),
-        setDecimalPrecision(position.lng, 6)
+        setDecimalPrecision(position.lng, 6),
       ])
     );
   }
@@ -194,7 +195,7 @@ class MarkerList extends React.Component {
       isEditingStop,
       currentIsNewStop,
       currentStopIsMultiModal,
-      tokenParsed
+      tokenParsed,
     } = props;
     const { formatMessage } = intl;
 
@@ -207,10 +208,10 @@ class MarkerList extends React.Component {
 
     markers.forEach((marker, stopIndex) => {
       if (marker.entityType === Entities.GROUP_OF_STOP_PLACE) {
-        marker.members.forEach(member => {
+        marker.members.forEach((member) => {
           popupMarkers.push(
             <StopPlaceMarker
-              key={'gos-member-' + member.id}
+              key={"gos-member-" + member.id}
               id={member.id}
               index={stopIndex}
               position={member.location}
@@ -251,14 +252,14 @@ class MarkerList extends React.Component {
 
       if (marker.coordinatePin) {
         popupMarkers.push(
-          <CoordinateMarker position={marker.position} key={'coordinatePin'} />
+          <CoordinateMarker position={marker.position} key={"coordinatePin"} />
         );
       }
 
       if (marker.isNewStop && !isEditingStop) {
         popupMarkers.push(
           <NewStopMarker
-            key={'newstop-parent- ' + stopIndex}
+            key={"newstop-parent- " + stopIndex}
             position={marker.location}
             newStopIsMultiModal={this.props.newStopIsMultiModal}
             handleDragEnd={this.handleDragEndNewStop.bind(this)}
@@ -274,7 +275,7 @@ class MarkerList extends React.Component {
             marker.children.forEach((child, i) => {
               popupMarkers.push(
                 <StopPlaceMarker
-                  key={'stopPlace-child-' + marker.id + '-' + i}
+                  key={"stopPlace-child-" + marker.id + "-" + i}
                   id={child.id}
                   index={stopIndex}
                   position={child.location}
@@ -315,7 +316,7 @@ class MarkerList extends React.Component {
                       index={index}
                       id={quayOfChild.id}
                       position={quayOfChild.location}
-                      key={'quay-neighbour-child' + quayOfChild.id}
+                      key={"quay-neighbour-child" + quayOfChild.id}
                       handleQuayDragEnd={() => {}}
                       translations={Object.assign(
                         {},
@@ -323,8 +324,8 @@ class MarkerList extends React.Component {
                         CustomPopupMarkerText
                       )}
                       compassBearing={quayOfChild.compassBearing}
-                      publicCode={quayOfChild.publicCode || ''}
-                      privateCode={quayOfChild.privateCode || ''}
+                      publicCode={quayOfChild.publicCode || ""}
+                      privateCode={quayOfChild.privateCode || ""}
                       stopPlaceName={marker.name}
                       stopPlaceId={child.id}
                       formattedStopType={localeStopType}
@@ -348,7 +349,7 @@ class MarkerList extends React.Component {
 
           popupMarkers.push(
             <StopPlaceMarker
-              key={'stopPlace-' + marker.id}
+              key={"stopPlace-" + marker.id}
               id={marker.id}
               index={stopIndex}
               position={marker.location}
@@ -363,7 +364,9 @@ class MarkerList extends React.Component {
               handleAdjustCentroid={this.handleAdjustCentroid.bind(this)}
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
-              createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(this)}
+              createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
+                this
+              )}
               translations={CustomPopupMarkerText}
               handleOnClick={() => {
                 this.handleStopOnClick(marker.id);
@@ -384,29 +387,31 @@ class MarkerList extends React.Component {
             marker.parking.forEach((parking, index) => {
               let isParkAndRide =
                 parking.parkingVehicleTypes &&
-                parking.parkingVehicleTypes.indexOf('car') > -1;
+                parking.parkingVehicleTypes.indexOf("car") > -1;
               let isCycleParking =
                 parking.parkingVehicleTypes &&
-                parking.parkingVehicleTypes.indexOf('pedalCycle') > -1;
+                parking.parkingVehicleTypes.indexOf("pedalCycle") > -1;
 
               if (isParkAndRide) {
                 popupMarkers.push(
                   <ParkAndRideMarker
                     position={parking.location}
                     index={index}
-                    name={parking.name || ''}
+                    name={parking.name || ""}
                     hasExpired={parking.hasExpired}
                     draggable={!disabled}
                     type="parking"
-                    key={'parking-' + index}
+                    key={"parking-" + index}
                     totalCapacity={parking.totalCapacity}
                     translations={{
-                      title: formatMessage({ id: 'parking_item_title_parkAndRide' }),
-                      totalCapacity: formatMessage({ id: 'total_capacity' }),
-                      parkingExpired: formatMessage({ id: 'parking_expired' }),
+                      title: formatMessage({
+                        id: "parking_item_title_parkAndRide",
+                      }),
+                      totalCapacity: formatMessage({ id: "total_capacity" }),
+                      parkingExpired: formatMessage({ id: "parking_expired" }),
                       totalCapacityUnknown: formatMessage({
-                        id: 'total_capacity_unknown'
-                      })
+                        id: "total_capacity_unknown",
+                      }),
                     }}
                     handleDragEnd={this.handleElementDragEnd.bind(this)}
                   />
@@ -416,19 +421,21 @@ class MarkerList extends React.Component {
                   <CycleParkingMarker
                     position={parking.location}
                     index={index}
-                    name={parking.name || ''}
+                    name={parking.name || ""}
                     totalCapacity={parking.totalCapacity}
                     hasExpired={parking.hasExpired}
-                    key={'parking-' + index}
+                    key={"parking-" + index}
                     draggable={!disabled}
                     type="parking"
                     translations={{
-                      title: formatMessage({ id: 'parking_item_title_bikeParking' }),
-                      totalCapacity: formatMessage({ id: 'total_capacity' }),
-                      parkingExpired: formatMessage({ id: 'parking_expired' }),
+                      title: formatMessage({
+                        id: "parking_item_title_bikeParking",
+                      }),
+                      totalCapacity: formatMessage({ id: "total_capacity" }),
+                      parkingExpired: formatMessage({ id: "parking_expired" }),
                       totalCapacityUnknown: formatMessage({
-                        id: 'total_capacity_unknown'
-                      })
+                        id: "total_capacity_unknown",
+                      }),
                     }}
                     handleDragEnd={this.handleElementDragEnd.bind(this)}
                   />
@@ -444,7 +451,7 @@ class MarkerList extends React.Component {
                   index={index}
                   id={quay.id}
                   position={quay.location}
-                  key={'quay-' + (quay.id || index)}
+                  key={"quay-" + (quay.id || index)}
                   handleQuayDragEnd={this.handleElementDragEnd.bind(this)}
                   translations={Object.assign(
                     {},
@@ -452,8 +459,8 @@ class MarkerList extends React.Component {
                     CustomPopupMarkerText
                   )}
                   compassBearing={quay.compassBearing}
-                  publicCode={quay.publicCode || ''}
-                  privateCode={quay.privateCode || ''}
+                  publicCode={quay.publicCode || ""}
+                  privateCode={quay.privateCode || ""}
                   stopPlaceName={marker.name}
                   stopPlaceId={marker.id}
                   disabled={disabled}
@@ -473,7 +480,7 @@ class MarkerList extends React.Component {
 
           if (marker.entrances) {
             const junctionMarkerText = {
-              junctionTitle: formatMessage({ id: 'entrance' })
+              junctionTitle: formatMessage({ id: "entrance" }),
             };
 
             marker.entrances.forEach((entrance, index) => {
@@ -481,7 +488,7 @@ class MarkerList extends React.Component {
                 <JunctionMarker
                   position={entrance.location}
                   index={index}
-                  key={'entrance-' + index}
+                  key={"entrance-" + index}
                   type="entrance"
                   handleDragEnd={this.handleElementDragEnd.bind(this)}
                   handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
@@ -498,14 +505,14 @@ class MarkerList extends React.Component {
 
           if (marker.pathJunctions) {
             const junctionMarkerText = {
-              junctionTitle: formatMessage({ id: 'pathJunction' })
+              junctionTitle: formatMessage({ id: "pathJunction" }),
             };
 
             marker.pathJunctions.forEach((pathJunction, index) => {
               popupMarkers.push(
                 <JunctionMarker
                   position={pathJunction.location}
-                  key={'pathjunction-' + index}
+                  key={"pathjunction-" + index}
                   index={index}
                   type="pathJunction"
                   handleDragEnd={this.handleElementDragEnd.bind(this)}
@@ -524,7 +531,7 @@ class MarkerList extends React.Component {
           if ((showExpiredStops && marker.hasExpired) || !marker.hasExpired) {
             popupMarkers.push(
               <NeighbourMarker
-                key={'neighbourStop-' + marker.id}
+                key={"neighbourStop-" + marker.id}
                 id={marker.id}
                 position={marker.location}
                 name={marker.name}
@@ -566,7 +573,7 @@ class MarkerList extends React.Component {
                     parentId={stopIndex}
                     id={quay.id}
                     position={quay.location}
-                    key={'quay-neighbour' + quay.id}
+                    key={"quay-neighbour" + quay.id}
                     handleQuayDragEnd={() => {}}
                     translations={Object.assign(
                       {},
@@ -574,8 +581,8 @@ class MarkerList extends React.Component {
                       CustomPopupMarkerText
                     )}
                     compassBearing={quay.compassBearing}
-                    publicCode={quay.publicCode || ''}
-                    privateCode={quay.privateCode || ''}
+                    publicCode={quay.publicCode || ""}
+                    privateCode={quay.privateCode || ""}
                     stopPlaceName={marker.name}
                     stopPlaceId={marker.id}
                     formattedStopType={localeStopType}
@@ -604,10 +611,10 @@ class MarkerList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   path: state.user.path,
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-  currentIsNewStop: getIn(state.stopPlace, ['current', 'isNewStop'], false),
+  currentIsNewStop: getIn(state.stopPlace, ["current", "isNewStop"], false),
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
   isEditingStop:
     state.routing.locationBeforeTransitions.pathname.indexOf(
@@ -621,28 +628,33 @@ const mapStateToProps = state => ({
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
-  disabled: (state.stopPlace.current && state.stopPlace.current.permanentlyTerminated) || !getIn(state.roles, ['allowanceInfo', 'canEdit'], false),
+  disabled:
+    (state.stopPlace.current &&
+      state.stopPlace.current.permanentlyTerminated) ||
+    !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
   disabledForSearch: !getIn(
     state.roles,
-    ['allowanceInfoSearchResult', 'canEdit'],
+    ["allowanceInfoSearchResult", "canEdit"],
     false
   ),
   newStopIsMultiModal: state.user.newStopIsMultiModal,
   currentStopIsMultiModal: getIn(
     state.stopPlace,
-    ['current', 'isParent'],
+    ["current", "isParent"],
     false
   ),
-  tokenParsed: getIn(state.roles, ['kc', 'tokenParsed'], null),
+  tokenParsed: getIn(state.roles, ["kc", "tokenParsed"], null),
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {
   if (stopPlaceType) {
     const { formatMessage } = intl;
-    const formattedStopTypeId = formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName`});
-    return formatMessage({ id: formattedStopTypeId || 'name' });
+    const formattedStopTypeId = formatMessage({
+      id: `stopTypes.${stopPlaceType}.quayItemName`,
+    });
+    return formatMessage({ id: formattedStopTypeId || "name" });
   }
-  return '';
+  return "";
 };
 
 export default withApollo(injectIntl(connect(mapStateToProps)(MarkerList)));

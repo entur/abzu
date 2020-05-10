@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import PropTypes from 'prop-types';
-import { TileLayer } from 'react-leaflet';
-import reactWMTSLayer from '../../plugins/WMTSPlugin';
+import PropTypes from "prop-types";
+import { TileLayer } from "react-leaflet";
+import reactWMTSLayer from "../../plugins/WMTSPlugin";
 
 export default class WMTSLayer extends TileLayer {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class WMTSLayer extends TileLayer {
 
     this.leafletElement = new reactWMTSLayer(baseURL, {
       gkt: gkt,
-      layers: 'toporaster2',
+      layers: "toporaster2",
     });
   }
 }

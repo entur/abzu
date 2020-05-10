@@ -12,15 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import { Polyline, FeatureGroup } from 'react-leaflet';
-import { connect } from 'react-redux';
-import { getCoordinatesFromGeometry } from '../../utils/';
+import React, { Component } from "react";
+import { Polyline, FeatureGroup } from "react-leaflet";
+import { connect } from "react-redux";
+import { getCoordinatesFromGeometry } from "../../utils/";
 
 class MultimodalStopEdges extends Component {
-
   render() {
-
     const { stops, showMultimodalEdges } = this.props;
     let vertices = [];
 
@@ -28,14 +26,19 @@ class MultimodalStopEdges extends Component {
 
     let foundMarkers = [];
 
-    let validParentStops = stops.filter(marker => marker.isParent
-      && marker.location && marker.children && marker.children.length);
+    let validParentStops = stops.filter(
+      (marker) =>
+        marker.isParent &&
+        marker.location &&
+        marker.children &&
+        marker.children.length
+    );
 
     validParentStops.forEach((marker, index) => {
       if (foundMarkers.indexOf(marker.id) === -1 || !marker.id) {
         marker.children
-          .filter(child => child.location && child.location.length === 2)
-          .map(child => {
+          .filter((child) => child.location && child.location.length === 2)
+          .map((child) => {
             let newChild = Object.assign({}, child);
             if (child.geometry && !child.location) {
               newChild.location = getCoordinatesFromGeometry(child.geometry);
@@ -45,32 +48,30 @@ class MultimodalStopEdges extends Component {
           .forEach((child, childIndex) => {
             vertices.push(
               <Polyline
-                key={'vertex-' + index + '-' + childIndex}
+                key={"vertex-" + index + "-" + childIndex}
                 ref="polyline"
                 positions={[marker.location, child.location]}
                 opacity={0.9}
-                color={'lime'}
+                color={"lime"}
                 dashArray="16,2"
                 weight={3}
               />
             );
-        });
+          });
         foundMarkers.push(marker.id);
       }
     });
 
     return (
       <FeatureGroup>
-        <div>
-          {(vertices && vertices.length) ? vertices : null}
-        </div>
+        <div>{vertices && vertices.length ? vertices : null}</div>
       </FeatureGroup>
     );
   }
 }
 
 const mapStateToProps = ({ stopPlace }) => ({
-  showMultimodalEdges: stopPlace.showMultimodalEdges
+  showMultimodalEdges: stopPlace.showMultimodalEdges,
 });
 
 export default connect(mapStateToProps)(MultimodalStopEdges);

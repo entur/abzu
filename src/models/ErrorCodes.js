@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
 export const MutationErrorCodes = {
-  ERROR_STOP_PLACE: 'ERROR_STOP_PLACE',
-  ERROR_PATH_LINKS: 'ERROR_PATH_LINKS',
-  ERROR_PARKING: 'ERROR_PARKING',
+  ERROR_STOP_PLACE: "ERROR_STOP_PLACE",
+  ERROR_PATH_LINKS: "ERROR_PATH_LINKS",
+  ERROR_PARKING: "ERROR_PARKING",
 };

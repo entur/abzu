@@ -12,83 +12,80 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import AutoComplete from 'material-ui/AutoComplete';
-import { withApollo } from 'react-apollo';
-import MenuItem from 'material-ui/MenuItem';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
+import AutoComplete from "material-ui/AutoComplete";
+import { withApollo } from "react-apollo";
+import MenuItem from "material-ui/MenuItem";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 
-import { getTariffZones } from '../../graphql/Tiamat/actions';
-import StopPlaceActions from '../../actions/StopPlaceActions';
+import { getTariffZones } from "../../graphql/Tiamat/actions";
+import StopPlaceActions from "../../actions/StopPlaceActions";
 
 class AddTariffZone extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSource: [],
-      searchText: ''
+      searchText: "",
     };
   }
 
   handleUpdate(searchText) {
     this.setState({
-      searchText
+      searchText,
     });
 
     if (searchText) {
       const { client } = this.props;
 
-      getTariffZones(client, searchText).then(result => {
+      getTariffZones(client, searchText).then((result) => {
         this.setState({
-          dataSource: result.data.tariffZones
+          dataSource: result.data.tariffZones,
         });
       });
     }
   }
 
   getMenuItems(dataSource) {
-    const addedTariffZones = this.props.tariffZones.map(tz => tz.id);
+    const addedTariffZones = this.props.tariffZones.map((tz) => tz.id);
     const innerDivStyle = {
-      display: 'flex',
-      justifyContent: 'space-between',
-      fontSize: '0.8em',
+      display: "flex",
+      justifyContent: "space-between",
+      fontSize: "0.8em",
     };
 
     return dataSource
-      .filter(item => addedTariffZones.indexOf(item.id) === -1)
-      .map(item => {
-      return {
-        text: item.name.value,
-        item,
-        value: (
-          <MenuItem
-            innerDivStyle={innerDivStyle}
-            key={'tz-' + item.id}
-            style={{ paddingLeft: 10, paddingRight: 10, width: 'auto' }}
-            primaryText={item.name.value}
-            secondaryText={item.id}
-          />
-        )
-      }
-    });
+      .filter((item) => addedTariffZones.indexOf(item.id) === -1)
+      .map((item) => {
+        return {
+          text: item.name.value,
+          item,
+          value: (
+            <MenuItem
+              innerDivStyle={innerDivStyle}
+              key={"tz-" + item.id}
+              style={{ paddingLeft: 10, paddingRight: 10, width: "auto" }}
+              primaryText={item.name.value}
+              secondaryText={item.id}
+            />
+          ),
+        };
+      });
   }
 
   handleNewRequest(chosen) {
     if (chosen && chosen.item) {
-      this.props.dispatch(
-        StopPlaceActions.addTariffZone(chosen.item)
-      );
+      this.props.dispatch(StopPlaceActions.addTariffZone(chosen.item));
       this.setState({
-        searchText: ''
+        searchText: "",
       });
     }
   }
 
   render() {
-
     const { dataSource, searchText } = this.state;
     const menuItems = this.getMenuItems(dataSource);
     const { formatMessage } = this.props.intl;
@@ -96,31 +93,31 @@ class AddTariffZone extends Component {
     return (
       <div
         style={{
-          background: 'rgba(33, 150, 243, 0)',
-          border: '1px dotted',
-          padding: 10
+          background: "rgba(33, 150, 243, 0)",
+          border: "1px dotted",
+          padding: 10,
         }}
       >
         <div
           style={{
             fontWeight: 600,
-            fontSize: '0.9em',
-            width: '100%',
-            marginTop: 10
+            fontSize: "0.9em",
+            width: "100%",
+            marginTop: 10,
           }}
         >
-          {formatMessage({id: 'add_tariff_zone'})}
+          {formatMessage({ id: "add_tariff_zone" })}
         </div>
         <AutoComplete
-          floatingLabelText={formatMessage({id: 'tariff_zone_search'})}
-          hintText={formatMessage({id: 'tariff_zone_search'})}
+          floatingLabelText={formatMessage({ id: "tariff_zone_search" })}
+          hintText={formatMessage({ id: "tariff_zone_search" })}
           dataSource={menuItems}
           searchText={searchText}
           onUpdateInput={this.handleUpdate.bind(this)}
           filter={AutoComplete.caseInsensitiveFilter}
           maxSearchResults={7}
           onNewRequest={this.handleNewRequest.bind(this)}
-          listStyle={{ width: 'auto' }}
+          listStyle={{ width: "auto" }}
           ref="autocomplete"
           fullWidth
         />
@@ -130,11 +127,11 @@ class AddTariffZone extends Component {
 }
 
 AddTariffZone.propTypes = {
-  handleAdd: PropTypes.func
+  handleAdd: PropTypes.func,
 };
 
-const mapStateToProps = ({stopPlace}) => ({
-  tariffZones: stopPlace.current.tariffZones
+const mapStateToProps = ({ stopPlace }) => ({
+  tariffZones: stopPlace.current.tariffZones,
 });
 
 export default withApollo(connect(mapStateToProps)(injectIntl(AddTariffZone)));

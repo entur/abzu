@@ -12,23 +12,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import MdCancel from 'material-ui/svg-icons/navigation/cancel';
-import MdMerge from 'material-ui/svg-icons/editor/merge-type';
-import AcceptChanges from '../EditStopPage/AcceptChanges';
-import ScrollableQuayList from './ScrollableQuayList';
-import Spinner from '../../static/icons/spinner';
+import React from "react";
+import PropTypes from "prop-types";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import MdCancel from "material-ui/svg-icons/navigation/cancel";
+import MdMerge from "material-ui/svg-icons/editor/merge-type";
+import AcceptChanges from "../EditStopPage/AcceptChanges";
+import ScrollableQuayList from "./ScrollableQuayList";
+import Spinner from "../../static/icons/spinner";
 
 class MoveQuayNewStopDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       changesUnderstood: false,
-      quayIds: []
+      quayIds: [],
     };
   }
 
@@ -36,13 +35,13 @@ class MoveQuayNewStopDialog extends React.Component {
     if (this.props.open !== nextProps.open && !nextProps.open) {
       this.setState({
         changesUnderstood: false,
-        quayIds: []
+        quayIds: [],
       });
     }
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState({
         changesUnderstood: false,
-        quayIds: nextProps.quay ? [nextProps.quay.id] : []
+        quayIds: nextProps.quay ? [nextProps.quay.id] : [],
       });
     }
   }
@@ -52,12 +51,12 @@ class MoveQuayNewStopDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    quays: PropTypes.arrayOf(PropTypes.object).isRequired
+    quays: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   handleUpdate(quayIds) {
     this.setState({
-      quayIds: quayIds
+      quayIds: quayIds,
     });
   }
 
@@ -70,7 +69,7 @@ class MoveQuayNewStopDialog extends React.Component {
       quay,
       quays,
       hasStopBeenModified,
-      isLoading
+      isLoading,
     } = this.props;
     const { formatMessage } = intl;
     const { changesUnderstood, quayIds } = this.state;
@@ -79,20 +78,25 @@ class MoveQuayNewStopDialog extends React.Component {
     if (!quay) return null;
 
     const translations = {
-      confirm: formatMessage({ id: 'confirm' }),
-      cancel: formatMessage({ id: 'cancel' }),
-      title: formatMessage({ id: 'move_quay_new_stop_title' }),
-      info: formatMessage({ id: 'move_quay_new_stop_info' }),
+      confirm: formatMessage({ id: "confirm" }),
+      cancel: formatMessage({ id: "cancel" }),
+      title: formatMessage({ id: "move_quay_new_stop_title" }),
+      info: formatMessage({ id: "move_quay_new_stop_info" }),
       result: formatMessage({
-        id: quayIds.length > 1
-          ? 'move_quay_new_stop_consequence_pl'
-          : 'move_quay_new_stop_consequence'
-      })
+        id:
+          quayIds.length > 1
+            ? "move_quay_new_stop_consequence_pl"
+            : "move_quay_new_stop_consequence",
+      }),
     };
 
-    const fromStopPlaceId =  quay.stopPlaceId;
-    const fromVersionComment = `Flyttet ${quayIds.join(', ')} til nytt stoppested`;
-    const toVersionComment = `Flyttet ${quayIds.join(', ')} fra ${fromStopPlaceId}`;
+    const fromStopPlaceId = quay.stopPlaceId;
+    const fromVersionComment = `Flyttet ${quayIds.join(
+      ", "
+    )} til nytt stoppested`;
+    const toVersionComment = `Flyttet ${quayIds.join(
+      ", "
+    )} fra ${fromStopPlaceId}`;
 
     const actions = [
       <FlatButton
@@ -108,8 +112,8 @@ class MoveQuayNewStopDialog extends React.Component {
         }}
         primary={true}
         keyboardFocused={true}
-        icon={isLoading ? <Spinner/> : <MdMerge />}
-      />
+        icon={isLoading ? <Spinner /> : <MdMerge />}
+      />,
     ];
 
     return (
@@ -121,25 +125,26 @@ class MoveQuayNewStopDialog extends React.Component {
         onRequestClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: '40%', minWidth: '40%', margin: 'auto' }}
+        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <div>
-          <div style={{ marginBottom: 10, fontWeight: 600, color: '#000' }}>
-            {quayIds.length}{' '}{translations.result}
+          <div style={{ marginBottom: 10, fontWeight: 600, color: "#000" }}>
+            {quayIds.length} {translations.result}
           </div>
           <ScrollableQuayList
-            style={{ marginBottom: 10, color: '#000' }}
+            style={{ marginBottom: 10, color: "#000" }}
             quays={quays}
             handleUpdate={this.handleUpdate.bind(this)}
             defaultQuayId={quay.id}
             formatMessage={formatMessage}
           />
-          <div style={{fontSize: '0.9em'}}>{translations.info}</div>
-          {hasStopBeenModified &&
+          <div style={{ fontSize: "0.9em" }}>{translations.info}</div>
+          {hasStopBeenModified && (
             <AcceptChanges
               checked={changesUnderstood}
               onChange={(e, v) => this.setState({ changesUnderstood: v })}
-            />}
+            />
+          )}
         </div>
       </Dialog>
     );
