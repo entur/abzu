@@ -64,7 +64,7 @@ spec:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /admin/nsr/_health
+              path: /_health
               port: {{ .Values.service.http.internalPort }}
               scheme: HTTP
             initialDelaySeconds: 15
@@ -83,4 +83,3 @@ spec:
           configMap:
             name: {{ .Values.configMapMount.name }}
             defaultMode: 420
-
