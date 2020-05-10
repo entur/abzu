@@ -17,6 +17,7 @@ import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
 import PropTypes from 'prop-types';
 import styles from '../../styles/menu.css'
+import svgSprite from '../../static/icons/svg-sprite.svg';
 
 class ModalityIconSvg extends React.Component {
 
@@ -57,7 +58,7 @@ class ModalityIconSvg extends React.Component {
       <span className={styles.clear} style={iconStyle}>
         <SvgIcon style={{ ...style, ...svgStyle }}>
           <use
-            xlinkHref={`${window.config.endpointBase}static/icons/svg-sprite.svg#icon-icon_${iconId}`}
+            xlinkHref={`${svgSprite}#icon-icon_${iconId}`}
           />
         </SvgIcon>
       </span>
