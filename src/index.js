@@ -15,12 +15,20 @@
 import React from "react";
 import { render } from "react-dom";
 import Keycloak from "keycloak-js";
-import Root from "./containers/Root";
-import { browserHistory } from "react-router";
+import { Router, Route, browserHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
+import { ApolloProvider } from "react-apollo";
+import Root from "./containers/Root";
+import App from "./containers/App";
+import StopPlaces from "./containers/StopPlaces";
+import StopPlace from "./containers/StopPlace";
+import ReportPage from "./containers/ReportPage";
+import Routes from "./routes/";
+import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
+
 import cfgreader from "./config/readConfig";
 import "intl";
-import { ApolloProvider } from "react-apollo";
+
 import axios from "axios";
 import ErrorBoundary from "./containers/ErrorBoundary";
 
@@ -28,14 +36,42 @@ function renderIndex(path, kc) {
   const configureStore = require("./store/store").default;
   const store = configureStore(kc);
   const history = syncHistoryWithStore(browserHistory, store.self);
-  render(
-    <ErrorBoundary Raven={store.Raven}>
-      <ApolloProvider store={store.self} client={store.client}>
-        <Root path={path} history={history} />
-      </ApolloProvider>
-    </ErrorBoundary>,
-    document.getElementById("root")
-  );
+
+  const renderApp = () => {
+    render(
+      <ErrorBoundary Raven={store.Raven}>
+        <ApolloProvider store={store.self} client={store.client}>
+          <Root>
+            <App>
+              <Router history={history}>
+                <Route path={path} component={StopPlaces} />
+                <Route
+                  path={path + Routes.STOP_PLACE + "/:stopId"}
+                  component={StopPlace}
+                />
+                <Route
+                  path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                  component={GroupOfStopPlaces}
+                />
+                <Route path={path + "reports"} component={ReportPage} />
+              </Router>
+            </App>
+          </Root>
+        </ApolloProvider>
+      </ErrorBoundary>,
+      document.getElementById("root")
+    );
+  };
+
+  renderApp();
+
+  if (process.env.NODE_ENV !== "production") {
+    if (module.hot) {
+      module.hot.accept("./containers/App", () => {
+        renderApp();
+      });
+    }
+  }
 }
 
 cfgreader.readConfig(function (config) {

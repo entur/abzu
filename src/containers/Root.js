@@ -17,7 +17,6 @@ import { connect } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { UserActions } from "../actions/";
 import configureLocalization from "../localization/localization";
-import RouterContainer from "./RouterContainer";
 import axios from "axios";
 
 class Root extends React.Component {
@@ -45,7 +44,6 @@ class Root extends React.Component {
   }
 
   render() {
-    const { history, path } = this.props;
     const { localization } = this.props;
 
     if (localization.locale == null) return null;
@@ -55,7 +53,7 @@ class Root extends React.Component {
         locale={localization.locale}
         messages={localization.messages}
       >
-        <RouterContainer path={path} history={history} />
+        {this.props.children}
       </IntlProvider>
     );
   }

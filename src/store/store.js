@@ -133,8 +133,10 @@ export default function configureStore(kc) {
     stopPlacesGroup: groupOfStopPlacesReducer,
   });
 
+  const store = createStore(combinedReducer, initialState, enchancer);
+
   return {
-    self: createStore(combinedReducer, initialState, enchancer),
+    self: store,
     client: tiamatClient,
     Raven,
   };
