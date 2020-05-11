@@ -65,7 +65,7 @@ class NewElementsBox extends React.Component {
     const elementStyle = {
       display: "inline-block",
       cursor: disabled ? "not-allowed" : "move",
-      margin: "10 15",
+      margin: "5px 15px",
     };
 
     const titleStyle = {
