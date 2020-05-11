@@ -103,7 +103,7 @@ export const getIsCurrentVersionMax = (
 
   const versionsOfStop = versions.map((version) => version.version);
   const maxVersion = Math.max(...versionsOfStop);
-  return maxVersion === currentVersion;
+  return maxVersion === Number(currentVersion);
 };
 
 export const findDuplicateImportedIds = (stopPlaces) => {
