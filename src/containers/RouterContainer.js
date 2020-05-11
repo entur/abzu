@@ -18,6 +18,7 @@ import App from "./App";
 import StopPlaces from "./StopPlaces";
 import StopPlace from "./StopPlace";
 import ReportPage from "./ReportPage";
+import ReportPageV2 from "./ReportPageV2";
 import Routes from "../routes/";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 
@@ -34,6 +35,7 @@ class RouterContainer extends React.Component {
         component={GroupOfStopPlaces}
       />
       <Route path={this.props.path + "reports"} component={ReportPage} />
+      <Route path={this.props.path + "reportsV2"} component={ReportPageV2} />}
     </Route>
   );
 
