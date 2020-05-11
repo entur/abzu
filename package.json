@@ -13,7 +13,9 @@
     "prebuild": "npm run fetch-schema",
     "predev-local": "TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql npm run fetch-schema",
     "preprod": "TIAMAT_BASE_URL=https://api.entur.io/stop-places/v1/graphql npm run fetch-schema",
-    "fetch-schema": "./fetchSchema.js"
+    "fetch-schema": "./fetchSchema.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
@@ -21,7 +23,7 @@
     "apollo-client": "1.9.2",
     "axios": "^0.18.1",
     "body-parser": "1.18.2",
-    "convict": "^4.4.1",
+    "convict": "^6.0.0",
     "detect-browser": "^2.5.1",
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
@@ -57,7 +59,8 @@
     "redux-raven-middleware": "1.2.0",
     "redux-thunk": "2.2.0",
     "request": "2.88.0",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "snyk": "^1.319.2"
   },
   "browserslist": {
     "production": [
@@ -80,5 +83,6 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "snyk": true
 }
