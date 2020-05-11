@@ -177,7 +177,7 @@ class Header extends React.Component {
               {title}
               {(tiamatEnv === "test" || tiamatEnv === "development") && (
                 <span style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}>
-                  WELCOME
+                  {tiamatEnv}
                 </span>
               )}
             </div>
