@@ -102,7 +102,7 @@ class ColumnFilterPopover extends React.Component {
                 label={selectAllLabel}
                 checked={allIsChecked}
                 onCheck={(e, checked) => {
-                  this.props.handleCheckAll();
+                  this.props.handleCheckAll(checked);
                 }}
               />
             </div>

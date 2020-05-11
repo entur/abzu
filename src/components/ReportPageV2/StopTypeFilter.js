@@ -14,7 +14,7 @@ import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    //margin: theme.spacing(1),
     minWidth: 300,
     maxWidth: 500,
   },

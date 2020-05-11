@@ -23,6 +23,7 @@ import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
 import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
+import ReportPageV2 from "./containers/ReportPageV2";
 import Routes from "./routes/";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 
@@ -54,6 +55,7 @@ function renderIndex(path, kc) {
                   component={GroupOfStopPlaces}
                 />
                 <Route path={path + "reports"} component={ReportPage} />
+                <Route path={path + "reportsV2"} component={ReportPageV2} />
               </Router>
             </App>
           </Root>
