@@ -153,7 +153,7 @@ const ReportPageV2 = ({ intl, client, results, duplicateInfo }) => {
   return (
     <>
       <Container>
-        <Box display="flex" alignItems="baseline">
+        <Box display="flex" alignItems="baseline" m={2}>
           <StopTypeFilter value={stopTypeFilter} onChange={setStopTypeFilter} />
           <TagFilterTray
             tags={tags}
@@ -163,51 +163,53 @@ const ReportPageV2 = ({ intl, client, results, duplicateInfo }) => {
             }
           />
         </Box>
-        <Box display="flex">
+        <Box display="flex" m={2}>
           <TextField
             label="Optional search query"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+        </Box>
+        <Box m={2}>
           <Button variant="outlined" onClick={handleSearch}>
             Search
           </Button>
         </Box>
-        <Box>
-          <div style={{ display: "flex" }}>
-            <ColumnFilterPopover
-              style={{ marginLeft: 2, marginTop: 5, transform: "scale(0.9)" }}
-              columnOptions={stopPlaceColumns}
-              handleColumnCheck={(id, checked) =>
-                setStopPlaceColumns(
-                  updateColumnOption({ id, checked }, stopPlaceColumns)
-                )
-              }
-              buttonLabel={formatMessage({
-                id: "column_filter_label_stop_place",
-              })}
-              captionLabel={formatMessage({ id: "stop_place" })}
-              formatMessage={formatMessage}
-              handleCheckAll={(checked) =>
-                setStopPlaceColumns(updateAllOption(checked, stopPlaceColumns))
-              }
-              selectAllLabel={formatMessage({ id: "all" })}
-            />
-            <ColumnFilterPopover
-              style={{ marginLeft: 2, marginTop: 5, transform: "scale(0.9)" }}
-              columnOptions={quayColumns}
-              handleColumnCheck={(id, checked) =>
-                setQuayColumns(updateColumnOption({ id, checked }, quayColumns))
-              }
-              buttonLabel={formatMessage({ id: "column_filter_label_quays" })}
-              captionLabel={formatMessage({ id: "quays" })}
-              formatMessage={formatMessage}
-              handleCheckAll={(checked) =>
-                setQuayColumns(updateAllOption(checked, quayColumns))
-              }
-              selectAllLabel={formatMessage({ id: "all" })}
-            />
-          </div>
+        <Box m={1} display="flex">
+          <ColumnFilterPopover
+            style={{ marginLeft: 2, marginTop: 5, transform: "scale(0.9)" }}
+            columnOptions={stopPlaceColumns}
+            handleColumnCheck={(id, checked) =>
+              setStopPlaceColumns(
+                updateColumnOption({ id, checked }, stopPlaceColumns)
+              )
+            }
+            buttonLabel={formatMessage({
+              id: "column_filter_label_stop_place",
+            })}
+            captionLabel={formatMessage({ id: "stop_place" })}
+            formatMessage={formatMessage}
+            handleCheckAll={(checked) =>
+              setStopPlaceColumns(updateAllOption(checked, stopPlaceColumns))
+            }
+            selectAllLabel={formatMessage({ id: "all" })}
+          />
+          <ColumnFilterPopover
+            style={{ marginLeft: 2, marginTop: 5, transform: "scale(0.9)" }}
+            columnOptions={quayColumns}
+            handleColumnCheck={(id, checked) =>
+              setQuayColumns(updateColumnOption({ id, checked }, quayColumns))
+            }
+            buttonLabel={formatMessage({ id: "column_filter_label_quays" })}
+            captionLabel={formatMessage({ id: "quays" })}
+            formatMessage={formatMessage}
+            handleCheckAll={(checked) =>
+              setQuayColumns(updateAllOption(checked, quayColumns))
+            }
+            selectAllLabel={formatMessage({ id: "all" })}
+          />
+        </Box>
+        <Box mx={1} my={4}>
           {isLoading ? (
             <LinearProgress />
           ) : (
