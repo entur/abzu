@@ -124,8 +124,8 @@ Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 212,
       "description": Object {
-        "lang": "nor",
-        "value": "",
+        "lang": null,
+        "value": null,
       },
       "geometry": Object {
         "coordinates": Array [
@@ -148,8 +148,8 @@ Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 38,
       "description": Object {
-        "lang": "nor",
-        "value": "",
+        "lang": null,
+        "value": null,
       },
       "geometry": Object {
         "coordinates": Array [
