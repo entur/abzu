@@ -47,6 +47,11 @@ spec:
                 secretKeyRef:
                   key: sentry-dsn
                   name: ror-abzu-secrets
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: google-api-key
+                  name: ror-abzu-secrets
           resources:
             limits:
               cpu: {{ .Values.resources.cpuLimit }}

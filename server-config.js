@@ -118,7 +118,8 @@ const configureApp = async (app) => {
         hostname: process.env.HOSTNAME,
         mapboxTariffZonesStyle: convict.get("mapboxTariffZonesStyle"),
         mapboxAccessToken: convict.get("mapboxAccessToken"),
-        sentryDSN: convict.get('sentryDSN')
+        sentryDSN: convict.get('sentryDSN'),
+        googleApiKey: convict.get('googleApiKey')
       };
 
       createKeyCloakConfig(convict.get('authServerUrl'));

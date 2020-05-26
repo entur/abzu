@@ -16,7 +16,6 @@ data:
       "OTPUrl":  "{{ .Values.configMap.OTPUrl }}",
       "mapboxTariffZonesStyle": "${MAPBOX_TARIFF_ZONES_STYLE}",
       "mapboxAccessToken": "${MAPBOX_ACCESS_TOKEN}",
-      "sentryDSN": "${SENTRY_DSN}"
+      "sentryDSN": "${SENTRY_DSN}",
+      "googleApiKey": "${GOOGLE_API_KEY}"
     }
-
-

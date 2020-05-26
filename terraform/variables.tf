@@ -35,3 +35,6 @@ variable ror-sentry-dsn {
   description = "Sentry DSN"
 }
 
+variable ror-abzu-google-api-key {
+  description = "API key for google api / google maps"
+}
