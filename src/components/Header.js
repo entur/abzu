@@ -354,7 +354,7 @@ class Header extends React.Component {
               />
               <MenuItem
                 leftIcon={<MdHelp color="#41c0c4" />}
-                href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/637370663"
+                href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
                 target="_blank"
                 primaryText={userGuide}
                 style={{ fontSize: 12, padding: 0 }}
