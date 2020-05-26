@@ -21,6 +21,7 @@ import { getIn } from "../../utils/";
 import TagTray from "./TagTray";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import BelongsToGroup from "./BelongsToGroup";
+import Code from "../EditStopPage/Code";
 
 class StopPlaceResultInfo extends Component {
   render() {
@@ -105,8 +106,17 @@ class StopPlaceResultInfo extends Component {
               }}
             >
               <div style={{ fontWeight: 600 }}>
-                {formatMessage({ id: "local_reference" }).replace(":", "")}{" "}
-                {` (${quay.id}):`}
+                {quay.id}
+                <Code
+                  type="publicCode"
+                  value={quay.publicCode}
+                  defaultValue={formatMessage({ id: "not_assigned" })}
+                />
+                <Code
+                  type="privateCode"
+                  value={quay.privateCode}
+                  defaultValue={formatMessage({ id: "not_assigned" })}
+                />
               </div>
               {quay.importedId ? quay.importedId.join(", ") : ""}
             </div>
