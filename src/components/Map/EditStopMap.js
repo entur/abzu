@@ -124,7 +124,7 @@ class EditStopMap extends React.Component {
 
   handleSubmitChangeCoordinates(position) {
     const { coordinatesOwner } = this.state;
-    const { dispatch } = this.props;
+    const { dispatch, zoom } = this.props;
 
     if (coordinatesOwner.isQuay) {
       dispatch(
@@ -138,7 +138,7 @@ class EditStopMap extends React.Component {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     }
 
-    dispatch(StopPlaceActions.changeMapCenter(position, 14));
+    dispatch(StopPlaceActions.changeMapCenter(position, zoom));
 
     this.setState({
       coordinatesDialogOpen: false,
