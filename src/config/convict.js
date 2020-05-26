@@ -91,6 +91,12 @@ module.exports = new Promise(function (resolve, reject) {
       default: undefined,
       env: "SENTRY_DSN",
     },
+    googleApiKey: {
+      doc: "Google API key for google maps",
+      format: String,
+      default: undefined,
+      env: "GOOGLE_API_KEY",
+    },
   });
 
   // If configuration URL exists, read it and update the configuration object

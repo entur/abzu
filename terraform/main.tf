@@ -18,8 +18,9 @@ resource "kubernetes_secret" "ror-abzu-secrets" {
   }
 
   data = {
-  "mapbox-tariff-zones-style"     = var.ror-mapbox-tariff-zones-style
-  "mapbox-access-token"     = var.ror-mapbox-access-token
-  "sentry-dsn"     = var.ror-sentry-dsn
+  "mapbox-tariff-zones-style" = var.ror-mapbox-tariff-zones-style
+  "mapbox-access-token" = var.ror-mapbox-access-token
+  "sentry-dsn" = var.ror-sentry-dsn
+  "google-api-key" = var.ror-google-api-key
   }
 }

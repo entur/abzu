@@ -64,8 +64,7 @@ export default class LeafLetMap extends React.Component {
   }
 
   render() {
-    // NB: this key is owned by rutebanken.official
-    const googleApiKey = "AIzaSyBIobnzsLdanPxsH6n1tlySXeeUuMfMM8E";
+    const googleApiKey = window.config.googleApiKey;
 
     const {
       position,
