@@ -30,8 +30,8 @@ helpers.mapQuayToVariables = (quay) => {
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
     description: {
-      value: quay.description,
-      lang: "nor",
+      value: quay.description || null,
+      lang: quay.description ? "nor" : null,
     },
   };
 
