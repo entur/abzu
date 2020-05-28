@@ -114,7 +114,7 @@ class StopPlaceResultInfo extends Component {
                 />
                 <Code
                   type="privateCode"
-                  value={quay.privateCode}
+                  value={quay.privateCode.value}
                   defaultValue={formatMessage({ id: "not_assigned" })}
                 />
               </div>

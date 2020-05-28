@@ -242,6 +242,10 @@ export const getStopById = gql`
         quays {
           id
           importedId
+          publicCode
+          privateCode {
+            value
+          }
         }
       }
       ... on ParentStopPlace {
@@ -370,6 +374,10 @@ export const findStop = gql`
         quays {
           id
           importedId
+          publicCode
+          privateCode {
+            value
+          }
         }
       }
       ... on ParentStopPlace {
