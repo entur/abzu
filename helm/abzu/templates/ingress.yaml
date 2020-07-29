@@ -11,7 +11,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   rules:
-  - host: stoppested.{{ .Values.ingress.domainName }}
+  - host: stoppested{{ .Values.ingress.domainName }}
     http:
       paths:
         - backend:
