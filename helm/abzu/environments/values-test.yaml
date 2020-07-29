@@ -6,3 +6,8 @@ configMap:
   OSMUrl: "https://api-stage.entur.org/map/1.0/{z}/{x}/{y}.png"
   tiamatEnv: "test"
   OTPUrl: "https://api.staging.entur.io/journey-planner/v2/graphql"
+
+ingress:
+  enabled: true
+  loadBalancerIP: 35.233.47.68
+  domainName: .staging.entur.org

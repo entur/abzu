@@ -1,0 +1,11 @@
+configMap:
+  tiamatBaseUrl: "https://api.entur.io/stop-places/v1/graphql"
+  authServerUrl: "https://auth.entur.org/auth/"
+  OSMUrl: "https://api.entur.org/map/1.0/{z}/{x}/{y}.png"
+  tiamatEnv: "production"
+  OTPUrl: "https://api.entur.io/journey-planner/v2/graphql"
+
+ingress:
+  enabled: true
+  loadBalancerIP: 192.158.29.145
+  domainName: .entur.org

@@ -6,3 +6,8 @@ configMap:
   OSMUrl: "https://api.entur.org/map/1.0/{z}/{x}/{y}.png"
   tiamatEnv: "production"
   OTPUrl: "https://api.entur.io/journey-planner/v2/graphql"
+
+ingress:
+  enabled: true
+  loadBalancerIP: 104.199.93.228
+  domainName: .entur.org

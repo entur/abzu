@@ -6,21 +6,12 @@ metadata:
     {{- include "common.labels" . | indent 4 }}
   annotations:
     kubernetes.io/ingress.class: traefik
-    {{- if eq .Values.env "production"}}
-    external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.productionIp }}
-    {{ else if eq .Values.env "staging"}}
-    external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.stagingIp }}
-    {{ else if eq .Values.env "dev"}}
-    external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.devIp }}
-    {{- end}}
+    external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.loadBalancerIP }}
   name: stoppested
   namespace: {{ .Release.Namespace }}
 spec:
   rules:
-  {{- if eq .Values.env "production"}}
-  - host: stoppested.entur.org
-  {{ else }}
-  - host: stoppested.{{ .Release.Namespace }}.entur.org
+  - host: stoppested.{{ .Values.ingress.domainName }}
   {{- end}}
     http:
       paths:
