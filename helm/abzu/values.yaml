@@ -24,4 +24,4 @@ image:
 service:
   http:
     externalPort: 80
-    internalPort: 8000:q
+    internalPort: 8000
