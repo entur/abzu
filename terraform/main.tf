@@ -1,6 +1,6 @@
 # Contains main description of bulk of terraform?
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13.2"
 }
 
 provider "google" {
