@@ -16,4 +16,30 @@ describe("getIsCurrentVersionMax", () => {
   test("Current version is max", () => {
     expect(getIsCurrentVersionMax([{ version: 2 }], "2", false)).toBeTruthy();
   });
+
+  test("Empty toDate has precedence over version number", () => {
+    expect(
+      getIsCurrentVersionMax(
+        [
+          { version: 2, toDate: "2010-12-10 19:30" },
+          { version: 1, toDate: "" },
+        ],
+        "1",
+        false
+      )
+    ).toBeTruthy();
+  });
+
+  test("Compare toDates", () => {
+    expect(
+      getIsCurrentVersionMax(
+        [
+          { version: 1, toDate: "2010-12-10 19:30" },
+          { version: 2, toDate: "2010-12-11 19:30" },
+        ],
+        "2",
+        false
+      )
+    ).toBeTruthy();
+  });
 });

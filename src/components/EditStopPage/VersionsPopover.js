@@ -17,6 +17,7 @@ import PropTypes from "prop-types";
 import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
+import { sortVersions } from "../../utils";
 
 class VersionsPopover extends Component {
   constructor(props) {
@@ -76,7 +77,7 @@ class VersionsPopover extends Component {
           animation={PopoverAnimationVertical}
         >
           <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
-            {versions.map((version, i) => (
+            {sortVersions(versions).map((version, i) => (
               <MenuItem
                 key={"version" + i}
                 primaryText={
