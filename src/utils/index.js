@@ -85,6 +85,13 @@ export const toCamelCase = (string) => {
   });
 };
 
+export const sortVersions = (versions) =>
+  versions.sort((a, b) => {
+    if (a.toDate === "") return -1;
+    if (b.toDate === "") return 1;
+    else return new Date(b.toDate) - new Date(a.toDate);
+  });
+
 export const getIsCurrentVersionMax = (
   versions,
   currentVersion,
@@ -101,9 +108,12 @@ export const getIsCurrentVersionMax = (
   // also when creating a new stop place
   if (!currentVersion) return true;
 
-  const versionsOfStop = versions.map((version) => version.version);
-  const maxVersion = Math.max(...versionsOfStop);
-  return maxVersion === Number(currentVersion);
+  // Check if the current version is the newest version, according to version sorted by toDate
+  return (
+    sortVersions(versions).findIndex(
+      ({ version }) => version === Number(currentVersion)
+    ) === 0
+  );
 };
 
 export const findDuplicateImportedIds = (stopPlaces) => {
