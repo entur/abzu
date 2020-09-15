@@ -111,7 +111,7 @@ export const getIsCurrentVersionMax = (
   // Check if the current version is the newest version, according to version sorted by toDate
   return (
     sortVersions(versions).findIndex(
-      ({ version }) => version === Number(currentVersion)
+      ({ version }) => Number(version) === Number(currentVersion)
     ) === 0
   );
 };
