@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import moment from "moment";
+
 export const setDecimalPrecision = (number, n) => {
   if (isNaN(number) || isNaN(n)) {
     return number;
@@ -85,12 +87,21 @@ export const toCamelCase = (string) => {
   });
 };
 
-export const sortVersions = (versions) =>
-  versions.sort((a, b) => {
+//15-09-2020 20:37
+const VERSION_DATE_FORMAT = "DD-MM-YYYY hh:mm";
+
+export const sortVersions = (versions) => {
+  const sorted = versions.sort((a, b) => {
     if (a.toDate === "") return -1;
     if (b.toDate === "") return 1;
-    else return new Date(b.toDate) - new Date(a.toDate);
+    else
+      return (
+        moment(b.toDate, VERSION_DATE_FORMAT) -
+        moment(a.toDate, VERSION_DATE_FORMAT)
+      );
   });
+  return sorted;
+};
 
 export const getIsCurrentVersionMax = (
   versions,

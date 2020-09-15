@@ -34,10 +34,10 @@ describe("getIsCurrentVersionMax", () => {
     expect(
       getIsCurrentVersionMax(
         [
-          { version: 1, toDate: "2010-12-10 19:30" },
-          { version: 2, toDate: "2010-12-11 19:30" },
+          { version: "10", toDate: "15-09-2020 20:37" },
+          { version: "14", toDate: "15-09-2020 09:16" },
         ],
-        "2",
+        "10",
         false
       )
     ).toBeTruthy();
