@@ -1,16 +1,13 @@
-FROM node:10.16.3
-# https://hub.docker.com/_/node/
+FROM node:10.23.2-alpine3.10
 
-# https://github.com/Yelp/dumb-init
-RUN wget --quiet https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64.deb
-RUN dpkg -i dumb-init_*.deb
-RUN npm set progress=false
+RUN addgroup appuser && adduser --disabled-password --gecos '' appuser --ingroup appuser
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY . .
+COPY --chown=appuser:appuser . .
 
 EXPOSE 8000
 ENV port 8000
+USER appuser
 
-CMD [ "dumb-init", "npm", "run", "prod" ]
+CMD [ "npm", "run", "prod" ]
