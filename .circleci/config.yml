@@ -116,7 +116,7 @@ workflows:
               ignore:
               - master
       - build:
-          context: org-carbon
+          context: global
           requires:
             - test
           filters:
