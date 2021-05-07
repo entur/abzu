@@ -33,7 +33,7 @@
     "husky": "^4.2.5",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
-    "keycloak-js": "3.2.1",
+    "keycloak-js": "3.4.3",
     "leaflet": "1.2.0",
     "lint-staged": "^10.2.2",
     "lodash.debounce": "4.0.8",
