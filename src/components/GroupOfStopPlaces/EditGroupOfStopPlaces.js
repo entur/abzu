@@ -25,8 +25,7 @@ import mapHelper from "../../modelUtils/mapToQueryVariables";
 import {
   mutateGroupOfStopPlace,
   deleteGroupOfStopPlaces,
-} from "../../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
+} from "../../actions/TiamatActions";
 import * as types from "../../actions/Types";
 import Routes from "../../routes/";
 import { UserActions, StopPlacesGroupActions } from "../../actions/";
@@ -84,8 +83,8 @@ class EditGroupOfStopPlaces extends Component {
   }
 
   handleDeleteGroup() {
-    const { client, dispatch, groupOfStopPlaces } = this.props;
-    deleteGroupOfStopPlaces(client, groupOfStopPlaces.id).then((response) => {
+    const { dispatch, groupOfStopPlaces } = this.props;
+    dispatch(deleteGroupOfStopPlaces(groupOfStopPlaces.id)).then((response) => {
       dispatch(UserActions.navigateTo("/", ""));
     });
   }
@@ -98,11 +97,11 @@ class EditGroupOfStopPlaces extends Component {
   }
 
   handleSave() {
-    const { groupOfStopPlaces, client } = this.props;
+    const { groupOfStopPlaces, dispatch } = this.props;
     const variables = mapHelper.mapGroupOfStopPlaceToVariables(
       groupOfStopPlaces
     );
-    mutateGroupOfStopPlace(client, variables).then((groupId) => {
+    dispatch(mutateGroupOfStopPlace(variables)).then((groupId) => {
       this.handleSaveSuccess(groupId);
     });
   }
@@ -270,6 +269,4 @@ const mapStateToProps = ({ stopPlacesGroup, roles }) => ({
   canDelete: getIn(roles, ["allowanceInfo", "canDeleteStop"], false),
 });
 
-export default withApollo(
-  connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces))
-);
+export default connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces));

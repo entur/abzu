@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getPolygon } from "../graphql/Tiamat/actions";
+import { getPolygon } from "../actions/TiamatActions";
 import { isCoordinatesInsidePolygon } from "../utils/mapUtils";
 
 let instance = null;

@@ -15,8 +15,7 @@
 import React, { Component } from "react";
 import FlatButton from "material-ui/FlatButton";
 import Popover from "material-ui/Popover";
-import { withApollo } from "react-apollo";
-import { getTagsByName } from "../../graphql/Tiamat/actions";
+import { getTagsByName } from "../../actions/TiamatActions";
 import MenuItem from "material-ui/MenuItem";
 import Menu from "material-ui/Menu";
 import Checkbox from "material-ui/Checkbox";
@@ -24,6 +23,7 @@ import ShowMoreMenuFooter from "./ShowMoreMenuFooter";
 import { injectIntl } from "react-intl";
 import TextField from "material-ui/TextField";
 import MdAdd from "material-ui/svg-icons/content/add";
+import { connect } from "react-redux";
 
 class TagSuggestionPopover extends Component {
   constructor(props) {
@@ -38,11 +38,11 @@ class TagSuggestionPopover extends Component {
   }
 
   componentDidMount() {
-    const { client, intl } = this.props;
+    const { dispatch, intl } = this.props;
     const { locale } = intl;
     const sortByName = (a, b) => a.name.localeCompare(b.name, locale);
 
-    getTagsByName(client, "").then(({ data }) => {
+    dispatch(getTagsByName("")).then(({ data }) => {
       this.setState({
         tags: data.tags ? data.tags.slice().sort(sortByName) : [],
       });
@@ -141,4 +141,4 @@ class TagSuggestionPopover extends Component {
   }
 }
 
-export default withApollo(injectIntl(TagSuggestionPopover));
+export default connect()(injectIntl(TagSuggestionPopover));

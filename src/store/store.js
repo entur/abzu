@@ -12,37 +12,36 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { createLogger } from "redux-logger";
-import mapReducer from "../reducers/mapReducer";
-import stopPlaceReducer from "../reducers/stopPlaceReducer";
-import userReducer from "../reducers/userReducer";
-import rolesReducer from "../reducers/rolesReducer";
-import reportReducer from "../reducers/reportReducer";
-import snackbarReducer from "../reducers/snackbarReducer";
-import groupOfStopPlacesReducer from "../reducers/groupOfStopPlacesReducer";
-import { routerReducer } from "react-router-redux";
+import Raven from "raven-js";
+import createRavenMiddleware from "redux-raven-middleware";
+import { routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
 import SettingsManager from "../singletons/SettingsManager";
 import PolygonManager from "../singletons/PolygonManager";
 import rolesParser from "../roles/rolesParser";
-import Raven from "raven-js";
-import createRavenMiddleware from "redux-raven-middleware";
 import { createTiamatClient } from "../graphql/clients";
+import createRootReducer from "../reducers";
+
+export const history = createBrowserHistory();
 
 export default function configureStore(kc) {
-  const loggerMiddleware = createLogger();
-
   let enchancer = {};
 
   const tiamatClient = createTiamatClient();
 
   if (process.env.NODE_ENV === "development") {
-    enchancer = compose(
+    const loggerMiddleware = createLogger({ collapsed: true });
+    const composeEnhancers = composeWithDevTools({});
+
+    enchancer = composeEnhancers(
       applyMiddleware(
+        routerMiddleware(history),
         thunkMiddleware,
-        loggerMiddleware,
-        tiamatClient.middleware()
+        loggerMiddleware
       )
     );
   } else {
@@ -54,9 +53,9 @@ export default function configureStore(kc) {
 
     enchancer = compose(
       applyMiddleware(
+        routerMiddleware,
         thunkMiddleware,
-        createRavenMiddleware(Raven),
-        tiamatClient.middleware()
+        createRavenMiddleware(Raven)
       )
     );
   }
@@ -121,19 +120,11 @@ export default function configureStore(kc) {
     },
   };
 
-  const combinedReducer = combineReducers({
-    mapUtils: mapReducer,
-    user: userReducer,
-    routing: routerReducer,
-    stopPlace: stopPlaceReducer,
-    report: reportReducer,
-    apollo: tiamatClient.reducer(),
-    roles: rolesReducer,
-    snackbar: snackbarReducer,
-    stopPlacesGroup: groupOfStopPlacesReducer,
-  });
-
-  const store = createStore(combinedReducer, initialState, enchancer);
+  const store = createStore(
+    createRootReducer(history),
+    initialState,
+    enchancer
+  );
 
   return {
     self: store,

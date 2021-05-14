@@ -16,12 +16,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import AutoComplete from "material-ui/AutoComplete";
-import { withApollo } from "react-apollo";
 import MenuItem from "material-ui/MenuItem";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { getTariffZones } from "../../graphql/Tiamat/actions";
+import { getTariffZones } from "../../actopms/TiamatActions";
 import StopPlaceActions from "../../actions/StopPlaceActions";
 
 class AddTariffZone extends Component {
@@ -39,9 +38,8 @@ class AddTariffZone extends Component {
     });
 
     if (searchText) {
-      const { client } = this.props;
-
-      getTariffZones(client, searchText).then((result) => {
+      const { dispatch } = this.props;
+      dispatch(getTariffZones(searchText)).then((result) => {
         this.setState({
           dataSource: result.data.tariffZones,
         });
@@ -134,4 +132,4 @@ const mapStateToProps = ({ stopPlace }) => ({
   tariffZones: stopPlace.current.tariffZones,
 });
 
-export default withApollo(connect(mapStateToProps)(injectIntl(AddTariffZone)));
+export default connect(mapStateToProps)(injectIntl(AddTariffZone));

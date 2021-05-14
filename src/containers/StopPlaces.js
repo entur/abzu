@@ -19,8 +19,7 @@ import StopPlacesMap from "../components/Map/StopPlacesMap";
 import {
   getStopPlaceById,
   getGroupOfStopPlacesById,
-} from "../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
+} from "../actions/TiamatActions";
 import formatHelpers from "../modelUtils/mapToClient";
 import StopPlaceActions from "../actions/StopPlaceActions";
 import {
@@ -42,8 +41,8 @@ class StopPlaces extends React.Component {
 
   handleGroupOfStopPlace(groupOfStopPlaceId) {
     this.setState({ isLoading: true });
-    const { client, dispatch } = this.props;
-    getGroupOfStopPlacesById(client, groupOfStopPlaceId)
+    const { dispatch } = this.props;
+    dispatch(getGroupOfStopPlacesById(groupOfStopPlaceId))
       .then(({ data }) => {
         if (data.groupOfStopPlaces && data.groupOfStopPlaces.length) {
           const groupOfStopPlace = formatHelpers.mapSearchResultatGroup(
@@ -61,12 +60,12 @@ class StopPlaces extends React.Component {
   }
 
   handleLoadStopPlace(props, stopPlaceId, forceLoad) {
-    const { activeSearchResult, client, dispatch } = props;
+    const { activeSearchResult, dispatch } = props;
 
     if (forceLoad || (!activeSearchResult && stopPlaceId)) {
       this.setState({ isLoading: true });
 
-      getStopPlaceById(client, stopPlaceId)
+      dispatch(getStopPlaceById(stopPlaceId))
         .then(({ data }) => {
           this.setState({ isLoading: false });
           if (data.stopPlace && data.stopPlace.length) {
@@ -135,4 +134,4 @@ const mapStateToProps = ({ stopPlace, user }) => ({
   currentPath: user.path,
 });
 
-export default withApollo(connect(mapStateToProps)(StopPlaces));
+export default connect(mapStateToProps)(StopPlaces);

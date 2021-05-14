@@ -16,10 +16,9 @@ import { connect } from "react-redux";
 import React from "react";
 import LeafletMap from "./LeafletMap";
 import { StopPlaceActions, UserActions } from "../../actions/";
-import { withApollo } from "react-apollo";
 import { getIn } from "../../utils/";
 import { injectIntl } from "react-intl";
-import { getNeighbourStops } from "../../graphql/Tiamat/actions";
+import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
 import debounce from "lodash.debounce";
 import { getMarkersForMap } from "../../selectors/StopPlaceMap";
@@ -27,7 +26,13 @@ import { getMarkersForMap } from "../../selectors/StopPlaceMap";
 class StopPlacesMap extends React.Component {
   constructor(props) {
     super(props);
-    this.getNearbyStops = debounce(getNeighbourStops, 500);
+    this.getNearbyStops = debounce(this.getNeighbourStops.bind(this), 500);
+  }
+
+  getNeighbourStops(ignoreStopId, bounds, includeExpired) {
+    this.props.dispatch(
+      getNeighbourStops(ignoreStopId, bounds, includeExpired)
+    );
   }
 
   componentDidMount() {
@@ -73,8 +78,8 @@ class StopPlacesMap extends React.Component {
 
     if (zoom > 14) {
       const bounds = leafletElement.getBounds();
-      const { ignoreStopId, client } = this.props;
-      this.getNearbyStops(client, ignoreStopId, bounds, includeExpired);
+      const { ignoreStopId } = this.props;
+      this.getNearbyStops(ignoreStopId, bounds, includeExpired);
     } else {
       const { neighbourMarkersCount } = this.props;
       if (neighbourMarkersCount) {
@@ -123,4 +128,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withApollo(injectIntl(connect(mapStateToProps)(StopPlacesMap)));
+export default injectIntl(connect(mapStateToProps)(StopPlacesMap));

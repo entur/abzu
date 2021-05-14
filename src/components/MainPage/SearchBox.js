@@ -31,8 +31,7 @@ import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import {
   findEntitiesWithFilters,
   findTopographicalPlace,
-} from "../../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
+} from "../../actions/TiamatActions";
 import FavoritePopover from "./FavoritePopover";
 import ModalityFilter from "../EditStopPage/ModalityFilter";
 import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";
@@ -71,15 +70,18 @@ class SearchBox extends React.Component {
 
       this.setState({ loading: true });
 
-      findEntitiesWithFilters(
-        this.props.client,
-        searchText,
-        stopPlaceTypes,
-        chips,
-        showFutureAndExpired
-      ).then(() => {
-        this.setState({ loading: false });
-      });
+      this.props
+        .dispatch(
+          findEntitiesWithFilters(
+            searchText,
+            stopPlaceTypes,
+            chips,
+            showFutureAndExpired
+          )
+        )
+        .then(() => {
+          this.setState({ loading: false });
+        });
     };
     this.debouncedSearch = debounce(searchStop, 500);
   }
@@ -148,8 +150,8 @@ class SearchBox extends React.Component {
   }
 
   handleTopographicalPlaceInput(searchText) {
-    const { client } = this.props;
-    findTopographicalPlace(client, searchText);
+    const { dispatch } = this.props;
+    dispatch(findTopographicalPlace(searchText));
   }
 
   handleNewRequest(result) {
@@ -734,4 +736,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withApollo(injectIntl(connect(mapStateToProps)(SearchBox)));
+export default injectIntl(connect(mapStateToProps)(SearchBox));

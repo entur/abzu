@@ -31,7 +31,7 @@ import {
   mutateGroupOfStopPlaces,
   deleteGroupMutation,
   deleteParkingMutation,
-} from "./mutations";
+} from "../graphql/Tiamat/mutations";
 import {
   allVersionsOfStopPlace,
   allEntities,
@@ -48,20 +48,66 @@ import {
   getTagsByNameQuery,
   getGroupOfStopPlaceQuery,
   findTariffones,
-} from "./queries";
-import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
+  stopPlaceAndPathLinkByVersion,
+  findStopForReport as findStopForReportQuery,
+  getParkingForMultipleStopPlaces as getParkingForMultipleStopPlacesQuery,
+  topopGraphicalPlacesReportQuery,
+  neighbourStopPlaceQuays,
+} from "../graphql/Tiamat/queries";
+import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
-export const findTagByName = (client, name) =>
-  client.query({
+import { createApolloThunk } from ".";
+import * as types from "./Types";
+
+const handleQuery = (client, payload) => (dispatch) =>
+  client.query(payload).then((result) => {
+    dispatch(
+      createApolloThunk(
+        types.APOLLO_QUERY_RESULT,
+        result,
+        payload.query,
+        payload.variables
+      )
+    );
+    return result;
+  });
+
+const handleMutation = (client, payload) => (dispatch) =>
+  client.mutate
+    .then((result) => {
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_MUTATION_RESULT,
+          result,
+          payload.mutation,
+          payload.variables
+        )
+      );
+      return result;
+    })
+    .catch((e) => {
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_MUTATION_RESULT,
+          e,
+          payload.mutation,
+          payload.variables
+        )
+      );
+      throw e;
+    });
+
+export const findTagByName = (name) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: findTagByNameQuery,
     fetchPolicy: "network-only",
     variables: {
       name,
     },
-  });
+  })(dispatch);
 
-export const addTag = (client, idReference, name, comment) =>
-  client.mutate({
+export const addTag = (idReference, name, comment) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateCreateTag,
     fetchPolicy: "network-only",
     variables: {
@@ -69,25 +115,28 @@ export const addTag = (client, idReference, name, comment) =>
       name,
       comment,
     },
-  });
+  })(dispatch);
 
-export const getStopPlaceById = (client, id) =>
-  client.query({
+export const getStopPlaceById = (id) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: getStopById,
     fetchPolicy: "network-only",
     variables: {
       id,
     },
-  });
+  })(dispatch);
 
-export const getAddStopPlaceInfo = (client, stopPlaceIds) =>
-  client.query({
+export const getAddStopPlaceInfo = (stopPlaceIds) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: getStopPlacesById(stopPlaceIds),
     operationName: "getAddStopPlaceInfo",
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
+export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
+  dispatch,
+  getState
+) => {
   const { isChildOfParent } = stopPlace;
 
   if (!isChildOfParent) {
@@ -97,12 +146,11 @@ export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
     );
 
     return new Promise((resolve, reject) => {
-      client
-        .mutate({
-          mutation: mutateStopPlace,
-          variables,
-          fetchPolicy: "network-only",
-        })
+      handleMutation(getState().user.client, {
+        mutation: mutateStopPlace,
+        variables,
+        fetchPolicy: "network-only",
+      })(dispatch)
         .then((result) => {
           if (result.data.mutateStopPlace[0].id) {
             resolve(result.data.mutateStopPlace[0].id);
@@ -121,12 +169,11 @@ export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
         userInput
       );
 
-      client
-        .mutate({
-          mutation: updateChildOfParentStop,
-          variables,
-          fetchPolicy: "network-only",
-        })
+      handleMutation(getState().user.client, {
+        mutation: updateChildOfParentStop,
+        variables,
+        fetchPolicy: "network-only",
+      })(dispatch)
         .then((result) => {
           resolve(stopPlace.id);
         })
@@ -137,51 +184,50 @@ export const saveStopPlaceBasedOnType = (client, stopPlace, userInput) => {
   }
 };
 
-export const saveParentStopPlace = (client, variables) =>
-  client.mutate({
+export const saveParentStopPlace = (variables) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateParentStopPlace,
     variables,
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const removeStopPlaceFromMultiModalStop = (
-  client,
   parentSiteRef,
   stopPlaceId
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: removeStopPlaceFromParent,
     variables: {
       stopPlaceId,
       parentSiteRef,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const deleteQuay = (client, variables) =>
-  client.mutate({
+export const deleteQuay = (variables) => (dispatch, getState) => {
+  handleMutation(getState().user.client, {
     mutation: mutateDeleteQuay,
     variables,
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
+};
 
-export const deleteStopPlace = (client, stopPlaceId) =>
-  client.mutate({
+export const deleteStopPlace = (stopPlaceId) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateDeleteStopPlace,
     variables: {
       stopPlaceId,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const terminateStop = (
-  client,
   stopPlaceId,
   shouldTerminatePermanently,
   versionComment,
   toDate
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateTerminateStopPlace,
     variables: {
       stopPlaceId,
@@ -189,23 +235,30 @@ export const terminateStop = (
       toDate,
       modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
     },
-  });
+  })(dispatch);
 
-export const addToMultiModalStopPlace = (client, parentSiteRef, stopPlaceIds) =>
-  client.mutate({
+export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => (
+  dispatch,
+  getState
+) =>
+  handleMutation(getState().user.client, {
     mutation: mutateAddToMultiModalStopPlace,
     variables: {
       stopPlaceIds,
       parentSiteRef,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const createParentStopPlace = (
-  client,
-  { name, description, versionComment, coordinates, validBetween, stopPlaceIds }
-) =>
-  client.mutate({
+export const createParentStopPlace = ({
+  name,
+  description,
+  versionComment,
+  coordinates,
+  validBetween,
+  stopPlaceIds,
+}) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateCreateMultiModalStopPlace,
     variables: {
       name,
@@ -216,16 +269,15 @@ export const createParentStopPlace = (
       stopPlaceIds,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const mutateGroupOfStopPlace = (client, variables) =>
+export const mutateGroupOfStopPlace = (variables) => (dispatch, getState) =>
   new Promise((resolve, reject) => {
-    client
-      .mutate({
-        mutation: mutateGroupOfStopPlaces,
-        variables,
-        fetchPolicy: "network-only",
-      })
+    handleMutation(getState().user.client, {
+      mutation: mutateGroupOfStopPlaces,
+      variables,
+      fetchPolicy: "network-only",
+    })(dispatch)
       .then(({ data }) => {
         const id = data["mutateGroupOfStopPlaces"]
           ? data["mutateGroupOfStopPlaces"].id
@@ -237,23 +289,22 @@ export const mutateGroupOfStopPlace = (client, variables) =>
       });
   });
 
-export const getStopPlaceVersions = (client, stopPlaceId) =>
-  client.query({
+export const getStopPlaceVersions = (stopPlaceId) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: allVersionsOfStopPlace,
     variables: {
       id: stopPlaceId,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const mergeQuays = (
-  client,
   stopPlaceId,
   fromQuayId,
   toQuayId,
   versionComment
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateMergeQuays,
     variables: {
       stopPlaceId,
@@ -262,25 +313,24 @@ export const mergeQuays = (
       versionComment,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const getStopPlaceWithAll = (client, id) =>
-  client.query({
+export const getStopPlaceWithAll = (id) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: allEntities,
     variables: {
       id,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const mergeAllQuaysFromStop = (
-  client,
   fromStopPlaceId,
   toStopPlaceId,
   fromVersionComment,
   toVersionComment
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateMergeStopPlaces,
     variables: {
       fromStopPlaceId,
@@ -289,16 +339,15 @@ export const mergeAllQuaysFromStop = (
       toVersionComment,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const moveQuaysToStop = (
-  client,
   toStopPlaceId,
   quayId,
   fromVersionComment,
   toVersionComment
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateMoveQuaysToStop,
     variables: {
       toStopPlaceId,
@@ -307,15 +356,14 @@ export const moveQuaysToStop = (
       toVersionComment,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const moveQuaysToNewStop = (
-  client,
   quayIds,
   fromVersionComment,
   toVersionComment
-) =>
-  client.mutate({
+) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateMoveQuaysToNewStop,
     variables: {
       quayIds,
@@ -323,15 +371,14 @@ export const moveQuaysToNewStop = (
       toVersionComment,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
 export const getNeighbourStops = (
-  client,
   ignoreStopPlaceId,
   bounds,
   includeExpired
-) =>
-  client.query({
+) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: stopPlaceBBQuery,
     variables: {
@@ -342,8 +389,9 @@ export const getNeighbourStops = (
       lonMin: bounds.getSouthWest().lng,
       lonMax: bounds.getNorthEast().lng,
     },
-  });
+  })(dispatch);
 
+// TODO: Special case, due to PolygonManager -- how to rewrite
 export const getPolygon = (client, ids) =>
   client.query({
     fetchPolicy: "network-only",
@@ -351,29 +399,28 @@ export const getPolygon = (client, ids) =>
     operationName: "getPolygons",
   });
 
-export const getTopographicPlaces = (client, ids) =>
-  client.query({
+export const getTopographicPlaces = (ids) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getQueryTopographicPlaces(ids),
     operationName: "topographicPlacesForQuery",
-  });
+  })(dispatch);
 
-export const getMergeInfoForStops = (client, stopPlaceId) =>
-  client.query({
+export const getMergeInfoForStops = (stopPlaceId) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getMergeInfoStopPlace,
     variables: {
       stopPlaceId,
     },
-  });
+  })(dispatch);
 
 export const findEntitiesWithFilters = (
-  client,
   query,
   stopPlaceType,
   chips,
   showFutureAndExpired
-) => {
+) => (dispatch, getState) => {
   const municipalityReference = chips
     .filter((topos) => topos.type === "municipality")
     .map((topos) => topos.value);
@@ -384,7 +431,7 @@ export const findEntitiesWithFilters = (
     .filter((topos) => topos.type === "country")
     .map((topos) => topos.value);
 
-  return client.query({
+  return handleQuery(getState().user.client, {
     query: findStop,
     fetchPolicy: "network-only",
     variables: {
@@ -396,78 +443,129 @@ export const findEntitiesWithFilters = (
       pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
       versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
     },
-  });
+  })(dispatch);
 };
 
-export const findTopographicalPlace = (client, query) =>
-  client.query({
+export const findTopographicalPlace = (query) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: topopGraphicalPlacesQuery,
     fetchPolicy: "network-only",
     variables: {
       query,
     },
-  });
+  })(dispatch);
 
-export const getTags = (client, idReference) =>
-  client.query({
+export const getTags = (idReference) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: getTagsQuery,
     fetchPolicy: "network-only",
     variables: {
       idReference,
     },
-  });
+  })(dispatch);
 
-export const getTagsByName = (client, name) =>
-  client.query({
+export const getTagsByName = (name) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: getTagsByNameQuery,
     fetchPolicy: "network-only",
     variables: {
       name,
     },
-  });
+  })(dispatch);
 
-export const removeTag = (client, name, idReference) =>
-  client.mutate({
+export const removeTag = (name, idReference) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: mutateRemoveTag,
     variables: {
       name,
       idReference,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const getGroupOfStopPlacesById = (client, id) =>
-  client.query({
+export const getGroupOfStopPlacesById = (id) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: getGroupOfStopPlaceQuery,
     variables: {
       id,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const deleteGroupOfStopPlaces = (client, id) =>
-  client.mutate({
+export const deleteGroupOfStopPlaces = (id) => (dispatch, getState) =>
+  handleMutation(getState().user.client, {
     mutation: deleteGroupMutation,
     variables: {
       id,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const getTariffZones = (client, query) =>
-  client.query({
+export const getTariffZones = (query) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     query: findTariffones,
     variables: {
       query,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
 
-export const deleteParking = (client, id) =>
-  client.mutate({
+export const deleteParking = (id) => (dispatch, getState) =>
+  handleMutation(getState.user.client, {
     mutation: deleteParkingMutation,
     variables: {
       id,
     },
     fetchPolicy: "network-only",
-  });
+  })(dispatch);
+
+export const getStopPlaceAndPathLinkByVersion = (id, version) => (
+  dispatch,
+  getState
+) =>
+  handleQuery(getState().user.client, {
+    fetchPolicy: "network-only",
+    query: stopPlaceAndPathLinkByVersion,
+    variables: {
+      id,
+      version,
+    },
+  })(dispatch);
+
+export const findStopForReport = (queryVariables) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
+    query: findStopForReportQuery,
+    fetchPolicy: "network-only",
+    variables: queryVariables,
+  })(dispatch);
+
+export const getParkingForMultipleStopPlaces = (stopPlaceIds) => (
+  dispatch,
+  getState
+) =>
+  handleQuery(getState().user.client, {
+    query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
+
+    // TODO: deal with this
+    //reducer: reportReducer,
+    fetchPolicy: "network-only",
+    operationName: "multipleParkingQuery",
+  })(dispatch);
+
+export const topographicalPlaceSearch = (searchText) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
+    query: topopGraphicalPlacesReportQuery,
+    fetchPolicy: "network-only",
+    variables: {
+      query: searchText,
+    },
+  })(dispatch);
+
+export const getNeighbourStopPlaceQuays = (id) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
+    fetchPolicy: "network-only",
+    query: neighbourStopPlaceQuays,
+    variables: {
+      id: id,
+    },
+  })(dispatch);

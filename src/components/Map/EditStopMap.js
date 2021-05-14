@@ -21,8 +21,7 @@ import { setDecimalPrecision } from "../../utils";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import CompassBearingDialog from "../Dialogs/CompassBearingDialog";
 import debounce from "lodash.debounce";
-import { withApollo } from "react-apollo";
-import { getNeighbourStops } from "../../graphql/Tiamat/actions";
+import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
 
 class EditStopMap extends React.Component {
@@ -33,14 +32,14 @@ class EditStopMap extends React.Component {
       compassBearingDialogOpen: false,
     };
     const mapEnd = (event, { leafletElement }) => {
-      let { ignoreStopId, client } = this.props;
+      let { ignoreStopId, dispatch } = this.props;
 
       const zoom = leafletElement.getZoom();
 
       if (zoom > 12) {
         const bounds = leafletElement.getBounds();
         let includeExpired = new Settings().getShowExpiredStops();
-        getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
+        dispatch(getNeighbourStops(ignoreStopId, bounds, includeExpired));
       }
     };
     this.handleMapMoveEnd = debounce(mapEnd, 500);
@@ -160,11 +159,11 @@ class EditStopMap extends React.Component {
 
   componentDidMount() {
     const { leafletElement } = this.refs.leafletMap.refs.map;
-    const { dispatch, client, ignoreStopId } = this.props;
+    const { dispatch, ignoreStopId } = this.props;
     dispatch(StopPlaceActions.setActiveMap(leafletElement));
     const bounds = leafletElement.getBounds();
     let includeExpired = new Settings().getShowExpiredStops();
-    getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
+    dispatch(getNeighbourStops(ignoreStopId, bounds, includeExpired));
   }
 
   render() {
@@ -241,4 +240,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withApollo(injectIntl(connect(mapStateToProps)(EditStopMap)));
+export default injectIntl(connect(mapStateToProps)(EditStopMap));

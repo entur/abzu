@@ -13,19 +13,19 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "./Types";
-import { browserHistory } from "react-router";
 import configureLocalization from "../localization/localization";
 import FavoriteManager from "../singletons/FavoriteManager";
 import SettingsManager from "../singletons/SettingsManager";
 import {
   getMergeInfoForStops,
   getAddStopPlaceInfo,
-} from "../graphql/Tiamat/actions";
+} from "../actions/TiamatActions";
 import { getIn } from "../utils/";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Routes from "../routes/";
 import { createThunk } from "./";
 import { checkStopPlaceUsage, checkQuayUsage } from "../graphql/OTP/actions";
+import { history } from "../store/store";
 
 var UserActions = {};
 
@@ -36,7 +36,7 @@ const goToRoute = (path, id) => {
   if (path.length && path[0] === "/") {
     path = path.slice(1);
   }
-  browserHistory.push(basePath + path + id);
+  history.push(basePath + path + id);
 };
 
 UserActions.navigateTo = (path, id) => (dispatch) => {
@@ -321,7 +321,7 @@ UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
   if (client) {
     dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
 
-    getMergeInfoForStops(client, fromStopPlaceID)
+    dispatch(getMergeInfoForStops(fromStopPlaceID))
       .then((response) => {
         dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
         dispatch(
@@ -622,10 +622,8 @@ UserActions.setServerDiffTime = (diff) => (dispatch) => {
   dispatch(createThunk(types.SET_SERVER_DIFF_TIME, diff));
 };
 
-UserActions.createMultimodalWith = (client, stopPlaceId, fromMain) => (
-  dispatch
-) => {
-  getAddStopPlaceInfo(client, [stopPlaceId]).then((response) => {
+UserActions.createMultimodalWith = (stopPlaceId, fromMain) => (dispatch) => {
+  dispatch(getAddStopPlaceInfo([stopPlaceId])).then((response) => {
     if (response.data) {
       const foundStop = Object.values(response.data)[0][0];
       const newStopPlace = new ParentStopPlace().createNew(

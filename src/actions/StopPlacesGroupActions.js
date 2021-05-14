@@ -17,13 +17,13 @@ import { createThunk } from "./";
 import {
   getStopPlaceById,
   getAddStopPlaceInfo,
-} from "../graphql/Tiamat/actions";
+} from "../actions/TiamatActions";
 import { UserActions } from "./";
 import Routes from "../routes/";
 
 var StopPlacesGroupActions = {};
 
-StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => (
+StopPlacesGroupActions.useStopPlaceIdForNewGroup = (stopPlaceId) => (
   dispatch
 ) => {
   dispatch(createThunk(types.CREATED_NEW_GROUP_OF_STOP_PLACES, stopPlaceId));
@@ -31,7 +31,7 @@ StopPlacesGroupActions.useStopPlaceIdForNewGroup = (client, stopPlaceId) => (
   if (
     window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1
   ) {
-    dispatch(StopPlacesGroupActions.createNewGroup(client, stopPlaceId));
+    dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId));
   } else {
     dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new"));
   }
@@ -51,20 +51,16 @@ StopPlacesGroupActions.removeMemberFromGroup = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.REMOVED_GROUP_MEMBER, stopPlaceId));
 };
 
-StopPlacesGroupActions.addMemberToGroup = (client, stopPlaceId) => (
-  dispatch
-) => {
+StopPlacesGroupActions.addMemberToGroup = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
-  getStopPlaceById(client, stopPlaceId).then((result) => {
+  dispatch(getStopPlaceById(stopPlaceId)).then((result) => {
     dispatch(createThunk(types.RECEIVED_MEMBER_INFO, result));
   });
 };
 
-StopPlacesGroupActions.addMembersToGroup = (client, stopPlaceIds) => (
-  dispatch
-) => {
+StopPlacesGroupActions.addMembersToGroup = (stopPlaceIds) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
-  getAddStopPlaceInfo(client, stopPlaceIds).then((result) => {
+  getAddStopPlaceInfo(stopPlaceIds).then((result) => {
     dispatch(createThunk(types.RECEIVED_MEMBERS_INFO, result));
   });
 };
@@ -73,8 +69,8 @@ StopPlacesGroupActions.discardChanges = () => (dispatch) => {
   dispatch(createThunk(types.DISCARDED_GOS_CHANGES, null));
 };
 
-StopPlacesGroupActions.createNewGroup = (client, stopPlaceId) => (dispatch) => {
-  getStopPlaceById(client, stopPlaceId)
+StopPlacesGroupActions.createNewGroup = (stopPlaceId) => (dispatch) => {
+  dispatch(getStopPlaceById(stopPlaceId))
     .then((result) => {
       if (
         result &&

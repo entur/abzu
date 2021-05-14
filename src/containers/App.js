@@ -30,16 +30,18 @@ class App extends React.Component {
     const { children, intl } = this.props;
 
     return (
-      <MuiThemeProvider theme={muiTheme}>
-        <V0MuiThemeProvider muiTheme={muiThemeV0}>
-          <div>
-            <Header intl={intl} />
-            {children}
-            <SnackbarWrapper formatMessage={intl.formatMessage} />
-            <BrowserSupport />
-          </div>
-        </V0MuiThemeProvider>
-      </MuiThemeProvider>
+      <>
+        <MuiThemeProvider theme={muiTheme}>
+          <V0MuiThemeProvider muiTheme={muiThemeV0}>
+            <div>
+              <Header intl={intl} />
+              {children}
+              <SnackbarWrapper formatMessage={intl.formatMessage} />
+              <BrowserSupport />
+            </div>
+          </V0MuiThemeProvider>
+        </MuiThemeProvider>
+      </>
     );
   }
 }

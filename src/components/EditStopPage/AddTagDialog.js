@@ -13,12 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { Component } from "react";
-import { withApollo } from "react-apollo";
 import AddTagAutoComplete from "./AddTagAutoComplete";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
-import { addTag, getTags } from "../../graphql/Tiamat/actions";
+import { addTag, getTags } from "../../actions/TiamatActions";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 
 class AddTagDialog extends Component {
   constructor(props) {
@@ -57,18 +57,18 @@ class AddTagDialog extends Component {
 
   handleAddTag() {
     const { comment, tagName } = this.state;
-    const { client, idReference, handleLoading } = this.props;
+    const { dispatch, idReference, handleLoading } = this.props;
 
     handleLoading(true);
 
-    addTag(client, idReference, tagName, comment)
+    dispatch(addTag(idReference, tagName, comment))
       .then((result) => {
         this.setState({
           comment: "",
           tagName: "",
           searchText: "",
         });
-        getTags(client, idReference)
+        dispatch(getTags(idReference))
           .then((response) => {
             handleLoading(false);
           })
@@ -127,4 +127,4 @@ class AddTagDialog extends Component {
   }
 }
 
-export default withApollo(injectIntl(AddTagDialog));
+export default connect(injectIntl(AddTagDialog));

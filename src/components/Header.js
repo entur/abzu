@@ -394,10 +394,8 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace:
-    state.routing.locationBeforeTransitions.pathname.indexOf("/stop_place/") >
-    -1,
-  isDisplayingReports:
-    state.routing.locationBeforeTransitions.pathname === "/reports",
+    state.router.location.pathname.indexOf("/stop_place/") > -1,
+  isDisplayingReports: state.router.location.pathname === "/reports",
   isPublicCodePrivateCodeOnStopPlacesEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,

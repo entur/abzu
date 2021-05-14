@@ -15,51 +15,51 @@
 import React from "react";
 import { render } from "react-dom";
 import Keycloak from "keycloak-js";
-import { Router, Route, browserHistory } from "react-router";
-import { syncHistoryWithStore } from "react-router-redux";
-import { ApolloProvider } from "react-apollo";
+import { Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
+import axios from "axios";
+import { ConnectedRouter } from "connected-react-router";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
 import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
-import ReportPageV2 from "./containers/ReportPageV2";
 import Routes from "./routes/";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-
 import cfgreader from "./config/readConfig";
+import ErrorBoundary from "./containers/ErrorBoundary";
+import configureStore, { history } from "./store/store";
+import { Provider } from "react-redux";
 import "intl";
 
-import axios from "axios";
-import ErrorBoundary from "./containers/ErrorBoundary";
-
 function renderIndex(path, kc) {
-  const configureStore = require("./store/store").default;
   const store = configureStore(kc);
-  const history = syncHistoryWithStore(browserHistory, store.self);
 
   const renderApp = () => {
     render(
       <ErrorBoundary Raven={store.Raven}>
-        <ApolloProvider store={store.self} client={store.client}>
-          <Root>
-            <App>
-              <Router history={history}>
-                <Route path={path} component={StopPlaces} />
-                <Route
-                  path={path + Routes.STOP_PLACE + "/:stopId"}
-                  component={StopPlace}
-                />
-                <Route
-                  path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                  component={GroupOfStopPlaces}
-                />
-                <Route path={path + "reports"} component={ReportPage} />
-                <Route path={path + "reportsV2"} component={ReportPageV2} />
-              </Router>
-            </App>
-          </Root>
-        </ApolloProvider>
+        <Provider store={store.self}>
+          <ApolloProvider client={store.client}>
+            <Root>
+              <App>
+                <ConnectedRouter history={history}>
+                  <Route exact path={path} component={StopPlaces} />
+                  <Route
+                    exact
+                    path={path + Routes.STOP_PLACE + "/:stopId"}
+                    component={StopPlace}
+                  />
+                  <Route
+                    exact
+                    path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                    component={GroupOfStopPlaces}
+                  />
+                  <Route exact path={path + "reports"} component={ReportPage} />
+                </ConnectedRouter>
+              </App>
+            </Root>
+          </ApolloProvider>
+        </Provider>
       </ErrorBoundary>,
       document.getElementById("root")
     );
