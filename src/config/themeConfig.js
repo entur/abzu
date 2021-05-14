@@ -48,7 +48,8 @@ export const getTheme = () => {
 
 export const getLogo = () => {
   if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/logo.png");
+    return require("./themes/" + process.env.REACT_APP_THEME + "/logo.png")
+      .default;
   } else {
     return defaultLogo;
   }

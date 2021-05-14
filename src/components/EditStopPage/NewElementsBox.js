@@ -18,12 +18,13 @@ import { injectIntl } from "react-intl";
 import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
-const entranceIcon = require("../../static/icons/entrance-icon-2x.png");
-const junctionIcon = require("../../static/icons/junction-icon-2x.png");
-const quayIcon = require("../../static/icons/quay-marker.png");
-const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
-const parkAndRideIcon = require("../../static/icons/parking-icon.png");
-const bikeParkingIcon = require("../../static/icons/cycle-parking-icon.png");
+const entranceIcon = require("../../static/icons/entrance-icon-2x.png").default;
+const junctionIcon = require("../../static/icons/junction-icon-2x.png").default;
+const quayIcon = require("../../static/icons/quay-marker.png").default;
+const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
+const parkAndRideIcon = require("../../static/icons/parking-icon.png").default;
+const bikeParkingIcon = require("../../static/icons/cycle-parking-icon.png")
+  .default;
 
 class NewElementsBox extends React.Component {
   constructor(props) {

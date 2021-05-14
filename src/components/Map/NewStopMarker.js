@@ -18,12 +18,12 @@ import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import PManager from "../../singletons/PolygonManager";
 
-const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
-const markerShadow = require("../../static/icons/marker-shadow.png");
+const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
+const markerShadow = require("../../static/icons/marker-shadow.png").default;
 
 class NewStopMarker extends React.Component {
   static propTypes = {
-    text: PropTypes.string.isRequired,
+    text: PropTypes.object.isRequired,
     handleOnClick: PropTypes.func.isRequired,
     handleDragEnd: PropTypes.func.isRequired,
   };

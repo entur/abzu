@@ -14,7 +14,8 @@ limitations under the Licence. */
 
 import React from "react";
 import compassBearingIcon from "../../static/icons/compass-bearing.png";
-const markerIcon = require("../../static/icons/quay-marker-background.png");
+const markerIcon = require("../../static/icons/quay-marker-background.png")
+  .default;
 
 class QuayMarkerIcon extends React.Component {
   componentWillMount() {
