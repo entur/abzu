@@ -182,6 +182,9 @@ class MarkerList extends React.Component {
     );
 
     markers.forEach((marker, stopIndex) => {
+      // stopPlaceType specific names, such as platform, gate, etc.
+      const localeStopType = getLocaleStopTypeName(marker.stopPlaceType, intl);
+
       if (marker.entityType === Entities.GROUP_OF_STOP_PLACE) {
         marker.members.forEach((member) => {
           popupMarkers.push(
@@ -221,9 +224,6 @@ class MarkerList extends React.Component {
         });
         return;
       }
-
-      // stopPlaceType specific names, such as platform, gate, etc.
-      const localeStopType = getLocaleStopTypeName(marker.stopPlaceType, intl);
 
       if (marker.coordinatePin) {
         popupMarkers.push(
