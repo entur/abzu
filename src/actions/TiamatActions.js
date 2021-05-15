@@ -56,7 +56,7 @@ import {
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
-import { createApolloThunk } from ".";
+import { createApolloErrorThunk, createApolloThunk } from ".";
 import * as types from "./Types";
 
 const handleQuery = (client, payload) => (dispatch) =>
@@ -73,22 +73,34 @@ const handleQuery = (client, payload) => (dispatch) =>
   });
 
 const handleMutation = (client, payload) => (dispatch) =>
-  client.mutate
+  client
+    .mutate(payload)
     .then((result) => {
-      dispatch(
-        createApolloThunk(
-          types.APOLLO_MUTATION_RESULT,
-          result,
-          payload.mutation,
-          payload.variables
-        )
-      );
-      return result;
+      if (result?.errors?.length > 0) {
+        dispatch(
+          createApolloErrorThunk(
+            types.APOLLO_MUTATION_ERROR,
+            result.errors,
+            payload.mutation,
+            payload.variables
+          )
+        );
+      } else {
+        dispatch(
+          createApolloThunk(
+            types.APOLLO_MUTATION_RESULT,
+            result,
+            payload.mutation,
+            payload.variables
+          )
+        );
+        return result;
+      }
     })
     .catch((e) => {
       dispatch(
-        createApolloThunk(
-          types.APOLLO_MUTATION_RESULT,
+        createApolloErrorThunk(
+          types.APOLLO_MUTATION_ERROR,
           e,
           payload.mutation,
           payload.variables
@@ -109,7 +121,7 @@ export const findTagByName = (name) => (dispatch, getState) =>
 export const addTag = (idReference, name, comment) => (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateCreateTag,
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
     variables: {
       idReference,
       name,
@@ -149,7 +161,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
       handleMutation(getState().user.client, {
         mutation: mutateStopPlace,
         variables,
-        fetchPolicy: "network-only",
+        fetchPolicy: "no-cache",
       })(dispatch)
         .then((result) => {
           if (result.data.mutateStopPlace[0].id) {
@@ -188,7 +200,7 @@ export const saveParentStopPlace = (variables) => (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateParentStopPlace,
     variables,
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const removeStopPlaceFromMultiModalStop = (
@@ -208,7 +220,7 @@ export const deleteQuay = (variables) => (dispatch, getState) => {
   handleMutation(getState().user.client, {
     mutation: mutateDeleteQuay,
     variables,
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 };
 
@@ -218,7 +230,7 @@ export const deleteStopPlace = (stopPlaceId) => (dispatch, getState) =>
     variables: {
       stopPlaceId,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const terminateStop = (
@@ -247,7 +259,7 @@ export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => (
       stopPlaceIds,
       parentSiteRef,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const createParentStopPlace = ({
@@ -268,7 +280,7 @@ export const createParentStopPlace = ({
       validBetween,
       stopPlaceIds,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const mutateGroupOfStopPlace = (variables) => (dispatch, getState) =>
@@ -276,7 +288,7 @@ export const mutateGroupOfStopPlace = (variables) => (dispatch, getState) =>
     handleMutation(getState().user.client, {
       mutation: mutateGroupOfStopPlaces,
       variables,
-      fetchPolicy: "network-only",
+      fetchPolicy: "no-cache",
     })(dispatch)
       .then(({ data }) => {
         const id = data["mutateGroupOfStopPlaces"]
@@ -312,7 +324,7 @@ export const mergeQuays = (
       toQuayId,
       versionComment,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const getStopPlaceWithAll = (id) => (dispatch, getState) =>
@@ -338,7 +350,7 @@ export const mergeAllQuaysFromStop = (
       fromVersionComment,
       toVersionComment,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const moveQuaysToStop = (
@@ -355,7 +367,7 @@ export const moveQuaysToStop = (
       fromVersionComment,
       toVersionComment,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const moveQuaysToNewStop = (
@@ -370,7 +382,7 @@ export const moveQuaysToNewStop = (
       fromVersionComment,
       toVersionComment,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const getNeighbourStops = (
@@ -480,7 +492,7 @@ export const removeTag = (name, idReference) => (dispatch, getState) =>
       name,
       idReference,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const getGroupOfStopPlacesById = (id) => (dispatch, getState) =>
@@ -498,7 +510,7 @@ export const deleteGroupOfStopPlaces = (id) => (dispatch, getState) =>
     variables: {
       id,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const getTariffZones = (query) => (dispatch, getState) =>
@@ -516,7 +528,7 @@ export const deleteParking = (id) => (dispatch, getState) =>
     variables: {
       id,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
   })(dispatch);
 
 export const getStopPlaceAndPathLinkByVersion = (id, version) => (

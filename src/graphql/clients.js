@@ -34,8 +34,9 @@ export const createTiamatClient = () => {
   //         req.options.headers = {};
   //       }
 
-  //       const token = localStorage.getItem("ABZU::jwt");
-  //       req.options.headers.authorization = token ? `Bearer ${token}` : null;
+  const token = localStorage.getItem("ABZU::jwt");
+  //req.options.headers.authorization = token ? `Bearer ${token}` : null;
+  const bearer = token ? `Bearer ${token}` : null;
   //       req.options.headers["ET-Client-Name"] = CLIENT_NAME;
   //       req.options.headers["X-Correlation-Id"] = uuid();
 
@@ -67,6 +68,7 @@ export const createTiamatClient = () => {
     headers: {
       "ET-Client-Name": CLIENT_NAME,
       "Et-Client-Id": window.config.hostname,
+      Authorization: bearer,
     },
   });
 };

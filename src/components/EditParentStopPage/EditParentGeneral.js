@@ -31,7 +31,10 @@ import { MutationErrorCodes } from "../../models/ErrorCodes";
 import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import { getIn, getIsCurrentVersionMax } from "../../utils/";
-import { getStopPlaceAndPathLinkByVersion } from "../../actions/TiamatActions";
+import {
+  getStopPlaceAndPathLinkByVersion,
+  saveParentStopPlace,
+} from "../../actions/TiamatActions";
 
 class EditParentGeneral extends React.Component {
   constructor(props) {

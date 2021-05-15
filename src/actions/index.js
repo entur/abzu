@@ -38,3 +38,10 @@ export const createApolloThunk = (type, result, doc, variables) => ({
   operationName: doc ? getOperationAST(doc)?.name?.value : undefined,
   variables,
 });
+
+export const createApolloErrorThunk = (type, error, doc, variables) => ({
+  type,
+  error,
+  operationName: doc ? getOperationAST(doc)?.name?.value : undefined,
+  variables,
+});
