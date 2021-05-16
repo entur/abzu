@@ -50,11 +50,9 @@ class GroupOfStopPlaces extends Component {
   }
 
   handleNewGroupOfStopPlace() {
-    const { sourceForNewGroup, dispatch, client } = this.props;
+    const { sourceForNewGroup, dispatch } = this.props;
     if (sourceForNewGroup) {
-      dispatch(
-        StopPlacesGroupActions.createNewGroup(client, sourceForNewGroup)
-      );
+      dispatch(StopPlacesGroupActions.createNewGroup(sourceForNewGroup));
     } else {
       dispatch(UserActions.navigateTo("/", ""));
     }

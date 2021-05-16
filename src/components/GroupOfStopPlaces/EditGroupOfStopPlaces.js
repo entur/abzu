@@ -39,6 +39,7 @@ class EditGroupOfStopPlaces extends Component {
       confirmSaveDialogOpen: false,
       confirmGoBack: false,
       confirmUndo: false,
+      confirmUndoOpen: false,
       confirmDeleteDialogOpen: false,
     };
   }

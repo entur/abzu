@@ -73,10 +73,10 @@ class EditParentGeneral extends React.Component {
     comment,
     dateTime
   ) {
-    const { client, stopPlace, dispatch } = this.props;
+    const { stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
     if (shouldHardDelete) {
-      deleteStopPlace(client, stopPlace.id)
+      dispatch(deleteStopPlace(stopPlace.id))
         .then((response) => {
           this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog());
@@ -89,12 +89,13 @@ class EditParentGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog(true));
         });
     } else {
-      terminateStop(
-        client,
-        stopPlace.id,
-        shouldTerminatePermanently,
-        comment,
-        dateTime
+      dispatch(
+        terminateStop(
+          stopPlace.id,
+          shouldTerminatePermanently,
+          comment,
+          dateTime
+        )
       )
         .then((result) => {
           this.handleSaveSuccess(stopPlace.id);
@@ -188,13 +189,13 @@ class EditParentGeneral extends React.Component {
   }
 
   handleSaveSuccess(stopPlaceId) {
-    const { client, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     this.setState({
       saveDialogOpen: false,
     });
 
-    getStopPlaceVersions(client, stopPlaceId).then(() => {
+    dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
       dispatch(UserActions.navigateTo("/edit/", stopPlaceId));
       dispatch(UserActions.openSnackbar(types.SUCCESS));
     });

@@ -19,6 +19,9 @@ let instance = null;
 let fetchedPolygons = null;
 let allowNewStopEverywhere = false;
 
+/**
+ * TODO This needs to be rewritten
+ */
 class PolygonManager {
   constructor() {
     if (!instance) {

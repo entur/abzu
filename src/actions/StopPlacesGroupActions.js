@@ -60,7 +60,7 @@ StopPlacesGroupActions.addMemberToGroup = (stopPlaceId) => (dispatch) => {
 
 StopPlacesGroupActions.addMembersToGroup = (stopPlaceIds) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MEMBER_INFO, null));
-  getAddStopPlaceInfo(stopPlaceIds).then((result) => {
+  dispatch(getAddStopPlaceInfo(stopPlaceIds)).then((result) => {
     dispatch(createThunk(types.RECEIVED_MEMBERS_INFO, result));
   });
 };

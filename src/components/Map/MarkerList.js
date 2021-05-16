@@ -33,7 +33,10 @@ import CoordinateMarker from "./CoordinateMarker";
 import Routes from "../../routes/";
 import * as MarkerStrings from "./markerText";
 import { Entities } from "../../models/Entities";
-import { getNeighbourStopPlaceQuays } from "../../actions/TiamatActions";
+import {
+  getNeighbourStopPlaceQuays,
+  getStopPlaceWithAll,
+} from "../../actions/TiamatActions";
 
 class MarkerList extends React.Component {
   static propTypes = {
