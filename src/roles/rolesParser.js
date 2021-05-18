@@ -20,7 +20,6 @@ import {
 import { submodes as allSubmodes } from "../models/submodes";
 import { Entities } from "../models/Entities";
 import { isPointInPolygon } from "../utils/mapUtils";
-import { fetchPolygons } from "../actions/RolesActions";
 
 const RoleParser = {};
 
@@ -69,12 +68,12 @@ RoleParser.filterRolesByZoneRestriction = (
 
       if (isArrayOfLatLngs(latLngs)) {
         inside = latLngs.every((latlng) =>
-          isPointInPolygon(latlng, fetchPolygons, allowNewStopEverywhere)
+          isPointInPolygon(latlng, fetchedPolygons, allowNewStopEverywhere)
         );
       } else {
         inside = isPointInPolygon(
           latLngs,
-          fetchPolygons,
+          fetchedPolygons,
           allowNewStopEverywhere
         );
       }

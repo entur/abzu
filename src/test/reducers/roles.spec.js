@@ -233,7 +233,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(stopWithoutStopPlaceType),
-      token
+      {
+        kc: { tokenParsed: token },
+        fetchedPolygons: [],
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
