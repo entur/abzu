@@ -590,7 +590,7 @@ export const getParkingForMultipleStopPlaces = (stopPlaceIds) => {
   });
 
   return gql`
-    query {
+    query ParkingForMultipleStopPlaces {
         ${queryContent}
     }
   `;

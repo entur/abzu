@@ -557,11 +557,7 @@ export const getParkingForMultipleStopPlaces = (stopPlaceIds) => (
 ) =>
   handleQuery(getState().user.client, {
     query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
-
-    // TODO: deal with this
-    //reducer: reportReducer,
     fetchPolicy: "network-only",
-    operationName: "multipleParkingQuery",
   })(dispatch);
 
 export const topographicalPlaceSearch = (searchText) => (dispatch, getState) =>
