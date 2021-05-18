@@ -22,6 +22,7 @@ export const neighbourStopPlaceQuays = gql`
       ... on ParentStopPlace {
         children {
           id
+          version
           adjacentSites {
             ref
           }
@@ -41,6 +42,7 @@ export const neighbourStopPlaceQuays = gql`
       }
       ... on StopPlace {
         id
+        version
         adjacentSites {
           ref
         }
@@ -80,6 +82,7 @@ export const stopPlaceBBQuery = gql`
       includeExpired: $includeExpired
     ) {
       id
+      version
       geometry {
         coordinates
       }
@@ -105,6 +108,7 @@ export const stopPlaceBBQuery = gql`
       ... on ParentStopPlace {
         children {
           id
+          version
           stopPlaceType
           submode
           geometry {
@@ -188,6 +192,7 @@ export const getStopById = gql`
   query getStopById($id: String!) {
     stopPlace(id: $id) {
       id
+      version
       __typename
       keyValues {
         key
@@ -323,6 +328,7 @@ export const findStop = gql`
       versionValidity: $versionValidity
     ) {
       id
+      version
       groups {
         id
         name {
@@ -610,6 +616,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
             ...on StopPlace {
                 __typename
                 id
+                version
                 name {
                     value
                 }
@@ -633,6 +640,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
             ...on ParentStopPlace {
                 __typename
                 id
+                version
                 name {
                     value
                 }

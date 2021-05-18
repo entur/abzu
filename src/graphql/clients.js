@@ -64,7 +64,13 @@ export const createTiamatClient = () => {
 
   return new ApolloClient({
     uri: window.config.tiamatBaseUrl,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        StopPlace: {
+          keyFields: ["id", "version"],
+        },
+      },
+    }),
     headers: {
       "ET-Client-Name": CLIENT_NAME,
       "Et-Client-Id": window.config.hostname,
