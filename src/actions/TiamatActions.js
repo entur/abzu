@@ -141,7 +141,6 @@ export const getStopPlaceById = (id) => (dispatch, getState) =>
 export const getAddStopPlaceInfo = (stopPlaceIds) => (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: getStopPlacesById(stopPlaceIds),
-    operationName: "getAddStopPlaceInfo",
     fetchPolicy: "network-only",
   })(dispatch);
 
@@ -415,7 +414,6 @@ export const getTopographicPlaces = (ids) => (dispatch, getState) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getQueryTopographicPlaces(ids),
-    operationName: "topographicPlacesForQuery",
   })(dispatch);
 
 export const getMergeInfoForStops = (stopPlaceId) => (dispatch, getState) =>
