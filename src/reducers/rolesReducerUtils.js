@@ -21,9 +21,29 @@ import { getIn } from "../utils/";
 import stopTypes, { submodes } from "../models/stopTypes";
 import { Entities } from "../models/Entities";
 
-export const getAllowanceInfoForStop = ({ result, variables }, tokenParsed) => {
+export const reduceFetchedPolygons = (result) => {
+  return Object.keys(result.data).reduce((fetchedPolygons, key) => {
+    let resultItem = result.data[key][0];
+
+    if (resultItem) {
+      fetchedPolygons[resultItem.id] = resultItem.polygon
+        ? resultItem.polygon.coordinates
+        : [[]];
+    }
+
+    return fetchedPolygons;
+  }, {});
+};
+
+export const getAllowanceInfoForStop = ({ result, variables }, state) => {
   /* find all roles that allow editing of stop */
-  const token = { ...tokenParsed };
+  const {
+    kc: {
+      tokenParsed: { token },
+    },
+    fetchedPolygons,
+    allowNewStopEverywhere,
+  } = state;
   const editStopRoles = roleParser.getEditStopRoles(token);
   const deleteStopRoles = roleParser.getDeleteStopRoles(token);
   const requestedStopPlaceId = variables.id;
@@ -46,7 +66,9 @@ export const getAllowanceInfoForStop = ({ result, variables }, tokenParsed) => {
     allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(
       childStopPlace,
       editStopRoles,
-      deleteStopRoles
+      deleteStopRoles,
+      fetchedPolygons,
+      allowNewStopEverywhere
     );
 
     // Check if the user is authorized to edit the parent stop place.
@@ -55,7 +77,9 @@ export const getAllowanceInfoForStop = ({ result, variables }, tokenParsed) => {
     const allowanceInfoForParentStop = buildAllowanceInfoForStopPlace(
       stopPlace,
       editStopRoles,
-      deleteStopRoles
+      deleteStopRoles,
+      fetchedPolygons,
+      allowNewStopEverywhere
     );
     allowanceInfoForStopPlace.canEditParentStop =
       allowanceInfoForParentStop.canEdit;
@@ -63,7 +87,9 @@ export const getAllowanceInfoForStop = ({ result, variables }, tokenParsed) => {
     allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(
       stopPlace,
       editStopRoles,
-      deleteStopRoles
+      deleteStopRoles,
+      fetchedPolygons,
+      allowNewStopEverywhere
     );
   }
   return allowanceInfoForStopPlace;
@@ -72,12 +98,16 @@ export const getAllowanceInfoForStop = ({ result, variables }, tokenParsed) => {
 const buildAllowanceInfoForStopPlace = (
   stopPlace,
   editStopRoles,
-  deleteStopRoles
+  deleteStopRoles,
+  fetchedPolygons,
+  allowNewStopEverywhere
 ) => {
   const latlng = getLatLng(stopPlace);
   const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
-    latlng
+    latlng,
+    fetchedPolygons,
+    allowNewStopEverywhere
   );
 
   // retrieve all roles that allow editing a given stop
@@ -124,9 +154,15 @@ const buildAllowanceInfoForStopPlace = (
   };
 };
 
-export const getAllowanceInfoForGroup = (result, tokenParsed) => {
+export const getAllowanceInfoForGroup = (result, state) => {
   /* find all roles that allow editing of group of stop places */
-  const token = { ...tokenParsed };
+  const {
+    kc: {
+      tokenParsed: { token },
+    },
+    fetchedPolygons,
+    allowNewStopEverywhere,
+  } = state;
   const editStopRoles = roleParser.getEditStopRoles(token);
   const deleteStopRoles = roleParser.getDeleteStopRoles(token);
   const groupOfStopPlaces = getGroupOfStopPlaces(result);
@@ -134,7 +170,9 @@ export const getAllowanceInfoForGroup = (result, tokenParsed) => {
 
   const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
-    latlngs
+    latlngs,
+    fetchedPolygons,
+    allowNewStopEverywhere
   );
 
   if (!groupOfStopPlaces) {
@@ -189,25 +227,6 @@ export const getAllowanceInfoForGroup = (result, tokenParsed) => {
     canEdit,
     canDeleteStop,
   };
-};
-
-export const isLegalChildStopPlace = (stopPlace, tokenParsed) => {
-  if (!stopPlace) {
-    return false;
-  }
-
-  const token = { ...tokenParsed };
-  const editStopRoles = roleParser.getEditStopRoles(token);
-  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    stopPlace.location
-  );
-  const responsibleEditRoles = roleParser.filterByEntities(
-    editStopRolesGeoFiltered,
-    stopPlace
-  );
-  const isLegal = responsibleEditRoles.length > 0;
-  return isLegal;
 };
 
 const restrictModeByRoles = (roles, modes, entityType) => {

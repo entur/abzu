@@ -21,7 +21,6 @@ import createRavenMiddleware from "redux-raven-middleware";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import SettingsManager from "../singletons/SettingsManager";
-import PolygonManager from "../singletons/PolygonManager";
 import rolesParser from "../roles/rolesParser";
 import { createTiamatClient } from "../graphql/clients";
 import createRootReducer from "../reducers";
@@ -59,8 +58,6 @@ export default function configureStore(kc) {
       )
     );
   }
-
-  new PolygonManager().fetch(tiamatClient, kc.tokenParsed);
 
   const Settings = new SettingsManager();
 
@@ -117,6 +114,8 @@ export default function configureStore(kc) {
     roles: {
       kc,
       isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true,
+      fetchedPolygons: null,
+      allowNewStopEverywhere: false,
     },
   };
 

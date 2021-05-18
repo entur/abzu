@@ -19,6 +19,7 @@ import {
   getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
   getLatLng,
+  reduceFetchedPolygons,
 } from "./rolesReducerUtils";
 
 export const initialState = {};
@@ -29,15 +30,17 @@ const rolesReducer = (state = initialState, action) => {
       if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoForStop(action, state.kc.tokenParsed),
+          allowanceInfo: getAllowanceInfoForStop(action, state),
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
           kc: state.kc,
-          allowanceInfo: getAllowanceInfoForGroup(
-            action.result,
-            state.kc.tokenParsed
-          ),
+          allowanceInfo: getAllowanceInfoForGroup(action.result, state),
+        });
+      } else if (action.operationName === "getPolygons") {
+        return Object.assign({}, state, {
+          ...state,
+          fetchedPolygons: reduceFetchedPolygons(action.result),
         });
       } else {
         return state;

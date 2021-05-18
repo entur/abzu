@@ -20,7 +20,8 @@ import ReactDOM from "react-dom/server";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
 import PopupButton from "./PopupButton";
-import { isLegalChildStopPlace } from "../../reducers/rolesReducerUtils";
+import { isLegalChildStopPlace } from "../../utils/roleUtils";
+import { connect } from "react-redux";
 
 class NeighbourMarker extends React.Component {
   constructor(props) {
@@ -91,6 +92,8 @@ class NeighbourMarker extends React.Component {
       tokenParsed,
       isEditingGroup,
       handleCreateGroup,
+      fetchedPolygons,
+      allowNewStopEverywhere,
     } = this.props;
 
     const { isAllowedToCreateFrom } = this.state;
@@ -138,7 +141,9 @@ class NeighbourMarker extends React.Component {
             this.setState({
               isAllowedToCreateFrom: isLegalChildStopPlace(
                 stopPlace,
-                tokenParsed
+                tokenParsed,
+                fetchedPolygons,
+                allowNewStopEverywhere
               ),
             });
           }}
@@ -232,4 +237,7 @@ class NeighbourMarker extends React.Component {
   }
 }
 
-export default NeighbourMarker;
+export default connect(({ roles }) => ({
+  fetchedPolygons: roles.fetchedPolygons,
+  allowNewStopEverywhere: roles.allowNewStopEverywhere,
+}))(NeighbourMarker);

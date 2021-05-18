@@ -40,7 +40,7 @@ import {
   topopGraphicalPlacesQuery,
   findStop,
   getStopPlacesById,
-  getPolygons,
+  getPolygons as getPolygonsQuery,
   getTagsQuery,
   findTagByNameQuery,
   getStopById,
@@ -402,13 +402,11 @@ export const getNeighbourStops = (
     },
   })(dispatch);
 
-// TODO: Special case, due to PolygonManager -- how to rewrite
-export const getPolygon = (client, ids) =>
-  client.query({
+export const getPolygons = (ids) => (dispatch, getState) =>
+  handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
-    query: getPolygons(ids),
-    operationName: "getPolygons",
-  });
+    query: getPolygonsQuery(ids),
+  })(dispatch);
 
 export const getTopographicPlaces = (ids) => (dispatch, getState) =>
   handleQuery(getState().user.client, {

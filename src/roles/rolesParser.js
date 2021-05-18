@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import PolygonManager from "../singletons/PolygonManager";
 import stopTypes from "../models/stopTypes";
 import {
   getLegalSubmodes,
@@ -20,6 +19,8 @@ import {
 } from "../reducers/rolesReducerUtils";
 import { submodes as allSubmodes } from "../models/submodes";
 import { Entities } from "../models/Entities";
+import { isPointInPolygon } from "../utils/mapUtils";
+import { fetchPolygons } from "../actions/RolesActions";
 
 const RoleParser = {};
 
@@ -50,11 +51,15 @@ RoleParser.isGuest = (tokenParsed) => {
   return RoleParser.getEditStopRoles(tokenParsed).length === 0;
 };
 
-RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
+RoleParser.filterRolesByZoneRestriction = (
+  roles,
+  latLngs,
+  fetchedPolygons,
+  allowNewStopEverywhere
+) => {
   if (!roles || !roles.length) return [];
 
   let result = [];
-  let PManager = new PolygonManager();
 
   roles.forEach((role) => {
     if (typeof role.z === "undefined") {
@@ -63,9 +68,15 @@ RoleParser.filterRolesByZoneRestriction = (roles, latLngs) => {
       let inside = false;
 
       if (isArrayOfLatLngs(latLngs)) {
-        inside = latLngs.every((latlng) => PManager.isPointInPolygon(latlng));
+        inside = latLngs.every((latlng) =>
+          isPointInPolygon(latlng, fetchPolygons, allowNewStopEverywhere)
+        );
       } else {
-        inside = PManager.isPointInPolygon(latLngs);
+        inside = isPointInPolygon(
+          latLngs,
+          fetchPolygons,
+          allowNewStopEverywhere
+        );
       }
 
       if (inside) {

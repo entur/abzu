@@ -16,7 +16,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import PManager from "../../singletons/PolygonManager";
+import { connect } from "react-redux";
+import { isPointInPolygon } from "../../utils/mapUtils";
 
 const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
 const markerShadow = require("../../static/icons/marker-shadow.png").default;
@@ -36,6 +37,8 @@ class NewStopMarker extends React.Component {
       handleDragEnd,
       text,
       newStopIsMultiModal,
+      fetchedPolygons,
+      allowNewStopEverywhere,
     } = this.props;
 
     var icon = L.icon({
@@ -48,7 +51,11 @@ class NewStopMarker extends React.Component {
       shadowSize: [36, 16],
     });
 
-    let latlngInside = new PManager().isPointInPolygon(position);
+    let latlngInside = isPointInPolygon(
+      position,
+      fetchedPolygons,
+      allowNewStopEverywhere
+    );
 
     return (
       <Marker
@@ -110,4 +117,7 @@ class NewStopMarker extends React.Component {
   }
 }
 
-export default NewStopMarker;
+export default connect(({ roles }) => ({
+  fetchedPolygons: roles.fetchedPolygons,
+  allowNewStopEverywhere: roles.allowNewStopEverywhere,
+}))(NewStopMarker);

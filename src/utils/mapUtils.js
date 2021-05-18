@@ -16,6 +16,26 @@ import L from "leaflet";
 import { setDecimalPrecision } from "./";
 const defaultCenterPosition = [64.349421, 16.809082];
 
+export const isPointInPolygon = (
+  point,
+  fetchedPolygons,
+  allowNewStopEverywhere
+) => {
+  let inside = false;
+
+  if (!fetchedPolygons || allowNewStopEverywhere) return true;
+
+  Object.keys(fetchedPolygons).forEach((k) => {
+    let polygon = fetchedPolygons[k];
+    let found = isCoordinatesInsidePolygon(point, polygon);
+    if (found) {
+      inside = true;
+    }
+  });
+
+  return inside;
+};
+
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
   if (!latlngs.length) {
     return originalCentroid;

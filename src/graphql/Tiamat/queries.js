@@ -651,7 +651,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
   });
 
   return gql`
-      query getAddStopPlaceInfo() {
+      query getAddStopPlaceInfo {
           ${queryContent}
       }
   `;
@@ -674,7 +674,7 @@ export const getPolygons = (ids) => {
   });
 
   return gql`
-      query getPolygons() {
+      query getPolygons {
           ${queryContent}
       }
   `;
@@ -703,7 +703,7 @@ export const getQueryTopographicPlaces = (ids) => {
   });
 
   return gql`
-      query topographicPlacesForQuery() {
+      query topographicPlacesForQuery {
           ${queryContent}
       }
   `;

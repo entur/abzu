@@ -21,11 +21,17 @@ import { injectIntl } from "react-intl";
 import { getTheme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import BrowserSupport from "../components/BrowserSupport";
+import { connect } from "react-redux";
+import { fetchPolygons } from "../actions/RolesActions";
 
 const muiThemeV0 = getMuiTheme(getTheme());
 const muiTheme = createMuiTheme(getTheme());
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(fetchPolygons());
+  }
+
   render() {
     const { children, intl } = this.props;
 
@@ -46,4 +52,4 @@ class App extends React.Component {
   }
 }
 
-export default injectIntl(App);
+export default connect()(injectIntl(App));

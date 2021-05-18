@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { LatLng } from "leaflet";
-import { isLegalChildStopPlace } from "../reducers/rolesReducerUtils";
 
 export const getUniquePathLinks = (a, key) => {
   var seen = {};
@@ -52,7 +51,9 @@ export const getChildStopPlaceSuggestions = (
   stopPlaceCentroid,
   neighbourStops,
   tokenParsed,
-  nFirst
+  nFirst,
+  fetchedPolygons,
+  allowNewStopEverywhere
 ) => {
   const alreadyAdded = children.map((child) => child.id);
 
@@ -80,8 +81,12 @@ export const getChildStopPlaceSuggestions = (
 
   const legalSuggestions = (suggestions || []).filter(
     (suggestion) =>
-      isLegalChildStopPlace(suggestion, tokenParsed) &&
-      isChildTooFarAway(suggestion.distance)
+      isLegalChildStopPlace(
+        suggestion,
+        tokenParsed,
+        fetchedPolygons,
+        allowNewStopEverywhere
+      ) && isChildTooFarAway(suggestion.distance)
   );
 
   return legalSuggestions.slice(0, nFirst);
@@ -92,7 +97,9 @@ export const getGroupMemberSuggestions = (
   centroid,
   neighbourStops,
   tokenParsed,
-  nFirst
+  nFirst,
+  fetchedPolygons,
+  allowNewStopEverywhere
 ) => {
   const alreadyAdded = exisitingMembers.map((member) => member.id);
 
@@ -118,7 +125,12 @@ export const getGroupMemberSuggestions = (
   const legalSuggestions = (suggestions || []).filter(
     (suggestion) =>
       isMemberTooFarAway(suggestion.distance) &&
-      isLegalChildStopPlace(suggestion, tokenParsed)
+      isLegalChildStopPlace(
+        suggestion,
+        tokenParsed,
+        fetchedPolygons,
+        allowNewStopEverywhere
+      )
   );
 
   return legalSuggestions.slice(0, nFirst);
