@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../../actions/Types";
-import { stopPlaceReducer } from "./../../reducers/";
+import stopPlaceReducer from "./../../reducers/stopPlaceReducer";
 import stopPlaceData from "./json/stopPlace.json";
 
 describe("stop place reducer", () => {

@@ -102,7 +102,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -124,7 +128,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -146,7 +154,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -168,7 +180,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(false);
   });
@@ -190,7 +206,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(false);
   });
@@ -212,7 +232,11 @@ describe("getAllowanceInfo", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(stopWithoutStopPlaceType),
-      token
+      {
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -234,8 +258,8 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(stopWithoutStopPlaceType),
       {
-        kc: { tokenParsed: token },
-        fetchedPolygons: [],
+        kc: { tokenParsed: { token } },
+        fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
     );

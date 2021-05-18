@@ -32,13 +32,11 @@ describe("snackbar", () => {
     expect(
       snackbarReducer(undefined, {
         type: APOLLO_MUTATION_ERROR,
-        error: {
-          graphQLErrors: [
-            {
-              message: errorMsg,
-            },
-          ],
-        },
+        error: [
+          {
+            message: errorMsg,
+          },
+        ],
       })
     ).toEqual({
       ...initialState,
