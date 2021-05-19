@@ -18,7 +18,7 @@ import { Route } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
-import AuthProvider, { useAuth } from "@entur/auth-provider";
+import AuthProvider from "@entur/auth-provider";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
@@ -29,9 +29,11 @@ import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
 import ErrorBoundary from "./containers/ErrorBoundary";
 import configureStore, { history } from "./store/store";
+import { useGktToken } from "./hooks/useGktToken";
 import "intl";
 
 const AuthenticatedApp = ({ path }) => {
+  useGktToken(path);
   const store = configureStore();
 
   return (
@@ -86,32 +88,3 @@ cfgreader.readConfig(function (config) {
   window.config = config;
   renderIndex(config);
 });
-
-// TODO deal with GKT token
-/*
-  let token = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
-
-  /* Renews token if it expires within 30 minutes to be on the safer side*/
-
-/*
-  if (
-    token != null &&
-    token.expires > new Date(Date.now() + 60 * 1000 * 30).getTime()
-  ) {
-    authWithKeyCloak(config.endpointBase);
-  } else {
-    axios
-      .get(config.endpointBase + "token")
-      .then((response) => {
-        let token = JSON.stringify(response.data);
-        localStorage.setItem("ABZU::GKT_TOKEN", token);
-      })
-      .catch((err) => {
-        console.warn(
-          "Failed to get GK token, Kartverket Flyfoto will not work",
-          err
-        );
-      });
-    authWithKeyCloak(config.endpointBase);
-  }
-  */
