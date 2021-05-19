@@ -32,15 +32,7 @@ import configureStore, { history } from "./store/store";
 import "intl";
 
 const AuthenticatedApp = ({ path }) => {
-  const auth = useAuth();
-  const store = configureStore(auth);
-
-  console.log(auth);
-
-  // TODO must also handle unauthenticated guests
-  if (!auth.isAuthenticated) {
-    return null;
-  }
+  const store = configureStore();
 
   return (
     <ErrorBoundary Raven={store.Raven}>

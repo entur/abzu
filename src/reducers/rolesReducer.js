@@ -29,12 +29,10 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
-          auth: state.auth,
           allowanceInfo: getAllowanceInfoForStop(action, state),
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
-          auth: state.auth,
           allowanceInfo: getAllowanceInfoForGroup(action.result, state),
         });
       } else if (action.operationName === "getPolygons") {
@@ -49,7 +47,6 @@ const rolesReducer = (state = initialState, action) => {
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
         ...state,
-        auth: state.auth,
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payLoad,
           state.auth.roleAssignments
@@ -63,7 +60,6 @@ const rolesReducer = (state = initialState, action) => {
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
         ...state,
-        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payLoad.data.stopPlace[0]),
           state.auth.roleAssignments
@@ -73,7 +69,6 @@ const rolesReducer = (state = initialState, action) => {
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
         ...state,
-        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payLoad,
           state.auth.roleAssignments
@@ -84,13 +79,17 @@ const rolesReducer = (state = initialState, action) => {
       const { newStopPlace } = action.payLoad;
       return Object.assign({}, state, {
         ...state,
-        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
           state.auth.roleAssignments
         ),
       });
 
+    case types.UPDATED_AUTH:
+      return Object.assign({}, state, {
+        ...state,
+        auth: action.payLoad,
+      });
     default:
       return state;
   }

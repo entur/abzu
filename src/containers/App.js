@@ -23,7 +23,7 @@ import Header from "../components/Header";
 import { getTheme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import BrowserSupport from "../components/BrowserSupport";
-import { fetchPolygons } from "../actions/RolesActions";
+import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 
 const muiThemeV0 = getMuiTheme(getTheme());
 const muiTheme = createMuiTheme(getTheme());
@@ -32,12 +32,13 @@ const App = ({ intl, children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
 
-  // TODO must also handle unauthenticated guests
   useEffect(() => {
+    dispatch(updateAuth(auth));
+
     if (auth.isAuthenticated) {
       dispatch(fetchPolygons());
     }
-  }, [auth.isAuthenticated]);
+  }, [auth]);
 
   return (
     <>

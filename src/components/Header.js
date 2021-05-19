@@ -88,8 +88,8 @@ class Header extends React.Component {
   }
 
   handleLogOut() {
-    if (this.props.kc) {
-      this.props.kc.logout();
+    if (this.props.auth) {
+      this.props.auth.logout();
     }
   }
 
@@ -399,7 +399,7 @@ const mapStateToProps = (state) => ({
   isPublicCodePrivateCodeOnStopPlacesEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-  auth: state.auth,
+  auth: state.roles.auth,
   showExpiredStops: state.stopPlace.showExpiredStops,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,

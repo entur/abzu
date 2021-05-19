@@ -1,4 +1,6 @@
+import { createThunk } from ".";
 import { getPolygons } from "./TiamatActions";
+import * as types from "./Types";
 
 const getAdministrativeZoneIds = (roles) => {
   let administrativeZoneIds = [];
@@ -29,4 +31,8 @@ export const fetchPolygons = () => (dispatch, getState) => {
       dispatch(getPolygons(adminZones));
     }
   }
+};
+
+export const updateAuth = (auth) => (dispatch) => {
+  dispatch(createThunk(types.UPDATED_AUTH, auth));
 };

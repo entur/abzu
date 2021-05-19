@@ -21,13 +21,12 @@ import createRavenMiddleware from "redux-raven-middleware";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import SettingsManager from "../singletons/SettingsManager";
-import rolesParser from "../roles/rolesParser";
 import { createTiamatClient } from "../graphql/clients";
 import createRootReducer from "../reducers";
 
 export const history = createBrowserHistory();
 
-export default function configureStore(auth) {
+export default function configureStore() {
   let enchancer = {};
 
   const tiamatClient = createTiamatClient();
@@ -112,8 +111,8 @@ export default function configureStore(auth) {
       adjacentStopDialogOpen: false,
     },
     roles: {
-      auth,
-      isGuest: !auth.isAuthenticated,
+      auth: {},
+      isGuest: true,
       fetchedPolygons: null,
       allowNewStopEverywhere: false,
     },
