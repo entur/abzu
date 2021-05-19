@@ -93,6 +93,12 @@ class Header extends React.Component {
     }
   }
 
+  handleLogin() {
+    if (this.props.auth) {
+      this.props.auth.login();
+    }
+  }
+
   goToReports() {
     this.props.dispatch(UserActions.navigateTo("reports", ""));
   }
@@ -154,7 +160,7 @@ class Header extends React.Component {
     const reportSite = formatMessage({ id: "report_site" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const userGuide = formatMessage({ id: "user_guide" });
-    const username = getIn(auth, ["roleAssignments", "username"], "");
+    const username = getIn(auth, ["user", "name"], "");
     const showMultimodalEdgesLabel = formatMessage({
       id: "show_multimodal_edges",
     });
@@ -359,12 +365,22 @@ class Header extends React.Component {
                 primaryText={userGuide}
                 style={{ fontSize: 12, padding: 0 }}
               />
-              <MenuItem
-                leftIcon={<MdAccount color="#41c0c4" />}
-                primaryText={`${logOut} ${username}`}
-                onClick={() => this.handleLogOut()}
-                style={{ fontSize: 12, padding: 0 }}
-              />
+              {this.props.auth.isAuthenticated && (
+                <MenuItem
+                  leftIcon={<MdAccount color="#41c0c4" />}
+                  primaryText={`${logOut} ${username}`}
+                  onClick={() => this.handleLogOut()}
+                  style={{ fontSize: 12, padding: 0 }}
+                />
+              )}
+              {!this.props.auth.isAuthenticated && (
+                <MenuItem
+                  leftIcon={<MdAccount color="#41c0c4" />}
+                  primaryText={`Logg inn`}
+                  onClick={() => this.handleLogin()}
+                  style={{ fontSize: 12, padding: 0 }}
+                />
+              )}
             </IconMenu>
           }
         />

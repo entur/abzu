@@ -37,7 +37,6 @@ const rolesReducer = (state = initialState, action) => {
         });
       } else if (action.operationName === "getPolygons") {
         return Object.assign({}, state, {
-          ...state,
           fetchedPolygons: reduceFetchedPolygons(action.result),
         });
       } else {
@@ -46,7 +45,6 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
-        ...state,
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payLoad,
           state.auth.roleAssignments
@@ -59,7 +57,6 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
-        ...state,
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payLoad.data.stopPlace[0]),
           state.auth.roleAssignments
@@ -68,7 +65,6 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
-        ...state,
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payLoad,
           state.auth.roleAssignments
@@ -78,7 +74,6 @@ const rolesReducer = (state = initialState, action) => {
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       const { newStopPlace } = action.payLoad;
       return Object.assign({}, state, {
-        ...state,
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
           state.auth.roleAssignments
@@ -87,8 +82,12 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.UPDATED_AUTH:
       return Object.assign({}, state, {
-        ...state,
         auth: action.payLoad,
+      });
+
+    case types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE:
+      return Object.assign({}, state, {
+        allowNewStopEverywhere: action.payLoad,
       });
     default:
       return state;

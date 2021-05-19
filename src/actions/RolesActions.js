@@ -3,12 +3,15 @@ import { getPolygons } from "./TiamatActions";
 import * as types from "./Types";
 
 const getAdministrativeZoneIds = (roles) => {
-  let administrativeZoneIds = [];
+  const administrativeZoneIds = [];
+  let allowNewStopEverywhere = roles.allowNewStopEverywhere;
 
-  if (!roles) return [];
+  if (!roles.auth.roleAssignments)
+    return [administrativeZoneIds, allowNewStopEverywhere];
 
-  roles.forEach((roleString) => {
-    let roleJSON = JSON.parse(roleString);
+  roles.auth.roleAssignments.forEach((roleString) => {
+    const roleJSON = JSON.parse(roleString);
+
     if (roleJSON.r === "editStops") {
       if (!!roleJSON.z) {
         administrativeZoneIds.push(roleJSON.z);
@@ -18,19 +21,35 @@ const getAdministrativeZoneIds = (roles) => {
     }
   });
 
-  return administrativeZoneIds;
+  return [administrativeZoneIds, allowNewStopEverywhere];
 };
 
 export const fetchPolygons = () => (dispatch, getState) => {
   if (getState().roles.auth) {
-    const adminZones = getAdministrativeZoneIds(
-      getState().roles.auth.roleAssignments
-    );
+    const [
+      administrativeZoneIds,
+      allowNewStopEverywhere,
+    ] = getAdministrativeZoneIds(getState().roles);
 
-    if (adminZones.length) {
-      dispatch(getPolygons(adminZones));
+    if (administrativeZoneIds.length) {
+      dispatch(getPolygons(administrativeZoneIds));
+    }
+
+    if (allowNewStopEverywhere !== getState().roles.allowNewStopEverywhere) {
+      dispatch(updateAllowNewStopsEverywhere(allowNewStopEverywhere));
     }
   }
+};
+
+export const updateAllowNewStopsEverywhere = (allowNewStopEverywhere) => (
+  dispatch
+) => {
+  dispatch(
+    createThunk(
+      types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE,
+      allowNewStopEverywhere
+    )
+  );
 };
 
 export const updateAuth = (auth) => (dispatch) => {

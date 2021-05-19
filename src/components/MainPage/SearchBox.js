@@ -48,6 +48,7 @@ import Menu from "material-ui/Menu";
 import CheckBox from "material-ui/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
+import RoleParser from "../../roles/rolesParser";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -361,7 +362,7 @@ class SearchBox extends React.Component {
       topoiChips,
       topographicalPlaces,
       canEdit,
-      isGuest,
+      roleAssignments,
       lookupCoordinatesOpen,
       newStopIsMultiModal,
       dataSource,
@@ -626,7 +627,7 @@ class SearchBox extends React.Component {
                 formatMessage={formatMessage}
               />
             ) : null}
-            {!isGuest && (
+            {!RoleParser.isGuest(roleAssignments) && (
               <div style={{ marginTop: 10 }}>
                 {isCreatingNewStop ? (
                   <NewStopPlace
@@ -729,7 +730,7 @@ const mapStateToProps = (state) => {
       ["allowanceInfoSearchResult", "canEdit"],
       false
     ),
-    isGuest: state.roles.isGuest,
+    roleAssignments: state.roles.auth.roleAssignments,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,

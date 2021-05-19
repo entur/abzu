@@ -112,7 +112,6 @@ export default function configureStore() {
     },
     roles: {
       auth: {},
-      isGuest: true,
       fetchedPolygons: null,
       allowNewStopEverywhere: false,
     },
