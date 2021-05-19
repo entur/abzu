@@ -58,6 +58,21 @@ import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
 import { createApolloErrorThunk, createApolloThunk } from ".";
 import * as types from "./Types";
+import uuid from "uuid/v4";
+
+const getContext = async (auth) => {
+  const context = {
+    headers: {
+      "X-Correlation-Id": uuid(),
+    },
+  };
+
+  if (auth.isAuthenticated) {
+    context.headers["Authorization"] = `Bearer ${await auth.getAccessToken()}`;
+  }
+
+  return context;
+};
 
 const handleQuery = (client, payload) => (dispatch) =>
   client.query(payload).then((result) => {
@@ -109,16 +124,20 @@ const handleMutation = (client, payload) => (dispatch) =>
       throw e;
     });
 
-export const findTagByName = (name) => (dispatch, getState) =>
+export const findTagByName = (name) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: findTagByNameQuery,
     fetchPolicy: "network-only",
     variables: {
       name,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const addTag = (idReference, name, comment) => (dispatch, getState) =>
+export const addTag = (idReference, name, comment) => async (
+  dispatch,
+  getState
+) =>
   handleMutation(getState().user.client, {
     mutation: mutateCreateTag,
     fetchPolicy: "no-cache",
@@ -127,24 +146,30 @@ export const addTag = (idReference, name, comment) => (dispatch, getState) =>
       name,
       comment,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getStopPlaceById = (id) => (dispatch, getState) =>
+export const getStopPlaceById = (id) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: getStopById,
     fetchPolicy: "network-only",
     variables: {
       id,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getAddStopPlaceInfo = (stopPlaceIds) => (dispatch, getState) =>
+export const getAddStopPlaceInfo = (stopPlaceIds) => async (
+  dispatch,
+  getState
+) =>
   handleQuery(getState().user.client, {
     query: getStopPlacesById(stopPlaceIds),
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
+export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
   dispatch,
   getState
 ) => {
@@ -156,11 +181,12 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
       userInput
     );
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       handleMutation(getState().user.client, {
         mutation: mutateStopPlace,
         variables,
         fetchPolicy: "no-cache",
+        context: await getContext(getState().roles.auth),
       })(dispatch)
         .then((result) => {
           if (result.data.mutateStopPlace[0].id) {
@@ -174,7 +200,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
         });
     });
   } else {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const variables = mapToMutationVariables.mapChildStopToVariables(
         stopPlace,
         userInput
@@ -184,6 +210,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
         mutation: updateChildOfParentStop,
         variables,
         fetchPolicy: "network-only",
+        context: await getContext(getState().roles.auth),
       })(dispatch)
         .then((result) => {
           resolve(stopPlace.id);
@@ -195,17 +222,18 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => (
   }
 };
 
-export const saveParentStopPlace = (variables) => (dispatch, getState) =>
+export const saveParentStopPlace = (variables) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateParentStopPlace,
     variables,
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const removeStopPlaceFromMultiModalStop = (
   parentSiteRef,
   stopPlaceId
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: removeStopPlaceFromParent,
     variables: {
@@ -213,23 +241,26 @@ export const removeStopPlaceFromMultiModalStop = (
       parentSiteRef,
     },
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const deleteQuay = (variables) => (dispatch, getState) => {
+export const deleteQuay = (variables) => async (dispatch, getState) => {
   handleMutation(getState().user.client, {
     mutation: mutateDeleteQuay,
     variables,
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 };
 
-export const deleteStopPlace = (stopPlaceId) => (dispatch, getState) =>
+export const deleteStopPlace = (stopPlaceId) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateDeleteStopPlace,
     variables: {
       stopPlaceId,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const terminateStop = (
@@ -237,7 +268,7 @@ export const terminateStop = (
   shouldTerminatePermanently,
   versionComment,
   toDate
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateTerminateStopPlace,
     variables: {
@@ -246,9 +277,10 @@ export const terminateStop = (
       toDate,
       modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => (
+export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => async (
   dispatch,
   getState
 ) =>
@@ -259,6 +291,7 @@ export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => (
       parentSiteRef,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const createParentStopPlace = ({
@@ -268,7 +301,7 @@ export const createParentStopPlace = ({
   coordinates,
   validBetween,
   stopPlaceIds,
-}) => (dispatch, getState) =>
+}) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateCreateMultiModalStopPlace,
     variables: {
@@ -280,14 +313,19 @@ export const createParentStopPlace = ({
       stopPlaceIds,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const mutateGroupOfStopPlace = (variables) => (dispatch, getState) =>
-  new Promise((resolve, reject) => {
+export const mutateGroupOfStopPlace = (variables) => async (
+  dispatch,
+  getState
+) =>
+  new Promise(async (resolve, reject) => {
     handleMutation(getState().user.client, {
       mutation: mutateGroupOfStopPlaces,
       variables,
       fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
     })(dispatch)
       .then(({ data }) => {
         const id = data["mutateGroupOfStopPlaces"]
@@ -300,13 +338,17 @@ export const mutateGroupOfStopPlace = (variables) => (dispatch, getState) =>
       });
   });
 
-export const getStopPlaceVersions = (stopPlaceId) => (dispatch, getState) =>
+export const getStopPlaceVersions = (stopPlaceId) => async (
+  dispatch,
+  getState
+) =>
   handleQuery(getState().user.client, {
     query: allVersionsOfStopPlace,
     variables: {
       id: stopPlaceId,
     },
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const mergeQuays = (
@@ -314,7 +356,7 @@ export const mergeQuays = (
   fromQuayId,
   toQuayId,
   versionComment
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateMergeQuays,
     variables: {
@@ -324,9 +366,10 @@ export const mergeQuays = (
       versionComment,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getStopPlaceWithAll = (id) => (dispatch, getState) =>
+export const getStopPlaceWithAll = (id) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: allEntities,
     variables: {
@@ -340,7 +383,7 @@ export const mergeAllQuaysFromStop = (
   toStopPlaceId,
   fromVersionComment,
   toVersionComment
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateMergeStopPlaces,
     variables: {
@@ -350,6 +393,7 @@ export const mergeAllQuaysFromStop = (
       toVersionComment,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const moveQuaysToStop = (
@@ -357,7 +401,7 @@ export const moveQuaysToStop = (
   quayId,
   fromVersionComment,
   toVersionComment
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateMoveQuaysToStop,
     variables: {
@@ -367,13 +411,14 @@ export const moveQuaysToStop = (
       toVersionComment,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const moveQuaysToNewStop = (
   quayIds,
   fromVersionComment,
   toVersionComment
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateMoveQuaysToNewStop,
     variables: {
@@ -382,13 +427,14 @@ export const moveQuaysToNewStop = (
       toVersionComment,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const getNeighbourStops = (
   ignoreStopPlaceId,
   bounds,
   includeExpired
-) => (dispatch, getState) =>
+) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: stopPlaceBBQuery,
@@ -400,27 +446,34 @@ export const getNeighbourStops = (
       lonMin: bounds.getSouthWest().lng,
       lonMax: bounds.getNorthEast().lng,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getPolygons = (ids) => (dispatch, getState) =>
+export const getPolygons = (ids) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getPolygonsQuery(ids),
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getTopographicPlaces = (ids) => (dispatch, getState) =>
+export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getQueryTopographicPlaces(ids),
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getMergeInfoForStops = (stopPlaceId) => (dispatch, getState) =>
+export const getMergeInfoForStops = (stopPlaceId) => async (
+  dispatch,
+  getState
+) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: getMergeInfoStopPlace,
     variables: {
       stopPlaceId,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const findEntitiesWithFilters = (
@@ -428,7 +481,7 @@ export const findEntitiesWithFilters = (
   stopPlaceType,
   chips,
   showFutureAndExpired
-) => (dispatch, getState) => {
+) => async (dispatch, getState) => {
   const municipalityReference = chips
     .filter((topos) => topos.type === "municipality")
     .map((topos) => topos.value);
@@ -451,37 +504,41 @@ export const findEntitiesWithFilters = (
       pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
       versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 };
 
-export const findTopographicalPlace = (query) => (dispatch, getState) =>
+export const findTopographicalPlace = (query) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: topopGraphicalPlacesQuery,
     fetchPolicy: "network-only",
     variables: {
       query,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getTags = (idReference) => (dispatch, getState) =>
+export const getTags = (idReference) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: getTagsQuery,
     fetchPolicy: "network-only",
     variables: {
       idReference,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getTagsByName = (name) => (dispatch, getState) =>
+export const getTagsByName = (name) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: getTagsByNameQuery,
     fetchPolicy: "network-only",
     variables: {
       name,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const removeTag = (name, idReference) => (dispatch, getState) =>
+export const removeTag = (name, idReference) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: mutateRemoveTag,
     variables: {
@@ -489,45 +546,50 @@ export const removeTag = (name, idReference) => (dispatch, getState) =>
       idReference,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getGroupOfStopPlacesById = (id) => (dispatch, getState) =>
+export const getGroupOfStopPlacesById = (id) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: getGroupOfStopPlaceQuery,
     variables: {
       id,
     },
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const deleteGroupOfStopPlaces = (id) => (dispatch, getState) =>
+export const deleteGroupOfStopPlaces = (id) => async (dispatch, getState) =>
   handleMutation(getState().user.client, {
     mutation: deleteGroupMutation,
     variables: {
       id,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getTariffZones = (query) => (dispatch, getState) =>
+export const getTariffZones = (query) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     query: findTariffones,
     variables: {
       query,
     },
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const deleteParking = (id) => (dispatch, getState) =>
+export const deleteParking = (id) => async (dispatch, getState) =>
   handleMutation(getState.user.client, {
     mutation: deleteParkingMutation,
     variables: {
       id,
     },
     fetchPolicy: "no-cache",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getStopPlaceAndPathLinkByVersion = (id, version) => (
+export const getStopPlaceAndPathLinkByVersion = (id, version) => async (
   dispatch,
   getState
 ) =>
@@ -538,38 +600,49 @@ export const getStopPlaceAndPathLinkByVersion = (id, version) => (
       id,
       version,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const findStopForReport = (queryVariables) => (dispatch, getState) =>
+export const findStopForReport = (queryVariables) => async (
+  dispatch,
+  getState
+) =>
   handleQuery(getState().user.client, {
     query: findStopForReportQuery,
     fetchPolicy: "network-only",
     variables: queryVariables,
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getParkingForMultipleStopPlaces = (stopPlaceIds) => (
+export const getParkingForMultipleStopPlaces = (stopPlaceIds) => async (
   dispatch,
   getState
 ) =>
   handleQuery(getState().user.client, {
     query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const topographicalPlaceSearch = (searchText) => (dispatch, getState) =>
+export const topographicalPlaceSearch = (searchText) => async (
+  dispatch,
+  getState
+) =>
   handleQuery(getState().user.client, {
     query: topopGraphicalPlacesReportQuery,
     fetchPolicy: "network-only",
     variables: {
       query: searchText,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getNeighbourStopPlaceQuays = (id) => (dispatch, getState) =>
+export const getNeighbourStopPlaceQuays = (id) => async (dispatch, getState) =>
   handleQuery(getState().user.client, {
     fetchPolicy: "network-only",
     query: neighbourStopPlaceQuays,
     variables: {
       id: id,
     },
+    context: await getContext(getState().roles.auth),
   })(dispatch);

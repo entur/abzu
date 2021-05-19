@@ -89,9 +89,9 @@ class NeighbourMarker extends React.Component {
       isChildOfParent,
       submode,
       stopPlace,
-      tokenParsed,
       isEditingGroup,
       handleCreateGroup,
+      roleAssignments,
       fetchedPolygons,
       allowNewStopEverywhere,
     } = this.props;
@@ -141,7 +141,7 @@ class NeighbourMarker extends React.Component {
             this.setState({
               isAllowedToCreateFrom: isLegalChildStopPlace(
                 stopPlace,
-                tokenParsed,
+                roleAssignments,
                 fetchedPolygons,
                 allowNewStopEverywhere
               ),
@@ -238,6 +238,7 @@ class NeighbourMarker extends React.Component {
 }
 
 export default connect(({ roles }) => ({
+  roleAssignments: roles.auth.roleAssignments,
   fetchedPolygons: roles.fetchedPolygons,
   allowNewStopEverywhere: roles.allowNewStopEverywhere,
 }))(NeighbourMarker);

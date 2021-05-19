@@ -2,7 +2,7 @@ import RoleParser from "../roles/rolesParser";
 
 export const isLegalChildStopPlace = (
   stopPlace,
-  tokenParsed,
+  roleAssignments,
   fetchedPolygons,
   allowNewStopEverywhere
 ) => {
@@ -10,8 +10,7 @@ export const isLegalChildStopPlace = (
     return false;
   }
 
-  const token = { ...tokenParsed };
-  const editStopRoles = RoleParser.getEditStopRoles(token);
+  const editStopRoles = RoleParser.getEditStopRoles(roleAssignments);
   const editStopRolesGeoFiltered = RoleParser.filterRolesByZoneRestriction(
     editStopRoles,
     stopPlace.location,

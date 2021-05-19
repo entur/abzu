@@ -53,7 +53,7 @@ class AddStopPlaceToParent extends Component {
       neighbourStops,
       stopPlaceCentroid,
       stopPlaceChildren,
-      tokenParsed,
+      roleAssignments,
       fetchedPolygons,
       allowNewStopEverywhere,
     } = this.props;
@@ -67,7 +67,7 @@ class AddStopPlaceToParent extends Component {
       stopPlaceChildren,
       stopPlaceCentroid,
       neighbourStops,
-      tokenParsed,
+      roleAssignments,
       10,
       fetchedPolygons,
       allowNewStopEverywhere
@@ -116,7 +116,7 @@ const mapStateToProps = ({ stopPlace, roles }) => ({
   stopPlaceCentroid: stopPlace.current.location,
   stopPlaceChildren: stopPlace.current.children,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
-  tokenParsed: roles.kc.tokenParsed,
+  roleAssignments: roles.auth.roleAssignments,
   fetchedPolygons: roles.fetchedPolygons,
   allowNewStopEverywhere: roles.allowNewStopEverywhere,
 });

@@ -29,12 +29,12 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
-          kc: state.kc,
+          auth: state.auth,
           allowanceInfo: getAllowanceInfoForStop(action, state),
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
-          kc: state.kc,
+          auth: state.auth,
           allowanceInfo: getAllowanceInfoForGroup(action.result, state),
         });
       } else if (action.operationName === "getPolygons") {
@@ -49,10 +49,10 @@ const rolesReducer = (state = initialState, action) => {
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
         ...state,
-        kc: state.kc,
+        auth: state.auth,
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payLoad,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
         allowanceInfo: {
           ...state.allowanceInfo,
@@ -63,20 +63,20 @@ const rolesReducer = (state = initialState, action) => {
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
         ...state,
-        kc: state.kc,
+        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payLoad.data.stopPlace[0]),
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
         ...state,
-        kc: state.kc,
+        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payLoad,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 
@@ -84,10 +84,10 @@ const rolesReducer = (state = initialState, action) => {
       const { newStopPlace } = action.payLoad;
       return Object.assign({}, state, {
         ...state,
-        kc: state.kc,
+        auth: state.auth,
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 

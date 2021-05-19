@@ -38,14 +38,12 @@ export const reduceFetchedPolygons = (result) => {
 export const getAllowanceInfoForStop = ({ result, variables }, state) => {
   /* find all roles that allow editing of stop */
   const {
-    kc: {
-      tokenParsed: { token },
-    },
+    auth: { roleAssignments },
     fetchedPolygons,
     allowNewStopEverywhere,
   } = state;
-  const editStopRoles = roleParser.getEditStopRoles(token);
-  const deleteStopRoles = roleParser.getDeleteStopRoles(token);
+  const editStopRoles = roleParser.getEditStopRoles(roleAssignments);
+  const deleteStopRoles = roleParser.getDeleteStopRoles(roleAssignments);
   const requestedStopPlaceId = variables.id;
 
   const stopPlace = getStopPlace(result);
@@ -157,14 +155,12 @@ const buildAllowanceInfoForStopPlace = (
 export const getAllowanceInfoForGroup = (result, state) => {
   /* find all roles that allow editing of group of stop places */
   const {
-    kc: {
-      tokenParsed: { token },
-    },
+    auth: { roleAssignments },
     fetchedPolygons,
     allowNewStopEverywhere,
   } = state;
-  const editStopRoles = roleParser.getEditStopRoles(token);
-  const deleteStopRoles = roleParser.getDeleteStopRoles(token);
+  const editStopRoles = roleParser.getEditStopRoles(roleAssignments);
+  const deleteStopRoles = roleParser.getDeleteStopRoles(roleAssignments);
   const groupOfStopPlaces = getGroupOfStopPlaces(result);
   const latlngs = getLatLngFromMembers(groupOfStopPlaces);
 
@@ -277,10 +273,9 @@ const restrictModeByRoles = (roles, modes, entityType) => {
   return [];
 };
 
-export const getAllowanceInfoFromPosition = (latlng, tokenParsed) => {
-  const token = { ...tokenParsed };
-  let editStopRoles = roleParser.getEditStopRoles(token);
-  let deleteRoles = roleParser.getDeleteStopRoles(token);
+export const getAllowanceInfoFromPosition = (latlng, roleAssignments) => {
+  let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
+  let deleteRoles = roleParser.getDeleteStopRoles(roleAssignments);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
@@ -372,9 +367,8 @@ const getBlacklistedStopPlaceTypes = (roles) => {
   return Array.from(blacklistSet);
 };
 
-export const getAllowanceSearchInfo = (payLoad, tokenParsed) => {
-  const token = { ...tokenParsed };
-  let editStopRoles = roleParser.getEditStopRoles(token);
+export const getAllowanceSearchInfo = (payLoad, roleAssignments) => {
+  let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
   let latlng =
     payLoad.entityType === Entities.GROUP_OF_STOP_PLACE
       ? payLoad.members.map((member) => member.location)

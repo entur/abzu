@@ -173,7 +173,6 @@ class MarkerList extends React.Component {
       isEditingStop,
       currentIsNewStop,
       currentStopIsMultiModal,
-      tokenParsed,
     } = props;
     const { formatMessage } = intl;
 
@@ -221,7 +220,6 @@ class MarkerList extends React.Component {
               isEditingStop={isEditingStop}
               missingCoordinatesMap={missingCoordinatesMap}
               createNewMultimodalStopFrom={() => {}}
-              tokenParsed={tokenParsed}
             />
           );
         });
@@ -537,7 +535,6 @@ class MarkerList extends React.Component {
                   this
                 )}
                 stopPlace={marker}
-                tokenParsed={tokenParsed}
                 isEditingGroup={this.props.isEditingGroup}
                 handleCreateGroup={this.handleCreateGroup.bind(this)}
               />
@@ -616,7 +613,6 @@ const mapStateToProps = (state) => ({
     ["current", "isParent"],
     false
   ),
-  tokenParsed: getIn(state.roles, ["kc", "tokenParsed"], null),
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

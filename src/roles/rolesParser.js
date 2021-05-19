@@ -23,12 +23,12 @@ import { isPointInPolygon } from "../utils/mapUtils";
 
 const RoleParser = {};
 
-const getRolesFromTokenByType = (tokenParsed, type) => {
-  if (!tokenParsed || !tokenParsed.roles) return [];
+const getRolesFromTokenByType = (roleAssignments, type) => {
+  if (!roleAssignments) return [];
 
   let roles = [];
 
-  tokenParsed.roles.forEach((roleString) => {
+  roleAssignments.forEach((roleString) => {
     let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === type) {
       roles.push(roleJSON);
@@ -38,16 +38,17 @@ const getRolesFromTokenByType = (tokenParsed, type) => {
   return roles;
 };
 
-RoleParser.getEditStopRoles = (tokenParsed) => {
-  return getRolesFromTokenByType(tokenParsed, "editStops");
+RoleParser.getEditStopRoles = (roleAssignments) => {
+  return getRolesFromTokenByType(roleAssignments, "editStops");
 };
 
-RoleParser.getDeleteStopRoles = (tokenParsed) => {
-  return getRolesFromTokenByType(tokenParsed, "deleteStops");
+RoleParser.getDeleteStopRoles = (roleAssignments) => {
+  return getRolesFromTokenByType(roleAssignments, "deleteStops");
 };
 
-RoleParser.isGuest = (tokenParsed) => {
-  return RoleParser.getEditStopRoles(tokenParsed).length === 0;
+// TODO can we have users without edit stop roles except guest/guest ?
+RoleParser.isGuest = (roleAssignments) => {
+  return RoleParser.getEditStopRoles(roleAssignments).length === 0;
 };
 
 RoleParser.filterRolesByZoneRestriction = (

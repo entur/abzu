@@ -14,11 +14,11 @@
 
 import React from "react";
 import { render } from "react-dom";
-import Keycloak from "keycloak-js";
 import { Route } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
-import axios from "axios";
 import { ConnectedRouter } from "connected-react-router";
+import { Provider } from "react-redux";
+import AuthProvider, { useAuth } from "@entur/auth-provider";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
@@ -29,59 +29,71 @@ import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
 import ErrorBoundary from "./containers/ErrorBoundary";
 import configureStore, { history } from "./store/store";
-import { Provider } from "react-redux";
 import "intl";
 
-function renderIndex(path, kc) {
-  const store = configureStore(kc);
+const AuthenticatedApp = ({ path }) => {
+  const auth = useAuth();
+  const store = configureStore(auth);
 
-  const renderApp = () => {
-    render(
-      <ErrorBoundary Raven={store.Raven}>
-        <Provider store={store.self}>
-          <ApolloProvider client={store.client}>
-            <Root>
-              <App>
-                <ConnectedRouter history={history}>
-                  <Route exact path={path} component={StopPlaces} />
-                  <Route
-                    exact
-                    path={path + Routes.STOP_PLACE + "/:stopId"}
-                    component={StopPlace}
-                  />
-                  <Route
-                    exact
-                    path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                    component={GroupOfStopPlaces}
-                  />
-                  <Route exact path={path + "reports"} component={ReportPage} />
-                </ConnectedRouter>
-              </App>
-            </Root>
-          </ApolloProvider>
-        </Provider>
-      </ErrorBoundary>,
-      document.getElementById("root")
-    );
-  };
+  console.log(auth);
 
-  renderApp();
-
-  if (process.env.NODE_ENV !== "production") {
-    if (module.hot) {
-      module.hot.accept("./containers/App", () => {
-        renderApp();
-      });
-    }
+  // TODO must also handle unauthenticated guests
+  if (!auth.isAuthenticated) {
+    return null;
   }
+
+  return (
+    <ErrorBoundary Raven={store.Raven}>
+      <Provider store={store.self}>
+        <ApolloProvider client={store.client}>
+          <Root>
+            <App>
+              <ConnectedRouter history={history}>
+                <Route exact path={path} component={StopPlaces} />
+                <Route
+                  exact
+                  path={path + Routes.STOP_PLACE + "/:stopId"}
+                  component={StopPlace}
+                />
+                <Route
+                  exact
+                  path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                  component={GroupOfStopPlaces}
+                />
+                <Route exact path={path + "reports"} component={ReportPage} />
+              </ConnectedRouter>
+            </App>
+          </Root>
+        </ApolloProvider>
+      </Provider>
+    </ErrorBoundary>
+  );
+};
+
+function renderIndex(config) {
+  render(
+    <AuthProvider
+      keycloakConfigUrl={config.endpointBase + "config/keycloak.json"}
+      defaultAuthMethod="kc"
+    >
+      <AuthenticatedApp path={config.endpointBase} />
+    </AuthProvider>,
+    document.getElementById("root")
+  );
 }
 
 cfgreader.readConfig(function (config) {
   window.config = config;
+  renderIndex(config);
+});
 
+// TODO deal with GKT token
+/*
   let token = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
 
   /* Renews token if it expires within 30 minutes to be on the safer side*/
+
+/*
   if (
     token != null &&
     token.expires > new Date(Date.now() + 60 * 1000 * 30).getTime()
@@ -102,25 +114,4 @@ cfgreader.readConfig(function (config) {
       });
     authWithKeyCloak(config.endpointBase);
   }
-});
-
-function authWithKeyCloak(path) {
-  let kc = new Keycloak(window.config.endpointBase + "config/keycloak.json");
-
-  kc.init({ onLoad: "login-required", checkLoginIframe: false }).success(
-    (authenticated) => {
-      if (authenticated) {
-        localStorage.setItem("ABZU::jwt", kc.token);
-
-        setInterval(() => {
-          kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem("ABZU::jwt", kc.token);
-        }, 10000);
-
-        renderIndex(path, kc);
-      } else {
-        kc.login();
-      }
-    }
-  );
-}
+  */

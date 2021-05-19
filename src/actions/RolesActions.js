@@ -1,11 +1,11 @@
 import { getPolygons } from "./TiamatActions";
 
-const getAdministrativeZoneIds = (tokenParsed) => {
+const getAdministrativeZoneIds = (roles) => {
   let administrativeZoneIds = [];
 
-  if (!tokenParsed || !tokenParsed.roles) return [];
+  if (!roles) return [];
 
-  tokenParsed.roles.forEach((roleString) => {
+  roles.forEach((roleString) => {
     let roleJSON = JSON.parse(roleString);
     if (roleJSON.r === "editStops") {
       if (!!roleJSON.z) {
@@ -20,9 +20,13 @@ const getAdministrativeZoneIds = (tokenParsed) => {
 };
 
 export const fetchPolygons = () => (dispatch, getState) => {
-  const adminZones = getAdministrativeZoneIds(getState().roles.kc.tokenParsed);
+  if (getState().roles.auth) {
+    const adminZones = getAdministrativeZoneIds(
+      getState().roles.auth.roleAssignments
+    );
 
-  if (adminZones.length) {
-    dispatch(getPolygons(adminZones));
+    if (adminZones.length) {
+      dispatch(getPolygons(adminZones));
+    }
   }
 };

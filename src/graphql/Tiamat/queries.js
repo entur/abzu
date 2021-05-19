@@ -313,6 +313,7 @@ export const findStop = gql`
         }
         ... on StopPlace {
           submode
+          version
           stopPlaceType
         }
       }
@@ -393,6 +394,7 @@ export const findStop = gql`
         }
         children {
           id
+          version
           name {
             value
           }

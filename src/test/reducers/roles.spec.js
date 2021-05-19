@@ -103,7 +103,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -129,7 +129,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -155,7 +155,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -181,7 +181,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -207,7 +207,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -233,7 +233,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(stopWithoutStopPlaceType),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -258,7 +258,7 @@ describe("getAllowanceInfo", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(stopWithoutStopPlaceType),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }

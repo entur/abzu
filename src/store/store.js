@@ -27,7 +27,7 @@ import createRootReducer from "../reducers";
 
 export const history = createBrowserHistory();
 
-export default function configureStore(kc) {
+export default function configureStore(auth) {
   let enchancer = {};
 
   const tiamatClient = createTiamatClient();
@@ -112,8 +112,8 @@ export default function configureStore(kc) {
       adjacentStopDialogOpen: false,
     },
     roles: {
-      kc,
-      isGuest: kc.tokenParsed ? rolesParser.isGuest(kc.tokenParsed) : true,
+      auth,
+      isGuest: !auth.isAuthenticated,
       fetchedPolygons: null,
       allowNewStopEverywhere: false,
     },

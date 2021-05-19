@@ -39,7 +39,7 @@ describe("User and roles - scenarios", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -66,7 +66,7 @@ describe("User and roles - scenarios", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -93,7 +93,7 @@ describe("User and roles - scenarios", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -102,7 +102,7 @@ describe("User and roles - scenarios", () => {
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -137,7 +137,7 @@ describe("User and roles - scenarios", () => {
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -164,7 +164,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -173,7 +173,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -200,7 +200,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -209,7 +209,7 @@ describe("User and roles - scenarios", () => {
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -236,7 +236,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -245,7 +245,7 @@ describe("User and roles - scenarios", () => {
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -271,7 +271,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -280,7 +280,7 @@ describe("User and roles - scenarios", () => {
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -289,7 +289,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -314,7 +314,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -323,7 +323,7 @@ describe("User and roles - scenarios", () => {
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -332,7 +332,7 @@ describe("User and roles - scenarios", () => {
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }
@@ -359,7 +359,7 @@ describe("User and roles - scenarios", () => {
     const allowanceStopWithNoModality = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockStopWithoutModality),
       {
-        kc: { tokenParsed: { token } },
+        auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
       }

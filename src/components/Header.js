@@ -126,7 +126,7 @@ class Header extends React.Component {
   render() {
     const {
       intl,
-      kc,
+      auth,
       isPublicCodePrivateCodeOnStopPlacesEnabled,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
@@ -154,7 +154,7 @@ class Header extends React.Component {
     const reportSite = formatMessage({ id: "report_site" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const userGuide = formatMessage({ id: "user_guide" });
-    const username = getIn(kc, ["tokenParsed", "preferred_username"], "");
+    const username = getIn(auth, ["roleAssignments", "username"], "");
     const showMultimodalEdgesLabel = formatMessage({
       id: "show_multimodal_edges",
     });
@@ -399,7 +399,7 @@ const mapStateToProps = (state) => ({
   isPublicCodePrivateCodeOnStopPlacesEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-  kc: state.roles.kc,
+  auth: state.auth,
   showExpiredStops: state.stopPlace.showExpiredStops,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,

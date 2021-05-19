@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { LatLng } from "leaflet";
+import { isLegalChildStopPlace } from "../utils/roleUtils";
 
 export const getUniquePathLinks = (a, key) => {
   var seen = {};
@@ -50,7 +51,7 @@ export const getChildStopPlaceSuggestions = (
   children,
   stopPlaceCentroid,
   neighbourStops,
-  tokenParsed,
+  roleAssignments,
   nFirst,
   fetchedPolygons,
   allowNewStopEverywhere
@@ -83,7 +84,7 @@ export const getChildStopPlaceSuggestions = (
     (suggestion) =>
       isLegalChildStopPlace(
         suggestion,
-        tokenParsed,
+        roleAssignments,
         fetchedPolygons,
         allowNewStopEverywhere
       ) && isChildTooFarAway(suggestion.distance)
@@ -96,7 +97,7 @@ export const getGroupMemberSuggestions = (
   exisitingMembers,
   centroid,
   neighbourStops,
-  tokenParsed,
+  roleAssignments,
   nFirst,
   fetchedPolygons,
   allowNewStopEverywhere
@@ -127,7 +128,7 @@ export const getGroupMemberSuggestions = (
       isMemberTooFarAway(suggestion.distance) &&
       isLegalChildStopPlace(
         suggestion,
-        tokenParsed,
+        roleAssignments,
         fetchedPolygons,
         allowNewStopEverywhere
       )
