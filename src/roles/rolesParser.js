@@ -46,7 +46,6 @@ RoleParser.getDeleteStopRoles = (roleAssignments) => {
   return getRolesFromTokenByType(roleAssignments, "deleteStops");
 };
 
-// TODO can we have users without edit stop roles except guest/guest ?
 RoleParser.isGuest = (roleAssignments) => {
   return RoleParser.getEditStopRoles(roleAssignments).length === 0;
 };
