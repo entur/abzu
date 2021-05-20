@@ -150,6 +150,7 @@ class Header extends React.Component {
     const swedish = formatMessage({ id: "swedish" });
     const french = formatMessage({ id: "french" });
     const logOut = formatMessage({ id: "log_out" });
+    const logIn = formatMessage({ id: "log_in" });
     const settings = formatMessage({ id: "settings" });
     const publicCodePrivateCodeSetting = formatMessage({
       id: "publicCode_privateCode_setting_label",
@@ -376,7 +377,7 @@ class Header extends React.Component {
               {!this.props.auth.isAuthenticated && (
                 <MenuItem
                   leftIcon={<MdAccount color="#41c0c4" />}
-                  primaryText={`Logg inn`}
+                  primaryText={logIn}
                   onClick={() => this.handleLogin()}
                   style={{ fontSize: 12, padding: 0 }}
                 />

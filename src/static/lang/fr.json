@@ -198,6 +198,7 @@
   "local_reference": "Ref. locale :",
   "local_reference_empty": "Pas de référence locale",
   "log_out": "Se déconnecter",
+  "log_in": "Se connecter",
   "lookup_coordinates": "Recherche par coordonnées",
   "making_parent_stop_place_title": "Vous êtes en train de créer un point d'arrêt multimodal",
   "making_stop_place_hint": "Double cliquer sur la carte pour mettre un marqueur à l'emplacement désiré. Cliquer ensuite sur le marqueur pour plus d'actions",
