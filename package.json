@@ -33,7 +33,7 @@
     "graphql": "^15.5.0",
     "graphql-fetch": "1.0.1",
     "graphql-tag": "2.4.2",
-    "history": "^4.10.1",
+    "history": "^5.0.0",
     "husky": "^4.2.5",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
