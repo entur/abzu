@@ -225,7 +225,7 @@ class EditStopGeneral extends React.Component {
         this.setState({ isLoading: false });
         dispatch(UserActions.closeMoveQuayDialog());
         dispatch(UserActions.openSnackbar(types.SUCCESS));
-        getStopPlaceWithAll(stopPlace.id);
+        dispatch(getStopPlaceWithAll(stopPlace.id));
       })
       .catch(() => {
         this.setState({ isLoading: false });
@@ -416,7 +416,7 @@ class EditStopGeneral extends React.Component {
         }
         dispatch(UserActions.closeMoveQuayToNewStopDialog());
         dispatch(UserActions.openSnackbar(types.SUCCESS));
-        getStopPlaceWithAll(stopPlace.id).then((response) => {
+        dispatch(getStopPlaceWithAll(stopPlace.id)).then((response) => {
           if (newStopPlaceId) {
             dispatch(
               UserActions.openSuccessfullyCreatedNewStop(newStopPlaceId)
