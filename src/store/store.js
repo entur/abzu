@@ -51,7 +51,7 @@ export default function configureStore() {
 
     enchancer = compose(
       applyMiddleware(
-        routerMiddleware,
+        routerMiddleware(history),
         thunkMiddleware,
         createRavenMiddleware(Raven)
       )
