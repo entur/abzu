@@ -46,10 +46,9 @@ class Root extends React.Component {
   render() {
     const { localization } = this.props;
 
-    if (localization.locale == null) return null;
-
     return (
       <IntlProvider
+        key={localization.locale}
         locale={localization.locale}
         messages={localization.messages}
       >
