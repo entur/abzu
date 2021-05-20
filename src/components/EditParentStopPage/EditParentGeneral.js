@@ -34,6 +34,7 @@ import { getIn, getIsCurrentVersionMax } from "../../utils/";
 import {
   createParentStopPlace,
   getStopPlaceAndPathLinkByVersion,
+  removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
 } from "../../actions/TiamatActions";
 
