@@ -48,6 +48,8 @@ import {
   saveStopPlaceBasedOnType,
   terminateStop,
   getStopPlaceAndPathLinkByVersion,
+  savePathLink,
+  saveParking,
 } from "../../actions/TiamatActions";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import MoveQuayDialog from "../Dialogs/MoveQuayDialog";
@@ -275,21 +277,15 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSaveAllEntities(userInput) {
-    const {
-      stopPlace,
-      pathLink,
-      originalPathLink,
-      client,
-      dispatch,
-    } = this.props;
+    const { stopPlace, pathLink, originalPathLink, dispatch } = this.props;
 
-    const saveParking = shouldMutateParking(stopPlace.parking);
+    const shouldSaveParking = shouldMutateParking(stopPlace.parking);
 
     const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
       pathLink
     );
 
-    const savePathLinks = shouldMutatePathLinks(
+    const shouldSavePathLink = shouldMutatePathLinks(
       pathLinkVariables,
       pathLink,
       originalPathLink
@@ -299,8 +295,9 @@ class EditStopGeneral extends React.Component {
 
     dispatch(saveStopPlaceBasedOnType(stopPlace, userInput))
       .then((resultId) => {
+        debugger;
         id = resultId;
-        if (!saveParking && !savePathLinks) {
+        if (!shouldSaveParking && !shouldSavePathLink) {
           this.handleSaveSuccess(id);
         } else {
           const parkingVariables = mapToMutationVariables.mapParkingToVariables(
@@ -308,19 +305,11 @@ class EditStopGeneral extends React.Component {
             stopPlace.id || id
           );
 
-          if (savePathLinks) {
-            client
-              .mutate({
-                variables: { PathLink: pathLinkVariables },
-                mutation: mutatePathLink,
-              })
+          if (shouldSavePathLink) {
+            dispatch(savePathLink(pathLinkVariables))
               .then(() => {
-                if (saveParking) {
-                  client
-                    .mutate({
-                      variables: { Parking: parkingVariables },
-                      mutation: mutateParking,
-                    })
+                if (shouldSaveParking) {
+                  dispatch(saveParking(parkingVariables))
                     .then((result) => {
                       this.handleSaveSuccess(id);
                     })
@@ -334,12 +323,8 @@ class EditStopGeneral extends React.Component {
               .catch((err) => {
                 this.handleSaveError(MutationErrorCodes.ERROR_PATH_LINKS);
               });
-          } else if (saveParking) {
-            client
-              .mutate({
-                variables: { Parking: parkingVariables },
-                mutation: mutateParking,
-              })
+          } else if (shouldSaveParking) {
+            dispatch(saveParking(parkingVariables))
               .then((result) => {
                 this.handleSaveSuccess(id);
               })

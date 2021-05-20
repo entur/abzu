@@ -31,6 +31,8 @@ import {
   mutateGroupOfStopPlaces,
   deleteGroupMutation,
   deleteParkingMutation,
+  mutatePathLink,
+  mutateParking,
 } from "../graphql/Tiamat/mutations";
 import {
   allVersionsOfStopPlace,
@@ -580,7 +582,7 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
   })(dispatch);
 
 export const deleteParking = (id) => async (dispatch, getState) =>
-  handleMutation(getState.user.client, {
+  handleMutation(getState().user.client, {
     mutation: deleteParkingMutation,
     variables: {
       id,
@@ -644,5 +646,21 @@ export const getNeighbourStopPlaceQuays = (id) => async (dispatch, getState) =>
     variables: {
       id: id,
     },
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
+
+export const savePathLink = (PathLink) => async (dispatch, getState) =>
+  handleMutation(getState().user.client, {
+    fetchPolicy: "no-cache",
+    mutation: mutatePathLink,
+    variables: { PathLink },
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
+
+export const saveParking = (Parking) => async (dispatch, getState) =>
+  handleMutation(getState().user.client, {
+    fetchPolicy: "no-cache",
+    mutation: mutateParking,
+    variables: { Parking },
     context: await getContext(getState().roles.auth),
   })(dispatch);
