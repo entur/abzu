@@ -16,9 +16,6 @@ import React, { Component } from "react";
 import AddTagAutoComplete from "./AddTagAutoComplete";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
-import { addTag, getTags } from "../../actions/TiamatActions";
-import { injectIntl } from "react-intl";
-import { connect } from "react-redux";
 
 class AddTagDialog extends Component {
   constructor(props) {
@@ -57,18 +54,18 @@ class AddTagDialog extends Component {
 
   handleAddTag() {
     const { comment, tagName } = this.state;
-    const { dispatch, idReference, handleLoading } = this.props;
+    const { idReference, handleLoading, addTag, getTags } = this.props;
 
     handleLoading(true);
 
-    dispatch(addTag(idReference, tagName, comment))
+    addTag(idReference, tagName, comment)
       .then((result) => {
         this.setState({
           comment: "",
           tagName: "",
           searchText: "",
         });
-        dispatch(getTags(idReference))
+        getTags(idReference)
           .then((response) => {
             handleLoading(false);
           })
@@ -105,6 +102,7 @@ class AddTagDialog extends Component {
               this.setState({ searchText: value });
             }}
             handleChooseTag={this.handleChooseTag.bind(this)}
+            findTagByName={this.props.findTagByName}
           />
         </div>
         <TextField
@@ -127,4 +125,4 @@ class AddTagDialog extends Component {
   }
 }
 
-export default connect(injectIntl(AddTagDialog));
+export default AddTagDialog;

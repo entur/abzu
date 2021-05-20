@@ -464,6 +464,8 @@ export const getTagsQuery = gql`
   query getTagsQuery($idReference: String!) {
     stopPlace(id: $idReference) {
       __typename
+      id
+      version
       tags {
         name
         comment

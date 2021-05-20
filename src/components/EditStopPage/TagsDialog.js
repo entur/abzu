@@ -16,9 +16,7 @@ import React, { Component } from "react";
 import MdClose from "material-ui/svg-icons/navigation/close";
 import IconButton from "material-ui/IconButton";
 import TagItem from "./TagItem";
-import { removeTag, getTags } from "../../actions/TiamatActions";
 import AddTagDialog from "./AddTagDialog";
-import { connect } from "react-redux";
 import RefreshIndicator from "material-ui/RefreshIndicator";
 
 class TagsDialog extends Component {
@@ -30,11 +28,12 @@ class TagsDialog extends Component {
   }
 
   handleDeleteTag(name, idReference) {
-    const { dispatch } = this.props;
+    const { removeTag, getTags } = this.props;
     this.setState({ isLoading: true });
-    dispatch(removeTag(name, idReference))
+
+    removeTag(name, idReference)
       .then((result) => {
-        dispatch(getTags(idReference))
+        getTags(idReference)
           .then((result) => {
             this.setState({ isLoading: false });
           })
@@ -48,7 +47,16 @@ class TagsDialog extends Component {
   }
 
   render() {
-    const { open, tags, handleClose, intl, idReference } = this.props;
+    const {
+      open,
+      tags,
+      handleClose,
+      intl,
+      idReference,
+      addTag,
+      getTags,
+      findTagByName,
+    } = this.props;
     const { formatMessage } = intl;
     const { isLoading } = this.state;
 
@@ -144,19 +152,19 @@ class TagsDialog extends Component {
         </div>
         <AddTagDialog
           idReference={idReference}
+          addTag={addTag}
+          getTags={getTags}
           handleLoading={(isLoading) => {
             this.setState({
               isLoading,
             });
           }}
+          intl={this.props.intl}
+          findTagByName={findTagByName}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ stopPlace }) => ({
-  idReference: stopPlace.current.id,
-});
-
-export default connect(mapStateToProps)(TagsDialog);
+export default TagsDialog;

@@ -295,7 +295,6 @@ class EditStopGeneral extends React.Component {
 
     dispatch(saveStopPlaceBasedOnType(stopPlace, userInput))
       .then((resultId) => {
-        debugger;
         id = resultId;
         if (!shouldSaveParking && !shouldSavePathLink) {
           this.handleSaveSuccess(id);

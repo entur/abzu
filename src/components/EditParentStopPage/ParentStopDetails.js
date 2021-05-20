@@ -33,7 +33,13 @@ import ToolTippable from "../EditStopPage/ToolTippable";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import UserActions from "../../actions/UserActions";
-import { getAddStopPlaceInfo } from "../../actions/TiamatActions";
+import {
+  addTag,
+  findTagByName,
+  getAddStopPlaceInfo,
+  getTags,
+  removeTag,
+} from "../../actions/TiamatActions";
 
 class ParentStopDetails extends Component {
   constructor(props) {
@@ -271,6 +277,15 @@ class ParentStopDetails extends Component {
           handleClose={() => {
             this.setState({ tagsOpen: false });
           }}
+          idReference={stopPlace.id}
+          addTag={(idReference, name, comment) =>
+            dispatch(addTag(idReference, name, comment))
+          }
+          getTags={(idReference) => dispatch(getTags(idReference))}
+          removeTag={(name, idReference) =>
+            dispatch(removeTag(name, idReference))
+          }
+          findTagByName={(name) => dispatch(findTagByName(name))}
         />
       </div>
     );

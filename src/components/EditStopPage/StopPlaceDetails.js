@@ -53,6 +53,12 @@ import FlatButton from "material-ui/FlatButton";
 import TagsDialog from "./TagsDialog";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
+import {
+  addTag,
+  findTagByName,
+  getTags,
+  removeTag,
+} from "../../actions/TiamatActions";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -361,6 +367,7 @@ class StopPlaceDetails extends React.Component {
       expanded,
       disabled,
       isPublicCodePrivateCodeEnabled,
+      dispatch,
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -786,6 +793,15 @@ class StopPlaceDetails extends React.Component {
           handleClose={() => {
             this.setState({ tagsOpen: false });
           }}
+          idReference={stopPlace.id}
+          addTag={(idReference, name, comment) =>
+            dispatch(addTag(idReference, name, comment))
+          }
+          getTags={(idReference) => dispatch(getTags(idReference))}
+          removeTag={(name, idReference) =>
+            dispatch(removeTag(name, idReference))
+          }
+          findTagByName={(name) => dispatch(findTagByName(name))}
         />
         <TariffZonesDialog
           open={tariffZoneOpen}

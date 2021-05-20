@@ -15,11 +15,9 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import AutoComplete from "material-ui/AutoComplete";
 import debounce from "lodash.debounce";
-import { findTagByName } from "../../actions/TiamatActions";
 import MenuItem from "material-ui/MenuItem";
 import { toCamelCase } from "../../utils/";
 import { injectIntl } from "react-intl";
-import { connect } from "react-redux";
 
 class AddTagAutoComplete extends Component {
   constructor(props) {
@@ -30,13 +28,11 @@ class AddTagAutoComplete extends Component {
     };
 
     this.findTag = debounce((name) => {
-      this.props
-        .dispatch(findTagByName(name.toLowerCase()))
-        .then((response) => {
-          this.setState({
-            dataSource: response.data.tags,
-          });
+      this.props.findTagByName(name.toLowerCase()).then((response) => {
+        this.setState({
+          dataSource: response.data.tags,
         });
+      });
     }, 500);
   }
 
@@ -162,4 +158,4 @@ class AddTagAutoComplete extends Component {
   }
 }
 
-export default connect(injectIntl(AddTagAutoComplete));
+export default injectIntl(AddTagAutoComplete);
