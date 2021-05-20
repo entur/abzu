@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { connect } from "react-redux";
 import MenuItem from "material-ui/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
@@ -161,8 +160,4 @@ class ModalitiesMenuItems extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  allowsInfo: state.roles.allowanceInfo,
-});
-
-export default connect(mapStateToProps)(ModalitiesMenuItems);
+export default ModalitiesMenuItems;

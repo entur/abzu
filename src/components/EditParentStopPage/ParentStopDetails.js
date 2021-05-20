@@ -26,8 +26,6 @@ import StopPlaceList from "./StopPlaceList";
 import FlatButton from "material-ui/FlatButton";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
-import { getAddStopPlaceInfo } from "../../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
 import TagsDialog from "../EditStopPage/TagsDialog";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
@@ -35,6 +33,7 @@ import ToolTippable from "../EditStopPage/ToolTippable";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import UserActions from "../../actions/UserActions";
+import { getAddStopPlaceInfo } from "../../actions/TiamatActions";
 
 class ParentStopDetails extends Component {
   constructor(props) {
@@ -67,7 +66,7 @@ class ParentStopDetails extends Component {
   }
 
   handleAddStopPlace(checkedItems) {
-    const { dispatch, client } = this.props;
+    const { dispatch } = this.props;
     this.setState({
       addStopPlaceOpen: false,
       altNamesDialogOpen: false,
@@ -76,7 +75,7 @@ class ParentStopDetails extends Component {
     this.setState({
       isLoading: true,
     });
-    getAddStopPlaceInfo(client, checkedItems)
+    dispatch(getAddStopPlaceInfo(checkedItems))
       .then((result) => {
         dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
         this.setState({
@@ -282,6 +281,4 @@ const mapStateToProps = ({ stopPlace }) => ({
   stopPlace: stopPlace.current,
 });
 
-export default withApollo(
-  connect(mapStateToProps)(injectIntl(ParentStopDetails))
-);
+export default connect(mapStateToProps)(injectIntl(ParentStopDetails));

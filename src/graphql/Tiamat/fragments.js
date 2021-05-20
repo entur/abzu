@@ -385,6 +385,7 @@ Fragments.parentStopPlace = {
       name {
         value
       }
+      version
       tags {
         name
         comment

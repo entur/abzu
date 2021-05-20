@@ -21,10 +21,8 @@ import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import EditStopBoxTabs from "./EditStopBoxTabs";
 import { Tabs, Tab } from "material-ui/Tabs";
 import StopPlaceDetails from "./StopPlaceDetails";
-import { withApollo } from "react-apollo";
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import { mutatePathLink, mutateParking } from "../../graphql/Tiamat/mutations";
-import { stopPlaceAndPathLinkByVersion } from "../../graphql/Tiamat/queries";
 import * as types from "../../actions/Types";
 import EditStopAdditional from "./EditStopAdditional";
 import MdUndo from "material-ui/svg-icons/content/undo";
@@ -49,7 +47,8 @@ import {
   moveQuaysToNewStop,
   saveStopPlaceBasedOnType,
   terminateStop,
-} from "../../graphql/Tiamat/actions";
+  getStopPlaceAndPathLinkByVersion,
+} from "../../actions/TiamatActions";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import MoveQuayDialog from "../Dialogs/MoveQuayDialog";
 import MoveQuayNewStopDialog from "../Dialogs/MoveQuayNewStopDialog";
@@ -119,13 +118,13 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSaveSuccess(stopPlaceId) {
-    const { client, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     this.setState({
       saveDialogOpen: false,
     });
 
-    getStopPlaceVersions(client, stopPlaceId).then(() => {
+    dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
       dispatch(UserActions.openSnackbar(types.SUCCESS));
     });
@@ -138,28 +137,30 @@ class EditStopGeneral extends React.Component {
   }
 
   handleMergeQuaysFromStop(fromVersionComment, toVersionComment) {
-    const { stopPlace, mergeSource, client, dispatch, activeMap } = this.props;
+    const { stopPlace, mergeSource, dispatch, activeMap } = this.props;
     this.setState({ isLoading: true });
 
-    mergeAllQuaysFromStop(
-      client,
-      mergeSource.id,
-      stopPlace.id,
-      fromVersionComment,
-      toVersionComment
+    dispatch(
+      mergeAllQuaysFromStop(
+        mergeSource.id,
+        stopPlace.id,
+        fromVersionComment,
+        toVersionComment
+      )
     )
       .then(() => {
         dispatch(UserActions.openSnackbar(types.SUCCESS));
         this.handleCloseMergeStopDialog();
-        getStopPlaceWithAll(client, stopPlace.id).then(() => {
+        dispatch(getStopPlaceWithAll(stopPlace.id)).then(() => {
           this.setState({ isLoading: false });
           if (activeMap) {
             let includeExpired = new Settings().getShowExpiredStops();
-            getNeighbourStops(
-              client,
-              stopPlace.id,
-              activeMap.getBounds(),
-              includeExpired
+            dispatch(
+              getNeighbourStops(
+                stopPlace.id,
+                activeMap.getBounds(),
+                includeExpired
+              )
             );
           }
         });
@@ -170,22 +171,23 @@ class EditStopGeneral extends React.Component {
   }
 
   handleMergeQuays(versionComment) {
-    const { mergingQuay, client, stopPlace, dispatch } = this.props;
+    const { mergingQuay, stopPlace, dispatch } = this.props;
 
     this.setState({ isLoading: true });
 
-    mergeQuays(
-      client,
-      stopPlace.id,
-      mergingQuay.fromQuay.id,
-      mergingQuay.toQuay.id,
-      versionComment
+    dispatch(
+      mergeQuays(
+        stopPlace.id,
+        mergingQuay.fromQuay.id,
+        mergingQuay.toQuay.id,
+        versionComment
+      )
     )
       .then(() => {
         this.setState({ isLoading: false });
         dispatch(UserActions.openSnackbar(types.SUCCESS));
         this.handleCloseMergeQuaysDialog();
-        getStopPlaceWithAll(client, stopPlace.id);
+        getStopPlaceWithAll(stopPlace.id);
       })
       .catch(() => {
         this.setState({ isLoading: false });
@@ -193,13 +195,13 @@ class EditStopGeneral extends React.Component {
   }
 
   handleDeleteQuay() {
-    const { client, deletingQuay, dispatch, stopPlace } = this.props;
+    const { deletingQuay, dispatch, stopPlace } = this.props;
     this.setState({ isLoading: true });
-    deleteQuay(client, deletingQuay)
+    dispatch(deleteQuay(deletingQuay))
       .then(() => {
         this.setState({ isLoading: false });
         dispatch(UserActions.hideDeleteQuayDialog());
-        getStopPlaceWithAll(client, stopPlace.id).then(() => {
+        getStopPlaceWithAll(stopPlace.id).then(() => {
           dispatch(UserActions.openSnackbar(types.SUCCESS));
         });
       })
@@ -209,20 +211,21 @@ class EditStopGeneral extends React.Component {
   }
 
   handleMoveQuay(fromVersionComment, toVersionComment) {
-    const { client, movingQuay, dispatch, stopPlace } = this.props;
+    const { movingQuay, dispatch, stopPlace } = this.props;
     this.setState({ isLoading: true });
-    moveQuaysToStop(
-      client,
-      stopPlace.id,
-      movingQuay.id,
-      fromVersionComment,
-      toVersionComment
+    dispatch(
+      moveQuaysToStop(
+        stopPlace.id,
+        movingQuay.id,
+        fromVersionComment,
+        toVersionComment
+      )
     )
       .then(() => {
         this.setState({ isLoading: false });
         dispatch(UserActions.closeMoveQuayDialog());
         dispatch(UserActions.openSnackbar(types.SUCCESS));
-        getStopPlaceWithAll(client, stopPlace.id);
+        getStopPlaceWithAll(stopPlace.id);
       })
       .catch(() => {
         this.setState({ isLoading: false });
@@ -235,11 +238,11 @@ class EditStopGeneral extends React.Component {
     comment,
     dateTime
   ) {
-    const { client, stopPlace, dispatch } = this.props;
+    const { stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
 
     if (shouldHardDelete) {
-      deleteStopPlace(client, stopPlace.id)
+      dispatch(deleteStopPlace(stopPlace.id))
         .then((response) => {
           this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog());
@@ -252,12 +255,13 @@ class EditStopGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog(true));
         });
     } else {
-      terminateStop(
-        client,
-        stopPlace.id,
-        shouldTerminatePermanently,
-        comment,
-        dateTime
+      dispatch(
+        terminateStop(
+          stopPlace.id,
+          shouldTerminatePermanently,
+          comment,
+          dateTime
+        )
       )
         .then((result) => {
           this.setState({ isLoading: false });
@@ -271,7 +275,13 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSaveAllEntities(userInput) {
-    const { stopPlace, pathLink, originalPathLink, client } = this.props;
+    const {
+      stopPlace,
+      pathLink,
+      originalPathLink,
+      client,
+      dispatch,
+    } = this.props;
 
     const saveParking = shouldMutateParking(stopPlace.parking);
 
@@ -287,7 +297,7 @@ class EditStopGeneral extends React.Component {
 
     let id = null;
 
-    saveStopPlaceBasedOnType(client, stopPlace, userInput)
+    dispatch(saveStopPlaceBasedOnType(stopPlace, userInput))
       .then((resultId) => {
         id = resultId;
         if (!saveParking && !savePathLinks) {
@@ -389,12 +399,12 @@ class EditStopGeneral extends React.Component {
   }
 
   handleMoveQuaysNewStop(quayIds, fromVersionComment, toVersionComment) {
-    const { client, dispatch, stopPlace } = this.props;
+    const { dispatch, stopPlace } = this.props;
     let newStopPlaceId = null;
 
     this.setState({ isLoading: true });
 
-    moveQuaysToNewStop(client, quayIds, fromVersionComment, toVersionComment)
+    dispatch(moveQuaysToNewStop(quayIds, fromVersionComment, toVersionComment))
       .then((response) => {
         this.setState({ isLoading: false });
         if (
@@ -406,7 +416,7 @@ class EditStopGeneral extends React.Component {
         }
         dispatch(UserActions.closeMoveQuayToNewStopDialog());
         dispatch(UserActions.openSnackbar(types.SUCCESS));
-        getStopPlaceWithAll(client, stopPlace.id).then((response) => {
+        getStopPlaceWithAll(stopPlace.id).then((response) => {
           if (newStopPlaceId) {
             dispatch(
               UserActions.openSuccessfullyCreatedNewStop(newStopPlaceId)
@@ -420,15 +430,8 @@ class EditStopGeneral extends React.Component {
   }
 
   handleLoadVersion = ({ id, version }) => {
-    const { client } = this.props;
-    client.query({
-      fetchPolicy: "network-only",
-      query: stopPlaceAndPathLinkByVersion,
-      variables: {
-        id,
-        version,
-      },
-    });
+    const { dispatch } = this.props;
+    dispatch(getStopPlaceAndPathLinkByVersion(id, version));
   };
 
   getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
@@ -856,6 +859,4 @@ const mapStateToProps = (state) => ({
   deleteQuayWarning: state.mapUtils.deleteQuayWarning,
 });
 
-export default withApollo(
-  injectIntl(connect(mapStateToProps)(EditStopGeneral))
-);
+export default injectIntl(connect(mapStateToProps)(EditStopGeneral));

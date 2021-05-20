@@ -16,8 +16,7 @@ import React, { Component } from "react";
 import LeafletMap from "../Map/LeafletMap";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
-import { getNeighbourStops } from "../../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
+import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
 
 class GroupOfStopPlaceMap extends Component {
@@ -25,14 +24,14 @@ class GroupOfStopPlaceMap extends Component {
     super(props);
 
     const mapEnd = (event, { leafletElement }) => {
-      let { ignoreStopId, client } = this.props;
+      let { ignoreStopId, dispatch } = this.props;
 
       const zoom = leafletElement.getZoom();
 
       if (zoom > 12) {
         const bounds = leafletElement.getBounds();
         let includeExpired = new Settings().getShowExpiredStops();
-        getNeighbourStops(client, ignoreStopId, bounds, includeExpired);
+        dispatch(getNeighbourStops(ignoreStopId, bounds, includeExpired));
       }
     };
     this.handleMapMoveEnd = debounce(mapEnd, 500);
@@ -79,4 +78,4 @@ const mapStateToProps = ({ stopPlace, user, stopPlacesGroup }) => ({
     .filter((m) => !m.permanentlyTerminated),
 });
 
-export default withApollo(connect(mapStateToProps)(GroupOfStopPlaceMap));
+export default connect(mapStateToProps)(GroupOfStopPlaceMap);

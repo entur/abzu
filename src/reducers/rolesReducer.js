@@ -19,6 +19,7 @@ import {
   getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
   getLatLng,
+  reduceFetchedPolygons,
 } from "./rolesReducerUtils";
 
 export const initialState = {};
@@ -28,16 +29,15 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
-          kc: state.kc,
-          allowanceInfo: getAllowanceInfoForStop(action, state.kc.tokenParsed),
+          allowanceInfo: getAllowanceInfoForStop(action, state),
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
-          kc: state.kc,
-          allowanceInfo: getAllowanceInfoForGroup(
-            action.result,
-            state.kc.tokenParsed
-          ),
+          allowanceInfo: getAllowanceInfoForGroup(action.result, state),
+        });
+      } else if (action.operationName === "getPolygons") {
+        return Object.assign({}, state, {
+          fetchedPolygons: reduceFetchedPolygons(action.result),
         });
       } else {
         return state;
@@ -45,11 +45,9 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
-        ...state,
-        kc: state.kc,
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payLoad,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
         allowanceInfo: {
           ...state.allowanceInfo,
@@ -59,35 +57,38 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
-        ...state,
-        kc: state.kc,
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payLoad.data.stopPlace[0]),
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
-        ...state,
-        kc: state.kc,
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payLoad,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
       const { newStopPlace } = action.payLoad;
       return Object.assign({}, state, {
-        ...state,
-        kc: state.kc,
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
-          state.kc.tokenParsed
+          state.auth.roleAssignments
         ),
       });
 
+    case types.UPDATED_AUTH:
+      return Object.assign({}, state, {
+        auth: action.payLoad,
+      });
+
+    case types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE:
+      return Object.assign({}, state, {
+        allowNewStopEverywhere: action.payLoad,
+      });
     default:
       return state;
   }

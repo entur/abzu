@@ -13,8 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../../actions/Types";
-import { userReducer } from "./../../reducers/";
-import { initialState } from "./../../reducers/userReducer";
+import userReducer, { initialState } from "./../../reducers/userReducer";
 
 describe("user reducer", () => {
   test("Should return the initial state", () => {

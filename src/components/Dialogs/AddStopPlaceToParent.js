@@ -53,7 +53,9 @@ class AddStopPlaceToParent extends Component {
       neighbourStops,
       stopPlaceCentroid,
       stopPlaceChildren,
-      tokenParsed,
+      roleAssignments,
+      fetchedPolygons,
+      allowNewStopEverywhere,
     } = this.props;
 
     const { formatMessage } = intl;
@@ -65,8 +67,10 @@ class AddStopPlaceToParent extends Component {
       stopPlaceChildren,
       stopPlaceCentroid,
       neighbourStops,
-      tokenParsed,
-      10
+      roleAssignments,
+      10,
+      fetchedPolygons,
+      allowNewStopEverywhere
     );
 
     const actions = [
@@ -112,7 +116,9 @@ const mapStateToProps = ({ stopPlace, roles }) => ({
   stopPlaceCentroid: stopPlace.current.location,
   stopPlaceChildren: stopPlace.current.children,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
-  tokenParsed: roles.kc.tokenParsed,
+  roleAssignments: roles.auth.roleAssignments,
+  fetchedPolygons: roles.fetchedPolygons,
+  allowNewStopEverywhere: roles.allowNewStopEverywhere,
 });
 
 export default connect(mapStateToProps)(injectIntl(AddStopPlaceToParent));

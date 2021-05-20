@@ -31,8 +31,7 @@ import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import {
   findEntitiesWithFilters,
   findTopographicalPlace,
-} from "../../graphql/Tiamat/actions";
-import { withApollo } from "react-apollo";
+} from "../../actions/TiamatActions";
 import FavoritePopover from "./FavoritePopover";
 import ModalityFilter from "../EditStopPage/ModalityFilter";
 import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";
@@ -49,6 +48,7 @@ import Menu from "material-ui/Menu";
 import CheckBox from "material-ui/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
+import RoleParser from "../../roles/rolesParser";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -71,15 +71,18 @@ class SearchBox extends React.Component {
 
       this.setState({ loading: true });
 
-      findEntitiesWithFilters(
-        this.props.client,
-        searchText,
-        stopPlaceTypes,
-        chips,
-        showFutureAndExpired
-      ).then(() => {
-        this.setState({ loading: false });
-      });
+      this.props
+        .dispatch(
+          findEntitiesWithFilters(
+            searchText,
+            stopPlaceTypes,
+            chips,
+            showFutureAndExpired
+          )
+        )
+        .then(() => {
+          this.setState({ loading: false });
+        });
     };
     this.debouncedSearch = debounce(searchStop, 500);
   }
@@ -148,8 +151,8 @@ class SearchBox extends React.Component {
   }
 
   handleTopographicalPlaceInput(searchText) {
-    const { client } = this.props;
-    findTopographicalPlace(client, searchText);
+    const { dispatch } = this.props;
+    dispatch(findTopographicalPlace(searchText));
   }
 
   handleNewRequest(result) {
@@ -359,7 +362,7 @@ class SearchBox extends React.Component {
       topoiChips,
       topographicalPlaces,
       canEdit,
-      isGuest,
+      roleAssignments,
       lookupCoordinatesOpen,
       newStopIsMultiModal,
       dataSource,
@@ -624,7 +627,7 @@ class SearchBox extends React.Component {
                 formatMessage={formatMessage}
               />
             ) : null}
-            {!isGuest && (
+            {!RoleParser.isGuest(roleAssignments) && (
               <div style={{ marginTop: 10 }}>
                 {isCreatingNewStop ? (
                   <NewStopPlace
@@ -727,11 +730,11 @@ const mapStateToProps = (state) => {
       ["allowanceInfoSearchResult", "canEdit"],
       false
     ),
-    isGuest: state.roles.isGuest,
+    roleAssignments: state.roles.auth.roleAssignments,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
   };
 };
 
-export default withApollo(injectIntl(connect(mapStateToProps)(SearchBox)));
+export default injectIntl(connect(mapStateToProps)(SearchBox));

@@ -88,8 +88,14 @@ class Header extends React.Component {
   }
 
   handleLogOut() {
-    if (this.props.kc) {
-      this.props.kc.logout();
+    if (this.props.auth) {
+      this.props.auth.logout();
+    }
+  }
+
+  handleLogin() {
+    if (this.props.auth) {
+      this.props.auth.login();
     }
   }
 
@@ -126,7 +132,7 @@ class Header extends React.Component {
   render() {
     const {
       intl,
-      kc,
+      auth,
       isPublicCodePrivateCodeOnStopPlacesEnabled,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,
@@ -144,6 +150,7 @@ class Header extends React.Component {
     const swedish = formatMessage({ id: "swedish" });
     const french = formatMessage({ id: "french" });
     const logOut = formatMessage({ id: "log_out" });
+    const logIn = formatMessage({ id: "log_in" });
     const settings = formatMessage({ id: "settings" });
     const publicCodePrivateCodeSetting = formatMessage({
       id: "publicCode_privateCode_setting_label",
@@ -154,7 +161,7 @@ class Header extends React.Component {
     const reportSite = formatMessage({ id: "report_site" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const userGuide = formatMessage({ id: "user_guide" });
-    const username = getIn(kc, ["tokenParsed", "preferred_username"], "");
+    const username = getIn(auth, ["user", "name"], "");
     const showMultimodalEdgesLabel = formatMessage({
       id: "show_multimodal_edges",
     });
@@ -359,12 +366,22 @@ class Header extends React.Component {
                 primaryText={userGuide}
                 style={{ fontSize: 12, padding: 0 }}
               />
-              <MenuItem
-                leftIcon={<MdAccount color="#41c0c4" />}
-                primaryText={`${logOut} ${username}`}
-                onClick={() => this.handleLogOut()}
-                style={{ fontSize: 12, padding: 0 }}
-              />
+              {this.props.auth.isAuthenticated && (
+                <MenuItem
+                  leftIcon={<MdAccount color="#41c0c4" />}
+                  primaryText={`${logOut} ${username}`}
+                  onClick={() => this.handleLogOut()}
+                  style={{ fontSize: 12, padding: 0 }}
+                />
+              )}
+              {!this.props.auth.isAuthenticated && (
+                <MenuItem
+                  leftIcon={<MdAccount color="#41c0c4" />}
+                  primaryText={logIn}
+                  onClick={() => this.handleLogin()}
+                  style={{ fontSize: 12, padding: 0 }}
+                />
+              )}
             </IconMenu>
           }
         />
@@ -394,14 +411,12 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace:
-    state.routing.locationBeforeTransitions.pathname.indexOf("/stop_place/") >
-    -1,
-  isDisplayingReports:
-    state.routing.locationBeforeTransitions.pathname === "/reports",
+    state.router.location.pathname.indexOf("/stop_place/") > -1,
+  isDisplayingReports: state.router.location.pathname === "/reports",
   isPublicCodePrivateCodeOnStopPlacesEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-  kc: state.roles.kc,
+  auth: state.roles.auth,
   showExpiredStops: state.stopPlace.showExpiredStops,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,

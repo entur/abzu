@@ -554,6 +554,7 @@ class StopPlaceDetails extends React.Component {
                     submodeChosen={stopPlace.submode}
                     stopTypes={stopTypes}
                     intl={intl}
+                    allowsInfo={this.props.allowsInfo}
                   />
                 </Popover>
               </div>
@@ -806,6 +807,7 @@ const mapStateToProps = (state) => ({
   isPublicCodePrivateCodeEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   keyValuesDialogOpen: state.user.keyValuesDialogOpen,
+  allowsInfo: state.roles.allowanceInfo,
 });
 
 export default connect(mapStateToProps)(StopPlaceDetails);

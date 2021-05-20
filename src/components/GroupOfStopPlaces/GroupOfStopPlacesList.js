@@ -20,7 +20,6 @@ import ContentAdd from "material-ui/svg-icons/content/add";
 import { connect } from "react-redux";
 import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
 import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
-import { withApollo } from "react-apollo";
 
 class GroupOfStopPlacesList extends Component {
   constructor(props) {
@@ -38,11 +37,11 @@ class GroupOfStopPlacesList extends Component {
   }
 
   handleAddMembers(members) {
-    const { dispatch, client } = this.props;
+    const { dispatch } = this.props;
     this.setState({
       addStopPlaceOpen: false,
     });
-    dispatch(StopPlacesGroupActions.addMembersToGroup(client, members));
+    dispatch(StopPlacesGroupActions.addMembersToGroup(members));
   }
 
   render() {
@@ -114,4 +113,4 @@ GroupOfStopPlacesList.defaultProps = {
   stopPlaces: [],
 };
 
-export default withApollo(connect(null)(injectIntl(GroupOfStopPlacesList)));
+export default connect(null)(injectIntl(GroupOfStopPlacesList));

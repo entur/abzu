@@ -14,113 +14,77 @@
 
 import React from "react";
 import { render } from "react-dom";
-import Keycloak from "keycloak-js";
-import { Router, Route, browserHistory } from "react-router";
-import { syncHistoryWithStore } from "react-router-redux";
-import { ApolloProvider } from "react-apollo";
+import { Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
+import { ConnectedRouter } from "connected-react-router";
+import { Provider } from "react-redux";
+import AuthProvider from "@entur/auth-provider";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
 import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
-import ReportPageV2 from "./containers/ReportPageV2";
 import Routes from "./routes/";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-
 import cfgreader from "./config/readConfig";
+import ErrorBoundary from "./containers/ErrorBoundary";
+import configureStore, { history } from "./store/store";
+import { useGktToken } from "./hooks/useGktToken";
 import "intl";
 
-import axios from "axios";
-import ErrorBoundary from "./containers/ErrorBoundary";
+const AuthenticatedApp = ({ path }) => {
+  useGktToken(path);
+  const store = configureStore();
 
-function renderIndex(path, kc) {
-  const configureStore = require("./store/store").default;
-  const store = configureStore(kc);
-  const history = syncHistoryWithStore(browserHistory, store.self);
-
-  const renderApp = () => {
-    render(
-      <ErrorBoundary Raven={store.Raven}>
-        <ApolloProvider store={store.self} client={store.client}>
+  return (
+    <ErrorBoundary Raven={store.Raven}>
+      <Provider store={store.self}>
+        <ApolloProvider client={store.client}>
           <Root>
             <App>
-              <Router history={history}>
-                <Route path={path} component={StopPlaces} />
+              <ConnectedRouter history={history}>
+                <Route exact path={path} component={StopPlaces} />
                 <Route
+                  exact
                   path={path + Routes.STOP_PLACE + "/:stopId"}
                   component={StopPlace}
                 />
                 <Route
+                  exact
                   path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
                   component={GroupOfStopPlaces}
                 />
-                <Route path={path + "reports"} component={ReportPage} />
-                <Route path={path + "reportsV2"} component={ReportPageV2} />
-              </Router>
+                <Route exact path={path + "reports"} component={ReportPage} />
+              </ConnectedRouter>
             </App>
           </Root>
         </ApolloProvider>
-      </ErrorBoundary>,
-      document.getElementById("root")
-    );
-  };
+      </Provider>
+    </ErrorBoundary>
+  );
+};
 
-  renderApp();
-
-  if (process.env.NODE_ENV !== "production") {
-    if (module.hot) {
-      module.hot.accept("./containers/App", () => {
-        renderApp();
-      });
-    }
-  }
+function renderIndex(config) {
+  render(
+    <AuthProvider
+      keycloakConfigUrl={config.endpointBase + "config/keycloak.json"}
+      auth0Config={{
+        domain: config.auth0Domain,
+        clientId: config.auth0ClientId,
+        audience: config.auth0Audience,
+        redirectUri: window.location.origin,
+      }}
+      auth0ClaimsNamespace={config.auth0ClaimsNamespace}
+      defaultAuthMethod="kc"
+      loginAutomatically={false}
+    >
+      <AuthenticatedApp path={config.endpointBase} />
+    </AuthProvider>,
+    document.getElementById("root")
+  );
 }
 
 cfgreader.readConfig(function (config) {
   window.config = config;
-
-  let token = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
-
-  /* Renews token if it expires within 30 minutes to be on the safer side*/
-  if (
-    token != null &&
-    token.expires > new Date(Date.now() + 60 * 1000 * 30).getTime()
-  ) {
-    authWithKeyCloak(config.endpointBase);
-  } else {
-    axios
-      .get(config.endpointBase + "token")
-      .then((response) => {
-        let token = JSON.stringify(response.data);
-        localStorage.setItem("ABZU::GKT_TOKEN", token);
-      })
-      .catch((err) => {
-        console.warn(
-          "Failed to get GK token, Kartverket Flyfoto will not work",
-          err
-        );
-      });
-    authWithKeyCloak(config.endpointBase);
-  }
+  renderIndex(config);
 });
-
-function authWithKeyCloak(path) {
-  let kc = new Keycloak(window.config.endpointBase + "config/keycloak.json");
-
-  kc.init({ onLoad: "login-required", checkLoginIframe: false }).success(
-    (authenticated) => {
-      if (authenticated) {
-        localStorage.setItem("ABZU::jwt", kc.token);
-
-        setInterval(() => {
-          kc.updateToken(10).error(() => kc.logout());
-          localStorage.setItem("ABZU::jwt", kc.token);
-        }, 10000);
-
-        renderIndex(path, kc);
-      } else {
-        kc.login();
-      }
-    }
-  );
-}

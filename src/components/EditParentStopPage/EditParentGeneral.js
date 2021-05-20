@@ -25,23 +25,17 @@ import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import SaveDialog from "../Dialogs/SaveDialog";
 import AddAdjacentStopsDialog from "../Dialogs/AddAdjacentStopsDialog";
-import { withApollo } from "react-apollo";
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
-import {
-  saveParentStopPlace,
-  getStopPlaceVersions,
-  createParentStopPlace,
-  addToMultiModalStopPlace,
-  removeStopPlaceFromMultiModalStop,
-  terminateStop,
-  deleteStopPlace,
-} from "../../graphql/Tiamat/actions";
 import * as types from "../../actions/Types";
 import { MutationErrorCodes } from "../../models/ErrorCodes";
-import { stopPlaceAndPathLinkByVersion } from "../../graphql/Tiamat/queries";
 import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import { getIn, getIsCurrentVersionMax } from "../../utils/";
+import {
+  createParentStopPlace,
+  getStopPlaceAndPathLinkByVersion,
+  saveParentStopPlace,
+} from "../../actions/TiamatActions";
 
 class EditParentGeneral extends React.Component {
   constructor(props) {
@@ -62,15 +56,7 @@ class EditParentGeneral extends React.Component {
   };
 
   handleLoadVersion({ id, version }) {
-    const { client } = this.props;
-    client.query({
-      fetchPolicy: "network-only",
-      query: stopPlaceAndPathLinkByVersion,
-      variables: {
-        id,
-        version,
-      },
-    });
+    this.props.dispatch(getStopPlaceAndPathLinkByVersion(id, version));
   }
 
   handleCloseRemoveStopFromParent() {
@@ -87,10 +73,10 @@ class EditParentGeneral extends React.Component {
     comment,
     dateTime
   ) {
-    const { client, stopPlace, dispatch } = this.props;
+    const { stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
     if (shouldHardDelete) {
-      deleteStopPlace(client, stopPlace.id)
+      dispatch(deleteStopPlace(stopPlace.id))
         .then((response) => {
           this.setState({ isLoading: false });
           dispatch(UserActions.hideDeleteStopDialog());
@@ -103,12 +89,13 @@ class EditParentGeneral extends React.Component {
           dispatch(UserActions.hideDeleteStopDialog(true));
         });
     } else {
-      terminateStop(
-        client,
-        stopPlace.id,
-        shouldTerminatePermanently,
-        comment,
-        dateTime
+      dispatch(
+        terminateStop(
+          stopPlace.id,
+          shouldTerminatePermanently,
+          comment,
+          dateTime
+        )
       )
         .then((result) => {
           this.handleSaveSuccess(stopPlace.id);
@@ -122,7 +109,7 @@ class EditParentGeneral extends React.Component {
   }
 
   determineHowToSave(userInput) {
-    const { stopPlace, client } = this.props;
+    const { stopPlace, dispatch } = this.props;
 
     if (stopPlace.isNewStop) {
       const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
@@ -141,7 +128,7 @@ class EditParentGeneral extends React.Component {
       );
 
       if (childrenToAdd.length) {
-        addToMultiModalStopPlace(client, stopPlace.id, childrenToAdd).then(
+        dispatch(addToMultiModalStopPlace(stopPlace.id, childrenToAdd)).then(
           (response) => {
             this.saveParentStop(stopPlaceVariables);
           }
@@ -174,15 +161,16 @@ class EditParentGeneral extends React.Component {
   }
 
   handleRemoveStopFromParent() {
-    const { removingStopPlaceFromParentId, client, stopPlace } = this.props;
+    const { removingStopPlaceFromParentId, dispatch, stopPlace } = this.props;
     this.setState({
       isLoading: true,
     });
 
-    removeStopPlaceFromMultiModalStop(
-      client,
-      stopPlace.id,
-      removingStopPlaceFromParentId
+    dispatch(
+      removeStopPlaceFromMultiModalStop(
+        stopPlace.id,
+        removingStopPlaceFromParentId
+      )
     )
       .then((response) => {
         this.handleSaveSuccess(stopPlace.id);
@@ -201,13 +189,13 @@ class EditParentGeneral extends React.Component {
   }
 
   handleSaveSuccess(stopPlaceId) {
-    const { client, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     this.setState({
       saveDialogOpen: false,
     });
 
-    getStopPlaceVersions(client, stopPlaceId).then(() => {
+    dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
       dispatch(UserActions.navigateTo("/edit/", stopPlaceId));
       dispatch(UserActions.openSnackbar(types.SUCCESS));
     });
@@ -234,9 +222,9 @@ class EditParentGeneral extends React.Component {
   }
 
   handleCreateNewParentStopPlace(variables) {
-    const { client } = this.props;
+    const { dispatch } = this.props;
 
-    createParentStopPlace(client, variables)
+    dispatch(createParentStopPlace(variables))
       .then(({ data }) => {
         if (data && data.createMultiModalStopPlace) {
           const parentStopPlaceId = data.createMultiModalStopPlace.id;
@@ -249,9 +237,9 @@ class EditParentGeneral extends React.Component {
   }
 
   saveParentStop(parentStopPlaceVariables) {
-    const { client } = this.props;
+    const { dispatch } = this.props;
 
-    saveParentStopPlace(client, parentStopPlaceVariables)
+    dispatch(saveParentStopPlace(parentStopPlaceVariables))
       .then(({ data }) => {
         if (
           data &&
@@ -507,6 +495,4 @@ const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   deleteStopDialogWarning: user.deleteStopDialogWarning,
 });
 
-export default withApollo(
-  injectIntl(connect(mapStateToProps)(EditParentGeneral))
-);
+export default injectIntl(connect(mapStateToProps)(EditParentGeneral));

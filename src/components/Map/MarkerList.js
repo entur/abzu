@@ -29,15 +29,14 @@ import ParkAndRideMarker from "./ParkAndRideMarker";
 import CycleParkingMarker from "./CycleParkingMarker";
 import { setDecimalPrecision, getIn } from "../../utils";
 import QuayMarker from "./QuayMarker";
-import { withApollo } from "react-apollo";
-import {
-  allEntities,
-  neighbourStopPlaceQuays,
-} from "../../graphql/Tiamat/queries";
 import CoordinateMarker from "./CoordinateMarker";
 import Routes from "../../routes/";
 import * as MarkerStrings from "./markerText";
 import { Entities } from "../../models/Entities";
+import {
+  getNeighbourStopPlaceQuays,
+  getStopPlaceWithAll,
+} from "../../actions/TiamatActions";
 
 class MarkerList extends React.Component {
   static propTypes = {
@@ -57,29 +56,18 @@ class MarkerList extends React.Component {
   }
 
   handleAddToGroup(stopPlaceId) {
-    const { client } = this.props;
-    this.props.dispatch(
-      StopPlacesGroupActions.addMemberToGroup(client, stopPlaceId)
-    );
+    this.props.dispatch(StopPlacesGroupActions.addMemberToGroup(stopPlaceId));
   }
 
   handleStopOnClick(id) {
-    const { dispatch, client, path } = this.props;
+    const { dispatch, path } = this.props;
 
     const isAlreadyActive = id === path;
 
     if (!isAlreadyActive) {
-      client
-        .query({
-          fetchPolicy: "network-only",
-          query: allEntities,
-          variables: {
-            id: id,
-          },
-        })
-        .then((result) => {
-          dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
-        });
+      dispatch(getStopPlaceWithAll(id)).then((result) => {
+        dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
+      });
     }
   }
 
@@ -97,10 +85,8 @@ class MarkerList extends React.Component {
   }
 
   createNewMultimodalStopFrom(stopPlaceId) {
-    const { dispatch, client, isEditingStop } = this.props;
-    dispatch(
-      UserActions.createMultimodalWith(client, stopPlaceId, !isEditingStop)
-    );
+    const { dispatch, isEditingStop } = this.props;
+    dispatch(UserActions.createMultimodalWith(stopPlaceId, !isEditingStop));
   }
 
   handleDragEndNewStop(event) {
@@ -114,13 +100,7 @@ class MarkerList extends React.Component {
   }
 
   handleShowQuays(id) {
-    this.props.client.query({
-      fetchPolicy: "network-only",
-      query: neighbourStopPlaceQuays,
-      variables: {
-        id: id,
-      },
-    });
+    this.props.dispatch(getNeighbourStopPlaceQuays(id));
   }
 
   handleMergeStopPlace(id, name) {
@@ -173,10 +153,8 @@ class MarkerList extends React.Component {
   }
 
   handleCreateGroup(stopPlaceId) {
-    const { client, dispatch } = this.props;
-    dispatch(
-      StopPlacesGroupActions.useStopPlaceIdForNewGroup(client, stopPlaceId)
-    );
+    const { dispatch } = this.props;
+    dispatch(StopPlacesGroupActions.useStopPlaceIdForNewGroup(stopPlaceId));
   }
 
   createMarkerList(props) {
@@ -195,7 +173,6 @@ class MarkerList extends React.Component {
       isEditingStop,
       currentIsNewStop,
       currentStopIsMultiModal,
-      tokenParsed,
     } = props;
     const { formatMessage } = intl;
 
@@ -207,6 +184,9 @@ class MarkerList extends React.Component {
     );
 
     markers.forEach((marker, stopIndex) => {
+      // stopPlaceType specific names, such as platform, gate, etc.
+      const localeStopType = getLocaleStopTypeName(marker.stopPlaceType, intl);
+
       if (marker.entityType === Entities.GROUP_OF_STOP_PLACE) {
         marker.members.forEach((member) => {
           popupMarkers.push(
@@ -240,15 +220,11 @@ class MarkerList extends React.Component {
               isEditingStop={isEditingStop}
               missingCoordinatesMap={missingCoordinatesMap}
               createNewMultimodalStopFrom={() => {}}
-              tokenParsed={tokenParsed}
             />
           );
         });
         return;
       }
-
-      // stopPlaceType specific names, such as platform, gate, etc.
-      const localeStopType = getLocaleStopTypeName(marker.stopPlaceType, intl);
 
       if (marker.coordinatePin) {
         popupMarkers.push(
@@ -559,7 +535,6 @@ class MarkerList extends React.Component {
                   this
                 )}
                 stopPlace={marker}
-                tokenParsed={tokenParsed}
                 isEditingGroup={this.props.isEditingGroup}
                 handleCreateGroup={this.handleCreateGroup.bind(this)}
               />
@@ -616,14 +591,9 @@ const mapStateToProps = (state) => ({
   isCreatingPolylines: state.stopPlace.isCreatingPolylines,
   currentIsNewStop: getIn(state.stopPlace, ["current", "isNewStop"], false),
   neighbourStopQuays: state.stopPlace.neighbourStopQuays || {},
-  isEditingStop:
-    state.routing.locationBeforeTransitions.pathname.indexOf(
-      Routes.STOP_PLACE
-    ) > -1,
+  isEditingStop: state.router.location.pathname.indexOf(Routes.STOP_PLACE) > -1,
   isEditingGroup:
-    state.routing.locationBeforeTransitions.pathname.indexOf(
-      Routes.GROUP_OF_STOP_PLACE
-    ) > -1,
+    state.router.location.pathname.indexOf(Routes.GROUP_OF_STOP_PLACE) > -1,
   missingCoordinatesMap: state.user.missingCoordsMap,
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
@@ -643,7 +613,6 @@ const mapStateToProps = (state) => ({
     ["current", "isParent"],
     false
   ),
-  tokenParsed: getIn(state.roles, ["kc", "tokenParsed"], null),
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {
@@ -657,4 +626,4 @@ const getLocaleStopTypeName = (stopPlaceType, intl) => {
   return "";
 };
 
-export default withApollo(injectIntl(connect(mapStateToProps)(MarkerList)));
+export default injectIntl(connect(mapStateToProps)(MarkerList));

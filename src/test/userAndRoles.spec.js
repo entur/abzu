@@ -38,7 +38,11 @@ describe("User and roles - scenarios", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -61,7 +65,11 @@ describe("User and roles - scenarios", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -84,12 +92,20 @@ describe("User and roles - scenarios", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceBusStop.canEdit).toEqual(false);
   });
@@ -120,7 +136,11 @@ describe("User and roles - scenarios", () => {
 
     const allowanceInfo = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -143,12 +163,20 @@ describe("User and roles - scenarios", () => {
 
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(false);
   });
@@ -171,12 +199,20 @@ describe("User and roles - scenarios", () => {
 
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
@@ -199,12 +235,20 @@ describe("User and roles - scenarios", () => {
 
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
@@ -226,17 +270,29 @@ describe("User and roles - scenarios", () => {
 
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailStop.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
@@ -257,17 +313,29 @@ describe("User and roles - scenarios", () => {
 
     const allowanceRailStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailStop.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockBusStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockRailReplacementStop),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
@@ -290,7 +358,11 @@ describe("User and roles - scenarios", () => {
 
     const allowanceStopWithNoModality = getAllowanceInfoForStop(
       mockedAllowanceInfoAction(mockStopWithoutModality),
-      token
+      {
+        auth: { roleAssignments: token.roles },
+        fetchedPolygons: null,
+        allowNewStopEverywhere: true,
+      }
     );
     expect(allowanceStopWithNoModality.canEdit).toEqual(true);
   });

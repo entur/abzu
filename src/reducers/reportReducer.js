@@ -28,8 +28,7 @@ const reportReducer = (state = initialState, action) => {
         return reduceTopopGraphicalPlacesForReport(state, action);
       } else if (action.operationName === "findStopForReport") {
         return reduceSearchResultsForReport(state, action);
-        // Used for adding parking elements to stopPlaces
-      } else if (!action.operationName) {
+      } else if (action.operationName === "ParkingForMultipleStopPlaces") {
         return populateStopPlacesWithParking(state, action.result.data);
       } else {
         return state;

@@ -15,9 +15,8 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import MdClose from "material-ui/svg-icons/navigation/close";
 import IconButton from "material-ui/IconButton";
-import { withApollo } from "react-apollo";
 import TagItem from "./TagItem";
-import { removeTag, getTags } from "../../graphql/Tiamat/actions";
+import { removeTag, getTags } from "../../actions/TiamatActions";
 import AddTagDialog from "./AddTagDialog";
 import { connect } from "react-redux";
 import RefreshIndicator from "material-ui/RefreshIndicator";
@@ -31,11 +30,11 @@ class TagsDialog extends Component {
   }
 
   handleDeleteTag(name, idReference) {
-    const { client } = this.props;
+    const { dispatch } = this.props;
     this.setState({ isLoading: true });
-    removeTag(client, name, idReference)
+    dispatch(removeTag(name, idReference))
       .then((result) => {
-        getTags(client, idReference)
+        dispatch(getTags(idReference))
           .then((result) => {
             this.setState({ isLoading: false });
           })
@@ -160,4 +159,4 @@ const mapStateToProps = ({ stopPlace }) => ({
   idReference: stopPlace.current.id,
 });
 
-export default withApollo(connect(mapStateToProps)(TagsDialog));
+export default connect(mapStateToProps)(TagsDialog);

@@ -13,9 +13,8 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import { withApollo } from "react-apollo";
 import { connect } from "react-redux";
-import { getGroupOfStopPlacesById } from "../graphql/Tiamat/actions";
+import { getGroupOfStopPlacesById } from "../actions/TiamatActions";
 import GroupOfStopPlaceMap from "../components/GroupOfStopPlaces/GroupOfStopPlacesMap";
 import EditGroupOfStopPlace from "../components/GroupOfStopPlaces/EditGroupOfStopPlaces";
 import Loader from "../components/Dialogs/Loader";
@@ -51,22 +50,20 @@ class GroupOfStopPlaces extends Component {
   }
 
   handleNewGroupOfStopPlace() {
-    const { sourceForNewGroup, dispatch, client } = this.props;
+    const { sourceForNewGroup, dispatch } = this.props;
     if (sourceForNewGroup) {
-      dispatch(
-        StopPlacesGroupActions.createNewGroup(client, sourceForNewGroup)
-      );
+      dispatch(StopPlacesGroupActions.createNewGroup(sourceForNewGroup));
     } else {
       dispatch(UserActions.navigateTo("/", ""));
     }
   }
 
   handleFetchGroup(groupId) {
-    const { client } = this.props;
+    const { dispatch } = this.props;
 
     this.handleLoading(true);
 
-    getGroupOfStopPlacesById(client, groupId)
+    dispatch(getGroupOfStopPlacesById(groupId))
       .then(({ data }) => {
         this.handleLoading(false);
         if (data.groupOfStopPlaces && !data.groupOfStopPlaces.length) {
@@ -134,4 +131,4 @@ const mapStateToProps = ({ stopPlacesGroup }) => ({
   sourceForNewGroup: stopPlacesGroup.sourceForNewGroup,
 });
 
-export default withApollo(connect(mapStateToProps)(GroupOfStopPlaces));
+export default connect(mapStateToProps)(GroupOfStopPlaces);

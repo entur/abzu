@@ -17,6 +17,7 @@ import UserActions from "./UserActions";
 import AssessmentActions from "./AssessmentActions";
 import EquipmentActions from "./EquipmentActions";
 import StopPlacesGroupActions from "./StopPlacesGroupActions";
+import { getOperationAST } from "graphql";
 
 export {
   StopPlaceActions,
@@ -29,4 +30,18 @@ export {
 export const createThunk = (type, payLoad) => ({
   type,
   payLoad,
+});
+
+export const createApolloThunk = (type, result, doc, variables) => ({
+  type,
+  result,
+  operationName: doc ? getOperationAST(doc)?.name?.value : undefined,
+  variables,
+});
+
+export const createApolloErrorThunk = (type, error, doc, variables) => ({
+  type,
+  error,
+  operationName: doc ? getOperationAST(doc)?.name?.value : undefined,
+  variables,
 });

@@ -198,6 +198,7 @@
   "local_reference": "Local reference:",
   "local_reference_empty": "No local reference",
   "log_out": "Log out",
+  "log_in": "Log in",
   "lookup_coordinates": "Lookup coordinates",
   "making_parent_stop_place_title": "You are now making a new multimodal stop place",
   "making_stop_place_hint": "Double click anywhere on the map to set desired location. Click the marker for more options",

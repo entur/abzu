@@ -20,20 +20,18 @@ import ReportFilterBox from "../components/ReportPage/ReportFilterBox";
 import ModalityFilter from "../components/EditStopPage/ModalityFilter";
 import TopographicalFilter from "../components/MainPage/TopographicalFilter";
 import AutoComplete from "material-ui/AutoComplete";
-import { withApollo } from "react-apollo";
 import {
   findStopForReport,
   getParkingForMultipleStopPlaces,
-  topopGraphicalPlacesReportQuery,
-} from "../graphql/Tiamat/queries";
-import { getTopographicPlaces } from "../graphql/Tiamat/actions";
+  getTopographicPlaces,
+  topographicalPlaceSearch,
+} from "../actions/TiamatActions";
 import MenuItem from "material-ui/MenuItem";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import MdSpinner from "../static/icons/spinner";
 import MdSearch from "material-ui/svg-icons/action/search";
 import ColumnFilterPopover from "../components/EditStopPage/ColumnFilterPopover";
-import { reportReducer } from "../reducers/";
 import { injectIntl } from "react-intl";
 import {
   columnOptionsQuays,
@@ -162,7 +160,7 @@ class ReportPage extends React.Component {
 
   componentDidMount() {
     const { formatMessage } = this.props.intl;
-    const { client } = this.props;
+    const { dispatch } = this.props;
     document.title = formatMessage({ id: "_report_page" });
     const fromURL = extractQueryParamsFromUrl();
     this.setState({
@@ -194,7 +192,7 @@ class ReportPage extends React.Component {
     }
 
     if (topographicalPlaceIds.length) {
-      getTopographicPlaces(client, topographicalPlaceIds).then((response) => {
+      dispatch(getTopographicPlaces(topographicalPlaceIds)).then((response) => {
         if (response.data && Object.keys(response.data).length) {
           let menuItems = [];
 
@@ -234,7 +232,7 @@ class ReportPage extends React.Component {
       showFutureAndExpired,
       tags,
     } = this.state;
-    const { client } = this.props;
+    const { dispatch } = this.props;
 
     this.setState({
       isLoading: true,
@@ -267,12 +265,7 @@ class ReportPage extends React.Component {
         .map((topos) => topos.id),
     };
 
-    client
-      .query({
-        query: findStopForReport,
-        fetchPolicy: "network-only",
-        variables: queryVariables,
-      })
+    dispatch(findStopForReport(queryVariables))
       .then((response) => {
         const stopPlaces = response.data.stopPlace;
         const stopPlaceIds = [];
@@ -290,19 +283,14 @@ class ReportPage extends React.Component {
           ...queryVariables,
           showFutureAndExpired,
         });
-        client
-          .query({
-            query: getParkingForMultipleStopPlaces(stopPlaceIds),
-            reducer: reportReducer,
-            fetchPolicy: "network-only",
-            operationName: "multipleParkingQuery",
-          })
-          .then((response) => {
+        dispatch(getParkingForMultipleStopPlaces(stopPlaceIds)).then(
+          (response) => {
             this.setState({
               isLoading: false,
               activePageIndex: 0,
             });
-          });
+          }
+        );
       })
       .catch((err) => {
         this.setState({
@@ -332,13 +320,7 @@ class ReportPage extends React.Component {
   }
 
   handleTopographicalPlaceSearch(searchText) {
-    this.props.client.query({
-      query: topopGraphicalPlacesReportQuery,
-      fetchPolicy: "network-only",
-      variables: {
-        query: searchText,
-      },
-    });
+    this.props.dispatch(topographicalPlaceSearch(searchText));
   }
 
   createTopographicPlaceMenuItem(place, formatMessage) {
@@ -576,4 +558,4 @@ const mapStateToProps = (state) => ({
   duplicateInfo: state.report.duplicateInfo,
 });
 
-export default withApollo(connect(mapStateToProps)(injectIntl(ReportPage)));
+export default connect(mapStateToProps)(injectIntl(ReportPage));

@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import { groupOfStopPlaceReducer } from "./../../reducers/";
+import groupOfStopPlaceReducer from "./../../reducers/groupOfStopPlacesReducer";
 import groupOfStopPlaceQuery from "./json/groupOfStopPlace.json";
 import groupOfStopPlaceMutation from "./json/groupOfStopPlaceMutation.json";
 import mapHelper from "../../modelUtils/mapToQueryVariables";

@@ -20,8 +20,6 @@ import EditParentGeneral from "../components/EditParentStopPage/EditParentGenera
 import InformationBanner from "../components/EditStopPage/InformationBanner";
 import { injectIntl } from "react-intl";
 import InformationManager from "../singletons/InformationManager";
-import { allEntities } from "../graphql/Tiamat/queries";
-import { withApollo } from "react-apollo";
 import "../styles/main.css";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
@@ -30,6 +28,7 @@ import { getIn } from "../utils";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import LoadingPage from "./LoadingPage";
+import { getStopPlaceWithAll } from "../actions/TiamatActions";
 
 class StopPlace extends React.Component {
   constructor(props) {
@@ -66,7 +65,7 @@ class StopPlace extends React.Component {
   }
 
   componentDidMount() {
-    const { client, dispatch } = this.props;
+    const { dispatch } = this.props;
     const idFromPath = window.location.pathname
       .substring(window.location.pathname.lastIndexOf("/"))
       .replace("/", "");
@@ -76,14 +75,7 @@ class StopPlace extends React.Component {
     }
 
     if (idFromPath && idFromPath.length && idFromPath && idFromPath !== "new") {
-      client
-        .query({
-          fetchPolicy: "network-only",
-          query: allEntities,
-          variables: {
-            id: idFromPath,
-          },
-        })
+      dispatch(getStopPlaceWithAll(idFromPath))
         .then((response) => {
           if (!response.data.stopPlace.length) {
             this.setState({
@@ -193,4 +185,4 @@ const mapStateToProps = (state) => ({
 
 const EditPlaceIntl = injectIntl(connect(mapStateToProps)(StopPlace));
 
-export default withApollo(EditPlaceIntl);
+export default EditPlaceIntl;

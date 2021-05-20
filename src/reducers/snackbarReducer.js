@@ -56,8 +56,8 @@ const rolesReducer = (state = initialState, action) => {
 };
 
 const getErrorMsg = (error) => {
-  if (error && error.graphQLErrors && error.graphQLErrors.length) {
-    return error.graphQLErrors[0].message;
+  if (error && error.length) {
+    return error[0].message;
   }
   return null;
 };

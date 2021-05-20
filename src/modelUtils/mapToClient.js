@@ -186,6 +186,7 @@ helpers.mapVersionToClientVersion = (source) => {
     const transformer = (value) => moment(value).format("DD-MM-YYYY HH:mm");
 
     return source
+      .slice()
       .sort((a, b) => Number(b.version) - Number(a.version))
       .map((data) => {
         let version = {
