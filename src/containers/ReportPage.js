@@ -283,14 +283,21 @@ class ReportPage extends React.Component {
           ...queryVariables,
           showFutureAndExpired,
         });
-        dispatch(getParkingForMultipleStopPlaces(stopPlaceIds)).then(
-          (response) => {
-            this.setState({
-              isLoading: false,
-              activePageIndex: 0,
-            });
-          }
-        );
+        if (stopPlaceIds.length > 0) {
+          dispatch(getParkingForMultipleStopPlaces(stopPlaceIds)).then(
+            (response) => {
+              this.setState({
+                isLoading: false,
+                activePageIndex: 0,
+              });
+            }
+          );
+        } else {
+          this.setState({
+            isLoading: false,
+            activePageIndex: 0,
+          });
+        }
       })
       .catch((err) => {
         this.setState({

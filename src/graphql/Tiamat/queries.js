@@ -592,16 +592,16 @@ export const getParkingForMultipleStopPlaces = (stopPlaceIds) => {
 
   stopPlaces.forEach((stopPlace) => {
     queryContent += `
-        ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
-            id
-            parkingVehicleTypes
-        }
+      ${stopPlace.alias}: parking(stopPlaceId: "${stopPlace.id}") {
+        id
+        parkingVehicleTypes
+      }
     `;
   });
 
   return gql`
     query ParkingForMultipleStopPlaces {
-        ${queryContent}
+      ${queryContent}
     }
   `;
 };
@@ -700,24 +700,24 @@ export const getQueryTopographicPlaces = (ids) => {
 
     queryContent += `
         ${alias}: topographicPlace(id: "${id}") {
-           id
-           name {
-            value
-           }
-           topographicPlaceType
-           parentTopographicPlace {
-            name {
-              value
-            }
+          id
+          name {
+          value
           }
-       }
+          topographicPlaceType
+          parentTopographicPlace {
+          name {
+            value
+          }
+        }
+      }
     `;
   });
 
   return gql`
-      query topographicPlacesForQuery {
-          ${queryContent}
-      }
+    query topographicPlacesForQuery {
+      ${queryContent}
+    }
   `;
 };
 
