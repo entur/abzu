@@ -187,7 +187,7 @@ class EditStopGeneral extends React.Component {
         this.setState({ isLoading: false });
         dispatch(UserActions.openSnackbar(types.SUCCESS));
         this.handleCloseMergeQuaysDialog();
-        getStopPlaceWithAll(stopPlace.id);
+        dispatch(getStopPlaceWithAll(stopPlace.id));
       })
       .catch(() => {
         this.setState({ isLoading: false });
@@ -201,7 +201,7 @@ class EditStopGeneral extends React.Component {
       .then(() => {
         this.setState({ isLoading: false });
         dispatch(UserActions.hideDeleteQuayDialog());
-        getStopPlaceWithAll(stopPlace.id).then(() => {
+        dispatch(getStopPlaceWithAll(stopPlace.id)).then(() => {
           dispatch(UserActions.openSnackbar(types.SUCCESS));
         });
       })
