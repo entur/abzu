@@ -83,7 +83,7 @@ class Parking {
       parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
+      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces || 0 : null,
       numberOfSpacesWithRechargePoint: this.isParkAndRide
         ? this.numberOfSpacesWithRechargePoint
         : null,
@@ -91,7 +91,7 @@ class Parking {
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
-      totalCapacity: parking.totalCapacity,
+      totalCapacity: parking.totalCapacity || 0,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
