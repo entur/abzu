@@ -23,7 +23,7 @@ class Parking {
   }
 
   findNumberOfSpaces(userType, lookupKey) {
-    return this.parking.parkingProperties.length > 0
+    return this.parking.parkingProperties?.length > 0
       ? this.parking.parkingProperties
           .slice()
           .shift()
@@ -32,7 +32,7 @@ class Parking {
   }
 
   get numberOfSpaces() {
-    if (this.parking.parkingProperties.length) {
+    if (this.parking.parkingProperties?.length) {
       return this.findNumberOfSpaces("allUsers", "numberOfSpaces");
     } else {
       return this.parking.totalCapacity;
@@ -83,7 +83,7 @@ class Parking {
       parkingType: this.parkingType,
       parkingPaymentProcess: parking.parkingPaymentProcess,
       rechargingAvailable: parking.rechargingAvailable,
-      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces || 0 : null,
+      numberOfSpaces: this.isParkAndRide ? this.numberOfSpaces : null,
       numberOfSpacesWithRechargePoint: this.isParkAndRide
         ? this.numberOfSpacesWithRechargePoint
         : null,
@@ -91,7 +91,7 @@ class Parking {
         ? this.numberOfSpacesForRegisteredDisabledUserType
         : null,
       parkingLayout: this.isParkAndRide ? this.parking.parkingLayout : null,
-      totalCapacity: parking.totalCapacity || 0,
+      totalCapacity: parking.totalCapacity,
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
