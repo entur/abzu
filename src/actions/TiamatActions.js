@@ -211,7 +211,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
       handleMutation(getState().user.client, {
         mutation: updateChildOfParentStop,
         variables,
-        fetchPolicy: "network-only",
+        fetchPolicy: "no-cache",
         context: await getContext(getState().roles.auth),
       })(dispatch)
         .then((result) => {
@@ -242,7 +242,7 @@ export const removeStopPlaceFromMultiModalStop = (
       stopPlaceId,
       parentSiteRef,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
@@ -279,6 +279,7 @@ export const terminateStop = (
       toDate,
       modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
     },
+    fetchPolicy: "no-cache",
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
