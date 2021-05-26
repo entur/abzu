@@ -125,7 +125,7 @@ class ParentStopDetails extends Component {
   }
 
   render() {
-    const { stopPlace, intl, disabled } = this.props;
+    const { stopPlace, intl, disabled, dispatch } = this.props;
     const {
       changePositionOpen,
       addStopPlaceOpen,
