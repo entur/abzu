@@ -17,5 +17,9 @@ data:
       "mapboxTariffZonesStyle": "${MAPBOX_TARIFF_ZONES_STYLE}",
       "mapboxAccessToken": "${MAPBOX_ACCESS_TOKEN}",
       "sentryDSN": "${SENTRY_DSN}",
-      "googleApiKey": "${GOOGLE_API_KEY}"
+      "googleApiKey": "${GOOGLE_API_KEY}",
+      "auth0Domain": "{{ .Values.configMap.auth0Domain }}",
+      "auth0ClientId": "{{ .Values.configMap.auth0ClientId }}",
+      "auth0Audience": "{{ .Values.configMap.auth0Audience }}",
+      "auth0ClaimsNamespace": "{{ .Values.configMap.auth0ClaimsNamespace }}",
     }

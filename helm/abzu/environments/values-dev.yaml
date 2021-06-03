@@ -6,6 +6,10 @@ configMap:
   OSMUrl: "https://api-test.entur.org/map/1.0/{z}/{x}/{y}.png"
   tiamatEnv: "test"
   OTPUrl: "https://api.dev.entur.io/journey-planner/v2/graphql"
+  auth0Domain: ror-entur-dev.eu.auth0.com
+  auth0ClientId: l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM
+  auth0Audience: https://ror.api.dev.entur.io
+  auth0ClaimsNamespace: https://ror.entur.io/role_assignments
 
 ingress:
   enabled: true
