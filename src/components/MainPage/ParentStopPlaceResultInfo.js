@@ -22,6 +22,7 @@ import TagTray from "./TagTray";
 import WheelChair from "material-ui/svg-icons/action/accessible";
 import { getIn } from "../../utils/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import ModalityIconImg from "./ModalityIconImg";
 
 class ParentStopPlaceResultInfo extends Component {
   render() {
@@ -132,6 +133,12 @@ class ParentStopPlaceResultInfo extends Component {
               }}
             >
               <div style={{ display: "flex", fontSize: "0.8rem" }}>
+                <ModalityIconImg
+                  type={childStopPlace.stopPlaceType}
+                  submode={childStopPlace.submode}
+                  svgStyle={{ transform: "scale(0.8)" }}
+                  style={{ marginTop: -8, marginRight: 5 }}
+                />
                 <div>{childStopPlace.name}</div>
                 <div style={{ marginLeft: 5 }}>
                   <StopPlaceLink id={childStopPlace.id} />
