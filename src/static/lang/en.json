@@ -182,6 +182,8 @@
   "important_notice": "Important notice:",
   "important_quay_usages_found": "The source quay has at least one scheduled journey. Used by",
   "important_stop_place_usages_found": "The stop place has at least one scheduled journey after requested termination date. The Stop place is used by:",
+  "important_quay_usages_api_link": "Check which lines use this quay in the API",
+  "important_stop_places_usages_api_link": "Check which lines use this stop place in the API",
   "in": "in",
   "is_missing_coordinates": "Missing coordinates",
   "is_missing_coordinates_help_text": "You can specify temporary coordinates before you edit.",

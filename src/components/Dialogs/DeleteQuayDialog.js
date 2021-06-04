@@ -21,6 +21,7 @@ import MdDelete from "material-ui/svg-icons/action/delete-forever";
 import MdWarning from "material-ui/svg-icons/alert/warning";
 import Spinner from "../../static/icons/spinner";
 import Checkbox from "material-ui/Checkbox";
+import { getQuaySearchUrl } from "../../utils/shamash";
 
 class DeleteQuayDialog extends React.Component {
   constructor(props) {
@@ -46,7 +47,12 @@ class DeleteQuayDialog extends React.Component {
   }
 
   getUsageWarning() {
-    const { fetchingOTPInfoLoading, warningInfo, intl } = this.props;
+    const {
+      fetchingOTPInfoLoading,
+      warningInfo,
+      intl,
+      deletingQuay,
+    } = this.props;
     const { formatMessage } = intl;
     const infoStyle = { fontSize: "1.1em", borderBottom: 10 };
 
@@ -72,6 +78,9 @@ class DeleteQuayDialog extends React.Component {
           border: "1px solid black",
           background: "rgb(252, 200, 197)",
         };
+
+        const shamashUrl = getQuaySearchUrl(deletingQuay?.quayId);
+
         return (
           <div style={panicStyle}>
             <div>{formatMessage({ id: "quay_usages_found" })}</div>
@@ -90,6 +99,11 @@ class DeleteQuayDialog extends React.Component {
                 </div>
                 <div style={{ fontStyle: "italic" }}>
                   {authorities && authorities.join(", ")}
+                </div>
+                <div>
+                  <a target="_NEW" href={shamashUrl}>
+                    {formatMessage({ id: "important_quay_usages_api_link" })}
+                  </a>
                 </div>
               </div>
             }

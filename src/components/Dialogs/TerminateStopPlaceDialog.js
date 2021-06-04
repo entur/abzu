@@ -28,6 +28,7 @@ import areIntlLocalesSupported from "intl-locales-supported";
 import TextField from "material-ui/TextField";
 import helpers from "../../modelUtils/mapToQueryVariables";
 import Spinner from "../../static/icons/spinner";
+import { getStopPlaceSearchUrl } from "../../utils/shamash";
 
 let DateTimeFormat;
 
@@ -127,6 +128,9 @@ class TerminateStopPlaceDialog extends React.Component {
           background: "rgb(252, 200, 197)",
         };
         const wrapperStyle = !makeSomeNoise ? alertStyle : panicStyle;
+
+        const shamashUrl = getStopPlaceSearchUrl(stopPlaceId);
+
         return (
           <div style={wrapperStyle}>
             <div>{formatMessage({ id: "stop_place_usages_found" })}</div>
@@ -145,6 +149,13 @@ class TerminateStopPlaceDialog extends React.Component {
                 </div>
                 <div style={{ fontStyle: "italic" }}>
                   {authorities && authorities.join(", ")}
+                </div>
+                <div>
+                  <a target="_NEW" href={shamashUrl}>
+                    {formatMessage({
+                      id: "important_stop_places_usages_api_link",
+                    })}
+                  </a>
                 </div>
               </div>
             )}
