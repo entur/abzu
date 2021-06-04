@@ -152,7 +152,9 @@ class TerminateStopPlaceDialog extends React.Component {
                 </div>
                 <div>
                   <a target="_NEW" href={shamashUrl}>
-                    Sjekk hvilke linjer som benytter stoppestedet i API
+                    {formatMessage({
+                      id: "important_stop_places_usages_api_link",
+                    })}
                   </a>
                 </div>
               </div>

@@ -182,6 +182,8 @@
   "important_notice": "Viktig melding:",
   "important_quay_usages_found": "Det er trafikk på kildequayen. Brukes av",
   "important_stop_place_usages_found": "Det er trafikk på stoppestedet etter nedleggelsesdato. Brukes av:",
+  "important_quay_usages_api_link": "Sjekk hvilke linjer som bruker denne plattformen i APIet",
+  "important_stop_places_usages_api_link": "Sjekk hvilke linjer som bruker dette stoppestedet i APIet",
   "in": "inn i",
   "is_missing_coordinates": "Koordinater mangler",
   "is_missing_coordinates_help_text": "Du kan sette midlertidige koordinater før du redigerer.",

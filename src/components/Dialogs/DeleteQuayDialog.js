@@ -102,7 +102,7 @@ class DeleteQuayDialog extends React.Component {
                 </div>
                 <div>
                   <a target="_NEW" href={shamashUrl}>
-                    Sjekk hvilke linjer som benytter plattformen i API
+                    {formatMessage({ id: "important_quay_usages_api_link" })}
                   </a>
                 </div>
               </div>
