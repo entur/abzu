@@ -356,6 +356,7 @@ class MarkerList extends React.Component {
               isGroupMember={marker.isMemberOfGroup}
               handleCreateGroup={this.handleCreateGroup.bind(this)}
               disabledForSearch={disabledForSearch}
+              allowConnectToAdjacentStop={false}
             />
           );
 

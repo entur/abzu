@@ -103,6 +103,7 @@ class StopPlaceMarker extends React.Component {
       isEditingStop,
       handleCreateGroup,
       isGroupMember,
+      allowConnectToAdjacentStop = true,
     } = this.props;
 
     const markerLocation = position || missingCoordinatesMap[id];
@@ -212,6 +213,7 @@ class StopPlaceMarker extends React.Component {
             />
             <PopupButton
               hidden={
+                !allowConnectToAdjacentStop ||
                 !isMultimodalChild ||
                 isMultimodal ||
                 hasExpired ||
