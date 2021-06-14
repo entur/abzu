@@ -113,17 +113,17 @@ class SaveDialog extends React.Component {
 
   handleSave() {
     const { handleConfirm } = this.props;
-    const {
-      expiraryExpanded,
-      timeFrom,
-      timeTo,
-      dateFrom,
-      dateTo,
-      comment,
-    } = this.state;
+
+    const earliestFrom = getEarliestFromDate(
+      this.props.currentValidBetween,
+      this.props.serverTimeDiff
+    );
+
+    const { expiraryExpanded, timeTo, dateTo, comment } = this.state;
+
     let userInput = {
-      dateFrom: dateFrom,
-      timeFrom: timeFrom,
+      dateFrom: earliestFrom,
+      timeFrom: earliestFrom,
       comment: comment,
     };
     if (expiraryExpanded) {
@@ -146,7 +146,6 @@ class SaveDialog extends React.Component {
       errorMessage,
       currentValidBetween,
       serverTimeDiff,
-      canTerminateValidBetween,
     } = this.props;
     const { formatMessage } = intl;
     const {
@@ -173,7 +172,6 @@ class SaveDialog extends React.Component {
       date: formatMessage({ id: "date" }),
       time: formatMessage({ id: "time" }),
       title: formatMessage({ id: "save_dialog_title" }),
-      message_from: formatMessage({ id: "save_dialog_message_from" }),
       message_to: formatMessage({ id: "save_dialog_message_to" }),
       note: formatMessage({ id: "save_dialog_note" }),
       error: formatMessage({ id: "save_dialog_to_is_before_from" }),
@@ -263,9 +261,6 @@ class SaveDialog extends React.Component {
       </div>
     );
 
-    // Make this configurable
-    const displayDatePickersForValidity = false;
-
     return (
       <Dialog
         title={translations.title}
@@ -277,60 +272,6 @@ class SaveDialog extends React.Component {
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        {displayDatePickersForValidity && (
-          <div>
-            <div style={{ marginLeft: 30 }}>{translations.message_from}</div>
-            <div style={{ marginTop: 15, textAlign: "center" }}>
-              <DatePicker
-                hintText={translations.date}
-                cancelLabel={translations.cancel}
-                okLabel={translations.use}
-                DateTimeFormat={DateTimeFormat}
-                formatDate={
-                  new DateTimeFormat(intl.locale, {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }).format
-                }
-                autoOk
-                mode="landscape"
-                minDate={earliestFrom}
-                value={dateFrom}
-                textFieldStyle={{ width: "80%" }}
-                onChange={(event, value) => {
-                  this.setState({ dateFrom: value });
-                }}
-              />
-              <TimePicker
-                format="24hr"
-                cancelLabel={translations.cancel}
-                hintText={translations.time}
-                value={timeFrom}
-                okLabel={translations.use}
-                autoOk
-                textFieldStyle={{ width: "80%" }}
-                onChange={(event, value) => {
-                  this.setState({
-                    timeFrom: new Date(new Date(value).setSeconds(0)),
-                  });
-                }}
-              />
-            </div>
-            <div style={{ fontSize: 12, textAlign: "center", marginTop: 10 }}>
-              {translations.note}
-            </div>
-            <Checkbox
-              checked={expiraryExpanded}
-              disabled={!canTerminateValidBetween}
-              label={translations.do_you_want_to_specify_expirary}
-              onCheck={(event, checked) => {
-                this.setState({ expiraryExpanded: checked });
-              }}
-              style={{ marginTop: 10, fontSize: 12 }}
-            />
-          </div>
-        )}
         {expiraryExpanded ? { expandedExpirary } : null}
         <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
           <TextField
