@@ -6,7 +6,7 @@ configMap:
   OSMUrl: "https://api.entur.org/map/1.0/{z}/{x}/{y}.png"
   tiamatEnv: "production"
   OTPUrl: "https://api.entur.io/journey-planner/v2/graphql"
-  auth0Domain: ror-entur.eu.auth0.com
+  auth0Domain: auth2.entur.org
   auth0ClientId: JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec
   auth0Audience: https://ror.api.entur.io
   auth0ClaimsNamespace: https://ror.entur.io/role_assignments
