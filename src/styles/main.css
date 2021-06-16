@@ -25,13 +25,3 @@ body {
   color: #191919;
   margin: 0px;
 }
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-span:not(.MuiButton-label) {
-  color: #191919;
-}
