@@ -31,6 +31,8 @@ import MdReport from "material-ui/svg-icons/content/report";
 import MdHelp from "material-ui/svg-icons/action/help";
 import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import { Button } from "@material-ui/core";
+import { RaisedButton } from "material-ui";
 
 class Header extends React.Component {
   constructor(props) {
@@ -180,13 +182,28 @@ class Header extends React.Component {
             background: getEnvColor(tiamatEnv),
           }}
           title={
-            <div>
-              {title}
-              {(tiamatEnv === "test" || tiamatEnv === "development") && (
-                <span style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}>
-                  {tiamatEnv}
-                </span>
-              )}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                {title}
+                {(tiamatEnv === "test" || tiamatEnv === "development") && (
+                  <span
+                    style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}
+                  >
+                    {tiamatEnv}
+                  </span>
+                )}
+              </div>
+              <div style={{ height: "36px" }}>
+                {!this.props.auth.isAuthenticated && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.handleLogin()}
+                  >
+                    {logIn}
+                  </Button>
+                )}
+              </div>
             </div>
           }
           showMenuIconButton={true}
@@ -371,14 +388,6 @@ class Header extends React.Component {
                   leftIcon={<MdAccount color="#41c0c4" />}
                   primaryText={`${logOut} ${username}`}
                   onClick={() => this.handleLogOut()}
-                  style={{ fontSize: 12, padding: 0 }}
-                />
-              )}
-              {!this.props.auth.isAuthenticated && (
-                <MenuItem
-                  leftIcon={<MdAccount color="#41c0c4" />}
-                  primaryText={logIn}
-                  onClick={() => this.handleLogin()}
                   style={{ fontSize: 12, padding: 0 }}
                 />
               )}

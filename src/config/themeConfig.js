@@ -14,7 +14,10 @@
 
 import { getIn } from "../utils";
 import { getEnvColor as defaultEnvColor } from "./themes/default/defaultTheme";
-import { getTheme as getDefaultTheme } from "./themes/default/defaultTheme";
+import {
+  getV0Theme as getV0DefaultTheme,
+  getTheme as getDefaultTheme,
+} from "./themes/default/defaultTheme";
 import defaultLogo from "./themes/default/logo.png";
 import { primary as defaultPrimary } from "./themes/default/defaultTheme";
 import {
@@ -33,6 +36,16 @@ export const getEnvColor = (env) => {
       "/index.js").getEnvColor(env);
   } else {
     return defaultEnvColor(env);
+  }
+};
+
+export const getV0Theme = () => {
+  if (process.env.REACT_APP_THEME) {
+    return require("./themes/" +
+      process.env.REACT_APP_THEME +
+      "/index.js").getV0Theme();
+  } else {
+    return getV0DefaultTheme();
   }
 };
 

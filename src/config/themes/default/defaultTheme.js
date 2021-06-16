@@ -41,7 +41,7 @@ export const getEnvColor = (env) => {
   }
 };
 
-export const getTheme = () => ({
+export const getV0Theme = () => ({
   fontFamily: "Roboto, sans-serif",
   palette: {
     primary1Color: primary,
@@ -68,5 +68,21 @@ export const getTheme = () => ({
   },
   appBar: {
     color: darkColor,
+  },
+});
+
+export const getTheme = () => ({
+  fontFamily: "Roboto, sans-serif",
+  palette: {
+    primary: {
+      main: primary,
+    },
+  },
+  overrides: {
+    MuiButton: {
+      containedPrimary: {
+        color: white,
+      },
+    },
   },
 });

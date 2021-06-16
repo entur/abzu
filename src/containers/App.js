@@ -20,12 +20,12 @@ import { injectIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useAuth } from "@entur/auth-provider";
 import Header from "../components/Header";
-import { getTheme } from "../config/themeConfig";
+import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import BrowserSupport from "../components/BrowserSupport";
 import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 
-const muiThemeV0 = getMuiTheme(getTheme());
+const muiThemeV0 = getMuiTheme(getV0Theme());
 const muiTheme = createMuiTheme(getTheme());
 
 const App = ({ intl, children }) => {
