@@ -91,7 +91,7 @@ class Header extends React.Component {
 
   handleLogOut() {
     if (this.props.auth) {
-      this.props.auth.logout();
+      this.props.auth.logout({ returnTo: window.location.origin });
     }
   }
 
