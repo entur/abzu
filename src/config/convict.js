@@ -124,7 +124,7 @@ module.exports = new Promise(function (resolve, reject) {
     defaultAuthMethod: {
       doc: "Set default authentication method (kc or auth0)",
       format: String,
-      default: "kc",
+      default: "auth0",
       env: "DEFAULT_AUTH_METHOD",
     },
   });
