@@ -121,6 +121,12 @@ module.exports = new Promise(function (resolve, reject) {
       default: "https://ror.entur.io/role_assignments",
       env: "AUTH0_CLAIMS_NAMESPACE",
     },
+    defaultAuthMethod: {
+      doc: "Set default authentication method (kc or auth0)",
+      format: String,
+      default: "auth0",
+      env: "DEFAULT_AUTH_METHOD",
+    },
   });
 
   // If configuration URL exists, read it and update the configuration object

@@ -75,7 +75,7 @@ function renderIndex(config) {
         redirectUri: window.location.origin,
       }}
       auth0ClaimsNamespace={config.auth0ClaimsNamespace}
-      defaultAuthMethod="kc"
+      defaultAuthMethod={config.defaultAuthMethod}
       loginAutomatically={false}
     >
       <AuthenticatedApp path={config.endpointBase} />

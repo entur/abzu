@@ -22,4 +22,5 @@ data:
       "auth0ClientId": "{{ .Values.configMap.auth0ClientId }}",
       "auth0Audience": "{{ .Values.configMap.auth0Audience }}",
       "auth0ClaimsNamespace": "{{ .Values.configMap.auth0ClaimsNamespace }}"
+      "defaultAuthMethod": "{{ .Values.configMap.defaultAuthMethod }}"
     }

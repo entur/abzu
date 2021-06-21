@@ -124,6 +124,7 @@ const configureApp = async (app) => {
         auth0ClientId: convict.get('auth0ClientId'),
         auth0Audience: convict.get('auth0Audience'),
         auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace'),
+        defaultAuthMethod: convict.get('defaultAuthMethod')
       };
 
       createKeyCloakConfig(convict.get('authServerUrl'));
