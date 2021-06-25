@@ -37,6 +37,7 @@ Fragments.groupOfStopPlaces = {
       members {
         __typename
         id
+        version
         name {
           value
         }
@@ -67,8 +68,10 @@ Fragments.groupOfStopPlaces = {
         }
         ... on ParentStopPlace {
           id
+          version
           children {
             id
+            version
             stopPlaceType
             submode
             geometry {
