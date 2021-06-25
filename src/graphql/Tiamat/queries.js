@@ -263,6 +263,7 @@ export const getStopById = gql`
             value
           }
           id
+          version
           importedId
           stopPlaceType
           transportMode
