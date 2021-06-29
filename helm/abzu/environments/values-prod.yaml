@@ -10,7 +10,7 @@ configMap:
   auth0ClientId: JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec
   auth0Audience: https://ror.api.entur.io
   auth0ClaimsNamespace: https://ror.entur.io/role_assignments
-  defaultAuthMethod: kc
+  defaultAuthMethod: auth0
 
 ingress:
   enabled: true
