@@ -24,7 +24,7 @@
     "axios": "^0.18.1",
     "body-parser": "1.18.2",
     "connected-react-router": "^6.9.1",
-    "convict": "^4.4.1",
+    "convict": "^5.0.0",
     "detect-browser": "^2.5.1",
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
