@@ -202,7 +202,10 @@ const userReducer = (state = initialState, action) => {
     case types.ADDED_STOP_PLACE_ELEMENT:
       let activeElementTabIndex = -1;
 
-      if (action.payLoad.type === "quay") {
+      if (
+        action.payLoad.type === "quay" ||
+        action.payLoad.type === "boardingPosition"
+      ) {
         activeElementTabIndex = 0;
       } else if (
         action.payLoad.type === "parkAndRide" ||

@@ -304,7 +304,10 @@ StopPlaceActions.setActiveMap = (map) => (dispatch) => {
   dispatch(createThunk(types.SET_ACTIVE_MAP, map));
 };
 
-StopPlaceActions.addElementToStop = (type, position) => (dispatch) => {
+StopPlaceActions.addElementToStop = (type, position) => (
+  dispatch,
+  getState
+) => {
   if (type === "stop_place") {
     dispatch(
       createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
@@ -316,6 +319,7 @@ StopPlaceActions.addElementToStop = (type, position) => (dispatch) => {
       createThunk(types.ADDED_STOP_PLACE_ELEMENT, {
         type,
         position,
+        focusedElement: getState().mapUtils.focusedElement,
       })
     );
   }

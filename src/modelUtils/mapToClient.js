@@ -559,7 +559,7 @@ helpers.updateCurrentStopWithPosition = (current, location) => {
 };
 
 helpers.updateCurrentWithNewElement = (current, payLoad) => {
-  const { type, position } = payLoad;
+  const { type, position, focusedElement } = payLoad;
   const copy = JSON.parse(JSON.stringify(current));
 
   const newElement = {
@@ -572,6 +572,16 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.quays = copy.quays.concat({
         ...newElement,
         keyValues: [],
+      });
+      break;
+    case "boardingPosition":
+      copy.quays[focusedElement.index].boardingPositions = copy.quays[
+        focusedElement.index
+      ].boardingPositions.concat({
+        publicCode: "",
+        geometry: {
+          coordinates: newElement.location,
+        },
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
