@@ -34,7 +34,7 @@
     "graphql-fetch": "1.0.1",
     "graphql-tag": "2.4.2",
     "history": "^4.10.1",
-    "husky": "^4.2.5",
+    "husky": "^7.0.0",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
     "leaflet": "1.2.0",
