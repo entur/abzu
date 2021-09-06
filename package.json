@@ -41,7 +41,7 @@
     "lint-staged": "^10.2.2",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.20.0",
-    "moment": "2.19.3",
+    "moment": "2.29.1",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "raven": "^2.6.4",
