@@ -199,21 +199,16 @@ const userReducer = (state = initialState, action) => {
     case types.CHANGED_ELEMENT_TYPE_TAB:
       return Object.assign({}, state, { activeElementTab: action.payLoad });
 
-    case types.ADDED_JUNCTION_ELEMENT:
+    case types.ADDED_STOP_PLACE_ELEMENT:
       let activeElementTabIndex = -1;
 
       if (action.payLoad.type === "quay") {
         activeElementTabIndex = 0;
       } else if (
-        action.payLoad.type === "pathJunction" ||
-        action.payLoad.type === "entrance"
-      ) {
-        activeElementTabIndex = 1;
-      } else if (
         action.payLoad.type === "parkAndRide" ||
         action.payLoad.type === "bikeParking"
       ) {
-        activeElementTabIndex = 2;
+        activeElementTabIndex = 1;
       } else {
         console.warn("type is not supported", action.payLoad.type);
         activeElementTabIndex = -1;

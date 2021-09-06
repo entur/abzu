@@ -186,8 +186,6 @@ class QuayItem extends React.Component {
       undefined: formatMessage({ id: "undefined" }),
       none: formatMessage({ id: "none_no" }),
       quays: formatMessage({ id: "quays" }),
-      pathJunctions: formatMessage({ id: "pathJunctions" }),
-      entrances: formatMessage({ id: "entrances" }),
       stepFreeAccess: formatMessage({ id: "step_free_access" }),
       noStepFreeAccess: formatMessage({ id: "step_free_access_no" }),
       wheelchairAccess: formatMessage({ id: "wheelchairAccess" }),

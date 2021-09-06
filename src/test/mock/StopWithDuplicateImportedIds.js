@@ -338,7 +338,5 @@ export default {
       location: [59.832616, 10.432819],
     },
   ],
-  entrances: [],
-  pathJunctions: [],
   parking: [],
 };

@@ -14,8 +14,6 @@ limitations under the Licence. */
 
 import React from "react";
 import QuayItem from "./QuayItem";
-import PathJunctionItem from "./PathJunctionItem";
-import EntranceItem from "./EntranceItem";
 import ParkingItem from "./ParkingItem";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
@@ -49,18 +47,6 @@ class EditStopBoxTabs extends React.Component {
   handleOpenKeyValuesDialog(keyValues, type, index) {
     this.props.dispatch(
       UserActions.openKeyValuesDialog(keyValues, type, index)
-    );
-  }
-
-  handleRemoveEntrance(index) {
-    this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, "entrance")
-    );
-  }
-
-  handleRemovePathJunction(index) {
-    this.props.dispatch(
-      StopPlaceActions.removeElementByType(index, "pathJunction")
     );
   }
 
@@ -105,72 +91,6 @@ class EditStopBoxTabs extends React.Component {
     ) : (
       <div style={noElementsStyle}>
         {itemTranslation.none} {itemTranslation.quays}
-      </div>
-    );
-  }
-
-  getNavigationItems(
-    activeStopPlace,
-    expandedItem,
-    itemTranslation,
-    noElementsStyle,
-    disabled
-  ) {
-    const elementsHeaderStyle = {
-      fontWeight: 600,
-      textTransform: "capitalize",
-      fontSize: "0.8em",
-      marginTop: 30,
-      textAlign: "center",
-      marginBottom: 10,
-      color: "#2196F3",
-    };
-
-    const hasElements =
-      activeStopPlace.pathJunctions.length || activeStopPlace.entrances.length;
-
-    return hasElements ? (
-      <div>
-        <div style={elementsHeaderStyle}>{itemTranslation.pathJunctions}</div>
-        {activeStopPlace.pathJunctions.map((pathJunction, index) => (
-          <PathJunctionItem
-            translations={itemTranslation}
-            pathJunction={pathJunction}
-            disabled={disabled}
-            key={"pathJunction-" + index}
-            index={index}
-            handleRemovePathJunction={() =>
-              this.handleRemovePathJunction(index)
-            }
-            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-            expanded={
-              expandedItem.type === "pathJunction" &&
-              index === expandedItem.index
-            }
-          />
-        ))}
-
-        <div style={elementsHeaderStyle}> {itemTranslation.entrances} </div>
-        {activeStopPlace.entrances.map((entrance, index) => (
-          <EntranceItem
-            translations={itemTranslation}
-            key={"entrance-" + index}
-            disabled={disabled}
-            entrance={entrance}
-            index={index}
-            handleRemoveEntrance={() => this.handleRemoveEntrance(index)}
-            handleLocateOnMap={this.handleLocateOnMap.bind(this)}
-            handleToggleCollapse={this.handleToggleCollapse.bind(this)}
-            expanded={
-              expandedItem.type === "entrance" && index === expandedItem.index
-            }
-          />
-        ))}
-      </div>
-    ) : (
-      <div style={noElementsStyle}>
-        {itemTranslation.none} {itemTranslation.elements}
       </div>
     );
   }
@@ -274,15 +194,6 @@ class EditStopBoxTabs extends React.Component {
             )
           : null}
         {activeElementTab === 1
-          ? this.getNavigationItems(
-              activeStopPlace,
-              expandedItem,
-              itemTranslation,
-              noElementsStyle,
-              disabled
-            )
-          : null}
-        {activeElementTab === 2
           ? this.getParkingElements(
               activeStopPlace,
               expandedItem,

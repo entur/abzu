@@ -313,7 +313,7 @@ StopPlaceActions.addElementToStop = (type, position) => (dispatch) => {
     );
   } else {
     dispatch(
-      createThunk(types.ADDED_JUNCTION_ELEMENT, {
+      createThunk(types.ADDED_STOP_PLACE_ELEMENT, {
         type,
         position,
       })

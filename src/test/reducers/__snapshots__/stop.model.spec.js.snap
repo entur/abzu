@@ -15,7 +15,6 @@ Object {
   "alternativeNames": Array [],
   "belongsToGroup": false,
   "entityType": "STOP_PLACE",
-  "entrances": Array [],
   "groups": Array [],
   "hasExpired": false,
   "id": "NSR:StopPlace:933",
@@ -30,7 +29,6 @@ Object {
   "name": "Aspestrand",
   "parentTopographicPlace": "Østfold",
   "parking": Array [],
-  "pathJunctions": Array [],
   "permanentlyTerminated": false,
   "quays": Array [
     Object {

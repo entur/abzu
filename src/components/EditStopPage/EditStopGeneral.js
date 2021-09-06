@@ -468,8 +468,6 @@ class EditStopGeneral extends React.Component {
       undefined: formatMessage({ id: "undefined" }),
       none: formatMessage({ id: "none_no" }),
       quays: formatMessage({ id: "quays" }),
-      pathJunctions: formatMessage({ id: "pathJunctions" }),
-      entrances: formatMessage({ id: "entrances" }),
       quayItemName: stopPlace.stopPlaceType
         ? formatMessage({
             id: `stopTypes.${stopPlace.stopPlaceType}.quayItemName`,
@@ -597,23 +595,12 @@ class EditStopGeneral extends React.Component {
                 })`}
                 value={0}
               />
-              {
-                /*
-                <Tab
-                  style={tabStyle}
-                  label={`${formatMessage({ id: 'navigation' })} (${stopPlace
-                    .pathJunctions.length + stopPlace.entrances.length})`}
-                  value={1}
-                />
-                */
-                // ROR-272: Hide this elements until they are supported by backend
-              }
               <Tab
                 style={tabStyle}
                 label={`${formatMessage({ id: "parking_general" })} (${
                   stopPlace.parking.length
                 })`}
-                value={2}
+                value={1}
               />
             </Tabs>
             <EditStopBoxTabs

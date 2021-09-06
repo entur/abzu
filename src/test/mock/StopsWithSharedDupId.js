@@ -148,8 +148,6 @@ export default [
         location: [60.868362, 11.082197],
       },
     ],
-    entrances: [],
-    pathJunctions: [],
     parking: [],
   },
   {
@@ -262,8 +260,6 @@ export default [
         location: [60.871956, 11.083831],
       },
     ],
-    entrances: [],
-    pathJunctions: [],
     parking: [],
   },
 ];

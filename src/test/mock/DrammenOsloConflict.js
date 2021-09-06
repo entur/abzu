@@ -826,8 +826,6 @@ export default [
         },
       },
     ],
-    entrances: [],
-    pathJunctions: [],
     parking: [],
   },
   {
@@ -949,8 +947,6 @@ export default [
         location: [59.740351, 10.202326],
       },
     ],
-    entrances: [],
-    pathJunctions: [],
     parking: [],
   },
   {
@@ -1037,8 +1033,6 @@ export default [
       },
     ],
     quays: [],
-    entrances: [],
-    pathJunctions: [],
     parking: [],
   },
 ];
