@@ -18,8 +18,6 @@ import { injectIntl } from "react-intl";
 import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
-const entranceIcon = require("../../static/icons/entrance-icon-2x.png").default;
-const junctionIcon = require("../../static/icons/junction-icon-2x.png").default;
 const quayIcon = require("../../static/icons/quay-marker.png").default;
 const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
 const parkAndRideIcon = require("../../static/icons/parking-icon.png").default;
@@ -75,8 +73,6 @@ class NewElementsBox extends React.Component {
     };
 
     const quayText = formatMessage({ id: "quay" });
-    const pathJunctionText = formatMessage({ id: "pathJunction" });
-    const entranceText = formatMessage({ id: "entrance" });
     const newStopText = formatMessage({ id: "stop_place" });
     const parkAndRideText = formatMessage({
       id: "parking_item_title_short_parkAndRide",
@@ -93,9 +89,6 @@ class NewElementsBox extends React.Component {
     ) {
       shouldShowNewStop = false;
     }
-
-    // ROR-272: Hide this elements until they are supported by backend
-    const temporaryHidden = { ...elementStyle, display: "none" };
 
     return (
       <div style={boxWrapperStyle}>
@@ -142,30 +135,6 @@ class NewElementsBox extends React.Component {
               src={quayIcon}
             />
             <div style={titleStyle}>{quayText}</div>
-          </div>
-          <div style={temporaryHidden}>
-            <img
-              alt=""
-              ref="pathJunction"
-              data-type="pathJunction"
-              id="drag2"
-              draggable
-              style={{ height: 25, width: "auto", marginLeft: 0 }}
-              src={junctionIcon}
-            />
-            <div style={titleStyle}>{pathJunctionText}</div>
-          </div>
-          <div style={temporaryHidden}>
-            <img
-              alt=""
-              ref="entrance"
-              data-type="entrance"
-              id="drag3"
-              draggable
-              style={{ height: 25, width: "auto", marginLeft: 0 }}
-              src={entranceIcon}
-            />
-            <div style={titleStyle}>{entranceText}</div>
           </div>
           <div style={elementStyle}>
             <img

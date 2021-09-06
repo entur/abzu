@@ -413,8 +413,6 @@ helpers.createNewStopFromLocation = (location) => ({
   topographicPlace: "",
   tariffZones: [],
   quays: [],
-  entrances: [],
-  pathJunctions: [],
   parking: [],
   isNewStop: true,
   isActive: true,
@@ -576,12 +574,6 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         keyValues: [],
       });
       break;
-    case "entrance":
-      copy.entrances = copy.entrances.concat(newElement);
-      break;
-    case "pathJunction":
-      copy.pathJunctions = copy.pathJunctions.concat(newElement);
-      break;
     case PARKING_TYPE.PARK_AND_RIDE:
       copy.parking = copy.parking.concat({
         ...newElement,
@@ -617,12 +609,6 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
     case "quay":
       copy.quays = removeElementByIndex(copy.quays, index);
       break;
-    case "entrance":
-      copy.entrances = removeElementByIndex(copy.entrances, index);
-      break;
-    case "pathJunction":
-      copy.pathJunctions = removeElementByIndex(copy.pathJunctions, index);
-      break;
     case "parking":
       copy.parking = removeElementByIndex(copy.parking, index);
       break;
@@ -639,16 +625,6 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   switch (type) {
     case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        location: position,
-      });
-      break;
-    case "entrance":
-      copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        location: position,
-      });
-      break;
-    case "pathJunction":
-      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
         location: position,
       });
       break;
@@ -672,16 +648,6 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
     case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
         publicCode: name,
-      });
-      break;
-    case "entrance":
-      copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        name: name,
-      });
-      break;
-    case "pathJunction":
-      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
-        name: name,
       });
       break;
     default:
@@ -723,16 +689,6 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   switch (type) {
     case "quay":
       copy.quays[index] = Object.assign({}, copy.quays[index], {
-        description: description,
-      });
-      break;
-    case "entrance":
-      copy.entrances[index] = Object.assign({}, copy.entrances[index], {
-        description: description,
-      });
-      break;
-    case "pathJunction":
-      copy.pathJunctions[index] = Object.assign({}, copy.pathJunctions[index], {
         description: description,
       });
       break;

@@ -143,8 +143,6 @@ class StopPlace {
 
       if (isActive) {
         clientStop.quays = [];
-        clientStop.entrances = [];
-        clientStop.pathJunctions = [];
         clientStop.parking = parking || [];
 
         if (stop.quays) {

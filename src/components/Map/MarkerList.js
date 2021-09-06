@@ -23,7 +23,6 @@ import {
 } from "../../actions/";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import JunctionMarker from "./JunctionMarker";
 import NeighbourMarker from "./NeighbourMarker";
 import ParkAndRideMarker from "./ParkAndRideMarker";
 import CycleParkingMarker from "./CycleParkingMarker";
@@ -450,56 +449,6 @@ class MarkerList extends React.Component {
                   showPathLink={!disabled}
                   isEditingStop={isEditingStop}
                   currentIsNewStop={currentIsNewStop}
-                />
-              );
-            });
-          }
-
-          if (marker.entrances) {
-            const junctionMarkerText = {
-              junctionTitle: formatMessage({ id: "entrance" }),
-            };
-
-            marker.entrances.forEach((entrance, index) => {
-              popupMarkers.push(
-                <JunctionMarker
-                  position={entrance.location}
-                  index={index}
-                  key={"entrance-" + index}
-                  type="entrance"
-                  handleDragEnd={this.handleElementDragEnd.bind(this)}
-                  handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
-                  text={Object.assign(
-                    {},
-                    junctionMarkerText,
-                    CustomPopupMarkerText
-                  )}
-                  name={entrance.name}
-                />
-              );
-            });
-          }
-
-          if (marker.pathJunctions) {
-            const junctionMarkerText = {
-              junctionTitle: formatMessage({ id: "pathJunction" }),
-            };
-
-            marker.pathJunctions.forEach((pathJunction, index) => {
-              popupMarkers.push(
-                <JunctionMarker
-                  position={pathJunction.location}
-                  key={"pathjunction-" + index}
-                  index={index}
-                  type="pathJunction"
-                  handleDragEnd={this.handleElementDragEnd.bind(this)}
-                  handleUpdatePathLink={this.handleUpdatePathLink.bind(this)}
-                  text={Object.assign(
-                    {},
-                    junctionMarkerText,
-                    CustomPopupMarkerText
-                  )}
-                  name={pathJunction.name}
                 />
               );
             });

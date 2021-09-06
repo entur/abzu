@@ -333,7 +333,7 @@ const stopPlaceReducer = (state = {}, action) => {
         }),
       });
 
-    case types.ADDED_JUNCTION_ELEMENT:
+    case types.ADDED_STOP_PLACE_ELEMENT:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithNewElement(
           state.current,

@@ -28,7 +28,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:27423",
@@ -41,7 +40,6 @@ Object {
         ],
         "name": "Strømsbrua",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -98,7 +96,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
@@ -111,7 +108,6 @@ Object {
         ],
         "name": "Paradis",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -151,7 +147,6 @@ Object {
         "belongsToGroup": false,
         "description": null,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:26635",
@@ -164,7 +159,6 @@ Object {
         ],
         "name": "Arne Garborgs vei",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -236,7 +230,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:27423",
@@ -249,7 +242,6 @@ Object {
         ],
         "name": "Strømsbrua",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -306,7 +298,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
@@ -319,7 +310,6 @@ Object {
         ],
         "name": "Paradis",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -359,7 +349,6 @@ Object {
         "belongsToGroup": false,
         "description": null,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:26635",
@@ -372,7 +361,6 @@ Object {
         ],
         "name": "Arne Garborgs vei",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -452,7 +440,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
@@ -465,7 +452,6 @@ Object {
         ],
         "name": "Paradis",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
@@ -519,7 +505,6 @@ Object {
         "alternativeNames": Array [],
         "belongsToGroup": false,
         "entityType": "STOP_PLACE",
-        "entrances": Array [],
         "groups": Array [],
         "hasExpired": false,
         "id": "NSR:StopPlace:10",
@@ -532,7 +517,6 @@ Object {
         ],
         "name": "Paradis",
         "parking": Array [],
-        "pathJunctions": Array [],
         "permanentlyTerminated": false,
         "quays": Array [
           Object {
