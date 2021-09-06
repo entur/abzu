@@ -132,6 +132,18 @@ Fragments.placeEquipments = {
   `,
 };
 
+Fragments.boardingPosition = {
+  verbose: gql`
+    fragment VerboseBoardingPosition on BoardingPosition {
+      id
+      publicCode
+      geometry {
+        coordinates
+      }
+    }
+  `,
+};
+
 Fragments.quay = {
   verbose: gql`
       fragment VerboseQuay on Quay {
@@ -158,9 +170,13 @@ Fragments.quay = {
           placeEquipments {
               ...PlaceEquipments
           }
+          boardingPositions {
+              ...VerboseBoardingPosition
+          }
       },
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
+      ${Fragments.boardingPosition.verbose}
   `,
 };
 
