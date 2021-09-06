@@ -29,6 +29,7 @@ class Quay {
       compassBearing: quay.compassBearing,
       publicCode: quay.publicCode,
       description: quay.description ? quay.description.value : "",
+      boardingPositions: quay.boardingPositions ? quay.boardingPositions : [],
     };
 
     clientQuay.accessibilityAssessment =
