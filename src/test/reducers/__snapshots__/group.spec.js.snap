@@ -52,6 +52,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:47270",
             "location": Array [
@@ -70,6 +71,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:47271",
             "location": Array [
@@ -120,6 +122,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:17",
             "location": Array [
@@ -171,6 +174,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:46027",
             "location": Array [
@@ -189,6 +193,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:46028",
             "location": Array [
@@ -254,6 +259,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:47270",
             "location": Array [
@@ -272,6 +278,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:47271",
             "location": Array [
@@ -322,6 +329,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:17",
             "location": Array [
@@ -373,6 +381,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:46027",
             "location": Array [
@@ -391,6 +400,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:46028",
             "location": Array [
@@ -464,6 +474,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:17",
             "location": Array [
@@ -529,6 +540,7 @@ Object {
                 "wheelchairAccess": "UNKNOWN",
               },
             },
+            "boardingPositions": Array [],
             "description": "",
             "id": "NSR:Quay:17",
             "location": Array [
