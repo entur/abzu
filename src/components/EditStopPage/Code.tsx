@@ -15,7 +15,12 @@ limitations under the Licence. */
 import React from "react";
 import "../../styles/Code.css";
 
-export const CodeBadge = ({ icon, type }) => {
+type CodeBadgeProps = {
+  icon: React.ReactElement;
+  type: string;
+};
+
+export const CodeBadge = ({ icon, type }: CodeBadgeProps) => {
   return (
     <div className={type}>
       <div style={{ marginTop: 2 }}>{icon}</div>
@@ -23,8 +28,13 @@ export const CodeBadge = ({ icon, type }) => {
   );
 };
 
-const Code = ({ type, value, defaultValue }) => {
-  // As a tribute to PHP
+type CodeProps = {
+  type: string;
+  value?: null | string | number;
+  defaultValue: string | number;
+};
+
+const Code = ({ type, value, defaultValue }: CodeProps) => {
   const valueIsSet = isSet(value);
 
   return (
@@ -38,16 +48,16 @@ const Code = ({ type, value, defaultValue }) => {
   );
 };
 
-const isSet = (type) => {
-  if (typeof type === "undefined" || type === null || !type.length) {
+const isSet = (value?: null | string | number): boolean => {
+  if (typeof value === "undefined" || value === null) {
     return false;
   }
 
-  if (typeof type === "string") {
-    return type.length > 0;
+  if (typeof value === "string") {
+    return value.length > 0;
   }
 
-  if (typeof type === "number") {
+  if (typeof value === "number") {
     return true;
   }
   return false;

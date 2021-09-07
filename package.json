@@ -21,6 +21,10 @@
     "@entur/auth-provider": "^0.4.0",
     "@material-ui/core": "^4.3.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
     "axios": "^0.21.2",
     "body-parser": "1.19.0",
     "connected-react-router": "^6.9.1",
@@ -60,6 +64,7 @@
     "redux-raven-middleware": "1.2.0",
     "redux-thunk": "^2.3.0",
     "request": "2.88.2",
+    "typescript": "^4.4.2",
     "uuid": "^3.0.1"
   },
   "browserslist": {
