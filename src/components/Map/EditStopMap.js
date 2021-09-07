@@ -221,7 +221,6 @@ const mapStateToProps = (state) => {
   }
 
   if (neighbourStops && neighbourStops.length) {
-    console.log({ neighbourStops });
     markers = markers.concat(
       neighbourStops.filter((m) => !m.permanentlyTerminated)
     );

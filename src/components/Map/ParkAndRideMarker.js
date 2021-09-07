@@ -16,8 +16,10 @@ import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import PropTypes from "prop-types";
 import L from "leaflet";
-import ParkingIcon from "../../static/icons/parking-icon.png";
 import { connect } from "react-redux";
+import classNames from "classnames";
+import ParkingIcon from "../../static/icons/parking-icon.png";
+
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { StopPlaceActions } from "../../actions/";
 import { shallowCompareParkNRide as shallowCompare } from "./shallowCompare/";
@@ -35,29 +37,6 @@ class ParkingAndRideMarker extends React.Component {
     }).isRequired,
   };
 
-  componentDidUpdate() {
-    const { focusedElement, index, type } = this.props;
-    const isFocused =
-      focusedElement.type === type && index === focusedElement.index;
-    if (isFocused) {
-      if (
-        this.refs.marker &&
-        this.refs.marker.leafletElement &&
-        this.refs.marker.leafletElement._icon
-      ) {
-        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, "focused");
-      }
-    } else {
-      if (
-        this.refs.marker &&
-        this.refs.marker.leafletElement &&
-        this.refs.marker.leafletElement._icon
-      ) {
-        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, "focused");
-      }
-    }
-  }
-
   handleSetFocus() {
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.setElementFocus(index, "parking"));
@@ -73,22 +52,30 @@ class ParkingAndRideMarker extends React.Component {
     const {
       position,
       index,
+      type,
       handleDragEnd,
       translations,
       name,
       hasExpired,
       totalCapacity,
       draggable,
+      focusedElement,
     } = this.props;
 
     if (!position) return null;
+
+    const isFocused =
+      focusedElement?.type === type && index === focusedElement?.index;
 
     const icon = L.icon({
       iconUrl: ParkingIcon,
       iconSize: [20, 30],
       iconAnchor: [10, 30],
       popupAnchor: [0, 15],
-      className: hasExpired ? "expired" : "",
+      className: classNames({
+        expired: hasExpired,
+        focused: isFocused,
+      }),
     });
 
     return (

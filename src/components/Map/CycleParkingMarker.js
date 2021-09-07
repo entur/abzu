@@ -16,8 +16,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import CycleParkingIcon from "../../static/icons/cycle-parking-icon.png";
 import { connect } from "react-redux";
+import classNames from "classnames";
+import CycleParkingIcon from "../../static/icons/cycle-parking-icon.png";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { StopPlaceActions } from "../../actions/";
 import { shallowCycleParkingMarker as shallowCompare } from "./shallowCompare/";
@@ -34,29 +35,6 @@ class CycleParkingMarker extends Component {
       totalCapacityUnknown: PropTypes.string.isRequired,
     }).isRequired,
   };
-
-  componentDidUpdate() {
-    const { focusedElement, index, type } = this.props;
-    const isFocused =
-      focusedElement.type === type && index === focusedElement.index;
-    if (isFocused) {
-      if (
-        this.refs.marker &&
-        this.refs.marker.leafletElement &&
-        this.refs.marker.leafletElement._icon
-      ) {
-        L.DomUtil.addClass(this.refs.marker.leafletElement._icon, "focused");
-      }
-    } else {
-      if (
-        this.refs.marker &&
-        this.refs.marker.leafletElement &&
-        this.refs.marker.leafletElement._icon
-      ) {
-        L.DomUtil.removeClass(this.refs.marker.leafletElement._icon, "focused");
-      }
-    }
-  }
 
   handleSetFocus() {
     const { dispatch, index } = this.props;
@@ -79,22 +57,30 @@ class CycleParkingMarker extends Component {
     const {
       position,
       index,
+      type,
       handleDragEnd,
       translations,
       name,
       hasExpired,
       totalCapacity,
       draggable,
+      focusedElement,
     } = this.props;
 
     if (!position) return null;
+
+    const isFocused =
+      focusedElement?.type === type && index === focusedElement?.index;
 
     const icon = L.icon({
       iconUrl: CycleParkingIcon,
       iconSize: [20, 30],
       iconAnchor: [10, 30],
       popupAnchor: [0, 15],
-      className: hasExpired ? "expired" : "",
+      className: classNames({
+        expired: hasExpired,
+        focused: isFocused,
+      }),
     });
 
     return (
