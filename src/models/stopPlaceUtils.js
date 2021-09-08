@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { setDecimalPrecision } from "../utils";
+
 export const extractAlternativeNames = (alternativeNames) => {
   if (!alternativeNames) return [];
   return alternativeNames.filter(
@@ -79,4 +81,22 @@ export const netexifyPlaceEquipment = (placeEquipments) => {
     return netexRepresentation;
   }
   return null;
+};
+
+export const mapBoardingPositions = (boardingPositions) => {
+  if (boardingPositions) {
+    return boardingPositions.map((bp) => {
+      let coordinates = bp.geometry.coordinates[0].slice();
+      return {
+        id: bp.id,
+        publicCode: bp.publicCode,
+        location: [
+          setDecimalPrecision(coordinates[1], 6),
+          setDecimalPrecision(coordinates[0], 6),
+        ],
+      };
+    });
+  } else {
+    return [];
+  }
 };

@@ -13,7 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { setDecimalPrecision } from "../utils/";
-import { getImportedId, simplifyPlaceEquipment } from "./stopPlaceUtils";
+import {
+  getImportedId,
+  mapBoardingPositions,
+  simplifyPlaceEquipment,
+} from "./stopPlaceUtils";
 
 class Quay {
   constructor(quay, accessibilityAssessment) {
@@ -29,7 +33,7 @@ class Quay {
       compassBearing: quay.compassBearing,
       publicCode: quay.publicCode,
       description: quay.description ? quay.description.value : "",
-      boardingPositions: quay.boardingPositions ? quay.boardingPositions : [],
+      boardingPositions: mapBoardingPositions(quay.boardingPositions),
     };
 
     clientQuay.accessibilityAssessment =
