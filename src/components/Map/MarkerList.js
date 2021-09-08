@@ -36,6 +36,7 @@ import {
   getNeighbourStopPlaceQuays,
   getStopPlaceWithAll,
 } from "../../actions/TiamatActions";
+import BoardingPositionMarker from "./BoardingPositionMarker";
 
 class MarkerList extends React.Component {
   static propTypes = {
@@ -174,6 +175,7 @@ class MarkerList extends React.Component {
       currentStopIsMultiModal,
       newStopIsMultiModal,
       isEditingGroup,
+      focusedElement,
     } = props;
     const { formatMessage } = intl;
 
@@ -453,6 +455,24 @@ class MarkerList extends React.Component {
                   currentIsNewStop={currentIsNewStop}
                 />
               );
+
+              if (
+                focusedElement.type === "quay" &&
+                index === focusedElement.index &&
+                quay.boardingPositions
+              ) {
+                quay.boardingPositions.forEach((boardingPosition, index) => {
+                  popupMarkers.push(
+                    <BoardingPositionMarker
+                      key={
+                        "boarding-position-" + (boardingPosition.id || index)
+                      }
+                      position={boardingPosition?.location}
+                      publicCode={boardingPosition?.publicCode || "N/A"}
+                    />
+                  );
+                });
+              }
             });
           }
         } else {
@@ -565,6 +585,7 @@ const mapStateToProps = (state) => ({
     ["current", "isParent"],
     false
   ),
+  focusedElement: state.mapUtils.focusedElement,
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {
