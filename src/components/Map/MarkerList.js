@@ -172,6 +172,8 @@ class MarkerList extends React.Component {
       isEditingStop,
       currentIsNewStop,
       currentStopIsMultiModal,
+      newStopIsMultiModal,
+      isEditingGroup,
     } = props;
     const { formatMessage } = intl;
 
@@ -236,7 +238,7 @@ class MarkerList extends React.Component {
           <NewStopMarker
             key={"newstop-parent- " + stopIndex}
             position={marker.location}
-            newStopIsMultiModal={this.props.newStopIsMultiModal}
+            newStopIsMultiModal={newStopIsMultiModal}
             handleDragEnd={this.handleDragEndNewStop.bind(this)}
             text={newStopMarkerText}
             handleOnClick={() => {
@@ -348,7 +350,7 @@ class MarkerList extends React.Component {
               }}
               isEditingStop={isEditingStop}
               removeFromGroup={this.handleRemoveFromGroup.bind(this)}
-              isEditingGroup={this.props.isEditingGroup}
+              isEditingGroup={isEditingGroup}
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={marker.isChildOfParent}
               hasExpired={marker.hasExpired}
@@ -485,7 +487,7 @@ class MarkerList extends React.Component {
                   this
                 )}
                 stopPlace={marker}
-                isEditingGroup={this.props.isEditingGroup}
+                isEditingGroup={isEditingGroup}
                 handleCreateGroup={this.handleCreateGroup.bind(this)}
               />
             );
