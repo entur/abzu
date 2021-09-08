@@ -579,9 +579,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
         focusedElement.index
       ].boardingPositions.concat({
         publicCode: "",
-        geometry: {
-          coordinates: newElement.location,
-        },
+        location: position.slice(),
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
