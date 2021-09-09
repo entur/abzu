@@ -337,6 +337,21 @@ StopPlaceActions.changeElementPosition = (index, type, position) => (
   );
 };
 
+StopPlaceActions.changeBoardingPositionElementPosition = (
+  quayIndex,
+  index,
+  position
+) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGE_ELEMENT_POSITION, {
+      quayIndex,
+      index,
+      position,
+      type: "boarding-position",
+    })
+  );
+};
+
 StopPlaceActions.changeParkingTotalCapacity = (index, totalCapacity) => (
   dispatch
 ) => {

@@ -152,6 +152,18 @@ class MarkerList extends React.Component {
     );
   }
 
+  handleBoardingPositionElementDragEnd(quayIndex, index, event) {
+    const { dispatch } = this.props;
+    const position = event.target.getLatLng();
+
+    dispatch(
+      StopPlaceActions.changeBoardingPositionElementPosition(quayIndex, index, [
+        setDecimalPrecision(position.lat, 6),
+        setDecimalPrecision(position.lng, 6),
+      ])
+    );
+  }
+
   handleCreateGroup(stopPlaceId) {
     const { dispatch } = this.props;
     dispatch(StopPlacesGroupActions.useStopPlaceIdForNewGroup(stopPlaceId));
@@ -461,7 +473,7 @@ class MarkerList extends React.Component {
                 index === focusedElement.index &&
                 quay.boardingPositions
               ) {
-                quay.boardingPositions.forEach((boardingPosition, index) => {
+                quay.boardingPositions.forEach((boardingPosition, bpIndex) => {
                   popupMarkers.push(
                     <BoardingPositionMarker
                       key={
@@ -469,6 +481,13 @@ class MarkerList extends React.Component {
                       }
                       position={boardingPosition?.location}
                       publicCode={boardingPosition?.publicCode || "N/A"}
+                      handleDragEnd={(event) =>
+                        this.handleBoardingPositionElementDragEnd(
+                          index,
+                          bpIndex,
+                          event
+                        )
+                      }
                     />
                   );
                 });

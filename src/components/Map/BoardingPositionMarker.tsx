@@ -8,9 +8,10 @@ import { useMemo } from "react";
 type Props = {
   position: [number, number];
   publicCode: string;
+  handleDragEnd: (event: React.DragEvent) => void;
 };
 
-export default ({ position, publicCode }: Props) => {
+export default ({ position, publicCode, handleDragEnd }: Props) => {
   const divBody = ReactDOM.renderToStaticMarkup(
     <BoardingPositionMarkerIcon publicCode={publicCode} />
   );
@@ -22,5 +23,12 @@ export default ({ position, publicCode }: Props) => {
     popupAnchor: [5, 0],
   });
 
-  return <Marker draggable={true} position={position} icon={icon} />;
+  return (
+    <Marker
+      draggable={true}
+      position={position}
+      icon={icon}
+      onDragend={handleDragEnd}
+    />
+  );
 };

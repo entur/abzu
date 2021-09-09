@@ -636,6 +636,15 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
         location: position,
       });
       break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions[index] = Object.assign(
+        {},
+        copy.quays[payLoad.quayIndex].boardingPositions[index],
+        {
+          location: position,
+        }
+      );
+      break;
     case "parking":
       copy.parking[index] = Object.assign({}, copy.parking[index], {
         location: position,
