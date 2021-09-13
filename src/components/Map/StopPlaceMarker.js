@@ -152,7 +152,10 @@ class StopPlaceMarker extends React.Component {
               }}
               onClick={() =>
                 handleChangeCoordinates &&
-                handleChangeCoordinates(false, index, markerLocation)
+                handleChangeCoordinates(
+                  { type: "stop-place", markerIndex: index },
+                  markerLocation
+                )
               }
             >
               <span

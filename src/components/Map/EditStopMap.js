@@ -110,14 +110,11 @@ class EditStopMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
-  handleChangeCoordinates(isQuay, markerIndex, position) {
+  handleChangeCoordinates(coordinatesOwner, position) {
     this.setState({
       coordinatesDialogOpen: true,
       coordinates: position.join(","),
-      coordinatesOwner: {
-        isQuay: isQuay,
-        markerIndex: markerIndex,
-      },
+      coordinatesOwner,
     });
   }
 
@@ -125,16 +122,12 @@ class EditStopMap extends React.Component {
     const { coordinatesOwner } = this.state;
     const { dispatch, zoom } = this.props;
 
-    if (coordinatesOwner.isQuay) {
-      dispatch(
-        StopPlaceActions.changeElementPosition(
-          coordinatesOwner.markerIndex,
-          "quay",
-          position
-        )
-      );
-    } else {
+    if (coordinatesOwner.type === "stop-place") {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position));
+    } else {
+      dispatch(
+        StopPlaceActions.changeElementPosition(coordinatesOwner, position)
+      );
     }
 
     dispatch(StopPlaceActions.changeMapCenter(position, zoom));

@@ -3,15 +3,23 @@ import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { divIcon } from "leaflet";
 import BoardingPositionMarkerIcon from "./BoardingPositionMarkerIcon";
-import { useMemo } from "react";
+import Code from "../EditStopPage/Code";
 
 type Props = {
   position: [number, number];
   publicCode: string;
+  translations: Record<string, string>;
+  handleChangeCoordinates: (event: React.MouseEvent) => void;
   handleDragEnd: (event: React.DragEvent) => void;
 };
 
-export default ({ position, publicCode, handleDragEnd }: Props) => {
+export default ({
+  position,
+  publicCode,
+  translations,
+  handleChangeCoordinates,
+  handleDragEnd,
+}: Props) => {
   const divBody = ReactDOM.renderToStaticMarkup(
     <BoardingPositionMarkerIcon publicCode={publicCode} />
   );
@@ -29,6 +37,34 @@ export default ({ position, publicCode, handleDragEnd }: Props) => {
       position={position}
       icon={icon}
       onDragend={handleDragEnd}
-    />
+    >
+      <Popup autoPan={false}>
+        <div>
+          <div className="boarding-position-marker-title">
+            <Code
+              type="publicCode"
+              value={publicCode}
+              defaultValue={translations.notAssigned}
+            />
+          </div>
+          <div
+            className="marker-popup-change-coordinates-wrapper"
+            onClick={handleChangeCoordinates}
+          >
+            <span className="marker-popup-change-coordinate-item">
+              {position[0]}
+            </span>
+            <span
+              className="marker-popup-change-coordinate-item"
+              style={{
+                marginLeft: 3,
+              }}
+            >
+              {position[1]}
+            </span>
+          </div>
+        </div>
+      </Popup>
+    </Marker>
   );
 };

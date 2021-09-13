@@ -627,26 +627,28 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
 };
 
 helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
-  const { index, type, position } = payLoad;
+  const { markerIndex, type, position } = payLoad;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
     case "quay":
-      copy.quays[index] = Object.assign({}, copy.quays[index], {
+      copy.quays[markerIndex] = Object.assign({}, copy.quays[markerIndex], {
         location: position,
       });
       break;
     case "boarding-position":
-      copy.quays[payLoad.quayIndex].boardingPositions[index] = Object.assign(
+      copy.quays[payLoad.quayIndex].boardingPositions[
+        markerIndex
+      ] = Object.assign(
         {},
-        copy.quays[payLoad.quayIndex].boardingPositions[index],
+        copy.quays[payLoad.quayIndex].boardingPositions[markerIndex],
         {
           location: position,
         }
       );
       break;
     case "parking":
-      copy.parking[index] = Object.assign({}, copy.parking[index], {
+      copy.parking[markerIndex] = Object.assign({}, copy.parking[markerIndex], {
         location: position,
       });
       break;

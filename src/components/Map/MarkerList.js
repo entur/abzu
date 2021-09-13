@@ -152,15 +152,22 @@ class MarkerList extends React.Component {
     );
   }
 
-  handleBoardingPositionElementDragEnd(quayIndex, index, event) {
+  handleBoardingPositionElementDragEnd(quayIndex, markerIndex, event) {
     const { dispatch } = this.props;
     const position = event.target.getLatLng();
 
     dispatch(
-      StopPlaceActions.changeBoardingPositionElementPosition(quayIndex, index, [
-        setDecimalPrecision(position.lat, 6),
-        setDecimalPrecision(position.lng, 6),
-      ])
+      StopPlaceActions.changeElementPosition(
+        {
+          markerIndex,
+          quayIndex,
+          type: "boarding-position",
+        },
+        [
+          setDecimalPrecision(position.lat, 6),
+          setDecimalPrecision(position.lng, 6),
+        ]
+      )
     );
   }
 
@@ -481,6 +488,17 @@ class MarkerList extends React.Component {
                       }
                       position={boardingPosition?.location}
                       publicCode={boardingPosition?.publicCode || "N/A"}
+                      translations={CustomPopupMarkerText}
+                      handleChangeCoordinates={() =>
+                        changeCoordinates(
+                          {
+                            type: "boarding-position",
+                            quayIndex: index,
+                            markerIndex: bpIndex,
+                          },
+                          boardingPosition.location
+                        )
+                      }
                       handleDragEnd={(event) =>
                         this.handleBoardingPositionElementDragEnd(
                           index,

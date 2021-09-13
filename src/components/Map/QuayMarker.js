@@ -302,16 +302,13 @@ class QuayMarker extends React.Component {
               />
             </div>
             <div
-              style={{
-                display: "block",
-                cursor: "pointer",
-                width: "auto",
-                textAlign: "center",
-                fontSize: 10,
-              }}
+              className="marker-popup-change-coordinates-wrapper"
               onClick={() =>
                 !belongsToNeighbourStop &&
-                handleChangeCoordinates(true, index, position)
+                handleChangeCoordinates(
+                  { type: "quay", markerIndex: index },
+                  position
+                )
               }
             >
               <span

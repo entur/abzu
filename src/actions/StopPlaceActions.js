@@ -325,29 +325,13 @@ StopPlaceActions.addElementToStop = (type, position) => (
   }
 };
 
-StopPlaceActions.changeElementPosition = (index, type, position) => (
+StopPlaceActions.changeElementPosition = (coordinatesOwner, position) => (
   dispatch
 ) => {
   dispatch(
     createThunk(types.CHANGE_ELEMENT_POSITION, {
-      index,
+      ...coordinatesOwner,
       position,
-      type,
-    })
-  );
-};
-
-StopPlaceActions.changeBoardingPositionElementPosition = (
-  quayIndex,
-  index,
-  position
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGE_ELEMENT_POSITION, {
-      quayIndex,
-      index,
-      position,
-      type: "boarding-position",
     })
   );
 };

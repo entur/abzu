@@ -75,7 +75,8 @@ limitations under the Licence. */
   border: none;
 }
 
-.quay-marker-title {
+.quay-marker-title,
+.boarding-position-marker-title {
   font-weight: 600;
   color: #41c0c4;
   font-size: 1.2em;
@@ -83,6 +84,30 @@ limitations under the Licence. */
   width: 100%;
   text-align: center;
   margin-bottom: 15px;
+}
+
+.boarding-position-marker-title {
+  margin-top: -2;
+  margin-bottom: 5;
+  font-size: 1em;
+  color: #191919;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-popup-change-coordinates-wrapper {
+  display: block;
+  cursor: pointer;
+  width: auto;
+  text-align: center;
+  font-size: 10;
+}
+
+.marker-popup-change-coordinate-item {
+  display: inline-block;
+  text-align: center;
+  border-bottom: 1px dotted black;
 }
 
 .marker-popup-button {
