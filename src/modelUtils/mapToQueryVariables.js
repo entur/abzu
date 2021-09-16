@@ -14,7 +14,10 @@ limitations under the Licence. */
 
 import moment from "moment";
 import { defaultLimitations } from "../models/Limitations";
-import { netexifyPlaceEquipment } from "../models/stopPlaceUtils";
+import {
+  netexifyPlaceEquipment,
+  netexifyBoardingPositions,
+} from "../models/stopPlaceUtils";
 
 const helpers = {};
 
@@ -45,6 +48,13 @@ helpers.mapQuayToVariables = (quay) => {
       type: "Point",
     };
   }
+
+  if (quay.boardingPositions) {
+    quayVariables.boardingPositions = netexifyBoardingPositions(
+      quay.boardingPositions
+    );
+  }
+
   helpers.removeTypeNameRecursively(quayVariables);
   return quayVariables;
 };

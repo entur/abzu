@@ -83,7 +83,7 @@ export const netexifyPlaceEquipment = (placeEquipments) => {
   return null;
 };
 
-export const mapBoardingPositions = (boardingPositions) => {
+export const simplifyBoardingPositions = (boardingPositions) => {
   if (boardingPositions) {
     return boardingPositions.map((bp) => {
       let coordinates = bp.geometry.coordinates[0].slice();
@@ -99,4 +99,17 @@ export const mapBoardingPositions = (boardingPositions) => {
   } else {
     return [];
   }
+};
+
+export const netexifyBoardingPositions = (boardingPositions) => {
+  return boardingPositions.map((bp) => {
+    return {
+      geometry: {
+        coordinates: [[bp.location[1], bp.location[0]]],
+        type: "Point",
+      },
+      publicCode: bp.publicCode,
+      id: bp.id || undefined,
+    };
+  });
 };
