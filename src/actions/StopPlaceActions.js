@@ -215,6 +215,21 @@ StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
   );
 };
 
+StopPlaceActions.changeBoardingPositionPublicCode = (
+  index,
+  quayIndex,
+  name
+) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
+      name,
+      index,
+      quayIndex,
+      type: "boarding-position",
+    })
+  );
+};
+
 StopPlaceActions.changePrivateCodeName = (index, name, type) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGE_PRIVATE_CODE_NAME, {

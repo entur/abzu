@@ -669,6 +669,15 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
         publicCode: name,
       });
       break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions[index] = Object.assign(
+        {},
+        copy.quays[payLoad.quayIndex].boardingPositions[index],
+        {
+          publicCode: name,
+        }
+      );
+      break;
     default:
       throw new Error("element not supported", type);
   }
