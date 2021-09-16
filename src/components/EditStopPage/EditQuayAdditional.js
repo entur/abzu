@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import FacilitiesQuayTab from "./FacilitiesQuayTab";
 import AccessiblityQuayTab from "./AcessibilityQuayTab";
 import { injectIntl } from "react-intl";
+import BoardingPositionsTab from "./BoardingPositionsTab";
 
 class EditQuayAdditional extends React.Component {
   constructor(props) {
@@ -77,6 +78,17 @@ class EditQuayAdditional extends React.Component {
           >
             <FacilitiesQuayTab
               intl={intl}
+              quay={quay}
+              index={index}
+              disabled={disabled}
+            />
+          </Tab>
+          <Tab
+            style={tabStyle}
+            label={intl.formatMessage({ id: "boarding_positions_tab_label" })}
+            value={2}
+          >
+            <BoardingPositionsTab
               quay={quay}
               index={index}
               disabled={disabled}
