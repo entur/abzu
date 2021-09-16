@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { StopPlaceActions } from "../../actions";
 import BoardingPositionItem from "./BoardingPositionItem";
@@ -32,15 +32,18 @@ const sortByPublicCode = (a: BoardingPosition, b: BoardingPosition) => {
 
 export default ({ quay, index, disabled }: Props) => {
   const dispatch = useDispatch();
-  const handlePublicCodeChange = (bpIndex: number, newValue: string) => {
-    dispatch(
-      StopPlaceActions.changeBoardingPositionPublicCode(
-        bpIndex,
-        index,
-        newValue
-      )
-    );
-  };
+  const handlePublicCodeChange = useCallback(
+    (bpIndex: number, newValue: string) => {
+      dispatch(
+        StopPlaceActions.changeBoardingPositionPublicCode(
+          bpIndex,
+          index,
+          newValue
+        )
+      );
+    },
+    [index]
+  );
 
   return (
     <div style={{ paddingLeft: "1rem" }}>
@@ -49,7 +52,9 @@ export default ({ quay, index, disabled }: Props) => {
           key={bp.id ?? i}
           boardingPosition={bp}
           disabled={disabled}
-          onPublicCodeChange={(newValue) => handlePublicCodeChange(i, newValue)}
+          onPublicCodeChange={(newValue: string) =>
+            handlePublicCodeChange(i, newValue)
+          }
         />
       ))}
     </div>
