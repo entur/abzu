@@ -92,6 +92,7 @@ class EditQuayAdditional extends React.Component {
               quay={quay}
               index={index}
               disabled={disabled}
+              focusedElement={this.props.focusedBoardingPositionElement}
             />
           </Tab>
         </Tabs>
@@ -102,6 +103,7 @@ class EditQuayAdditional extends React.Component {
 
 const mapStateToProps = (state) => ({
   focusedElement: state.mapUtils.focusedElement,
+  focusedBoardingPositionElement: state.mapUtils.focusedBoardingPositionElement,
   stopPlace: state.stopPlace.current,
 });
 

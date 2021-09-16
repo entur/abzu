@@ -19,6 +19,10 @@ export const initialState = {
     type: "quay",
     index: -1,
   },
+  focusedBoardingPositionElement: {
+    index: -1,
+    quayIndex: -1,
+  },
   mergingQuay: {
     isMerging: false,
     fromQuay: null,
@@ -56,6 +60,14 @@ const mapReducer = (state = initialState, action) => {
         focusedElement: {
           index: action.payLoad.index,
           type: action.payLoad.type,
+        },
+      });
+
+    case types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT:
+      return Object.assign({}, state, {
+        focusedBoardingPositionElement: {
+          index: action.payLoad.index,
+          quayIndex: action.payLoad.quayIndex,
         },
       });
 

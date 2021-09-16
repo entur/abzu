@@ -17,6 +17,7 @@ type Props = {
   quay: Quay;
   index: number;
   disabled: boolean;
+  focusedElement: any;
 };
 
 const sortByPublicCode = (a: BoardingPosition, b: BoardingPosition) => {
@@ -30,7 +31,7 @@ const sortByPublicCode = (a: BoardingPosition, b: BoardingPosition) => {
   return 0;
 };
 
-export default ({ quay, index, disabled }: Props) => {
+export default ({ quay, index, disabled, focusedElement }: Props) => {
   const dispatch = useDispatch();
   const handlePublicCodeChange = useCallback(
     (bpIndex: number, newValue: string) => {
@@ -63,6 +64,23 @@ export default ({ quay, index, disabled }: Props) => {
             handlePublicCodeChange(i, newValue)
           }
           onDelete={() => handleDelete(i)}
+          handleLocateOnMap={() => {
+            dispatch(StopPlaceActions.changeMapCenter(bp.location, 17));
+            dispatch(
+              StopPlaceActions.setBoardingPositionElementFocus(i, index)
+            );
+          }}
+          expanded={
+            index === focusedElement.quayIndex && i === focusedElement.index
+          }
+          handleToggleCollapse={() => {
+            dispatch(
+              StopPlaceActions.setBoardingPositionElementFocus(
+                i === focusedElement.index ? -1 : i,
+                index
+              )
+            );
+          }}
         />
       ))}
     </div>

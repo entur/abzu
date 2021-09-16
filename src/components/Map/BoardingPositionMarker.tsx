@@ -11,6 +11,7 @@ type Props = {
   translations: Record<string, string>;
   handleChangeCoordinates: (event: React.MouseEvent) => void;
   handleDragEnd: (event: React.DragEvent) => void;
+  handleSetFocus: () => void;
 };
 
 export default ({
@@ -19,6 +20,7 @@ export default ({
   translations,
   handleChangeCoordinates,
   handleDragEnd,
+  handleSetFocus,
 }: Props) => {
   const divBody = ReactDOM.renderToStaticMarkup(
     <BoardingPositionMarkerIcon publicCode={publicCode} />
@@ -38,7 +40,7 @@ export default ({
       icon={icon}
       onDragend={handleDragEnd}
     >
-      <Popup autoPan={false}>
+      <Popup autoPan={false} onOpen={handleSetFocus}>
         <div>
           <div className="boarding-position-marker-title">
             <Code

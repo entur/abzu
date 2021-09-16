@@ -506,6 +506,24 @@ class MarkerList extends React.Component {
                           event
                         )
                       }
+                      handleSetFocus={() => {
+                        this.props.dispatch(
+                          StopPlaceActions.setBoardingPositionElementFocus(
+                            bpIndex,
+                            index
+                          )
+                        );
+                        const expandedQuayEl = document.querySelector(
+                          ".boarding-position-item-expanded"
+                        );
+                        const scrollBodyEl = document.querySelector(
+                          "#scroll-body"
+                        );
+                        if (expandedQuayEl && scrollBodyEl) {
+                          expandedQuayEl.scrollIntoView(true);
+                          scrollBodyEl.scrollTop -= 50;
+                        }
+                      }}
                     />
                   );
                 });

@@ -312,6 +312,19 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
   );
 };
 
+StopPlaceActions.setBoardingPositionElementFocus = (index, quayIndex) => (
+  dispatch
+) => {
+  dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
+
+  dispatch(
+    createThunk(types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT, {
+      index,
+      quayIndex,
+    })
+  );
+};
+
 StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {
   const state = getState();
   const isMultimodal = state.user.newStopIsMultiModal;

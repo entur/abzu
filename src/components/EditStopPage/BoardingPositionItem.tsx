@@ -16,7 +16,10 @@ type Props = {
   disabled: boolean;
   onPublicCodeChange: (publicCode: string) => void;
   onDelete: () => void;
+  handleLocateOnMap: () => void;
   intl: any;
+  expanded: boolean;
+  handleToggleCollapse: () => void;
 };
 
 const BoardingPositionItem = ({
@@ -24,16 +27,11 @@ const BoardingPositionItem = ({
   disabled,
   onPublicCodeChange,
   onDelete,
+  handleLocateOnMap,
   intl,
+  expanded,
+  handleToggleCollapse,
 }: Props) => {
-  const [expanded, setExpanded] = useState(false);
-  const dispatch = useDispatch();
-
-  const handleLocateOnMap = useCallback(() => {
-    dispatch(StopPlaceActions.changeMapCenter(bp.location, 17));
-    //this.props.dispatch(StopPlaceActions.setElementFocus(index, type));
-  }, []);
-
   return (
     <Item>
       <ItemHeader
@@ -42,7 +40,7 @@ const BoardingPositionItem = ({
         expanded={expanded}
         handleLocateOnMap={handleLocateOnMap}
         handleMissingCoordinatesClick={() => {}} // TODO
-        handleToggleCollapse={() => setExpanded(!expanded)}
+        handleToggleCollapse={handleToggleCollapse}
       >
         <span style={{ color: "#2196F3" }}>
           {intl.formatMessage({ id: "boarding_positions_item_header" })}
@@ -54,7 +52,10 @@ const BoardingPositionItem = ({
         />
       </ItemHeader>
       {!expanded ? null : (
-        <div style={{ display: "flex" }}>
+        <div
+          style={{ display: "flex" }}
+          className="boarding-position-item-expanded"
+        >
           <TextField
             hintText={intl.formatMessage({ id: "publicCode" })}
             floatingLabelText={intl.formatMessage({ id: "publicCode" })}
