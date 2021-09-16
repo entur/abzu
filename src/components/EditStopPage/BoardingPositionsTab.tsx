@@ -45,6 +45,13 @@ export default ({ quay, index, disabled }: Props) => {
     [index]
   );
 
+  const handleDelete = useCallback(
+    (bpIndex: number) => {
+      dispatch(StopPlaceActions.removeBoardingPositionElement(bpIndex, index));
+    },
+    [index]
+  );
+
   return (
     <div style={{ paddingLeft: "1rem" }}>
       {quay.boardingPositions.sort(sortByPublicCode).map((bp, i) => (
@@ -55,6 +62,7 @@ export default ({ quay, index, disabled }: Props) => {
           onPublicCodeChange={(newValue: string) =>
             handlePublicCodeChange(i, newValue)
           }
+          onDelete={() => handleDelete(i)}
         />
       ))}
     </div>

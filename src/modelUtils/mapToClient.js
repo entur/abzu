@@ -617,6 +617,12 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
     case "quay":
       copy.quays = removeElementByIndex(copy.quays, index);
       break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions = removeElementByIndex(
+        copy.quays[payLoad.quayIndex].boardingPositions,
+        index
+      );
+      break;
     case "parking":
       copy.parking = removeElementByIndex(copy.parking, index);
       break;

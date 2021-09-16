@@ -1,15 +1,19 @@
 import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import TextField from "material-ui/TextField";
 import { injectIntl } from "react-intl";
+import MdDelete from "material-ui/svg-icons/action/delete-forever";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
 import { BoardingPosition } from "./BoardingPositionsTab";
+import ToolTippable from "./ToolTippable";
+import { IconButton } from "@material-ui/core";
 
 type Props = {
   boardingPosition: BoardingPosition;
   disabled: boolean;
   onPublicCodeChange: (publicCode: string) => void;
+  onDelete: () => void;
   intl: any;
 };
 
@@ -17,9 +21,11 @@ const BoardingPositionItem = ({
   boardingPosition: bp,
   disabled,
   onPublicCodeChange,
+  onDelete,
   intl,
 }: Props) => {
   const [expanded, setExpanded] = useState(false);
+
   return (
     <Item>
       <ItemHeader
@@ -40,7 +46,7 @@ const BoardingPositionItem = ({
         />
       </ItemHeader>
       {!expanded ? null : (
-        <div className="quay-item-expanded">
+        <div style={{ display: "flex" }}>
           <TextField
             hintText={intl.formatMessage({ id: "publicCode" })}
             floatingLabelText={intl.formatMessage({ id: "publicCode" })}
@@ -49,6 +55,14 @@ const BoardingPositionItem = ({
             style={{ width: "95%", marginTop: -10 }}
             onChange={(e: any) => onPublicCodeChange(e.target.value)}
           />
+          <ToolTippable
+            toolTipText={intl.formatMessage({ id: "delete_boarding_position" })}
+            toolTipStyle={{ marginLeft: 10 }}
+          >
+            <IconButton disabled={disabled} onClick={onDelete}>
+              <MdDelete />
+            </IconButton>
+          </ToolTippable>
         </div>
       )}
     </Item>

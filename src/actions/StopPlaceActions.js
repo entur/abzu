@@ -205,6 +205,18 @@ StopPlaceActions.removeElementByType = (index, type) => (dispatch) => {
   );
 };
 
+StopPlaceActions.removeBoardingPositionElement = (index, quayIndex) => (
+  dispatch
+) => {
+  dispatch(
+    createThunk(types.REMOVED_ELEMENT_BY_TYPE, {
+      index,
+      quayIndex,
+      type: "boarding-position",
+    })
+  );
+};
+
 StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
