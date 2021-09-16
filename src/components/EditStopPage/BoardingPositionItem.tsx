@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from "react";
+import React, { useCallback, useState } from "react";
 import TextField from "material-ui/TextField";
 import { injectIntl } from "react-intl";
 import MdDelete from "material-ui/svg-icons/action/delete-forever";
@@ -8,6 +8,8 @@ import ItemHeader from "./ItemHeader";
 import { BoardingPosition } from "./BoardingPositionsTab";
 import ToolTippable from "./ToolTippable";
 import { IconButton } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { StopPlaceActions } from "../../actions";
 
 type Props = {
   boardingPosition: BoardingPosition;
@@ -25,6 +27,12 @@ const BoardingPositionItem = ({
   intl,
 }: Props) => {
   const [expanded, setExpanded] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleLocateOnMap = useCallback(() => {
+    dispatch(StopPlaceActions.changeMapCenter(bp.location, 17));
+    //this.props.dispatch(StopPlaceActions.setElementFocus(index, type));
+  }, []);
 
   return (
     <Item>
@@ -32,7 +40,7 @@ const BoardingPositionItem = ({
         location={bp.location}
         translations={{}}
         expanded={expanded}
-        handleLocateOnMap={() => {}} // TODO
+        handleLocateOnMap={handleLocateOnMap}
         handleMissingCoordinatesClick={() => {}} // TODO
         handleToggleCollapse={() => setExpanded(!expanded)}
       >
