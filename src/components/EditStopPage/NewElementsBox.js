@@ -18,10 +18,14 @@ import { injectIntl } from "react-intl";
 import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
-const quayIcon = require("../../static/icons/quay-marker.png").default;
+
+const quayIcon = require("../../static/icons/pin-50x82-red-quay.png").default;
+const boardingPositionIcon = require("../../static/icons/pin-50x82-purple-boardingPosition.png")
+  .default;
 const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
-const parkAndRideIcon = require("../../static/icons/parking-icon.png").default;
-const bikeParkingIcon = require("../../static/icons/cycle-parking-icon.png")
+const parkAndRideIcon = require("../../static/icons/pin-50x82-blue-parkAndRide.png")
+  .default;
+const bikeParkingIcon = require("../../static/icons/pin-50x82-blue-bikepark.png")
   .default;
 
 class NewElementsBox extends React.Component {
@@ -48,7 +52,12 @@ class NewElementsBox extends React.Component {
   }
   render() {
     const { formatMessage } = this.props.intl;
-    const { activeStopPlace, missingCoordsMap, disabled } = this.props;
+    const {
+      activeStopPlace,
+      missingCoordsMap,
+      disabled,
+      focusedElement,
+    } = this.props;
 
     const boxWrapperStyle = {
       zIndex: 999,
@@ -81,6 +90,10 @@ class NewElementsBox extends React.Component {
       id: "parking_item_title_bikeParking",
     });
 
+    const boardingPositionsText = formatMessage({
+      id: "boarding_positions_title",
+    });
+
     let shouldShowNewStop = true;
 
     if (
@@ -89,6 +102,9 @@ class NewElementsBox extends React.Component {
     ) {
       shouldShowNewStop = false;
     }
+
+    const shouldShowNewBoardingPosition =
+      focusedElement.type === "quay" && focusedElement.index > -1;
 
     return (
       <div style={boxWrapperStyle}>
@@ -111,7 +127,7 @@ class NewElementsBox extends React.Component {
               <img
                 alt=""
                 ref="stop_place"
-                id="stop_place"
+                id="drag-stop-place"
                 data-type="stop_place"
                 draggable
                 style={{
@@ -127,7 +143,7 @@ class NewElementsBox extends React.Component {
           <div style={elementStyle}>
             <img
               alt=""
-              id="drag1"
+              id="drag-quay"
               data-type="quay"
               ref="quay"
               draggable="true"
@@ -136,12 +152,29 @@ class NewElementsBox extends React.Component {
             />
             <div style={titleStyle}>{quayText}</div>
           </div>
+          <div
+            style={{
+              ...elementStyle,
+              display: shouldShowNewBoardingPosition ? "inline-block" : "none",
+            }}
+          >
+            <img
+              alt=""
+              id="drag-boarding-position"
+              data-type="boardingPosition"
+              ref="boardingPosition"
+              draggable="true"
+              style={{ height: 25, width: "auto", marginLeft: 0 }}
+              src={boardingPositionIcon}
+            />
+            <div style={titleStyle}>{boardingPositionsText}</div>
+          </div>
           <div style={elementStyle}>
             <img
               alt=""
               ref="parkAndRide"
               data-type="parkAndRide"
-              id="drag4"
+              id="drag-park-and-ride"
               draggable
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={parkAndRideIcon}
@@ -153,7 +186,7 @@ class NewElementsBox extends React.Component {
               alt=""
               ref="bikeParking"
               data-type="bikeParking"
-              id="drag5"
+              id="drag-bike-parking"
               draggable
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={bikeParkingIcon}
@@ -232,6 +265,7 @@ const mapStateToProps = (state) => ({
   activeMap: state.mapUtils.activeMap,
   missingCoordsMap: state.user.missingCoordsMap,
   activeStopPlace: state.stopPlace.current,
+  focusedElement: state.mapUtils.focusedElement,
 });
 
 export default injectIntl(connect(mapStateToProps)(NewElementsBox));
