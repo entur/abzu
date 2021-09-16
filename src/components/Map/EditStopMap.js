@@ -87,7 +87,13 @@ class EditStopMap extends React.Component {
 
     if (isQuay) {
       dispatch(
-        StopPlaceActions.changeElementPosition(index, "quay", formattedPosition)
+        StopPlaceActions.changeElementPosition(
+          {
+            markerIndex: index,
+            type: "quay",
+          },
+          formattedPosition
+        )
       );
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition));

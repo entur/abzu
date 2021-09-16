@@ -145,7 +145,7 @@ class MarkerList extends React.Component {
     const position = event.target.getLatLng();
 
     dispatch(
-      StopPlaceActions.changeElementPosition(index, type, [
+      StopPlaceActions.changeElementPosition({ markerIndex: index, type }, [
         setDecimalPrecision(position.lat, 6),
         setDecimalPrecision(position.lng, 6),
       ])
