@@ -20,17 +20,6 @@ type Props = {
   focusedElement: any;
 };
 
-const sortByPublicCode = (a: BoardingPosition, b: BoardingPosition) => {
-  if (a.publicCode > b.publicCode) {
-    return 1;
-  }
-  if (a.publicCode < b.publicCode) {
-    return -1;
-  }
-
-  return 0;
-};
-
 export default ({ quay, index, disabled, focusedElement }: Props) => {
   const dispatch = useDispatch();
   const handlePublicCodeChange = useCallback(
@@ -55,7 +44,7 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
 
   return (
     <div style={{ paddingLeft: "1rem" }}>
-      {quay.boardingPositions.sort(sortByPublicCode).map((bp, i) => (
+      {quay.boardingPositions.map((bp, i) => (
         <BoardingPositionItem
           key={bp.id ?? i}
           boardingPosition={bp}
