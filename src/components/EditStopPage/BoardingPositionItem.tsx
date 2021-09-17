@@ -33,7 +33,7 @@ const BoardingPositionItem = ({
   handleToggleCollapse,
 }: Props) => {
   return (
-    <Item>
+    <Item handleChangeCoordinates={() => {}}>
       <ItemHeader
         location={bp.location}
         translations={{}}
