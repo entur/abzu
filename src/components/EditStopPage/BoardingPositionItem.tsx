@@ -50,6 +50,16 @@ const BoardingPositionItem = ({
           value={bp.publicCode}
           defaultValue={intl.formatMessage({ id: "not_assigned" })}
         />
+        <span
+          style={{
+            fontSize: "0.8em",
+            marginLeft: 5,
+            fontWeight: 600,
+            color: "#464545",
+          }}
+        >
+          {bp.id}
+        </span>
       </ItemHeader>
       {!expanded ? null : (
         <div
