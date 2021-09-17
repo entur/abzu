@@ -205,12 +205,39 @@ StopPlaceActions.removeElementByType = (index, type) => (dispatch) => {
   );
 };
 
+StopPlaceActions.removeBoardingPositionElement = (index, quayIndex) => (
+  dispatch
+) => {
+  dispatch(
+    createThunk(types.REMOVED_ELEMENT_BY_TYPE, {
+      index,
+      quayIndex,
+      type: "boarding-position",
+    })
+  );
+};
+
 StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
       name: name,
       index: index,
       type: type,
+    })
+  );
+};
+
+StopPlaceActions.changeBoardingPositionPublicCode = (
+  index,
+  quayIndex,
+  name
+) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
+      name,
+      index,
+      quayIndex,
+      type: "boarding-position",
     })
   );
 };
@@ -285,6 +312,19 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
   );
 };
 
+StopPlaceActions.setBoardingPositionElementFocus = (index, quayIndex) => (
+  dispatch
+) => {
+  dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
+
+  dispatch(
+    createThunk(types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT, {
+      index,
+      quayIndex,
+    })
+  );
+};
+
 StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {
   const state = getState();
   const isMultimodal = state.user.newStopIsMultiModal;
@@ -304,7 +344,10 @@ StopPlaceActions.setActiveMap = (map) => (dispatch) => {
   dispatch(createThunk(types.SET_ACTIVE_MAP, map));
 };
 
-StopPlaceActions.addElementToStop = (type, position) => (dispatch) => {
+StopPlaceActions.addElementToStop = (type, position) => (
+  dispatch,
+  getState
+) => {
   if (type === "stop_place") {
     dispatch(
       createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
@@ -316,19 +359,19 @@ StopPlaceActions.addElementToStop = (type, position) => (dispatch) => {
       createThunk(types.ADDED_STOP_PLACE_ELEMENT, {
         type,
         position,
+        focusedElement: getState().mapUtils.focusedElement,
       })
     );
   }
 };
 
-StopPlaceActions.changeElementPosition = (index, type, position) => (
+StopPlaceActions.changeElementPosition = (coordinatesOwner, position) => (
   dispatch
 ) => {
   dispatch(
     createThunk(types.CHANGE_ELEMENT_POSITION, {
-      index,
+      ...coordinatesOwner,
       position,
-      type,
     })
   );
 };

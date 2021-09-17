@@ -517,5 +517,9 @@
   "wheelchair_stop_hint": "Er alle quayene for dette stoppestedet rullestolvennlige?",
   "with_nearby_similar_duplicates": "Kun nærliggende stoppesteder med liknende navn",
   "you_are_creating_group": "Ny stoppestedsgruppe",
-  "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer."
+  "you_are_using_temporary_coordinates": "Du bruker midlertidige koordinater. Posisjonen vil ikke bli persistert før du aktivt lagrer endringer.",
+  "boarding_positions_title": "Boarding Positions",
+  "boarding_positions_tab_label": "Boarding positions",
+  "boarding_positions_item_header": "Boarding position",
+  "delete_boarding_position": "Slette boarding position"
 }

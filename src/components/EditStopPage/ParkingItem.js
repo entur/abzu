@@ -118,7 +118,15 @@ class ParkingItem extends React.Component {
 
   handleChangeCoordinates(position) {
     const { dispatch, index, handleLocateOnMap } = this.props;
-    dispatch(StopPlaceActions.changeElementPosition(index, "quay", position));
+    dispatch(
+      StopPlaceActions.changeElementPosition(
+        {
+          markerIndex: index,
+          type: "quay",
+        },
+        position
+      )
+    );
     handleLocateOnMap(position);
   }
 

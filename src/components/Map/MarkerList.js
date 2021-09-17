@@ -36,6 +36,7 @@ import {
   getNeighbourStopPlaceQuays,
   getStopPlaceWithAll,
 } from "../../actions/TiamatActions";
+import BoardingPositionMarker from "./BoardingPositionMarker";
 
 class MarkerList extends React.Component {
   static propTypes = {
@@ -144,10 +145,29 @@ class MarkerList extends React.Component {
     const position = event.target.getLatLng();
 
     dispatch(
-      StopPlaceActions.changeElementPosition(index, type, [
+      StopPlaceActions.changeElementPosition({ markerIndex: index, type }, [
         setDecimalPrecision(position.lat, 6),
         setDecimalPrecision(position.lng, 6),
       ])
+    );
+  }
+
+  handleBoardingPositionElementDragEnd(quayIndex, markerIndex, event) {
+    const { dispatch } = this.props;
+    const position = event.target.getLatLng();
+
+    dispatch(
+      StopPlaceActions.changeElementPosition(
+        {
+          markerIndex,
+          quayIndex,
+          type: "boarding-position",
+        },
+        [
+          setDecimalPrecision(position.lat, 6),
+          setDecimalPrecision(position.lng, 6),
+        ]
+      )
     );
   }
 
@@ -172,6 +192,9 @@ class MarkerList extends React.Component {
       isEditingStop,
       currentIsNewStop,
       currentStopIsMultiModal,
+      newStopIsMultiModal,
+      isEditingGroup,
+      focusedElement,
     } = props;
     const { formatMessage } = intl;
 
@@ -236,7 +259,7 @@ class MarkerList extends React.Component {
           <NewStopMarker
             key={"newstop-parent- " + stopIndex}
             position={marker.location}
-            newStopIsMultiModal={this.props.newStopIsMultiModal}
+            newStopIsMultiModal={newStopIsMultiModal}
             handleDragEnd={this.handleDragEndNewStop.bind(this)}
             text={newStopMarkerText}
             handleOnClick={() => {
@@ -348,7 +371,7 @@ class MarkerList extends React.Component {
               }}
               isEditingStop={isEditingStop}
               removeFromGroup={this.handleRemoveFromGroup.bind(this)}
-              isEditingGroup={this.props.isEditingGroup}
+              isEditingGroup={isEditingGroup}
               missingCoordinatesMap={missingCoordinatesMap}
               isMultimodalChild={marker.isChildOfParent}
               hasExpired={marker.hasExpired}
@@ -451,6 +474,60 @@ class MarkerList extends React.Component {
                   currentIsNewStop={currentIsNewStop}
                 />
               );
+
+              if (
+                focusedElement.type === "quay" &&
+                index === focusedElement.index &&
+                quay.boardingPositions
+              ) {
+                quay.boardingPositions.forEach((boardingPosition, bpIndex) => {
+                  popupMarkers.push(
+                    <BoardingPositionMarker
+                      key={
+                        "boarding-position-" + (boardingPosition.id || index)
+                      }
+                      position={boardingPosition?.location}
+                      publicCode={boardingPosition?.publicCode || "N/A"}
+                      translations={CustomPopupMarkerText}
+                      handleChangeCoordinates={() =>
+                        changeCoordinates(
+                          {
+                            type: "boarding-position",
+                            quayIndex: index,
+                            markerIndex: bpIndex,
+                          },
+                          boardingPosition.location
+                        )
+                      }
+                      handleDragEnd={(event) =>
+                        this.handleBoardingPositionElementDragEnd(
+                          index,
+                          bpIndex,
+                          event
+                        )
+                      }
+                      handleSetFocus={() => {
+                        this.props.dispatch(
+                          StopPlaceActions.setBoardingPositionElementFocus(
+                            bpIndex,
+                            index
+                          )
+                        );
+                        const expandedQuayEl = document.querySelector(
+                          ".boarding-position-item-expanded"
+                        );
+                        const scrollBodyEl = document.querySelector(
+                          "#scroll-body"
+                        );
+                        if (expandedQuayEl && scrollBodyEl) {
+                          expandedQuayEl.scrollIntoView(true);
+                          scrollBodyEl.scrollTop -= 50;
+                        }
+                      }}
+                    />
+                  );
+                });
+              }
             });
           }
         } else {
@@ -485,7 +562,7 @@ class MarkerList extends React.Component {
                   this
                 )}
                 stopPlace={marker}
-                isEditingGroup={this.props.isEditingGroup}
+                isEditingGroup={isEditingGroup}
                 handleCreateGroup={this.handleCreateGroup.bind(this)}
               />
             );
@@ -563,6 +640,7 @@ const mapStateToProps = (state) => ({
     ["current", "isParent"],
     false
   ),
+  focusedElement: state.mapUtils.focusedElement,
 });
 
 const getLocaleStopTypeName = (stopPlaceType, intl) => {

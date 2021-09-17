@@ -87,7 +87,13 @@ class EditStopMap extends React.Component {
 
     if (isQuay) {
       dispatch(
-        StopPlaceActions.changeElementPosition(index, "quay", formattedPosition)
+        StopPlaceActions.changeElementPosition(
+          {
+            markerIndex: index,
+            type: "quay",
+          },
+          formattedPosition
+        )
       );
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition));
@@ -110,14 +116,11 @@ class EditStopMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
-  handleChangeCoordinates(isQuay, markerIndex, position) {
+  handleChangeCoordinates(coordinatesOwner, position) {
     this.setState({
       coordinatesDialogOpen: true,
       coordinates: position.join(","),
-      coordinatesOwner: {
-        isQuay: isQuay,
-        markerIndex: markerIndex,
-      },
+      coordinatesOwner,
     });
   }
 
@@ -125,16 +128,12 @@ class EditStopMap extends React.Component {
     const { coordinatesOwner } = this.state;
     const { dispatch, zoom } = this.props;
 
-    if (coordinatesOwner.isQuay) {
-      dispatch(
-        StopPlaceActions.changeElementPosition(
-          coordinatesOwner.markerIndex,
-          "quay",
-          position
-        )
-      );
-    } else {
+    if (coordinatesOwner.type === "stop-place") {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position));
+    } else {
+      dispatch(
+        StopPlaceActions.changeElementPosition(coordinatesOwner, position)
+      );
     }
 
     dispatch(StopPlaceActions.changeMapCenter(position, zoom));
@@ -221,7 +220,6 @@ const mapStateToProps = (state) => {
   }
 
   if (neighbourStops && neighbourStops.length) {
-    console.log({ neighbourStops });
     markers = markers.concat(
       neighbourStops.filter((m) => !m.permanentlyTerminated)
     );

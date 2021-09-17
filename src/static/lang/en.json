@@ -517,5 +517,9 @@
   "wheelchair_stop_hint": "Are all quays for this stop place wheelchair friendly?",
   "with_nearby_similar_duplicates": "Only nearby stop places with similar name",
   "you_are_creating_group": "New Group of Stop Places",
-  "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted."
+  "you_are_using_temporary_coordinates": "You are using temporary coordinates. Location will not be persisted.",
+  "boarding_positions_title": "Boarding Positions",
+  "boarding_positions_tab_label": "Boarding positions",
+  "boarding_positions_item_header": "Boarding position",
+  "delete_boarding_position": "Delete boarding position"
 }

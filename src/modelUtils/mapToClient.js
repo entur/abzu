@@ -559,7 +559,7 @@ helpers.updateCurrentStopWithPosition = (current, location) => {
 };
 
 helpers.updateCurrentWithNewElement = (current, payLoad) => {
-  const { type, position } = payLoad;
+  const { type, position, focusedElement } = payLoad;
   const copy = JSON.parse(JSON.stringify(current));
 
   const newElement = {
@@ -572,6 +572,14 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.quays = copy.quays.concat({
         ...newElement,
         keyValues: [],
+      });
+      break;
+    case "boardingPosition":
+      copy.quays[focusedElement.index].boardingPositions = copy.quays[
+        focusedElement.index
+      ].boardingPositions.concat({
+        publicCode: "",
+        location: position.slice(),
       });
       break;
     case PARKING_TYPE.PARK_AND_RIDE:
@@ -609,6 +617,12 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
     case "quay":
       copy.quays = removeElementByIndex(copy.quays, index);
       break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions = removeElementByIndex(
+        copy.quays[payLoad.quayIndex].boardingPositions,
+        index
+      );
+      break;
     case "parking":
       copy.parking = removeElementByIndex(copy.parking, index);
       break;
@@ -619,17 +633,28 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
 };
 
 helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
-  const { index, type, position } = payLoad;
+  const { markerIndex, type, position } = payLoad;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
     case "quay":
-      copy.quays[index] = Object.assign({}, copy.quays[index], {
+      copy.quays[markerIndex] = Object.assign({}, copy.quays[markerIndex], {
         location: position,
       });
       break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions[
+        markerIndex
+      ] = Object.assign(
+        {},
+        copy.quays[payLoad.quayIndex].boardingPositions[markerIndex],
+        {
+          location: position,
+        }
+      );
+      break;
     case "parking":
-      copy.parking[index] = Object.assign({}, copy.parking[index], {
+      copy.parking[markerIndex] = Object.assign({}, copy.parking[markerIndex], {
         location: position,
       });
       break;
@@ -649,6 +674,15 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
       copy.quays[index] = Object.assign({}, copy.quays[index], {
         publicCode: name,
       });
+      break;
+    case "boarding-position":
+      copy.quays[payLoad.quayIndex].boardingPositions[index] = Object.assign(
+        {},
+        copy.quays[payLoad.quayIndex].boardingPositions[index],
+        {
+          publicCode: name,
+        }
+      );
       break;
     default:
       throw new Error("element not supported", type);
