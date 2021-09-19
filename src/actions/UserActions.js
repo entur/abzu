@@ -82,7 +82,7 @@ UserActions.showEditStopAdditional = () => (dispatch) => {
 };
 
 UserActions.hideEditQuayAdditional = () => (dispatch) => {
-  dispatch(createThunk(types.HID_EDIT_QUAY_ADDITIONAL, null));
+  dispatch(createThunk(types.HIDE_EDIT_QUAY_ADDITIONAL, null));
 };
 
 UserActions.showEditQuayAdditional = () => (dispatch) => {
@@ -300,6 +300,20 @@ UserActions.changeElementTypeTabByType = (type) => (dispatch) => {
   };
   let value = typesMap[type] || 0;
   dispatch(UserActions.changeElementTypeTab(value));
+};
+
+UserActions.changeQuayAdditionalTypeTab = (value) => (dispatch) => {
+  dispatch(createThunk(types.CHANGED_QUAY_ADDITIONAL_TAB, value));
+};
+
+UserActions.changeQuayAdditionalTypeTabByType = (type) => (dispatch) => {
+  let typesMap = {
+    accessibility: 0,
+    facilities: 1,
+    "boarding-positions": 2,
+  };
+  let value = typesMap[type] || 0;
+  dispatch(UserActions.changeQuayAdditionalTypeTab(value));
 };
 
 UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (

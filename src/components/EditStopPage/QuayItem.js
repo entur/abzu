@@ -19,6 +19,7 @@ import {
   StopPlaceActions,
   AssessmentActions,
   EquipmentActions,
+  UserActions,
 } from "../../actions/";
 import { connect } from "react-redux";
 import Checkbox from "material-ui/Checkbox";
@@ -58,7 +59,6 @@ class QuayItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      additionalExpanded: false,
       coordinatesDialogOpen: false,
     };
   }
@@ -89,7 +89,11 @@ class QuayItem extends React.Component {
   };
 
   showMoreOptionsForQuay = (expanded) => {
-    this.setState({ additionalExpanded: expanded });
+    if (expanded) {
+      this.props.dispatch(UserActions.showEditQuayAdditional());
+    } else {
+      this.props.dispatch(UserActions.hideEditQuayAdditional());
+    }
   };
 
   handleWheelChairChange(value) {
@@ -143,6 +147,7 @@ class QuayItem extends React.Component {
     const {
       quay,
       expanded,
+      additionalExpanded,
       index,
       handleToggleCollapse,
       handleLocateOnMap,
@@ -151,7 +156,6 @@ class QuayItem extends React.Component {
       disabled,
     } = this.props;
     const { formatMessage } = intl;
-    const { additionalExpanded } = this.state;
 
     const wheelchairAccess = getIn(
       quay,
@@ -435,4 +439,8 @@ class QuayItem extends React.Component {
   }
 }
 
-export default injectIntl(connect(null)(QuayItem));
+const mapStateToProps = (state) => ({
+  additionalExpanded: state.user.showEditQuayAdditional,
+});
+
+export default injectIntl(connect(mapStateToProps)(QuayItem));

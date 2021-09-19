@@ -33,6 +33,7 @@ export const initialState = {
   removedFavorites: [],
   activeElementTab: 0,
   showEditQuayAdditional: false,
+  activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
   keyValuesDialogOpen: false,
   keyValuesDialogSource: [],
@@ -226,7 +227,12 @@ const userReducer = (state = initialState, action) => {
         showEditQuayAdditional: true,
       });
 
-    case types.HID_EDIT_QUAY_ADDITIONAL:
+    case types.CHANGED_QUAY_ADDITIONAL_TAB:
+      return Object.assign({}, state, {
+        activeQuayAdditionalTab: action.payLoad,
+      });
+
+    case types.HIDE_EDIT_QUAY_ADDITIONAL:
       return Object.assign({}, state, {
         showEditQuayAdditional: false,
       });

@@ -323,6 +323,10 @@ StopPlaceActions.setBoardingPositionElementFocus = (index, quayIndex) => (
       quayIndex,
     })
   );
+
+  dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
+
+  dispatch(UserActions.changeQuayAdditionalTypeTabByType("boarding-positions"));
 };
 
 StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {

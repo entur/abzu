@@ -19,23 +19,15 @@ import FacilitiesQuayTab from "./FacilitiesQuayTab";
 import AccessiblityQuayTab from "./AcessibilityQuayTab";
 import { injectIntl } from "react-intl";
 import BoardingPositionsTab from "./BoardingPositionsTab";
+import { UserActions } from "../../actions";
 
 class EditQuayAdditional extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTabIndex: 0,
-    };
-  }
-
   handleTabOnChange = (value) => {
-    this.setState({
-      activeTabIndex: value,
-    });
+    this.props.dispatch(UserActions.changeQuayAdditionalTypeTab(value));
   };
 
   render() {
-    const { intl, quay, index, disabled } = this.props;
+    const { intl, quay, index, disabled, activeTabIndex } = this.props;
     const { formatMessage } = intl;
 
     const style = {
@@ -49,8 +41,6 @@ class EditQuayAdditional extends React.Component {
       fontWeight: 600,
       marginTop: -10,
     };
-
-    const { activeTabIndex } = this.state;
 
     return (
       <div style={style} id="additional">
@@ -105,6 +95,7 @@ const mapStateToProps = (state) => ({
   focusedElement: state.mapUtils.focusedElement,
   focusedBoardingPositionElement: state.mapUtils.focusedBoardingPositionElement,
   stopPlace: state.stopPlace.current,
+  activeTabIndex: state.user.activeQuayAdditionalTab,
 });
 
 export default injectIntl(connect(mapStateToProps)(EditQuayAdditional));
