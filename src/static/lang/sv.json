@@ -517,5 +517,9 @@
   "wheelchair_stop_hint": "Är alla quays på hållplatsen rullstolsanpassade?",
   "with_nearby_similar_duplicates": "Endast närliggande hållplatser med liknande namn",
   "you_are_creating_group": "Ny hållplatsgrupp",
-  "you_are_using_temporary_coordinates": "Du använder tillfälliga koordinater. Positionen kommer vidareföras innan du har sparat dina ändringar."
+  "you_are_using_temporary_coordinates": "Du använder tillfälliga koordinater. Positionen kommer vidareföras innan du har sparat dina ändringar.",
+  "boarding_positions_title": "Ombordstigningspunkter",
+  "boarding_positions_tab_label": "Ombordstigningspunkter",
+  "boarding_positions_item_header": "Ombordstigningspunkt",
+  "delete_boarding_position": "Ta bort ombordstigningspunkt"
 }
