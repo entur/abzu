@@ -572,6 +572,7 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
       copy.quays = copy.quays.concat({
         ...newElement,
         keyValues: [],
+        boardingPositions: [],
       });
       break;
     case "boardingPosition":

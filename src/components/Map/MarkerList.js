@@ -484,7 +484,7 @@ class MarkerList extends React.Component {
                   popupMarkers.push(
                     <BoardingPositionMarker
                       key={
-                        "boarding-position-" + (boardingPosition.id || index)
+                        "boarding-position-" + (boardingPosition.id || bpIndex)
                       }
                       position={boardingPosition?.location}
                       publicCode={boardingPosition?.publicCode || "N/A"}
