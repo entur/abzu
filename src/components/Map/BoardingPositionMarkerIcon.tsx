@@ -46,8 +46,9 @@ export default ({ publicCode }: Props) => {
         <div
           style={{
             width: 30,
-            fontSize: nameLen > 2 ? 10 : 12,
+            fontSize: nameLen > 2 ? 8 : 10,
             textAlign: "center",
+            paddingTop: 3,
           }}
         >
           {publicCode}
