@@ -70,9 +70,11 @@ const BoardingPositionItem = ({
             hintText={intl.formatMessage({ id: "publicCode" })}
             floatingLabelText={intl.formatMessage({ id: "publicCode" })}
             disabled={disabled}
-            defaultValue={bp.publicCode}
+            value={bp.publicCode}
             style={{ width: "95%", marginTop: -10 }}
-            onChange={(e: any) => onPublicCodeChange(e.target.value)}
+            onChange={(e: any) =>
+              onPublicCodeChange(e.target.value.substring(0, 3))
+            }
           />
           <ToolTippable
             toolTipText={intl.formatMessage({ id: "delete_boarding_position" })}
