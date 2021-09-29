@@ -31,9 +31,9 @@ export const getEnvColor = (env) => {
   let currentEnv = env || getTiamatEnv();
   switch (currentEnv.toLowerCase()) {
     case "development":
-      return "#d18e25";
-    case "test":
       return "#457645";
+    case "test":
+      return "#d18e25";
     case "prod":
       return darkColor;
     default:
