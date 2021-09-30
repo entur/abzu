@@ -54,11 +54,7 @@ npm test
 
 ### Authentication
 
-Uses Keycloak to authenticate user and read JWT, set `auth-server-url`:
-
-```
-AUTH_SERVER_URL=https://www-test.entur.org/auth port=9000 NODE_ENV=development node server.js
-```
+Uses Auth0 to authenticate user and read JWT.
 
 ### Themes
 

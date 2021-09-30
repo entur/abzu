@@ -9,7 +9,6 @@ data:
   config.json: |
     {
       "tiamatBaseUrl": "{{ .Values.configMap.tiamatBaseUrl }}",
-      "authServerUrl": "{{ .Values.configMap.authServerUrl }}",
       "OSMUrl": "{{ .Values.configMap.OSMUrl }}",
       "endpointBase": "/",
       "tiamatEnv": "{{ .Values.configMap.tiamatEnv }}",
@@ -22,5 +21,4 @@ data:
       "auth0ClientId": "{{ .Values.configMap.auth0ClientId }}",
       "auth0Audience": "{{ .Values.configMap.auth0Audience }}",
       "auth0ClaimsNamespace": "{{ .Values.configMap.auth0ClaimsNamespace }}",
-      "defaultAuthMethod": "{{ .Values.configMap.defaultAuthMethod }}"
     }

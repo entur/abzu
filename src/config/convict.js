@@ -54,18 +54,6 @@ module.exports = new Promise(function (resolve, reject) {
       default: "/",
       env: "ENDPOINTBASE",
     },
-    authServerUrl: {
-      doc: "URL to keycloak auth server",
-      format: String,
-      default: "https://kc-dev.devstage.entur.io/auth",
-      env: "AUTH_SERVER_URL",
-    },
-    authRealmName: {
-      doc: "Authentication realm name",
-      format: String,
-      default: "rutebanken",
-      env: "AUTH_REALM_NAME",
-    },
     netexPrefix: {
       doc: "Netex Prefix to be used",
       format: String,
@@ -120,12 +108,6 @@ module.exports = new Promise(function (resolve, reject) {
       format: String,
       default: "https://ror.entur.io/role_assignments",
       env: "AUTH0_CLAIMS_NAMESPACE",
-    },
-    defaultAuthMethod: {
-      doc: "Set default authentication method (kc or auth0)",
-      format: String,
-      default: "auth0",
-      env: "DEFAULT_AUTH_METHOD",
     },
   });
 

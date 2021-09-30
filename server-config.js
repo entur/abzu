@@ -34,21 +34,6 @@ const configureApp = async (app) => {
 
   app.use(bodyParser.json());
 
-  const createKeyCloakConfig = authServerUrl => {
-    let config = {
-      realm: convict.get('authRealmName'),
-      'tokens-not-before': 1490857383,
-      'public-client': true,
-      'auth-server-url': authServerUrl,
-      resource: 'neti-frontend'
-    };
-    fs.writeFileSync(
-      './src/config/keycloak.json',
-      JSON.stringify(config),
-      'utf8'
-    );
-  };
-
   const getTranslations = req => {
     const supportedLanguages = ['en', 'nb', 'fr', 'sv'];
 
@@ -124,18 +109,11 @@ const configureApp = async (app) => {
         auth0ClientId: convict.get('auth0ClientId'),
         auth0Audience: convict.get('auth0Audience'),
         auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace'),
-        defaultAuthMethod: convict.get('defaultAuthMethod')
       };
-
-      createKeyCloakConfig(convict.get('authServerUrl'));
 
       res.send(cfg);
     }
   );
-
-  app.get(ENDPOINTBASE + 'config/keycloak.json', function(req, res) {
-    res.sendFile(__dirname + '/src/config/keycloak.json');
-  });
 
   app.get(ENDPOINTBASE + '_health', function(req, res) {
     res.sendStatus(200);

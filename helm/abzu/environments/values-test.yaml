@@ -2,7 +2,6 @@ env: staging
 
 configMap:
   tiamatBaseUrl: "https://api.staging.entur.io/stop-places/v1/graphql"
-  authServerUrl: "https://kc-stage.devstage.entur.io/auth"
   OSMUrl: "https://api-stage.entur.org/map/1.0/{z}/{x}/{y}.png"
   tiamatEnv: "test"
   OTPUrl: "https://api.staging.entur.io/journey-planner/v2/graphql"
@@ -10,7 +9,6 @@ configMap:
   auth0ClientId: WrqQUHAVuMS3MbKdGcw91TBFTqLLpnUh
   auth0Audience: https://ror.api.staging.entur.io
   auth0ClaimsNamespace: https://ror.entur.io/role_assignments
-  defaultAuthMethod: auth0
 
 ingress:
   enabled: true
