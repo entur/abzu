@@ -569,6 +569,8 @@ export const topopGraphicalPlacesReportQuery = gql`
 export const getMergeInfoStopPlace = gql`
   query MergeInfoStopPlace($stopPlaceId: String!) {
     stopPlace(id: $stopPlaceId) {
+      id
+      version
       ... on StopPlace {
         quays {
           id
