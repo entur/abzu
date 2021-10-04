@@ -20,5 +20,5 @@ data:
       "auth0Domain": "{{ .Values.configMap.auth0Domain }}",
       "auth0ClientId": "{{ .Values.configMap.auth0ClientId }}",
       "auth0Audience": "{{ .Values.configMap.auth0Audience }}",
-      "auth0ClaimsNamespace": "{{ .Values.configMap.auth0ClaimsNamespace }}",
+      "auth0ClaimsNamespace": "{{ .Values.configMap.auth0ClaimsNamespace }}"
     }
