@@ -182,7 +182,7 @@
   "important_stop_place_usages_found": "L'arrêt a au moins une course planifiée après la date d'expiration demandée. Le point d'arrêt est utilisé par :",
   "important_quay_usages_api_link": "Vérifier les lignes qui utilisent ce quai dans l'API",
   "important_stop_places_usages_api_link": "Vérifier les lignes qui utilisent cet arrêt dans l'API",
-  "in": "dans",
+  "into": "dans",
   "is_missing_coordinates": "Coordonnées manquantes",
   "is_missing_coordinates_help_text": "Vous pouvez spécifier des coordonnées temporaires avant l'édition.",
   "is_missing_name": "<Nom manquant>",

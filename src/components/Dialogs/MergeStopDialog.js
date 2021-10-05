@@ -73,7 +73,7 @@ class MergeStopDialog extends React.Component {
       oneMergeQuay: formatMessage({ id: "one_merged_quay" }),
       mergedQuays: formatMessage({ id: "merged_quays" }),
       merged: formatMessage({ id: "merged" }),
-      in: formatMessage({ id: "in" }),
+      in: formatMessage({ id: "into" }),
     };
 
     const fromStopPlace = sourceElement
