@@ -12,5 +12,4 @@ configMap:
 
 ingress:
   enabled: true
-  loadBalancerIP: 35.233.47.68
   domainName: .staging.entur.org

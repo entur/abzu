@@ -12,5 +12,4 @@ configMap:
 
 ingress:
   enabled: true
-  loadBalancerIP: 104.199.93.228
   domainName: .entur.org
