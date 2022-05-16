@@ -10,4 +10,4 @@ echo "Image: ${IMAGE}"
 eval "docker build -t ${IMAGE} ${BUILD_ARGS:-} ."
 
 docker tag "${IMAGE}" "${IMAGE}":"${VERSION}"
-docker push "${IMAGE}"
+docker push "${IMAGE}":"${VERSION}"
