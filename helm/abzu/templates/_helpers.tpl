@@ -34,4 +34,5 @@ team: ror
 slack: talk-ror
 type: abzu
 namespace: {{ .Release.Namespace }}
+environment: {{ .Values.env }}
 {{- end }}

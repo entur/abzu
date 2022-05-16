@@ -1,4 +1,4 @@
-env: staging
+env: test
 
 configMap:
   tiamatBaseUrl: "https://api.staging.entur.io/stop-places/v1/graphql"
