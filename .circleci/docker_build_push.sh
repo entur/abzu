@@ -10,4 +10,5 @@ echo "Image: ${IMAGE}"
 eval "docker build -t ${IMAGE} ${BUILD_ARGS:-} ."
 
 docker tag "${IMAGE}" "${IMAGE}":"${VERSION}"
+docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/account-auth.json
 docker push "${IMAGE}":"${VERSION}"
