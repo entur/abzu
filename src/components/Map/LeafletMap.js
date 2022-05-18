@@ -15,26 +15,26 @@ limitations under the Licence. */
 import React from "react";
 import MarkerList from "./MarkerList";
 import {
-  Map as Lmap,
+  MapContainer as Lmap,
   TileLayer,
   ZoomControl,
   LayersControl,
   ScaleControl,
 } from "react-leaflet";
-import { GoogleLayer } from "react-leaflet-google";
+import { GoogleLayer } from "react-leaflet-google-v2";
 import MultiPolylineList from "./PathLink";
-import WMTSLayer from "./WMTSLayer";
-import MapboxLayer from "./MapboxLayer";
+// import WMTSLayer from "./WMTSLayer";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
+import { MapEvents } from "./MapEvents";
 
 export default class LeafLetMap extends React.Component {
   getCheckedBaseLayerByValue(value) {
     return this.props.activeBaselayer === value;
   }
 
-  handleBaselayerChanged(element) {
-    this.props.handleBaselayerChanged(element.name);
+  handleBaselayerChanged(name) {
+    this.props.handleBaselayerChanged(name);
   }
 
   getCenterPosition(position) {
@@ -88,8 +88,6 @@ export default class LeafLetMap extends React.Component {
     };
 
     const centerPosition = this.getCenterPosition(position);
-    const mapboxAccessToken = this.getMapboxAccessToken();
-    const mapboxTariffZonesStyle = this.getMapboxTariffZoneStyle();
 
     return (
       <Lmap
@@ -105,86 +103,72 @@ export default class LeafLetMap extends React.Component {
         onMoveEnd={(event) => {
           handleMapMoveEnd(event, this.refs.map);
         }}
-        OnBaselayerChange={this.handleBaselayerChanged.bind(this)}
         onclick={(event) => {
           handleOnClick && handleOnClick(event, this.refs.map);
         }}
       >
-        <LayersControl position="topright">
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("OpenStreetMap")}
-            name="OpenStreetMap"
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("OpenStreetMap Transport")}
-            name="OpenStreetMap Transport"
-          >
-            <TileLayer
-              attribution="&copy; OpenStreetMap contributors"
-              url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Kartverket topografisk")}
-            name="Kartverket topografisk"
-          >
-            <TileLayer
-              attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Kartverket flyfoto")}
-            name="Kartverket flyfoto"
-          >
-            <WMTSLayer
-              gkt={this.getLocalGKTToken()}
-              baseURL="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
-              zoom={zoom}
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Google Maps Hydrid")}
-            name="Google Maps Hydrid"
-          >
-            <GoogleLayer
-              maxZoom="19"
-              googlekey={googleApiKey}
-              maptype="HYBRID"
-            />
-          </BaseLayer>
-          {mapboxAccessToken && mapboxTariffZonesStyle ? (
+        <MapEvents
+          handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+        >
+          <LayersControl position="topright">
             <BaseLayer
-              checked={this.getCheckedBaseLayerByValue("Takstsoner")}
-              name="Takstsoner"
+              checked={this.getCheckedBaseLayerByValue("OpenStreetMap")}
+              name="OpenStreetMap"
             >
-              <MapboxLayer
-                accessToken={mapboxAccessToken}
-                style={mapboxTariffZonesStyle}
+              <TileLayer
+                attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                maxZoom="19"
               />
             </BaseLayer>
-          ) : null}
-        </LayersControl>
-        <ScaleControl imperial={false} position="bottomright" />
-        <ZoomControl position="bottomright" />
-        <MarkerList
-          changeCoordinates={handleChangeCoordinates}
-          markers={markers}
-          handleDragEnd={handleDragEnd}
-          dragableMarkers={dragableMarkers}
-          handleSetCompassBearing={handleSetCompassBearing}
-        />
-        <MultimodalStopEdges stops={markers} />
-        <MultiPolylineList />
-        <StopPlaceGroupList />
+            <BaseLayer
+              checked={this.getCheckedBaseLayerByValue(
+                "OpenStreetMap Transport"
+              )}
+              name="OpenStreetMap Transport"
+            >
+              <TileLayer
+                attribution="&copy; OpenStreetMap contributors"
+                url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
+                maxZoom="19"
+              />
+            </BaseLayer>
+            <BaseLayer
+              checked={this.getCheckedBaseLayerByValue(
+                "Kartverket topografisk"
+              )}
+              name="Kartverket topografisk"
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
+                url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
+                maxZoom="19"
+              />
+            </BaseLayer>
+            <BaseLayer
+              checked={this.getCheckedBaseLayerByValue("Google Maps Hydrid")}
+              name="Google Maps Hydrid"
+            >
+              <GoogleLayer
+                maxZoom="19"
+                googlekey={googleApiKey}
+                maptype="HYBRID"
+              />
+            </BaseLayer>
+          </LayersControl>
+          <ScaleControl imperial={false} position="bottomright" />
+          <ZoomControl position="bottomright" />
+          <MarkerList
+            changeCoordinates={handleChangeCoordinates}
+            markers={markers}
+            handleDragEnd={handleDragEnd}
+            dragableMarkers={dragableMarkers}
+            handleSetCompassBearing={handleSetCompassBearing}
+          />
+          <MultimodalStopEdges stops={markers} />
+          <MultiPolylineList />
+          <StopPlaceGroupList />
+        </MapEvents>
       </Lmap>
     );
   }
