@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
+import React, { useMemo, useRef } from "react";
 import MarkerList from "./MarkerList";
 import {
   MapContainer as Lmap,
@@ -23,153 +23,121 @@ import {
 } from "react-leaflet";
 import { GoogleLayer } from "react-leaflet-google-v2";
 import MultiPolylineList from "./PathLink";
-// import WMTSLayer from "./WMTSLayer";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
 import { MapEvents } from "./MapEvents";
 
-export default class LeafLetMap extends React.Component {
-  getCheckedBaseLayerByValue(value) {
-    return this.props.activeBaselayer === value;
-  }
+const lmapStyle = {
+  border: "2px solid #eee",
+};
 
-  handleBaselayerChanged(name) {
-    this.props.handleBaselayerChanged(name);
-  }
+export const LeafLetMap = ({
+  position,
+  zoom,
+  handleDragEnd,
+  handleChangeCoordinates,
+  handleOnClick,
+  minZoom,
+  handleSetCompassBearing,
+  markers,
+  dragableMarkers,
+  handleMapMoveEnd,
+  onDoubleClick,
+  handleZoomEnd,
+  activeBaselayer,
+  handleBaselayerChanged,
+}) => {
+  const mapRef = useRef();
 
-  getCenterPosition(position) {
+  const centerPosition = useMemo(() => {
     if (!position) {
       return [64.349421, 16.809082];
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
       : [Number(position.lat), Number(position.lng)];
-  }
+  }, [position]);
 
-  getLocalGKTToken() {
-    let localToken = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
+  const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
+  const googleApiKey = window.config.googleApiKey;
+  const { BaseLayer } = LayersControl;
 
-    if (localToken && localToken.gkt) {
-      return localToken.gkt;
-    }
-    return null;
-  }
+  return (
+    <Lmap
+      ref={mapRef}
+      style={lmapStyle}
+      center={centerPosition}
+      className="leaflet-map"
+      onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
+      zoom={zoom}
+      zoomControl={false}
+      minZoom={minZoom || null}
+      onDblclick={(e) => onDoubleClick && onDoubleClick(e, mapRef.current)}
+      onMoveEnd={(event) => {
+        handleMapMoveEnd(event, mapRef.current);
+      }}
+      onclick={(event) => {
+        handleOnClick && handleOnClick(event, mapRef.current);
+      }}
+    >
+      <MapEvents handleBaselayerChanged={handleBaselayerChanged}>
+        <LayersControl position="topright">
+          <BaseLayer
+            checked={getCheckedBaseLayerByValue("OpenStreetMap")}
+            name="OpenStreetMap"
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={getCheckedBaseLayerByValue("OpenStreetMap Transport")}
+            name="OpenStreetMap Transport"
+          >
+            <TileLayer
+              attribution="&copy; OpenStreetMap contributors"
+              url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={getCheckedBaseLayerByValue("Kartverket topografisk")}
+            name="Kartverket topografisk"
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
+              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
+              maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}
+            name="Google Maps Hydrid"
+          >
+            <GoogleLayer
+              maxZoom="19"
+              googlekey={googleApiKey}
+              maptype="HYBRID"
+            />
+          </BaseLayer>
+        </LayersControl>
+        <ScaleControl imperial={false} position="bottomright" />
+        <ZoomControl position="bottomright" />
+        <MarkerList
+          changeCoordinates={handleChangeCoordinates}
+          markers={markers}
+          handleDragEnd={handleDragEnd}
+          dragableMarkers={dragableMarkers}
+          handleSetCompassBearing={handleSetCompassBearing}
+        />
+        <MultimodalStopEdges stops={markers} />
+        <MultiPolylineList />
+        <StopPlaceGroupList />
+      </MapEvents>
+    </Lmap>
+  );
+};
 
-  getMapboxAccessToken() {
-    return `${window.config.mapboxAccessToken}`;
-  }
-
-  getMapboxTariffZoneStyle() {
-    return `${window.config.mapboxTariffZonesStyle}`;
-  }
-
-  render() {
-    const googleApiKey = window.config.googleApiKey;
-
-    const {
-      position,
-      zoom,
-      handleDragEnd,
-      handleChangeCoordinates,
-      handleOnClick,
-      minZoom,
-      handleSetCompassBearing,
-      markers,
-      dragableMarkers,
-      handleMapMoveEnd,
-      onDoubleClick,
-      handleZoomEnd,
-    } = this.props;
-
-    const { BaseLayer } = LayersControl;
-
-    const lmapStyle = {
-      border: "2px solid #eee",
-    };
-
-    const centerPosition = this.getCenterPosition(position);
-
-    return (
-      <Lmap
-        ref="map"
-        style={lmapStyle}
-        center={centerPosition}
-        className="leaflet-map"
-        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
-        zoom={zoom}
-        zoomControl={false}
-        minZoom={minZoom || null}
-        onDblclick={(e) => onDoubleClick && onDoubleClick(e, this.refs.map)}
-        onMoveEnd={(event) => {
-          handleMapMoveEnd(event, this.refs.map);
-        }}
-        onclick={(event) => {
-          handleOnClick && handleOnClick(event, this.refs.map);
-        }}
-      >
-        <MapEvents
-          handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
-        >
-          <LayersControl position="topright">
-            <BaseLayer
-              checked={this.getCheckedBaseLayerByValue("OpenStreetMap")}
-              name="OpenStreetMap"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxZoom="19"
-              />
-            </BaseLayer>
-            <BaseLayer
-              checked={this.getCheckedBaseLayerByValue(
-                "OpenStreetMap Transport"
-              )}
-              name="OpenStreetMap Transport"
-            >
-              <TileLayer
-                attribution="&copy; OpenStreetMap contributors"
-                url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
-                maxZoom="19"
-              />
-            </BaseLayer>
-            <BaseLayer
-              checked={this.getCheckedBaseLayerByValue(
-                "Kartverket topografisk"
-              )}
-              name="Kartverket topografisk"
-            >
-              <TileLayer
-                attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-                url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
-                maxZoom="19"
-              />
-            </BaseLayer>
-            <BaseLayer
-              checked={this.getCheckedBaseLayerByValue("Google Maps Hydrid")}
-              name="Google Maps Hydrid"
-            >
-              <GoogleLayer
-                maxZoom="19"
-                googlekey={googleApiKey}
-                maptype="HYBRID"
-              />
-            </BaseLayer>
-          </LayersControl>
-          <ScaleControl imperial={false} position="bottomright" />
-          <ZoomControl position="bottomright" />
-          <MarkerList
-            changeCoordinates={handleChangeCoordinates}
-            markers={markers}
-            handleDragEnd={handleDragEnd}
-            dragableMarkers={dragableMarkers}
-            handleSetCompassBearing={handleSetCompassBearing}
-          />
-          <MultimodalStopEdges stops={markers} />
-          <MultiPolylineList />
-          <StopPlaceGroupList />
-        </MapEvents>
-      </Lmap>
-    );
-  }
-}
+export default LeafLetMap;
