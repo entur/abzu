@@ -26,9 +26,20 @@ import MultiPolylineList from "./PathLink";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
 import { MapEvents } from "./MapEvents";
+import { WMTSLayer } from "./WMTSLayer";
 
 const lmapStyle = {
   border: "2px solid #eee",
+};
+
+const getLocalGKTToken = () => {
+  let localToken = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
+
+  if (localToken && localToken.gkt) {
+    console.log({ localToken });
+    return localToken.gkt;
+  }
+  return null;
 };
 
 export const LeafLetMap = ({
@@ -110,6 +121,15 @@ export const LeafLetMap = ({
               attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
               url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
               maxZoom="19"
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
+            name="Kartverket flyfoto"
+          >
+            <WMTSLayer
+              baseUrl="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
+              token={getLocalGKTToken()}
             />
           </BaseLayer>
           <BaseLayer
