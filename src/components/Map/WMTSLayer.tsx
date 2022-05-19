@@ -1,40 +1,43 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { TileLayer } from "react-leaflet";
 import L from "leaflet";
-import { useGktToken } from "./useGktToken";
 
-const BASE_URL =
-  "https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2";
+export interface WMTSLayerProps {
+  baseUrl: string;
+  params: Record<string, string>;
+  attribution: string;
+}
 
-export const WMTSLayer: React.FC = () => {
-  const token = useGktToken();
+const DEFAULT_PARAMS = {
+  service: "WMTS",
+  request: "GetTile",
+  version: "1.1.1",
+  style: "default",
+  format: "image/png",
+  transparent: "false",
+  tilematrixSet: "default028mm",
+  layers: "toporaster2",
+};
 
-  const wmtsParams = useMemo(
-    () =>
-      L.Util.getParamString({
-        service: "WMTS",
-        request: "GetTile",
-        version: "1.1.1",
-        style: "default",
-        format: "image/png",
-        transparent: "false",
-        tilematrixSet: "default028mm",
-        layers: "toporaster2",
-        gkt: token,
-      }),
-    [token]
-  );
+export const WMTSLayer: React.FC<WMTSLayerProps> = ({
+  baseUrl,
+  params,
+  attribution,
+}) => {
+  const wmtsParams: string = useMemo(() => {
+    const newParams: Record<string, string> = Object.assign({}, DEFAULT_PARAMS);
+
+    Object.keys(params).forEach((key) => {
+      newParams[key] = params[key];
+    });
+
+    return L.Util.getParamString(newParams);
+  }, [params]);
 
   const url = useMemo(
-    () => `${BASE_URL}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
+    () => `${baseUrl}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
     [wmtsParams]
   );
 
-  return (
-    <TileLayer
-      attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-      url={url}
-      maxZoom={19}
-    />
-  );
+  return <TileLayer attribution={attribution} url={url} maxZoom={19} />;
 };

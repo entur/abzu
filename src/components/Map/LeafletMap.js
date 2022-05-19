@@ -26,7 +26,7 @@ import MultiPolylineList from "./PathLink";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
 import { MapEvents } from "./MapEvents";
-import { WMTSLayer } from "./WMTSLayer";
+import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -117,7 +117,7 @@ export const LeafLetMap = ({
             checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
             name="Kartverket flyfoto"
           >
-            <WMTSLayer />
+            <KartverketFlyFotoLayer />
           </BaseLayer>
           <BaseLayer
             checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}

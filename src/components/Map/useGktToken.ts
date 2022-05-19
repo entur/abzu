@@ -6,8 +6,6 @@ export const useGktToken = () => {
     JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "{}")
   );
 
-  console.log({ token });
-
   useEffect(() => {
     const fetchNewToken = async () => {
       const response = await Axios.get(window.config.endpointBase + "token");
