@@ -32,16 +32,6 @@ const lmapStyle = {
   border: "2px solid #eee",
 };
 
-const getLocalGKTToken = () => {
-  let localToken = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
-
-  if (localToken && localToken.gkt) {
-    console.log({ localToken });
-    return localToken.gkt;
-  }
-  return null;
-};
-
 export const LeafLetMap = ({
   position,
   zoom,
@@ -127,10 +117,7 @@ export const LeafLetMap = ({
             checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
             name="Kartverket flyfoto"
           >
-            <WMTSLayer
-              baseUrl="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
-              token={getLocalGKTToken()}
-            />
+            <WMTSLayer baseUrl="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2" />
           </BaseLayer>
           <BaseLayer
             checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}

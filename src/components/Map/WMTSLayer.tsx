@@ -1,13 +1,16 @@
 import React, { useMemo } from "react";
 import { TileLayer } from "react-leaflet";
 import L from "leaflet";
+import { useGktToken } from "./useGktToken";
 
 export interface WMTSLayerProps {
   baseUrl: string;
   token: string;
 }
 
-export const WMTSLayer: React.FC<WMTSLayerProps> = ({ baseUrl, token }) => {
+export const WMTSLayer: React.FC<WMTSLayerProps> = ({ baseUrl }) => {
+  const token = useGktToken();
+
   const wmtsParams = useMemo(
     () =>
       L.Util.getParamString({
