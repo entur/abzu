@@ -41,7 +41,7 @@
     "lint-staged": "^10.2.2",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.20.0",
-    "moment": "2.29.1",
+    "moment": "2.29.3",
     "prop-types": "^15.7.2",
     "raven": "^2.6.4",
     "raven-js": "^3.27.2",
