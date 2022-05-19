@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
 
+const INTERVAL_IN_MS = 60000;
+
 export const useGktToken = () => {
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "{}")
@@ -28,7 +30,7 @@ export const useGktToken = () => {
           );
         }
       }
-    }, 1000);
+    }, INTERVAL_IN_MS);
 
     return () => {
       clearInterval(fetchTokenInterval);
