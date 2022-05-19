@@ -29,7 +29,7 @@
     "detect-browser": "^2.5.1",
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
-    "glob": "7.2.0",
+    "glob": "7.2.3",
     "google-maps": "^3.3.0",
     "graphql": "^15.5.0",
     "graphql-fetch": "1.0.1",
