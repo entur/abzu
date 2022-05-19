@@ -3,12 +3,10 @@ import { TileLayer } from "react-leaflet";
 import L from "leaflet";
 import { useGktToken } from "./useGktToken";
 
-export interface WMTSLayerProps {
-  baseUrl: string;
-  token: string;
-}
+const BASE_URL =
+  "https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2";
 
-export const WMTSLayer: React.FC<WMTSLayerProps> = ({ baseUrl }) => {
+export const WMTSLayer: React.FC = () => {
   const token = useGktToken();
 
   const wmtsParams = useMemo(
@@ -28,8 +26,8 @@ export const WMTSLayer: React.FC<WMTSLayerProps> = ({ baseUrl }) => {
   );
 
   const url = useMemo(
-    () => `${baseUrl}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
-    [baseUrl, wmtsParams]
+    () => `${BASE_URL}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
+    [wmtsParams]
   );
 
   return (

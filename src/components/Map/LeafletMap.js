@@ -117,7 +117,7 @@ export const LeafLetMap = ({
             checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
             name="Kartverket flyfoto"
           >
-            <WMTSLayer baseUrl="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2" />
+            <WMTSLayer />
           </BaseLayer>
           <BaseLayer
             checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}
