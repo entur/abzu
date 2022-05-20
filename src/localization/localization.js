@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { addLocaleData } from "react-intl";
 import axios from "axios";
 
 const localization = (locale) => {
@@ -32,9 +31,6 @@ const localization = (locale) => {
       .then(({ data }) => {
         const locale = data.locale;
         const messages = JSON.parse(data.messages);
-
-        var lang = require("react-intl/locale-data/" + locale);
-        addLocaleData(lang);
 
         localStorage.setItem(localStorageKey, locale);
 
