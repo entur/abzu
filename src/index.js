@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Route } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { ConnectedRouter } from "connected-react-router";
@@ -65,7 +65,8 @@ const AuthenticatedApp = ({ path }) => {
 };
 
 function renderIndex(config) {
-  render(
+  const root = createRoot(document.getElementById("root"));
+  root.render(
     <AuthProvider
       auth0Config={{
         domain: config.auth0Domain,
@@ -77,8 +78,7 @@ function renderIndex(config) {
       loginAutomatically={false}
     >
       <AuthenticatedApp path={config.endpointBase} />
-    </AuthProvider>,
-    document.getElementById("root")
+    </AuthProvider>
   );
 }
 
