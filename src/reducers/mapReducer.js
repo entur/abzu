@@ -40,6 +40,7 @@ export const initialState = {
   fetchOTPInfoMergeLoading: false,
   fetchOTPInfoDeleteLoading: false,
   deleteQuayWarning: null,
+  showFareZones: false,
 };
 
 const mapReducer = (state = initialState, action) => {
@@ -211,6 +212,11 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         removeStopPlaceFromParentOpen: false,
         removingStopPlaceFromParentId: null,
+      });
+
+    case types.TOGGLE_SHOW_FARE_ZONES_IN_MAP:
+      return Object.assign({}, state, {
+        showFareZones: action.payLoad,
       });
 
     default:

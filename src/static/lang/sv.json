@@ -374,6 +374,7 @@
   "settings": "Inställningar",
   "show_compass_bearing": "Visa väderstreck",
   "show_expired_stops": "Visa utlöpte hållplatser",
+  "show_fare_zones_label": "Visa zoner",
   "show_future_expired_and_terminated": "Visa utlöpte, framtida och nedlagda hållplatser",
   "show_less": "Visa färre",
   "show_more": "Visa fler",
