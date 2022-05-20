@@ -20,8 +20,25 @@ import equipmentHelpers from "../modelUtils/equipmentHelpers";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import { setDecimalPrecision } from "../utils/";
+import SettingsManager from "../singletons/SettingsManager";
 
-const stopPlaceReducer = (state = {}, action) => {
+const Settings = new SettingsManager();
+
+const initialState = {
+  centerPosition: [64.349421, 16.809082],
+  zoom: 6,
+  minZoom: 14,
+  isCompassBearingEnabled: Settings.getShowCompassBearing(),
+  isCreatingPolylines: false,
+  enablePublicCodePrivateCodeOnStopPlaces: Settings.getEnablePublicCodePrivateCodeOnStopPlaces(),
+  enablePolylines: Settings.getShowPathLinks(),
+  showExpiredStops: Settings.getShowExpiredStops(),
+  showMultimodalEdges: Settings.getShowMultimodalEdges(),
+  lastMutatedStopPlaceId: [],
+  isFetchingMergeInfo: false,
+};
+
+const stopPlaceReducer = (state = initialState, action) => {
   switch (action.type) {
     /* These actions are dispatched by Apollo-Client */
     case types.APOLLO_QUERY_RESULT:

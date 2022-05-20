@@ -14,9 +14,9 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { ApolloProvider } from "@apollo/client";
-import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
 import AuthProvider from "@entur/auth-provider";
 import Root from "./containers/Root";
@@ -24,38 +24,47 @@ import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
 import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
-import Routes from "./routes/";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
 import ErrorBoundary from "./containers/ErrorBoundary";
-import configureStore, { history } from "./store/store";
+import { store, history } from "./store/store";
 import { useGktToken } from "./hooks/useGktToken";
+import AppRoutes from "./routes";
 import "intl";
+import { getTiamatClient } from "./graphql/clients";
 
 const AuthenticatedApp = ({ path }) => {
   useGktToken(path);
-  const store = configureStore();
+
+  const client = getTiamatClient();
 
   return (
-    <ErrorBoundary Raven={store.Raven}>
-      <Provider store={store.self}>
-        <ApolloProvider client={store.client}>
+    // <ErrorBoundary Raven={store.Raven}>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ApolloProvider client={client}>
           <Root>
             <App>
-              <ConnectedRouter history={history}>
-                <Route exact path={path} component={StopPlaces} />
-                <Route
-                  exact
-                  path={path + Routes.STOP_PLACE + "/:stopId"}
-                  component={StopPlace}
-                />
-                <Route
-                  exact
-                  path={path + Routes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                  component={GroupOfStopPlaces}
-                />
-                <Route exact path={path + "reports"} component={ReportPage} />
-              </ConnectedRouter>
+              <Router history={history}>
+                <Routes>
+                  <Route path={path} element={<StopPlaces />} />
+                  <Route
+                    exact
+                    path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+                    element={<StopPlace />}
+                  />
+                  <Route
+                    exact
+                    path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                    element={<GroupOfStopPlaces />}
+                  />
+                  <Route
+                    exact
+                    path={path + AppRoutes.REPORTS}
+                    element={<ReportPage />}
+                  />
+                </Routes>
+              </Router>
             </App>
           </Root>
         </ApolloProvider>

@@ -61,6 +61,7 @@ import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 import { createApolloErrorThunk, createApolloThunk } from ".";
 import * as types from "./Types";
 import uuid from "uuid/v4";
+import { getTiamatClient } from "../graphql/clients";
 
 const getContext = async (auth) => {
   const context = {
@@ -127,7 +128,7 @@ const handleMutation = (client, payload) => (dispatch) =>
     });
 
 export const findTagByName = (name) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: findTagByNameQuery,
     fetchPolicy: "network-only",
     variables: {
@@ -140,7 +141,7 @@ export const addTag = (idReference, name, comment) => async (
   dispatch,
   getState
 ) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateCreateTag,
     fetchPolicy: "no-cache",
     variables: {
@@ -152,7 +153,7 @@ export const addTag = (idReference, name, comment) => async (
   })(dispatch);
 
 export const getStopPlaceById = (id) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getStopById,
     fetchPolicy: "network-only",
     variables: {
@@ -165,7 +166,7 @@ export const getAddStopPlaceInfo = (stopPlaceIds) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getStopPlacesById(stopPlaceIds),
     fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
@@ -184,7 +185,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
     );
 
     return new Promise(async (resolve, reject) => {
-      handleMutation(getState().user.client, {
+      handleMutation(getTiamatClient(), {
         mutation: mutateStopPlace,
         variables,
         fetchPolicy: "no-cache",
@@ -208,7 +209,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
         userInput
       );
 
-      handleMutation(getState().user.client, {
+      handleMutation(getTiamatClient(), {
         mutation: updateChildOfParentStop,
         variables,
         fetchPolicy: "no-cache",
@@ -225,7 +226,7 @@ export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
 };
 
 export const saveParentStopPlace = (variables) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateParentStopPlace,
     variables,
     fetchPolicy: "no-cache",
@@ -236,7 +237,7 @@ export const removeStopPlaceFromMultiModalStop = (
   parentSiteRef,
   stopPlaceId
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: removeStopPlaceFromParent,
     variables: {
       stopPlaceId,
@@ -247,7 +248,7 @@ export const removeStopPlaceFromMultiModalStop = (
   })(dispatch);
 
 export const deleteQuay = (variables) => async (dispatch, getState) => {
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateDeleteQuay,
     variables,
     fetchPolicy: "no-cache",
@@ -256,7 +257,7 @@ export const deleteQuay = (variables) => async (dispatch, getState) => {
 };
 
 export const deleteStopPlace = (stopPlaceId) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateDeleteStopPlace,
     variables: {
       stopPlaceId,
@@ -271,7 +272,7 @@ export const terminateStop = (
   versionComment,
   toDate
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateTerminateStopPlace,
     variables: {
       stopPlaceId,
@@ -287,7 +288,7 @@ export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => async (
   dispatch,
   getState
 ) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateAddToMultiModalStopPlace,
     variables: {
       stopPlaceIds,
@@ -305,7 +306,7 @@ export const createParentStopPlace = ({
   validBetween,
   stopPlaceIds,
 }) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateCreateMultiModalStopPlace,
     variables: {
       name,
@@ -324,7 +325,7 @@ export const mutateGroupOfStopPlace = (variables) => async (
   getState
 ) =>
   new Promise(async (resolve, reject) => {
-    handleMutation(getState().user.client, {
+    handleMutation(getTiamatClient(), {
       mutation: mutateGroupOfStopPlaces,
       variables,
       fetchPolicy: "no-cache",
@@ -345,7 +346,7 @@ export const getStopPlaceVersions = (stopPlaceId) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: allVersionsOfStopPlace,
     variables: {
       id: stopPlaceId,
@@ -360,7 +361,7 @@ export const mergeQuays = (
   toQuayId,
   versionComment
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateMergeQuays,
     variables: {
       stopPlaceId,
@@ -373,7 +374,7 @@ export const mergeQuays = (
   })(dispatch);
 
 export const getStopPlaceWithAll = (id) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: allEntities,
     variables: {
       id,
@@ -387,7 +388,7 @@ export const mergeAllQuaysFromStop = (
   fromVersionComment,
   toVersionComment
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateMergeStopPlaces,
     variables: {
       fromStopPlaceId,
@@ -405,7 +406,7 @@ export const moveQuaysToStop = (
   fromVersionComment,
   toVersionComment
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateMoveQuaysToStop,
     variables: {
       toStopPlaceId,
@@ -422,7 +423,7 @@ export const moveQuaysToNewStop = (
   fromVersionComment,
   toVersionComment
 ) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateMoveQuaysToNewStop,
     variables: {
       quayIds,
@@ -438,7 +439,7 @@ export const getNeighbourStops = (
   bounds,
   includeExpired
 ) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: stopPlaceBBQuery,
     variables: {
@@ -453,14 +454,14 @@ export const getNeighbourStops = (
   })(dispatch);
 
 export const getPolygons = (ids) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: getPolygonsQuery(ids),
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: getQueryTopographicPlaces(ids),
     context: await getContext(getState().roles.auth),
@@ -470,7 +471,7 @@ export const getMergeInfoForStops = (stopPlaceId) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: getMergeInfoStopPlace,
     variables: {
@@ -495,7 +496,7 @@ export const findEntitiesWithFilters = (
     .filter((topos) => topos.type === "country")
     .map((topos) => topos.value);
 
-  return handleQuery(getState().user.client, {
+  return handleQuery(getTiamatClient(), {
     query: findStop,
     fetchPolicy: "network-only",
     variables: {
@@ -512,7 +513,7 @@ export const findEntitiesWithFilters = (
 };
 
 export const findTopographicalPlace = (query) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: topopGraphicalPlacesQuery,
     fetchPolicy: "network-only",
     variables: {
@@ -522,7 +523,7 @@ export const findTopographicalPlace = (query) => async (dispatch, getState) =>
   })(dispatch);
 
 export const getTags = (idReference) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getTagsQuery,
     fetchPolicy: "network-only",
     variables: {
@@ -532,7 +533,7 @@ export const getTags = (idReference) => async (dispatch, getState) =>
   })(dispatch);
 
 export const getTagsByName = (name) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getTagsByNameQuery,
     fetchPolicy: "network-only",
     variables: {
@@ -542,7 +543,7 @@ export const getTagsByName = (name) => async (dispatch, getState) =>
   })(dispatch);
 
 export const removeTag = (name, idReference) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: mutateRemoveTag,
     variables: {
       name,
@@ -553,7 +554,7 @@ export const removeTag = (name, idReference) => async (dispatch, getState) =>
   })(dispatch);
 
 export const getGroupOfStopPlacesById = (id) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getGroupOfStopPlaceQuery,
     variables: {
       id,
@@ -563,7 +564,7 @@ export const getGroupOfStopPlacesById = (id) => async (dispatch, getState) =>
   })(dispatch);
 
 export const deleteGroupOfStopPlaces = (id) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: deleteGroupMutation,
     variables: {
       id,
@@ -573,7 +574,7 @@ export const deleteGroupOfStopPlaces = (id) => async (dispatch, getState) =>
   })(dispatch);
 
 export const getTariffZones = (query) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: findTariffones,
     variables: {
       query,
@@ -583,7 +584,7 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
   })(dispatch);
 
 export const deleteParking = (id) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     mutation: deleteParkingMutation,
     variables: {
       id,
@@ -596,7 +597,7 @@ export const getStopPlaceAndPathLinkByVersion = (id, version) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: stopPlaceAndPathLinkByVersion,
     variables: {
@@ -610,7 +611,7 @@ export const findStopForReport = (queryVariables) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: findStopForReportQuery,
     fetchPolicy: "network-only",
     variables: queryVariables,
@@ -621,7 +622,7 @@ export const getParkingForMultipleStopPlaces = (stopPlaceIds) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
     fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
@@ -631,7 +632,7 @@ export const topographicalPlaceSearch = (searchText) => async (
   dispatch,
   getState
 ) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     query: topopGraphicalPlacesReportQuery,
     fetchPolicy: "network-only",
     variables: {
@@ -641,7 +642,7 @@ export const topographicalPlaceSearch = (searchText) => async (
   })(dispatch);
 
 export const getNeighbourStopPlaceQuays = (id) => async (dispatch, getState) =>
-  handleQuery(getState().user.client, {
+  handleQuery(getTiamatClient(), {
     fetchPolicy: "network-only",
     query: neighbourStopPlaceQuays,
     variables: {
@@ -651,7 +652,7 @@ export const getNeighbourStopPlaceQuays = (id) => async (dispatch, getState) =>
   })(dispatch);
 
 export const savePathLink = (PathLink) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     fetchPolicy: "no-cache",
     mutation: mutatePathLink,
     variables: { PathLink },
@@ -659,7 +660,7 @@ export const savePathLink = (PathLink) => async (dispatch, getState) =>
   })(dispatch);
 
 export const saveParking = (Parking) => async (dispatch, getState) =>
-  handleMutation(getState().user.client, {
+  handleMutation(getTiamatClient(), {
     fetchPolicy: "no-cache",
     mutation: mutateParking,
     variables: { Parking },

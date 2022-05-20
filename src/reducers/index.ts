@@ -12,8 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+import { combineReducers } from "@reduxjs/toolkit";
 
 import userReducer from "./userReducer";
 import mapReducer from "./mapReducer";
@@ -22,10 +21,11 @@ import reportReducer from "./reportReducer";
 import rolesReducer from "./rolesReducer";
 import snackbarReducer from "./snackbarReducer";
 import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
+import type { Reducer } from "redux";
 
-const createRootReducer = (history) =>
+export const createRootReducer = (routerReducer: Reducer) =>
   combineReducers({
-    router: connectRouter(history),
+    router: routerReducer,
     user: userReducer,
     mapUtils: mapReducer,
     stopPlace: stopPlaceReducer,
@@ -34,5 +34,3 @@ const createRootReducer = (history) =>
     snackbar: snackbarReducer,
     stopPlacesGroup: groupOfStopPlaceReducer,
   });
-
-export default createRootReducer;

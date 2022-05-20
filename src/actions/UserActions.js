@@ -25,23 +25,23 @@ import ParentStopPlace from "../models/ParentStopPlace";
 import Routes from "../routes/";
 import { createThunk } from "./";
 import { checkStopPlaceUsage, checkQuayUsage } from "../graphql/OTP/actions";
-import { history } from "../store/store";
+import { push } from "redux-first-history";
 
 var UserActions = {};
 
 let Settings = new SettingsManager();
 
-const goToRoute = (path, id) => {
+const goToRoute = (dispatch, path, id) => {
   const basePath = window.config.endpointBase;
   if (path.length && path[0] === "/") {
     path = path.slice(1);
   }
-  history.push(basePath + path + id);
+  dispatch(push(basePath + path + id));
 };
 
 UserActions.navigateTo = (path, id) => (dispatch) => {
   dispatch(createThunk(types.NAVIGATE_TO, id));
-  goToRoute(path, id);
+  goToRoute(dispatch, path, id);
 };
 
 UserActions.toggleShowFutureAndExpired = (value) => (dispatch) => {
@@ -50,7 +50,7 @@ UserActions.toggleShowFutureAndExpired = (value) => (dispatch) => {
 
 UserActions.navigateToMainAfterDelete = () => (dispatch) => {
   dispatch(createThunk(types.NAVIGATE_TO_MAIN_AFTER_DELETE, null));
-  goToRoute("/", "");
+  goToRoute(dispatch, "/", "");
 };
 
 UserActions.closeLookupCoordinatesDialog = () => (dispatch) => {

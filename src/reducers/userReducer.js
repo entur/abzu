@@ -13,9 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import SettingsManager from "../singletons/SettingsManager";
+
+const Settings = new SettingsManager();
 
 export const initialState = {
   path: "/",
+  isCreatingNewStop: false,
   missingCoordsMap: {},
   searchFilters: {
     stopType: [],
@@ -23,6 +27,11 @@ export const initialState = {
       // e.g. {key: 0, text: 'Nordland', type: 'county', value: 2},
     ],
     text: "",
+    showFutureAndExpired: false,
+  },
+  snackbarOptions: {
+    isOpen: false,
+    message: "",
   },
   localization: {
     locale: null,
@@ -32,6 +41,7 @@ export const initialState = {
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
   activeElementTab: 0,
+  activeBaselayer: Settings.getMapLayer(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
@@ -46,6 +56,12 @@ export const initialState = {
     warning: false,
     stopPlaceId: null,
   },
+  newStopCreated: {
+    open: false,
+    stopPlaceId: null,
+  },
+  showPublicCode: Settings.getShowPublicCode(),
+  adjacentStopDialogOpen: false,
 };
 
 const userReducer = (state = initialState, action) => {

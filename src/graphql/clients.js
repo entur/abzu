@@ -16,42 +16,53 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 import schema from "./Tiamat/schema.json";
 
+const possibleTypes = schema.__schema.types.reduce((acc, supertype) => {
+  if (supertype.possibleTypes) {
+    acc[supertype.name] = supertype.possibleTypes.map(
+      (subtype) => subtype.name
+    );
+  }
+  return acc;
+}, {});
+
 const CLIENT_NAME = "entur-abzu";
 
-export const createTiamatClient = () => {
-  const possibleTypes = schema.__schema.types.reduce((acc, supertype) => {
-    if (supertype.possibleTypes) {
-      acc[supertype.name] = supertype.possibleTypes.map(
-        (subtype) => subtype.name
-      );
-    }
-    return acc;
-  }, {});
+let tiamatClient = null;
+let otpClient = null;
 
-  return new ApolloClient({
-    uri: window.config.tiamatBaseUrl,
-    cache: new InMemoryCache({
-      typePolicies: {
-        StopPlace: {
-          keyFields: ["id", "version"],
+export const getTiamatClient = () => {
+  if (tiamatClient === null) {
+    tiamatClient = new ApolloClient({
+      uri: window.config.tiamatBaseUrl,
+      cache: new InMemoryCache({
+        typePolicies: {
+          StopPlace: {
+            keyFields: ["id", "version"],
+          },
         },
+        possibleTypes,
+      }),
+      headers: {
+        "ET-Client-Name": CLIENT_NAME,
+        "Et-Client-Id": window.config.hostname,
       },
-      possibleTypes,
-    }),
-    headers: {
-      "ET-Client-Name": CLIENT_NAME,
-      "Et-Client-Id": window.config.hostname,
-    },
-  });
+    });
+  }
+
+  return tiamatClient;
 };
 
-export const createOTPClient = () => {
-  return new ApolloClient({
-    uri: window.config.OTPUrl,
-    cache: new InMemoryCache(),
-    headers: {
-      "ET-Client-Name": CLIENT_NAME,
-      "Et-Client-Id": window.config.hostname,
-    },
-  });
+export const getOTPClient = () => {
+  if (otpClient === null) {
+    otpClient = new ApolloClient({
+      uri: window.config.OTPUrl,
+      cache: new InMemoryCache(),
+      headers: {
+        "ET-Client-Name": CLIENT_NAME,
+        "Et-Client-Id": window.config.hostname,
+      },
+    });
+  }
+
+  return otpClient;
 };

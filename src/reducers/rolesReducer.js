@@ -22,7 +22,11 @@ import {
   reduceFetchedPolygons,
 } from "./rolesReducerUtils";
 
-export const initialState = {};
+export const initialState = {
+  auth: {},
+  fetchedPolygons: null,
+  allowNewStopEverywhere: false,
+};
 
 const rolesReducer = (state = initialState, action) => {
   switch (action.type) {
