@@ -17,6 +17,8 @@ import { createReduxHistoryContext } from "redux-first-history";
 import { createBrowserHistory } from "history";
 import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
+import Raven from "raven-js";
+import createRavenMiddleware from "redux-raven-middleware";
 
 const {
   createReduxHistory,
@@ -30,14 +32,30 @@ const getMiddleware = () => {
   const middleware = [routerMiddleware];
   if (process.env.NODE_ENV === "development") {
     middleware.push(loggerMiddleware);
+  } else {
+    Raven.config(window.config.sentryDSN, {
+      release: process.env.VERSION,
+      stacktrace: true,
+      environment: process.env.NODE_ENV,
+    }).install();
+
+    middleware.push(createRavenMiddleware);
   }
   return middleware;
 };
 
-export const store = configureStore({
-  reducer: createRootReducer(routerReducer),
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(getMiddleware()),
-});
+export const getStore = () => {
+  const store = configureStore({
+    reducer: createRootReducer(routerReducer),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(getMiddleware()),
+  });
 
-export const history = createReduxHistory(store);
+  const history = createReduxHistory(store);
+
+  return {
+    store,
+    history,
+    Raven,
+  };
+};

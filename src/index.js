@@ -27,7 +27,7 @@ import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
 import ErrorBoundary from "./containers/ErrorBoundary";
-import { store, history } from "./store/store";
+import { getStore } from "./store/store";
 import { useGktToken } from "./hooks/useGktToken";
 import AppRoutes from "./routes";
 import "intl";
@@ -38,9 +38,10 @@ const AuthenticatedApp = ({ path }) => {
 
   const client = getTiamatClient();
 
+  const { store, history, Raven } = getStore();
+
   return (
-    // <ErrorBoundary Raven={store.Raven}>
-    <ErrorBoundary>
+    <ErrorBoundary Raven={Raven}>
       <Provider store={store}>
         <ApolloProvider client={client}>
           <Root>
