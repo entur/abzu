@@ -374,7 +374,7 @@
   "settings": "Settings",
   "show_compass_bearing": "Show compass bearing",
   "show_expired_stops": "Show expired stop places",
-  "show_fare_zones": "Show zones",
+  "show_fare_zones_label": "Show zones",
   "show_future_expired_and_terminated": "Show expired, future and permanently terminated",
   "show_less": "Show less",
   "show_more": "Show more",
