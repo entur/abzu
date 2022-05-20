@@ -53,7 +53,6 @@
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
     "redux": "^4.2.0",
-    "redux-devtools-extension": "^2.13.9",
     "redux-first-history": "^5.0.9",
     "redux-logger": "3.0.6",
     "redux-raven-middleware": "1.2.0",
