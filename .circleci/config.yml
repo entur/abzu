@@ -51,7 +51,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: cimg/node:14.16.1
+      - image: cimg/node:14.19.3
         auth:
           username: _json_key
           password: $DOCKER_PASSWORD
