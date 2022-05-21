@@ -38,10 +38,10 @@ const AuthenticatedApp = ({ path }) => {
 
   const client = getTiamatClient();
 
-  const { store, history, Raven } = getStore();
+  const { store, history } = getStore();
 
   return (
-    <ErrorBoundary Raven={Raven}>
+    <ErrorBoundary>
       <Provider store={store}>
         <ApolloProvider client={client}>
           <Root>
