@@ -46,6 +46,5 @@ export const getStore = () => {
   return {
     store,
     history,
-    Raven,
   };
 };
