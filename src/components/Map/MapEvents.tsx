@@ -3,7 +3,7 @@ import { useMapEvents } from "react-leaflet";
 
 export interface MapEventsProps {
   handleBaselayerChanged: (name: string) => void;
-  children: JSX.Element
+  children: JSX.Element;
 }
 
 export const MapEvents: React.FC<MapEventsProps> = ({

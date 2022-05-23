@@ -39,7 +39,7 @@ export default ({
       position={position}
       icon={icon}
       eventHandlers={{
-        dragend: handleDragEnd
+        dragend: handleDragEnd,
       }}
     >
       <Popup autoPan={false} onOpen={handleSetFocus}>
