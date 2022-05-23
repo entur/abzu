@@ -31,7 +31,7 @@ class MoveQuayNewStopDialog extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && !nextProps.open) {
       this.setState({
         changesUnderstood: false,

@@ -39,7 +39,7 @@ class StopPlace extends React.Component {
     };
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     const { stopPlace, intl, originalStopPlace } = nextProps;
     const { formatMessage } = intl;
 
@@ -100,12 +100,8 @@ class StopPlace extends React.Component {
   }
 
   render() {
-    const {
-      isCreatingPolylines,
-      stopPlace,
-      disabled,
-      newStopCreated,
-    } = this.props;
+    const { isCreatingPolylines, stopPlace, disabled, newStopCreated } =
+      this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
     const { formatMessage } = this.props.intl;
 

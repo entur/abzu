@@ -24,7 +24,7 @@ class ScrollableQuayList extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.defaultQuayId !== nextProps.defaultQuayId) {
       this.setState({
         checkedQuays: [nextProps.defaultQuayId],

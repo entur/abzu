@@ -38,7 +38,7 @@ class DeleteQuayDialog extends React.Component {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.open && !nextProps.open) {
       this.setState({
         changesUnderstood: false,
@@ -47,12 +47,8 @@ class DeleteQuayDialog extends React.Component {
   }
 
   getUsageWarning() {
-    const {
-      fetchingOTPInfoLoading,
-      warningInfo,
-      intl,
-      deletingQuay,
-    } = this.props;
+    const { fetchingOTPInfoLoading, warningInfo, intl, deletingQuay } =
+      this.props;
     const { formatMessage } = intl;
     const infoStyle = { fontSize: "1.1em", borderBottom: 10 };
 

@@ -37,7 +37,7 @@ class MergeQuaysDialog extends React.Component {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && !nextProps.open) {
       this.setState({
         changesUnderstood: false,

@@ -40,7 +40,7 @@ class StopPlacesMap extends React.Component {
     document.title = formatMessage({ id: "_title" });
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     if (this.props.intl.locale !== nextProps.intl.locale) {
       const { formatMessage } = nextProps.intl;
       document.title = formatMessage({ id: "_title" });

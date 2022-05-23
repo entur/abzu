@@ -29,7 +29,7 @@ class MakeExpandable extends React.PureComponent {
     this.setState((prevState) => ({ expanded: !prevState.expanded }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.ownerId && nextProps.ownerId) {
       if (this.props.ownerId !== nextProps.ownerId) {
         this.setState({

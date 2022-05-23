@@ -14,17 +14,13 @@ limitations under the Licence. */
 
 import React from "react";
 import compassBearingIcon from "../../static/icons/compass-bearing.png";
-const markerIcon = require("../../static/icons/quay-marker-background.png")
-  .default;
+const markerIcon =
+  require("../../static/icons/quay-marker-background.png").default;
 
 class QuayMarkerIcon extends React.Component {
-  componentWillMount() {
-    const {
-      focusedElement,
-      index,
-      belongsToNeighbourStop,
-      compassBearing,
-    } = this.props;
+  UNSAFE_componentWillMount() {
+    const { focusedElement, index, belongsToNeighbourStop, compassBearing } =
+      this.props;
 
     let markerIconStyle = {};
 

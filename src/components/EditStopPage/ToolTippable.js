@@ -47,7 +47,7 @@ class ToolTippable extends React.Component {
     }
   }
 
-  componentWillReceiveProps(prevProps, prevState) {
+  UNSAFE_componentWillReceiveProps(prevProps, prevState) {
     if (this.refs.child) {
       const ignorePostRender = this.state.open === prevState.open;
       const { top, left } = this.refs.child.getBoundingClientRect();

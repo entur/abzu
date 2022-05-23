@@ -40,11 +40,11 @@ class StopPlaceMarker extends React.Component {
     return shallowCompare(this.props, nextProps);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.createIcon(this.props);
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     this.createIcon(nextProps);
   }
 

@@ -54,7 +54,7 @@ class TerminateStopPlaceDialog extends React.Component {
     this.state = this.getInitialState(props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState(this.getInitialState(nextProps));
     }

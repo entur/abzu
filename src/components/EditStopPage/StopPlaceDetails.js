@@ -105,7 +105,7 @@ class StopPlaceDetails extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       name: nextProps.stopPlace.name || "",
       publicCode: nextProps.stopPlace.publicCode || "",

@@ -23,7 +23,7 @@ class CustomMarkerIcon extends React.Component {
     hasExpired: PropTypes.bool,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const {
       stopType,
       active,
@@ -60,8 +60,8 @@ class CustomMarkerIcon extends React.Component {
 
 const getIconIdByTypeOrSubmode = (submode, type, isMultimodal) => {
   const submodeMap = {
-    railReplacementBus: require("../../static/icons/modalities/railReplacement.png")
-      .default,
+    railReplacementBus:
+      require("../../static/icons/modalities/railReplacement.png").default,
   };
   return submodeMap[submode] || getIconIdByModality(type, isMultimodal);
 };

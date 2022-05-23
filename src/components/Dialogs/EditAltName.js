@@ -28,7 +28,7 @@ class EditAltName extends Component {
     this.state = this.getInitialState(props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState(this.getInitialState(nextProps));
   }
 

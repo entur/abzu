@@ -29,7 +29,7 @@ class CreateKeyValuePair extends React.Component {
     errorMsg: "",
   });
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.isOpen !== nextProps.isOpen) {
       this.setState(this.getInitialValues);
     }

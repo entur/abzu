@@ -25,7 +25,7 @@ class EditKeyValuePair extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       values: this.getValuesByKey(nextProps.keyValues, nextProps.editingKey),
     });

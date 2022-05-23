@@ -43,11 +43,11 @@ class MarkerList extends React.Component {
     handleDragEnd: PropTypes.func.isRequired,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.createMarkerList(this.props);
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     this.createMarkerList(nextProps);
   }
 
@@ -201,9 +201,8 @@ class MarkerList extends React.Component {
     let popupMarkers = [];
 
     const CustomPopupMarkerText = MarkerStrings.popupMarkerText(formatMessage);
-    const newStopMarkerText = MarkerStrings.newStopPlaceMarkerText(
-      formatMessage
-    );
+    const newStopMarkerText =
+      MarkerStrings.newStopPlaceMarkerText(formatMessage);
 
     markers.forEach((marker, stopIndex) => {
       // stopPlaceType specific names, such as platform, gate, etc.
@@ -516,9 +515,8 @@ class MarkerList extends React.Component {
                         const expandedQuayEl = document.querySelector(
                           ".boarding-position-item-expanded"
                         );
-                        const scrollBodyEl = document.querySelector(
-                          "#scroll-body"
-                        );
+                        const scrollBodyEl =
+                          document.querySelector("#scroll-body");
                         if (expandedQuayEl && scrollBodyEl) {
                           expandedQuayEl.scrollIntoView(true);
                           scrollBodyEl.scrollTop -= 50;
