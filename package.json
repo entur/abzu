@@ -90,7 +90,7 @@
     "@types/react-dom": "18.0.4",
     "@types/react-leaflet": "2.8.2",
     "@types/redux-logger": "3.0.9",
-    "husky": "4.3.8",
+    "husky": "8.0.1",
     "prettier": "2.6.2",
     "react-scripts": "5.0.1",
     "redux-devtools": "3.7.0",
