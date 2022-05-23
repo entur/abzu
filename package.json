@@ -15,7 +15,8 @@
     "preprod": "TIAMAT_BASE_URL=https://api.entur.io/stop-places/v1/graphql npm run fetch-schema",
     "fetch-schema": "./fetchSchema.js",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
@@ -87,6 +88,7 @@
     "prettier": "2.6.2",
     "react-scripts": "5.0.1",
     "redux-devtools": "3.7.0",
+    "source-map-explorer": "2.5.2",
     "typescript": "4.6.4"
   }
 }
