@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
-import { divIcon } from "leaflet";
+import { divIcon, DragEndEvent } from "leaflet";
 import BoardingPositionMarkerIcon from "./BoardingPositionMarkerIcon";
 import Code from "../EditStopPage/Code";
 
@@ -10,7 +10,7 @@ type Props = {
   publicCode: string;
   translations: Record<string, string>;
   handleChangeCoordinates: (event: React.MouseEvent) => void;
-  handleDragEnd: (event: React.DragEvent) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
   handleSetFocus: () => void;
 };
 
@@ -38,7 +38,9 @@ export default ({
       draggable={true}
       position={position}
       icon={icon}
-      onDragend={handleDragEnd}
+      eventHandlers={{
+        dragend: handleDragEnd
+      }}
     >
       <Popup autoPan={false} onOpen={handleSetFocus}>
         <div>
