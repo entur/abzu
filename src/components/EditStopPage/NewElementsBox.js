@@ -19,14 +19,11 @@ import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 
-const quayIcon = require("../../static/icons/pin-50x82-red-quay.png").default;
-const boardingPositionIcon = require("../../static/icons/pin-50x82-purple-boardingPosition.png")
-  .default;
-const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
-const parkAndRideIcon = require("../../static/icons/pin-50x82-blue-parkAndRide.png")
-  .default;
-const bikeParkingIcon = require("../../static/icons/pin-50x82-blue-bikepark.png")
-  .default;
+import quayIcon from "../../static/icons/pin-50x82-red-quay.png";
+import boardingPositionIcon from "../../static/icons/pin-50x82-purple-boardingPosition.png";
+import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
+import parkAndRideIcon from "../../static/icons/pin-50x82-blue-parkAndRide.png";
+import bikeParkingIcon from "../../static/icons/pin-50x82-blue-bikepark.png";
 
 class NewElementsBox extends React.Component {
   constructor(props) {
@@ -52,12 +49,8 @@ class NewElementsBox extends React.Component {
   }
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      activeStopPlace,
-      missingCoordsMap,
-      disabled,
-      focusedElement,
-    } = this.props;
+    const { activeStopPlace, missingCoordsMap, disabled, focusedElement } =
+      this.props;
 
     const boxWrapperStyle = {
       zIndex: 999,
@@ -233,9 +226,8 @@ class NewElementsBox extends React.Component {
 
             const absolutePosition = new window.L.Point(xPos, yPos);
 
-            const { lat, lng } = activeMap.containerPointToLatLng(
-              absolutePosition
-            );
+            const { lat, lng } =
+              activeMap.containerPointToLatLng(absolutePosition);
 
             const latlng = [
               setDecimalPrecision(lat, 6),

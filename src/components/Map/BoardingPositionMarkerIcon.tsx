@@ -14,8 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 
-const boardingPositionIcon = require("../../static/icons/pin-50x82-purple.png")
-  .default;
+import boardingPositionIcon from "../../static/icons/pin-50x82-purple.png";
 
 const imageStyle: React.CSSProperties = {
   padding: 3,

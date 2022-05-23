@@ -13,78 +13,34 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import PropTypes from "prop-types";
+import { getIconByTypeOrSubmode } from "../../utils/iconUtils";
 
-class CustomMarkerIcon extends React.Component {
-  static propTypes = {
-    markerIndex: PropTypes.number.isRequired,
-    stopType: PropTypes.string,
-    active: PropTypes.bool.isRequired,
-    hasExpired: PropTypes.bool,
+const CustomMarkerIcon = ({
+  stopType,
+  active,
+  hasExpired,
+  submode,
+  isMultimodal,
+  isMultimodalChild,
+}) => {
+  let imageStyle = {
+    padding: 3,
+    background: "#0060b9",
+    borderRadius: "50%",
   };
 
-  UNSAFE_componentWillMount() {
-    const {
-      stopType,
-      active,
-      hasExpired,
-      submode,
-      isMultimodal,
-      isMultimodalChild,
-    } = this.props;
-
-    let imageStyle = {
-      padding: 3,
-      background: "#0060b9",
-      borderRadius: "50%",
-    };
-
-    if (!active) {
-      imageStyle.opacity = hasExpired ? "0.5" : "1.0";
-      imageStyle.filter = isMultimodalChild
-        ? "grayscale(60%)"
-        : "grayscale(80%)";
-    }
-
-    const icon = getIconIdByTypeOrSubmode(submode, stopType, isMultimodal);
-
-    this._stopTypeIcon = (
-      <img alt="" style={{ width: 20, height: 20, ...imageStyle }} src={icon} />
-    );
+  if (!active) {
+    imageStyle.opacity = hasExpired ? "0.5" : "1.0";
+    imageStyle.filter = isMultimodalChild ? "grayscale(60%)" : "grayscale(80%)";
   }
 
-  render() {
-    return <div>{this._stopTypeIcon}</div>;
-  }
-}
+  const icon = getIconByTypeOrSubmode(submode, stopType, isMultimodal);
 
-const getIconIdByTypeOrSubmode = (submode, type, isMultimodal) => {
-  const submodeMap = {
-    railReplacementBus:
-      require("../../static/icons/modalities/railReplacement.png").default,
-  };
-  return submodeMap[submode] || getIconIdByModality(type, isMultimodal);
-};
-const getIconIdByModality = (type, isMultimodal) => {
-  if (isMultimodal) {
-    return require("../../static/icons/modalities/multiModal.png").default;
-  }
+  const stopTypeIcon = (
+    <img alt="" style={{ width: 20, height: 20, ...imageStyle }} src={icon} />
+  );
 
-  const modalityMap = {
-    onstreetBus: "bus-without-box",
-    onstreetTram: "tram-without-box",
-    railStation: "rails-without-box",
-    metroStation: "metro-without-box",
-    busStation: "busstation-without-box",
-    ferryStop: "ferry-without-box",
-    airport: "airport-without-box",
-    harbourPort: "harbour_port",
-    liftStation: "lift-without-box",
-  };
-
-  const stopType = modalityMap[type] || "no-information";
-
-  return require("../../static/icons/modalities/" + stopType + ".png").default;
+  return <div>{stopTypeIcon}</div>;
 };
 
 export default CustomMarkerIcon;

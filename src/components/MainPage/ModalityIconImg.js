@@ -15,6 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "../../styles/menu.css";
+import { getIconByTypeOrSubmode } from "../../utils/iconUtils";
 
 class ModalityIconImg extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -44,10 +45,7 @@ class ModalityIconImg extends React.Component {
       transform: "translateY(2px)",
     };
 
-    const iconId = getIconIdByTypeOrSubmode(
-      this.props.submode,
-      this.props.type
-    );
+    const icon = getIconByTypeOrSubmode(this.props.submode, this.props.type);
 
     let style = {
       ...(this.props.style || {}),
@@ -55,14 +53,7 @@ class ModalityIconImg extends React.Component {
 
     return (
       <span className={styles.clear} style={iconStyle}>
-        <img
-          alt=""
-          style={{ ...style, ...svgStyle }}
-          src={
-            require("../../static/icons/modalities/svg/" + iconId + ".svg")
-              .default
-          }
-        />
+        <img alt="" style={{ ...style, ...svgStyle }} src={icon} />
       </span>
     );
   }
@@ -74,29 +65,6 @@ ModalityIconImg.propTypes = {
   iconStyle: PropTypes.object,
   style: PropTypes.object,
   forceUpdate: PropTypes.bool,
-};
-
-const getIconIdByTypeOrSubmode = (submode, type) => {
-  const submodeMap = {
-    railReplacementBus: "railReplacement",
-  };
-  return submodeMap[submode] || getIconIdByModality(type);
-};
-
-const getIconIdByModality = (type) => {
-  const modalityMap = {
-    onstreetBus: "bus-withoutBox",
-    onstreetTram: "tram-withoutBox",
-    railStation: "rail-withoutBox",
-    metroStation: "subway-withoutBox",
-    busStation: "busstation-withoutBox",
-    ferryStop: "ferry-withoutBox",
-    airport: "airplane-withoutBox",
-    harbourPort: "harbour_port",
-    liftStation: "lift",
-    other: "no-information",
-  };
-  return modalityMap[type] || "no-information";
 };
 
 export default ModalityIconImg;

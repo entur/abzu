@@ -19,8 +19,8 @@ import L from "leaflet";
 import { connect } from "react-redux";
 import { isPointInPolygon } from "../../utils/mapUtils";
 
-const newStopIcon = require("../../static/icons/new-stop-icon-2x.png").default;
-const markerShadow = require("../../static/icons/marker-shadow.png").default;
+import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
+import markerShadow from "../../static/icons/marker-shadow.png";
 
 class NewStopMarker extends React.Component {
   static propTypes = {

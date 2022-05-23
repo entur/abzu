@@ -16,7 +16,7 @@ import React from "react";
 import IconButton from "material-ui/IconButton";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
-const newStopIcon = require("../../static/icons/new-stop-icon-2x.png");
+import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
 
 class CreateNewStop extends React.Component {
   handleOnClick(e) {
