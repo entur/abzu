@@ -18,13 +18,10 @@ import { createBrowserHistory } from "history";
 import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
 
-const {
-  createReduxHistory,
-  routerMiddleware,
-  routerReducer,
-} = createReduxHistoryContext({
-  history: createBrowserHistory(),
-});
+const { createReduxHistory, routerMiddleware, routerReducer } =
+  createReduxHistoryContext({
+    history: createBrowserHistory(),
+  });
 
 const getMiddleware = () => {
   const middleware = [routerMiddleware];
@@ -38,7 +35,11 @@ export const getStore = () => {
   const store = configureStore({
     reducer: createRootReducer(routerReducer),
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(getMiddleware()),
+      getDefaultMiddleware({
+        // TODO: these should be turned on at some point
+        immutableCheck: false,
+        serializableCheck: false,
+      }).concat(getMiddleware()),
   });
 
   const history = createReduxHistory(store);
