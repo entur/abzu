@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React, { useEffect } from "react";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
 import { injectIntl } from "react-intl";
 import { useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ import BrowserSupport from "../components/BrowserSupport";
 import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
-const muiTheme = createMuiTheme(getTheme());
+const muiTheme = createTheme(getTheme());
 
 const App = ({ intl, children }) => {
   const auth = useAuth();
