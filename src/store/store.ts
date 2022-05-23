@@ -17,11 +17,16 @@ import { createReduxHistoryContext } from "redux-first-history";
 import { createBrowserHistory } from "history";
 import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
+import * as Sentry from "@sentry/react";
+
+// ...
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory(),
   });
+
+const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 const getMiddleware = () => {
   const middleware = [routerMiddleware];
@@ -40,6 +45,7 @@ export const getStore = () => {
         immutableCheck: false,
         serializableCheck: false,
       }).concat(getMiddleware()),
+    enhancers: [sentryReduxEnhancer],
   });
 
   const history = createReduxHistory(store);
