@@ -60,13 +60,13 @@ import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
 import { createApolloErrorThunk, createApolloThunk } from ".";
 import * as types from "./Types";
-import uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import { getTiamatClient } from "../graphql/clients";
 
 const getContext = async (auth) => {
   const context = {
     headers: {
-      "X-Correlation-Id": uuid(),
+      "X-Correlation-Id": uuidv4(),
     },
   };
 
@@ -137,20 +137,18 @@ export const findTagByName = (name) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const addTag = (idReference, name, comment) => async (
-  dispatch,
-  getState
-) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateCreateTag,
-    fetchPolicy: "no-cache",
-    variables: {
-      idReference,
-      name,
-      comment,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const addTag =
+  (idReference, name, comment) => async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateCreateTag,
+      fetchPolicy: "no-cache",
+      variables: {
+        idReference,
+        name,
+        comment,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
 export const getStopPlaceById = (id) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
@@ -162,68 +160,64 @@ export const getStopPlaceById = (id) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getAddStopPlaceInfo = (stopPlaceIds) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    query: getStopPlacesById(stopPlaceIds),
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const getAddStopPlaceInfo =
+  (stopPlaceIds) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: getStopPlacesById(stopPlaceIds),
+      fetchPolicy: "network-only",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const saveStopPlaceBasedOnType = (stopPlace, userInput) => async (
-  dispatch,
-  getState
-) => {
-  const { isChildOfParent } = stopPlace;
+export const saveStopPlaceBasedOnType =
+  (stopPlace, userInput) => async (dispatch, getState) => {
+    const { isChildOfParent } = stopPlace;
 
-  if (!isChildOfParent) {
-    const variables = mapToMutationVariables.mapStopToVariables(
-      stopPlace,
-      userInput
-    );
-
-    return new Promise(async (resolve, reject) => {
-      handleMutation(getTiamatClient(), {
-        mutation: mutateStopPlace,
-        variables,
-        fetchPolicy: "no-cache",
-        context: await getContext(getState().roles.auth),
-      })(dispatch)
-        .then((result) => {
-          if (result.data.mutateStopPlace[0].id) {
-            resolve(result.data.mutateStopPlace[0].id);
-          } else {
-            reject("Id not returned");
-          }
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  } else {
-    return new Promise(async (resolve, reject) => {
-      const variables = mapToMutationVariables.mapChildStopToVariables(
+    if (!isChildOfParent) {
+      const variables = mapToMutationVariables.mapStopToVariables(
         stopPlace,
         userInput
       );
 
-      handleMutation(getTiamatClient(), {
-        mutation: updateChildOfParentStop,
-        variables,
-        fetchPolicy: "no-cache",
-        context: await getContext(getState().roles.auth),
-      })(dispatch)
-        .then((result) => {
-          resolve(stopPlace.id);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-};
+      return new Promise(async (resolve, reject) => {
+        handleMutation(getTiamatClient(), {
+          mutation: mutateStopPlace,
+          variables,
+          fetchPolicy: "no-cache",
+          context: await getContext(getState().roles.auth),
+        })(dispatch)
+          .then((result) => {
+            if (result.data.mutateStopPlace[0].id) {
+              resolve(result.data.mutateStopPlace[0].id);
+            } else {
+              reject("Id not returned");
+            }
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    } else {
+      return new Promise(async (resolve, reject) => {
+        const variables = mapToMutationVariables.mapChildStopToVariables(
+          stopPlace,
+          userInput
+        );
+
+        handleMutation(getTiamatClient(), {
+          mutation: updateChildOfParentStop,
+          variables,
+          fetchPolicy: "no-cache",
+          context: await getContext(getState().roles.auth),
+        })(dispatch)
+          .then((result) => {
+            resolve(stopPlace.id);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    }
+  };
 
 export const saveParentStopPlace = (variables) => async (dispatch, getState) =>
   handleMutation(getTiamatClient(), {
@@ -233,19 +227,17 @@ export const saveParentStopPlace = (variables) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const removeStopPlaceFromMultiModalStop = (
-  parentSiteRef,
-  stopPlaceId
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: removeStopPlaceFromParent,
-    variables: {
-      stopPlaceId,
-      parentSiteRef,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const removeStopPlaceFromMultiModalStop =
+  (parentSiteRef, stopPlaceId) => async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: removeStopPlaceFromParent,
+      variables: {
+        stopPlaceId,
+        parentSiteRef,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
 export const deleteQuay = (variables) => async (dispatch, getState) => {
   handleMutation(getTiamatClient(), {
@@ -266,112 +258,102 @@ export const deleteStopPlace = (stopPlaceId) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const terminateStop = (
-  stopPlaceId,
-  shouldTerminatePermanently,
-  versionComment,
-  toDate
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateTerminateStopPlace,
-    variables: {
-      stopPlaceId,
-      versionComment,
-      toDate,
-      modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const addToMultiModalStopPlace = (parentSiteRef, stopPlaceIds) => async (
-  dispatch,
-  getState
-) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateAddToMultiModalStopPlace,
-    variables: {
-      stopPlaceIds,
-      parentSiteRef,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const createParentStopPlace = ({
-  name,
-  description,
-  versionComment,
-  coordinates,
-  validBetween,
-  stopPlaceIds,
-}) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateCreateMultiModalStopPlace,
-    variables: {
-      name,
-      description,
-      versionComment,
-      coordinates,
-      validBetween,
-      stopPlaceIds,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const mutateGroupOfStopPlace = (variables) => async (
-  dispatch,
-  getState
-) =>
-  new Promise(async (resolve, reject) => {
+export const terminateStop =
+  (stopPlaceId, shouldTerminatePermanently, versionComment, toDate) =>
+  async (dispatch, getState) =>
     handleMutation(getTiamatClient(), {
-      mutation: mutateGroupOfStopPlaces,
-      variables,
+      mutation: mutateTerminateStopPlace,
+      variables: {
+        stopPlaceId,
+        versionComment,
+        toDate,
+        modificationEnumeration: shouldTerminatePermanently ? "delete" : null,
+      },
       fetchPolicy: "no-cache",
       context: await getContext(getState().roles.auth),
-    })(dispatch)
-      .then(({ data }) => {
-        const id = data["mutateGroupOfStopPlaces"]
-          ? data["mutateGroupOfStopPlaces"].id
-          : null;
-        resolve(id);
-      })
-      .catch((err) => {
-        reject(null);
-      });
-  });
+    })(dispatch);
 
-export const getStopPlaceVersions = (stopPlaceId) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    query: allVersionsOfStopPlace,
-    variables: {
-      id: stopPlaceId,
-    },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const addToMultiModalStopPlace =
+  (parentSiteRef, stopPlaceIds) => async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateAddToMultiModalStopPlace,
+      variables: {
+        stopPlaceIds,
+        parentSiteRef,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const mergeQuays = (
-  stopPlaceId,
-  fromQuayId,
-  toQuayId,
-  versionComment
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateMergeQuays,
-    variables: {
-      stopPlaceId,
-      fromQuayId,
-      toQuayId,
-      versionComment,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const createParentStopPlace =
+  ({
+    name,
+    description,
+    versionComment,
+    coordinates,
+    validBetween,
+    stopPlaceIds,
+  }) =>
+  async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateCreateMultiModalStopPlace,
+      variables: {
+        name,
+        description,
+        versionComment,
+        coordinates,
+        validBetween,
+        stopPlaceIds,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
+
+export const mutateGroupOfStopPlace =
+  (variables) => async (dispatch, getState) =>
+    new Promise(async (resolve, reject) => {
+      handleMutation(getTiamatClient(), {
+        mutation: mutateGroupOfStopPlaces,
+        variables,
+        fetchPolicy: "no-cache",
+        context: await getContext(getState().roles.auth),
+      })(dispatch)
+        .then(({ data }) => {
+          const id = data["mutateGroupOfStopPlaces"]
+            ? data["mutateGroupOfStopPlaces"].id
+            : null;
+          resolve(id);
+        })
+        .catch((err) => {
+          reject(null);
+        });
+    });
+
+export const getStopPlaceVersions =
+  (stopPlaceId) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: allVersionsOfStopPlace,
+      variables: {
+        id: stopPlaceId,
+      },
+      fetchPolicy: "network-only",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
+
+export const mergeQuays =
+  (stopPlaceId, fromQuayId, toQuayId, versionComment) =>
+  async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateMergeQuays,
+      variables: {
+        stopPlaceId,
+        fromQuayId,
+        toQuayId,
+        versionComment,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
 export const getStopPlaceWithAll = (id) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
@@ -382,76 +364,65 @@ export const getStopPlaceWithAll = (id) => async (dispatch, getState) =>
     fetchPolicy: "network-only",
   })(dispatch);
 
-export const mergeAllQuaysFromStop = (
-  fromStopPlaceId,
-  toStopPlaceId,
-  fromVersionComment,
-  toVersionComment
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateMergeStopPlaces,
-    variables: {
-      fromStopPlaceId,
-      toStopPlaceId,
-      fromVersionComment,
-      toVersionComment,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const mergeAllQuaysFromStop =
+  (fromStopPlaceId, toStopPlaceId, fromVersionComment, toVersionComment) =>
+  async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateMergeStopPlaces,
+      variables: {
+        fromStopPlaceId,
+        toStopPlaceId,
+        fromVersionComment,
+        toVersionComment,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const moveQuaysToStop = (
-  toStopPlaceId,
-  quayId,
-  fromVersionComment,
-  toVersionComment
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateMoveQuaysToStop,
-    variables: {
-      toStopPlaceId,
-      quayId,
-      fromVersionComment,
-      toVersionComment,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const moveQuaysToStop =
+  (toStopPlaceId, quayId, fromVersionComment, toVersionComment) =>
+  async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateMoveQuaysToStop,
+      variables: {
+        toStopPlaceId,
+        quayId,
+        fromVersionComment,
+        toVersionComment,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const moveQuaysToNewStop = (
-  quayIds,
-  fromVersionComment,
-  toVersionComment
-) => async (dispatch, getState) =>
-  handleMutation(getTiamatClient(), {
-    mutation: mutateMoveQuaysToNewStop,
-    variables: {
-      quayIds,
-      fromVersionComment,
-      toVersionComment,
-    },
-    fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const moveQuaysToNewStop =
+  (quayIds, fromVersionComment, toVersionComment) =>
+  async (dispatch, getState) =>
+    handleMutation(getTiamatClient(), {
+      mutation: mutateMoveQuaysToNewStop,
+      variables: {
+        quayIds,
+        fromVersionComment,
+        toVersionComment,
+      },
+      fetchPolicy: "no-cache",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const getNeighbourStops = (
-  ignoreStopPlaceId,
-  bounds,
-  includeExpired
-) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    fetchPolicy: "network-only",
-    query: stopPlaceBBQuery,
-    variables: {
-      includeExpired: includeExpired,
-      ignoreStopPlaceId,
-      latMin: bounds.getSouthWest().lat,
-      latMax: bounds.getNorthEast().lat,
-      lonMin: bounds.getSouthWest().lng,
-      lonMax: bounds.getNorthEast().lng,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const getNeighbourStops =
+  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      fetchPolicy: "network-only",
+      query: stopPlaceBBQuery,
+      variables: {
+        includeExpired: includeExpired,
+        ignoreStopPlaceId,
+        latMin: bounds.getSouthWest().lat,
+        latMax: bounds.getNorthEast().lat,
+        lonMin: bounds.getSouthWest().lng,
+        lonMax: bounds.getNorthEast().lng,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
 export const getPolygons = (ids) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
@@ -467,50 +438,45 @@ export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getMergeInfoForStops = (stopPlaceId) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    fetchPolicy: "network-only",
-    query: getMergeInfoStopPlace,
-    variables: {
-      stopPlaceId,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const getMergeInfoForStops =
+  (stopPlaceId) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      fetchPolicy: "network-only",
+      query: getMergeInfoStopPlace,
+      variables: {
+        stopPlaceId,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const findEntitiesWithFilters = (
-  query,
-  stopPlaceType,
-  chips,
-  showFutureAndExpired
-) => async (dispatch, getState) => {
-  const municipalityReference = chips
-    .filter((topos) => topos.type === "municipality")
-    .map((topos) => topos.value);
-  const countyReference = chips
-    .filter((topos) => topos.type === "county")
-    .map((topos) => topos.value);
-  const countryReference = chips
-    .filter((topos) => topos.type === "country")
-    .map((topos) => topos.value);
+export const findEntitiesWithFilters =
+  (query, stopPlaceType, chips, showFutureAndExpired) =>
+  async (dispatch, getState) => {
+    const municipalityReference = chips
+      .filter((topos) => topos.type === "municipality")
+      .map((topos) => topos.value);
+    const countyReference = chips
+      .filter((topos) => topos.type === "county")
+      .map((topos) => topos.value);
+    const countryReference = chips
+      .filter((topos) => topos.type === "country")
+      .map((topos) => topos.value);
 
-  return handleQuery(getTiamatClient(), {
-    query: findStop,
-    fetchPolicy: "network-only",
-    variables: {
-      query,
-      stopPlaceType,
-      municipalityReference: municipalityReference,
-      countyReference: countyReference,
-      countryReference: countryReference,
-      pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
-      versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-};
+    return handleQuery(getTiamatClient(), {
+      query: findStop,
+      fetchPolicy: "network-only",
+      variables: {
+        query,
+        stopPlaceType,
+        municipalityReference: municipalityReference,
+        countyReference: countyReference,
+        countryReference: countryReference,
+        pointInTime: showFutureAndExpired ? null : new Date().toISOString(),
+        versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
+  };
 
 export const findTopographicalPlace = (query) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
@@ -593,53 +559,45 @@ export const deleteParking = (id) => async (dispatch, getState) =>
     context: await getContext(getState().roles.auth),
   })(dispatch);
 
-export const getStopPlaceAndPathLinkByVersion = (id, version) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    fetchPolicy: "network-only",
-    query: stopPlaceAndPathLinkByVersion,
-    variables: {
-      id,
-      version,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const getStopPlaceAndPathLinkByVersion =
+  (id, version) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      fetchPolicy: "network-only",
+      query: stopPlaceAndPathLinkByVersion,
+      variables: {
+        id,
+        version,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const findStopForReport = (queryVariables) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    query: findStopForReportQuery,
-    fetchPolicy: "network-only",
-    variables: queryVariables,
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const findStopForReport =
+  (queryVariables) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: findStopForReportQuery,
+      fetchPolicy: "network-only",
+      variables: queryVariables,
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const getParkingForMultipleStopPlaces = (stopPlaceIds) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const getParkingForMultipleStopPlaces =
+  (stopPlaceIds) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: getParkingForMultipleStopPlacesQuery(stopPlaceIds),
+      fetchPolicy: "network-only",
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
-export const topographicalPlaceSearch = (searchText) => async (
-  dispatch,
-  getState
-) =>
-  handleQuery(getTiamatClient(), {
-    query: topopGraphicalPlacesReportQuery,
-    fetchPolicy: "network-only",
-    variables: {
-      query: searchText,
-    },
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
+export const topographicalPlaceSearch =
+  (searchText) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: topopGraphicalPlacesReportQuery,
+      fetchPolicy: "network-only",
+      variables: {
+        query: searchText,
+      },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
 
 export const getNeighbourStopPlaceQuays = (id) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
