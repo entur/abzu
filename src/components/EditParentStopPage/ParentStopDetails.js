@@ -126,11 +126,8 @@ class ParentStopDetails extends Component {
 
   render() {
     const { stopPlace, intl, disabled, dispatch } = this.props;
-    const {
-      changePositionOpen,
-      addStopPlaceOpen,
-      altNamesDialogOpen,
-    } = this.state;
+    const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } =
+      this.state;
     const { formatMessage } = intl;
 
     const hasAltNames = !!(

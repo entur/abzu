@@ -73,8 +73,7 @@ module.exports = new Promise(function (resolve, reject) {
       env: "MAPBOX_TARIFF_ZONES_STYLE",
     },
     sentryDSN: {
-      doc:
-        "SENTRY_DSN - found in https://sentry.io/settings/{organisation_slug}/{project_slug}/keys/",
+      doc: "SENTRY_DSN - found in https://sentry.io/settings/{organisation_slug}/{project_slug}/keys/",
       format: String,
       default: undefined,
       env: "SENTRY_DSN",

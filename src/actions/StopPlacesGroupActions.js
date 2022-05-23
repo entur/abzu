@@ -23,19 +23,21 @@ import Routes from "../routes/";
 
 var StopPlacesGroupActions = {};
 
-StopPlacesGroupActions.useStopPlaceIdForNewGroup = (stopPlaceId) => (
-  dispatch
-) => {
-  dispatch(createThunk(types.CREATED_NEW_GROUP_OF_STOP_PLACES, stopPlaceId));
-  // i.e already creating a new group of stop place, update state instead
-  if (
-    window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) > -1
-  ) {
-    dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId));
-  } else {
-    dispatch(UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new"));
-  }
-};
+StopPlacesGroupActions.useStopPlaceIdForNewGroup =
+  (stopPlaceId) => (dispatch) => {
+    dispatch(createThunk(types.CREATED_NEW_GROUP_OF_STOP_PLACES, stopPlaceId));
+    // i.e already creating a new group of stop place, update state instead
+    if (
+      window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) >
+      -1
+    ) {
+      dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId));
+    } else {
+      dispatch(
+        UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new")
+      );
+    }
+  };
 
 StopPlacesGroupActions.changeName = (name) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_STOP_PLACE_GROUP_NAME, name));

@@ -199,12 +199,8 @@ class SearchBox extends React.Component {
   }
 
   handleAddChip({ text, type, id }) {
-    const {
-      searchText,
-      stopTypeFilters,
-      showFutureAndExpired,
-      topoiChips,
-    } = this.props;
+    const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } =
+      this.props;
     if (searchText) {
       this.handleSearchUpdate(searchText, null, null, {
         showFutureAndExpired,
@@ -368,11 +364,8 @@ class SearchBox extends React.Component {
       dataSource,
       showFutureAndExpired,
     } = this.props;
-    const {
-      coordinatesDialogOpen,
-      showMoreFilterOptions,
-      loading,
-    } = this.state;
+    const { coordinatesDialogOpen, showMoreFilterOptions, loading } =
+      this.state;
 
     const { formatMessage, locale } = intl;
     const menuItems = this.getMenuItems(this.props);

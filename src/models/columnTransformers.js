@@ -333,9 +333,8 @@ export const ColumnTransformerQuaysJsx = {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         {quay.importedId.map((importedId, index) => {
-          const isDuplicate = !!duplicateInfo.quaysWithDuplicateImportedIds[
-            importedId
-          ];
+          const isDuplicate =
+            !!duplicateInfo.quaysWithDuplicateImportedIds[importedId];
 
           const confictToolTip = isDuplicate
             ? getConflictTooltip(duplicateInfo.fullConflictMap[importedId])

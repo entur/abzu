@@ -89,35 +89,32 @@ UserActions.showEditQuayAdditional = () => (dispatch) => {
   dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
 };
 
-UserActions.toggleIsCreatingNewStop = (isMultiModal) => (
-  dispatch,
-  getState
-) => {
-  const state = getState();
-  const isCreatingNewStop = state.user.isCreatingNewStop;
+UserActions.toggleIsCreatingNewStop =
+  (isMultiModal) => (dispatch, getState) => {
+    const state = getState();
+    const isCreatingNewStop = state.user.isCreatingNewStop;
 
-  if (isCreatingNewStop) {
-    dispatch(createThunk(types.DESTROYED_NEW_STOP, null));
-  }
-  dispatch(createThunk(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
-};
+    if (isCreatingNewStop) {
+      dispatch(createThunk(types.DESTROYED_NEW_STOP, null));
+    }
+    dispatch(createThunk(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
+  };
 
 UserActions.toggleMultimodalEdges = (value) => (dispatch) => {
   Settings.setShowMultimodalEdges(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));
 };
 
-UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces = (value) => (
-  dispatch
-) => {
-  Settings.setEnablePublicCodePrivateCodeOnStopPlaces(value);
-  dispatch(
-    createThunk(
-      types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES,
-      value
-    )
-  );
-};
+UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces =
+  (value) => (dispatch) => {
+    Settings.setEnablePublicCodePrivateCodeOnStopPlaces(value);
+    dispatch(
+      createThunk(
+        types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES,
+        value
+      )
+    );
+  };
 
 UserActions.togglePathLinksEnabled = (value) => (dispatch) => {
   Settings.setShowPathLinks(value);
@@ -316,40 +313,38 @@ UserActions.changeQuayAdditionalTypeTabByType = (type) => (dispatch) => {
   dispatch(UserActions.changeQuayAdditionalTypeTab(value));
 };
 
-UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (
-  dispatch,
-  getState
-) => {
-  let state = getState();
-  let client = state.user.client;
+UserActions.showMergeStopDialog =
+  (fromStopPlaceID, name) => (dispatch, getState) => {
+    let state = getState();
+    let client = state.user.client;
 
-  dispatch(
-    createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-      id: fromStopPlaceID,
-      name: name,
-    })
-  );
-
-  if (client) {
-    dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
-
-    dispatch(getMergeInfoForStops(fromStopPlaceID))
-      .then((response) => {
-        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-        dispatch(
-          createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-            id: fromStopPlaceID,
-            name,
-            quays: getQuaysForMergeInfo(response.data.stopPlace),
-          })
-        );
+    dispatch(
+      createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+        id: fromStopPlaceID,
+        name: name,
       })
-      .catch((err) => {
-        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-        console.log(err);
-      });
-  }
-};
+    );
+
+    if (client) {
+      dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
+
+      dispatch(getMergeInfoForStops(fromStopPlaceID))
+        .then((response) => {
+          dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+          dispatch(
+            createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+              id: fromStopPlaceID,
+              name,
+              quays: getQuaysForMergeInfo(response.data.stopPlace),
+            })
+          );
+        })
+        .catch((err) => {
+          dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+          console.log(err);
+        });
+    }
+  };
 
 UserActions.hideMergeStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_MERGE_STOP_DIALOG, null));
@@ -431,57 +426,56 @@ UserActions.hideDeleteStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CANCELLED_DELETE_STOP_DIALOG, null));
 };
 
-UserActions.requestDeleteQuay = (stopPlaceId, quayId, importedId) => (
-  dispatch
-) => {
-  const source = {
-    stopPlaceId,
-    quayId,
-  };
+UserActions.requestDeleteQuay =
+  (stopPlaceId, quayId, importedId) => (dispatch) => {
+    const source = {
+      stopPlaceId,
+      quayId,
+    };
 
-  dispatch(
-    createThunk(types.REQUESTED_DELETE_QUAY, {
-      source,
-      importedId,
-    })
-  );
+    dispatch(
+      createThunk(types.REQUESTED_DELETE_QUAY, {
+        source,
+        importedId,
+      })
+    );
 
-  checkQuayUsage(quayId)
-    .then(({ data }) => {
-      if (data.quay && data.quay.lines) {
-        let authorities = new Set();
-        let serviceJourneyActiveDates = new Set();
+    checkQuayUsage(quayId)
+      .then(({ data }) => {
+        if (data.quay && data.quay.lines) {
+          let authorities = new Set();
+          let serviceJourneyActiveDates = new Set();
 
-        data.quay.lines.forEach((line) => {
-          if (line.authority && line.authority.name) {
-            authorities.add(line.authority.name);
-          }
-          line.serviceJourneys.forEach((sj) => {
-            sj.activeDates.forEach((activeDateString) => {
-              serviceJourneyActiveDates.add(activeDateString);
+          data.quay.lines.forEach((line) => {
+            if (line.authority && line.authority.name) {
+              authorities.add(line.authority.name);
+            }
+            line.serviceJourneys.forEach((sj) => {
+              sj.activeDates.forEach((activeDateString) => {
+                serviceJourneyActiveDates.add(activeDateString);
+              });
             });
           });
-        });
 
-        dispatch(
-          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
-            authorities: Array.from(authorities),
-            warning: serviceJourneyActiveDates.size > 0,
-          })
-        );
-      } else {
-        dispatch(
-          createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
-            authorities: [],
-            warning: 0,
-          })
-        );
-      }
-    })
-    .catch(() => {
-      dispatch(createThunk(types.ERROR_QUAY_DELETE_OTP_INFO, null));
-    });
-};
+          dispatch(
+            createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+              authorities: Array.from(authorities),
+              warning: serviceJourneyActiveDates.size > 0,
+            })
+          );
+        } else {
+          dispatch(
+            createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
+              authorities: [],
+              warning: 0,
+            })
+          );
+        }
+      })
+      .catch(() => {
+        dispatch(createThunk(types.ERROR_QUAY_DELETE_OTP_INFO, null));
+      });
+  };
 
 const formatStopPlaceUsageDetails = (stopPlace) => {
   if (stopPlace) {
@@ -536,11 +530,8 @@ UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
     checkStopPlaceUsage(stopPlaceId)
       .then(({ data }) => {
         if (data.stopPlace) {
-          const {
-            serviceJourneyActiveDates,
-            authorities,
-            latestActiveDate,
-          } = formatStopPlaceUsageDetails(data.stopPlace);
+          const { serviceJourneyActiveDates, authorities, latestActiveDate } =
+            formatStopPlaceUsageDetails(data.stopPlace);
 
           dispatch(
             createThunk(types.TERMINATE_DELETE_STOP_DIALOG_WARNING, {

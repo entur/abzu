@@ -38,13 +38,8 @@ class GroupOfStopPlaceMap extends Component {
   }
 
   render() {
-    const {
-      position,
-      activeBaselayer,
-      enablePolylines,
-      zoom,
-      markers,
-    } = this.props;
+    const { position, activeBaselayer, enablePolylines, zoom, markers } =
+      this.props;
 
     return (
       <LeafletMap

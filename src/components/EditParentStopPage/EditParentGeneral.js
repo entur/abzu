@@ -114,20 +114,16 @@ class EditParentGeneral extends React.Component {
     const { stopPlace, dispatch } = this.props;
 
     if (stopPlace.isNewStop) {
-      const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
-        stopPlace,
-        userInput
-      );
+      const stopPlaceVariables =
+        mapToMutationVariables.mapParentStopToVariables(stopPlace, userInput);
       this.handleCreateNewParentStopPlace(stopPlaceVariables);
     } else {
       const childrenToAdd = stopPlace.children
         .filter((child) => child.notSaved)
         .map((child) => child.id);
 
-      const stopPlaceVariables = mapToMutationVariables.mapParentStopToVariables(
-        stopPlace,
-        userInput
-      );
+      const stopPlaceVariables =
+        mapToMutationVariables.mapParentStopToVariables(stopPlace, userInput);
 
       if (childrenToAdd.length) {
         dispatch(addToMultiModalStopPlace(stopPlace.id, childrenToAdd)).then(

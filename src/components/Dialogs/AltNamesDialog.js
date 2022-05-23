@@ -163,14 +163,8 @@ class AltNamesDialog extends React.Component {
   render() {
     const { open, intl, altNames = [], handleClose, disabled } = this.props;
     const { formatMessage } = intl;
-    const {
-      isEditing,
-      lang,
-      type,
-      value,
-      confirmDialogOpen,
-      editingId,
-    } = this.state;
+    const { isEditing, lang, type, value, confirmDialogOpen, editingId } =
+      this.state;
 
     if (!open) return null;
 

@@ -13,12 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 export const getMarkersForMap = ({ stopPlace, user }) => {
-  const {
-    newStop,
-    findCoordinates,
-    activeSearchResult,
-    neighbourStops,
-  } = stopPlace;
+  const { newStop, findCoordinates, activeSearchResult, neighbourStops } =
+    stopPlace;
 
   const { isCreatingNewStop } = user;
 

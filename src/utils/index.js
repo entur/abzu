@@ -145,9 +145,8 @@ export const findDuplicateImportedIds = (stopPlaces) => {
                 if (!quaysWithDuplicateImportedIds[value]) {
                   quaysWithDuplicateImportedIds[value] = [quay.id];
                 } else {
-                  quaysWithDuplicateImportedIds[
-                    value
-                  ] = quaysWithDuplicateImportedIds[value].concat(quay.id);
+                  quaysWithDuplicateImportedIds[value] =
+                    quaysWithDuplicateImportedIds[value].concat(quay.id);
                 }
 
                 if (fullConflictMap[value]) {

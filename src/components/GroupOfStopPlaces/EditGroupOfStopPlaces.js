@@ -99,9 +99,8 @@ class EditGroupOfStopPlaces extends Component {
 
   handleSave() {
     const { groupOfStopPlaces, dispatch } = this.props;
-    const variables = mapHelper.mapGroupOfStopPlaceToVariables(
-      groupOfStopPlaces
-    );
+    const variables =
+      mapHelper.mapGroupOfStopPlaceToVariables(groupOfStopPlaces);
     dispatch(mutateGroupOfStopPlace(variables)).then((groupId) => {
       this.handleSaveSuccess(groupId);
     });

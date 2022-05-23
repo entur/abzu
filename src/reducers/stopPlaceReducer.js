@@ -30,7 +30,8 @@ const initialState = {
   minZoom: 14,
   isCompassBearingEnabled: Settings.getShowCompassBearing(),
   isCreatingPolylines: false,
-  enablePublicCodePrivateCodeOnStopPlaces: Settings.getEnablePublicCodePrivateCodeOnStopPlaces(),
+  enablePublicCodePrivateCodeOnStopPlaces:
+    Settings.getEnablePublicCodePrivateCodeOnStopPlaces(),
   enablePolylines: Settings.getShowPathLinks(),
   showExpiredStops: Settings.getShowExpiredStops(),
   showMultimodalEdges: Settings.getShowMultimodalEdges(),
@@ -612,10 +613,11 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.CHANGED_PARKING_NUMBER_OF_SPACES_FOR_REGISTERED_DISABLED_USER_TYPE:
       return Object.assign({}, state, {
-        current: formatHelpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
-          state.current,
-          action.payLoad
-        ),
+        current:
+          formatHelpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
+            state.current,
+            action.payLoad
+          ),
         stopHasBeenModified: true,
       });
 

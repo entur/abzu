@@ -13,7 +13,8 @@
     "prebuild": "npm run fetch-schema",
     "predev-local": "TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql npm run fetch-schema",
     "preprod": "TIAMAT_BASE_URL=https://api.entur.io/stop-places/v1/graphql npm run fetch-schema",
-    "fetch-schema": "./fetchSchema.js"
+    "fetch-schema": "./fetchSchema.js",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {

@@ -644,15 +644,14 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
       });
       break;
     case "boarding-position":
-      copy.quays[payLoad.quayIndex].boardingPositions[
-        markerIndex
-      ] = Object.assign(
-        {},
-        copy.quays[payLoad.quayIndex].boardingPositions[markerIndex],
-        {
-          location: position,
-        }
-      );
+      copy.quays[payLoad.quayIndex].boardingPositions[markerIndex] =
+        Object.assign(
+          {},
+          copy.quays[payLoad.quayIndex].boardingPositions[markerIndex],
+          {
+            location: position,
+          }
+        );
       break;
     case "parking":
       copy.parking[markerIndex] = Object.assign({}, copy.parking[markerIndex], {
@@ -851,9 +850,8 @@ helpers.changeParkingNumberOfSpaces = (original, payload) => {
 helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
   const { index, numberOfSpacesWithRechargePoint } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[
-    index
-  ].numberOfSpacesWithRechargePoint = numberOfSpacesWithRechargePoint;
+  copy.parking[index].numberOfSpacesWithRechargePoint =
+    numberOfSpacesWithRechargePoint;
   return copy;
 };
 
@@ -863,9 +861,8 @@ helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
 ) => {
   const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
   const copy = JSON.parse(JSON.stringify(original));
-  copy.parking[
-    index
-  ].numberOfSpacesForRegisteredDisabledUserType = numberOfSpacesForRegisteredDisabledUserType;
+  copy.parking[index].numberOfSpacesForRegisteredDisabledUserType =
+    numberOfSpacesForRegisteredDisabledUserType;
   return copy;
 };
 
