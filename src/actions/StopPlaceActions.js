@@ -14,44 +14,42 @@ limitations under the Licence. */
 
 import * as types from "./Types";
 import { getCentroid } from "../utils/mapUtils";
-import { UserActions } from "./";
-import { getIn } from "../utils/";
+import { UserActions } from ".";
+import { getIn } from "../utils";
 import { updateURLWithId } from "../utils/URLhelpers";
-import { createThunk } from "./";
+import { createThunk } from ".";
 import { Entities } from "../models/Entities";
 
 var StopPlaceActions = {};
 
-StopPlaceActions.removeChildFromParentStopPlace = (stopPlaceId) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId)
-  );
-};
+StopPlaceActions.removeChildFromParentStopPlace =
+  (stopPlaceId) => (dispatch) => {
+    dispatch(
+      createThunk(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId)
+    );
+  };
 
-StopPlaceActions.addChildrenToParenStopPlace = ({ data }) => (
-  dispatch,
-  getState
-) => {
-  // extract stopPlaces from query result
-  let foundStopPlaces = [];
+StopPlaceActions.addChildrenToParenStopPlace =
+  ({ data }) =>
+  (dispatch, getState) => {
+    // extract stopPlaces from query result
+    let foundStopPlaces = [];
 
-  Object.values(data).forEach(
-    (entry) => (foundStopPlaces = foundStopPlaces.concat(entry[0]))
-  );
+    Object.values(data).forEach(
+      (entry) => (foundStopPlaces = foundStopPlaces.concat(entry[0]))
+    );
 
-  const state = getState();
-  // Do not append children already added
-  const alreadyAdded = state.stopPlace.current.children.map(
-    (child) => child.id
-  );
-  const toAdd = foundStopPlaces
-    .filter((item) => alreadyAdded.indexOf(item.id) === -1)
-    .map((item) => ({ ...item, notSaved: true }));
+    const state = getState();
+    // Do not append children already added
+    const alreadyAdded = state.stopPlace.current.children.map(
+      (child) => child.id
+    );
+    const toAdd = foundStopPlaces
+      .filter((item) => alreadyAdded.indexOf(item.id) === -1)
+      .map((item) => ({ ...item, notSaved: true }));
 
-  dispatch(createThunk(types.ADDED_STOP_PLACES_TO_PARENT, toAdd));
-};
+    dispatch(createThunk(types.ADDED_STOP_PLACES_TO_PARENT, toAdd));
+  };
 
 StopPlaceActions.changeLocationNewStop = (location) => (dispatch) => {
   dispatch(
@@ -99,33 +97,30 @@ StopPlaceActions.changeStopType = (type) => (dispatch) => {
   }
 };
 
-StopPlaceActions.changeSubmode = (stopPlaceType, transportMode, submode) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGED_STOP_SUBMODE, {
-      stopPlaceType,
-      transportMode,
-      submode,
-    })
-  );
-};
+StopPlaceActions.changeSubmode =
+  (stopPlaceType, transportMode, submode) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_STOP_SUBMODE, {
+        stopPlaceType,
+        transportMode,
+        submode,
+      })
+    );
+  };
 
-StopPlaceActions.updateKeyValuesForKey = (key, values) => (
-  dispatch,
-  getState
-) => {
-  let state = getState();
-  let origin = state.user.keyValuesOrigin;
+StopPlaceActions.updateKeyValuesForKey =
+  (key, values) => (dispatch, getState) => {
+    let state = getState();
+    let origin = state.user.keyValuesOrigin;
 
-  dispatch(
-    createThunk(types.UPDATED_KEY_VALUES_FOR_KEY, {
-      key,
-      values,
-      origin,
-    })
-  );
-};
+    dispatch(
+      createThunk(types.UPDATED_KEY_VALUES_FOR_KEY, {
+        key,
+        values,
+        origin,
+      })
+    );
+  };
 
 StopPlaceActions.deleteKeyValuesByKey = (key) => (dispatch, getState) => {
   let state = getState();
@@ -139,21 +134,19 @@ StopPlaceActions.deleteKeyValuesByKey = (key) => (dispatch, getState) => {
   );
 };
 
-StopPlaceActions.createKeyValuesPair = (key, values) => (
-  dispatch,
-  getState
-) => {
-  let state = getState();
-  let origin = state.user.keyValuesOrigin;
+StopPlaceActions.createKeyValuesPair =
+  (key, values) => (dispatch, getState) => {
+    let state = getState();
+    let origin = state.user.keyValuesOrigin;
 
-  dispatch(
-    createThunk(types.CREATED_KEY_VALUES_PAIR, {
-      key,
-      values,
-      origin,
-    })
-  );
-};
+    dispatch(
+      createThunk(types.CREATED_KEY_VALUES_PAIR, {
+        key,
+        values,
+        origin,
+      })
+    );
+  };
 
 StopPlaceActions.setMarkerOnMap = (data) => (dispatch) => {
   dispatch(
@@ -205,17 +198,16 @@ StopPlaceActions.removeElementByType = (index, type) => (dispatch) => {
   );
 };
 
-StopPlaceActions.removeBoardingPositionElement = (index, quayIndex) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.REMOVED_ELEMENT_BY_TYPE, {
-      index,
-      quayIndex,
-      type: "boarding-position",
-    })
-  );
-};
+StopPlaceActions.removeBoardingPositionElement =
+  (index, quayIndex) => (dispatch) => {
+    dispatch(
+      createThunk(types.REMOVED_ELEMENT_BY_TYPE, {
+        index,
+        quayIndex,
+        type: "boarding-position",
+      })
+    );
+  };
 
 StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
   dispatch(
@@ -227,20 +219,17 @@ StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
   );
 };
 
-StopPlaceActions.changeBoardingPositionPublicCode = (
-  index,
-  quayIndex,
-  name
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
-      name,
-      index,
-      quayIndex,
-      type: "boarding-position",
-    })
-  );
-};
+StopPlaceActions.changeBoardingPositionPublicCode =
+  (index, quayIndex, name) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGE_PUBLIC_CODE_NAME, {
+        name,
+        index,
+        quayIndex,
+        type: "boarding-position",
+      })
+    );
+  };
 
 StopPlaceActions.changePrivateCodeName = (index, name, type) => (dispatch) => {
   dispatch(
@@ -264,28 +253,26 @@ StopPlaceActions.changeWeightingForStop = (value) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_WEIGHTING_STOP_PLACE, value));
 };
 
-StopPlaceActions.changeElementDescription = (index, description, type) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGED_ELEMENT_DESCRIPTION, {
-      index: index,
-      description: description,
-      type: type,
-    })
-  );
-};
+StopPlaceActions.changeElementDescription =
+  (index, description, type) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_ELEMENT_DESCRIPTION, {
+        index: index,
+        description: description,
+        type: type,
+      })
+    );
+  };
 
-StopPlaceActions.changeQuayCompassBearing = (index, compassBearing) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGED_QUAY_COMPASS_BEARING, {
-      index,
-      compassBearing,
-    })
-  );
-};
+StopPlaceActions.changeQuayCompassBearing =
+  (index, compassBearing) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_QUAY_COMPASS_BEARING, {
+        index,
+        compassBearing,
+      })
+    );
+  };
 
 StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
   let state = getState();
@@ -312,22 +299,23 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
   );
 };
 
-StopPlaceActions.setBoardingPositionElementFocus = (index, quayIndex) => (
-  dispatch
-) => {
-  dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
+StopPlaceActions.setBoardingPositionElementFocus =
+  (index, quayIndex) => (dispatch) => {
+    dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
 
-  dispatch(
-    createThunk(types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT, {
-      index,
-      quayIndex,
-    })
-  );
+    dispatch(
+      createThunk(types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT, {
+        index,
+        quayIndex,
+      })
+    );
 
-  dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
+    dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
 
-  dispatch(UserActions.changeQuayAdditionalTypeTabByType("boarding-positions"));
-};
+    dispatch(
+      UserActions.changeQuayAdditionalTypeTabByType("boarding-positions")
+    );
+  };
 
 StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {
   const state = getState();
@@ -348,48 +336,44 @@ StopPlaceActions.setActiveMap = (map) => (dispatch) => {
   dispatch(createThunk(types.SET_ACTIVE_MAP, map));
 };
 
-StopPlaceActions.addElementToStop = (type, position) => (
-  dispatch,
-  getState
-) => {
-  if (type === "stop_place") {
+StopPlaceActions.addElementToStop =
+  (type, position) => (dispatch, getState) => {
+    if (type === "stop_place") {
+      dispatch(
+        createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
+          location: position,
+        })
+      );
+    } else {
+      dispatch(
+        createThunk(types.ADDED_STOP_PLACE_ELEMENT, {
+          type,
+          position,
+          focusedElement: getState().mapUtils.focusedElement,
+        })
+      );
+    }
+  };
+
+StopPlaceActions.changeElementPosition =
+  (coordinatesOwner, position) => (dispatch) => {
     dispatch(
-      createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
-        location: position,
-      })
-    );
-  } else {
-    dispatch(
-      createThunk(types.ADDED_STOP_PLACE_ELEMENT, {
-        type,
+      createThunk(types.CHANGE_ELEMENT_POSITION, {
+        ...coordinatesOwner,
         position,
-        focusedElement: getState().mapUtils.focusedElement,
       })
     );
-  }
-};
+  };
 
-StopPlaceActions.changeElementPosition = (coordinatesOwner, position) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGE_ELEMENT_POSITION, {
-      ...coordinatesOwner,
-      position,
-    })
-  );
-};
-
-StopPlaceActions.changeParkingTotalCapacity = (index, totalCapacity) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_TOTAL_CAPACITY, {
-      index,
-      totalCapacity,
-    })
-  );
-};
+StopPlaceActions.changeParkingTotalCapacity =
+  (index, totalCapacity) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_TOTAL_CAPACITY, {
+        index,
+        totalCapacity,
+      })
+    );
+  };
 
 StopPlaceActions.changeParkingName = (index, name) => (dispatch) => {
   dispatch(
@@ -409,91 +393,79 @@ StopPlaceActions.changeParkingLayout = (index, parkingLayout) => (dispatch) => {
   );
 };
 
-StopPlaceActions.changeParkingPaymentProcess = (
-  index,
-  parkingPaymentProcess
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_PAYMENT_PROCESS, {
-      index,
-      parkingPaymentProcess,
-    })
-  );
-};
-
-StopPlaceActions.changeParkingRechargingAvailable = (
-  index,
-  rechargingAvailable
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_RECHARGING_AVAILABLE, {
-      index,
-      rechargingAvailable,
-    })
-  );
-};
-
-StopPlaceActions.changeParkingNumberOfSpaces = (index, numberOfSpaces) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES, {
-      index,
-      numberOfSpaces,
-    })
-  );
-};
-
-StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint = (
-  index,
-  numberOfSpacesWithRechargePoint
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES_WITH_RECHARGE_POINT, {
-      index,
-      numberOfSpacesWithRechargePoint,
-    })
-  );
-};
-
-StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
-  index,
-  numberOfSpacesForRegisteredDisabledUserType
-) => (dispatch) => {
-  dispatch(
-    createThunk(
-      types.CHANGED_PARKING_NUMBER_OF_SPACES_FOR_REGISTERED_DISABLED_USER_TYPE,
-      {
+StopPlaceActions.changeParkingPaymentProcess =
+  (index, parkingPaymentProcess) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_PAYMENT_PROCESS, {
         index,
-        numberOfSpacesForRegisteredDisabledUserType,
-      }
-    )
-  );
-};
+        parkingPaymentProcess,
+      })
+    );
+  };
+
+StopPlaceActions.changeParkingRechargingAvailable =
+  (index, rechargingAvailable) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_RECHARGING_AVAILABLE, {
+        index,
+        rechargingAvailable,
+      })
+    );
+  };
+
+StopPlaceActions.changeParkingNumberOfSpaces =
+  (index, numberOfSpaces) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES, {
+        index,
+        numberOfSpaces,
+      })
+    );
+  };
+
+StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint =
+  (index, numberOfSpacesWithRechargePoint) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES_WITH_RECHARGE_POINT, {
+        index,
+        numberOfSpacesWithRechargePoint,
+      })
+    );
+  };
+
+StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType =
+  (index, numberOfSpacesForRegisteredDisabledUserType) => (dispatch) => {
+    dispatch(
+      createThunk(
+        types.CHANGED_PARKING_NUMBER_OF_SPACES_FOR_REGISTERED_DISABLED_USER_TYPE,
+        {
+          index,
+          numberOfSpacesForRegisteredDisabledUserType,
+        }
+      )
+    );
+  };
 
 StopPlaceActions.clearLastMutatedStopPlaceId = () => (dispatch) => {
   dispatch(createThunk(types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS, null));
 };
 
-StopPlaceActions.addAdjacentConnection = (stopPlaceId1, stopPlaceId2) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(types.ADD_ADJACENT_SITE, { stopPlaceId1, stopPlaceId2 })
-  );
-};
+StopPlaceActions.addAdjacentConnection =
+  (stopPlaceId1, stopPlaceId2) => (dispatch) => {
+    dispatch(
+      createThunk(types.ADD_ADJACENT_SITE, { stopPlaceId1, stopPlaceId2 })
+    );
+  };
 
-StopPlaceActions.removeAdjacentConnection = (
-  stopPlaceId,
-  adjacentStopPlaceRef
-) => (dispatch) => {
-  dispatch(
-    createThunk(types.REMOVE_ADJACENT_SITE, {
-      stopPlaceId,
-      adjacentStopPlaceRef,
-    })
-  );
-};
+StopPlaceActions.removeAdjacentConnection =
+  (stopPlaceId, adjacentStopPlaceRef) => (dispatch) => {
+    dispatch(
+      createThunk(types.REMOVE_ADJACENT_SITE, {
+        stopPlaceId,
+        adjacentStopPlaceRef,
+      })
+    );
+  };
 
 StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   const state = getState();

@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { AnyAction } from "redux";
 import { StopPlaceActions } from "../../actions";
 import BoardingPositionItem from "./BoardingPositionItem";
 
@@ -29,7 +30,7 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
           bpIndex,
           index,
           newValue
-        )
+        ) as unknown as AnyAction
       );
     },
     [index]
@@ -37,7 +38,12 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
 
   const handleDelete = useCallback(
     (bpIndex: number) => {
-      dispatch(StopPlaceActions.removeBoardingPositionElement(bpIndex, index));
+      dispatch(
+        StopPlaceActions.removeBoardingPositionElement(
+          bpIndex,
+          index
+        ) as unknown as AnyAction
+      );
     },
     [index]
   );
@@ -54,9 +60,17 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
           }
           onDelete={() => handleDelete(i)}
           handleLocateOnMap={() => {
-            dispatch(StopPlaceActions.changeMapCenter(bp.location, 17));
             dispatch(
-              StopPlaceActions.setBoardingPositionElementFocus(i, index)
+              StopPlaceActions.changeMapCenter(
+                bp.location,
+                17
+              ) as unknown as AnyAction
+            );
+            dispatch(
+              StopPlaceActions.setBoardingPositionElementFocus(
+                i,
+                index
+              ) as unknown as AnyAction
             );
           }}
           expanded={
@@ -67,7 +81,7 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
               StopPlaceActions.setBoardingPositionElementFocus(
                 i === focusedElement.index ? -1 : i,
                 index
-              )
+              ) as unknown as AnyAction
             );
           }}
         />
