@@ -12,9 +12,7 @@ aliases:
     command: npm install
   - &check
     name: Check formatting
-    command: |
-      npm run format
-      npx run stop-build
+    command: npm run check
   - &test
     name: Test
     command: npm run test
