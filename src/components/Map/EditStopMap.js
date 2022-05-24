@@ -156,10 +156,11 @@ class EditStopMap extends React.Component {
     });
   }
 
-  handleOnMapCreated(mapInstance) {
+  onMapReady(leafletElement) {
+    console.log({ leafletElement });
     const { dispatch, ignoreStopId } = this.props;
-    dispatch(StopPlaceActions.setActiveMap(mapInstance));
-    const bounds = mapInstance.getBounds();
+    dispatch(StopPlaceActions.setActiveMap(leafletElement));
+    const bounds = leafletElement.getBounds();
     let includeExpired = new Settings().getShowExpiredStops();
     dispatch(getNeighbourStops(ignoreStopId, bounds, includeExpired));
   }
@@ -171,11 +172,11 @@ class EditStopMap extends React.Component {
     return (
       <div>
         <LeafletMap
-          onMapCreated={handleOnMapCreated}
           position={position}
           markers={markers}
           zoom={zoom}
           boundsOptions={{ padding: [50, 50] }}
+          onMapReady={this.onMapReady.bind(this)}
           key="leafletmap-edit"
           handleOnClick={this.handleMapOnClick.bind(this)}
           handleDragEnd={this.handleMapDragEnd.bind(this)}

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import MarkerList from "./MarkerList";
 import {
   MapContainer,
@@ -47,9 +47,8 @@ export const LeafLetMap = ({
   handleZoomEnd,
   activeBaselayer,
   handleBaselayerChanged,
+  onMapReady = () => {},
 }) => {
-  const mapRef = useRef();
-
   const centerPosition = useMemo(() => {
     if (!position) {
       return [64.349421, 16.809082];
@@ -59,13 +58,27 @@ export const LeafLetMap = ({
       : [Number(position.lat), Number(position.lng)];
   }, [position]);
 
+  const [map, setMap] = useState();
+
+  const mapInstanceHandler = useCallback((mapInstance) => {
+    if (mapInstance) {
+      setMap(mapInstance);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (map) {
+      onMapReady(map);
+    }
+  }, [map]);
+
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
   const googleApiKey = window.config.googleApiKey;
   const { BaseLayer } = LayersControl;
 
   return (
     <MapContainer
-      ref={mapRef}
+      ref={mapInstanceHandler}
       style={lmapStyle}
       center={centerPosition}
       className="leaflet-map"
@@ -75,13 +88,13 @@ export const LeafLetMap = ({
     >
       <MapEvents
         handleBaselayerChanged={handleBaselayerChanged}
-        onDblclick={(e) => onDoubleClick && onDoubleClick(e, mapRef.current)}
+        onDblclick={(e) => onDoubleClick && onDoubleClick(e, map)}
         onClick={(event) => {
-          handleOnClick && handleOnClick(event, mapRef.current);
+          handleOnClick && handleOnClick(event, map);
         }}
         onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
         onMoveEnd={(event) => {
-          handleMapMoveEnd(event, mapRef.current);
+          handleMapMoveEnd(event, map);
         }}
       >
         <LayersControl position="topright">
