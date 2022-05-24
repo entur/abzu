@@ -21,7 +21,7 @@ import {
   LayersControl,
   ScaleControl,
 } from "react-leaflet";
-import { GoogleLayer } from "react-leaflet-google-v2";
+import { GoogleLayer } from "@entur/react-leaflet-google";
 import MultiPolylineList from "./PathLink";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
