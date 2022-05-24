@@ -12,11 +12,11 @@ export interface MapEventsProps {
 
 export const MapEvents: React.FC<MapEventsProps> = ({
   children,
-  handleBaselayerChanged,
-  onClick,
-  onDblclick,
-  onZoomEnd,
-  onMoveEnd
+  handleBaselayerChanged = () => {},
+  onClick = () => {},
+  onDblclick = () => {},
+  onZoomEnd = () => {},
+  onMoveEnd = () => {}
 
 }) => {
   useMapEvents({

@@ -110,10 +110,13 @@ class GroupOfStopPlaces extends Component {
           <EditGroupOfStopPlace />
         )}
         {isFetchingMember && <Loader />}
-        <GroupOfStopPlaceMap
-          position={this.props.position}
-          zoom={this.props.zoom}
-        />
+        {!isLoadingGroup && (
+          <GroupOfStopPlaceMap
+            position={this.props.position}
+            zoom={this.props.zoom}
+          />
+        )}
+
         <GroupErrorDialog
           open={errorDialog.open}
           errorType={errorDialog.type}

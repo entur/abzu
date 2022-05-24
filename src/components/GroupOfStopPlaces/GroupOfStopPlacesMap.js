@@ -18,18 +18,19 @@ import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
+import { StopPlaceActions } from "../../actions";
 
 class GroupOfStopPlaceMap extends Component {
   constructor(props) {
     super(props);
 
-    const mapEnd = (event, { leafletElement }) => {
+    const mapEnd = (event, map) => {
       let { ignoreStopId, dispatch } = this.props;
 
-      const zoom = leafletElement.getZoom();
+      const zoom = map.getZoom();
 
       if (zoom > 12) {
-        const bounds = leafletElement.getBounds();
+        const bounds = map.getBounds();
         let includeExpired = new Settings().getShowExpiredStops();
         dispatch(getNeighbourStops(ignoreStopId, bounds, includeExpired));
       }
@@ -47,18 +48,11 @@ class GroupOfStopPlaceMap extends Component {
         markers={markers}
         zoom={zoom}
         boundsOptions={{ padding: [50, 50] }}
-        ref="leafletMap"
         key="leafletmap-edit"
-        handleOnClick={() => {}}
-        handleDragEnd={() => {}}
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
-        handleChangeCoordinates={() => {}}
         dragableMarkers={false}
         activeBaselayer={activeBaselayer}
-        handleBaselayerChanged={() => {}}
         enablePolylines={enablePolylines}
-        handleZoomEnd={() => {}}
-        handleSetCompassBearing={() => {}}
       />
     );
   }
