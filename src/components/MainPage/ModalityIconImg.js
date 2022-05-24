@@ -15,7 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "../../styles/menu.css";
-import { getIconByTypeOrSubmode } from "../../utils/iconUtils";
+import { getSvgIconByTypeOrSubmode } from "../../utils/iconUtils";
 
 class ModalityIconImg extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -45,7 +45,7 @@ class ModalityIconImg extends React.Component {
       transform: "translateY(2px)",
     };
 
-    const icon = getIconByTypeOrSubmode(this.props.submode, this.props.type);
+    const icon = getSvgIconByTypeOrSubmode(this.props.submode, this.props.type);
 
     let style = {
       ...(this.props.style || {}),
