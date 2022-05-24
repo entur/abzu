@@ -15,7 +15,7 @@ limitations under the Licence. */
 import React, { useMemo, useRef } from "react";
 import MarkerList from "./MarkerList";
 import {
-  MapContainer as Lmap,
+  MapContainer,
   TileLayer,
   ZoomControl,
   LayersControl,
@@ -64,24 +64,26 @@ export const LeafLetMap = ({
   const { BaseLayer } = LayersControl;
 
   return (
-    <Lmap
+    <MapContainer
       ref={mapRef}
       style={lmapStyle}
       center={centerPosition}
       className="leaflet-map"
-      onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
       zoom={zoom}
       zoomControl={false}
       minZoom={minZoom || null}
-      onDblclick={(e) => onDoubleClick && onDoubleClick(e, mapRef.current)}
-      onMoveEnd={(event) => {
-        handleMapMoveEnd(event, mapRef.current);
-      }}
-      onclick={(event) => {
-        handleOnClick && handleOnClick(event, mapRef.current);
-      }}
     >
-      <MapEvents handleBaselayerChanged={handleBaselayerChanged}>
+      <MapEvents
+        handleBaselayerChanged={handleBaselayerChanged}
+        onDblclick={(e) => onDoubleClick && onDoubleClick(e, mapRef.current)}
+        onClick={(event) => {
+          handleOnClick && handleOnClick(event, mapRef.current);
+        }}
+        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
+        onMoveEnd={(event) => {
+          handleMapMoveEnd(event, mapRef.current);
+        }}
+      >
         <LayersControl position="topright">
           <BaseLayer
             checked={getCheckedBaseLayerByValue("OpenStreetMap")}
@@ -143,7 +145,7 @@ export const LeafLetMap = ({
         <MultiPolylineList />
         <StopPlaceGroupList />
       </MapEvents>
-    </Lmap>
+    </MapContainer>
   );
 };
 

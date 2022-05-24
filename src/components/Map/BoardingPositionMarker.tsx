@@ -42,7 +42,7 @@ export default ({
         dragend: handleDragEnd,
       }}
     >
-      <Popup autoPan={false} onOpen={handleSetFocus}>
+      <Popup autoPan={false} eventHandlers={{ popupopen: handleSetFocus}}>
         <div>
           <div className="boarding-position-marker-title">
             <Code
