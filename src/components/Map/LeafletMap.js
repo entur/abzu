@@ -92,7 +92,7 @@ export const LeafLetMap = ({
         onClick={(event) => {
           handleOnClick && handleOnClick(event, map);
         }}
-        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
+        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e, map)}
         onMoveEnd={(event) => {
           handleMapMoveEnd(event, map);
         }}

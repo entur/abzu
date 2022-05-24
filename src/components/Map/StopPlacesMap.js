@@ -51,10 +51,10 @@ class StopPlacesMap extends React.Component {
     const { isCreatingNewStop } = this.props;
 
     if (isCreatingNewStop) {
-      map.leafletElement.doubleClickZoom.disable();
+      map.doubleClickZoom.disable();
       this.props.dispatch(StopPlaceActions.createNewStop(e.latlng));
     } else {
-      map.leafletElement.doubleClickZoom.enable();
+      map.doubleClickZoom.enable();
     }
   }
 
@@ -66,9 +66,9 @@ class StopPlacesMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
-  handleMapMoveEnd(event, { leafletElement }) {
-    const zoom = leafletElement.getZoom();
-    const center = leafletElement.getCenter();
+  handleMapMoveEnd(event, map) {
+    const zoom = map.getZoom();
+    const center = map.getCenter();
 
     let includeExpired = new Settings().getShowExpiredStops();
 
@@ -77,7 +77,7 @@ class StopPlacesMap extends React.Component {
     dispatch(UserActions.setCenterAndZoom([center.lat, center.lng], null));
 
     if (zoom > 14) {
-      const bounds = leafletElement.getBounds();
+      const bounds = map.getBounds();
       const { ignoreStopId } = this.props;
       this.getNearbyStops(ignoreStopId, bounds, includeExpired);
     } else {
