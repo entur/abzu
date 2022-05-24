@@ -16,8 +16,7 @@ export const MapEvents: React.FC<MapEventsProps> = ({
   onClick = () => {},
   onDblclick = () => {},
   onZoomEnd = () => {},
-  onMoveEnd = () => {}
-
+  onMoveEnd = () => {},
 }) => {
   useMapEvents({
     baselayerchange: ({ name }) => {
@@ -26,7 +25,7 @@ export const MapEvents: React.FC<MapEventsProps> = ({
     click: onClick,
     dblclick: onDblclick,
     zoomend: onZoomEnd,
-    moveend: onMoveEnd
+    moveend: onMoveEnd,
   });
 
   return <>{children}</>;
