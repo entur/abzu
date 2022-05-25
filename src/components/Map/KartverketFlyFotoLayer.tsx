@@ -14,6 +14,10 @@ export const KartverketFlyFotoLayer: React.FC = () => {
     };
   }, [token]);
 
+  if (!token) {
+    return null;
+  }
+
   return (
     <WMTSLayer
       baseUrl={BASE_URL}

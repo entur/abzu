@@ -5,7 +5,7 @@ const INTERVAL_IN_MS = 60000;
 
 export const useGktToken = () => {
   const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "{}")
+    JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "null")
   );
 
   useEffect(() => {
@@ -13,12 +13,12 @@ export const useGktToken = () => {
       const response = await Axios.get(window.config.endpointBase + "token");
       const newToken = JSON.stringify(response.data);
       localStorage.setItem("ABZU::GKT_TOKEN", newToken);
-      setToken(newToken);
+      setToken(response.data);
     };
 
-    const fetchTokenInterval = setInterval(() => {
+    const fetchTokenService = () => {
       if (
-        token == null ||
+        token === null ||
         token.expires < new Date(Date.now() + 60 * 1000 * 30).getTime()
       ) {
         try {
@@ -30,12 +30,16 @@ export const useGktToken = () => {
           );
         }
       }
-    }, INTERVAL_IN_MS);
+    };
+
+    fetchTokenService();
+
+    const fetchTokenInterval = setInterval(fetchTokenService, INTERVAL_IN_MS);
 
     return () => {
       clearInterval(fetchTokenInterval);
     };
   }, []);
 
-  return token.gkt;
+  return token && token.gkt;
 };
