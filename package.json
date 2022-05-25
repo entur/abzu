@@ -81,7 +81,7 @@
     "@types/material-ui": "0.21.12",
     "@types/node": "16.11.36",
     "@types/react": "18.0.9",
-    "@types/react-dom": "18.0.4",
+    "@types/react-dom": "18.0.5",
     "@types/react-leaflet": "2.8.2",
     "@types/redux-logger": "3.0.9",
     "husky": "8.0.1",
