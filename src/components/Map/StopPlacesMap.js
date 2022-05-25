@@ -89,7 +89,7 @@ class StopPlacesMap extends React.Component {
   }
 
   render() {
-    const { position, markers, zoom } = this.props;
+    const { position, markers, zoom, showFareZonesControl } = this.props;
 
     return (
       <LeafletMap
@@ -104,6 +104,7 @@ class StopPlacesMap extends React.Component {
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         enablePolylines={false}
+        showFareZonesControl={showFareZonesControl}
       />
     );
   }
@@ -125,6 +126,7 @@ const mapStateToProps = (state) => {
       ["activeSearchResult", "id"],
       undefined
     ),
+    showFareZonesControl: state.mapUtils.showFareZones,
   };
 };
 
