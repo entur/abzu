@@ -15,12 +15,14 @@
     "preprod": "TIAMAT_BASE_URL=https://api.entur.io/stop-places/v1/graphql npm run fetch-schema",
     "fetch-schema": "./fetchSchema.js",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
     "@apollo/client": "3.3.16",
     "@entur/auth-provider": "1.0.0",
+    "@entur/react-leaflet-google": "1.0.3",
     "@material-ui/core": "4.12.4",
     "@material-ui/lab": "4.0.0-alpha.53",
     "@reduxjs/toolkit": "1.8.1",
@@ -49,8 +51,8 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-intl": "6.0.1",
-    "react-leaflet": "1.9.1",
-    "react-leaflet-google": "3.3.1",
+    "react-leaflet": "4.0.0",
+    "react-leaflet-custom-control": "1.2.6",
     "react-redux": "8.0.1",
     "react-router-dom": "6.3.0",
     "redux": "4.2.0",
@@ -59,18 +61,11 @@
     "request": "2.88.2",
     "uuid": "8.3.2"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -83,6 +78,7 @@
   },
   "devDependencies": {
     "@types/jest": "27.5.1",
+    "@types/leaflet": "1.7.1",
     "@types/material-ui": "0.21.12",
     "@types/node": "16.11.36",
     "@types/react": "18.0.9",
@@ -93,6 +89,7 @@
     "prettier": "2.6.2",
     "react-scripts": "5.0.1",
     "redux-devtools": "3.7.0",
+    "source-map-explorer": "2.5.2",
     "typescript": "4.6.4"
   }
 }

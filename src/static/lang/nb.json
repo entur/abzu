@@ -374,6 +374,7 @@
   "settings": "Innstillinger",
   "show_compass_bearing": "Vis kompassretninger",
   "show_expired_stops": "Vis utløpte stoppesteder",
+  "show_fare_zones_label": "Vis soner",
   "show_future_expired_and_terminated": "Vis utløpte, fremtidige og nedlagte",
   "show_less": "Vis færre",
   "show_more": "Vis flere",

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import TextField from "material-ui/TextField";
 import { injectIntl } from "react-intl";
 import MdDelete from "material-ui/svg-icons/action/delete-forever";
@@ -8,8 +8,6 @@ import ItemHeader from "./ItemHeader";
 import { BoardingPosition } from "./BoardingPositionsTab";
 import ToolTippable from "./ToolTippable";
 import { IconButton } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { StopPlaceActions } from "../../actions";
 
 type Props = {
   boardingPosition: BoardingPosition;

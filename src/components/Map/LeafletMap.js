@@ -12,107 +12,90 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import MarkerList from "./MarkerList";
 import {
-  Map as Lmap,
+  MapContainer,
   TileLayer,
   ZoomControl,
   LayersControl,
   ScaleControl,
 } from "react-leaflet";
-import { GoogleLayer } from "react-leaflet-google";
+import { GoogleLayer } from "@entur/react-leaflet-google";
 import MultiPolylineList from "./PathLink";
-import WMTSLayer from "./WMTSLayer";
-import MapboxLayer from "./MapboxLayer";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
+import { MapEvents } from "./MapEvents";
+import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
+import { FareZonesControl } from "./FareZonesControl";
 
-export default class LeafLetMap extends React.Component {
-  getCheckedBaseLayerByValue(value) {
-    return this.props.activeBaselayer === value;
-  }
+const lmapStyle = {
+  border: "2px solid #eee",
+};
 
-  handleBaselayerChanged(element) {
-    this.props.handleBaselayerChanged(element.name);
-  }
-
-  getCenterPosition(position) {
+export const LeafLetMap = ({
+  position,
+  zoom,
+  handleDragEnd,
+  handleChangeCoordinates,
+  handleOnClick,
+  minZoom,
+  handleSetCompassBearing,
+  markers,
+  dragableMarkers,
+  handleMapMoveEnd,
+  onDoubleClick,
+  handleZoomEnd,
+  activeBaselayer,
+  handleBaselayerChanged,
+  onMapReady = () => {},
+  showFareZonesControl = false,
+}) => {
+  const centerPosition = useMemo(() => {
     if (!position) {
       return [64.349421, 16.809082];
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
       : [Number(position.lat), Number(position.lng)];
-  }
+  }, [position]);
 
-  getLocalGKTToken() {
-    let localToken = JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN"));
+  const [map, setMap] = useState();
 
-    if (localToken && localToken.gkt) {
-      return localToken.gkt;
+  useEffect(() => {
+    if (map) {
+      onMapReady(map);
     }
-    return null;
-  }
+  }, [map]);
 
-  getMapboxAccessToken() {
-    return `${window.config.mapboxAccessToken}`;
-  }
+  const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
+  const googleApiKey = window.config.googleApiKey;
+  const { BaseLayer } = LayersControl;
 
-  getMapboxTariffZoneStyle() {
-    return `${window.config.mapboxTariffZonesStyle}`;
-  }
-
-  render() {
-    const googleApiKey = window.config.googleApiKey;
-
-    const {
-      position,
-      zoom,
-      handleDragEnd,
-      handleChangeCoordinates,
-      handleOnClick,
-      minZoom,
-      handleSetCompassBearing,
-      markers,
-      dragableMarkers,
-      handleMapMoveEnd,
-      onDoubleClick,
-      handleZoomEnd,
-    } = this.props;
-
-    const { BaseLayer } = LayersControl;
-
-    const lmapStyle = {
-      border: "2px solid #eee",
-    };
-
-    const centerPosition = this.getCenterPosition(position);
-    const mapboxAccessToken = this.getMapboxAccessToken();
-    const mapboxTariffZonesStyle = this.getMapboxTariffZoneStyle();
-
-    return (
-      <Lmap
-        ref="map"
-        style={lmapStyle}
-        center={centerPosition}
-        className="leaflet-map"
-        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e)}
-        zoom={zoom}
-        zoomControl={false}
-        minZoom={minZoom || null}
-        onDblclick={(e) => onDoubleClick && onDoubleClick(e, this.refs.map)}
-        onMoveEnd={(event) => {
-          handleMapMoveEnd(event, this.refs.map);
+  return (
+    <MapContainer
+      ref={(instance) => instance && setMap(instance)}
+      style={lmapStyle}
+      center={centerPosition}
+      className="leaflet-map"
+      zoom={zoom}
+      zoomControl={false}
+      minZoom={minZoom || null}
+    >
+      <MapEvents
+        handleBaselayerChanged={handleBaselayerChanged}
+        onDblclick={(e) => onDoubleClick && onDoubleClick(e, map)}
+        onClick={(event) => {
+          handleOnClick && handleOnClick(event, map);
         }}
-        OnBaselayerChange={this.handleBaselayerChanged.bind(this)}
-        onclick={(event) => {
-          handleOnClick && handleOnClick(event, this.refs.map);
+        onZoomEnd={(e) => handleZoomEnd && handleZoomEnd(e, map)}
+        onMoveEnd={(event) => {
+          handleMapMoveEnd(event, map);
         }}
       >
         <LayersControl position="topright">
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("OpenStreetMap")}
+            checked={getCheckedBaseLayerByValue("OpenStreetMap")}
             name="OpenStreetMap"
           >
             <TileLayer
@@ -122,7 +105,7 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("OpenStreetMap Transport")}
+            checked={getCheckedBaseLayerByValue("OpenStreetMap Transport")}
             name="OpenStreetMap Transport"
           >
             <TileLayer
@@ -132,7 +115,7 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Kartverket topografisk")}
+            checked={getCheckedBaseLayerByValue("Kartverket topografisk")}
             name="Kartverket topografisk"
           >
             <TileLayer
@@ -142,17 +125,13 @@ export default class LeafLetMap extends React.Component {
             />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Kartverket flyfoto")}
+            checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
             name="Kartverket flyfoto"
           >
-            <WMTSLayer
-              gkt={this.getLocalGKTToken()}
-              baseURL="https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2"
-              zoom={zoom}
-            />
+            <KartverketFlyFotoLayer />
           </BaseLayer>
           <BaseLayer
-            checked={this.getCheckedBaseLayerByValue("Google Maps Hydrid")}
+            checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}
             name="Google Maps Hydrid"
           >
             <GoogleLayer
@@ -161,18 +140,8 @@ export default class LeafLetMap extends React.Component {
               maptype="HYBRID"
             />
           </BaseLayer>
-          {mapboxAccessToken && mapboxTariffZonesStyle ? (
-            <BaseLayer
-              checked={this.getCheckedBaseLayerByValue("Takstsoner")}
-              name="Takstsoner"
-            >
-              <MapboxLayer
-                accessToken={mapboxAccessToken}
-                style={mapboxTariffZonesStyle}
-              />
-            </BaseLayer>
-          ) : null}
         </LayersControl>
+        <FareZonesControl show={showFareZonesControl} position="topright" />
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList
@@ -185,7 +154,9 @@ export default class LeafLetMap extends React.Component {
         <MultimodalStopEdges stops={markers} />
         <MultiPolylineList />
         <StopPlaceGroupList />
-      </Lmap>
-    );
-  }
-}
+      </MapEvents>
+    </MapContainer>
+  );
+};
+
+export default LeafLetMap;

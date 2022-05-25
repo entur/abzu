@@ -28,15 +28,12 @@ import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
-import { getStore } from "./store/store";
-import { useGktToken } from "./hooks/useGktToken";
 import AppRoutes from "./routes";
 import "intl";
 import { getTiamatClient } from "./graphql/clients";
+import { getStore } from "./store/store";
 
 const AuthenticatedApp = ({ path }) => {
-  useGktToken(path);
-
   Sentry.init({
     dsn: window.config.sentryDSN,
     integrations: [new BrowserTracing()],

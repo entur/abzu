@@ -1,0 +1,43 @@
+import React, { useEffect, useMemo } from "react";
+import { TileLayer } from "react-leaflet";
+import L from "leaflet";
+
+export interface WMTSLayerProps {
+  baseUrl: string;
+  params: Record<string, string>;
+  attribution: string;
+}
+
+const DEFAULT_PARAMS = {
+  service: "WMTS",
+  request: "GetTile",
+  version: "1.1.1",
+  style: "default",
+  format: "image/png",
+  transparent: "false",
+  tilematrixSet: "default028mm",
+  layers: "toporaster2",
+};
+
+export const WMTSLayer: React.FC<WMTSLayerProps> = ({
+  baseUrl,
+  params,
+  attribution,
+}) => {
+  const wmtsParams: string = useMemo(() => {
+    const newParams: Record<string, string> = Object.assign({}, DEFAULT_PARAMS);
+
+    Object.keys(params).forEach((key) => {
+      newParams[key] = params[key];
+    });
+
+    return L.Util.getParamString(newParams);
+  }, [params]);
+
+  const url = useMemo(
+    () => `${baseUrl}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
+    [wmtsParams]
+  );
+
+  return <TileLayer attribution={attribution} url={url} maxZoom={19} />;
+};

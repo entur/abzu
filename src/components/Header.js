@@ -131,6 +131,10 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.toggleShowPublicCode(value));
   }
 
+  handleToggleShowFareZones(value) {
+    this.props.dispatch(UserActions.toggleShowFareZonesInMap(value));
+  }
+
   render() {
     const {
       intl,
@@ -141,6 +145,7 @@ class Header extends React.Component {
       showExpiredStops,
       showMultimodalEdges,
       showPublicCode,
+      showFareZones,
     } = this.props;
 
     const { formatMessage, locale } = intl;
@@ -170,6 +175,7 @@ class Header extends React.Component {
     const showPublicCodeLabel = formatMessage({ id: "show_public_code" });
     const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
     const quayCodeShowingLabel = formatMessage({ id: "quay_marker_label" });
+    const showFareZonesLabel = formatMessage({ id: "show_fare_zones_label" });
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();
@@ -338,6 +344,17 @@ class Header extends React.Component {
                       />,
                     ]}
                   />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowFareZones(!showFareZones)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showFareZones}
+                    primaryText={showFareZonesLabel}
+                  />,
                 ]}
               />
               <MenuItem
@@ -430,6 +447,7 @@ const mapStateToProps = (state) => ({
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
+  showFareZones: state.mapUtils.showFareZones,
 });
 
 export default connect(mapStateToProps)(Header);

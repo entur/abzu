@@ -55,6 +55,8 @@ import {
   getParkingForMultipleStopPlaces as getParkingForMultipleStopPlacesQuery,
   topopGraphicalPlacesReportQuery,
   neighbourStopPlaceQuays,
+  findFareZones,
+  findFareZonesProviders,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
@@ -545,6 +547,23 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
     variables: {
       query,
     },
+    fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
+
+export const getFareZones = (query) => async (dispatch, getState) =>
+  handleQuery(getTiamatClient(), {
+    query: findFareZones,
+    variables: {
+      query,
+    },
+    fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
+
+export const getFareZonesProviders = () => async (dispatch, getState) =>
+  handleQuery(getTiamatClient(), {
+    query: findFareZonesProviders,
     fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
   })(dispatch);
