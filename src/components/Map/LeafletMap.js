@@ -60,12 +60,6 @@ export const LeafLetMap = ({
 
   const [map, setMap] = useState();
 
-  const mapInstanceHandler = useCallback((mapInstance) => {
-    if (mapInstance) {
-      setMap(mapInstance);
-    }
-  }, []);
-
   useEffect(() => {
     if (map) {
       onMapReady(map);
@@ -78,7 +72,7 @@ export const LeafLetMap = ({
 
   return (
     <MapContainer
-      ref={mapInstanceHandler}
+      ref={(instance) => (instance && setMap(instance))}
       style={lmapStyle}
       center={centerPosition}
       className="leaflet-map"
