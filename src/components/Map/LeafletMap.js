@@ -49,7 +49,7 @@ export const LeafLetMap = ({
   activeBaselayer,
   handleBaselayerChanged,
   onMapReady = () => {},
-  showFareZonesControl = false
+  showFareZonesControl = false,
 }) => {
   const centerPosition = useMemo(() => {
     if (!position) {
@@ -74,7 +74,7 @@ export const LeafLetMap = ({
 
   return (
     <MapContainer
-      ref={(instance) => (instance && setMap(instance))}
+      ref={(instance) => instance && setMap(instance)}
       style={lmapStyle}
       center={centerPosition}
       className="leaflet-map"

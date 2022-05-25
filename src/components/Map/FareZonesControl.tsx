@@ -15,7 +15,10 @@ export interface FareZonesLayerProps {
   position: ControlPosition;
 }
 
-export const FareZonesControl: React.FC<FareZonesLayerProps> = ({ show, position }) => {
+export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
+  show,
+  position,
+}) => {
   const [fareZones, setFareZones] = useState<any[]>([]);
   const [codespaces, setCodespaces] = useState<string[]>([]);
   const [selectedCodespace, setSelectedCodespace] = useState<string | null>(
