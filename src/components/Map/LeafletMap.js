@@ -105,16 +105,6 @@ export const LeafLetMap = ({
             />
           </BaseLayer>
           <BaseLayer
-            checked={getCheckedBaseLayerByValue("OpenStreetMap Transport")}
-            name="OpenStreetMap Transport"
-          >
-            <TileLayer
-              attribution="&copy; OpenStreetMap contributors"
-              url="//{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
             checked={getCheckedBaseLayerByValue("Kartverket topografisk")}
             name="Kartverket topografisk"
           >
