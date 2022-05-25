@@ -22,7 +22,7 @@
   "dependencies": {
     "@apollo/client": "3.3.16",
     "@entur/auth-provider": "1.0.0",
-    "@entur/react-leaflet-google": "1.0.3",
+    "@entur/react-leaflet-google": "1.0.0",
     "@material-ui/core": "4.12.4",
     "@material-ui/lab": "4.0.0-alpha.53",
     "@reduxjs/toolkit": "1.8.1",
