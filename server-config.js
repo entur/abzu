@@ -101,8 +101,6 @@ const configureApp = async (app) => {
         netexPrefix: convict.get('netexPrefix'),
         // Pod ID used in req header for Tiamat
         hostname: process.env.HOSTNAME,
-        mapboxTariffZonesStyle: convict.get("mapboxTariffZonesStyle"),
-        mapboxAccessToken: convict.get("mapboxAccessToken"),
         sentryDSN: convict.get('sentryDSN'),
         googleApiKey: convict.get('googleApiKey'),
         auth0Domain: convict.get('auth0Domain'),

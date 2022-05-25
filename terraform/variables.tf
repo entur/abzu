@@ -23,14 +23,6 @@ variable "labels" {
      }
 }
 
-variable ror-mapbox-tariff-zones-style {
-  description = "Mapbox tariffzone styles"
-}
-
-variable ror-mapbox-access-token {
-  description = "Mapbox access token"
-}
-
 variable ror-sentry-dsn {
   description = "Sentry DSN"
 }

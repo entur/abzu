@@ -60,18 +60,6 @@ module.exports = new Promise(function (resolve, reject) {
       default: "NSR",
       env: "NETEX_PREFIX",
     },
-    mapboxAccessToken: {
-      doc: "Mapbox Access Token",
-      format: String,
-      default: undefined,
-      env: "MAPBOX_ACCESS_TOKEN",
-    },
-    mapboxTariffZonesStyle: {
-      doc: "Mapbox Style for Tariff Zones",
-      format: String,
-      default: undefined,
-      env: "MAPBOX_TARIFF_ZONES_STYLE",
-    },
     sentryDSN: {
       doc: "SENTRY_DSN - found in https://sentry.io/settings/{organisation_slug}/{project_slug}/keys/",
       format: String,

@@ -32,16 +32,6 @@ spec:
               value: /etc/application-config/config.json
             - name: NODE_ENV
               value: production
-            - name: MAPBOX_TARIFF_ZONES_STYLE
-              valueFrom:
-                secretKeyRef:
-                  key: mapbox-tariff-zones-style
-                  name: ror-abzu-secrets
-            - name: MAPBOX_ACCESS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: mapbox-access-token
-                  name: ror-abzu-secrets
             - name: SENTRY_DSN
               valueFrom:
                 secretKeyRef:
