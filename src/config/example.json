@@ -1,4 +1,0 @@
-{
-  "endpointBase": "/admin/nsr/",
-  "tiamatBaseUrl": "https://api-test.entur.org/stop_places/1.0/graphql"
-}

@@ -1,0 +1,13 @@
+{
+  "tiamatBaseUrl": "https://api.staging.entur.io/stop-places/v1/graphql",
+  "OTPUrl": "https://api.staging.entur.io/journey-planner/v2/graphql",
+  "tiamatEnv": "test",
+  "netexPrefix": "NSR",
+  "hostname": "stoppested.staging.entur.org",
+  "sentryDSN": "https://2c74afd3e84f4dbf94232421f6b3f5dc@o209253.ingest.sentry.io/1354790",
+  "googleApiKey": "AIzaSyBxrXsp9PVsZVwMX05GfinElYswEH-_mG4",
+  "auth0Domain": "ror-entur-staging.eu.auth0.com",
+  "auth0ClientId": "WrqQUHAVuMS3MbKdGcw91TBFTqLLpnUh",
+  "auth0Audience": "https://ror.api.staging.entur.io",
+  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments"
+}

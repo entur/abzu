@@ -17,7 +17,7 @@ import Routes from "../../routes/";
 import PropTypes from "prop-types";
 
 const GroupOfStopPlacesLink = ({ name, id, style }) => {
-  const url = `${window.location.origin}${window.config.endpointBase}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+  const url = `${window.location.origin}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
     <a

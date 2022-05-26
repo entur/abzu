@@ -16,7 +16,7 @@ import React from "react";
 import Routes from "../../routes/";
 
 export default ({ id, style }) => {
-  const url = `${window.location.origin}${window.config.endpointBase}${Routes.STOP_PLACE}/${id}`;
+  const url = `${window.location.origin}/${Routes.STOP_PLACE}/${id}`;
   return (
     <a
       style={{ ...style }}

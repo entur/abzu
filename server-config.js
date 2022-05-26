@@ -14,26 +14,18 @@
  *
  */
 
-const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
-const convictConfig = require('./src/config/convict.js');
-const getRouteEntries = require('./src/routes/entries').getRouteEntries;
 const fallback = require('express-history-api-fallback');
 
 const contentRoot = path.resolve(process.env.CONTENT_BASE || './build');
 
 const configureApp = async (app) => {
-  const convict = await convictConfig;
-
-  const ENDPOINTBASE = convict.get('endpointBase');
-  console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
-
   app.use(bodyParser.json());
 
-  app.get(ENDPOINTBASE + 'token', (req, res) => {
+  app.get('/token', (req, res) => {
     const remoteAddress =
       req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
@@ -49,37 +41,11 @@ const configureApp = async (app) => {
       });
   });
 
-  const configEndpoints = getRouteEntries(ENDPOINTBASE, '/config.json');
-
-  app.get(
-    [ENDPOINTBASE + 'config.json', [...configEndpoints]],
-    function(req, res) {
-
-      const cfg = {
-        tiamatBaseUrl: convict.get('tiamatBaseUrl'),
-        endpointBase: convict.get('endpointBase'),
-        OTPUrl: convict.get('OTPUrl'),
-        tiamatEnv: convict.get('tiamatEnv'),
-        netexPrefix: convict.get('netexPrefix'),
-        // Pod ID used in req header for Tiamat
-        hostname: process.env.HOSTNAME,
-        sentryDSN: convict.get('sentryDSN'),
-        googleApiKey: convict.get('googleApiKey'),
-        auth0Domain: convict.get('auth0Domain'),
-        auth0ClientId: convict.get('auth0ClientId'),
-        auth0Audience: convict.get('auth0Audience'),
-        auth0ClaimsNamespace: convict.get('auth0ClaimsNamespace'),
-      };
-
-      res.send(cfg);
-    }
-  );
-
-  app.get(ENDPOINTBASE + '_health', function(req, res) {
+  app.get('/_health', function(req, res) {
     res.sendStatus(200);
   });
 
-  app.post(ENDPOINTBASE + 'timeOffset', function(req, res) {
+  app.post('/timeOffset', function(req, res) {
     if (req.body.clientTime) {
       res.send({
         offset: new Date().getTime() - req.body.clientTime,
@@ -89,15 +55,15 @@ const configureApp = async (app) => {
     }
   });
 
-  app.use(ENDPOINTBASE, express.static(contentRoot))
+  app.use('/', express.static(contentRoot))
 
-  app.use(ENDPOINTBASE, fallback('index.html', { root: contentRoot }))
+  app.use('/', fallback('index.html', { root: contentRoot }))
   .use((err, req, res, next) => {
     console.log(`Request to ${req.url} failed: ${err.stack}`);
     next(err);
   });
 
-  app.use(ENDPOINTBASE, (err, req, res, next) => {
+  app.use('/', (err, req, res, next) => {
     res.status(500);
     res.send({
       code: 'INTERNAL_ERROR',

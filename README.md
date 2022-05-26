@@ -15,13 +15,7 @@ npm run build && npm run prod
 
 ### Configuration
 
-We use node-convict for config: `config/convict.js`
-
-* `TIAMAT_BASE_URL` : Where to find tiamat
-* `ENDPOINTBASE` : Where th application resides, in development defaulting
-  to `/` but in the test environment `/admin/nsr/`
-
-You can serve a config file and provide a `CONFIG_URL` env to let node-convict do this for you.
+See `src/config/enviroments` for environment specific configuration.
 
 ## Development
 

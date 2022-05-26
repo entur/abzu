@@ -1,0 +1,13 @@
+{
+  "tiamatBaseUrl": "https://api.entur.io/stop-places/v1/graphql",
+  "OTPUrl": "https://api.entur.io/journey-planner/v2/graphql",
+  "tiamatEnv": "production",
+  "netexPrefix": "NSR",
+  "hostname": "stoppested.entur.org",
+  "sentryDSN": "https://2c74afd3e84f4dbf94232421f6b3f5dc@o209253.ingest.sentry.io/1354790",
+  "googleApiKey": "AIzaSyBMSXn6sJ1IvSsRHijvPlZFL-dL9CJczBQ",
+  "auth0Domain": "auth2.entur.org",
+  "auth0ClientId": "JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec",
+  "auth0Audience": "https://ror.api.entur.io",
+  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments"
+}

@@ -32,7 +32,7 @@ var UserActions = {};
 let Settings = new SettingsManager();
 
 const goToRoute = (dispatch, path, id) => {
-  const basePath = window.config.endpointBase;
+  const basePath = "/";
   if (path.length && path[0] === "/") {
     path = path.slice(1);
   }

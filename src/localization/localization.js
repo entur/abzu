@@ -20,7 +20,7 @@ const localization = async (locale) => {
     `../static/lang/${preferredLocale}.json`
   );
   localStorage.setItem(localStorageKey, preferredLocale);
-  return { preferredLocale, messages };
+  return { locale: preferredLocale, messages };
 };
 
 export default localization;

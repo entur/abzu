@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 const { request, gql } = require('graphql-request');
-const convictPromise = require('./src/config/convict.js');
+const config = require('./src/config/environments/prod.json');
 
 const introspectionQuery = gql`
 {
@@ -18,10 +18,7 @@ const introspectionQuery = gql`
 }
 `;
 
-convictPromise.then(convict => {
-  const url = convict.get('tiamatBaseUrl');
-  return request(url, introspectionQuery);
-}).then(response => {
+request(config.tiamatBaseUrl, introspectionQuery).then(response => {
   fs.writeFileSync(
     './src/graphql/Tiamat/schema.json',
     JSON.stringify(response),

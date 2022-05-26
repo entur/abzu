@@ -32,8 +32,10 @@ import AppRoutes from "./routes";
 import "intl";
 import { getTiamatClient } from "./graphql/clients";
 import { getStore } from "./store/store";
+import { getEnvironment } from "./config/getEnvironment";
+import configreader from "./config/readConfig";
 
-const AuthenticatedApp = ({ path }) => {
+const AuthenticatedApp = () => {
   Sentry.init({
     dsn: window.config.sentryDSN,
     integrations: [new BrowserTracing()],
@@ -46,6 +48,8 @@ const AuthenticatedApp = ({ path }) => {
   const client = getTiamatClient();
 
   const { store, history } = getStore();
+
+  const path = "/";
 
   return (
     <Sentry.ErrorBoundary showDialog>
@@ -94,12 +98,12 @@ function renderIndex(config) {
       auth0ClaimsNamespace={config.auth0ClaimsNamespace}
       loginAutomatically={false}
     >
-      <AuthenticatedApp path={config.endpointBase} />
+      <AuthenticatedApp />
     </AuthProvider>
   );
 }
 
-cfgreader.readConfig(function (config) {
+configreader.readConfig((config) => {
   window.config = config;
   renderIndex(config);
 });
