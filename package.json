@@ -37,7 +37,7 @@
     "express": "4.18.1",
     "express-history-api-fallback": "2.2.1",
     "glob": "8.0.3",
-    "graphql": "15.8.0",
+    "graphql": "16.5.0",
     "graphql-tag": "2.12.6",
     "intl": "1.2.5",
     "intl-locales-supported": "1.8.11",
