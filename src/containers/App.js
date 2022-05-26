@@ -14,7 +14,12 @@ limitations under the Licence. */
 
 import React, { useEffect } from "react";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  adaptV4Theme,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
 import { injectIntl } from "react-intl";
 import { useDispatch } from "react-redux";
@@ -26,7 +31,7 @@ import BrowserSupport from "../components/BrowserSupport";
 import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
-const muiTheme = createTheme(getTheme());
+const muiTheme = createTheme(adaptV4Theme(getTheme()));
 
 const App = ({ intl, children }) => {
   const auth = useAuth();
@@ -42,16 +47,18 @@ const App = ({ intl, children }) => {
 
   return (
     <>
-      <MuiThemeProvider theme={muiTheme}>
-        <V0MuiThemeProvider muiTheme={muiThemeV0}>
-          <div>
-            <Header intl={intl} />
-            {children}
-            <SnackbarWrapper formatMessage={intl.formatMessage} />
-            <BrowserSupport />
-          </div>
-        </V0MuiThemeProvider>
-      </MuiThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={muiTheme}>
+          <V0MuiThemeProvider muiTheme={muiThemeV0}>
+            <div>
+              <Header intl={intl} />
+              {children}
+              <SnackbarWrapper formatMessage={intl.formatMessage} />
+              <BrowserSupport />
+            </div>
+          </V0MuiThemeProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </>
   );
 };

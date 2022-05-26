@@ -6,12 +6,7 @@ import {
   getFareZonesForFilter,
 } from "../../actions/TiamatActions";
 import Control from "react-leaflet-custom-control";
-import {
-  InputLabel,
-  MenuItem,
-  Select,
-  LinearProgress,
-} from "@material-ui/core";
+import { InputLabel, MenuItem, Select, LinearProgress } from "@mui/material";
 import { AnyAction } from "redux";
 import { ControlPosition } from "leaflet";
 import { FareZone } from "../../models/FareZone";
@@ -76,6 +71,7 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             {fareZonesForFilter.length === 0 && <LinearProgress />}
             {fareZonesForFilter.length > 0 && (
               <Select
+                variant="standard"
                 multiple
                 labelId="select-fare-zones-label"
                 id="select-fare-zones"

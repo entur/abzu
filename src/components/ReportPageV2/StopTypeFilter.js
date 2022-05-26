@@ -1,13 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { injectIntl } from "react-intl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Select from "@material-ui/core/Select";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Select from "@mui/material/Select";
 
 import stopTypes from "../../models/stopTypes";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
@@ -46,7 +46,7 @@ const StopTypeFilter = ({ intl: { formatMessage }, value, onChange }) => {
   const modalities = Object.keys(stopTypes);
 
   return (
-    <FormControl className={classes.formControl}>
+    <FormControl className={classes.formControl} variant="standard">
       <InputLabel id="modality-filter-label">Modality filter</InputLabel>
       <Select
         id="modality-filter"
@@ -60,6 +60,7 @@ const StopTypeFilter = ({ intl: { formatMessage }, value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         input={<Input />}
         MenuProps={MenuProps}
+        variant="standard"
       >
         {modalities.map((mode) => (
           <MenuItem key={mode} value={mode}>
