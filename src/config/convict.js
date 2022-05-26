@@ -12,9 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-var convict = require("convict");
-var request = require("request");
-var fs = require("fs");
+const convict = require("convict");
+const convict_format_with_validator = require("convict-format-with-validator");
+const request = require("request");
+const fs = require("fs");
+
+convict.addFormats(convict_format_with_validator);
 
 module.exports = new Promise(function (resolve, reject) {
   var conf = convict({
@@ -73,8 +76,7 @@ module.exports = new Promise(function (resolve, reject) {
       env: "MAPBOX_TARIFF_ZONES_STYLE",
     },
     sentryDSN: {
-      doc:
-        "SENTRY_DSN - found in https://sentry.io/settings/{organisation_slug}/{project_slug}/keys/",
+      doc: "SENTRY_DSN - found in https://sentry.io/settings/{organisation_slug}/{project_slug}/keys/",
       format: String,
       default: undefined,
       env: "SENTRY_DSN",
