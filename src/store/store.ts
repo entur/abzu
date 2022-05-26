@@ -19,8 +19,6 @@ import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
 import * as Sentry from "@sentry/react";
 
-// ...
-
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory(),

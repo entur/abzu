@@ -27,19 +27,36 @@ export {
   StopPlacesGroupActions,
 };
 
-export const createThunk = (type, payload) => ({
+export const createThunk = (type: string, payload: any) => ({
   type,
   payload,
 });
 
-export const createApolloThunk = (type, result, doc, variables) => ({
+export type ApolloQueryResult = {
+  type: string;
+  result: any;
+  operationName?: string;
+  variables: any;
+};
+
+export const createApolloThunk = (
+  type: string,
+  result: any,
+  doc: any,
+  variables: Record<string, any>
+): ApolloQueryResult => ({
   type,
   result,
   operationName: doc ? getOperationAST(doc)?.name?.value : undefined,
   variables,
 });
 
-export const createApolloErrorThunk = (type, error, doc, variables) => ({
+export const createApolloErrorThunk = (
+  type: string,
+  error: any,
+  doc: any,
+  variables: Record<string, any>
+) => ({
   type,
   error,
   operationName: doc ? getOperationAST(doc)?.name?.value : undefined,

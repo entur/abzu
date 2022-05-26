@@ -12,10 +12,45 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { Action } from "redux";
+import { ApolloQueryResult } from "../actions";
 import * as types from "../actions/Types";
+import { FareZone } from "../models/FareZone";
+import Quay from "../models/Quay";
 import { getStateByOperation } from "./mapReducerUtil";
 
-export const initialState = {
+export type MapState = {
+  focusedElement: {
+    type: string;
+    index: number;
+  };
+  focusedBoardingPositionElement: {
+    index: number;
+    quayIndex: number;
+  };
+  mergingQuay: {
+    isMerging: boolean;
+    fromQuay: Quay | null;
+    toQuay: Quay | null;
+  };
+  mergingQuayDialogOpen: boolean;
+  deleteQuayDialogOpen: boolean;
+  deleteStopDialogOpen: boolean;
+  moveQuayDialogOpen: boolean;
+  moveQuayToNewStopDialogOpen: boolean;
+  movingQuayToNewStop: boolean | null;
+  deletingQuay: boolean | null;
+  movingQuay: boolean | null;
+  deleteQuayImportedId: string[];
+  fetchOTPInfoMergeLoading: boolean;
+  fetchOTPInfoDeleteLoading: boolean;
+  deleteQuayWarning: string | null;
+  showFareZones: boolean;
+  fareZonesForFilter: FareZone[];
+  fareZones: FareZone[];
+};
+
+export const initialState: MapState = {
   focusedElement: {
     type: "quay",
     index: -1,
@@ -46,7 +81,12 @@ export const initialState = {
   fareZones: [],
 };
 
-const mapReducer = (state = initialState, action) => {
+export type MapAction = Action &
+  ApolloQueryResult & {
+    payload: any;
+  };
+
+const mapReducer = (state = initialState, action: MapAction) => {
   switch (action.type) {
     case types.APOLLO_QUERY_RESULT:
       return getStateByOperation(state, action);
@@ -59,21 +99,21 @@ const mapReducer = (state = initialState, action) => {
       });
 
     case types.SET_ACTIVE_MAP:
-      return Object.assign({}, state, { activeMap: action.payLoad });
+      return Object.assign({}, state, { activeMap: action.payload });
 
     case types.SET_FOCUS_ON_ELEMENT:
       return Object.assign({}, state, {
         focusedElement: {
-          index: action.payLoad.index,
-          type: action.payLoad.type,
+          index: action.payload.index,
+          type: action.payload.type,
         },
       });
 
     case types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT:
       return Object.assign({}, state, {
         focusedBoardingPositionElement: {
-          index: action.payLoad.index,
-          quayIndex: action.payLoad.quayIndex,
+          index: action.payload.index,
+          quayIndex: action.payload.quayIndex,
         },
       });
 
@@ -97,7 +137,7 @@ const mapReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mergingQuay: {
           isMerging: true,
-          fromQuay: action.payLoad,
+          fromQuay: action.payload,
           toQuay: null,
         },
       });
@@ -109,14 +149,14 @@ const mapReducer = (state = initialState, action) => {
         mergingQuay: {
           ...state.mergingQuay,
           isMerging: false,
-          toQuay: action.payLoad,
+          toQuay: action.payload,
         },
       });
 
     case types.GET_QUAY_MERGE_OTP_INFO:
       return Object.assign({}, state, {
         fetchOTPInfoMergeLoading: false,
-        mergeQuayWarning: action.payLoad,
+        mergeQuayWarning: action.payload,
       });
 
     case types.ERROR_QUAY_MERGE_OTP_INFO:
@@ -149,15 +189,15 @@ const mapReducer = (state = initialState, action) => {
     case types.REQUESTED_DELETE_QUAY:
       return Object.assign({}, state, {
         deleteQuayDialogOpen: true,
-        deletingQuay: action.payLoad.source,
-        deleteQuayImportedId: action.payLoad.importedId,
+        deletingQuay: action.payload.source,
+        deleteQuayImportedId: action.payload.importedId,
         fetchOTPInfoDeleteLoading: true,
       });
 
     case types.GET_QUAY_DELETE_OTP_INFO:
       return Object.assign({}, state, {
         fetchOTPInfoDeleteLoading: false,
-        deleteQuayWarning: action.payLoad,
+        deleteQuayWarning: action.payload,
       });
 
     case types.ERROR_QUAY_DELETE_OTP_INFO:
@@ -169,7 +209,7 @@ const mapReducer = (state = initialState, action) => {
     case types.REQUESTED_MOVE_QUAY_NEW_STOP:
       return Object.assign({}, state, {
         moveQuayToNewStopDialogOpen: true,
-        movingQuayToNewStop: action.payLoad,
+        movingQuayToNewStop: action.payload,
       });
 
     case types.CANCELLED_MOVE_QUAY_NEW_STOP:
@@ -204,13 +244,13 @@ const mapReducer = (state = initialState, action) => {
     case types.REQUESTED_MOVE_QUAY:
       return Object.assign({}, state, {
         moveQuayDialogOpen: true,
-        movingQuay: action.payLoad,
+        movingQuay: action.payload,
       });
 
     case types.SHOW_REMOVE_STOP_PLACE_FROM_PARENT:
       return Object.assign({}, state, {
         removeStopPlaceFromParentOpen: true,
-        removingStopPlaceFromParentId: action.payLoad,
+        removingStopPlaceFromParentId: action.payload,
       });
 
     case types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT:
@@ -221,7 +261,7 @@ const mapReducer = (state = initialState, action) => {
 
     case types.TOGGLE_SHOW_FARE_ZONES_IN_MAP:
       return Object.assign({}, state, {
-        showFareZones: action.payLoad,
+        showFareZones: action.payload,
       });
 
     default:
