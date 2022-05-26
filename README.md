@@ -1,4 +1,6 @@
-# Abzu [![CircleCI](https://circleci.com/gh/entur/abzu/tree/master.svg?style=svg)](https://circleci.com/gh/entur/abzu/tree/master)
+# Abzu
+
+[![CircleCI](https://circleci.com/gh/entur/abzu/tree/master.svg?style=svg)](https://circleci.com/gh/entur/abzu/tree/master)
 
 Stop place register frontend.
 Uses stop place register backend tiamat's graphQL API
@@ -43,7 +45,6 @@ To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environmen
 TIAMAT_BASE_URL=https://api.dev.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
 ```
 
-
 ### Testing
 
 Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing
@@ -58,7 +59,7 @@ Uses Auth0 to authenticate user and read JWT.
 
 ### Themes
 
-Default theme is found in `./config/default`.
+Default theme is found in `./config/default` .
 
 #### Add custom theme
 
