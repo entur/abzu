@@ -12,34 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import axios from "axios";
-
-const localization = (locale) => {
+const localization = async (locale) => {
   const localStorageKey = "ABZU::settings::locale";
-
-  return new Promise((resolve, reject) => {
-    let preferredLocale = locale || localStorage.getItem(localStorageKey);
-
-    let queryParams = "";
-
-    if (preferredLocale) {
-      queryParams = "?locale=" + preferredLocale;
-    }
-
-    axios
-      .get(window.config.endpointBase + "translation.json" + queryParams)
-      .then(({ data }) => {
-        const locale = data.locale;
-        const messages = JSON.parse(data.messages);
-
-        localStorage.setItem(localStorageKey, locale);
-
-        resolve({ locale, messages });
-      })
-      .catch((response) => {
-        reject(response);
-      });
-  });
+  const preferredLocale =
+    locale || localStorage.getItem(localStorageKey) || "en";
+  const { default: messages } = await import(
+    `../static/lang/${preferredLocale}.json`
+  );
+  localStorage.setItem(localStorageKey, preferredLocale);
+  return { preferredLocale, messages };
 };
 
 export default localization;

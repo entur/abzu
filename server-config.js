@@ -15,7 +15,6 @@
  */
 
 const fs = require('fs');
-const globSync = require('glob').sync;
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
@@ -33,43 +32,6 @@ const configureApp = async (app) => {
   console.info('ENDPOINTBASE is set to', ENDPOINTBASE);
 
   app.use(bodyParser.json());
-
-  const getTranslations = req => {
-    const supportedLanguages = ['en', 'nb', 'fr', 'sv'];
-
-    const translations = globSync(__dirname + '/src/static/lang/*.json')
-      .map(filename => [
-        path.basename(filename, '.json'),
-        fs.readFileSync(filename, 'utf8')
-      ])
-      .reduce((messages, [namespace, collection]) => {
-        messages[namespace] = collection;
-        return messages;
-      }, {});
-
-    let locale = 'en'; // i.e. fallback language
-
-    if (
-      typeof req.query.locale !== 'undefined' &&
-      supportedLanguages.indexOf(req.query.locale) > -1
-    ) {
-      locale = req.query.locale;
-    } else {
-      if (req.acceptsLanguages()) {
-        for (let i = 0; i < req.acceptsLanguages().length; i++) {
-          if (translations[req.acceptsLanguages()[i]]) {
-            locale = req.acceptsLanguages()[i];
-            break;
-          }
-        }
-      }
-    }
-
-    return {
-      locale: locale,
-      messages: translations[locale]
-    };
-  };
 
   app.get(ENDPOINTBASE + 'token', (req, res) => {
     const remoteAddress =
@@ -126,19 +88,6 @@ const configureApp = async (app) => {
       res.sendStatus(400);
     }
   });
-
-  const translationEndpoints = getRouteEntries(ENDPOINTBASE, '/translation.json');
-
-  app.get(
-    [
-      ENDPOINTBASE + 'translation.json',
-      [...translationEndpoints]
-    ],
-    function(req, res) {
-      let translations = getTranslations(req);
-      res.send(translations);
-    }
-  );
 
   app.use(ENDPOINTBASE, express.static(contentRoot))
 
