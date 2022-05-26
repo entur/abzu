@@ -35,6 +35,7 @@ import {
   addToMultiModalStopPlace,
   createParentStopPlace,
   getStopPlaceAndPathLinkByVersion,
+  getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
 } from "../../actions/TiamatActions";
@@ -194,8 +195,8 @@ class EditParentGeneral extends React.Component {
     });
 
     dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
-      dispatch(UserActions.navigateTo("/edit/", stopPlaceId));
       dispatch(UserActions.openSnackbar(types.SUCCESS));
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
     });
   }
 
