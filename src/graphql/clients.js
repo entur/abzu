@@ -40,8 +40,8 @@ export const getTiamatClient = () => {
             keyFields: ["id", "version"],
           },
           ParentStopPlace: {
-            keyFields: ["id", "version"]
-          }
+            keyFields: ["id", "version"],
+          },
         },
         possibleTypes,
       }),

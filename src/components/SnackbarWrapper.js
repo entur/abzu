@@ -19,7 +19,7 @@ import * as types from "../actions/Types";
 import MdCheck from "@mui/icons-material/Check";
 import MdError from "@mui/icons-material/Error";
 import { UserActions } from "../actions/";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import MdInfo from "@mui/icons-material/InfoOutlined";
 
 class SnackbarWrapper extends Component {
