@@ -14,13 +14,13 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Snackbar from "material-ui/Snackbar";
+import Snackbar from "@mui/material/Snackbar";
 import * as types from "../actions/Types";
-import MdCheck from "material-ui/svg-icons/navigation/check";
-import MdError from "material-ui/svg-icons/alert/error";
+import MdCheck from "@mui/icons-material/Check";
+import MdError from "@mui/icons-material/Error";
 import { UserActions } from "../actions/";
-import FlatButton from "material-ui/FlatButton";
-import MdInfo from "material-ui/svg-icons/action/info-outline";
+import Button from '@mui/material/Button';
+import MdInfo from "@mui/icons-material/InfoOutlined";
 
 class SnackbarWrapper extends Component {
   constructor(props) {
@@ -63,7 +63,6 @@ class SnackbarWrapper extends Component {
     return (
       <Snackbar
         open={isOpen}
-        style={{ height: showExpanded ? 150 : "initial", background: "#000" }}
         message={
           <div>
             {showExpanded && (
@@ -93,7 +92,8 @@ class SnackbarWrapper extends Component {
                 {message}
               </div>
               {isError && (
-                <FlatButton
+                <Button
+                  variant="text"
                   icon={
                     <MdInfo
                       style={{ fill: "#fff" }}
@@ -107,9 +107,8 @@ class SnackbarWrapper extends Component {
             </div>
           </div>
         }
-        bodyStyle={{ background: "#000", opacity: "0.8" }}
         autoHideDuration={autoHideDuration}
-        onRequestClose={this.handleRequestClose.bind(this)}
+        onClose={this.handleRequestClose.bind(this)}
       />
     );
   }
