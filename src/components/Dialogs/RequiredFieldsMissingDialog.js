@@ -6,13 +6,8 @@ import MdInfo from "material-ui/svg-icons/action/info-outline";
 
 class RequiredFieldsMissingDialog extends Component {
   render() {
-    const {
-      open,
-      handleClose,
-      requiredMissing,
-      formatMessage,
-      isNewStop,
-    } = this.props;
+    const { open, handleClose, requiredMissing, formatMessage, isNewStop } =
+      this.props;
     const { name, type } = requiredMissing;
 
     const translations = {

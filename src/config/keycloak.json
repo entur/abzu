@@ -1,1 +1,7 @@
-{"realm":"rutebanken","tokens-not-before":1490857383,"public-client":true,"auth-server-url":"https://kc-dev.devstage.entur.io/auth","resource":"neti-frontend"}
+{
+  "realm": "rutebanken",
+  "tokens-not-before": 1490857383,
+  "public-client": true,
+  "auth-server-url": "https://kc-dev.devstage.entur.io/auth",
+  "resource": "neti-frontend"
+}

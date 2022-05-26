@@ -26,10 +26,8 @@ const getAdministrativeZoneIds = (roles) => {
 
 export const fetchPolygons = () => (dispatch, getState) => {
   if (getState().roles.auth) {
-    const [
-      administrativeZoneIds,
-      allowNewStopEverywhere,
-    ] = getAdministrativeZoneIds(getState().roles);
+    const [administrativeZoneIds, allowNewStopEverywhere] =
+      getAdministrativeZoneIds(getState().roles);
 
     if (administrativeZoneIds.length) {
       dispatch(getPolygons(administrativeZoneIds));
@@ -41,16 +39,15 @@ export const fetchPolygons = () => (dispatch, getState) => {
   }
 };
 
-export const updateAllowNewStopsEverywhere = (allowNewStopEverywhere) => (
-  dispatch
-) => {
-  dispatch(
-    createThunk(
-      types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE,
-      allowNewStopEverywhere
-    )
-  );
-};
+export const updateAllowNewStopsEverywhere =
+  (allowNewStopEverywhere) => (dispatch) => {
+    dispatch(
+      createThunk(
+        types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE,
+        allowNewStopEverywhere
+      )
+    );
+  };
 
 export const updateAuth = (auth) => (dispatch) => {
   dispatch(createThunk(types.UPDATED_AUTH, auth));

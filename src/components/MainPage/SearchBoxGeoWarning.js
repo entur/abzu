@@ -18,11 +18,8 @@ import Warning from "material-ui/svg-icons/alert/warning";
 
 class SearchBoxGeoWarning extends Component {
   render() {
-    const {
-      userSuppliedCoordinates,
-      result,
-      handleChangeCoordinates,
-    } = this.props;
+    const { userSuppliedCoordinates, result, handleChangeCoordinates } =
+      this.props;
 
     if (!userSuppliedCoordinates && result.isMissingLocation) {
       return (

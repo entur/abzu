@@ -144,9 +144,8 @@ const buildAllowanceInfoForStopPlace = (
     roles: responsibleEditRoles,
     legalStopPlaceTypes,
     legalSubmodes,
-    blacklistedStopPlaceTypes: getBlacklistedStopPlaceTypes(
-      responsibleEditRoles
-    ),
+    blacklistedStopPlaceTypes:
+      getBlacklistedStopPlaceTypes(responsibleEditRoles),
     canEdit,
     canDeleteStop,
   };
@@ -217,9 +216,8 @@ export const getAllowanceInfoForGroup = (result, state) => {
     roles: responsibleEditRoles,
     legalStopPlaceTypes,
     legalSubmodes,
-    blacklistedStopPlaceTypes: getBlacklistedStopPlaceTypes(
-      responsibleEditRoles
-    ),
+    blacklistedStopPlaceTypes:
+      getBlacklistedStopPlaceTypes(responsibleEditRoles),
     canEdit,
     canDeleteStop,
   };

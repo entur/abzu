@@ -53,12 +53,8 @@ class NeighbourMarker extends React.Component {
   }
 
   getIsMergingStopAllowed() {
-    const {
-      currentStopIsMultiModal,
-      isMultimodal,
-      disabled,
-      isEditingStop,
-    } = this.props;
+    const { currentStopIsMultiModal, isMultimodal, disabled, isEditingStop } =
+      this.props;
 
     const { isAllowedToCreateFrom } = this.state;
 

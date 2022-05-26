@@ -24,12 +24,8 @@ import PropTypes from "prop-types";
 
 class StopPlaceListItemDetails extends Component {
   render() {
-    const {
-      stopPlace,
-      intl,
-      disabled,
-      handleRemoveAdjacentConnection,
-    } = this.props;
+    const { stopPlace, intl, disabled, handleRemoveAdjacentConnection } =
+      this.props;
     const { notSaved } = stopPlace;
     const { formatMessage } = intl;
 

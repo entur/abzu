@@ -19,6 +19,8 @@ import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
 import AuthProvider from "@entur/auth-provider";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
@@ -26,22 +28,27 @@ import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import cfgreader from "./config/readConfig";
-import ErrorBoundary from "./containers/ErrorBoundary";
-import { getStore } from "./store/store";
-import { useGktToken } from "./hooks/useGktToken";
 import AppRoutes from "./routes";
 import "intl";
 import { getTiamatClient } from "./graphql/clients";
+import { getStore } from "./store/store";
 
 const AuthenticatedApp = ({ path }) => {
-  useGktToken(path);
+  Sentry.init({
+    dsn: window.config.sentryDSN,
+    integrations: [new BrowserTracing()],
+
+    // We recommend adjusting this value in production, or using tracesSampler
+    // for finer control
+    tracesSampleRate: 1.0,
+  });
 
   const client = getTiamatClient();
 
   const { store, history } = getStore();
 
   return (
-    <ErrorBoundary>
+    <Sentry.ErrorBoundary showDialog>
       <Provider store={store}>
         <ApolloProvider client={client}>
           <Root>
@@ -70,7 +77,7 @@ const AuthenticatedApp = ({ path }) => {
           </Root>
         </ApolloProvider>
       </Provider>
-    </ErrorBoundary>
+    </Sentry.ErrorBoundary>
   );
 };
 

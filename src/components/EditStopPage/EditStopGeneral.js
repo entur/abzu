@@ -281,9 +281,8 @@ class EditStopGeneral extends React.Component {
 
     const shouldSaveParking = shouldMutateParking(stopPlace.parking);
 
-    const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
-      pathLink
-    );
+    const pathLinkVariables =
+      mapToMutationVariables.mapPathLinkToVariables(pathLink);
 
     const shouldSavePathLink = shouldMutatePathLinks(
       pathLinkVariables,

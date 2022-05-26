@@ -11,6 +11,18 @@ import harbourPort from "../static/icons/modalities/harbour_port.png";
 import liftStation from "../static/icons/modalities/lift-without-box.png";
 import noInformation from "../static/icons/modalities/no-information.png";
 
+import railReplacementBusSvg from "../static/icons/modalities/svg/railReplacement.svg";
+import onstreetBusSvg from "../static/icons/modalities/svg/bus-withoutBox.svg";
+import onstreetTramSvg from "../static/icons/modalities/svg/tram-withoutBox.svg";
+import railStationSvg from "../static/icons/modalities/svg/rail-withoutBox.svg";
+import metroStationSvg from "../static/icons/modalities/svg/subway-withoutBox.svg";
+import busStationSvg from "../static/icons/modalities/svg/busstation-withoutBox.svg";
+import ferryStopSvg from "../static/icons/modalities/svg/ferry-withoutBox.svg";
+import airportSvg from "../static/icons/modalities/svg/airplane-withoutBox.svg";
+import harbourPortSvg from "../static/icons/modalities/svg/harbour_port.svg";
+import liftStationSvg from "../static/icons/modalities/svg/lift.svg";
+import noInformationSvg from "../static/icons/modalities/svg/no-information.svg";
+
 type Submodes = "railReplacementBus";
 type Modalities =
   | "onstreetBus"
@@ -21,7 +33,8 @@ type Modalities =
   | "ferryStop"
   | "airport"
   | "harbourPort"
-  | "liftStation";
+  | "liftStation"
+  | "other";
 
 export const getIconByTypeOrSubmode = (
   submode: Submodes,
@@ -50,9 +63,36 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
     airport,
     harbourPort,
     liftStation,
+    other: noInformation,
   };
 
   const stopType = modalityMap[type] || noInformation;
 
   return stopType;
+};
+
+export const getSvgIconByTypeOrSubmode = (
+  submode: Submodes,
+  type: Modalities
+) => {
+  const submodeMap = {
+    railReplacementBus: railReplacementBusSvg,
+  };
+  return submodeMap[submode] || getSvgIconIdByModality(type);
+};
+
+export const getSvgIconIdByModality = (type: Modalities) => {
+  const modalityMap = {
+    onstreetBus: onstreetBusSvg,
+    onstreetTram: onstreetTramSvg,
+    railStation: railStationSvg,
+    metroStation: metroStationSvg,
+    busStation: busStationSvg,
+    ferryStop: ferryStopSvg,
+    airport: airportSvg,
+    harbourPort: harbourPortSvg,
+    liftStation: liftStationSvg,
+    other: noInformationSvg,
+  };
+  return modalityMap[type] || noInformationSvg;
 };

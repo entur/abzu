@@ -23,6 +23,7 @@ const mapLayerKey = rootKey + "::mapLayer";
 const showPublicCodeKey = rootKey + "::showPublicCode";
 const enablePublicCodePrivateCodeOnStopPlaces =
   rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
+const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 
 class SettingsManager {
   constructor() {
@@ -96,6 +97,14 @@ class SettingsManager {
 
   setEnablePublicCodePrivateCodeOnStopPlaces(value) {
     localStorage.setItem(enablePublicCodePrivateCodeOnStopPlaces, value);
+  }
+
+  getShowFareZonesInMap() {
+    localStorage.getItem(showFareZonesInMapKey);
+  }
+
+  setShowFareZonesInMap(value) {
+    localStorage.setItem(showFareZonesInMapKey, value);
   }
 }
 

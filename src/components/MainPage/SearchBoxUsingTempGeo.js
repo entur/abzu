@@ -17,11 +17,8 @@ import { FormattedMessage } from "react-intl";
 
 class SearchBoxMissingGeo extends Component {
   render() {
-    const {
-      userSuppliedCoordinates,
-      result,
-      handleChangeCoordinates,
-    } = this.props;
+    const { userSuppliedCoordinates, result, handleChangeCoordinates } =
+      this.props;
 
     if (userSuppliedCoordinates && result.isMissingLocation) {
       return (

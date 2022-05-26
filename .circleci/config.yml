@@ -7,46 +7,49 @@ references:
       at: *workspace_root
 
 aliases:
-- &install
-  name: Install dependencies
-  command: npm install
-- &test
-  name: Test
-  command: npm run test
-- &build
-  name: Build
-  command: npm run build
-- &google-sdk-container-config
-  docker:
-    - image: google/cloud-sdk:alpine
-      auth:
-        username: $DOCKERHUB_LOGIN
-        password: $DOCKERHUB_PASSWORD
-- &GCP-auth-docker
-  name: GCP authentication with docker
-  command: |
-    echo $DOCKER_PASSWORD > ${HOME}/account-auth.json
-- &tag-git-version
-  name: Tag git commit with build version and push to github
-  command: |
-    git config --global user.email "circleci@entur.no"
-    git config --global user.name "circleci"
-    git tag $VERSION
-    git push origin $VERSION
-- &create-image-version
-  name: Create new image version and store to env var and as file in workspace
-  command: |
-    echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
-    echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
-- &docker-build-and-push
-  name: Docker build and push
-  command: |
-    echo 'export CIRCLE_PROJECT_REPONAME="$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
-    echo 'export VERSION="$VERSION"' >> $BASH_ENV
-    chmod u+x .circleci/docker_build_push.sh
-    .circleci/docker_build_push.sh
-    chmod u+x .circleci/sentry_upload_sourcemaps.sh
-    .circleci/sentry_upload_sourcemaps.sh $CIRCLE_BRANCH-v$VERSION $SENTRY_TOKEN abzu
+  - &install
+    name: Install dependencies
+    command: npm install
+  - &check
+    name: Check formatting
+    command: npm run check
+  - &test
+    name: Test
+    command: npm run test
+  - &build
+    name: Build
+    command: npm run build
+  - &google-sdk-container-config
+    docker:
+      - image: google/cloud-sdk:alpine
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
+  - &GCP-auth-docker
+    name: GCP authentication with docker
+    command: |
+      echo $DOCKER_PASSWORD > ${HOME}/account-auth.json
+  - &tag-git-version
+    name: Tag git commit with build version and push to github
+    command: |
+      git config --global user.email "circleci@entur.no"
+      git config --global user.name "circleci"
+      git tag $VERSION
+      git push origin $VERSION
+  - &create-image-version
+    name: Create new image version and store to env var and as file in workspace
+    command: |
+      echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
+      echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
+  - &docker-build-and-push
+    name: Docker build and push
+    command: |
+      echo 'export CIRCLE_PROJECT_REPONAME="$CIRCLE_PROJECT_REPONAME"' >> $BASH_ENV
+      echo 'export VERSION="$VERSION"' >> $BASH_ENV
+      chmod u+x .circleci/docker_build_push.sh
+      .circleci/docker_build_push.sh
+      chmod u+x .circleci/sentry_upload_sourcemaps.sh
+      .circleci/sentry_upload_sourcemaps.sh $CIRCLE_BRANCH-v$VERSION $SENTRY_TOKEN abzu
 
 jobs:
   build:
@@ -67,10 +70,11 @@ jobs:
           paths:
             - ~/project/node_modules
           key: dep-cache-v1-{{ checksum "package-lock.json" }}
+      - run: *check
       - run: *test
       - run: *build
       - run:
-          name: 'Persist built files'
+          name: "Persist built files"
           command: |
             set -exu
             mv build /tmp/workspace/
@@ -97,7 +101,7 @@ jobs:
       - run: *tag-git-version
 
 workflows:
-  'Build Pipeline':
+  "Build Pipeline":
     jobs:
       - build
       - deploy-docker:

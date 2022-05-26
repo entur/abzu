@@ -18,12 +18,8 @@ import AddStopPlaceSuggestionListItem from "./AddStopPlaceSuggestionListItem";
 
 class AddStopPlaceSuggestionList extends Component {
   render() {
-    const {
-      suggestions,
-      onItemCheck,
-      checkedItems,
-      formatMessage,
-    } = this.props;
+    const { suggestions, onItemCheck, checkedItems, formatMessage } =
+      this.props;
     const noStopSNearby = formatMessage({ id: "no_stops_nearby" });
 
     return (

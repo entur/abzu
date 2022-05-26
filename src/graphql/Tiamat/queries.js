@@ -743,3 +743,27 @@ export const findTariffones = gql`
     }
   }
 `;
+
+export const findFareZonesProviders = gql`
+  query findFareZonesProviders {
+    fareZonesProviders
+  }
+`;
+
+export const findFareZones = gql`
+  query findFareZones($query: String!) {
+    fareZones(query: $query) {
+      id
+      privateCode {
+        value
+      }
+      name {
+        value
+      }
+      polygon {
+        type
+        coordinates
+      }
+    }
+  }
+`;
