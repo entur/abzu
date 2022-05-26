@@ -13,12 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
 import { injectIntl } from "react-intl";
 import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
 import { parkingLayouts } from "../../models/parkingLayout";
@@ -27,9 +27,9 @@ import RechargingAvailablePopover from "./RechargingAvailablePopover";
 import LocalParking from "material-ui/svg-icons/maps/local-parking";
 import { ActionAccessible } from "material-ui/svg-icons";
 import Payment from "material-ui/svg-icons/action/payment";
-import Box from "@material-ui/core/Box";
-import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   mainGrid: {
@@ -120,6 +120,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           {formatMessage({ id: "parking_layout" })}
         </InputLabel>
         <Select
+          variant="standard"
           displayEmpty
           disabled={disabled || hasExpired}
           value={parkingLayout}
@@ -166,6 +167,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               {formatMessage({ id: "parking_payment_process" })}
             </InputLabel>
             <Select
+              variant="standard"
               multiple
               displayEmpty
               disabled={disabled || hasExpired}
@@ -240,6 +242,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         >
           <LocalParking style={parkingIconStyles()} />
           <TextField
+            variant="standard"
             disabled={disabled || hasExpired}
             floatingLabelText={formatMessage({
               id: "parking_number_of_spaces",
@@ -260,6 +263,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         >
           <ActionAccessible style={parkingIconStyles()} />
           <TextField
+            variant="standard"
             hintText={formatMessage({
               id: "parking_number_of_spaces_for_registered_disabled_user_type",
             })}
@@ -301,6 +305,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             )}
           />
           <TextField
+            variant="standard"
             hintText={formatMessage({
               id: "parking_number_of_spaces_with_recharge_point",
             })}

@@ -31,8 +31,7 @@ import MdReport from "material-ui/svg-icons/content/report";
 import MdHelp from "material-ui/svg-icons/action/help";
 import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
-import { Button } from "@material-ui/core";
-import { RaisedButton } from "material-ui";
+import { Button } from "@mui/material";
 
 class Header extends React.Component {
   constructor(props) {
@@ -203,7 +202,6 @@ class Header extends React.Component {
                 {!this.props.auth.isAuthenticated && (
                   <Button
                     variant="contained"
-                    color="primary"
                     onClick={() => this.handleLogin()}
                   >
                     {logIn}

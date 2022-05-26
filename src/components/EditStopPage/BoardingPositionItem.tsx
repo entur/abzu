@@ -7,7 +7,7 @@ import Item from "./Item";
 import ItemHeader from "./ItemHeader";
 import { BoardingPosition } from "./BoardingPositionsTab";
 import ToolTippable from "./ToolTippable";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 
 type Props = {
   boardingPosition: BoardingPosition;
@@ -78,7 +78,7 @@ const BoardingPositionItem = ({
             toolTipText={intl.formatMessage({ id: "delete_boarding_position" })}
             toolTipStyle={{ marginLeft: 10 }}
           >
-            <IconButton disabled={disabled} onClick={onDelete}>
+            <IconButton disabled={disabled} onClick={onDelete} size="large">
               <MdDelete />
             </IconButton>
           </ToolTippable>
