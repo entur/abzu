@@ -744,15 +744,9 @@ export const findTariffones = gql`
   }
 `;
 
-export const findFareZonesProviders = gql`
-  query findFareZonesProviders {
-    fareZonesProviders
-  }
-`;
-
 export const findFareZones = gql`
-  query findFareZones($query: String!) {
-    fareZones(query: $query) {
+  query findFareZones($ids: [String]) {
+    fareZones(ids: $ids) {
       id
       privateCode {
         value
@@ -764,6 +758,21 @@ export const findFareZones = gql`
         type
         coordinates
       }
+    }
+  }
+`;
+
+export const findFareZonesForFilter = gql`
+  query findFareZonesForFilter {
+    fareZones {
+      id
+      privateCode {
+        value
+      }
+      name {
+        value
+      }
+      authorityRef
     }
   }
 `;

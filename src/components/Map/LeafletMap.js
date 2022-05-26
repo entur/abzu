@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MarkerList from "./MarkerList";
 import {
   MapContainer,
@@ -49,7 +49,6 @@ export const LeafLetMap = ({
   activeBaselayer,
   handleBaselayerChanged,
   onMapReady = () => {},
-  showFareZonesControl = false,
 }) => {
   const centerPosition = useMemo(() => {
     if (!position) {
@@ -131,7 +130,7 @@ export const LeafLetMap = ({
             />
           </BaseLayer>
         </LayersControl>
-        <FareZonesControl show={showFareZonesControl} position="topright" />
+        <FareZonesControl position="topright" />
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList

@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import { getStateByOperation } from "./mapReducerUtil";
 
 export const initialState = {
   focusedElement: {
@@ -41,10 +42,14 @@ export const initialState = {
   fetchOTPInfoDeleteLoading: false,
   deleteQuayWarning: null,
   showFareZones: false,
+  fareZonesForFilter: [],
+  fareZones: [],
 };
 
 const mapReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.APOLLO_QUERY_RESULT:
+      return getStateByOperation(state, action);
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         focusedElement: {
