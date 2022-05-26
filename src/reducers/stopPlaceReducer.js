@@ -37,7 +37,7 @@ const initialState = {
   showMultimodalEdges: Settings.getShowMultimodalEdges(),
   lastMutatedStopPlaceId: [],
   isFetchingMergeInfo: false,
-  loading: false
+  loading: false,
 };
 
 const stopPlaceReducer = (state = initialState, action) => {
@@ -680,7 +680,7 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.SET_STOP_PLACE_LOADING:
       return Object.assign({}, state, {
-        loading: action.payload
+        loading: action.payload,
       });
 
     default:
