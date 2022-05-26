@@ -177,12 +177,12 @@ StopPlaceActions.changeMapCenter = (position, zoom) => (dispatch) => {
   );
 };
 
-StopPlaceActions.addAltName = (payLoad) => (dispatch) => {
-  dispatch(createThunk(types.ADDED_ALT_NAME, payLoad));
+StopPlaceActions.addAltName = (payload) => (dispatch) => {
+  dispatch(createThunk(types.ADDED_ALT_NAME, payload));
 };
 
-StopPlaceActions.editAltName = (payLoad) => (dispatch) => {
-  dispatch(createThunk(types.EDITED_ALT_NAME, payLoad));
+StopPlaceActions.editAltName = (payload) => (dispatch) => {
+  dispatch(createThunk(types.EDITED_ALT_NAME, payload));
 };
 
 StopPlaceActions.removeAltName = (index) => (dispatch) => {

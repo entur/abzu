@@ -23,7 +23,7 @@ describe("user reducer", () => {
   test("Should navigate to path", () => {
     const editPathChange = {
       type: types.NAVIGATE_TO,
-      payLoad: "/stop_place/",
+      payload: "/stop_place/",
     };
 
     expect(userReducer(undefined, editPathChange)).toEqual({
@@ -36,7 +36,7 @@ describe("user reducer", () => {
     expect(
       userReducer(undefined, {
         type: types.TOGGLED_IS_CREATING_NEW_STOP,
-        payLoad: false,
+        payload: false,
       })
     ).toEqual({
       ...initialState,
@@ -50,7 +50,7 @@ describe("user reducer", () => {
     expect(
       userReducer(undefined, {
         type: types.APPLIED_STOPTYPE_SEARCH_FILTER,
-        payLoad: filters,
+        payload: filters,
       })
     ).toEqual({
       ...initialState,
@@ -67,7 +67,7 @@ describe("user reducer", () => {
     expect(
       userReducer(undefined, {
         type: types.CHANGED_LOCALIZATION,
-        payLoad: localization,
+        payload: localization,
       })
     ).toEqual({
       ...initialState,
@@ -81,7 +81,7 @@ describe("user reducer", () => {
     expect(
       userReducer(undefined, {
         type: types.APPLIED_LOCALE,
-        payLoad: locale,
+        payload: locale,
       })
     ).toEqual({
       ...initialState,
@@ -95,7 +95,7 @@ describe("user reducer", () => {
     expect(
       userReducer(undefined, {
         type: types.CHANGED_ACTIVE_BASELAYER,
-        payLoad: newBaselayer,
+        payload: newBaselayer,
       })
     ).toEqual({
       ...initialState,

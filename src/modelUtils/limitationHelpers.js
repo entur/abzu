@@ -17,8 +17,8 @@ import { getIn } from "../utils";
 
 const LimitationHelpers = {};
 
-LimitationHelpers.updateCurrentWithLimitations = (current, payLoad) => {
-  const { limitationType, value } = payLoad;
+LimitationHelpers.updateCurrentWithLimitations = (current, payload) => {
+  const { limitationType, value } = payload;
 
   let copy = JSON.parse(JSON.stringify(current));
 
@@ -32,8 +32,8 @@ LimitationHelpers.updateCurrentWithLimitations = (current, payLoad) => {
   return copy;
 };
 
-LimitationHelpers.updateCurrentWithQuayLimitations = (current, payLoad) => {
-  const { index, value, limitationType } = payLoad;
+LimitationHelpers.updateCurrentWithQuayLimitations = (current, payload) => {
+  const { index, value, limitationType } = payload;
   let copy = JSON.parse(JSON.stringify(current));
 
   if (copy.quays && copy.quays[index]) {

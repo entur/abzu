@@ -55,21 +55,21 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
     case types.RECEIVED_MEMBER_INFO:
       return Object.assign({}, state, {
         isFetchingMember: false,
-        current: addMemberToGroup(state.current, action.payLoad),
+        current: addMemberToGroup(state.current, action.payload),
         isModified: true,
       });
 
     case types.RECEIVED_MEMBERS_INFO:
       return Object.assign({}, state, {
         isFetchingMember: false,
-        current: addMemberToGroup(state.current, action.payLoad),
+        current: addMemberToGroup(state.current, action.payload),
         isModified: true,
       });
 
     case types.REMOVED_GROUP_MEMBER:
       return Object.assign({}, state, {
         isFetchingMember: false,
-        current: removeMemberFromGroup(state.current, action.payLoad),
+        current: removeMemberFromGroup(state.current, action.payload),
         isModified: true,
       });
 
@@ -77,13 +77,13 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: {
           ...state.current,
-          name: action.payLoad,
+          name: action.payload,
         },
         isModified: true,
       });
 
     case types.SETUP_NEW_GROUP:
-      const newCreatedGroup = addMemberToGroup(newGroup, action.payLoad);
+      const newCreatedGroup = addMemberToGroup(newGroup, action.payload);
       return Object.assign({}, state, {
         current: newCreatedGroup,
         original: Object.assign({}, newCreatedGroup),
@@ -97,14 +97,14 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: {
           ...state.current,
-          description: action.payLoad,
+          description: action.payload,
         },
         isModified: true,
       });
 
     case types.CREATED_NEW_GROUP_OF_STOP_PLACES:
       return Object.assign({}, state, {
-        sourceForNewGroup: action.payLoad,
+        sourceForNewGroup: action.payload,
       });
 
     case types.ERROR_NEW_GROUP:
@@ -113,7 +113,7 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
       });
 
     case types.NAVIGATE_TO:
-      if (action.payLoad === "") {
+      if (action.payload === "") {
         return Object.assign({}, state, {
           sourceForNewGroup: null,
           current: newGroup,

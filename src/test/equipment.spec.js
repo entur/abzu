@@ -73,7 +73,7 @@ describe("equipment helper", () => {
   });
 
   test("should enable sign512Equipment prop for signEquipment on StopPlace based on data", () => {
-    const payLoadTrue = {
+    const payloadTrue = {
       state: true,
       type: "stopPlace",
       id: null,
@@ -81,7 +81,7 @@ describe("equipment helper", () => {
 
     let stopPlace = helpers.update512SignEquipment(
       unequiptedStopPlace,
-      payLoadTrue
+      payloadTrue
     );
 
     const equipted = helpers.get512SignEquipment(stopPlace);
@@ -89,14 +89,14 @@ describe("equipment helper", () => {
   });
 
   test("should disable sign512Equipment prop for signEquipment on StopPlace based on data", () => {
-    const payLoadFalse = {
+    const payloadFalse = {
       state: false,
       type: "stopPlace",
       id: null,
     };
     let stopPlace = helpers.update512SignEquipment(
       equiptedStopPlace,
-      payLoadFalse
+      payloadFalse
     );
     const unequipted = helpers.get512SignEquipment(stopPlace);
     expect(unequipted).toEqual(false);
@@ -116,7 +116,7 @@ describe("equipment helper", () => {
     );
     expect(equiptedWith512).toEqual(false);
 
-    const payLoadTrue = {
+    const payloadTrue = {
       state: true,
       type: "quay",
       id: 1,
@@ -124,7 +124,7 @@ describe("equipment helper", () => {
 
     let stopPlace = helpers.update512SignEquipment(
       unEquiptedWith512Sign,
-      payLoadTrue
+      payloadTrue
     );
 
     const equiptedQuay = helpers.get512SignEquipment(stopPlace.quays[1]);

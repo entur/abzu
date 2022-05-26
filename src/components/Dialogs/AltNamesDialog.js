@@ -56,7 +56,7 @@ class AltNamesDialog extends React.Component {
   }
 
   handleEditAltName(lang, value, type, id) {
-    const payLoad = {
+    const payload = {
       nameType: type,
       lang,
       value,
@@ -68,11 +68,11 @@ class AltNamesDialog extends React.Component {
     if (conflictFoundIndex > -1 && conflictFoundIndex !== id) {
       this.setState({
         confirmDialogOpen: true,
-        pendingPayLoad: payLoad,
+        pendingPayLoad: payload,
         pendingRemoveAltNameIndex: conflictFoundIndex,
       });
     } else {
-      this.props.dispatch(StopPlaceActions.editAltName(payLoad));
+      this.props.dispatch(StopPlaceActions.editAltName(payload));
     }
   }
 
@@ -99,7 +99,7 @@ class AltNamesDialog extends React.Component {
     const { lang, value, type } = this.state;
     const { dispatch } = this.props;
 
-    const payLoad = {
+    const payload = {
       nameType: type,
       lang: lang,
       value: value,
@@ -110,11 +110,11 @@ class AltNamesDialog extends React.Component {
     if (conflictFoundIndex > -1) {
       this.setState({
         confirmDialogOpen: true,
-        pendingPayLoad: payLoad,
+        pendingPayLoad: payload,
         pendingRemoveAltNameIndex: conflictFoundIndex,
       });
     } else {
-      dispatch(StopPlaceActions.addAltName(payLoad));
+      dispatch(StopPlaceActions.addAltName(payload));
 
       this.setState({
         lang: "",

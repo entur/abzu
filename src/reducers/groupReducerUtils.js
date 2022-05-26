@@ -26,8 +26,8 @@ export const getGroupOfStopPlace = (state, action) => {
   return state;
 };
 
-export const addMemberToGroup = (current, payLoad) => {
-  let membersJSON = payLoad.data;
+export const addMemberToGroup = (current, payload) => {
+  let membersJSON = payload.data;
 
   if (membersJSON == null) {
     return current;
@@ -54,9 +54,9 @@ export const addMemberToGroup = (current, payLoad) => {
   return newGroup;
 };
 
-export const removeMemberFromGroup = (current, payLoad) => ({
+export const removeMemberFromGroup = (current, payload) => ({
   ...current,
-  members: current.members.filter((member) => member.id !== payLoad),
+  members: current.members.filter((member) => member.id !== payload),
 });
 
 const updateStateByOperationName = (state, action, operation) => {

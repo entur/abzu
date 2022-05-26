@@ -76,7 +76,7 @@ describe("Changes correct properties", () => {
 
       const changePublicCode = {
         type: "CHANGE_PUBLIC_CODE_NAME",
-        payLoad: {
+        payload: {
           type: "quay",
           name: newPublicCode,
           index: quayIndex,

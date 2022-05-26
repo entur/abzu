@@ -22,7 +22,7 @@ describe("stop place reducer", () => {
 
     const action = {
       type: types.CREATED_NEW_STOP,
-      payLoad: {
+      payload: {
         location,
         isMultimodal: false,
       },
@@ -42,7 +42,7 @@ describe("stop place reducer", () => {
 
     const changeNameAction = {
       type: types.CHANGED_STOP_NAME,
-      payLoad: "new stop name",
+      payload: "new stop name",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
@@ -61,7 +61,7 @@ describe("stop place reducer", () => {
 
     const changeNameAction = {
       type: types.CHANGED_STOP_DESCRIPTION,
-      payLoad: "new description",
+      payload: "new description",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
@@ -83,7 +83,7 @@ describe("stop place reducer", () => {
 
     const changeNameAction = {
       type: types.CHANGED_ACTIVE_STOP_POSITION,
-      payLoad: { location: newDehli },
+      payload: { location: newDehli },
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
@@ -104,7 +104,7 @@ describe("stop place reducer", () => {
 
     const changeNameAction = {
       type: types.CHANGED_STOP_DESCRIPTION,
-      payLoad: "awesome description",
+      payload: "awesome description",
     };
     const stateAfter = stopPlaceReducer(stateBefore, changeNameAction);
 
@@ -113,7 +113,7 @@ describe("stop place reducer", () => {
 
     const restoreAction = {
       type: types.RESTORED_TO_ORIGINAL_STOP_PLACE,
-      payLoad: null,
+      payload: null,
     };
 
     const finalState = stopPlaceReducer(stateAfter, restoreAction);

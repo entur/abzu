@@ -365,19 +365,19 @@ const getBlacklistedStopPlaceTypes = (roles) => {
   return Array.from(blacklistSet);
 };
 
-export const getAllowanceSearchInfo = (payLoad, roleAssignments) => {
+export const getAllowanceSearchInfo = (payload, roleAssignments) => {
   let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
   let latlng =
-    payLoad.entityType === Entities.GROUP_OF_STOP_PLACE
-      ? payLoad.members.map((member) => member.location)
-      : payLoad.location;
+    payload.entityType === Entities.GROUP_OF_STOP_PLACE
+      ? payload.members.map((member) => member.location)
+      : payload.location;
 
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng
   );
 
-  let finalRoles = roleParser.filterByEntities(rolesAllowingGeo, payLoad);
+  let finalRoles = roleParser.filterByEntities(rolesAllowingGeo, payload);
 
   return {
     roles: finalRoles,

@@ -53,9 +53,9 @@ helpers.sortQuays = (current, attribute) => {
   };
 };
 
-helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
+helpers.updateParentStopWithStopPlaces = (current, payload) => {
   const newStopPlace = Object.assign({}, current);
-  const newChildren = payLoad.map((child) => {
+  const newChildren = payload.map((child) => {
     const newChild = { ...child };
     newChild.name =
       newChild.name && newChild.name.value ? newChild.name.value : current.name;
@@ -65,9 +65,9 @@ helpers.updateParentStopWithStopPlaces = (current, payLoad) => {
   return newStopPlace;
 };
 
-helpers.updateStopWithTags = (current, payLoad) => {
+helpers.updateStopWithTags = (current, payload) => {
   const copy = JSON.parse(JSON.stringify(current));
-  const { result } = payLoad;
+  const { result } = payload;
 
   if (
     result.data &&
@@ -82,9 +82,9 @@ helpers.updateStopWithTags = (current, payLoad) => {
   return current;
 };
 
-helpers.updateParenStopWithoutStopPlace = (current, payLoad) => {
+helpers.updateParenStopWithoutStopPlace = (current, payload) => {
   const copy = JSON.parse(JSON.stringify(current));
-  copy.children = copy.children.filter((child) => child.id !== payLoad);
+  copy.children = copy.children.filter((child) => child.id !== payload);
   return copy;
 };
 
@@ -98,14 +98,14 @@ helpers.mapPathLinkToClient = (pathLinks = []) => {
 };
 
 helpers.updateEstimateForPathLink = (action, pathLink) => {
-  const { index, estimate } = action.payLoad;
+  const { index, estimate } = action.payload;
   let updatedPathLink = JSON.parse(JSON.stringify(pathLink));
   updatedPathLink[index].estimate = estimate;
   return updatedPathLink;
 };
 
 helpers.addNewPointToPathlink = (action, pathLink) => {
-  const coordinates = action.payLoad;
+  const coordinates = action.payload;
   let updatedPathLink = JSON.parse(JSON.stringify(pathLink));
 
   let lastPathLink = updatedPathLink[updatedPathLink.length - 1];
@@ -124,12 +124,12 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
     let newPathLink = {
       from: {
         placeRef: {
-          ref: action.payLoad.id,
+          ref: action.payload.id,
           addressablePlace: {
-            id: action.payLoad.id,
+            id: action.payload.id,
             geometry: {
               type: "Point",
-              coordinates: [action.payLoad.coordinates],
+              coordinates: [action.payload.coordinates],
             },
           },
         },
@@ -161,18 +161,18 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     lastPathLink.to = {
       placeRef: {
-        ref: action.payLoad.id,
+        ref: action.payload.id,
         addressablePlace: {
-          id: action.payLoad.id,
+          id: action.payload.id,
           geometry: {
             type: "Point",
-            coordinates: [action.payLoad.coordinates],
+            coordinates: [action.payload.coordinates],
           },
         },
       },
     };
 
-    latlngCoordinates.push(action.payLoad.coordinates);
+    latlngCoordinates.push(action.payload.coordinates);
 
     lastPathLink.distance = calculateDistance(latlngCoordinates);
     lastPathLink.estimate = calculateEstimate(lastPathLink.distance);
@@ -558,8 +558,8 @@ helpers.updateCurrentStopWithPosition = (current, location) => {
   });
 };
 
-helpers.updateCurrentWithNewElement = (current, payLoad) => {
-  const { type, position, focusedElement } = payLoad;
+helpers.updateCurrentWithNewElement = (current, payload) => {
+  const { type, position, focusedElement } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   const newElement = {
@@ -610,8 +610,8 @@ helpers.updateCurrentWithNewElement = (current, payLoad) => {
   return copy;
 };
 
-helpers.updateCurrentWithoutElement = (current, payLoad) => {
-  const { type, index } = payLoad;
+helpers.updateCurrentWithoutElement = (current, payload) => {
+  const { type, index } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
@@ -619,8 +619,8 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
       copy.quays = removeElementByIndex(copy.quays, index);
       break;
     case "boarding-position":
-      copy.quays[payLoad.quayIndex].boardingPositions = removeElementByIndex(
-        copy.quays[payLoad.quayIndex].boardingPositions,
+      copy.quays[payload.quayIndex].boardingPositions = removeElementByIndex(
+        copy.quays[payload.quayIndex].boardingPositions,
         index
       );
       break;
@@ -633,8 +633,8 @@ helpers.updateCurrentWithoutElement = (current, payLoad) => {
   return copy;
 };
 
-helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
-  const { markerIndex, type, position } = payLoad;
+helpers.updateCurrentWithElementPositionChange = (current, payload) => {
+  const { markerIndex, type, position } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
@@ -644,10 +644,10 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
       });
       break;
     case "boarding-position":
-      copy.quays[payLoad.quayIndex].boardingPositions[markerIndex] =
+      copy.quays[payload.quayIndex].boardingPositions[markerIndex] =
         Object.assign(
           {},
-          copy.quays[payLoad.quayIndex].boardingPositions[markerIndex],
+          copy.quays[payload.quayIndex].boardingPositions[markerIndex],
           {
             location: position,
           }
@@ -665,8 +665,8 @@ helpers.updateCurrentWithElementPositionChange = (current, payLoad) => {
   return copy;
 };
 
-helpers.updateCurrentWithPublicCode = (current, payLoad) => {
-  const { index, type, name } = payLoad;
+helpers.updateCurrentWithPublicCode = (current, payload) => {
+  const { index, type, name } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
@@ -676,9 +676,9 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
       });
       break;
     case "boarding-position":
-      copy.quays[payLoad.quayIndex].boardingPositions[index] = Object.assign(
+      copy.quays[payload.quayIndex].boardingPositions[index] = Object.assign(
         {},
-        copy.quays[payLoad.quayIndex].boardingPositions[index],
+        copy.quays[payload.quayIndex].boardingPositions[index],
         {
           publicCode: name,
         }
@@ -690,8 +690,8 @@ helpers.updateCurrentWithPublicCode = (current, payLoad) => {
   return copy;
 };
 
-helpers.updateCurrentWithPrivateCode = (current, payLoad) => {
-  const { index, type, name } = payLoad;
+helpers.updateCurrentWithPrivateCode = (current, payload) => {
+  const { index, type, name } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
@@ -706,8 +706,8 @@ helpers.updateCurrentWithPrivateCode = (current, payLoad) => {
   return copy;
 };
 
-helpers.updateCompassBearing = (current, payLoad) => {
-  const { compassBearing, index } = payLoad;
+helpers.updateCompassBearing = (current, payload) => {
+  const { compassBearing, index } = payload;
   const quaysCopy = current.quays.slice();
   quaysCopy[index].compassBearing = compassBearing;
   return {
@@ -716,8 +716,8 @@ helpers.updateCompassBearing = (current, payLoad) => {
   };
 };
 
-helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
-  const { index, type, description } = payLoad;
+helpers.updateCurrentWithElementDescriptionChange = (current, payload) => {
+  const { index, type, description } = payload;
   const copy = JSON.parse(JSON.stringify(current));
 
   switch (type) {
@@ -732,12 +732,12 @@ helpers.updateCurrentWithElementDescriptionChange = (current, payLoad) => {
   return copy;
 };
 
-helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
+helpers.mapNeighbourQuaysToClient = (original, payload, resourceId) => {
   let neighbourQuaysMap = { ...original } || {};
 
-  if (!payLoad || !payLoad.length) return neighbourQuaysMap;
+  if (!payload || !payload.length) return neighbourQuaysMap;
 
-  const rootStopPlace = payLoad[0];
+  const rootStopPlace = payload[0];
   let stopPlace = null;
 
   // root element in possible multimodal structure is the one requested
@@ -777,8 +777,8 @@ helpers.mapNeighbourQuaysToClient = (original, payLoad, resourceId) => {
   return neighbourQuaysMap;
 };
 
-helpers.addAltName = (original, payLoad) => {
-  const { nameType, lang, value } = payLoad;
+helpers.addAltName = (original, payload) => {
+  const { nameType, lang, value } = payload;
   const copy = JSON.parse(JSON.stringify(original));
 
   if (!copy.alternativeNames) {
@@ -795,8 +795,8 @@ helpers.addAltName = (original, payLoad) => {
   return copy;
 };
 
-helpers.editAltName = (original, payLoad) => {
-  const { nameType, lang, value, id } = payLoad;
+helpers.editAltName = (original, payload) => {
+  const { nameType, lang, value, id } = payload;
   const copy = JSON.parse(JSON.stringify(original));
 
   if (!copy.alternativeNames) {
@@ -812,22 +812,22 @@ helpers.editAltName = (original, payLoad) => {
   return copy;
 };
 
-helpers.changeParkingName = (original, payLoad) => {
-  const { index, name } = payLoad;
+helpers.changeParkingName = (original, payload) => {
+  const { index, name } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].name = name;
   return copy;
 };
 
-helpers.changeParkingLayout = (original, payLoad) => {
-  const { index, parkingLayout } = payLoad;
+helpers.changeParkingLayout = (original, payload) => {
+  const { index, parkingLayout } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].parkingLayout = parkingLayout;
   return copy;
 };
 
-helpers.changeParkingPaymentProcess = (original, payLoad) => {
-  const { index, parkingPaymentProcess } = payLoad;
+helpers.changeParkingPaymentProcess = (original, payload) => {
+  const { index, parkingPaymentProcess } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].parkingPaymentProcess = parkingPaymentProcess;
   return copy;
@@ -866,16 +866,16 @@ helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
   return copy;
 };
 
-helpers.changeParkingTotalCapacity = (original, payLoad) => {
-  const { index, totalCapacity } = payLoad;
+helpers.changeParkingTotalCapacity = (original, payload) => {
+  const { index, totalCapacity } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].totalCapacity = Number(totalCapacity);
   return copy;
 };
 
-helpers.updateCurrentStopWithWeighting = (stopPlace, payLoad) => {
+helpers.updateCurrentStopWithWeighting = (stopPlace, payload) => {
   const copy = JSON.parse(JSON.stringify(stopPlace));
-  copy.weighting = payLoad;
+  copy.weighting = payload;
   return copy;
 };
 

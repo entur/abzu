@@ -50,19 +50,19 @@ const rolesReducer = (state = initialState, action) => {
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
         allowanceInfoSearchResult: getAllowanceSearchInfo(
-          action.payLoad,
+          action.payload,
           state.auth.roleAssignments
         ),
         allowanceInfo: {
           ...state.allowanceInfo,
-          ...getAllowanceInfoFromPosition(action.payLoad.location),
+          ...getAllowanceInfoFromPosition(action.payload.location),
         },
       });
 
     case types.SETUP_NEW_GROUP:
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
-          getLatLng(action.payLoad.data.stopPlace[0]),
+          getLatLng(action.payload.data.stopPlace[0]),
           state.auth.roleAssignments
         ),
       });
@@ -70,13 +70,13 @@ const rolesReducer = (state = initialState, action) => {
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
-          action.payLoad,
+          action.payload,
           state.auth.roleAssignments
         ),
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
-      const { newStopPlace } = action.payLoad;
+      const { newStopPlace } = action.payload;
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
@@ -86,12 +86,12 @@ const rolesReducer = (state = initialState, action) => {
 
     case types.UPDATED_AUTH:
       return Object.assign({}, state, {
-        auth: action.payLoad,
+        auth: action.payload,
       });
 
     case types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE:
       return Object.assign({}, state, {
-        allowNewStopEverywhere: action.payLoad,
+        allowNewStopEverywhere: action.payload,
       });
     default:
       return state;

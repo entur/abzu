@@ -27,9 +27,9 @@ export {
   StopPlacesGroupActions,
 };
 
-export const createThunk = (type, payLoad) => ({
+export const createThunk = (type, payload) => ({
   type,
-  payLoad,
+  payload,
 });
 
 export const createApolloThunk = (type, result, doc, variables) => ({

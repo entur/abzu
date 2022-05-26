@@ -54,7 +54,7 @@ describe("snackbar", () => {
     expect(
       snackbarReducer(undefined, {
         type: OPENED_SNACKBAR,
-        payLoad: {
+        payload: {
           status: snackbarOptions.status,
         },
       })

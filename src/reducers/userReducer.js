@@ -68,7 +68,7 @@ const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
-        path: action.payLoad,
+        path: action.payload,
         showEditQuayAdditional: false,
         showEditStopAdditional: false,
         isCreatingNewStop: false,
@@ -82,12 +82,12 @@ const userReducer = (state = initialState, action) => {
     case types.TOGGLED_IS_CREATING_NEW_STOP:
       return Object.assign({}, state, {
         isCreatingNewStop: !state.isCreatingNewStop,
-        newStopIsMultiModal: action.payLoad,
+        newStopIsMultiModal: action.payload,
       });
 
     case types.APPLIED_STOPTYPE_SEARCH_FILTER:
       return Object.assign({}, state, {
-        searchFilters: { ...state.searchFilters, stopType: action.payLoad },
+        searchFilters: { ...state.searchFilters, stopType: action.payload },
       });
 
     case types.REMOVED_ALL_FILTERS:
@@ -106,14 +106,14 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.CHANGED_LOCALIZATION:
-      return Object.assign({}, state, { localization: action.payLoad });
+      return Object.assign({}, state, { localization: action.payload });
 
     case types.APPLIED_LOCALE:
-      return Object.assign({}, state, { appliedLocale: action.payLoad });
+      return Object.assign({}, state, { appliedLocale: action.payload });
 
     case types.ADDED_TOPOS_CHIP:
       let newChipList = state.searchFilters.topoiChips.splice(0);
-      let newChipToAdd = action.payLoad;
+      let newChipToAdd = action.payload;
       newChipToAdd.key = newChipList.push(newChipToAdd);
       return Object.assign({}, state, {
         searchFilters: {
@@ -124,7 +124,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.DELETED_TOPOS_CHIP:
       let chips = state.searchFilters.topoiChips.filter(
-        (chip) => chip.value !== action.payLoad
+        (chip) => chip.value !== action.payload
       );
       return Object.assign({}, state, {
         searchFilters: {
@@ -137,7 +137,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         newStopCreated: {
           open: true,
-          stopPlaceId: action.payLoad,
+          stopPlaceId: action.payload,
         },
       });
 
@@ -153,7 +153,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          topoiChips: action.payLoad,
+          topoiChips: action.payload,
         },
       });
 
@@ -161,7 +161,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          stopType: action.payLoad,
+          stopType: action.payload,
         },
       });
 
@@ -169,7 +169,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          showFutureAndExpired: action.payLoad,
+          showFutureAndExpired: action.payload,
         },
       });
 
@@ -177,7 +177,7 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,
-          text: action.payLoad,
+          text: action.payload,
         },
       });
 
@@ -189,13 +189,13 @@ const userReducer = (state = initialState, action) => {
 
     case types.REMOVE_SEARCH_AS_FAVORITE:
       return Object.assign({}, state, {
-        removedFavorites: state.removedFavorites.concat(action.payLoad),
+        removedFavorites: state.removedFavorites.concat(action.payload),
       });
 
     case types.REQUESTED_ADJACENT_SITE_DIALOG:
       return Object.assign({}, state, {
         adjacentStopDialogOpen: true,
-        adjacentStopDialogStopPlace: action.payLoad,
+        adjacentStopDialogStopPlace: action.payload,
       });
 
     case types.CLOSED_ADJACENT_SITE_DIALOG:
@@ -204,33 +204,33 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.CHANGED_ACTIVE_BASELAYER:
-      return Object.assign({}, state, { activeBaselayer: action.payLoad });
+      return Object.assign({}, state, { activeBaselayer: action.payload });
 
     case types.SET_MISSING_COORDINATES:
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);
-      newMissingCoordsMap[action.payLoad.stopPlaceId] = action.payLoad.position;
+      newMissingCoordsMap[action.payload.stopPlaceId] = action.payload.position;
       return Object.assign({}, state, {
         missingCoordsMap: newMissingCoordsMap,
       });
 
     case types.CHANGED_ELEMENT_TYPE_TAB:
-      return Object.assign({}, state, { activeElementTab: action.payLoad });
+      return Object.assign({}, state, { activeElementTab: action.payload });
 
     case types.ADDED_STOP_PLACE_ELEMENT:
       let activeElementTabIndex = -1;
 
       if (
-        action.payLoad.type === "quay" ||
-        action.payLoad.type === "boardingPosition"
+        action.payload.type === "quay" ||
+        action.payload.type === "boardingPosition"
       ) {
         activeElementTabIndex = 0;
       } else if (
-        action.payLoad.type === "parkAndRide" ||
-        action.payLoad.type === "bikeParking"
+        action.payload.type === "parkAndRide" ||
+        action.payload.type === "bikeParking"
       ) {
         activeElementTabIndex = 1;
       } else {
-        console.warn("type is not supported", action.payLoad.type);
+        console.warn("type is not supported", action.payload.type);
         activeElementTabIndex = -1;
       }
 
@@ -245,7 +245,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.CHANGED_QUAY_ADDITIONAL_TAB:
       return Object.assign({}, state, {
-        activeQuayAdditionalTab: action.payLoad,
+        activeQuayAdditionalTab: action.payload,
       });
 
     case types.HIDE_EDIT_QUAY_ADDITIONAL:
@@ -259,7 +259,7 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.SET_FOCUS_ON_ELEMENT:
-      if (action.payLoad.index > -1) {
+      if (action.payload.index > -1) {
         return Object.assign({}, state, {
           showEditStopAdditional: false,
         });
@@ -276,8 +276,8 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         keyValuesDialogOpen: true,
         keyValuesOrigin: {
-          type: action.payLoad.type,
-          index: action.payLoad.index,
+          type: action.payload.type,
+          index: action.payload.index,
         },
       });
 
@@ -288,7 +288,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.SET_SERVER_DIFF_TIME:
       return Object.assign({}, state, {
-        serverTimeDiff: action.payLoad,
+        serverTimeDiff: action.payload,
       });
 
     case types.SORTED_QUAYS:
@@ -300,12 +300,12 @@ const userReducer = (state = initialState, action) => {
 
     case types.TOGGLE_SHOW_PUBLIC_CODE:
       return Object.assign({}, state, {
-        showPublicCode: action.payLoad,
+        showPublicCode: action.payload,
       });
 
     case types.TERMINATE_DELETE_STOP_DIALOG_WARNING:
       return Object.assign({}, state, {
-        deleteStopDialogWarning: action.payLoad,
+        deleteStopDialogWarning: action.payload,
       });
 
     default:

@@ -57,9 +57,9 @@ EquipmentHelpers.get512SignEquipment = (entity) => {
   return false;
 };
 
-EquipmentHelpers.update512SignEquipment = (entity, payLoad) => {
+EquipmentHelpers.update512SignEquipment = (entity, payload) => {
   const copyOfEntity = JSON.parse(JSON.stringify(entity));
-  return updateEquipmentForEntitity(copyOfEntity, payLoad, types.generalSign);
+  return updateEquipmentForEntitity(copyOfEntity, payload, types.generalSign);
 };
 
 EquipmentHelpers.getWaitingRoomState = (entity) => {
@@ -80,49 +80,49 @@ EquipmentHelpers.getCycleStorageEquipment = (entity) => {
   return cycleStorageState !== null;
 };
 
-EquipmentHelpers.updateTicketMachineState = (stopPlace, payLoad) => {
+EquipmentHelpers.updateTicketMachineState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(updatedStop, payLoad, types.ticketMachine);
+  return updateEquipmentForEntitity(updatedStop, payload, types.ticketMachine);
 };
 
-EquipmentHelpers.updateShelterEquipmentState = (stopPlace, payLoad) => {
+EquipmentHelpers.updateShelterEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
   return updateEquipmentForEntitity(
     updatedStop,
-    payLoad,
+    payload,
     types.shelterEquipment
   );
 };
 
-EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payLoad) => {
+EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
   return updateEquipmentForEntitity(
     updatedStop,
-    payLoad,
+    payload,
     types.sanitaryEquipment
   );
 };
 
-EquipmentHelpers.updateWaitingRoomState = (stopPlace, payLoad) => {
+EquipmentHelpers.updateWaitingRoomState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
   return updateEquipmentForEntitity(
     updatedStop,
-    payLoad,
+    payload,
     types.waitingRoomEquipment
   );
 };
 
-EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payLoad) => {
+EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
   return updateEquipmentForEntitity(
     updatedStop,
-    payLoad,
+    payload,
     types.cycleStorageEquipment
   );
 };
 
-const updateEquipmentForEntitity = (entity, payLoad, typeOfEquipment) => {
-  const { state, type, id } = payLoad;
+const updateEquipmentForEntitity = (entity, payload, typeOfEquipment) => {
+  const { state, type, id } = payload;
 
   let stateFromCheckbox = typeof state === "boolean";
 

@@ -42,7 +42,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         snackbarOptions: {
           isOpen: true,
-          status: action.payLoad.status,
+          status: action.payload.status,
           errorMsg: null,
         },
       });

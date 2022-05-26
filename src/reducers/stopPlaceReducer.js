@@ -55,7 +55,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateParenStopWithoutStopPlace(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -64,7 +64,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateParentStopWithStopPlaces(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -86,7 +86,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.HID_QUAYS_FOR_NEIGHBOUR_STOP:
-      const id = action.payLoad;
+      const id = action.payload;
       return Object.assign({}, state, {
         neighbourStopQuays: { ...state.neighbourStopQuays, [id]: null },
       });
@@ -99,8 +99,8 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.ADD_ADJACENT_SITE:
-      const stopPlaceId1 = action.payLoad.stopPlaceId1;
-      const stopPlaceId2 = action.payLoad.stopPlaceId2;
+      const stopPlaceId1 = action.payload.stopPlaceId1;
+      const stopPlaceId2 = action.payload.stopPlaceId2;
       AdjacentStopAdder.addAdjacentStopReference(
         state.current,
         stopPlaceId1,
@@ -112,8 +112,8 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.REMOVE_ADJACENT_SITE:
-      const adjacentStopPlaceRef = action.payLoad.adjacentStopPlaceRef;
-      const stopPlaceIdForRemovingAdjacentSite = action.payLoad.stopPlaceId;
+      const adjacentStopPlaceRef = action.payload.adjacentStopPlaceRef;
+      const stopPlaceIdForRemovingAdjacentSite = action.payload.stopPlaceId;
       const changedStopPlace = AdjacentStopRemover.removeAdjacentStop(
         state.current,
         adjacentStopPlaceRef,
@@ -127,8 +127,8 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.SET_CENTER_AND_ZOOM:
       return Object.assign({}, state, {
-        centerPosition: action.payLoad.position.slice(),
-        zoom: action.payLoad.zoom,
+        centerPosition: action.payload.position.slice(),
+        zoom: action.payload.zoom,
       });
 
     case types.CLEAR_LAST_MUTATED_STOP_PLACE_IDS:
@@ -137,7 +137,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.NAVIGATE_TO:
-      if (action.payLoad === "") {
+      if (action.payload === "") {
         return Object.assign({}, state, {
           pathLink: [],
           current: null,
@@ -154,34 +154,34 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.SORTED_QUAYS:
       return Object.assign({}, state, {
-        current: formatHelpers.sortQuays(state.current, action.payLoad),
+        current: formatHelpers.sortQuays(state.current, action.payload),
       });
 
     case types.LOOKUP_COORDINATES:
       return Object.assign({}, state, {
         findCoordinates: {
-          position: action.payLoad.position.map((pos) =>
+          position: action.payload.position.map((pos) =>
             setDecimalPrecision(pos, 6)
           ),
           coordinatePin: true,
         },
-        centerPosition: action.payLoad.triggeredByDrag
+        centerPosition: action.payload.triggeredByDrag
           ? state.centerPosition
-          : action.payLoad.position,
-        zoom: action.payLoad.triggeredByDrag ? state.zoom : 5,
+          : action.payload.position,
+        zoom: action.payload.triggeredByDrag ? state.zoom : 5,
       });
 
     case types.CHANGED_WEIGHTING_STOP_PLACE:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithWeighting(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
 
     case types.CREATED_NEW_STOP:
-      const { location, isMultimodal } = action.payLoad;
+      const { location, isMultimodal } = action.payload;
       const stopToBeCreated = isMultimodal
         ? formatHelpers.createNewParentStopFromLocation(location)
         : formatHelpers.createNewStopFromLocation(location);
@@ -199,7 +199,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCompassBearing(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -208,9 +208,9 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateKeyValuesByKey(
           state.current,
-          action.payLoad.key,
-          action.payLoad.values,
-          action.payLoad.origin
+          action.payload.key,
+          action.payload.values,
+          action.payload.origin
         ),
         stopHasBeenModified: true,
       });
@@ -219,8 +219,8 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.deleteKeyValuesByKey(
           state.current,
-          action.payLoad.key,
-          action.payLoad.origin
+          action.payload.key,
+          action.payload.origin
         ),
         stopHasBeenModified: true,
       });
@@ -229,16 +229,16 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.createKeyValuesPair(
           state.current,
-          action.payLoad.key,
-          action.payLoad.values,
-          action.payLoad.origin
+          action.payload.key,
+          action.payload.values,
+          action.payload.origin
         ),
         stopHasBeenModified: true,
       });
 
     case types.CHANGED_LOCATION_NEW_STOP:
       return Object.assign({}, state, {
-        newStop: formatHelpers.createNewStopFromLocation(action.payLoad),
+        newStop: formatHelpers.createNewStopFromLocation(action.payload),
         stopHasBeenModified: true,
       });
 
@@ -247,7 +247,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         ...state,
         current: {
           ...state.current,
-          name: action.payLoad,
+          name: action.payload,
         },
         stopHasBeenModified: true,
       };
@@ -257,7 +257,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         ...state,
         current: {
           ...state.current,
-          publicCode: action.payLoad,
+          publicCode: action.payload,
         },
         stopHasBeenModified: true,
       };
@@ -267,7 +267,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         ...state,
         current: {
           ...state.current,
-          privateCode: action.payLoad,
+          privateCode: action.payload,
         },
         stopHasBeenModified: true,
       };
@@ -277,7 +277,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         ...state,
         current: {
           ...state.current,
-          description: action.payLoad,
+          description: action.payload,
         },
         stopHasBeenModified: true,
       };
@@ -286,7 +286,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithType(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -295,9 +295,9 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithSubMode(
           state.current,
-          action.payLoad.stopPlaceType,
-          action.payLoad.transportMode,
-          action.payLoad.submode
+          action.payload.stopPlaceType,
+          action.payload.transportMode,
+          action.payload.submode
         ),
         stopHasBeenModified: true,
       });
@@ -306,7 +306,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithPosition(
           state.current,
-          action.payLoad.location
+          action.payload.location
         ),
         stopHasBeenModified: true,
       });
@@ -322,7 +322,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
-      const { newStopPlace, fromMain } = action.payLoad;
+      const { newStopPlace, fromMain } = action.payload;
       let newState = Object.assign({}, state, {
         current: newStopPlace,
         isCreatingPolylines: false,
@@ -336,18 +336,18 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.SET_ACTIVE_MARKER:
       return Object.assign({}, state, {
-        activeSearchResult: action.payLoad,
-        centerPosition: getProperCenterLocation(action.payLoad.location),
-        zoom: getProperZoomLevel(action.payLoad.location),
+        activeSearchResult: action.payload,
+        centerPosition: getProperCenterLocation(action.payload.location),
+        zoom: getProperZoomLevel(action.payload.location),
       });
 
     case types.SET_MISSING_COORDINATES:
       return Object.assign({}, state, {
-        centerPosition: getProperCenterLocation(action.payLoad.position),
-        zoom: getProperZoomLevel(action.payLoad.position),
-        userDefinedCoordinates: action.payLoad,
+        centerPosition: getProperCenterLocation(action.payload.position),
+        zoom: getProperZoomLevel(action.payload.position),
+        userDefinedCoordinates: action.payload,
         activeSearchResult: Object.assign({}, state.activeSearchResult, {
-          location: action.payLoad.position,
+          location: action.payload.position,
         }),
       });
 
@@ -355,7 +355,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithNewElement(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -364,7 +364,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithElementPositionChange(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -373,7 +373,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithPublicCode(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -382,7 +382,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithPrivateCode(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -391,7 +391,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithElementDescriptionChange(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -400,15 +400,15 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentWithoutElement(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
 
     case types.CHANGED_MAP_CENTER:
       return Object.assign({}, state, {
-        centerPosition: action.payLoad.position,
-        zoom: action.payLoad.zoom,
+        centerPosition: action.payload.position,
+        zoom: action.payload.zoom,
       });
 
     case types.STARTED_CREATING_POLYLINE:
@@ -454,27 +454,27 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES:
       return Object.assign({}, state, {
-        enablePublicCodePrivateCodeOnStopPlaces: action.payLoad,
+        enablePublicCodePrivateCodeOnStopPlaces: action.payload,
       });
 
     case types.TOGGLED_IS_MULTIPOLYLINES_ENABLED:
-      return Object.assign({}, state, { enablePolylines: action.payLoad });
+      return Object.assign({}, state, { enablePolylines: action.payload });
 
     case types.TOGGLED_IS_COMPASS_BEARING_ENABLED:
       return Object.assign({}, state, {
-        isCompassBearingEnabled: action.payLoad,
+        isCompassBearingEnabled: action.payload,
       });
 
     case types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED:
       return Object.assign({}, state, {
-        showMultimodalEdges: action.payLoad,
+        showMultimodalEdges: action.payload,
       });
 
     case types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT:
       return Object.assign({}, state, {
         current: limitationHelpers.updateCurrentWithLimitations(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -483,7 +483,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: limitationHelpers.updateCurrentWithQuayLimitations(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -492,7 +492,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.updateTicketMachineState(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -501,7 +501,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.updateShelterEquipmentState(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -510,7 +510,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.updateSanitaryEquipmentState(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -519,7 +519,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.updateWaitingRoomState(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -528,7 +528,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.updateCycleStorageEquipmentState(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -537,32 +537,32 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: equipmentHelpers.update512SignEquipment(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
 
     case types.ADDED_ALT_NAME:
       return Object.assign({}, state, {
-        current: formatHelpers.addAltName(state.current, action.payLoad),
+        current: formatHelpers.addAltName(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
     case types.EDITED_ALT_NAME:
       return Object.assign({}, state, {
-        current: formatHelpers.editAltName(state.current, action.payLoad),
+        current: formatHelpers.editAltName(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
     case types.REMOVED_ALT_NAME:
       return Object.assign({}, state, {
-        current: formatHelpers.removeAltName(state.current, action.payLoad),
+        current: formatHelpers.removeAltName(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
     case types.CHANGED_PARKING_NAME:
       return Object.assign({}, state, {
-        current: formatHelpers.changeParkingName(state.current, action.payLoad),
+        current: formatHelpers.changeParkingName(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
@@ -570,7 +570,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingLayout(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -579,7 +579,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingPaymentProcess(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -588,7 +588,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingRechargingAvailable(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -597,7 +597,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingNumberOfSpaces(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -606,7 +606,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingNumberOfSpacesWithRechargePoint(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -616,7 +616,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         current:
           formatHelpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
             state.current,
-            action.payLoad
+            action.payload
           ),
         stopHasBeenModified: true,
       });
@@ -625,7 +625,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.changeParkingTotalCapacity(
           state.current,
-          action.payLoad
+          action.payload
         ),
         stopHasBeenModified: true,
       });
@@ -634,7 +634,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mergeStopDialog: {
           isOpen: true,
-          ...action.payLoad,
+          ...action.payload,
         },
       });
 
@@ -657,23 +657,23 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.TOGGLED_IS_SHOW_EXPIRED_STOPS:
       return Object.assign({}, state, {
-        showExpiredStops: action.payLoad,
+        showExpiredStops: action.payload,
       });
 
     case types.SET_ZOOM_LEVEL:
       return Object.assign({}, state, {
-        zoom: action.payLoad,
+        zoom: action.payload,
       });
 
     case types.ADDED_TARIFF_ZONE:
       return Object.assign({}, state, {
-        current: formatHelpers.addTariffZone(state.current, action.payLoad),
+        current: formatHelpers.addTariffZone(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
     case types.REMOVED_TARIFF_ZONE:
       return Object.assign({}, state, {
-        current: formatHelpers.removeTariffZone(state.current, action.payLoad),
+        current: formatHelpers.removeTariffZone(state.current, action.payload),
         stopHasBeenModified: true,
       });
 
