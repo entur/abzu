@@ -39,6 +39,9 @@ export const getTiamatClient = () => {
           StopPlace: {
             keyFields: ["id", "version"],
           },
+          ParentStopPlace: {
+            keyFields: ["id", "version"]
+          }
         },
         possibleTypes,
       }),
