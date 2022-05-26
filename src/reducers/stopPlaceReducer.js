@@ -37,6 +37,7 @@ const initialState = {
   showMultimodalEdges: Settings.getShowMultimodalEdges(),
   lastMutatedStopPlaceId: [],
   isFetchingMergeInfo: false,
+  loading: false
 };
 
 const stopPlaceReducer = (state = initialState, action) => {
@@ -675,6 +676,11 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         current: formatHelpers.removeTariffZone(state.current, action.payload),
         stopHasBeenModified: true,
+      });
+
+    case types.SET_STOP_PLACE_LOADING:
+      return Object.assign({}, state, {
+        loading: action.payload
       });
 
     default:

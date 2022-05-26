@@ -100,7 +100,7 @@ class StopPlace extends React.Component {
   }
 
   render() {
-    const { isCreatingPolylines, stopPlace, disabled, newStopCreated } =
+    const { isCreatingPolylines, stopPlace, disabled, newStopCreated, stopPlaceLoading } =
       this.props;
     const { resourceNotFound, showErrorDialog } = this.state;
     const { formatMessage } = this.props.intl;
@@ -149,18 +149,25 @@ class StopPlace extends React.Component {
             handleOnClick={this.handleOnClickPathLinkInfo.bind(this)}
           />
         )}
-        {!stopPlace && !showErrorDialog && <LoadingPage />}
+
+        {!stopPlace && !showErrorDialog&& (
+          <>
+            <LoadingPage />
+            <EditStopMap disabled />
+          </>
+        )}
+        {stopPlaceLoading && <LoadingPage />}
         {stopPlace && !stopPlace.isParent && (
           <div>
-            <NewElementsBox disabled={disabled} />
-            <EditStopGeneral disabled={disabled} />
-            <EditStopMap disabled={disabled} />
+            <NewElementsBox disabled={disabled || stopPlaceLoading} />
+            <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+            <EditStopMap disabled={disabled || stopPlaceLoading} />
           </div>
         )}
         {stopPlace && stopPlace.isParent && (
           <div>
-            <EditParentGeneral disabled={disabled} />
-            <EditStopMap disabled={disabled} />
+            <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+            <EditStopMap disabled={disabled || stopPlaceLoading} />
           </div>
         )}
       </div>
@@ -177,6 +184,7 @@ const mapStateToProps = (state) => ({
     !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
   newStopCreated: state.user.newStopCreated,
   originalStopPlace: state.stopPlace.originalCurrent,
+  stopPlaceLoading: state.stopPlace.loading
 });
 
 const EditPlaceIntl = injectIntl(connect(mapStateToProps)(StopPlace));

@@ -492,4 +492,8 @@ StopPlaceActions.removeTariffZone = (tariffZoneId) => (dispatch) => {
   dispatch(createThunk(types.REMOVED_TARIFF_ZONE, tariffZoneId));
 };
 
+StopPlaceActions.setStopPlaceLoading = (state) => (dispatch) => {
+  dispatch(createThunk(types.SET_STOP_PLACE_LOADING, state));
+}
+
 export default StopPlaceActions;
