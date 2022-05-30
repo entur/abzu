@@ -264,8 +264,8 @@ class QuayMarker extends React.Component {
         position={position}
         icon={quayIcon}
         draggable={this.props.draggable}
-        onDragend={(event) => {
-          handleQuayDragEnd(index, "quay", event);
+        eventHandlers={{
+          dragend: (e) => handleQuayDragEnd(index, "quay", e),
         }}
         keyboard={false}
       >

@@ -84,8 +84,8 @@ class ParkingAndRideMarker extends React.Component {
         position={position}
         icon={icon}
         key={"parking-marker" + index}
-        onDragend={(event) => {
-          handleDragEnd(index, "parking", event);
+        eventHandlers={{
+          dragend: (e) => handleDragEnd(index, "parking", e),
         }}
         ref="marker"
       >

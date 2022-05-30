@@ -72,8 +72,8 @@ class CoordinateMarker extends React.Component {
         draggable={true}
         position={position}
         icon={icon}
-        onDragend={(e) => {
-          this.handleDragEnd(e);
+        eventHandlers={{
+          dragend: (e) => handleDragEnd(e),
         }}
       >
         <Popup autoPan={false}>
