@@ -133,15 +133,17 @@ class NeighbourMarker extends React.Component {
         draggable={false}
       >
         <Popup
-          onOpen={() => {
-            this.setState({
-              isAllowedToCreateFrom: isLegalChildStopPlace(
-                stopPlace,
-                roleAssignments,
-                fetchedPolygons,
-                allowNewStopEverywhere
-              ),
-            });
+          eventHandlers={{
+            popupopen: () => {
+              this.setState({
+                isAllowedToCreateFrom: isLegalChildStopPlace(
+                  stopPlace,
+                  roleAssignments,
+                  fetchedPolygons,
+                  allowNewStopEverywhere
+                ),
+              });
+            }
           }}
           autoPan={false}
         >

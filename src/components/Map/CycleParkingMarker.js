@@ -96,8 +96,10 @@ class CycleParkingMarker extends Component {
       >
         <Popup
           autoPan={false}
-          onOpen={() => {
-            this.handleSetFocus();
+          eventHandlers={{
+            popupopen: () => {
+              this.handleSetFocus();
+            }
           }}
         >
           <div>

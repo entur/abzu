@@ -91,8 +91,10 @@ class ParkingAndRideMarker extends React.Component {
       >
         <Popup
           autoPan={false}
-          onOpen={() => {
-            this.handleSetFocus();
+          eventHandlers={{
+            popupopen: () => {
+              this.handleSetFocus();
+            }
           }}
         >
           <div>
