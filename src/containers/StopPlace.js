@@ -21,14 +21,13 @@ import InformationBanner from "../components/EditStopPage/InformationBanner";
 import { injectIntl } from "react-intl";
 import InformationManager from "../singletons/InformationManager";
 import "../styles/main.css";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import { UserActions } from "../actions/";
 import { getIn } from "../utils";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import LoadingPage from "./LoadingPage";
 import { getStopPlaceWithAll } from "../actions/TiamatActions";
+import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 
 class StopPlace extends React.Component {
   constructor(props) {
@@ -114,13 +113,6 @@ class StopPlace extends React.Component {
       .substring(window.location.pathname.lastIndexOf("/"))
       .replace("/", "");
 
-    const actions = [
-      <FlatButton
-        label={formatMessage({ id: "cancel" })}
-        onClick={this.handleCloseErrorDialog.bind(this)}
-      />,
-    ];
-
     const shouldDisplayMessage =
       isCreatingPolylines &&
       new InformationManager().getShouldPathLinkBeDisplayed();
@@ -128,16 +120,24 @@ class StopPlace extends React.Component {
     return (
       <div>
         <Dialog
-          modal={false}
-          actions={actions}
           open={showErrorDialog}
           onRequestClose={() => {
             this.setState({ showErrorDialog: false });
           }}
         >
-          {resourceNotFound
-            ? formatMessage({ id: "error_stopPlace_404" }) + idFromPath
-            : formatMessage({ id: "error_unable_to_load_stop" })}
+          <DialogContent>
+            {resourceNotFound
+              ? formatMessage({ id: "error_stopPlace_404" }) + idFromPath
+              : formatMessage({ id: "error_unable_to_load_stop" })}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              onClick={this.handleCloseErrorDialog.bind(this)}
+            >
+              {formatMessage({ id: "cancel" })}
+            </Button>
+          </DialogActions>
         </Dialog>
         <NewStopPlaceInfo
           open={newStopCreated.open}

@@ -14,9 +14,14 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 
 class WalkingDistanceDialog extends React.Component {
   constructor(props) {
@@ -89,50 +94,39 @@ class WalkingDistanceDialog extends React.Component {
       cancel: formatMessage({ id: "change_walking_distance_cancel" }),
     };
 
-    const buttonWrapperStyle = {
-      display: "flex",
-      justifyContent: "flex-end",
-      alignItems: "center",
-      marginTop: 20,
-    };
-
-    const actions = [
-      <TextField
-        hintText={formatMessage({ id: "seconds" })}
-        floatingLabelText={formatMessage({ id: "seconds" })}
-        floatingLabelStyle={{ textTransform: "capitalize" }}
-        style={{ display: "block", margin: "auto", width: "90%" }}
-        value={estimate}
-        onChange={this.handleInputChange.bind(this)}
-        errorText={this.state.errorText}
-      />,
-      <div style={buttonWrapperStyle}>
-        <FlatButton
-          label={translation.cancel}
-          primary={false}
-          keyboardFocused={true}
-          onClick={() => this.handleClose()}
-          style={{ marginRight: 5 }}
-        />
-        <FlatButton
-          label={translation.confirm}
-          primary={true}
-          keyboardFocused={true}
-          onClick={() => this.handleConfirm()}
-        />
-      </div>,
-    ];
-
     return (
       <div>
-        <Dialog
-          title={translation.title}
-          actions={actions}
-          modal={false}
-          open={open}
-          contentStyle={{ width: "45vw" }}
-        >
-          {translation.body}
+        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+          <DialogTitle>{translation.title}</DialogTitle>
+          <DialogContent>
+            {translation.body}
+            <TextField
+              hintText={formatMessage({ id: "seconds" })}
+              floatingLabelText={formatMessage({ id: "seconds" })}
+              floatingLabelStyle={{ textTransform: "capitalize" }}
+              style={{ display: "block", margin: "auto", width: "90%" }}
+              value={estimate}
+              onChange={this.handleInputChange.bind(this)}
+              errorText={this.state.errorText}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={() => this.handleClose()}
+              style={{ marginRight: 5 }}
+            >
+              {translation.cancel}
+            </Button>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={() => this.handleConfirm()}
+            >
+              {translation.confirm}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

@@ -14,12 +14,6 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import MdDeleteForever from "material-ui/svg-icons/action/delete-forever";
-import MdWarning from "material-ui/svg-icons/alert/warning";
 import Checkbox from "material-ui/Checkbox";
 import TimePicker from "material-ui/TimePicker";
 import DatePicker from "material-ui/DatePicker";
@@ -29,6 +23,14 @@ import TextField from "material-ui/TextField";
 import helpers from "../../modelUtils/mapToQueryVariables";
 import Spinner from "../../static/icons/spinner";
 import { getStopPlaceSearchUrl } from "../../utils/shamash";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Cancel, Delete, DeleteForever, Warning } from "@mui/icons-material";
 
 let DateTimeFormat;
 
@@ -218,37 +220,6 @@ class TerminateStopPlaceDialog extends React.Component {
     const dateTime = helpers.getFullUTCString(time, date);
     const warningUsage = this.getUsageWarning();
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        onClick={() =>
-          handleConfirm(
-            shouldHardDelete,
-            shouldTerminatePermanently,
-            comment,
-            dateTime
-          )
-        }
-        disabled={this.getConfirmIsDisabled()}
-        primary={true}
-        keyboardFocused={true}
-        icon={
-          isLoading ? (
-            <Spinner />
-          ) : shouldHardDelete ? (
-            <MdDeleteForever />
-          ) : (
-            <MdDelete />
-          )
-        }
-      />,
-    ];
-
     const earliestFrom = getEarliestFromDate(
       previousValidBetween,
       serverTimeDiff
@@ -256,9 +227,6 @@ class TerminateStopPlaceDialog extends React.Component {
 
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         titleStyle={{ padding: "24px 24px 0px" }}
         onRequestClose={() => {
@@ -266,96 +234,130 @@ class TerminateStopPlaceDialog extends React.Component {
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div>
-          <div style={{ marginBottom: 10, color: "#000" }}>
-            <span
-              style={{ fontWeight: 600 }}
-            >{`${stopPlace.name} (${stopPlace.id})`}</span>
-          </div>
-          <div style={{ color: "#bb271c" }}>
-            {stopPlace.hasExpired &&
-              formatMessage({ id: "expired_can_only_be_deleted" })}
-          </div>
-          {warningUsage}
-          <DatePicker
-            hintText={translations.date}
-            disabled={shouldHardDelete || stopPlace.hasExpired}
-            cancelLabel={translations.cancel}
-            floatingLabelText={translations.date}
-            okLabel={translations.use}
-            DateTimeFormat={DateTimeFormat}
-            formatDate={
-              new DateTimeFormat(intl.locale, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }).format
-            }
-            autoOk
-            mode="landscape"
-            minDate={earliestFrom}
-            value={date}
-            fullWidth={true}
-            onChange={(event, value) => {
-              this.setState({ date: value });
-            }}
-          />
-          <TimePicker
-            format="24hr"
-            cancelLabel={translations.cancel}
-            hintText={translations.time}
-            floatingLabelText={translations.time}
-            disabled={shouldHardDelete || stopPlace.hasExpired}
-            value={time}
-            fullWidth={true}
-            okLabel={translations.use}
-            autoOk
-            onChange={(event, value) => {
-              this.setState({
-                time: value,
-              });
-            }}
-          />
-          <TextField
-            value={comment}
-            disabled={shouldHardDelete || stopPlace.hasExpired}
-            fullWidth={true}
-            floatingLabelText={translations.comment}
-            hintText={translations.comment}
-            id="terminate-comment"
-            onChange={(e, v) => this.setState({ comment: v })}
-          />
-          <Checkbox
-            style={{ marginTop: 5 }}
-            checked={shouldTerminatePermanently}
-            onCheck={(e, v) => this.setState({ shouldTerminatePermanently: v })}
-            label={translations.permanentLabel}
-          />
-          {canDeleteStop && (
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          <div>
+            <div style={{ marginBottom: 10, color: "#000" }}>
+              <span
+                style={{ fontWeight: 600 }}
+              >{`${stopPlace.name} (${stopPlace.id})`}</span>
+            </div>
+            <div style={{ color: "#bb271c" }}>
+              {stopPlace.hasExpired &&
+                formatMessage({ id: "expired_can_only_be_deleted" })}
+            </div>
+            {warningUsage}
+            <DatePicker
+              hintText={translations.date}
+              disabled={shouldHardDelete || stopPlace.hasExpired}
+              cancelLabel={translations.cancel}
+              floatingLabelText={translations.date}
+              okLabel={translations.use}
+              DateTimeFormat={DateTimeFormat}
+              formatDate={
+                new DateTimeFormat(intl.locale, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }).format
+              }
+              autoOk
+              mode="landscape"
+              minDate={earliestFrom}
+              value={date}
+              fullWidth={true}
+              onChange={(event, value) => {
+                this.setState({ date: value });
+              }}
+            />
+            <TimePicker
+              format="24hr"
+              cancelLabel={translations.cancel}
+              hintText={translations.time}
+              floatingLabelText={translations.time}
+              disabled={shouldHardDelete || stopPlace.hasExpired}
+              value={time}
+              fullWidth={true}
+              okLabel={translations.use}
+              autoOk
+              onChange={(event, value) => {
+                this.setState({
+                  time: value,
+                });
+              }}
+            />
+            <TextField
+              value={comment}
+              disabled={shouldHardDelete || stopPlace.hasExpired}
+              fullWidth={true}
+              floatingLabelText={translations.comment}
+              hintText={translations.comment}
+              id="terminate-comment"
+              onChange={(e, v) => this.setState({ comment: v })}
+            />
             <Checkbox
               style={{ marginTop: 5 }}
-              checked={shouldHardDelete}
-              onCheck={(e, v) => this.setState({ shouldHardDelete: v })}
-              label={translations.deleteLabel}
+              checked={shouldTerminatePermanently}
+              onCheck={(e, v) =>
+                this.setState({ shouldTerminatePermanently: v })
+              }
+              label={translations.permanentLabel}
             />
-          )}
-          {shouldHardDelete && (
-            <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
-              <div style={{ marginTop: 0, marginRight: 5 }}>
-                <MdWarning color="orange" />
+            {canDeleteStop && (
+              <Checkbox
+                style={{ marginTop: 5 }}
+                checked={shouldHardDelete}
+                onCheck={(e, v) => this.setState({ shouldHardDelete: v })}
+                label={translations.deleteLabel}
+              />
+            )}
+            {shouldHardDelete && (
+              <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
+                <div style={{ marginTop: 0, marginRight: 5 }}>
+                  <Warning color="orange" />
+                </div>
+                <span>{translations.deleteWarning}</span>
               </div>
-              <span>{translations.deleteWarning}</span>
-            </div>
-          )}
-          {shouldTerminatePermanently && (
-            <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
-              <div style={{ marginTop: 0, marginRight: 5 }}>
-                <MdWarning color="orange" />
+            )}
+            {shouldTerminatePermanently && (
+              <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>
+                <div style={{ marginTop: 0, marginRight: 5 }}>
+                  <Warning color="orange" />
+                </div>
+                <span>{translations.permanentWarning}</span>
               </div>
-              <span>{translations.permanentWarning}</span>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            onClick={() =>
+              handleConfirm(
+                shouldHardDelete,
+                shouldTerminatePermanently,
+                comment,
+                dateTime
+              )
+            }
+            disabled={this.getConfirmIsDisabled()}
+            keyboardFocused={true}
+            startIcon={
+              isLoading ? (
+                <Spinner />
+              ) : shouldHardDelete ? (
+                <DeleteForever />
+              ) : (
+                <Delete />
+              )
+            }
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

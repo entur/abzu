@@ -14,13 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdMerge from "material-ui/svg-icons/editor/merge-type";
 import MergeQuaysDetails from "../EditStopPage/MergeQuaysDetails";
 import AcceptChanges from "../EditStopPage/AcceptChanges";
 import Spinner from "../../static/icons/spinner";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Cancel, Merge } from "@mui/icons-material";
 
 class MergeQuaysDialog extends React.Component {
   constructor(props) {
@@ -130,46 +134,46 @@ class MergeQuaysDialog extends React.Component {
 
     const versionComment = `Flettet quay ${fromQuay} til ${toQuay}`;
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        onClick={() => {
-          handleConfirm(versionComment);
-        }}
-        disabled={!enableConfirm || isLoading || OTPFetchIsLoading}
-        primary={true}
-        keyboardFocused={true}
-        icon={isLoading ? <Spinner /> : <MdMerge />}
-      />,
-    ];
-
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div>
-          {this.getUsageWarning()}
-          <MergeQuaysDetails merginQuays={mergingQuays} />
-          <div style={{ marginLeft: 0, fontSize: 14 }}>{translations.info}</div>
-          {hasStopBeenModified && (
-            <AcceptChanges
-              checked={changesUnderstood}
-              onChange={(e, v) => this.setState({ changesUnderstood: v })}
-            />
-          )}
-        </div>
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          <div>
+            {this.getUsageWarning()}
+            <MergeQuaysDetails merginQuays={mergingQuays} />
+            <div style={{ marginLeft: 0, fontSize: 14 }}>
+              {translations.info}
+            </div>
+            {hasStopBeenModified && (
+              <AcceptChanges
+                checked={changesUnderstood}
+                onChange={(e, v) => this.setState({ changesUnderstood: v })}
+              />
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            onClick={() => {
+              handleConfirm(versionComment);
+            }}
+            disabled={!enableConfirm || isLoading || OTPFetchIsLoading}
+            keyboardFocused={true}
+            icon={isLoading ? <Spinner /> : <Merge />}
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

@@ -12,9 +12,14 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import React, { Component } from "react";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import { injectIntl } from "react-intl";
 
 class GroupErrorDialog extends Component {
@@ -31,22 +36,15 @@ class GroupErrorDialog extends Component {
     const { formatMessage } = intl;
     const errorText = this.getErrorText(errorType, formatMessage);
 
-    const actions = [
-      <FlatButton
-        label={formatMessage({ id: "ok" })}
-        primary={true}
-        onClick={handleOK}
-      />,
-    ];
-
     return (
-      <Dialog
-        style={{ zIndex: 10000 }}
-        actions={actions}
-        open={open}
-        title={formatMessage({ id: "error_has_occurred" })}
-      >
-        {errorText}
+      <Dialog open={open}>
+        <DialogTitle>{formatMessage({ id: "error_has_occurred" })}</DialogTitle>
+        <DialogContent>{errorText}</DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleOK}>
+            {formatMessage({ id: "ok" })}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

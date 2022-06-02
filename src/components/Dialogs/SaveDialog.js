@@ -14,20 +14,23 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import TimePicker from "material-ui/TimePicker";
 import DatePicker from "material-ui/DatePicker";
-import Checkbox from "material-ui/Checkbox";
-import TextField from "material-ui/TextField";
-import MdSave from "material-ui/svg-icons/content/save";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
 import MdSpinner from "../../static/icons/spinner";
 import areIntlLocalesSupported from "intl-locales-supported";
 import {
   isDateRangeLegal,
   getEarliestFromDate,
 } from "../../utils/saveDialogUtils";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Cancel, Save } from "@mui/icons-material";
+import { TextField } from "material-ui";
 
 let DateTimeFormat;
 
@@ -189,22 +192,6 @@ class SaveDialog extends React.Component {
       timeTo
     );
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        primary={true}
-        keyboardFocused={true}
-        icon={isSaving && !errorMessage.length ? <MdSpinner /> : <MdSave />}
-        disabled={!timeLegal || !dateLegal || isSaving}
-        onClick={() => this.handleSave()}
-      />,
-    ];
-
     const expandedExpirary = (
       <div>
         <div style={{ marginTop: 20, marginLeft: 30 }}>
@@ -263,30 +250,46 @@ class SaveDialog extends React.Component {
 
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        {expiraryExpanded ? { expandedExpirary } : null}
-        <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
-          <TextField
-            floatingLabelText={translations.comment}
-            ref={(input) => {
-              this.commentInput = input;
-            }}
-            fullWidth={true}
-            multiLine={true}
-            value={comment}
-            onChange={(e, value) => this.setState({ comment: value })}
-            rowsMax={4}
-          />
-        </div>
-        <div style={{ color: "#bb271c" }}>{errorMessageLabel}</div>
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          {expiraryExpanded ? { expandedExpirary } : null}
+          <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
+            <TextField
+              floatingLabelText={translations.comment}
+              ref={(input) => {
+                this.commentInput = input;
+              }}
+              fullWidth={true}
+              multiLine={true}
+              value={comment}
+              onChange={(e, value) => this.setState({ comment: value })}
+              rowsMax={4}
+            />
+          </div>
+          <div style={{ color: "#bb271c" }}>{errorMessageLabel}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            keyboardFocused={true}
+            startIcon={
+              isSaving && !errorMessage.length ? <MdSpinner /> : <Save />
+            }
+            disabled={!timeLegal || !dateLegal || isSaving}
+            onClick={() => this.handleSave()}
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

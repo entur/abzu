@@ -14,13 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdMerge from "material-ui/svg-icons/editor/merge-type";
 import AcceptChanges from "../EditStopPage/AcceptChanges";
 import ScrollableQuayList from "./ScrollableQuayList";
 import Spinner from "../../static/icons/spinner";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Cancel, Merge } from "@mui/icons-material";
 
 class MoveQuayNewStopDialog extends React.Component {
   constructor(props) {
@@ -98,54 +102,52 @@ class MoveQuayNewStopDialog extends React.Component {
       ", "
     )} fra ${fromStopPlaceId}`;
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        disabled={!enableConfirm || isLoading || !quayIds.length}
-        onClick={() => {
-          handleConfirm(quayIds, fromVersionComment, toVersionComment);
-        }}
-        primary={true}
-        keyboardFocused={true}
-        icon={isLoading ? <Spinner /> : <MdMerge />}
-      />,
-    ];
-
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div>
-          <div style={{ marginBottom: 10, fontWeight: 600, color: "#000" }}>
-            {quayIds.length} {translations.result}
-          </div>
-          <ScrollableQuayList
-            style={{ marginBottom: 10, color: "#000" }}
-            quays={quays}
-            handleUpdate={this.handleUpdate.bind(this)}
-            defaultQuayId={quay.id}
-            formatMessage={formatMessage}
-          />
-          <div style={{ fontSize: "0.9em" }}>{translations.info}</div>
-          {hasStopBeenModified && (
-            <AcceptChanges
-              checked={changesUnderstood}
-              onChange={(e, v) => this.setState({ changesUnderstood: v })}
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          <div>
+            <div style={{ marginBottom: 10, fontWeight: 600, color: "#000" }}>
+              {quayIds.length} {translations.result}
+            </div>
+            <ScrollableQuayList
+              style={{ marginBottom: 10, color: "#000" }}
+              quays={quays}
+              handleUpdate={this.handleUpdate.bind(this)}
+              defaultQuayId={quay.id}
+              formatMessage={formatMessage}
             />
-          )}
-        </div>
+            <div style={{ fontSize: "0.9em" }}>{translations.info}</div>
+            {hasStopBeenModified && (
+              <AcceptChanges
+                checked={changesUnderstood}
+                onChange={(e, v) => this.setState({ changesUnderstood: v })}
+              />
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            disabled={!enableConfirm || isLoading || !quayIds.length}
+            onClick={() => {
+              handleConfirm(quayIds, fromVersionComment, toVersionComment);
+            }}
+            keyboardFocused={true}
+            startIcon={isLoading ? <Spinner /> : <Merge />}
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

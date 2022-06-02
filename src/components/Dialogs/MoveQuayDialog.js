@@ -14,13 +14,11 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdMerge from "material-ui/svg-icons/editor/merge-type";
 import Code from "../EditStopPage/Code";
 import AcceptChanges from "../EditStopPage/AcceptChanges";
 import Spinner from "../../static/icons/spinner";
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Cancel, Merge } from "@mui/icons-material";
 
 class MoveQuayDialog extends React.Component {
   constructor(props) {
@@ -72,60 +70,58 @@ class MoveQuayDialog extends React.Component {
     const fromVersionComment = `Flyttet ${quay.id} til ${stopPlaceId}`;
     const toVersionComment = `Flyttet ${quay.id} til ${stopPlaceId}`;
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        disabled={!enableConfirm || isLoading}
-        onClick={() => {
-          handleConfirm(fromVersionComment, toVersionComment);
-        }}
-        primary={true}
-        keyboardFocused={true}
-        icon={isLoading ? <Spinner /> : <MdMerge />}
-      />,
-    ];
-
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div>
-          <div style={{ marginBottom: 10, color: "#000" }}>
-            <span
-              style={{ fontWeight: 600 }}
-            >{`${quay.id} => ${stopPlaceId}`}</span>
-            <div
-              style={{
-                display: "flex",
-                padding: 5,
-                textAlign: "center",
-                width: "100%",
-              }}
-            >
-              <Code type="publicCode" value={quay.publicCode} />
-              <Code type="privateCode" value={quay.privateCode} />
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          <div>
+            <div style={{ marginBottom: 10, color: "#000" }}>
+              <span
+                style={{ fontWeight: 600 }}
+              >{`${quay.id} => ${stopPlaceId}`}</span>
+              <div
+                style={{
+                  display: "flex",
+                  padding: 5,
+                  textAlign: "center",
+                  width: "100%",
+                }}
+              >
+                <Code type="publicCode" value={quay.publicCode} />
+                <Code type="privateCode" value={quay.privateCode} />
+              </div>
             </div>
+            <span>{translations.info}</span>
+            {hasStopBeenModified && (
+              <AcceptChanges
+                checked={changesUnderstood}
+                onChange={(e, v) => this.setState({ changesUnderstood: v })}
+              />
+            )}
           </div>
-          <span>{translations.info}</span>
-          {hasStopBeenModified && (
-            <AcceptChanges
-              checked={changesUnderstood}
-              onChange={(e, v) => this.setState({ changesUnderstood: v })}
-            />
-          )}
-        </div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            disabled={!enableConfirm || isLoading}
+            onClick={() => {
+              handleConfirm(fromVersionComment, toVersionComment);
+            }}
+            keyboardFocused={true}
+            startIcon={isLoading ? <Spinner /> : <Merge />}
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

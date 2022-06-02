@@ -13,12 +13,17 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import { UserActions } from "../../actions/";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 
 class FavoriteNameDialog extends React.Component {
   constructor(props) {
@@ -66,35 +71,30 @@ class FavoriteNameDialog extends React.Component {
       title_for_favorite: formatMessage({ id: "title_for_favorite" }),
     };
 
-    const actions = [
-      <FlatButton
-        label={labelTexts.cancel}
-        primary={true}
-        onClick={this.handleClose.bind(this)}
-      />,
-      <FlatButton
-        label={labelTexts.use}
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.handleSubmit.bind(this)}
-      />,
-    ];
-
     return (
       <div>
-        <Dialog
-          title={labelTexts.title_for_favorite}
-          actions={actions}
-          modal={false}
-          open={isOpen}
-          onRequestClose={this.handleClose}
-        >
-          <TextField
-            name="favoriteTittel"
-            fullWidth={true}
-            errorText={errorText}
-            onChange={this.handleChange}
-          />
+        <Dialog open={isOpen} onRequestClose={this.handleClose}>
+          <DialogTitle>{labelTexts.title_for_favorite}</DialogTitle>
+          <DialogContent>
+            <TextField
+              name="favoriteTittel"
+              fullWidth={true}
+              errorText={errorText}
+              onChange={this.handleChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="text" onClick={this.handleClose.bind(this)}>
+              {labelTexts.cancel}
+            </Button>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={this.handleSubmit.bind(this)}
+            >
+              {labelTexts.use}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

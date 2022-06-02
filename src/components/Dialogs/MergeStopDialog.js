@@ -14,13 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdMerge from "material-ui/svg-icons/editor/merge-type";
 import AcceptChanges from "../EditStopPage/AcceptChanges";
 import QuayDetails from "../EditStopPage/QuayDetails";
 import Spinner from "../../static/icons/spinner";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Cancel, Merge } from "@mui/icons-material";
 
 class MergeStopDialog extends React.Component {
   constructor(props) {
@@ -122,84 +126,82 @@ class MergeStopDialog extends React.Component {
 
     if (!sourceElement) return null;
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-    ];
-
-    if (canMerge) {
-      actions.push(
-        <FlatButton
-          label={translations.confirm}
-          disabled={!enableConfirm || isLoading || isFetchingQuays}
-          onClick={() => {
-            handleConfirm(fromVersionComment, toVersionComment);
-          }}
-          primary={true}
-          keyboardFocused={true}
-          icon={isLoading ? <Spinner /> : <MdMerge />}
-        />
-      );
-    }
-
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        {canMerge ? (
-          isFetchingQuays ? (
-            <div style={{ textAlign: "center" }}>
-              <Spinner style={{ height: 40, width: 40 }} />
-            </div>
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          {canMerge ? (
+            isFetchingQuays ? (
+              <div style={{ textAlign: "center" }}>
+                <Spinner style={{ height: 40, width: 40 }} />
+              </div>
+            ) : (
+              <div>
+                <div style={{ marginBottom: 20, color: "#000" }}>
+                  {mergeResultText}
+                </div>
+                {sourceElement.quays && sourceElement.quays.length ? (
+                  <span style={{ fontWeight: 600 }}>{translations.result}</span>
+                ) : (
+                  <span style={{ fontWeight: 600, borderBottom: "1px solid" }}>
+                    {translations.result_empty}
+                  </span>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    maxHeight: 300,
+                    overflowX: "auto",
+                    marginBottom: 10,
+                  }}
+                >
+                  {(sourceElement.quays || []).map((quay) => (
+                    <div
+                      style={{ padding: 10 }}
+                      key={"quay-details-" + quay.id}
+                    >
+                      <QuayDetails quay={quay} hideSourceOriginLabel={true} />
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginLeft: 0 }}>{translations.info}</div>
+                {hasStopBeenModified && (
+                  <AcceptChanges
+                    checked={changesUnderstood}
+                    onChange={(e, v) => this.setState({ changesUnderstood: v })}
+                  />
+                )}
+              </div>
+            )
           ) : (
-            <div>
-              <div style={{ marginBottom: 20, color: "#000" }}>
-                {mergeResultText}
-              </div>
-              {sourceElement.quays && sourceElement.quays.length ? (
-                <span style={{ fontWeight: 600 }}>{translations.result}</span>
-              ) : (
-                <span style={{ fontWeight: 600, borderBottom: "1px solid" }}>
-                  {translations.result_empty}
-                </span>
-              )}
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  maxHeight: 300,
-                  overflowX: "auto",
-                  marginBottom: 10,
-                }}
-              >
-                {(sourceElement.quays || []).map((quay) => (
-                  <div style={{ padding: 10 }} key={"quay-details-" + quay.id}>
-                    <QuayDetails quay={quay} hideSourceOriginLabel={true} />
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginLeft: 0 }}>{translations.info}</div>
-              {hasStopBeenModified && (
-                <AcceptChanges
-                  checked={changesUnderstood}
-                  onChange={(e, v) => this.setState({ changesUnderstood: v })}
-                />
-              )}
-            </div>
-          )
-        ) : (
-          <div>{translations.mergingNotAllowed}</div>
-        )}
+            <div>{translations.mergingNotAllowed}</div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          {canMerge && (
+            <Button
+              variant="text"
+              disabled={!enableConfirm || isLoading || isFetchingQuays}
+              onClick={() => {
+                handleConfirm(fromVersionComment, toVersionComment);
+              }}
+              keyboardFocused={true}
+              startIcon={isLoading ? <Spinner /> : <Merge />}
+            >
+              {translations.confirm}
+            </Button>
+          )}
+        </DialogActions>
       </Dialog>
     );
   }
