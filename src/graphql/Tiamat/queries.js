@@ -88,8 +88,10 @@ export const stopPlaceBBQuery = gql`
       }
       name {
         value
+        lang
       }
       topographicPlace {
+        id
         name {
           value
         }
@@ -115,6 +117,7 @@ export const stopPlaceBBQuery = gql`
             coordinates
           }
           topographicPlace {
+            id
             name {
               value
             }
@@ -126,6 +129,7 @@ export const stopPlaceBBQuery = gql`
           }
           name {
             value
+            lang
           }
         }
         name {
@@ -200,6 +204,7 @@ export const getStopById = gql`
       }
       name {
         value
+        lang
       }
       groups {
         id
@@ -227,11 +232,13 @@ export const getStopById = gql`
       }
       modificationEnumeration
       topographicPlace {
+        id
         name {
           value
         }
         topographicPlaceType
         parentTopographicPlace {
+          id
           name {
             value
           }
@@ -261,6 +268,7 @@ export const getStopById = gql`
         children {
           name {
             value
+            lang
           }
           id
           version
@@ -303,10 +311,12 @@ export const findStop = gql`
           coordinates
         }
         topographicPlace {
+          id
           name {
             value
           }
           parentTopographicPlace {
+            id
             name {
               value
             }
@@ -364,11 +374,13 @@ export const findStop = gql`
         }
       }
       topographicPlace {
+        id
         name {
           value
         }
         topographicPlaceType
         parentTopographicPlace {
+          id
           name {
             value
           }
@@ -541,6 +553,7 @@ export const topopGraphicalPlacesQuery = gql`
       }
       topographicPlaceType
       parentTopographicPlace {
+        id
         name {
           value
         }
@@ -558,6 +571,7 @@ export const topopGraphicalPlacesReportQuery = gql`
       }
       topographicPlaceType
       parentTopographicPlace {
+        id
         name {
           value
         }
@@ -709,6 +723,7 @@ export const getQueryTopographicPlaces = (ids) => {
           }
           topographicPlaceType
           parentTopographicPlace {
+          id
           name {
             value
           }
