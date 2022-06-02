@@ -53,6 +53,7 @@ class GroupOfStopPlaceMap extends Component {
         dragableMarkers={false}
         activeBaselayer={activeBaselayer}
         enablePolylines={enablePolylines}
+        handleDragEnd={() => {}}
       />
     );
   }
