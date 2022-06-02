@@ -84,7 +84,11 @@ class FavoriteNameDialog extends React.Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button variant="text" onClick={this.handleClose.bind(this)}>
+            <Button
+              variant="text"
+              onClick={this.handleClose.bind(this)}
+              color="secondary"
+            >
               {labelTexts.cancel}
             </Button>
             <Button

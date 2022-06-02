@@ -116,6 +116,7 @@ class WalkingDistanceDialog extends React.Component {
               keyboardFocused={true}
               onClick={() => this.handleClose()}
               style={{ marginRight: 5 }}
+              color="secondary"
             >
               {translation.cancel}
             </Button>

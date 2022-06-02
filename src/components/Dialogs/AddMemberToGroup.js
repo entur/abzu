@@ -102,7 +102,7 @@ class AddMemberToGroup extends Component {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose}>
+          <Button variant="text" onClick={handleClose} color="secondary">
             {formatMessage({ id: "change_coordinates_cancel" })}
           </Button>
           <Button

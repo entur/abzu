@@ -275,7 +275,12 @@ class SaveDialog extends React.Component {
           <div style={{ color: "#bb271c" }}>{errorMessageLabel}</div>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+          <Button
+            variant="text"
+            onClick={handleClose}
+            startIcon={<Cancel />}
+            color="secondary"
+          >
             {translations.cancel}
           </Button>
           <Button

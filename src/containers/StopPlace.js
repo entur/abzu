@@ -134,6 +134,7 @@ class StopPlace extends React.Component {
             <Button
               variant="text"
               onClick={this.handleCloseErrorDialog.bind(this)}
+              color="secondary"
             >
               {formatMessage({ id: "cancel" })}
             </Button>

@@ -159,7 +159,12 @@ class MergeQuaysDialog extends React.Component {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+          <Button
+            variant="text"
+            onClick={handleClose}
+            startIcon={<Cancel />}
+            color="secondary"
+          >
             {translations.cancel}
           </Button>
           <Button

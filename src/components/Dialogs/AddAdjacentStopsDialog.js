@@ -115,7 +115,7 @@ class AddAdjacentStopDialog extends React.Component {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose}>
+          <Button variant="text" onClick={handleClose} color="secondary">
             {formatMessage({ id: "cancel" })}
           </Button>
           <Button

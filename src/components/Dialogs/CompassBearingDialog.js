@@ -111,6 +111,7 @@ class CompassBearingDialog extends React.Component {
               keyboardFocused={true}
               onClick={() => this.handleClose()}
               style={{ marginRight: 5 }}
+              color="secondary"
             >
               {compassBearingTranslation.cancel}
             </Button>

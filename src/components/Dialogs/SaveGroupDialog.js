@@ -38,7 +38,7 @@ class SaveGroupDialog extends Component {
           </p>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose}>
+          <Button variant="text" onClick={handleClose} color="secondary">
             {formatMessage({ id: "cancel" })}
           </Button>
           <Button variant="text" onClick={handleSave}>

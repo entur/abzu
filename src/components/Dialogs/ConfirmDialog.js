@@ -55,7 +55,7 @@ class ConfirmDialog extends React.Component {
           <DialogContent>{confirmDialogTranslation.body}</DialogContent>
           <DialogActions>
             <ButtonGroup>
-              <Button variant="text" onClick={handleClose}>
+              <Button variant="text" onClick={handleClose} color="secondary">
                 {confirmDialogTranslation.cancel}
               </Button>
               <Button
