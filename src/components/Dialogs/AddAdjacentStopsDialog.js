@@ -14,11 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import FlatButton from "material-ui/FlatButton";
 import AddStopPlaceSuggestionListItem from "./AddStopPlaceSuggestionListItem";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
 class AddAdjacentStopDialog extends React.Component {
   constructor(props) {
@@ -66,54 +72,65 @@ class AddAdjacentStopDialog extends React.Component {
 
     const { formatMessage } = intl;
 
-    const actions = [
-      <FlatButton
-        label={formatMessage({ id: "cancel" })}
-        primary={true}
-        onClick={handleClose}
-      />,
-      <FlatButton
-        label={formatMessage({ id: "confirm" })}
-        disabled={this.state.selectedAdjacentStopPlace === "NONE"}
-        primary={true}
-        onClick={() =>
-          handleConfirm(
-            currentStopPlaceId,
-            this.state.selectedAdjacentStopPlace
-          )
-        }
-      />,
-    ];
-
     return (
       <Dialog
-        title={formatMessage({ id: "connect_to_adjacent_stop_title" })}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div style={{ margin: 10 }}>
-          {formatMessage({ id: "connect_to_adjacent_stop_description" })}
-        </div>
-        {stopPlaceChildren &&
-          stopPlaceChildren
-            .filter((child) => !this.isCurrentChildStop(child))
-            .map((child) => (
-              <AddStopPlaceSuggestionListItem
-                key={child.id}
-                disabled={this.isConnected(child)}
-                onCheck={this.handleChange.bind(this)}
-                checked={
-                  this.state.selectedAdjacentStopPlace === child.id ||
-                  this.isConnected(child)
-                }
-                suggestion={child}
-              />
-            ))}
+        <DialogTitle>
+          {formatMessage({ id: "connect_to_adjacent_stop_title" })}
+        </DialogTitle>
+        <DialogContent>
+          <Box
+            noValidate
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              width: "fit-content",
+            }}
+          >
+            <div style={{ margin: 10 }}>
+              {formatMessage({ id: "connect_to_adjacent_stop_description" })}
+            </div>
+            {stopPlaceChildren &&
+              stopPlaceChildren
+                .filter((child) => !this.isCurrentChildStop(child))
+                .map((child) => (
+                  <AddStopPlaceSuggestionListItem
+                    key={child.id}
+                    disabled={this.isConnected(child)}
+                    onCheck={this.handleChange.bind(this)}
+                    checked={
+                      this.state.selectedAdjacentStopPlace === child.id ||
+                      this.isConnected(child)
+                    }
+                    suggestion={child}
+                  />
+                ))}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose}>
+            {formatMessage({ id: "cancel" })}
+          </Button>
+          <Button
+            variant="text"
+            disabled={this.state.selectedAdjacentStopPlace === "NONE"}
+            onClick={() =>
+              handleConfirm(
+                currentStopPlaceId,
+                this.state.selectedAdjacentStopPlace
+              )
+            }
+          >
+            {formatMessage({ id: "confirm" })}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

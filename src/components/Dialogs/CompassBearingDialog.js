@@ -14,9 +14,14 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { TextField } from "material-ui";
 
 class CompassBearingDialog extends React.Component {
   constructor(props) {
@@ -85,50 +90,39 @@ class CompassBearingDialog extends React.Component {
       cancel: formatMessage({ id: "change_compass_bearing_cancel" }),
     };
 
-    const buttonWrapperStyle = {
-      display: "flex",
-      justifyContent: "flex-end",
-      alignItems: "center",
-      marginTop: 20,
-    };
-
-    const actions = [
-      <TextField
-        hintText="lat,lng"
-        floatingLabelText={formatMessage({ id: "compass_bearing" })}
-        style={{ display: "block", margin: "auto", width: "90%" }}
-        value={compassBearing}
-        onChange={this.handleInputChange.bind(this)}
-        errorText={this.state.errorText}
-      />,
-      <div style={buttonWrapperStyle}>
-        <FlatButton
-          label={compassBearingTranslation.cancel}
-          primary={false}
-          keyboardFocused={true}
-          onClick={() => this.handleClose()}
-          style={{ marginRight: 5 }}
-        />
-        <FlatButton
-          label={compassBearingTranslation.confirm}
-          primary={true}
-          disabled={!this.state.compassBearing}
-          keyboardFocused={true}
-          onClick={() => this.handleConfirm()}
-        />
-      </div>,
-    ];
-
     return (
       <div>
-        <Dialog
-          title={compassBearingTranslation.title}
-          actions={actions}
-          modal={false}
-          open={open}
-          contentStyle={{ width: "45vw" }}
-        >
-          {compassBearingTranslation.body}
+        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+          <DialogTitle>{compassBearingTranslation.title}</DialogTitle>
+          <DialogContent>
+            {compassBearingTranslation.body}
+
+            <TextField
+              floatingLabelText={formatMessage({ id: "compass_bearing" })}
+              style={{ display: "block", margin: "auto", width: "90%" }}
+              value={compassBearing}
+              onChange={this.handleInputChange.bind(this)}
+              errorText={this.state.errorText}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={() => this.handleClose()}
+              style={{ marginRight: 5 }}
+            >
+              {compassBearingTranslation.cancel}
+            </Button>
+            <Button
+              variant="text"
+              disabled={!this.state.compassBearing}
+              keyboardFocused={true}
+              onClick={() => this.handleConfirm()}
+            >
+              {compassBearingTranslation.confirm}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

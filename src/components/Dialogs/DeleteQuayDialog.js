@@ -14,14 +14,18 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import MdCancel from "material-ui/svg-icons/navigation/cancel";
-import MdDelete from "material-ui/svg-icons/action/delete-forever";
-import MdWarning from "material-ui/svg-icons/alert/warning";
 import Spinner from "../../static/icons/spinner";
-import Checkbox from "material-ui/Checkbox";
 import { getQuaySearchUrl } from "../../utils/shamash";
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+} from "@mui/material";
+import { Cancel, Delete, Warning } from "@mui/icons-material";
 
 class DeleteQuayDialog extends React.Component {
   constructor(props) {
@@ -135,95 +139,97 @@ class DeleteQuayDialog extends React.Component {
       important_notice: formatMessage({ id: "important_notice" }),
     };
 
-    const actions = [
-      <FlatButton
-        label={translations.cancel}
-        onClick={handleClose}
-        icon={<MdCancel />}
-      />,
-      <FlatButton
-        label={translations.confirm}
-        onClick={handleConfirm}
-        primary={true}
-        disabled={isLoading || !changesUnderstood}
-        keyboardFocused={true}
-        icon={isLoading ? <Spinner /> : <MdDelete />}
-      />,
-    ];
-
     return (
       <Dialog
-        title={translations.title}
-        actions={actions}
-        modal={true}
         open={open}
         onRequestClose={() => {
           handleClose();
         }}
         contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
-        <div>
-          <div style={{ marginBottom: 20, color: "#000" }}>
-            <span style={{ fontWeight: 600 }}>
-              {deletingQuay ? deletingQuay.quayId : null}
-            </span>
-          </div>
-          <div style={{ fontSize: "1.3em", color: "#000", marginBottom: 5 }}>
-            {translations.important_notice}
-          </div>
-          {this.getUsageWarning()}
-          <div
-            style={{
-              marginLeft: 0,
-              color: "#000",
-              background: "#fcc8c5",
-              padding: 10,
-              border: "1px solid black",
-            }}
-          >
-            {translations.info}
-          </div>
-          {importedId.length ? (
+        <DialogTitle>{translations.title}</DialogTitle>
+        <DialogContent>
+          <div>
+            <div style={{ marginBottom: 20, color: "#000" }}>
+              <span style={{ fontWeight: 600 }}>
+                {deletingQuay ? deletingQuay.quayId : null}
+              </span>
+            </div>
+            <div style={{ fontSize: "1.3em", color: "#000", marginBottom: 5 }}>
+              {translations.important_notice}
+            </div>
+            {this.getUsageWarning()}
             <div
               style={{
-                padding: 10,
+                marginLeft: 0,
                 color: "#000",
-                maxHeight: 200,
-                overflow: "auto",
+                background: "#fcc8c5",
+                padding: 10,
+                border: "1px solid black",
               }}
             >
-              <div>{translations.importedId}</div>
-              <ol>
-                {importedId.map((entry, index) => (
-                  <li
-                    key={"importedId-" + index}
-                    style={{ lineHeight: "1.4em" }}
-                  >
-                    {entry}
-                  </li>
-                ))}
-              </ol>
+              {translations.info}
             </div>
-          ) : (
-            <p style={{ fontStyle: "italic" }}>
-              {translations.importedId_empty}
-            </p>
-          )}
-          <Checkbox
-            style={{ marginTop: 10 }}
-            checked={changesUnderstood}
-            onCheck={(e, v) => {
-              this.setState({ changesUnderstood: v });
-            }}
-            label={translations.are_you_sure}
-          />
-          <div style={{ marginTop: 10, display: "flex", alignItems: "center" }}>
-            <MdWarning color="orange" />
-            <span style={{ fontWeight: 600, marginLeft: 5 }}>
-              {translations.warning}
-            </span>
+            {importedId.length ? (
+              <div
+                style={{
+                  padding: 10,
+                  color: "#000",
+                  maxHeight: 200,
+                  overflow: "auto",
+                }}
+              >
+                <div>{translations.importedId}</div>
+                <ol>
+                  {importedId.map((entry, index) => (
+                    <li
+                      key={"importedId-" + index}
+                      style={{ lineHeight: "1.4em" }}
+                    >
+                      {entry}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : (
+              <p style={{ fontStyle: "italic" }}>
+                {translations.importedId_empty}
+              </p>
+            )}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={changesUnderstood}
+                  onChange={(e, v) => {
+                    this.setState({ changesUnderstood: v });
+                  }}
+                />
+              }
+              label={translations.are_you_sure}
+            />
+
+            <div style={{ marginTop: 10, display: "flex", alignItems: "end" }}>
+              <Warning color="orange" />
+              <span style={{ fontWeight: 600, marginLeft: 5 }}>
+                {translations.warning}
+              </span>
+            </div>
           </div>
-        </div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+            {translations.cancel}
+          </Button>
+          <Button
+            variant="text"
+            onClick={handleConfirm}
+            disabled={isLoading || !changesUnderstood}
+            keyboardFocused={true}
+            startIcon={isLoading ? <Spinner /> : <Delete />}
+          >
+            {translations.confirm}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

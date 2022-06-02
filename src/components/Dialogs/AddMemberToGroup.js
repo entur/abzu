@@ -13,13 +13,19 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
 import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getGroupMemberSuggestions } from "../../modelUtils/leafletUtils";
 import AddStopPlaceSuggestionList from "./AddStopPlaceSuggestionList";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
 class AddMemberToGroup extends Component {
   constructor(props) {
@@ -73,33 +79,41 @@ class AddMemberToGroup extends Component {
       allowNewStopEverywhere
     );
 
-    const actions = [
-      <FlatButton
-        label={formatMessage({ id: "change_coordinates_cancel" })}
-        primary={true}
-        onClick={handleClose}
-      />,
-      <FlatButton
-        label={formatMessage({ id: "add" })}
-        primary={true}
-        keyboardFocused={true}
-        disabled={!canSave}
-        onClick={() => handleConfirm(checkedItems)}
-      />,
-    ];
-
     return (
-      <Dialog
-        actions={actions}
-        open={open}
-        title={formatMessage({ id: "add_stop_place" })}
-      >
-        <AddStopPlaceSuggestionList
-          suggestions={suggestions}
-          checkedItems={checkedItems}
-          formatMessage={formatMessage}
-          onItemCheck={this.handleOnItemCheck.bind(this)}
-        />
+      <Dialog open={open}>
+        <DialogTitle>{formatMessage({ id: "add_stop_place" })}</DialogTitle>
+        <DialogContent>
+          <Box
+            noValidate
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              width: "fit-content",
+            }}
+          >
+            <AddStopPlaceSuggestionList
+              suggestions={suggestions}
+              checkedItems={checkedItems}
+              formatMessage={formatMessage}
+              onItemCheck={this.handleOnItemCheck.bind(this)}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={handleClose}>
+            {formatMessage({ id: "change_coordinates_cancel" })}
+          </Button>
+          <Button
+            variant="text"
+            keyboardFocused={true}
+            disabled={!canSave}
+            onClick={() => handleConfirm(checkedItems)}
+          >
+            {formatMessage({ id: "add" })}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

@@ -14,8 +14,14 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
 class ConfirmDialog extends React.Component {
   static propTypes = {
@@ -37,32 +43,30 @@ class ConfirmDialog extends React.Component {
       cancel: formatMessage({ id: messagesById.cancel }),
     };
 
-    const actions = [
-      <FlatButton
-        label={confirmDialogTranslation.cancel}
-        primary={true}
-        onClick={handleClose}
-      />,
-      <FlatButton
-        label={confirmDialogTranslation.confirm}
-        primary={true}
-        keyboardFocused={true}
-        onClick={handleConfirm}
-      />,
-    ];
-
     return (
       <div>
         <Dialog
-          title={confirmDialogTranslation.title}
-          actions={actions}
-          modal={false}
           open={open}
           onRequestClose={() => {
             handleClose();
           }}
         >
-          {confirmDialogTranslation.body}
+          <DialogTitle>{confirmDialogTranslation.title}</DialogTitle>
+          <DialogContent>{confirmDialogTranslation.body}</DialogContent>
+          <DialogActions>
+            <ButtonGroup>
+              <Button variant="text" onClick={handleClose}>
+                {confirmDialogTranslation.cancel}
+              </Button>
+              <Button
+                variant="text"
+                keyboardFocused={true}
+                onClick={handleConfirm}
+              >
+                {confirmDialogTranslation.confirm}
+              </Button>
+            </ButtonGroup>
+          </DialogActions>
         </Dialog>
       </div>
     );

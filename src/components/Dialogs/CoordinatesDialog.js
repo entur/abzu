@@ -14,9 +14,14 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { TextField } from "material-ui";
 import { extractCoordinates } from "../../utils/";
 
 class CoordinatesDialog extends React.Component {
@@ -86,49 +91,39 @@ class CoordinatesDialog extends React.Component {
       cancel: formatMessage({ id: "change_coordinates_cancel" }),
     };
 
-    const buttonWrapperStyle = {
-      display: "flex",
-      justifyContent: "flex-end",
-      alignItems: "center",
-      marginTop: 20,
-    };
-
-    const actions = [
-      <TextField
-        hintText="lat,lng"
-        floatingLabelText={formatMessage({ id: "coordinates" })}
-        style={{ display: "block", margin: "auto", width: "90%" }}
-        value={coordinates}
-        onChange={this.handleInputChange.bind(this)}
-        errorText={this.state.errorText}
-      />,
-      <div style={buttonWrapperStyle}>
-        <FlatButton
-          label={confirmDialogTranslation.cancel}
-          primary={false}
-          keyboardFocused={true}
-          onClick={() => this.handleClose()}
-          style={{ marginRight: 5 }}
-        />
-        <FlatButton
-          label={confirmDialogTranslation.confirm}
-          primary={true}
-          keyboardFocused={true}
-          onClick={() => this.handleConfirm()}
-        />
-      </div>,
-    ];
-
     return (
       <div>
-        <Dialog
-          title={confirmDialogTranslation.title}
-          actions={actions}
-          modal={false}
-          open={open}
-          contentStyle={{ width: "45vw" }}
-        >
-          {confirmDialogTranslation.body}
+        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+          <DialogTitle>{confirmDialogTranslation.title}</DialogTitle>
+          <DialogContent>
+            {confirmDialogTranslation.body}
+
+            <TextField
+              hintText="lat,lng"
+              floatingLabelText={formatMessage({ id: "coordinates" })}
+              style={{ display: "block", margin: "auto", width: "90%" }}
+              value={coordinates}
+              onChange={this.handleInputChange.bind(this)}
+              errorText={this.state.errorText}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={() => this.handleClose()}
+              style={{ marginRight: 5 }}
+            >
+              {confirmDialogTranslation.cancel}
+            </Button>
+            <Button
+              variant="text"
+              keyboardFocused={true}
+              onClick={() => this.handleConfirm()}
+            >
+              {confirmDialogTranslation.confirm}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );
