@@ -48,9 +48,6 @@ aliases:
       echo 'export VERSION="$VERSION"' >> $BASH_ENV
       chmod u+x .circleci/docker_build_push.sh
       .circleci/docker_build_push.sh
-      chmod u+x .circleci/sentry_upload_sourcemaps.sh
-      .circleci/sentry_upload_sourcemaps.sh $CIRCLE_BRANCH-v$VERSION $SENTRY_TOKEN abzu
-
 jobs:
   build:
     docker:
