@@ -19,11 +19,11 @@ import {
   ColumnTransformersStopPlace,
   ColumnTransformersQuays,
 } from "../../models/columnTransformers";
-import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 import moment from "moment";
 import { getDarkColor } from "../../config/themeConfig";
+import { Popover } from "@mui/material";
 
 class ReportPageFooter extends React.Component {
   constructor(props) {
@@ -200,7 +200,7 @@ class ReportPageFooter extends React.Component {
             anchorEl={this.state.anchorEl}
             anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
             targetOrigin={{ horizontal: "left", vertical: "top" }}
-            onRequestClose={() => {
+            onClose={() => {
               this.setState({ open: false });
             }}
           >

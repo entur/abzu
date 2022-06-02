@@ -14,7 +14,6 @@
 
 import React, { Component } from "react";
 import FlatButton from "material-ui/FlatButton";
-import Popover from "material-ui/Popover";
 import { getTagsByName } from "../../actions/TiamatActions";
 import MenuItem from "material-ui/MenuItem";
 import Menu from "material-ui/Menu";
@@ -24,6 +23,7 @@ import { injectIntl } from "react-intl";
 import TextField from "material-ui/TextField";
 import MdAdd from "material-ui/svg-icons/content/add";
 import { connect } from "react-redux";
+import { Popover } from "@mui/material";
 
 class TagSuggestionPopover extends Component {
   constructor(props) {
@@ -89,7 +89,7 @@ class TagSuggestionPopover extends Component {
         <Popover
           open={open}
           anchorEl={anchorEl}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
         >

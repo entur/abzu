@@ -75,10 +75,9 @@ class AddAdjacentStopDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>
           {formatMessage({ id: "connect_to_adjacent_stop_title" })}

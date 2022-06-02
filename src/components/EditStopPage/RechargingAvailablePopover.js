@@ -4,7 +4,7 @@ import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
 import EvStation from "material-ui/svg-icons/maps/ev-station";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
+import { Popover } from "@mui/material";
 
 class RechargingAvailablePopover extends React.Component {
   constructor(props) {
@@ -92,8 +92,7 @@ class RechargingAvailablePopover extends React.Component {
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={this.handleClosePopover.bind(this)}
-          animation={PopoverAnimationVertical}
+          onClose={this.handleClosePopover.bind(this)}
         >
           {rechargingAvailableMenuItems}
         </Popover>

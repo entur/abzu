@@ -92,7 +92,7 @@ class CompassBearingDialog extends React.Component {
 
     return (
       <div>
-        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+        <Dialog open={open}>
           <DialogTitle>{compassBearingTranslation.title}</DialogTitle>
           <DialogContent>
             {compassBearingTranslation.body}
@@ -108,7 +108,6 @@ class CompassBearingDialog extends React.Component {
           <DialogActions>
             <Button
               variant="text"
-              keyboardFocused={true}
               onClick={() => this.handleClose()}
               style={{ marginRight: 5 }}
               color="secondary"
@@ -118,7 +117,6 @@ class CompassBearingDialog extends React.Component {
             <Button
               variant="text"
               disabled={!this.state.compassBearing}
-              keyboardFocused={true}
               onClick={() => this.handleConfirm()}
             >
               {compassBearingTranslation.confirm}

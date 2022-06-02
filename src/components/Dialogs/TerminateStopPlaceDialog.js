@@ -229,10 +229,9 @@ class TerminateStopPlaceDialog extends React.Component {
       <Dialog
         open={open}
         titleStyle={{ padding: "24px 24px 0px" }}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -349,7 +348,6 @@ class TerminateStopPlaceDialog extends React.Component {
               )
             }
             disabled={this.getConfirmIsDisabled()}
-            keyboardFocused={true}
             startIcon={
               isLoading ? (
                 <Spinner />

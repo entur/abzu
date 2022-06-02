@@ -121,7 +121,7 @@ class StopPlace extends React.Component {
       <div>
         <Dialog
           open={showErrorDialog}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ showErrorDialog: false });
           }}
         >

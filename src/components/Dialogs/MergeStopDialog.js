@@ -129,10 +129,9 @@ class MergeStopDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -200,7 +199,6 @@ class MergeStopDialog extends React.Component {
               onClick={() => {
                 handleConfirm(fromVersionComment, toVersionComment);
               }}
-              keyboardFocused={true}
               startIcon={isLoading ? <Spinner /> : <Merge />}
             >
               {translations.confirm}

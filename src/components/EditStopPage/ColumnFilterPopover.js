@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
 import RaisedButton from "material-ui/RaisedButton";
 import Menu from "material-ui/Menu";
 import Checkbox from "material-ui/Checkbox";
+import { Popover } from "@mui/material";
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {
@@ -62,10 +62,9 @@ class ColumnFilterPopover extends React.Component {
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
-          animation={PopoverAnimationVertical}
         >
           <Menu>
             <div

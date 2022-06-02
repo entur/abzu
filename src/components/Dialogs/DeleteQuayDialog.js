@@ -142,10 +142,9 @@ class DeleteQuayDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -217,14 +216,18 @@ class DeleteQuayDialog extends React.Component {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={handleClose} startIcon={<Cancel />}>
+          <Button
+            variant="text"
+            onClick={handleClose}
+            startIcon={<Cancel />}
+            color="secondary"
+          >
             {translations.cancel}
           </Button>
           <Button
             variant="text"
             onClick={handleConfirm}
             disabled={isLoading || !changesUnderstood}
-            keyboardFocused={true}
             startIcon={isLoading ? <Spinner /> : <Delete />}
           >
             {translations.confirm}

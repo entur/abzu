@@ -47,7 +47,7 @@ class ConfirmDialog extends React.Component {
       <div>
         <Dialog
           open={open}
-          onRequestClose={() => {
+          onClose={() => {
             handleClose();
           }}
         >
@@ -58,11 +58,7 @@ class ConfirmDialog extends React.Component {
               <Button variant="text" onClick={handleClose} color="secondary">
                 {confirmDialogTranslation.cancel}
               </Button>
-              <Button
-                variant="text"
-                keyboardFocused={true}
-                onClick={handleConfirm}
-              >
+              <Button variant="text" onClick={handleConfirm}>
                 {confirmDialogTranslation.confirm}
               </Button>
             </ButtonGroup>

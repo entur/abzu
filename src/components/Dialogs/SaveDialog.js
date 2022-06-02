@@ -251,10 +251,9 @@ class SaveDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -285,7 +284,6 @@ class SaveDialog extends React.Component {
           </Button>
           <Button
             variant="text"
-            keyboardFocused={true}
             startIcon={
               isSaving && !errorMessage.length ? <MdSpinner /> : <Save />
             }

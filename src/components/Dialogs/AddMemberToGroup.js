@@ -107,7 +107,6 @@ class AddMemberToGroup extends Component {
           </Button>
           <Button
             variant="text"
-            keyboardFocused={true}
             disabled={!canSave}
             onClick={() => handleConfirm(checkedItems)}
           >

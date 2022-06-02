@@ -73,7 +73,7 @@ class FavoriteNameDialog extends React.Component {
 
     return (
       <div>
-        <Dialog open={isOpen} onRequestClose={this.handleClose}>
+        <Dialog open={isOpen} onClose={this.handleClose}>
           <DialogTitle>{labelTexts.title_for_favorite}</DialogTitle>
           <DialogContent>
             <TextField
@@ -91,11 +91,7 @@ class FavoriteNameDialog extends React.Component {
             >
               {labelTexts.cancel}
             </Button>
-            <Button
-              variant="text"
-              keyboardFocused={true}
-              onClick={this.handleSubmit.bind(this)}
-            >
+            <Button variant="text" onClick={this.handleSubmit.bind(this)}>
               {labelTexts.use}
             </Button>
           </DialogActions>

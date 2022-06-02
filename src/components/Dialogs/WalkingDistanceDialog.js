@@ -96,7 +96,7 @@ class WalkingDistanceDialog extends React.Component {
 
     return (
       <div>
-        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+        <Dialog open={open}>
           <DialogTitle>{translation.title}</DialogTitle>
           <DialogContent>
             {translation.body}
@@ -113,18 +113,13 @@ class WalkingDistanceDialog extends React.Component {
           <DialogActions>
             <Button
               variant="text"
-              keyboardFocused={true}
               onClick={() => this.handleClose()}
               style={{ marginRight: 5 }}
               color="secondary"
             >
               {translation.cancel}
             </Button>
-            <Button
-              variant="text"
-              keyboardFocused={true}
-              onClick={() => this.handleConfirm()}
-            >
+            <Button variant="text" onClick={() => this.handleConfirm()}>
               {translation.confirm}
             </Button>
           </DialogActions>

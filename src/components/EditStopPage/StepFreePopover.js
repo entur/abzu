@@ -15,9 +15,9 @@ limitations under the Licence. */
 import React from "react";
 import MenuItem from "material-ui/MenuItem";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
 import IconButton from "material-ui/IconButton";
+import { Popover } from "@mui/material";
 
 class StepFreePopover extends React.Component {
   constructor(props) {
@@ -83,8 +83,7 @@ class StepFreePopover extends React.Component {
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={this.handleClosePopover.bind(this)}
-          animation={PopoverAnimationVertical}
+          onClose={this.handleClosePopover.bind(this)}
         >
           {accessibilityAssessments.stepFreeAccess.options.map(
             (option, index) => (

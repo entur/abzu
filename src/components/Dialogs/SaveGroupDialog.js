@@ -28,7 +28,7 @@ class SaveGroupDialog extends Component {
     const { formatMessage } = intl;
 
     return (
-      <Dialog onRequestClose={handleClose} open={open}>
+      <Dialog onClose={handleClose} open={open}>
         <DialogTitle>
           {formatMessage({ id: "save_group_of_stop_places" })}
         </DialogTitle>

@@ -14,10 +14,10 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 import { sortVersions } from "../../utils";
+import { Popover } from "@mui/material";
 
 class VersionsPopover extends Component {
   constructor(props) {
@@ -73,8 +73,7 @@ class VersionsPopover extends Component {
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={() => this.setState({ open: false })}
-          animation={PopoverAnimationVertical}
+          onClose={() => this.setState({ open: false })}
         >
           <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
             {sortVersions(versions).map((version, i) => (

@@ -43,12 +43,12 @@ import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import MdLocationSearching from "material-ui/svg-icons/device/location-searching";
 import MdSpinner from "../../static/icons/spinner";
 import { createSearchMenuItem } from "./SearchMenuItem";
-import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import CheckBox from "material-ui/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
+import { Popover } from "@mui/material";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -667,7 +667,7 @@ class SearchBox extends React.Component {
                         vertical: "bottom",
                       }}
                       targetOrigin={{ horizontal: "left", vertical: "top" }}
-                      onRequestClose={() => {
+                      onClose={() => {
                         this.setState({ createNewStopOpen: false });
                       }}
                     >

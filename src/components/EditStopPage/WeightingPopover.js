@@ -13,11 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import Popover, { PopoverAnimationVertical } from "material-ui/Popover";
 import MenuItem from "material-ui/MenuItem";
 import MdTransfer from "material-ui/svg-icons/maps/transfer-within-a-station";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import { injectIntl } from "react-intl";
+import { Popover } from "@mui/material";
 class WeightingPopover extends React.Component {
   render() {
     const {
@@ -32,8 +32,7 @@ class WeightingPopover extends React.Component {
       <Popover
         open={open}
         anchorEl={anchorEl}
-        onRequestClose={handleClose}
-        animation={PopoverAnimationVertical}
+        onClose={handleClose}
         animated={true}
       >
         {weightTypes.map((type, index) => (

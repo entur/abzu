@@ -14,13 +14,13 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import Popover from "material-ui/Popover";
 import MenuItem from "material-ui/MenuItem";
 import FlatButton from "material-ui/FlatButton";
 import FavoriteManager from "../../singletons/FavoriteManager";
 import StarIcon from "material-ui/svg-icons/toggle/star";
 import MdDelete from "material-ui/svg-icons/action/delete";
 import { UserActions } from "../../actions/";
+import { Popover } from "@mui/material";
 
 class FilterPopover extends React.Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class FilterPopover extends React.Component {
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={() => this.handleRequestClose(this.refs)}
+          onClose={() => this.handleRequestClose(this.refs)}
           style={popoverstyle}
         >
           <div

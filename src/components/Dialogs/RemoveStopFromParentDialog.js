@@ -83,10 +83,9 @@ class RemoveStopFromParentDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -142,7 +141,6 @@ class RemoveStopFromParentDialog extends React.Component {
             variant="text"
             onClick={handleConfirm}
             disabled={confirmDisabled}
-            keyboardFocused={true}
             startIcon={isLoading ? <Spinner /> : <Delete />}
           >
             {translations.confirm}

@@ -93,7 +93,7 @@ class CoordinatesDialog extends React.Component {
 
     return (
       <div>
-        <Dialog open={open} contentStyle={{ width: "45vw" }}>
+        <Dialog open={open}>
           <DialogTitle>{confirmDialogTranslation.title}</DialogTitle>
           <DialogContent>
             {confirmDialogTranslation.body}
@@ -110,18 +110,13 @@ class CoordinatesDialog extends React.Component {
           <DialogActions>
             <Button
               variant="text"
-              keyboardFocused={true}
               onClick={() => this.handleClose()}
               style={{ marginRight: 5 }}
               color="secondary"
             >
               {confirmDialogTranslation.cancel}
             </Button>
-            <Button
-              variant="text"
-              keyboardFocused={true}
-              onClick={() => this.handleConfirm()}
-            >
+            <Button variant="text" onClick={() => this.handleConfirm()}>
               {confirmDialogTranslation.confirm}
             </Button>
           </DialogActions>

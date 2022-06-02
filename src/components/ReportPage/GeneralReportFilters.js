@@ -15,9 +15,9 @@
 import React, { Component } from "react";
 import Checkbox from "material-ui/Checkbox";
 import RaisedButton from "material-ui/RaisedButton";
-import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
+import { Popover } from "@mui/material";
 
 class GeneralReportFilters extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ class GeneralReportFilters extends Component {
         <Popover
           open={open}
           anchorEl={anchorEl}
-          onRequestClose={() => {
+          onClose={() => {
             this.setState({ open: false });
           }}
         >

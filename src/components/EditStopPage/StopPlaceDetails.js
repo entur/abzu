@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import React from "react";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
 import IconButton from "material-ui/IconButton";
 import TextField from "material-ui/TextField";
 import ImportedId from "./ImportedId";
@@ -59,6 +58,7 @@ import {
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
+import { Popover } from "@mui/material";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -545,10 +545,7 @@ class StopPlaceDetails extends React.Component {
                   anchorEl={this.state.stopTypeAnchorEl}
                   anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
                   targetOrigin={{ horizontal: "left", vertical: "top" }}
-                  onRequestClose={this.handleCloseStopPlaceTypePopover.bind(
-                    this
-                  )}
-                  animation={PopoverAnimationVertical}
+                  onClose={this.handleCloseStopPlaceTypePopover.bind(this)}
                   style={{ overflowY: "none" }}
                   animated={true}
                 >

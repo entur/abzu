@@ -137,10 +137,9 @@ class MergeQuaysDialog extends React.Component {
     return (
       <Dialog
         open={open}
-        onRequestClose={() => {
+        onClose={() => {
           handleClose();
         }}
-        contentStyle={{ width: "40%", minWidth: "40%", margin: "auto" }}
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
@@ -173,7 +172,6 @@ class MergeQuaysDialog extends React.Component {
               handleConfirm(versionComment);
             }}
             disabled={!enableConfirm || isLoading || OTPFetchIsLoading}
-            keyboardFocused={true}
             icon={isLoading ? <Spinner /> : <Merge />}
           >
             {translations.confirm}

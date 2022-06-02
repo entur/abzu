@@ -14,10 +14,10 @@ limitations under the Licence. */
 
 import React from "react";
 import MenuItem from "material-ui/MenuItem";
-import { Popover, PopoverAnimationVertical } from "material-ui/Popover";
 import WheelChair from "material-ui/svg-icons/action/accessible";
 import IconButton from "material-ui/IconButton";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
+import { Popover } from "@mui/material";
 
 class WheelChairPopover extends React.Component {
   constructor(props) {
@@ -83,8 +83,7 @@ class WheelChairPopover extends React.Component {
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
-          onRequestClose={this.handleClosePopover.bind(this)}
-          animation={PopoverAnimationVertical}
+          onClose={this.handleClosePopover.bind(this)}
         >
           {accessibilityAssessments.wheelchairAccess.options.map(
             (option, index) => (
