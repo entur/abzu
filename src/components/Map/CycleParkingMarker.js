@@ -99,7 +99,7 @@ class CycleParkingMarker extends Component {
           eventHandlers={{
             popupopen: () => {
               this.handleSetFocus();
-            }
+            },
           }}
         >
           <div>

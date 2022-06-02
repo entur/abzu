@@ -274,7 +274,7 @@ class QuayMarker extends React.Component {
           eventHandlers={{
             popupopen: () => {
               this.handleSetFocus();
-            }
+            },
           }}
         >
           <div>

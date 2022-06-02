@@ -94,7 +94,7 @@ class ParkingAndRideMarker extends React.Component {
           eventHandlers={{
             popupopen: () => {
               this.handleSetFocus();
-            }
+            },
           }}
         >
           <div>

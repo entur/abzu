@@ -141,12 +141,10 @@ class NeighbourMarker extends React.Component {
                 allowNewStopEverywhere
               ),
             });
-          }
+          },
         }}
       >
-        <Popup
-          autoPan={false}
-        >
+        <Popup autoPan={false}>
           <div>
             <div
               style={{
