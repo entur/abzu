@@ -9,6 +9,16 @@ const mergeFareZones = (arr1: FareZone[], arr2: FareZone[]) => {
   return Array.from(map.values());
 };
 
+const sortByPrivateCode = (a: FareZone, b: FareZone) => {
+  if (a.privateCode.value > b.privateCode.value) {
+    return 1;
+  } else if (b.privateCode.value > a.privateCode.value) {
+    return -1;
+  } else {
+    return 0;
+  }
+};
+
 export const getStateByOperation = (
   state: MapState,
   action: ApolloQueryResult
@@ -17,7 +27,9 @@ export const getStateByOperation = (
     case "findFareZonesForFilter":
       return Object.assign({
         ...state,
-        fareZonesForFilter: action.result.data.fareZones,
+        fareZonesForFilter: action.result.data.fareZones
+          .slice()
+          .sort(sortByPrivateCode),
       });
     case "findFareZones":
       return Object.assign({
