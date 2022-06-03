@@ -172,8 +172,10 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               {fareZonesForFilter.length > 0 && (
                 <>
-                  <Box sx={{maxHeight: "25rem", overflow: 'hidden'}}>
-                    {fareZonesToDisplay.map((fareZone) => ((<Box>{`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}</Box>)))}
+                  <Box sx={{ maxHeight: "25rem", overflow: "hidden" }}>
+                    {fareZonesToDisplay.map((fareZone) => (
+                      <Box>{`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}</Box>
+                    ))}
                   </Box>
                   <Button
                     variant="outlined"
