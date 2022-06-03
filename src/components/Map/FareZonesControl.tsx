@@ -18,11 +18,13 @@ import {
   Button,
   DialogTitle,
   DialogActions,
+  IconButton,
 } from "@mui/material";
 import { AnyAction } from "redux";
 import { ControlPosition } from "leaflet";
 import { FareZone } from "../../models/FareZone";
 import { Box } from "@mui/system";
+import { ExpandMore } from "@mui/icons-material";
 
 export interface FareZonesLayerProps {
   show: boolean;
@@ -101,7 +103,7 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
 
   const toggleCodespaceSelection = useCallback(
     (codespace: string, checked: boolean) => {
-      if (checked && expandedCodespaces.includes(codespace)) {
+      if (checked) {
         setSelectedFareZones((prev: string[]) =>
           prev
             .filter(
@@ -112,8 +114,6 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             )
             .concat(groupedFarezonesForFilter[codespace].map(({ id }) => id))
         );
-      } else if (checked && !expandedCodespaces.includes(codespace)) {
-        setExpandedCodespaces([...expandedCodespaces, codespace]);
       } else {
         setSelectedFareZones((prev: string[]) =>
           prev.filter(
@@ -123,13 +123,18 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
               )
           )
         );
-        setExpandedCodespaces((prev: string[]) =>
-          prev.filter((id) => id !== codespace)
-        );
       }
     },
     [expandedCodespaces, groupedFarezonesForFilter]
   );
+
+  const toggleExpandCodespace = useCallback((codespace: string) => {
+    setExpandedCodespaces((prev: string[]) =>
+      prev.includes(codespace)
+        ? prev.filter((id) => id !== codespace)
+        : [...prev, codespace]
+    );
+  }, []);
 
   const fareZonesToDisplay = useMemo(() => {
     return fareZones
@@ -218,6 +223,9 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
                   />
                 }
               />
+              <IconButton onClick={() => toggleExpandCodespace(codespace)}>
+                <ExpandMore />
+              </IconButton>
               <Box
                 sx={{
                   display: "flex",
