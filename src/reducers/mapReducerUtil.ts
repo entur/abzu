@@ -2,10 +2,20 @@ import { ApolloQueryResult } from "../actions";
 import { FareZone } from "../models/FareZone";
 import { MapState } from "./mapReducer";
 
-const mergeFareZones = (arr1: FareZone[], arr2: FareZone[]) => {
+const mergeFareZones = (prev: FareZone[], next: FareZone[]) => {
   const map = new Map();
-  arr1.forEach((item) => map.set(item.id, item));
-  arr2.forEach((item) => map.set(item.id, { ...map.get(item.id), ...item }));
+  prev.forEach((item) => map.set(item.id, item));
+  next
+    .map(({ polygon, ...rest }) => ({
+      ...rest,
+      polygon: {
+        ...polygon,
+        coordinates: polygon.coordinates.map((lnglat: number[]) =>
+          lnglat.slice().reverse()
+        ),
+      },
+    }))
+    .forEach((item) => map.set(item.id, { ...map.get(item.id), ...item }));
   return Array.from(map.values());
 };
 

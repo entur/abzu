@@ -9,6 +9,6 @@ export interface FareZone {
   authorityRef: string;
   polygon: {
     type: "Polygon";
-    coordinates: [number, number];
+    coordinates: [[number, number]];
   };
 }

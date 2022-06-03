@@ -13,20 +13,11 @@ import {
 } from "../../actions/TiamatActions";
 import Control from "react-leaflet-custom-control";
 import {
-  InputLabel,
-  MenuItem,
-  Select,
   LinearProgress,
   FormControlLabel,
   Checkbox,
-  Dialog,
-  DialogContent,
-  Button,
-  DialogTitle,
-  DialogActions,
   IconButton,
   Typography,
-  Paper,
   Popover,
 } from "@mui/material";
 import { AnyAction } from "redux";
@@ -187,7 +178,7 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             {fareZonesForFilter.length > 0 && (
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 {Object.keys(groupedFarezonesForFilter).map((codespace) => (
-                  <Box sx={{ display: "flex" }}>
+                  <Box key={codespace} sx={{ display: "flex" }}>
                     <FormControlLabel
                       label={codespace}
                       control={
@@ -252,14 +243,10 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
               </Box>
             </Popover>
           )}
-          {fareZonesToDisplay.map((fareZone: any) => (
+          {fareZonesToDisplay.map((fareZone: FareZone) => (
             <Polygon
               key={fareZone.id}
-              positions={[
-                fareZone.polygon.coordinates.map((lnglat: number[]) =>
-                  lnglat.slice().reverse()
-                ),
-              ]}
+              positions={fareZone.polygon.coordinates}
               pathOptions={{ fillColor: "blue" }}
             />
           ))}
