@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Polygon } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,6 +26,8 @@ import {
   DialogActions,
   IconButton,
   Typography,
+  Paper,
+  Popover,
 } from "@mui/material";
 import { AnyAction } from "redux";
 import { ControlPosition } from "leaflet";
@@ -44,8 +52,12 @@ type AppState = {
 export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
   position,
 }) => {
-  const [expandedCodespaces, setExpandedCodespaces] = useState<string[]>([]);
+  const [expandedCodespace, setExpandedCodespace] = useState<
+    string | undefined
+  >();
   const [selectedFareZones, setSelectedFareZones] = useState<string[]>([]);
+  const itemsRef = useRef<Record<string, HTMLElement | null>>({});
+
   const dispatch = useDispatch();
 
   const show = useSelector<AppState, boolean>(
@@ -91,8 +103,6 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
     }
   }, [show]);
 
-  const [showDialog, setShowDialog] = useState(false);
-
   const toggleFareZoneSelection = useCallback(
     (id: string, checked: boolean) => {
       setSelectedFareZones((prev: string[]) =>
@@ -126,14 +136,12 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
         );
       }
     },
-    [expandedCodespaces, groupedFarezonesForFilter]
+    [groupedFarezonesForFilter]
   );
 
   const toggleExpandCodespace = useCallback((codespace: string) => {
-    setExpandedCodespaces((prev: string[]) =>
-      prev.includes(codespace)
-        ? prev.filter((id) => id !== codespace)
-        : [...prev, codespace]
+    setExpandedCodespace((prev: string | undefined) =>
+      prev === codespace ? undefined : codespace
     );
   }, []);
 
@@ -176,58 +184,44 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
           >
             <Typography variant="subtitle1">Fare zones</Typography>
             {fareZonesForFilter.length === 0 && <LinearProgress />}
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              {fareZonesForFilter.length > 0 && (
-                <>
-                  <Box sx={{ maxHeight: "25rem", overflow: "hidden" }}>
-                    {fareZonesToDisplay.map((fareZone) => (
-                      <Box>{`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}</Box>
-                    ))}
+            {fareZonesForFilter.length > 0 && (
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                {Object.keys(groupedFarezonesForFilter).map((codespace) => (
+                  <Box sx={{ display: "flex" }}>
+                    <FormControlLabel
+                      label={codespace}
+                      control={
+                        <Checkbox
+                          ref={(elm) => (itemsRef.current[codespace] = elm)}
+                          size="small"
+                          onChange={(e) =>
+                            toggleCodespaceSelection(
+                              codespace,
+                              e.target.checked
+                            )
+                          }
+                          checked={checkedCodespace(codespace)}
+                          indeterminate={indeterminateCodespace(codespace)}
+                        />
+                      }
+                    />
+                    <IconButton
+                      onClick={() => toggleExpandCodespace(codespace)}
+                    >
+                      <ExpandMore />
+                    </IconButton>
                   </Box>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowDialog(true)}
-                  >
-                    Select fare zones
-                  </Button>
-                </>
-              )}
-            </Box>
+                ))}
+              </Box>
+            )}
           </Control>
-          {fareZonesToDisplay.map((fareZone: any) => (
-            <Polygon
-              key={fareZone.id}
-              positions={[
-                fareZone.polygon.coordinates.map((lnglat: number[]) =>
-                  lnglat.slice().reverse()
-                ),
-              ]}
-              pathOptions={{ fillColor: "blue" }}
-            />
-          ))}
-        </>
-      )}
-      <Dialog open={showDialog} onClose={() => setShowDialog(false)} fullWidth>
-        <DialogTitle>Select fare zones</DialogTitle>
-        <DialogContent>
-          {Object.keys(groupedFarezonesForFilter).map((codespace) => (
-            <>
-              <FormControlLabel
-                label={codespace}
-                control={
-                  <Checkbox
-                    size="small"
-                    onChange={(e) =>
-                      toggleCodespaceSelection(codespace, e.target.checked)
-                    }
-                    checked={checkedCodespace(codespace)}
-                    indeterminate={indeterminateCodespace(codespace)}
-                  />
-                }
-              />
-              <IconButton onClick={() => toggleExpandCodespace(codespace)}>
-                <ExpandMore />
-              </IconButton>
+          {expandedCodespace && (
+            <Popover
+              open
+              anchorEl={() => itemsRef.current[expandedCodespace]!}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              onClose={() => toggleExpandCodespace(expandedCodespace)}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -235,9 +229,10 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
                   marginLeft: "24px",
                 }}
               >
-                {expandedCodespaces.includes(codespace) &&
-                  groupedFarezonesForFilter[codespace].map((fareZone) => (
+                {groupedFarezonesForFilter[expandedCodespace].map(
+                  (fareZone) => (
                     <FormControlLabel
+                      key={fareZone.id}
                       label={`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}
                       control={
                         <Checkbox
@@ -252,15 +247,24 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
                         />
                       }
                     />
-                  ))}
+                  )
+                )}
               </Box>
-            </>
+            </Popover>
+          )}
+          {fareZonesToDisplay.map((fareZone: any) => (
+            <Polygon
+              key={fareZone.id}
+              positions={[
+                fareZone.polygon.coordinates.map((lnglat: number[]) =>
+                  lnglat.slice().reverse()
+                ),
+              ]}
+              pathOptions={{ fillColor: "blue" }}
+            />
           ))}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowDialog(false)}>Done</Button>
-        </DialogActions>
-      </Dialog>
+        </>
+      )}
     </>
   );
 };
