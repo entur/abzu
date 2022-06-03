@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogActions,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { AnyAction } from "redux";
 import { ControlPosition } from "leaflet";
@@ -173,6 +174,7 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             position={position}
             style={{ backgroundColor: "white", padding: ".5rem" }}
           >
+            <Typography variant="subtitle1">Fare zones</Typography>
             {fareZonesForFilter.length === 0 && <LinearProgress />}
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               {fareZonesForFilter.length > 0 && (
