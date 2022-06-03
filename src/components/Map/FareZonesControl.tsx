@@ -131,8 +131,6 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
     [expandedCodespaces, groupedFarezonesForFilter]
   );
 
-  console.log({ selectedFareZones });
-
   const fareZonesToDisplay = useMemo(() => {
     return fareZones
       .filter((fareZone) => selectedFareZones.includes(fareZone.id))
@@ -174,7 +172,9 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               {fareZonesForFilter.length > 0 && (
                 <>
-                  Currently showing {selectedFareZones.length} fare zones
+                  <Box sx={{maxHeight: "25rem", overflow: 'hidden'}}>
+                    {fareZonesToDisplay.map((fareZone) => ((<Box>{`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}</Box>)))}
+                  </Box>
                   <Button
                     variant="outlined"
                     onClick={() => setShowDialog(true)}
@@ -204,7 +204,7 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
           {Object.keys(groupedFarezonesForFilter).map((codespace) => (
             <>
               <FormControlLabel
-                label={groupedFarezonesForFilter[codespace][0].authorityRef}
+                label={codespace}
                 control={
                   <Checkbox
                     size="small"
