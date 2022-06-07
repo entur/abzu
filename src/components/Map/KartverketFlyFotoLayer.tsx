@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGktToken } from "./useGktToken";
+import { useGktToken } from "./hooks/useGktToken";
 import { WMTSLayer } from "./WMTSLayer";
 
 const BASE_URL =
