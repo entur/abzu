@@ -27,7 +27,7 @@ import MultimodalStopEdges from "./MultimodalStopEdges";
 import StopPlaceGroupList from "./StopPlaceGroupList";
 import { MapEvents } from "./MapEvents";
 import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
-import { FareZonesControl } from "./FareZonesControl";
+import { FareZones } from "../Zones/FareZones";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -130,7 +130,7 @@ export const LeafLetMap = ({
             />
           </BaseLayer>
         </LayersControl>
-        <FareZonesControl position="topright" />
+        <FareZones position="topright" />
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList
