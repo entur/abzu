@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Polygon } from "react-leaflet";
+import { Polygon, Tooltip } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFareZones,
@@ -38,6 +38,39 @@ type AppState = {
     fareZonesForFilter: FareZone[];
     fareZones: FareZone[];
   };
+};
+
+const getColorByCodespace = (codespace: string) => {
+  switch (codespace) {
+    case "ATB":
+      return "5F464B";
+    case "MOR":
+      return "8E4A49";
+    case "BRA":
+      return "7DAA92";
+    case "VOT":
+      return "80FFEC";
+    case "SKY":
+      return "C2FBEF";
+    case "INN":
+      return "6D545D";
+    case "AKT":
+      return "756D54";
+    case "KOL":
+      return "8B9556";
+    case "TRO":
+      return "ABB557";
+    case "RUT":
+      return "BED558";
+    case "OST":
+      return "7AFDD6";
+    case "NOR":
+      return "77FF94";
+    case "FIN":
+      return "A1E44D";
+    default:
+      return "fff";
+  }
 };
 
 export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
@@ -247,8 +280,17 @@ export const FareZonesControl: React.FC<FareZonesLayerProps> = ({
             <Polygon
               key={fareZone.id}
               positions={fareZone.polygon.coordinates}
-              pathOptions={{ fillColor: "blue" }}
-            />
+              pathOptions={{
+                fillColor: `#${getColorByCodespace(fareZone.id.split(":")[0])}`,
+                color: `#${getColorByCodespace(fareZone.id.split(":")[0])}`,
+              }}
+            >
+              <Tooltip>
+                <Box>
+                  {`${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`}
+                </Box>
+              </Tooltip>
+            </Polygon>
           ))}
         </>
       )}
