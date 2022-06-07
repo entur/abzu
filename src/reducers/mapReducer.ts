@@ -17,6 +17,7 @@ import { ApolloQueryResult } from "../actions";
 import * as types from "../actions/Types";
 import { FareZone } from "../models/FareZone";
 import Quay from "../models/Quay";
+import SettingsManager from "../singletons/SettingsManager";
 import { getStateByOperation } from "./mapReducerUtil";
 
 export type MapState = {
@@ -76,7 +77,7 @@ export const initialState: MapState = {
   fetchOTPInfoMergeLoading: false,
   fetchOTPInfoDeleteLoading: false,
   deleteQuayWarning: null,
-  showFareZones: false,
+  showFareZones: new SettingsManager().getShowFareZonesInMap(),
   fareZonesForFilter: [],
   fareZones: [],
 };

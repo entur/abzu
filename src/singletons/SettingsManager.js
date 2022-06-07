@@ -100,7 +100,7 @@ class SettingsManager {
   }
 
   getShowFareZonesInMap() {
-    localStorage.getItem(showFareZonesInMapKey);
+    return this.parseBoolean(localStorage.getItem(showFareZonesInMapKey), false);
   }
 
   setShowFareZonesInMap(value) {
