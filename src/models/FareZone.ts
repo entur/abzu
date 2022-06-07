@@ -6,7 +6,6 @@ export interface FareZone {
   privateCode: {
     value: string;
   };
-  authorityRef: string;
   polygon: {
     type: "Polygon";
     coordinates: [[number, number]];

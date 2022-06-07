@@ -787,7 +787,6 @@ export const findFareZonesForFilter = gql`
       name {
         value
       }
-      authorityRef
     }
   }
 `;
