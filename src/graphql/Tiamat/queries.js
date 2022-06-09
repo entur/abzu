@@ -303,6 +303,7 @@ export const findStop = gql`
       members {
         __typename
         id
+        version
         name {
           value
         }
