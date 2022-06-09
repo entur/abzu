@@ -554,14 +554,14 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
   })(dispatch);
 
 export const getTariffZonesByIds = (ids) => async (dispatch, getState) =>
-handleQuery(getTiamatClient(), {
-  query: findTariffZonesByIds,
-  variables: {
-    ids,
-  },
-  fetchPolicy: "network-only",
-  context: await getContext(getState().roles.auth),
-})(dispatch);
+  handleQuery(getTiamatClient(), {
+    query: findTariffZonesByIds,
+    variables: {
+      ids,
+    },
+    fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
 
 export const getTariffZonesForFilter = () => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {

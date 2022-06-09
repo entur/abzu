@@ -772,7 +772,7 @@ export const findTariffZonesByIds = gql`
       }
     }
   }
-`
+`;
 
 export const findFareZones = gql`
   query findFareZones($ids: [String]) {

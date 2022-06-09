@@ -14,11 +14,11 @@ export interface FareZonesProps {
 }
 
 export const FareZones: React.FC<FareZonesProps> = ({ position }) => {
-  const {formatMessage} = useIntl();
+  const { formatMessage } = useIntl();
   return (
     <Zones<FareZone>
       controlPosition={position}
-      controlTitle={formatMessage({id: 'fareZones'})}
+      controlTitle={formatMessage({ id: "fareZones" })}
       getZoneLabel={(fareZone: FareZone) =>
         `${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`
       }

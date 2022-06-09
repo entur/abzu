@@ -182,7 +182,9 @@ class Header extends React.Component {
     const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
     const quayCodeShowingLabel = formatMessage({ id: "quay_marker_label" });
     const showFareZonesLabel = formatMessage({ id: "show_fare_zones_label" });
-    const showTariffZonesLabel = formatMessage({ id: "show_tariff_zones_label" });
+    const showTariffZonesLabel = formatMessage({
+      id: "show_tariff_zones_label",
+    });
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();

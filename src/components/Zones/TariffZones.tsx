@@ -14,11 +14,11 @@ export interface TariffZonesProps {
 }
 
 export const TariffZones: React.FC<TariffZonesProps> = ({ position }) => {
-  const {formatMessage} = useIntl();
+  const { formatMessage } = useIntl();
   return (
     <Zones<TariffZone>
       controlPosition={position}
-      controlTitle={formatMessage({id: 'tariffZones'})}
+      controlTitle={formatMessage({ id: "tariffZones" })}
       getZoneLabel={(fareZone: TariffZone) =>
         `${fareZone.name.value} (${fareZone.id})`
       }
