@@ -672,4 +672,9 @@ UserActions.toggleShowFareZonesInMap = (value) => (dispatch) => {
   dispatch(createThunk(types.TOGGLE_SHOW_FARE_ZONES_IN_MAP, value));
 };
 
+UserActions.toggleShowTariffZonesInMap = (value) => (dispatch) => {
+  Settings.setShowTariffZonesInMap(value);
+  dispatch(createThunk(types.TOGGLE_SHOW_TARIFF_ZONES_IN_MAP, value));
+};
+
 export default UserActions;

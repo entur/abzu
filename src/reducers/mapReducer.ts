@@ -17,6 +17,7 @@ import { ApolloQueryResult } from "../actions";
 import * as types from "../actions/Types";
 import { FareZone } from "../models/FareZone";
 import Quay from "../models/Quay";
+import { TariffZone } from "../models/TariffZone";
 import SettingsManager from "../singletons/SettingsManager";
 import { getStateByOperation } from "./mapReducerUtil";
 
@@ -47,8 +48,11 @@ export type MapState = {
   fetchOTPInfoDeleteLoading: boolean;
   deleteQuayWarning: string | null;
   showFareZones: boolean;
+  showTariffZones: boolean;
   fareZonesForFilter: FareZone[];
+  tariffZonesForFilter: TariffZone[];
   fareZones: FareZone[];
+  tariffZones: TariffZone[];
 };
 
 export const initialState: MapState = {
@@ -78,8 +82,11 @@ export const initialState: MapState = {
   fetchOTPInfoDeleteLoading: false,
   deleteQuayWarning: null,
   showFareZones: new SettingsManager().getShowFareZonesInMap(),
+  showTariffZones: new SettingsManager().getShowTariffZonesInMap(),
   fareZonesForFilter: [],
+  tariffZonesForFilter: [],
   fareZones: [],
+  tariffZones: [],
 };
 
 export type MapAction = Action &
@@ -263,6 +270,11 @@ const mapReducer = (state = initialState, action: MapAction) => {
     case types.TOGGLE_SHOW_FARE_ZONES_IN_MAP:
       return Object.assign({}, state, {
         showFareZones: action.payload,
+      });
+
+    case types.TOGGLE_SHOW_TARIFF_ZONES_IN_MAP:
+      return Object.assign({}, state, {
+        showTariffZones: action.payload,
       });
 
     default:

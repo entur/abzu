@@ -57,6 +57,8 @@ import {
   neighbourStopPlaceQuays,
   findFareZones,
   findFareZonesForFilter,
+  findTariffZonesForFilter,
+  findTariffZonesByIds,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
@@ -547,6 +549,23 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
     variables: {
       query,
     },
+    fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
+  })(dispatch);
+
+export const getTariffZonesByIds = (ids) => async (dispatch, getState) =>
+handleQuery(getTiamatClient(), {
+  query: findTariffZonesByIds,
+  variables: {
+    ids,
+  },
+  fetchPolicy: "network-only",
+  context: await getContext(getState().roles.auth),
+})(dispatch);
+
+export const getTariffZonesForFilter = () => async (dispatch, getState) =>
+  handleQuery(getTiamatClient(), {
+    query: findTariffZonesForFilter,
     fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
   })(dispatch);

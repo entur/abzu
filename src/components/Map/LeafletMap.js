@@ -28,6 +28,7 @@ import StopPlaceGroupList from "./StopPlaceGroupList";
 import { MapEvents } from "./MapEvents";
 import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
 import { FareZones } from "../Zones/FareZones";
+import { TariffZones } from "../Zones/TariffZones";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -131,6 +132,7 @@ export const LeafLetMap = ({
           </BaseLayer>
         </LayersControl>
         <FareZones position="topright" />
+        <TariffZones position="topright" />
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList

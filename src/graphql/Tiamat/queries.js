@@ -759,6 +759,21 @@ export const findTariffones = gql`
   }
 `;
 
+export const findTariffZonesByIds = gql`
+  query findTariffZonesByIds($ids: [String]) {
+    tariffZones(ids: $ids) {
+      id
+      name {
+        value
+      }
+      polygon {
+        type
+        coordinates
+      }
+    }
+  }
+`
+
 export const findFareZones = gql`
   query findFareZones($ids: [String]) {
     fareZones(ids: $ids) {
@@ -772,6 +787,17 @@ export const findFareZones = gql`
       polygon {
         type
         coordinates
+      }
+    }
+  }
+`;
+
+export const findTariffZonesForFilter = gql`
+  query findTariffZonesForFilter {
+    tariffZones {
+      id
+      name {
+        value
       }
     }
   }

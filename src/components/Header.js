@@ -131,7 +131,13 @@ class Header extends React.Component {
   }
 
   handleToggleShowFareZones(value) {
+    this.props.dispatch(UserActions.toggleShowTariffZonesInMap(!value));
     this.props.dispatch(UserActions.toggleShowFareZonesInMap(value));
+  }
+
+  handleToggleShowTariffZones(value) {
+    this.props.dispatch(UserActions.toggleShowFareZonesInMap(!value));
+    this.props.dispatch(UserActions.toggleShowTariffZonesInMap(value));
   }
 
   render() {
@@ -145,6 +151,7 @@ class Header extends React.Component {
       showMultimodalEdges,
       showPublicCode,
       showFareZones,
+      showTariffZones,
     } = this.props;
 
     const { formatMessage, locale } = intl;
@@ -175,6 +182,7 @@ class Header extends React.Component {
     const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
     const quayCodeShowingLabel = formatMessage({ id: "quay_marker_label" });
     const showFareZonesLabel = formatMessage({ id: "show_fare_zones_label" });
+    const showTariffZonesLabel = formatMessage({ id: "show_tariff_zones_label" });
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();
@@ -353,6 +361,17 @@ class Header extends React.Component {
                     checked={showFareZones}
                     primaryText={showFareZonesLabel}
                   />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowTariffZones(!showTariffZones)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showTariffZones}
+                    primaryText={showTariffZonesLabel}
+                  />,
                 ]}
               />
               <MenuItem
@@ -446,6 +465,7 @@ const mapStateToProps = (state) => ({
   showPublicCode: state.user.showPublicCode,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
   showFareZones: state.mapUtils.showFareZones,
+  showTariffZones: state.mapUtils.showTariffZones,
 });
 
 export default connect(mapStateToProps)(Header);

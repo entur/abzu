@@ -1,8 +1,9 @@
 import { ApolloQueryResult } from "../actions";
 import { FareZone } from "../models/FareZone";
+import { TariffZone } from "../models/TariffZone";
 import { MapState } from "./mapReducer";
 
-const mergeFareZones = (prev: FareZone[], next: FareZone[]) => {
+const mergeFareZones = (prev: TariffZone[], next: TariffZone[]) => {
   const map = new Map();
   prev.forEach((item) => map.set(item.id, item));
   next
@@ -41,12 +42,25 @@ export const getStateByOperation = (
           .slice()
           .sort(sortByPrivateCode),
       });
+    case "findTariffZonesForFilter":
+      return Object.assign({
+        ...state,
+        tariffZonesForFilter: action.result.data.tariffZones,
+      });
     case "findFareZones":
       return Object.assign({
         ...state,
         fareZones: mergeFareZones(
           state.fareZones,
           action.result.data.fareZones
+        ),
+      });
+    case "findTariffZonesByIds":
+      return Object.assign({
+        ...state,
+        tariffZones: mergeFareZones(
+          state.tariffZones,
+          action.result.data.tariffZones
         ),
       });
     default:
