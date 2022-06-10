@@ -59,5 +59,3 @@ Default theme is found in `./config/default` .
 * Add `logo.png` to `./config/themes/{YOUR_THEME_NAME}`
 * Add `index.js` with custom fyles (cf. `defaultTheme.js`)
 * Set `process.env.REACT_APP_THEME={YOUR_THEME_NAME}`
-
-This is WIP.
