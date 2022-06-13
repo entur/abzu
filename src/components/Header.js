@@ -32,6 +32,10 @@ import MdHelp from "material-ui/svg-icons/action/help";
 import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { Button } from "@mui/material";
+import {
+  toggleShowFareZonesInMap,
+  toggleShowTariffZonesInMap,
+} from "../reducers/zonesSlice";
 
 class Header extends React.Component {
   constructor(props) {
@@ -131,13 +135,13 @@ class Header extends React.Component {
   }
 
   handleToggleShowFareZones(value) {
-    this.props.dispatch(UserActions.toggleShowTariffZonesInMap(!value));
-    this.props.dispatch(UserActions.toggleShowFareZonesInMap(value));
+    this.props.dispatch(toggleShowTariffZonesInMap(!value));
+    this.props.dispatch(toggleShowFareZonesInMap(value));
   }
 
   handleToggleShowTariffZones(value) {
-    this.props.dispatch(UserActions.toggleShowFareZonesInMap(!value));
-    this.props.dispatch(UserActions.toggleShowTariffZonesInMap(value));
+    this.props.dispatch(toggleShowFareZonesInMap(!value));
+    this.props.dispatch(toggleShowTariffZonesInMap(value));
   }
 
   render() {
@@ -466,8 +470,8 @@ const mapStateToProps = (state) => ({
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,
   stopHasBeenModified: state.stopPlace.stopHasBeenModified,
-  showFareZones: state.mapUtils.showFareZones,
-  showTariffZones: state.mapUtils.showTariffZones,
+  showFareZones: state.zones.showFareZones,
+  showTariffZones: state.zones.showTariffZones,
 });
 
 export default connect(mapStateToProps)(Header);

@@ -21,6 +21,7 @@ import reportReducer from "./reportReducer";
 import rolesReducer from "./rolesReducer";
 import snackbarReducer from "./snackbarReducer";
 import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
+import zonesSlice from "./zonesSlice";
 import type { Reducer } from "redux";
 
 export const createRootReducer = (routerReducer: Reducer) =>
@@ -33,4 +34,5 @@ export const createRootReducer = (routerReducer: Reducer) =>
     roles: rolesReducer,
     snackbar: snackbarReducer,
     stopPlacesGroup: groupOfStopPlaceReducer,
+    zones: zonesSlice,
   });

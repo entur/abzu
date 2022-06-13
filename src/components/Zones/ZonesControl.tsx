@@ -18,7 +18,7 @@ export interface ZonesControlProps<T extends TariffZone> {
   title: string;
   zonesForFilter: T[];
   selectedZones: string[];
-  setSelectedZones: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedZones: (ids: string[]) => void;
   getZoneLabel: (zone: T) => string;
 }
 
@@ -47,8 +47,8 @@ export const ZonesControl = <T extends TariffZone>({
   const toggleCodespaceSelection = useCallback(
     (codespace: string, checked: boolean) => {
       if (checked) {
-        setSelectedZones((prev: string[]) =>
-          prev
+        setSelectedZones(
+          selectedZones
             .filter(
               (id) =>
                 !groupedZonesForFilter[codespace].some((zone) => zone.id === id)
@@ -56,15 +56,15 @@ export const ZonesControl = <T extends TariffZone>({
             .concat(groupedZonesForFilter[codespace].map(({ id }) => id))
         );
       } else {
-        setSelectedZones((prev: string[]) =>
-          prev.filter(
+        setSelectedZones(
+          selectedZones.filter(
             (id) =>
               !groupedZonesForFilter[codespace].some((zone) => zone.id === id)
           )
         );
       }
     },
-    [groupedZonesForFilter]
+    [groupedZonesForFilter, selectedZones]
   );
 
   const checkedCodespace = useCallback(
@@ -98,8 +98,10 @@ export const ZonesControl = <T extends TariffZone>({
 
   const toggleFareZoneSelection = useCallback(
     (id: string, checked: boolean) => {
-      setSelectedZones((prev: string[]) =>
-        checked ? prev.concat([id]) : prev.filter((selected) => selected !== id)
+      setSelectedZones(
+        checked
+          ? selectedZones.concat([id])
+          : selectedZones.filter((selected) => selected !== id)
       );
     },
     []

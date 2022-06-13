@@ -1,13 +1,14 @@
 import React from "react";
-import {
-  getTariffZonesByIds,
-  getTariffZonesForFilter,
-} from "../../actions/TiamatActions";
 import { ControlPosition } from "leaflet";
 import { Zones } from "./Zones";
 import { TariffZone } from "../../models/TariffZone";
 import { getColorByCodespace } from "./getColorByCodespace";
 import { useIntl } from "react-intl";
+import {
+  getTariffZonesByIdsAction,
+  getTariffZonesForFilterAction,
+  setSelectedTariffZones,
+} from "../../reducers/zonesSlice";
 
 export interface TariffZonesProps {
   position: ControlPosition;
@@ -25,11 +26,13 @@ export const TariffZones: React.FC<TariffZonesProps> = ({ position }) => {
       getZoneColor={(fareZone) =>
         getColorByCodespace(fareZone.id.split(":")[0])
       }
-      showSelector={(state) => state.mapUtils.showTariffZones}
-      zonesForFilterSelector={(state) => state.mapUtils.tariffZonesForFilter}
-      zonesSelector={(state) => state.mapUtils.tariffZones}
-      getZonesForFilterAction={getTariffZonesForFilter}
-      getZonesAction={getTariffZonesByIds}
+      showSelector={(state) => state.zones.showTariffZones}
+      zonesForFilterSelector={(state) => state.zones.tariffZonesForFilter}
+      zonesSelector={(state) => state.zones.tariffZones}
+      selectedZonesSelector={(state) => state.zones.selectedTariffZones}
+      getZonesForFilterAction={getTariffZonesForFilterAction}
+      getZonesAction={getTariffZonesByIdsAction}
+      setSelectedZonesAction={setSelectedTariffZones}
     />
   );
 };

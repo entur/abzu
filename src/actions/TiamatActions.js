@@ -67,7 +67,7 @@ import * as types from "./Types";
 import { v4 as uuidv4 } from "uuid";
 import { getTiamatClient } from "../graphql/clients";
 
-const getContext = async (auth) => {
+export const getContext = async (auth) => {
   const context = {
     headers: {
       "X-Correlation-Id": uuidv4(),
@@ -549,40 +549,6 @@ export const getTariffZones = (query) => async (dispatch, getState) =>
     variables: {
       query,
     },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const getTariffZonesByIds = (ids) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findTariffZonesByIds,
-    variables: {
-      ids,
-    },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const getTariffZonesForFilter = () => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findTariffZonesForFilter,
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const getFareZones = (ids) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findFareZones,
-    variables: {
-      ids,
-    },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const getFareZonesForFilter = () => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findFareZonesForFilter,
     fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
   })(dispatch);

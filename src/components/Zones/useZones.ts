@@ -1,19 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction } from "redux";
+import { AsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { useCallback, useEffect, useMemo } from "react";
 import { TariffZone } from "../../models/TariffZone";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { RootState } from "../../store/store";
 
 export interface Options<T extends TariffZone> {
-  showSelector: (state: any) => boolean;
-  zonesForFilterSelector: (state: any) => T[];
-  zonesSelector: (state: any) => T[];
-  getZonesForFilterAction: () => (
-    dispatch: any,
-    getState: any
-  ) => Promise<void>;
-  getZonesAction: (
-    ids: string[]
-  ) => (dispatch: any, getState: any) => Promise<void>;
+  showSelector: (state: RootState) => boolean;
+  zonesForFilterSelector: (state: RootState) => T[];
+  zonesSelector: (state: RootState) => T[];
+  getZonesForFilterAction: AsyncThunk<T[], void, { state: RootState }>;
+  getZonesAction: AsyncThunk<T[], string[], { state: RootState }>;
+  selectedZonesSelector: (state: RootState) => string[];
+  setSelectedZonesAction: (ids: string[]) => PayloadAction<string[]>;
 }
 
 export const useZones = <T extends TariffZone>({
@@ -22,15 +20,21 @@ export const useZones = <T extends TariffZone>({
   zonesSelector,
   getZonesForFilterAction,
   getZonesAction,
+  selectedZonesSelector,
+  setSelectedZonesAction,
 }: Options<T>) => {
-  const [selectedZones, setSelectedZones] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useDispatch();
-
-  const show = useSelector<any, boolean>(showSelector);
-  const zonesForFilter = useSelector<any, T[]>(zonesForFilterSelector);
-  const zones = useSelector<any, T[]>(zonesSelector);
-
+  const show = useAppSelector<boolean>(showSelector);
+  const zonesForFilter = useAppSelector<T[]>(zonesForFilterSelector);
+  const zones = useAppSelector<T[]>(zonesSelector);
+  const selectedZones = useAppSelector<string[]>(selectedZonesSelector);
+  const setSelectedZones = useCallback(
+    (ids: string[]) => {
+      dispatch(setSelectedZonesAction(ids));
+    },
+    [dispatch, setSelectedZonesAction]
+  );
   useEffect(() => {
     const zoneIds = selectedZones.filter(
       (id) => !zones.some((zone) => zone.id === id)
@@ -40,14 +44,14 @@ export const useZones = <T extends TariffZone>({
       dispatch(
         getZonesAction(
           selectedZones.filter((id) => !zones.some((zone) => zone.id === id))
-        ) as unknown as AnyAction
+        )
       );
     }
   }, [selectedZones]);
 
   useEffect(() => {
     if (show) {
-      dispatch(getZonesForFilterAction() as unknown as AnyAction);
+      dispatch(getZonesForFilterAction());
     }
   }, [show]);
 

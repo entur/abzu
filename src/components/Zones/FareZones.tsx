@@ -1,13 +1,14 @@
 import React from "react";
-import {
-  getFareZones,
-  getFareZonesForFilter,
-} from "../../actions/TiamatActions";
 import { ControlPosition } from "leaflet";
 import { FareZone } from "../../models/FareZone";
 import { Zones } from "./Zones";
 import { getColorByCodespace } from "./getColorByCodespace";
 import { useIntl } from "react-intl";
+import {
+  getFareZonesByIdsAction,
+  getFareZonesForFilterAction,
+  setSelectedFareZones,
+} from "../../reducers/zonesSlice";
 
 export interface FareZonesProps {
   position: ControlPosition;
@@ -25,11 +26,13 @@ export const FareZones: React.FC<FareZonesProps> = ({ position }) => {
       getZoneColor={(fareZone) =>
         getColorByCodespace(fareZone.id.split(":")[0])
       }
-      showSelector={(state) => state.mapUtils.showFareZones}
-      zonesForFilterSelector={(state) => state.mapUtils.fareZonesForFilter}
-      zonesSelector={(state) => state.mapUtils.fareZones}
-      getZonesForFilterAction={getFareZonesForFilter}
-      getZonesAction={getFareZones}
+      showSelector={(state) => state.zones.showFareZones}
+      zonesForFilterSelector={(state) => state.zones.fareZonesForFilter}
+      zonesSelector={(state) => state.zones.fareZones}
+      selectedZonesSelector={(state) => state.zones.selectedFareZones}
+      getZonesForFilterAction={getFareZonesForFilterAction}
+      getZonesAction={getFareZonesByIdsAction}
+      setSelectedZonesAction={setSelectedFareZones}
     />
   );
 };

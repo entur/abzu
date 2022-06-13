@@ -15,11 +15,7 @@ limitations under the Licence. */
 import { Action } from "redux";
 import { ApolloQueryResult } from "../actions";
 import * as types from "../actions/Types";
-import { FareZone } from "../models/FareZone";
 import Quay from "../models/Quay";
-import { TariffZone } from "../models/TariffZone";
-import SettingsManager from "../singletons/SettingsManager";
-import { getStateByOperation } from "./mapReducerUtil";
 
 export type MapState = {
   focusedElement: {
@@ -47,12 +43,6 @@ export type MapState = {
   fetchOTPInfoMergeLoading: boolean;
   fetchOTPInfoDeleteLoading: boolean;
   deleteQuayWarning: string | null;
-  showFareZones: boolean;
-  showTariffZones: boolean;
-  fareZonesForFilter: FareZone[];
-  tariffZonesForFilter: TariffZone[];
-  fareZones: FareZone[];
-  tariffZones: TariffZone[];
 };
 
 export const initialState: MapState = {
@@ -81,12 +71,6 @@ export const initialState: MapState = {
   fetchOTPInfoMergeLoading: false,
   fetchOTPInfoDeleteLoading: false,
   deleteQuayWarning: null,
-  showFareZones: new SettingsManager().getShowFareZonesInMap(),
-  showTariffZones: new SettingsManager().getShowTariffZonesInMap(),
-  fareZonesForFilter: [],
-  tariffZonesForFilter: [],
-  fareZones: [],
-  tariffZones: [],
 };
 
 export type MapAction = Action &
@@ -96,8 +80,6 @@ export type MapAction = Action &
 
 const mapReducer = (state = initialState, action: MapAction) => {
   switch (action.type) {
-    case types.APOLLO_QUERY_RESULT:
-      return getStateByOperation(state, action);
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         focusedElement: {
@@ -265,16 +247,6 @@ const mapReducer = (state = initialState, action: MapAction) => {
       return Object.assign({}, state, {
         removeStopPlaceFromParentOpen: false,
         removingStopPlaceFromParentId: null,
-      });
-
-    case types.TOGGLE_SHOW_FARE_ZONES_IN_MAP:
-      return Object.assign({}, state, {
-        showFareZones: action.payload,
-      });
-
-    case types.TOGGLE_SHOW_TARIFF_ZONES_IN_MAP:
-      return Object.assign({}, state, {
-        showTariffZones: action.payload,
       });
 
     default:

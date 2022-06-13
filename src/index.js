@@ -27,12 +27,10 @@ import StopPlaces from "./containers/StopPlaces";
 import StopPlace from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-import cfgreader from "./config/readConfig";
 import AppRoutes from "./routes";
 import "intl";
 import { getTiamatClient } from "./graphql/clients";
-import { getStore } from "./store/store";
-import { getEnvironment } from "./config/getEnvironment";
+import { store, history } from "./store/store";
 import configreader from "./config/readConfig";
 
 const AuthenticatedApp = () => {
@@ -46,8 +44,6 @@ const AuthenticatedApp = () => {
   });
 
   const client = getTiamatClient();
-
-  const { store, history } = getStore();
 
   const path = "/";
 

@@ -34,22 +34,19 @@ const getMiddleware = () => {
   return middleware;
 };
 
-export const getStore = () => {
-  const store = configureStore({
-    reducer: createRootReducer(routerReducer),
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        // TODO: these should be turned on at some point
-        immutableCheck: false,
-        serializableCheck: false,
-      }).concat(getMiddleware()),
-    enhancers: [sentryReduxEnhancer],
-  });
+export const store = configureStore({
+  reducer: createRootReducer(routerReducer),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      // TODO: these should be turned on at some point
+      immutableCheck: false,
+      serializableCheck: false,
+    }).concat(getMiddleware()),
+  enhancers: [sentryReduxEnhancer],
+});
 
-  const history = createReduxHistory(store);
+export const history = createReduxHistory(store);
 
-  return {
-    store,
-    history,
-  };
-};
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;

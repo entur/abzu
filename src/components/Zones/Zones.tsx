@@ -1,5 +1,13 @@
+import {
+  ActionCreatorWithoutPayload,
+  ActionCreatorWithPayload,
+  AsyncThunk,
+  AsyncThunkAction,
+} from "@reduxjs/toolkit";
 import { ControlPosition } from "leaflet";
+import { Dispatch } from "redux";
 import { TariffZone } from "../../models/TariffZone";
+import { AppDispatch, RootState } from "../../store/store";
 import { useZones } from "./useZones";
 import { ZonesControl } from "./ZonesControl";
 import { ZonesLayer } from "./ZonesLayer";
@@ -9,16 +17,13 @@ export interface ZonesProps<T extends TariffZone> {
   controlTitle: string;
   getZoneLabel: (zone: T) => string;
   getZoneColor: (zone: T) => string;
-  showSelector: (state: any) => boolean;
-  zonesForFilterSelector: (state: any) => T[];
-  zonesSelector: (state: any) => T[];
-  getZonesForFilterAction: () => (
-    dispatch: any,
-    getState: any
-  ) => Promise<void>;
-  getZonesAction: (
-    ids: string[]
-  ) => (dispatch: any, getState: any) => Promise<void>;
+  showSelector: (state: RootState) => boolean;
+  zonesForFilterSelector: (state: RootState) => T[];
+  zonesSelector: (state: RootState) => T[];
+  selectedZonesSelector: (state: RootState) => string[];
+  getZonesForFilterAction: AsyncThunk<T[], void, { state: RootState }>;
+  getZonesAction: AsyncThunk<T[], string[], { state: RootState }>;
+  setSelectedZonesAction: ActionCreatorWithPayload<string[], string>;
 }
 
 export const Zones = <T extends TariffZone>({
@@ -29,8 +34,10 @@ export const Zones = <T extends TariffZone>({
   showSelector,
   zonesForFilterSelector,
   zonesSelector,
+  selectedZonesSelector,
   getZonesForFilterAction,
   getZonesAction,
+  setSelectedZonesAction,
 }: ZonesProps<T>) => {
   const {
     show,
@@ -42,8 +49,10 @@ export const Zones = <T extends TariffZone>({
     showSelector,
     zonesForFilterSelector,
     zonesSelector,
+    selectedZonesSelector,
     getZonesForFilterAction,
     getZonesAction,
+    setSelectedZonesAction,
   });
 
   return (
