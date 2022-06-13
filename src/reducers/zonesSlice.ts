@@ -41,7 +41,6 @@ const sortByPrivateCode = (a: FareZone, b: FareZone) => {
   }
 };
 
-// Define a type for the slice state
 export interface ZonesState {
   showFareZones: boolean;
   showTariffZones: boolean;
@@ -53,7 +52,6 @@ export interface ZonesState {
   selectedTariffZones: string[];
 }
 
-// Define the initial state using that type
 const initialState: ZonesState = {
   showFareZones: Settings.getShowFareZonesInMap(),
   showTariffZones: Settings.getShowTariffZonesInMap(),
@@ -125,7 +123,6 @@ export const getFareZonesByIdsAction = createAsyncThunk<
 
 export const zonesSlice = createSlice({
   name: "zones",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     toggleShowFareZonesInMap: (state, action: PayloadAction<boolean>) => {
@@ -175,33 +172,4 @@ export const {
   setSelectedTariffZones,
 } = zonesSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-//export const selectCount = (state: RootState) => state.counter.value;
-
 export default zonesSlice.reducer;
-
-/*
-
-
-export const getTariffZonesByIds = (ids) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findTariffZonesByIds,
-    variables: {
-      ids,
-    },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-
-export const getFareZones = (ids) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findFareZones,
-    variables: {
-      ids,
-    },
-    fetchPolicy: "network-only",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-  */
