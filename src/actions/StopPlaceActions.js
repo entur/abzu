@@ -484,14 +484,6 @@ StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
   dispatch(UserActions.setCenterAndZoom(centroid, null));
 };
 
-StopPlaceActions.addTariffZone = (tariffZone) => (dispatch) => {
-  dispatch(createThunk(types.ADDED_TARIFF_ZONE, tariffZone));
-};
-
-StopPlaceActions.removeTariffZone = (tariffZoneId) => (dispatch) => {
-  dispatch(createThunk(types.REMOVED_TARIFF_ZONE, tariffZoneId));
-};
-
 StopPlaceActions.setStopPlaceLoading = (state) => (dispatch) => {
   dispatch(createThunk(types.SET_STOP_PLACE_LOADING, state));
 };

@@ -21,10 +21,6 @@ import TariffZonesItem from "./TariffZonesItem";
 import StopPlaceActions from "../../actions/StopPlaceActions";
 
 class TariffZonesDialog extends React.Component {
-  handleRemoveTZ(id) {
-    this.props.dispatch(StopPlaceActions.removeTariffZone(id));
-  }
-
   render() {
     const { open, intl, tariffZones = [], handleClose } = this.props;
     const { formatMessage } = intl;
