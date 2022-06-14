@@ -46,7 +46,7 @@ export const ZonesControl = <T extends TariffZone>({
 
   const sortedCodespaces = useMemo(() => {
     return Object.keys(groupedZonesForFilter).sort();
-  }, [groupedZonesForFilter])
+  }, [groupedZonesForFilter]);
 
   const toggleCodespaceSelection = useCallback(
     (codespace: string, checked: boolean) => {
