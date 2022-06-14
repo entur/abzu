@@ -44,6 +44,10 @@ export const ZonesControl = <T extends TariffZone>({
     }, {});
   }, [zonesForFilter]);
 
+  const sortedCodespaces = useMemo(() => {
+    return Object.keys(groupedZonesForFilter).sort();
+  }, [groupedZonesForFilter])
+
   const toggleCodespaceSelection = useCallback(
     (codespace: string, checked: boolean) => {
       if (checked) {
@@ -117,7 +121,7 @@ export const ZonesControl = <T extends TariffZone>({
         {zonesForFilter.length === 0 && <LinearProgress />}
         {zonesForFilter.length > 0 && (
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            {Object.keys(groupedZonesForFilter).map((codespace) => (
+            {sortedCodespaces.map((codespace) => (
               <Box key={codespace} sx={{ display: "flex" }}>
                 <FormControlLabel
                   label={codespace}
