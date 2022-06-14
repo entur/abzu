@@ -49,16 +49,11 @@ import {
   getQueryTopographicPlaces,
   getTagsByNameQuery,
   getGroupOfStopPlaceQuery,
-  findTariffones,
   stopPlaceAndPathLinkByVersion,
   findStopForReport as findStopForReportQuery,
   getParkingForMultipleStopPlaces as getParkingForMultipleStopPlacesQuery,
   topopGraphicalPlacesReportQuery,
   neighbourStopPlaceQuays,
-  findFareZones,
-  findFareZonesForFilter,
-  findTariffZonesForFilter,
-  findTariffZonesByIds,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
@@ -540,16 +535,6 @@ export const deleteGroupOfStopPlaces = (id) => async (dispatch, getState) =>
       id,
     },
     fetchPolicy: "no-cache",
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
-
-export const getTariffZones = (query) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    query: findTariffones,
-    variables: {
-      query,
-    },
-    fetchPolicy: "network-only",
     context: await getContext(getState().roles.auth),
   })(dispatch);
 

@@ -749,17 +749,6 @@ export const getGroupOfStopPlaceQuery = gql`
   ${Fragments.groupOfStopPlaces.verbose}
 `;
 
-export const findTariffones = gql`
-  query findTariffZones($query: String!) {
-    tariffZones(query: $query, size: 7) {
-      id
-      name {
-        value
-      }
-    }
-  }
-`;
-
 export const findTariffZonesByIds = gql`
   query findTariffZonesByIds($ids: [String]) {
     tariffZones(ids: $ids) {
