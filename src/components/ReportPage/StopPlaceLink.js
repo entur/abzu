@@ -13,18 +13,14 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
+import { Link } from "react-router-dom";
 import Routes from "../../routes/";
 
 export default ({ id, style }) => {
-  const url = `${window.location.origin}/${Routes.STOP_PLACE}/${id}`;
+  const url = `/${Routes.STOP_PLACE}/${id}`;
   return (
-    <a
-      style={{ ...style }}
-      target="_blank"
-      rel="noopener noreferrer"
-      href={url}
-    >
+    <Link style={{ ...style }} to={url}>
       {id}
-    </a>
+    </Link>
   );
 };

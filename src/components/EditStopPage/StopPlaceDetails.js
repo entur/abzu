@@ -47,7 +47,6 @@ import ToolTippable from "./ToolTippable";
 import MdKey from "material-ui/svg-icons/communication/vpn-key";
 import KeyValuesDialog from "../Dialogs/KeyValuesDialog";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
-import { createStopPlaceHref } from "../../utils/";
 import FlatButton from "material-ui/FlatButton";
 import TagsDialog from "./TagsDialog";
 import TagTray from "../MainPage/TagTray";
@@ -59,6 +58,8 @@ import {
   removeTag,
 } from "../../actions/TiamatActions";
 import { Popover } from "@mui/material";
+import { Link } from "react-router-dom";
+import Routes from "../../routes";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -431,10 +432,6 @@ class StopPlaceDetails extends React.Component {
     const tariffZonesHint = formatMessage({ id: "tariffZones" });
     const altNamesHint = formatMessage({ id: "alternative_names" });
     const belongsToParent = formatMessage({ id: "belongs_to_parent" });
-
-    const parentStopHref = belongsToParent
-      ? createStopPlaceHref(getIn(stopPlace, ["parentStop", "id"], null))
-      : "";
     const primaryDarker = getPrimaryDarkerColor();
 
     return (
@@ -446,14 +443,16 @@ class StopPlaceDetails extends React.Component {
                 <span style={{ fontWeight: 600, fontSize: "0.9em" }}>
                   {belongsToParent}
                 </span>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={`/${Routes.STOP_PLACE}/${getIn(
+                    stopPlace,
+                    ["parentStop", "id"],
+                    null
+                  )}`}
                   style={{ fontSize: "0.8em" }}
-                  href={parentStopHref}
                 >
                   {stopPlace.parentStop.id}
-                </a>
+                </Link>
               </div>
             )}
             {!stopPlace.isNewStop && (

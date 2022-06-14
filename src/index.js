@@ -24,7 +24,7 @@ import { BrowserTracing } from "@sentry/tracing";
 import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
-import StopPlace from "./containers/StopPlace";
+import { StopPlace } from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import AppRoutes from "./routes";
