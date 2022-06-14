@@ -104,7 +104,7 @@ export const ZonesControl = <T extends TariffZone>({
           : selectedZones.filter((selected) => selected !== id)
       );
     },
-    []
+    [selectedZones]
   );
 
   return (
