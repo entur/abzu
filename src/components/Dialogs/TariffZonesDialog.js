@@ -14,21 +14,25 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-
 import DialogHeader from "./DialogHeader";
 import TariffZonesItem from "./TariffZonesItem";
 
-import StopPlaceActions from "../../actions/StopPlaceActions";
-
 class TariffZonesDialog extends React.Component {
   render() {
-    const { open, intl, tariffZones = [], handleClose } = this.props;
+    const {
+      open,
+      intl,
+      tariffZones = [],
+      fareZones = [],
+      handleClose,
+    } = this.props;
     const { formatMessage } = intl;
 
     const translations = {
       value: formatMessage({ id: "name" }),
       tariffZones: formatMessage({ id: "tariffZones" }),
       noTariffZones: formatMessage({ id: "noTariffZones" }),
+      tariffZonesDeprecated: formatMessage({ id: "tariffZonesDeprecated" }),
     };
 
     if (!open) return null;
@@ -65,23 +69,42 @@ class TariffZonesDialog extends React.Component {
             marginBottom: 5,
           }}
         >
-          {tariffZones.length ? (
-            <div
-              style={{
-                width: "100%",
-                fontSize: 12,
-                overflowY: "overlay",
-                maxHeight: 400,
-              }}
-            >
-              {tariffZones.map((tz) => (
-                <TariffZonesItem
-                  key={"tariffZone-" + tz.id}
-                  id={tz.id}
-                  name={tz.name}
-                />
-              ))}
-            </div>
+          {tariffZones.length || fareZones.length ? (
+            <>
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: 12,
+                  overflowY: "overlay",
+                  maxHeight: 400,
+                }}
+              >
+                {tariffZones.map((tz) => (
+                  <TariffZonesItem
+                    key={"tariffZone-" + tz.id}
+                    id={tz.id}
+                    name={tz.name}
+                  />
+                ))}
+              </div>
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: 12,
+                  overflowY: "overlay",
+                  maxHeight: 400,
+                }}
+              >
+                {fareZones.map((fz) => (
+                  <TariffZonesItem
+                    key={"fareZone-" + fz.id}
+                    id={fz.id}
+                    name={fz.name}
+                    privateCode={fz.privateCode}
+                  />
+                ))}
+              </div>
+            </>
           ) : (
             <div style={noItemsStyle}>{translations.noTariffZones}</div>
           )}

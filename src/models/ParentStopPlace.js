@@ -119,6 +119,18 @@ class ParentStopPlace {
         clientStop.tariffZones = [];
       }
 
+      if (stop.fareZones && stop.fareZones.length) {
+        clientStop.fareZones = stop.fareZones.map((zone) => {
+          return {
+            name: zone.name?.value,
+            privateCode: zone.privateCode?.value,
+            id: zone.id,
+          };
+        });
+      } else {
+        clientStop.fareZones = [];
+      }
+
       clientStop.accessibilityAssessment = stop.accessibilityAssessment
         ? stop.accessibilityAssessment
         : getAssessmentSetBasedOnQuays(stop.quays);

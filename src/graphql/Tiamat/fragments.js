@@ -239,6 +239,15 @@ Fragments.stopPlace = {
             }
             id
         }
+        fareZones {
+          name {
+            value
+          }
+          privateCode {
+            value
+          }
+          id
+        }
         topographicPlace {
             name {
                 value
@@ -306,6 +315,15 @@ Fragments.stopPlace = {
                   value
               }
               id
+          }
+          fareZones {
+            name {
+              value
+            }
+            privateCode {
+              value
+            }
+            id
           }
           topographicPlace {
               name {

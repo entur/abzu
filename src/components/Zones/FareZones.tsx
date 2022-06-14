@@ -19,7 +19,7 @@ export const FareZones: React.FC<FareZonesProps> = ({ position }) => {
   return (
     <Zones<FareZone>
       controlPosition={position}
-      controlTitle={formatMessage({ id: "fareZones" })}
+      controlTitle={formatMessage({ id: "tariffZones" })}
       getZoneLabel={(fareZone: FareZone) =>
         `${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`
       }

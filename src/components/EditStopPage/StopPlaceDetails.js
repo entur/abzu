@@ -802,6 +802,7 @@ class StopPlaceDetails extends React.Component {
         <TariffZonesDialog
           open={tariffZoneOpen}
           tariffZones={stopPlace.tariffZones}
+          fareZones={stopPlace.fareZones}
           intl={intl}
           disabled={disabled}
           handleClose={() => {

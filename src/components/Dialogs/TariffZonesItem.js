@@ -21,7 +21,7 @@ const itemStyle = {
   marginRight: 5,
 };
 
-const TariffZonesItem = ({ id, name }) => (
+const TariffZonesItem = ({ id, name, privateCode }) => (
   <div
     style={{
       display: "flex",
@@ -32,6 +32,9 @@ const TariffZonesItem = ({ id, name }) => (
     }}
   >
     <div style={itemStyle}>{id}</div>
+    {(privateCode && <div style={itemStyle}>{privateCode}</div>) || (
+      <div style={itemStyle}></div>
+    )}
     <div style={itemStyle}>{name}</div>
   </div>
 );
@@ -39,7 +42,7 @@ const TariffZonesItem = ({ id, name }) => (
 TariffZonesItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  handleRemove: PropTypes.func.isRequired,
+  privateCode: PropTypes.string,
   disabled: PropTypes.bool.isRequired,
 };
 

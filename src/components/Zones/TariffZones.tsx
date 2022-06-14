@@ -19,7 +19,7 @@ export const TariffZones: React.FC<TariffZonesProps> = ({ position }) => {
   return (
     <Zones<TariffZone>
       controlPosition={position}
-      controlTitle={formatMessage({ id: "tariffZones" })}
+      controlTitle={formatMessage({ id: "tariffZonesDeprecated" })}
       getZoneLabel={(fareZone: TariffZone) =>
         `${fareZone.name.value} (${fareZone.id})`
       }
