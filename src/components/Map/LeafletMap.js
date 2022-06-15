@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import MarkerList from "./MarkerList";
 import {
   MapContainer,
@@ -29,6 +29,7 @@ import { MapEvents } from "./MapEvents";
 import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
+import { ConfigContext } from "../../config/ConfigContext";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -68,8 +69,8 @@ export const LeafLetMap = ({
     }
   }, [map]);
 
+  const { googleApiKey } = useContext(ConfigContext);
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
-  const googleApiKey = window.config.googleApiKey;
   const { BaseLayer } = LayersControl;
 
   return (

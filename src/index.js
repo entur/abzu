@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React from "react";
+import React, { useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { Route, Routes } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
@@ -34,8 +34,9 @@ import configreader from "./config/readConfig";
 import { ConfigContext } from "./config/ConfigContext";
 
 const AuthenticatedApp = () => {
+  const config = useContext(ConfigContext);
   Sentry.init({
-    dsn: window.config.sentryDSN,
+    dsn: config.sentryDSN,
     integrations: [new BrowserTracing()],
 
     // We recommend adjusting this value in production, or using tracesSampler
