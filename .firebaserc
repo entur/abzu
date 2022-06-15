@@ -2,6 +2,7 @@
   "projects": {
     "dev": "ent-ror-abzu-dev",
     "staging": "ent-ror-abzu-tst",
-    "production": "ent-ror-abzu-prd"
+    "production": "ent-ror-abzu-prd",
+    "default": "ent-ror-abzu-dev"
   }
 }
