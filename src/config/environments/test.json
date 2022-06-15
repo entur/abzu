@@ -1,6 +1,7 @@
 {
   "tiamatBaseUrl": "https://api.staging.entur.io/stop-places/v1/graphql",
   "OTPUrl": "https://api.staging.entur.io/journey-planner/v2/graphql",
+  "baatTokenProxyEndpoint": "https://api.staging.entur.io/baat-token-proxy/v1",
   "tiamatEnv": "test",
   "netexPrefix": "NSR",
   "hostname": "stoppested.staging.entur.org",

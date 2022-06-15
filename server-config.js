@@ -25,22 +25,6 @@ const contentRoot = path.resolve(process.env.CONTENT_BASE || './build');
 const configureApp = async (app) => {
   app.use(bodyParser.json());
 
-  app.get('/token', (req, res) => {
-    const remoteAddress =
-      req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-    axios
-      .post(
-        `http://gatekeeper1.geonorge.no/BaatGatekeeper/gktoken?ip=${remoteAddress}&min=400`
-      )
-      .then(gkt => {
-        res.send({
-          gkt: gkt.data,
-          expires: new Date(Date.now() + 60 * 1000 * 399).getTime()
-        });
-      });
-  });
-
   app.get('/_health', function(req, res) {
     res.sendStatus(200);
   });

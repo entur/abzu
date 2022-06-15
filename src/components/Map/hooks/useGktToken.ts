@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Axios from "axios";
+import { ConfigContext } from "../../../config/ConfigContext";
 
 const INTERVAL_IN_MS = 60000;
 
@@ -8,9 +9,11 @@ export const useGktToken = () => {
     JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "null")
   );
 
+  const config = useContext(ConfigContext);
+
   useEffect(() => {
     const fetchNewToken = async () => {
-      const response = await Axios.get("/token");
+      const response = await Axios.get(config.baatTokenProxyEndpoint!);
       const newToken = JSON.stringify(response.data);
       localStorage.setItem("ABZU::GKT_TOKEN", newToken);
       setToken(response.data);
@@ -39,7 +42,7 @@ export const useGktToken = () => {
     return () => {
       clearInterval(fetchTokenInterval);
     };
-  }, []);
+  }, [config.baatTokenProxyEndpoint]);
 
   return token && token.gkt;
 };

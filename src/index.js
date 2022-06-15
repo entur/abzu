@@ -32,6 +32,7 @@ import "intl";
 import { getTiamatClient } from "./graphql/clients";
 import { store, history } from "./store/store";
 import configreader from "./config/readConfig";
+import { ConfigContext } from "./config/ConfigContext";
 
 const AuthenticatedApp = () => {
   Sentry.init({
@@ -94,7 +95,9 @@ function renderIndex(config) {
       auth0ClaimsNamespace={config.auth0ClaimsNamespace}
       loginAutomatically={false}
     >
-      <AuthenticatedApp />
+      <ConfigContext.Provider value={config}>
+        <AuthenticatedApp />
+      </ConfigContext.Provider>
     </AuthProvider>
   );
 }
