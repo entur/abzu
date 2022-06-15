@@ -165,11 +165,25 @@ export const zonesSlice = createSlice({
   },
 });
 
-export const {
-  toggleShowFareZonesInMap,
-  toggleShowTariffZonesInMap,
-  setSelectedFareZones,
-  setSelectedTariffZones,
-} = zonesSlice.actions;
+export const { setSelectedFareZones, setSelectedTariffZones } =
+  zonesSlice.actions;
+
+export const toggleShowFareZonesInMap = createAsyncThunk<void, boolean>(
+  "zones/toggleShowFareZonesInMap",
+  async (value, { dispatch }) => {
+    Settings.setShowTariffZonesInMap(false);
+    Settings.setShowFareZonesInMap(value);
+    dispatch(zonesSlice.actions.toggleShowFareZonesInMap(value));
+  }
+);
+
+export const toggleShowTariffZonesInMap = createAsyncThunk<void, boolean>(
+  "zones/toggleShowTariffZonesInMap",
+  async (value, { dispatch }) => {
+    Settings.setShowFareZonesInMap(false);
+    Settings.setShowTariffZonesInMap(value);
+    dispatch(zonesSlice.actions.toggleShowTariffZonesInMap(value));
+  }
+);
 
 export default zonesSlice.reducer;
