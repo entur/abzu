@@ -36,6 +36,7 @@ import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
 } from "../reducers/zonesSlice";
+import { injectIntl } from "react-intl";
 
 class Header extends React.Component {
   constructor(props) {
@@ -474,4 +475,4 @@ const mapStateToProps = (state) => ({
   showTariffZones: state.zones.showTariffZones,
 });
 
-export default connect(mapStateToProps)(Header);
+export default injectIntl(connect(mapStateToProps)(Header));

@@ -21,6 +21,7 @@ import MdError from "@mui/icons-material/Error";
 import { UserActions } from "../actions/";
 import Button from "@mui/material/Button";
 import MdInfo from "@mui/icons-material/InfoOutlined";
+import { injectIntl } from "react-intl";
 
 class SnackbarWrapper extends Component {
   constructor(props) {
@@ -49,7 +50,10 @@ class SnackbarWrapper extends Component {
   }
 
   render() {
-    const { snackbarOptions, formatMessage } = this.props;
+    const {
+      snackbarOptions,
+      intl: { formatMessage },
+    } = this.props;
     const { isOpen, status, errorMsg } = snackbarOptions;
     const { expanded } = this.state;
     const autoHideDuration = status === types.SUCCESS ? 3000 : 0;
@@ -118,4 +122,4 @@ const mapStateToProps = ({ snackbar }) => ({
   snackbarOptions: snackbar.snackbarOptions,
 });
 
-export default connect(mapStateToProps)(SnackbarWrapper);
+export default injectIntl(connect(mapStateToProps)(SnackbarWrapper));

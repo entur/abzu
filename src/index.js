@@ -21,7 +21,6 @@ import { Provider } from "react-redux";
 import AuthProvider from "@entur/auth-provider";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-import Root from "./containers/Root";
 import App from "./containers/App";
 import StopPlaces from "./containers/StopPlaces";
 import { StopPlace } from "./containers/StopPlace";
@@ -52,30 +51,28 @@ const AuthenticatedApp = () => {
     <Sentry.ErrorBoundary showDialog>
       <Provider store={store}>
         <ApolloProvider client={client}>
-          <Root>
-            <App>
-              <Router history={history}>
-                <Routes>
-                  <Route path={path} element={<StopPlaces />} />
-                  <Route
-                    exact
-                    path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                    element={<StopPlace />}
-                  />
-                  <Route
-                    exact
-                    path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                    element={<GroupOfStopPlaces />}
-                  />
-                  <Route
-                    exact
-                    path={path + AppRoutes.REPORTS}
-                    element={<ReportPage />}
-                  />
-                </Routes>
-              </Router>
-            </App>
-          </Root>
+          <App>
+            <Router history={history}>
+              <Routes>
+                <Route path={path} element={<StopPlaces />} />
+                <Route
+                  exact
+                  path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+                  element={<StopPlace />}
+                />
+                <Route
+                  exact
+                  path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                  element={<GroupOfStopPlaces />}
+                />
+                <Route
+                  exact
+                  path={path + AppRoutes.REPORTS}
+                  element={<ReportPage />}
+                />
+              </Routes>
+            </Router>
+          </App>
         </ApolloProvider>
       </Provider>
     </Sentry.ErrorBoundary>

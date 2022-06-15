@@ -21,7 +21,7 @@ import {
   StyledEngineProvider,
 } from "@mui/material/styles";
 import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
-import { injectIntl } from "react-intl";
+import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useAuth } from "@entur/auth-provider";
 import Header from "../components/Header";
@@ -29,13 +29,25 @@ import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import BrowserSupport from "../components/BrowserSupport";
 import { fetchPolygons, updateAuth } from "../actions/RolesActions";
+import { useAppSelector } from "../store/hooks";
+import configureLocalization from "../localization/localization";
+import { UserActions } from "../actions";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
 const muiTheme = createTheme(adaptV4Theme(getTheme()));
 
-const App = ({ intl, children }) => {
+const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
+
+  const localization = useAppSelector((state) => state.user.localization);
+  const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
+
+  useEffect(() => {
+    configureLocalization(appliedLocale).then((localization) => {
+      dispatch(UserActions.changeLocalization(localization));
+    });
+  }, [appliedLocale]);
 
   useEffect(() => {
     dispatch(updateAuth(auth));
@@ -45,22 +57,30 @@ const App = ({ intl, children }) => {
     }
   }, [auth]);
 
+  if (localization.locale === null) {
+    return null;
+  }
+
   return (
-    <>
+    <IntlProvider
+      key={localization.locale}
+      locale={localization.locale}
+      messages={localization.messages}
+    >
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={muiTheme}>
           <V0MuiThemeProvider muiTheme={muiThemeV0}>
             <div>
-              <Header intl={intl} />
+              <Header />
               {children}
-              <SnackbarWrapper formatMessage={intl.formatMessage} />
+              <SnackbarWrapper />
               <BrowserSupport />
             </div>
           </V0MuiThemeProvider>
         </ThemeProvider>
       </StyledEngineProvider>
-    </>
+    </IntlProvider>
   );
 };
 
-export default injectIntl(App);
+export default App;
