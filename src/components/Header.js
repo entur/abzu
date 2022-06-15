@@ -197,7 +197,10 @@ class Header extends React.Component {
 
     return (
       <div>
-        <Helmet defaultTitle={formatMessage({ id: "_title" })} />
+        <Helmet
+          defaultTitle={formatMessage({ id: "_title" })}
+          titleTemplate={`${formatMessage({ id: "_title" })} - %s`}
+        />
         <AppBar
           style={{
             zIndex: 999,
