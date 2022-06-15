@@ -266,16 +266,14 @@ class QuayMarker extends React.Component {
         draggable={this.props.draggable}
         eventHandlers={{
           dragend: (e) => handleQuayDragEnd(index, "quay", e),
+          popupopen: () => {
+            this.handleSetFocus();
+          },
         }}
         keyboard={false}
       >
         <Popup
           autoPan={false}
-          eventHandlers={{
-            popupopen: () => {
-              this.handleSetFocus();
-            },
-          }}
         >
           <div>
             <span className="quay-marker-title">{stopPlaceName}</span>
