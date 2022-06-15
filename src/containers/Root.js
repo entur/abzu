@@ -26,21 +26,6 @@ class Root extends React.Component {
     configureLocalization(appliedLocale).then((localization) => {
       dispatch(UserActions.changeLocalization(localization));
     });
-
-    setTimeout(() => {
-      const timeBeforeRequest = new Date().getTime();
-      axios
-        .post("/timeOffset", {
-          clientTime: timeBeforeRequest,
-        })
-        .then((response) => {
-          const resolvedTime = new Date().getTime();
-          const serverClientOffset = response.data.offset;
-          const timeSpentOnRequest = resolvedTime - timeBeforeRequest;
-          const diff = (serverClientOffset - timeSpentOnRequest) / 2;
-          dispatch(UserActions.setServerDiffTime(diff));
-        });
-    }, 5000);
   }
 
   render() {

@@ -621,10 +621,6 @@ UserActions.hideRemoveStopPlaceFromParent = () => (dispatch) => {
   dispatch(createThunk(types.HIDE_REMOVE_STOP_PLACE_FROM_PARENT, null));
 };
 
-UserActions.setServerDiffTime = (diff) => (dispatch) => {
-  dispatch(createThunk(types.SET_SERVER_DIFF_TIME, diff));
-};
-
 UserActions.createMultimodalWith = (stopPlaceId, fromMain) => (dispatch) => {
   dispatch(getAddStopPlaceInfo([stopPlaceId])).then((response) => {
     if (response.data) {

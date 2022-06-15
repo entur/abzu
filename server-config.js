@@ -16,7 +16,6 @@
 
 const path = require('path');
 const express = require('express');
-const axios = require('axios');
 const bodyParser = require('body-parser');
 const fallback = require('express-history-api-fallback');
 
@@ -27,16 +26,6 @@ const configureApp = async (app) => {
 
   app.get('/_health', function(req, res) {
     res.sendStatus(200);
-  });
-
-  app.post('/timeOffset', function(req, res) {
-    if (req.body.clientTime) {
-      res.send({
-        offset: new Date().getTime() - req.body.clientTime,
-      });
-    } else {
-      res.sendStatus(400);
-    }
   });
 
   app.use('/', express.static(contentRoot))
