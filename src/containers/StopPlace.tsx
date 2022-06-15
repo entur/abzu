@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useSelector } from "react-redux";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import EditStopMap from "../components/Map/EditStopMap";
 import EditStopGeneral from "../components/EditStopPage/EditStopGeneral";
@@ -28,7 +27,7 @@ import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import LoadingPage from "./LoadingPage";
 import { getStopPlaceWithAll } from "../actions/TiamatActions";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { Helmet } from "react-helmet";
@@ -37,11 +36,11 @@ const selectProps = createSelector(
   (state: RootState) => state,
   (state) => ({
     isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-    stopPlace: state.stopPlace.current || state.stopPlace.newStop,
     disabled:
       (state.stopPlace.current &&
         state.stopPlace.current.permanentlyTerminated) ||
       !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
+    stopPlace: state.stopPlace.current || state.stopPlace.newStop,
     newStopCreated: state.user.newStopCreated,
     originalStopPlace: state.stopPlace.originalCurrent,
     stopPlaceLoading: state.stopPlace.loading,
@@ -56,7 +55,7 @@ export const StopPlace = () => {
     disabled,
     newStopCreated,
     stopPlaceLoading,
-  } = useSelector(selectProps);
+  } = useAppSelector(selectProps);
 
   const [error, setError] = useState({
     showErrorDialog: false,
@@ -124,7 +123,7 @@ export const StopPlace = () => {
           });
         });
     }
-  }, [idFromPath, stopPlace]);
+  }, [idFromPath]);
 
   const shouldDisplayMessage =
     isCreatingPolylines &&
