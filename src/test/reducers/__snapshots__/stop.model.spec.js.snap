@@ -15,6 +15,7 @@ Object {
   "alternativeNames": Array [],
   "belongsToGroup": false,
   "entityType": "STOP_PLACE",
+  "fareZones": Array [],
   "groups": Array [],
   "hasExpired": false,
   "id": "NSR:StopPlace:933",
