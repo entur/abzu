@@ -227,6 +227,7 @@ class TerminateStopPlaceDialog extends React.Component {
 
     return (
       <Dialog
+        fullWidth
         open={open}
         titleStyle={{ padding: "24px 24px 0px" }}
         onClose={() => {
