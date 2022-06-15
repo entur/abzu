@@ -31,6 +31,7 @@ import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import { useAppDispatch } from "../store/hooks";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
+import { Helmet } from "react-helmet";
 
 const selectProps = createSelector(
   (state: RootState) => state,
@@ -77,22 +78,21 @@ export const StopPlace = () => {
     new InformationManager().setShouldPathLinkBeDisplayed(false);
   }, []);
 
-  useEffect(() => {
-    let title = "";
+  const [title, setTitle] = useState(formatMessage({ id: "_title" }));
 
+  useEffect(() => {
     if (stopPlace) {
       if (stopPlace.isNewStop) {
-        title = formatMessage({ id: "_title_new_stop" });
+        setTitle(formatMessage({ id: "_title_new_stop" }));
       } else {
         if (originalStopPlace.name) {
-          title = originalStopPlace.name;
+          setTitle(originalStopPlace.name);
         }
         if (stopPlace.topographicPlace) {
-          title += ", " + stopPlace.topographicPlace;
+          setTitle((prev) => prev + ", " + stopPlace.topographicPlace);
         }
       }
     }
-    document.title = title;
   }, [stopPlace]);
 
   const idFromPath = useMemo(() => {
@@ -132,6 +132,7 @@ export const StopPlace = () => {
 
   return (
     <div>
+      <Helmet title={title} />
       <Dialog
         open={error.showErrorDialog}
         onClose={() => {

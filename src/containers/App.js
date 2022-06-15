@@ -32,6 +32,7 @@ import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 import { useAppSelector } from "../store/hooks";
 import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";
+import { Helmet } from "react-helmet";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
 const muiTheme = createTheme(adaptV4Theme(getTheme()));
@@ -67,6 +68,9 @@ const App = ({ children }) => {
       locale={localization.locale}
       messages={localization.messages}
     >
+      <Helmet>
+        <html lang={localization.locale} />
+      </Helmet>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={muiTheme}>
           <V0MuiThemeProvider muiTheme={muiThemeV0}>

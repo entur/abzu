@@ -37,6 +37,7 @@ import {
   toggleShowTariffZonesInMap,
 } from "../reducers/zonesSlice";
 import { injectIntl } from "react-intl";
+import { Helmet } from "react-helmet";
 
 class Header extends React.Component {
   constructor(props) {
@@ -196,6 +197,7 @@ class Header extends React.Component {
 
     return (
       <div>
+        <Helmet defaultTitle={formatMessage({ id: "_title" })} />
         <AppBar
           style={{
             zIndex: 999,
