@@ -286,11 +286,6 @@ const userReducer = (state = initialState, action) => {
         keyValuesDialogOpen: false,
       });
 
-    case types.SET_SERVER_DIFF_TIME:
-      return Object.assign({}, state, {
-        serverTimeDiff: action.payload,
-      });
-
     case types.SORTED_QUAYS:
       return Object.assign({}, state, {
         keyValuesDialogOpen: false,
