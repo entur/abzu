@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import Code from "../EditStopPage/Code";
 import AcceptChanges from "../EditStopPage/AcceptChanges";
 import Spinner from "../../static/icons/spinner";
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Cancel, Merge } from "@mui/icons-material";
 
 class MoveQuayDialog extends React.Component {
