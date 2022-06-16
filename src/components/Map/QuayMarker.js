@@ -272,9 +272,7 @@ class QuayMarker extends React.Component {
         }}
         keyboard={false}
       >
-        <Popup
-          autoPan={false}
-        >
+        <Popup autoPan={false}>
           <div>
             <span className="quay-marker-title">{stopPlaceName}</span>
             <div
