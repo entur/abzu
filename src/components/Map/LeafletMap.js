@@ -69,6 +69,12 @@ export const LeafLetMap = ({
     }
   }, [map]);
 
+  useEffect(() => {
+    if (map) {
+      map.setView(centerPosition, zoom);
+    }
+  }, [centerPosition[0], centerPosition[1], zoom]);
+
   const { googleApiKey } = useContext(ConfigContext);
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
   const { BaseLayer } = LayersControl;
