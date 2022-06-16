@@ -91,7 +91,7 @@ class AddStopPlaceToParent extends Component {
               display: "flex",
               flexDirection: "column",
               m: "auto",
-              width: "fit-content",
+              width: "100%",
             }}
           >
             <AddStopPlaceSuggestionList
