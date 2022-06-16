@@ -315,9 +315,6 @@ UserActions.changeQuayAdditionalTypeTabByType = (type) => (dispatch) => {
 
 UserActions.showMergeStopDialog =
   (fromStopPlaceID, name) => (dispatch, getState) => {
-    let state = getState();
-    let client = state.user.client;
-
     dispatch(
       createThunk(types.OPENED_MERGE_STOP_DIALOG, {
         id: fromStopPlaceID,
@@ -325,25 +322,23 @@ UserActions.showMergeStopDialog =
       })
     );
 
-    if (client) {
-      dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
+    dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
 
-      dispatch(getMergeInfoForStops(fromStopPlaceID))
-        .then((response) => {
-          dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-          dispatch(
-            createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-              id: fromStopPlaceID,
-              name,
-              quays: getQuaysForMergeInfo(response.data.stopPlace),
-            })
-          );
-        })
-        .catch((err) => {
-          dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-          console.log(err);
-        });
-    }
+    dispatch(getMergeInfoForStops(fromStopPlaceID))
+      .then((response) => {
+        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+        dispatch(
+          createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+            id: fromStopPlaceID,
+            name,
+            quays: getQuaysForMergeInfo(response.data.stopPlace),
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+        console.log(err);
+      });
   };
 
 UserActions.hideMergeStopDialog = () => (dispatch) => {
