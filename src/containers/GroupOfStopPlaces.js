@@ -110,7 +110,7 @@ class GroupOfStopPlaces extends Component {
           <EditGroupOfStopPlace />
         )}
         {isFetchingMember && <Loader />}
-        {!isLoadingGroup && (
+        {!isLoadingGroup && this.props.zoom && (
           <GroupOfStopPlaceMap
             position={this.props.position}
             zoom={this.props.zoom}
