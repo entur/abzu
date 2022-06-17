@@ -66,6 +66,7 @@ export const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "@@router/LOCATION_CHANGE":
     case types.NAVIGATE_TO:
       return Object.assign({}, state, {
         path: action.payload,
