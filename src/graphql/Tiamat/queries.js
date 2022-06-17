@@ -19,6 +19,7 @@ export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
     stopPlace(id: $id) {
       id
+      version
       ... on ParentStopPlace {
         children {
           id
