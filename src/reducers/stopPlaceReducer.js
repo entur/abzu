@@ -661,11 +661,6 @@ const stopPlaceReducer = (state = initialState, action) => {
         showExpiredStops: action.payload,
       });
 
-    case types.SET_ZOOM_LEVEL:
-      return Object.assign({}, state, {
-        zoom: action.payload,
-      });
-
     case types.SET_STOP_PLACE_LOADING:
       return Object.assign({}, state, {
         loading: action.payload,

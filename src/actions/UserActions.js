@@ -598,10 +598,6 @@ UserActions.moveQuayToNewStopPlace = (quayProps) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MOVE_QUAY_NEW_STOP, quayProps));
 };
 
-UserActions.setZoomLevel = (zoomLevel) => (dispatch) => {
-  dispatch(createThunk(types.SET_ZOOM_LEVEL, zoomLevel));
-};
-
 UserActions.lookupCoordinates = (latLng, triggeredByDrag) => (dispatch) => {
   dispatch(
     createThunk(types.LOOKUP_COORDINATES, { position: latLng, triggeredByDrag })

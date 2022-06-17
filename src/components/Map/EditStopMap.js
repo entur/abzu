@@ -35,6 +35,9 @@ class EditStopMap extends React.Component {
       let { ignoreStopId, dispatch } = this.props;
 
       const zoom = map.getZoom();
+      const center = map.getCenter();
+
+      dispatch(UserActions.setCenterAndZoom([center.lat, center.lng], zoom));
 
       if (zoom > 12) {
         const bounds = map.getBounds();
@@ -109,7 +112,13 @@ class EditStopMap extends React.Component {
   }
 
   handleZoomEnd(event) {
-    this.props.dispatch(UserActions.setZoomLevel(event.target.getZoom()));
+    const center = event.target.getCenter();
+    this.props.dispatch(
+      UserActions.setCenterAndZoom(
+        [center.lat, center.lng],
+        event.target.getZoom()
+      )
+    );
   }
 
   handleBaselayerChanged(value) {

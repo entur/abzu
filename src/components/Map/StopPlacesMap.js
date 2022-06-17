@@ -47,7 +47,13 @@ class StopPlacesMap extends React.Component {
   }
 
   handleZoomEnd(event) {
-    this.props.dispatch(UserActions.setZoomLevel(event.target.getZoom()));
+    const center = event.target.getCenter();
+    this.props.dispatch(
+      UserActions.setCenterAndZoom(
+        [center.lat, center.lng],
+        event.target.getZoom()
+      )
+    );
   }
 
   handleBaselayerChanged(value) {
