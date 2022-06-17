@@ -77,7 +77,6 @@ class MarkerList extends React.Component {
     const { dispatch, intl } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
     dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
-    document.title = intl.formatMessage({ id: "_title_new_stop" });
   }
 
   handleRemoveFromGroup(stopPlaceId) {
