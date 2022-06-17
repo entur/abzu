@@ -17,9 +17,14 @@ import formatHelpers from "../modelUtils/mapToClient";
 export const getStateByOperation = (state, action) => {
   switch (action.operationName) {
     case "stopPlace":
-    case "updateChildOfParentStop":
-    case "stopPlaceAndPathLink":
       return getStateWithEntitiesFromQuery(state, action);
+    case "updateChildOfParentStop":
+      return getStateWithEntitiesFromQuery(state, action);
+    case "stopPlaceAndPathLink":
+      return {
+        ...getStateWithEntitiesFromQuery(state, action),
+        loading: false,
+      };
 
     case "stopPlaceAllVersions":
       return Object.assign({}, state, {

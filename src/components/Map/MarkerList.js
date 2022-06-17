@@ -66,10 +66,7 @@ class MarkerList extends React.Component {
 
     if (!isAlreadyActive) {
       dispatch(StopPlaceActions.setStopPlaceLoading(true));
-      dispatch(getStopPlaceWithAll(id)).then((result) => {
-        dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
-        dispatch(StopPlaceActions.setStopPlaceLoading(false));
-      });
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, id));
     }
   }
 
