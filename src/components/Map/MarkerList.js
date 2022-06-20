@@ -61,8 +61,7 @@ class MarkerList extends React.Component {
 
   handleStopOnClick(id) {
     const { dispatch, path } = this.props;
-
-    const isAlreadyActive = id === path;
+    const isAlreadyActive = path.location.pathname.indexOf(id) > -1;
 
     if (!isAlreadyActive) {
       dispatch(StopPlaceActions.setStopPlaceLoading(true));
@@ -71,7 +70,7 @@ class MarkerList extends React.Component {
   }
 
   handleNewStopClick() {
-    const { dispatch, intl } = this.props;
+    const { dispatch } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
     dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
   }
