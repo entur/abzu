@@ -17,6 +17,7 @@ import PropTypes from "prop-types";
 import Spinner from "../../static/icons/spinner";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
