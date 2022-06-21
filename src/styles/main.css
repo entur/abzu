@@ -11,7 +11,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-@import url(//fonts.googleapis.com/earlyaccess/notosanskannada.css);
 @import "messages.css";
 @import "markers.css";
 @import "tabs.css";
@@ -21,7 +20,7 @@ limitations under the Licence. */
 @import "menu.css";
 
 body {
-  font-family: "Noto Sans Kannada", sans-serif;
+  font-family: sans-serif;
   color: #191919;
   margin: 0px;
 }
