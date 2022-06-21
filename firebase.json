@@ -22,7 +22,7 @@
           },
           {
             "key": "Content-Security-Policy-Report-Only",
-            "value": "default-src 'self'; script-src 'report-sample' 'self' https://maps.googleapis.com/maps-api-v3/api/js/49/5/intl/no_ALL/common.js; style-src 'report-sample' 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; object-src 'none'; base-uri 'self'; connect-src 'self' https://maps.googleapis.com https://o209253.ingest.sentry.io https://ror-entur-dev.eu.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://ror-entur-dev.eu.auth0.com; img-src 'self' data: https://cdnjs.cloudflare.com https://khms0.googleapis.com https://khms1.googleapis.com https://maps.googleapis.com https://maps.gstatic.com; manifest-src 'self'; media-src 'self'; report-uri https://62b171c29bc141b6c537094c.endpoint.csper.io/?v=1; worker-src 'none';"
+            "value": "default-src 'self'; script-src 'report-sample' 'self' https://maps.googleapis.com/maps/api/js; style-src 'report-sample' 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; object-src 'none'; base-uri 'self'; connect-src 'self' https://maps.googleapis.com https://o209253.ingest.sentry.io https://ror-entur-dev.eu.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://ror-entur-dev.eu.auth0.com; img-src 'self' https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org https://cdnjs.cloudflare.com; manifest-src 'self'; media-src 'self'; report-uri https://62b1833c5a9e55900da77bce.endpoint.csper.io/?v=0; worker-src 'none';"
           },
           {
             "key": "Referrer-Policy",
