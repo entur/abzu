@@ -26,7 +26,7 @@
           },
           {
             "key": "Content-Security-Policy-Report-Only",
-            "value": "default-src 'self'; script-src 'self' maps.googleapis.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; object-src 'none'; base-uri 'self'; connect-src 'self' api.dev.entur.io maps.googleapis.com *.ingest.sentry.io ror-entur-dev.eu.auth0.com; font-src 'self' fonts.gstatic.com; frame-src 'self' ror-entur-dev.eu.auth0.com; img-src 'self' *.tile.openstreetmap.org cdnjs.cloudflare.com opencache.statkart.no gatekeeper1.geonorge.no *.googleapis.com; manifest-src 'self'; media-src 'self'; worker-src 'none';"
+            "value": "default-src 'self'; script-src 'self' https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; object-src 'none'; base-uri 'self'; connect-src 'self' https://api.dev.entur.io https://maps.googleapis.com https://*.ingest.sentry.io https://ror-entur-dev.eu.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://ror-entur-dev.eu.auth0.com; img-src 'self' data https://*.tile.openstreetmap.org https://cdnjs.cloudflare.com https://opencache.statkart.no https://gatekeeper1.geonorge.no https://*.googleapis.comhttps:// maps.gstatic.com; manifest-src 'self'; media-src 'self'; worker-src 'none';"
           },
           {
             "key": "Referrer-Policy",
