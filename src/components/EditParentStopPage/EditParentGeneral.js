@@ -34,11 +34,13 @@ import { getIn, getIsCurrentVersionMax } from "../../utils/";
 import {
   addToMultiModalStopPlace,
   createParentStopPlace,
+  deleteStopPlace,
   getNeighbourStops,
   getStopPlaceAndPathLinkByVersion,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
+  terminateStop,
 } from "../../actions/TiamatActions";
 import Routes from "../../routes";
 import SettingsManager from "../../singletons/SettingsManager";
