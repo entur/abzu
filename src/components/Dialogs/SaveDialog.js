@@ -80,17 +80,9 @@ class SaveDialog extends React.Component {
   }
 
   render() {
-    const {
-      open,
-      intl,
-      handleClose,
-      errorMessage,
-    } = this.props;
+    const { open, intl, handleClose, errorMessage } = this.props;
     const { formatMessage } = intl;
-    const {
-      isSaving,
-      comment,
-    } = this.state;
+    const { isSaving, comment } = this.state;
 
     const errorMessageLabel = this.getErrorMessage();
 

@@ -127,11 +127,13 @@ class EditStopGeneral extends React.Component {
     });
 
     await dispatch(getStopPlaceVersions(stopPlaceId));
-    await dispatch(getNeighbourStops(
-      stopPlaceId,
-      activeMap.getBounds(),
-      new Settings().getShowExpiredStops()
-    ));
+    await dispatch(
+      getNeighbourStops(
+        stopPlaceId,
+        activeMap.getBounds(),
+        new Settings().getShowExpiredStops()
+      )
+    );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
   }

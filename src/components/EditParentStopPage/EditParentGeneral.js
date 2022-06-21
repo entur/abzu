@@ -200,11 +200,13 @@ class EditParentGeneral extends React.Component {
     });
 
     await dispatch(getStopPlaceVersions(stopPlaceId));
-    await dispatch(getNeighbourStops(
-      stopPlaceId,
-      activeMap.getBounds(),
-      new SettingsManager().getShowExpiredStops()
-    ));
+    await dispatch(
+      getNeighbourStops(
+        stopPlaceId,
+        activeMap.getBounds(),
+        new SettingsManager().getShowExpiredStops()
+      )
+    );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
   }
