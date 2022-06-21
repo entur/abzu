@@ -480,8 +480,6 @@ class EditParentGeneral extends React.Component {
             handleConfirm={this.determineHowToSave.bind(this)}
             errorMessage={this.state.errorMessage}
             intl={intl}
-            currentValidBetween={stopPlace.validBetween}
-            serverTimeDiff={this.props.serverTimeDiff}
           />
         ) : null}
       </div>

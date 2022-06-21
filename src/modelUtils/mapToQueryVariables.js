@@ -101,19 +101,7 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   }
 
   if (userInput) {
-    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
-
-    let validPeriod = {};
-
-    if (timeFrom && dateFrom) {
-      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom);
-    }
-
-    if (timeTo && dateTo) {
-      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
-    }
-
-    variables.validBetween = validPeriod;
+    const { comment } = userInput;
 
     variables.versionComment = comment;
   }
@@ -145,19 +133,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   }
 
   if (userInput) {
-    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
-
-    let validPeriod = {};
-
-    if (timeFrom && dateFrom) {
-      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom);
-    }
-
-    if (timeTo && dateTo) {
-      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
-    }
-
-    parentStopVariables.validBetween = validPeriod;
+    const { comment } = userInput;
 
     parentStopVariables.versionComment = comment;
   }
@@ -225,20 +201,7 @@ helpers.mapStopToVariables = (original, userInput) => {
   };
 
   if (userInput) {
-    const { timeFrom, timeTo, dateFrom, dateTo, comment } = userInput;
-
-    let validPeriod = {};
-
-    if (timeFrom && dateFrom) {
-      validPeriod.fromDate = helpers.getFullUTCString(timeFrom, dateFrom);
-    }
-
-    if (timeTo && dateTo) {
-      validPeriod.toDate = helpers.getFullUTCString(timeTo, dateTo);
-    }
-
-    stopVariables.validBetween = validPeriod;
-
+    const { comment } = userInput;
     stopVariables.versionComment = comment;
   }
 

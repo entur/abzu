@@ -654,9 +654,6 @@ class EditStopGeneral extends React.Component {
               handleConfirm={this.handleSaveAllEntities.bind(this)}
               errorMessage={this.state.errorMessage}
               intl={intl}
-              serverTimeDiff={this.props.serverTimeDiff}
-              currentValidBetween={stopPlace.validBetween}
-              canTerminateValidBetween={this.props.canEditParentStop}
             />
           ) : null}
           <MergeStopDialog

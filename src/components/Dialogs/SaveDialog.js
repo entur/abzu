@@ -14,14 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import TimePicker from "material-ui/TimePicker";
-import DatePicker from "material-ui/DatePicker";
 import MdSpinner from "../../static/icons/spinner";
-import areIntlLocalesSupported from "intl-locales-supported";
-import {
-  isDateRangeLegal,
-  getEarliestFromDate,
-} from "../../utils/saveDialogUtils";
 import {
   Button,
   Dialog,
@@ -32,25 +25,11 @@ import {
 import { Cancel, Save } from "@mui/icons-material";
 import { TextField } from "material-ui";
 
-let DateTimeFormat;
-
-if (areIntlLocalesSupported(["nb"])) {
-  DateTimeFormat = global.Intl.DateTimeFormat;
-} else {
-  const IntlPolyfill = require("intl");
-  DateTimeFormat = IntlPolyfill.DateTimeFormat;
-  require("intl/locale-data/jsonp/nb");
-}
-
 class SaveDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
   }
-
-  static defaultProps = {
-    canTerminateValidBetween: true,
-  };
 
   componentWillUnmount() {
     this.setState(this.getInitialState);
@@ -66,40 +45,11 @@ class SaveDialog extends React.Component {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
-    canTerminateValidBetween: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
-  handleSetToDate(value) {
-    const { timeFrom, timeTo } = this.state;
-
-    let newTimeFrom = timeTo
-      ? new Date(timeTo.valueOf())
-      : new Date(timeFrom.valueOf());
-
-    if (timeTo === null) {
-      if (timeTo === null && timeFrom !== null) {
-        newTimeFrom = newTimeFrom.setTime(timeFrom.getTime() + 1000 * 60);
-      }
-    }
-
-    this.setState({
-      dateTo: value,
-      timeTo: new Date(newTimeFrom),
-    });
-  }
-
   getInitialState() {
-    const earliestFrom = getEarliestFromDate(
-      this.props.currentValidBetween,
-      this.props.serverTimeDiff
-    );
     return {
-      timeFrom: earliestFrom,
-      timeTo: null,
-      dateFrom: earliestFrom,
-      dateTo: null,
-      expiraryExpanded: false,
       isSaving: false,
       comment: "",
     };
@@ -116,23 +66,11 @@ class SaveDialog extends React.Component {
 
   handleSave() {
     const { handleConfirm } = this.props;
-
-    const earliestFrom = getEarliestFromDate(
-      this.props.currentValidBetween,
-      this.props.serverTimeDiff
-    );
-
-    const { expiraryExpanded, timeTo, dateTo, comment } = this.state;
+    const { comment } = this.state;
 
     let userInput = {
-      dateFrom: earliestFrom,
-      timeFrom: earliestFrom,
       comment: comment,
     };
-    if (expiraryExpanded) {
-      userInput.dateTo = dateTo;
-      userInput.timeTo = timeTo;
-    }
 
     this.setState({
       isSaving: true,
@@ -147,106 +85,25 @@ class SaveDialog extends React.Component {
       intl,
       handleClose,
       errorMessage,
-      currentValidBetween,
-      serverTimeDiff,
     } = this.props;
     const { formatMessage } = intl;
     const {
-      timeFrom,
-      timeTo,
-      dateFrom,
-      dateTo,
-      expiraryExpanded,
       isSaving,
       comment,
     } = this.state;
 
     const errorMessageLabel = this.getErrorMessage();
 
-    const earliestFrom = getEarliestFromDate(
-      currentValidBetween,
-      serverTimeDiff
-    );
-
     const translations = {
       use: formatMessage({ id: "use" }),
       confirm: formatMessage({ id: "confirm" }),
       cancel: formatMessage({ id: "cancel" }),
-      date: formatMessage({ id: "date" }),
-      time: formatMessage({ id: "time" }),
       title: formatMessage({ id: "save_dialog_title" }),
       message_to: formatMessage({ id: "save_dialog_message_to" }),
       note: formatMessage({ id: "save_dialog_note" }),
       error: formatMessage({ id: "save_dialog_to_is_before_from" }),
-      do_you_want_to_specify_expirary: formatMessage({
-        id: "do_you_want_to_specify_expirary",
-      }),
       comment: formatMessage({ id: "comment" }),
     };
-
-    const { timeLegal, dateLegal } = isDateRangeLegal(
-      dateTo,
-      dateFrom,
-      expiraryExpanded,
-      timeFrom,
-      timeTo
-    );
-
-    const expandedExpirary = (
-      <div>
-        <div style={{ marginTop: 20, marginLeft: 30 }}>
-          {translations.message_to}
-        </div>
-        <div style={{ marginTop: 15, textAlign: "center" }}>
-          <DatePicker
-            hintText={translations.date}
-            cancelLabel={translations.cancel}
-            okLabel={translations.use}
-            DateTimeFormat={DateTimeFormat}
-            formatDate={
-              new DateTimeFormat(intl.locale, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }).format
-            }
-            autoOk
-            mode="landscape"
-            minDate={dateFrom ? new Date(dateFrom) : earliestFrom}
-            value={dateTo}
-            textFieldStyle={{
-              width: "80%",
-              border: !dateLegal ? "1px solid #ff0d0d" : "none",
-            }}
-            onChange={(event, value) => {
-              this.handleSetToDate(value);
-            }}
-          />
-          <div style={{ fontSize: 10, color: "rgb(244, 67, 54)" }}>
-            {!dateLegal ? translations.error : ""}
-          </div>
-          <TimePicker
-            format="24hr"
-            cancelLabel={translations.cancel}
-            hintText={translations.time}
-            value={timeTo}
-            okLabel={translations.use}
-            textFieldStyle={{
-              width: "80%",
-              border: !timeLegal ? "1px solid #ff0d0d" : "none",
-            }}
-            onChange={(event, value) => {
-              this.setState({
-                timeTo: new Date(new Date(value).setSeconds(0)),
-              });
-            }}
-          />
-          <div style={{ fontSize: 10, color: "rgb(244, 67, 54)" }}>
-            {!timeLegal ? translations.error : ""}
-          </div>
-        </div>
-      </div>
-    );
 
     return (
       <Dialog
@@ -257,7 +114,6 @@ class SaveDialog extends React.Component {
       >
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
-          {expiraryExpanded ? { expandedExpirary } : null}
           <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
             <TextField
               floatingLabelText={translations.comment}
@@ -287,7 +143,7 @@ class SaveDialog extends React.Component {
             startIcon={
               isSaving && !errorMessage.length ? <MdSpinner /> : <Save />
             }
-            disabled={!timeLegal || !dateLegal || isSaving}
+            disabled={isSaving}
             onClick={() => this.handleSave()}
           >
             {translations.confirm}
