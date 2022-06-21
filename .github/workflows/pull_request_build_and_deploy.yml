@@ -28,6 +28,7 @@ jobs:
         continue-on-error: true
         run: npm list
       - run: npm ci
+      - run: npm run check
       - run: npm run test
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
