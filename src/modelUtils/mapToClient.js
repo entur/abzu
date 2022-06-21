@@ -59,6 +59,10 @@ helpers.updateParentStopWithStopPlaces = (current, payload) => {
     const newChild = { ...child };
     newChild.name =
       newChild.name && newChild.name.value ? newChild.name.value : current.name;
+    newChild.quays = newChild.quays.map(quay => ({
+      ...quay,
+      privateCode: quay.privateCode?.value
+    }));
     return newChild;
   });
   newStopPlace.children = newStopPlace.children.concat(newChildren);
