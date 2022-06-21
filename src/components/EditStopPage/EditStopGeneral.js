@@ -119,17 +119,21 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(UserActions.closeMoveQuayToNewStopDialog());
   }
 
-  handleSaveSuccess(stopPlaceId) {
-    const { dispatch } = this.props;
+  async handleSaveSuccess(stopPlaceId) {
+    const { dispatch, activeMap } = this.props;
 
     this.setState({
       saveDialogOpen: false,
     });
 
-    dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
-      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
-      dispatch(UserActions.openSnackbar(types.SUCCESS));
-    });
+    await dispatch(getStopPlaceVersions(stopPlaceId));
+    await dispatch(getNeighbourStops(
+      stopPlaceId,
+      activeMap.getBounds(),
+      new Settings().getShowExpiredStops()
+    ));
+
+    dispatch(UserActions.openSnackbar(types.SUCCESS));
   }
 
   handleSaveError(errorCode) {

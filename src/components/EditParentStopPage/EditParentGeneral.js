@@ -34,12 +34,14 @@ import { getIn, getIsCurrentVersionMax } from "../../utils/";
 import {
   addToMultiModalStopPlace,
   createParentStopPlace,
+  getNeighbourStops,
   getStopPlaceAndPathLinkByVersion,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
 } from "../../actions/TiamatActions";
 import Routes from "../../routes";
+import SettingsManager from "../../singletons/SettingsManager";
 
 class EditParentGeneral extends React.Component {
   constructor(props) {
@@ -188,17 +190,21 @@ class EditParentGeneral extends React.Component {
       });
   }
 
-  handleSaveSuccess(stopPlaceId) {
-    const { dispatch } = this.props;
+  async handleSaveSuccess(stopPlaceId) {
+    const { dispatch, activeMap } = this.props;
 
     this.setState({
       saveDialogOpen: false,
     });
 
-    dispatch(getStopPlaceVersions(stopPlaceId)).then(() => {
-      dispatch(UserActions.openSnackbar(types.SUCCESS));
-      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
-    });
+    await dispatch(getStopPlaceVersions(stopPlaceId));
+    await dispatch(getNeighbourStops(
+      stopPlaceId,
+      activeMap.getBounds(),
+      new SettingsManager().getShowExpiredStops()
+    ));
+
+    dispatch(UserActions.openSnackbar(types.SUCCESS));
   }
 
   handleSaveError(errorCode) {
@@ -484,6 +490,7 @@ class EditParentGeneral extends React.Component {
 const mapStateToProps = ({ stopPlace, mapUtils, roles, user }) => ({
   stopPlace: stopPlace.current,
   versions: stopPlace.versions,
+  activeMap: mapUtils.activeMap,
   stopHasBeenModified: stopPlace.stopHasBeenModified,
   removeStopPlaceFromParentOpen: mapUtils.removeStopPlaceFromParentOpen,
   removingStopPlaceFromParentId: mapUtils.removingStopPlaceFromParentId,
