@@ -675,6 +675,9 @@ export const getStopPlacesById = (stopPlaceIds) => {
                     transportMode
                     stopPlaceType
                     submode
+                    geometry {
+                      coordinates
+                    }
                 }
             }
         }

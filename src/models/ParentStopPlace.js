@@ -53,6 +53,7 @@ class ParentStopPlace {
         setDecimalPrecision(coordinates[1], 6),
         setDecimalPrecision(coordinates[0], 6),
       ];
+      childToAdd.location = clientStop.location;
     }
     return clientStop;
   }
@@ -184,6 +185,15 @@ class ParentStopPlace {
           child.isFuture = isFuture(clientStop.validBetween);
           child.hasExpired = hasExpired(clientStop.validBetween);
           child.isChildOfParent = true;
+
+          if (child.geometry && child.geometry.coordinates) {
+            let coordinates = child.geometry.coordinates[0].slice();
+            // Leaflet uses latLng, GeoJSON is [long,lat]
+            child.location = [
+              setDecimalPrecision(coordinates[1], 6),
+              setDecimalPrecision(coordinates[0], 6),
+            ];
+          }
 
           return child;
         });
