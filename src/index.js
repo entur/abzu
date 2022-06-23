@@ -35,14 +35,17 @@ import { ConfigContext } from "./config/ConfigContext";
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
-  Sentry.init({
-    dsn: config.sentryDSN,
-    integrations: [new BrowserTracing()],
 
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
-  });
+  if (process.env.NODE_ENV === 'production') {
+    Sentry.init({
+      dsn: config.sentryDSN,
+      integrations: [new BrowserTracing()],
+
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0,
+    });
+  }
 
   const client = getTiamatClient();
 
