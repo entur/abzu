@@ -36,7 +36,7 @@ import { ConfigContext } from "./config/ConfigContext";
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     Sentry.init({
       dsn: config.sentryDSN,
       integrations: [new BrowserTracing()],
