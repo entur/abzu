@@ -33,14 +33,29 @@ export const getMarkersForMap = ({ stopPlace, user }) => {
   }
 
   if (neighbourStops && neighbourStops.length) {
-    markers = markers.concat(neighbourStops);
+    markers = markers.concat(
+      neighbourStops.filter(
+        (current) => !markers.some((exist) => current.id === exist.id)
+      )
+    );
   }
 
   if (findCoordinates) {
-    markers = markers.concat(findCoordinates);
+    markers = markers.concat(
+      findCoordinates.filter(
+        (current) => !markers.some((exist) => current.id === exist.id)
+      )
+    );
   }
 
   markers = markers.filter((m) => !m.permanentlyTerminated);
+
+  let seen = new Set();
+  let hasDuplicates = markers.some((current) => {
+    return seen.size === seen.add(current.id).size;
+  });
+
+  console.log({ hasDuplicates });
 
   return markers;
 };
