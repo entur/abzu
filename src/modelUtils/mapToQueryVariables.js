@@ -32,10 +32,9 @@ helpers.mapQuayToVariables = (quay) => {
     ),
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
-    description: {
-      value: quay.description || null,
-      lang: quay.description ? "nor" : null,
-    },
+    description: quay.description
+      ? createEmbeddableMultilingualString(quay.description)
+      : null,
   };
 
   quayVariables.privateCode = {
@@ -91,7 +90,7 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   let variables = {
     id: stop.parentStop.id,
     children: [child],
-    name: stop.parentStop.name,
+    name: createEmbeddableMultilingualString(stop.parentStop.name),
   };
 
   if (stop.parentStop.location) {
@@ -116,8 +115,10 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   );
 
   let parentStopVariables = {
-    name: stop.name,
-    description: stop.description || null,
+    name: createEmbeddableMultilingualString(stop.name),
+    description: stop.description
+      ? createEmbeddableMultilingualString(stop.description)
+      : null,
     alternativeNames: stop.alternativeNames || null,
     children: children,
   };
@@ -143,16 +144,12 @@ helpers.mapParentStopToVariables = (original, userInput) => {
 
 const createEmbeddableMultilingualString = (string) => ({
   value: string || "",
-  lang: "nor",
+  lang: window.config.defaultLanguageCode,
 });
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
 helpers.mapDeepStopToVariables = (original) => {
   let stopPlace = helpers.mapStopToVariables(original, null);
-  stopPlace.name = createEmbeddableMultilingualString(stopPlace.name);
-  stopPlace.description = createEmbeddableMultilingualString(
-    stopPlace.description
-  );
 
   if (stopPlace.coordinates) {
     stopPlace.geometry = {
@@ -176,9 +173,11 @@ helpers.mapStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
   let stopVariables = {
     id: stop.id,
-    name: stop.name,
+    name: createEmbeddableMultilingualString(stop.name),
     publicCode: stop.publicCode,
-    description: stop.description || null,
+    description: stop.description
+      ? createEmbeddableMultilingualString(stop.description)
+      : null,
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(
@@ -296,7 +295,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
     parking.name = {
       value: source.name,
-      lang: "nor",
+      lang: window.config.defaultLanguageCode,
     };
 
     if (source.location) {

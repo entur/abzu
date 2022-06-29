@@ -18,8 +18,8 @@ import Fragments from "./fragments";
 export const mutateParentStopPlace = gql`
   mutation mutateParentStopPlace(
     $id: String
-    $name: String
-    $description: String
+    $name: EmbeddableMultilingualStringInput
+    $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
     $coordinates: Coordinates!
@@ -29,8 +29,8 @@ export const mutateParentStopPlace = gql`
     mutateParentStopPlace(
       ParentStopPlace: {
         id: $id
-        name: { value: $name, lang: "nor" }
-        description: { value: $description, lang: "nor" }
+        name: $name
+        description: $description
         versionComment: $versionComment
         validBetween: $validBetween
         geometry: { type: Point, coordinates: $coordinates }
@@ -59,8 +59,8 @@ export const mutateCreateTag = gql`
 export const updateChildOfParentStop = gql`
   mutation updateChildOfParentStop(
     $id: String
-    $name: String
-    $description: String
+    $name: EmbeddableMultilingualStringInput
+    $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
     $coordinates: Coordinates!
@@ -69,8 +69,8 @@ export const updateChildOfParentStop = gql`
     mutateParentStopPlace(
       ParentStopPlace: {
         id: $id
-        name: { value: $name, lang: "nor" }
-        description: { value: $description, lang: "nor" }
+        name: $name
+        description: $description
         versionComment: $versionComment
         validBetween: $validBetween
         geometry: { type: Point, coordinates: $coordinates }
@@ -85,18 +85,18 @@ export const updateChildOfParentStop = gql`
 
 export const mutateCreateMultiModalStopPlace = gql`
   mutation mutateCreateMultiModalStopPlace(
-    $name: String!
+    $name: EmbeddableMultilingualStringInput!
     $stopPlaceIds: [String]!
-    $description: String
+    $description: EmbeddableMultilingualStringInput
     $coordinates: Coordinates!
     $versionComment: String
     $validBetween: ValidBetweenInput
   ) {
     createMultiModalStopPlace(
       input: {
-        name: { value: $name, lang: "nor" }
+        name: $name
         stopPlaceIds: $stopPlaceIds
-        description: { value: $description, lang: "nor" }
+        description: $description
         geometry: { type: Point, coordinates: $coordinates }
         versionComment: $versionComment
         validBetween: $validBetween
@@ -135,10 +135,10 @@ export const mutateAddToMultiModalStopPlace = gql`
 export const mutateStopPlace = gql`
   mutation mutateStopPlace(
     $id: String
-    $name: String
+    $name: EmbeddableMultilingualStringInput
     $publicCode: String
     $privateCode: PrivateCodeInput
-    $description: String
+    $description: EmbeddableMultilingualStringInput
     $coordinates: Coordinates!
     $stopPlaceType: StopPlaceType
     $quays: [QuayInput]
@@ -160,10 +160,10 @@ export const mutateStopPlace = gql`
         submode: $submode
         transportMode: $transportMode
         weighting: $weighting
-        name: { value: $name, lang: "nor" }
+        name: $name
         publicCode: $publicCode
         privateCode: $privateCode
-        description: { value: $description, lang: "nor" }
+        description: $description
         geometry: { type: Point, coordinates: $coordinates }
         versionComment: $versionComment
         alternativeNames: $alternativeNames

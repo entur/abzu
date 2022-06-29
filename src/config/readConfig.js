@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { getEnvironment } from "./getEnvironment";
+const globalConfig = require("./global.json");
 
 var configreader = {};
 
@@ -20,7 +21,7 @@ configreader.readConfig = (callback) => {
   const fetchEnvConfig = async () => {
     const env = getEnvironment();
     const { default: config } = await import(`./environments/${env}.json`);
-    callback(config);
+    callback(Object.assign({}, globalConfig, config));
   };
   fetchEnvConfig();
 };
