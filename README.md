@@ -1,17 +1,9 @@
-# Abzu [![CircleCI](https://circleci.com/gh/entur/abzu/tree/master.svg?style=svg&circle-token=be31b45b987be372c02e8fa0bcc73a0ff7c303c8)](https://circleci.com/gh/entur/abzu/tree/master)
+# Abzu
 
 Stop place register frontend.
 Uses stop place register backend tiamat's graphQL API
 
 The app is built on top of [Create React App](https://create-react-app.dev/docs/getting-started).
-
-## Production
-
-In order to build the webpack bundle and run the application, use
-
-```
-npm run build && npm run prod
-```
 
 ### Configuration
 
