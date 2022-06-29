@@ -69,8 +69,8 @@ export const updateChildOfParentStop = gql`
     mutateParentStopPlace(
       ParentStopPlace: {
         id: $id
-        name: { value: $name, lang: "no" }
-        description: { value: $description, lang: "no" }
+        name: { value: $name, lang: "nor" }
+        description: { value: $description, lang: "nor" }
         versionComment: $versionComment
         validBetween: $validBetween
         geometry: { type: Point, coordinates: $coordinates }
@@ -94,9 +94,9 @@ export const mutateCreateMultiModalStopPlace = gql`
   ) {
     createMultiModalStopPlace(
       input: {
-        name: { value: $name, lang: "no" }
+        name: { value: $name, lang: "nor" }
         stopPlaceIds: $stopPlaceIds
-        description: { value: $description, lang: "no" }
+        description: { value: $description, lang: "nor" }
         geometry: { type: Point, coordinates: $coordinates }
         versionComment: $versionComment
         validBetween: $validBetween
@@ -160,10 +160,10 @@ export const mutateStopPlace = gql`
         submode: $submode
         transportMode: $transportMode
         weighting: $weighting
-        name: { value: $name, lang: "no" }
+        name: { value: $name, lang: "nor" }
         publicCode: $publicCode
         privateCode: $privateCode
-        description: { value: $description, lang: "no" }
+        description: { value: $description, lang: "nor" }
         geometry: { type: Point, coordinates: $coordinates }
         versionComment: $versionComment
         alternativeNames: $alternativeNames

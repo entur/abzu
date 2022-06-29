@@ -348,7 +348,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "1",
@@ -364,7 +364,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "2",
@@ -380,7 +380,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "3",
@@ -396,7 +396,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "4",
@@ -412,7 +412,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "5",
@@ -428,7 +428,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "6",
@@ -444,7 +444,7 @@ const mockBusStop = {
         },
         name: {
           value: "Asker",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "7",

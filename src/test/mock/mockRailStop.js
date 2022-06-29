@@ -304,7 +304,7 @@ const mockRailStop = {
         },
         name: {
           value: "Sarpsborg",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "1",

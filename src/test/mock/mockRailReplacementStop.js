@@ -112,7 +112,7 @@ const mockRailReplacementStop = {
         },
         name: {
           value: "TestStopp - buss for tog",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "1",
@@ -128,7 +128,7 @@ const mockRailReplacementStop = {
         },
         name: {
           value: "TestStopp - buss for tog",
-          lang: "no",
+          lang: "nor",
           __typename: "EmbeddableMultilingualString",
         },
         version: "2",
