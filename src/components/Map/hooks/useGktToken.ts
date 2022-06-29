@@ -19,13 +19,13 @@ export const useGktToken = () => {
       setToken(response.data);
     };
 
-    const fetchTokenService = () => {
+    const fetchTokenService = async () => {
       if (
         token === null ||
         token.expires < new Date(Date.now() + 60 * 1000 * 30).getTime()
       ) {
         try {
-          fetchNewToken();
+          await fetchNewToken();
         } catch (err) {
           console.warn(
             "Failed to get GK token, Kartverket Flyfoto will not work",
