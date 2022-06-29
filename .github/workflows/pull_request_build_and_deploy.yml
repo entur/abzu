@@ -30,6 +30,19 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run test
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.organization=enturas-github
+            -Dsonar.projectKey=entur_abzu
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=src/**/*.test.ts
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
