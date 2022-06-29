@@ -37,7 +37,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
           SONAR_HOST_URL: https://sonarcloud.io
         with:
-          projectBaseDir: src
           args: >
             -Dsonar.organization=enturas-github
             -Dsonar.projectKey=entur_abzu
