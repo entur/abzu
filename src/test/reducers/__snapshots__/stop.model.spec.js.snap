@@ -111,10 +111,16 @@ Object {
       59.587427,
     ],
   ],
-  "description": "Beskrivelse",
+  "description": Object {
+    "lang": "nor",
+    "value": "Beskrivelse",
+  },
   "id": "NSR:StopPlace:19744",
   "keyValues": Array [],
-  "name": "Aspelundsveien",
+  "name": Object {
+    "lang": "nor",
+    "value": "Aspelundsveien",
+  },
   "placeEquipments": null,
   "privateCode": Object {
     "value": "private",
@@ -124,10 +130,7 @@ Object {
     Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 212,
-      "description": Object {
-        "lang": null,
-        "value": null,
-      },
+      "description": null,
       "geometry": Object {
         "coordinates": Array [
           Array [
@@ -148,10 +151,7 @@ Object {
     Object {
       "accessibilityAssessment": undefined,
       "compassBearing": 38,
-      "description": Object {
-        "lang": null,
-        "value": null,
-      },
+      "description": null,
       "geometry": Object {
         "coordinates": Array [
           Array [
