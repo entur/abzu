@@ -45,10 +45,10 @@ jobs:
             -Dsonar.test.inclusions=src/**/*.test.ts
             -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
       - run: npm run build
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
         env:
           REACT_APP_VERSION: $GITHUB_SHA
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: |
