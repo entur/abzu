@@ -5,7 +5,6 @@
   "tiamatEnv": "development",
   "netexPrefix": "NSR",
   "hostname": "stoppested.dev.entur.org",
-  "sentryDSN": "https://2c74afd3e84f4dbf94232421f6b3f5dc@o209253.ingest.sentry.io/1354790",
   "googleApiKey": "AIzaSyAxVwdrNpWjX5EITjuBQWkqCFd6DSEK9QM",
   "auth0Domain": "ror-entur-dev.eu.auth0.com",
   "auth0ClientId": "l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM",

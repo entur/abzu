@@ -45,7 +45,7 @@ const AuthenticatedApp = () => {
       // for finer control
       tracesSampleRate: 1.0,
       environment: config.tiamatEnv,
-      release: `abzu@process.env.REACT_APP_VERSION`,
+      release: `abzu@${process.env.REACT_APP_VERSION}`,
     });
   }
 
