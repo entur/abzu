@@ -46,7 +46,7 @@ jobs:
             -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
       - run: npm run build
         env:
-          REACT_APP_VERSION: $GITHUB_SHA
+          REACT_APP_VERSION: ${{ github.sha }}
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
