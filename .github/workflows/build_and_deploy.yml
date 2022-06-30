@@ -47,6 +47,8 @@ jobs:
       - run: npm run build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
+        env:
+          REACT_APP_VERSION: $GITHUB_SHA
         with:
           name: build
           path: |
