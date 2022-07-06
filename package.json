@@ -78,7 +78,7 @@
     "@types/leaflet": "1.7.11",
     "@types/material-ui": "0.21.12",
     "@types/node": "16.11.43",
-    "@types/react": "18.0.14",
+    "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "@types/react-helmet": "6.1.5",
     "@types/react-leaflet": "2.8.2",
