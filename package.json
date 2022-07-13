@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@mui/types": "7.1.4",
-    "@types/jest": "28.1.4",
+    "@types/jest": "28.1.5",
     "@types/leaflet": "1.7.11",
     "@types/material-ui": "0.21.12",
     "@types/node": "16.11.43",
