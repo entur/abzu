@@ -115,7 +115,7 @@ export const ZonesControl = <T extends TariffZone>({
     <>
       <Control
         position={position}
-        style={{ backgroundColor: "white", padding: ".5rem" }}
+        container={{ style: { backgroundColor: "white", padding: ".5rem" } }}
       >
         <Typography variant="subtitle1">{title}</Typography>
         {zonesForFilter.length === 0 && <LinearProgress />}
