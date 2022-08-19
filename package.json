@@ -28,7 +28,7 @@
     "@mui/lab": "5.0.0-alpha.95",
     "@mui/material": "5.10.1",
     "@mui/styles": "5.9.3",
-    "@reduxjs/toolkit": "1.8.4",
+    "@reduxjs/toolkit": "1.8.5",
     "@sentry/react": "7.11.1",
     "@sentry/tracing": "7.11.1",
     "axios": "0.27.2",
