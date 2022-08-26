@@ -1,3 +1,9 @@
 {
-  "extends": ["github>entur/ror-renovate-config"]
+  "extends": ["github>entur/ror-renovate-config"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["react-leaflet"],
+      "allowedVersions": ["4.0.1"]
+    }
+  ]
 }
