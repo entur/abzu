@@ -27,7 +27,6 @@ import { useAuth } from "@entur/auth-provider";
 import Header from "../components/Header";
 import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import BrowserSupport from "../components/BrowserSupport";
 import { fetchPolygons, updateAuth } from "../actions/RolesActions";
 import { useAppSelector } from "../store/hooks";
 import configureLocalization from "../localization/localization";
@@ -78,7 +77,6 @@ const App = ({ children }) => {
               <Header />
               {children}
               <SnackbarWrapper />
-              <BrowserSupport />
             </div>
           </V0MuiThemeProvider>
         </ThemeProvider>
