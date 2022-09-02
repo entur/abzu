@@ -63,6 +63,7 @@ import {
   shouldMutateParking,
   shouldMutatePathLinks,
 } from "../../modelUtils/shouldMutate";
+import { replace } from "redux-first-history";
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -125,6 +126,8 @@ class EditStopGeneral extends React.Component {
     this.setState({
       saveDialogOpen: false,
     });
+
+    await dispatch(replace(`/${Routes.STOP_PLACE}/${stopPlaceId}`));
 
     await dispatch(getStopPlaceVersions(stopPlaceId));
     await dispatch(
