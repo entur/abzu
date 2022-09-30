@@ -83,7 +83,7 @@
     "@types/react-helmet": "6.1.5",
     "@types/react-leaflet": "2.8.2",
     "@types/redux-logger": "3.0.9",
-    "firebase-tools": "11.11.0",
+    "firebase-tools": "11.13.0",
     "graphql-request": "4.3.0",
     "husky": "8.0.1",
     "prettier": "2.7.1",
