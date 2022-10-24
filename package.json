@@ -22,7 +22,7 @@
     "@apollo/client": "3.7.0",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
-    "@entur/auth-provider": "1.0.0",
+    "@entur/auth-provider": "1.1.0",
     "@entur/react-leaflet-google": "1.0.3",
     "@mui/icons-material": "5.10.9",
     "@mui/lab": "5.0.0-alpha.104",
