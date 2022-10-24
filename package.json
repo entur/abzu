@@ -79,7 +79,7 @@
     "@types/material-ui": "0.21.12",
     "@types/node": "16.18.0",
     "@types/react": "18.0.22",
-    "@types/react-dom": "18.0.6",
+    "@types/react-dom": "18.0.7",
     "@types/react-helmet": "6.1.5",
     "@types/react-leaflet": "2.8.2",
     "@types/redux-logger": "3.0.9",
