@@ -63,7 +63,6 @@ import { v4 as uuidv4 } from "uuid";
 import { getTiamatClient } from "../graphql/clients";
 
 export const getContext = async (auth) => {
-  const token = await auth.getAccessToken();
   const context = {
     headers: {
       "X-Correlation-Id": uuidv4(),
@@ -71,6 +70,7 @@ export const getContext = async (auth) => {
   };
 
   if (auth.isAuthenticated) {
+    const token = await auth.getAccessToken();
     context.headers["Authorization"] = `Bearer ${token}`;
   }
 
