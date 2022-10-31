@@ -35,20 +35,20 @@
         ]
       },
       {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=60"
+          }
+        ]
+      },
+      {
         "source": "**/*.@(eot|otf|ttf|ttc|woff|woff2|css|js|map|json)",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "max-age=31536000"
-          }
-        ]
-      },
-      {
-        "source": "index.html",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=60"
           }
         ]
       }
