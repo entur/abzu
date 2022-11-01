@@ -63,7 +63,11 @@ import { v4 as uuidv4 } from "uuid";
 import { getTiamatClient } from "../graphql/clients";
 
 export const getContext = async (auth) => {
-  const token = await auth.getAccessToken();
+  let token;
+
+  try {
+    token = await auth.getAccessToken();
+  } catch (_) {}
 
   const context = {
     headers: {
