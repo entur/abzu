@@ -4,5 +4,18 @@
     "staging": "ent-ror-abzu-tst",
     "prod": "ent-ror-abzu-prd",
     "default": "ent-ror-abzu-prd"
-  }
+  },
+  "targets": {
+    "ent-ror-abzu-dev": {
+      "hosting": {
+        "nordic-dev": [
+          "ent-ror-abzu-nordic-dev"
+        ],
+        "dev": [
+          "ent-ror-abzu-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
