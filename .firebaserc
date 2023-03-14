@@ -15,6 +15,20 @@
           "ent-ror-abzu-dev"
         ]
       }
+    },
+    "ent-ror-abzu-tst": {
+      "hosting": {
+        "staging": [
+          "ent-ror-abzu-tst"
+        ]
+      }
+    },
+    "ent-ror-abzu-prd": {
+      "hosting": {
+        "prod": [
+          "ent-ror-abzu-prd"
+        ]
+      }
     }
   },
   "etags": {}
