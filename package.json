@@ -84,7 +84,7 @@
     "@types/react-leaflet": "2.8.2",
     "@types/redux-logger": "3.0.9",
     "firebase-tools": "11.16.1",
-    "graphql-request": "4.3.0",
+    "graphql-request": "5.2.0",
     "husky": "8.0.2",
     "prettier": "2.7.1",
     "react-scripts": "5.0.1",
