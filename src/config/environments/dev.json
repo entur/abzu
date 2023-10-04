@@ -5,7 +5,7 @@
   "tiamatEnv": "development",
   "netexPrefix": "NSR",
   "hostname": "stoppested.dev.entur.org",
-  "googleApiKey": "AIzaSyAxVwdrNpWjX5EITjuBQWkqCFd6DSEK9QM",
+  "googleApiKey": "AIzaSyB_8bdt2skRkdsyQO19m_gqTzr0_2gqo8U",
   "auth0Domain": "ror-entur-dev.eu.auth0.com",
   "auth0ClientId": "l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM",
   "auth0Audience": "https://ror.api.dev.entur.io",
