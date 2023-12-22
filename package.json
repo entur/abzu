@@ -38,7 +38,7 @@
     "graphql-tag": "2.12.6",
     "intl": "1.2.5",
     "intl-locales-supported": "1.8.11",
-    "leaflet": "1.9.3",
+    "leaflet": "1.9.4",
     "lint-staged": "13.3.0",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.20.0",
@@ -75,7 +75,7 @@
   "devDependencies": {
     "@mui/types": "7.2.11",
     "@types/jest": "28.1.8",
-    "@types/leaflet": "1.9.0",
+    "@types/leaflet": "1.9.8",
     "@types/material-ui": "0.21.15",
     "@types/node": "16.18.9",
     "@types/react": "18.2.45",
