@@ -24,10 +24,10 @@
     "@emotion/styled": "11.10.5",
     "@entur/auth-provider": "1.1.1",
     "@entur/react-leaflet-google": "1.0.3",
-    "@mui/icons-material": "5.10.16",
-    "@mui/lab": "5.0.0-alpha.111",
-    "@mui/material": "5.10.17",
-    "@mui/styles": "5.10.16",
+    "@mui/icons-material": "5.15.1",
+    "@mui/lab": "5.0.0-alpha.157",
+    "@mui/material": "5.15.1",
+    "@mui/styles": "5.15.1",
     "@reduxjs/toolkit": "1.9.7",
     "@sentry/react": "7.91.0",
     "@sentry/tracing": "7.91.0",
@@ -73,7 +73,7 @@
     ]
   },
   "devDependencies": {
-    "@mui/types": "7.2.2",
+    "@mui/types": "7.2.11",
     "@types/jest": "28.1.8",
     "@types/leaflet": "1.9.0",
     "@types/material-ui": "0.21.15",
