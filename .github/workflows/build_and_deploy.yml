@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Copy favicon
         run: cp build/nsr-d.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Copy favicon
         run: cp build/nsr-d.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Copy favicon
         run: cp build/nsr-s.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -112,7 +112,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Copy favicon
         run: cp build/nsr-p.ico build/favicon.ico
       - uses: FirebaseExtended/action-hosting-deploy@v0
