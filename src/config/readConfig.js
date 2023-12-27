@@ -15,15 +15,18 @@ limitations under the Licence. */
 import { getEnvironment } from "./getEnvironment";
 const globalConfig = require("./global.json");
 
+const config = {
+  'dev': require("./environments/dev.json"),
+  'nordic-dev': require("./environments/nordic-dev.json"),
+  'test': require("./environments/test.json"),
+  'prod': require("./environments/prod.json")
+};
+
 var configreader = {};
 
 configreader.readConfig = (callback) => {
-  const fetchEnvConfig = async () => {
     const env = getEnvironment();
-    const { default: config } = await require(`./environments/${env}.json`);
-    callback(Object.assign({}, globalConfig, config));
-  };
-  fetchEnvConfig();
+    callback(Object.assign({}, globalConfig, config[env]));
 };
 
 export default configreader;
