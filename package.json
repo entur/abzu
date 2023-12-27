@@ -39,7 +39,7 @@
     "intl": "1.2.5",
     "intl-locales-supported": "1.8.11",
     "leaflet": "1.9.4",
-    "lint-staged": "13.3.0",
+    "lint-staged": "15.2.0",
     "lodash.debounce": "4.0.8",
     "material-ui": "0.20.0",
     "moment": "2.30.1",
