@@ -42,7 +42,8 @@ export const store = configureStore({
       immutableCheck: false,
       serializableCheck: false,
     }).concat(getMiddleware()),
-  enhancers: [sentryReduxEnhancer],
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat([sentryReduxEnhancer]),
 });
 
 export const history = createReduxHistory(store);
