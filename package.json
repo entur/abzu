@@ -85,7 +85,7 @@
     "@types/redux-logger": "3.0.12",
     "caniuse-lite": "1.0.30001571",
     "firebase-tools": "13.0.2",
-    "graphql-request": "4.3.0",
+    "graphql-request": "6.1.0",
     "husky": "8.0.3",
     "prettier": "3.1.1",
     "react-scripts": "5.0.1",
