@@ -16,17 +16,17 @@ import { getEnvironment } from "./getEnvironment";
 const globalConfig = require("./global.json");
 
 const config = {
-  'dev': require("./environments/dev.json"),
-  'nordic-dev': require("./environments/nordic-dev.json"),
-  'test': require("./environments/test.json"),
-  'prod': require("./environments/prod.json")
+  dev: require("./environments/dev.json"),
+  "nordic-dev": require("./environments/nordic-dev.json"),
+  test: require("./environments/test.json"),
+  prod: require("./environments/prod.json"),
 };
 
 var configreader = {};
 
 configreader.readConfig = (callback) => {
-    const env = getEnvironment();
-    callback(Object.assign({}, globalConfig, config[env]));
+  const env = getEnvironment();
+  callback(Object.assign({}, globalConfig, config[env]));
 };
 
 export default configreader;
