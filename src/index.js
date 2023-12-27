@@ -18,7 +18,6 @@ import { Route, Routes } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
-import AuthProvider from "@entur/auth-provider";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import App from "./containers/App";
@@ -32,6 +31,7 @@ import { getTiamatClient } from "./graphql/clients";
 import { store, history } from "./store/store";
 import configreader from "./config/readConfig";
 import { ConfigContext } from "./config/ConfigContext";
+import { AuthProvider } from "./auth/auth";
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
@@ -88,20 +88,12 @@ const AuthenticatedApp = () => {
 function renderIndex(config) {
   const root = createRoot(document.getElementById("root"));
   root.render(
-    <AuthProvider
-      auth0Config={{
-        domain: config.auth0Domain,
-        clientId: config.auth0ClientId,
-        audience: config.auth0Audience,
-        redirectUri: window.location.origin,
-      }}
-      auth0ClaimsNamespace={config.auth0ClaimsNamespace}
-      loginAutomatically={false}
-    >
-      <ConfigContext.Provider value={config}>
+    <ConfigContext.Provider value={config}>
+      <AuthProvider>
         <AuthenticatedApp />
-      </ConfigContext.Provider>
-    </AuthProvider>,
+      </AuthProvider>
+      ,
+    </ConfigContext.Provider>,
   );
 }
 

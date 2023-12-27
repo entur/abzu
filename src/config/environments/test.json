@@ -6,8 +6,12 @@
   "netexPrefix": "NSR",
   "hostname": "stoppested.staging.entur.org",
   "googleApiKey": "AIzaSyCLcnzpsbgBccJ50lZ5hPPQG_CALmWaeC4",
-  "auth0Domain": "ror-entur-staging.eu.auth0.com",
-  "auth0ClientId": "WrqQUHAVuMS3MbKdGcw91TBFTqLLpnUh",
-  "auth0Audience": "https://ror.api.staging.entur.io",
-  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments"
+  "claimsNamespace": "https://ror.entur.io/role_assignments",
+  "oidcConfig": {
+    "authority": "https://ror-entur-staging.eu.auth0.com",
+    "client_id": "WrqQUHAVuMS3MbKdGcw91TBFTqLLpnUh",
+    "extraQueryParams": {
+      "audience": "https://ror.api.staging.entur.io"
+    }
+  }
 }

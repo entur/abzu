@@ -23,7 +23,6 @@ import {
 import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
-import { useAuth } from "@entur/auth-provider";
 import Header from "../components/Header";
 import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
@@ -32,6 +31,7 @@ import { useAppSelector } from "../store/hooks";
 import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";
 import { Helmet } from "react-helmet";
+import { useAuth } from "../auth/auth";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
 const muiTheme = createTheme(adaptV4Theme(getTheme()));

@@ -6,8 +6,13 @@
   "endpointBase": "/",
   "tiamatEnv": "development",
   "sentryDSN": "https://2c74afd3e84f4dbf94232421f6b3f5dc@sentry.io/1354790",
-  "auth0Domain": "ror-entur-dev.eu.auth0.com",
-  "auth0ClientId": "l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM",
-  "auth0Audience": "https://ror.api.dev.entur.io",
-  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments"
+  "claimsNamespace": "https://ror.entur.io/role_assignments",
+  "preferredNameNamespace": "https://ror.entur.io/preferred_name",
+  "oidcConfig": {
+    "authority": "https://ror-entur-dev.eu.auth0.com",
+    "client_id": "l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM",
+    "extraQueryParams": {
+      "audience": "https://ror.api.dev.entur.io"
+    }
+  }
 }
