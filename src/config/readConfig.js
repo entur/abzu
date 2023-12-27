@@ -20,7 +20,7 @@ var configreader = {};
 configreader.readConfig = (callback) => {
   const fetchEnvConfig = async () => {
     const env = getEnvironment();
-    const { default: config } = await import(`./environments/${env}.json`);
+    const { default: config } = await require(`./environments/${env}.json`);
     callback(Object.assign({}, globalConfig, config));
   };
   fetchEnvConfig();
