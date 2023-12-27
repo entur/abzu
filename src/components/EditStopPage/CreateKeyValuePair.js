@@ -40,7 +40,7 @@ class CreateKeyValuePair extends React.Component {
     const { key, values } = this.state;
 
     let keyAlreadyExists = keyValues.some(
-      (kv) => kv.key.toLowerCase() === key.toLowerCase()
+      (kv) => kv.key.toLowerCase() === key.toLowerCase(),
     );
 
     if (keyAlreadyExists) {

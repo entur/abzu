@@ -95,8 +95,8 @@ class EditStopMap extends React.Component {
             markerIndex: index,
             type: "quay",
           },
-          formattedPosition
-        )
+          formattedPosition,
+        ),
       );
     } else {
       dispatch(StopPlaceActions.changeCurrentStopPosition(formattedPosition));
@@ -116,8 +116,8 @@ class EditStopMap extends React.Component {
     this.props.dispatch(
       UserActions.setCenterAndZoom(
         [center.lat, center.lng],
-        event.target.getZoom()
-      )
+        event.target.getZoom(),
+      ),
     );
   }
 
@@ -141,7 +141,7 @@ class EditStopMap extends React.Component {
       dispatch(StopPlaceActions.changeCurrentStopPosition(position));
     } else {
       dispatch(
-        StopPlaceActions.changeElementPosition(coordinatesOwner, position)
+        StopPlaceActions.changeElementPosition(coordinatesOwner, position),
       );
     }
 
@@ -157,8 +157,8 @@ class EditStopMap extends React.Component {
     this.props.dispatch(
       StopPlaceActions.changeQuayCompassBearing(
         compassBearingOwner,
-        compassBearing
-      )
+        compassBearing,
+      ),
     );
     this.setState({
       compassBearingDialogOpen: false,
@@ -229,7 +229,7 @@ const mapStateToProps = (state) => {
 
   if (neighbourStops && neighbourStops.length) {
     markers = markers.concat(
-      neighbourStops.filter((m) => !m.permanentlyTerminated)
+      neighbourStops.filter((m) => !m.permanentlyTerminated),
     );
   }
 

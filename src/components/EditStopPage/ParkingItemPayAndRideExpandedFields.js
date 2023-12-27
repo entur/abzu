@@ -172,7 +172,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               displayEmpty
               disabled={disabled || hasExpired}
               value={parkingPaymentProcessSelectFieldValue(
-                parkingPaymentProcess
+                parkingPaymentProcess,
               )}
               renderValue={(selected) => {
                 if (selected.length === 0) {
@@ -209,7 +209,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
                   <Checkbox
                     checked={parkingPaymentProcessChecked(
                       parkingPaymentProcess,
-                      key
+                      key,
                     )}
                   />
                   <ListItemText
@@ -301,7 +301,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               handleSetNumberOfSpacesWithRechargePoint
             }
             rechargingAvailableValue={getRechargingAvailableValue(
-              rechargingAvailable
+              rechargingAvailable,
             )}
           />
           <TextField

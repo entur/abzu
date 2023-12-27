@@ -25,8 +25,8 @@ describe("getIsCurrentVersionMax", () => {
           { version: 1, toDate: "" },
         ],
         "1",
-        false
-      )
+        false,
+      ),
     ).toBeTruthy();
   });
 
@@ -38,8 +38,8 @@ describe("getIsCurrentVersionMax", () => {
           { version: "14", toDate: "15-09-2020 09:16" },
         ],
         "10",
-        false
-      )
+        false,
+      ),
     ).toBeTruthy();
   });
 });

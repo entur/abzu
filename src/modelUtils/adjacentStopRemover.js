@@ -17,7 +17,7 @@ const AdjacentStopRemover = {};
 AdjacentStopRemover.removeAdjacentStop = (
   currentStop,
   adjacentStopPlaceRef,
-  stopPlaceIdForRemovingAdjacentSite
+  stopPlaceIdForRemovingAdjacentSite,
 ) => {
   if (currentStop.isParent) {
     const childrenCopy = currentStop.children.slice();
@@ -26,12 +26,12 @@ AdjacentStopRemover.removeAdjacentStop = (
       if (child.id === stopPlaceIdForRemovingAdjacentSite) {
         AdjacentStopRemover.removeAdjacentStopFromChild(
           child,
-          adjacentStopPlaceRef
+          adjacentStopPlaceRef,
         );
       } else if (child.id === adjacentStopPlaceRef) {
         AdjacentStopRemover.removeAdjacentStopFromChild(
           child,
-          stopPlaceIdForRemovingAdjacentSite
+          stopPlaceIdForRemovingAdjacentSite,
         );
       }
     });
@@ -45,10 +45,10 @@ AdjacentStopRemover.removeAdjacentStop = (
 
 AdjacentStopRemover.removeAdjacentStopFromChild = (
   child,
-  adjacentRefToRemove
+  adjacentRefToRemove,
 ) => {
   const result = child.adjacentSites.filter(
-    (adjacentSite) => adjacentSite.ref !== adjacentRefToRemove
+    (adjacentSite) => adjacentSite.ref !== adjacentRefToRemove,
   );
   child.adjacentSites = result;
 };

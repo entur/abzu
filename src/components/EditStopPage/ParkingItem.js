@@ -78,8 +78,8 @@ class ParkingItem extends React.Component {
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(
         index,
-        value
-      )
+        value,
+      ),
     );
   }
 
@@ -88,8 +88,8 @@ class ParkingItem extends React.Component {
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
         index,
-        value
-      )
+        value,
+      ),
     );
   }
 
@@ -124,8 +124,8 @@ class ParkingItem extends React.Component {
           markerIndex: index,
           type: "quay",
         },
-        position
-      )
+        position,
+      ),
     );
     handleLocateOnMap(position);
   }
@@ -150,7 +150,7 @@ class ParkingItem extends React.Component {
     if (parkingType === PARKING_TYPE.PARK_AND_RIDE) {
       const numberOfSpaces = Number(parking.numberOfSpaces);
       const numberOfSpacesForRegisteredDisabledUserType = Number(
-        parking.numberOfSpacesForRegisteredDisabledUserType
+        parking.numberOfSpacesForRegisteredDisabledUserType,
       );
 
       if (
@@ -243,19 +243,19 @@ class ParkingItem extends React.Component {
                 }
                 handleSetParkingLayout={this.handleSetParkingLayout.bind(this)}
                 handleSetParkingPaymentProcess={this.handleSetParkingPaymentProcess.bind(
-                  this
+                  this,
                 )}
                 handleSetRechargingAvailable={this.handleSetRechargingAvailable.bind(
-                  this
+                  this,
                 )}
                 handleSetNumberOfSpaces={this.handleSetNumberOfSpaces.bind(
-                  this
+                  this,
                 )}
                 handleSetNumberOfSpacesWithRechargePoint={this.handleSetNumberOfSpacesWithRechargePoint.bind(
-                  this
+                  this,
                 )}
                 handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(
-                  this
+                  this,
                 )}
               />
             ) : (

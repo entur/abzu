@@ -111,8 +111,8 @@ UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces =
     dispatch(
       createThunk(
         types.TOGGLED_ENABLE_PUBLIC_CODE_PRIVATE_CODE_ON_STOP_PLACES,
-        value
-      )
+        value,
+      ),
     );
   };
 
@@ -190,7 +190,7 @@ UserActions.saveSearchAsFavorite = (title) => (dispatch, getState) => {
     searchFilters.text,
     searchFilters.stopType,
     searchFilters.topoiChips,
-    searchFilters.showFutureAndExpired
+    searchFilters.showFutureAndExpired,
   );
   favoriteManager.save(savableContent);
   dispatch(UserActions.closeFavoriteNameDialog());
@@ -211,7 +211,7 @@ UserActions.setMissingCoordinates = (position, stopPlaceId) => (dispatch) => {
     createThunk(types.SET_MISSING_COORDINATES, {
       stopPlaceId,
       position,
-    })
+    }),
   );
 };
 
@@ -220,7 +220,7 @@ UserActions.loadFavoriteSearch = (favorite) => (dispatch) => {
   dispatch(UserActions.setStopPlaceTypes(favorite.stopType));
   dispatch(UserActions.setSearchText(favorite.searchText));
   dispatch(
-    UserActions.toggleShowFutureAndExpired(favorite.showFutureAndExpired)
+    UserActions.toggleShowFutureAndExpired(favorite.showFutureAndExpired),
   );
 };
 
@@ -247,7 +247,7 @@ UserActions.startCreatingPolyline = (coordinates, id, type) => (dispatch) => {
       coordinates: coordinates,
       id: id,
       type: type,
-    })
+    }),
   );
 };
 
@@ -265,7 +265,7 @@ UserActions.addFinalCoordinesToPolylines = (coords, id, type) => (dispatch) => {
       coordinates: coords,
       id: id,
       type: type,
-    })
+    }),
   );
 };
 
@@ -282,7 +282,7 @@ UserActions.editPolylineTimeEstimate = (index, seconds) => (dispatch) => {
     createThunk(types.EDITED_TIME_ESTIMATE_FOR_POLYLINE, {
       index: index,
       estimate: seconds,
-    })
+    }),
   );
 };
 
@@ -319,7 +319,7 @@ UserActions.showMergeStopDialog =
       createThunk(types.OPENED_MERGE_STOP_DIALOG, {
         id: fromStopPlaceID,
         name: name,
-      })
+      }),
     );
 
     dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
@@ -332,7 +332,7 @@ UserActions.showMergeStopDialog =
             id: fromStopPlaceID,
             name,
             quays: getQuaysForMergeInfo(response.data.stopPlace),
-          })
+          }),
         );
       })
       .catch((err) => {
@@ -393,14 +393,14 @@ UserActions.endMergingQuayTo = (id) => (dispatch, getState) => {
           createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
             authorities: Array.from(authorities),
             warning: serviceJourneyActiveDates.size > 0,
-          })
+          }),
         );
       } else {
         dispatch(
           createThunk(types.GET_QUAY_MERGE_OTP_INFO, {
             authorities: [],
             warning: 0,
-          })
+          }),
         );
       }
     })
@@ -432,7 +432,7 @@ UserActions.requestDeleteQuay =
       createThunk(types.REQUESTED_DELETE_QUAY, {
         source,
         importedId,
-      })
+      }),
     );
 
     checkQuayUsage(quayId)
@@ -456,14 +456,14 @@ UserActions.requestDeleteQuay =
             createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
               authorities: Array.from(authorities),
               warning: serviceJourneyActiveDates.size > 0,
-            })
+            }),
           );
         } else {
           dispatch(
             createThunk(types.GET_QUAY_DELETE_OTP_INFO, {
               authorities: [],
               warning: 0,
-            })
+            }),
           );
         }
       })
@@ -519,7 +519,7 @@ UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
         activeDatesSize: 0,
         latestActiveDate: null,
         stopPlaceId,
-      })
+      }),
     );
 
     checkStopPlaceUsage(stopPlaceId)
@@ -537,7 +537,7 @@ UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
               activeDatesSize: serviceJourneyActiveDates.size,
               latestActiveDate,
               stopPlaceId,
-            })
+            }),
           );
         } else {
           // i.e. stop place is not in OTP, and returns null
@@ -549,7 +549,7 @@ UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
               activeDatesSize: null,
               latestActiveDate: null,
               stopPlaceId,
-            })
+            }),
           );
         }
       })
@@ -562,7 +562,7 @@ UserActions.requestTerminateStopPlace = (stopPlaceId) => (dispatch) => {
             activeDatesSize: 0,
             latestActiveDate: null,
             stopPlaceId,
-          })
+          }),
         );
       });
   }
@@ -578,7 +578,7 @@ UserActions.openKeyValuesDialog = (keyValues, type, index) => (dispatch) => {
       keyValues,
       type,
       index,
-    })
+    }),
   );
 };
 
@@ -600,7 +600,10 @@ UserActions.moveQuayToNewStopPlace = (quayProps) => (dispatch) => {
 
 UserActions.lookupCoordinates = (latLng, triggeredByDrag) => (dispatch) => {
   dispatch(
-    createThunk(types.LOOKUP_COORDINATES, { position: latLng, triggeredByDrag })
+    createThunk(types.LOOKUP_COORDINATES, {
+      position: latLng,
+      triggeredByDrag,
+    }),
   );
 };
 
@@ -618,13 +621,13 @@ UserActions.createMultimodalWith = (stopPlaceId, fromMain) => (dispatch) => {
       const foundStop = Object.values(response.data)[0][0];
       const newStopPlace = new ParentStopPlace().createNew(
         foundStop.name,
-        foundStop
+        foundStop,
       );
       dispatch(
         createThunk(types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING, {
           newStopPlace,
           fromMain,
-        })
+        }),
       );
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
     }

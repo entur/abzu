@@ -21,23 +21,23 @@ describe("language support", () => {
     const englishKeys = Object.keys(en_lang).sort();
 
     let notInEnglish = norwegianKeys.filter(
-      (key) => englishKeys.indexOf(key) === -1
+      (key) => englishKeys.indexOf(key) === -1,
     );
     let notInNorwegian = englishKeys.filter(
-      (key) => norwegianKeys.indexOf(key) === -1
+      (key) => norwegianKeys.indexOf(key) === -1,
     );
 
     if (notInEnglish.length) {
       console.info(
         "Keys found in Norwegian not present in English: ",
-        notInEnglish.join(",")
+        notInEnglish.join(","),
       );
     }
 
     if (notInNorwegian.length) {
       console.info(
         "Keys found in English not present in Norwegian: ",
-        notInNorwegian.join(",")
+        notInNorwegian.join(","),
       );
     }
 

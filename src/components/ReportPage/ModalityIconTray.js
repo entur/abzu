@@ -48,7 +48,7 @@ ModalityIconTray.propTypes = {
     PropTypes.shape({
       submode: PropTypes.string,
       stopPlaceType: PropTypes.string,
-    })
+    }),
   ),
   style: PropTypes.object,
 };

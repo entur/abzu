@@ -44,15 +44,15 @@ describe("mapUtils", () => {
 
     let isSandefjordInside = isCoordinatesInsidePolygon(
       latLngSandefjord,
-      polygonVestfold
+      polygonVestfold,
     );
     let isOsloSInside = isCoordinatesInsidePolygon(
       latLngOsloS,
-      polygonVestfold
+      polygonVestfold,
     );
     let isVerketNearVestFoldInside = isCoordinatesInsidePolygon(
       latLngVerketNearVestfold,
-      polygonVestfold
+      polygonVestfold,
     );
 
     expect(isSandefjordInside).toEqual(true);

@@ -125,7 +125,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.DELETED_TOPOS_CHIP:
       let chips = state.searchFilters.topoiChips.filter(
-        (chip) => chip.value !== action.payload
+        (chip) => chip.value !== action.payload,
       );
       return Object.assign({}, state, {
         searchFilters: {

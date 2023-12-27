@@ -112,7 +112,7 @@ class Header extends React.Component {
 
   handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
     this.props.dispatch(
-      UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value)
+      UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value),
     );
   }
 
@@ -239,7 +239,7 @@ class Header extends React.Component {
               onClick={() =>
                 this.handleConfirmChangeRoute(
                   this.goToMain.bind(this),
-                  "GoToMain"
+                  "GoToMain",
                 )
               }
             />
@@ -260,7 +260,7 @@ class Header extends React.Component {
                 onClick={() =>
                   this.handleConfirmChangeRoute(
                     this.goToReports.bind(this),
-                    "GoToReports"
+                    "GoToReports",
                   )
                 }
                 style={{ fontSize: 12, padding: 0 }}
@@ -277,7 +277,7 @@ class Header extends React.Component {
                     style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
                       this.handleTogglePublicCodePrivateCodeOnStopPlaces(
-                        !isPublicCodePrivateCodeOnStopPlacesEnabled
+                        !isPublicCodePrivateCodeOnStopPlacesEnabled,
                       )
                     }
                     insetChildren

@@ -29,7 +29,7 @@ class PopupButton extends Component {
             cursor: "pointer",
             textAlign: "center",
           },
-          style
+          style,
         )}
         onClick={onClick}
       >

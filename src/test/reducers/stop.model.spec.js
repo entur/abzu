@@ -46,7 +46,7 @@ describe("Model: map format from server to expected client model", () => {
 
     let result = QueryVariablesMapper.mapParkingToVariables(
       parking,
-      "NSR:StopPlace:1"
+      "NSR:StopPlace:1",
     );
 
     expect(result).toMatchSnapshot();
@@ -90,11 +90,11 @@ describe("Changes correct properties", () => {
       expect(state.current.quays[quayIndex].publicCode).toEqual(newPublicCode);
 
       const stopValidWithSchema = QueryVariablesMapper.mapStopToVariables(
-        state.current
+        state.current,
       );
 
       expect(state.current.quays[quayIndex].id).toEqual(
-        stopValidWithSchema.quays[quayIndex].id
+        stopValidWithSchema.quays[quayIndex].id,
       );
     }
   });

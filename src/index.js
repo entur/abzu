@@ -101,7 +101,7 @@ function renderIndex(config) {
       <ConfigContext.Provider value={config}>
         <AuthenticatedApp />
       </ConfigContext.Provider>
-    </AuthProvider>
+    </AuthProvider>,
   );
 }
 

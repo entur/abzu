@@ -70,7 +70,7 @@ class ReportPageFooter extends React.Component {
       false,
       false,
       0,
-      null
+      null,
     );
 
     element.dispatchEvent(event);
@@ -82,7 +82,7 @@ class ReportPageFooter extends React.Component {
       results,
       stopPlaceColumnOptions,
       "results-stop-places",
-      ColumnTransformersStopPlace
+      ColumnTransformersStopPlace,
     );
     this.setState({
       open: false,
@@ -115,7 +115,7 @@ class ReportPageFooter extends React.Component {
       items,
       finalColumns,
       "results-quays",
-      ColumnTransformersQuays
+      ColumnTransformersQuays,
     );
     this.setState({
       open: false,

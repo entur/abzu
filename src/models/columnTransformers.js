@@ -171,7 +171,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const wheelchairAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     return (
       <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
@@ -181,7 +181,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const stepFreeAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     return (
       <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]} />
@@ -230,7 +230,7 @@ export const ColumnTransformerStopPlaceJsx = {
               >
                 {privateCodeValue}
               </span>
-            </div>
+            </div>,
           );
         }
       });
@@ -266,7 +266,7 @@ export const ColumnTransformersStopPlace = {
     getIn(
       stop,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UKNOWN"
+      "UKNOWN",
     ),
   sanitaryEquipment: (stop) =>
     isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]),
@@ -278,7 +278,7 @@ export const ColumnTransformersStopPlace = {
     getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     ),
   generalSign: (stop) => {
     let signs = getIn(stop, ["placeEquipments", "generalSign"], null);

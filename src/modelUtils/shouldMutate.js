@@ -9,7 +9,7 @@ export const shouldMutateParking = (parking) => {
 export const shouldMutatePathLinks = (
   pathLinkVariables,
   pathLinks,
-  originalPathLinks
+  originalPathLinks,
 ) => {
   if (!pathLinkVariables || !pathLinkVariables.length) {
     return false;
@@ -18,7 +18,7 @@ export const shouldMutatePathLinks = (
   if (pathLinks && originalPathLinks) {
     // only save path links with at least both to and from reference (avoids broken path links)
     const allPathLinksComplete = pathLinks.every(
-      (pathLink) => pathLink.from && pathLink.to
+      (pathLink) => pathLink.from && pathLink.to,
     );
 
     if (allPathLinksComplete) {

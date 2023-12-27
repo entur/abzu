@@ -23,7 +23,7 @@ export default ({
   handleSetFocus,
 }: Props) => {
   const divBody = ReactDOM.renderToStaticMarkup(
-    <BoardingPositionMarkerIcon publicCode={publicCode} />
+    <BoardingPositionMarkerIcon publicCode={publicCode} />,
   );
 
   let icon = divIcon({

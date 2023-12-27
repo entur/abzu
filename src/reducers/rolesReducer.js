@@ -51,7 +51,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payload,
-          state.auth.roleAssignments
+          state.auth.roleAssignments,
         ),
         allowanceInfo: {
           ...state.allowanceInfo,
@@ -63,7 +63,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
           getLatLng(action.payload.data.stopPlace[0]),
-          state.auth.roleAssignments
+          state.auth.roleAssignments,
         ),
       });
 
@@ -71,7 +71,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
           action.payload,
-          state.auth.roleAssignments
+          state.auth.roleAssignments,
         ),
       });
 
@@ -80,7 +80,7 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfo: getAllowanceInfoFromPosition(
           newStopPlace.location,
-          state.auth.roleAssignments
+          state.auth.roleAssignments,
         ),
       });
 

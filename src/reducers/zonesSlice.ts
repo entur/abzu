@@ -23,7 +23,7 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
       polygon: {
         ...polygon,
         coordinates: polygon.coordinates.map((lnglat: number[]) =>
-          lnglat.slice().reverse()
+          lnglat.slice().reverse(),
         ),
       },
     }))
@@ -145,19 +145,19 @@ export const zonesSlice = createSlice({
       getTariffZonesForFilterAction.fulfilled,
       (state, { payload }) => {
         state.tariffZonesForFilter = payload.slice();
-      }
+      },
     );
     builder.addCase(
       getFareZonesForFilterAction.fulfilled,
       (state, { payload }) => {
         state.fareZonesForFilter = payload.slice().sort(sortByPrivateCode);
-      }
+      },
     );
     builder.addCase(
       getTariffZonesByIdsAction.fulfilled,
       (state, { payload }) => {
         state.tariffZones = mergeTariffZones(state.tariffZones, payload);
-      }
+      },
     );
     builder.addCase(getFareZonesByIdsAction.fulfilled, (state, { payload }) => {
       state.fareZones = mergeTariffZones(state.fareZones, payload);
@@ -174,7 +174,7 @@ export const toggleShowFareZonesInMap = createAsyncThunk<void, boolean>(
     Settings.setShowTariffZonesInMap(false);
     Settings.setShowFareZonesInMap(value);
     dispatch(zonesSlice.actions.toggleShowFareZonesInMap(value));
-  }
+  },
 );
 
 export const toggleShowTariffZonesInMap = createAsyncThunk<void, boolean>(
@@ -183,7 +183,7 @@ export const toggleShowTariffZonesInMap = createAsyncThunk<void, boolean>(
     Settings.setShowFareZonesInMap(false);
     Settings.setShowTariffZonesInMap(value);
     dispatch(zonesSlice.actions.toggleShowTariffZonesInMap(value));
-  }
+  },
 );
 
 export default zonesSlice.reducer;

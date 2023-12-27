@@ -92,7 +92,7 @@ class SettingsManager {
   getEnablePublicCodePrivateCodeOnStopPlaces() {
     return this.parseBoolean(
       localStorage.getItem(enablePublicCodePrivateCodeOnStopPlaces),
-      false
+      false,
     );
   }
 
@@ -103,7 +103,7 @@ class SettingsManager {
   getShowFareZonesInMap() {
     return this.parseBoolean(
       localStorage.getItem(showFareZonesInMapKey),
-      false
+      false,
     );
   }
 
@@ -114,7 +114,7 @@ class SettingsManager {
   getShowTariffZonesInMap() {
     return this.parseBoolean(
       localStorage.getItem(showTariffZonesInMapKey),
-      false
+      false,
     );
   }
 

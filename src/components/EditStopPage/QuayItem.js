@@ -69,22 +69,22 @@ class QuayItem extends React.Component {
       StopPlaceActions.changeElementDescription(
         index,
         event.target.value,
-        "quay"
-      )
+        "quay",
+      ),
     );
   };
 
   handlePublicCodeChange = (event) => {
     const { dispatch, index } = this.props;
     dispatch(
-      StopPlaceActions.changePublicCodeName(index, event.target.value, "quay")
+      StopPlaceActions.changePublicCodeName(index, event.target.value, "quay"),
     );
   };
 
   handlePrivateCodeChange = (event) => {
     const { dispatch, index } = this.props;
     dispatch(
-      StopPlaceActions.changePrivateCodeName(index, event.target.value, "quay")
+      StopPlaceActions.changePrivateCodeName(index, event.target.value, "quay"),
     );
   };
 
@@ -117,7 +117,7 @@ class QuayItem extends React.Component {
     const { dispatch, disabled, index } = this.props;
     if (!disabled) {
       dispatch(
-        EquipmentActions.updateShelterEquipmentState(value, "quay", index)
+        EquipmentActions.updateShelterEquipmentState(value, "quay", index),
       );
     }
   }
@@ -137,8 +137,8 @@ class QuayItem extends React.Component {
           markerIndex: index,
           type: "quay",
         },
-        position
-      )
+        position,
+      ),
     );
     handleLocateOnMap(position);
   }
@@ -160,12 +160,12 @@ class QuayItem extends React.Component {
     const wheelchairAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     const stepFreeAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay);
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay);

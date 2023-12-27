@@ -19,7 +19,7 @@ import schema from "./Tiamat/schema.json";
 const possibleTypes = schema.__schema.types.reduce((acc, supertype) => {
   if (supertype.possibleTypes) {
     acc[supertype.name] = supertype.possibleTypes.map(
-      (subtype) => subtype.name
+      (subtype) => subtype.name,
     );
   }
   return acc;

@@ -54,7 +54,7 @@ RoleParser.filterRolesByZoneRestriction = (
   roles,
   latLngs,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   if (!roles || !roles.length) return [];
 
@@ -68,13 +68,13 @@ RoleParser.filterRolesByZoneRestriction = (
 
       if (isArrayOfLatLngs(latLngs)) {
         inside = latLngs.every((latlng) =>
-          isPointInPolygon(latlng, fetchedPolygons, allowNewStopEverywhere)
+          isPointInPolygon(latlng, fetchedPolygons, allowNewStopEverywhere),
         );
       } else {
         inside = isPointInPolygon(
           latLngs,
           fetchedPolygons,
-          allowNewStopEverywhere
+          allowNewStopEverywhere,
         );
       }
 
@@ -129,8 +129,8 @@ RoleParser.filterByEntities = (roles, object) => {
             role.e.StopPlaceType,
             role.e.TransportMode,
             role.e.Submode,
-            child
-          )
+            child,
+          ),
         );
       } else {
         return doesRoleGrantAccessToStop(
@@ -138,7 +138,7 @@ RoleParser.filterByEntities = (roles, object) => {
           role.e.StopPlaceType,
           role.e.TransportMode,
           role.e.Submode,
-          object
+          object,
         );
       }
     });
@@ -153,8 +153,8 @@ RoleParser.filterByEntities = (roles, object) => {
           role.e.StopPlaceType,
           role.e.TransportMode,
           role.e.Submode,
-          member
-        )
+          member,
+        ),
       );
     });
   }
@@ -166,7 +166,7 @@ const doesRoleGrantAccessToStop = (
   roleStopPlaceType,
   roleTransportMode,
   roleSubmode,
-  stopPlace
+  stopPlace,
 ) => {
   const submodeOptions = getRoleOptions(roleSubmode);
   const forgiveSubmodeNotSet = false;
@@ -174,13 +174,13 @@ const doesRoleGrantAccessToStop = (
   const submodeValid = isModeOptionsValidForMode(
     submodeOptions,
     stopPlace.submode,
-    forgiveSubmodeNotSet
+    forgiveSubmodeNotSet,
   );
   const transportModeOptions = getRoleOptions(roleTransportMode);
   const transportModeValid = isModeOptionsValidForMode(
     transportModeOptions,
     stopPlace.transportMode,
-    forgiveTransportmodeNotSet
+    forgiveTransportmodeNotSet,
   );
   const legalStopPlaceTypes = getLegalStopPlaceTypes(roles, true);
   const stopPlaceTypeValid =
@@ -188,7 +188,7 @@ const doesRoleGrantAccessToStop = (
 
   const legalSubmodes = getLegalSubmodes(roles, true);
   const isSubModeRestrictionRelevant = legalSubmodes.some((submode) =>
-    getSubModeRelevance(submode, stopPlace.stopPlaceType)
+    getSubModeRelevance(submode, stopPlace.stopPlaceType),
   );
 
   if (!stopPlace.stopPlaceType) {
@@ -270,7 +270,7 @@ export const isInArrayIgnoreCase = (array, value) => {
 export const isModeOptionsValidForMode = (
   options,
   mode,
-  forgiveNotSet = true
+  forgiveNotSet = true,
 ) => {
   const { blacklisted, whitelisted, allowAll } = options;
 
@@ -373,7 +373,7 @@ export const doesStopTypeAllowEdit = (
   stopPlaceType,
   submode,
   legalStopPlaces,
-  legalSubmodes
+  legalSubmodes,
 ) => {
   if (stopPlaceType && (!legalStopPlaces || !legalStopPlaces.length)) {
     return false;

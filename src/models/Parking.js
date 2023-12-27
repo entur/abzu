@@ -42,7 +42,7 @@ class Parking {
   get numberOfSpacesWithRechargePoint() {
     return this.findNumberOfSpaces(
       "allUsers",
-      "numberOfSpacesWithRechargePoint"
+      "numberOfSpacesWithRechargePoint",
     );
   }
 
@@ -61,7 +61,7 @@ class Parking {
 
     if (
       this.parking.parkingVehicleTypes.includes(
-        PARKING_VEHICLE_TYPE.PEDAL_CYCLE
+        PARKING_VEHICLE_TYPE.PEDAL_CYCLE,
       )
     ) {
       return PARKING_TYPE.BIKE_PARKING;

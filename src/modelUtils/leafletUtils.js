@@ -25,7 +25,7 @@ export const getUniquePathLinks = (a, key) => {
 
 export const calculateDistance = (coords) => {
   let latlngDistances = coords.map(
-    (position) => new LatLng(position[0], position[1])
+    (position) => new LatLng(position[0], position[1]),
   );
   let totalDistance = 0;
 
@@ -54,7 +54,7 @@ export const getChildStopPlaceSuggestions = (
   roleAssignments,
   nFirst,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   const alreadyAdded = children.map((child) => child.id);
 
@@ -62,7 +62,7 @@ export const getChildStopPlaceSuggestions = (
     (stop) =>
       !stop.isParent &&
       !stop.isChildOfParent &&
-      alreadyAdded.indexOf(stop.id) === -1
+      alreadyAdded.indexOf(stop.id) === -1,
   );
 
   if (stopPlaceCentroid) {
@@ -86,8 +86,8 @@ export const getChildStopPlaceSuggestions = (
         suggestion,
         roleAssignments,
         fetchedPolygons,
-        allowNewStopEverywhere
-      ) && isChildTooFarAway(suggestion.distance)
+        allowNewStopEverywhere,
+      ) && isChildTooFarAway(suggestion.distance),
   );
 
   return legalSuggestions.slice(0, nFirst);
@@ -100,12 +100,12 @@ export const getGroupMemberSuggestions = (
   roleAssignments,
   nFirst,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   const alreadyAdded = exisitingMembers.map((member) => member.id);
 
   let suggestions = neighbourStops.filter(
-    (stop) => !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1
+    (stop) => !stop.isChildOfParent && alreadyAdded.indexOf(stop.id) === -1,
   );
 
   if (centroid) {
@@ -130,8 +130,8 @@ export const getGroupMemberSuggestions = (
         suggestion,
         roleAssignments,
         fetchedPolygons,
-        allowNewStopEverywhere
-      )
+        allowNewStopEverywhere,
+      ),
   );
 
   return legalSuggestions.slice(0, nFirst);

@@ -55,48 +55,50 @@ export const ZonesControl = <T extends TariffZone>({
           selectedZones
             .filter(
               (id) =>
-                !groupedZonesForFilter[codespace].some((zone) => zone.id === id)
+                !groupedZonesForFilter[codespace].some(
+                  (zone) => zone.id === id,
+                ),
             )
-            .concat(groupedZonesForFilter[codespace].map(({ id }) => id))
+            .concat(groupedZonesForFilter[codespace].map(({ id }) => id)),
         );
       } else {
         setSelectedZones(
           selectedZones.filter(
             (id) =>
-              !groupedZonesForFilter[codespace].some((zone) => zone.id === id)
-          )
+              !groupedZonesForFilter[codespace].some((zone) => zone.id === id),
+          ),
         );
       }
     },
-    [groupedZonesForFilter, selectedZones]
+    [groupedZonesForFilter, selectedZones],
   );
 
   const checkedCodespace = useCallback(
     (codespace: string) => {
       return groupedZonesForFilter[codespace].every((fareZone) =>
-        selectedZones.includes(fareZone.id)
+        selectedZones.includes(fareZone.id),
       );
     },
-    [groupedZonesForFilter, selectedZones]
+    [groupedZonesForFilter, selectedZones],
   );
 
   const indeterminateCodespace = useCallback(
     (codespace: string) => {
       return (
         groupedZonesForFilter[codespace].some((fareZone) =>
-          selectedZones.includes(fareZone.id)
+          selectedZones.includes(fareZone.id),
         ) &&
         groupedZonesForFilter[codespace].some(
-          (fareZone) => !selectedZones.includes(fareZone.id)
+          (fareZone) => !selectedZones.includes(fareZone.id),
         )
       );
     },
-    [groupedZonesForFilter, selectedZones]
+    [groupedZonesForFilter, selectedZones],
   );
 
   const toggleExpandCodespace = useCallback((codespace: string) => {
     setExpandedCodespace((prev: string | undefined) =>
-      prev === codespace ? undefined : codespace
+      prev === codespace ? undefined : codespace,
     );
   }, []);
 
@@ -105,10 +107,10 @@ export const ZonesControl = <T extends TariffZone>({
       setSelectedZones(
         checked
           ? selectedZones.concat([id])
-          : selectedZones.filter((selected) => selected !== id)
+          : selectedZones.filter((selected) => selected !== id),
       );
     },
-    [selectedZones]
+    [selectedZones],
   );
 
   return (

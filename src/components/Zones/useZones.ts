@@ -33,18 +33,18 @@ export const useZones = <T extends TariffZone>({
     (ids: string[]) => {
       dispatch(setSelectedZonesAction(ids));
     },
-    [dispatch, setSelectedZonesAction]
+    [dispatch, setSelectedZonesAction],
   );
   useEffect(() => {
     const zoneIds = selectedZones.filter(
-      (id) => !zones.some((zone) => zone.id === id)
+      (id) => !zones.some((zone) => zone.id === id),
     );
 
     if (zoneIds.length > 0) {
       dispatch(
         getZonesAction(
-          selectedZones.filter((id) => !zones.some((zone) => zone.id === id))
-        )
+          selectedZones.filter((id) => !zones.some((zone) => zone.id === id)),
+        ),
       );
     }
   }, [selectedZones]);

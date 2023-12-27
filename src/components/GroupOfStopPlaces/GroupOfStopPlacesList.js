@@ -32,7 +32,7 @@ class GroupOfStopPlacesList extends Component {
 
   handleRemoveStopPlace(stopPlaceId) {
     this.props.dispatch(
-      StopPlacesGroupActions.removeMemberFromGroup(stopPlaceId)
+      StopPlacesGroupActions.removeMemberFromGroup(stopPlaceId),
     );
   }
 

@@ -171,7 +171,7 @@ class TerminateStopPlaceDialog extends React.Component {
   getInitialState(props) {
     const earliestFrom = getEarliestFromDate(
       props.previousValidBetween,
-      this.props.serverTimeDiff
+      this.props.serverTimeDiff,
     );
     return {
       shouldHardDelete: false,
@@ -222,7 +222,7 @@ class TerminateStopPlaceDialog extends React.Component {
 
     const earliestFrom = getEarliestFromDate(
       previousValidBetween,
-      serverTimeDiff
+      serverTimeDiff,
     );
 
     return (
@@ -345,7 +345,7 @@ class TerminateStopPlaceDialog extends React.Component {
                 shouldHardDelete,
                 shouldTerminatePermanently,
                 comment,
-                dateTime
+                dateTime,
               )
             }
             disabled={this.getConfirmIsDisabled()}

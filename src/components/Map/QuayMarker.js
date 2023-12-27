@@ -88,7 +88,7 @@ class QuayMarker extends React.Component {
         id: this.props.id,
         privateCode: this.props.privateCode,
         publicCode: this.props.publicCode,
-      })
+      }),
     );
   }
 
@@ -99,7 +99,7 @@ class QuayMarker extends React.Component {
         privateCode: this.props.privateCode,
         publicCode: this.props.publicCode,
         stopPlaceId: this.props.stopPlaceId,
-      })
+      }),
     );
   }
 
@@ -217,7 +217,7 @@ class QuayMarker extends React.Component {
       let fromId = getIn(
         lastPathLink,
         ["from", "placeRef", "addressablePlace", "id"],
-        null
+        null,
       );
 
       if (fromId === id) {
@@ -242,7 +242,7 @@ class QuayMarker extends React.Component {
         isCompassBearingEnabled={this.props.isCompassBearingEnabled}
         belongsToNeighbourStop={belongsToNeighbourStop}
         defaultValueIcon={translations.notAssigned}
-      />
+      />,
     );
 
     let quayIcon = divIcon({
@@ -305,7 +305,7 @@ class QuayMarker extends React.Component {
                 !belongsToNeighbourStop &&
                 handleChangeCoordinates(
                   { type: "quay", markerIndex: index },
-                  position
+                  position,
                 )
               }
             >
@@ -345,7 +345,7 @@ class QuayMarker extends React.Component {
                   onClick={() => {
                     this.props.handleSetCompassBearing(
                       this.props.compassBearing,
-                      index
+                      index,
                     );
                   }}
                 >
@@ -482,7 +482,7 @@ const mapStateToProps = (state) => ({
   currentStopIsMultimodal: getIn(
     state,
     ["stopPlace", "current", "isParent"],
-    false
+    false,
   ),
 });
 

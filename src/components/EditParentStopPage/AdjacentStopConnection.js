@@ -23,7 +23,7 @@ class AdjacentStopConnection extends Component {
   handleRemoveAdjacentConnection = () => {
     this.props.handleRemoveAdjacentConnection(
       this.props.stopPlace.id,
-      this.props.adjacentRef
+      this.props.adjacentRef,
     );
   };
 

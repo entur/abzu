@@ -31,9 +31,9 @@ export const getTiamatEnv = () => {
 
 export const getEnvColor = (env) => {
   if (process.env.REACT_APP_THEME) {
-    return require("./themes/" +
-      process.env.REACT_APP_THEME +
-      "/index.js").getEnvColor(env);
+    return require(
+      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+    ).getEnvColor(env);
   } else {
     return defaultEnvColor(env);
   }
@@ -41,9 +41,9 @@ export const getEnvColor = (env) => {
 
 export const getV0Theme = () => {
   if (process.env.REACT_APP_THEME) {
-    return require("./themes/" +
-      process.env.REACT_APP_THEME +
-      "/index.js").getV0Theme();
+    return require(
+      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+    ).getV0Theme();
   } else {
     return getV0DefaultTheme();
   }
@@ -51,9 +51,9 @@ export const getV0Theme = () => {
 
 export const getTheme = () => {
   if (process.env.REACT_APP_THEME) {
-    return require("./themes/" +
-      process.env.REACT_APP_THEME +
-      "/index.js").getTheme();
+    return require(
+      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+    ).getTheme();
   } else {
     return getDefaultTheme();
   }

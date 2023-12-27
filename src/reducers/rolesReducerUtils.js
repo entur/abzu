@@ -66,7 +66,7 @@ export const getAllowanceInfoForStop = ({ result, variables }, state) => {
       editStopRoles,
       deleteStopRoles,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
 
     // Check if the user is authorized to edit the parent stop place.
@@ -77,7 +77,7 @@ export const getAllowanceInfoForStop = ({ result, variables }, state) => {
       editStopRoles,
       deleteStopRoles,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
     allowanceInfoForStopPlace.canEditParentStop =
       allowanceInfoForParentStop.canEdit;
@@ -87,7 +87,7 @@ export const getAllowanceInfoForStop = ({ result, variables }, state) => {
       editStopRoles,
       deleteStopRoles,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
   }
   return allowanceInfoForStopPlace;
@@ -98,26 +98,26 @@ const buildAllowanceInfoForStopPlace = (
   editStopRoles,
   deleteStopRoles,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   const latlng = getLatLng(stopPlace);
   const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
     latlng,
     fetchedPolygons,
-    allowNewStopEverywhere
+    allowNewStopEverywhere,
   );
 
   // retrieve all roles that allow editing a given stop
   const responsibleEditRoles = roleParser.filterByEntities(
     editStopRolesGeoFiltered,
-    stopPlace
+    stopPlace,
   );
 
   // retrieve all roles that allow hard-deleting a given stop
   const responsibleDeleteRoles = roleParser.filterByEntities(
     deleteStopRoles,
-    stopPlace
+    stopPlace,
   );
 
   const canEdit = responsibleEditRoles.length > 0;
@@ -127,7 +127,7 @@ const buildAllowanceInfoForStopPlace = (
   let legalSubmodes = [];
 
   const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(
-    editStopRolesGeoFiltered
+    editStopRolesGeoFiltered,
   );
   const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
 
@@ -135,7 +135,7 @@ const buildAllowanceInfoForStopPlace = (
     legalStopPlaceTypes = restrictModeByRoles(
       editStopRolesGeoFiltered,
       stopPlaceTypesFoundinRoles,
-      "StopPlaceType"
+      "StopPlaceType",
     );
     legalSubmodes = submodesFoundinRoles;
   }
@@ -167,7 +167,7 @@ export const getAllowanceInfoForGroup = (result, state) => {
     editStopRoles,
     latlngs,
     fetchedPolygons,
-    allowNewStopEverywhere
+    allowNewStopEverywhere,
   );
 
   if (!groupOfStopPlaces) {
@@ -183,13 +183,13 @@ export const getAllowanceInfoForGroup = (result, state) => {
   // retrieve all roles that allow editing a given group of stop places
   const responsibleEditRoles = roleParser.filterByEntities(
     editStopRolesGeoFiltered,
-    groupOfStopPlaces
+    groupOfStopPlaces,
   );
 
   // retrieve all roles that allow hard-deleting a given group of stop places
   const responsibleDeleteRoles = roleParser.filterByEntities(
     deleteStopRoles,
-    groupOfStopPlaces
+    groupOfStopPlaces,
   );
 
   const canEdit = responsibleEditRoles.length > 0;
@@ -199,7 +199,7 @@ export const getAllowanceInfoForGroup = (result, state) => {
   let legalSubmodes = [];
 
   const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(
-    editStopRolesGeoFiltered
+    editStopRolesGeoFiltered,
   );
   const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
 
@@ -207,7 +207,7 @@ export const getAllowanceInfoForGroup = (result, state) => {
     legalStopPlaceTypes = restrictModeByRoles(
       editStopRolesGeoFiltered,
       stopPlaceTypesFoundinRoles,
-      "StopPlaceType"
+      "StopPlaceType",
     );
     legalSubmodes = submodesFoundinRoles;
   }
@@ -276,7 +276,7 @@ export const getAllowanceInfoFromPosition = (latlng, roleAssignments) => {
   let deleteRoles = roleParser.getDeleteStopRoles(roleAssignments);
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
-    latlng
+    latlng,
   );
   return {
     legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
@@ -329,7 +329,7 @@ const filterByLegalMode = (roles, completeList, key, restrict = false) => {
   }
 
   return completeList.filter((entityType) =>
-    isModeOptionsValidForMode(options, entityType)
+    isModeOptionsValidForMode(options, entityType),
   );
 };
 
@@ -374,7 +374,7 @@ export const getAllowanceSearchInfo = (payload, roleAssignments) => {
 
   let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
     editStopRoles,
-    latlng
+    latlng,
   );
 
   let finalRoles = roleParser.filterByEntities(rolesAllowingGeo, payload);
@@ -422,7 +422,7 @@ export const getStopPlace = (result, childId) => {
     stopPlace.children.length
   ) {
     let matchingChildStop = stopPlace.children.find(
-      (child) => child.id === childId
+      (child) => child.id === childId,
     );
     if (matchingChildStop) {
       stopPlace = matchingChildStop;

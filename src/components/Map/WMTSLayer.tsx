@@ -36,7 +36,7 @@ export const WMTSLayer: React.FC<WMTSLayerProps> = ({
 
   const url = useMemo(
     () => `${baseUrl}${wmtsParams}&tilematrix={z}&tilerow={y}&tilecol={x}`,
-    [wmtsParams]
+    [wmtsParams],
   );
 
   return <TileLayer attribution={attribution} url={url} maxZoom={19} />;

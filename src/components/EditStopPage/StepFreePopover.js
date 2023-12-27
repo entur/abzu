@@ -109,7 +109,7 @@ class StepFreePopover extends React.Component {
                   />
                 }
               />
-            )
+            ),
           )}
         </Popover>
       </div>

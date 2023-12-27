@@ -180,13 +180,13 @@ class ReportPage extends React.Component {
     let topographicalPlaceIds = [];
     if (fromURL.municipalityReference) {
       topographicalPlaceIds = topographicalPlaceIds.concat(
-        fromURL.municipalityReference.split(",")
+        fromURL.municipalityReference.split(","),
       );
     }
 
     if (fromURL.countyReference) {
       topographicalPlaceIds = topographicalPlaceIds.concat(
-        fromURL.countyReference.split(",")
+        fromURL.countyReference.split(","),
       );
     }
 
@@ -204,7 +204,7 @@ class ReportPage extends React.Component {
             if (place) {
               const menuItem = this.createTopographicPlaceMenuItem(
                 place,
-                formatMessage
+                formatMessage,
               );
               menuItems.push(menuItem);
             }
@@ -289,7 +289,7 @@ class ReportPage extends React.Component {
                 isLoading: false,
                 activePageIndex: 0,
               });
-            }
+            },
           );
         } else {
           this.setState({
@@ -378,7 +378,7 @@ class ReportPage extends React.Component {
     const { locale, formatMessage } = intl;
     const results = hasParking
       ? dataSource.filter(
-          (stopPlace) => stopPlace.parking && stopPlace.parking.length
+          (stopPlace) => stopPlace.parking && stopPlace.parking.length,
         )
       : dataSource;
 
@@ -387,13 +387,14 @@ class ReportPage extends React.Component {
         (place) =>
           place.topographicPlaceType === "county" ||
           place.topographicPlaceType === "municipality" ||
-          place.topographicPlaceType === "country"
+          place.topographicPlaceType === "country",
       )
       .filter(
-        (place) => topoiChips.map((chip) => chip.value).indexOf(place.id) === -1
+        (place) =>
+          topoiChips.map((chip) => chip.value).indexOf(place.id) === -1,
       )
       .map((place) =>
-        this.createTopographicPlaceMenuItem(place, formatMessage)
+        this.createTopographicPlaceMenuItem(place, formatMessage),
       );
 
     return (

@@ -37,7 +37,7 @@ describe("snackbar", () => {
             message: errorMsg,
           },
         ],
-      })
+      }),
     ).toEqual({
       ...initialState,
       snackbarOptions: snackbarOptions,
@@ -57,7 +57,7 @@ describe("snackbar", () => {
         payload: {
           status: snackbarOptions.status,
         },
-      })
+      }),
     ).toEqual({
       ...initialState,
       snackbarOptions,

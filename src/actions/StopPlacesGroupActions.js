@@ -34,7 +34,7 @@ StopPlacesGroupActions.useStopPlaceIdForNewGroup =
       dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId));
     } else {
       dispatch(
-        UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new")
+        UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new"),
       );
     }
   };
@@ -45,7 +45,7 @@ StopPlacesGroupActions.changeName = (name) => (dispatch) => {
 
 StopPlacesGroupActions.changeDescription = (description) => (dispatch) => {
   dispatch(
-    createThunk(types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION, description)
+    createThunk(types.CHANGED_STOP_PLACE_GROUP_DESCRIPTION, description),
   );
 };
 

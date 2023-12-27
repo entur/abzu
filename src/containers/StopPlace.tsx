@@ -44,7 +44,7 @@ const selectProps = createSelector(
     newStopCreated: state.user.newStopCreated,
     originalStopPlace: state.stopPlace.originalCurrent,
     stopPlaceLoading: state.stopPlace.loading,
-  })
+  }),
 );
 
 export const StopPlace = () => {

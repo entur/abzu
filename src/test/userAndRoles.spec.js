@@ -42,7 +42,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -69,7 +69,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -96,7 +96,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
@@ -105,7 +105,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceBusStop.canEdit).toEqual(false);
   });
@@ -140,7 +140,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -167,7 +167,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
@@ -176,7 +176,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(false);
   });
@@ -203,7 +203,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceBusStop = getAllowanceInfoForStop(
@@ -212,7 +212,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
@@ -239,7 +239,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailStop.canEdit).toEqual(false);
     const allowanceBusStop = getAllowanceInfoForStop(
@@ -248,7 +248,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
   });
@@ -274,7 +274,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailStop.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
@@ -283,7 +283,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
@@ -292,7 +292,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
@@ -317,7 +317,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailStop.canEdit).toEqual(true);
     const allowanceBusStop = getAllowanceInfoForStop(
@@ -326,7 +326,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceBusStop.canEdit).toEqual(true);
     const allowanceRailReplacementBus = getAllowanceInfoForStop(
@@ -335,7 +335,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceRailReplacementBus.canEdit).toEqual(true);
   });
@@ -362,7 +362,7 @@ describe("User and roles - scenarios", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceStopWithNoModality.canEdit).toEqual(true);
   });

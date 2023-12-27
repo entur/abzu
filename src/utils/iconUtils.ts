@@ -39,7 +39,7 @@ type Modalities =
 export const getIconByTypeOrSubmode = (
   submode: Submodes,
   type: Modalities,
-  isMultimodal: boolean
+  isMultimodal: boolean,
 ) => {
   const submodeMap = {
     railReplacementBus,
@@ -73,7 +73,7 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
 
 export const getSvgIconByTypeOrSubmode = (
   submode: Submodes,
-  type: Modalities
+  type: Modalities,
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,

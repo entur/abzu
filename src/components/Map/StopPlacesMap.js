@@ -31,7 +31,7 @@ class StopPlacesMap extends React.Component {
 
   getNeighbourStops(ignoreStopId, bounds, includeExpired) {
     this.props.dispatch(
-      getNeighbourStops(ignoreStopId, bounds, includeExpired)
+      getNeighbourStops(ignoreStopId, bounds, includeExpired),
     );
   }
 
@@ -51,8 +51,8 @@ class StopPlacesMap extends React.Component {
     this.props.dispatch(
       UserActions.setCenterAndZoom(
         [center.lat, center.lng],
-        event.target.getZoom()
-      )
+        event.target.getZoom(),
+      ),
     );
   }
 
@@ -117,7 +117,7 @@ const mapStateToProps = (state) => {
     ignoreStopId: getIn(
       state.stopPlace,
       ["activeSearchResult", "id"],
-      undefined
+      undefined,
     ),
   };
 };

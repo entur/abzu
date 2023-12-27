@@ -79,7 +79,7 @@ class EditParentGeneral extends React.Component {
     shouldHardDelete,
     shouldTerminatePermanently,
     comment,
-    dateTime
+    dateTime,
   ) {
     const { stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
@@ -102,8 +102,8 @@ class EditParentGeneral extends React.Component {
           stopPlace.id,
           shouldTerminatePermanently,
           comment,
-          dateTime
-        )
+          dateTime,
+        ),
       )
         .then((result) => {
           this.handleSaveSuccess(stopPlace.id);
@@ -135,7 +135,7 @@ class EditParentGeneral extends React.Component {
         dispatch(addToMultiModalStopPlace(stopPlace.id, childrenToAdd)).then(
           (response) => {
             this.saveParentStop(stopPlaceVariables);
-          }
+          },
         );
       } else {
         this.saveParentStop(stopPlaceVariables);
@@ -173,8 +173,8 @@ class EditParentGeneral extends React.Component {
     dispatch(
       removeStopPlaceFromMultiModalStop(
         stopPlace.id,
-        removingStopPlaceFromParentId
-      )
+        removingStopPlaceFromParentId,
+      ),
     )
       .then((response) => {
         this.handleSaveSuccess(stopPlace.id);
@@ -204,8 +204,8 @@ class EditParentGeneral extends React.Component {
       getNeighbourStops(
         stopPlaceId,
         activeMap.getBounds(),
-        new SettingsManager().getShowExpiredStops()
-      )
+        new SettingsManager().getShowExpiredStops(),
+      ),
     );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
@@ -283,7 +283,7 @@ class EditParentGeneral extends React.Component {
 
   addAdjacentStopReference(stopPlaceId1, stopPlaceId2) {
     this.props.dispatch(
-      StopPlaceActions.addAdjacentConnection(stopPlaceId1, stopPlaceId2)
+      StopPlaceActions.addAdjacentConnection(stopPlaceId1, stopPlaceId2),
     );
     this.handleCloseAddAdjacentStop();
   }
@@ -307,7 +307,7 @@ class EditParentGeneral extends React.Component {
     const isAllowedToSave = this.getIsAllowedToSave();
     const isCurrentVersionMax = getIsCurrentVersionMax(
       versions,
-      stopPlace.version
+      stopPlace.version,
     );
     const isLastChild = this.getIsLastChild(stopPlace.children);
 
@@ -335,7 +335,7 @@ class EditParentGeneral extends React.Component {
     const stopPlaceLabel = this.getTitleText(
       stopPlace,
       originalStopPlace,
-      formatMessage
+      formatMessage,
     );
     const disableTerminate =
       stopPlace.isNewStop || disabled || stopPlace.hasExpired;
@@ -364,7 +364,7 @@ class EditParentGeneral extends React.Component {
         </div>
         <ParentStopDetails
           handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(
-            this
+            this,
           )}
           disabled={disabled}
         />
@@ -388,7 +388,7 @@ class EditParentGeneral extends React.Component {
               }}
               onClick={() => {
                 this.props.dispatch(
-                  UserActions.requestTerminateStopPlace(stopPlace.id)
+                  UserActions.requestTerminateStopPlace(stopPlace.id),
                 );
               }}
             />

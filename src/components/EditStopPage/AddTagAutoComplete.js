@@ -48,7 +48,7 @@ class AddTagAutoComplete extends Component {
     const value = event.target.value;
     const { dataSource } = this.state;
     const isFoundInDataSource = dataSource.find(
-      (item) => item.name.toLowerCase() === value.toLowerCase()
+      (item) => item.name.toLowerCase() === value.toLowerCase(),
     );
 
     if (value) {
@@ -68,7 +68,7 @@ class AddTagAutoComplete extends Component {
     if (!searchText) return menuItems;
 
     const isFoundInDataSource = dataSource.some(
-      (item) => item.name.toLowerCase() === searchText.toLowerCase()
+      (item) => item.name.toLowerCase() === searchText.toLowerCase(),
     );
 
     if (dataSource.length) {
@@ -101,7 +101,7 @@ class AddTagAutoComplete extends Component {
               />
             ),
           };
-        })
+        }),
       );
     }
 

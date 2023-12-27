@@ -4,7 +4,7 @@ export const isLegalChildStopPlace = (
   stopPlace,
   roleAssignments,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   if (!stopPlace) {
     return false;
@@ -15,11 +15,11 @@ export const isLegalChildStopPlace = (
     editStopRoles,
     stopPlace.location,
     fetchedPolygons,
-    allowNewStopEverywhere
+    allowNewStopEverywhere,
   );
   const responsibleEditRoles = RoleParser.filterByEntities(
     editStopRolesGeoFiltered,
-    stopPlace
+    stopPlace,
   );
   const isLegal = responsibleEditRoles.length > 0;
   return isLegal;

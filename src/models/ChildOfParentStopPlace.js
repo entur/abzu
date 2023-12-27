@@ -35,7 +35,7 @@ class ChildOfParentStopPlace {
           children[i],
           this.isActive,
           this.parking,
-          this.userDefinedCoordinates
+          this.userDefinedCoordinates,
         ).toClient();
       }
     }
@@ -51,7 +51,7 @@ class ChildOfParentStopPlace {
         this.stop,
         this.isActive,
         this.parking,
-        this.userDefinedCoordinates
+        this.userDefinedCoordinates,
       ).toClient();
 
       if (!stopPlace.topographicPlace) {

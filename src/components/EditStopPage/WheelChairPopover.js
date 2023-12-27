@@ -109,7 +109,7 @@ class WheelChairPopover extends React.Component {
                   />
                 }
               />
-            )
+            ),
           )}
         </Popover>
       </div>

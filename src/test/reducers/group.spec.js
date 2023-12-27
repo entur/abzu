@@ -51,7 +51,7 @@ describe("Model: map Group of Stop Place from server to expected client model", 
     const state = groupOfStopPlaceReducer({}, action);
     const clientGroupOfStopPlace = state.current;
     const groupOfStopPlaceExample = mapHelper.mapGroupOfStopPlaceToVariables(
-      clientGroupOfStopPlace
+      clientGroupOfStopPlace,
     );
     expect(groupOfStopPlaceExample).toMatchSnapshot();
   });

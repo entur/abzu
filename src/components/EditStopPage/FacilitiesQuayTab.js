@@ -72,7 +72,7 @@ class FacilitiesQuayTab extends React.Component {
     const { index, disabled, dispatch } = this.props;
     if (!disabled) {
       dispatch(
-        EquipmentActions.updateShelterEquipmentState(value, "quay", index)
+        EquipmentActions.updateShelterEquipmentState(value, "quay", index),
       );
     }
   }
@@ -84,12 +84,12 @@ class FacilitiesQuayTab extends React.Component {
       stepFree: getIn(
         quay,
         ["placeEquipments", "shelterEquipment", "stepFree"],
-        false
+        false,
       ),
       enclosed: getIn(
         quay,
         ["placeEquipments", "shelterEquipment", "enclosed"],
-        false
+        false,
       ),
     };
     const newValuesSet = Object.assign({}, oldValuesSet, newValue);
@@ -116,17 +116,17 @@ class FacilitiesQuayTab extends React.Component {
       seats: getIn(
         quay,
         ["placeEquipments", "waitingRoomEquipment", "seats"],
-        0
+        0,
       ),
       heated: getIn(
         quay,
         ["placeEquipments", "waitingRoomEquipment", "heated"],
-        false
+        false,
       ),
       stepFree: getIn(
         quay,
         ["placeEquipments", "waitingRoomEquipment", "stepFree"],
-        false
+        false,
       ),
     };
     const newValuesSet = Object.assign({}, oldValuesSet, newValue);
@@ -136,7 +136,7 @@ class FacilitiesQuayTab extends React.Component {
   handle512Sign(value) {
     if (!this.props.disabled) {
       this.props.dispatch(
-        EquipmentActions.update512SignState(value, "quay", this.props.index)
+        EquipmentActions.update512SignState(value, "quay", this.props.index),
       );
     }
   }
@@ -154,37 +154,37 @@ class FacilitiesQuayTab extends React.Component {
     const ticketMachineNumber = getIn(
       quay,
       ["placeEquipments", "ticketingEquipment", "numberOfMachines"],
-      0
+      0,
     );
     const shelterSeats = getIn(
       quay,
       ["placeEquipments", "shelterEquipment", "seats"],
-      0
+      0,
     );
     const shelterStepFree = getIn(
       quay,
       ["placeEquipments", "shelterEquipment", "stepFree"],
-      false
+      false,
     );
     const shelterEnclosed = getIn(
       quay,
       ["placeEquipments", "shelterEquipment", "enclosed"],
-      false
+      false,
     );
     const waitingRoomSeats = getIn(
       quay,
       ["placeEquipments", "waitingRoomEquipment", "seats"],
-      0
+      0,
     );
     const waitingRoomHeated = getIn(
       quay,
       ["placeEquipments", "waitingRoomEquipment", "heated"],
-      false
+      false,
     );
     const waitingRoomStepFree = getIn(
       quay,
       ["placeEquipments", "waitingRoomEquipment", "stepFree"],
-      false
+      false,
     );
     const sign512 = equipmentHelpers.get512SignEquipment(quay);
 

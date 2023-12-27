@@ -17,7 +17,7 @@ export const isDateRangeLegal = (
   dateFrom,
   expiraryExpanded,
   timeFrom,
-  timeTo
+  timeTo,
 ) => {
   if (!expiraryExpanded) {
     return {

@@ -58,7 +58,7 @@ class ReportQuayRows extends React.Component {
                 {ColumnTransformerQuaysJsx[column](
                   quay,
                   duplicateInfo,
-                  formatMessage
+                  formatMessage,
                 )}
               </div>
             ))}

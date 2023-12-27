@@ -77,7 +77,7 @@ class MarkerList extends React.Component {
 
   handleRemoveFromGroup(stopPlaceId) {
     this.props.dispatch(
-      StopPlacesGroupActions.removeMemberFromGroup(stopPlaceId)
+      StopPlacesGroupActions.removeMemberFromGroup(stopPlaceId),
     );
   }
 
@@ -88,7 +88,7 @@ class MarkerList extends React.Component {
 
   handleDragEndNewStop(event) {
     this.props.dispatch(
-      StopPlaceActions.changeLocationNewStop(event.target.getLatLng())
+      StopPlaceActions.changeLocationNewStop(event.target.getLatLng()),
     );
   }
 
@@ -119,7 +119,7 @@ class MarkerList extends React.Component {
       const lastPathLinkFromId = getIn(
         lastPathLink,
         ["from", "placeRef", "addressablePlace", "id"],
-        null
+        null,
       );
 
       if (lastPathLinkFromId === id && !lastPathLink.to) {
@@ -130,7 +130,7 @@ class MarkerList extends React.Component {
 
     if (isCreatingPolylines) {
       this.props.dispatch(
-        UserActions.addFinalCoordinesToPolylines(coords, id, type)
+        UserActions.addFinalCoordinesToPolylines(coords, id, type),
       );
     } else {
       this.props.dispatch(UserActions.startCreatingPolyline(coords, id, type));
@@ -145,7 +145,7 @@ class MarkerList extends React.Component {
       StopPlaceActions.changeElementPosition({ markerIndex: index, type }, [
         setDecimalPrecision(position.lat, 6),
         setDecimalPrecision(position.lng, 6),
-      ])
+      ]),
     );
   }
 
@@ -163,8 +163,8 @@ class MarkerList extends React.Component {
         [
           setDecimalPrecision(position.lat, 6),
           setDecimalPrecision(position.lng, 6),
-        ]
-      )
+        ],
+      ),
     );
   }
 
@@ -238,7 +238,7 @@ class MarkerList extends React.Component {
               isEditingStop={isEditingStop}
               missingCoordinatesMap={missingCoordinatesMap}
               createNewMultimodalStopFrom={() => {}}
-            />
+            />,
           );
         });
         return;
@@ -246,7 +246,7 @@ class MarkerList extends React.Component {
 
       if (marker.coordinatePin) {
         popupMarkers.push(
-          <CoordinateMarker position={marker.position} key={"coordinatePin"} />
+          <CoordinateMarker position={marker.position} key={"coordinatePin"} />,
         );
       }
 
@@ -261,7 +261,7 @@ class MarkerList extends React.Component {
             handleOnClick={() => {
               this.handleNewStopClick(marker.location);
             }}
-          />
+          />,
         );
       } else {
         if (marker.isActive) {
@@ -297,10 +297,10 @@ class MarkerList extends React.Component {
                   isEditingStop={isEditingStop}
                   missingCoordinatesMap={missingCoordinatesMap}
                   createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
-                    this
+                    this,
                   )}
                   connectToAdjacentStop={this.connectToAdjacentStop.bind(this)}
-                />
+                />,
               );
 
               if (neighbourStopQuays[child.id]) {
@@ -315,7 +315,7 @@ class MarkerList extends React.Component {
                       translations={Object.assign(
                         {},
                         newStopMarkerText,
-                        CustomPopupMarkerText
+                        CustomPopupMarkerText,
                       )}
                       compassBearing={quayOfChild.compassBearing}
                       publicCode={quayOfChild.publicCode || ""}
@@ -324,7 +324,7 @@ class MarkerList extends React.Component {
                       stopPlaceId={child.id}
                       formattedStopType={localeStopType}
                       handleUpdatePathLink={this.handleUpdatePathLink.bind(
-                        this
+                        this,
                       )}
                       handleChangeCoordinates={() => {}}
                       draggable={false}
@@ -334,7 +334,7 @@ class MarkerList extends React.Component {
                       isEditingStop={isEditingStop}
                       disabled={disabled}
                       currentIsNewStop={currentIsNewStop}
-                    />
+                    />,
                   );
                 });
               }
@@ -359,7 +359,7 @@ class MarkerList extends React.Component {
               draggable={dragableMarkers}
               handleChangeCoordinates={changeCoordinates}
               createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
-                this
+                this,
               )}
               translations={CustomPopupMarkerText}
               handleOnClick={() => {
@@ -375,7 +375,7 @@ class MarkerList extends React.Component {
               handleCreateGroup={this.handleCreateGroup.bind(this)}
               disabledForSearch={disabledForSearch}
               allowConnectToAdjacentStop={false}
-            />
+            />,
           );
 
           if (marker.parking) {
@@ -409,7 +409,7 @@ class MarkerList extends React.Component {
                       }),
                     }}
                     handleDragEnd={this.handleElementDragEnd.bind(this)}
-                  />
+                  />,
                 );
               } else if (isCycleParking) {
                 popupMarkers.push(
@@ -433,7 +433,7 @@ class MarkerList extends React.Component {
                       }),
                     }}
                     handleDragEnd={this.handleElementDragEnd.bind(this)}
-                  />
+                  />,
                 );
               }
             });
@@ -451,7 +451,7 @@ class MarkerList extends React.Component {
                   translations={Object.assign(
                     {},
                     newStopMarkerText,
-                    CustomPopupMarkerText
+                    CustomPopupMarkerText,
                   )}
                   compassBearing={quay.compassBearing}
                   publicCode={quay.publicCode || ""}
@@ -468,7 +468,7 @@ class MarkerList extends React.Component {
                   showPathLink={!disabled}
                   isEditingStop={isEditingStop}
                   currentIsNewStop={currentIsNewStop}
-                />
+                />,
               );
 
               if (
@@ -492,25 +492,25 @@ class MarkerList extends React.Component {
                             quayIndex: index,
                             markerIndex: bpIndex,
                           },
-                          boardingPosition.location
+                          boardingPosition.location,
                         )
                       }
                       handleDragEnd={(event) =>
                         this.handleBoardingPositionElementDragEnd(
                           index,
                           bpIndex,
-                          event
+                          event,
                         )
                       }
                       handleSetFocus={() => {
                         this.props.dispatch(
                           StopPlaceActions.setBoardingPositionElementFocus(
                             bpIndex,
-                            index
-                          )
+                            index,
+                          ),
                         );
                         const expandedQuayEl = document.querySelector(
-                          ".boarding-position-item-expanded"
+                          ".boarding-position-item-expanded",
                         );
                         const scrollBodyEl =
                           document.querySelector("#scroll-body");
@@ -519,7 +519,7 @@ class MarkerList extends React.Component {
                           scrollBodyEl.scrollTop -= 50;
                         }
                       }}
-                    />
+                    />,
                   );
                 });
               }
@@ -554,12 +554,12 @@ class MarkerList extends React.Component {
                 handleHideQuays={this.handleHideQuays.bind(this)}
                 hasExpired={marker.hasExpired}
                 createNewMultimodalStopFrom={this.createNewMultimodalStopFrom.bind(
-                  this
+                  this,
                 )}
                 stopPlace={marker}
                 isEditingGroup={isEditingGroup}
                 handleCreateGroup={this.handleCreateGroup.bind(this)}
-              />
+              />,
             );
 
             if (neighbourStopQuays && neighbourStopQuays[marker.id]) {
@@ -575,7 +575,7 @@ class MarkerList extends React.Component {
                     translations={Object.assign(
                       {},
                       newStopMarkerText,
-                      CustomPopupMarkerText
+                      CustomPopupMarkerText,
                     )}
                     compassBearing={quay.compassBearing}
                     publicCode={quay.publicCode || ""}
@@ -592,7 +592,7 @@ class MarkerList extends React.Component {
                     isEditingStop={isEditingStop}
                     disabled={disabled}
                     currentIsNewStop={currentIsNewStop}
-                  />
+                  />,
                 );
               });
             }
@@ -627,13 +627,13 @@ const mapStateToProps = (state) => ({
   disabledForSearch: !getIn(
     state.roles,
     ["allowanceInfoSearchResult", "canEdit"],
-    false
+    false,
   ),
   newStopIsMultiModal: state.user.newStopIsMultiModal,
   currentStopIsMultiModal: getIn(
     state.stopPlace,
     ["current", "isParent"],
-    false
+    false,
   ),
   focusedElement: state.mapUtils.focusedElement,
 });

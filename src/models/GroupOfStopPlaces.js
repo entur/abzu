@@ -30,14 +30,14 @@ class GroupOfStopPlace {
         members
           .filter(
             ({ topographicPlace, parentTopographicPlace }) =>
-              topographicPlace && parentTopographicPlace
+              topographicPlace && parentTopographicPlace,
           )
           .map(({ topographicPlace, parentTopographicPlace }) =>
             JSON.stringify({
               topographicPlace,
               parentTopographicPlace,
-            })
-          )
+            }),
+          ),
       ),
     ].map((member) => JSON.parse(member));
   }
@@ -66,7 +66,7 @@ class GroupOfStopPlace {
       };
 
       clientGroup.topographicPlaces = this.getTopographicPlacesFromMembers(
-        clientGroup.members
+        clientGroup.members,
       );
 
       clientGroup.location = calculatePolygonCenter(clientGroup.members);

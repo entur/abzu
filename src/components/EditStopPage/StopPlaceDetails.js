@@ -144,8 +144,8 @@ class StopPlaceDetails extends React.Component {
       UserActions.openKeyValuesDialog(
         this.props.stopPlace.keyValues,
         "stopPlace",
-        null
-      )
+        null,
+      ),
     );
   }
 
@@ -266,7 +266,7 @@ class StopPlaceDetails extends React.Component {
   handleSubModeTypeChange(stopType, transportMode, submode) {
     this.handleCloseStopPlaceTypePopover();
     this.props.dispatch(
-      StopPlaceActions.changeSubmode(stopType, transportMode, submode)
+      StopPlaceActions.changeSubmode(stopType, transportMode, submode),
     );
   }
 
@@ -276,8 +276,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateTicketMachineState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -288,8 +288,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateShelterEquipmentState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -300,8 +300,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateSanitaryState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -312,8 +312,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.updateWaitingRoomState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -332,8 +332,8 @@ class StopPlaceDetails extends React.Component {
         EquipmentActions.update512SignState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -387,7 +387,7 @@ class StopPlaceDetails extends React.Component {
     const wheelchairAccess = getIn(
       stopPlace,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace);
@@ -402,7 +402,7 @@ class StopPlaceDetails extends React.Component {
 
     const stopTypeHint = this.getStopTypeTranslation(
       stopPlace.stopPlaceType,
-      stopPlace.submode
+      stopPlace.submode,
     );
     const weightingStateHint = this.getNameForWeightingState(stopPlace);
     const expirationText = formatMessage({ id: "stop_has_expired" });
@@ -447,7 +447,7 @@ class StopPlaceDetails extends React.Component {
                   to={`/${Routes.STOP_PLACE}/${getIn(
                     stopPlace,
                     ["parentStop", "id"],
-                    null
+                    null,
                   )}`}
                   style={{ fontSize: "0.8em" }}
                 >
@@ -550,7 +550,7 @@ class StopPlaceDetails extends React.Component {
                 >
                   <ModalitiesMenuItems
                     handleSubModeTypeChange={this.handleSubModeTypeChange.bind(
-                      this
+                      this,
                     )}
                     handleStopTypeChange={this.handleStopTypeChange.bind(this)}
                     stopPlaceTypeChosen={stopPlace.stopPlaceType}

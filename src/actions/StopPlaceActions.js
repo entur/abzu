@@ -25,7 +25,7 @@ var StopPlaceActions = {};
 StopPlaceActions.removeChildFromParentStopPlace =
   (stopPlaceId) => (dispatch) => {
     dispatch(
-      createThunk(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId)
+      createThunk(types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE, stopPlaceId),
     );
   };
 
@@ -36,13 +36,13 @@ StopPlaceActions.addChildrenToParenStopPlace =
     let foundStopPlaces = [];
 
     Object.values(data).forEach(
-      (entry) => (foundStopPlaces = foundStopPlaces.concat(entry[0]))
+      (entry) => (foundStopPlaces = foundStopPlaces.concat(entry[0])),
     );
 
     const state = getState();
     // Do not append children already added
     const alreadyAdded = state.stopPlace.current.children.map(
-      (child) => child.id
+      (child) => child.id,
     );
     const toAdd = foundStopPlaces
       .filter((item) => alreadyAdded.indexOf(item.id) === -1)
@@ -53,7 +53,7 @@ StopPlaceActions.addChildrenToParenStopPlace =
 
 StopPlaceActions.changeLocationNewStop = (location) => (dispatch) => {
   dispatch(
-    createThunk(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng])
+    createThunk(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]),
   );
 };
 
@@ -90,7 +90,7 @@ StopPlaceActions.changeStopType = (type) => (dispatch) => {
         stopPlaceType: type,
         transportMode: "bus",
         submode: null,
-      })
+      }),
     );
   } else {
     dispatch(createThunk(types.CHANGED_STOP_TYPE, type));
@@ -104,7 +104,7 @@ StopPlaceActions.changeSubmode =
         stopPlaceType,
         transportMode,
         submode,
-      })
+      }),
     );
   };
 
@@ -118,7 +118,7 @@ StopPlaceActions.updateKeyValuesForKey =
         key,
         values,
         origin,
-      })
+      }),
     );
   };
 
@@ -130,7 +130,7 @@ StopPlaceActions.deleteKeyValuesByKey = (key) => (dispatch, getState) => {
     createThunk(types.DELETED_KEY_VALUES_BY_KEY, {
       key,
       origin,
-    })
+    }),
   );
 };
 
@@ -144,7 +144,7 @@ StopPlaceActions.createKeyValuesPair =
         key,
         values,
         origin,
-      })
+      }),
     );
   };
 
@@ -152,8 +152,8 @@ StopPlaceActions.setMarkerOnMap = (data) => (dispatch) => {
   dispatch(
     createThunk(
       types.SET_ACTIVE_MARKER,
-      Object.assign({}, data, { isActive: true })
-    )
+      Object.assign({}, data, { isActive: true }),
+    ),
   );
   if (data.entityType === Entities.STOP_PLACE) {
     updateURLWithId("stopPlaceId", data.id);
@@ -163,7 +163,7 @@ StopPlaceActions.setMarkerOnMap = (data) => (dispatch) => {
     console.error(
       "entityType not found",
       data.entityType,
-      ", will not update URL"
+      ", will not update URL",
     );
   }
 };
@@ -173,7 +173,7 @@ StopPlaceActions.changeMapCenter = (position, zoom) => (dispatch) => {
     createThunk(types.CHANGED_MAP_CENTER, {
       position,
       zoom,
-    })
+    }),
   );
 };
 
@@ -194,7 +194,7 @@ StopPlaceActions.removeElementByType = (index, type) => (dispatch) => {
     createThunk(types.REMOVED_ELEMENT_BY_TYPE, {
       index: index,
       type: type,
-    })
+    }),
   );
 };
 
@@ -205,7 +205,7 @@ StopPlaceActions.removeBoardingPositionElement =
         index,
         quayIndex,
         type: "boarding-position",
-      })
+      }),
     );
   };
 
@@ -215,7 +215,7 @@ StopPlaceActions.changePublicCodeName = (index, name, type) => (dispatch) => {
       name: name,
       index: index,
       type: type,
-    })
+    }),
   );
 };
 
@@ -227,7 +227,7 @@ StopPlaceActions.changeBoardingPositionPublicCode =
         index,
         quayIndex,
         type: "boarding-position",
-      })
+      }),
     );
   };
 
@@ -237,7 +237,7 @@ StopPlaceActions.changePrivateCodeName = (index, name, type) => (dispatch) => {
       name: name,
       index: index,
       type: type,
-    })
+    }),
   );
 };
 
@@ -245,7 +245,7 @@ StopPlaceActions.changeCurrentStopPosition = (position) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
       location: position,
-    })
+    }),
   );
 };
 
@@ -260,7 +260,7 @@ StopPlaceActions.changeElementDescription =
         index: index,
         description: description,
         type: type,
-      })
+      }),
     );
   };
 
@@ -270,7 +270,7 @@ StopPlaceActions.changeQuayCompassBearing =
       createThunk(types.CHANGED_QUAY_COMPASS_BEARING, {
         index,
         compassBearing,
-      })
+      }),
     );
   };
 
@@ -295,7 +295,7 @@ StopPlaceActions.setElementFocus = (index, type) => (dispatch, getState) => {
     createThunk(types.SET_FOCUS_ON_ELEMENT, {
       index: index,
       type: type,
-    })
+    }),
   );
 };
 
@@ -307,13 +307,13 @@ StopPlaceActions.setBoardingPositionElementFocus =
       createThunk(types.SET_FOCUS_ON_BOARDING_POSITION_ELEMENT, {
         index,
         quayIndex,
-      })
+      }),
     );
 
     dispatch(createThunk(types.SHOW_EDIT_QUAY_ADDITIONAL, null));
 
     dispatch(
-      UserActions.changeQuayAdditionalTypeTabByType("boarding-positions")
+      UserActions.changeQuayAdditionalTypeTabByType("boarding-positions"),
     );
   };
 
@@ -324,7 +324,7 @@ StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {
     createThunk(types.CREATED_NEW_STOP, {
       isMultimodal,
       location: [Number(location.lat), Number(location.lng)],
-    })
+    }),
   );
 };
 
@@ -342,7 +342,7 @@ StopPlaceActions.addElementToStop =
       dispatch(
         createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
           location: position,
-        })
+        }),
       );
     } else {
       dispatch(
@@ -350,7 +350,7 @@ StopPlaceActions.addElementToStop =
           type,
           position,
           focusedElement: getState().mapUtils.focusedElement,
-        })
+        }),
       );
     }
   };
@@ -361,7 +361,7 @@ StopPlaceActions.changeElementPosition =
       createThunk(types.CHANGE_ELEMENT_POSITION, {
         ...coordinatesOwner,
         position,
-      })
+      }),
     );
   };
 
@@ -371,7 +371,7 @@ StopPlaceActions.changeParkingTotalCapacity =
       createThunk(types.CHANGED_PARKING_TOTAL_CAPACITY, {
         index,
         totalCapacity,
-      })
+      }),
     );
   };
 
@@ -380,7 +380,7 @@ StopPlaceActions.changeParkingName = (index, name) => (dispatch) => {
     createThunk(types.CHANGED_PARKING_NAME, {
       index,
       name,
-    })
+    }),
   );
 };
 
@@ -389,7 +389,7 @@ StopPlaceActions.changeParkingLayout = (index, parkingLayout) => (dispatch) => {
     createThunk(types.CHANGED_PARKING_LAYOUT, {
       index,
       parkingLayout,
-    })
+    }),
   );
 };
 
@@ -399,7 +399,7 @@ StopPlaceActions.changeParkingPaymentProcess =
       createThunk(types.CHANGED_PARKING_PAYMENT_PROCESS, {
         index,
         parkingPaymentProcess,
-      })
+      }),
     );
   };
 
@@ -409,7 +409,7 @@ StopPlaceActions.changeParkingRechargingAvailable =
       createThunk(types.CHANGED_PARKING_RECHARGING_AVAILABLE, {
         index,
         rechargingAvailable,
-      })
+      }),
     );
   };
 
@@ -419,7 +419,7 @@ StopPlaceActions.changeParkingNumberOfSpaces =
       createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES, {
         index,
         numberOfSpaces,
-      })
+      }),
     );
   };
 
@@ -429,7 +429,7 @@ StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint =
       createThunk(types.CHANGED_PARKING_NUMBER_OF_SPACES_WITH_RECHARGE_POINT, {
         index,
         numberOfSpacesWithRechargePoint,
-      })
+      }),
     );
   };
 
@@ -441,8 +441,8 @@ StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType =
         {
           index,
           numberOfSpacesForRegisteredDisabledUserType,
-        }
-      )
+        },
+      ),
     );
   };
 
@@ -453,7 +453,7 @@ StopPlaceActions.clearLastMutatedStopPlaceId = () => (dispatch) => {
 StopPlaceActions.addAdjacentConnection =
   (stopPlaceId1, stopPlaceId2) => (dispatch) => {
     dispatch(
-      createThunk(types.ADD_ADJACENT_SITE, { stopPlaceId1, stopPlaceId2 })
+      createThunk(types.ADD_ADJACENT_SITE, { stopPlaceId1, stopPlaceId2 }),
     );
   };
 
@@ -463,7 +463,7 @@ StopPlaceActions.removeAdjacentConnection =
       createThunk(types.REMOVE_ADJACENT_SITE, {
         stopPlaceId,
         adjacentStopPlaceRef,
-      })
+      }),
     );
   };
 

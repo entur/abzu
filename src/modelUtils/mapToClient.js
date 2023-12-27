@@ -45,7 +45,7 @@ helpers.sortQuays = (current, attribute) => {
     (a[attribute] || "ZZZZZ").localeCompare(b[attribute] || "ZZZZZ", "nb", {
       numeric: true,
       sensitivity: "base",
-    })
+    }),
   );
   return {
     ...copy,
@@ -96,7 +96,7 @@ helpers.mapPathLinkToClient = (pathLinks = []) => {
   // NRP-1675, this is a temporary solution until pathLinks(stopPLaceId: $id) returns a unique list
   let uniquePathLinks = getUniquePathLinks(
     pathLinks,
-    (pathLink) => pathLink.id
+    (pathLink) => pathLink.id,
   );
   return uniquePathLinks.map((data) => new PathLink(data).toClient());
 };
@@ -144,7 +144,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
   if (action.type === types.ADDED_FINAL_COORDINATES_TO_POLYLINE) {
     let lastPathLink = JSON.parse(
-      JSON.stringify(pathLink[pathLink.length - 1])
+      JSON.stringify(pathLink[pathLink.length - 1]),
     );
 
     let latlngCoordinates = [];
@@ -152,7 +152,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
     let startCoordinates = getIn(
       lastPathLink,
       ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
-      null
+      null,
     );
 
     if (startCoordinates) {
@@ -201,13 +201,13 @@ helpers.mapVersionToClientVersion = (source) => {
             data.validBetween,
             ["fromDate"],
             "",
-            transformer
+            transformer,
           ),
           toDate: getInTransform(
             data.validBetween,
             ["toDate"],
             "",
-            transformer
+            transformer,
           ),
           versionComment: data.versionComment,
           changedBy: data.changedBy ? data.changedBy : "",
@@ -223,7 +223,7 @@ helpers.mapStopToClientStop = (
   isActive,
   parking,
   userDefinedCoordinates = {},
-  resourceId
+  resourceId,
 ) => {
   if (stop.__typename === "ParentStopPlace") {
     if (resourceId && stop.id !== resourceId) {
@@ -232,14 +232,14 @@ helpers.mapStopToClientStop = (
         isActive,
         parking,
         userDefinedCoordinates,
-        resourceId
+        resourceId,
       ).toClient();
     } else {
       return new ParentStopPlace(
         stop,
         isActive,
         parking,
-        userDefinedCoordinates
+        userDefinedCoordinates,
       ).toClient();
     }
   } else {
@@ -247,7 +247,7 @@ helpers.mapStopToClientStop = (
       stop,
       isActive,
       parking,
-      userDefinedCoordinates
+      userDefinedCoordinates,
     ).toClient();
   }
 };
@@ -258,7 +258,7 @@ helpers.mapQuayToClientQuay = (quay, accessibilityAssessment) => {
 
 helpers.mapNeighbourStopsToClientStops = (stops, currentStopPlace) => {
   const allStops = stops.map((stop) =>
-    helpers.mapStopToClientStop(stop, false)
+    helpers.mapStopToClientStop(stop, false),
   );
   let extractedChildren = [];
   const currentStopPlaceId = currentStopPlace ? currentStopPlace.id : null;
@@ -299,7 +299,7 @@ helpers.mapSearchResultStopPlace = (stop) => {
 
 helpers.mapSearchResultatGroup = (groupsOfStopPlaces) => {
   return groupsOfStopPlaces.map((group) =>
-    new GroupOfStopPlaces(group).toClient()
+    new GroupOfStopPlaces(group).toClient(),
   );
 };
 
@@ -309,12 +309,12 @@ helpers.mapSearchResultParentStopPlace = (stop) => {
     let parentTopographicPlace = getIn(
       stop,
       ["topographicPlace", "parentTopographicPlace", "name", "value"],
-      ""
+      "",
     );
     let topographicPlace = getIn(
       stop,
       ["topographicPlace", "name", "value"],
-      ""
+      "",
     );
 
     let clientParentStop = {
@@ -547,7 +547,7 @@ helpers.updateCurrentStopWithSubMode = (
   current,
   stopPlaceType,
   transportMode,
-  submode
+  submode,
 ) => {
   return Object.assign({}, current, {
     stopPlaceType,
@@ -625,7 +625,7 @@ helpers.updateCurrentWithoutElement = (current, payload) => {
     case "boarding-position":
       copy.quays[payload.quayIndex].boardingPositions = removeElementByIndex(
         copy.quays[payload.quayIndex].boardingPositions,
-        index
+        index,
       );
       break;
     case "parking":
@@ -654,7 +654,7 @@ helpers.updateCurrentWithElementPositionChange = (current, payload) => {
           copy.quays[payload.quayIndex].boardingPositions[markerIndex],
           {
             location: position,
-          }
+          },
         );
       break;
     case "parking":
@@ -685,7 +685,7 @@ helpers.updateCurrentWithPublicCode = (current, payload) => {
         copy.quays[payload.quayIndex].boardingPositions[index],
         {
           publicCode: name,
-        }
+        },
       );
       break;
     default:
@@ -861,7 +861,7 @@ helpers.changeParkingNumberOfSpacesWithRechargePoint = (original, payload) => {
 
 helpers.changeParkingNumberOfSpacesForRegisteredDisabledUserType = (
   original,
-  payload
+  payload,
 ) => {
   const { index, numberOfSpacesForRegisteredDisabledUserType } = payload;
   const copy = JSON.parse(JSON.stringify(original));

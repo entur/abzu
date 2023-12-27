@@ -77,8 +77,8 @@ class SearchBox extends React.Component {
             searchText,
             stopPlaceTypes,
             chips,
-            showFutureAndExpired
-          )
+            showFutureAndExpired,
+          ),
         )
         .then(() => {
           this.setState({ loading: false });
@@ -190,7 +190,7 @@ class SearchBox extends React.Component {
   handleSubmitCoordinates(position) {
     this.props.dispatch(StopPlaceActions.changeMapCenter(position, 11));
     this.props.dispatch(
-      UserActions.setMissingCoordinates(position, this.props.chosenResult.id)
+      UserActions.setMissingCoordinates(position, this.props.chosenResult.id),
     );
 
     this.setState({
@@ -213,7 +213,7 @@ class SearchBox extends React.Component {
       });
     }
     this.props.dispatch(
-      UserActions.addToposChip({ text: text, type: type, value: id })
+      UserActions.addToposChip({ text: text, type: type, value: id }),
     );
     this.refs.topoFilter.setState({
       searchText: "",
@@ -278,7 +278,7 @@ class SearchBox extends React.Component {
     let menuItems = [];
     if (dataSource && dataSource.length) {
       menuItems = dataSource.map((element) =>
-        createSearchMenuItem(element, formatMessage)
+        createSearchMenuItem(element, formatMessage),
       );
     } else {
       menuItems = [
@@ -402,10 +402,11 @@ class SearchBox extends React.Component {
         (place) =>
           place.topographicPlaceType === "county" ||
           place.topographicPlaceType === "municipality" ||
-          place.topographicPlaceType === "country"
+          place.topographicPlaceType === "country",
       )
       .filter(
-        (place) => topoiChips.map((chip) => chip.value).indexOf(place.id) === -1
+        (place) =>
+          topoiChips.map((chip) => chip.value).indexOf(place.id) === -1,
       )
       .map((place) => {
         const name = this.getTopographicalNames(place);
@@ -516,7 +517,7 @@ class SearchBox extends React.Component {
                       hintText={formatMessage({ id: "filter_by_topography" })}
                       dataSource={topographicalPlacesDataSource}
                       onUpdateInput={this.handleTopographicalPlaceInput.bind(
-                        this
+                        this,
                       )}
                       listStyle={{ width: "auto", minWidth: 300 }}
                       filter={AutoComplete.caseInsensitiveFilter}
@@ -609,7 +610,7 @@ class SearchBox extends React.Component {
                 handleEdit={this.handleEdit.bind(this)}
                 result={chosenResult}
                 handleChangeCoordinates={this.handleOpenCoordinatesDialog.bind(
-                  this
+                  this,
                 )}
                 userSuppliedCoordinates={
                   missingCoordinatesMap &&
@@ -636,7 +637,7 @@ class SearchBox extends React.Component {
                   >
                     <RaisedButton
                       onClick={this.handleOpenLookupCoordinatesDialog.bind(
-                        this
+                        this,
                       )}
                       icon={
                         <MdLocationSearching
@@ -704,7 +705,7 @@ const mapStateToProps = (state) => {
     "",
     text,
     stopType,
-    topoiChips
+    topoiChips,
   );
   const favorited = favoriteManager.isFavoriteAlreadyStored(favoriteContent);
 
@@ -721,7 +722,7 @@ const mapStateToProps = (state) => {
     canEdit: getIn(
       state.roles,
       ["allowanceInfoSearchResult", "canEdit"],
-      false
+      false,
     ),
     roleAssignments: state.roles.auth.roleAssignments,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,

@@ -17,7 +17,7 @@ import { setDecimalPrecision } from "../utils";
 export const extractAlternativeNames = (alternativeNames) => {
   if (!alternativeNames) return [];
   return alternativeNames.filter(
-    (alt) => alt.name && alt.name.value && alt.nameType
+    (alt) => alt.name && alt.name.value && alt.nameType,
   );
 };
 

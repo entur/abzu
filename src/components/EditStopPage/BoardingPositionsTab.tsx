@@ -29,11 +29,11 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
         StopPlaceActions.changeBoardingPositionPublicCode(
           bpIndex,
           index,
-          newValue
-        ) as unknown as AnyAction
+          newValue,
+        ) as unknown as AnyAction,
       );
     },
-    [index]
+    [index],
   );
 
   const handleDelete = useCallback(
@@ -41,11 +41,11 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
       dispatch(
         StopPlaceActions.removeBoardingPositionElement(
           bpIndex,
-          index
-        ) as unknown as AnyAction
+          index,
+        ) as unknown as AnyAction,
       );
     },
-    [index]
+    [index],
   );
 
   return (
@@ -63,14 +63,14 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
             dispatch(
               StopPlaceActions.changeMapCenter(
                 bp.location,
-                17
-              ) as unknown as AnyAction
+                17,
+              ) as unknown as AnyAction,
             );
             dispatch(
               StopPlaceActions.setBoardingPositionElementFocus(
                 i,
-                index
-              ) as unknown as AnyAction
+                index,
+              ) as unknown as AnyAction,
             );
           }}
           expanded={
@@ -80,8 +80,8 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
             dispatch(
               StopPlaceActions.setBoardingPositionElementFocus(
                 i === focusedElement.index ? -1 : i,
-                index
-              ) as unknown as AnyAction
+                index,
+              ) as unknown as AnyAction,
             );
           }}
         />

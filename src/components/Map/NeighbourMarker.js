@@ -106,7 +106,7 @@ class NeighbourMarker extends React.Component {
         hasExpired={hasExpired}
         isMultimodal={isMultimodal}
         active={false}
-      />
+      />,
     );
 
     let icon = divIcon({
@@ -138,7 +138,7 @@ class NeighbourMarker extends React.Component {
                 stopPlace,
                 roleAssignments,
                 fetchedPolygons,
-                allowNewStopEverywhere
+                allowNewStopEverywhere,
               ),
             });
           },

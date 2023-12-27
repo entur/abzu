@@ -76,7 +76,7 @@ class AddMemberToGroup extends Component {
       tokenParsed,
       10,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
 
     return (

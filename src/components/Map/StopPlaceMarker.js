@@ -154,7 +154,7 @@ class StopPlaceMarker extends React.Component {
                 handleChangeCoordinates &&
                 handleChangeCoordinates(
                   { type: "stop-place", markerIndex: index },
-                  markerLocation
+                  markerLocation,
                 )
               }
             >

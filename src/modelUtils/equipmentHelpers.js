@@ -21,7 +21,7 @@ EquipmentHelpers.getTicketMachineState = (entity) => {
   const equipmentState = getIn(
     entity,
     ["placeEquipments", "ticketingEquipment"],
-    null
+    null,
   );
   return equipmentState !== null;
 };
@@ -30,7 +30,7 @@ EquipmentHelpers.getShelterEquipmentState = (entity) => {
   const equipmentState = getIn(
     entity,
     ["placeEquipments", "shelterEquipment"],
-    null
+    null,
   );
   return equipmentState !== null;
 };
@@ -39,7 +39,7 @@ EquipmentHelpers.getSanitaryEquipmentState = (entity) => {
   const sanitaryState = getIn(
     entity,
     ["placeEquipments", "sanitaryEquipment"],
-    null
+    null,
   );
   return sanitaryState !== null;
 };
@@ -66,7 +66,7 @@ EquipmentHelpers.getWaitingRoomState = (entity) => {
   const waitingRoomState = getIn(
     entity,
     ["placeEquipments", "waitingRoomEquipment"],
-    null
+    null,
   );
   return waitingRoomState !== null;
 };
@@ -75,7 +75,7 @@ EquipmentHelpers.getCycleStorageEquipment = (entity) => {
   const cycleStorageState = getIn(
     entity,
     ["placeEquipments", "cycleStorageEquipment"],
-    null
+    null,
   );
   return cycleStorageState !== null;
 };
@@ -90,7 +90,7 @@ EquipmentHelpers.updateShelterEquipmentState = (stopPlace, payload) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payload,
-    types.shelterEquipment
+    types.shelterEquipment,
   );
 };
 
@@ -99,7 +99,7 @@ EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payload) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payload,
-    types.sanitaryEquipment
+    types.sanitaryEquipment,
   );
 };
 
@@ -108,7 +108,7 @@ EquipmentHelpers.updateWaitingRoomState = (stopPlace, payload) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payload,
-    types.waitingRoomEquipment
+    types.waitingRoomEquipment,
   );
 };
 
@@ -117,7 +117,7 @@ EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payload) => {
   return updateEquipmentForEntitity(
     updatedStop,
     payload,
-    types.cycleStorageEquipment
+    types.cycleStorageEquipment,
   );
 };
 

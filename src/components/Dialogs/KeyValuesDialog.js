@@ -225,7 +225,7 @@ const mapStateToProps = (state) => ({
   open: state.user.keyValuesDialogOpen,
   keyValues: selectKeyValuesDataSource(
     state.user.keyValuesOrigin,
-    state.stopPlace.current
+    state.stopPlace.current,
   ),
 });
 

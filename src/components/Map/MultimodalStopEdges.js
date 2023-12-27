@@ -31,7 +31,7 @@ class MultimodalStopEdges extends Component {
         marker.isParent &&
         marker.location &&
         marker.children &&
-        marker.children.length
+        marker.children.length,
     );
 
     validParentStops.forEach((marker, index) => {
@@ -55,7 +55,7 @@ class MultimodalStopEdges extends Component {
                 color={"lime"}
                 dashArray="16,2"
                 weight={3}
-              />
+              />,
             );
           });
         foundMarkers.push(marker.id);

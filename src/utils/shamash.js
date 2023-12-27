@@ -1,7 +1,7 @@
 const getShamashBaseUrl = () =>
   window.config.OTPUrl.replace(
     "/journey-planner/v2/graphql",
-    "/graphql-explorer/journey-planner"
+    "/graphql-explorer/journey-planner",
   );
 
 export const getQuaySearchUrl = (id) => {

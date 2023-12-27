@@ -39,14 +39,14 @@ export const getStateByOperation = (state, action) => {
       return updateStopPlaceStateAfterMutate(
         state,
         action,
-        "terminateStopPlace"
+        "terminateStopPlace",
       );
 
     case "removeStopPlaceFromParent":
       return updateStopPlaceStateAfterMutate(
         state,
         action,
-        "removeFromMultiModalStopPlace"
+        "removeFromMultiModalStopPlace",
       );
 
     case "mutateStopPlace":
@@ -56,14 +56,14 @@ export const getStateByOperation = (state, action) => {
       return updateStopPlaceStateAfterMutate(
         state,
         action,
-        "createMultiModalStopPlace"
+        "createMultiModalStopPlace",
       );
 
     case "mutateParentStopPlace":
       return updateStopPlaceStateAfterMutate(
         state,
         action,
-        "mutateParentStopPlace"
+        "mutateParentStopPlace",
       );
 
     case "getTagsQuery":
@@ -75,17 +75,17 @@ export const getStateByOperation = (state, action) => {
       return Object.assign({}, state, {
         neighbourStops: formatHelpers.mapNeighbourStopsToClientStops(
           action.result.data.stopPlaceBBox,
-          state.current
+          state.current,
         ),
       });
 
     case "mutatePathLink":
       return Object.assign({}, state, {
         pathLink: formatHelpers.mapPathLinkToClient(
-          action.result.data.mutatePathlink
+          action.result.data.mutatePathlink,
         ),
         originalPathLink: formatHelpers.mapPathLinkToClient(
-          action.result.data.mutatePathlink
+          action.result.data.mutatePathlink,
         ),
       });
 
@@ -93,10 +93,10 @@ export const getStateByOperation = (state, action) => {
       return Object.assign({}, state, {
         searchResults: [
           ...formatHelpers.mapSearchResultToStopPlaces(
-            action.result.data.stopPlace
+            action.result.data.stopPlace,
           ),
           ...formatHelpers.mapSearchResultatGroup(
-            action.result.data.groupOfStopPlaces
+            action.result.data.groupOfStopPlaces,
           ),
         ],
       });
@@ -104,7 +104,7 @@ export const getStateByOperation = (state, action) => {
     case "mutateParking":
       let stopPlaceWithParking = Object.assign({}, state.current, {
         parking: formatHelpers.mapParkingToClient(
-          action.result.data.mutateParking
+          action.result.data.mutateParking,
         ),
       });
 
@@ -118,7 +118,7 @@ export const getStateByOperation = (state, action) => {
         neighbourStopQuays: formatHelpers.mapNeighbourQuaysToClient(
           state.neighbourStopQuays,
           action.result.data.stopPlace,
-          resourceId
+          resourceId,
         ),
       });
 
@@ -177,7 +177,7 @@ const getStateWithEntitiesFromQuery = (state, action) => {
     true,
     formatHelpers.mapParkingToClient(parking),
     state.userDefinedCoordinates,
-    resourceId
+    resourceId,
   );
   const originalCurrentStop = JSON.parse(JSON.stringify(currentStop));
 

@@ -24,7 +24,7 @@ EquipmentActions.updateTicketMachineState =
         state: state,
         type: entityType,
         id: id,
-      })
+      }),
     );
   };
 
@@ -35,7 +35,7 @@ EquipmentActions.updateShelterEquipmentState =
         state: state,
         type: entityType,
         id: id,
-      })
+      }),
     );
   };
 
@@ -46,7 +46,7 @@ EquipmentActions.updateSanitaryState =
         state: state,
         type: entityType,
         id: id,
-      })
+      }),
     );
   };
 
@@ -57,7 +57,7 @@ EquipmentActions.updateWaitingRoomState =
         state: state,
         type: entityType,
         id: id,
-      })
+      }),
     );
   };
 
@@ -68,7 +68,7 @@ EquipmentActions.updateCycleStorageState =
         state: state,
         type: entityType,
         id: id,
-      })
+      }),
     );
   };
 
@@ -78,7 +78,7 @@ EquipmentActions.update512SignState = (state, entityType, id) => (dispatch) => {
       state: state,
       type: entityType,
       id: id,
-    })
+    }),
   );
 };
 

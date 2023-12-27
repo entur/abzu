@@ -37,12 +37,12 @@ class AcessibilityStopTab extends React.Component {
     const wheelchairAccess = getIn(
       stopPlace,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     const stepFreeAccess = getIn(
       stopPlace,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
 
     return (

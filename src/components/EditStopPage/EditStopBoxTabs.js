@@ -32,21 +32,21 @@ class EditStopBoxTabs extends React.Component {
       dispatch(StopPlaceActions.removeElementByType(index, "quay"));
     } else {
       const quayImportedId = activeStopPlace.quays.find(
-        (quay) => quay.id === quayId
+        (quay) => quay.id === quayId,
       ).importedId;
       dispatch(
         UserActions.requestDeleteQuay(
           activeStopPlace.id,
           quayId,
-          quayImportedId
-        )
+          quayImportedId,
+        ),
       );
     }
   }
 
   handleOpenKeyValuesDialog(keyValues, type, index) {
     this.props.dispatch(
-      UserActions.openKeyValuesDialog(keyValues, type, index)
+      UserActions.openKeyValuesDialog(keyValues, type, index),
     );
   }
 
@@ -66,7 +66,7 @@ class EditStopBoxTabs extends React.Component {
     expandedItem,
     itemTranslation,
     noElementsStyle,
-    disabled
+    disabled,
   ) {
     return activeStopPlace.quays.length ? (
       activeStopPlace.quays.map((quay, index) => (
@@ -100,7 +100,7 @@ class EditStopBoxTabs extends React.Component {
     expandedItem,
     itemTranslation,
     noElementsStyle,
-    disabled
+    disabled,
   ) {
     return activeStopPlace.parking.length ? (
       activeStopPlace.parking.map((parking, index) => {
@@ -190,7 +190,7 @@ class EditStopBoxTabs extends React.Component {
               expandedItem,
               itemTranslation,
               noElementsStyle,
-              disabled
+              disabled,
             )
           : null}
         {activeElementTab === 1
@@ -199,7 +199,7 @@ class EditStopBoxTabs extends React.Component {
               expandedItem,
               itemTranslation,
               noElementsStyle,
-              disabled
+              disabled,
             )
           : null}
       </div>

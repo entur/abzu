@@ -106,7 +106,7 @@ export const sortVersions = (versions) => {
 export const getIsCurrentVersionMax = (
   versions,
   currentVersion,
-  isChildOfParent
+  isChildOfParent,
 ) => {
   /* versioning of child of parent is difficult task and error prone, so it is not supported to
     to view older versions of a child in current state of Abzu
@@ -122,7 +122,7 @@ export const getIsCurrentVersionMax = (
   // Check if the current version is the newest version, according to version sorted by toDate
   return (
     sortVersions(versions).findIndex(
-      ({ version }) => Number(version) === Number(currentVersion)
+      ({ version }) => Number(version) === Number(currentVersion),
     ) === 0
   );
 };
@@ -195,7 +195,7 @@ export const findDuplicateImportedIds = (stopPlaces) => {
 
   Object.keys(quaysWithDuplicateImportedIds).forEach((importedId) => {
     quaysWithDuplicateImportedIds[importedId] = Array.from(
-      new Set(quaysWithDuplicateImportedIds[importedId])
+      new Set(quaysWithDuplicateImportedIds[importedId]),
     );
     if (quaysWithDuplicateImportedIds[importedId].length < 2) {
       delete quaysWithDuplicateImportedIds[importedId];

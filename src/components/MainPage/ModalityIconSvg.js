@@ -48,7 +48,7 @@ class ModalityIconSvg extends React.Component {
 
     const iconId = getIconIdByTypeOrSubmode(
       this.props.submode,
-      this.props.type
+      this.props.type,
     );
 
     let style = {

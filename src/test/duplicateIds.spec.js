@@ -40,7 +40,7 @@ describe("duplicateIds", () => {
 
   test("should find all duplicate Ids on quays between stopPlaces", () => {
     const duplicationInfo = findDuplicateImportedIds(
-      StopsWithDuplicateImportedIds
+      StopsWithDuplicateImportedIds,
     );
     const {
       stopPlacesWithConflict,

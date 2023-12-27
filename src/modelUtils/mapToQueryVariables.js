@@ -28,7 +28,7 @@ helpers.mapQuayToVariables = (quay) => {
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
     accessibilityAssessment: formatAccessibilityAssements(
-      quay.accessibilityAssessment
+      quay.accessibilityAssessment,
     ),
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
@@ -50,7 +50,7 @@ helpers.mapQuayToVariables = (quay) => {
 
   if (quay.boardingPositions) {
     quayVariables.boardingPositions = netexifyBoardingPositions(
-      quay.boardingPositions
+      quay.boardingPositions,
     );
   }
 
@@ -74,7 +74,7 @@ helpers.mapGroupOfStopPlaceToVariables = (groupOfStopPlace) => {
     id: groupOfStopPlace.id,
     name: createEmbeddableMultilingualString(groupOfStopPlace.name),
     description: createEmbeddableMultilingualString(
-      groupOfStopPlace.description
+      groupOfStopPlace.description,
     ),
     members: groupOfStopPlace.members.map((member) => ({
       ref: member.id,
@@ -111,7 +111,7 @@ helpers.mapChildStopToVariables = (original, userInput) => {
 helpers.mapParentStopToVariables = (original, userInput) => {
   const stop = JSON.parse(JSON.stringify(original));
   const children = stop.children.map((child) =>
-    helpers.mapDeepStopToVariables(child, null)
+    helpers.mapDeepStopToVariables(child, null),
   );
 
   let parentStopVariables = {
@@ -181,7 +181,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssements(
-      stop.accessibilityAssessment
+      stop.accessibilityAssessment,
     ),
     keyValues: stop.keyValues,
     placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),

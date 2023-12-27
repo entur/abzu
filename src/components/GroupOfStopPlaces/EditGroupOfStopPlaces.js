@@ -77,7 +77,7 @@ class EditGroupOfStopPlaces extends Component {
 
     if (groupId) {
       dispatch(
-        UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, groupId)
+        UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, groupId),
       );
       dispatch(UserActions.openSnackbar(types.SUCCESS));
     }

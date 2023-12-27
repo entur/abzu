@@ -19,7 +19,7 @@ describe("Group of stop places - models", () => {
   test("should retrive a unique list of topographic places for members of a group", () => {
     const clientGOS = new GroupOfStopPlaces(
       mockGroupOfStopPlaces,
-      true
+      true,
     ).toClient();
     expect(clientGOS.topographicPlaces).toMatchSnapshot();
   });

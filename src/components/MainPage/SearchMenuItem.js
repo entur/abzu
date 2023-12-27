@@ -33,7 +33,7 @@ export const createSearchMenuItem = (element, formatMessage) => {
     return createGroupOfStopPlacesMenuItem(element, formatMessage);
   } else {
     console.error(
-      `createSearchMenuItem: ${element.entityType} is not supported`
+      `createSearchMenuItem: ${element.entityType} is not supported`,
     );
   }
 };

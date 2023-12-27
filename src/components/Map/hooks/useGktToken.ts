@@ -6,7 +6,7 @@ const INTERVAL_IN_MS = 60000;
 
 export const useGktToken = () => {
   const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "null")
+    JSON.parse(localStorage.getItem("ABZU::GKT_TOKEN") || "null"),
   );
 
   const config = useContext(ConfigContext);
@@ -29,7 +29,7 @@ export const useGktToken = () => {
         } catch (err) {
           console.warn(
             "Failed to get GK token, Kartverket Flyfoto will not work",
-            err
+            err,
           );
         }
       }

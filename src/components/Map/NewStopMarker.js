@@ -54,7 +54,7 @@ class NewStopMarker extends React.Component {
     let latlngInside = isPointInPolygon(
       position,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
 
     return (

@@ -122,7 +122,7 @@ class ReportResultView extends React.Component {
                     <div key={"column-item-" + column} style={columnStyle}>
                       {ColumnTransformerStopPlaceJsx[column](
                         item,
-                        formatMessage
+                        formatMessage,
                       )}
                     </div>
                   );

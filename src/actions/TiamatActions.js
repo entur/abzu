@@ -89,8 +89,8 @@ const handleQuery = (client, payload) => (dispatch) =>
         types.APOLLO_QUERY_RESULT,
         result,
         payload.query,
-        payload.variables
-      )
+        payload.variables,
+      ),
     );
     return result;
   });
@@ -105,8 +105,8 @@ const handleMutation = (client, payload) => (dispatch) =>
             types.APOLLO_MUTATION_ERROR,
             result.errors,
             payload.mutation,
-            payload.variables
-          )
+            payload.variables,
+          ),
         );
       } else {
         dispatch(
@@ -114,8 +114,8 @@ const handleMutation = (client, payload) => (dispatch) =>
             types.APOLLO_MUTATION_RESULT,
             result,
             payload.mutation,
-            payload.variables
-          )
+            payload.variables,
+          ),
         );
         return result;
       }
@@ -126,8 +126,8 @@ const handleMutation = (client, payload) => (dispatch) =>
           types.APOLLO_MUTATION_ERROR,
           e,
           payload.mutation,
-          payload.variables
-        )
+          payload.variables,
+        ),
       );
       throw e;
     });
@@ -180,7 +180,7 @@ export const saveStopPlaceBasedOnType =
     if (!isChildOfParent) {
       const variables = mapToMutationVariables.mapStopToVariables(
         stopPlace,
-        userInput
+        userInput,
       );
 
       return new Promise(async (resolve, reject) => {
@@ -205,7 +205,7 @@ export const saveStopPlaceBasedOnType =
       return new Promise(async (resolve, reject) => {
         const variables = mapToMutationVariables.mapChildStopToVariables(
           stopPlace,
-          userInput
+          userInput,
         );
 
         handleMutation(getTiamatClient(), {

@@ -40,7 +40,7 @@ class InformationManager {
         key,
         JSON.stringify({
           shouldBeDisplayed: shouldBeDisplayed,
-        })
+        }),
       );
     } catch (e) {
       console.error("Unable to update information to localStorage", e);

@@ -32,7 +32,7 @@ class ParentStopPlaceResultInfo extends Component {
       getIn(
         result,
         ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-        null
+        null,
       ) === "TRUE";
 
     return (

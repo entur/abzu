@@ -17,7 +17,7 @@ const AdjacentStopAdder = {};
 AdjacentStopAdder.addAdjacentStopReference = (
   parentStopPlace,
   stopPlaceId1,
-  stopPlaceId2
+  stopPlaceId2,
 ) => {
   parentStopPlace.children.forEach((child) => {
     if (child.id === stopPlaceId1) {
@@ -30,7 +30,7 @@ AdjacentStopAdder.addAdjacentStopReference = (
 
 AdjacentStopAdder.addAdjacentReferenceToStop = (
   childStopPlace,
-  adjacentRef
+  adjacentRef,
 ) => {
   if (!childStopPlace.adjacentSites) {
     childStopPlace.adjacentSites = [];

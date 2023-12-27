@@ -19,7 +19,7 @@ const defaultCenterPosition = [64.349421, 16.809082];
 export const isPointInPolygon = (
   point,
   fetchedPolygons,
-  allowNewStopEverywhere
+  allowNewStopEverywhere,
 ) => {
   let inside = false;
 

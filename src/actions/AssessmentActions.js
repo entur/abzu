@@ -23,7 +23,7 @@ AssessmentActions.setStopWheelchairAccess = (value) => (dispatch) => {
     createThunk(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       limitationType: limitations.wheelchairAccess,
-    })
+    }),
   );
 };
 
@@ -32,7 +32,7 @@ AssessmentActions.setStopStepFreeAccess = (value) => (dispatch) => {
     createThunk(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
       value: value,
       limitationType: limitations.stepFreeAccess,
-    })
+    }),
   );
 };
 
@@ -42,7 +42,7 @@ AssessmentActions.setQuayWheelchairAccess = (value, index) => (dispatch) => {
       value: value,
       index: index,
       limitationType: limitations.wheelchairAccess,
-    })
+    }),
   );
 };
 
@@ -52,7 +52,7 @@ AssessmentActions.setQuayStepFreeAccess = (value, index) => (dispatch) => {
       value: value,
       index: index,
       limitationType: limitations.stepFreeAccess,
-    })
+    }),
   );
 };
 

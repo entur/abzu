@@ -77,7 +77,7 @@ class AddStopPlaceToParent extends Component {
       roleAssignments,
       10,
       fetchedPolygons,
-      allowNewStopEverywhere
+      allowNewStopEverywhere,
     );
 
     return (

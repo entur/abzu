@@ -31,13 +31,13 @@ class AcessibilityQuayTab extends React.Component {
 
   handleWheelChairChange(value) {
     this.props.dispatch(
-      AssessmentActions.setQuayWheelchairAccess(value, this.props.index)
+      AssessmentActions.setQuayWheelchairAccess(value, this.props.index),
     );
   }
 
   handleStepFreeChange(value) {
     this.props.dispatch(
-      AssessmentActions.setQuayStepFreeAccess(value, this.props.index)
+      AssessmentActions.setQuayStepFreeAccess(value, this.props.index),
     );
   }
 
@@ -48,12 +48,12 @@ class AcessibilityQuayTab extends React.Component {
     const wheelchairAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
     const stepFreeAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN"
+      "UNKNOWN",
     );
 
     return (

@@ -96,10 +96,10 @@ class MoveQuayNewStopDialog extends React.Component {
 
     const fromStopPlaceId = quay.stopPlaceId;
     const fromVersionComment = `Flyttet ${quayIds.join(
-      ", "
+      ", ",
     )} til nytt stoppested`;
     const toVersionComment = `Flyttet ${quayIds.join(
-      ", "
+      ", ",
     )} fra ${fromStopPlaceId}`;
 
     return (

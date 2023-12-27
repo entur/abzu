@@ -37,7 +37,7 @@ describe("user reducer", () => {
       userReducer(undefined, {
         type: types.TOGGLED_IS_CREATING_NEW_STOP,
         payload: false,
-      })
+      }),
     ).toEqual({
       ...initialState,
       isCreatingNewStop: true,
@@ -51,7 +51,7 @@ describe("user reducer", () => {
       userReducer(undefined, {
         type: types.APPLIED_STOPTYPE_SEARCH_FILTER,
         payload: filters,
-      })
+      }),
     ).toEqual({
       ...initialState,
       searchFilters: { ...initialState.searchFilters, stopType: filters },
@@ -68,7 +68,7 @@ describe("user reducer", () => {
       userReducer(undefined, {
         type: types.CHANGED_LOCALIZATION,
         payload: localization,
-      })
+      }),
     ).toEqual({
       ...initialState,
       localization: localization,
@@ -82,7 +82,7 @@ describe("user reducer", () => {
       userReducer(undefined, {
         type: types.APPLIED_LOCALE,
         payload: locale,
-      })
+      }),
     ).toEqual({
       ...initialState,
       appliedLocale: locale,
@@ -96,7 +96,7 @@ describe("user reducer", () => {
       userReducer(undefined, {
         type: types.CHANGED_ACTIVE_BASELAYER,
         payload: newBaselayer,
-      })
+      }),
     ).toEqual({
       ...initialState,
       activeBaselayer: newBaselayer,

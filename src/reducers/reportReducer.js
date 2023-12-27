@@ -47,7 +47,7 @@ const reduceTopopGraphicalPlacesForReport = (state, action) => {
 
 const reduceSearchResultsForReport = (state, action) => {
   const stops = formatHelpers.mapReportSearchResultsToClientStop(
-    action.result.data.stopPlace
+    action.result.data.stopPlace,
   );
   return Object.assign({}, state, {
     results: stops,
@@ -60,7 +60,7 @@ const populateStopPlacesWithParking = (state, results) => {
   let stopPlacesWithParking = stopPlaces.map((stopPlace) => {
     let aliasedId = stopPlace.id.replace(
       window.config.netexPrefix + ":StopPlace:",
-      "StopPlace"
+      "StopPlace",
     );
     return Object.assign({}, stopPlace, {
       parking: results[aliasedId],

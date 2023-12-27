@@ -43,7 +43,7 @@ export const createApolloThunk = (
   type: string,
   result: any,
   doc: any,
-  variables: Record<string, any>
+  variables: Record<string, any>,
 ): ApolloQueryResult => ({
   type,
   result,
@@ -55,7 +55,7 @@ export const createApolloErrorThunk = (
   type: string,
   error: any,
   doc: any,
-  variables: Record<string, any>
+  variables: Record<string, any>,
 ) => ({
   type,
   error,

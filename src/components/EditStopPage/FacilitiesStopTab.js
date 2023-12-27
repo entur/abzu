@@ -59,8 +59,8 @@ class FacilitiesStopTab extends React.Component {
         EquipmentActions.updateTicketMachineState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -78,8 +78,8 @@ class FacilitiesStopTab extends React.Component {
         EquipmentActions.updateShelterEquipmentState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -90,17 +90,17 @@ class FacilitiesStopTab extends React.Component {
       seats: getIn(
         stopPlace,
         ["placeEquipments", "shelterEquipment", "seats"],
-        0
+        0,
       ),
       stepFree: getIn(
         stopPlace,
         ["placeEquipments", "shelterEquipment", "stepFree"],
-        false
+        false,
       ),
       enclosed: getIn(
         stopPlace,
         ["placeEquipments", "shelterEquipment", "enclosed"],
-        false
+        false,
       ),
     };
     const newValuesSet = Object.assign({}, oldValuesSet, newValue);
@@ -113,8 +113,8 @@ class FacilitiesStopTab extends React.Component {
         EquipmentActions.updateSanitaryState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -125,8 +125,8 @@ class FacilitiesStopTab extends React.Component {
         EquipmentActions.updateWaitingRoomState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -137,8 +137,8 @@ class FacilitiesStopTab extends React.Component {
         EquipmentActions.update512SignState(
           value,
           "stopPlace",
-          this.props.stopPlace.id
-        )
+          this.props.stopPlace.id,
+        ),
       );
     }
   }
@@ -149,17 +149,17 @@ class FacilitiesStopTab extends React.Component {
       seats: getIn(
         stopPlace,
         ["placeEquipments", "waitingRoomEquipment", "seats"],
-        0
+        0,
       ),
       heated: getIn(
         stopPlace,
         ["placeEquipments", "waitingRoomEquipment", "heated"],
-        false
+        false,
       ),
       stepFree: getIn(
         stopPlace,
         ["placeEquipments", "waitingRoomEquipment", "stepFree"],
-        false
+        false,
       ),
     };
     const newValuesSet = Object.assign({}, oldValuesSet, newValue);
@@ -182,37 +182,37 @@ class FacilitiesStopTab extends React.Component {
     const ticketMachineNumber = getIn(
       stopPlace,
       ["placeEquipments", "ticketingEquipment", "numberOfMachines"],
-      0
+      0,
     );
     const shelterSeats = getIn(
       stopPlace,
       ["placeEquipments", "shelterEquipment", "seats"],
-      0
+      0,
     );
     const shelterStepFree = getIn(
       stopPlace,
       ["placeEquipments", "shelterEquipment", "stepFree"],
-      false
+      false,
     );
     const shelterEnclosed = getIn(
       stopPlace,
       ["placeEquipments", "shelterEquipment", "enclosed"],
-      false
+      false,
     );
     const waitingRoomSeats = getIn(
       stopPlace,
       ["placeEquipments", "waitingRoomEquipment", "seats"],
-      0
+      0,
     );
     const waitingRoomHeated = getIn(
       stopPlace,
       ["placeEquipments", "waitingRoomEquipment", "heated"],
-      false
+      false,
     );
     const waitingRoomStepFree = getIn(
       stopPlace,
       ["placeEquipments", "waitingRoomEquipment", "stepFree"],
-      false
+      false,
     );
 
     return (

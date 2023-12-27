@@ -46,7 +46,7 @@ class StopPlaces extends React.Component {
       .then(({ data }) => {
         if (data.groupOfStopPlaces && data.groupOfStopPlaces.length) {
           const groupOfStopPlace = formatHelpers.mapSearchResultatGroup(
-            data.groupOfStopPlaces
+            data.groupOfStopPlaces,
           );
           dispatch(StopPlaceActions.setMarkerOnMap(groupOfStopPlace[0]));
         } else {
@@ -70,7 +70,7 @@ class StopPlaces extends React.Component {
           this.setState({ isLoading: false });
           if (data.stopPlace && data.stopPlace.length) {
             const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
-              data.stopPlace
+              data.stopPlace,
             );
             if (stopPlaces.length) {
               dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));

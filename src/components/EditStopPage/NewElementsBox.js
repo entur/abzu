@@ -43,7 +43,7 @@ class NewElementsBox extends React.Component {
   handleConfirmSubmit() {
     const { owner } = this.state;
     this.props.dispatch(
-      StopPlaceActions.addElementToStop(owner.key, owner.latlng)
+      StopPlaceActions.addElementToStop(owner.key, owner.latlng),
     );
     this.handleDialogClose();
   }

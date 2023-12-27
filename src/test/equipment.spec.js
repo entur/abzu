@@ -20,7 +20,7 @@ import { simplifyPlaceEquipment } from "../models/stopPlaceUtils";
 
 /* Simplify placeEquipment to client model */
 equiptedStopPlace.placeEquipments = simplifyPlaceEquipment(
-  equiptedStopPlace.placeEquipments
+  equiptedStopPlace.placeEquipments,
 );
 
 describe("equipment helper", () => {
@@ -81,7 +81,7 @@ describe("equipment helper", () => {
 
     let stopPlace = helpers.update512SignEquipment(
       unequiptedStopPlace,
-      payloadTrue
+      payloadTrue,
     );
 
     const equipted = helpers.get512SignEquipment(stopPlace);
@@ -96,7 +96,7 @@ describe("equipment helper", () => {
     };
     let stopPlace = helpers.update512SignEquipment(
       equiptedStopPlace,
-      payloadFalse
+      payloadFalse,
     );
     const unequipted = helpers.get512SignEquipment(stopPlace);
     expect(unequipted).toEqual(false);
@@ -112,7 +112,7 @@ describe("equipment helper", () => {
     }
 
     let equiptedWith512 = helpers.get512SignEquipment(
-      unEquiptedWith512Sign.quays[0]
+      unEquiptedWith512Sign.quays[0],
     );
     expect(equiptedWith512).toEqual(false);
 
@@ -124,7 +124,7 @@ describe("equipment helper", () => {
 
     let stopPlace = helpers.update512SignEquipment(
       unEquiptedWith512Sign,
-      payloadTrue
+      payloadTrue,
     );
 
     const equiptedQuay = helpers.get512SignEquipment(stopPlace.quays[1]);

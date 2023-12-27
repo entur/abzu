@@ -51,7 +51,7 @@ class FavoriteManager {
     searchText,
     stopType,
     topoiChips,
-    showFutureAndExpired
+    showFutureAndExpired,
   ) {
     return {
       stopType,
@@ -109,7 +109,7 @@ class FavoriteManager {
       console.error(
         "Invalid data in localStorage for key",
         key,
-        "returning []"
+        "returning []",
       );
       localStorage.removeItem(key);
       return [];

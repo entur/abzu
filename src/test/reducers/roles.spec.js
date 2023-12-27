@@ -106,7 +106,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -132,7 +132,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -158,7 +158,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -184,7 +184,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(false);
   });
@@ -210,7 +210,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(false);
   });
@@ -236,7 +236,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -261,7 +261,7 @@ describe("getAllowanceInfo", () => {
         auth: { roleAssignments: token.roles },
         fetchedPolygons: null,
         allowNewStopEverywhere: true,
-      }
+      },
     );
     expect(allowanceInfo.canEdit).toEqual(true);
   });
@@ -406,7 +406,7 @@ describe("getAllowanceInfo", () => {
         stopPlaceType,
         null,
         legalStopPlacesTypes,
-        legalSubmodes
+        legalSubmodes,
       );
       expect(canEditWithStopPlaceType).toEqual(false);
 
@@ -415,7 +415,7 @@ describe("getAllowanceInfo", () => {
           stopPlaceType,
           submode,
           legalStopPlacesTypes,
-          legalSubmodes
+          legalSubmodes,
         );
         expect(canEditStopPlaceTypeAndSubmode).toEqual(false);
       });
@@ -426,7 +426,7 @@ describe("getAllowanceInfo", () => {
         stopPlaceType,
         null,
         legalStopPlacesTypes,
-        legalSubmodes
+        legalSubmodes,
       );
       expect(canEditWithStopPlaceType).toEqual(true);
 
@@ -435,7 +435,7 @@ describe("getAllowanceInfo", () => {
           stopPlaceType,
           submode,
           legalStopPlacesTypes,
-          legalSubmodes
+          legalSubmodes,
         );
         expect(canEditStopPlaceTypeAndSubmode).toEqual(true);
       });

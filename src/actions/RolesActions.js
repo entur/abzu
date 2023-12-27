@@ -44,8 +44,8 @@ export const updateAllowNewStopsEverywhere =
     dispatch(
       createThunk(
         types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE,
-        allowNewStopEverywhere
-      )
+        allowNewStopEverywhere,
+      ),
     );
   };
 

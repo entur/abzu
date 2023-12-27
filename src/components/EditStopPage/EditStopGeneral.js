@@ -134,8 +134,8 @@ class EditStopGeneral extends React.Component {
       getNeighbourStops(
         stopPlaceId,
         activeMap.getBounds(),
-        new Settings().getShowExpiredStops()
-      )
+        new Settings().getShowExpiredStops(),
+      ),
     );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
@@ -156,8 +156,8 @@ class EditStopGeneral extends React.Component {
         mergeSource.id,
         stopPlace.id,
         fromVersionComment,
-        toVersionComment
-      )
+        toVersionComment,
+      ),
     )
       .then(() => {
         dispatch(UserActions.openSnackbar(types.SUCCESS));
@@ -170,8 +170,8 @@ class EditStopGeneral extends React.Component {
               getNeighbourStops(
                 stopPlace.id,
                 activeMap.getBounds(),
-                includeExpired
-              )
+                includeExpired,
+              ),
             );
           }
         });
@@ -191,8 +191,8 @@ class EditStopGeneral extends React.Component {
         stopPlace.id,
         mergingQuay.fromQuay.id,
         mergingQuay.toQuay.id,
-        versionComment
-      )
+        versionComment,
+      ),
     )
       .then(() => {
         this.setState({ isLoading: false });
@@ -229,8 +229,8 @@ class EditStopGeneral extends React.Component {
         stopPlace.id,
         movingQuay.id,
         fromVersionComment,
-        toVersionComment
-      )
+        toVersionComment,
+      ),
     )
       .then(() => {
         this.setState({ isLoading: false });
@@ -247,7 +247,7 @@ class EditStopGeneral extends React.Component {
     shouldHardDelete,
     shouldTerminatePermanently,
     comment,
-    dateTime
+    dateTime,
   ) {
     const { stopPlace, dispatch } = this.props;
     this.setState({ isLoading: true });
@@ -271,8 +271,8 @@ class EditStopGeneral extends React.Component {
           stopPlace.id,
           shouldTerminatePermanently,
           comment,
-          dateTime
-        )
+          dateTime,
+        ),
       )
         .then((result) => {
           this.setState({ isLoading: false });
@@ -296,7 +296,7 @@ class EditStopGeneral extends React.Component {
     const shouldSavePathLink = shouldMutatePathLinks(
       pathLinkVariables,
       pathLink,
-      originalPathLink
+      originalPathLink,
     );
 
     let id = null;
@@ -309,7 +309,7 @@ class EditStopGeneral extends React.Component {
         } else {
           const parkingVariables = mapToMutationVariables.mapParkingToVariables(
             stopPlace.parking,
-            stopPlace.id || id
+            stopPlace.id || id,
           );
 
           if (shouldSavePathLink) {
@@ -411,7 +411,7 @@ class EditStopGeneral extends React.Component {
         dispatch(getStopPlaceWithAll(stopPlace.id)).then((response) => {
           if (newStopPlaceId) {
             dispatch(
-              UserActions.openSuccessfullyCreatedNewStop(newStopPlaceId)
+              UserActions.openSuccessfullyCreatedNewStop(newStopPlaceId),
             );
           }
         });
@@ -495,12 +495,12 @@ class EditStopGeneral extends React.Component {
     const stopPlaceLabel = this.getTitleText(
       stopPlace,
       originalStopPlace,
-      formatMessage
+      formatMessage,
     );
     const isCurrentVersionMax = getIsCurrentVersionMax(
       versions,
       stopPlace.version,
-      stopPlace.isChildOfParent
+      stopPlace.isChildOfParent,
     );
 
     const style = {
@@ -764,7 +764,7 @@ class EditStopGeneral extends React.Component {
                 }}
                 onClick={() => {
                   this.props.dispatch(
-                    UserActions.requestTerminateStopPlace(stopPlace.id)
+                    UserActions.requestTerminateStopPlace(stopPlace.id),
                   );
                 }}
               />
@@ -822,7 +822,7 @@ const mapStateToProps = (state) => ({
   canEditParentStop: getIn(
     state.roles,
     ["allowanceInfo", "canEditParentStop"],
-    false
+    false,
   ),
   originalStopPlace: state.stopPlace.originalCurrent,
   serverTimeDiff: state.user.serverTimeDiff,

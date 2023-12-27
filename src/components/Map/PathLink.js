@@ -33,7 +33,7 @@ class PathLink extends React.Component {
   handleEditTimeEstimate(index, estimate) {
     if (estimate && !isNaN(estimate)) {
       this.props.dispatch(
-        UserActions.editPolylineTimeEstimate(index, parseInt(estimate))
+        UserActions.editPolylineTimeEstimate(index, parseInt(estimate)),
       );
 
       this.setState({

@@ -53,7 +53,7 @@ class TagSuggestionPopover extends Component {
     const { tags, showMore, filterText } = this.state;
     return tags
       .filter(
-        (tag) => tag.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1
+        (tag) => tag.name.toLowerCase().indexOf(filterText.toLowerCase()) > -1,
       )
       .slice(0, showMore ? tags.length : 7);
   }

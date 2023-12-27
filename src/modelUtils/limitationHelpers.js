@@ -26,7 +26,7 @@ LimitationHelpers.updateCurrentWithLimitations = (current, payload) => {
 
   if (copy.quays) {
     copy.quays = copy.quays.map((quay) =>
-      setLimitationForEntity(quay, limitationType, value)
+      setLimitationForEntity(quay, limitationType, value),
     );
   }
   return copy;
@@ -40,11 +40,11 @@ LimitationHelpers.updateCurrentWithQuayLimitations = (current, payload) => {
     copy.quays[index] = setLimitationForEntity(
       copy.quays[index],
       limitationType,
-      value
+      value,
     );
     const correctLimitationValue = getLimitationForStopBasedOnQuays(
       copy.quays,
-      limitationType
+      limitationType,
     );
     return setLimitationForEntity(copy, limitationType, correctLimitationValue);
   }
@@ -90,7 +90,7 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
     let limitation = getIn(
       q,
       ["accessibilityAssessment", "limitations", limitationType],
-      null
+      null,
     );
 
     if (limitation === Limitations.availableTypes.UNKNOWN) {

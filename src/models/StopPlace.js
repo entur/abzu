@@ -127,7 +127,7 @@ class StopPlace {
 
       if (stop.placeEquipments) {
         clientStop.placeEquipments = simplifyPlaceEquipment(
-          stop.placeEquipments
+          stop.placeEquipments,
         );
       }
 
@@ -160,7 +160,7 @@ class StopPlace {
         if (stop.quays) {
           clientStop.quays = stop.quays
             .map((item) =>
-              new Quay(item, clientStop.accessibilityAssessment).toClient()
+              new Quay(item, clientStop.accessibilityAssessment).toClient(),
             )
             .sort((a, b) => (a.publicCode || "") - b.publicCode || "");
         }
