@@ -13,13 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { getEnvironment } from "./getEnvironment";
-const globalConfig = require("./global.json");
+const globalConfig = require("./global.json").default;
 
 const config = {
-  dev: require("./environments/dev.json"),
-  "nordic-dev": require("./environments/nordic-dev.json"),
-  test: require("./environments/test.json"),
-  prod: require("./environments/prod.json"),
+  dev: require("./environments/dev.json").default,
+  "nordic-dev": require("./environments/nordic-dev.json").default,
+  test: require("./environments/test.json").default,
+  prod: require("./environments/prod.json").default,
 };
 
 var configreader = {};
