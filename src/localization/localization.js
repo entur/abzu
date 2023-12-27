@@ -16,9 +16,7 @@ const localization = async (locale) => {
   const localStorageKey = "ABZU::settings::locale";
   const preferredLocale =
     locale || localStorage.getItem(localStorageKey) || "en";
-  const messages = await import(
-    `../static/lang/${preferredLocale}.json`
-  );
+  const messages = await import(`../static/lang/${preferredLocale}.json`);
   localStorage.setItem(localStorageKey, preferredLocale);
   return { locale: preferredLocale, messages };
 };
