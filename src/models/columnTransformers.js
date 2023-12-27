@@ -126,12 +126,14 @@ export const ColumnTransformerStopPlaceJsx = {
                 : formatMessage({ id: "childStopPlace" })}
             </span>
           )}
-          {stop.validBetween && stop.validBetween.toDate && !isFutureOrExpired && (
-            <span style={{ ...infoTextStyle, color: "#ffa500" }}>
-              {formatMessage({ id: "expires" })}{" "}
-              {moment(stop.validBetween.toDate).format("YYYY-MM-DD")}
-            </span>
-          )}
+          {stop.validBetween &&
+            stop.validBetween.toDate &&
+            !isFutureOrExpired && (
+              <span style={{ ...infoTextStyle, color: "#ffa500" }}>
+                {formatMessage({ id: "expires" })}{" "}
+                {moment(stop.validBetween.toDate).format("YYYY-MM-DD")}
+              </span>
+            )}
         </div>
       </div>
     );
