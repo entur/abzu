@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { injectIntl } from "react-intl";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
@@ -12,20 +12,32 @@ import Select from "@mui/material/Select";
 import stopTypes from "../../models/stopTypes";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
+const PREFIX = "StopTypeFilter";
+
+const classes = {
+  formControl: `${PREFIX}-formControl`,
+  chips: `${PREFIX}-chips`,
+  chip: `${PREFIX}-chip`,
+  noLabel: `${PREFIX}-noLabel`,
+};
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  [`&.${classes.formControl}`]: {
     //margin: theme.spacing(1),
     minWidth: 300,
     maxWidth: 500,
   },
-  chips: {
+
+  [`& .${classes.chips}`]: {
     display: "flex",
     flexWrap: "wrap",
   },
-  chip: {
+
+  [`& .${classes.chip}`]: {
     margin: 2,
   },
-  noLabel: {
+
+  [`& .${classes.noLabel}`]: {
     marginTop: theme.spacing(3),
   },
 }));
@@ -42,11 +54,10 @@ const MenuProps = {
 };
 
 const StopTypeFilter = ({ intl: { formatMessage }, value, onChange }) => {
-  const classes = useStyles();
   const modalities = Object.keys(stopTypes);
 
   return (
-    <FormControl className={classes.formControl} variant="standard">
+    <StyledFormControl className={classes.formControl} variant="standard">
       <InputLabel id="modality-filter-label">Modality filter</InputLabel>
       <Select
         id="modality-filter"
@@ -77,7 +88,7 @@ const StopTypeFilter = ({ intl: { formatMessage }, value, onChange }) => {
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </StyledFormControl>
   );
 };
 
