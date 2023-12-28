@@ -3,7 +3,7 @@
     "dev": "ent-ror-abzu-dev",
     "staging": "ent-ror-abzu-tst",
     "prod": "ent-ror-abzu-prd",
-    "default": "ent-ror-abzu-prd"
+    "default": "ent-ror-abzu-dev"
   },
   "targets": {
     "ent-ror-abzu-dev": {
