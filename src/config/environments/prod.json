@@ -6,8 +6,12 @@
   "netexPrefix": "NSR",
   "hostname": "stoppested.entur.org",
   "googleApiKey": "AIzaSyAAa-ZJ7h6FNxDY-UcqTAB-3YSdRQm8Gsg",
-  "auth0Domain": "auth2.entur.org",
-  "auth0ClientId": "JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec",
-  "auth0Audience": "https://ror.api.entur.io",
-  "auth0ClaimsNamespace": "https://ror.entur.io/role_assignments"
+  "claimsNamespace": "https://ror.entur.io/role_assignments",
+  "oidcConfig": {
+    "authority": "https://auth2.entur.org",
+    "client_id": "JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec",
+    "extraQueryParams": {
+      "audience": "https://ror.api.entur.io"
+    }
+  }
 }

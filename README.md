@@ -37,9 +37,25 @@ Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing
 npm test
 ```
 
-### Authentication
+## Authentication
 
-Uses Auth0 to authenticate user and read JWT.
+Uses OIDC for authentication. This solution is agnostic to which authentication provider you use.
+
+Example configuration (works with Auth0):
+
+```json
+{
+    "oidcConfig": {
+      "authority": "https://<authentication domain>",
+      "client_id": "<client id>",
+      "extraQueryParams": {
+        "audience": "<example audience>"
+      }
+    }
+}
+  ```
+
+For full configuration reference, see [oidc-client-ts documentation](https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html).
 
 ### Themes
 
