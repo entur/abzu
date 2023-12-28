@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
+import { styled } from "@mui/material/styles";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Input from "@mui/material/Input";
@@ -29,25 +30,39 @@ import { ActionAccessible } from "material-ui/svg-icons";
 import Payment from "material-ui/svg-icons/action/payment";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+const PREFIX = "ParkingItemPayAndRideExpandedFields";
 
-const useStyles = makeStyles(() => ({
-  mainGrid: {
+const classes = {
+  mainGrid: `${PREFIX}-mainGrid`,
+  gridItemMargin: `${PREFIX}-gridItemMargin`,
+  boxFullWidth: `${PREFIX}-boxFullWidth`,
+  textField: `${PREFIX}-textField`,
+  selectInput: `${PREFIX}-selectInput`,
+  info: `${PREFIX}-info`,
+};
+
+const StyledGrid = styled(Grid)(() => ({
+  [`&.${classes.mainGrid}`]: {
     marginTop: ".5rem",
   },
-  gridItemMargin: {
+
+  [`& .${classes.gridItemMargin}`]: {
     marginLeft: "55px",
   },
-  boxFullWidth: {
+
+  [`& .${classes.boxFullWidth}`]: {
     width: "100%",
   },
-  textField: {
+
+  [`& .${classes.textField}`]: {
     marginTop: -10,
   },
-  selectInput: {
+
+  [`& .${classes.selectInput}`]: {
     width: "100%",
   },
-  info: {
+
+  [`& .${classes.info}`]: {
     color: "rgba(0, 0, 0, 0.54)",
     fontSize: "12px",
     paddingLeft: "16px",
@@ -57,7 +72,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Info = ({ children }) => {
-  const classes = useStyles();
   return <p className={classes.info}>{children}</p>;
 };
 
@@ -105,10 +119,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     handleSetNumberOfSpacesForRegisteredDisabledUserType,
   } = props;
 
-  const classes = useStyles();
-
   return (
-    <Grid
+    <StyledGrid
       container
       alignItems="stretch"
       direction="column"
@@ -323,7 +335,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           />
         </Box>
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 };
 
