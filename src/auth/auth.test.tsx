@@ -51,7 +51,7 @@ describe('useAuth', () => {
 
     test('user.name', () => {
         const { result } = testHook();
-        expect(result.current.user.name).toBe('Test Name');
+        expect(result.current.user?.name).toBe('Test Name');
     });
 
     test('roleAssignments', () => {
