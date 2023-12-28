@@ -37,19 +37,6 @@ export const useAuth = (): Auth => {
 
   const { claimsNamespace, preferredNameNamespace } = useConfig();
 
-  useEffect(() => {
-    if (
-      !hasAuthParams() &&
-      !isAuthenticated &&
-      !activeNavigator &&
-      !isLoading
-    ) {
-      signinRedirect().catch((err: any) => {
-        throw err;
-      });
-    }
-  }, [isAuthenticated, activeNavigator, isLoading, signinRedirect]);
-
   const getAccessToken = useCallback(() => {
     return new Promise<string>((resolve, reject) => {
       const accessToken = user?.access_token;
