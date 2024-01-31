@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
     "@mui/types": "7.2.13",
-    "@testing-library/react": "14.1.2",
+    "@testing-library/react": "14.2.0",
     "@types/jest": "28.1.8",
     "@types/leaflet": "1.9.8",
     "@types/material-ui": "0.21.16",
