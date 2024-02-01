@@ -79,7 +79,7 @@
     "@types/jest": "28.1.8",
     "@types/leaflet": "1.9.8",
     "@types/material-ui": "0.21.16",
-    "@types/node": "20.11.14",
+    "@types/node": "20.11.15",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "@types/react-helmet": "6.1.11",
