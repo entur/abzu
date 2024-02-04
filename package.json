@@ -89,7 +89,7 @@
     "firebase-tools": "13.1.0",
     "graphql-request": "6.1.0",
     "husky": "8.0.3",
-    "prettier": "3.2.4",
+    "prettier": "3.2.5",
     "react-scripts": "5.0.1",
     "redux-devtools": "3.7.0",
     "source-map-explorer": "2.5.3",
