@@ -26,7 +26,7 @@
     "@mui/icons-material": "5.15.10",
     "@mui/lab": "5.0.0-alpha.165",
     "@mui/material": "5.15.10",
-    "@reduxjs/toolkit": "2.1.0",
+    "@reduxjs/toolkit": "2.2.0",
     "@sentry/react": "7.100.1",
     "@sentry/tracing": "7.100.1",
     "axios": "1.6.7",
