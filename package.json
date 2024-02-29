@@ -78,7 +78,7 @@
     "@testing-library/react": "14.2.1",
     "@types/jest": "28.1.8",
     "@types/leaflet": "1.9.8",
-    "@types/material-ui": "0.21.16",
+    "@types/material-ui": "0.21.17",
     "@types/node": "20.11.24",
     "@types/react": "18.2.61",
     "@types/react-dom": "18.2.19",
