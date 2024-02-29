@@ -8,6 +8,8 @@ name: Build and deploy
       - master
 jobs:
   build:
+    permissions:
+      checks: write
     steps:
       - uses: actions/checkout@v4
       - name: Cache node modules
