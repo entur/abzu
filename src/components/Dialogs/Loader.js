@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RefreshIndicator from "material-ui/RefreshIndicator";
+import RefreshIndicator from "@mui/material/RefreshIndicator";
 
 const Loader = () => {
   const loadingStyle = {

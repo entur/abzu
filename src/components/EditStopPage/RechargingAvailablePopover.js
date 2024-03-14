@@ -1,8 +1,8 @@
 import React from "react";
 import { injectIntl } from "react-intl";
-import IconButton from "material-ui/IconButton";
-import MenuItem from "material-ui/MenuItem";
-import EvStation from "material-ui/svg-icons/maps/ev-station";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import EvStation from "@mui/icons-material/EvStation";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
 import { Popover } from "@mui/material";
 

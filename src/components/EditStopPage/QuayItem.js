@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import TextField from "material-ui/TextField";
+import TextField from "@mui/material/TextField";
 import {
   StopPlaceActions,
   AssessmentActions,
@@ -22,15 +22,15 @@ import {
   UserActions,
 } from "../../actions/";
 import { connect } from "react-redux";
-import Checkbox from "material-ui/Checkbox";
-import IconButton from "material-ui/IconButton";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
 import { injectIntl } from "react-intl";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import ImportedId from "./ImportedId";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
+import MdLess from "@mui/icons-material/ExpandLess";
 import EditQuayAdditional from "./EditQuayAdditional";
 import WheelChairPopover from "./WheelChairPopover";
 import StepFreePopover from "./StepFreePopover";
@@ -39,8 +39,8 @@ import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import Sign512 from "../../static/icons/TransportSign";
 
 import ToolTippable from "./ToolTippable";
-import MdDelete from "material-ui/svg-icons/action/delete-forever";
-import MdKey from "material-ui/svg-icons/communication/vpn-key";
+import MdDelete from "@mui/icons-material/DeleteForever";
+import MdKey from "@mui/icons-material/VpnKey";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import Code from "./Code";
 import ItemHeader from "./ItemHeader";

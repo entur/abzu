@@ -14,17 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
-import Divider from "material-ui/Divider";
-import MdWc from "material-ui/svg-icons/notification/wc";
+import Divider from "@mui/material/Divider";
+import MdWc from "@mui/icons-material/Wc";
 import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import ToolTipIcon from "./ToolTipIcon";
-import TextField from "material-ui/TextField";
-import MdMore from "material-ui/svg-icons/navigation/expand-more";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import MdMore from "@mui/icons-material/ExpandMore";
+import MdLess from "@mui/icons-material/ExpandLess";
+import FlatButton from "@mui/material/Button";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../static/icons/facilities/Enclosed";
 import Heated from "../../static/icons/facilities/Heated";

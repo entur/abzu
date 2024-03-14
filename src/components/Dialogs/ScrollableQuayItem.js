@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import Code from "../EditStopPage/Code";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 
 class ScrollableQuayItem extends React.Component {
   render() {

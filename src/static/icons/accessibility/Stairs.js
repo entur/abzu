@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import SvgIcon from "material-ui/SvgIcon";
+import SvgIcon from "@mui/material/SvgIcon";
 
 const Stairs = (props) => (
   <SvgIcon {...props} viewBox="-35 -35 100 125">

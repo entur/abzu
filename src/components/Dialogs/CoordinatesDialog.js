@@ -21,7 +21,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { TextField } from "material-ui";
+import { TextField } from "@mui/material";
 import { extractCoordinates } from "../../utils/";
 
 class CoordinatesDialog extends React.Component {

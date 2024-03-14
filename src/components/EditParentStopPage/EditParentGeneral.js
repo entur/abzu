@@ -15,12 +15,12 @@ limitations under the Licence. */
 import React from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import ParentStopDetails from "./ParentStopDetails";
-import MdBack from "material-ui/svg-icons/navigation/arrow-back";
+import MdBack from "@mui/icons-material/ArrowBack";
 import VersionsPopover from "../EditStopPage/VersionsPopover";
-import MdUndo from "material-ui/svg-icons/content/undo";
-import MdSave from "material-ui/svg-icons/content/save";
+import MdUndo from "@mui/icons-material/Undo";
+import MdSave from "@mui/icons-material/Save";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import SaveDialog from "../Dialogs/SaveDialog";

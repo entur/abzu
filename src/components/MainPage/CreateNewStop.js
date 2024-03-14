@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";

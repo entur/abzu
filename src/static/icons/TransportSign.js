@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@mui/material/IconButton";
 
 const TransportSign = (props) => {
   return (

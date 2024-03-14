@@ -14,11 +14,11 @@ limitations under the Licence. */
 
 import React from "react";
 import ModalityIconImg from "./ModalityIconImg";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import ModalityIconTray from "../ReportPage/ModalityIconTray";
 import { hasExpired, isFuture } from "../../modelUtils/validBetween";
 import { Entities } from "../../models/Entities";
-import MdGroup from "material-ui/svg-icons/action/group-work";
+import MdGroup from "@mui/icons-material/GroupWork";
 
 export const createSearchMenuItem = (element, formatMessage) => {
   if (!element) return null;

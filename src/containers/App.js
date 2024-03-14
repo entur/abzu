@@ -13,14 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { useEffect } from "react";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {
   ThemeProvider,
   createTheme,
-  adaptV4Theme,
   StyledEngineProvider,
 } from "@mui/material/styles";
-import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
+
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
 import Header from "../components/Header";
@@ -34,7 +32,7 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "../auth/auth";
 
 const muiThemeV0 = getMuiTheme(getV0Theme());
-const muiTheme = createTheme(adaptV4Theme(getTheme()));
+const muiTheme = createTheme(getTheme());
 
 const App = ({ children }) => {
   const auth = useAuth();

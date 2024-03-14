@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import AddTagAutoComplete from "./AddTagAutoComplete";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import FlatButton from "@mui/material/Button";
 
 class AddTagDialog extends Component {
   constructor(props) {

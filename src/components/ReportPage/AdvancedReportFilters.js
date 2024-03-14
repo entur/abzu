@@ -13,10 +13,10 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Checkbox from "material-ui/Checkbox";
-import RaisedButton from "material-ui/RaisedButton";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import RaisedButton from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { Popover } from "@mui/material";
 
 class AdvancedReportFilters extends Component {

@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import FlatButton from "@mui/material/Button";
 import { injectIntl } from "react-intl";
 
 class EditKeyValuePair extends React.Component {

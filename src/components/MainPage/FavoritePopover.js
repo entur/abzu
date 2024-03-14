@@ -14,11 +14,11 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
+import MenuItem from "@mui/material/MenuItem";
+import FlatButton from "@mui/material/Button";
 import FavoriteManager from "../../singletons/FavoriteManager";
-import StarIcon from "material-ui/svg-icons/toggle/star";
-import MdDelete from "material-ui/svg-icons/action/delete";
+import StarIcon from "@mui/icons-material/Star";
+import MdDelete from "@mui/icons-material/Delete";
 import { UserActions } from "../../actions/";
 import { Popover } from "@mui/material";
 

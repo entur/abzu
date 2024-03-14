@@ -13,15 +13,15 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import { getTagsByName } from "../../actions/TiamatActions";
-import MenuItem from "material-ui/MenuItem";
-import Menu from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Checkbox from "@mui/material/Checkbox";
 import ShowMoreMenuFooter from "./ShowMoreMenuFooter";
 import { injectIntl } from "react-intl";
-import TextField from "material-ui/TextField";
-import MdAdd from "material-ui/svg-icons/content/add";
+import TextField from "@mui/material/TextField";
+import MdAdd from "@mui/icons-material/Add";
 import { connect } from "react-redux";
 import { Popover } from "@mui/material";
 

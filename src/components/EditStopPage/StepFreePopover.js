@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { Popover } from "@mui/material";
 
 class StepFreePopover extends React.Component {

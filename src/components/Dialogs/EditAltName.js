@@ -13,14 +13,14 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import TextField from "material-ui/TextField";
+import FlatButton from "@mui/material/Button";
+import SelectField from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import * as altNameConfig from "../../config/altNamesConfig";
 import { getIn } from "../../utils/";
-import MdClose from "material-ui/svg-icons/navigation/close";
-import IconButton from "material-ui/IconButton";
+import MdClose from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 class EditAltName extends Component {
   constructor(props) {

@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import MdClose from "material-ui/svg-icons/navigation/close";
-import IconButton from "material-ui/IconButton";
+import MdClose from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 class DialogHeader extends Component {
   render() {

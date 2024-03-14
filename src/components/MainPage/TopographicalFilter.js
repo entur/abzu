@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import Chip from "material-ui/Chip";
+import Chip from "@mui/material/Chip";
 
 class TopographicalFilter extends React.Component {
   renderChip(data) {

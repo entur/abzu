@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import SvgIcon from "material-ui/SvgIcon";
+import SvgIcon from "@mui/material/SvgIcon";
 
 const NoWheelChair = (props) => (
   <SvgIcon {...props} viewBox="0 0 24 24">

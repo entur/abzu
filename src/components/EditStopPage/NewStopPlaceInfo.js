@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React from "react";
 import { injectIntl } from "react-intl";
-import InformationIcon from "material-ui/svg-icons/action/info";
-import FlatButton from "material-ui/FlatButton";
+import InformationIcon from "@mui/icons-material/Info";
+import FlatButton from "@mui/material/Button";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";

@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Chip from "material-ui/Chip";
+import Chip from "@mui/material/Chip";
 import TagSuggestionPopover from "./TagSuggestionPopover";
 
 class TagFilterTray extends Component {

@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MdInfo from "material-ui/svg-icons/action/info";
+import MdInfo from "@mui/icons-material/Info";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 
 const ToolTipIcon = ({ title }) => (

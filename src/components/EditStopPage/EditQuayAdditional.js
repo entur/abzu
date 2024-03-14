@@ -13,7 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { Tabs, Tab } from "material-ui/Tabs";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import { connect } from "react-redux";
 import FacilitiesQuayTab from "./FacilitiesQuayTab";
 import AccessiblityQuayTab from "./AcessibilityQuayTab";

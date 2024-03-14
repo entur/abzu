@@ -14,10 +14,10 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import ModalityIconImg from "../MainPage/ModalityIconImg";
-import Divider from "material-ui/Divider";
-import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
-import NavigationExpandLess from "material-ui/svg-icons/navigation/expand-less";
-import EditorInsertLink from "material-ui/svg-icons/editor/insert-link";
+import Divider from "@mui/material/Divider";
+import NavigationExpandMore from "@mui/icons-material/ExpandMore";
+import NavigationExpandLess from "@mui/icons-material/ExpandLess";
+import EditorInsertLink from "@mui/icons-material/InsertLink";
 import StopPlaceListItemDetails from "./StopPlaceListItemDetails";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";
 import ModalityIconTray from "../ReportPage/ModalityIconTray";

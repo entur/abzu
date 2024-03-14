@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React from "react";
-import SvgIcon from "material-ui/SvgIcon";
+import SvgIcon from "@mui/material/SvgIcon";
 import PropTypes from "prop-types";
 import styles from "../../styles/menu.css";
 import svgSprite from "../../static/icons/svg-sprite.svg";

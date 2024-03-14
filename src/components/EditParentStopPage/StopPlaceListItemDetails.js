@@ -14,9 +14,9 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import IconButton from "material-ui/IconButton";
-import MdWarning from "material-ui/svg-icons/alert/warning";
+import MdDelete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import MdWarning from "@mui/icons-material/Warning";
 import StopPlaceListItemQuays from "./StopPlaceListItemQuays";
 import StopPlaceChildrenItems from "./StopPlaceChildrenItems";
 import AdjacentStopList from "./AdjacentStopList";

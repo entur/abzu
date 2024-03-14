@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
-import MdTransfer from "material-ui/svg-icons/maps/transfer-within-a-station";
+import MenuItem from "@mui/material/MenuItem";
+import MdTransfer from "@mui/icons-material/TransferWithinAStation";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import { injectIntl } from "react-intl";
 import { Popover } from "@mui/material";

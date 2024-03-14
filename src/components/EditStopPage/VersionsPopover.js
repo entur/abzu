@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { sortVersions } from "../../utils";
 import { Popover } from "@mui/material";
 

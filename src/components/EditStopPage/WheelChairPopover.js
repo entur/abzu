@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
-import WheelChair from "material-ui/svg-icons/action/accessible";
-import IconButton from "material-ui/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import WheelChair from "@mui/icons-material/Accessible";
+import IconButton from "@mui/material/IconButton";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
 import { Popover } from "@mui/material";
 

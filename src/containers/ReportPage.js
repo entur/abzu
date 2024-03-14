@@ -19,18 +19,18 @@ import ReportResultView from "../components/ReportPage/ReportResultView";
 import ReportFilterBox from "../components/ReportPage/ReportFilterBox";
 import ModalityFilter from "../components/EditStopPage/ModalityFilter";
 import TopographicalFilter from "../components/MainPage/TopographicalFilter";
-import AutoComplete from "material-ui/AutoComplete";
+import AutoComplete from "@mui/material/Autocomplete";
 import {
   findStopForReport,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
 } from "../actions/TiamatActions";
-import MenuItem from "material-ui/MenuItem";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import RaisedButton from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import MdSpinner from "../static/icons/spinner";
-import MdSearch from "material-ui/svg-icons/action/search";
+import MdSearch from "@mui/icons-material/Search";
 import ColumnFilterPopover from "../components/EditStopPage/ColumnFilterPopover";
 import { injectIntl } from "react-intl";
 import {

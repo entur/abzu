@@ -15,7 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import stopTypes from "../../models/stopTypes";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {

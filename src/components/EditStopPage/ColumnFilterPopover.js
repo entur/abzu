@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RaisedButton from "material-ui/RaisedButton";
-import Menu from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
+import RaisedButton from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import Checkbox from "@mui/material/Checkbox";
 import { Popover } from "@mui/material";
 
 class ColumnFilterPopover extends React.Component {

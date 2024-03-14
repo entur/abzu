@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Divider from "material-ui/Divider";
+import Divider from "@mui/material/Divider";
 import ModalityIcon from "../MainPage/ModalityIconSvg";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";
 

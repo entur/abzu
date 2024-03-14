@@ -23,7 +23,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Cancel, Save } from "@mui/icons-material";
-import { TextField } from "material-ui";
+import { TextField } from "@mui/material";
 
 class SaveDialog extends React.Component {
   constructor(props) {

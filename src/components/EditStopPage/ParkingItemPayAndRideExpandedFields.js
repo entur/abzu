@@ -23,11 +23,11 @@ import Checkbox from "@mui/material/Checkbox";
 import { injectIntl } from "react-intl";
 import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
 import { parkingLayouts } from "../../models/parkingLayout";
-import { TextField, Subheader } from "material-ui";
+import { TextField, ListSubheader } from "@mui/material";
 import RechargingAvailablePopover from "./RechargingAvailablePopover";
-import LocalParking from "material-ui/svg-icons/maps/local-parking";
-import { ActionAccessible } from "material-ui/svg-icons";
-import Payment from "material-ui/svg-icons/action/payment";
+import LocalParking from "@mui/icons-material/LocalParking";
+import { Accessible } from "@mui/icons-material/";
+import Payment from "@mui/icons-material/Payment";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 const PREFIX = "ParkingItemPayAndRideExpandedFields";
@@ -273,7 +273,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           flexDirection="row"
           className={classes.boxFullWidth}
         >
-          <ActionAccessible style={parkingIconStyles()} />
+          <Accessible style={parkingIconStyles()} />
           <TextField
             variant="standard"
             hintText={formatMessage({

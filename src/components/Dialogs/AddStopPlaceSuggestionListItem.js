@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import ModalityIconImg from "../MainPage/ModalityIconImg";
 import { injectIntl } from "react-intl";
 import HasExpiredInfo from "../MainPage/HasExpiredInfo";

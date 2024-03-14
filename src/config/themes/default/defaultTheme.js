@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { fade } from "material-ui/utils/colorManipulator";
+import { lighten } from "@mui/material/styles/";
 import { getTiamatEnv } from "../../themeConfig";
 
 export const primary = "#5AC39A";
@@ -54,9 +54,9 @@ export const getV0Theme = () => ({
     alternateTextColor: white,
     canvasColor: white,
     borderColor: grey300,
-    disabledColor: fade(darkBlack, 0.3),
+    disabledColor: lighten(darkBlack, 0.3),
     pickerHeaderColor: primary,
-    clockCircleColor: fade(darkBlack, 0.07),
+    clockCircleColor: lighten(darkBlack, 0.07),
     shadowColor: fullBlack,
   },
   datePicker: {

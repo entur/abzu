@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React from "react";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import IconButton from "material-ui/IconButton";
-import TextField from "material-ui/TextField";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import ImportedId from "./ImportedId";
 import {
   StopPlaceActions,
@@ -27,27 +27,27 @@ import { connect } from "react-redux";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
 import debounce from "lodash.debounce";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import stopTypes from "../../models/stopTypes";
-import MdWC from "material-ui/svg-icons/notification/wc";
+import MdWC from "@mui/icons-material/Wc";
 import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import WheelChairPopover from "./WheelChairPopover";
 import { getIn } from "../../utils";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
-import MdLanguage from "material-ui/svg-icons/action/language";
+import MdLanguage from "@mui/icons-material/Language";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
-import MdTransfer from "material-ui/svg-icons/maps/transfer-within-a-station";
+import MdTransfer from "@mui/icons-material/TransferWithinAStation";
 import WeightingPopover from "./WeightingPopover";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import Sign512 from "../../static/icons/TransportSign";
-import MdWarning from "material-ui/svg-icons/alert/warning";
+import MdWarning from "@mui/icons-material/Warning";
 import ToolTippable from "./ToolTippable";
-import MdKey from "material-ui/svg-icons/communication/vpn-key";
+import MdKey from "@mui/icons-material/VpnKey";
 import KeyValuesDialog from "../Dialogs/KeyValuesDialog";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import TagsDialog from "./TagsDialog";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";

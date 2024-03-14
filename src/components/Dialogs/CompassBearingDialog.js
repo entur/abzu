@@ -21,7 +21,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { TextField } from "material-ui";
+import { TextField } from "@mui/material";
 
 class CompassBearingDialog extends React.Component {
   constructor(props) {

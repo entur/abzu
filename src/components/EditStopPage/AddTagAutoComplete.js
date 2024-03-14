@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { Component } from "react";
-import AutoComplete from "material-ui/AutoComplete";
+import AutoComplete from "@mui/material/Autocomplete";
 import debounce from "lodash.debounce";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { toCamelCase } from "../../utils/";
 import { injectIntl } from "react-intl";
 

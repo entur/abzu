@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 
 class ShowMoreMenuFooter extends Component {
   render() {

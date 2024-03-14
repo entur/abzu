@@ -13,14 +13,14 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RaisedButton from "material-ui/RaisedButton";
+import RaisedButton from "@mui/material/Button";
 import { jsonArrayToCSV } from "../../utils/CSVHelper";
 import {
   ColumnTransformersStopPlace,
   ColumnTransformersQuays,
 } from "../../models/columnTransformers";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
 import { getDarkColor } from "../../config/themeConfig";
 import { Popover } from "@mui/material";

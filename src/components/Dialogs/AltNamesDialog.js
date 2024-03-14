@@ -14,10 +14,10 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import MdDelete from "material-ui/svg-icons/action/delete";
+import MdDelete from "@mui/icons-material/Delete";
 import * as altNameConfig from "../../config/altNamesConfig";
-import MdEdit from "material-ui/svg-icons/editor/mode-edit";
-import IconButton from "material-ui/IconButton";
+import MdEdit from "@mui/icons-material/ModeEdit";
+import IconButton from "@mui/material/IconButton";
 import { StopPlaceActions } from "../../actions/";
 import ConfirmDialog from "./ConfirmDialog";
 import { getPrimaryColor } from "../../config/themeConfig";

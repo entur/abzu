@@ -13,14 +13,14 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
+import ArrowDropRight from "@mui/icons-material/ArrowRight";
 import {
   getStopPlacesForSubmodes,
   getInverseSubmodesWhitelist,
 } from "../../roles/rolesParser";
-import Menu from "material-ui/Menu";
+import Menu from "@mui/material/Menu";
 
 class ModalitiesMenuItems extends React.Component {
   render() {
