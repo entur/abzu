@@ -15,9 +15,10 @@ limitations under the Licence. */
 import { connect } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
-import AutoComplete from "@mui/material/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
 import RaisedButton from "@mui/material/Button";
+import CloseIcon from '@mui/icons-material/Close';
 import FlatButton from "@mui/material/Button";
 import MdMore from "@mui/icons-material/ExpandMore";
 import { StopPlaceActions, UserActions } from "../../actions/";
@@ -48,7 +49,8 @@ import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
-import { Popover } from "@mui/material";
+import {Box, InputAdornment, Popover} from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -510,12 +512,12 @@ class SearchBox extends React.Component {
                     </FlatButton>
                   </div>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <AutoComplete
+                    <Autocomplete
                       floatingLabelText={formatMessage({
                         id: "filter_by_topography",
                       })}
                       hintText={formatMessage({ id: "filter_by_topography" })}
-                      dataSource={topographicalPlacesDataSource}
+                      options={topographicalPlacesDataSource}
                       onUpdateInput={this.handleTopographicalPlaceInput.bind(
                         this,
                       )}
@@ -529,6 +531,12 @@ class SearchBox extends React.Component {
                       maxSearchResults={7}
                       ref="topoFilter"
                       onNewRequest={this.handleAddChip.bind(this)}
+                      renderInput={(params) => (
+                          <TextField
+                              {...params}
+                              label="SearchBox1"
+                          />
+                      )}
                     />
                     <CheckBox
                       checked={showFutureAndExpired}
@@ -557,41 +565,36 @@ class SearchBox extends React.Component {
                 </div>
               )}
             </div>
-            <SearchIcon
-              style={{
-                verticalAlign: "middle",
-                marginRight: 5,
-                height: 22,
-                width: 22,
-              }}
-            />
-            <AutoComplete
-              textFieldStyle={{ width: 380 }}
+
+            <Autocomplete
+
               animated={false}
               openOnFocus
-              hintText={formatMessage({ id: "filter_by_name" })}
-              dataSource={
-                loading && !dataSource.length ? Loading : menuItems || []
-              }
+              options={menuItems}
               filter={(searchText, key) => searchText !== ""}
               onUpdateInput={this.handleSearchUpdate.bind(this)}
               maxSearchResults={10}
               searchText={this.props.searchText}
               ref="searchText"
               onNewRequest={this.handleNewRequest.bind(this)}
-              listStyle={{ width: "auto" }}
+
+              renderInput={(params) => (
+                  <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                    <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                    <TextField
+                        sx={{ width: 380}}
+                        label={formatMessage({ id: "filter_by_name" })}
+                        variant="standard"
+                    />
+                    <CloseIcon
+                        onClick={this.handleClearSearch.bind(this)}>
+                    </CloseIcon>
+                  </Box>
+
+              )}
             />
-            <div style={{ float: "right" }}>
-              <IconButton
-                style={{ verticalAlign: "middle" }}
-                iconStyle={{ fontSize: 22 }}
-                onClick={this.handleClearSearch.bind(this)}
-                iconClassName="material-icons"
-              >
-                clear
-              </IconButton>
-            </div>
-            <Divider />
+
+
           </div>
           <div style={{ marginBottom: 5, textAlign: "right", marginRight: 10 }}>
             <FlatButton
@@ -672,7 +675,7 @@ class SearchBox extends React.Component {
                         this.setState({ createNewStopOpen: false });
                       }}
                     >
-                      <Menu>
+                      <Menu open>
                         <MenuItem
                           onClick={() => this.handleNewStop(false)}
                           style={{ fontSize: "0.9em" }}

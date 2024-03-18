@@ -17,7 +17,8 @@ import MdClose from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import TagItem from "./TagItem";
 import AddTagDialog from "./AddTagDialog";
-import RefreshIndicator from "@mui/material/RefreshIndicator";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 class TagsDialog extends Component {
   constructor(props) {
@@ -93,12 +94,13 @@ class TagsDialog extends Component {
             <div>
               <div>{formatMessage({ id: "tags" })}</div>
               {isLoading && (
-                <RefreshIndicator
+                <CircularProgress
                   size={20}
                   left={100}
                   top={15}
                   status="loading"
                 />
+
               )}
             </div>
           </div>

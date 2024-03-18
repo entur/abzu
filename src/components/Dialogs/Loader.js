@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RefreshIndicator from "@mui/material/RefreshIndicator";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Loader = () => {
   const loadingStyle = {
@@ -25,7 +25,7 @@ const Loader = () => {
 
   return (
     <div style={loadingStyle}>
-      <RefreshIndicator size={70} left={0} top={0} status="loading" />
+      <CircularProgress size={70} left={0} top={0} status="loading" />
     </div>
   );
 };

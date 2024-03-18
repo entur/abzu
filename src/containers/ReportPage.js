@@ -425,8 +425,7 @@ class ReportPage extends React.Component {
                   {formatMessage({ id: "filter_report_by_topography" })}
                 </div>
                 <AutoComplete
-                  hintText={formatMessage({ id: "filter_by_topography" })}
-                  dataSource={topographicalPlacesDataSource}
+                  options={topographicalPlacesDataSource}
                   onUpdateInput={this.handleTopographicalPlaceSearch.bind(this)}
                   filter={AutoComplete.caseInsensitiveFilter}
                   style={{
@@ -439,6 +438,12 @@ class ReportPage extends React.Component {
                   fullWidth={true}
                   ref="topoFilter"
                   onNewRequest={this.handleAddChip.bind(this)}
+                  renderInput={(params) => (
+                      <TextField
+
+                          label={formatMessage({ id: "filter_by_topography" })}
+                      />
+                  )}
                 />
                 <TopographicalFilter
                   topoiChips={topoiChips}
