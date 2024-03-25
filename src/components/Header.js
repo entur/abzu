@@ -33,7 +33,7 @@ import { UserActions } from "../actions/";
 import { getIn } from "../utils";
 import MdReport from "@mui/icons-material/Report";
 import MdHelp from "@mui/icons-material/Help";
-import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
+import { getTiamatEnv} from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { Button } from "@mui/material";
 import {
@@ -254,8 +254,8 @@ class Header extends React.Component {
                 </div>
 
 
-      <IconMenu>
 
+          <MenuIcon>
                 <MenuItem
                     leftIcon={<MdReport color="#41c0c4"/>}
                     primaryText={reportSite}
@@ -439,7 +439,7 @@ class Header extends React.Component {
                         style={{fontSize: 12, padding: 0}}
                     />
                 )}
-              </IconMenu>
+          </MenuIcon>
 
             </Toolbar>
         </AppBar>

@@ -21,6 +21,7 @@ import StarIcon from "@mui/icons-material/Star";
 import MdDelete from "@mui/icons-material/Delete";
 import { UserActions } from "../../actions/";
 import { Popover } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 class FilterPopover extends React.Component {
   constructor(props) {
@@ -63,12 +64,13 @@ class FilterPopover extends React.Component {
 
     return (
       <div>
-        <FlatButton
+        <IconButton
           onClick={this.handleTouchTap.bind(this)}
-          icon={<StarIcon style={{ height: 20, width: 20, marginLeft: -1 }} />}
           label={caption}
           labelStyle={{ fontSize: 12 }}
-        />
+        ><StarIcon/>
+        </IconButton>
+          <span>{caption.toUpperCase()}</span>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}

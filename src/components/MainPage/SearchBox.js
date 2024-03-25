@@ -15,10 +15,8 @@ limitations under the Licence. */
 import { connect } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
-import Autocomplete from "@mui/material/Autocomplete";
-import IconButton from "@mui/material/IconButton";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import RaisedButton from "@mui/material/Button";
-import CloseIcon from '@mui/icons-material/Close';
 import FlatButton from "@mui/material/Button";
 import MdMore from "@mui/icons-material/ExpandMore";
 import { StopPlaceActions, UserActions } from "../../actions/";
@@ -27,6 +25,7 @@ import NewStopPlace from "./CreateNewStop";
 import { injectIntl } from "react-intl";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import FavoriteManager from "../../singletons/FavoriteManager";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import {
@@ -49,8 +48,10 @@ import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
-import {Box, InputAdornment, Popover} from "@mui/material";
+import {Box, Button, InputAdornment, Popover} from "@mui/material";
 import TextField from "@mui/material/TextField";
+import AutoComplete from "@mui/material/Autocomplete";
+
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -70,7 +71,6 @@ class SearchBox extends React.Component {
       const stopPlaceTypes = filter
         ? filter.stopType
         : this.props.stopTypeFilter;
-
       this.setState({ loading: true });
 
       this.props
@@ -89,20 +89,19 @@ class SearchBox extends React.Component {
     this.debouncedSearch = debounce(searchStop, 500);
   }
 
-  handleSearchUpdate(searchText, dataSource, params, filter) {
+  handleSearchUpdate(event, searchText) {
     // prevents ghost clicks
-    if (params && params.source === "click") {
+    if (this.props.params && this.props.params.source === "click") {
       return;
     }
-
     if (!searchText || !searchText.length) {
       this.props.dispatch(UserActions.clearSearchResults());
       this.props.dispatch(UserActions.setSearchText(""));
     } else if (searchText.indexOf("(") > -1 && searchText.indexOf(")") > -1) {
-      return;
+
     } else {
       this.props.dispatch(UserActions.setSearchText(searchText));
-      this.debouncedSearch(searchText, dataSource, params, filter);
+      this.debouncedSearch(searchText, this.props.dataSource, this.props.params, this.props.filter);
     }
   }
 
@@ -157,7 +156,8 @@ class SearchBox extends React.Component {
     dispatch(findTopographicalPlace(searchText));
   }
 
-  handleNewRequest(result) {
+  handleNewRequest(event,result) {
+    debugger;
     if (typeof result.element !== "undefined") {
       this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
     }
@@ -250,9 +250,6 @@ class SearchBox extends React.Component {
   }
 
   handleClearSearch() {
-    this.refs.searchText.setState({
-      searchText: "",
-    });
     this.props.dispatch(UserActions.setSearchText(""));
   }
 
@@ -371,7 +368,6 @@ class SearchBox extends React.Component {
 
     const { formatMessage, locale } = intl;
     const menuItems = this.getMenuItems(this.props);
-
     const Loading = loading &&
       !dataSource.length && [
         {
@@ -463,6 +459,11 @@ class SearchBox extends React.Component {
       border: "1px solid rgb(81, 30, 18)",
     };
 
+    const filterOptions = createFilterOptions({
+      matchFrom: 'start',
+          stringify: (option) => option.text,
+    });
+
     return (
       <div>
         <CoordinatesDialog
@@ -504,12 +505,12 @@ class SearchBox extends React.Component {
               {showMoreFilterOptions ? (
                 <div>
                   <div style={{ width: "100%", textAlign: "center" }}>
-                    <FlatButton
+                    <Button
                       onClick={() => this.handleToggleFilter(false)}
                       style={{ fontSize: 12 }}
                     >
                       {formatMessage({ id: "filters_less" })}
-                    </FlatButton>
+                    </Button>
                   </div>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Autocomplete
@@ -522,7 +523,6 @@ class SearchBox extends React.Component {
                         this,
                       )}
                       listStyle={{ width: "auto", minWidth: 300 }}
-                      filter={AutoComplete.caseInsensitiveFilter}
                       style={{
                         margin: "auto",
                         width: "100%",
@@ -535,6 +535,7 @@ class SearchBox extends React.Component {
                           <TextField
                               {...params}
                               label="SearchBox1"
+                              variant="standard"
                           />
                       )}
                     />
@@ -568,28 +569,37 @@ class SearchBox extends React.Component {
 
             <Autocomplete
 
-              animated={false}
-              openOnFocus
+              //animated={false}
+              //openOnFocus
+              freeSolo
               options={menuItems}
-              filter={(searchText, key) => searchText !== ""}
-              onUpdateInput={this.handleSearchUpdate.bind(this)}
-              maxSearchResults={10}
-              searchText={this.props.searchText}
-              ref="searchText"
-              onNewRequest={this.handleNewRequest.bind(this)}
-
+              filterOptions={(x) => x}
+              onInputChange={this.handleSearchUpdate.bind(this)}
+              //maxSearchResults={10}
+              //inputValue={this.state.searchText}
+              onChange={this.handleNewRequest.bind(this)}
+              //getOptionLabel={(option) => `${option.text}` }
+              getOptionLabel={option.value}
+              //renderOption={(props, option) => (
+              //    <Box component="li" {...props}>
+              //      {option.text}{option.value}
+              //    </Box>
+              //)}
               renderInput={(params) => (
-                  <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                    <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                    <TextField
+
+                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+
+                      <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                      <TextField
+                        {...params}
                         sx={{ width: 380}}
                         label={formatMessage({ id: "filter_by_name" })}
                         variant="standard"
                     />
-                    <CloseIcon
-                        onClick={this.handleClearSearch.bind(this)}>
-                    </CloseIcon>
-                  </Box>
+
+
+                    </Box>
+
 
               )}
             />

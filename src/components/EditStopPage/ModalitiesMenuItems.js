@@ -43,7 +43,8 @@ class ModalitiesMenuItems extends React.Component {
     const chosenStyle = { fontWeight: 600 };
 
     return (
-      <Menu>
+      <Menu open="true">
+
         {Object.keys(stopTypes).map((type, index) => {
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||

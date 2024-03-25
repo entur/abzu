@@ -50,7 +50,6 @@ export const initialState = {
   keyValuesOrigin: null,
   lookupCoordinatesOpen: false,
   newStopIsMultiModal: false,
-  isCreatingNewStop: false,
   serverTimeDiff: 0,
   deleteStopDialogWarning: {
     warning: false,
@@ -175,6 +174,8 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.SET_SEARCH_TEXT:
+
+
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,

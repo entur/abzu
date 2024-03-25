@@ -27,6 +27,7 @@ const white = "#ffffff";
 const darkBlack = "rgba(0, 0, 0, 0.87)";
 const fullBlack = "rgba(0, 0, 0, 1)";
 
+
 export const getEnvColor = (env) => {
   let currentEnv = env || getTiamatEnv();
   switch (currentEnv.toLowerCase()) {
@@ -74,15 +75,29 @@ export const getV0Theme = () => ({
 export const getTheme = () => ({
   fontFamily: "Roboto, sans-serif",
   palette: {
-    primary: {
-      main: primary,
-    },
+    primary1Color: primary,
+    primary2Color: cyan700,
+    primary3Color: grey400,
+    accent1Color: primary,
+    accent2Color: grey100,
+    accent3Color: grey500,
+    textColor: darkBlack,
+    alternateTextColor: white,
+    canvasColor: white,
+    borderColor: grey300,
+    disabledColor: lighten(darkBlack, 0.3),
+    pickerHeaderColor: primary,
+    clockCircleColor: lighten(darkBlack, 0.07),
+    shadowColor: fullBlack,
   },
-  overrides: {
-    MuiButton: {
-      containedPrimary: {
-        color: white,
-      },
-    },
+  datePicker: {
+    selectColor: primary,
+    selectTextColor: white,
+  },
+  checkbox: {
+    checkedColor: primaryDarker,
+  },
+  appBar: {
+    color: darkColor,
   },
 });
