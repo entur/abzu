@@ -180,6 +180,8 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
     stopPlaceType: element.stopPlaceType,
     submode: element.submode,
     id:  element.id,
+    topographicPlace: element.topographicPlace,
+    parentTopographicPlace:  element.parentTopographicPlace,
     futureOrExpiredLabel:  getFutureOrExpiredLabel(element),
     value: (
       <MenuItem

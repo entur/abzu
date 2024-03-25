@@ -462,8 +462,8 @@ class SearchBox extends React.Component {
     };
 
     const filterOptions = createFilterOptions({
-      matchFrom: 'start',
-          stringify: (option) => option.text,
+      matchFrom: 'any',
+      stringify: (option) => option.text,
     });
 
     return (
@@ -575,7 +575,9 @@ class SearchBox extends React.Component {
               //openOnFocus
               freeSolo
               options={menuItems}
-              filterOptions={(x) => x}
+              loading={true}
+              //filterOptions={(x) => x !== ""}
+              //filterOptions={filterOptions}
               onInputChange={this.handleSearchUpdate.bind(this)}
               //maxSearchResults={10}
               //inputValue={this.state.searchText}
@@ -583,57 +585,81 @@ class SearchBox extends React.Component {
               //  loading && !dataSource.length ? Loading : menuItems || []
               //}
               renderOption={(props, option, { selected }) => (
-                  <li {...props}>
-                    <MenuItem>
+                  <li {...props} key={option.id}>
+                    <MenuItem
+                        style={{ marginTop: 0, width: "auto" }}
 
+                        //innerDivStyle={{ padding: "0px 16px 0px 0px" }}
+                    >
+                      <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div
+                            style={{
+                              marginLeft: 10,
+                              display: "flex",
+                              flexDirection: "column",
+                              minWidth: 280,
+                            }}
+                        >
+                          <div style={{display: "flex", justifyContent: "space-between"}}>
+                            <div style={{fontSize: "0.9em"}}>{option.text}</div>
+                            <div style={{fontSize: "0.6em", color: "grey"}}>
+                              {option.id}
+                            </div>
+                          </div>
+                          <div >
+                            <div style={{fontSize: "0.6em", color: "grey"}}>{`${option.topographicPlace}, ${option.parentTopographicPlace}`}</div>
+                            {option.futureOrExpiredLabel && (
+                                <div
+                                    key={"valid-label" + option.id}
+                                    style={{marginRight: 5}}
+                                >
+                                  {formatMessage({id: option.futureOrExpiredLabel})}
+                                </div>
+                            )}
+                          </div>
+                        </div>
+                        <ModalityIconImg
+                            svgStyle={{
+                              marginTop: -10,
+                              marginRight: 0,
+                              transform: "translate3d(0,0,0)",
+                            }}
+                            style={{display: "inline-block", position: "relative"}}
+                            iconStyle={{
+                              transform: "scale(0.8)",
+                            }}
+                            type={option.stopPlaceType}
+                            submode={option.submode}
+                        />
+                      </div>
 
-
-                      <ListItemText>{option.text}</ListItemText>
-                      <Typography variant="caption">
-                        {option.id}
-                      </Typography>
-                    <ListItemIcon>
-                      <ModalityIconImg
-                          svgStyle={{
-                            marginTop: 10,
-                            marginRight: 0,
-                            transform: "translate3d(0,0,0)",
-                          }}
-                          style={{ display: "inline-block", position: "relative" }}
-                          iconStyle={{
-                            transform: "scale(0.8)",
-                          }}
-                          type={option.stopPlaceType}
-                          submode={option.submode}
-                      />
-                    </ListItemIcon>
                     </MenuItem>
 
 
                   </li>
               )}
               onChange={this.handleNewRequest.bind(this)}
-              getOptionLabel={(option) => `${option.text}` }
-              //getOptionLabel={option.value}
-              //renderOption={(props, option) => (
-              //    <Box component="li" {...props}>
-              //      {option.text}{option.value}
-              //    </Box>
-              //)}
+              getOptionLabel={(option) => `${option.text}`}
+                //getOptionLabel={option.value}
+                //renderOption={(props, option) => (
+                //    <Box component="li" {...props}>
+                //      {option.text}{option.value}
+                //    </Box>
+                //)}
               renderInput={(params) => (
 
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
 
-                      <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                      <TextField
+                    <SearchIcon sx={{color: 'action.active', mr: 1, my: 0.5}}/>
+                    <TextField
                         {...params}
-                        sx={{ width: 380}}
-                        label={formatMessage({ id: "filter_by_name" })}
+                        sx={{width: 380}}
+                        label={formatMessage({id: "filter_by_name"})}
                         variant="standard"
                     />
 
 
-                    </Box>
+                  </Box>
 
 
               )}
@@ -641,21 +667,21 @@ class SearchBox extends React.Component {
 
 
           </div>
-          <div style={{ marginBottom: 5, textAlign: "right", marginRight: 10 }}>
+          <div style={{marginBottom: 5, textAlign: "right", marginRight: 10}}>
             <FlatButton
-              style={{ marginLeft: 10, fontSize: 12 }}
-              disabled={!!favorited}
-              onClick={() => {
-                this.handleSaveAsFavorite(!!favorited);
-              }}
+                style={{marginLeft: 10, fontSize: 12}}
+                disabled={!!favorited}
+                onClick={() => {
+                  this.handleSaveAsFavorite(!!favorited);
+                }}
             >
-              {formatMessage({ id: "filter_save_favorite" })}
+              {formatMessage({id: "filter_save_favorite"})}
             </FlatButton>
           </div>
           <div key="searchbox-edit">
             {chosenResult ? (
-              <SearchBoxDetails
-                handleEdit={this.handleEdit.bind(this)}
+                <SearchBoxDetails
+                    handleEdit={this.handleEdit.bind(this)}
                 result={chosenResult}
                 handleChangeCoordinates={this.handleOpenCoordinatesDialog.bind(
                   this,
