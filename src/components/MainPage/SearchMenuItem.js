@@ -51,7 +51,7 @@ const getFutureOrExpiredLabel = (stopPlace) => {
   return null;
 };
 
-const topographicPlaceStyle = {
+export const topographicPlaceStyle = {
   color: "grey",
   marginTop: -20,
   marginBottom: -10,
@@ -177,6 +177,10 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
   return {
     element: element,
     text: element.name,
+    stopPlaceType: element.stopPlaceType,
+    submode: element.submode,
+    id:  element.id,
+    futureOrExpiredLabel:  getFutureOrExpiredLabel(element),
     value: (
       <MenuItem
         style={{ marginTop: 0, width: "auto" }}

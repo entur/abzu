@@ -25,7 +25,6 @@ import NewStopPlace from "./CreateNewStop";
 import { injectIntl } from "react-intl";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import FavoriteManager from "../../singletons/FavoriteManager";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import {
@@ -36,7 +35,6 @@ import FavoritePopover from "./FavoritePopover";
 import ModalityFilter from "../EditStopPage/ModalityFilter";
 import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";
 import TopographicalFilter from "./TopographicalFilter";
-import Divider from "@mui/material/Divider";
 import debounce from "lodash.debounce";
 import { getIn } from "../../utils/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
@@ -48,9 +46,13 @@ import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
-import {Box, Button, InputAdornment, Popover} from "@mui/material";
+import {Box, Button, Popover} from "@mui/material";
 import TextField from "@mui/material/TextField";
-import AutoComplete from "@mui/material/Autocomplete";
+import ModalityIconImg from "./ModalityIconImg";
+import {topographicPlaceStyle} from "./SearchMenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 
 class SearchBox extends React.Component {
@@ -577,9 +579,42 @@ class SearchBox extends React.Component {
               onInputChange={this.handleSearchUpdate.bind(this)}
               //maxSearchResults={10}
               //inputValue={this.state.searchText}
+              //dataSource={
+              //  loading && !dataSource.length ? Loading : menuItems || []
+              //}
+              renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <MenuItem>
+
+
+
+                      <ListItemText>{option.text}</ListItemText>
+                      <Typography variant="caption">
+                        {option.id}
+                      </Typography>
+                    <ListItemIcon>
+                      <ModalityIconImg
+                          svgStyle={{
+                            marginTop: 10,
+                            marginRight: 0,
+                            transform: "translate3d(0,0,0)",
+                          }}
+                          style={{ display: "inline-block", position: "relative" }}
+                          iconStyle={{
+                            transform: "scale(0.8)",
+                          }}
+                          type={option.stopPlaceType}
+                          submode={option.submode}
+                      />
+                    </ListItemIcon>
+                    </MenuItem>
+
+
+                  </li>
+              )}
               onChange={this.handleNewRequest.bind(this)}
-              //getOptionLabel={(option) => `${option.text}` }
-              getOptionLabel={option.value}
+              getOptionLabel={(option) => `${option.text}` }
+              //getOptionLabel={option.value}
               //renderOption={(props, option) => (
               //    <Box component="li" {...props}>
               //      {option.text}{option.value}
