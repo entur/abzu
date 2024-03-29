@@ -21,7 +21,7 @@
   "dependencies": {
     "@apollo/client": "3.9.9",
     "@emotion/react": "11.11.4",
-    "@emotion/styled": "11.11.0",
+    "@emotion/styled": "11.11.5",
     "@entur/react-leaflet-google": "1.0.3",
     "@mui/icons-material": "5.15.14",
     "@mui/lab": "5.0.0-alpha.169",
