@@ -420,7 +420,7 @@ export const getNeighbourStops =
       query: stopPlaceBBQuery,
       variables: {
         includeExpired: includeExpired,
-        ignoreStopPlaceId: ignoreStopPlaceId.toString(),
+        ignoreStopPlaceId: ignoreStopPlaceId+"",
         latMin: bounds.getSouthWest().lat,
         latMax: bounds.getNorthEast().lat,
         lonMin: bounds.getSouthWest().lng,
