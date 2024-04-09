@@ -64,9 +64,6 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
     element,
     text: element.name,
     value: (
-      <MenuItem
-        style={{ marginTop: 0, width: "auto" }}
-        >
           <div style={{ display: "flex" }}>
             <div
               style={{
@@ -96,7 +93,6 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
               style={{ marginTop: 10, marginLeft: 5, transform: "scale(0.8)" }}
             />
           </div>
-      </MenuItem>
     ),
   };
 };
@@ -107,9 +103,6 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
     element,
     text: element.name,
     value: (
-      <MenuItem
-        style={{ marginTop: 0, width: "auto" }}
-          >
           <div style={{ display: "flex" }}>
             <div
               style={{
@@ -160,7 +153,6 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
               }))}
             />
           </div>
-      </MenuItem>
 
     ),
   };
@@ -178,12 +170,6 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
     parentTopographicPlace:  element.parentTopographicPlace,
     futureOrExpiredLabel:  getFutureOrExpiredLabel(element),
     value: (
-        <MenuItem
-            style={{ marginTop: 0, width: "auto" }}
-
-            //innerDivStyle={{ padding: "0px 16px 0px 0px" }}
-        >
-
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div
                     style={{
@@ -225,8 +211,6 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
                     submode={element.submode}
                 />
             </div>
-
-        </MenuItem>
 
     ),
   };

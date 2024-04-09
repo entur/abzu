@@ -201,7 +201,7 @@ class SearchBox extends React.Component {
     });
   }
 
-  handleAddChip({ text, type, id }) {
+  handleAddChip({ event, text, type, id }) {
     const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } =
       this.props;
     if (searchText) {
@@ -536,6 +536,7 @@ class SearchBox extends React.Component {
                   </div>
                   <div style={{ alignItems: "center" }}>
                     <Autocomplete
+                      freeSolo
                       floatingLabelText={formatMessage({
                         id: "filter_by_topography",
                       })}
@@ -551,9 +552,9 @@ class SearchBox extends React.Component {
                         width: "100%",
                         marginTop: -20,
                       }}
-                      maxSearchResults={7}
-                      ref="topoFilter"
-                      onNewRequest={this.handleAddChip.bind(this)}
+//                      maxSearchResults={7}
+//                      ref="topoFilter"
+                      onChange={this.handleAddChip.bind(this)}
                       renderInput={(params) => (
 
                           <TextField
@@ -621,9 +622,9 @@ class SearchBox extends React.Component {
               //  loading && !dataSource.length ? Loading : menuItems || []
               //}
               renderOption={(props, option, { selected }) => (
-                  <li {...props} key={option.id}>
+                  <MenuItem {...props} key={option.id}>
                     {option.value}
-                  </li>
+                  </MenuItem>
               )}
               onChange={this.handleNewRequest.bind(this)}
               getOptionLabel={(option) => `${option.text}`}
