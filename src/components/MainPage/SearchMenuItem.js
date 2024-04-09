@@ -53,8 +53,7 @@ const getFutureOrExpiredLabel = (stopPlace) => {
 
 export const topographicPlaceStyle = {
   color: "grey",
-  marginTop: -20,
-  marginBottom: -10,
+
   fontSize: "0.7em",
   display: "flex",
   justifyContent: "space-between",
@@ -67,9 +66,7 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
     value: (
       <MenuItem
         style={{ marginTop: 0, width: "auto" }}
-        key={element.id}
-        innerDivStyle={{ padding: "0px 16px 0px 0px" }}
-        primaryText={
+        >
           <div style={{ display: "flex" }}>
             <div
               style={{
@@ -99,8 +96,7 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
               style={{ marginTop: 10, marginLeft: 5, transform: "scale(0.8)" }}
             />
           </div>
-        }
-      />
+      </MenuItem>
     ),
   };
 };
@@ -113,9 +109,7 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
     value: (
       <MenuItem
         style={{ marginTop: 0, width: "auto" }}
-        key={element.id}
-        innerDivStyle={{ padding: "0px 16px 0px 0px" }}
-        primaryText={
+          >
           <div style={{ display: "flex" }}>
             <div
               style={{
@@ -166,8 +160,8 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
               }))}
             />
           </div>
-        }
-      />
+      </MenuItem>
+
     ),
   };
 };
@@ -184,54 +178,56 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
     parentTopographicPlace:  element.parentTopographicPlace,
     futureOrExpiredLabel:  getFutureOrExpiredLabel(element),
     value: (
-      <MenuItem
-        style={{ marginTop: 0, width: "auto" }}
-        key={element.id}
-        innerDivStyle={{ padding: "0px 16px 0px 0px" }}
-        primaryText={
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div
-              style={{
-                marginLeft: 10,
-                display: "flex",
-                flexDirection: "column",
-                minWidth: 280,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontSize: "0.9em" }}>{element.name}</div>
-                <div style={{ fontSize: "0.6em", color: "grey" }}>
-                  {element.id}
+        <MenuItem
+            style={{ marginTop: 0, width: "auto" }}
+
+            //innerDivStyle={{ padding: "0px 16px 0px 0px" }}
+        >
+
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+                <div
+                    style={{
+                        marginLeft: 10,
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 280,
+                    }}
+                >
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <div style={{fontSize: "0.9em"}}>{element.name}</div>
+                        <div style={{fontSize: "0.6em", color: "grey"}}>
+                            {element.id}
+                        </div>
+                    </div>
+                    <div >
+                        <div style={{fontSize: "0.6em", color: "grey"}}>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+                        {element.futureOrExpiredLabel && (
+                            <div
+                                key={"valid-label" + element.id}
+                                style={{marginRight: 5}}
+                            >
+                                {formatMessage({id: element.futureOrExpiredLabel})}
+                            </div>
+                        )}
+                    </div>
                 </div>
-              </div>
-              <div style={topographicPlaceStyle}>
-                <div>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-                {futureOrExpiredLabel && (
-                  <div
-                    key={"valid-label" + element.id}
-                    style={{ marginRight: 5 }}
-                  >
-                    {formatMessage({ id: futureOrExpiredLabel })}
-                  </div>
-                )}
-              </div>
+                <ModalityIconImg
+                    svgStyle={{
+                        marginTop: -10,
+                        marginRight: 0,
+                        transform: "translate3d(0,0,0)",
+                    }}
+                    style={{display: "inline-block", position: "relative"}}
+                    iconStyle={{
+                        transform: "scale(0.8)",
+                    }}
+                    type={element.stopPlaceType}
+                    submode={element.submode}
+                />
             </div>
-            <ModalityIconImg
-              svgStyle={{
-                marginTop: 10,
-                marginRight: 0,
-                transform: "translate3d(0,0,0)",
-              }}
-              style={{ display: "inline-block", position: "relative" }}
-              iconStyle={{
-                transform: "scale(0.8)",
-              }}
-              type={element.stopPlaceType}
-              submode={element.submode}
-            />
-          </div>
-        }
-      />
+
+        </MenuItem>
+
     ),
   };
 };

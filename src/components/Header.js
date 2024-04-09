@@ -42,6 +42,7 @@ import {
 } from "../reducers/zonesSlice";
 import { injectIntl } from "react-intl";
 import { Helmet } from "react-helmet";
+import Menu from "@mui/material/Menu";
 
 class Header extends React.Component {
   constructor(props) {
@@ -150,6 +151,17 @@ class Header extends React.Component {
     this.props.dispatch(toggleShowTariffZonesInMap(value));
   }
 
+    state = {
+        anchorEl: null,
+    };
+
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
   render() {
     const {
       intl,
@@ -198,6 +210,7 @@ class Header extends React.Component {
 
     const tiamatEnv = getTiamatEnv();
     const logo = getLogo();
+    const { anchorEl } = this.state;
 
     return (
       <div>
@@ -255,10 +268,23 @@ class Header extends React.Component {
 
 
 
-          <MenuIcon>
+                <IconButton
+                    aria-owns={anchorEl ? 'simple-menu' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleClose}
+
+                >
                 <MenuItem
-                    leftIcon={<MdReport color="#41c0c4"/>}
-                    primaryText={reportSite}
+
+
                     onClick={() =>
                         this.handleConfirmChangeRoute(
                             this.goToReports.bind(this),
@@ -266,11 +292,11 @@ class Header extends React.Component {
                         )
                     }
                     style={{fontSize: 12, padding: 0}}
-                />
+                >
+                    <MdReport color="#41c0c4"/>{reportSite}
+                </MenuItem>
                 <MenuItem
-                    primaryText={settings}
-                    rightIcon={<ArrowDropRight/>}
-                    leftIcon={<MdSettings color="#41c0c4"/>}
+
                     style={{fontSize: 12, padding: 0}}
                     desktop={true}
                     multiple
@@ -289,11 +315,11 @@ class Header extends React.Component {
                           primaryText={publicCodePrivateCodeSetting}
                       />,
                     ]}
-                />
+                >
+                    <MdSettings color="#41c0c4"/>{settings} <ArrowDropRight/>
+                </MenuItem>
                 <MenuItem
-                    primaryText={mapSettings}
-                    rightIcon={<ArrowDropRight/>}
-                    leftIcon={<MdMap color="#41c0c4"/>}
+
                     style={{fontSize: 12, padding: 0}}
                     desktop={true}
                     multiple
@@ -387,11 +413,13 @@ class Header extends React.Component {
                           primaryText={showTariffZonesLabel}
                       />,
                     ]}
-                />
+                >
+                    <MdMap color="#41c0c4"/>
+                    {mapSettings}
+                    <ArrowDropRight/>
+                </MenuItem>
                 <MenuItem
-                    primaryText={language}
-                    rightIcon={<ArrowDropRight/>}
-                    leftIcon={<MdLanguage color="#41c0c4"/>}
+
                     style={{fontSize: 12, padding: 0}}
                     menuItems={[
                       <MenuItem
@@ -423,14 +451,21 @@ class Header extends React.Component {
                           checked={locale === "sv"}
                       />,
                     ]}
-                />
+                >
+                    <MdLanguage color="#41c0c4"/>
+                    {language}
+                    <ArrowDropRight/>
+                </MenuItem>
                 <MenuItem
-                    leftIcon={<MdHelp color="#41c0c4"/>}
+                    component={"a"}
                     href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
                     target="_blank"
-                    primaryText={userGuide}
                     style={{fontSize: 12, padding: 0}}
-                />
+                >
+                    <MdHelp color="#41c0c4"/>
+                    {userGuide}
+                </MenuItem>
+
                 {this.props.auth.isAuthenticated && (
                     <MenuItem
                         leftIcon={<MdAccount color="#41c0c4"/>}
@@ -439,7 +474,7 @@ class Header extends React.Component {
                         style={{fontSize: 12, padding: 0}}
                     />
                 )}
-          </MenuIcon>
+          </Menu>
 
             </Toolbar>
         </AppBar>

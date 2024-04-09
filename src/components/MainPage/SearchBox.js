@@ -46,7 +46,7 @@ import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
-import {Box, Button, Popover} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, FormGroup, Popover} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ModalityIconImg from "./ModalityIconImg";
 import {topographicPlaceStyle} from "./SearchMenuItem";
@@ -153,13 +153,12 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.toggleShowFutureAndExpired(value));
   }
 
-  handleTopographicalPlaceInput(searchText) {
+  handleTopographicalPlaceInput(event,searchText) {
     const { dispatch } = this.props;
     dispatch(findTopographicalPlace(searchText));
   }
 
   handleNewRequest(event,result) {
-    debugger;
     if (typeof result.element !== "undefined") {
       this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
     }
@@ -286,14 +285,14 @@ class SearchBox extends React.Component {
         {
           text: "",
           value: (
-            <MenuItem
-              style={{ paddingLeft: 10, paddingRight: 10, width: "auto" }}
-              primaryText={
-                <div style={{ fontWeight: 600, fontSize: "0.8em" }}>
-                  {formatMessage({ id: "no_results_found" })}
+              <MenuItem
+                  style={{paddingLeft: 10, paddingRight: 10, width: "auto"}}
+
+              >
+                <div style={{fontWeight: 600, fontSize: "0.8em"}}>
+                  {formatMessage({id: "no_results_found"})}
                 </div>
-              }
-            />
+              </MenuItem>
           ),
         },
       ];
@@ -414,40 +413,61 @@ class SearchBox extends React.Component {
           text: name,
           id: place.id,
           value: (
-            <MenuItem
-              primaryText={name}
-              style={{
-                fontSize: "0.8em",
-                overflow: "hidden",
-                whiteSpace: "no-wrap",
-                textOverflow: "ellipsis",
-              }}
-              secondaryText={formatMessage({ id: place.topographicPlaceType })}
-            />
-          ),
-          type: place.topographicPlaceType,
-        };
+              <MenuItem
+                key={place.id}
+              >
+
+                  <div
+                      style={{
+                        marginLeft: 10,
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 380,
+                      }}
+                  >
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                      <div style={{fontSize: "0.9em"}}>{name}</div>
+                      <div style={{fontSize: "0.6em", color: "grey"}}>
+                        {formatMessage({id: place.topographicPlaceType})}
+                      </div>
+                    </div>
+                  </div>
+
+              </MenuItem>
+      ),
+      type: place.topographicPlaceType,
+      };
       });
 
-    const newStopText = {
-      headerText: formatMessage({
-        id: newStopIsMultiModal
-          ? "making_parent_stop_place_title"
-          : "making_stop_place_title",
-      }),
-      bodyText: formatMessage({ id: "making_stop_place_hint" }),
-    };
+      const newStopText = {
+        headerText: formatMessage({
+          id: newStopIsMultiModal
+              ? "making_parent_stop_place_title"
+              : "making_stop_place_title",
+        }),
+            bodyText
+      :
+        formatMessage({id: "making_stop_place_hint"}),
+      };
 
-    let favoriteText = {
-      title: formatMessage({ id: "favorites_title" }),
-      noFavoritesFoundText: formatMessage({ id: "no_favorites_found" }),
-    };
+      let favoriteText = {
+        title: formatMessage({id: "favorites_title"}),
+            noFavoritesFoundText
+      :
+        formatMessage({id: "no_favorites_found"}),
+      };
 
-    const text = {
-      emptyDescription: formatMessage({ id: "empty_description" }),
+      const text = {
+        emptyDescription: formatMessage({ id: "empty_description" }),
       edit: formatMessage({ id: "edit" }),
       view: formatMessage({ id: "view" }),
     };
+
+    const formControlLabelStyle = {
+      "& .MuiFormControlLabel-label": {
+        fontSize: "0.8em"
+      }
+    }
 
     const searchBoxWrapperStyle = {
       top: 60,
@@ -509,19 +529,20 @@ class SearchBox extends React.Component {
                   <div style={{ width: "100%", textAlign: "center" }}>
                     <Button
                       onClick={() => this.handleToggleFilter(false)}
-                      style={{ fontSize: 12 }}
+                      style={{ fontSize: 12, paddingBottom: "12px" }}
                     >
                       {formatMessage({ id: "filters_less" })}
                     </Button>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ alignItems: "center" }}>
                     <Autocomplete
                       floatingLabelText={formatMessage({
                         id: "filter_by_topography",
                       })}
+                      getOptionLabel={(option) => `${option.text}`}
                       hintText={formatMessage({ id: "filter_by_topography" })}
                       options={topographicalPlacesDataSource}
-                      onUpdateInput={this.handleTopographicalPlaceInput.bind(
+                      onInputChange={this.handleTopographicalPlaceInput.bind(
                         this,
                       )}
                       listStyle={{ width: "auto", minWidth: 300 }}
@@ -534,23 +555,38 @@ class SearchBox extends React.Component {
                       ref="topoFilter"
                       onNewRequest={this.handleAddChip.bind(this)}
                       renderInput={(params) => (
+
                           <TextField
                               {...params}
-                              label="SearchBox1"
+
                               variant="standard"
+                              label={formatMessage({id: "filter_by_topography"})}
                           />
                       )}
+                      renderOption={(props, option, { selected }) => (
+                        <>
+                          {option.value}
+                        </>
+                      )}
                     />
-                    <CheckBox
-                      checked={showFutureAndExpired}
-                      onCheck={(e, value) =>
-                        this.toggleShowFutureAndExpired(value)
-                      }
-                      label={formatMessage({
-                        id: "show_future_expired_and_terminated",
-                      })}
-                      labelStyle={{ fontSize: "0.8em" }}
-                    />
+                    <div>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                          checked={showFutureAndExpired}
+                          onCheck={(e, value) =>
+                              this.toggleShowFutureAndExpired(value)
+                          }
+                          />
+                        }
+                        label={
+                          formatMessage({id: "show_future_expired_and_terminated",})
+                        }
+                        sx = {formControlLabelStyle}
+                      />
+                    </FormGroup>
+                    </div>
                   </div>
                   <TopographicalFilter
                     topoiChips={topoiChips}
@@ -586,56 +622,7 @@ class SearchBox extends React.Component {
               //}
               renderOption={(props, option, { selected }) => (
                   <li {...props} key={option.id}>
-                    <MenuItem
-                        style={{ marginTop: 0, width: "auto" }}
-
-                        //innerDivStyle={{ padding: "0px 16px 0px 0px" }}
-                    >
-                      <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div
-                            style={{
-                              marginLeft: 10,
-                              display: "flex",
-                              flexDirection: "column",
-                              minWidth: 280,
-                            }}
-                        >
-                          <div style={{display: "flex", justifyContent: "space-between"}}>
-                            <div style={{fontSize: "0.9em"}}>{option.text}</div>
-                            <div style={{fontSize: "0.6em", color: "grey"}}>
-                              {option.id}
-                            </div>
-                          </div>
-                          <div >
-                            <div style={{fontSize: "0.6em", color: "grey"}}>{`${option.topographicPlace}, ${option.parentTopographicPlace}`}</div>
-                            {option.futureOrExpiredLabel && (
-                                <div
-                                    key={"valid-label" + option.id}
-                                    style={{marginRight: 5}}
-                                >
-                                  {formatMessage({id: option.futureOrExpiredLabel})}
-                                </div>
-                            )}
-                          </div>
-                        </div>
-                        <ModalityIconImg
-                            svgStyle={{
-                              marginTop: -10,
-                              marginRight: 0,
-                              transform: "translate3d(0,0,0)",
-                            }}
-                            style={{display: "inline-block", position: "relative"}}
-                            iconStyle={{
-                              transform: "scale(0.8)",
-                            }}
-                            type={option.stopPlaceType}
-                            submode={option.submode}
-                        />
-                      </div>
-
-                    </MenuItem>
-
-
+                    {option.value}
                   </li>
               )}
               onChange={this.handleNewRequest.bind(this)}
