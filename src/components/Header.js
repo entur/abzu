@@ -226,17 +226,18 @@ class Header extends React.Component {
                     color="inherit"
                     aria-label="menu"
                     sx={{mr: 2}}
+                    onClick={() =>
+                        this.handleConfirmChangeRoute(
+                            this.goToMain.bind(this),
+                            "GoToMain",
+                        )
+                    }
                 >
                     <img
                         alt=""
                         src={logo}
                         style={{width: 40, height: "auto", cursor: "pointer"}}
-                        onClick={() =>
-                            this.handleConfirmChangeRoute(
-                                this.goToMain.bind(this),
-                                "GoToMain",
-                            )
-                        }
+
                     />
                 </IconButton>
 
