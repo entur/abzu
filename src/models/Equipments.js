@@ -53,7 +53,7 @@ export const defaultEquipments = {
   },
   generalSign: {
     isChecked: {
-      privateCode: { value: 512 },
+      privateCode: { value: "512" },
       signContentType: "transportMode",
     },
     isUnChecked: null,
