@@ -46,7 +46,14 @@ import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
 import RoleParser from "../../roles/rolesParser";
-import {Box, Button, Checkbox, FormControlLabel, FormGroup, Popover} from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Popover,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 
 class SearchBox extends React.Component {
@@ -60,7 +67,6 @@ class SearchBox extends React.Component {
       stopPlaceSearchValue: "",
       topographicPlaceFilterValue: "",
     };
-
 
     const searchStop = (searchText, dataSource, params, filter) => {
       const chips = filter ? filter.topoiChips : this.props.topoiChips;
@@ -88,23 +94,26 @@ class SearchBox extends React.Component {
     this.debouncedSearch = debounce(searchStop, 500);
   }
 
-
-  handleSearchUpdate = (event, searchText, reason) =>{
+  handleSearchUpdate = (event, searchText, reason) => {
     // prevents ghost clicks
-    if(reason && reason === "clear"){
-      this.setState({ stopPlaceSearchValue: '' });
+    if (reason && reason === "clear") {
+      this.setState({ stopPlaceSearchValue: "" });
     }
 
     if (!searchText || !searchText.length) {
       this.props.dispatch(UserActions.clearSearchResults());
       this.props.dispatch(UserActions.setSearchText(""));
     } else if (searchText.indexOf("(") > -1 && searchText.indexOf(")") > -1) {
-
     } else {
       this.props.dispatch(UserActions.setSearchText(searchText));
-      this.debouncedSearch(searchText, this.props.dataSource, this.props.params, this.props.filter);
+      this.debouncedSearch(
+        searchText,
+        this.props.dataSource,
+        this.props.params,
+        this.props.filter,
+      );
     }
-  }
+  };
 
   handleEdit(id, entityType) {
     const route =
@@ -124,7 +133,7 @@ class SearchBox extends React.Component {
       topoiChips: [],
       stopTypeFilter: [],
     };
-    this.handleSearchUpdate(null,this.props.searchText);
+    this.handleSearchUpdate(null, this.props.searchText);
   }
 
   handleRetrieveFilter(filter) {
@@ -153,18 +162,18 @@ class SearchBox extends React.Component {
     this.props.dispatch(UserActions.toggleShowFutureAndExpired(value));
   }
 
-  handleTopographicalPlaceInput(event,searchText,reason) {
-    if(reason && reason === "clear"){
-      this.setState({ topographicPlaceFilterValue: '' });
+  handleTopographicalPlaceInput(event, searchText, reason) {
+    if (reason && reason === "clear") {
+      this.setState({ topographicPlaceFilterValue: "" });
     }
     const { dispatch } = this.props;
     dispatch(findTopographicalPlace(searchText));
   }
 
-  handleNewRequest(event,result,reason) {
+  handleNewRequest(event, result, reason) {
     if (result && typeof result.element !== "undefined") {
       this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
-      this.setState({stopPlaceSearchValue: "" });
+      this.setState({ stopPlaceSearchValue: "" });
     }
   }
 
@@ -205,29 +214,28 @@ class SearchBox extends React.Component {
     });
   }
 
-  handleAddChip( event, value ) {
-
+  handleAddChip(event, value) {
     if (value == null) {
       //
-    } else{
-      const {text, type, id} = value;
-    const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } =
-      this.props;
+    } else {
+      const { text, type, id } = value;
+      const { searchText, stopTypeFilters, showFutureAndExpired, topoiChips } =
+        this.props;
 
-    if (searchText) {
-      this.handleSearchUpdate(null, searchText, null, {
-        showFutureAndExpired,
-        topoiChips: topoiChips.concat({
-          text,
-          type,
-          value: id,
-        }),
-        stopType: stopTypeFilters,
-      });
-    }
-    this.props.dispatch(
-      UserActions.addToposChip({ text: text, type: type, value: id }),
-    );
+      if (searchText) {
+        this.handleSearchUpdate(null, searchText, null, {
+          showFutureAndExpired,
+          topoiChips: topoiChips.concat({
+            text,
+            type,
+            value: id,
+          }),
+          stopType: stopTypeFilters,
+        });
+      }
+      this.props.dispatch(
+        UserActions.addToposChip({ text: text, type: type, value: id }),
+      );
 
       this.setState({ topographicPlaceFilterValue: "" });
     }
@@ -295,14 +303,13 @@ class SearchBox extends React.Component {
         {
           text: "",
           value: (
-              <MenuItem
-                  style={{paddingLeft: 10, paddingRight: 10, width: "auto"}}
-
-              >
-                <div style={{fontWeight: 600, fontSize: "0.8em"}}>
-                  {formatMessage({id: "no_results_found"})}
-                </div>
-              </MenuItem>
+            <MenuItem
+              style={{ paddingLeft: 10, paddingRight: 10, width: "auto" }}
+            >
+              <div style={{ fontWeight: 600, fontSize: "0.8em" }}>
+                {formatMessage({ id: "no_results_found" })}
+              </div>
+            </MenuItem>
           ),
         },
       ];
@@ -312,37 +319,38 @@ class SearchBox extends React.Component {
       const filterNotification = {
         text: "",
         value: (
-            <MenuItem disabled={true}>
-              <div
+          <MenuItem disabled={true}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                minWidth: 340,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ fontWeight: 600, fontSize: "0.9em" }}>
+                  {formatMessage({ id: "filters_are_applied" })}
+                </div>
+                <div
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    minWidth: 340,
-                  }}
-              >
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <div style={{fontWeight: 600, fontSize: "0.9em"}}>{formatMessage({id: "filters_are_applied"})}</div>
-                  <div style={{
                     fontSize: "0.8em",
                     color: getPrimaryDarkerColor(),
                     cursor: "pointer",
                   }}
-                    onClick={() => this.removeFiltersAndSearch()}>
-                    {formatMessage({id: "remove"})}
-                  </div>
+                  onClick={() => this.removeFiltersAndSearch()}
+                >
+                  {formatMessage({ id: "remove" })}
                 </div>
               </div>
-
-            </MenuItem>
+            </div>
+          </MenuItem>
         ),
-          }
-      ;
-
-//      if (menuItems.length > 6) {
-//        menuItems[6] = filterNotification;
-//      } else {
-        menuItems.push(filterNotification);
-//      }
+      };
+      //      if (menuItems.length > 6) {
+      //        menuItems[6] = filterNotification;
+      //      } else {
+      menuItems.push(filterNotification);
+      //      }
     }
     return menuItems;
   }
@@ -364,11 +372,10 @@ class SearchBox extends React.Component {
       dataSource,
       showFutureAndExpired,
     } = this.props;
-    const {coordinatesDialogOpen, showMoreFilterOptions, loading} =
-        this.state;
+    const { coordinatesDialogOpen, showMoreFilterOptions, loading } =
+      this.state;
 
-
-    const {formatMessage, locale} = intl;
+    const { formatMessage, locale } = intl;
     const menuItems = this.getMenuItems(this.props);
     const Loading = loading &&
       !dataSource.length && [
@@ -414,55 +421,51 @@ class SearchBox extends React.Component {
           text: name,
           id: place.id,
           value: (
-              <div
-                      style={{
-                        marginLeft: 10,
-                        display: "flex",
-                        flexDirection: "column",
-                        minWidth: 380,
-                      }}
-                  >
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                      <div style={{fontSize: "0.9em"}}>{name}</div>
-                      <div style={{fontSize: "0.6em", color: "grey"}}>
-                        {formatMessage({id: place.topographicPlaceType})}
-                      </div>
-                    </div>
-                  </div>
-      ),
-      type: place.topographicPlaceType,
-      };
+            <div
+              style={{
+                marginLeft: 10,
+                display: "flex",
+                flexDirection: "column",
+                minWidth: 380,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ fontSize: "0.9em" }}>{name}</div>
+                <div style={{ fontSize: "0.6em", color: "grey" }}>
+                  {formatMessage({ id: place.topographicPlaceType })}
+                </div>
+              </div>
+            </div>
+          ),
+          type: place.topographicPlaceType,
+        };
       });
 
-      const newStopText = {
-        headerText: formatMessage({
-          id: newStopIsMultiModal
-              ? "making_parent_stop_place_title"
-              : "making_stop_place_title",
-        }),
-            bodyText
-      :
-        formatMessage({id: "making_stop_place_hint"}),
-      };
+    const newStopText = {
+      headerText: formatMessage({
+        id: newStopIsMultiModal
+          ? "making_parent_stop_place_title"
+          : "making_stop_place_title",
+      }),
+      bodyText: formatMessage({ id: "making_stop_place_hint" }),
+    };
 
-      let favoriteText = {
-        title: formatMessage({id: "favorites_title"}),
-            noFavoritesFoundText
-      :
-        formatMessage({id: "no_favorites_found"}),
-      };
+    let favoriteText = {
+      title: formatMessage({ id: "favorites_title" }),
+      noFavoritesFoundText: formatMessage({ id: "no_favorites_found" }),
+    };
 
-      const text = {
-        emptyDescription: formatMessage({ id: "empty_description" }),
+    const text = {
+      emptyDescription: formatMessage({ id: "empty_description" }),
       edit: formatMessage({ id: "edit" }),
       view: formatMessage({ id: "view" }),
     };
 
     const formControlLabelStyle = {
       "& .MuiFormControlLabel-label": {
-        fontSize: "0.8em"
-      }
-    }
+        fontSize: "0.8em",
+      },
+    };
 
     const searchBoxWrapperStyle = {
       top: 60,
@@ -477,7 +480,7 @@ class SearchBox extends React.Component {
     };
 
     const filterOptions = createFilterOptions({
-      matchFrom: 'any',
+      matchFrom: "any",
       stringify: (option) => option.text,
     });
 
@@ -543,41 +546,43 @@ class SearchBox extends React.Component {
                       inputValue={this.state.topographicPlaceFilterValue}
                       onChange={this.handleAddChip.bind(this)}
                       renderInput={(params) => (
-                          <TextField
-                              {...params}
-                              variant="standard"
-                              label={formatMessage({id: "filter_by_topography"})}
-                              onChange={(event) => {
-                                // don't fire API if the user delete or not entered anything
-                                if (event.target.value !== null) {
-                                  this.setState({ topographicPlaceFilterValue: event.target.value });
-                                }
-                              }}
-                          />
+                        <TextField
+                          {...params}
+                          variant="standard"
+                          label={formatMessage({ id: "filter_by_topography" })}
+                          onChange={(event) => {
+                            // don't fire API if the user delete or not entered anything
+                            if (event.target.value !== null) {
+                              this.setState({
+                                topographicPlaceFilterValue: event.target.value,
+                              });
+                            }
+                          }}
+                        />
                       )}
                       renderOption={(props, option, { selected }) => (
-                        <MenuItem  {...props} key={option.id}>
+                        <MenuItem {...props} key={option.id}>
                           {option.value}
                         </MenuItem>
                       )}
                     />
                     <div>
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                          checked={showFutureAndExpired}
-                          onCheck={(e, value) =>
-                              this.toggleShowFutureAndExpired(value)
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={showFutureAndExpired}
+                              onCheck={(e, value) =>
+                                this.toggleShowFutureAndExpired(value)
+                              }
+                            />
                           }
-                          />
-                        }
-                        label={
-                          formatMessage({id: "show_future_expired_and_terminated",})
-                        }
-                        sx = {formControlLabelStyle}
-                      />
-                    </FormGroup>
+                          label={formatMessage({
+                            id: "show_future_expired_and_terminated",
+                          })}
+                          sx={formControlLabelStyle}
+                        />
+                      </FormGroup>
                     </div>
                   </div>
                   <TopographicalFilter
@@ -598,7 +603,6 @@ class SearchBox extends React.Component {
             </div>
 
             <Autocomplete
-
               //animated={false}
               //openOnFocus
               freeSolo
@@ -614,60 +618,54 @@ class SearchBox extends React.Component {
               //  loading && !dataSource.length ? Loading : menuItems || []
               //}
               renderOption={(props, option, { selected }) => (
-                  <MenuItem {...props} key={option.id}>
-                    {option.value}
-                  </MenuItem>
+                <MenuItem {...props} key={option.id}>
+                  {option.value}
+                </MenuItem>
               )}
               onChange={this.handleNewRequest.bind(this)}
               getOptionLabel={(option) => `${option.text}`}
-                //getOptionLabel={option.value}
-                //renderOption={(props, option) => (
-                //    <Box component="li" {...props}>
-                //      {option.text}{option.value}
-                //    </Box>
-                //)}
+              //getOptionLabel={option.value}
+              //renderOption={(props, option) => (
+              //    <Box component="li" {...props}>
+              //      {option.text}{option.value}
+              //    </Box>
+              //)}
               renderInput={(params) => (
-
-                  <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-
-                    <SearchIcon sx={{color: 'action.active', mr: 1, my: 0.5}}/>
-                    <TextField
-                        {...params}
-                        sx={{width: 380}}
-                        label={formatMessage({id: "filter_by_name"})}
-                        variant="standard"
-                        onChange={(event) => {
-                          // don't fire API if the user delete or not entered anything
-                          if (event.target.value !== null) {
-                            this.setState({ stopPlaceSearchValue: event.target.value });
-                          }
-                        }}
-                    />
-
-
-                  </Box>
-
-
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                  <TextField
+                    {...params}
+                    sx={{ width: 380 }}
+                    label={formatMessage({ id: "filter_by_name" })}
+                    variant="standard"
+                    onChange={(event) => {
+                      // don't fire API if the user delete or not entered anything
+                      if (event.target.value !== null) {
+                        this.setState({
+                          stopPlaceSearchValue: event.target.value,
+                        });
+                      }
+                    }}
+                  />
+                </Box>
               )}
             />
-
-
           </div>
-          <div style={{marginBottom: 5, textAlign: "right", marginRight: 10}}>
+          <div style={{ marginBottom: 5, textAlign: "right", marginRight: 10 }}>
             <FlatButton
-                style={{marginLeft: 10, fontSize: 12}}
-                disabled={!!favorited}
-                onClick={() => {
-                  this.handleSaveAsFavorite(!!favorited);
-                }}
+              style={{ marginLeft: 10, fontSize: 12 }}
+              disabled={!!favorited}
+              onClick={() => {
+                this.handleSaveAsFavorite(!!favorited);
+              }}
             >
-              {formatMessage({id: "filter_save_favorite"})}
+              {formatMessage({ id: "filter_save_favorite" })}
             </FlatButton>
           </div>
           <div key="searchbox-edit">
             {chosenResult ? (
-                <SearchBoxDetails
-                    handleEdit={this.handleEdit.bind(this)}
+              <SearchBoxDetails
+                handleEdit={this.handleEdit.bind(this)}
                 result={chosenResult}
                 handleChangeCoordinates={this.handleOpenCoordinatesDialog.bind(
                   this,
@@ -757,7 +755,6 @@ class SearchBox extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => {
   const favoriteManager = new FavoriteManager();

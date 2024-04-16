@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import AutoComplete from "@mui/material/Autocomplete";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import debounce from "lodash.debounce";
 import MenuItem from "@mui/material/MenuItem";
 import { toCamelCase } from "../../utils/";
@@ -155,10 +155,7 @@ class AddTagAutoComplete extends Component {
         filter={() => true}
         onUpdateInput={this.handleUpdate.bind(this)}
         renderInput={(params) => (
-            <TextField
-                {...params}
-                label="AddTagAutoComplete"
-            />
+          <TextField {...params} label="AddTagAutoComplete" />
         )}
       />
     );

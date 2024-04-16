@@ -19,7 +19,6 @@ import TagItem from "./TagItem";
 import AddTagDialog from "./AddTagDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
 class TagsDialog extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +99,6 @@ class TagsDialog extends Component {
                   top={15}
                   status="loading"
                 />
-
               )}
             </div>
           </div>

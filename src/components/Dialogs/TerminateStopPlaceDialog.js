@@ -15,7 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
-import {DatePicker, TimePicker} from "@mui/x-date-pickers/";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers/";
 import { getEarliestFromDate } from "../../utils/saveDialogUtils";
 import areIntlLocalesSupported from "intl-locales-supported";
 import TextField from "@mui/material/TextField";

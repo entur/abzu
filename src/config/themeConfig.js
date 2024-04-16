@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import { getIn } from "../utils";
-import {getEnvColor as defaultEnvColor} from "./themes/default/defaultTheme";
+import { getEnvColor as defaultEnvColor } from "./themes/default/defaultTheme";
 import {
   getV0Theme as getV0DefaultTheme,
   getTheme as getDefaultTheme,
@@ -23,7 +23,7 @@ import { primary as defaultPrimary } from "./themes/default/defaultTheme";
 import {
   primaryDarker as defaultPrimaryDarker,
   darkColor as defaultDarkColor,
-    headerColor as defaultBanner,
+  headerColor as defaultBanner,
 } from "./themes/default/defaultTheme";
 
 export const getTiamatEnv = () => {
@@ -81,7 +81,7 @@ export const getPrimaryColor = () => {
 export const getHeaderColor = () => {
   if (process.env.REACT_APP_THEME) {
     return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
-        .primary;
+      .primary;
   } else {
     return headerColor;
   }

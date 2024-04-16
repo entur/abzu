@@ -439,10 +439,9 @@ class ReportPage extends React.Component {
                   ref="topoFilter"
                   onNewRequest={this.handleAddChip.bind(this)}
                   renderInput={(params) => (
-                      <TextField
-
-                          label={formatMessage({ id: "filter_by_topography" })}
-                      />
+                    <TextField
+                      label={formatMessage({ id: "filter_by_topography" })}
+                    />
                   )}
                 />
                 <TopographicalFilter

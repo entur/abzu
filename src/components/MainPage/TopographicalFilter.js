@@ -24,7 +24,7 @@ class TopographicalFilter extends React.Component {
     const chipStyle = {
       margin: 4,
       backgroundColor: typeColor,
-      color: typeTextColor
+      color: typeTextColor,
     };
     let id = data.id || data.value;
 
@@ -34,10 +34,7 @@ class TopographicalFilter extends React.Component {
         onDelete={() => this.props.handleDeleteChip(id)}
         style={chipStyle}
         label={data.text}
-      >
-
-
-      </Chip>
+      ></Chip>
     );
   }
 

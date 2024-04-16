@@ -16,14 +16,14 @@ import React from "react";
 import { connect } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import IconMenu from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowDropRight from "@mui/icons-material/ArrowRight";
-import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
+import Typography from "@mui/material/Typography";
+import MenuIcon from "@mui/icons-material/Menu";
 import { getLogo } from "../config/themeConfig";
 import MdAccount from "@mui/icons-material/AccountCircle";
 import MdLanguage from "@mui/icons-material/Language";
@@ -33,7 +33,7 @@ import { UserActions } from "../actions/";
 import { getIn } from "../utils";
 import MdReport from "@mui/icons-material/Report";
 import MdHelp from "@mui/icons-material/Help";
-import { getTiamatEnv} from "../config/themeConfig";
+import { getTiamatEnv } from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { Button } from "@mui/material";
 import {
@@ -151,17 +151,17 @@ class Header extends React.Component {
     this.props.dispatch(toggleShowTariffZonesInMap(value));
   }
 
-    state = {
-        anchorEl: null,
-    };
+  state = {
+    anchorEl: null,
+  };
 
-    handleClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
-    };
+  handleClick = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
 
-    handleClose = () => {
-        this.setState({ anchorEl: null });
-    };
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
   render() {
     const {
       intl,
@@ -219,277 +219,277 @@ class Header extends React.Component {
           titleTemplate={`${formatMessage({ id: "_title" })} - %s`}
         />
         <AppBar position="static">
-            <Toolbar >
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{mr: 2}}
-                    onClick={() =>
-                        this.handleConfirmChangeRoute(
-                            this.goToMain.bind(this),
-                            "GoToMain",
-                        )
-                    }
-                >
-                    <img
-                        alt=""
-                        src={logo}
-                        style={{width: 40, height: "auto", cursor: "pointer"}}
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() =>
+                this.handleConfirmChangeRoute(
+                  this.goToMain.bind(this),
+                  "GoToMain",
+                )
+              }
+            >
+              <img
+                alt=""
+                src={logo}
+                style={{ width: 40, height: "auto", cursor: "pointer" }}
+              />
+            </IconButton>
 
-                    />
-                </IconButton>
-
-                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    <div style={{fontSize: 24, display: "flex", justifyContent: "space-between", color: "#fff"}}>
-                        <div>
-                            {title}
-                            {(tiamatEnv === "test" || tiamatEnv === "development") && (
-                                <span style={{fontSize: 18, marginLeft: 8, color: "#ddffa5"}}>
-                                    {tiamatEnv}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                </Typography>
-
-
-                <div style={{height: "36px"}}>
-                    {!this.props.auth.isAuthenticated && (
-                        <Button
-                            variant="contained"
-                            onClick={() => this.handleLogin()}
-                            sx={{mr: 2}}
-                        >
-                            {logIn}
-                        </Button>
-                    )}
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <div
+                style={{
+                  fontSize: 24,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: "#fff",
+                }}
+              >
+                <div>
+                  {title}
+                  {(tiamatEnv === "test" || tiamatEnv === "development") && (
+                    <span
+                      style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}
+                    >
+                      {tiamatEnv}
+                    </span>
+                  )}
                 </div>
+              </div>
+            </Typography>
 
-
-
-                <IconButton
-                    aria-owns={anchorEl ? 'simple-menu' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleClick}
+            <div style={{ height: "36px" }}>
+              {!this.props.auth.isAuthenticated && (
+                <Button
+                  variant="contained"
+                  onClick={() => this.handleLogin()}
+                  sx={{ mr: 2 }}
                 >
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={this.handleClose}
+                  {logIn}
+                </Button>
+              )}
+            </div>
 
-                >
-                <MenuItem
-
-
+            <IconButton
+              aria-owns={anchorEl ? "simple-menu" : undefined}
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleClose}
+            >
+              <MenuItem
+                onClick={() =>
+                  this.handleConfirmChangeRoute(
+                    this.goToReports.bind(this),
+                    "GoToReports",
+                  )
+                }
+                style={{ fontSize: 12, padding: 0 }}
+              >
+                <MdReport color="#41c0c4" />
+                {reportSite}
+              </MenuItem>
+              <MenuItem
+                style={{ fontSize: 12, padding: 0 }}
+                desktop={true}
+                multiple
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
                     onClick={() =>
-                        this.handleConfirmChangeRoute(
-                            this.goToReports.bind(this),
-                            "GoToReports",
-                        )
+                      this.handleTogglePublicCodePrivateCodeOnStopPlaces(
+                        !isPublicCodePrivateCodeOnStopPlacesEnabled,
+                      )
                     }
-                    style={{fontSize: 12, padding: 0}}
-                >
-                    <MdReport color="#41c0c4"/>{reportSite}
-                </MenuItem>
-                <MenuItem
-
-                    style={{fontSize: 12, padding: 0}}
+                    insetChildren
                     desktop={true}
                     multiple
-                    menuItems={[
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleTogglePublicCodePrivateCodeOnStopPlaces(
-                                  !isPublicCodePrivateCodeOnStopPlacesEnabled,
-                              )
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
-                          primaryText={publicCodePrivateCodeSetting}
-                      />,
-                    ]}
-                >
-                    <MdSettings color="#41c0c4"/>{settings} <ArrowDropRight/>
-                </MenuItem>
-                <MenuItem
-
-                    style={{fontSize: 12, padding: 0}}
+                    checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
+                    primaryText={publicCodePrivateCodeSetting}
+                  />,
+                ]}
+              >
+                <MdSettings color="#41c0c4" />
+                {settings} <ArrowDropRight />
+              </MenuItem>
+              <MenuItem
+                style={{ fontSize: 12, padding: 0 }}
+                desktop={true}
+                multiple
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
+                    }
+                    insetChildren
                     desktop={true}
                     multiple
+                    checked={isMultiPolylinesEnabled}
+                    primaryText={showPathLinks}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleCompassBearing(!isCompassBearingEnabled)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={isCompassBearingEnabled}
+                    primaryText={showCompassBearing}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowExpiredStops(!showExpiredStops)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showExpiredStops}
+                    primaryText={expiredStopLabel}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleMultimodalEdges(!showMultimodalEdges)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showMultimodalEdges}
+                    primaryText={showMultimodalEdgesLabel}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    primaryText={quayCodeShowingLabel}
+                    rightIcon={<ArrowDropRight />}
+                    insetChildren
                     menuItems={[
                       <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={isMultiPolylinesEnabled}
-                          primaryText={showPathLinks}
+                        style={{ fontSize: 12, padding: 0 }}
+                        onClick={() => this.handleToggleShowPublicCode(true)}
+                        insetChildren
+                        primaryText={showPublicCodeLabel}
+                        checked={showPublicCode}
                       />,
                       <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleCompassBearing(!isCompassBearingEnabled)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={isCompassBearingEnabled}
-                          primaryText={showCompassBearing}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleShowExpiredStops(!showExpiredStops)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={showExpiredStops}
-                          primaryText={expiredStopLabel}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleMultimodalEdges(!showMultimodalEdges)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={showMultimodalEdges}
-                          primaryText={showMultimodalEdgesLabel}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          primaryText={quayCodeShowingLabel}
-                          rightIcon={<ArrowDropRight/>}
-                          insetChildren
-                          menuItems={[
-                            <MenuItem
-                                style={{fontSize: 12, padding: 0}}
-                                onClick={() => this.handleToggleShowPublicCode(true)}
-                                insetChildren
-                                primaryText={showPublicCodeLabel}
-                                checked={showPublicCode}
-                            />,
-                            <MenuItem
-                                style={{fontSize: 12, padding: 0}}
-                                onClick={() => this.handleToggleShowPublicCode(false)}
-                                insetChildren
-                                primaryText={showPrivateCodeLabel}
-                                checked={!showPublicCode}
-                            />,
-                          ]}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleShowFareZones(!showFareZones)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={showFareZones}
-                          primaryText={showFareZonesLabel}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() =>
-                              this.handleToggleShowTariffZones(!showTariffZones)
-                          }
-                          insetChildren
-                          desktop={true}
-                          multiple
-                          checked={showTariffZones}
-                          primaryText={showTariffZonesLabel}
+                        style={{ fontSize: 12, padding: 0 }}
+                        onClick={() => this.handleToggleShowPublicCode(false)}
+                        insetChildren
+                        primaryText={showPrivateCodeLabel}
+                        checked={!showPublicCode}
                       />,
                     ]}
-                >
-                    <MdMap color="#41c0c4"/>
-                    {mapSettings}
-                    <ArrowDropRight/>
-                </MenuItem>
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowFareZones(!showFareZones)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showFareZones}
+                    primaryText={showFareZonesLabel}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() =>
+                      this.handleToggleShowTariffZones(!showTariffZones)
+                    }
+                    insetChildren
+                    desktop={true}
+                    multiple
+                    checked={showTariffZones}
+                    primaryText={showTariffZonesLabel}
+                  />,
+                ]}
+              >
+                <MdMap color="#41c0c4" />
+                {mapSettings}
+                <ArrowDropRight />
+              </MenuItem>
+              <MenuItem
+                style={{ fontSize: 12, padding: 0 }}
+                menuItems={[
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage("nb")}
+                    insetChildren
+                    primaryText={norwegian}
+                    checked={locale === "nb"}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage("en")}
+                    insetChildren
+                    primaryText={english}
+                    checked={locale === "en"}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage("fr")}
+                    insetChildren
+                    primaryText={french}
+                    checked={locale === "fr"}
+                  />,
+                  <MenuItem
+                    style={{ fontSize: 12, padding: 0 }}
+                    onClick={() => this.handleSetLanguage("sv")}
+                    insetChildren
+                    primaryText={swedish}
+                    checked={locale === "sv"}
+                  />,
+                ]}
+              >
+                <MdLanguage color="#41c0c4" />
+                {language}
+                <ArrowDropRight />
+              </MenuItem>
+              <MenuItem
+                component={"a"}
+                href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
+                target="_blank"
+                style={{ fontSize: 12, padding: 0 }}
+              >
+                <MdHelp color="#41c0c4" />
+                {userGuide}
+              </MenuItem>
+
+              {this.props.auth.isAuthenticated && (
                 <MenuItem
-
-                    style={{fontSize: 12, padding: 0}}
-                    menuItems={[
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() => this.handleSetLanguage("nb")}
-                          insetChildren
-                          primaryText={norwegian}
-                          checked={locale === "nb"}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() => this.handleSetLanguage("en")}
-                          insetChildren
-                          primaryText={english}
-                          checked={locale === "en"}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() => this.handleSetLanguage("fr")}
-                          insetChildren
-                          primaryText={french}
-                          checked={locale === "fr"}
-                      />,
-                      <MenuItem
-                          style={{fontSize: 12, padding: 0}}
-                          onClick={() => this.handleSetLanguage("sv")}
-                          insetChildren
-                          primaryText={swedish}
-                          checked={locale === "sv"}
-                      />,
-                    ]}
-                >
-                    <MdLanguage color="#41c0c4"/>
-                    {language}
-                    <ArrowDropRight/>
-                </MenuItem>
-                <MenuItem
-                    component={"a"}
-                    href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
-                    target="_blank"
-                    style={{fontSize: 12, padding: 0}}
-                >
-                    <MdHelp color="#41c0c4"/>
-                    {userGuide}
-                </MenuItem>
-
-                {this.props.auth.isAuthenticated && (
-                    <MenuItem
-                        leftIcon={<MdAccount color="#41c0c4"/>}
-                        primaryText={`${logOut} ${username}`}
-                        onClick={() => this.handleLogOut()}
-                        style={{fontSize: 12, padding: 0}}
-                    />
-                )}
-          </Menu>
-
-            </Toolbar>
+                  leftIcon={<MdAccount color="#41c0c4" />}
+                  primaryText={`${logOut} ${username}`}
+                  onClick={() => this.handleLogOut()}
+                  style={{ fontSize: 12, padding: 0 }}
+                />
+              )}
+            </Menu>
+          </Toolbar>
         </AppBar>
 
         <ConfirmDialog
-            open={this.state.isConfirmDialogOpen}
-            handleClose={() => {
-              this.setState({
-                isConfirmDialogOpen: false,
-              });
-            }}
-            handleConfirm={() => {
-              this.handleConfirm();
-            }}
+          open={this.state.isConfirmDialogOpen}
+          handleClose={() => {
+            this.setState({
+              isConfirmDialogOpen: false,
+            });
+          }}
+          handleConfirm={() => {
+            this.handleConfirm();
+          }}
           messagesById={{
             title: "discard_changes_title",
             body: "discard_changes_body",

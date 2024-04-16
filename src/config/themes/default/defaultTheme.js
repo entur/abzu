@@ -27,7 +27,6 @@ const white = "#ffffff";
 const darkBlack = "rgba(0, 0, 0, 0.87)";
 const fullBlack = "rgba(0, 0, 0, 1)";
 
-
 export const getEnvColor = (env) => {
   let currentEnv = env || getTiamatEnv();
   switch (currentEnv.toLowerCase()) {

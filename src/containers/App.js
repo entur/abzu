@@ -30,8 +30,7 @@ import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../auth/auth";
-import MuiThemeProvider from "@mui/material/styles/ThemeProvider"
-
+import MuiThemeProvider from "@mui/material/styles/ThemeProvider";
 
 const muiTheme = createTheme(getTheme());
 
@@ -70,15 +69,13 @@ const App = ({ children }) => {
         <html lang={localization.locale} />
       </Helmet>
       <StyledEngineProvider injectFirst>
-
-          <MuiThemeProvider theme={muiTheme}>
-            <div>
-              <Header />
-              {children}
-              <SnackbarWrapper />
-            </div>
-          </MuiThemeProvider>
-
+        <MuiThemeProvider theme={muiTheme}>
+          <div>
+            <Header />
+            {children}
+            <SnackbarWrapper />
+          </div>
+        </MuiThemeProvider>
       </StyledEngineProvider>
     </IntlProvider>
   );

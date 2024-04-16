@@ -174,8 +174,6 @@ const userReducer = (state = initialState, action) => {
       });
 
     case types.SET_SEARCH_TEXT:
-
-
       return Object.assign({}, state, {
         searchFilters: {
           ...state.searchFilters,

@@ -64,35 +64,33 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
     element,
     text: element.name,
     value: (
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                marginLeft: 10,
-                display: "flex",
-                flexDirection: "column",
-                minWidth: 280,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontSize: "0.9em" }}>{element.name}</div>
-                <div style={{ fontSize: "0.6em", color: "grey" }}>
-                  {element.id}
-                </div>
-              </div>
-              {element.topographicPlaces.length && (
-                <div style={topographicPlaceStyle}>
-                  {element.topographicPlaces.map((place, i) => (
-                    <div key={"place-" + i} style={{ marginRight: 5 }}>
-                      {`${place.topographicPlace}, ${place.parentTopographicPlace}`}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <MdGroup
-              style={{ marginTop: 10, marginLeft: 5, transform: "scale(0.8)" }}
-            />
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            marginLeft: 10,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 280,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontSize: "0.9em" }}>{element.name}</div>
+            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
           </div>
+          {element.topographicPlaces.length && (
+            <div style={topographicPlaceStyle}>
+              {element.topographicPlaces.map((place, i) => (
+                <div key={"place-" + i} style={{ marginRight: 5 }}>
+                  {`${place.topographicPlace}, ${place.parentTopographicPlace}`}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <MdGroup
+          style={{ marginTop: 10, marginLeft: 5, transform: "scale(0.8)" }}
+        />
+      </div>
     ),
   };
 };
@@ -103,57 +101,51 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
     element,
     text: element.name,
     value: (
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                marginLeft: 10,
-                display: "flex",
-                flexDirection: "column",
-                minWidth: 280,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontSize: "0.9em" }}>
-                  {element.name}
-                  <span
-                    style={{
-                      fontWeight: 600,
-                      fontSize: "0.7em",
-                      marginLeft: 5,
-                    }}
-                  >
-                    MM
-                  </span>
-                </div>
-                <div style={{ fontSize: "0.6em", color: "grey" }}>
-                  {element.id}
-                </div>
-              </div>
-              <div style={topographicPlaceStyle}>
-                <div>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-                {futureOrExpiredLabel && (
-                  <div
-                    key={"valid-label" + element.id}
-                    style={{ marginRight: 5 }}
-                  >
-                    {formatMessage({ id: futureOrExpiredLabel })}
-                  </div>
-                )}
-              </div>
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            marginLeft: 10,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 280,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontSize: "0.9em" }}>
+              {element.name}
+              <span
+                style={{
+                  fontWeight: 600,
+                  fontSize: "0.7em",
+                  marginLeft: 5,
+                }}
+              >
+                MM
+              </span>
             </div>
-            <ModalityIconTray
-              style={{
-                marginLeft: 7,
-                display: "flex",
-                flexDirection: "column",
-              }}
-              modalities={element.children.map((child) => ({
-                submode: child.submode,
-                stopPlaceType: child.stopPlaceType,
-              }))}
-            />
+            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
           </div>
-
+          <div style={topographicPlaceStyle}>
+            <div>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+            {futureOrExpiredLabel && (
+              <div key={"valid-label" + element.id} style={{ marginRight: 5 }}>
+                {formatMessage({ id: futureOrExpiredLabel })}
+              </div>
+            )}
+          </div>
+        </div>
+        <ModalityIconTray
+          style={{
+            marginLeft: 7,
+            display: "flex",
+            flexDirection: "column",
+          }}
+          modalities={element.children.map((child) => ({
+            submode: child.submode,
+            stopPlaceType: child.stopPlaceType,
+          }))}
+        />
+      </div>
     ),
   };
 };
@@ -165,53 +157,49 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
     text: element.name,
     stopPlaceType: element.stopPlaceType,
     submode: element.submode,
-    id:  element.id,
+    id: element.id,
     topographicPlace: element.topographicPlace,
-    parentTopographicPlace:  element.parentTopographicPlace,
-    futureOrExpiredLabel:  getFutureOrExpiredLabel(element),
+    parentTopographicPlace: element.parentTopographicPlace,
+    futureOrExpiredLabel: getFutureOrExpiredLabel(element),
     value: (
-            <div style={{display: "flex", justifyContent: "space-between"}}>
-                <div
-                    style={{
-                        marginLeft: 10,
-                        display: "flex",
-                        flexDirection: "column",
-                        minWidth: 280,
-                    }}
-                >
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div style={{fontSize: "0.9em"}}>{element.name}</div>
-                        <div style={{fontSize: "0.6em", color: "grey"}}>
-                            {element.id}
-                        </div>
-                    </div>
-                    <div >
-                        <div style={{fontSize: "0.6em", color: "grey"}}>{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
-                        {element.futureOrExpiredLabel && (
-                            <div
-                                key={"valid-label" + element.id}
-                                style={{marginRight: 5}}
-                            >
-                                {formatMessage({id: element.futureOrExpiredLabel})}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <ModalityIconImg
-                    svgStyle={{
-                        marginTop: -10,
-                        marginRight: 0,
-                        transform: "translate3d(0,0,0)",
-                    }}
-                    style={{display: "inline-block", position: "relative"}}
-                    iconStyle={{
-                        transform: "scale(0.8)",
-                    }}
-                    type={element.stopPlaceType}
-                    submode={element.submode}
-                />
-            </div>
-
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            marginLeft: 10,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 280,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontSize: "0.9em" }}>{element.name}</div>
+            <div style={{ fontSize: "0.6em", color: "grey" }}>{element.id}</div>
+          </div>
+          <div>
+            <div
+              style={{ fontSize: "0.6em", color: "grey" }}
+            >{`${element.topographicPlace}, ${element.parentTopographicPlace}`}</div>
+            {element.futureOrExpiredLabel && (
+              <div key={"valid-label" + element.id} style={{ marginRight: 5 }}>
+                {formatMessage({ id: element.futureOrExpiredLabel })}
+              </div>
+            )}
+          </div>
+        </div>
+        <ModalityIconImg
+          svgStyle={{
+            marginTop: -10,
+            marginRight: 0,
+            transform: "translate3d(0,0,0)",
+          }}
+          style={{ display: "inline-block", position: "relative" }}
+          iconStyle={{
+            transform: "scale(0.8)",
+          }}
+          type={element.stopPlaceType}
+          submode={element.submode}
+        />
+      </div>
     ),
   };
 };

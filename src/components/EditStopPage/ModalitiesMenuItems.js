@@ -44,7 +44,6 @@ class ModalitiesMenuItems extends React.Component {
 
     return (
       <Menu open="true">
-
         {Object.keys(stopTypes).map((type, index) => {
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||
