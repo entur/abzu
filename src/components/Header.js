@@ -24,7 +24,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowDropRight from "@mui/icons-material/ArrowRight";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { getLogo } from "../config/themeConfig";
+import { getEnvColor, getHeaderColor, getLogo } from "../config/themeConfig";
 import MdAccount from "@mui/icons-material/AccountCircle";
 import MdLanguage from "@mui/icons-material/Language";
 import MdSettings from "@mui/icons-material/Settings";

@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import RaisedButton from "@mui/material/Button";
 import FlatButton from "@mui/material/Button";
 import MdMore from "@mui/icons-material/ExpandMore";
 import { StopPlaceActions, UserActions } from "../../actions/";
@@ -572,7 +571,7 @@ class SearchBox extends React.Component {
                           control={
                             <Checkbox
                               checked={showFutureAndExpired}
-                              onCheck={(e, value) =>
+                              onChange={(e, value) =>
                                 this.toggleShowFutureAndExpired(value)
                               }
                             />
@@ -635,7 +634,6 @@ class SearchBox extends React.Component {
                   <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
                   <TextField
                     {...params}
-                    sx={{ width: 380 }}
                     label={formatMessage({ id: "filter_by_name" })}
                     variant="standard"
                     onChange={(event) => {
@@ -693,32 +691,35 @@ class SearchBox extends React.Component {
                       justifyContent: "space-between",
                     }}
                   >
-                    <RaisedButton
+                    <Button
                       onClick={this.handleOpenLookupCoordinatesDialog.bind(
                         this,
                       )}
-                      icon={
+                      variant="outlined"
+                      startIcon={
                         <MdLocationSearching
                           style={{ width: 20, height: 20 }}
                         />
                       }
                       primary={false}
-                      labelStyle={{ fontSize: 11 }}
-                      label={formatMessage({ id: "lookup_coordinates" })}
-                    />
-                    <RaisedButton
+                    >
+                      {formatMessage({ id: "lookup_coordinates" })}
+                    </Button>
+                    <Button
+                      variant="contained"
                       onClick={(e) => {
                         this.setState({
                           createNewStopOpen: true,
                           anchorEl: e.currentTarget,
                         });
                       }}
-                      icon={<MdMore style={{ width: 20, height: 20 }} />}
+                      startIcon={<MdMore style={{ width: 20, height: 20 }} />}
                       primary={true}
-                      labelStyle={{ fontSize: 11 }}
-                      label={formatMessage({ id: "new_stop" })}
-                    />
-                    <Popover
+                    >
+                      {formatMessage({ id: "new_stop" })}
+                    </Button>
+
+                    <Menu
                       open={this.state.createNewStopOpen}
                       anchorEl={this.state.anchorEl}
                       anchorOrigin={{
@@ -730,21 +731,15 @@ class SearchBox extends React.Component {
                         this.setState({ createNewStopOpen: false });
                       }}
                     >
-                      <Menu open>
-                        <MenuItem
-                          onClick={() => this.handleNewStop(false)}
-                          style={{ fontSize: "0.9em" }}
-                          primaryText={formatMessage({ id: "new_stop" })}
-                        />
-                        <MenuItem
-                          onClick={() => this.handleNewStop(true)}
-                          style={{ fontSize: "0.9em" }}
-                          primaryText={formatMessage({
-                            id: "new__multi_stop",
-                          })}
-                        />
-                      </Menu>
-                    </Popover>
+                      <MenuItem onClick={() => this.handleNewStop(false)}>
+                        {formatMessage({ id: "new_stop" })}
+                      </MenuItem>
+                      <MenuItem onClick={() => this.handleNewStop(true)}>
+                        {formatMessage({
+                          id: "new__multi_stop",
+                        })}
+                      </MenuItem>
+                    </Menu>
                   </div>
                 )}
               </div>

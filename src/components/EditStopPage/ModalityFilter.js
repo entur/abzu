@@ -67,7 +67,7 @@ class ModalityFilter extends React.Component {
                     forceUpdate={true}
                   />
                 }
-                uncheckedIcon={
+                icon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
                     style={{ fill: "#8c8c8c", opacity: "0.8" }}
@@ -77,7 +77,7 @@ class ModalityFilter extends React.Component {
                 }
                 style={{ width: "auto" }}
                 checked={checked}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleOnCheck(v, item);
                 }}
               />

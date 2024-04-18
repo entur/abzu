@@ -29,6 +29,7 @@ class CoordinatesDialog extends React.Component {
     super(props);
     this.state = {
       errorText: "",
+      coordinates: null,
     };
   }
 
@@ -40,9 +41,10 @@ class CoordinatesDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
   };
 
-  handleInputChange(event, newValue) {
+  handleInputChange(event) {
+    debugger;
     this.setState({
-      coordinates: newValue,
+      coordinates: event.target.value,
     });
   }
 
@@ -58,7 +60,6 @@ class CoordinatesDialog extends React.Component {
     const coordinatesString = this.state
       ? this.state.coordinates
       : this.props.coordinates;
-
     if (typeof coordinatesString === "undefined") return;
 
     const position = extractCoordinates(coordinatesString);
@@ -97,21 +98,22 @@ class CoordinatesDialog extends React.Component {
           <DialogTitle>{confirmDialogTranslation.title}</DialogTitle>
           <DialogContent>
             {confirmDialogTranslation.body}
-
             <TextField
-              hintText="lat,lng"
-              floatingLabelText={formatMessage({ id: "coordinates" })}
-              style={{ display: "block", margin: "auto", width: "90%" }}
+              fullWidth
+              error={!!this.state.errorText}
+              variant="standard"
+              placeholder="lat,lng"
+              label={formatMessage({ id: "coordinates" })}
               value={coordinates}
               onChange={this.handleInputChange.bind(this)}
-              errorText={this.state.errorText}
+              helperText={this.state.errorText}
             />
           </DialogContent>
           <DialogActions>
             <Button
               variant="text"
               onClick={() => this.handleClose()}
-              style={{ marginRight: 5 }}
+              sx={{ marginRight: 5 }}
               color="secondary"
             >
               {confirmDialogTranslation.cancel}
