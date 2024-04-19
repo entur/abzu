@@ -95,7 +95,9 @@ class SearchBox extends React.Component {
 
   handleSearchUpdate = (event, searchText, reason) => {
     // prevents ghost clicks
-    debugger;
+    if (event && event.source === "click") {
+      return;
+    }
     if (reason && reason === "clear") {
       this.setState({ stopPlaceSearchValue: "" });
       this.props.dispatch(UserActions.clearSearchResults());
@@ -103,11 +105,6 @@ class SearchBox extends React.Component {
     }
 
     if (!searchText || !searchText.length) {
-      this.props.dispatch(UserActions.clearSearchResults());
-      this.props.dispatch(UserActions.setSearchText(""));
-      this.setState({ stopPlaceSearchValue: "" });
-    } else if (searchText && searchText === "") {
-      debugger;
       this.props.dispatch(UserActions.clearSearchResults());
       this.props.dispatch(UserActions.setSearchText(""));
       this.setState({ stopPlaceSearchValue: "" });
@@ -175,7 +172,12 @@ class SearchBox extends React.Component {
   }
 
   handleNewRequest(event, result, reason) {
-    if (result && typeof result.element !== "undefined") {
+    debugger;
+    if (
+      result &&
+      typeof result.element !== "undefined" &&
+      result.element !== null
+    ) {
       this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
       this.setState({ stopPlaceSearchValue: "" });
     }
@@ -295,7 +297,7 @@ class SearchBox extends React.Component {
   }
 
   getMenuItems(nextProps) {
-    const { dataSource, topoiChips, stopTypeFilter } = nextProps;
+    const { dataSource, topoiChips, stopTypeFilter, searchText } = nextProps;
     const { formatMessage } = nextProps.intl;
     let menuItems = [];
     if (dataSource && dataSource.length) {
@@ -305,14 +307,11 @@ class SearchBox extends React.Component {
     } else {
       menuItems = [
         {
-          text: "",
+          element: null,
+          text: searchText,
           value: (
-            <MenuItem
-              style={{ paddingLeft: 10, paddingRight: 10, width: "auto" }}
-            >
-              <div style={{ fontWeight: 600, fontSize: "0.8em" }}>
-                {formatMessage({ id: "no_results_found" })}
-              </div>
+            <MenuItem disabled={true}>
+              {formatMessage({ id: "no_results_found" })}
             </MenuItem>
           ),
         },
@@ -321,9 +320,9 @@ class SearchBox extends React.Component {
 
     if (stopTypeFilter.length || topoiChips.length) {
       const filterNotification = {
-        text: "",
+        text: searchText,
         value: (
-          <MenuItem>
+          <MenuItem onClick={() => this.removeFiltersAndSearch()}>
             <div
               style={{
                 display: "flex",
@@ -341,7 +340,6 @@ class SearchBox extends React.Component {
                     color: getPrimaryDarkerColor(),
                     cursor: "pointer",
                   }}
-                  onClick={() => this.removeFiltersAndSearch()}
                 >
                   {formatMessage({ id: "remove" })}
                 </div>
@@ -350,11 +348,12 @@ class SearchBox extends React.Component {
           </MenuItem>
         ),
       };
-      //      if (menuItems.length > 6) {
-      //        menuItems[6] = filterNotification;
-      //      } else {
-      menuItems.push(filterNotification);
-      //      }
+
+      if (menuItems.length > 6) {
+        menuItems[6] = filterNotification;
+      } else {
+        menuItems.push(filterNotification);
+      }
     }
     return menuItems;
   }
@@ -386,24 +385,21 @@ class SearchBox extends React.Component {
         {
           text: "",
           value: (
-            <MenuItem
-              style={{ paddingRight: 10, width: "auto" }}
-              primaryText={
-                <div
-                  style={{
-                    fontWeight: 600,
-                    fontSize: "0.8em",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <MdSpinner />
-                  <div style={{ marginLeft: 5 }}>
-                    {formatMessage({ id: "loading" })}
-                  </div>
+            <MenuItem>
+              <div
+                style={{
+                  fontWeight: 600,
+                  fontSize: "0.8em",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <MdSpinner />
+                <div style={{ marginLeft: 5 }}>
+                  {formatMessage({ id: "loading" })}
                 </div>
-              }
-            />
+              </div>
+            </MenuItem>
           ),
         },
       ];
@@ -609,6 +605,23 @@ class SearchBox extends React.Component {
               freeSolo
               options={menuItems}
               loading={loading}
+              loadingText={
+                <MenuItem>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.8em",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <MdSpinner />
+                    <div style={{ marginLeft: 5 }}>
+                      {formatMessage({ id: "loading" })}
+                    </div>
+                  </div>
+                </MenuItem>
+              }
               //filterOptions={(x) => x !== ""}
               //filterOptions={filterOptions}
               onInputChange={this.handleSearchUpdate.bind(this)}
@@ -631,6 +644,7 @@ class SearchBox extends React.Component {
               //      {option.text}{option.value}
               //    </Box>
               //)}
+              noOptionsText={formatMessage({ id: "no_results_found" })}
               renderInput={(params) => (
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                   <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
