@@ -59,7 +59,7 @@ class AddMemberToGroup extends Component {
       neighbourStops,
       stopPlaceCentroid,
       groupMembers,
-      tokenParsed,
+      roleAssignments,
       fetchedPolygons,
       allowNewStopEverywhere,
     } = this.props;
@@ -73,7 +73,7 @@ class AddMemberToGroup extends Component {
       groupMembers,
       stopPlaceCentroid,
       neighbourStops,
-      tokenParsed,
+      roleAssignments,
       10,
       fetchedPolygons,
       allowNewStopEverywhere,
@@ -129,7 +129,7 @@ const mapStateToProps = ({ stopPlace, roles, stopPlacesGroup }) => ({
   stopPlaceCentroid: stopPlacesGroup.centerPosition,
   groupMembers: stopPlacesGroup.current.members,
   stopHasBeenModified: stopPlacesGroup.stopHasBeenModified,
-  tokenParsed: roles.auth.roleAssignments,
+  roleAssignments: roles.auth.roleAssignments,
   fetchedPolygons: roles.fetchedPolygons,
   allowNewStopEverywhere: roles.allowNewStopEverywhere,
 });
