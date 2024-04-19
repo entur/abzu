@@ -129,7 +129,7 @@ const mapStateToProps = ({ stopPlace, roles, stopPlacesGroup }) => ({
   stopPlaceCentroid: stopPlacesGroup.centerPosition,
   groupMembers: stopPlacesGroup.current.members,
   stopHasBeenModified: stopPlacesGroup.stopHasBeenModified,
-  roleAssignments: roles.auth.roleAssignments,
+  tokenParsed: roles.auth.roleAssignments,
   fetchedPolygons: roles.fetchedPolygons,
   allowNewStopEverywhere: roles.allowNewStopEverywhere,
 });
