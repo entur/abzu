@@ -209,6 +209,7 @@ class Header extends React.Component {
     });
 
     const tiamatEnv = getTiamatEnv();
+    const headerColor = getEnvColor(tiamatEnv);
     const logo = getLogo();
     const { anchorEl } = this.state;
 
@@ -218,7 +219,7 @@ class Header extends React.Component {
           defaultTitle={formatMessage({ id: "_title" })}
           titleTemplate={`${formatMessage({ id: "_title" })} - %s`}
         />
-        <AppBar position="static">
+        <AppBar position="static" sx={{ background: headerColor }}>
           <Toolbar>
             <IconButton
               size="large"

@@ -95,13 +95,22 @@ class SearchBox extends React.Component {
 
   handleSearchUpdate = (event, searchText, reason) => {
     // prevents ghost clicks
+    debugger;
     if (reason && reason === "clear") {
       this.setState({ stopPlaceSearchValue: "" });
+      this.props.dispatch(UserActions.clearSearchResults());
+      this.props.dispatch(UserActions.setSearchText(""));
     }
 
     if (!searchText || !searchText.length) {
       this.props.dispatch(UserActions.clearSearchResults());
       this.props.dispatch(UserActions.setSearchText(""));
+      this.setState({ stopPlaceSearchValue: "" });
+    } else if (searchText && searchText === "") {
+      debugger;
+      this.props.dispatch(UserActions.clearSearchResults());
+      this.props.dispatch(UserActions.setSearchText(""));
+      this.setState({ stopPlaceSearchValue: "" });
     } else if (searchText.indexOf("(") > -1 && searchText.indexOf(")") > -1) {
     } else {
       this.props.dispatch(UserActions.setSearchText(searchText));
@@ -128,10 +137,6 @@ class SearchBox extends React.Component {
 
   removeFiltersAndSearch() {
     this.props.dispatch(UserActions.removeAllFilters());
-    this.props.filter = {
-      topoiChips: [],
-      stopTypeFilter: [],
-    };
     this.handleSearchUpdate(null, this.props.searchText);
   }
 
@@ -318,7 +323,7 @@ class SearchBox extends React.Component {
       const filterNotification = {
         text: "",
         value: (
-          <MenuItem disabled={true}>
+          <MenuItem>
             <div
               style={{
                 display: "flex",
@@ -534,9 +539,6 @@ class SearchBox extends React.Component {
                   <div style={{ alignItems: "center" }}>
                     <Autocomplete
                       freeSolo
-                      floatingLabelText={formatMessage({
-                        id: "filter_by_topography",
-                      })}
                       getOptionLabel={(option) => `${option.text}`}
                       options={topographicalPlacesDataSource}
                       onInputChange={this.handleTopographicalPlaceInput.bind(
@@ -606,7 +608,7 @@ class SearchBox extends React.Component {
               //openOnFocus
               freeSolo
               options={menuItems}
-              loading={true}
+              loading={loading}
               //filterOptions={(x) => x !== ""}
               //filterOptions={filterOptions}
               onInputChange={this.handleSearchUpdate.bind(this)}
@@ -702,6 +704,7 @@ class SearchBox extends React.Component {
                         />
                       }
                       primary={false}
+                      sx={{ color: "black" }}
                     >
                       {formatMessage({ id: "lookup_coordinates" })}
                     </Button>

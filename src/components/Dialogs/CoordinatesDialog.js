@@ -42,7 +42,6 @@ class CoordinatesDialog extends React.Component {
   };
 
   handleInputChange(event) {
-    debugger;
     this.setState({
       coordinates: event.target.value,
     });

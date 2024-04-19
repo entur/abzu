@@ -82,8 +82,8 @@ export const getContext = async (auth) => {
   return context;
 };
 
-const handleQuery = (client, payload) => (dispatch) =>
-  client.query(payload).then((result) => {
+const handleQuery = (client, payload) => (dispatch) => {
+  return client.query(payload).then((result) => {
     dispatch(
       createApolloThunk(
         types.APOLLO_QUERY_RESULT,
@@ -94,6 +94,7 @@ const handleQuery = (client, payload) => (dispatch) =>
     );
     return result;
   });
+};
 
 const handleMutation = (client, payload) => (dispatch) =>
   client
