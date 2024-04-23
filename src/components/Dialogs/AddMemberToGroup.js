@@ -59,7 +59,7 @@ class AddMemberToGroup extends Component {
       neighbourStops,
       stopPlaceCentroid,
       groupMembers,
-      tokenParsed,
+      roleAssignments,
       fetchedPolygons,
       allowNewStopEverywhere,
     } = this.props;
@@ -73,7 +73,7 @@ class AddMemberToGroup extends Component {
       groupMembers,
       stopPlaceCentroid,
       neighbourStops,
-      tokenParsed,
+      roleAssignments,
       10,
       fetchedPolygons,
       allowNewStopEverywhere,
