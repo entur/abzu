@@ -317,8 +317,6 @@ class Header extends React.Component {
                   paddingTop: 5,
                   width: 300,
                 }}
-                desktop={true}
-                multiple
               >
                 <MenuItem
                   style={{
@@ -333,10 +331,6 @@ class Header extends React.Component {
                       !isPublicCodePrivateCodeOnStopPlacesEnabled,
                     )
                   }
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
                 >
                   {isPublicCodePrivateCodeOnStopPlacesEnabled ? (
                     <Check />
@@ -356,8 +350,6 @@ class Header extends React.Component {
                   paddingTop: 5,
                   width: 300,
                 }}
-                desktop={true}
-                multiple
               >
                 <MenuItem
                   style={{
@@ -370,9 +362,6 @@ class Header extends React.Component {
                   onClick={() =>
                     this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
                   }
-                  insetChildren
-                  desktop={true}
-                  multiple
                 >
                   {isMultiPolylinesEnabled ? (
                     <Check />
@@ -433,10 +422,6 @@ class Header extends React.Component {
                   onClick={() =>
                     this.handleToggleMultimodalEdges(!showMultimodalEdges)
                   }
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={showMultimodalEdges}
                 >
                   {showMultimodalEdges ? (
                     <Check />
@@ -503,10 +488,6 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() => this.handleToggleShowFareZones(!showFareZones)}
-                  insetChildren
-                  desktop={true}
-                  multiple
-                  checked={showFareZones}
                 >
                   {showFareZones ? (
                     <Check />
@@ -527,9 +508,6 @@ class Header extends React.Component {
                   onClick={() =>
                     this.handleToggleShowTariffZones(!showTariffZones)
                   }
-                  insetChildren
-                  desktop={true}
-                  multiple
                   checked={showTariffZones}
                 >
                   {showTariffZones ? (
@@ -579,7 +557,6 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() => this.handleSetLanguage("en")}
-                  insetChildren
                   checked={locale === "en"}
                 >
                   {locale === "en" ? (
@@ -598,7 +575,6 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() => this.handleSetLanguage("fr")}
-                  insetChildren
                   checked={locale === "fr"}
                 >
                   {locale === "fr" ? (
