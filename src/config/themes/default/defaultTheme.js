@@ -75,20 +75,48 @@ export const getV0Theme = () => ({
 export const getTheme = () => ({
   fontFamily: "Roboto, sans-serif",
   palette: {
-    primary1Color: primary,
-    primary2Color: cyan700,
-    primary3Color: grey400,
-    accent1Color: primary,
-    accent2Color: grey100,
-    accent3Color: grey500,
-    textColor: darkBlack,
-    alternateTextColor: white,
-    canvasColor: white,
-    borderColor: grey300,
-    disabledColor: lighten(darkBlack, 0.3),
-    pickerHeaderColor: primary,
-    clockCircleColor: lighten(darkBlack, 0.07),
-    shadowColor: fullBlack,
+    primary1Color: {
+      main: primary,
+    },
+    primary2Color: {
+      main: cyan700,
+    },
+    primary3Color: {
+      main: grey400,
+    },
+    accent1Color: {
+      main: primary,
+    },
+    accent2Color: {
+      main: grey100,
+    },
+    accent3Color: {
+      main: grey500,
+    },
+    textColor: {
+      main: darkBlack,
+    },
+    alternateTextColor: {
+      main: white,
+    },
+    canvasColor: {
+      main: white,
+    },
+    borderColor: {
+      main: grey300,
+    },
+    disabledColor: {
+      main: lighten(darkBlack, 0.3),
+    },
+    pickerHeaderColor: {
+      main: primary,
+    },
+    clockCircleColor: {
+      main: lighten(darkBlack, 0.07),
+    },
+    shadowColor: {
+      main: fullBlack,
+    },
   },
   datePicker: {
     selectColor: primary,

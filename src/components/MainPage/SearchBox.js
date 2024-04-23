@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import FlatButton from "@mui/material/Button";
 import MdMore from "@mui/icons-material/ExpandMore";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import SearchBoxDetails from "./SearchBoxDetails";
@@ -172,7 +171,6 @@ class SearchBox extends React.Component {
   }
 
   handleNewRequest(event, result, reason) {
-    debugger;
     if (
       result &&
       typeof result.element !== "undefined" &&
@@ -527,7 +525,11 @@ class SearchBox extends React.Component {
                   <div style={{ width: "100%", textAlign: "center" }}>
                     <Button
                       onClick={() => this.handleToggleFilter(false)}
-                      style={{ fontSize: 12, paddingBottom: "12px" }}
+                      style={{
+                        fontSize: 12,
+                        paddingBottom: "12px",
+                        color: "black",
+                      }}
                     >
                       {formatMessage({ id: "filters_less" })}
                     </Button>
@@ -589,12 +591,13 @@ class SearchBox extends React.Component {
                 </div>
               ) : (
                 <div style={{ width: "100%", textAlign: "center" }}>
-                  <FlatButton
+                  <Button
                     style={{ fontSize: 12 }}
                     onClick={() => this.handleToggleFilter(true)}
+                    color={"textColor"}
                   >
                     {formatMessage({ id: "filters_more" })}
-                  </FlatButton>
+                  </Button>
                 </div>
               )}
             </div>
@@ -666,15 +669,16 @@ class SearchBox extends React.Component {
             />
           </div>
           <div style={{ marginBottom: 5, textAlign: "right", marginRight: 10 }}>
-            <FlatButton
+            <Button
               style={{ marginLeft: 10, fontSize: 12 }}
               disabled={!!favorited}
               onClick={() => {
                 this.handleSaveAsFavorite(!!favorited);
               }}
+              color={"textColor"}
             >
               {formatMessage({ id: "filter_save_favorite" })}
-            </FlatButton>
+            </Button>
           </div>
           <div key="searchbox-edit">
             {chosenResult ? (
@@ -717,7 +721,6 @@ class SearchBox extends React.Component {
                           style={{ width: 20, height: 20 }}
                         />
                       }
-                      primary={false}
                       sx={{ color: "black" }}
                     >
                       {formatMessage({ id: "lookup_coordinates" })}
@@ -730,8 +733,9 @@ class SearchBox extends React.Component {
                           anchorEl: e.currentTarget,
                         });
                       }}
+                      color={"primary2Color"}
+                      sx={{ color: "white" }}
                       startIcon={<MdMore style={{ width: 20, height: 20 }} />}
-                      primary={true}
                     >
                       {formatMessage({ id: "new_stop" })}
                     </Button>
