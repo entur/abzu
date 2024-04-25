@@ -20,7 +20,6 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ArrowDropRight from "@mui/icons-material/ArrowRight";
 import Typography from "@mui/material/Typography";
 import { getEnvColor, getLogo, getTheme } from "../config/themeConfig";
 import MdAccount from "@mui/icons-material/AccountCircle";

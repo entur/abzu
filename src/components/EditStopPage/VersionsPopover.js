@@ -75,33 +75,29 @@ class VersionsPopover extends Component {
           targetOrigin={{ horizontal: "left", vertical: "top" }}
           onClose={() => this.setState({ open: false })}
         >
-          <Menu menuItemStyle={{ fontSize: 12 }} autoWidth={true}>
-            {sortVersions(versions).map((version, i) => (
-              <MenuItem
-                key={"version" + i}
-                primaryText={
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div style={{ display: "flex" }}>
-                      <div style={{ marginRight: 8, fontWeight: 600 }}>
-                        {version.version}
-                      </div>
-                      <div>{version.name}</div>
-                    </div>
-                    <div style={{ marginTop: -10 }}>
-                      {version.changedBy || notAvailableMessage}:{" "}
-                      {version.versionComment || notAvailableMessage}
-                    </div>
+          {sortVersions(versions).map((version, i) => (
+            <MenuItem
+              disabled={true}
+              key={"version" + i}
+              onClick={() => this.handleOnRequest(version)}
+            >
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex" }}>
+                  <div style={{ marginRight: 8, fontWeight: 600 }}>
+                    {version.version}
                   </div>
-                }
-                secondaryText={
-                  <div style={{ transform: "translateY(-14px)" }}>{`${
-                    version.fromDate || notAvailableMessage
-                  } - ${version.toDate || notAvailableMessage}`}</div>
-                }
-                onClick={() => this.handleOnRequest(version)}
-              />
-            ))}
-          </Menu>
+                  <div>{version.name}</div>
+                </div>
+                <div style={{ marginTop: -10 }}>
+                  {version.changedBy || notAvailableMessage}:{" "}
+                  {version.versionComment || notAvailableMessage}
+                </div>
+              </div>
+              <div style={{ transform: "translateY(-14px)" }}>{`${
+                version.fromDate || notAvailableMessage
+              } - ${version.toDate || notAvailableMessage}`}</div>
+            </MenuItem>
+          ))}
         </Popover>
       </div>
     );
