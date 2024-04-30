@@ -140,12 +140,12 @@ class Header extends React.Component {
   }
 
   handleToggleShowFareZones(value) {
-    this.props.dispatch(toggleShowTariffZonesInMap(!value));
+    this.props.dispatch(toggleShowTariffZonesInMap(false));
     this.props.dispatch(toggleShowFareZonesInMap(value));
   }
 
   handleToggleShowTariffZones(value) {
-    this.props.dispatch(toggleShowFareZonesInMap(!value));
+    this.props.dispatch(toggleShowFareZonesInMap(false));
     this.props.dispatch(toggleShowTariffZonesInMap(value));
   }
 
@@ -537,7 +537,6 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() => this.handleSetLanguage("nb")}
-                  insetChildren
                   checked={locale === "nb"}
                 >
                   {locale === "nb" ? (
@@ -592,7 +591,6 @@ class Header extends React.Component {
                     width: 300,
                   }}
                   onClick={() => this.handleSetLanguage("sv")}
-                  insetChildren
                   checked={locale === "sv"}
                 >
                   {locale === "sv" ? (

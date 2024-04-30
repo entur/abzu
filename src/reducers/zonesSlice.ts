@@ -171,7 +171,6 @@ export const { setSelectedFareZones, setSelectedTariffZones } =
 export const toggleShowFareZonesInMap = createAsyncThunk<void, boolean>(
   "zones/toggleShowFareZonesInMap",
   async (value, { dispatch }) => {
-    debugger;
     Settings.setShowTariffZonesInMap(!value);
     Settings.setShowFareZonesInMap(value);
     dispatch(zonesSlice.actions.toggleShowFareZonesInMap(value));
