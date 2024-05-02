@@ -22,7 +22,7 @@ export const mutateParentStopPlace = gql`
     $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
-    $coordinates: Coordinates!
+    $legacyCoordinates: Coordinates!
     $alternativeNames: [AlternativeNameInput]
     $children: [StopPlaceInput]
   ) {
@@ -33,7 +33,7 @@ export const mutateParentStopPlace = gql`
         description: $description
         versionComment: $versionComment
         validBetween: $validBetween
-        geometry: { type: Point, coordinates: $coordinates }
+        geometry: { type: Point, coordinates: $legacyCoordinates }
         alternativeNames: $alternativeNames
         children: $children
       }
@@ -63,7 +63,7 @@ export const updateChildOfParentStop = gql`
     $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
-    $coordinates: Coordinates!
+    $legacyCoordinates: Coordinates!
     $children: [StopPlaceInput]
   ) {
     mutateParentStopPlace(
@@ -73,7 +73,7 @@ export const updateChildOfParentStop = gql`
         description: $description
         versionComment: $versionComment
         validBetween: $validBetween
-        geometry: { type: Point, coordinates: $coordinates }
+        geometry: { type: Point, coordinates: $legacyCoordinates }
         children: $children
       }
     ) {
@@ -88,7 +88,7 @@ export const mutateCreateMultiModalStopPlace = gql`
     $name: EmbeddableMultilingualStringInput!
     $stopPlaceIds: [String]!
     $description: EmbeddableMultilingualStringInput
-    $coordinates: Coordinates!
+    $legacyCoordinates: Coordinates!
     $versionComment: String
     $validBetween: ValidBetweenInput
   ) {
@@ -97,7 +97,7 @@ export const mutateCreateMultiModalStopPlace = gql`
         name: $name
         stopPlaceIds: $stopPlaceIds
         description: $description
-        geometry: { type: Point, coordinates: $coordinates }
+        geometry: { type: Point, coordinates: $legacyCoordinates }
         versionComment: $versionComment
         validBetween: $validBetween
       }
@@ -139,7 +139,7 @@ export const mutateStopPlace = gql`
     $publicCode: String
     $privateCode: PrivateCodeInput
     $description: EmbeddableMultilingualStringInput
-    $coordinates: Coordinates!
+    $legacyCoordinates: Coordinates!
     $stopPlaceType: StopPlaceType
     $quays: [QuayInput]
     $validBetween: ValidBetweenInput
@@ -164,7 +164,7 @@ export const mutateStopPlace = gql`
         publicCode: $publicCode
         privateCode: $privateCode
         description: $description
-        geometry: { type: Point, coordinates: $coordinates }
+        geometry: { type: Point, legacyCoordinates: $legacyCoordinates }
         versionComment: $versionComment
         alternativeNames: $alternativeNames
         quays: $quays
