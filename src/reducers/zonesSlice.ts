@@ -22,7 +22,7 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
       ...rest,
       polygon: {
         ...polygon,
-        coordinates: polygon.coordinates.map((lnglat: number[]) =>
+        coordinates: polygon.legacyCoordinates.map((lnglat: number[]) =>
           lnglat.slice().reverse(),
         ),
       },

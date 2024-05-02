@@ -160,14 +160,14 @@ const arrayOfPolylinesFromPolyline = (line) => {
     "placeRef",
     "addressablePlace",
     "geometry",
-    "coordinates",
+    "legacyCoordinates",
   ]);
   let endPosition = getIn(line, [
     "to",
     "placeRef",
     "addressablePlace",
     "geometry",
-    "coordinates",
+    "legacyCoordinates",
   ]);
 
   if (startPosition) {

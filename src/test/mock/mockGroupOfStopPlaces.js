@@ -28,7 +28,7 @@ export default {
       },
       geometry: {
         type: "Point",
-        coordinates: [[10.522878, 59.677607]],
+        legacyCoordinates: [[10.522878, 59.677607]],
         __typename: "GeoJSON",
       },
       topographicPlace: {
@@ -57,7 +57,7 @@ export default {
       },
       geometry: {
         type: "Point",
-        coordinates: [[10.526195, 59.682017]],
+        legacyCoordinates: [[10.526195, 59.682017]],
         __typename: "GeoJSON",
       },
       topographicPlace: {
@@ -86,7 +86,7 @@ export default {
       },
       geometry: {
         type: "Point",
-        coordinates: [[10.53034, 59.680506]],
+        legacyCoordinates: [[10.53034, 59.680506]],
         __typename: "GeoJSON",
       },
       topographicPlace: {

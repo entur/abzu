@@ -151,7 +151,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
 
     let startCoordinates = getIn(
       lastPathLink,
-      ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
+      ["from", "placeRef", "addressablePlace", "geometry", "legacyCoordinates"],
       null,
     );
 

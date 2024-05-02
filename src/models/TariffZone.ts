@@ -5,6 +5,6 @@ export interface TariffZone {
   };
   polygon: {
     type: "Polygon";
-    coordinates: [[number, number]];
+    legacyCoordinates: [[number, number]];
   };
 }

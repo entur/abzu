@@ -27,7 +27,7 @@ export const reduceFetchedPolygons = (result) => {
 
     if (resultItem) {
       fetchedPolygons[resultItem.id] = resultItem.polygon
-        ? resultItem.polygon.coordinates
+        ? resultItem.polygon.legacyCoordinates
         : [[]];
     }
 
@@ -386,7 +386,7 @@ export const getAllowanceSearchInfo = (payload, roleAssignments) => {
 };
 
 export const getLatLng = (entity) => {
-  let lngLat = getIn(entity, ["geometry", "coordinates"], null);
+  let lngLat = getIn(entity, ["geometry", "legacyCoordinates"], null);
 
   if (!lngLat || !lngLat.length) return null;
 
