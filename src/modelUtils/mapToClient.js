@@ -369,8 +369,8 @@ helpers.mapSearchResultParentStopPlace = (stop) => {
 
 const updateObjectWithLocation = (stop) => {
   let newStop = Object.assign({}, stop);
-  if (stop.geometry && stop.geometry.coordinates) {
-    let coordinates = stop.geometry.coordinates[0].slice();
+  if (stop.geometry && stop.geometry.legacyCoordinates) {
+    let coordinates = stop.geometry.legacyCoordinates[0].slice();
     newStop.location = [
       setDecimalPrecision(coordinates[1], 6),
       setDecimalPrecision(coordinates[0], 6),
@@ -438,8 +438,8 @@ helpers.createNewParentStopFromLocation = (location) => ({
 helpers.getCenterPosition = (geometry) => {
   if (!geometry) return null;
   return [
-    setDecimalPrecision(geometry.coordinates[0][1], 6),
-    setDecimalPrecision(geometry.coordinates[0][0], 6),
+    setDecimalPrecision(geometry.legacyCoordinates[0][1], 6),
+    setDecimalPrecision(geometry.legacyCoordinates[0][0], 6),
   ];
 };
 
@@ -760,8 +760,8 @@ helpers.mapNeighbourQuaysToClient = (original, payload, resourceId) => {
 
     clientQuay.id = quay.id;
 
-    if (quay.geometry && quay.geometry.coordinates) {
-      let coordinates = quay.geometry.coordinates[0].slice();
+    if (quay.geometry && quay.geometry.legacyCoordinates) {
+      let coordinates = quay.geometry.legacyCoordinates[0].slice();
       clientQuay.location = [
         setDecimalPrecision(coordinates[1], 6),
         setDecimalPrecision(coordinates[0], 6),

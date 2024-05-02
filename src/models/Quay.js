@@ -48,8 +48,8 @@ class Quay {
       clientQuay.privateCode = quay.privateCode.value;
     }
 
-    if (quay.geometry && quay.geometry.coordinates) {
-      let coordinates = quay.geometry.coordinates[0].slice();
+    if (quay.geometry && quay.geometry.legacyCoordinates) {
+      let coordinates = quay.geometry.legacyCoordinates[0].slice();
 
       clientQuay.location = [
         setDecimalPrecision(coordinates[1], 6),
