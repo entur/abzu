@@ -371,7 +371,7 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
   }
 
-  handleSlideChange(value) {
+  handleSlideChange(event, value) {
     this.props.dispatch(UserActions.changeElementTypeTab(value));
   }
 
@@ -617,6 +617,7 @@ class EditStopGeneral extends React.Component {
               activeStopPlace={stopPlace}
               itemTranslation={translations}
               intl={intl}
+              value={activeElementTab}
             />
           </div>
           <ConfirmDialog

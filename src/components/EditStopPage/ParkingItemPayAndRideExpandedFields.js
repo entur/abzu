@@ -243,10 +243,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         </Box>
       </Grid>
       <Grid item>
-        <Subheader>
+        <ListSubheader>
           {formatMessage({ id: "parking_parkAndRide_capacity_sub_header" })} (
           {`${totalCapacity}`})
-        </Subheader>
+        </ListSubheader>
         <Box
           display="flex"
           flexDirection="row"
@@ -294,9 +294,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         </Box>
       </Grid>
       <Grid item>
-        <Subheader>
+        <ListSubheader>
           {formatMessage({ id: "parking_recharging_sub_header" })}
-        </Subheader>
+        </ListSubheader>
         <Info>
           {formatMessage({ id: "parking_recharging_available_info" })}
         </Info>
