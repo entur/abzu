@@ -19,7 +19,7 @@
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
-    "@apollo/client": "3.10.1",
+    "@apollo/client": "3.10.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@entur/react-leaflet-google": "1.0.3",
