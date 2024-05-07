@@ -131,16 +131,8 @@ class StopPlace {
         );
       }
 
-      if (stop.geometry && stop.geometry.legacyCoordinates) {
+      if (stop.geometry && stop.geometry.coordinates) {
         // this is temporary
-        let coordinates = stop.geometry.legacyCoordinates[0].slice();
-        // Leaflet uses latLng, GeoJSON [long,lat]
-        clientStop.location = [
-          setDecimalPrecision(coordinates[1], 6),
-          setDecimalPrecision(coordinates[0], 6),
-        ];
-      } else if (stop.geometry && stop.geometry.coordinates) {
-        //this must be changed to new input format when we have switched to legacyCoordinates
         let coordinates = stop.geometry.coordinates[0].slice();
         // Leaflet uses latLng, GeoJSON [long,lat]
         clientStop.location = [

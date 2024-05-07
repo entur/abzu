@@ -87,9 +87,7 @@ export const simplifyBoardingPositions = (boardingPositions) => {
   if (boardingPositions) {
     return boardingPositions.map((bp) => {
       let coordinates;
-      if (bp.geometry.legacyCoordinates) {
-        coordinates = bp.geometry.legacyCoordinates[0].slice();
-      } else if (bp.geometry.coordinates) {
+      if (bp.geometry.coordinates) {
         coordinates = bp.geometry.coordinates[0].slice();
       }
 
