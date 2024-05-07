@@ -105,7 +105,7 @@ Object {
   },
   "adjacentSites": undefined,
   "alternativeNames": Array [],
-  "legacyCoordinates": Array [
+  "coordinates": Array [
     Array [
       11.170963,
       59.587427,
