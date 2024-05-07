@@ -43,7 +43,7 @@ helpers.mapQuayToVariables = (quay) => {
 
   if (quay.location) {
     quayVariables.geometry = {
-      coordinates: [[quay.location[1], quay.location[0]]],
+      legacyCoordinates: [[quay.location[1], quay.location[0]]],
       type: "Point",
     };
   }
