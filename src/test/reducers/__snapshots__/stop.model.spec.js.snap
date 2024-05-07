@@ -182,7 +182,7 @@ exports[`Model: map format from server to expected client model should map parki
 Array [
   Object {
     "geometry": Object {
-      "legacyCoordinates": Array [
+      "coordinates": Array [
         Array [
           11.088595,
           63.207698,
