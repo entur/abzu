@@ -22,7 +22,7 @@ export const mutateParentStopPlace = gql`
     $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
-    $legacyCoordinates: legacyCoordinates!
+    $legacyCoordinates: legacy-Coordinates!
     $alternativeNames: [AlternativeNameInput]
     $children: [StopPlaceInput]
   ) {
@@ -63,7 +63,7 @@ export const updateChildOfParentStop = gql`
     $description: EmbeddableMultilingualStringInput
     $validBetween: ValidBetweenInput
     $versionComment: String
-    $legacyCoordinates: legacyCoordinates!
+    $legacyCoordinates: legacy-Coordinates!
     $children: [StopPlaceInput]
   ) {
     mutateParentStopPlace(
@@ -88,7 +88,7 @@ export const mutateCreateMultiModalStopPlace = gql`
     $name: EmbeddableMultilingualStringInput!
     $stopPlaceIds: [String]!
     $description: EmbeddableMultilingualStringInput
-    $legacyCoordinates: legacyCoordinates!
+    $legacyCoordinates: legacy-Coordinates!
     $versionComment: String
     $validBetween: ValidBetweenInput
   ) {
@@ -139,7 +139,7 @@ export const mutateStopPlace = gql`
     $publicCode: String
     $privateCode: PrivateCodeInput
     $description: EmbeddableMultilingualStringInput
-    $legacyCoordinates: legacyCoordinates!
+    $legacyCoordinates: legacy-Coordinates!
     $stopPlaceType: StopPlaceType
     $quays: [QuayInput]
     $validBetween: ValidBetweenInput
