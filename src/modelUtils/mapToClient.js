@@ -452,7 +452,7 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
       importedId: key === "imported-id" ? newValues : original.importedId,
       keyValues: original.keyValues.map((kv) => {
         if (kv.key === key) {
-          kv.values = newValues;
+          return Object.assign({}, kv, { values: newValues });
         }
         return kv;
       }),
@@ -469,7 +469,7 @@ helpers.updateKeyValuesByKey = (original, key, newValues, origin) => {
           }
           quay.keyValues = quay.keyValues.map((kv) => {
             if (kv.key === key) {
-              kv.values = newValues;
+              return Object.assign({}, kv, { values: newValues });
             }
             return kv;
           });
