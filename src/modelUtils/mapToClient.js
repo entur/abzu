@@ -133,7 +133,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
             id: action.payload.id,
             geometry: {
               type: "Point",
-              coordinates: [action.payload.coordinates],
+              legacyCoordinates: [action.payload.coordinates],
             },
           },
         },
@@ -170,7 +170,7 @@ helpers.updatePathLinkWithNewEntry = (action, pathLink) => {
           id: action.payload.id,
           geometry: {
             type: "Point",
-            coordinates: [action.payload.coordinates],
+            legacyCoordinates: [action.payload.coordinates],
           },
         },
       },
