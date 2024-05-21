@@ -22,7 +22,7 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
       ...rest,
       polygon: {
         ...polygon,
-        coordinates: polygon.legacyCoordinates.map((lnglat: number[]) =>
+        legacyCoordinates: polygon.legacyCoordinates.map((lnglat: number[]) =>
           lnglat.slice().reverse(),
         ),
       },
@@ -102,7 +102,7 @@ export const getTariffZonesByIdsAction = createAsyncThunk<
     fetchPolicy: "network-only",
     context: getContext(thunkAPI.getState().roles.auth),
   });
-
+  debugger;
   return response.data.tariffZones;
 });
 
