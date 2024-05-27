@@ -43,7 +43,7 @@ helpers.mapQuayToVariables = (quay) => {
 
   if (quay.location) {
     quayVariables.geometry = {
-      coordinates: [[quay.location[1], quay.location[0]]],
+      legacyCoordinates: [[quay.location[1], quay.location[0]]],
       type: "Point",
     };
   }
@@ -94,7 +94,7 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   };
 
   if (stop.parentStop.location) {
-    variables.coordinates = [
+    variables.legacyCoordinates = [
       [stop.parentStop.location[1], stop.parentStop.location[0]],
     ];
   }
@@ -130,7 +130,9 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   }
 
   if (stop.location) {
-    parentStopVariables.coordinates = [[stop.location[1], stop.location[0]]];
+    parentStopVariables.legacyCoordinates = [
+      [stop.location[1], stop.location[0]],
+    ];
   }
 
   if (userInput) {
@@ -151,12 +153,12 @@ const createEmbeddableMultilingualString = (string) => ({
 helpers.mapDeepStopToVariables = (original) => {
   let stopPlace = helpers.mapStopToVariables(original, null);
 
-  if (stopPlace.coordinates) {
+  if (stopPlace.legacyCoordinates) {
     stopPlace.geometry = {
-      coordinates: stopPlace.coordinates.slice(),
+      legacyCoordinates: stopPlace.legacyCoordinates.slice(),
       type: "Point",
     };
-    delete stopPlace.coordinates;
+    delete stopPlace.legacyCoordinates;
   }
   return stopPlace;
 };
@@ -205,7 +207,7 @@ helpers.mapStopToVariables = (original, userInput) => {
   }
 
   if (stop.location) {
-    stopVariables.coordinates = [[stop.location[1], stop.location[0]]];
+    stopVariables.legacyCoordinates = [[stop.location[1], stop.location[0]]];
   }
   helpers.removeTypeNameRecursively(stopVariables);
   return stopVariables;
@@ -236,7 +238,7 @@ helpers.mapPathLinkToVariables = (pathLinks) => {
     if (pathLink.inBetween && pathLink.inBetween.length) {
       pathLink.geometry = {
         type: "LineString",
-        coordinates: pathLink.inBetween.map((latlng) => latlng.reverse()),
+        legacyCoordinates: pathLink.inBetween.map((latlng) => latlng.reverse()),
       };
     }
     helpers.removeTypeNameRecursively(pathLink);
@@ -310,7 +312,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
       parking.geometry = {
         type: "Point",
-        coordinates: [coordinates],
+        legacyCoordinates: [coordinates],
       };
     } else {
       parking.geometry = null;

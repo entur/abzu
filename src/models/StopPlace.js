@@ -131,8 +131,8 @@ class StopPlace {
         );
       }
 
-      if (stop.geometry && stop.geometry.coordinates) {
-        let coordinates = stop.geometry.coordinates[0].slice();
+      if (stop.geometry && stop.geometry.legacyCoordinates) {
+        let coordinates = stop.geometry.legacyCoordinates[0].slice();
         // Leaflet uses latLng, GeoJSON [long,lat]
         clientStop.location = [
           setDecimalPrecision(coordinates[1], 6),

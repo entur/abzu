@@ -31,16 +31,16 @@ class PathLink {
 
     let startCoordinates = getIn(
       clientPathLink,
-      ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
+      ["from", "placeRef", "addressablePlace", "geometry", "legacyCoordinates"],
       null,
     );
     let inBetweenCoordinates = getIn(clientPathLink, [
       "geometry",
-      "coordinates",
+      "legacyCoordinates",
     ]);
     let endCoordinates = getIn(
       clientPathLink,
-      ["to", "placeRef", "addressablePlace", "geometry", "coordinates"],
+      ["to", "placeRef", "addressablePlace", "geometry", "legacyCoordinates"],
       null,
     );
 

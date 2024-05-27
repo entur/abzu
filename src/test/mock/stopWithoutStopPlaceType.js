@@ -26,14 +26,14 @@ const mockBusStop = {
           __typename: "EmbeddableMultilingualString",
         },
         geometry: {
-          coordinates: [[10.434486, 59.833343]],
+          legacyCoordinates: [[10.434486, 59.833343]],
           __typename: "GeoJSON",
         },
         quays: [
           {
             id: "NSR:Quay:695",
             geometry: {
-              coordinates: [[10.434574, 59.833321]],
+              legacyCoordinates: [[10.434574, 59.833321]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -64,7 +64,7 @@ const mockBusStop = {
           {
             id: "NSR:Quay:696",
             geometry: {
-              coordinates: [[10.434846, 59.833237]],
+              legacyCoordinates: [[10.434846, 59.833237]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -95,7 +95,7 @@ const mockBusStop = {
           {
             id: "NSR:Quay:697",
             geometry: {
-              coordinates: [[10.43442, 59.833368]],
+              legacyCoordinates: [[10.43442, 59.833368]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -126,7 +126,7 @@ const mockBusStop = {
           {
             id: "NSR:Quay:698",
             geometry: {
-              coordinates: [[10.434126, 59.833448]],
+              legacyCoordinates: [[10.434126, 59.833448]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -162,7 +162,7 @@ const mockBusStop = {
           {
             id: "NSR:Quay:699",
             geometry: {
-              coordinates: [[10.434682, 59.833288]],
+              legacyCoordinates: [[10.434682, 59.833288]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -193,7 +193,7 @@ const mockBusStop = {
           {
             id: "NSR:Quay:700",
             geometry: {
-              coordinates: [[10.434301, 59.833399]],
+              legacyCoordinates: [[10.434301, 59.833399]],
               __typename: "GeoJSON",
             },
             version: "7",
@@ -310,7 +310,7 @@ const mockBusStop = {
         totalCapacity: 0,
         name: { value: "Asker", __typename: "EmbeddableMultilingualString" },
         geometry: {
-          coordinates: [[10.43469, 59.83353]],
+          legacyCoordinates: [[10.43469, 59.83353]],
           __typename: "GeoJSON",
         },
         parkingVehicleTypes: ["pedalCycle"],
@@ -326,7 +326,7 @@ const mockBusStop = {
         totalCapacity: 644,
         name: { value: "Asker", __typename: "EmbeddableMultilingualString" },
         geometry: {
-          coordinates: [[10.43469, 59.83353]],
+          legacyCoordinates: [[10.43469, 59.83353]],
           __typename: "GeoJSON",
         },
         parkingVehicleTypes: ["car"],
