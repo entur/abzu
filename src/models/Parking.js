@@ -96,7 +96,7 @@ class Parking {
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
     };
-    let coordinates = getIn(parking, ["geometry", "coordinates"], null);
+    let coordinates = getIn(parking, ["geometry", "legacyCoordinates"], null);
 
     if (coordinates && coordinates.length) {
       clientParking.location = [coordinates[0][1], coordinates[0][0]];

@@ -38,8 +38,8 @@ export const getInTransform = (object, keys, defaultValue, transformater) => {
 };
 
 export const getCoordinatesFromGeometry = (geometry) => {
-  if (geometry && geometry.coordinates) {
-    let coordinates = geometry.coordinates[0].slice();
+  if (geometry && geometry.legacyCoordinates) {
+    let coordinates = geometry.legacyCoordinates[0].slice();
     // Leaflet uses latLng, GeoJSON [long,lat]
     return [
       setDecimalPrecision(coordinates[1], 6),

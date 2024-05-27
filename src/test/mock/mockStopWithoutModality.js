@@ -10,14 +10,14 @@ export default {
         alternativeNames: [],
         description: null,
         geometry: {
-          coordinates: [[10.399077, 63.43604]],
+          legacyCoordinates: [[10.399077, 63.43604]],
           __typename: "GeoJSON",
         },
         quays: [
           {
             id: "NSR:Quay:98580",
             geometry: {
-              coordinates: [[10.399077, 63.43604]],
+              legacyCoordinates: [[10.399077, 63.43604]],
               __typename: "GeoJSON",
             },
             version: "21",

@@ -30,14 +30,14 @@ const mockRailReplacementStop = {
           __typename: "EmbeddableMultilingualString",
         },
         geometry: {
-          coordinates: [[9.052734, 60.844911]],
+          legacyCoordinates: [[9.052734, 60.844911]],
           __typename: "GeoJSON",
         },
         quays: [
           {
             id: "NSR:Quay:110500",
             geometry: {
-              coordinates: [[9.049687, 60.845538]],
+              legacyCoordinates: [[9.049687, 60.845538]],
               __typename: "GeoJSON",
             },
             version: "1",

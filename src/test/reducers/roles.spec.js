@@ -36,7 +36,7 @@ const stopPlaceResult = {
     stopPlace: [
       {
         geometry: {
-          coordinates: [[10.434486, 59.833343]],
+          legacyCoordinates: [[10.434486, 59.833343]],
         },
       },
     ],

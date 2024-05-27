@@ -45,7 +45,7 @@ Fragments.groupOfStopPlaces = {
           value
         }
         geometry {
-          coordinates
+          legacyCoordinates
           type
         }
         ... on StopPlace {
@@ -61,7 +61,7 @@ Fragments.groupOfStopPlaces = {
             }
             publicCode
             geometry {
-              coordinates
+              legacyCoordinates
               type
             }
           }
@@ -75,7 +75,7 @@ Fragments.groupOfStopPlaces = {
             stopPlaceType
             submode
             geometry {
-              coordinates
+              legacyCoordinates
               type
             }
             name {
@@ -138,7 +138,7 @@ Fragments.boardingPosition = {
       id
       publicCode
       geometry {
-        coordinates
+        legacyCoordinates
       }
     }
   `,
@@ -149,7 +149,7 @@ Fragments.quay = {
       fragment VerboseQuay on Quay {
           id
           geometry {
-              coordinates
+              legacyCoordinates
           }
           version
           compassBearing
@@ -203,7 +203,7 @@ Fragments.stopPlace = {
             value
         }
         geometry {
-            coordinates
+            legacyCoordinates
         }
         adjacentSites {
             ref
@@ -290,7 +290,7 @@ Fragments.stopPlace = {
               }
           }
           geometry {
-              coordinates
+              legacyCoordinates
           }
           quays {
               ...VerboseQuay
@@ -375,7 +375,7 @@ Fragments.parentStopPlace = {
               value
           }
           geometry {
-              coordinates
+              legacyCoordinates
           }
           tags {
               name
@@ -446,7 +446,7 @@ Fragments.parentStopPlace = {
         key
       }
       geometry {
-        coordinates
+        legacyCoordinates
       }
       validBetween {
         fromDate
@@ -470,7 +470,7 @@ Fragments.pathLink = {
       }
       geometry {
         type
-        coordinates
+        legacyCoordinates
       }
       from {
         placeRef {
@@ -479,7 +479,7 @@ Fragments.pathLink = {
           addressablePlace {
             id
             geometry {
-              coordinates
+              legacyCoordinates
               type
             }
           }
@@ -492,7 +492,7 @@ Fragments.pathLink = {
           addressablePlace {
             id
             geometry {
-              coordinates
+              legacyCoordinates
               type
             }
           }
@@ -511,7 +511,7 @@ Fragments.parking = {
         value
       }
       geometry {
-        coordinates
+        legacyCoordinates
       }
       parkingVehicleTypes
       validBetween {

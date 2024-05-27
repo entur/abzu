@@ -105,18 +105,18 @@ Object {
   },
   "adjacentSites": undefined,
   "alternativeNames": Array [],
-  "coordinates": Array [
-    Array [
-      11.170963,
-      59.587427,
-    ],
-  ],
   "description": Object {
     "lang": "nor",
     "value": "Beskrivelse",
   },
   "id": "NSR:StopPlace:19744",
   "keyValues": Array [],
+  "legacyCoordinates": Array [
+    Array [
+      11.170963,
+      59.587427,
+    ],
+  ],
   "name": Object {
     "lang": "nor",
     "value": "Aspelundsveien",
@@ -132,7 +132,7 @@ Object {
       "compassBearing": 212,
       "description": null,
       "geometry": Object {
-        "coordinates": Array [
+        "legacyCoordinates": Array [
           Array [
             11.17094,
             59.587486,
@@ -153,7 +153,7 @@ Object {
       "compassBearing": 38,
       "description": null,
       "geometry": Object {
-        "coordinates": Array [
+        "legacyCoordinates": Array [
           Array [
             11.170986,
             59.587368,
@@ -182,7 +182,7 @@ exports[`Model: map format from server to expected client model should map parki
 Array [
   Object {
     "geometry": Object {
-      "coordinates": Array [
+      "legacyCoordinates": Array [
         Array [
           11.088595,
           63.207698,
