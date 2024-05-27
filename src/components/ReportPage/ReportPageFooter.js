@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RaisedButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import { jsonArrayToCSV } from "../../utils/CSVHelper";
 import {
   ColumnTransformersStopPlace,
@@ -189,7 +189,7 @@ class ReportPageFooter extends React.Component {
           ))}
         </div>
         <div style={{ marginRight: 20, display: "flex" }}>
-          <RaisedButton
+          <Button
             onClick={this.handleExportOpen.bind(this)}
             label={formatMessage({ id: "export_to_csv" })}
             disabled={!totalCount}

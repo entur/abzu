@@ -311,7 +311,7 @@ class ReportPage extends React.Component {
     });
   }
 
-  handleAddChip(chip, index) {
+  handleAddChip(event, chip, index) {
     if (chip && index > -1) {
       let addedChipsIds = this.state.topoiChips.map((tc) => tc.id);
       if (addedChipsIds.indexOf(chip.id) === -1) {
@@ -325,7 +325,7 @@ class ReportPage extends React.Component {
     }
   }
 
-  handleTopographicalPlaceSearch(searchText) {
+  handleTopographicalPlaceSearch(event, searchText) {
     this.props.dispatch(topographicalPlaceSearch(searchText));
   }
 
@@ -335,10 +335,21 @@ class ReportPage extends React.Component {
       text: name,
       id: place.id,
       value: (
-        <MenuItem
-          primaryText={name}
-          secondaryText={formatMessage({ id: place.topographicPlaceType })}
-        />
+        <div
+          style={{
+            marginLeft: 10,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 380,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontSize: "0.9em" }}>{name}</div>
+            <div style={{ fontSize: "0.6em", color: "grey" }}>
+              {formatMessage({ id: place.topographicPlaceType })}
+            </div>
+          </div>
+        </div>
       ),
       type: place.topographicPlaceType,
     };
@@ -425,23 +436,25 @@ class ReportPage extends React.Component {
                   {formatMessage({ id: "filter_report_by_topography" })}
                 </div>
                 <AutoComplete
+                  freeSolo
+                  getOptionLabel={(option) => `${option.name}`}
                   options={topographicalPlacesDataSource}
-                  onUpdateInput={this.handleTopographicalPlaceSearch.bind(this)}
-                  filter={AutoComplete.caseInsensitiveFilter}
-                  style={{
-                    margin: "auto",
-                    width: "50%",
-                    textAlign: "center",
-                    marginTop: -10,
-                  }}
+                  onInputChange={this.handleTopographicalPlaceSearch.bind(this)}
                   maxSearchResults={5}
                   fullWidth={true}
-                  ref="topoFilter"
-                  onNewRequest={this.handleAddChip.bind(this)}
+                  onChange={this.handleAddChip.bind(this)}
+                  noOptionsText={formatMessage({ id: "no_results_found" })}
                   renderInput={(params) => (
                     <TextField
+                      {...params}
+                      variant="standard"
                       label={formatMessage({ id: "filter_by_topography" })}
                     />
+                  )}
+                  renderOption={(props, option, { selected }) => (
+                    <MenuItem {...props} key={option.id}>
+                      {option.value}
+                    </MenuItem>
                   )}
                 />
                 <TopographicalFilter
