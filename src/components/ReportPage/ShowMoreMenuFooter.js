@@ -14,6 +14,7 @@
 
 import React, { Component } from "react";
 import FlatButton from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 class ShowMoreMenuFooter extends Component {
   render() {
@@ -39,12 +40,9 @@ class ShowMoreMenuFooter extends Component {
 
     return (
       <div style={style}>
-        <FlatButton
-          fullWidth={true}
-          label={label}
-          labelStyle={labelStyle}
-          onClick={onClick}
-        />
+        <FlatButton onClick={onClick}>
+          <Typography sx={{ fontSize: "0.9em" }}>{label}</Typography>
+        </FlatButton>
       </div>
     );
   }

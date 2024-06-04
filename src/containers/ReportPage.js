@@ -27,7 +27,7 @@ import {
   topographicalPlaceSearch,
 } from "../actions/TiamatActions";
 import MenuItem from "@mui/material/MenuItem";
-import RaisedButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MdSpinner from "../static/icons/spinner";
 import MdSearch from "@mui/icons-material/Search";
@@ -55,6 +55,7 @@ class ReportPage extends React.Component {
       topoiChips: [],
       activePageIndex: 0,
       searchQuery: "",
+      topographicPlaceFilterValue: "",
       isLoading: false,
       columnOptionsQuays: columnOptionsQuays,
       columnOptionsStopPlace: columnOptionsStopPlace,
@@ -318,15 +319,18 @@ class ReportPage extends React.Component {
         this.setState({
           topoiChips: this.state.topoiChips.concat(chip),
         });
-        this.refs.topoFilter.setState({
-          searchText: "",
-        });
+        this.setState({ topographicPlaceFilterValue: "" });
       }
     }
   }
 
-  handleTopographicalPlaceSearch(event, searchText) {
-    this.props.dispatch(topographicalPlaceSearch(searchText));
+  handleTopographicalPlaceSearch(event, searchText, reason) {
+    if (reason && reason === "clear") {
+      debugger;
+      this.setState({ topographicPlaceFilterValue: "" });
+    }
+    const { dispatch } = this.props;
+    dispatch(topographicalPlaceSearch(searchText));
   }
 
   createTopographicPlaceMenuItem(place, formatMessage) {
@@ -440,8 +444,6 @@ class ReportPage extends React.Component {
                   getOptionLabel={(option) => `${option.name}`}
                   options={topographicalPlacesDataSource}
                   onInputChange={this.handleTopographicalPlaceSearch.bind(this)}
-                  maxSearchResults={5}
-                  fullWidth={true}
                   onChange={this.handleAddChip.bind(this)}
                   noOptionsText={formatMessage({ id: "no_results_found" })}
                   renderInput={(params) => (
@@ -449,6 +451,14 @@ class ReportPage extends React.Component {
                       {...params}
                       variant="standard"
                       label={formatMessage({ id: "filter_by_topography" })}
+                      onChange={(event) => {
+                        // don't fire API if the user delete or not entered anything
+                        if (event.target.value !== null) {
+                          this.setState({
+                            topographicPlaceFilterValue: event.target.value,
+                          });
+                        }
+                      }}
                     />
                   )}
                   renderOption={(props, option, { selected }) => (
@@ -484,6 +494,7 @@ class ReportPage extends React.Component {
                 }}
               >
                 <TextField
+                  variant="standard"
                   floatingLabelText={formatMessage({
                     id: "optional_search_string",
                   })}
@@ -501,7 +512,8 @@ class ReportPage extends React.Component {
                     marginTop: 2,
                   }}
                 >
-                  <RaisedButton
+                  <Button
+                    variant="outlined"
                     style={{
                       marginTop: 10,
                       marginLeft: 5,
@@ -509,9 +521,10 @@ class ReportPage extends React.Component {
                     }}
                     disabled={isLoading}
                     icon={isLoading ? <MdSpinner /> : <MdSearch />}
-                    label={formatMessage({ id: "search" })}
                     onClick={() => this.handleSearch()}
-                  />
+                  >
+                    {formatMessage({ id: "search" })}
+                  </Button>
                   <GeneralReportFilters
                     formatMessage={formatMessage}
                     hasParking={hasParking}

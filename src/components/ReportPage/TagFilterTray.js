@@ -40,10 +40,9 @@ class TagFilterTray extends Component {
                     color: "#fff",
                     textTransform: "uppercase",
                   }}
-                  onRequestDelete={() => handleItemOnCheck(tag, false)}
-                >
-                  {tag}
-                </Chip>
+                  label={tag}
+                  onDelete={() => handleItemOnCheck(tag, false)}
+                />
               ))}
           </div>
         </div>

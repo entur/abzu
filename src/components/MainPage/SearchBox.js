@@ -544,6 +544,7 @@ class SearchBox extends React.Component {
                       )}
                       inputValue={this.state.topographicPlaceFilterValue}
                       onChange={this.handleAddChip.bind(this)}
+                      noOptionsText={formatMessage({ id: "no_results_found" })}
                       renderInput={(params) => (
                         <TextField
                           {...params}
