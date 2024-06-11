@@ -18,6 +18,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { sortVersions } from "../../utils";
 import { Popover } from "@mui/material";
+import Divider from "@mui/material/Divider";
 
 class VersionsPopover extends Component {
   constructor(props) {
@@ -54,7 +55,6 @@ class VersionsPopover extends Component {
     return (
       <div>
         <div
-          disabled={disabled}
           style={{
             marginRight: 10,
             zIndex: 999,
@@ -68,7 +68,7 @@ class VersionsPopover extends Component {
         >
           {buttonLabel}
         </div>
-        <Popover
+        <Menu
           open={open}
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
@@ -77,28 +77,39 @@ class VersionsPopover extends Component {
         >
           {sortVersions(versions).map((version, i) => (
             <MenuItem
-              disabled={true}
               key={"version" + i}
               onClick={() => this.handleOnRequest(version)}
+              sx={{ fontSize: 12 }}
             >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: 10,
+                }}
+              >
+                <div style={{ display: "flex", marginTop: 10 }}>
                   <div style={{ marginRight: 8, fontWeight: 600 }}>
                     {version.version}
                   </div>
                   <div>{version.name}</div>
                 </div>
-                <div style={{ marginTop: -10 }}>
+                <div style={{ marginTop: 10 }}>
                   {version.changedBy || notAvailableMessage}:{" "}
                   {version.versionComment || notAvailableMessage}
                 </div>
               </div>
-              <div style={{ transform: "translateY(-14px)" }}>{`${
-                version.fromDate || notAvailableMessage
-              } - ${version.toDate || notAvailableMessage}`}</div>
+              <hr />
+              <div
+                style={{ transform: "translateY(-19px)", textAlign: "right" }}
+              >
+                {`${
+                  version.fromDate || notAvailableMessage
+                } - ${version.toDate || notAvailableMessage}`}
+              </div>
             </MenuItem>
           ))}
-        </Popover>
+        </Menu>
       </div>
     );
   }
