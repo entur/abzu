@@ -561,7 +561,7 @@ export const getStopPlaceAndPathLinkByVersion =
       query: stopPlaceAndPathLinkByVersion,
       variables: {
         id,
-        version,
+        version: parseInt(version),
       },
       context: await getContext(getState().roles.auth),
     })(dispatch);
