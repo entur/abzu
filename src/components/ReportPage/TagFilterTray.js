@@ -33,7 +33,9 @@ class TagFilterTray extends Component {
                 <Chip
                   key={"tag-filter" + i}
                   deleteIconStyle={{ fill: "#fff" }}
-                  backgroundColor="#ffa500"
+                  sx={
+                    "background-color: #ffa500; color: #fff; text-transform: uppercase"
+                  }
                   style={{ margin: 3, transform: "scale(0.9)" }}
                   labelStyle={{
                     fontSize: "0.7em",
@@ -50,5 +52,4 @@ class TagFilterTray extends Component {
     );
   }
 }
-
 export default TagFilterTray;

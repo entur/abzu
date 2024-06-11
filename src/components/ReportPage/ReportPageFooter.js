@@ -190,31 +190,33 @@ class ReportPageFooter extends React.Component {
         </div>
         <div style={{ marginRight: 20, display: "flex" }}>
           <Button
+            variant="contained"
             onClick={this.handleExportOpen.bind(this)}
-            label={formatMessage({ id: "export_to_csv" })}
             disabled={!totalCount}
             primary={true}
-          />
-          <Popover
+          >
+            {formatMessage({ id: "export_to_csv" })}
+          </Button>
+
+          <Menu
             open={this.state.open}
             anchorEl={this.state.anchorEl}
-            anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+            anchorOrigin={{
+              horizontal: "left",
+              vertical: "bottom",
+            }}
             targetOrigin={{ horizontal: "left", vertical: "top" }}
             onClose={() => {
               this.setState({ open: false });
             }}
           >
-            <Menu>
-              <MenuItem
-                onClick={this.handleGetCSVStopPlace.bind(this)}
-                primaryText={formatMessage({ id: "export_to_csv_stop_places" })}
-              />
-              <MenuItem
-                onClick={this.handleGetCSVQuays.bind(this)}
-                primaryText={formatMessage({ id: "export_to_csv_quays" })}
-              />
-            </Menu>
-          </Popover>
+            <MenuItem onClick={this.handleGetCSVStopPlace.bind(this)}>
+              {formatMessage({ id: "export_to_csv_stop_places" })}
+            </MenuItem>
+            <MenuItem onClick={this.handleGetCSVQuays.bind(this)}>
+              {formatMessage({ id: "export_to_csv_quays" })}
+            </MenuItem>
+          </Menu>
         </div>
       </div>
     );

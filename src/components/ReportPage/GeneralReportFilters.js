@@ -41,7 +41,6 @@ class GeneralReportFilters extends Component {
         <Button
           variant="contained"
           style={{
-            marginTop: 10,
             marginLeft: 5,
             transform: "scale(0.9)",
           }}

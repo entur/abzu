@@ -31,7 +31,7 @@ import moment from "moment";
 
 const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {
-    return <MdNotChecked color="#B71C1C" />;
+    return <MdNotChecked sx={{ color: "#B71C1C" }} />;
   }
   return parking.map((p) => (
     <div style={{ display: "inline-block", marginLeft: 5 }}>
@@ -189,23 +189,23 @@ export const ColumnTransformerStopPlaceJsx = {
   },
   shelterEquipment: (stop) => {
     return isEquipted(stop, ["placeEquipments", "shelterEquipment"]) ? (
-      <MdCheck color="#1B5E20" />
+      <MdCheck sx={{ color: "#1B5E20" }} />
     ) : (
-      <MdNotChecked color="#B71C1C" />
+      <MdNotChecked sx={{ color: "#B71C1C" }} />
     );
   },
   waitingRoomEquipment: (stop) => {
     return isEquipted(stop, ["placeEquipments", "waitingRoomEquipment"]) ? (
-      <MdCheck color="#1B5E20" />
+      <MdCheck sx={{ color: "#1B5E20" }} />
     ) : (
-      <MdNotChecked color="#B71C1C" />
+      <MdNotChecked sx={{ color: "#B71C1C" }} />
     );
   },
   sanitaryEquipment: (stop) => {
     return isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]) ? (
-      <MdCheck color="#1B5E20" />
+      <MdCheck sx={{ color: "#1B5E20" }} />
     ) : (
-      <MdNotChecked color="#B71C1C" />
+      <MdNotChecked sx={{ color: "#B71C1C" }} />
     );
   },
   generalSign: (stop) => {
@@ -236,7 +236,7 @@ export const ColumnTransformerStopPlaceJsx = {
       });
       return transportModeSigns;
     }
-    return <MdNotChecked color="#B71C1C" />;
+    return <MdNotChecked sx={{ color: "#B71C1C" }} />;
   },
   tags: (stop) => (
     <TagTray

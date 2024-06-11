@@ -489,13 +489,15 @@ class ReportPage extends React.Component {
               <div
                 style={{
                   marginLeft: 10,
+                  marginTop: 40,
                   display: "flex",
                   alignItems: "center",
                 }}
               >
                 <TextField
                   variant="standard"
-                  floatingLabelText={formatMessage({
+                  type="search"
+                  label={formatMessage({
                     id: "optional_search_string",
                   })}
                   style={{ width: 330 }}
@@ -515,7 +517,7 @@ class ReportPage extends React.Component {
                   <Button
                     variant="outlined"
                     style={{
-                      marginTop: 10,
+                      marginTop: 12,
                       marginLeft: 5,
                       transform: "scale(0.9)",
                     }}
