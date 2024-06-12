@@ -488,10 +488,12 @@ class StopPlaceDetails extends React.Component {
                   </div>
                 )}
                 <FlatButton
+                  variant="outlined"
                   onClick={this.handleOpenTags.bind(this)}
-                  style={{ marginTop: -8 }}
                   label={formatMessage({ id: "tags" })}
-                />
+                >
+                  {formatMessage({ id: "tags" })}
+                </FlatButton>
               </div>
             )}
             <div style={{ padding: 5 }}>
@@ -568,21 +570,19 @@ class StopPlaceDetails extends React.Component {
           <BelongsToGroup
             formatMessage={formatMessage}
             groups={stopPlace.groups}
-            style={{ marginTop: 5 }}
+            style={{ marginTop: 5, marginBottom: 15 }}
           />
         )}
         <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "name" })}
-            floatingLabelText={formatMessage({ id: "name" })}
+            label={formatMessage({ id: "name" })}
             style={{ marginTop: -10, width: 300 }}
             value={name}
             disabled={disabled}
-            errorText={
-              name && name.trim().length
-                ? ""
-                : formatMessage({ id: "name_is_required" })
-            }
+            error={!(name && name.trim().length)}
+            helperText={formatMessage({ id: "name_is_required" })}
             onChange={this.handleStopNameChange.bind(this)}
           />
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -627,17 +627,19 @@ class StopPlaceDetails extends React.Component {
         {isPublicCodePrivateCodeEnabled && (
           <div style={{ display: "flex", alignItems: "center" }}>
             <TextField
+              variant={"standard"}
               hintText={formatMessage({ id: "publicCode" })}
-              floatingLabelText={formatMessage({ id: "publicCode" })}
-              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              label={formatMessage({ id: "publicCode" })}
+              style={{ width: 170, marginRight: 25 }}
               disabled={disabled}
               value={publicCode}
               onChange={this.handleStopPublicCodeChange.bind(this)}
             />
             <TextField
+              variant={"standard"}
               hintText={formatMessage({ id: "privateCode" })}
-              floatingLabelText={formatMessage({ id: "privateCode" })}
-              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              label={formatMessage({ id: "privateCode" })}
+              style={{ width: 170, marginRight: 25 }}
               disabled={disabled}
               value={privateCode}
               onChange={this.handleStopPrivateCodeChange.bind(this)}
@@ -646,9 +648,10 @@ class StopPlaceDetails extends React.Component {
         )}
         <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "description" })}
-            floatingLabelText={formatMessage({ id: "description" })}
-            style={{ width: 340, marginTop: -10 }}
+            label={formatMessage({ id: "description" })}
+            style={{ width: 340 }}
             disabled={disabled}
             value={description}
             onChange={this.handleStopDescriptionChange.bind(this)}

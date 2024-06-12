@@ -1,5 +1,5 @@
 {
-  "tiamatBaseUrl": "http://localhost:1888/services/stop_places/graphql",
+  "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/graphql",
   "OTPUrl": "https://api.dev.entur.io/journey-planner/v2/graphql",
   "baatTokenProxyEndpoint": "https://api.dev.entur.io/baat-token-proxy/v1/token",
   "tiamatEnv": "development",
