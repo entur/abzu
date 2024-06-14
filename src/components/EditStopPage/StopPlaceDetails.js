@@ -60,6 +60,8 @@ import {
 import { Popover } from "@mui/material";
 import { Link } from "react-router-dom";
 import Routes from "../../routes";
+import { Signpost } from "@mui/icons-material";
+import TransportSign from "../../static/icons/TransportSign";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -471,8 +473,7 @@ class StopPlaceDetails extends React.Component {
                     style={{ display: "flex", alignItems: "center", flex: 2 }}
                   >
                     <MdWarning
-                      color="orange"
-                      style={{ marginTop: -5, marginLeft: 10 }}
+                      style={{ marginTop: -5, marginLeft: 10, color: "orange" }}
                     />
                     <span
                       style={{
@@ -651,22 +652,27 @@ class StopPlaceDetails extends React.Component {
             variant={"standard"}
             hintText={formatMessage({ id: "description" })}
             label={formatMessage({ id: "description" })}
-            style={{ width: 340 }}
+            style={{ width: 340, marginRight: 10 }}
             disabled={disabled}
             value={description}
             onChange={this.handleStopDescriptionChange.bind(this)}
           />
-          <ToolTippable
-            toolTipText={weightingStateHint}
-            style={{ marginLeft: 6, borderBottom: "1px dotted", marginTop: -3 }}
-          >
+          <ToolTippable toolTipText={weightingStateHint}>
             <IconButton
               onClick={(e) => {
                 this.handleOpenWeightPopover(e);
               }}
+              style={{ paddingTop: 12 }}
             >
-              <MdTransfer color={this.getWeightingStateColor(stopPlace)} />
+              <MdTransfer
+                style={{ color: this.getWeightingStateColor(stopPlace) }}
+              />
             </IconButton>
+            <div
+              style={{
+                borderBottom: "1px dotted",
+              }}
+            ></div>
             <WeightingPopover
               open={!disabled && weightingOpen}
               anchorEl={this.state.weightingAnchorEl}
@@ -681,7 +687,7 @@ class StopPlaceDetails extends React.Component {
         {expanded ? null : (
           <div
             style={{
-              marginTop: 10,
+              marginTop: 20,
               marginBottom: 10,
               height: 15,
               display: "flex",
@@ -695,16 +701,22 @@ class StopPlaceDetails extends React.Component {
                 handleChange={this.handleHandleWheelChair.bind(this)}
                 wheelchairAccess={wheelchairAccess}
               />
+              <div
+                style={{
+                  borderBottom: "1px dotted",
+                }}
+              ></div>
             </ToolTippable>
+
             <ToolTippable toolTipText={ticketMachineHint}>
               <Checkbox
                 checkedIcon={<TicketMachine />}
-                uncheckedIcon={
+                icon={
                   <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={ticketMachine}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleTicketMachineChange(v);
                 }}
               />
@@ -712,12 +724,12 @@ class StopPlaceDetails extends React.Component {
             <ToolTippable toolTipText={busShelterHint}>
               <Checkbox
                 checkedIcon={<BusShelter />}
-                uncheckedIcon={
+                icon={
                   <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={busShelter}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleBusShelterChange(v);
                 }}
               />
@@ -725,12 +737,10 @@ class StopPlaceDetails extends React.Component {
             <ToolTippable toolTipText={WCHint}>
               <Checkbox
                 checkedIcon={<MdWC />}
-                uncheckedIcon={
-                  <MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                }
+                icon={<MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                 style={{ width: "auto" }}
                 checked={WC}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleWCChange(v);
                 }}
               />
@@ -738,29 +748,22 @@ class StopPlaceDetails extends React.Component {
             <ToolTippable toolTipText={waitingRoomHint}>
               <Checkbox
                 checkedIcon={<WaitingRoom />}
-                uncheckedIcon={
+                icon={
                   <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={waitingRoom}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleWaitingRoomChange(v);
                 }}
               />
             </ToolTippable>
             <ToolTippable toolTipText={transportSignHint}>
               <Checkbox
-                checkedIcon={
-                  <Sign512
-                    style={{
-                      transform: "scale(1) translateY(-12px) translateX(-12px)",
-                    }}
-                  />
-                }
+                icon={<TransportSign />}
                 uncheckedIcon={
-                  <Sign512
+                  <Signpost
                     style={{
-                      transform: "scale(1) translateY(-12px) translateX(-12px)",
                       fill: "#8c8c8c",
                       opacity: "0.8",
                     }}
@@ -768,7 +771,7 @@ class StopPlaceDetails extends React.Component {
                 }
                 style={{ width: "auto" }}
                 checked={sign512}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleChangeSign512(v);
                 }}
               />

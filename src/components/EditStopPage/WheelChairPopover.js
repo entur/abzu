@@ -17,7 +17,10 @@ import MenuItem from "@mui/material/MenuItem";
 import WheelChair from "@mui/icons-material/Accessible";
 import IconButton from "@mui/material/IconButton";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
-import { Popover } from "@mui/material";
+
+import Menu from "@mui/material/Menu";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
 class WheelChairPopover extends React.Component {
   constructor(props) {
@@ -59,13 +62,14 @@ class WheelChairPopover extends React.Component {
           style={{ display: "flex", alignItems: "center", fontSize: "0.8em" }}
         >
           <IconButton
-            style={{ borderBottom: disabled ? "none" : "1px dotted grey" }}
             onClick={(e) => {
               if (!disabled) this.handleOpenPopover(e);
             }}
           >
             <WheelChair
-              color={accessibilityAssessments.colors[wheelchairAccess]}
+              style={{
+                color: accessibilityAssessments.colors[wheelchairAccess],
+              }}
             />
           </IconButton>
           {displayLabel ? (
@@ -78,7 +82,7 @@ class WheelChairPopover extends React.Component {
             ""
           )}
         </div>
-        <Popover
+        <Menu
           open={open}
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
@@ -94,24 +98,26 @@ class WheelChairPopover extends React.Component {
                 onClick={() => {
                   this.handleChange(option);
                 }}
-                primaryText={formatMessage({
-                  id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}`,
-                })}
-                secondaryText={
+              >
+                <ListItemIcon>
                   <WheelChair
                     style={{
                       float: "left",
-                      marginLeft: -18,
                       marginTop: 9,
                       marginRight: 5,
                       color: accessibilityAssessments.colors[option],
                     }}
                   />
-                }
-              />
+                </ListItemIcon>
+                <ListItemText>
+                  {formatMessage({
+                    id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}`,
+                  })}
+                </ListItemText>
+              </MenuItem>
             ),
           )}
-        </Popover>
+        </Menu>
       </div>
     );
   }

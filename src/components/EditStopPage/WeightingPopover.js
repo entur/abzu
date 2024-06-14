@@ -17,7 +17,10 @@ import MenuItem from "@mui/material/MenuItem";
 import MdTransfer from "@mui/icons-material/TransferWithinAStation";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import { injectIntl } from "react-intl";
-import { Popover } from "@mui/material";
+import Menu from "@mui/material/Menu";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+
 class WeightingPopover extends React.Component {
   render() {
     const {
@@ -29,7 +32,7 @@ class WeightingPopover extends React.Component {
     } = this.props;
 
     return (
-      <Popover
+      <Menu
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -40,14 +43,19 @@ class WeightingPopover extends React.Component {
             key={"weightType" + index}
             value={type}
             style={{ padding: "0px 10px" }}
-            primaryText={formatMessage({ id: `weightTypes.${type}` })}
             onClick={() => {
               handleChange(type);
             }}
-            leftIcon={<MdTransfer color={weightColors[type] || "grey"} />}
-          />
+          >
+            <ListItemIcon>
+              <MdTransfer style={{ color: weightColors[type] || "grey" }} />
+            </ListItemIcon>
+            <ListItemText>
+              {formatMessage({ id: `weightTypes.${type}` })}
+            </ListItemText>
+          </MenuItem>
         ))}
-      </Popover>
+      </Menu>
     );
   }
 }
