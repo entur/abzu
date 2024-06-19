@@ -1,69 +1,67 @@
-# Abzu [![Build and deploy](https://github.com/entur/abzu/actions/workflows/build_and_deploy.yml/badge.svg)](https://github.com/entur/abzu/actions/workflows/build_and_deploy.yml)
+# Report for Assignment 1
 
-Stop place register frontend.
-Uses stop place register backend tiamat's graphQL API
+## Project chosen
 
-The app is built on top of [Create React App](https://create-react-app.dev/docs/getting-started).
+Name: abzu
 
-### Configuration
+URL: https://github.com/entur/abzu
 
-See `src/config/enviroments` for environment specific configuration.
+Number of lines of code and the tool used to count it: 38 KLOC, as measured by sonarcloud
 
-## Development
+Programming language: JavaScript
 
-To run Abzu for development, simply do:
+## Coverage measurement
 
-```
-npm install
-npm start
-```
+### Existing tool
 
-Note: This will launch the application with hot reload enabled.
+<Inform the name of the existing tool that was executed and how it was executed>
 
-Default port in development is _9000_. This can be overrided by setting the environment
-variable `port` (notice lower case).
+<Show the coverage results provided by the existing tool with a screenshot>
 
-To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
+### Your own coverage tool
 
-```
-TIAMAT_BASE_URL=https://api.dev.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
-```
+<The following is supposed to be repeated for each group member>
 
-### Testing
+<Group member name>
 
-Uses [Jest](https://facebook.github.io/jest/) to test unit and reducer testing
+<Function 1 name>
 
-```
-npm test
-```
+<Show a patch (diff) or a link to a commit made in your forked repository that shows the instrumented code to gather coverage measurements>
 
-## Authentication
+<Provide a screenshot of the coverage results output by the instrumentation>
 
-Uses OIDC for authentication. This solution is agnostic to which authentication provider you use.
+<Function 2 name>
 
-Example configuration (works with Auth0):
+<Provide the same kind of information provided for Function 1>
 
-```json
-{
-    "oidcConfig": {
-      "authority": "https://<authentication domain>",
-      "client_id": "<client id>",
-      "extraQueryParams": {
-        "audience": "<example audience>"
-      }
-    }
-}
-  ```
+## Coverage improvement
 
-For full configuration reference, see [oidc-client-ts documentation](https://authts.github.io/oidc-client-ts/interfaces/UserManagerSettings.html).
+### Individual tests
 
-### Themes
+<The following is supposed to be repeated for each group member>
 
-Default theme is found in `./config/default` .
+<Group member name>
 
-#### Add custom theme
+<Test 1>
 
-* Create new directory: `./config/themes/{YOUR_THEME_NAME}`
-* Add `logo.png` to `./config/themes/{YOUR_THEME_NAME}`
-* Add `index.js` with custom fyles (cf. `defaultTheme.js`)
-* Set `process.env.REACT_APP_THEME={YOUR_THEME_NAME}`
+<Show a patch (diff) or a link to a commit made in your forked repository that shows the new/enhanced test>
+
+<Provide a screenshot of the old coverage results (the same as you already showed above)>
+
+<Provide a screenshot of the new coverage results>
+
+<State the coverage improvement with a number and elaborate on why the coverage is improved>
+
+<Test 2>
+
+<Provide the same kind of information provided for Test 1>
+
+### Overall
+
+<Provide a screenshot of the old coverage results by running an existing tool (the same as you already showed above)>
+
+<Provide a screenshot of the new coverage results by running the existing tool using all test modifications made by the group>
+
+## Statement of individual contributions
+
+<Write what each group member did>
