@@ -25,12 +25,6 @@ class EditKeyValuePair extends React.Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      values: this.getValuesByKey(nextProps.keyValues, nextProps.editingKey),
-    });
-  }
-
   handleUpdate() {
     const { handleUpdateValues, editingKey } = this.props;
     const { values } = this.state;
@@ -60,10 +54,11 @@ class EditKeyValuePair extends React.Component {
             {`${formatMessage({ id: "editing_key" })} ${editingKey}`}
           </span>
           <TextField
+            variant={"standard"}
             id="editing-key-values"
-            onChange={(e, v) => {
+            onChange={(event) => {
               this.setState({
-                values: v,
+                values: event.target.value,
               });
             }}
             value={values}

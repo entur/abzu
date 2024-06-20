@@ -29,16 +29,10 @@ class CreateKeyValuePair extends React.Component {
     errorMsg: "",
   });
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.isOpen !== nextProps.isOpen) {
-      this.setState(this.getInitialValues);
-    }
-  }
-
   handleUpdate() {
     const { handleCreateValues, keyValues, intl } = this.props;
     const { key, values } = this.state;
-
+    debugger;
     let keyAlreadyExists = keyValues.some(
       (kv) => kv.key.toLowerCase() === key.toLowerCase(),
     );
@@ -71,29 +65,31 @@ class CreateKeyValuePair extends React.Component {
             {formatMessage({ id: "creating_new_key_values" })}
           </span>
           <TextField
+            variant={"standard"}
             id="new-key"
-            onChange={(e, v) => {
+            onChange={(event) => {
               this.setState({
-                key: v,
+                key: event.target.value,
               });
             }}
-            value={key}
-            hintText={formatMessage({ id: "key" })}
-            floatingLabelText={formatMessage({ id: "key" })}
+            value={this.state.key}
+            placeholder={formatMessage({ id: "key" })}
+            label={formatMessage({ id: "key" })}
             floatingLabelFixed={true}
             fullWidth={true}
           />
           <TextField
+            variant={"standard"}
             id="new-values"
-            onChange={(e, v) => {
+            onChange={(event) => {
               this.setState({
-                values: v,
+                values: event.target.value,
               });
             }}
-            hintText={formatMessage({ id: "values" })}
-            floatingLabelText={formatMessage({ id: "values" })}
+            placeholder={formatMessage({ id: "values" })}
+            label={formatMessage({ id: "values" })}
             floatingLabelFixed={true}
-            value={values}
+            value={this.state.values}
             fullWidth={true}
             multiLine={true}
           />

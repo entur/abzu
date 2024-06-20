@@ -14,7 +14,7 @@
 
 import React, { Component } from "react";
 import FlatButton from "@mui/material/Button";
-import SelectField from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import * as altNameConfig from "../../config/altNamesConfig";
@@ -89,10 +89,9 @@ class EditAltName extends Component {
             </IconButton>
           </div>
         </div>
-        <SelectField
-          style={{ marginTop: -10 }}
+        <Select
           fullWidth={true}
-          floatingLabelText={translations.nameType}
+          label={translations.nameType}
           value={type}
           onChange={(event, key, type) => {
             this.setState({
@@ -101,19 +100,17 @@ class EditAltName extends Component {
           }}
         >
           {altNameConfig.supportedNameTypes.map((type) => (
-            <MenuItem
-              key={"type-" + type}
-              value={type}
-              primaryText={formatMessage({
+            <MenuItem key={"type-" + type} value={type}>
+              {formatMessage({
                 id: `altNamesDialog.nameTypes.${type}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
-        <SelectField
-          style={{ marginTop: -10 }}
+        </Select>
+
+        <Select
           fullWidth={true}
-          floatingLabelText={translations.language}
+          label={translations.language}
           value={lang}
           onChange={(event, key, lang) => {
             this.setState({
@@ -122,15 +119,13 @@ class EditAltName extends Component {
           }}
         >
           {altNameConfig.languages.map((key) => (
-            <MenuItem
-              key={"lang-" + key}
-              value={key}
-              primaryText={formatMessage({
+            <MenuItem key={"lang-" + key} value={key}>
+              {formatMessage({
                 id: `altNamesDialog.languages.${key}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
+        </Select>
         <TextField
           fullWidth={true}
           hintText={translations.value}

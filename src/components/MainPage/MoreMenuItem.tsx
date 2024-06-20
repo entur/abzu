@@ -81,36 +81,43 @@ const MoreMenuItem: FC<MoreMenuItemProps> = ({
         {leftIcon}
         {label}
       </div>
-      <NavigateNextIcon />
-      <Menu
-        TransitionProps={{ onExited: () => menuItemRef.current?.focus() }}
-        disableRestoreFocus
-        onKeyDown={handleMenuKeyDown}
-        sx={{
-          pointerEvents: "none",
-          "& .MuiList-root": {
-            pointerEvents: "auto",
-          },
-        }}
-        MenuListProps={{
-          ...MenuProps?.MenuListProps,
-          "aria-labelledby": normMenuItemId,
-        }}
-        anchorEl={menuItemRef.current}
-        open={isOpen}
-        onClose={close}
-        anchorOrigin={
-          MenuProps?.anchorOrigin ?? { vertical: "center", horizontal: "left" }
-        }
-        transformOrigin={
-          MenuProps?.transformOrigin ?? {
-            vertical: "center",
-            horizontal: "right",
-          }
-        }
-      >
-        {children}
-      </Menu>
+      {children && (
+        <>
+          <NavigateNextIcon />
+          <Menu
+            TransitionProps={{ onExited: () => menuItemRef.current?.focus() }}
+            disableRestoreFocus
+            onKeyDown={handleMenuKeyDown}
+            sx={{
+              pointerEvents: "none",
+              "& .MuiList-root": {
+                pointerEvents: "auto",
+              },
+            }}
+            MenuListProps={{
+              ...MenuProps?.MenuListProps,
+              "aria-labelledby": normMenuItemId,
+            }}
+            anchorEl={menuItemRef.current}
+            open={isOpen}
+            onClose={close}
+            anchorOrigin={
+              MenuProps?.anchorOrigin ?? {
+                vertical: "center",
+                horizontal: "left",
+              }
+            }
+            transformOrigin={
+              MenuProps?.transformOrigin ?? {
+                vertical: "center",
+                horizontal: "right",
+              }
+            }
+          >
+            {children}
+          </Menu>
+        </>
+      )}
     </MenuItem>
   );
 };

@@ -256,14 +256,14 @@ class AltNamesDialog extends React.Component {
                         this.handleEdit(i);
                       }}
                     >
-                      <MdEdit color={getPrimaryColor()} />
+                      <MdEdit color={"primary"} />
                     </IconButton>
                     <IconButton
                       onClick={() => {
                         this.handleRemoveName(i);
                       }}
                     >
-                      <MdDelete color="rgb(223, 84, 74)" />
+                      <MdDelete sx="color: rgb(223, 84, 74)" />
                     </IconButton>
                   </div>
                 ) : null}

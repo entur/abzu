@@ -62,6 +62,7 @@ import { Link } from "react-router-dom";
 import Routes from "../../routes";
 import { Signpost } from "@mui/icons-material";
 import TransportSign from "../../static/icons/TransportSign";
+import Menu from "@mui/material/Menu";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -510,46 +511,52 @@ class StopPlaceDetails extends React.Component {
                 text={formatMessage({ id: "local_reference" })}
               />
               <div style={{ display: "flex", marginLeft: "auto" }}>
-                <ToolTippable toolTipText={keyValuesHint}>
-                  <IconButton
-                    style={{
-                      borderBottom: disabled ? "none" : "1px dotted grey",
-                    }}
-                    onClick={this.handleOpenKeyValues.bind(this)}
-                  >
-                    <MdKey
-                      color={
-                        (stopPlace.keyValues || []).length
-                          ? primaryDarker
-                          : "#000"
-                      }
-                    />
-                  </IconButton>
-                </ToolTippable>
-                <ToolTippable toolTipText={stopTypeHint}>
-                  <IconButton
-                    style={{
-                      borderBottom: disabled ? "none" : "1px dotted grey",
-                      marginLeft: 5,
-                    }}
-                    onClick={(e) => {
-                      this.handleOpenStopPlaceTypePopover(e);
-                    }}
-                  >
-                    <ModalityIconSvg
-                      type={stopPlace.stopPlaceType}
-                      submode={stopPlace.submode}
-                    />
-                  </IconButton>
-                </ToolTippable>
-                <Popover
+                <div
+                  style={{
+                    borderBottom: "1px dotted",
+                    marginLeft: 10,
+                    marginTop: 0,
+                  }}
+                >
+                  <ToolTippable toolTipText={keyValuesHint}>
+                    <IconButton onClick={this.handleOpenKeyValues.bind(this)}>
+                      <MdKey
+                        color={
+                          (stopPlace.keyValues || []).length
+                            ? primaryDarker
+                            : "#000"
+                        }
+                      />
+                    </IconButton>
+                  </ToolTippable>
+                </div>
+                <div
+                  style={{
+                    borderBottom: "1px dotted",
+                    marginLeft: 10,
+                    marginTop: 0,
+                  }}
+                >
+                  <ToolTippable toolTipText={stopTypeHint}>
+                    <IconButton
+                      onClick={(e) => {
+                        this.handleOpenStopPlaceTypePopover(e);
+                      }}
+                    >
+                      <ModalityIconSvg
+                        type={stopPlace.stopPlaceType}
+                        submode={stopPlace.submode}
+                      />
+                    </IconButton>
+                  </ToolTippable>
+                </div>
+                <Menu
                   open={this.state.stopTypeOpen}
                   anchorEl={this.state.stopTypeAnchorEl}
-                  anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-                  targetOrigin={{ horizontal: "left", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                  targetOrigin={{ horizontal: "right", vertical: "top" }}
                   onClose={this.handleCloseStopPlaceTypePopover.bind(this)}
                   style={{ overflowY: "none" }}
-                  animated={true}
                 >
                   <ModalitiesMenuItems
                     handleSubModeTypeChange={this.handleSubModeTypeChange.bind(
@@ -562,7 +569,7 @@ class StopPlaceDetails extends React.Component {
                     intl={intl}
                     allowsInfo={this.props.allowsInfo}
                   />
-                </Popover>
+                </Menu>
               </div>
             </div>
           </div>
@@ -592,9 +599,9 @@ class StopPlaceDetails extends React.Component {
                 onClick={this.handleOpenTZDialog.bind(this)}
                 style={{
                   borderBottom: "1px dotted",
-                  marginTop: 13,
+                  marginTop: -10,
                   paddingBottom: 4,
-                  marginLeft: 8,
+                  marginLeft: 28,
                   cursor: "pointer",
                 }}
               >
@@ -613,8 +620,8 @@ class StopPlaceDetails extends React.Component {
             <div
               style={{
                 borderBottom: "1px dotted",
-                marginLeft: 19,
-                marginTop: -3,
+                marginLeft: 10,
+                marginTop: -24,
               }}
             >
               <ToolTippable toolTipText={altNamesHint}>
@@ -760,15 +767,15 @@ class StopPlaceDetails extends React.Component {
             </ToolTippable>
             <ToolTippable toolTipText={transportSignHint}>
               <Checkbox
-                icon={<TransportSign />}
-                uncheckedIcon={
-                  <Signpost
+                icon={
+                  <TransportSign
                     style={{
                       fill: "#8c8c8c",
                       opacity: "0.8",
                     }}
                   />
                 }
+                checkedIcon={<TransportSign />}
                 style={{ width: "auto" }}
                 checked={sign512}
                 onChange={(e, v) => {

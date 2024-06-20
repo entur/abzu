@@ -325,10 +325,6 @@ class ReportPage extends React.Component {
   }
 
   handleTopographicalPlaceSearch(event, searchText, reason) {
-    if (reason && reason === "clear") {
-      debugger;
-      this.setState({ topographicPlaceFilterValue: "" });
-    }
     const { dispatch } = this.props;
     dispatch(topographicalPlaceSearch(searchText));
   }
@@ -412,6 +408,8 @@ class ReportPage extends React.Component {
         this.createTopographicPlaceMenuItem(place, formatMessage),
       );
 
+    console.log({ topographicalPlacesDataSource });
+
     return (
       <div>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -441,7 +439,7 @@ class ReportPage extends React.Component {
                 </div>
                 <AutoComplete
                   freeSolo
-                  getOptionLabel={(option) => `${option.name}`}
+                  filterOptions={(x) => x}
                   options={topographicalPlacesDataSource}
                   onInputChange={this.handleTopographicalPlaceSearch.bind(this)}
                   onChange={this.handleAddChip.bind(this)}
@@ -451,21 +449,20 @@ class ReportPage extends React.Component {
                       {...params}
                       variant="standard"
                       label={formatMessage({ id: "filter_by_topography" })}
-                      onChange={(event) => {
-                        // don't fire API if the user delete or not entered anything
-                        if (event.target.value !== null) {
-                          this.setState({
-                            topographicPlaceFilterValue: event.target.value,
-                          });
-                        }
+                      onChange={(event, v) => {
+                        this.setState({
+                          topographicPlaceFilterValue: event.target.value,
+                        });
                       }}
                     />
                   )}
-                  renderOption={(props, option, { selected }) => (
-                    <MenuItem {...props} key={option.id}>
-                      {option.value}
-                    </MenuItem>
-                  )}
+                  renderOption={(props, option, { selected }) => {
+                    return (
+                      <MenuItem {...props} key={option.id}>
+                        {option.value}
+                      </MenuItem>
+                    );
+                  }}
                 />
                 <TopographicalFilter
                   topoiChips={topoiChips}

@@ -202,7 +202,7 @@ class FacilitiesQuayTab extends React.Component {
                 />
               }
               disabled={disabled}
-              uncheckedIcon={
+              icon={
                 <Sign512
                   style={{
                     transform: "scale(1) translateY(-12px) translateX(-12px)",
@@ -218,7 +218,7 @@ class FacilitiesQuayTab extends React.Component {
               }
               labelStyle={{ fontSize: "0.8em" }}
               style={{ width: "80%" }}
-              onCheck={(e, v) => {
+              onChange={(e, v) => {
                 this.handle512Sign(v);
               }}
             />
@@ -233,7 +233,7 @@ class FacilitiesQuayTab extends React.Component {
             <Checkbox
               checked={ticketMachine}
               checkedIcon={<TicketMachine />}
-              uncheckedIcon={
+              icon={
                 <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
               }
               label={
@@ -243,7 +243,7 @@ class FacilitiesQuayTab extends React.Component {
               }
               labelStyle={{ fontSize: "0.8em" }}
               style={{ width: "80%" }}
-              onCheck={(e, v) => {
+              onChange={(e, v) => {
                 this.handleTicketMachineChange(v);
               }}
             />
@@ -291,9 +291,7 @@ class FacilitiesQuayTab extends React.Component {
             <Checkbox
               checked={busShelter}
               checkedIcon={<BusShelter />}
-              uncheckedIcon={
-                <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 busShelter
                   ? formatMessage({ id: "busShelter" })
@@ -301,7 +299,7 @@ class FacilitiesQuayTab extends React.Component {
               }
               labelStyle={{ fontSize: "0.8em" }}
               style={{ width: "80%" }}
-              onCheck={(e, v) => {
+              onChange={(e, v) => {
                 this.handleBusShelterChange(v);
               }}
             />
@@ -339,18 +337,18 @@ class FacilitiesQuayTab extends React.Component {
                         ? formatMessage({ id: "step_free_access" })
                         : formatMessage({ id: "step_free_access_no" })
                     }
-                    uncheckedIcon={
+                    icon={
                       <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     labelStyle={{ fontSize: "0.8em" }}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleValueForBusShelterChange({ stepFree: v });
                     }}
                   />
                   <Checkbox
                     checked={shelterEnclosed}
                     checkedIcon={<EnclosedIcon />}
-                    uncheckedIcon={
+                    icon={
                       <EnclosedIcon
                         style={{ fill: "#8c8c8c", opacity: "0.8" }}
                       />
@@ -362,7 +360,7 @@ class FacilitiesQuayTab extends React.Component {
                     }
                     labelStyle={{ fontSize: "0.8em" }}
                     style={{ width: "auto" }}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleValueForBusShelterChange({ enclosed: v });
                     }}
                   />
@@ -392,9 +390,7 @@ class FacilitiesQuayTab extends React.Component {
             <Checkbox
               checked={WC}
               checkedIcon={<MdWc />}
-              uncheckedIcon={
-                <MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 WC
                   ? formatMessage({ id: "wc" })
@@ -402,7 +398,7 @@ class FacilitiesQuayTab extends React.Component {
               }
               labelStyle={{ fontSize: "0.8em" }}
               style={{ width: "80%" }}
-              onCheck={(e, v) => {
+              onChange={(e, v) => {
                 this.handleWCChange(v);
               }}
             />
@@ -415,9 +411,7 @@ class FacilitiesQuayTab extends React.Component {
             <Checkbox
               checked={waitingRoom}
               checkedIcon={<WaitingRoom />}
-              uncheckedIcon={
-                <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 waitingRoom
                   ? formatMessage({ id: "waiting_room" })
@@ -425,7 +419,7 @@ class FacilitiesQuayTab extends React.Component {
               }
               labelStyle={{ fontSize: "0.8em" }}
               style={{ width: "80%" }}
-              onCheck={(e, v) => {
+              onChange={(e, v) => {
                 this.handleWaitingRoomChange(v);
               }}
             />
@@ -464,18 +458,18 @@ class FacilitiesQuayTab extends React.Component {
                         ? formatMessage({ id: "step_free_access" })
                         : formatMessage({ id: "step_free_access_no" })
                     }
-                    uncheckedIcon={
+                    icon={
                       <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     labelStyle={{ fontSize: "0.8em" }}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleValueForWaitingRoomChange({ stepFree: v });
                     }}
                   />
                   <Checkbox
                     checked={waitingRoomHeated}
                     checkedIcon={<Heated />}
-                    uncheckedIcon={
+                    icon={
                       <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     label={
@@ -485,7 +479,7 @@ class FacilitiesQuayTab extends React.Component {
                     }
                     labelStyle={{ fontSize: "0.8em" }}
                     style={{ width: "auto" }}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleValueForWaitingRoomChange({ heated: v });
                     }}
                   />

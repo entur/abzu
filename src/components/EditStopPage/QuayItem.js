@@ -331,7 +331,7 @@ class QuayItem extends React.Component {
                   <Checkbox
                     checkedIcon={<TicketMachine />}
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <TicketMachine
                         style={{ fill: "#8c8c8c", opacity: "0.8" }}
                       />
@@ -347,7 +347,7 @@ class QuayItem extends React.Component {
                   <Checkbox
                     checkedIcon={<BusShelter />}
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     style={{ width: "auto" }}
@@ -368,7 +368,7 @@ class QuayItem extends React.Component {
                       />
                     }
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <Sign512
                         style={{
                           transform:

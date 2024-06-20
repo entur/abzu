@@ -228,7 +228,7 @@ class FacilitiesStopTab extends React.Component {
                   }}
                 />
               }
-              uncheckedIcon={
+              icon={
                 <Sign512
                   style={{
                     transform: "scale(1) translateY(-12px) translateX(-12px)",
@@ -257,7 +257,7 @@ class FacilitiesStopTab extends React.Component {
             <Checkbox
               checked={ticketMachine}
               checkedIcon={<TicketMachine />}
-              uncheckedIcon={
+              icon={
                 <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
               }
               label={
@@ -315,9 +315,7 @@ class FacilitiesStopTab extends React.Component {
             <Checkbox
               checked={busShelter}
               checkedIcon={<BusShelter />}
-              uncheckedIcon={
-                <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 busShelter
                   ? formatMessage({ id: "busShelter" })
@@ -366,7 +364,7 @@ class FacilitiesStopTab extends React.Component {
                         ? formatMessage({ id: "step_free_access" })
                         : formatMessage({ id: "step_free_access_no" })
                     }
-                    uncheckedIcon={
+                    icon={
                       <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     labelStyle={{ fontSize: "0.8em" }}
@@ -374,7 +372,7 @@ class FacilitiesStopTab extends React.Component {
                   <Checkbox
                     checked={shelterEnclosed}
                     checkedIcon={<EnclosedIcon />}
-                    uncheckedIcon={
+                    icon={
                       <EnclosedIcon
                         style={{ fill: "#8c8c8c", opacity: "0.8" }}
                       />
@@ -416,9 +414,7 @@ class FacilitiesStopTab extends React.Component {
             <Checkbox
               checked={WC}
               checkedIcon={<MdWc />}
-              uncheckedIcon={
-                <MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 WC
                   ? formatMessage({ id: "wc" })
@@ -439,9 +435,7 @@ class FacilitiesStopTab extends React.Component {
             <Checkbox
               checked={waitingRoom}
               checkedIcon={<WaitingRoom />}
-              uncheckedIcon={
-                <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-              }
+              icon={<WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
               label={
                 waitingRoom
                   ? formatMessage({ id: "waiting_room" })
@@ -488,7 +482,7 @@ class FacilitiesStopTab extends React.Component {
                         ? formatMessage({ id: "step_free_access" })
                         : formatMessage({ id: "step_free_access_no" })
                     }
-                    uncheckedIcon={
+                    icon={
                       <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     labelStyle={{ fontSize: "0.8em" }}
@@ -499,7 +493,7 @@ class FacilitiesStopTab extends React.Component {
                   <Checkbox
                     checked={waitingRoomHeated}
                     checkedIcon={<Heated />}
-                    uncheckedIcon={
+                    icon={
                       <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     label={
