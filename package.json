@@ -17,6 +17,10 @@
     "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
+  "jest": {
+    "globalSetup": "<rootDir>/src/test/instrumentation/setupTests.js",
+    "globalTeardown": "<rootDir>/src/test/instrumentation/teardownTests.js"
+  },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
     "@apollo/client": "3.10.4",
