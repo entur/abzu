@@ -136,14 +136,14 @@ export const getStateByOperation = (state, action) => {
 
 export const getProperZoomLevel = (data, prevZoom) => {
   if (!data || data.location) {
-    markBranchHit("getMarkersForMap", 0);
+    markBranchHit("getProperZoomLevel", 0);
     return 5
   }
   if (prevZoom > 15) {
-    markBranchHit("getMarkersForMap", 1);
+    markBranchHit("getProperZoomLevel", 1);
     return prevZoom
   }
-  markBranchHit("getMarkersForMap", 2);
+  markBranchHit("getProperZoomLevel", 2);
   return 15;
 };
 
