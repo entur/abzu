@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { markBranchHit } from "../test/instrumentation/coverageData";
+
 import formatHelpers from "../modelUtils/mapToClient";
 
 export const getStateByOperation = (state, action) => {
@@ -132,9 +134,16 @@ export const getStateByOperation = (state, action) => {
   }
 };
 
-const getProperZoomLevel = (data, prevZoom) => {
-  if (!data || data.location) return 5;
-  if (prevZoom > 15) return prevZoom;
+export const getProperZoomLevel = (data, prevZoom) => {
+  if (!data || data.location) {
+    markBranchHit("getMarkersForMap", 0);
+    return 5
+  }
+  if (prevZoom > 15) {
+    markBranchHit("getMarkersForMap", 1);
+    return prevZoom
+  }
+  markBranchHit("getMarkersForMap", 2);
   return 15;
 };
 

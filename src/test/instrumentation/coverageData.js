@@ -11,6 +11,7 @@ const branchCounts = {
     "extractCoordinates": 5,
     "getEnvColor": 4,
     "getMarkersForMap": 4,
+    "getProperZoomLevel": 3,
 }
 
 const writeCoverage = branchCoverage => {
