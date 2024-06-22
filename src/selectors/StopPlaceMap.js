@@ -28,22 +28,22 @@ export const getMarkersForMap = ({ stopPlace, user }) => {
     activeSearchResult.children
   ) {
     markers = markers.concat(activeSearchResult.children);
-    markBranchHit("getMarkersForMap", 1);
+    markBranchHit("getMarkersForMap", 0);
   }
 
   if (newStop && isCreatingNewStop) {
     markers = markers.concat(newStop);
-    markBranchHit("getMarkersForMap", 2);
+    markBranchHit("getMarkersForMap", 1);
   }
 
   if (neighbourStops && neighbourStops.length) {
     markers = markers.concat(neighbourStops);
-    markBranchHit("getMarkersForMap", 3);
+    markBranchHit("getMarkersForMap", 2);
   }
 
   if (findCoordinates) {
     markers = markers.concat(findCoordinates);
-    markBranchHit("getMarkersForMap", 4);
+    markBranchHit("getMarkersForMap", 3);
   }
 
   markers = markers.filter((m) => !m.permanentlyTerminated);
