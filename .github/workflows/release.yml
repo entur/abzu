@@ -1,11 +1,11 @@
 # Adapted from https://github.com/actions/create-release
 
-name: Create Release
-
 on:
   push:
     branches:
       - main
+
+name: Create Release
 
 jobs:
   build:
@@ -29,4 +29,3 @@ jobs:
             Release ${{ github.run_number }}
           draft: false
           prerelease: false
-          
