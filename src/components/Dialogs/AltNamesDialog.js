@@ -301,6 +301,7 @@ class AltNamesDialog extends React.Component {
               this.setState({ type });
             }}
             onLanguageChange={(event, key, lang) => {
+              debugger;
               this.setState({ lang });
             }}
             onValueChange={(event, value) => {

@@ -90,6 +90,7 @@ class EditAltName extends Component {
           </div>
         </div>
         <Select
+          variant="standard"
           fullWidth={true}
           label={translations.nameType}
           value={type}
@@ -109,6 +110,7 @@ class EditAltName extends Component {
         </Select>
 
         <Select
+          variant="standard"
           fullWidth={true}
           label={translations.language}
           value={lang}
@@ -127,6 +129,8 @@ class EditAltName extends Component {
           ))}
         </Select>
         <TextField
+          style={{ marginTop: 10 }}
+          variant={"standard"}
           fullWidth={true}
           hintText={translations.value}
           value={value}

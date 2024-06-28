@@ -521,11 +521,11 @@ class StopPlaceDetails extends React.Component {
                   <ToolTippable toolTipText={keyValuesHint}>
                     <IconButton onClick={this.handleOpenKeyValues.bind(this)}>
                       <MdKey
-                        color={
-                          (stopPlace.keyValues || []).length
+                        style={{
+                          color: (stopPlace.keyValues || []).length
                             ? primaryDarker
-                            : "#000"
-                        }
+                            : "#000",
+                        }}
                       />
                     </IconButton>
                   </ToolTippable>

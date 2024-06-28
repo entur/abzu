@@ -53,9 +53,9 @@ class NewAltName extends Component {
           {translations.addAltName}
         </div>
         <SelectField
-          style={{ marginTop: -10 }}
+          style={{ marginTop: 0 }}
           fullWidth={true}
-          floatingLabelText={translations.nameType}
+          label={translations.nameType}
           value={type}
           onChange={handleTypeChange}
         >
@@ -72,7 +72,7 @@ class NewAltName extends Component {
         <SelectField
           style={{ marginTop: -10 }}
           fullWidth={true}
-          floatingLabelText={translations.language}
+          label={translations.language}
           value={lang}
           onChange={onLanguageChange}
         >
