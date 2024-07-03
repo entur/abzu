@@ -626,7 +626,9 @@ class StopPlaceDetails extends React.Component {
             >
               <ToolTippable toolTipText={altNamesHint}>
                 <IconButton onClick={this.handleOpenAltNames.bind(this)}>
-                  <MdLanguage color={hasAltNames ? primaryDarker : "#000"} />
+                  <MdLanguage
+                    style={{ color: hasAltNames ? primaryDarker : "#000" }}
+                  />
                 </IconButton>
               </ToolTippable>
             </div>
@@ -717,7 +719,7 @@ class StopPlaceDetails extends React.Component {
 
             <ToolTippable toolTipText={ticketMachineHint}>
               <Checkbox
-                checkedIcon={<TicketMachine />}
+                checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
                 icon={
                   <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
@@ -730,7 +732,7 @@ class StopPlaceDetails extends React.Component {
             </ToolTippable>
             <ToolTippable toolTipText={busShelterHint}>
               <Checkbox
-                checkedIcon={<BusShelter />}
+                checkedIcon={<BusShelter style={{ fill: "#000" }} />}
                 icon={
                   <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
@@ -743,7 +745,7 @@ class StopPlaceDetails extends React.Component {
             </ToolTippable>
             <ToolTippable toolTipText={WCHint}>
               <Checkbox
-                checkedIcon={<MdWC />}
+                checkedIcon={<MdWC style={{ fill: "#000" }} />}
                 icon={<MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                 style={{ width: "auto" }}
                 checked={WC}
@@ -754,7 +756,7 @@ class StopPlaceDetails extends React.Component {
             </ToolTippable>
             <ToolTippable toolTipText={waitingRoomHint}>
               <Checkbox
-                checkedIcon={<WaitingRoom />}
+                checkedIcon={<WaitingRoom style={{ fill: "#000" }} />}
                 icon={
                   <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }

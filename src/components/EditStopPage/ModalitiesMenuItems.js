@@ -40,7 +40,8 @@ class ModalitiesMenuItems extends React.Component {
     const illegalSubmodes = getInverseSubmodesWhitelist(legalSubmodes);
     // stopPlacesTypes that submodes are depending on to be legal in order to render
     const adHocStopPlaceTypes = getStopPlacesForSubmodes(legalSubmodes);
-    const chosenStyle = { fontWeight: 600 };
+    const chosenStyle = { fontWeight: "bold" };
+    const unchosenStyle = {};
 
     return (
       <div>
@@ -89,7 +90,7 @@ class ModalitiesMenuItems extends React.Component {
               }
               label={
                 <span
-                  style={stopTypeMatchingChosen && !submodes ? chosenStyle : {}}
+                  style={stopTypeMatchingChosen ? chosenStyle : unchosenStyle}
                 >
                   {formatMessage({ id: `stopTypes.${type}.name` })}
                 </span>
@@ -139,14 +140,22 @@ class ModalitiesMenuItems extends React.Component {
                         type={type}
                         submode={submode}
                       />
-                      {submode &&
-                        formatMessage({
-                          id: `stopTypes.${type}.submodes.${submode}`,
-                        })}
-                      {!submode &&
-                        formatMessage({
-                          id: `stopTypes.${type}.submodes.unspecified`,
-                        })}
+                      <span
+                        style={
+                          stopTypeMatchingChosen && submodeChosen === submode
+                            ? chosenStyle
+                            : unchosenStyle
+                        }
+                      >
+                        {submode &&
+                          formatMessage({
+                            id: `stopTypes.${type}.submodes.${submode}`,
+                          })}
+                        {!submode &&
+                          formatMessage({
+                            id: `stopTypes.${type}.submodes.unspecified`,
+                          })}
+                      </span>
                     </MenuItem>
                   );
                 })}
