@@ -102,7 +102,6 @@ export const getTariffZonesByIdsAction = createAsyncThunk<
     fetchPolicy: "network-only",
     context: getContext(thunkAPI.getState().roles.auth),
   });
-  debugger;
   return response.data.tariffZones;
 });
 
