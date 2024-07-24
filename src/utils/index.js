@@ -78,10 +78,10 @@ export const toCamelCase = (string) => {
   if (!string) return "";
 
   if (!/\s/g.test(string)) {
-    return string.toLowerCase();
+    return string.toString().toLowerCase();
   }
 
-  return string.replace(/^([A-Z])|\s(\w)/g, (match, p1, p2) => {
+  return string.toString().replace(/^([A-Z])|\s(\w)/g, (match, p1, p2) => {
     if (p2) return p2.toUpperCase();
     return p1.toLowerCase();
   });

@@ -18,6 +18,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ModalityIconImg from "../MainPage/ModalityIconImg";
 import { injectIntl } from "react-intl";
 import HasExpiredInfo from "../MainPage/HasExpiredInfo";
+import { FormControlLabel } from "@mui/material";
 
 class AddStopPlaceSuggestionListItem extends Component {
   render() {
@@ -26,10 +27,14 @@ class AddStopPlaceSuggestionListItem extends Component {
 
     return (
       <div style={{ display: "flex", alignItems: "center", padding: 4 }}>
-        <Checkbox
-          disabled={suggestion && (suggestion.hasExpired || disabled)}
-          checked={checked}
-          onCheck={(e, v) => onCheck(suggestion.id, v)}
+        <FormControlLabel
+          control={
+            <Checkbox
+              disabled={suggestion && (suggestion.hasExpired || disabled)}
+              checked={checked}
+              onChange={(e, v) => onCheck(suggestion.id, v)}
+            />
+          }
           label={
             <div style={{ display: "flex", alignItems: "center" }}>
               {suggestion.isParent ? (
@@ -39,10 +44,16 @@ class AddStopPlaceSuggestionListItem extends Component {
                   type={suggestion.stopPlaceType}
                   submode={suggestion.submode}
                   style={{ marginRight: 5 }}
-                  iconStyle={{ marginTop: -1 }}
                 />
               )}
-              <div style={{ fontSize: "0.9em", flex: 0.8 }}>
+              <div
+                style={{
+                  fontSize: "0.9em",
+                  flex: 0.8,
+                  whiteSpace: "nowrap",
+                  paddingRight: 10,
+                }}
+              >
                 {suggestion.name ? (
                   <span>{suggestion.name}</span>
                 ) : (
@@ -53,8 +64,7 @@ class AddStopPlaceSuggestionListItem extends Component {
               </div>
               <div
                 style={{
-                  fontSize: "0.8em",
-                  lineHeight: "1.2em",
+                  fontSize: "0.9em",
                   flex: 1.5,
                   display: "flex",
                 }}

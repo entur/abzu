@@ -490,7 +490,6 @@ class StopPlaceDetails extends React.Component {
                   </div>
                 )}
                 <FlatButton
-                  variant="outlined"
                   onClick={this.handleOpenTags.bind(this)}
                   label={formatMessage({ id: "tags" })}
                 >

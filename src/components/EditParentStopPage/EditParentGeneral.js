@@ -271,6 +271,7 @@ class EditParentGeneral extends React.Component {
   }
 
   getIsAllowedToSave() {
+    debugger;
     const { disabled, stopHasBeenModified, stopPlace } = this.props;
     if (!stopPlace) return false;
     if (disabled) return false;
@@ -360,6 +361,7 @@ class EditParentGeneral extends React.Component {
             buttonLabel={formatMessage({ id: "versions" })}
             disabled={!(versions || []).length}
             handleSelect={this.handleLoadVersion.bind(this)}
+            hide={!(versions || []).length}
           />
         </div>
         <ParentStopDetails
@@ -382,34 +384,57 @@ class EditParentGeneral extends React.Component {
               disabled={disableTerminate}
               label={formatMessage({ id: "terminate_stop_place" })}
               style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{
-                fontSize: "0.7em",
-                color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
-              }}
               onClick={() => {
                 this.props.dispatch(
                   UserActions.requestTerminateStopPlace(stopPlace.id),
                 );
               }}
-            />
+            >
+              <div
+                style={{
+                  fontSize: "0.7em",
+                  color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
+                }}
+              >
+                {formatMessage({ id: "terminate_stop_place" })}
+              </div>
+            </FlatButton>
             <FlatButton
-              icon={<MdUndo style={{ height: "1.3em", width: "1.3em" }} />}
               disabled={!stopHasBeenModified}
               label={formatMessage({ id: "undo_changes" })}
-              style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{ fontSize: "0.7em" }}
+              style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
               onClick={() => {
                 this.setState({ confirmUndoOpen: true });
               }}
-            />
+            >
+              <MdUndo
+                style={{
+                  height: "1.3em",
+                  width: "1.3em",
+                  fontSize: "1.4em",
+                  marginTop: -2,
+                  marginRight: 4,
+                }}
+              />
+              {formatMessage({ id: "undo_changes" })}
+            </FlatButton>
             <FlatButton
-              icon={<MdSave style={{ height: "1.3em", width: "1.3em" }} />}
               disabled={!isAllowedToSave}
               label={formatMessage({ id: "save_new_version" })}
-              style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{ fontSize: "0.7em" }}
+              style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
               onClick={this.handleSave.bind(this)}
-            />
+            >
+              <MdSave
+                style={{
+                  height: "1.3em",
+                  width: "1.3em",
+                  fontSize: "1.4em",
+                  marginTop: -6,
+                  marginRight: 4,
+                }}
+              />
+              {formatMessage({ id: "save_new_version" })}
+            </FlatButton>
           </div>
         )}
         <ConfirmDialog

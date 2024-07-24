@@ -149,11 +149,12 @@ class ParentStopDetails extends Component {
         >
           <div>{formatMessage({ id: "parentStopPlace" })}</div>
           <FlatButton
+            variant="text"
             onClick={() => this.setState({ tagsOpen: true })}
-            style={{ marginTop: -8 }}
-            label={formatMessage({ id: "tags" })}
             disabled={!stopPlace.id}
-          />
+          >
+            {formatMessage({ id: "tags" })}
+          </FlatButton>
         </div>
         {!stopPlace.location && (
           <div style={{ textAlign: "right" }}>
@@ -206,15 +207,16 @@ class ParentStopDetails extends Component {
         <div style={{ width: "98%", margin: "auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
+              variant={"standard"}
               hintText={formatMessage({ id: "name" })}
+              label={formatMessage({ id: "name" })}
               floatingLabelText={formatMessage({ id: "name" })}
               fullWidth={true}
               value={stopPlace.name}
               disabled={disabled}
-              style={{ marginTop: -10, width: 300 }}
-              errorText={
-                stopPlace.name ? "" : formatMessage({ id: "name_is_required" })
-              }
+              style={{ width: 300 }}
+              error={stopPlace.name}
+              helperText={formatMessage({ id: "name_is_required" })}
               onChange={this.handleChangeName.bind(this)}
             />
             <div style={{ display: "flex", alignItems: "right" }}>
@@ -226,7 +228,9 @@ class ParentStopDetails extends Component {
             </div>
           </div>
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "description" })}
+            label={formatMessage({ id: "description" })}
             floatingLabelText={formatMessage({ id: "description" })}
             fullWidth={true}
             disabled={disabled}

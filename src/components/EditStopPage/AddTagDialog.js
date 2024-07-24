@@ -90,7 +90,8 @@ class AddTagDialog extends Component {
           display: "flex",
           flexDirection: "column",
           marginLeft: 5,
-          paddingBottom: 5,
+          marginBottom: 10,
+          paddingTop: 10,
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -99,6 +100,7 @@ class AddTagDialog extends Component {
             tagName={tagName}
             searchText={searchText}
             handleInputChange={(value) => {
+              debugger;
               this.setState({ searchText: value });
             }}
             handleChooseTag={this.handleChooseTag.bind(this)}
