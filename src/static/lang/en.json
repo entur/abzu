@@ -35,6 +35,8 @@
   "altNamesDialog.languages.rus": "Russian",
   "altNamesDialog.languages.sme": "Northern Sami",
   "altNamesDialog.languages.swe": "Swedish",
+  "altNamesDialog.languages.smj": "Lule Sami",
+  "altNamesDialog.languages.sma": "Southern Sami",
   "altNamesDialog.nameTypes.alias": "Alias",
   "altNamesDialog.nameTypes.copy": "Copy",
   "altNamesDialog.nameTypes.label": "Label",
