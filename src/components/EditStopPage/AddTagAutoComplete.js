@@ -39,12 +39,22 @@ class AddTagAutoComplete extends Component {
     }, 500);
   }
 
-  handleSelectedTag({ event, text, comment }) {
-    const tagInCamelCase = toCamelCase(text);
-    this.props.handleChooseTag(tagInCamelCase, comment);
+  handleSelectedTag(event, text) {
+    debugger;
+    var tagTextName, tagComment;
+    if (text == null) {
+      tagTextName = "";
+      tagComment = "";
+    } else {
+      tagTextName = text.text;
+      tagComment = text.comment;
+    }
+    const tagInCamelCase = toCamelCase(tagTextName);
+    this.props.handleChooseTag(tagInCamelCase, tagComment);
     this.setState({
-      chosen: text,
+      chosen: tagTextName,
     });
+    debugger;
   }
 
   handleBlur(event) {
@@ -74,21 +84,16 @@ class AddTagAutoComplete extends Component {
         item.name.toString().toLowerCase() ===
         searchText.toString().toLowerCase(),
     );
-    debugger;
+
     if (dataSource.length) {
       const suggestion = {
         text: "TAG_SUGGESTION",
         value: (
-          <MenuItem
-            disabled={true}
-            key={"tag-menu-suggestion"}
-            innerDivStyle={{ margin: "-12px 0px" }}
-          >
+          <div key={"tag-menu-suggestion"}>
             <div style={{ fontWeight: 600, fontSize: "0.8em" }}>Forslag:</div>
-          </MenuItem>
+          </div>
         ),
       };
-
       menuItems = menuItems.concat(
         suggestion,
         dataSource.map((tag, i) => {
@@ -96,13 +101,12 @@ class AddTagAutoComplete extends Component {
             text: tag.name,
             comment: tag.comment,
             value: (
-              <MenuItem
+              <div
                 key={"tag-menu-item" + i}
                 style={{ paddingRight: 10, width: "auto" }}
-                innerDivStyle={{ margin: "-5px 0px" }}
               >
                 {tag.name}
-              </MenuItem>
+              </div>
             ),
           };
         }),
@@ -114,7 +118,7 @@ class AddTagAutoComplete extends Component {
         text: searchText.toString().toLowerCase(),
         comment: "",
         value: (
-          <MenuItem
+          <div
             key={"tag-menu-create"}
             style={{ paddingRight: 10, width: "auto" }}
           >
@@ -124,7 +128,7 @@ class AddTagAutoComplete extends Component {
                 {this.props.intl.formatMessage({ id: "new_tag_hint" })}
               </span>
             </div>
-          </MenuItem>
+          </div>
         ),
       });
     }
@@ -145,25 +149,23 @@ class AddTagAutoComplete extends Component {
     return (
       <AutoComplete
         freeSolo
-        searchText={searchText}
-        floatingLabelText={formatMessage({ id: "tag" })}
+        value={searchText}
         options={menuItems}
-        maxSearchResults={7}
-        style={style}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option.text
+        }
         onChange={this.handleSelectedTag.bind(this)}
-        onBlur={(e, v) => this.handleBlur(e)}
-        fullWidth={true}
-        filter={() => true}
+        style={{ marginLeft: 10, width: 350 }}
+        //filterOptions={(x) => x.text}
         onInputChange={this.handleUpdate.bind(this)}
         renderInput={(params) => (
-          <TextField {...params} label="AddTagAutoComplete" />
+          <TextField
+            {...params}
+            label={formatMessage({ id: "tag" })}
+            variant="standard"
+          />
         )}
-        renderOption={(props, option, { selected }) => (
-          <MenuItem {...props} key={option.id}>
-            {option.value}
-          </MenuItem>
-        )}
-      />
+      ></AutoComplete>
     );
   }
 }

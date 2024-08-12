@@ -53,8 +53,8 @@ class ParentStopDetails extends Component {
     };
   }
 
-  handleChangeName(e, value) {
-    this.props.dispatch(StopPlaceActions.changeStopName(value));
+  handleChangeName(e) {
+    this.props.dispatch(StopPlaceActions.changeStopName(e.target.value));
   }
 
   handleAddStopPlaceClose() {
@@ -208,16 +208,16 @@ class ParentStopDetails extends Component {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
               variant={"standard"}
-              hintText={formatMessage({ id: "name" })}
               label={formatMessage({ id: "name" })}
               floatingLabelText={formatMessage({ id: "name" })}
               fullWidth={true}
               value={stopPlace.name}
               disabled={disabled}
               style={{ width: 300 }}
-              error={stopPlace.name}
+              error={!stopPlace.name}
               helperText={formatMessage({ id: "name_is_required" })}
               onChange={this.handleChangeName.bind(this)}
+              type={"text"}
             />
             <div style={{ display: "flex", alignItems: "right" }}>
               <ToolTippable toolTipText={altNamesHint}>
@@ -227,6 +227,7 @@ class ParentStopDetails extends Component {
               </ToolTippable>
             </div>
           </div>
+
           <TextField
             variant={"standard"}
             hintText={formatMessage({ id: "description" })}

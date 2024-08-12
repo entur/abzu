@@ -271,7 +271,6 @@ class EditParentGeneral extends React.Component {
   }
 
   getIsAllowedToSave() {
-    debugger;
     const { disabled, stopHasBeenModified, stopPlace } = this.props;
     if (!stopPlace) return false;
     if (disabled) return false;

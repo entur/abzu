@@ -296,7 +296,7 @@ export const createParentStopPlace =
     name,
     description,
     versionComment,
-    coordinates,
+    legacyCoordinates,
     validBetween,
     stopPlaceIds,
   }) =>
@@ -307,7 +307,7 @@ export const createParentStopPlace =
         name,
         description,
         versionComment,
-        coordinates,
+        legacyCoordinates,
         validBetween,
         stopPlaceIds,
       },

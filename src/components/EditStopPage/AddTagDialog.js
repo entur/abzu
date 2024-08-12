@@ -28,6 +28,7 @@ class AddTagDialog extends Component {
   }
 
   handleChooseTag(tagName, comment) {
+    debugger;
     if (!tagName) {
       this.setState({
         searchText: "",
@@ -46,10 +47,6 @@ class AddTagDialog extends Component {
         searchText: tagName,
       });
     }
-
-    if (this.refs.comment) {
-      this.refs.comment.focus();
-    }
   }
 
   handleAddTag() {
@@ -57,7 +54,7 @@ class AddTagDialog extends Component {
     const { idReference, handleLoading, addTag, getTags } = this.props;
 
     handleLoading(true);
-
+    debugger;
     addTag(idReference, tagName, comment)
       .then((result) => {
         this.setState({
@@ -100,7 +97,6 @@ class AddTagDialog extends Component {
             tagName={tagName}
             searchText={searchText}
             handleInputChange={(value) => {
-              debugger;
               this.setState({ searchText: value });
             }}
             handleChooseTag={this.handleChooseTag.bind(this)}
@@ -108,20 +104,23 @@ class AddTagDialog extends Component {
           />
         </div>
         <TextField
+          variant="standard"
           value={comment}
-          floatingLabelText={formatMessage({ id: "comment" })}
+          label={formatMessage({ id: "comment" })}
           hintText={formatMessage({ id: "comment" })}
           style={{ marginLeft: 10, width: 350 }}
+          fullWidth={true}
           ref="comment"
           id={"comment-text"}
-          onChange={(e, v) => this.setState({ comment: v || "" })}
+          onChange={(e) => this.setState({ comment: e.target.value || "" })}
         />
         <FlatButton
-          label={formatMessage({ id: "add" })}
-          style={{ width: "30%", margin: "auto" }}
+          variant="outlined"
           disabled={!tagName}
           onClick={this.handleAddTag.bind(this)}
-        />
+        >
+          {formatMessage({ id: "add" })}
+        </FlatButton>
       </div>
     );
   }
