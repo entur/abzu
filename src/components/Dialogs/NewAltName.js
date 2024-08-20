@@ -14,7 +14,7 @@
 
 import React, { Component } from "react";
 import FlatButton from "@mui/material/Button";
-import SelectField from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import * as altNameConfig from "../../config/altNamesConfig";
@@ -52,45 +52,43 @@ class NewAltName extends Component {
         >
           {translations.addAltName}
         </div>
-        <SelectField
-          style={{ marginTop: 0 }}
+        <Select
+          style={{ marginTop: 10 }}
           fullWidth={true}
           label={translations.nameType}
           value={type}
           onChange={handleTypeChange}
         >
           {altNameConfig.supportedNameTypes.map((type, index) => (
-            <MenuItem
-              key={"type-" + type}
-              value={type}
-              primaryText={formatMessage({
+            <MenuItem key={"type-" + type} value={type}>
+              {formatMessage({
                 id: `altNamesDialog.nameTypes.${type}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
-        <SelectField
-          style={{ marginTop: -10 }}
+        </Select>
+        <Select
+          style={{ marginTop: 10 }}
           fullWidth={true}
           label={translations.language}
           value={lang}
           onChange={onLanguageChange}
         >
           {altNameConfig.languages.map((key, index) => (
-            <MenuItem
-              key={"lang-" + index}
-              value={key}
-              primaryText={formatMessage({
+            <MenuItem key={"lang-" + index} value={key}>
+              {formatMessage({
                 id: `altNamesDialog.languages.${key}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
+        </Select>
         <TextField
+          style={{ marginTop: 10 }}
           fullWidth={true}
           hintText={translations.value}
-          value={value || ""}
+          label={translations.value}
           onChange={onValueChange}
+          value={value}
         />
         <FlatButton
           style={{ marginTop: 10, width: "100%", textAlign: "center" }}

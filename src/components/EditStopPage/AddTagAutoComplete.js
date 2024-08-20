@@ -40,7 +40,6 @@ class AddTagAutoComplete extends Component {
   }
 
   handleSelectedTag(event, text) {
-    debugger;
     var tagTextName, tagComment;
     if (text == null) {
       tagTextName = "";
@@ -54,7 +53,6 @@ class AddTagAutoComplete extends Component {
     this.setState({
       chosen: tagTextName,
     });
-    debugger;
   }
 
   handleBlur(event) {

@@ -18,6 +18,7 @@ import {
   netexifyPlaceEquipment,
   netexifyBoardingPositions,
 } from "../models/stopPlaceUtils";
+import PARKING_TYPE from "../models/parkingType";
 
 const helpers = {};
 
@@ -128,7 +129,6 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   } else {
     parentStopVariables.stopPlaceIds = stop.children.map((child) => child.id);
   }
-  debugger;
   if (stop.location) {
     parentStopVariables.legacyCoordinates = [
       [stop.location[1], stop.location[0]],
@@ -289,6 +289,18 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
               parkingUserType: "registeredDisabled",
               numberOfSpaces:
                 source.numberOfSpacesForRegisteredDisabledUserType,
+            },
+          ],
+        },
+      ];
+    } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
+      debugger;
+      parking.parkingProperties = [
+        {
+          spaces: [
+            {
+              parkingUserType: "allUsers",
+              numberOfSpaces: source.totalCapacity,
             },
           ],
         },

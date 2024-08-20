@@ -298,14 +298,15 @@ class AltNamesDialog extends React.Component {
             translations={translations}
             handleAddAltName={this.handleAddAltName.bind(this)}
             handleTypeChange={(event, key, type) => {
-              this.setState({ type });
+              this.setState({ type: event.target.value });
             }}
             onLanguageChange={(event, key, lang) => {
+              this.setState({ lang: event.target.value });
               debugger;
-              this.setState({ lang });
             }}
-            onValueChange={(event, value) => {
-              this.setState({ value });
+            onValueChange={(event) => {
+              this.setState({ value: event.target.value });
+              debugger;
             }}
             lang={lang}
             type={type}

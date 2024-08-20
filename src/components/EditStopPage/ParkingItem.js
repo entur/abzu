@@ -263,8 +263,8 @@ class ParkingItem extends React.Component {
                 hintText={translations.capacity}
                 disabled={disabled || parking.hasExpired}
                 floatingLabelText={translations.capacity}
-                onChange={(e, v) => {
-                  this.handleSetTotalCapacity(v);
+                onChange={(event) => {
+                  this.handleSetTotalCapacity(event.target.value);
                 }}
                 value={parking.totalCapacity}
                 type="number"

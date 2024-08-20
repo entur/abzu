@@ -32,7 +32,6 @@ class CreateKeyValuePair extends React.Component {
   handleUpdate() {
     const { handleCreateValues, keyValues, intl } = this.props;
     const { key, values } = this.state;
-    debugger;
     let keyAlreadyExists = keyValues.some(
       (kv) => kv.key.toLowerCase() === key.toLowerCase(),
     );

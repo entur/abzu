@@ -28,7 +28,6 @@ class AddTagDialog extends Component {
   }
 
   handleChooseTag(tagName, comment) {
-    debugger;
     if (!tagName) {
       this.setState({
         searchText: "",
@@ -54,7 +53,6 @@ class AddTagDialog extends Component {
     const { idReference, handleLoading, addTag, getTags } = this.props;
 
     handleLoading(true);
-    debugger;
     addTag(idReference, tagName, comment)
       .then((result) => {
         this.setState({
