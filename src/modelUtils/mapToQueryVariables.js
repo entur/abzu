@@ -18,6 +18,7 @@ import {
   netexifyPlaceEquipment,
   netexifyBoardingPositions,
 } from "../models/stopPlaceUtils";
+import PARKING_TYPE from "../models/parkingType";
 
 const helpers = {};
 
@@ -289,6 +290,18 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
               parkingUserType: "registeredDisabled",
               numberOfSpaces:
                 source.numberOfSpacesForRegisteredDisabledUserType,
+            },
+          ],
+        },
+      ];
+    } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
+      debugger;
+      parking.parkingProperties = [
+        {
+          spaces: [
+            {
+              parkingUserType: "allUsers",
+              numberOfSpaces: source.totalCapacity,
             },
           ],
         },
