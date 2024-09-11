@@ -127,16 +127,6 @@ export const LeafLetMap = ({
           >
             <KartverketFlyFotoLayer />
           </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}
-            name="Google Maps Hydrid"
-          >
-            <GoogleLayer
-              maxZoom="19"
-              googlekey={googleApiKey}
-              maptype="HYBRID"
-            />
-          </BaseLayer>
         </LayersControl>
         <FareZones position="topright" />
         <TariffZones position="topright" />
