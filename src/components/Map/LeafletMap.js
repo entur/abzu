@@ -117,7 +117,7 @@ export const LeafLetMap = ({
           >
             <TileLayer
               attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-              url="https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}"
+              url="https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png"
               maxZoom="19"
             />
           </BaseLayer>
@@ -126,16 +126,6 @@ export const LeafLetMap = ({
             name="Kartverket flyfoto"
           >
             <KartverketFlyFotoLayer />
-          </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Google Maps Hydrid")}
-            name="Google Maps Hydrid"
-          >
-            <GoogleLayer
-              maxZoom="19"
-              googlekey={googleApiKey}
-              maptype="HYBRID"
-            />
           </BaseLayer>
         </LayersControl>
         <FareZones position="topright" />
