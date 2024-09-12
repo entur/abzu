@@ -91,7 +91,7 @@ class AddTagDialog extends Component {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <AddTagAutoComplete
-            style={{ marginLeft: 10, width: 350 }}
+            style={{ marginLeft: 10, width: 350, paddingTop: 10 }}
             tagName={tagName}
             searchText={searchText}
             handleInputChange={(value) => {
@@ -106,13 +106,14 @@ class AddTagDialog extends Component {
           value={comment}
           label={formatMessage({ id: "comment" })}
           hintText={formatMessage({ id: "comment" })}
-          style={{ marginLeft: 10, width: 350 }}
+          style={{ marginLeft: 10, width: 350, marginTop: 10 }}
           fullWidth={true}
           ref="comment"
           id={"comment-text"}
           onChange={(e) => this.setState({ comment: e.target.value || "" })}
         />
         <FlatButton
+          style={{ marginLeft: 10, width: 350, marginTop: 10 }}
           variant="outlined"
           disabled={!tagName}
           onClick={this.handleAddTag.bind(this)}
