@@ -58,6 +58,7 @@ class NewAltName extends Component {
           label={translations.nameType}
           value={type}
           onChange={handleTypeChange}
+          variant="standard"
         >
           {altNameConfig.supportedNameTypes.map((type, index) => (
             <MenuItem key={"type-" + type} value={type}>
@@ -73,6 +74,7 @@ class NewAltName extends Component {
           label={translations.language}
           value={lang}
           onChange={onLanguageChange}
+          variant="standard"
         >
           {altNameConfig.languages.map((key, index) => (
             <MenuItem key={"lang-" + index} value={key}>
@@ -89,6 +91,7 @@ class NewAltName extends Component {
           label={translations.value}
           onChange={onValueChange}
           value={value}
+          variant="standard"
         />
         <FlatButton
           style={{ marginTop: 10, width: "100%", textAlign: "center" }}

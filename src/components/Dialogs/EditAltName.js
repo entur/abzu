@@ -90,13 +90,14 @@ class EditAltName extends Component {
           </div>
         </div>
         <Select
+          style={{ marginTop: 10 }}
           variant="standard"
           fullWidth={true}
           label={translations.nameType}
           value={type}
-          onChange={(event, key, type) => {
+          onChange={(event) => {
             this.setState({
-              type,
+              type: event.target.value,
             });
           }}
         >
@@ -110,13 +111,14 @@ class EditAltName extends Component {
         </Select>
 
         <Select
+          style={{ marginTop: 10 }}
           variant="standard"
           fullWidth={true}
           label={translations.language}
           value={lang}
-          onChange={(event, key, lang) => {
+          onChange={(event) => {
             this.setState({
-              lang,
+              lang: event.target.value,
             });
           }}
         >
@@ -134,9 +136,9 @@ class EditAltName extends Component {
           fullWidth={true}
           hintText={translations.value}
           value={value}
-          onChange={(e, value) => {
+          onChange={(event) => {
             this.setState({
-              value,
+              value: event.target.value,
             });
           }}
         />

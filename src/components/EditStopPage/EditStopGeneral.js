@@ -759,7 +759,12 @@ class EditStopGeneral extends React.Component {
               <FlatButton
                 disabled={disableTerminate}
                 label={formatMessage({ id: "terminate_stop_place" })}
-                style={{ margin: "8 5", zIndex: 999 }}
+                style={{
+                  margin: "8 5",
+                  zIndex: 999,
+                  fontSize: "0.7em",
+                  color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
+                }}
                 labelStyle={{
                   fontSize: "0.7em",
                   color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
@@ -769,26 +774,39 @@ class EditStopGeneral extends React.Component {
                     UserActions.requestTerminateStopPlace(stopPlace.id),
                   );
                 }}
-              />
+              >
+                {formatMessage({ id: "terminate_stop_place" })}
+              </FlatButton>
             )}
           <FlatButton
             icon={<MdUndo style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={!stopHasBeenModified}
             label={formatMessage({ id: "undo_changes" })}
-            style={{ margin: "8 5", zIndex: 999, minWidth: "120px" }}
+            style={{
+              margin: "8 5",
+              zIndex: 999,
+              minWidth: "120px",
+              fontSize: "0.7em",
+            }}
             labelStyle={{ fontSize: "0.7em" }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
             }}
-          />
+          >
+            <MdUndo style={{ height: "1.3em", width: "1.3em" }} />
+            {formatMessage({ id: "undo_changes" })}
+          </FlatButton>
           <FlatButton
             icon={<MdSave style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={disabled || !stopHasBeenModified}
             label={formatMessage({ id: "save_new_version" })}
-            style={{ margin: "8 5", zIndex: 999 }}
+            style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
             labelStyle={{ fontSize: "0.7em" }}
             onClick={this.handleSave.bind(this)}
-          />
+          >
+            <MdSave style={{ height: "1.3em", width: "1.3em" }} />
+            {formatMessage({ id: "save_new_version" })}
+          </FlatButton>
         </div>
       </div>
     );
