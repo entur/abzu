@@ -36,7 +36,7 @@ class MergeQuaysDetails extends React.Component {
           isSource={true}
           quay={merginQuays.fromQuay}
         />
-        =>
+
         <QuayDetails key="to_quay" quay={merginQuays.toQuay} isSource={false} />
       </div>
     );

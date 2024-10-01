@@ -21,6 +21,9 @@ import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import EditStopBoxTabs from "./EditStopBoxTabs";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import StopPlaceDetails from "./StopPlaceDetails";
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import { mutatePathLink, mutateParking } from "../../graphql/Tiamat/mutations";
@@ -76,6 +79,7 @@ class EditStopGeneral extends React.Component {
       errorMessage: "",
       requiredFieldsMissingOpen: false,
       isLoading: false,
+      tabValue: "1",
     };
   }
 
@@ -372,6 +376,7 @@ class EditStopGeneral extends React.Component {
   }
 
   handleSlideChange(event, value) {
+    this.setState({ tabValue: value });
     this.props.dispatch(UserActions.changeElementTypeTab(value));
   }
 
@@ -582,13 +587,17 @@ class EditStopGeneral extends React.Component {
                 <FlatButton
                   icon={<MdLess />}
                   onClick={() => this.showLessStopPlace()}
-                />
+                >
+                  <MdLess />
+                </FlatButton>
               ) : (
                 <FlatButton
                   label={formatMessage({ id: "more" })}
                   labelStyle={{ fontSize: 12 }}
                   onClick={() => this.showMoreStopPlace()}
-                />
+                >
+                  {formatMessage({ id: "more" })}
+                </FlatButton>
               )}
             </div>
             <Divider inset={true} />

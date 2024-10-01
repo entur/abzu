@@ -27,7 +27,7 @@ class EditStopAdditional extends React.Component {
     };
   }
 
-  handleTabOnChange = (value) => {
+  handleTabOnChange = (event, value) => {
     this.setState({
       activeTabIndex: value,
     });
@@ -60,17 +60,19 @@ class EditStopAdditional extends React.Component {
             style={tabStyle}
             label={formatMessage({ id: "accessibility" })}
             value={0}
-          >
-            <AcessibilityStopTab intl={intl} disabled={disabled} />
-          </Tab>
+          ></Tab>
           <Tab
             style={tabStyle}
             label={formatMessage({ id: "facilities" })}
             value={1}
-          >
-            <FacilitiesStopTab intl={intl} disabled={disabled} />
-          </Tab>
+          ></Tab>
         </Tabs>
+        {activeTabIndex === 0 && (
+          <AcessibilityStopTab intl={intl} disabled={disabled} />
+        )}
+        {activeTabIndex === 1 && (
+          <FacilitiesStopTab intl={intl} disabled={disabled} />
+        )}
       </div>
     );
   }

@@ -18,6 +18,9 @@ import accessibilityAssessments from "../../models/accessibilityAssessments";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
 import IconButton from "@mui/material/IconButton";
 import { Popover } from "@mui/material";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import WheelChair from "@mui/icons-material/Accessible";
+import ListItemText from "@mui/material/ListItemText";
 
 class StepFreePopover extends React.Component {
   constructor(props) {
@@ -94,21 +97,23 @@ class StepFreePopover extends React.Component {
                 onClick={() => {
                   this.handleChange(option);
                 }}
-                primaryText={formatMessage({
-                  id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`,
-                })}
-                secondaryText={
+              >
+                <ListItemIcon>
                   <StairsIcon
                     style={{
                       float: "left",
-                      marginLeft: -18,
                       marginTop: 9,
                       marginRight: 5,
                       color: accessibilityAssessments.colors[option],
                     }}
                   />
-                }
-              />
+                </ListItemIcon>
+                <ListItemText>
+                  {formatMessage({
+                    id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`,
+                  })}
+                </ListItemText>
+              </MenuItem>
             ),
           )}
         </Popover>
