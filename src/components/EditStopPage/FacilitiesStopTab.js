@@ -69,6 +69,9 @@ class FacilitiesStopTab extends React.Component {
   }
 
   handleValueForTicketMachineChange(numberOfMachines) {
+    if (numberOfMachines < 0) {
+      numberOfMachines = 0;
+    }
     this.handleTicketMachineChange({
       numberOfMachines,
       ticketMachines: numberOfMachines > 0,
@@ -89,6 +92,9 @@ class FacilitiesStopTab extends React.Component {
 
   handleValueForBusShelterChange(newValue) {
     const { stopPlace } = this.props;
+    if (newValue < 0) {
+      newValue = 0;
+    }
     const oldValuesSet = {
       seats: getIn(
         stopPlace,
@@ -148,6 +154,9 @@ class FacilitiesStopTab extends React.Component {
 
   handleValueForWaitingRoomChange(newValue) {
     const { stopPlace } = this.props;
+    if (newValue < 0) {
+      newValue = 0;
+    }
     const oldValuesSet = {
       seats: getIn(
         stopPlace,
@@ -226,7 +235,7 @@ class FacilitiesStopTab extends React.Component {
               control={
                 <Checkbox
                   checked={sign512}
-                  checkedIcon={<TransportSign />}
+                  checkedIcon={<TransportSign style={{ fill: "#000" }} />}
                   icon={
                     <TransportSign
                       style={{
@@ -259,7 +268,7 @@ class FacilitiesStopTab extends React.Component {
               control={
                 <Checkbox
                   checked={ticketMachine}
-                  checkedIcon={<TicketMachine />}
+                  checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
                   icon={
                     <TicketMachine
                       style={{ fill: "#8c8c8c", opacity: "0.8" }}
@@ -285,18 +294,16 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 0 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_ticket_machines" })}
+                label={formatMessage({ id: "number_of_ticket_machines" })}
                 type="number"
+                variant="filled"
+                //defaultValue={ticketMachineNumber}
                 value={ticketMachineNumber}
                 disabled={disabled}
-                onChange={(event, value) => {
-                  this.handleValueForTicketMachineChange(value);
+                onChange={(event) => {
+                  this.handleValueForTicketMachineChange(event.target.value);
                 }}
-                min="0"
                 fullWidth={true}
-                floatingLabelText={formatMessage({
-                  id: "number_of_ticket_machines",
-                })}
               />
             </div>
           ) : null}
@@ -325,7 +332,7 @@ class FacilitiesStopTab extends React.Component {
               control={
                 <Checkbox
                   checked={busShelter}
-                  checkedIcon={<BusShelter />}
+                  checkedIcon={<BusShelter style={{ fill: "#000" }} />}
                   icon={
                     <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                   }
@@ -349,11 +356,14 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 1 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_seats" })}
+                label={formatMessage({ id: "number_of_seats" })}
+                variant="filled"
                 value={shelterSeats}
                 type="number"
-                onChange={(event, value) => {
-                  this.handleValueForBusShelterChange({ seats: value });
+                onChange={(event) => {
+                  this.handleValueForBusShelterChange({
+                    seats: event.target.value,
+                  });
                 }}
                 min="0"
                 fullWidth={true}
@@ -367,41 +377,65 @@ class FacilitiesStopTab extends React.Component {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Checkbox
-                    checked={shelterStepFree}
-                    onChange={(e, v) => {
-                      this.handleValueForBusShelterChange({ stepFree: v });
-                    }}
-                    checkedIcon={<StairsIcon />}
-                    style={{ width: "auto" }}
-                    label={
-                      shelterStepFree
-                        ? formatMessage({ id: "step_free_access" })
-                        : formatMessage({ id: "step_free_access_no" })
-                    }
-                    icon={
-                      <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                    }
-                    labelStyle={{ fontSize: "0.8em" }}
-                  />
-                  <Checkbox
-                    checked={shelterEnclosed}
-                    checkedIcon={<EnclosedIcon />}
-                    icon={
-                      <EnclosedIcon
-                        style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shelterStepFree}
+                        onChange={(e, v) => {
+                          this.handleValueForBusShelterChange({ stepFree: v });
+                        }}
+                        checkedIcon={<StairsIcon style={{ fill: "#000" }} />}
+                        style={{ width: "auto" }}
+                        label={
+                          shelterStepFree
+                            ? formatMessage({ id: "step_free_access" })
+                            : formatMessage({ id: "step_free_access_no" })
+                        }
+                        icon={
+                          <StairsIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
                       />
                     }
                     label={
-                      shelterEnclosed
-                        ? formatMessage({ id: "enclosed" })
-                        : formatMessage({ id: "enclosed_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {shelterStepFree
+                          ? formatMessage({ id: "step_free_access" })
+                          : formatMessage({ id: "step_free_access_no" })}
+                      </div>
                     }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    style={{ width: "auto" }}
-                    onChange={(e, v) => {
-                      this.handleValueForBusShelterChange({ enclosed: v });
-                    }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shelterEnclosed}
+                        checkedIcon={<EnclosedIcon style={{ fill: "#000" }} />}
+                        icon={
+                          <EnclosedIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        label={
+                          shelterEnclosed
+                            ? formatMessage({ id: "enclosed" })
+                            : formatMessage({ id: "enclosed_no" })
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        style={{ width: "auto" }}
+                        onChange={(e, v) => {
+                          this.handleValueForBusShelterChange({ enclosed: v });
+                        }}
+                      />
+                    }
+                    label={
+                      <div style={{ fontSize: "0.8em" }}>
+                        {shelterEnclosed
+                          ? formatMessage({ id: "enclosed" })
+                          : formatMessage({ id: "enclosed_no" })}
+                      </div>
+                    }
                   />
                 </div>
               </div>
@@ -432,7 +466,7 @@ class FacilitiesStopTab extends React.Component {
               control={
                 <Checkbox
                   checked={WC}
-                  checkedIcon={<MdWc />}
+                  checkedIcon={<MdWc style={{ fill: "#000" }} />}
                   icon={<MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                   onChange={(e, v) => {
                     this.handleWCChange(v);
@@ -457,7 +491,7 @@ class FacilitiesStopTab extends React.Component {
               control={
                 <Checkbox
                   checked={waitingRoom}
-                  checkedIcon={<WaitingRoom />}
+                  checkedIcon={<WaitingRoom style={{ fill: "#000" }} />}
                   icon={
                     <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                   }
@@ -481,16 +515,20 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 3 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_seats" })}
+                label={formatMessage({ id: "number_of_seats" })}
+                variant="filled"
                 type="number"
                 value={waitingRoomSeats}
-                disabled={disabled}
+                //defaultValue={waitingRoomSeats}
+                //disabled={disabled}
                 onChange={(event, value) => {
-                  this.handleValueForWaitingRoomChange({ seats: value });
+                  this.handleValueForWaitingRoomChange({
+                    seats: event.target.value,
+                  });
                 }}
                 min="0"
                 fullWidth={true}
-                floatingLabelText={formatMessage({ id: "number_of_seats" })}
+                InputLabelProps={{ shrink: true }}
               />
               <div style={{ display: "block" }}>
                 <div
@@ -500,39 +538,63 @@ class FacilitiesStopTab extends React.Component {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Checkbox
-                    checked={waitingRoomStepFree}
-                    checkedIcon={<StairsIcon />}
-                    style={{ width: "auto" }}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitingRoomStepFree}
+                        checkedIcon={<StairsIcon style={{ fill: "#000" }} />}
+                        style={{ width: "auto" }}
+                        label={
+                          waitingRoomStepFree
+                            ? formatMessage({ id: "step_free_access" })
+                            : formatMessage({ id: "step_free_access_no" })
+                        }
+                        icon={
+                          <StairsIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        onChange={(e, v) => {
+                          this.handleValueForWaitingRoomChange({ stepFree: v });
+                        }}
+                      />
+                    }
                     label={
-                      waitingRoomStepFree
-                        ? formatMessage({ id: "step_free_access" })
-                        : formatMessage({ id: "step_free_access_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {waitingRoomStepFree
+                          ? formatMessage({ id: "step_free_access" })
+                          : formatMessage({ id: "step_free_access_no" })}
+                      </div>
                     }
-                    icon={
-                      <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                    }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    onChange={(e, v) => {
-                      this.handleValueForWaitingRoomChange({ stepFree: v });
-                    }}
                   />
-                  <Checkbox
-                    checked={waitingRoomHeated}
-                    checkedIcon={<Heated />}
-                    icon={
-                      <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitingRoomHeated}
+                        checkedIcon={<Heated style={{ fill: "#000" }} />}
+                        icon={
+                          <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                        }
+                        label={
+                          waitingRoomHeated
+                            ? formatMessage({ id: "heating" })
+                            : formatMessage({ id: "heating_no" })
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        style={{ width: "auto" }}
+                        onChange={(e, v) => {
+                          this.handleValueForWaitingRoomChange({ heated: v });
+                        }}
+                      />
                     }
                     label={
-                      waitingRoomHeated
-                        ? formatMessage({ id: "heating" })
-                        : formatMessage({ id: "heating_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {waitingRoomHeated
+                          ? formatMessage({ id: "heating" })
+                          : formatMessage({ id: "heating_no" })}
+                      </div>
                     }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    style={{ width: "auto" }}
-                    onChange={(e, v) => {
-                      this.handleValueForWaitingRoomChange({ heated: v });
-                    }}
                   />
                 </div>
               </div>
