@@ -21,14 +21,25 @@ import AccessiblityQuayTab from "./AcessibilityQuayTab";
 import { injectIntl } from "react-intl";
 import BoardingPositionsTab from "./BoardingPositionsTab";
 import { UserActions } from "../../actions";
+import AcessibilityStopTab from "./AcessibilityStopTab";
+import FacilitiesStopTab from "./FacilitiesStopTab";
 
 class EditQuayAdditional extends React.Component {
-  handleTabOnChange = (value) => {
-    this.props.dispatch(UserActions.changeQuayAdditionalTypeTab(value));
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTabIndex: 0,
+    };
+  }
+
+  handleTabOnChange = (event, value) => {
+    this.setState({
+      activeTabIndex: value,
+    });
   };
 
   render() {
-    const { intl, quay, index, disabled, activeTabIndex } = this.props;
+    const { intl, quay, index, disabled } = this.props;
     const { formatMessage } = intl;
 
     const style = {
@@ -43,6 +54,8 @@ class EditQuayAdditional extends React.Component {
       marginTop: -10,
     };
 
+    const { activeTabIndex } = this.state;
+
     return (
       <div style={style} id="additional">
         <Tabs
@@ -54,39 +67,42 @@ class EditQuayAdditional extends React.Component {
             style={tabStyle}
             label={formatMessage({ id: "accessibility" })}
             value={0}
-          >
-            <AccessiblityQuayTab
-              intl={intl}
-              quay={quay}
-              index={index}
-              disabled={disabled}
-            />
-          </Tab>
+          ></Tab>
           <Tab
             style={tabStyle}
             label={formatMessage({ id: "facilities" })}
             value={1}
-          >
-            <FacilitiesQuayTab
-              intl={intl}
-              quay={quay}
-              index={index}
-              disabled={disabled}
-            />
-          </Tab>
+          ></Tab>
           <Tab
             style={tabStyle}
             label={intl.formatMessage({ id: "boarding_positions_tab_label" })}
             value={2}
-          >
-            <BoardingPositionsTab
-              quay={quay}
-              index={index}
-              disabled={disabled}
-              focusedElement={this.props.focusedBoardingPositionElement}
-            />
-          </Tab>
+          ></Tab>
         </Tabs>
+        {activeTabIndex === 0 && (
+          <AccessiblityQuayTab
+            intl={intl}
+            quay={quay}
+            index={index}
+            disabled={disabled}
+          />
+        )}
+        {activeTabIndex === 1 && (
+          <FacilitiesQuayTab
+            intl={intl}
+            quay={quay}
+            index={index}
+            disabled={disabled}
+          />
+        )}
+        {activeTabIndex === 2 && (
+          <BoardingPositionsTab
+            quay={quay}
+            index={index}
+            disabled={disabled}
+            focusedElement={this.props.focusedBoardingPositionElement}
+          />
+        )}
       </div>
     );
   }
