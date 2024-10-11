@@ -259,13 +259,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             floatingLabelText={formatMessage({
               id: "parking_number_of_spaces",
             })}
-            onChange={(_e, value) => {
-              handleSetNumberOfSpaces(value);
+            onChange={(event) => {
+              handleSetNumberOfSpaces(event.target.value);
             }}
             value={numberOfSpaces || ""}
             type="number"
             fullWidth
             className={classes.textField}
+            style={{ marginTop: 10 }}
           />
         </Box>
         <Box
@@ -276,15 +277,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           <Accessible style={parkingIconStyles()} />
           <TextField
             variant="standard"
-            hintText={formatMessage({
+            label={formatMessage({
               id: "parking_number_of_spaces_for_registered_disabled_user_type",
             })}
             disabled={disabled || hasExpired}
-            floatingLabelText={formatMessage({
-              id: "parking_number_of_spaces_for_registered_disabled_user_type",
-            })}
-            onChange={(e, value) => {
-              handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
+            onChange={(event) => {
+              handleSetNumberOfSpacesForRegisteredDisabledUserType(
+                event.target.value,
+              );
             }}
             value={numberOfSpacesForRegisteredDisabledUserType || ""}
             type="number"
@@ -325,13 +325,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             floatingLabelText={formatMessage({
               id: "parking_number_of_spaces_with_recharge_point",
             })}
-            onChange={(_e, value) => {
-              handleSetNumberOfSpacesWithRechargePoint(value);
+            onChange={(event) => {
+              handleSetNumberOfSpacesWithRechargePoint(event.target.value);
             }}
             value={numberOfSpacesWithRechargePoint || ""}
             type="number"
             fullWidth
             className={classes.textField}
+            style={{ marginTop: 15 }}
           />
         </Box>
       </Grid>

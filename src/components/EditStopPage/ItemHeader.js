@@ -8,6 +8,7 @@ const locationStyle = {
   marginRight: 5,
   height: 16,
   width: 16,
+  fill: "#000",
 };
 
 export default ({

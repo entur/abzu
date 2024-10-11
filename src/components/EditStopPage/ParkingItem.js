@@ -44,6 +44,9 @@ class ParkingItem extends React.Component {
   };
 
   handleSetTotalCapacity(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value));
   }
@@ -69,11 +72,17 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpaces(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingNumberOfSpaces(index, value));
   }
 
   handleSetNumberOfSpacesWithRechargePoint(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(
@@ -84,6 +93,9 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
@@ -216,14 +228,14 @@ class ParkingItem extends React.Component {
         {expanded && (
           <div className="pr-item-expanded">
             <TextField
-              hintText={this.props.translations.name}
+              label={this.props.translations.name}
               disabled={this.props.disabled || this.props.parking.hasExpired}
-              floatingLabelText={this.props.translations.name}
               onChange={(e, v) => {
                 this.handleSetName(v);
               }}
+              variant="standard"
               value={this.props.parking.name}
-              style={{ width: "95%", marginTop: -10 }}
+              style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
             />
 
             {parkingType === PARKING_TYPE.PARK_AND_RIDE ? (
@@ -260,6 +272,7 @@ class ParkingItem extends React.Component {
               />
             ) : (
               <TextField
+                variant="standard"
                 hintText={translations.capacity}
                 disabled={disabled || parking.hasExpired}
                 floatingLabelText={translations.capacity}
@@ -268,7 +281,7 @@ class ParkingItem extends React.Component {
                 }}
                 value={parking.totalCapacity}
                 type="number"
-                style={{ width: "95%", marginTop: -10 }}
+                style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
               />
             )}
 

@@ -66,8 +66,8 @@ const BoardingPositionItem = ({
         >
           <TextField
             placeholder={intl.formatMessage({ id: "publicCode" })}
-            //floatingLabelText={intl.formatMessage({ id: "publicCode" })}
-
+            variant="standard"
+            label={intl.formatMessage({ id: "publicCode" })}
             disabled={disabled}
             value={bp.publicCode}
             style={{ width: "95%", marginTop: -10 }}

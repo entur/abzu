@@ -5,6 +5,9 @@ import MenuItem from "@mui/material/MenuItem";
 import EvStation from "@mui/icons-material/EvStation";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
 import { Popover } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import accessibilityAssessments from "../../models/accessibilityAssessments";
 
 class RechargingAvailablePopover extends React.Component {
   constructor(props) {
@@ -63,29 +66,44 @@ class RechargingAvailablePopover extends React.Component {
 
     const rechargingAvailableMenuItems = [true, false].map((key) => (
       <MenuItem
-        leftIcon={<EvStation color={evStationIconColor(key)} />}
         key={`rechargingAvailable_${key}`}
         value={key}
-        primaryText={formatMessage({
-          id: `parking_recharging_available_${key}`,
-        })}
         onClick={() => this.handleSelect(key)}
-      />
+      >
+        <ListItemIcon>
+          <EvStation
+            style={{
+              color: evStationIconColor(key),
+            }}
+          />
+        </ListItemIcon>
+        <ListItemText>
+          {formatMessage({
+            id: `parking_recharging_available_${key}`,
+          })}
+        </ListItemText>
+      </MenuItem>
     ));
 
     return (
       <div>
         <div style={{ margin: "6px 6px 0 0", height: "56px" }}>
           <IconButton
-            style={{
-              borderBottom: disabled || hasExpired ? "none" : "1px dotted grey",
-            }}
             onClick={(e) => {
               if (!disabled && !hasExpired) this.handleOpenPopover(e);
             }}
           >
-            <EvStation color={evStationIconColor(rechargingAvailableValue)} />
+            <EvStation
+              style={{
+                color: evStationIconColor(rechargingAvailableValue),
+              }}
+            />
           </IconButton>
+          <div
+            style={{
+              borderBottom: "1px dotted",
+            }}
+          ></div>
         </div>
         <Popover
           open={open}
