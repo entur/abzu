@@ -28,4 +28,6 @@ export const languages = [
   "rus",
   "fkv",
   "fra",
+  "smj",
+  "sma",
 ];

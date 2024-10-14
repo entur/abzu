@@ -102,7 +102,6 @@ export const getTariffZonesByIdsAction = createAsyncThunk<
     fetchPolicy: "network-only",
     context: getContext(thunkAPI.getState().roles.auth),
   });
-
   return response.data.tariffZones;
 });
 
@@ -171,7 +170,7 @@ export const { setSelectedFareZones, setSelectedTariffZones } =
 export const toggleShowFareZonesInMap = createAsyncThunk<void, boolean>(
   "zones/toggleShowFareZonesInMap",
   async (value, { dispatch }) => {
-    Settings.setShowTariffZonesInMap(!value);
+    Settings.setShowTariffZonesInMap(false);
     Settings.setShowFareZonesInMap(value);
     dispatch(zonesSlice.actions.toggleShowFareZonesInMap(value));
   },
@@ -180,7 +179,7 @@ export const toggleShowFareZonesInMap = createAsyncThunk<void, boolean>(
 export const toggleShowTariffZonesInMap = createAsyncThunk<void, boolean>(
   "zones/toggleShowTariffZonesInMap",
   async (value, { dispatch }) => {
-    Settings.setShowFareZonesInMap(!value);
+    Settings.setShowFareZonesInMap(false);
     Settings.setShowTariffZonesInMap(value);
     dispatch(zonesSlice.actions.toggleShowTariffZonesInMap(value));
   },
