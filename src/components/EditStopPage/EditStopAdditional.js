@@ -13,7 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { Tabs, Tab } from "material-ui/Tabs";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import FacilitiesStopTab from "./FacilitiesStopTab";
 import AcessibilityStopTab from "./AcessibilityStopTab";
 import { injectIntl } from "react-intl";
@@ -26,7 +27,7 @@ class EditStopAdditional extends React.Component {
     };
   }
 
-  handleTabOnChange = (value) => {
+  handleTabOnChange = (event, value) => {
     this.setState({
       activeTabIndex: value,
     });
@@ -59,17 +60,19 @@ class EditStopAdditional extends React.Component {
             style={tabStyle}
             label={formatMessage({ id: "accessibility" })}
             value={0}
-          >
-            <AcessibilityStopTab intl={intl} disabled={disabled} />
-          </Tab>
+          ></Tab>
           <Tab
             style={tabStyle}
             label={formatMessage({ id: "facilities" })}
             value={1}
-          >
-            <FacilitiesStopTab intl={intl} disabled={disabled} />
-          </Tab>
+          ></Tab>
         </Tabs>
+        {activeTabIndex === 0 && (
+          <AcessibilityStopTab intl={intl} disabled={disabled} />
+        )}
+        {activeTabIndex === 1 && (
+          <FacilitiesStopTab intl={intl} disabled={disabled} />
+        )}
       </div>
     );
   }

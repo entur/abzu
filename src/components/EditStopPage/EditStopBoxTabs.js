@@ -18,7 +18,7 @@ import ParkingItem from "./ParkingItem";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { CodeBadge } from "./Code";
-import MdSortByAlpha from "material-ui/svg-icons/av/sort-by-alpha";
+import MdSortByAlpha from "@mui/icons-material/SortByAlpha";
 
 class EditStopBoxTabs extends React.Component {
   handleLocateOnMap(position, index, type) {

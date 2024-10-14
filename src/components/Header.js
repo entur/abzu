@@ -13,23 +13,24 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
+import MoreMenuItem from "./MainPage/MoreMenuItem";
 import { connect } from "react-redux";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
-import { getLogo } from "../config/themeConfig";
-import MdAccount from "material-ui/svg-icons/action/account-circle";
-import MdLanguage from "material-ui/svg-icons/action/language";
-import MdSettings from "material-ui/svg-icons/action/settings";
-import MdMap from "material-ui/svg-icons/maps/map";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Typography from "@mui/material/Typography";
+import { getEnvColor, getLogo, getTheme } from "../config/themeConfig";
+import MdAccount from "@mui/icons-material/AccountCircle";
+import MdLanguage from "@mui/icons-material/Language";
+import MdSettings from "@mui/icons-material/Settings";
+import MdMap from "@mui/icons-material/Map";
 import { UserActions } from "../actions/";
 import { getIn } from "../utils";
-import MdReport from "material-ui/svg-icons/content/report";
-import MdHelp from "material-ui/svg-icons/action/help";
-import { getTiamatEnv, getEnvColor } from "../config/themeConfig";
+import MdReport from "@mui/icons-material/Report";
+import MdHelp from "@mui/icons-material/Help";
+import { getTiamatEnv } from "../config/themeConfig";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { Button } from "@mui/material";
 import {
@@ -38,6 +39,8 @@ import {
 } from "../reducers/zonesSlice";
 import { injectIntl } from "react-intl";
 import { Helmet } from "react-helmet";
+import Menu from "@mui/material/Menu";
+import { Check } from "@mui/icons-material";
 
 class Header extends React.Component {
   constructor(props) {
@@ -137,15 +140,26 @@ class Header extends React.Component {
   }
 
   handleToggleShowFareZones(value) {
-    this.props.dispatch(toggleShowTariffZonesInMap(!value));
+    this.props.dispatch(toggleShowTariffZonesInMap(false));
     this.props.dispatch(toggleShowFareZonesInMap(value));
   }
 
   handleToggleShowTariffZones(value) {
-    this.props.dispatch(toggleShowFareZonesInMap(!value));
+    this.props.dispatch(toggleShowFareZonesInMap(false));
     this.props.dispatch(toggleShowTariffZonesInMap(value));
   }
 
+  state = {
+    anchorEl: null,
+  };
+
+  handleClick = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
   render() {
     const {
       intl,
@@ -193,7 +207,10 @@ class Header extends React.Component {
     });
 
     const tiamatEnv = getTiamatEnv();
+    const headerColor = getEnvColor(tiamatEnv);
+    const theme = getTheme();
     const logo = getLogo();
+    const { anchorEl } = this.state;
 
     return (
       <div>
@@ -201,245 +218,425 @@ class Header extends React.Component {
           defaultTitle={formatMessage({ id: "_title" })}
           titleTemplate={`${formatMessage({ id: "_title" })} - %s`}
         />
-        <AppBar
-          style={{
-            zIndex: 999,
-            background: getEnvColor(tiamatEnv),
-          }}
-          title={
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div>
-                {title}
-                {(tiamatEnv === "test" || tiamatEnv === "development") && (
-                  <span
-                    style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}
-                  >
-                    {tiamatEnv}
-                  </span>
-                )}
-              </div>
-              <div style={{ height: "36px" }}>
-                {!this.props.auth.isAuthenticated && (
-                  <Button
-                    variant="contained"
-                    onClick={() => this.handleLogin()}
-                  >
-                    {logIn}
-                  </Button>
-                )}
-              </div>
-            </div>
-          }
-          showMenuIconButton={true}
-          iconElementLeft={
-            <img
-              alt=""
-              src={logo}
-              style={{ width: 40, height: "auto", cursor: "pointer" }}
+        <AppBar position="static" sx={{ background: headerColor }}>
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
               onClick={() =>
                 this.handleConfirmChangeRoute(
                   this.goToMain.bind(this),
                   "GoToMain",
                 )
               }
-            />
-          }
-          iconElementRight={
-            <IconMenu
-              iconButtonElement={
-                <IconButton>
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              targetOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "top" }}
+            >
+              <img
+                alt=""
+                src={logo}
+                style={{ width: 40, height: "auto", cursor: "pointer" }}
+              />
+            </IconButton>
+
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <div
+                style={{
+                  fontSize: 24,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: "#fff",
+                }}
+              >
+                <div>
+                  {title}
+                  {(tiamatEnv === "test" || tiamatEnv === "development") && (
+                    <span
+                      style={{ fontSize: 18, marginLeft: 8, color: "#ddffa5" }}
+                    >
+                      {tiamatEnv}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Typography>
+
+            <div style={{ height: "36px" }}>
+              {!this.props.auth.isAuthenticated && (
+                <Button
+                  variant="contained"
+                  onClick={() => this.handleLogin()}
+                  sx={{ mr: 2 }}
+                  color={"primary2Color"}
+                >
+                  {logIn}
+                </Button>
+              )}
+            </div>
+
+            <IconButton
+              aria-owns={anchorEl ? "simple-menu" : undefined}
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            >
+              <MoreVertIcon color={"alternateTextColor"} />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.handleClose}
             >
               <MenuItem
-                leftIcon={<MdReport color="#41c0c4" />}
-                primaryText={reportSite}
                 onClick={() =>
                   this.handleConfirmChangeRoute(
                     this.goToReports.bind(this),
                     "GoToReports",
                   )
                 }
-                style={{ fontSize: 12, padding: 0 }}
-              />
-              <MenuItem
-                primaryText={settings}
-                rightIcon={<ArrowDropRight />}
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MdReport color="#41c0c4" />
+                {reportSite}
+              </MenuItem>
+              <MoreMenuItem
                 leftIcon={<MdSettings color="#41c0c4" />}
-                style={{ fontSize: 12, padding: 0 }}
-                desktop={true}
-                multiple
-                menuItems={[
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleTogglePublicCodePrivateCodeOnStopPlaces(
-                        !isPublicCodePrivateCodeOnStopPlacesEnabled,
-                      )
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={isPublicCodePrivateCodeOnStopPlacesEnabled}
-                    primaryText={publicCodePrivateCodeSetting}
-                  />,
-                ]}
-              />
-              <MenuItem
-                primaryText={mapSettings}
-                rightIcon={<ArrowDropRight />}
+                label={settings}
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleTogglePublicCodePrivateCodeOnStopPlaces(
+                      !isPublicCodePrivateCodeOnStopPlacesEnabled,
+                    )
+                  }
+                >
+                  {isPublicCodePrivateCodeOnStopPlacesEnabled ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {publicCodePrivateCodeSetting}
+                </MenuItem>
+              </MoreMenuItem>
+              <MoreMenuItem
                 leftIcon={<MdMap color="#41c0c4" />}
-                style={{ fontSize: 12, padding: 0 }}
-                desktop={true}
-                multiple
-                menuItems={[
+                label={mapSettings}
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
+                  }
+                >
+                  {isMultiPolylinesEnabled ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {showPathLinks}
+                </MenuItem>
+
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleToggleCompassBearing(!isCompassBearingEnabled)
+                  }
+                >
+                  {isCompassBearingEnabled ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {showCompassBearing}
+                </MenuItem>
+
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleToggleShowExpiredStops(!showExpiredStops)
+                  }
+                >
+                  {showExpiredStops ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {expiredStopLabel}
+                </MenuItem>
+
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleToggleMultimodalEdges(!showMultimodalEdges)
+                  }
+                >
+                  {showMultimodalEdges ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {showMultimodalEdgesLabel}
+                </MenuItem>
+
+                <MoreMenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  leftIcon={<div style={{ width: "24px", height: "24px" }} />}
+                  label={quayCodeShowingLabel}
+                >
                   <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={isMultiPolylinesEnabled}
-                    primaryText={showPathLinks}
-                  />,
+                    style={{
+                      fontSize: 12,
+                      padding: 0,
+                      paddingBottom: 5,
+                      paddingTop: 5,
+                      width: 300,
+                    }}
+                    onClick={() => this.handleToggleShowPublicCode(true)}
+                  >
+                    {showPublicCode ? (
+                      <Check />
+                    ) : (
+                      <div style={{ width: "24px", height: "24px" }} />
+                    )}
+                    {showPublicCodeLabel}
+                  </MenuItem>
+
                   <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleCompassBearing(!isCompassBearingEnabled)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={isCompassBearingEnabled}
-                    primaryText={showCompassBearing}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleShowExpiredStops(!showExpiredStops)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={showExpiredStops}
-                    primaryText={expiredStopLabel}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleMultimodalEdges(!showMultimodalEdges)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={showMultimodalEdges}
-                    primaryText={showMultimodalEdgesLabel}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    primaryText={quayCodeShowingLabel}
-                    rightIcon={<ArrowDropRight />}
-                    insetChildren
-                    menuItems={[
-                      <MenuItem
-                        style={{ fontSize: 12, padding: 0 }}
-                        onClick={() => this.handleToggleShowPublicCode(true)}
-                        insetChildren
-                        primaryText={showPublicCodeLabel}
-                        checked={showPublicCode}
-                      />,
-                      <MenuItem
-                        style={{ fontSize: 12, padding: 0 }}
-                        onClick={() => this.handleToggleShowPublicCode(false)}
-                        insetChildren
-                        primaryText={showPrivateCodeLabel}
-                        checked={!showPublicCode}
-                      />,
-                    ]}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleShowFareZones(!showFareZones)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={showFareZones}
-                    primaryText={showFareZonesLabel}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() =>
-                      this.handleToggleShowTariffZones(!showTariffZones)
-                    }
-                    insetChildren
-                    desktop={true}
-                    multiple
-                    checked={showTariffZones}
-                    primaryText={showTariffZonesLabel}
-                  />,
-                ]}
-              />
-              <MenuItem
-                primaryText={language}
-                rightIcon={<ArrowDropRight />}
+                    style={{
+                      fontSize: 12,
+                      padding: 0,
+                      paddingBottom: 5,
+                      paddingTop: 5,
+                      width: 300,
+                    }}
+                    onClick={() => this.handleToggleShowPublicCode(false)}
+                  >
+                    {!showPublicCode ? (
+                      <Check />
+                    ) : (
+                      <div style={{ width: "24px", height: "24px" }} />
+                    )}
+                    {showPrivateCodeLabel}
+                  </MenuItem>
+                </MoreMenuItem>
+
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() => this.handleToggleShowFareZones(!showFareZones)}
+                >
+                  {showFareZones ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {showFareZonesLabel}
+                </MenuItem>
+
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.handleToggleShowTariffZones(!showTariffZones)
+                  }
+                  checked={showTariffZones}
+                >
+                  {showTariffZones ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {showTariffZonesLabel}
+                </MenuItem>
+              </MoreMenuItem>
+              <MoreMenuItem
                 leftIcon={<MdLanguage color="#41c0c4" />}
-                style={{ fontSize: 12, padding: 0 }}
-                menuItems={[
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage("nb")}
-                    insetChildren
-                    primaryText={norwegian}
-                    checked={locale === "nb"}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage("en")}
-                    insetChildren
-                    primaryText={english}
-                    checked={locale === "en"}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage("fr")}
-                    insetChildren
-                    primaryText={french}
-                    checked={locale === "fr"}
-                  />,
-                  <MenuItem
-                    style={{ fontSize: 12, padding: 0 }}
-                    onClick={() => this.handleSetLanguage("sv")}
-                    insetChildren
-                    primaryText={swedish}
-                    checked={locale === "sv"}
-                  />,
-                ]}
-              />
+                label={language}
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() => this.handleSetLanguage("nb")}
+                  checked={locale === "nb"}
+                >
+                  {locale === "nb" ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {norwegian}
+                </MenuItem>
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() => this.handleSetLanguage("en")}
+                  checked={locale === "en"}
+                >
+                  {locale === "en" ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {english}
+                </MenuItem>
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() => this.handleSetLanguage("fr")}
+                  checked={locale === "fr"}
+                >
+                  {locale === "fr" ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {french}
+                </MenuItem>
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() => this.handleSetLanguage("sv")}
+                  checked={locale === "sv"}
+                >
+                  {locale === "sv" ? (
+                    <Check />
+                  ) : (
+                    <div style={{ width: "24px", height: "24px" }} />
+                  )}
+                  {swedish}
+                </MenuItem>
+              </MoreMenuItem>
               <MenuItem
-                leftIcon={<MdHelp color="#41c0c4" />}
+                component={"a"}
                 href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
                 target="_blank"
-                primaryText={userGuide}
-                style={{ fontSize: 12, padding: 0 }}
-              />
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MdHelp color="#41c0c4" />
+                {userGuide}
+              </MenuItem>
+
               {this.props.auth.isAuthenticated && (
                 <MenuItem
                   leftIcon={<MdAccount color="#41c0c4" />}
-                  primaryText={`${logOut} ${username}`}
                   onClick={() => this.handleLogOut()}
-                  style={{ fontSize: 12, padding: 0 }}
-                />
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                >
+                  <MdAccount color="#41c0c4" />
+                  {`${logOut} ${username}`}
+                </MenuItem>
               )}
-            </IconMenu>
-          }
-        />
+            </Menu>
+          </Toolbar>
+        </AppBar>
+
         <ConfirmDialog
           open={this.state.isConfirmDialogOpen}
           handleClose={() => {

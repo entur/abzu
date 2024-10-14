@@ -1,7 +1,7 @@
 import React from "react";
-import TextField from "material-ui/TextField";
+import TextField from "@mui/material/TextField";
 import { injectIntl } from "react-intl";
-import MdDelete from "material-ui/svg-icons/action/delete-forever";
+import MdDelete from "@mui/icons-material/DeleteForever";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
@@ -65,8 +65,9 @@ const BoardingPositionItem = ({
           className="boarding-position-item-expanded"
         >
           <TextField
-            hintText={intl.formatMessage({ id: "publicCode" })}
-            floatingLabelText={intl.formatMessage({ id: "publicCode" })}
+            placeholder={intl.formatMessage({ id: "publicCode" })}
+            variant="standard"
+            label={intl.formatMessage({ id: "publicCode" })}
             disabled={disabled}
             value={bp.publicCode}
             style={{ width: "95%", marginTop: -10 }}

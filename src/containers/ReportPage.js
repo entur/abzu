@@ -19,18 +19,18 @@ import ReportResultView from "../components/ReportPage/ReportResultView";
 import ReportFilterBox from "../components/ReportPage/ReportFilterBox";
 import ModalityFilter from "../components/EditStopPage/ModalityFilter";
 import TopographicalFilter from "../components/MainPage/TopographicalFilter";
-import AutoComplete from "material-ui/AutoComplete";
+import AutoComplete from "@mui/material/Autocomplete";
 import {
   findStopForReport,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
 } from "../actions/TiamatActions";
-import MenuItem from "material-ui/MenuItem";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import MdSpinner from "../static/icons/spinner";
-import MdSearch from "material-ui/svg-icons/action/search";
+import MdSearch from "@mui/icons-material/Search";
 import ColumnFilterPopover from "../components/EditStopPage/ColumnFilterPopover";
 import { injectIntl } from "react-intl";
 import {
@@ -55,6 +55,7 @@ class ReportPage extends React.Component {
       topoiChips: [],
       activePageIndex: 0,
       searchQuery: "",
+      topographicPlaceFilterValue: "",
       isLoading: false,
       columnOptionsQuays: columnOptionsQuays,
       columnOptionsStopPlace: columnOptionsStopPlace,
@@ -311,22 +312,21 @@ class ReportPage extends React.Component {
     });
   }
 
-  handleAddChip(chip, index) {
+  handleAddChip(event, chip, index) {
     if (chip && index > -1) {
       let addedChipsIds = this.state.topoiChips.map((tc) => tc.id);
       if (addedChipsIds.indexOf(chip.id) === -1) {
         this.setState({
           topoiChips: this.state.topoiChips.concat(chip),
         });
-        this.refs.topoFilter.setState({
-          searchText: "",
-        });
+        this.setState({ topographicPlaceFilterValue: "" });
       }
     }
   }
 
-  handleTopographicalPlaceSearch(searchText) {
-    this.props.dispatch(topographicalPlaceSearch(searchText));
+  handleTopographicalPlaceSearch(event, searchText, reason) {
+    const { dispatch } = this.props;
+    dispatch(topographicalPlaceSearch(searchText));
   }
 
   createTopographicPlaceMenuItem(place, formatMessage) {
@@ -335,10 +335,21 @@ class ReportPage extends React.Component {
       text: name,
       id: place.id,
       value: (
-        <MenuItem
-          primaryText={name}
-          secondaryText={formatMessage({ id: place.topographicPlaceType })}
-        />
+        <div
+          style={{
+            marginLeft: 10,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 380,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ fontSize: "0.9em" }}>{name}</div>
+            <div style={{ fontSize: "0.6em", color: "grey" }}>
+              {formatMessage({ id: place.topographicPlaceType })}
+            </div>
+          </div>
+        </div>
       ),
       type: place.topographicPlaceType,
     };
@@ -397,6 +408,8 @@ class ReportPage extends React.Component {
         this.createTopographicPlaceMenuItem(place, formatMessage),
       );
 
+    console.log({ topographicalPlacesDataSource });
+
     return (
       <div>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -425,20 +438,31 @@ class ReportPage extends React.Component {
                   {formatMessage({ id: "filter_report_by_topography" })}
                 </div>
                 <AutoComplete
-                  hintText={formatMessage({ id: "filter_by_topography" })}
-                  dataSource={topographicalPlacesDataSource}
-                  onUpdateInput={this.handleTopographicalPlaceSearch.bind(this)}
-                  filter={AutoComplete.caseInsensitiveFilter}
-                  style={{
-                    margin: "auto",
-                    width: "50%",
-                    textAlign: "center",
-                    marginTop: -10,
+                  freeSolo
+                  filterOptions={(x) => x}
+                  options={topographicalPlacesDataSource}
+                  onInputChange={this.handleTopographicalPlaceSearch.bind(this)}
+                  onChange={this.handleAddChip.bind(this)}
+                  noOptionsText={formatMessage({ id: "no_results_found" })}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label={formatMessage({ id: "filter_by_topography" })}
+                      onChange={(event, v) => {
+                        this.setState({
+                          topographicPlaceFilterValue: event.target.value,
+                        });
+                      }}
+                    />
+                  )}
+                  renderOption={(props, option, { selected }) => {
+                    return (
+                      <MenuItem {...props} key={option.id}>
+                        {option.value}
+                      </MenuItem>
+                    );
                   }}
-                  maxSearchResults={5}
-                  fullWidth={true}
-                  ref="topoFilter"
-                  onNewRequest={this.handleAddChip.bind(this)}
                 />
                 <TopographicalFilter
                   topoiChips={topoiChips}
@@ -462,12 +486,15 @@ class ReportPage extends React.Component {
               <div
                 style={{
                   marginLeft: 10,
+                  marginTop: 40,
                   display: "flex",
                   alignItems: "center",
                 }}
               >
                 <TextField
-                  floatingLabelText={formatMessage({
+                  variant="standard"
+                  type="search"
+                  label={formatMessage({
                     id: "optional_search_string",
                   })}
                   style={{ width: 330 }}
@@ -484,17 +511,19 @@ class ReportPage extends React.Component {
                     marginTop: 2,
                   }}
                 >
-                  <RaisedButton
+                  <Button
+                    variant="outlined"
                     style={{
-                      marginTop: 10,
+                      marginTop: 12,
                       marginLeft: 5,
                       transform: "scale(0.9)",
                     }}
                     disabled={isLoading}
                     icon={isLoading ? <MdSpinner /> : <MdSearch />}
-                    label={formatMessage({ id: "search" })}
                     onClick={() => this.handleSearch()}
-                  />
+                  >
+                    {formatMessage({ id: "search" })}
+                  </Button>
                   <GeneralReportFilters
                     formatMessage={formatMessage}
                     hasParking={hasParking}

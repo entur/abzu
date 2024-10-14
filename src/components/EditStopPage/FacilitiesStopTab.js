@@ -14,17 +14,17 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
-import Divider from "material-ui/Divider";
-import MdWc from "material-ui/svg-icons/notification/wc";
+import Divider from "@mui/material/Divider";
+import MdWc from "@mui/icons-material/Wc";
 import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import ToolTipIcon from "./ToolTipIcon";
-import TextField from "material-ui/TextField";
-import MdMore from "material-ui/svg-icons/navigation/expand-more";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import MdMore from "@mui/icons-material/ExpandMore";
+import MdLess from "@mui/icons-material/ExpandLess";
+import FlatButton from "@mui/material/Button";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../static/icons/facilities/Enclosed";
 import Heated from "../../static/icons/facilities/Heated";
@@ -32,6 +32,9 @@ import { getIn } from "../../utils/";
 import equiptmentHelpers from "../../modelUtils/equipmentHelpers";
 import { EquipmentActions } from "../../actions/";
 import Sign512 from "../../static/icons/TransportSign";
+import TransportSign from "../../static/icons/TransportSign";
+import { FormControlLabel } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 class FacilitiesStopTab extends React.Component {
   constructor(props) {
@@ -66,6 +69,9 @@ class FacilitiesStopTab extends React.Component {
   }
 
   handleValueForTicketMachineChange(numberOfMachines) {
+    if (numberOfMachines < 0) {
+      numberOfMachines = 0;
+    }
     this.handleTicketMachineChange({
       numberOfMachines,
       ticketMachines: numberOfMachines > 0,
@@ -86,6 +92,9 @@ class FacilitiesStopTab extends React.Component {
 
   handleValueForBusShelterChange(newValue) {
     const { stopPlace } = this.props;
+    if (newValue < 0) {
+      newValue = 0;
+    }
     const oldValuesSet = {
       seats: getIn(
         stopPlace,
@@ -145,6 +154,9 @@ class FacilitiesStopTab extends React.Component {
 
   handleValueForWaitingRoomChange(newValue) {
     const { stopPlace } = this.props;
+    if (newValue < 0) {
+      newValue = 0;
+    }
     const oldValuesSet = {
       seats: getIn(
         stopPlace,
@@ -219,34 +231,32 @@ class FacilitiesStopTab extends React.Component {
       <div style={{ padding: 10 }}>
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox
-              checked={sign512}
-              checkedIcon={
-                <Sign512
-                  style={{
-                    transform: "scale(1) translateY(-12px) translateX(-12px)",
-                  }}
-                />
-              }
-              uncheckedIcon={
-                <Sign512
-                  style={{
-                    transform: "scale(1) translateY(-12px) translateX(-12px)",
-                    fill: "#8c8c8c",
-                    opacity: "0.8",
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={sign512}
+                  checkedIcon={<TransportSign style={{ fill: "#000" }} />}
+                  icon={
+                    <TransportSign
+                      style={{
+                        fill: "#8c8c8c",
+                        opacity: "0.8",
+                      }}
+                    />
+                  }
+                  style={{ width: "auto" }}
+                  onChange={(e, v) => {
+                    this.handle512Sign(v);
                   }}
                 />
               }
               label={
-                sign512
-                  ? formatMessage({ id: "transport_sign" })
-                  : formatMessage({ id: "transport_sign_no" })
+                <div style={{ fontSize: "0.8em" }}>
+                  {sign512
+                    ? formatMessage({ id: "transport_sign" })
+                    : formatMessage({ id: "transport_sign_no" })}
+                </div>
               }
-              labelStyle={{ fontSize: "0.8em" }}
-              style={{ width: "80%" }}
-              onCheck={(e, v) => {
-                this.handle512Sign(v);
-              }}
             />
             <ToolTipIcon title={formatMessage({ id: "transport_sign_hint" })} />
           </div>
@@ -254,22 +264,28 @@ class FacilitiesStopTab extends React.Component {
         </div>
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox
-              checked={ticketMachine}
-              checkedIcon={<TicketMachine />}
-              uncheckedIcon={
-                <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={ticketMachine}
+                  checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
+                  icon={
+                    <TicketMachine
+                      style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                    />
+                  }
+                  onChange={(e, v) => {
+                    this.handleTicketMachineChange(v);
+                  }}
+                />
               }
               label={
-                ticketMachine
-                  ? formatMessage({ id: "ticketMachine" })
-                  : formatMessage({ id: "ticketMachine_no" })
+                <div style={{ fontSize: "0.8em" }}>
+                  {ticketMachine
+                    ? formatMessage({ id: "ticketMachine" })
+                    : formatMessage({ id: "ticketMachine_no" })}
+                </div>
               }
-              labelStyle={{ fontSize: "0.8em" }}
-              style={{ width: "80%" }}
-              onCheck={(e, v) => {
-                this.handleTicketMachineChange(v);
-              }}
             />
             <ToolTipIcon
               title={formatMessage({ id: "ticketMachine_stop_hint" })}
@@ -278,56 +294,60 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 0 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_ticket_machines" })}
+                label={formatMessage({ id: "number_of_ticket_machines" })}
                 type="number"
+                variant="filled"
+                //defaultValue={ticketMachineNumber}
                 value={ticketMachineNumber}
                 disabled={disabled}
-                onChange={(event, value) => {
-                  this.handleValueForTicketMachineChange(value);
+                onChange={(event) => {
+                  this.handleValueForTicketMachineChange(event.target.value);
                 }}
-                min="0"
                 fullWidth={true}
-                floatingLabelText={formatMessage({
-                  id: "number_of_ticket_machines",
-                })}
               />
             </div>
           ) : null}
           <div style={{ textAlign: "center", marginBottom: 5 }}>
             {expandedIndex === 0 ? (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdLess style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleCollapseIndex(0)}
-              />
+              >
+                <MdLess style={{ height: 16, width: 16 }} />
+              </IconButton>
             ) : (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdMore style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleExpandIndex(0)}
-              />
+              >
+                <MdMore style={{ height: 16, width: 16 }} />
+              </IconButton>
             )}
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />
         </div>
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox
-              checked={busShelter}
-              checkedIcon={<BusShelter />}
-              uncheckedIcon={
-                <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={busShelter}
+                  checkedIcon={<BusShelter style={{ fill: "#000" }} />}
+                  icon={
+                    <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                  }
+                  onChange={(e, v) => {
+                    this.handleBusShelterChange(v);
+                  }}
+                />
               }
               label={
-                busShelter
-                  ? formatMessage({ id: "busShelter" })
-                  : formatMessage({ id: "busShelter_no" })
+                <div style={{ fontSize: "0.8em" }}>
+                  {busShelter
+                    ? formatMessage({ id: "busShelter" })
+                    : formatMessage({ id: "busShelter_no" })}
+                </div>
               }
-              labelStyle={{ fontSize: "0.8em" }}
-              style={{ width: "80%" }}
-              onCheck={(e, v) => {
-                this.handleBusShelterChange(v);
-              }}
             />
             <ToolTipIcon
               title={formatMessage({ id: "busShelter_stop_hint" })}
@@ -336,11 +356,14 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 1 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_seats" })}
+                label={formatMessage({ id: "number_of_seats" })}
+                variant="filled"
                 value={shelterSeats}
                 type="number"
-                onChange={(event, value) => {
-                  this.handleValueForBusShelterChange({ seats: value });
+                onChange={(event) => {
+                  this.handleValueForBusShelterChange({
+                    seats: event.target.value,
+                  });
                 }}
                 min="0"
                 fullWidth={true}
@@ -354,41 +377,65 @@ class FacilitiesStopTab extends React.Component {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Checkbox
-                    checked={shelterStepFree}
-                    onCheck={(e, v) => {
-                      this.handleValueForBusShelterChange({ stepFree: v });
-                    }}
-                    checkedIcon={<StairsIcon />}
-                    style={{ width: "auto" }}
-                    label={
-                      shelterStepFree
-                        ? formatMessage({ id: "step_free_access" })
-                        : formatMessage({ id: "step_free_access_no" })
-                    }
-                    uncheckedIcon={
-                      <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                    }
-                    labelStyle={{ fontSize: "0.8em" }}
-                  />
-                  <Checkbox
-                    checked={shelterEnclosed}
-                    checkedIcon={<EnclosedIcon />}
-                    uncheckedIcon={
-                      <EnclosedIcon
-                        style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shelterStepFree}
+                        onChange={(e, v) => {
+                          this.handleValueForBusShelterChange({ stepFree: v });
+                        }}
+                        checkedIcon={<StairsIcon style={{ fill: "#000" }} />}
+                        style={{ width: "auto" }}
+                        label={
+                          shelterStepFree
+                            ? formatMessage({ id: "step_free_access" })
+                            : formatMessage({ id: "step_free_access_no" })
+                        }
+                        icon={
+                          <StairsIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
                       />
                     }
                     label={
-                      shelterEnclosed
-                        ? formatMessage({ id: "enclosed" })
-                        : formatMessage({ id: "enclosed_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {shelterStepFree
+                          ? formatMessage({ id: "step_free_access" })
+                          : formatMessage({ id: "step_free_access_no" })}
+                      </div>
                     }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    style={{ width: "auto" }}
-                    onCheck={(e, v) => {
-                      this.handleValueForBusShelterChange({ enclosed: v });
-                    }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shelterEnclosed}
+                        checkedIcon={<EnclosedIcon style={{ fill: "#000" }} />}
+                        icon={
+                          <EnclosedIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        label={
+                          shelterEnclosed
+                            ? formatMessage({ id: "enclosed" })
+                            : formatMessage({ id: "enclosed_no" })
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        style={{ width: "auto" }}
+                        onChange={(e, v) => {
+                          this.handleValueForBusShelterChange({ enclosed: v });
+                        }}
+                      />
+                    }
+                    label={
+                      <div style={{ fontSize: "0.8em" }}>
+                        {shelterEnclosed
+                          ? formatMessage({ id: "enclosed" })
+                          : formatMessage({ id: "enclosed_no" })}
+                      </div>
+                    }
                   />
                 </div>
               </div>
@@ -396,39 +443,43 @@ class FacilitiesStopTab extends React.Component {
           ) : null}
           <div style={{ textAlign: "center", marginBottom: 5 }}>
             {expandedIndex === 1 ? (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdLess style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleCollapseIndex(1)}
-              />
+              >
+                <MdLess style={{ height: 16, width: 16 }} />
+              </IconButton>
             ) : (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdMore style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleExpandIndex(1)}
-              />
+              >
+                <MdMore style={{ height: 16, width: 16 }} />
+              </IconButton>
             )}
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />
         </div>
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox
-              checked={WC}
-              checkedIcon={<MdWc />}
-              uncheckedIcon={
-                <MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={WC}
+                  checkedIcon={<MdWc style={{ fill: "#000" }} />}
+                  icon={<MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
+                  onChange={(e, v) => {
+                    this.handleWCChange(v);
+                  }}
+                />
               }
               label={
-                WC
-                  ? formatMessage({ id: "wc" })
-                  : formatMessage({ id: "wc_no" })
+                <div style={{ fontSize: "0.8em" }}>
+                  {WC
+                    ? formatMessage({ id: "wc" })
+                    : formatMessage({ id: "wc_no" })}
+                </div>
               }
-              labelStyle={{ fontSize: "0.8em" }}
-              style={{ width: "80%" }}
-              onCheck={(e, v) => {
-                this.handleWCChange(v);
-              }}
             />
             <ToolTipIcon title={formatMessage({ id: "wc_stop_hint" })} />
           </div>
@@ -436,22 +487,26 @@ class FacilitiesStopTab extends React.Component {
         </div>
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox
-              checked={waitingRoom}
-              checkedIcon={<WaitingRoom />}
-              uncheckedIcon={
-                <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={waitingRoom}
+                  checkedIcon={<WaitingRoom style={{ fill: "#000" }} />}
+                  icon={
+                    <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                  }
+                  onChange={(e, v) => {
+                    this.handleWaitingRoomChange(v);
+                  }}
+                />
               }
               label={
-                waitingRoom
-                  ? formatMessage({ id: "waiting_room" })
-                  : formatMessage({ id: "waiting_room_no" })
+                <div style={{ fontSize: "0.8em" }}>
+                  {waitingRoom
+                    ? formatMessage({ id: "waiting_room" })
+                    : formatMessage({ id: "waiting_room_no" })}
+                </div>
               }
-              labelStyle={{ fontSize: "0.8em" }}
-              style={{ width: "80%" }}
-              onCheck={(e, v) => {
-                this.handleWaitingRoomChange(v);
-              }}
             />
             <ToolTipIcon
               title={formatMessage({ id: "waitingroom_stop_hint" })}
@@ -460,16 +515,20 @@ class FacilitiesStopTab extends React.Component {
           {expandedIndex === 3 ? (
             <div>
               <TextField
-                hintText={formatMessage({ id: "number_of_seats" })}
+                label={formatMessage({ id: "number_of_seats" })}
+                variant="filled"
                 type="number"
                 value={waitingRoomSeats}
-                disabled={disabled}
+                //defaultValue={waitingRoomSeats}
+                //disabled={disabled}
                 onChange={(event, value) => {
-                  this.handleValueForWaitingRoomChange({ seats: value });
+                  this.handleValueForWaitingRoomChange({
+                    seats: event.target.value,
+                  });
                 }}
                 min="0"
                 fullWidth={true}
-                floatingLabelText={formatMessage({ id: "number_of_seats" })}
+                InputLabelProps={{ shrink: true }}
               />
               <div style={{ display: "block" }}>
                 <div
@@ -479,39 +538,63 @@ class FacilitiesStopTab extends React.Component {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Checkbox
-                    checked={waitingRoomStepFree}
-                    checkedIcon={<StairsIcon />}
-                    style={{ width: "auto" }}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitingRoomStepFree}
+                        checkedIcon={<StairsIcon style={{ fill: "#000" }} />}
+                        style={{ width: "auto" }}
+                        label={
+                          waitingRoomStepFree
+                            ? formatMessage({ id: "step_free_access" })
+                            : formatMessage({ id: "step_free_access_no" })
+                        }
+                        icon={
+                          <StairsIcon
+                            style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                          />
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        onChange={(e, v) => {
+                          this.handleValueForWaitingRoomChange({ stepFree: v });
+                        }}
+                      />
+                    }
                     label={
-                      waitingRoomStepFree
-                        ? formatMessage({ id: "step_free_access" })
-                        : formatMessage({ id: "step_free_access_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {waitingRoomStepFree
+                          ? formatMessage({ id: "step_free_access" })
+                          : formatMessage({ id: "step_free_access_no" })}
+                      </div>
                     }
-                    uncheckedIcon={
-                      <StairsIcon style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                    }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    onCheck={(e, v) => {
-                      this.handleValueForWaitingRoomChange({ stepFree: v });
-                    }}
                   />
-                  <Checkbox
-                    checked={waitingRoomHeated}
-                    checkedIcon={<Heated />}
-                    uncheckedIcon={
-                      <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitingRoomHeated}
+                        checkedIcon={<Heated style={{ fill: "#000" }} />}
+                        icon={
+                          <Heated style={{ fill: "#8c8c8c", opacity: "0.8" }} />
+                        }
+                        label={
+                          waitingRoomHeated
+                            ? formatMessage({ id: "heating" })
+                            : formatMessage({ id: "heating_no" })
+                        }
+                        labelStyle={{ fontSize: "0.8em" }}
+                        style={{ width: "auto" }}
+                        onChange={(e, v) => {
+                          this.handleValueForWaitingRoomChange({ heated: v });
+                        }}
+                      />
                     }
                     label={
-                      waitingRoomHeated
-                        ? formatMessage({ id: "heating" })
-                        : formatMessage({ id: "heating_no" })
+                      <div style={{ fontSize: "0.8em" }}>
+                        {waitingRoomHeated
+                          ? formatMessage({ id: "heating" })
+                          : formatMessage({ id: "heating_no" })}
+                      </div>
                     }
-                    labelStyle={{ fontSize: "0.8em" }}
-                    style={{ width: "auto" }}
-                    onCheck={(e, v) => {
-                      this.handleValueForWaitingRoomChange({ heated: v });
-                    }}
                   />
                 </div>
               </div>
@@ -519,17 +602,19 @@ class FacilitiesStopTab extends React.Component {
           ) : null}
           <div style={{ textAlign: "center", marginBottom: 5 }}>
             {expandedIndex === 3 ? (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdLess style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleCollapseIndex(3)}
-              />
+              >
+                <MdLess style={{ height: 16, width: 16 }} />
+              </IconButton>
             ) : (
-              <FlatButton
+              <IconButton
                 style={{ height: 20, minWidth: 20, width: 20 }}
-                icon={<MdMore style={{ height: 16, width: 16 }} />}
                 onClick={() => this.handleExpandIndex(3)}
-              />
+              >
+                <MdMore style={{ height: 16, width: 16 }} />
+              </IconButton>
             )}
           </div>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />

@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import IconButton from "material-ui/IconButton";
+import Button from "@mui/material/Button";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
@@ -38,13 +38,13 @@ class CreateNewStop extends React.Component {
         }}
       >
         <div style={{ marginLeft: 10 }}>
-          <IconButton
+          <Button
             style={{ float: "right" }}
             onClick={this.handleOnClick.bind(this)}
             iconClassName="material-icons"
           >
             remove
-          </IconButton>
+          </Button>
           <h4>
             <img
               alt=""

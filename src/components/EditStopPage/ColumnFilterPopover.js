@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import RaisedButton from "material-ui/RaisedButton";
-import Menu from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
-import { Popover } from "@mui/material";
+import RaisedButton from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import Checkbox from "@mui/material/Checkbox";
+import { FormControlLabel, Popover } from "@mui/material";
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {
@@ -52,12 +52,10 @@ class ColumnFilterPopover extends React.Component {
 
     return (
       <div style={this.props.style}>
-        <RaisedButton
-          label={buttonLabel}
-          labelStyle={{ fontSize: 12 }}
-          onClick={this.handleTouchTap.bind(this)}
-        />
-        <Popover
+        <RaisedButton onClick={this.handleTouchTap.bind(this)}>
+          {buttonLabel}
+        </RaisedButton>
+        <Menu
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
@@ -66,47 +64,53 @@ class ColumnFilterPopover extends React.Component {
             this.setState({ open: false });
           }}
         >
-          <Menu>
-            <div
-              style={{
-                width: "100%",
-                fontSize: 12,
-                padding: 5,
-                background: "#000",
-                marginTop: -8,
-              }}
-            >
-              <span style={{ color: "#fff", textTransform: "capitalize" }}>
-                {captionLabel}
-              </span>
-            </div>
-            {columnOptions.map((option) => (
-              <div style={optionStyle} key={"option-" + option.id}>
-                <Checkbox
-                  label={formatMessage({
-                    id: `report.columnNames.${option.id}`,
-                  })}
-                  checked={option.checked}
-                  onCheck={(e, checked) => {
-                    this.props.handleColumnCheck(option.id, checked);
-                  }}
-                />
-              </div>
-            ))}
-            <div
-              style={{ ...optionStyle, borderTop: "1px solid black" }}
-              key={"option-all"}
-            >
-              <Checkbox
-                label={selectAllLabel}
-                checked={allIsChecked}
-                onCheck={(e, checked) => {
-                  this.props.handleCheckAll(checked);
-                }}
+          <div
+            style={{
+              width: "100%",
+              fontSize: 12,
+              padding: 5,
+              background: "#000",
+              marginTop: -8,
+            }}
+          >
+            <span style={{ color: "#fff", textTransform: "capitalize" }}>
+              {captionLabel}
+            </span>
+          </div>
+          {columnOptions.map((option) => (
+            <div style={optionStyle} key={"option-" + option.id}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={option.checked}
+                    onChange={(e, checked) => {
+                      this.props.handleColumnCheck(option.id, checked);
+                    }}
+                  />
+                }
+                label={formatMessage({
+                  id: `report.columnNames.${option.id}`,
+                })}
               />
             </div>
-          </Menu>
-        </Popover>
+          ))}
+          <div
+            style={{ ...optionStyle, borderTop: "1px solid black" }}
+            key={"option-all"}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={allIsChecked}
+                  onChange={(e, checked) => {
+                    this.props.handleCheckAll(checked);
+                  }}
+                />
+              }
+              label={selectAllLabel}
+            />
+          </div>
+        </Menu>
       </div>
     );
   }

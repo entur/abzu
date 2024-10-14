@@ -129,7 +129,6 @@ helpers.mapParentStopToVariables = (original, userInput) => {
   } else {
     parentStopVariables.stopPlaceIds = stop.children.map((child) => child.id);
   }
-
   if (stop.location) {
     parentStopVariables.legacyCoordinates = [
       [stop.location[1], stop.location[0]],

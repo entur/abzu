@@ -15,7 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import stopTypes from "../../models/stopTypes";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {
@@ -63,21 +63,22 @@ class ModalityFilter extends React.Component {
                 checkedIcon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
+                    style={{ color: "black" }}
                     type={item}
                     forceUpdate={true}
                   />
                 }
-                uncheckedIcon={
+                icon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    style={{ fill: "#8c8c8c", opacity: "0.8" }}
+                    style={{ opacity: "0.8" }}
                     type={item}
                     forceUpdate={true}
                   />
                 }
                 style={{ width: "auto" }}
                 checked={checked}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleOnCheck(v, item);
                 }}
               />

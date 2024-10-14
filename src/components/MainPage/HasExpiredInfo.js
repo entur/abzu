@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
-import Warning from "material-ui/svg-icons/alert/warning";
+import Warning from "@mui/icons-material/Warning";
 
 class HasExpiredInfo extends Component {
   render() {

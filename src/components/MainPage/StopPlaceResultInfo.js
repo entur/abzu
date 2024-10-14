@@ -16,7 +16,7 @@ import React, { Component } from "react";
 import HasExpiredInfo from "./HasExpiredInfo";
 import ModalityIconImg from "./ModalityIconImg";
 import CircularNumber from "./CircularNumber";
-import WheelChair from "material-ui/svg-icons/action/accessible";
+import WheelChair from "@mui/icons-material/Accessible";
 import { getIn } from "../../utils/";
 import TagTray from "./TagTray";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";

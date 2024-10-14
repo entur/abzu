@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MdExpand from "material-ui/svg-icons/navigation/expand-more";
-import MdCollapse from "material-ui/svg-icons/navigation/expand-less";
-import IconButton from "material-ui/IconButton";
+import MdExpand from "@mui/icons-material/ExpandMore";
+import MdCollapse from "@mui/icons-material/ExpandLess";
+import IconButton from "@mui/material/IconButton";
 
 class MakeExpandable extends React.PureComponent {
   constructor(props) {

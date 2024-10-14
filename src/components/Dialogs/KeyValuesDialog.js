@@ -14,16 +14,16 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import MdEdit from "material-ui/svg-icons/editor/mode-edit";
-import MdRemove from "material-ui/svg-icons/action/delete";
+import MdEdit from "@mui/icons-material/ModeEdit";
+import MdRemove from "@mui/icons-material/Delete";
 import { getPrimaryColor } from "../../config/themeConfig";
 import EditKeyValuePair from "../EditStopPage/EditKeyValuePair";
 import CreateKeyValuePair from "../EditStopPage/CreateKeyValuePair";
 import { StopPlaceActions, UserActions } from "../../actions/";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import Fab from "@mui/material/Fab";
 import { selectKeyValuesDataSource } from "../../reducers/selectors";
 import DialogHeader from "./DialogHeader";
+import Add from "@mui/icons-material/Add";
 
 class KeyValuesDialog extends React.Component {
   constructor(props) {
@@ -197,13 +197,13 @@ class KeyValuesDialog extends React.Component {
           )}
         </div>
         {!disabled && (
-          <FloatingActionButton
+          <Fab
             onClick={this.handleOpenCreateValues.bind(this)}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
-            <ContentAdd />
-          </FloatingActionButton>
+            <Add />
+          </Fab>
         )}
         <EditKeyValuePair
           isOpen={this.state.isEditingOpen}

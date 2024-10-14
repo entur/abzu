@@ -14,10 +14,10 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import MdDelete from "material-ui/svg-icons/action/delete";
+import MdDelete from "@mui/icons-material/Delete";
 import * as altNameConfig from "../../config/altNamesConfig";
-import MdEdit from "material-ui/svg-icons/editor/mode-edit";
-import IconButton from "material-ui/IconButton";
+import MdEdit from "@mui/icons-material/ModeEdit";
+import IconButton from "@mui/material/IconButton";
 import { StopPlaceActions } from "../../actions/";
 import ConfirmDialog from "./ConfirmDialog";
 import { getPrimaryColor } from "../../config/themeConfig";
@@ -256,14 +256,14 @@ class AltNamesDialog extends React.Component {
                         this.handleEdit(i);
                       }}
                     >
-                      <MdEdit color={getPrimaryColor()} />
+                      <MdEdit color={"primary"} />
                     </IconButton>
                     <IconButton
                       onClick={() => {
                         this.handleRemoveName(i);
                       }}
                     >
-                      <MdDelete color="rgb(223, 84, 74)" />
+                      <MdDelete sx="color: rgb(223, 84, 74)" />
                     </IconButton>
                   </div>
                 ) : null}
@@ -298,13 +298,15 @@ class AltNamesDialog extends React.Component {
             translations={translations}
             handleAddAltName={this.handleAddAltName.bind(this)}
             handleTypeChange={(event, key, type) => {
-              this.setState({ type });
+              this.setState({ type: event.target.value });
             }}
             onLanguageChange={(event, key, lang) => {
-              this.setState({ lang });
+              this.setState({ lang: event.target.value });
+              debugger;
             }}
-            onValueChange={(event, value) => {
-              this.setState({ value });
+            onValueChange={(event) => {
+              this.setState({ value: event.target.value });
+              debugger;
             }}
             lang={lang}
             type={type}

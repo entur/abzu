@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Divider from "material-ui/Divider";
+import Divider from "@mui/material/Divider";
 import Code from "../EditStopPage/Code";
 import { injectIntl } from "react-intl";
 

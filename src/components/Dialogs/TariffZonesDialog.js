@@ -81,6 +81,7 @@ class TariffZonesDialog extends React.Component {
               >
                 {tariffZones.map((tz) => (
                   <TariffZonesItem
+                    disabled={false}
                     key={"tariffZone-" + tz.id}
                     id={tz.id}
                     name={tz.name}
@@ -97,6 +98,7 @@ class TariffZonesDialog extends React.Component {
               >
                 {fareZones.map((fz) => (
                   <TariffZonesItem
+                    disabled={false}
                     key={"fareZone-" + fz.id}
                     id={fz.id}
                     name={fz.name}

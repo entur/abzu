@@ -13,10 +13,10 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import TextField from "material-ui/TextField";
+import FlatButton from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import * as altNameConfig from "../../config/altNamesConfig";
 
 class NewAltName extends Component {
@@ -52,45 +52,46 @@ class NewAltName extends Component {
         >
           {translations.addAltName}
         </div>
-        <SelectField
-          style={{ marginTop: -10 }}
+        <Select
+          style={{ marginTop: 10 }}
           fullWidth={true}
-          floatingLabelText={translations.nameType}
+          label={translations.nameType}
           value={type}
           onChange={handleTypeChange}
+          variant="standard"
         >
           {altNameConfig.supportedNameTypes.map((type, index) => (
-            <MenuItem
-              key={"type-" + type}
-              value={type}
-              primaryText={formatMessage({
+            <MenuItem key={"type-" + type} value={type}>
+              {formatMessage({
                 id: `altNamesDialog.nameTypes.${type}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
-        <SelectField
-          style={{ marginTop: -10 }}
+        </Select>
+        <Select
+          style={{ marginTop: 10 }}
           fullWidth={true}
-          floatingLabelText={translations.language}
+          label={translations.language}
           value={lang}
           onChange={onLanguageChange}
+          variant="standard"
         >
           {altNameConfig.languages.map((key, index) => (
-            <MenuItem
-              key={"lang-" + index}
-              value={key}
-              primaryText={formatMessage({
+            <MenuItem key={"lang-" + index} value={key}>
+              {formatMessage({
                 id: `altNamesDialog.languages.${key}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
+        </Select>
         <TextField
+          style={{ marginTop: 10 }}
           fullWidth={true}
           hintText={translations.value}
-          value={value || ""}
+          label={translations.value}
           onChange={onValueChange}
+          value={value}
+          variant="standard"
         />
         <FlatButton
           style={{ marginTop: 10, width: "100%", textAlign: "center" }}

@@ -12,12 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { fade } from "material-ui/utils/colorManipulator";
+import { lighten } from "@mui/material/styles/";
 import { getTiamatEnv } from "../../themeConfig";
 
 export const primary = "#5AC39A";
 export const primaryDarker = "#181C56";
 export const darkColor = "#181C56";
+
 const cyan700 = "#5AC39A";
 const grey100 = "#f5f5f5";
 const grey300 = "#e0e0e0";
@@ -54,9 +55,9 @@ export const getV0Theme = () => ({
     alternateTextColor: white,
     canvasColor: white,
     borderColor: grey300,
-    disabledColor: fade(darkBlack, 0.3),
+    disabledColor: lighten(darkBlack, 0.3),
     pickerHeaderColor: primary,
-    clockCircleColor: fade(darkBlack, 0.07),
+    clockCircleColor: lighten(darkBlack, 0.07),
     shadowColor: fullBlack,
   },
   datePicker: {
@@ -74,15 +75,57 @@ export const getV0Theme = () => ({
 export const getTheme = () => ({
   fontFamily: "Roboto, sans-serif",
   palette: {
-    primary: {
+    primary1Color: {
       main: primary,
     },
-  },
-  overrides: {
-    MuiButton: {
-      containedPrimary: {
-        color: white,
-      },
+    primary2Color: {
+      main: cyan700,
     },
+    primary3Color: {
+      main: grey400,
+    },
+    accent1Color: {
+      main: primary,
+    },
+    accent2Color: {
+      main: grey100,
+    },
+    accent3Color: {
+      main: grey500,
+    },
+    textColor: {
+      main: darkBlack,
+    },
+    alternateTextColor: {
+      main: white,
+    },
+    canvasColor: {
+      main: white,
+    },
+    borderColor: {
+      main: grey300,
+    },
+    disabledColor: {
+      main: lighten(darkBlack, 0.3),
+    },
+    pickerHeaderColor: {
+      main: primary,
+    },
+    clockCircleColor: {
+      main: lighten(darkBlack, 0.07),
+    },
+    shadowColor: {
+      main: fullBlack,
+    },
+  },
+  datePicker: {
+    selectColor: primary,
+    selectTextColor: white,
+  },
+  checkbox: {
+    checkedColor: primaryDarker,
+  },
+  appBar: {
+    color: darkColor,
   },
 });

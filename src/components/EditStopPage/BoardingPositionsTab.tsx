@@ -49,7 +49,7 @@ export default ({ quay, index, disabled, focusedElement }: Props) => {
   );
 
   return (
-    <div style={{ paddingLeft: "1rem", marginBottom: "2rem" }}>
+    <div>
       {quay.boardingPositions.map((bp, i) => (
         <BoardingPositionItem
           key={bp.id ?? i}

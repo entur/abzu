@@ -50,7 +50,6 @@ export const initialState = {
   keyValuesOrigin: null,
   lookupCoordinatesOpen: false,
   newStopIsMultiModal: false,
-  isCreatingNewStop: false,
   serverTimeDiff: 0,
   deleteStopDialogWarning: {
     warning: false,
@@ -93,7 +92,7 @@ const userReducer = (state = initialState, action) => {
 
     case types.REMOVED_ALL_FILTERS:
       return Object.assign({}, state, {
-        searchFilters: { topoiChips: [], stopType: [] },
+        searchFilters: { ...state.searchFilters, topoiChips: [], stopType: [] },
       });
 
     case types.OPEN_LOOKUP_COORDINATES_DIALOG:

@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import FlatButton from "material-ui/FlatButton";
-import InformationIcon from "material-ui/svg-icons/action/info";
+import FlatButton from "@mui/material/Button";
+import InformationIcon from "@mui/icons-material/Info";
 
 class InformationBanner extends React.Component {
   constructor(props) {

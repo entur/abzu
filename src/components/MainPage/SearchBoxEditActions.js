@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { Component } from "react";
-import Edit from "material-ui/svg-icons/editor/mode-edit";
-import FlatButton from "material-ui/FlatButton";
-import MapsMyLocation from "material-ui/svg-icons/maps/my-location";
+import Edit from "@mui/icons-material/ModeEdit";
+import FlatButton from "@mui/material/Button";
+import MapsMyLocation from "@mui/icons-material/MyLocation";
 
 class SearchBoxEditAction extends Component {
   render() {

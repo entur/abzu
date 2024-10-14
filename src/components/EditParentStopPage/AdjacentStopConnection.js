@@ -15,9 +15,9 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
-import EditorInsertLink from "material-ui/svg-icons/editor/insert-link";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import IconButton from "material-ui/IconButton";
+import EditorInsertLink from "@mui/icons-material/InsertLink";
+import MdDelete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 class AdjacentStopConnection extends Component {
   handleRemoveAdjacentConnection = () => {

@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Chip from "material-ui/Chip";
+import Chip from "@mui/material/Chip";
 import TagSuggestionPopover from "./TagSuggestionPopover";
 
 class TagFilterTray extends Component {
@@ -33,17 +33,18 @@ class TagFilterTray extends Component {
                 <Chip
                   key={"tag-filter" + i}
                   deleteIconStyle={{ fill: "#fff" }}
-                  backgroundColor="#ffa500"
+                  sx={
+                    "background-color: #ffa500; color: #fff; text-transform: uppercase"
+                  }
                   style={{ margin: 3, transform: "scale(0.9)" }}
                   labelStyle={{
                     fontSize: "0.7em",
                     color: "#fff",
                     textTransform: "uppercase",
                   }}
-                  onRequestDelete={() => handleItemOnCheck(tag, false)}
-                >
-                  {tag}
-                </Chip>
+                  label={tag}
+                  onDelete={() => handleItemOnCheck(tag, false)}
+                />
               ))}
           </div>
         </div>
@@ -51,5 +52,4 @@ class TagFilterTray extends Component {
     );
   }
 }
-
 export default TagFilterTray;

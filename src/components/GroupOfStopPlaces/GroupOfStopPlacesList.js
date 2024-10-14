@@ -15,8 +15,8 @@
 import React, { Component } from "react";
 import StopPlaceListItem from "../EditParentStopPage/StopPlaceListItem";
 import { injectIntl } from "react-intl";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import Fab from "@mui/material/Fab";
+import ContentAdd from "@mui/icons-material/Add";
 import { connect } from "react-redux";
 import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
 import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
@@ -62,7 +62,7 @@ class GroupOfStopPlacesList extends Component {
           <div style={{ fontWeight: 600, fontSize: ".9em" }}>
             {formatMessage({ id: "stop_places" })}
           </div>
-          <FloatingActionButton
+          <Fab
             onClick={() => {
               this.setState({ addStopPlaceOpen: true });
             }}
@@ -71,7 +71,7 @@ class GroupOfStopPlacesList extends Component {
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
             <ContentAdd />
-          </FloatingActionButton>
+          </Fab>
         </div>
         <div style={{ maxHeight: 500, overflow: "auto" }}>
           {stopPlaces.map((stopPlace, i) => (

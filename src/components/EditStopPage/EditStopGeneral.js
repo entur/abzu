@@ -14,22 +14,26 @@ limitations under the Licence. */
 
 import { connect } from "react-redux";
 import React from "react";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { injectIntl } from "react-intl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import EditStopBoxTabs from "./EditStopBoxTabs";
-import { Tabs, Tab } from "material-ui/Tabs";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import StopPlaceDetails from "./StopPlaceDetails";
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import { mutatePathLink, mutateParking } from "../../graphql/Tiamat/mutations";
 import * as types from "../../actions/Types";
 import EditStopAdditional from "./EditStopAdditional";
-import MdUndo from "material-ui/svg-icons/content/undo";
-import MdSave from "material-ui/svg-icons/content/save";
-import MdBack from "material-ui/svg-icons/navigation/arrow-back";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
-import Divider from "material-ui/Divider";
+import MdUndo from "@mui/icons-material/Undo";
+import MdSave from "@mui/icons-material/Save";
+import MdBack from "@mui/icons-material/ArrowBack";
+import MdLess from "@mui/icons-material/ExpandLess";
+import Divider from "@mui/material/Divider";
 import SaveDialog from "../Dialogs/SaveDialog";
 import MergeStopDialog from "../Dialogs/MergeStopDialog";
 import MergeQuaysDialog from "../Dialogs/MergeQuaysDialog";
@@ -75,6 +79,7 @@ class EditStopGeneral extends React.Component {
       errorMessage: "",
       requiredFieldsMissingOpen: false,
       isLoading: false,
+      tabValue: "1",
     };
   }
 
@@ -370,7 +375,8 @@ class EditStopGeneral extends React.Component {
     this.props.dispatch(StopPlaceActions.discardChangesForEditingStop());
   }
 
-  handleSlideChange(value) {
+  handleSlideChange(event, value) {
+    this.setState({ tabValue: value });
     this.props.dispatch(UserActions.changeElementTypeTab(value));
   }
 
@@ -581,13 +587,17 @@ class EditStopGeneral extends React.Component {
                 <FlatButton
                   icon={<MdLess />}
                   onClick={() => this.showLessStopPlace()}
-                />
+                >
+                  <MdLess />
+                </FlatButton>
               ) : (
                 <FlatButton
                   label={formatMessage({ id: "more" })}
                   labelStyle={{ fontSize: 12 }}
                   onClick={() => this.showMoreStopPlace()}
-                />
+                >
+                  {formatMessage({ id: "more" })}
+                </FlatButton>
               )}
             </div>
             <Divider inset={true} />
@@ -616,6 +626,7 @@ class EditStopGeneral extends React.Component {
               activeStopPlace={stopPlace}
               itemTranslation={translations}
               intl={intl}
+              value={activeElementTab}
             />
           </div>
           <ConfirmDialog
@@ -757,7 +768,12 @@ class EditStopGeneral extends React.Component {
               <FlatButton
                 disabled={disableTerminate}
                 label={formatMessage({ id: "terminate_stop_place" })}
-                style={{ margin: "8 5", zIndex: 999 }}
+                style={{
+                  margin: "8 5",
+                  zIndex: 999,
+                  fontSize: "0.7em",
+                  color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
+                }}
                 labelStyle={{
                   fontSize: "0.7em",
                   color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
@@ -767,26 +783,48 @@ class EditStopGeneral extends React.Component {
                     UserActions.requestTerminateStopPlace(stopPlace.id),
                   );
                 }}
-              />
+              >
+                {formatMessage({ id: "terminate_stop_place" })}
+              </FlatButton>
             )}
           <FlatButton
-            icon={<MdUndo style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={!stopHasBeenModified}
             label={formatMessage({ id: "undo_changes" })}
-            style={{ margin: "8 5", zIndex: 999, minWidth: "120px" }}
+            style={{
+              margin: "8 5",
+              zIndex: 999,
+              minWidth: "120px",
+              fontSize: "0.7em",
+              color: disabled || !stopHasBeenModified ? "#999" : "#000",
+            }}
             labelStyle={{ fontSize: "0.7em" }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
             }}
-          />
+          >
+            <MdUndo style={{ height: "1em", width: "1em" }} />
+            {formatMessage({ id: "undo_changes" })}
+          </FlatButton>
           <FlatButton
-            icon={<MdSave style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={disabled || !stopHasBeenModified}
             label={formatMessage({ id: "save_new_version" })}
-            style={{ margin: "8 5", zIndex: 999 }}
+            style={{
+              margin: "8 5",
+              zIndex: 999,
+              fontSize: "0.7em",
+              color: disabled || !stopHasBeenModified ? "#999" : "#000",
+            }}
             labelStyle={{ fontSize: "0.7em" }}
             onClick={this.handleSave.bind(this)}
-          />
+          >
+            <MdSave
+              style={{
+                height: "1em",
+                width: "1em",
+              }}
+            />
+            {formatMessage({ id: "save_new_version" })}
+          </FlatButton>
         </div>
       </div>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import Divider from "material-ui/Divider";
+import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
 import GroupOfStopPlacesList from "./GroupOfStopPlacesList";
 import { StopPlacesGroupActions } from "../../actions/";
 import { connect } from "react-redux";

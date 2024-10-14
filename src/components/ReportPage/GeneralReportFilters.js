@@ -13,11 +13,12 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import Checkbox from "material-ui/Checkbox";
-import RaisedButton from "material-ui/RaisedButton";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
-import { Popover } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { FormControlLabel, Popover } from "@mui/material";
+import MdMore from "@mui/icons-material/ExpandMore";
 
 class GeneralReportFilters extends Component {
   constructor(props) {
@@ -37,38 +38,50 @@ class GeneralReportFilters extends Component {
 
     return (
       <div style={{ marginTop: 10, marginLeft: 5 }}>
-        <RaisedButton
+        <Button
+          variant="contained"
+          style={{
+            marginLeft: 5,
+            transform: "scale(0.9)",
+          }}
           onClick={(e) => {
             this.setState({
               open: true,
               anchorEl: e.currentTarget,
             });
           }}
-          style={{ transform: "scale(0.9)" }}
-          label={formatMessage({ id: "filters_general" })}
-        />
-        <Popover
+          startIcon={<MdMore style={{ width: 20, height: 20 }} />}
+        >
+          {formatMessage({ id: "filters_general" })}
+        </Button>
+        <Menu
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{
+            horizontal: "left",
+            vertical: "bottom",
+          }}
+          targetOrigin={{ horizontal: "left", vertical: "top" }}
           onClose={() => {
             this.setState({ open: false });
           }}
         >
-          <Menu>
-            <MenuItem style={menuItemsStyle}>
-              <Checkbox
-                label={formatMessage({ id: "has_parking" })}
-                labelPosition="right"
-                labelStyle={{ width: "auto", fontSize: "0.9em" }}
-                checked={hasParking}
-                onCheck={(e, value) => {
-                  handleCheckboxChange("hasParking", value);
-                }}
-                style={{ marginTop: 10 }}
-              />
-            </MenuItem>
-          </Menu>
-        </Popover>
+          <MenuItem style={menuItemsStyle}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={hasParking}
+                  onChange={(e, value) => {
+                    handleCheckboxChange("hasParking", value);
+                  }}
+                />
+              }
+              label={formatMessage({
+                id: "has_parking",
+              })}
+            />
+          </MenuItem>
+        </Menu>
       </div>
     );
   }

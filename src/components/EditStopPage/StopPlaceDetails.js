@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React from "react";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import IconButton from "material-ui/IconButton";
-import TextField from "material-ui/TextField";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import ImportedId from "./ImportedId";
 import {
   StopPlaceActions,
@@ -27,27 +27,27 @@ import { connect } from "react-redux";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
 import debounce from "lodash.debounce";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import stopTypes from "../../models/stopTypes";
-import MdWC from "material-ui/svg-icons/notification/wc";
+import MdWC from "@mui/icons-material/Wc";
 import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import WheelChairPopover from "./WheelChairPopover";
 import { getIn } from "../../utils";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
-import MdLanguage from "material-ui/svg-icons/action/language";
+import MdLanguage from "@mui/icons-material/Language";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
-import MdTransfer from "material-ui/svg-icons/maps/transfer-within-a-station";
+import MdTransfer from "@mui/icons-material/TransferWithinAStation";
 import WeightingPopover from "./WeightingPopover";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import Sign512 from "../../static/icons/TransportSign";
-import MdWarning from "material-ui/svg-icons/alert/warning";
+import MdWarning from "@mui/icons-material/Warning";
 import ToolTippable from "./ToolTippable";
-import MdKey from "material-ui/svg-icons/communication/vpn-key";
+import MdKey from "@mui/icons-material/VpnKey";
 import KeyValuesDialog from "../Dialogs/KeyValuesDialog";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import TagsDialog from "./TagsDialog";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
@@ -60,6 +60,9 @@ import {
 import { Popover } from "@mui/material";
 import { Link } from "react-router-dom";
 import Routes from "../../routes";
+import { Signpost } from "@mui/icons-material";
+import TransportSign from "../../static/icons/TransportSign";
+import Menu from "@mui/material/Menu";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -471,8 +474,7 @@ class StopPlaceDetails extends React.Component {
                     style={{ display: "flex", alignItems: "center", flex: 2 }}
                   >
                     <MdWarning
-                      color="orange"
-                      style={{ marginTop: -5, marginLeft: 10 }}
+                      style={{ marginTop: -5, marginLeft: 10, color: "orange" }}
                     />
                     <span
                       style={{
@@ -489,9 +491,10 @@ class StopPlaceDetails extends React.Component {
                 )}
                 <FlatButton
                   onClick={this.handleOpenTags.bind(this)}
-                  style={{ marginTop: -8 }}
                   label={formatMessage({ id: "tags" })}
-                />
+                >
+                  {formatMessage({ id: "tags" })}
+                </FlatButton>
               </div>
             )}
             <div style={{ padding: 5 }}>
@@ -507,46 +510,52 @@ class StopPlaceDetails extends React.Component {
                 text={formatMessage({ id: "local_reference" })}
               />
               <div style={{ display: "flex", marginLeft: "auto" }}>
-                <ToolTippable toolTipText={keyValuesHint}>
-                  <IconButton
-                    style={{
-                      borderBottom: disabled ? "none" : "1px dotted grey",
-                    }}
-                    onClick={this.handleOpenKeyValues.bind(this)}
-                  >
-                    <MdKey
-                      color={
-                        (stopPlace.keyValues || []).length
-                          ? primaryDarker
-                          : "#000"
-                      }
-                    />
-                  </IconButton>
-                </ToolTippable>
-                <ToolTippable toolTipText={stopTypeHint}>
-                  <IconButton
-                    style={{
-                      borderBottom: disabled ? "none" : "1px dotted grey",
-                      marginLeft: 5,
-                    }}
-                    onClick={(e) => {
-                      this.handleOpenStopPlaceTypePopover(e);
-                    }}
-                  >
-                    <ModalityIconSvg
-                      type={stopPlace.stopPlaceType}
-                      submode={stopPlace.submode}
-                    />
-                  </IconButton>
-                </ToolTippable>
-                <Popover
+                <div
+                  style={{
+                    borderBottom: "1px dotted",
+                    marginLeft: 10,
+                    marginTop: 0,
+                  }}
+                >
+                  <ToolTippable toolTipText={keyValuesHint}>
+                    <IconButton onClick={this.handleOpenKeyValues.bind(this)}>
+                      <MdKey
+                        style={{
+                          color: (stopPlace.keyValues || []).length
+                            ? primaryDarker
+                            : "#000",
+                        }}
+                      />
+                    </IconButton>
+                  </ToolTippable>
+                </div>
+                <div
+                  style={{
+                    borderBottom: "1px dotted",
+                    marginLeft: 10,
+                    marginTop: 0,
+                  }}
+                >
+                  <ToolTippable toolTipText={stopTypeHint}>
+                    <IconButton
+                      onClick={(e) => {
+                        this.handleOpenStopPlaceTypePopover(e);
+                      }}
+                    >
+                      <ModalityIconSvg
+                        type={stopPlace.stopPlaceType}
+                        submode={stopPlace.submode}
+                      />
+                    </IconButton>
+                  </ToolTippable>
+                </div>
+                <Menu
                   open={this.state.stopTypeOpen}
                   anchorEl={this.state.stopTypeAnchorEl}
-                  anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-                  targetOrigin={{ horizontal: "left", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                  targetOrigin={{ horizontal: "right", vertical: "top" }}
                   onClose={this.handleCloseStopPlaceTypePopover.bind(this)}
                   style={{ overflowY: "none" }}
-                  animated={true}
                 >
                   <ModalitiesMenuItems
                     handleSubModeTypeChange={this.handleSubModeTypeChange.bind(
@@ -559,7 +568,7 @@ class StopPlaceDetails extends React.Component {
                     intl={intl}
                     allowsInfo={this.props.allowsInfo}
                   />
-                </Popover>
+                </Menu>
               </div>
             </div>
           </div>
@@ -568,21 +577,19 @@ class StopPlaceDetails extends React.Component {
           <BelongsToGroup
             formatMessage={formatMessage}
             groups={stopPlace.groups}
-            style={{ marginTop: 5 }}
+            style={{ marginTop: 5, marginBottom: 15 }}
           />
         )}
         <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "name" })}
-            floatingLabelText={formatMessage({ id: "name" })}
+            label={formatMessage({ id: "name" })}
             style={{ marginTop: -10, width: 300 }}
             value={name}
             disabled={disabled}
-            errorText={
-              name && name.trim().length
-                ? ""
-                : formatMessage({ id: "name_is_required" })
-            }
+            error={!(name && name.trim().length)}
+            helperText={formatMessage({ id: "name_is_required" })}
             onChange={this.handleStopNameChange.bind(this)}
           />
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -591,9 +598,9 @@ class StopPlaceDetails extends React.Component {
                 onClick={this.handleOpenTZDialog.bind(this)}
                 style={{
                   borderBottom: "1px dotted",
-                  marginTop: 13,
+                  marginTop: -10,
                   paddingBottom: 4,
-                  marginLeft: 8,
+                  marginLeft: 28,
                   cursor: "pointer",
                 }}
               >
@@ -612,13 +619,15 @@ class StopPlaceDetails extends React.Component {
             <div
               style={{
                 borderBottom: "1px dotted",
-                marginLeft: 19,
-                marginTop: -3,
+                marginLeft: 10,
+                marginTop: -24,
               }}
             >
               <ToolTippable toolTipText={altNamesHint}>
                 <IconButton onClick={this.handleOpenAltNames.bind(this)}>
-                  <MdLanguage color={hasAltNames ? primaryDarker : "#000"} />
+                  <MdLanguage
+                    style={{ color: hasAltNames ? primaryDarker : "#000" }}
+                  />
                 </IconButton>
               </ToolTippable>
             </div>
@@ -627,17 +636,19 @@ class StopPlaceDetails extends React.Component {
         {isPublicCodePrivateCodeEnabled && (
           <div style={{ display: "flex", alignItems: "center" }}>
             <TextField
+              variant={"standard"}
               hintText={formatMessage({ id: "publicCode" })}
-              floatingLabelText={formatMessage({ id: "publicCode" })}
-              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              label={formatMessage({ id: "publicCode" })}
+              style={{ width: 170, marginRight: 25 }}
               disabled={disabled}
               value={publicCode}
               onChange={this.handleStopPublicCodeChange.bind(this)}
             />
             <TextField
+              variant={"standard"}
               hintText={formatMessage({ id: "privateCode" })}
-              floatingLabelText={formatMessage({ id: "privateCode" })}
-              style={{ width: 170, marginTop: -10, marginRight: 25 }}
+              label={formatMessage({ id: "privateCode" })}
+              style={{ width: 170, marginRight: 25 }}
               disabled={disabled}
               value={privateCode}
               onChange={this.handleStopPrivateCodeChange.bind(this)}
@@ -646,24 +657,30 @@ class StopPlaceDetails extends React.Component {
         )}
         <div style={{ display: "flex", alignItems: "center" }}>
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "description" })}
-            floatingLabelText={formatMessage({ id: "description" })}
-            style={{ width: 340, marginTop: -10 }}
+            label={formatMessage({ id: "description" })}
+            style={{ width: 340, marginRight: 10 }}
             disabled={disabled}
             value={description}
             onChange={this.handleStopDescriptionChange.bind(this)}
           />
-          <ToolTippable
-            toolTipText={weightingStateHint}
-            style={{ marginLeft: 6, borderBottom: "1px dotted", marginTop: -3 }}
-          >
+          <ToolTippable toolTipText={weightingStateHint}>
             <IconButton
               onClick={(e) => {
                 this.handleOpenWeightPopover(e);
               }}
+              style={{ paddingTop: 12 }}
             >
-              <MdTransfer color={this.getWeightingStateColor(stopPlace)} />
+              <MdTransfer
+                style={{ color: this.getWeightingStateColor(stopPlace) }}
+              />
             </IconButton>
+            <div
+              style={{
+                borderBottom: "1px dotted",
+              }}
+            ></div>
             <WeightingPopover
               open={!disabled && weightingOpen}
               anchorEl={this.state.weightingAnchorEl}
@@ -678,7 +695,7 @@ class StopPlaceDetails extends React.Component {
         {expanded ? null : (
           <div
             style={{
-              marginTop: 10,
+              marginTop: 20,
               marginBottom: 10,
               height: 15,
               display: "flex",
@@ -692,80 +709,77 @@ class StopPlaceDetails extends React.Component {
                 handleChange={this.handleHandleWheelChair.bind(this)}
                 wheelchairAccess={wheelchairAccess}
               />
+              <div
+                style={{
+                  borderBottom: "1px dotted",
+                }}
+              ></div>
             </ToolTippable>
+
             <ToolTippable toolTipText={ticketMachineHint}>
               <Checkbox
-                checkedIcon={<TicketMachine />}
-                uncheckedIcon={
+                checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
+                icon={
                   <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={ticketMachine}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleTicketMachineChange(v);
                 }}
               />
             </ToolTippable>
             <ToolTippable toolTipText={busShelterHint}>
               <Checkbox
-                checkedIcon={<BusShelter />}
-                uncheckedIcon={
+                checkedIcon={<BusShelter style={{ fill: "#000" }} />}
+                icon={
                   <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={busShelter}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleBusShelterChange(v);
                 }}
               />
             </ToolTippable>
             <ToolTippable toolTipText={WCHint}>
               <Checkbox
-                checkedIcon={<MdWC />}
-                uncheckedIcon={
-                  <MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />
-                }
+                checkedIcon={<MdWC style={{ fill: "#000" }} />}
+                icon={<MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                 style={{ width: "auto" }}
                 checked={WC}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleWCChange(v);
                 }}
               />
             </ToolTippable>
             <ToolTippable toolTipText={waitingRoomHint}>
               <Checkbox
-                checkedIcon={<WaitingRoom />}
-                uncheckedIcon={
+                checkedIcon={<WaitingRoom style={{ fill: "#000" }} />}
+                icon={
                   <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
                 checked={waitingRoom}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleWaitingRoomChange(v);
                 }}
               />
             </ToolTippable>
             <ToolTippable toolTipText={transportSignHint}>
               <Checkbox
-                checkedIcon={
-                  <Sign512
+                icon={
+                  <TransportSign
                     style={{
-                      transform: "scale(1) translateY(-12px) translateX(-12px)",
-                    }}
-                  />
-                }
-                uncheckedIcon={
-                  <Sign512
-                    style={{
-                      transform: "scale(1) translateY(-12px) translateX(-12px)",
                       fill: "#8c8c8c",
                       opacity: "0.8",
                     }}
                   />
                 }
+                checkedIcon={<TransportSign />}
                 style={{ width: "auto" }}
                 checked={sign512}
-                onCheck={(e, v) => {
+                onChange={(e, v) => {
                   this.handleChangeSign512(v);
                 }}
               />

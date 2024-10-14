@@ -16,15 +16,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
-import Warning from "material-ui/svg-icons/alert/warning";
-import MdDeleteForver from "material-ui/svg-icons/action/delete-forever";
+import Warning from "@mui/icons-material/Warning";
+import MdDeleteForver from "@mui/icons-material/DeleteForever";
 import ToolTippable from "./ToolTippable";
 import { injectIntl } from "react-intl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import { deleteParking } from "../../actions/TiamatActions";
 import * as types from "../../actions/Types";
-import { FlatButton } from "material-ui";
-import TextField from "material-ui/TextField";
+import FlatButton from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import ParkingItemPayAndRideExpandedFields from "./ParkingItemPayAndRideExpandedFields";
 import ItemHeader from "./ItemHeader";
 import Item from "./Item";
@@ -44,6 +44,9 @@ class ParkingItem extends React.Component {
   };
 
   handleSetTotalCapacity(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingTotalCapacity(index, value));
   }
@@ -69,11 +72,17 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpaces(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(StopPlaceActions.changeParkingNumberOfSpaces(index, value));
   }
 
   handleSetNumberOfSpacesWithRechargePoint(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesWithRechargePoint(
@@ -84,6 +93,9 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
+    if (value < 0) {
+      value = 0;
+    }
     const { dispatch, index } = this.props;
     dispatch(
       StopPlaceActions.changeParkingNumberOfSpacesForRegisteredDisabledUserType(
@@ -216,14 +228,14 @@ class ParkingItem extends React.Component {
         {expanded && (
           <div className="pr-item-expanded">
             <TextField
-              hintText={this.props.translations.name}
+              label={this.props.translations.name}
               disabled={this.props.disabled || this.props.parking.hasExpired}
-              floatingLabelText={this.props.translations.name}
               onChange={(e, v) => {
                 this.handleSetName(v);
               }}
+              variant="standard"
               value={this.props.parking.name}
-              style={{ width: "95%", marginTop: -10 }}
+              style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
             />
 
             {parkingType === PARKING_TYPE.PARK_AND_RIDE ? (
@@ -260,15 +272,16 @@ class ParkingItem extends React.Component {
               />
             ) : (
               <TextField
+                variant="standard"
                 hintText={translations.capacity}
                 disabled={disabled || parking.hasExpired}
                 floatingLabelText={translations.capacity}
-                onChange={(e, v) => {
-                  this.handleSetTotalCapacity(v);
+                onChange={(event) => {
+                  this.handleSetTotalCapacity(event.target.value);
                 }}
                 value={parking.totalCapacity}
                 type="number"
-                style={{ width: "95%", marginTop: -10 }}
+                style={{ width: "95%", marginTop: 15, marginLeft: 5 }}
               />
             )}
 

@@ -15,12 +15,12 @@ limitations under the Licence. */
 import React from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import ParentStopDetails from "./ParentStopDetails";
-import MdBack from "material-ui/svg-icons/navigation/arrow-back";
+import MdBack from "@mui/icons-material/ArrowBack";
 import VersionsPopover from "../EditStopPage/VersionsPopover";
-import MdUndo from "material-ui/svg-icons/content/undo";
-import MdSave from "material-ui/svg-icons/content/save";
+import MdUndo from "@mui/icons-material/Undo";
+import MdSave from "@mui/icons-material/Save";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import SaveDialog from "../Dialogs/SaveDialog";
@@ -360,6 +360,7 @@ class EditParentGeneral extends React.Component {
             buttonLabel={formatMessage({ id: "versions" })}
             disabled={!(versions || []).length}
             handleSelect={this.handleLoadVersion.bind(this)}
+            hide={!(versions || []).length}
           />
         </div>
         <ParentStopDetails
@@ -382,34 +383,57 @@ class EditParentGeneral extends React.Component {
               disabled={disableTerminate}
               label={formatMessage({ id: "terminate_stop_place" })}
               style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{
-                fontSize: "0.7em",
-                color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
-              }}
               onClick={() => {
                 this.props.dispatch(
                   UserActions.requestTerminateStopPlace(stopPlace.id),
                 );
               }}
-            />
+            >
+              <div
+                style={{
+                  fontSize: "0.7em",
+                  color: disableTerminate ? "rgba(0, 0, 0, 0.3)" : "initial",
+                }}
+              >
+                {formatMessage({ id: "terminate_stop_place" })}
+              </div>
+            </FlatButton>
             <FlatButton
-              icon={<MdUndo style={{ height: "1.3em", width: "1.3em" }} />}
               disabled={!stopHasBeenModified}
               label={formatMessage({ id: "undo_changes" })}
-              style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{ fontSize: "0.7em" }}
+              style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
               onClick={() => {
                 this.setState({ confirmUndoOpen: true });
               }}
-            />
+            >
+              <MdUndo
+                style={{
+                  height: "1.3em",
+                  width: "1.3em",
+                  fontSize: "1.4em",
+                  marginTop: -2,
+                  marginRight: 4,
+                }}
+              />
+              {formatMessage({ id: "undo_changes" })}
+            </FlatButton>
             <FlatButton
-              icon={<MdSave style={{ height: "1.3em", width: "1.3em" }} />}
               disabled={!isAllowedToSave}
               label={formatMessage({ id: "save_new_version" })}
-              style={{ margin: "8 5", zIndex: 999 }}
-              labelStyle={{ fontSize: "0.7em" }}
+              style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
               onClick={this.handleSave.bind(this)}
-            />
+            >
+              <MdSave
+                style={{
+                  height: "1.3em",
+                  width: "1.3em",
+                  fontSize: "1.4em",
+                  marginTop: -6,
+                  marginRight: 4,
+                }}
+              />
+              {formatMessage({ id: "save_new_version" })}
+            </FlatButton>
           </div>
         )}
         <ConfirmDialog

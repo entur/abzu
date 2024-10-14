@@ -23,6 +23,7 @@ import { primary as defaultPrimary } from "./themes/default/defaultTheme";
 import {
   primaryDarker as defaultPrimaryDarker,
   darkColor as defaultDarkColor,
+  headerColor as defaultBanner,
 } from "./themes/default/defaultTheme";
 
 export const getTiamatEnv = () => {
@@ -74,6 +75,15 @@ export const getPrimaryColor = () => {
       .primary;
   } else {
     return defaultPrimary;
+  }
+};
+
+export const getHeaderColor = () => {
+  if (process.env.REACT_APP_THEME) {
+    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+      .primary;
+  } else {
+    return headerColor;
   }
 };
 

@@ -14,7 +14,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import MdGroup from "material-ui/svg-icons/action/group-work";
+import MdGroup from "@mui/icons-material/GroupWork";
 import CircularNumber from "./CircularNumber";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";

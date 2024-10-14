@@ -15,8 +15,8 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import StopPlaceListItem from "./StopPlaceListItem";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import ContentAdd from "material-ui/svg-icons/content/add";
+import Fab from "@mui/material/Fab";
+import ContentAdd from "@mui/icons-material/Add";
 import { injectIntl } from "react-intl";
 import Loader from "../Dialogs/Loader";
 import { StopPlaceActions, UserActions } from "../../actions/";
@@ -65,14 +65,14 @@ class StopPlaceList extends Component {
             {formatMessage({ id: "children_of_parent_stop_place" })}
             {isLoading ? <Loader /> : null}
           </div>
-          <FloatingActionButton
+          <Fab
             onClick={handleAddStopPlaceOpen}
             disabled={disabled}
             mini={true}
             style={{ marginLeft: 20, marginBottom: 10 }}
           >
             <ContentAdd />
-          </FloatingActionButton>
+          </Fab>
         </div>
         <div
           style={{

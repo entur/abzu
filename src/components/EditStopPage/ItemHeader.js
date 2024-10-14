@@ -1,13 +1,14 @@
 import React from "react";
-import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
-import NavigationExpandLess from "material-ui/svg-icons/navigation/expand-less";
-import MapsMyLocation from "material-ui/svg-icons/maps/my-location";
-import MdError from "material-ui/svg-icons/alert/error";
+import NavigationExpandMore from "@mui/icons-material/ExpandMore";
+import NavigationExpandLess from "@mui/icons-material/ExpandLess";
+import MapsMyLocation from "@mui/icons-material/MyLocation";
+import MdError from "@mui/icons-material/Error";
 
 const locationStyle = {
   marginRight: 5,
   height: 16,
   width: 16,
+  fill: "#000",
 };
 
 export default ({

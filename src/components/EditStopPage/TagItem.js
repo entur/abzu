@@ -15,8 +15,8 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import Tag from "../MainPage/Tag";
 import moment from "moment";
-import MdDelete from "material-ui/svg-icons/action/delete";
-import IconButton from "material-ui/IconButton";
+import MdDelete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 class TagItem extends Component {
   render() {

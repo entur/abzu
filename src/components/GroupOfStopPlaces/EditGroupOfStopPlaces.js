@@ -13,12 +13,12 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import MdBack from "material-ui/svg-icons/navigation/arrow-back";
+import MdBack from "@mui/icons-material/ArrowBack";
 import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
 import { injectIntl } from "react-intl";
-import FlatButton from "material-ui/FlatButton";
-import MdUndo from "material-ui/svg-icons/content/undo";
-import MdSave from "material-ui/svg-icons/content/save";
+import FlatButton from "@mui/material/Button";
+import MdUndo from "@mui/icons-material/Undo";
+import MdSave from "@mui/icons-material/Save";
 import { connect } from "react-redux";
 import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
 import mapHelper from "../../modelUtils/mapToQueryVariables";

@@ -14,12 +14,11 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import Checkbox from "material-ui/Checkbox";
-import TimePicker from "material-ui/TimePicker";
-import DatePicker from "material-ui/DatePicker";
+import Checkbox from "@mui/material/Checkbox";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers/";
 import { getEarliestFromDate } from "../../utils/saveDialogUtils";
 import areIntlLocalesSupported from "intl-locales-supported";
-import TextField from "material-ui/TextField";
+import TextField from "@mui/material/TextField";
 import helpers from "../../modelUtils/mapToQueryVariables";
 import Spinner from "../../static/icons/spinner";
 import { getStopPlaceSearchUrl } from "../../utils/shamash";

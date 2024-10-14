@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import TextField from "material-ui/TextField";
+import TextField from "@mui/material/TextField";
 import {
   StopPlaceActions,
   AssessmentActions,
@@ -22,15 +22,15 @@ import {
   UserActions,
 } from "../../actions/";
 import { connect } from "react-redux";
-import Checkbox from "material-ui/Checkbox";
-import IconButton from "material-ui/IconButton";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import BusShelter from "../../static/icons/facilities/BusShelter";
 import { injectIntl } from "react-intl";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import ImportedId from "./ImportedId";
-import MdLess from "material-ui/svg-icons/navigation/expand-less";
+import MdLess from "@mui/icons-material/ExpandLess";
 import EditQuayAdditional from "./EditQuayAdditional";
 import WheelChairPopover from "./WheelChairPopover";
 import StepFreePopover from "./StepFreePopover";
@@ -39,8 +39,8 @@ import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import Sign512 from "../../static/icons/TransportSign";
 
 import ToolTippable from "./ToolTippable";
-import MdDelete from "material-ui/svg-icons/action/delete-forever";
-import MdKey from "material-ui/svg-icons/communication/vpn-key";
+import MdDelete from "@mui/icons-material/DeleteForever";
+import MdKey from "@mui/icons-material/VpnKey";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import Code from "./Code";
 import ItemHeader from "./ItemHeader";
@@ -269,33 +269,36 @@ class QuayItem extends React.Component {
               id={quay.importedId}
             />
             <TextField
-              hintText={translations.publicCode}
+              variant="standard"
+              style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
+              label={translations.publicCode}
               floatingLabelText={translations.publicCode}
               disabled={disabled}
               defaultValue={quay.publicCode}
-              style={{ width: "95%", marginTop: -10 }}
               onChange={(e) =>
                 typeof e.target.value === "string" &&
                 this.handlePublicCodeChange(e)
               }
             />
             <TextField
-              hintText={translations.privateCode}
+              variant="standard"
+              label={translations.privateCode}
+              style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
               floatingLabelText={translations.privateCode}
               disabled={disabled}
               defaultValue={quay.privateCode}
-              style={{ width: "95%", marginTop: -10 }}
               onChange={(e) =>
                 typeof e.target.value === "string" &&
                 this.handlePrivateCodeChange(e)
               }
             />
             <TextField
-              hintText={translations.description}
+              variant="standard"
+              label={translations.description}
+              style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
               disabled={disabled}
               floatingLabelText={translations.description}
               defaultValue={quay.description}
-              style={{ width: "95%", marginTop: -10 }}
               onChange={(e) =>
                 typeof e.target.value === "string" &&
                 this.handleDescriptionChange(e)
@@ -329,50 +332,41 @@ class QuayItem extends React.Component {
                 </ToolTippable>
                 <ToolTippable toolTipText={ticketMachineHint}>
                   <Checkbox
-                    checkedIcon={<TicketMachine />}
+                    checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <TicketMachine
                         style={{ fill: "#8c8c8c", opacity: "0.8" }}
                       />
                     }
                     style={{ width: "auto" }}
                     checked={ticketMachine}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleTicketMachineChange(v);
                     }}
                   />
                 </ToolTippable>
                 <ToolTippable toolTipText={busShelterHint}>
                   <Checkbox
-                    checkedIcon={<BusShelter />}
+                    checkedIcon={<BusShelter style={{ fill: "#000" }} />}
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     style={{ width: "auto" }}
                     checked={busShelter}
-                    onCheck={(e, v) => {
+                    onChange={(e, v) => {
                       this.handleBusShelterChange(v);
                     }}
                   />
                 </ToolTippable>
                 <ToolTippable toolTipText={transportSignHint}>
                   <Checkbox
-                    checkedIcon={
-                      <Sign512
-                        style={{
-                          transform:
-                            "scale(1) translateY(-12px) translateX(-12px)",
-                        }}
-                      />
-                    }
+                    checkedIcon={<Sign512 />}
                     disabled={disabled}
-                    uncheckedIcon={
+                    icon={
                       <Sign512
                         style={{
-                          transform:
-                            "scale(1) translateY(-12px) translateX(-12px)",
                           fill: "#8c8c8c",
                           opacity: "0.8",
                         }}
@@ -380,7 +374,7 @@ class QuayItem extends React.Component {
                     }
                     style={{ width: "auto" }}
                     checked={sign512}
-                    onCheck={(e, v) => {
+                    onChange={(event, v) => {
                       this.handleTransportSignChange(v);
                     }}
                   />
@@ -389,16 +383,17 @@ class QuayItem extends React.Component {
             ) : null}
             <div style={{ textAlign: "center", width: "100%" }}>
               {additionalExpanded ? (
-                <FlatButton
-                  icon={<MdLess />}
-                  onClick={() => this.showMoreOptionsForQuay(false)}
-                />
+                <FlatButton onClick={() => this.showMoreOptionsForQuay(false)}>
+                  <MdLess />
+                </FlatButton>
               ) : (
                 <FlatButton
                   style={{ marginTop: 5, marginBottom: -5 }}
                   label={formatMessage({ id: "more" })}
                   onClick={() => this.showMoreOptionsForQuay(true)}
-                />
+                >
+                  {formatMessage({ id: "more" })}
+                </FlatButton>
               )}
               {additionalExpanded ? (
                 <EditQuayAdditional

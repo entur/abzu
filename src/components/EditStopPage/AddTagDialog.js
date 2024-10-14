@@ -14,8 +14,8 @@ limitations under the Licence. */
 
 import React, { Component } from "react";
 import AddTagAutoComplete from "./AddTagAutoComplete";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import FlatButton from "@mui/material/Button";
 
 class AddTagDialog extends Component {
   constructor(props) {
@@ -46,10 +46,6 @@ class AddTagDialog extends Component {
         searchText: tagName,
       });
     }
-
-    if (this.refs.comment) {
-      this.refs.comment.focus();
-    }
   }
 
   handleAddTag() {
@@ -57,7 +53,6 @@ class AddTagDialog extends Component {
     const { idReference, handleLoading, addTag, getTags } = this.props;
 
     handleLoading(true);
-
     addTag(idReference, tagName, comment)
       .then((result) => {
         this.setState({
@@ -90,12 +85,13 @@ class AddTagDialog extends Component {
           display: "flex",
           flexDirection: "column",
           marginLeft: 5,
-          paddingBottom: 5,
+          marginBottom: 10,
+          paddingTop: 10,
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <AddTagAutoComplete
-            style={{ marginLeft: 10, width: 350 }}
+            style={{ marginLeft: 10, width: 350, paddingTop: 10 }}
             tagName={tagName}
             searchText={searchText}
             handleInputChange={(value) => {
@@ -106,20 +102,24 @@ class AddTagDialog extends Component {
           />
         </div>
         <TextField
+          variant="standard"
           value={comment}
-          floatingLabelText={formatMessage({ id: "comment" })}
+          label={formatMessage({ id: "comment" })}
           hintText={formatMessage({ id: "comment" })}
-          style={{ marginLeft: 10, width: 350 }}
+          style={{ marginLeft: 10, width: 350, marginTop: 10 }}
+          fullWidth={true}
           ref="comment"
           id={"comment-text"}
-          onChange={(e, v) => this.setState({ comment: v || "" })}
+          onChange={(e) => this.setState({ comment: e.target.value || "" })}
         />
         <FlatButton
-          label={formatMessage({ id: "add" })}
-          style={{ width: "30%", margin: "auto" }}
+          style={{ marginLeft: 10, width: 350, marginTop: 10 }}
+          variant="outlined"
           disabled={!tagName}
           onClick={this.handleAddTag.bind(this)}
-        />
+        >
+          {formatMessage({ id: "add" })}
+        </FlatButton>
       </div>
     );
   }

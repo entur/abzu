@@ -19,7 +19,7 @@ import ModalityTray from "../ReportPage/ModalityIconTray";
 import React, { Component } from "react";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";
 import TagTray from "./TagTray";
-import WheelChair from "material-ui/svg-icons/action/accessible";
+import WheelChair from "@mui/icons-material/Accessible";
 import { getIn } from "../../utils/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import ModalityIconImg from "./ModalityIconImg";

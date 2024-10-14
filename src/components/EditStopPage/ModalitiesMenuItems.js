@@ -13,14 +13,14 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right";
+import ArrowDropRight from "@mui/icons-material/ArrowRight";
 import {
   getStopPlacesForSubmodes,
   getInverseSubmodesWhitelist,
 } from "../../roles/rolesParser";
-import Menu from "material-ui/Menu";
+import MoreMenuItem from "../MainPage/MoreMenuItem";
 
 class ModalitiesMenuItems extends React.Component {
   render() {
@@ -40,10 +40,11 @@ class ModalitiesMenuItems extends React.Component {
     const illegalSubmodes = getInverseSubmodesWhitelist(legalSubmodes);
     // stopPlacesTypes that submodes are depending on to be legal in order to render
     const adHocStopPlaceTypes = getStopPlacesForSubmodes(legalSubmodes);
-    const chosenStyle = { fontWeight: 600 };
+    const chosenStyle = { fontWeight: "bold" };
+    const unchosenStyle = {};
 
     return (
-      <Menu>
+      <div>
         {Object.keys(stopTypes).map((type, index) => {
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||
@@ -83,28 +84,26 @@ class ModalitiesMenuItems extends React.Component {
           }
 
           return (
-            <MenuItem
-              key={"stopType" + index}
-              className={isLegal ? "" : "menu-item--not-legal"}
-              value={type}
-              style={{ padding: "0px 10px" }}
-              primaryText={
+            <MoreMenuItem
+              leftIcon={
+                <ModalityIconSvg iconStyle={{ float: "left" }} type={type} />
+              }
+              label={
                 <span
-                  style={stopTypeMatchingChosen && !submodes ? chosenStyle : {}}
+                  style={stopTypeMatchingChosen ? chosenStyle : unchosenStyle}
                 >
                   {formatMessage({ id: `stopTypes.${type}.name` })}
                 </span>
               }
+              key={"stopType" + index}
+              className={isLegal ? "" : "menu-item--not-legal"}
+              value={type}
+              style={{ padding: "0px 10px" }}
               onClick={() => {
                 !submodes && handleStopTypeChange(type);
               }}
-              insetChildren={true}
-              rightIcon={submodes && <ArrowDropRight />}
-              leftIcon={
-                <ModalityIconSvg iconStyle={{ float: "left" }} type={type} />
-              }
-              menuItems={
-                submodes &&
+            >
+              {submodes &&
                 submodes.map(({ submode, formatted }) => {
                   // make all submodes legal if stopPlace is legal
                   let isLegal =
@@ -132,30 +131,38 @@ class ModalitiesMenuItems extends React.Component {
                       value={submode}
                       className={isLegal ? "" : "menu-item--not-legal"}
                       style={{ padding: "0px 10px" }}
-                      primaryText={
-                        <span style={isMatchingChosen ? chosenStyle : {}}>
-                          {formatted}
-                        </span>
-                      }
                       onClick={() => {
                         handleSubModeTypeChange(type, transportMode, submode);
                       }}
-                      leftIcon={
-                        <ModalityIconSvg
-                          iconStyle={{ float: "left" }}
-                          type={type}
-                          submode={submode}
-                        />
-                      }
-                      insetChildren={true}
-                    />
+                    >
+                      <ModalityIconSvg
+                        iconStyle={{ float: "left" }}
+                        type={type}
+                        submode={submode}
+                      />
+                      <span
+                        style={
+                          stopTypeMatchingChosen && submodeChosen === submode
+                            ? chosenStyle
+                            : unchosenStyle
+                        }
+                      >
+                        {submode &&
+                          formatMessage({
+                            id: `stopTypes.${type}.submodes.${submode}`,
+                          })}
+                        {!submode &&
+                          formatMessage({
+                            id: `stopTypes.${type}.submodes.unspecified`,
+                          })}
+                      </span>
+                    </MenuItem>
                   );
-                })
-              }
-            />
+                })}
+            </MoreMenuItem>
           );
         })}
-      </Menu>
+      </div>
     );
   }
 }

@@ -13,14 +13,14 @@
  limitations under the Licence. */
 
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import TextField from "material-ui/TextField";
+import FlatButton from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import * as altNameConfig from "../../config/altNamesConfig";
 import { getIn } from "../../utils/";
-import MdClose from "material-ui/svg-icons/navigation/close";
-import IconButton from "material-ui/IconButton";
+import MdClose from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 class EditAltName extends Component {
   constructor(props) {
@@ -89,55 +89,56 @@ class EditAltName extends Component {
             </IconButton>
           </div>
         </div>
-        <SelectField
-          style={{ marginTop: -10 }}
+        <Select
+          style={{ marginTop: 10 }}
+          variant="standard"
           fullWidth={true}
-          floatingLabelText={translations.nameType}
+          label={translations.nameType}
           value={type}
-          onChange={(event, key, type) => {
+          onChange={(event) => {
             this.setState({
-              type,
+              type: event.target.value,
             });
           }}
         >
           {altNameConfig.supportedNameTypes.map((type) => (
-            <MenuItem
-              key={"type-" + type}
-              value={type}
-              primaryText={formatMessage({
+            <MenuItem key={"type-" + type} value={type}>
+              {formatMessage({
                 id: `altNamesDialog.nameTypes.${type}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
-        <SelectField
-          style={{ marginTop: -10 }}
+        </Select>
+
+        <Select
+          style={{ marginTop: 10 }}
+          variant="standard"
           fullWidth={true}
-          floatingLabelText={translations.language}
+          label={translations.language}
           value={lang}
-          onChange={(event, key, lang) => {
+          onChange={(event) => {
             this.setState({
-              lang,
+              lang: event.target.value,
             });
           }}
         >
           {altNameConfig.languages.map((key) => (
-            <MenuItem
-              key={"lang-" + key}
-              value={key}
-              primaryText={formatMessage({
+            <MenuItem key={"lang-" + key} value={key}>
+              {formatMessage({
                 id: `altNamesDialog.languages.${key}`,
               })}
-            />
+            </MenuItem>
           ))}
-        </SelectField>
+        </Select>
         <TextField
+          style={{ marginTop: 10 }}
+          variant={"standard"}
           fullWidth={true}
           hintText={translations.value}
           value={value}
-          onChange={(e, value) => {
+          onChange={(event) => {
             this.setState({
-              value,
+              value: event.target.value,
             });
           }}
         />

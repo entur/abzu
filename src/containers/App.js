@@ -13,14 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { useEffect } from "react";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {
   ThemeProvider,
   createTheme,
-  adaptV4Theme,
   StyledEngineProvider,
 } from "@mui/material/styles";
-import { MuiThemeProvider as V0MuiThemeProvider } from "material-ui";
+
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
 import Header from "../components/Header";
@@ -32,9 +30,9 @@ import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../auth/auth";
+import MuiThemeProvider from "@mui/material/styles/ThemeProvider";
 
-const muiThemeV0 = getMuiTheme(getV0Theme());
-const muiTheme = createTheme(adaptV4Theme(getTheme()));
+const muiTheme = createTheme(getTheme());
 
 const App = ({ children }) => {
   const auth = useAuth();
@@ -71,15 +69,13 @@ const App = ({ children }) => {
         <html lang={localization.locale} />
       </Helmet>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={muiTheme}>
-          <V0MuiThemeProvider muiTheme={muiThemeV0}>
-            <div>
-              <Header />
-              {children}
-              <SnackbarWrapper />
-            </div>
-          </V0MuiThemeProvider>
-        </ThemeProvider>
+        <MuiThemeProvider theme={muiTheme}>
+          <div>
+            <Header />
+            {children}
+            <SnackbarWrapper />
+          </div>
+        </MuiThemeProvider>
       </StyledEngineProvider>
     </IntlProvider>
   );

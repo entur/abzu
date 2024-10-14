@@ -23,11 +23,11 @@ import Checkbox from "@mui/material/Checkbox";
 import { injectIntl } from "react-intl";
 import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
 import { parkingLayouts } from "../../models/parkingLayout";
-import { TextField, Subheader } from "material-ui";
+import { TextField, ListSubheader } from "@mui/material";
 import RechargingAvailablePopover from "./RechargingAvailablePopover";
-import LocalParking from "material-ui/svg-icons/maps/local-parking";
-import { ActionAccessible } from "material-ui/svg-icons";
-import Payment from "material-ui/svg-icons/action/payment";
+import LocalParking from "@mui/icons-material/LocalParking";
+import { Accessible } from "@mui/icons-material/";
+import Payment from "@mui/icons-material/Payment";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 const PREFIX = "ParkingItemPayAndRideExpandedFields";
@@ -243,10 +243,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         </Box>
       </Grid>
       <Grid item>
-        <Subheader>
+        <ListSubheader>
           {formatMessage({ id: "parking_parkAndRide_capacity_sub_header" })} (
           {`${totalCapacity}`})
-        </Subheader>
+        </ListSubheader>
         <Box
           display="flex"
           flexDirection="row"
@@ -259,13 +259,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             floatingLabelText={formatMessage({
               id: "parking_number_of_spaces",
             })}
-            onChange={(_e, value) => {
-              handleSetNumberOfSpaces(value);
+            onChange={(event) => {
+              handleSetNumberOfSpaces(event.target.value);
             }}
             value={numberOfSpaces || ""}
             type="number"
             fullWidth
             className={classes.textField}
+            style={{ marginTop: 10 }}
           />
         </Box>
         <Box
@@ -273,18 +274,17 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           flexDirection="row"
           className={classes.boxFullWidth}
         >
-          <ActionAccessible style={parkingIconStyles()} />
+          <Accessible style={parkingIconStyles()} />
           <TextField
             variant="standard"
-            hintText={formatMessage({
+            label={formatMessage({
               id: "parking_number_of_spaces_for_registered_disabled_user_type",
             })}
             disabled={disabled || hasExpired}
-            floatingLabelText={formatMessage({
-              id: "parking_number_of_spaces_for_registered_disabled_user_type",
-            })}
-            onChange={(e, value) => {
-              handleSetNumberOfSpacesForRegisteredDisabledUserType(value);
+            onChange={(event) => {
+              handleSetNumberOfSpacesForRegisteredDisabledUserType(
+                event.target.value,
+              );
             }}
             value={numberOfSpacesForRegisteredDisabledUserType || ""}
             type="number"
@@ -294,9 +294,9 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         </Box>
       </Grid>
       <Grid item>
-        <Subheader>
+        <ListSubheader>
           {formatMessage({ id: "parking_recharging_sub_header" })}
-        </Subheader>
+        </ListSubheader>
         <Info>
           {formatMessage({ id: "parking_recharging_available_info" })}
         </Info>
@@ -325,13 +325,14 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             floatingLabelText={formatMessage({
               id: "parking_number_of_spaces_with_recharge_point",
             })}
-            onChange={(_e, value) => {
-              handleSetNumberOfSpacesWithRechargePoint(value);
+            onChange={(event) => {
+              handleSetNumberOfSpacesWithRechargePoint(event.target.value);
             }}
             value={numberOfSpacesWithRechargePoint || ""}
             type="number"
             fullWidth
             className={classes.textField}
+            style={{ marginTop: 15 }}
           />
         </Box>
       </Grid>

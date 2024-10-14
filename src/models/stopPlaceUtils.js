@@ -105,7 +105,7 @@ export const netexifyBoardingPositions = (boardingPositions) => {
   return boardingPositions.map((bp) => {
     return {
       geometry: {
-        legacyCoordinates: [[bp.location[1], bp.location[0]]],
+        coordinates: [[bp.location[1], bp.location[0]]],
         type: "Point",
       },
       publicCode: bp.publicCode,

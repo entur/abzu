@@ -15,15 +15,15 @@ limitations under the Licence. */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import MdWarning from "material-ui/svg-icons/alert/warning";
-import IconButton from "material-ui/IconButton";
-import MdLanguage from "material-ui/svg-icons/action/language";
+import MdWarning from "@mui/icons-material/Warning";
+import IconButton from "@mui/material/IconButton";
+import MdLanguage from "@mui/icons-material/Language";
 import ImportedId from "../EditStopPage/ImportedId";
 import { StopPlaceActions } from "../../actions/";
-import TextField from "material-ui/TextField";
-import Divider from "material-ui/Divider";
+import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
 import StopPlaceList from "./StopPlaceList";
-import FlatButton from "material-ui/FlatButton";
+import FlatButton from "@mui/material/Button";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
 import TagsDialog from "../EditStopPage/TagsDialog";
@@ -53,8 +53,8 @@ class ParentStopDetails extends Component {
     };
   }
 
-  handleChangeName(e, value) {
-    this.props.dispatch(StopPlaceActions.changeStopName(value));
+  handleChangeName(e) {
+    this.props.dispatch(StopPlaceActions.changeStopName(e.target.value));
   }
 
   handleAddStopPlaceClose() {
@@ -149,11 +149,12 @@ class ParentStopDetails extends Component {
         >
           <div>{formatMessage({ id: "parentStopPlace" })}</div>
           <FlatButton
+            variant="text"
             onClick={() => this.setState({ tagsOpen: true })}
-            style={{ marginTop: -8 }}
-            label={formatMessage({ id: "tags" })}
             disabled={!stopPlace.id}
-          />
+          >
+            {formatMessage({ id: "tags" })}
+          </FlatButton>
         </div>
         {!stopPlace.location && (
           <div style={{ textAlign: "right" }}>
@@ -206,16 +207,17 @@ class ParentStopDetails extends Component {
         <div style={{ width: "98%", margin: "auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
-              hintText={formatMessage({ id: "name" })}
+              variant={"standard"}
+              label={formatMessage({ id: "name" })}
               floatingLabelText={formatMessage({ id: "name" })}
               fullWidth={true}
               value={stopPlace.name}
               disabled={disabled}
-              style={{ marginTop: -10, width: 300 }}
-              errorText={
-                stopPlace.name ? "" : formatMessage({ id: "name_is_required" })
-              }
+              style={{ width: 300 }}
+              error={!stopPlace.name}
+              helperText={formatMessage({ id: "name_is_required" })}
               onChange={this.handleChangeName.bind(this)}
+              type={"text"}
             />
             <div style={{ display: "flex", alignItems: "right" }}>
               <ToolTippable toolTipText={altNamesHint}>
@@ -225,8 +227,11 @@ class ParentStopDetails extends Component {
               </ToolTippable>
             </div>
           </div>
+
           <TextField
+            variant={"standard"}
             hintText={formatMessage({ id: "description" })}
+            label={formatMessage({ id: "description" })}
             floatingLabelText={formatMessage({ id: "description" })}
             fullWidth={true}
             disabled={disabled}

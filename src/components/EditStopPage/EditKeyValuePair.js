@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
+import TextField from "@mui/material/TextField";
+import FlatButton from "@mui/material/Button";
 import { injectIntl } from "react-intl";
 
 class EditKeyValuePair extends React.Component {
@@ -23,12 +23,6 @@ class EditKeyValuePair extends React.Component {
     this.state = {
       values: [],
     };
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      values: this.getValuesByKey(nextProps.keyValues, nextProps.editingKey),
-    });
   }
 
   handleUpdate() {
@@ -60,10 +54,11 @@ class EditKeyValuePair extends React.Component {
             {`${formatMessage({ id: "editing_key" })} ${editingKey}`}
           </span>
           <TextField
+            variant={"standard"}
             id="editing-key-values"
-            onChange={(e, v) => {
+            onChange={(event) => {
               this.setState({
-                values: v,
+                values: event.target.value,
               });
             }}
             value={values}

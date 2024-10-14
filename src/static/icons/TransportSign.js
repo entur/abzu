@@ -13,11 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import IconButton from "material-ui/IconButton";
+import SvgIcon from "@mui/material/SvgIcon";
 
 const TransportSign = (props) => {
   return (
-    <IconButton {...props}>
+    <SvgIcon {...props}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
         <defs>
           <pattern
@@ -58,7 +58,7 @@ const TransportSign = (props) => {
         />
         <rect style={{ fill: "rgb(150,150,150)" }} />
       </svg>
-    </IconButton>
+    </SvgIcon>
   );
 };
 

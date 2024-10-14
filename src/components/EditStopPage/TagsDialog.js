@@ -13,11 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React, { Component } from "react";
-import MdClose from "material-ui/svg-icons/navigation/close";
-import IconButton from "material-ui/IconButton";
+import MdClose from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import TagItem from "./TagItem";
 import AddTagDialog from "./AddTagDialog";
-import RefreshIndicator from "material-ui/RefreshIndicator";
+import CircularProgress from "@mui/material/CircularProgress";
 
 class TagsDialog extends Component {
   constructor(props) {
@@ -93,7 +93,7 @@ class TagsDialog extends Component {
             <div>
               <div>{formatMessage({ id: "tags" })}</div>
               {isLoading && (
-                <RefreshIndicator
+                <CircularProgress
                   size={20}
                   left={100}
                   top={15}

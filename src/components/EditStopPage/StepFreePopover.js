@@ -13,11 +13,14 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { Popover } from "@mui/material";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import WheelChair from "@mui/icons-material/Accessible";
+import ListItemText from "@mui/material/ListItemText";
 
 class StepFreePopover extends React.Component {
   constructor(props) {
@@ -59,13 +62,14 @@ class StepFreePopover extends React.Component {
           style={{ display: "flex", alignItems: "center", fontSize: "0.8em" }}
         >
           <IconButton
-            style={{ borderBottom: disabled ? "none" : "1px dotted grey" }}
             onClick={(e) => {
               if (!disabled) this.handleOpenPopover(e);
             }}
           >
             <StairsIcon
-              color={accessibilityAssessments.colors[stepFreeAccess]}
+              style={{
+                color: accessibilityAssessments.colors[stepFreeAccess],
+              }}
             />
           </IconButton>
           {displayLabel ? (
@@ -94,21 +98,23 @@ class StepFreePopover extends React.Component {
                 onClick={() => {
                   this.handleChange(option);
                 }}
-                primaryText={formatMessage({
-                  id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`,
-                })}
-                secondaryText={
+              >
+                <ListItemIcon>
                   <StairsIcon
                     style={{
                       float: "left",
-                      marginLeft: -18,
                       marginTop: 9,
                       marginRight: 5,
                       color: accessibilityAssessments.colors[option],
                     }}
                   />
-                }
-              />
+                </ListItemIcon>
+                <ListItemText>
+                  {formatMessage({
+                    id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`,
+                  })}
+                </ListItemText>
+              </MenuItem>
             ),
           )}
         </Popover>

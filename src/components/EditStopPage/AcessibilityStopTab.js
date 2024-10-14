@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import ToolTipIcon from "./ToolTipIcon";
-import Divider from "material-ui/Divider";
+import Divider from "@mui/material/Divider";
 import WheelChairPopover from "./WheelChairPopover";
 import StepFreePopover from "./StepFreePopover";
 import { connect } from "react-redux";

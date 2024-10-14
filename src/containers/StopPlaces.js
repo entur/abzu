@@ -61,7 +61,6 @@ class StopPlaces extends React.Component {
 
   handleLoadStopPlace(props, stopPlaceId, forceLoad) {
     const { activeSearchResult, dispatch } = props;
-
     if (forceLoad || (!activeSearchResult && stopPlaceId)) {
       this.setState({ isLoading: true });
 

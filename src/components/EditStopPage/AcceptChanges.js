@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import MdWarning from "material-ui/svg-icons/alert/warning";
-import Checkbox from "material-ui/Checkbox";
+import MdWarning from "@mui/icons-material/Warning";
+import Checkbox from "@mui/material/Checkbox";
 import { injectIntl } from "react-intl";
 import { getPrimaryColor } from "../../config/themeConfig";
 
