@@ -40,8 +40,9 @@ const BoardingPositionItem = ({
         handleMissingCoordinatesClick={() => {}} // TODO
         handleToggleCollapse={handleToggleCollapse}
       >
-        <span style={{ color: "#2196F3" }}>
-          {intl.formatMessage({ id: "boarding_positions_item_header" })}
+        <span style={{ color: "#2196F3", alignItems: "start" }}>
+          {intl.formatMessage({ id: "boarding_positions_item_header" }) +
+            "hjelp"}
         </span>
         <Code
           type="publicCode"

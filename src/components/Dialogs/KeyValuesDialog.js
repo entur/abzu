@@ -162,8 +162,8 @@ class KeyValuesDialog extends React.Component {
                         <div style={{ display: "flex" }}>
                           <MdEdit
                             style={{
-                              height: 14,
-                              width: 14,
+                              height: 16,
+                              width: 16,
                               color: getPrimaryColor(),
                               marginTop: -2,
                               marginLeft: 5,
@@ -173,8 +173,8 @@ class KeyValuesDialog extends React.Component {
                           />
                           <MdRemove
                             style={{
-                              height: 14,
-                              width: 14,
+                              height: 16,
+                              width: 16,
                               color: "#df544a",
                               marginTop: -2,
                               marginLeft: 5,
@@ -199,8 +199,14 @@ class KeyValuesDialog extends React.Component {
         {!disabled && (
           <Fab
             onClick={this.handleOpenCreateValues.bind(this)}
-            mini={true}
-            style={{ marginLeft: 20, marginBottom: 10 }}
+            //mini={true}
+            style={{
+              marginLeft: 20,
+              marginBottom: 10,
+              height: 10,
+              width: 40,
+              backgroundColor: getPrimaryColor(),
+            }}
           >
             <Add />
           </Fab>

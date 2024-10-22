@@ -294,7 +294,6 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
         },
       ];
     } else if (source.parkingType === PARKING_TYPE.BIKE_PARKING) {
-      debugger;
       parking.parkingProperties = [
         {
           spaces: [

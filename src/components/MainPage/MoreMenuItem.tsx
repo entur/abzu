@@ -11,6 +11,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 type MoreMenuItemProps = {
   button?: true;
+  openLeft?: true;
   label: string;
   leftIcon: string;
   MenuProps?: Omit<MenuProps, "open" | "onClose" | "anchorEl" | "onKeyDown">;
@@ -19,6 +20,7 @@ type MoreMenuItemProps = {
 const MoreMenuItem: FC<MoreMenuItemProps> = ({
   label,
   leftIcon,
+  openLeft,
   children,
   id,
   MenuProps,
@@ -104,13 +106,13 @@ const MoreMenuItem: FC<MoreMenuItemProps> = ({
             anchorOrigin={
               MenuProps?.anchorOrigin ?? {
                 vertical: "center",
-                horizontal: "left",
+                horizontal: openLeft ? "left" : "right",
               }
             }
             transformOrigin={
               MenuProps?.transformOrigin ?? {
                 vertical: "center",
-                horizontal: "right",
+                horizontal: openLeft ? "right" : "left",
               }
             }
           >

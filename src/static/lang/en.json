@@ -377,7 +377,7 @@
   "show_expired_stops": "Show expired stop places",
   "show_fare_zones_label": "Show tariff zones",
   "show_tariff_zones_label": "Show tariff zones (deprecated)",
-  "show_future_expired_and_terminated": "Show expired, future and permanently terminated",
+  "show_future_expired_and_terminated": "Show expired, future and permanently terminated stop places",
   "show_less": "Show less",
   "show_more": "Show more",
   "show_multimodal_edges": "Show multimodal internal connections",
