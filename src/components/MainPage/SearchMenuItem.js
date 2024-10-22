@@ -22,10 +22,14 @@ import MdGroup from "@mui/icons-material/GroupWork";
 
 export const createSearchMenuItem = (element, formatMessage) => {
   if (!element) return null;
-
   if (element.entityType === Entities.STOP_PLACE) {
     if (element.isParent) {
-      return createParentStopPlaceMenuItem(element, formatMessage);
+      const parentStopPlaceMenuItem = createParentStopPlaceMenuItem(
+        element,
+        formatMessage,
+      );
+      debugger;
+      return parentStopPlaceMenuItem;
     } else {
       return createStopPlaceMenuItem(element, formatMessage);
     }
@@ -63,6 +67,7 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
   return {
     element,
     text: element.name,
+    id: element.id,
     value: (
       <div style={{ display: "flex" }}>
         <div
@@ -70,7 +75,7 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 360,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -100,6 +105,7 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
   return {
     element,
     text: element.name,
+    id: element.id,
     value: (
       <div style={{ display: "flex" }}>
         <div
@@ -107,7 +113,7 @@ const createParentStopPlaceMenuItem = (element, formatMessage) => {
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 355,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -168,7 +174,7 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 360,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>

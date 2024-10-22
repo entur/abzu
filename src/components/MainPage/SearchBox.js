@@ -641,7 +641,7 @@ class SearchBox extends React.Component {
                 </MenuItem>
               )}
               onChange={this.handleNewRequest.bind(this)}
-              getOptionLabel={(option) => `${option.text}`}
+              getOptionLabel={(option) => option.text || ""}
               //getOptionLabel={option.value}
               //renderOption={(props, option) => (
               //    <Box component="li" {...props}>

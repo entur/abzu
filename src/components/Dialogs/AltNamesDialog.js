@@ -256,14 +256,26 @@ class AltNamesDialog extends React.Component {
                         this.handleEdit(i);
                       }}
                     >
-                      <MdEdit color={"primary"} />
+                      <MdEdit
+                        style={{
+                          color: getPrimaryColor(),
+                          height: 16,
+                          width: 16,
+                        }}
+                      />
                     </IconButton>
                     <IconButton
                       onClick={() => {
                         this.handleRemoveName(i);
                       }}
                     >
-                      <MdDelete sx="color: rgb(223, 84, 74)" />
+                      <MdDelete
+                        style={{
+                          color: "rgb(223, 84, 74)",
+                          height: 16,
+                          width: 16,
+                        }}
+                      />
                     </IconButton>
                   </div>
                 ) : null}
@@ -302,11 +314,9 @@ class AltNamesDialog extends React.Component {
             }}
             onLanguageChange={(event, key, lang) => {
               this.setState({ lang: event.target.value });
-              debugger;
             }}
             onValueChange={(event) => {
               this.setState({ value: event.target.value });
-              debugger;
             }}
             lang={lang}
             type={type}
