@@ -29,9 +29,9 @@ import AppRoutes from "./routes";
 import "intl";
 import { getTiamatClient } from "./graphql/clients";
 import { store, history } from "./store/store";
-import configreader from "./config/readConfig";
 import { ConfigContext } from "./config/ConfigContext";
 import { AuthProvider } from "./auth/auth";
+import { fetchConfig } from "./config/fetchConfig";
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
@@ -97,7 +97,7 @@ function renderIndex(config) {
   );
 }
 
-configreader.readConfig((config) => {
+fetchConfig().then((config) => {
   window.config = config;
   renderIndex(config);
 });

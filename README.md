@@ -7,7 +7,13 @@ The app is built on top of [Create React App](https://create-react-app.dev/docs/
 
 ### Configuration
 
-See `src/config/enviroments` for environment specific configuration.
+Configuration is bootstrapped from /bootstrap.json, when the app loads. You should 
+add your environment-specific config to the deployment, along with the built static
+files (i.e. in the build/ folder).
+
+For local development, add a bootstrap.json file to the public/ folder.
+
+See src/config/ConfigContext.ts for the shape of the configuration.
 
 ## Development
 

@@ -25,3 +25,6 @@ yarn-error.log*
 tmp/
 
 .firebase/
+
+# Ignore bootstrap config file
+public/bootstrap.json

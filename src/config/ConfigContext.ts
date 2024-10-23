@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { OidcClientSettings } from "oidc-client-ts";
 
-interface Config {
+export interface Config {
   baatTokenProxyEndpoint?: string;
   sentryDSN?: string;
   googleApiKey?: string;
