@@ -1,4 +1,4 @@
-# Abzu [![Build and deploy](https://github.com/entur/abzu/actions/workflows/build_and_deploy.yml/badge.svg)](https://github.com/entur/abzu/actions/workflows/build_and_deploy.yml)
+# Abzu [![Build and deploy](https://github.com/entur/abzu/actions/workflows/build.yml/badge.svg)](https://github.com/entur/abzu/actions/workflows/build.yml)
 
 Stop place register frontend.
 Uses stop place register backend tiamat's graphQL API
