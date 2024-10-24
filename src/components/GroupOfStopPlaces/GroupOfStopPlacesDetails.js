@@ -7,11 +7,13 @@ import { connect } from "react-redux";
 
 class GroupOfStopPlacesDetails extends Component {
   handleChangeName(e, name) {
-    this.props.dispatch(StopPlacesGroupActions.changeName(name));
+    this.props.dispatch(StopPlacesGroupActions.changeName(e.target.value));
   }
 
   handleChangeDescription(e, description) {
-    this.props.dispatch(StopPlacesGroupActions.changeDescription(description));
+    this.props.dispatch(
+      StopPlacesGroupActions.changeDescription(e.target.value),
+    );
   }
 
   render() {
@@ -20,7 +22,8 @@ class GroupOfStopPlacesDetails extends Component {
     return (
       <div style={{ padding: 5, minHeight: 400 }}>
         <TextField
-          floatingLabelText={formatMessage({ id: "name" })}
+          variant="standard"
+          label={formatMessage({ id: "name" })}
           fullWidth={true}
           errorText={name ? "" : formatMessage({ id: "name_is_required" })}
           value={name}
@@ -28,11 +31,13 @@ class GroupOfStopPlacesDetails extends Component {
           onChange={this.handleChangeName.bind(this)}
         />
         <TextField
-          floatingLabelText={formatMessage({ id: "description" })}
+          variant="standard"
+          label={formatMessage({ id: "description" })}
           fullWidth={true}
           disabled={!canEdit}
           value={description}
           onChange={this.handleChangeDescription.bind(this)}
+          style={{ marginTop: 10 }}
         />
         <Divider />
         <GroupOfStopPlacesList

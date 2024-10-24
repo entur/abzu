@@ -15,7 +15,13 @@ limitations under the Licence. */
 import React from "react";
 import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers/";
+import {
+  DatePicker,
+  MuiPickersAdapterContext,
+  TimePicker,
+} from "@mui/x-date-pickers/";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { getEarliestFromDate } from "../../utils/saveDialogUtils";
 import areIntlLocalesSupported from "intl-locales-supported";
 import TextField from "@mui/material/TextField";
@@ -28,8 +34,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
 } from "@mui/material";
 import { Cancel, Delete, DeleteForever, Warning } from "@mui/icons-material";
+import moment from "moment";
 
 let DateTimeFormat;
 
@@ -246,69 +255,92 @@ class TerminateStopPlaceDialog extends React.Component {
                 formatMessage({ id: "expired_can_only_be_deleted" })}
             </div>
             {warningUsage}
-            <DatePicker
-              hintText={translations.date}
-              disabled={shouldHardDelete || stopPlace.hasExpired}
-              cancelLabel={translations.cancel}
-              floatingLabelText={translations.date}
-              okLabel={translations.use}
-              DateTimeFormat={DateTimeFormat}
-              formatDate={
-                new DateTimeFormat(intl.locale, {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                }).format
-              }
-              autoOk
-              mode="landscape"
-              minDate={earliestFrom}
-              value={date}
-              fullWidth={true}
-              onChange={(event, value) => {
-                this.setState({ date: value });
-              }}
-            />
-            <TimePicker
-              format="24hr"
-              cancelLabel={translations.cancel}
-              hintText={translations.time}
-              floatingLabelText={translations.time}
-              disabled={shouldHardDelete || stopPlace.hasExpired}
-              value={time}
-              fullWidth={true}
-              okLabel={translations.use}
-              autoOk
-              onChange={(event, value) => {
-                this.setState({
-                  time: value,
-                });
-              }}
-            />
+            <div style={{ marginBottom: 10, marginTop: 10 }}>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  hintText={translations.date}
+                  disabled={shouldHardDelete || stopPlace.hasExpired}
+                  cancelLabel={translations.cancel}
+                  floatingLabelText={translations.date}
+                  okLabel={translations.use}
+                  DateTimeFormat={DateTimeFormat}
+                  formatDate={
+                    new DateTimeFormat(intl.locale, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }).format
+                  }
+                  autoOk
+                  mode="landscape"
+                  minDate={moment(earliestFrom)}
+                  value={moment(date)}
+                  fullWidth={true}
+                  onChange={(event, value) => {
+                    this.setState({ date: moment(value) });
+                  }}
+                />
+                <span style={{ marginLeft: 10 }}>
+                  <TimePicker
+                    ampm={false}
+                    cancelLabel={translations.cancel}
+                    hintText={translations.time}
+                    floatingLabelText={translations.time}
+                    disabled={shouldHardDelete || stopPlace.hasExpired}
+                    value={moment(time)}
+                    fullWidth={true}
+                    okLabel={translations.use}
+                    autoOk
+                    onChange={(value) => {
+                      this.setState({
+                        time: moment(value),
+                      });
+                    }}
+                  />
+                </span>
+              </LocalizationProvider>
+            </div>
             <TextField
               value={comment}
+              variant={"standard"}
               disabled={shouldHardDelete || stopPlace.hasExpired}
               fullWidth={true}
-              floatingLabelText={translations.comment}
+              label={translations.comment}
               hintText={translations.comment}
               id="terminate-comment"
-              onChange={(e, v) => this.setState({ comment: v })}
+              onChange={(e) => this.setState({ comment: e.target.value })}
             />
-            <Checkbox
-              style={{ marginTop: 5 }}
-              checked={shouldTerminatePermanently}
-              onCheck={(e, v) =>
-                this.setState({ shouldTerminatePermanently: v })
-              }
-              label={translations.permanentLabel}
-            />
-            {canDeleteStop && (
-              <Checkbox
-                style={{ marginTop: 5 }}
-                checked={shouldHardDelete}
-                onCheck={(e, v) => this.setState({ shouldHardDelete: v })}
-                label={translations.deleteLabel}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    style={{ marginTop: 5 }}
+                    checked={shouldTerminatePermanently}
+                    onChange={(e, v) =>
+                      this.setState({ shouldTerminatePermanently: v })
+                    }
+                    label={translations.permanentLabel}
+                  />
+                }
+                label={translations.permanentLabel}
               />
+            </FormGroup>
+            {canDeleteStop && (
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      style={{ marginTop: 5 }}
+                      checked={shouldHardDelete}
+                      onChange={(e, v) =>
+                        this.setState({ shouldHardDelete: v })
+                      }
+                      label={translations.deleteLabel}
+                    />
+                  }
+                  label={translations.deleteLabel}
+                />
+              </FormGroup>
             )}
             {shouldHardDelete && (
               <div style={{ marginLeft: 10, display: "flex", marginTop: 10 }}>

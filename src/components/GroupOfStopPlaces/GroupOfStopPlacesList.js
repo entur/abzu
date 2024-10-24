@@ -20,6 +20,7 @@ import ContentAdd from "@mui/icons-material/Add";
 import { connect } from "react-redux";
 import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
 import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
+import { getPrimaryColor } from "../../config/themeConfig";
 
 class GroupOfStopPlacesList extends Component {
   constructor(props) {
@@ -67,8 +68,12 @@ class GroupOfStopPlacesList extends Component {
               this.setState({ addStopPlaceOpen: true });
             }}
             disabled={!canEdit}
-            mini={true}
-            style={{ marginLeft: 20, marginBottom: 10 }}
+            size={"small"}
+            style={{
+              marginLeft: 20,
+              marginBottom: 10,
+              backgroundColor: getPrimaryColor(),
+            }}
           >
             <ContentAdd />
           </Fab>
