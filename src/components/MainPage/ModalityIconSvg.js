@@ -15,7 +15,7 @@
 import React from "react";
 import SvgIcon from "@mui/material/SvgIcon";
 import PropTypes from "prop-types";
-import  "../../styles/menu.css";
+import "../../styles/menu.css";
 import svgSprite from "../../static/icons/svg-sprite.svg";
 
 class ModalityIconSvg extends React.Component {
