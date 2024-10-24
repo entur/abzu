@@ -1,4 +1,4 @@
-/// <reference types="react-scripts" />
+/// <reference types="vite/client" />
 
 declare module "redux-raven-middleware";
 declare module "material-ui/TextField";
