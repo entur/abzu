@@ -63,7 +63,7 @@ describe("Model: map format from server to expected client model", () => {
 describe("Changes correct properties", () => {
   var state = {};
 
-  beforeAll((done) => {
+  beforeAll(() => {
     const action = {
       type: "APOLLO_QUERY_RESULT",
       result: stopPlaceMock10Quays,
@@ -71,7 +71,6 @@ describe("Changes correct properties", () => {
     };
     state = stopPlaceReducer({}, action);
     expect(state.current.quays.length).toEqual(10);
-    done();
   });
 
   test("should change property of correct quay", () => {
