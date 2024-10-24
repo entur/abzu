@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 const { request, gql } = require('graphql-request');
-const config = require('./src/config/environments/prod.json');
+const config = require('./public/bootstrap.json');
 
 const introspectionQuery = gql`
 {
