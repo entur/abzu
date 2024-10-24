@@ -307,7 +307,8 @@ class SearchBox extends React.Component {
         {
           element: null,
           text: searchText,
-          value: (
+          id: null,
+          menuDiv: (
             <MenuItem disabled={true}>
               {formatMessage({ id: "no_results_found" })}
             </MenuItem>
@@ -315,11 +316,10 @@ class SearchBox extends React.Component {
         },
       ];
     }
-
     if (stopTypeFilter.length || topoiChips.length) {
       const filterNotification = {
         text: searchText,
-        value: (
+        menuDiv: (
           <MenuItem onClick={() => this.removeFiltersAndSearch()}>
             <div
               style={{
@@ -382,7 +382,7 @@ class SearchBox extends React.Component {
       !dataSource.length && [
         {
           text: "",
-          value: (
+          menuDiv: (
             <MenuItem>
               <div
                 style={{
@@ -606,6 +606,7 @@ class SearchBox extends React.Component {
             <Autocomplete
               //animated={false}
               //openOnFocus
+              filterOptions={(options) => options}
               freeSolo
               options={menuItems}
               loading={loading}
@@ -626,28 +627,15 @@ class SearchBox extends React.Component {
                   </div>
                 </MenuItem>
               }
-              //filterOptions={(x) => x !== ""}
-              //filterOptions={filterOptions}
               onInputChange={this.handleSearchUpdate.bind(this)}
-              //maxSearchResults={10}
               inputValue={this.state.stopPlaceSearchValue}
-              //value={this.state.stopPlaceSearchValue}
-              //dataSource={
-              //  loading && !dataSource.length ? Loading : menuItems || []
-              //}
               renderOption={(props, option, { selected }) => (
                 <MenuItem {...props} key={option.id}>
-                  {option.value}
+                  {option.menuDiv}
                 </MenuItem>
               )}
               onChange={this.handleNewRequest.bind(this)}
               getOptionLabel={(option) => option.text || ""}
-              //getOptionLabel={option.value}
-              //renderOption={(props, option) => (
-              //    <Box component="li" {...props}>
-              //      {option.text}{option.value}
-              //    </Box>
-              //)}
               noOptionsText={formatMessage({ id: "no_results_found" })}
               renderInput={(params) => (
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>

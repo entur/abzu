@@ -814,7 +814,6 @@ class EditStopGeneral extends React.Component {
               fontSize: "0.7em",
               color: disabled || !stopHasBeenModified ? "#999" : "#000",
             }}
-            labelStyle={{ fontSize: "0.7em" }}
             onClick={this.handleSave.bind(this)}
           >
             <MdSave

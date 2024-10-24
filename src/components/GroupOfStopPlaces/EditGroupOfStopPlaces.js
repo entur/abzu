@@ -164,36 +164,59 @@ class EditGroupOfStopPlaces extends Component {
           {groupOfStopPlaces.id && (
             <FlatButton
               label={formatMessage({ id: "remove" })}
-              style={{ margin: "8 5", zIndex: 999 }}
+              style={{
+                margin: "8 5",
+                zIndex: 999,
+                fontSize: "0.7em",
+                color: "#000",
+              }}
               disabled={!canDelete}
-              labelStyle={{ fontSize: "0.7em" }}
               onClick={() => {
                 this.setState({ confirmDeleteDialogOpen: true });
               }}
-            />
+            >
+              {formatMessage({ id: "remove" })}
+            </FlatButton>
           )}
           <FlatButton
             icon={<MdUndo style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={!this.props.isModified}
             label={formatMessage({ id: "undo_changes" })}
-            style={{ margin: "8 5", zIndex: 999 }}
-            labelStyle={{ fontSize: "0.7em" }}
+            style={{
+              fontSize: "0.7em",
+              zIndex: 999,
+              color:
+                !this.props.isModified || !groupOfStopPlaces.name || !canEdit
+                  ? "#999"
+                  : "#000",
+            }}
             onClick={() => {
               this.setState({ confirmUndoOpen: true });
             }}
-          />
+          >
+            <MdUndo style={{ height: "1em", width: "1em" }} />
+            {formatMessage({ id: "undo_changes" })}
+          </FlatButton>
           <FlatButton
-            icon={<MdSave style={{ height: "1.3em", width: "1.3em" }} />}
             disabled={
               !this.props.isModified || !groupOfStopPlaces.name || !canEdit
             }
             label={formatMessage({ id: "save" })}
-            style={{ margin: "8 5", zIndex: 999 }}
-            labelStyle={{ fontSize: "0.7em" }}
+            style={{
+              fontSize: "0.7em",
+              zIndex: 999,
+              color:
+                !this.props.isModified || !groupOfStopPlaces.name || !canEdit
+                  ? "#999"
+                  : "#000",
+            }}
             onClick={() => {
               this.setState({ confirmSaveDialogOpen: true });
             }}
-          />
+          >
+            <MdSave style={{ height: "0.7em", width: "0.7em" }} />
+            {formatMessage({ id: "save" })}
+          </FlatButton>
         </div>
         <SaveGroupDialog
           handleSave={this.handleSave.bind(this)}

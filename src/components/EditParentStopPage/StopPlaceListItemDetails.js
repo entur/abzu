@@ -74,6 +74,7 @@ class StopPlaceListItemDetails extends Component {
               {formatMessage({ id: "remove_stop_from_parent_title" })}
             </div>
             <IconButton
+              style={{ color: "rgb(223, 84, 74)" }}
               disabled={disabled}
               onClick={() =>
                 this.props.handleRemoveStopPlace(stopPlace.id, notSaved)
