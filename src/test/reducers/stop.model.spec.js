@@ -19,7 +19,9 @@ import clientStop from "./json/clientStop.json";
 import QueryVariablesMapper from "../../modelUtils/mapToQueryVariables";
 import { hasExpired } from "../../modelUtils/validBetween";
 
-window.config = require("../../config/global.json");
+window.config = {
+  defaultLanguageCode: "nor",
+};
 
 describe("Model: map format from server to expected client model", () => {
   test("should map GraphQL response to client model for StopPlace", () => {

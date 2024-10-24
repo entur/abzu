@@ -17,7 +17,9 @@ import groupOfStopPlaceQuery from "./json/groupOfStopPlace.json";
 import groupOfStopPlaceMutation from "./json/groupOfStopPlaceMutation.json";
 import mapHelper from "../../modelUtils/mapToQueryVariables";
 
-window.config = require("../../config/global.json");
+window.config = {
+  defaultLanguageCode: "nor",
+};
 
 describe("Model: map Group of Stop Place from server to expected client model", () => {
   test("should map GraphQL query result to client model for Group of StopPlace", () => {
