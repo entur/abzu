@@ -28,7 +28,7 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 const getMiddleware = () => {
   const middleware = [routerMiddleware];
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.DEV) {
     // @ts-ignore
     middleware.push(loggerMiddleware);
   }

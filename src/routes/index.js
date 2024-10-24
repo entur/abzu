@@ -4,4 +4,4 @@ const Routes = {
   REPORTS: "reports",
 };
 
-module.exports = Routes;
+export default Routes;

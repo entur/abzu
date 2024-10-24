@@ -3,9 +3,11 @@ import { renderHook } from "@testing-library/react";
 import { useAuth } from "./auth";
 import { ConfigContext } from "../config/ConfigContext";
 
-jest.mock("react-oidc-context", () => {
+import { describe, test, expect, vi } from 'vitest';
+
+vi.mock('react-oidc-context', async () => {
   return {
-    ...jest.requireActual("react-oidc-context"),
+    ...(await vi.importActual('react-oidc-context')),
     useAuth: () => ({
       isLoading: false,
       isAuthenticated: true,

@@ -17,7 +17,6 @@ import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers/";
 import { getEarliestFromDate } from "../../utils/saveDialogUtils";
-import areIntlLocalesSupported from "intl-locales-supported";
 import TextField from "@mui/material/TextField";
 import helpers from "../../modelUtils/mapToQueryVariables";
 import Spinner from "../../static/icons/spinner";
@@ -30,16 +29,6 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Cancel, Delete, DeleteForever, Warning } from "@mui/icons-material";
-
-let DateTimeFormat;
-
-if (areIntlLocalesSupported(["nb"])) {
-  DateTimeFormat = global.Intl.DateTimeFormat;
-} else {
-  const IntlPolyfill = require("intl");
-  DateTimeFormat = IntlPolyfill.DateTimeFormat;
-  require("intl/locale-data/jsonp/nb");
-}
 
 class TerminateStopPlaceDialog extends React.Component {
   static propTypes = {
@@ -252,9 +241,9 @@ class TerminateStopPlaceDialog extends React.Component {
               cancelLabel={translations.cancel}
               floatingLabelText={translations.date}
               okLabel={translations.use}
-              DateTimeFormat={DateTimeFormat}
+              DateTimeFormat={Intl.DateTimeFormat}
               formatDate={
-                new DateTimeFormat(intl.locale, {
+                new Intl.DateTimeFormat(intl.locale, {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
