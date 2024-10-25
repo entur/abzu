@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { OidcClientSettings } from "oidc-client-ts";
 
 export interface Config {
+  tiamatBaseUrl?: string;
   baatTokenProxyEndpoint?: string;
   sentryDSN?: string;
   googleApiKey?: string;
