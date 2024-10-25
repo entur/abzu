@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import React from "react";
 import ModalityIconImg from "./ModalityIconImg";
-import MenuItem from "@mui/material/MenuItem";
 import ModalityIconTray from "../ReportPage/ModalityIconTray";
 import { hasExpired, isFuture } from "../../modelUtils/validBetween";
 import { Entities } from "../../models/Entities";
@@ -22,7 +21,6 @@ import MdGroup from "@mui/icons-material/GroupWork";
 
 export const createSearchMenuItem = (element, formatMessage) => {
   if (!element) return null;
-
   if (element.entityType === Entities.STOP_PLACE) {
     if (element.isParent) {
       return createParentStopPlaceMenuItem(element, formatMessage);
@@ -63,14 +61,15 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
   return {
     element,
     text: element.name,
-    value: (
+    id: element.id,
+    menuDiv: (
       <div style={{ display: "flex" }}>
         <div
           style={{
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 360,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -98,16 +97,17 @@ const createGroupOfStopPlacesMenuItem = (element, formatMessage) => {
 const createParentStopPlaceMenuItem = (element, formatMessage) => {
   const futureOrExpiredLabel = getFutureOrExpiredLabel(element);
   return {
-    element,
+    element: element,
     text: element.name,
-    value: (
-      <div style={{ display: "flex" }}>
+    id: element.id,
+    menuDiv: (
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div
           style={{
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 360,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -161,14 +161,14 @@ const createStopPlaceMenuItem = (element, formatMessage) => {
     topographicPlace: element.topographicPlace,
     parentTopographicPlace: element.parentTopographicPlace,
     futureOrExpiredLabel: getFutureOrExpiredLabel(element),
-    value: (
+    menuDiv: (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div
           style={{
             marginLeft: 10,
             display: "flex",
             flexDirection: "column",
-            minWidth: 280,
+            minWidth: 360,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>

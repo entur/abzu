@@ -231,7 +231,7 @@ class ParkingItem extends React.Component {
               label={this.props.translations.name}
               disabled={this.props.disabled || this.props.parking.hasExpired}
               onChange={(e, v) => {
-                this.handleSetName(v);
+                this.handleSetName(e.target.value);
               }}
               variant="standard"
               value={this.props.parking.name}

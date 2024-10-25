@@ -377,7 +377,7 @@
   "show_expired_stops": "Vis utløpte stoppesteder",
   "show_fare_zones_label": "Vis tariffsoner",
   "show_tariff_zones_label": "Vis tariffsoner (avviklet)",
-  "show_future_expired_and_terminated": "Vis utløpte, fremtidige og nedlagte",
+  "show_future_expired_and_terminated": "Vis utløpte, fremtidige og nedlagte stoppesteder",
   "show_less": "Vis færre",
   "show_more": "Vis flere",
   "show_multimodal_edges": "Vis interne knytninger i multimodale stoppesteder",

@@ -307,6 +307,7 @@ class Header extends React.Component {
                 {reportSite}
               </MenuItem>
               <MoreMenuItem
+                openLeft={true}
                 leftIcon={<MdSettings color="#41c0c4" />}
                 label={settings}
                 style={{
@@ -340,6 +341,7 @@ class Header extends React.Component {
                 </MenuItem>
               </MoreMenuItem>
               <MoreMenuItem
+                openLeft={true}
                 leftIcon={<MdMap color="#41c0c4" />}
                 label={mapSettings}
                 style={{
@@ -431,6 +433,7 @@ class Header extends React.Component {
                 </MenuItem>
 
                 <MoreMenuItem
+                  openLeft={false}
                   style={{
                     fontSize: 12,
                     padding: 0,
@@ -518,6 +521,7 @@ class Header extends React.Component {
                 </MenuItem>
               </MoreMenuItem>
               <MoreMenuItem
+                openLeft={true}
                 leftIcon={<MdLanguage color="#41c0c4" />}
                 label={language}
                 style={{

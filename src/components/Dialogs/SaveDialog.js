@@ -108,14 +108,17 @@ class SaveDialog extends React.Component {
         <DialogContent>
           <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
             <TextField
-              floatingLabelText={translations.comment}
+              label={translations.comment}
+              variant="standard"
               ref={(input) => {
                 this.commentInput = input;
               }}
               fullWidth={true}
               multiLine={true}
-              value={comment}
-              onChange={(e, value) => this.setState({ comment: value })}
+              value={this.comment}
+              onChange={(event) =>
+                this.setState({ comment: event.target.value })
+              }
               rowsMax={4}
             />
           </div>

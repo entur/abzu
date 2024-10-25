@@ -23,10 +23,11 @@ export default ({
   <div className="tabItem">
     <div
       style={{
-        float: "flex",
-        alignItems: "center",
+        display: "flex",
+        alignItems: "flex-start",
         width: "95%",
         marginTop: 10,
+        marginBottom: 5,
         padding: 3,
       }}
     >

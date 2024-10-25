@@ -423,7 +423,7 @@ class QuayItem extends React.Component {
                   disabled={disabled}
                   onClick={this.props.handleRemoveQuay}
                 >
-                  <MdDelete />
+                  <MdDelete style={{ color: "#df544a" }} />
                 </IconButton>
               </ToolTippable>
             </div>

@@ -74,7 +74,6 @@ class CreateKeyValuePair extends React.Component {
             value={this.state.key}
             placeholder={formatMessage({ id: "key" })}
             label={formatMessage({ id: "key" })}
-            floatingLabelFixed={true}
             fullWidth={true}
           />
           <TextField
@@ -87,7 +86,6 @@ class CreateKeyValuePair extends React.Component {
             }}
             placeholder={formatMessage({ id: "values" })}
             label={formatMessage({ id: "values" })}
-            floatingLabelFixed={true}
             value={this.state.values}
             fullWidth={true}
             multiLine={true}

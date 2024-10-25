@@ -21,6 +21,7 @@ import { injectIntl } from "react-intl";
 import Loader from "../Dialogs/Loader";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { connect } from "react-redux";
+import { getPrimaryColor } from "../../config/themeConfig";
 
 class StopPlaceList extends Component {
   constructor(props) {
@@ -68,8 +69,12 @@ class StopPlaceList extends Component {
           <Fab
             onClick={handleAddStopPlaceOpen}
             disabled={disabled}
-            mini={true}
-            style={{ marginLeft: 20, marginBottom: 10 }}
+            size={"small"}
+            style={{
+              marginLeft: 20,
+              marginBottom: 10,
+              backgroundColor: getPrimaryColor(),
+            }}
           >
             <ContentAdd />
           </Fab>

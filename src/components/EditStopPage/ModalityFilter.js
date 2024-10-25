@@ -63,7 +63,7 @@ class ModalityFilter extends React.Component {
                 checkedIcon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    style={{ color: "black" }}
+                    //style={{ color: "black" }}
                     type={item}
                     forceUpdate={true}
                   />
@@ -71,7 +71,7 @@ class ModalityFilter extends React.Component {
                 icon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    style={{ opacity: "0.8" }}
+                    style={{ opacity: "0.3" }}
                     type={item}
                     forceUpdate={true}
                   />

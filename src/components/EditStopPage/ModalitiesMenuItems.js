@@ -102,6 +102,7 @@ class ModalitiesMenuItems extends React.Component {
               onClick={() => {
                 !submodes && handleStopTypeChange(type);
               }}
+              openLeft={false}
             >
               {submodes &&
                 submodes.map(({ submode, formatted }) => {

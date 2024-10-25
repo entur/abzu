@@ -50,7 +50,7 @@ class TagItem extends Component {
         </div>
         <div style={{ ...columnStyle, flex: 1, padding: 0 }}>
           <IconButton onClick={() => handleDelete(tag.name, tag.idReference)}>
-            <MdDelete color="rgb(223, 84, 74)" />
+            <MdDelete style={{ color: "rgb(223, 84, 74)" }} />
           </IconButton>
         </div>
       </div>
