@@ -75,7 +75,7 @@ class WheelChairPopover extends React.Component {
           {displayLabel ? (
             <div style={{ maginLeft: 5 }}>
               {formatMessage({
-                id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}`,
+                id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
               })}
             </div>
           ) : (
@@ -111,7 +111,7 @@ class WheelChairPopover extends React.Component {
                 </ListItemIcon>
                 <ListItemText>
                   {formatMessage({
-                    id: `accessibilityAssessments.wheelchairAccess.${option.toLowerCase()}`,
+                    id: `accessibilityAssessments_wheelchairAccess_${option.toLowerCase()}`,
                   })}
                 </ListItemText>
               </MenuItem>
