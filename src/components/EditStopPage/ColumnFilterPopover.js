@@ -89,7 +89,7 @@ class ColumnFilterPopover extends React.Component {
                   />
                 }
                 label={formatMessage({
-                  id: `report.columnNames.${option.id}`,
+                  id: `report_columnNames_${option.id}`,
                 })}
               />
             </div>

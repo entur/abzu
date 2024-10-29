@@ -147,7 +147,7 @@ class AltNamesDialog extends React.Component {
   getNameTypeByLocale(nameType) {
     if (altNameConfig.allNameTypes.includes(nameType)) {
       return this.props.intl.formatMessage({
-        id: `altNamesDialog.nameTypes.${nameType}`,
+        id: `altNamesDialog_nameTypes_${nameType}`,
       });
     }
   }
@@ -155,7 +155,7 @@ class AltNamesDialog extends React.Component {
   getLangByLocale(lang) {
     if (altNameConfig.languages.includes(lang)) {
       return this.props.intl.formatMessage({
-        id: `altNamesDialog.languages.${lang}`,
+        id: `altNamesDialog_languages_${lang}`,
       });
     }
   }

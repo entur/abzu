@@ -51,7 +51,7 @@ class WeightingPopover extends React.Component {
               <MdTransfer style={{ color: weightColors[type] || "grey" }} />
             </ListItemIcon>
             <ListItemText>
-              {formatMessage({ id: `weightTypes.${type}` })}
+              {formatMessage({ id: `weightTypes_${type}` })}
             </ListItemText>
           </MenuItem>
         ))}

@@ -40,7 +40,7 @@ class ReportQuayRows extends React.Component {
         <div style={{ display: "flex", fontWeight: 600, paddingLeft: 10 }}>
           {columns.map((column, i) => (
             <div key={"quay-column-" + i} style={columnStyle}>
-              {formatMessage({ id: `report.columnNames.${column}` })}
+              {formatMessage({ id: `report_columnNames_${column}` })}
             </div>
           ))}
         </div>
