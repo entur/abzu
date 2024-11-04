@@ -23,7 +23,6 @@ import { primary as defaultPrimary } from "./themes/default/defaultTheme";
 import {
   primaryDarker as defaultPrimaryDarker,
   darkColor as defaultDarkColor,
-  headerColor as defaultBanner,
 } from "./themes/default/defaultTheme";
 
 export const getTiamatEnv = () => {
@@ -31,9 +30,9 @@ export const getTiamatEnv = () => {
 };
 
 export const getEnvColor = (env) => {
-  if (process.env.REACT_APP_THEME) {
+  if (import.meta.env.VITE_THEME) {
     return require(
-      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+      "./themes/" + import.meta.env.VITE_THEME + "/index.js",
     ).getEnvColor(env);
   } else {
     return defaultEnvColor(env);
@@ -41,9 +40,9 @@ export const getEnvColor = (env) => {
 };
 
 export const getV0Theme = () => {
-  if (process.env.REACT_APP_THEME) {
+  if (import.meta.env.VITE_THEME) {
     return require(
-      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+      "./themes/" + import.meta.env.VITE_THEME + "/index.js",
     ).getV0Theme();
   } else {
     return getV0DefaultTheme();
@@ -51,9 +50,9 @@ export const getV0Theme = () => {
 };
 
 export const getTheme = () => {
-  if (process.env.REACT_APP_THEME) {
+  if (import.meta.env.VITE_THEME) {
     return require(
-      "./themes/" + process.env.REACT_APP_THEME + "/index.js",
+      "./themes/" + import.meta.env.VITE_THEME + "/index.js",
     ).getTheme();
   } else {
     return getDefaultTheme();
@@ -61,8 +60,8 @@ export const getTheme = () => {
 };
 
 export const getLogo = () => {
-  if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/logo.png")
+  if (import.meta.env.VITE_THEME) {
+    return require("./themes/" + import.meta.env.VITE_THEME + "/logo.png")
       .default;
   } else {
     return defaultLogo;
@@ -70,8 +69,8 @@ export const getLogo = () => {
 };
 
 export const getPrimaryColor = () => {
-  if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+  if (import.meta.env.VITE_THEME) {
+    return require("./themes/" + import.meta.env.VITE_THEME + "/index.js")
       .primary;
   } else {
     return defaultPrimary;
@@ -79,17 +78,17 @@ export const getPrimaryColor = () => {
 };
 
 export const getHeaderColor = () => {
-  if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+  if (import.meta.env.VITE_THEME) {
+    return require("./themes/" + import.meta.env.VITE_THEME + "/index.js")
       .primary;
   } else {
-    return headerColor;
+    return defaultEnvColor;
   }
 };
 
 export const getDarkColor = () => {
-  if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+  if (import.meta.env.VITE_THEME) {
+    return require("./themes/" + import.meta.env.VITE_THEME + "/index.js")
       .darkColor;
   } else {
     return defaultDarkColor;
@@ -97,8 +96,8 @@ export const getDarkColor = () => {
 };
 
 export const getPrimaryDarkerColor = () => {
-  if (process.env.REACT_APP_THEME) {
-    return require("./themes/" + process.env.REACT_APP_THEME + "/index.js")
+  if (import.meta.env.VITE_THEME) {
+    return require("./themes/" + import.meta.env.VITE_THEME + "/index.js")
       .primaryDarker;
   } else {
     return defaultPrimaryDarker;
