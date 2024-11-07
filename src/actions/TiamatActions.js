@@ -368,6 +368,7 @@ export const getStopPlaceWithAll = (id) => async (dispatch, getState) =>
       id,
     },
     fetchPolicy: "network-only",
+    context: await getContext(getState().roles.auth),
   })(dispatch);
 
 export const mergeAllQuaysFromStop =
