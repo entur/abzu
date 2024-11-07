@@ -315,7 +315,6 @@ class ReportPage extends React.Component {
   }
 
   handleAddChip(event, chip, index) {
-    debugger;
     let value = event.target.value;
     if (chip) {
       let addedChipsIds = this.state.topoiChips.map((tc) => tc.id);

@@ -81,7 +81,6 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpacesWithRechargePoint(value) {
-    debugger;
     if (value < 0) {
       value = 0;
     }
