@@ -132,6 +132,17 @@ Fragments.placeEquipments = {
   `,
 };
 
+Fragments.entityPermissions = gql`
+  fragment EntityPermissions on EntityPermissions {
+    allowedStopPlaceTypes
+    allowedSubmodes
+    bannedStopPlaceTypes
+    bannedSubmodes
+    canDelete
+    canEdit
+  }
+`;
+
 Fragments.boardingPosition = {
   verbose: gql`
     fragment VerboseBoardingPosition on BoardingPosition {
@@ -270,10 +281,14 @@ Fragments.stopPlace = {
             toDate
         }
         modificationEnumeration
+        permissions {
+            ...EntityPermissions
+        }
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
     ${Fragments.accessibilityAssessment.verbose}
+    ${Fragments.entityPermissions}
   `,
   reportView: gql`
       fragment ReportStopPlace on StopPlace {
@@ -412,8 +427,12 @@ Fragments.parentStopPlace = {
               }
               topographicPlaceType
           }
+          permissions {
+              ...EntityPermissions
+          }
       },
       ${Fragments.stopPlace.verbose},
+      ${Fragments.entityPermissions},
   `,
   reportView: gql`
     fragment ReportParentStopPlace on ParentStopPlace {

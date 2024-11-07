@@ -33,7 +33,7 @@ const rolesReducer = (state = initialState, action) => {
     case types.APOLLO_QUERY_RESULT:
       if (action.operationName === "stopPlaceAndPathLink") {
         return Object.assign({}, state, {
-          allowanceInfo: getAllowanceInfoForStop(action, state),
+          allowanceInfo: getAllowanceInfoForStop(action),
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {

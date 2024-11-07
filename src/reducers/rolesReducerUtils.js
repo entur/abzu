@@ -35,17 +35,8 @@ export const reduceFetchedPolygons = (result) => {
   }, {});
 };
 
-export const getAllowanceInfoForStop = ({ result, variables }, state) => {
-  /* find all roles that allow editing of stop */
-  const {
-    auth: { roleAssignments },
-    fetchedPolygons,
-    allowNewStopEverywhere,
-  } = state;
-  const editStopRoles = roleParser.getEditStopRoles(roleAssignments);
-  const deleteStopRoles = roleParser.getDeleteStopRoles(roleAssignments);
+export const getAllowanceInfoForStop = ({ result, variables }) => {
   const requestedStopPlaceId = variables.id;
-
   const stopPlace = getStopPlace(result);
 
   if (!stopPlace) {
@@ -58,94 +49,36 @@ export const getAllowanceInfoForStop = ({ result, variables }, state) => {
   }
 
   let allowanceInfoForStopPlace;
+
   if (stopPlace.id !== requestedStopPlaceId) {
     // Requested stop place ID seems to be a child
     const childStopPlace = getStopPlace(result, requestedStopPlaceId);
-    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(
-      childStopPlace,
-      editStopRoles,
-      deleteStopRoles,
-      fetchedPolygons,
-      allowNewStopEverywhere,
-    );
+    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(childStopPlace);
 
     // Check if the user is authorized to edit the parent stop place.
     // It should be possible to edit a child of a multimodal stop place, of only authorized to edit that child.
     // But it shall not be possible to set the termination date for the parent stop.
-    const allowanceInfoForParentStop = buildAllowanceInfoForStopPlace(
-      stopPlace,
-      editStopRoles,
-      deleteStopRoles,
-      fetchedPolygons,
-      allowNewStopEverywhere,
-    );
+    const allowanceInfoForParentStop =
+      buildAllowanceInfoForStopPlace(stopPlace);
     allowanceInfoForStopPlace.canEditParentStop =
       allowanceInfoForParentStop.canEdit;
   } else {
-    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(
-      stopPlace,
-      editStopRoles,
-      deleteStopRoles,
-      fetchedPolygons,
-      allowNewStopEverywhere,
-    );
+    allowanceInfoForStopPlace = buildAllowanceInfoForStopPlace(stopPlace);
   }
   return allowanceInfoForStopPlace;
 };
 
-const buildAllowanceInfoForStopPlace = (
-  stopPlace,
-  editStopRoles,
-  deleteStopRoles,
-  fetchedPolygons,
-  allowNewStopEverywhere,
-) => {
-  const latlng = getLatLng(stopPlace);
-  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    latlng,
-    fetchedPolygons,
-    allowNewStopEverywhere,
-  );
+const buildAllowanceInfoForStopPlace = (stopPlace) => {
+  const canEdit = stopPlace.permissions.canEdit;
+  const canDeleteStop = stopPlace.permissions.canDelete;
 
-  // retrieve all roles that allow editing a given stop
-  const responsibleEditRoles = roleParser.filterByEntities(
-    editStopRolesGeoFiltered,
-    stopPlace,
-  );
-
-  // retrieve all roles that allow hard-deleting a given stop
-  const responsibleDeleteRoles = roleParser.filterByEntities(
-    deleteStopRoles,
-    stopPlace,
-  );
-
-  const canEdit = responsibleEditRoles.length > 0;
-  const canDeleteStop = responsibleDeleteRoles.length > 0;
-
-  let legalStopPlaceTypes = [];
-  let legalSubmodes = [];
-
-  const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(
-    editStopRolesGeoFiltered,
-  );
-  const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
-
-  if (canEdit) {
-    legalStopPlaceTypes = restrictModeByRoles(
-      editStopRolesGeoFiltered,
-      stopPlaceTypesFoundinRoles,
-      "StopPlaceType",
-    );
-    legalSubmodes = submodesFoundinRoles;
-  }
+  let legalStopPlaceTypes = getLegalStopPlaceTypesForStopPlace(stopPlace);
+  let legalSubmodes = getLegalSubmodesForStopPlace(stopPlace);
 
   return {
-    roles: responsibleEditRoles,
     legalStopPlaceTypes,
     legalSubmodes,
-    blacklistedStopPlaceTypes:
-      getBlacklistedStopPlaceTypes(responsibleEditRoles),
+    blacklistedStopPlaceTypes: stopPlace.permissions.bannedStopPlaceTypes,
     canEdit,
     canDeleteStop,
   };
@@ -336,6 +269,38 @@ const filterByLegalMode = (roles, completeList, key, restrict = false) => {
 export const getLegalStopPlaceTypes = (roles) => {
   let allStopTypes = Object.keys(stopTypes);
   return filterByLegalMode(roles, allStopTypes, "StopPlaceType");
+};
+
+export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
+  let allStopTypes = Object.keys(stopTypes);
+
+  if (stopPlace.permissions.allowedStopPlaceTypes.includes("*")) {
+    return allStopTypes;
+  } else if (stopPlace.permissions.bannedStopPlaceTypes.includes("*")) {
+    return [];
+  } else {
+    return allStopTypes.filter(
+      (type) =>
+        stopPlace.permissions.allowedStopPlaceTypes.includes(type) &&
+        !stopPlace.permissions.bannedStopPlaceTypes.includes(type),
+    );
+  }
+};
+
+const getLegalSubmodesForStopPlace = (stopPlace) => {
+  let allSubmodes = Object.keys(submodes);
+
+  if (stopPlace.permissions.allowedSubmodes.includes("*")) {
+    return allStopTypes;
+  } else if (stopPlace.permissions.bannedSubmodes.includes("*")) {
+    return [];
+  } else {
+    return allSubmodes.filter(
+      (type) =>
+        stopPlace.permissions.allowedSubmodes.includes(type) &&
+        !stopPlace.permissions.bannedSubmodes.includes(type),
+    );
+  }
 };
 
 const getBlacklistedStopPlaceTypes = (roles) => {
