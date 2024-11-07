@@ -114,7 +114,7 @@ class SaveDialog extends React.Component {
                 this.commentInput = input;
               }}
               fullWidth={true}
-              multiLine={true}
+              multiline={true}
               value={this.comment}
               onChange={(event) =>
                 this.setState({ comment: event.target.value })

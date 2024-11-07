@@ -1,98 +1,59 @@
-/*
- *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
-
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { createPortal } from "react-dom";
 
-class ToolTippable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showToolTip: false,
-      top: 0,
-      left: 0,
-    };
-  }
+const ToolTippable = ({ children, toolTipText, toolTipStyle }) => {
+  const [showToolTip, setShowToolTip] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const childRef = useRef(null);
 
-  static propTypes = {
-    toolTipText: PropTypes.string.isRequired,
+  const handleShowToolTip = () => setShowToolTip(true);
+  const handleHideToolTip = () => setShowToolTip(false);
+
+  useEffect(() => {
+    if (childRef.current) {
+      const { top, left, height } = childRef.current.getBoundingClientRect();
+      // Set the tooltip position just below the child element, relative to the viewport
+      setPosition({ top: top + height + 8, left });
+    }
+  }, [showToolTip]); // Re-calculate position on tooltip show/hide
+
+  const defaultStyle = {
+    background: "#595959",
+    padding: "5px 8px",
+    fontSize: 12,
+    zIndex: 999999,
+    color: "#fff",
+    borderRadius: "4px",
+    position: "fixed",
+    top: position.top,
+    left: position.left,
+    whiteSpace: "nowrap",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
   };
 
-  handleShowToolTip() {
-    const { showToolTip } = this.state;
-    if (!showToolTip) {
-      this.setState({
-        showToolTip: true,
-      });
-    }
-  }
+  const appliedStyle = { ...defaultStyle, ...toolTipStyle };
 
-  handleHideToolTip() {
-    const { showToolTip } = this.state;
-    if (showToolTip) {
-      this.setState({
-        showToolTip: false,
-      });
-    }
-  }
+  const tooltipElement = showToolTip ? (
+    <span style={appliedStyle}>{toolTipText}</span>
+  ) : null;
 
-  UNSAFE_componentWillReceiveProps(prevProps, prevState) {
-    if (this.refs.child) {
-      const ignorePostRender = this.state.open === prevState.open;
-      const { top, left } = this.refs.child.getBoundingClientRect();
-      if (
-        !ignorePostRender ||
-        this.state.top !== top ||
-        this.state.left !== left
-      ) {
-        this.setState({
-          left,
-          top,
-        });
-      }
-    }
-  }
+  return (
+    <div
+      onMouseEnter={handleShowToolTip}
+      onMouseLeave={handleHideToolTip}
+      style={{ position: "relative", display: "inline-block" }} // Ensures correct positioning
+    >
+      <div ref={childRef}>{children}</div>
+      {createPortal(tooltipElement, document.body)}
+    </div>
+  );
+};
 
-  render() {
-    const { children, toolTipText, toolTipStyle } = this.props;
-    const { showToolTip, top, left } = this.state;
-
-    const defaultStyle = {
-      background: "#595959",
-      position: "fixed",
-      marginTop: 40,
-      marginLeft: -20,
-      top,
-      left,
-      padding: 5,
-      fontSize: 12,
-      zIndex: 999999,
-      color: "#fff",
-    };
-
-    const appliedStyle = { ...defaultStyle, ...toolTipStyle };
-
-    return (
-      <div
-        onMouseEnter={this.handleShowToolTip.bind(this)}
-        onMouseLeave={this.handleHideToolTip.bind(this)}
-      >
-        <div ref="child">{children}</div>
-        {showToolTip && <span style={appliedStyle}>{toolTipText}</span>}
-      </div>
-    );
-  }
-}
+ToolTippable.propTypes = {
+  toolTipText: PropTypes.string.isRequired,
+  toolTipStyle: PropTypes.object,
+  children: PropTypes.node.isRequired,
+};
 
 export default ToolTippable;

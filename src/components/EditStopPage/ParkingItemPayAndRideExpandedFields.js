@@ -256,7 +256,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           <TextField
             variant="standard"
             disabled={disabled || hasExpired}
-            floatingLabelText={formatMessage({
+            label={formatMessage({
               id: "parking_number_of_spaces",
             })}
             onChange={(event) => {
@@ -266,7 +266,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             type="number"
             fullWidth
             className={classes.textField}
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 0 }}
           />
         </Box>
         <Box
@@ -322,7 +322,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
               id: "parking_number_of_spaces_with_recharge_point",
             })}
             disabled={!rechargingAvailable || disabled || hasExpired}
-            floatingLabelText={formatMessage({
+            label={formatMessage({
               id: "parking_number_of_spaces_with_recharge_point",
             })}
             onChange={(event) => {
@@ -332,7 +332,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             type="number"
             fullWidth
             className={classes.textField}
-            style={{ marginTop: 15 }}
+            style={{ marginTop: 0 }}
           />
         </Box>
       </Grid>

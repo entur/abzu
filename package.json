@@ -7,7 +7,7 @@
     "start": "PORT=9000 TIAMAT_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "dev-local": "PORT=9000 TIAMAT_ENV=development TIAMAT_BASE_URL=http://localhost:1888/services/stop_places/graphql react-scripts start",
+    "dev-local": "PORT=9000 TIAMAT_ENV=development TIAMAT_BASE_URL=https://api.dev.entur.org/stop_places/1.0/graphql react-scripts start",
     "fetch-schema": "./fetchSchema.js",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",

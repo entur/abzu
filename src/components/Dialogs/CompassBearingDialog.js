@@ -28,6 +28,7 @@ class CompassBearingDialog extends React.Component {
     super(props);
     this.state = {
       errorText: "",
+      enableSave: false,
     };
   }
 
@@ -38,7 +39,9 @@ class CompassBearingDialog extends React.Component {
     handleConfirm: PropTypes.func.isRequired,
   };
 
-  handleInputChange(event, compassBearing) {
+  handleInputChange(event) {
+    let compassBearing = event.target.value;
+    this.validateInput(compassBearing);
     this.setState({
       compassBearing,
     });
@@ -75,6 +78,45 @@ class CompassBearingDialog extends React.Component {
     }
   }
 
+  validateInput(compassBearing) {
+    if (typeof compassBearing === "undefined") {
+      this.setState({
+        errorText: "",
+        enableSave: false,
+      });
+    } else if (compassBearing === "") {
+      this.setState({
+        errorText: "",
+        enableSave: false,
+      });
+    } else if (isNaN(compassBearing)) {
+      this.setState({
+        errorText: this.props.intl.formatMessage({
+          id: "change_compass_bearing_invalid",
+        }),
+        enableSave: false,
+      });
+    } else if (compassBearing > 360) {
+      this.setState({
+        errorText: this.props.intl.formatMessage({
+          id: "change_compass_bearing_invalid",
+        }),
+        enableSave: false,
+      });
+    } else if (compassBearing < 0) {
+      this.setState({
+        errorText: this.props.intl.formatMessage({
+          id: "change_compass_bearing_invalid",
+        }),
+        enableSave: false,
+      });
+    } else {
+      this.setState({
+        errorText: "",
+        enableSave: true,
+      });
+    }
+  }
   render() {
     const { open, intl } = this.props;
     const { formatMessage } = intl;
@@ -98,11 +140,18 @@ class CompassBearingDialog extends React.Component {
             {compassBearingTranslation.body}
 
             <TextField
-              floatingLabelText={formatMessage({ id: "compass_bearing" })}
-              style={{ display: "block", margin: "auto", width: "90%" }}
+              label={formatMessage({ id: "compass_bearing" })}
+              variant={"standard"}
+              style={{
+                display: "block",
+                margin: "auto",
+                width: "90%",
+                marginTop: 10,
+              }}
               value={compassBearing}
               onChange={this.handleInputChange.bind(this)}
-              errorText={this.state.errorText}
+              error={this.state.errorText}
+              helperText={this.state.errorText}
             />
           </DialogContent>
           <DialogActions>
@@ -116,7 +165,7 @@ class CompassBearingDialog extends React.Component {
             </Button>
             <Button
               variant="text"
-              disabled={!this.state.compassBearing}
+              disabled={!this.state.enableSave}
               onClick={() => this.handleConfirm()}
             >
               {compassBearingTranslation.confirm}

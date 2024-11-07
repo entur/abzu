@@ -272,7 +272,6 @@ class QuayItem extends React.Component {
               variant="standard"
               style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
               label={translations.publicCode}
-              floatingLabelText={translations.publicCode}
               disabled={disabled}
               defaultValue={quay.publicCode}
               onChange={(e) =>
@@ -284,7 +283,6 @@ class QuayItem extends React.Component {
               variant="standard"
               label={translations.privateCode}
               style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
-              floatingLabelText={translations.privateCode}
               disabled={disabled}
               defaultValue={quay.privateCode}
               onChange={(e) =>
@@ -297,7 +295,6 @@ class QuayItem extends React.Component {
               label={translations.description}
               style={{ width: "95%", marginTop: 10, marginLeft: 5 }}
               disabled={disabled}
-              floatingLabelText={translations.description}
               defaultValue={quay.description}
               onChange={(e) =>
                 typeof e.target.value === "string" &&
@@ -409,9 +406,11 @@ class QuayItem extends React.Component {
               >
                 <IconButton onClick={this.props.handleOpenKeyValuesDialog}>
                   <MdKey
-                    color={
-                      quay.keyValues.length ? getPrimaryDarkerColor() : "#000"
-                    }
+                    style={{
+                      color: (quay.keyValues || []).length
+                        ? getPrimaryDarkerColor()
+                        : "#000",
+                    }}
                   />
                 </IconButton>
               </ToolTippable>

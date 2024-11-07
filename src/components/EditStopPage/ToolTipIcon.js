@@ -18,7 +18,10 @@ import { getPrimaryDarkerColor } from "../../config/themeConfig";
 
 const ToolTipIcon = ({ title }) => (
   <div className="tooltip">
-    <MdInfo color={getPrimaryDarkerColor()} />
+    <MdInfo
+      color={getPrimaryDarkerColor()}
+      style={{ color: getPrimaryDarkerColor() }}
+    />
     <span className="tooltiptext"> {title} </span>
   </div>
 );

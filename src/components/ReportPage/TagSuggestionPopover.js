@@ -73,6 +73,11 @@ class TagSuggestionPopover extends Component {
       padding: 10,
     };
 
+    const handleKeyDown = (event) => {
+      // Prevent arrow keys and other keys from navigating the menu items
+      event.stopPropagation();
+    };
+
     return (
       <div style={{ marginLeft: 10, flex: 1 }}>
         <FlatButton
@@ -99,16 +104,17 @@ class TagSuggestionPopover extends Component {
         >
           <TextField
             variant="standard"
-            value={this.state.filterText}
-            floatingLabelText={formatMessage({ id: "filter_tags_by_name" })}
-            style={{ marginTop: -10, padding: 5 }}
-            onChange={(e, filterText) => {
+            //value={this.state.filterText}
+            label={formatMessage({ id: "filter_tags_by_name" })}
+            style={{ padding: 5 }}
+            onChange={(e) => {
               this.setState({
-                filterText: filterText,
+                filterText: e.target.value,
               });
             }}
+            onKeyDown={handleKeyDown}
+            autoFocus
           />
-
           {filteredTags && filteredTags.length ? (
             filteredTags.map((tag, i) => (
               <MenuItem key={"tag-menuitem-" + i} value={tag.name}>

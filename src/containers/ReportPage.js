@@ -22,6 +22,7 @@ import TopographicalFilter from "../components/MainPage/TopographicalFilter";
 import AutoComplete from "@mui/material/Autocomplete";
 import {
   findStopForReport,
+  findTopographicalPlace,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
@@ -44,6 +45,7 @@ import {
 import TagFilterTray from "../components/ReportPage/TagFilterTray";
 import AdvancedReportFilters from "../components/ReportPage/AdvancedReportFilters";
 import GeneralReportFilters from "../components/ReportPage/GeneralReportFilters";
+import Autocomplete from "@mui/material/Autocomplete";
 
 class ReportPage extends React.Component {
   constructor(props) {
@@ -313,7 +315,9 @@ class ReportPage extends React.Component {
   }
 
   handleAddChip(event, chip, index) {
-    if (chip && index > -1) {
+    debugger;
+    let value = event.target.value;
+    if (chip) {
       let addedChipsIds = this.state.topoiChips.map((tc) => tc.id);
       if (addedChipsIds.indexOf(chip.id) === -1) {
         this.setState({
@@ -325,6 +329,9 @@ class ReportPage extends React.Component {
   }
 
   handleTopographicalPlaceSearch(event, searchText, reason) {
+    if (reason && reason === "clear") {
+      this.setState({ topographicPlaceFilterValue: "" });
+    }
     const { dispatch } = this.props;
     dispatch(topographicalPlaceSearch(searchText));
   }
@@ -437,11 +444,12 @@ class ReportPage extends React.Component {
                 <div style={{ fontWeight: 600, marginBottom: 5, fontSize: 12 }}>
                   {formatMessage({ id: "filter_report_by_topography" })}
                 </div>
-                <AutoComplete
+                <Autocomplete
                   freeSolo
-                  filterOptions={(x) => x}
+                  getOptionLabel={(option) => `${option.text}`}
                   options={topographicalPlacesDataSource}
                   onInputChange={this.handleTopographicalPlaceSearch.bind(this)}
+                  inputValue={this.state.topographicPlaceFilterValue}
                   onChange={this.handleAddChip.bind(this)}
                   noOptionsText={formatMessage({ id: "no_results_found" })}
                   renderInput={(params) => (
@@ -449,21 +457,23 @@ class ReportPage extends React.Component {
                       {...params}
                       variant="standard"
                       label={formatMessage({ id: "filter_by_topography" })}
-                      onChange={(event, v) => {
-                        this.setState({
-                          topographicPlaceFilterValue: event.target.value,
-                        });
+                      onChange={(event) => {
+                        // don't fire API if the user delete or not entered anything
+                        if (event.target.value !== null) {
+                          this.setState({
+                            topographicPlaceFilterValue: event.target.value,
+                          });
+                        }
                       }}
                     />
                   )}
-                  renderOption={(props, option, { selected }) => {
-                    return (
-                      <MenuItem {...props} key={option.id}>
-                        {option.value}
-                      </MenuItem>
-                    );
-                  }}
+                  renderOption={(props, option, { selected }) => (
+                    <MenuItem {...props} key={option.id}>
+                      {option.value}
+                    </MenuItem>
+                  )}
                 />
+
                 <TopographicalFilter
                   topoiChips={topoiChips}
                   handleDeleteChip={(chip) => this.handleDeleteChipById(chip)}
@@ -486,7 +496,7 @@ class ReportPage extends React.Component {
               <div
                 style={{
                   marginLeft: 10,
-                  marginTop: 40,
+                  marginTop: 43,
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -498,10 +508,10 @@ class ReportPage extends React.Component {
                     id: "optional_search_string",
                   })}
                   style={{ width: 330 }}
-                  value={this.state.searchQuery}
+                  //value={this.state.searchQuery}
                   onKeyDown={this.handleOnKeyDown.bind(this)}
                   onChange={(e, v) => {
-                    this.handleSearchQueryChange(v);
+                    this.handleSearchQueryChange(e.target.value);
                   }}
                 />
                 <div

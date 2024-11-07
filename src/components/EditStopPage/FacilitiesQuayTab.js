@@ -490,7 +490,7 @@ class FacilitiesQuayTab extends React.Component {
                 }}
                 min="0"
                 fullWidth={true}
-                floatingLabelText={formatMessage({ id: "number_of_seats" })}
+                label={formatMessage({ id: "number_of_seats" })}
               />
               <div style={{ display: "block" }}>
                 <div
