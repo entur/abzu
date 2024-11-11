@@ -209,7 +209,6 @@ class ParentStopDetails extends Component {
             <TextField
               variant={"standard"}
               label={formatMessage({ id: "name" })}
-              label={formatMessage({ id: "name" })}
               fullWidth={true}
               value={stopPlace.name}
               disabled={disabled}
@@ -231,7 +230,6 @@ class ParentStopDetails extends Component {
           <TextField
             variant={"standard"}
             hintText={formatMessage({ id: "description" })}
-            label={formatMessage({ id: "description" })}
             label={formatMessage({ id: "description" })}
             fullWidth={true}
             disabled={disabled}

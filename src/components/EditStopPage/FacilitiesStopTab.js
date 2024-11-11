@@ -367,7 +367,6 @@ class FacilitiesStopTab extends React.Component {
                 }}
                 min="0"
                 fullWidth={true}
-                label={formatMessage({ id: "number_of_seats" })}
               />
               <div style={{ display: "block" }}>
                 <div
