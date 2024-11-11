@@ -642,7 +642,7 @@ const getLocaleStopTypeName = (stopPlaceType, intl) => {
   if (stopPlaceType) {
     const { formatMessage } = intl;
     const formattedStopTypeId = formatMessage({
-      id: `stopTypes.${stopPlaceType}.quayItemName`,
+      id: `stopTypes_${stopPlaceType}_quayItemName`,
     });
     return formatMessage({ id: formattedStopTypeId || "name" });
   }

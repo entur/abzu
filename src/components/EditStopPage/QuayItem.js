@@ -172,7 +172,7 @@ class QuayItem extends React.Component {
     const sign512 = equipmentHelpers.get512SignEquipment(quay);
 
     const wheelChairHint = formatMessage({
-      id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}`,
+      id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
     const ticketMachineHint = ticketMachine
       ? formatMessage({ id: "ticketMachine" })
@@ -184,10 +184,10 @@ class QuayItem extends React.Component {
       ? formatMessage({ id: "transport_sign" })
       : formatMessage({ id: "transport_sign_no" });
     const stepFreeHint = formatMessage({
-      id: `accessibilityAssessments.stepFreeAccess.${stepFreeAccess.toLowerCase()}`,
+      id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
     });
     const quayItemName = stopPlaceType
-      ? formatMessage({ id: `stopTypes.${stopPlaceType}.quayItemName` })
+      ? formatMessage({ id: `stopTypes_${stopPlaceType}_quayItemName` })
       : null;
 
     const translations = {
@@ -195,7 +195,6 @@ class QuayItem extends React.Component {
       publicCode: formatMessage({ id: "publicCode" }),
       description: formatMessage({ id: "description" }),
       unsaved: formatMessage({ id: "unsaved" }),
-      undefined: formatMessage({ id: "undefined" }),
       none: formatMessage({ id: "none_no" }),
       quays: formatMessage({ id: "quays" }),
       stepFreeAccess: formatMessage({ id: "step_free_access" }),

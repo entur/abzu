@@ -68,7 +68,7 @@ class ModalitiesMenuItems extends React.Component {
                 return {
                   submode,
                   formatted: formatMessage({
-                    id: `stopTypes.${type}.submodes.${
+                    id: `stopTypes_${type}_submodes_${
                       submode || "unspecified"
                     }`,
                   }),
@@ -92,7 +92,7 @@ class ModalitiesMenuItems extends React.Component {
                 <span
                   style={stopTypeMatchingChosen ? chosenStyle : unchosenStyle}
                 >
-                  {formatMessage({ id: `stopTypes.${type}.name` })}
+                  {formatMessage({ id: `stopTypes_${type}_name` })}
                 </span>
               }
               key={"stopType" + index}
@@ -150,11 +150,11 @@ class ModalitiesMenuItems extends React.Component {
                       >
                         {submode &&
                           formatMessage({
-                            id: `stopTypes.${type}.submodes.${submode}`,
+                            id: `stopTypes_${type}_submodes_${submode}`,
                           })}
                         {!submode &&
                           formatMessage({
-                            id: `stopTypes.${type}.submodes.unspecified`,
+                            id: `stopTypes_${type}_submodes_unspecified`,
                           })}
                       </span>
                     </MenuItem>

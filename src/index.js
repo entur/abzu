@@ -26,7 +26,6 @@ import { StopPlace } from "./containers/StopPlace";
 import ReportPage from "./containers/ReportPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import AppRoutes from "./routes";
-import "intl";
 import { getTiamatClient } from "./graphql/clients";
 import { store, history } from "./store/store";
 import { ConfigContext } from "./config/ConfigContext";

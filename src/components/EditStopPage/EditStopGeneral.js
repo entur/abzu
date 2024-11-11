@@ -479,12 +479,11 @@ class EditStopGeneral extends React.Component {
       publicCode: formatMessage({ id: "publicCode" }),
       description: formatMessage({ id: "description" }),
       unsaved: formatMessage({ id: "unsaved" }),
-      undefined: formatMessage({ id: "undefined" }),
       none: formatMessage({ id: "none_no" }),
       quays: formatMessage({ id: "quays" }),
       quayItemName: stopPlace.stopPlaceType
         ? formatMessage({
-            id: `stopTypes.${stopPlace.stopPlaceType}.quayItemName`,
+            id: `stopTypes_${stopPlace.stopPlaceType}_quayItemName`,
           })
         : null,
       capacity: formatMessage({ id: "total_capacity" }),
