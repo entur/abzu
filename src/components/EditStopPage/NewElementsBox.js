@@ -56,7 +56,7 @@ class NewElementsBox extends React.Component {
       zIndex: 999,
       fontSize: 10,
       textAlign: "center",
-      position: "fixed",
+      position: "absolute",
       width: "auto",
       marginLeft: "41%",
       top: 5,

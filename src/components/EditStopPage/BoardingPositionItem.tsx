@@ -81,7 +81,7 @@ const BoardingPositionItem = ({
             toolTipStyle={{ marginLeft: 10 }}
           >
             <IconButton disabled={disabled} onClick={onDelete} size="large">
-              <MdDelete />
+              <MdDelete style={{ color: "#df544a" }} />
             </IconButton>
           </ToolTippable>
         </div>

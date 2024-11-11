@@ -250,7 +250,7 @@ class TerminateStopPlaceDialog extends React.Component {
                   hintText={translations.date}
                   disabled={shouldHardDelete || stopPlace.hasExpired}
                   cancelLabel={translations.cancel}
-                  floatingLabelText={translations.date}
+                  label={translations.date}
                   okLabel={translations.use}
                   DateTimeFormat={Intl.DateTimeFormat}
                   formatDate={
@@ -274,7 +274,7 @@ class TerminateStopPlaceDialog extends React.Component {
                     ampm={false}
                     cancelLabel={translations.cancel}
                     hintText={translations.time}
-                    floatingLabelText={translations.time}
+                    label={translations.time}
                     disabled={shouldHardDelete || stopPlace.hasExpired}
                     value={moment(time)}
                     fullWidth={true}

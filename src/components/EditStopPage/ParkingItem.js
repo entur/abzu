@@ -30,6 +30,7 @@ import ItemHeader from "./ItemHeader";
 import Item from "./Item";
 import Code from "./Code";
 import PARKING_TYPE from "../../models/parkingType";
+import MdDelete from "@mui/icons-material/DeleteForever";
 
 class ParkingItem extends React.Component {
   state = {
@@ -72,7 +73,7 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpaces(value) {
-    if (value < 0) {
+    if (value && value < 0) {
       value = 0;
     }
     const { dispatch, index } = this.props;
@@ -93,7 +94,7 @@ class ParkingItem extends React.Component {
   }
 
   handleSetNumberOfSpacesForRegisteredDisabledUserType(value) {
-    if (value < 0) {
+    if (value && value < 0) {
       value = 0;
     }
     const { dispatch, index } = this.props;
@@ -275,7 +276,7 @@ class ParkingItem extends React.Component {
                 variant="standard"
                 hintText={translations.capacity}
                 disabled={disabled || parking.hasExpired}
-                floatingLabelText={translations.capacity}
+                label={translations.capacity}
                 onChange={(event) => {
                   this.handleSetTotalCapacity(event.target.value);
                 }}
@@ -291,10 +292,11 @@ class ParkingItem extends React.Component {
                 tootTipTextStyle={{ position: "relative" }}
               >
                 <FlatButton
-                  icon={<MdDeleteForver />}
                   onClick={this.handleDeleteParking.bind(this)}
                   style={{ borderRadius: 25 }}
-                />
+                >
+                  <MdDeleteForver style={{ color: "#df544a" }} />
+                </FlatButton>
               </ToolTippable>
             </div>
           </div>

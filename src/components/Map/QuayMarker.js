@@ -437,7 +437,7 @@ class QuayMarker extends React.Component {
               </div>
             </div>
             <div style={{ marginTop: 10 }}>
-              {showPathLink && isEditingStop && !currentIsNewStop ? (
+              {false && isEditingStop && !currentIsNewStop ? ( // change false to showPathLink to revert thjs change
                 <div>
                   {id ? (
                     <div

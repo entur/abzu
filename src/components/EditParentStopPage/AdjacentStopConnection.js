@@ -42,7 +42,7 @@ class AdjacentStopConnection extends Component {
           <div style={{ fontSize: "0.7em", marginTop: 5 }}>{adjacentRef}</div>
         </div>
         <IconButton onClick={this.handleRemoveAdjacentConnection}>
-          <MdDelete />
+          <MdDelete style={{ color: "#df544a" }} />
         </IconButton>
       </div>
     );
