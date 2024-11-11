@@ -48,7 +48,7 @@ const getParkingType = (parking, formatMessage) => {
   const pedalCycle = "pedalCycle";
   const carParking = "car";
   const unknownParking = formatMessage({
-    id: "report.columnNames.notAssigned",
+    id: "report_columnNames_notAssigned",
   });
   const iconStyle = {
     borderRadius: "50%",
@@ -163,7 +163,7 @@ export const ColumnTransformerStopPlaceJsx = {
   position: (stop, formatMessage) =>
     stop.location
       ? stop.location.join(",")
-      : formatMessage({ id: "report.columNames.notAssigned" }),
+      : formatMessage({ id: "report_columNames_notAssigned" }),
   quays: (stop) => (stop.quays ? stop.quays.length : 0),
   parking: (stop, formatMessage) =>
     getParkingElements(stop.parking, formatMessage),

@@ -75,7 +75,7 @@ class StepFreePopover extends React.Component {
           {displayLabel ? (
             <div style={{ maginLeft: 5 }}>
               {formatMessage({
-                id: `accessibilityAssessments.stepFreeAccess.${stepFreeAccess.toLowerCase()}`,
+                id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
               })}
             </div>
           ) : (
@@ -111,7 +111,7 @@ class StepFreePopover extends React.Component {
                 </ListItemIcon>
                 <ListItemText>
                   {formatMessage({
-                    id: `accessibilityAssessments.stepFreeAccess.${option.toLowerCase()}`,
+                    id: `accessibilityAssessments_stepFreeAccess_${option.toLowerCase()}`,
                   })}
                 </ListItemText>
               </MenuItem>

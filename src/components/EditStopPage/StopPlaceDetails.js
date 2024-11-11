@@ -202,12 +202,12 @@ class StopPlaceDetails extends React.Component {
     for (let i = 0; i < weightTypes.length; i++) {
       if (weightTypes[i] === weightingValue) {
         return this.props.intl.formatMessage({
-          id: `weightTypes.${weightingValue}`,
+          id: `weightTypes_${weightingValue}`,
         });
       }
     }
 
-    return this.props.intl.formatMessage({ id: `weightTypes.noValue` });
+    return this.props.intl.formatMessage({ id: `weightTypes_noValue` });
   }
 
   handleOpenWeightPopover(event) {
@@ -348,15 +348,15 @@ class StopPlaceDetails extends React.Component {
 
     if (submode) {
       return formatMessage({
-        id: `stopTypes.${stopPlaceType}.submodes.${submode}`,
+        id: `stopTypes_${stopPlaceType}_quayItemName`,
       });
     }
 
     if (stopPlaceType) {
-      return formatMessage({ id: `stopTypes.${stopPlaceType}.name` });
+      return formatMessage({ id: `stopTypes_${stopPlaceType}_name` });
     }
 
-    return formatMessage({ id: `stopTypes.unknown` });
+    return formatMessage({ id: `stopTypes_unknown` });
   }
 
   render() {
@@ -415,7 +415,7 @@ class StopPlaceDetails extends React.Component {
     const versionLabel = formatMessage({ id: "version" });
     const keyValuesHint = formatMessage({ id: "key_values_hint" });
     const wheelChairHint = formatMessage({
-      id: `accessibilityAssessments.wheelchairAccess.${wheelchairAccess.toLowerCase()}`,
+      id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
     const ticketMachineHint = ticketMachine
       ? formatMessage({ id: "ticketMachine" })

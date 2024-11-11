@@ -63,7 +63,7 @@ class NewAltName extends Component {
           {altNameConfig.supportedNameTypes.map((type, index) => (
             <MenuItem key={"type-" + type} value={type}>
               {formatMessage({
-                id: `altNamesDialog.nameTypes.${type}`,
+                id: `altNamesDialog_nameTypes_${type}`,
               })}
             </MenuItem>
           ))}
@@ -79,7 +79,7 @@ class NewAltName extends Component {
           {altNameConfig.languages.map((key, index) => (
             <MenuItem key={"lang-" + index} value={key}>
               {formatMessage({
-                id: `altNamesDialog.languages.${key}`,
+                id: `altNamesDialog_languages_${key}`,
               })}
             </MenuItem>
           ))}

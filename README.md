@@ -26,14 +26,10 @@ npm start
 
 Note: This will launch the application with hot reload enabled.
 
-Default port in development is _9000_. This can be overrided by setting the environment
-variable `port` (notice lower case).
+Default port in development is _9000_. This can be overridden by setting the environment
+variable `PORT`.
 
-To override timatBaseURL (GraphQL endpoint), set `TIAMAT_BASE_URL` as environment variables, e.g.
-
-```
-TIAMAT_BASE_URL=https://api.dev.entur.org/stop_places/1.0/graphql port=9000 NODE_ENV=development node server.js
-```
+To override timatBaseURL (GraphQL endpoint), set `VITE_REACT_APP_TIAMAT_BASE_URL` as environment variables.
 
 ### Testing
 

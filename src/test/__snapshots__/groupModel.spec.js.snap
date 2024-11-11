@@ -1,8 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Group of stop places - models should retrive a unique list of topographic places for members of a group 1`] = `
-Array [
-  Object {
+exports[`Group of stop places - models > should retrive a unique list of topographic places for members of a group 1`] = `
+[
+  {
     "parentTopographicPlace": "Buskerud",
     "topographicPlace": "Hurum",
   },

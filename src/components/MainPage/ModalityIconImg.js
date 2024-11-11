@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "../../styles/menu.css";
+import "../../styles/menu.css";
 import { getSvgIconByTypeOrSubmode } from "../../utils/iconUtils";
 
 class ModalityIconImg extends React.Component {
@@ -52,7 +52,7 @@ class ModalityIconImg extends React.Component {
     };
 
     return (
-      <span className={styles.clear} style={iconStyle}>
+      <span className="clear" style={iconStyle}>
         <img alt="" style={{ ...style, ...svgStyle }} src={icon} />
       </span>
     );
