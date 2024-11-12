@@ -41,8 +41,7 @@ const BoardingPositionItem = ({
         handleToggleCollapse={handleToggleCollapse}
       >
         <span style={{ color: "#2196F3", alignItems: "start" }}>
-          {intl.formatMessage({ id: "boarding_positions_item_header" }) +
-            "hjelp"}
+          {intl.formatMessage({ id: "boarding_positions_item_header" })}
         </span>
         <Code
           type="publicCode"
