@@ -278,11 +278,15 @@ export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
     return allStopTypes;
   } else if (stopPlace.permissions.bannedStopPlaceTypes.includes("*")) {
     return [];
-  } else {
+  } else if (stopPlace.permissions.allowedStopPlaceTypes.length > 0) {
     return allStopTypes.filter(
       (type) =>
         stopPlace.permissions.allowedStopPlaceTypes.includes(type) &&
         !stopPlace.permissions.bannedStopPlaceTypes.includes(type),
+    );
+  } else {
+    return allStopTypes.filter(
+      (type) => !stopPlace.permissions.bannedStopPlaceTypes.includes(type),
     );
   }
 };
@@ -294,11 +298,15 @@ const getLegalSubmodesForStopPlace = (stopPlace) => {
     return allStopTypes;
   } else if (stopPlace.permissions.bannedSubmodes.includes("*")) {
     return [];
-  } else {
+  } else if (stopPlace.permissions.allowedSubmodes.length > 0) {
     return allSubmodes.filter(
       (type) =>
         stopPlace.permissions.allowedSubmodes.includes(type) &&
         !stopPlace.permissions.bannedSubmodes.includes(type),
+    );
+  } else {
+    return allSubmodes.filter(
+      (type) => !stopPlace.permissions.bannedSubmodes.includes(type),
     );
   }
 };
