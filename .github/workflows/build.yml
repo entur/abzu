@@ -49,9 +49,9 @@ jobs:
             -Dsonar.projectKey=entur_abzu
             -Dsonar.sources=src
             -Dsonar.tests=src
-            -Dsonar.test.inclusions=src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.test.ts,src/**/*.test.tsx
-            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.test.inclusions=src/**/*.spec.ts,src/**/*.spec.tsx,src/**/*.test.ts,src/**/*.test.tsx,src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.testExecutionReportPaths=test-report.xml
       - name: Bump version
         run: |
           npm version minor
