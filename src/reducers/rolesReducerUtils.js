@@ -291,11 +291,11 @@ export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
   }
 };
 
-const getLegalSubmodesForStopPlace = (stopPlace) => {
-  let allSubmodes = Object.keys(submodes);
+export const getLegalSubmodesForStopPlace = (stopPlace) => {
+  let allSubmodes = submodes;
 
   if (stopPlace.permissions.allowedSubmodes.includes("*")) {
-    return allStopTypes;
+    return allSubmodes;
   } else if (stopPlace.permissions.bannedSubmodes.includes("*")) {
     return [];
   } else if (stopPlace.permissions.allowedSubmodes.length > 0) {
