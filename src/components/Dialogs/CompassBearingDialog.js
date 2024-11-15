@@ -16,7 +16,7 @@ class CompassBearingDialog extends React.Component {
     this.state = {
       errorText: "",
       enableSave: false,
-      compassBearing: props.compassBearing || 0, // Initialize with a valid default bearing
+      compassBearing: props.compassBearing || 0, // Initialize with props
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,12 +33,20 @@ class CompassBearingDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    compassBearing: 0,
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.compassBearing !== this.props.compassBearing) {
+      this.setState({ compassBearing: this.props.compassBearing });
+    }
+  }
+
   handleInputChange(event) {
     const compassBearing = event.target.value;
     this.validateInput(compassBearing);
-    this.setState({
-      compassBearing,
-    });
+    this.setState({ compassBearing });
   }
 
   handleClose() {
@@ -52,7 +60,7 @@ class CompassBearingDialog extends React.Component {
   handleConfirm() {
     const { compassBearing } = this.state;
 
-    if (typeof compassBearing === "undefined" || isNaN(compassBearing)) {
+    if (isNaN(compassBearing) || compassBearing < 0 || compassBearing > 360) {
       this.setState({
         errorText: this.props.intl.formatMessage({
           id: "change_compass_bearing_invalid",
@@ -63,10 +71,10 @@ class CompassBearingDialog extends React.Component {
 
     this.props.handleConfirm(Number(compassBearing));
 
-    /**this.setState({
+    this.setState({
       compassBearing: null,
       errorText: "",
-    });**/
+    });
   }
 
   setCompassBearing(bearing) {
@@ -125,7 +133,7 @@ class CompassBearingDialog extends React.Component {
               error={Boolean(errorText)}
               helperText={errorText}
               InputLabelProps={{
-                shrink: true, // Force the label to always shrink, avoiding overlap
+                shrink: true,
               }}
             />
 
