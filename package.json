@@ -83,7 +83,7 @@
     "@vitest/coverage-v8": "2.1.5",
     "caniuse-lite": "1.0.30001680",
     "graphql-request": "6.1.0",
-    "husky": "8.0.3",
+    "husky": "9.1.7",
     "jsdom": "25.0.1",
     "prettier": "3.3.3",
     "redux-devtools": "3.7.0",
