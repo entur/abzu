@@ -41,7 +41,6 @@ export const getAllowanceInfoForStop = ({ result, variables }) => {
 
   if (!stopPlace) {
     return {
-      roles: [],
       legalStopPlaceTypes: [],
       legalSubmodes: [],
       canEdit: false,
