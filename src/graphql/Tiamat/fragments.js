@@ -30,6 +30,17 @@ Fragments.accessibilityAssessment = {
   `,
 };
 
+Fragments.entityPermissions = gql`
+  fragment EntityPermissions on EntityPermissions {
+    allowedStopPlaceTypes
+    allowedSubmodes
+    bannedStopPlaceTypes
+    bannedSubmodes
+    canDelete
+    canEdit
+  }
+`;
+
 Fragments.groupOfStopPlaces = {
   verbose: gql`
     fragment GroupOfStopPlaces on GroupOfStopPlaces {
@@ -90,7 +101,11 @@ Fragments.groupOfStopPlaces = {
       description {
         value
       }
+      permissions {
+        ...EntityPermissions
+      }
     }
+    ${Fragments.entityPermissions}
   `,
 };
 
@@ -131,17 +146,6 @@ Fragments.placeEquipments = {
     }
   `,
 };
-
-Fragments.entityPermissions = gql`
-  fragment EntityPermissions on EntityPermissions {
-    allowedStopPlaceTypes
-    allowedSubmodes
-    bannedStopPlaceTypes
-    bannedSubmodes
-    canDelete
-    canEdit
-  }
-`;
 
 Fragments.boardingPosition = {
   verbose: gql`

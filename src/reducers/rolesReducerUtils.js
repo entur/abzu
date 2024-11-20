@@ -15,7 +15,6 @@ limitations under the Licence. */
 import roleParser, {
   getRoleOptions,
   isModeOptionsValidForMode,
-  isInArrayIgnoreCase,
 } from "../roles/rolesParser";
 import { getIn } from "../utils/";
 import stopTypes, { submodes } from "../models/stopTypes";
@@ -83,28 +82,11 @@ const buildAllowanceInfoForStopPlace = (stopPlace) => {
   };
 };
 
-export const getAllowanceInfoForGroup = (result, state) => {
-  /* find all roles that allow editing of group of stop places */
-  const {
-    auth: { roleAssignments },
-    fetchedPolygons,
-    allowNewStopEverywhere,
-  } = state;
-  const editStopRoles = roleParser.getEditStopRoles(roleAssignments);
-  const deleteStopRoles = roleParser.getDeleteStopRoles(roleAssignments);
+export const getAllowanceInfoForGroup = (result) => {
   const groupOfStopPlaces = getGroupOfStopPlaces(result);
-  const latlngs = getLatLngFromMembers(groupOfStopPlaces);
-
-  const editStopRolesGeoFiltered = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    latlngs,
-    fetchedPolygons,
-    allowNewStopEverywhere,
-  );
 
   if (!groupOfStopPlaces) {
     return {
-      roles: [],
       legalStopPlaceTypes: [],
       legalSubmodes: [],
       canEdit: false,
@@ -112,95 +94,21 @@ export const getAllowanceInfoForGroup = (result, state) => {
     };
   }
 
-  // retrieve all roles that allow editing a given group of stop places
-  const responsibleEditRoles = roleParser.filterByEntities(
-    editStopRolesGeoFiltered,
-    groupOfStopPlaces,
-  );
+  const canEdit = groupOfStopPlaces.permissions.canEdit;
+  const canDeleteStop = groupOfStopPlaces.permissions.canDelete;
 
-  // retrieve all roles that allow hard-deleting a given group of stop places
-  const responsibleDeleteRoles = roleParser.filterByEntities(
-    deleteStopRoles,
-    groupOfStopPlaces,
-  );
-
-  const canEdit = responsibleEditRoles.length > 0;
-  const canDeleteStop = responsibleDeleteRoles.length > 0;
-
-  let legalStopPlaceTypes = [];
-  let legalSubmodes = [];
-
-  const stopPlaceTypesFoundinRoles = getLegalStopPlaceTypes(
-    editStopRolesGeoFiltered,
-  );
-  const submodesFoundinRoles = getLegalSubmodes(editStopRolesGeoFiltered, true);
-
-  if (canEdit) {
-    legalStopPlaceTypes = restrictModeByRoles(
-      editStopRolesGeoFiltered,
-      stopPlaceTypesFoundinRoles,
-      "StopPlaceType",
-    );
-    legalSubmodes = submodesFoundinRoles;
-  }
+  let legalStopPlaceTypes =
+    getLegalStopPlaceTypesForStopPlace(groupOfStopPlaces);
+  let legalSubmodes = getLegalSubmodesForStopPlace(groupOfStopPlaces);
 
   return {
-    roles: responsibleEditRoles,
     legalStopPlaceTypes,
     legalSubmodes,
     blacklistedStopPlaceTypes:
-      getBlacklistedStopPlaceTypes(responsibleEditRoles),
+      groupOfStopPlaces.permissions.bannedStopPlaceTypes,
     canEdit,
     canDeleteStop,
   };
-};
-
-const restrictModeByRoles = (roles, modes, entityType) => {
-  let foundEditStops = false;
-  let result = new Set();
-  let blacklistedSet = new Set();
-
-  roles.forEach((role) => {
-    if (role.r === "editStops") {
-      foundEditStops = true;
-    }
-
-    if (role.e && role.e[entityType] && role.e[entityType].length) {
-      modes.forEach((mode) => {
-        (role.e[entityType] || []).forEach((roleMode) => {
-          const isBlacklisted = roleMode.indexOf("!") > -1;
-
-          // only add if whitelisted or whitelisted
-          if ((!isBlacklisted && roleMode === mode) || roleMode === "*") {
-            result.add(mode);
-          } else {
-            const blacklistedEntity = roleMode.substring(1);
-            blacklistedSet.add(blacklistedEntity);
-          }
-        });
-      });
-    }
-  });
-
-  if (foundEditStops) {
-    // add all other as withlisted for entities that are blacklisted
-    Array.from(blacklistedSet).forEach((b) => {
-      modes.forEach((m) => {
-        if (b !== m) {
-          result.add(m);
-        }
-      });
-    });
-
-    // cleanup by removing all blacklisted
-    Array.from(blacklistedSet).forEach((b) => {
-      result.delete(b);
-    });
-
-    return Array.from(result);
-  }
-
-  return [];
 };
 
 export const getAllowanceInfoFromPosition = (latlng, roleAssignments) => {
@@ -310,33 +218,6 @@ export const getLegalSubmodesForStopPlace = (stopPlace) => {
   }
 };
 
-const getBlacklistedStopPlaceTypes = (roles) => {
-  const blacklistSet = new Set();
-
-  const stopPlaceRoles = roles.map((role) => {
-    if (role.e && role.e.EntityType) {
-      if (
-        isInArrayIgnoreCase(role.e.EntityType, "stopPlace") ||
-        isInArrayIgnoreCase(role.e.EntityType, "*")
-      ) {
-        return getRoleOptions(role.e.StopPlaceType);
-      }
-      return undefined;
-    }
-    return undefined;
-  });
-
-  stopPlaceRoles.forEach((role) => {
-    role.blacklisted.forEach((b) => {
-      if (b) {
-        blacklistSet.add(b);
-      }
-    });
-  });
-
-  return Array.from(blacklistSet);
-};
-
 export const getAllowanceSearchInfo = (payload, roleAssignments) => {
   let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
   let latlng =
@@ -363,17 +244,6 @@ export const getLatLng = (entity) => {
   if (!lngLat || !lngLat.length) return null;
 
   return lngLat[0].slice().reverse();
-};
-
-export const getLatLngFromMembers = (groupOfStopPlaces) => {
-  if (
-    !groupOfStopPlaces ||
-    !groupOfStopPlaces.members ||
-    !groupOfStopPlaces.members.length
-  ) {
-    return null;
-  }
-  return groupOfStopPlaces.members.map((member) => getLatLng(member));
 };
 
 export const getStopPlace = (result, childId) => {
