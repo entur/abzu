@@ -37,7 +37,7 @@ const rolesReducer = (state = initialState, action) => {
         });
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
-          allowanceInfo: getAllowanceInfoForGroup(action.result, state),
+          allowanceInfo: getAllowanceInfoForGroup(action),
         });
       } else if (action.operationName === "getPolygons") {
         return Object.assign({}, state, {

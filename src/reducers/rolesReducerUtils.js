@@ -82,7 +82,7 @@ const buildAllowanceInfoForStopPlace = (stopPlace) => {
   };
 };
 
-export const getAllowanceInfoForGroup = (result) => {
+export const getAllowanceInfoForGroup = ({ result }) => {
   const groupOfStopPlaces = getGroupOfStopPlaces(result);
 
   if (!groupOfStopPlaces) {
