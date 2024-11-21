@@ -219,22 +219,8 @@ export const getLegalSubmodesForStopPlace = (stopPlace) => {
 };
 
 export const getAllowanceSearchInfo = (payload, roleAssignments) => {
-  let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
-  let latlng =
-    payload.entityType === Entities.GROUP_OF_STOP_PLACE
-      ? payload.members.map((member) => member.location)
-      : payload.location;
-
-  let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    latlng,
-  );
-
-  let finalRoles = roleParser.filterByEntities(rolesAllowingGeo, payload);
-
   return {
-    roles: finalRoles,
-    canEdit: finalRoles.length > 0,
+    canEdit: payload.permissions.canEdit,
   };
 };
 

@@ -301,6 +301,9 @@ export const findStop = gql`
       name {
         value
       }
+      permissions {
+        canEdit
+      }
       members {
         __typename
         id
@@ -328,6 +331,9 @@ export const findStop = gql`
           submode
           version
           stopPlaceType
+          permissions {
+            canEdit
+          }
         }
       }
     }
@@ -389,6 +395,9 @@ export const findStop = gql`
         }
       }
       modificationEnumeration
+      permissions {
+        canEdit
+      }
       ... on StopPlace {
         stopPlaceType
         submode
