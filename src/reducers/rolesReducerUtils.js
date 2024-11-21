@@ -18,7 +18,6 @@ import roleParser, {
 } from "../roles/rolesParser";
 import { getIn } from "../utils/";
 import stopTypes, { submodes } from "../models/stopTypes";
-import { Entities } from "../models/Entities";
 
 export const reduceFetchedPolygons = (result) => {
   return Object.keys(result.data).reduce((fetchedPolygons, key) => {
@@ -218,7 +217,7 @@ export const getLegalSubmodesForStopPlace = (stopPlace) => {
   }
 };
 
-export const getAllowanceSearchInfo = (payload, roleAssignments) => {
+export const getAllowanceSearchInfo = (payload) => {
   return {
     canEdit: payload.permissions.canEdit,
   };
