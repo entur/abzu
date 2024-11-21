@@ -54,6 +54,7 @@ import {
   getParkingForMultipleStopPlaces as getParkingForMultipleStopPlacesQuery,
   topopGraphicalPlacesReportQuery,
   neighbourStopPlaceQuays,
+  getLocationPermissions,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
@@ -621,3 +622,15 @@ export const saveParking = (Parking) => async (dispatch, getState) =>
     variables: { Parking },
     context: await getContext(getState().roles.auth),
   })(dispatch);
+
+export const getLocationPermissionsForCoordinates = (longitude, latitude) => {
+  return async (dispatch, getState) => {
+    const { client } = getState().apollo;
+    return handleQuery(client, {
+      fetchPolicy: "no-cache",
+      query: getLocationPermissions,
+      variables: { longitude, latitude },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
+  };
+};

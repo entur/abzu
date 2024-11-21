@@ -819,3 +819,19 @@ export const findFareZonesForFilter = gql`
     }
   }
 `;
+
+export const getLocationPermissions = gql`
+  query getLocationPermissions(
+    $longitude: BigDecimal!
+    $latitude: BigDecimal!
+  ) {
+    locationPermissions(longitude: $longitude, latitude: $latitude) {
+      allowedStopPlaceTypes
+      allowedSubmodes
+      bannedStopPlaceTypes
+      bannedSubmodes
+      canDelete
+      canEdit
+    }
+  }
+`;
