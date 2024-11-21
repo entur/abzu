@@ -629,6 +629,10 @@ UserActions.createMultimodalWith = (stopPlaceId, fromMain) => (dispatch) => {
           fromMain,
         }),
       );
+      const { location } = newStopPlace;
+      dispatch(
+        getLocationPermissionsForCoordinates(location.lng, location.lat),
+      );
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
     }
   });

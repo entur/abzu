@@ -625,8 +625,7 @@ export const saveParking = (Parking) => async (dispatch, getState) =>
 
 export const getLocationPermissionsForCoordinates = (longitude, latitude) => {
   return async (dispatch, getState) => {
-    const { client } = getState().apollo;
-    return handleQuery(client, {
+    return handleQuery(getTiamatClient(), {
       fetchPolicy: "no-cache",
       query: getLocationPermissions,
       variables: { longitude, latitude },

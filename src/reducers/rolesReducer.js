@@ -16,9 +16,7 @@ import * as types from "../actions/Types";
 import {
   getAllowanceInfoForGroup,
   getAllowanceSearchInfo,
-  getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
-  getLatLng,
   reduceFetchedPolygons,
 } from "./rolesReducerUtils";
 
@@ -43,6 +41,12 @@ const rolesReducer = (state = initialState, action) => {
         return Object.assign({}, state, {
           fetchedPolygons: reduceFetchedPolygons(action.result),
         });
+      } else if (action.operationName === "getLocationPermissions") {
+        return Object.assign({}, state, {
+          allowanceInfo: getAllowanceInfoFromLocationPermissions(
+            action.result.data.locationPermissions,
+          ),
+        });
       } else {
         return state;
       }
@@ -51,35 +55,6 @@ const rolesReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allowanceInfoSearchResult: getAllowanceSearchInfo(
           action.payload,
-          state.auth.roleAssignments,
-        ),
-        allowanceInfo: {
-          ...state.allowanceInfo,
-          ...getAllowanceInfoFromPosition(action.payload.location),
-        },
-      });
-
-    case types.SETUP_NEW_GROUP:
-      return Object.assign({}, state, {
-        allowanceInfo: getAllowanceInfoFromPosition(
-          getLatLng(action.payload.data.stopPlace[0]),
-          state.auth.roleAssignments,
-        ),
-      });
-
-    case types.USE_NEW_STOP_AS_CURRENT:
-      return Object.assign({}, state, {
-        allowanceInfo: getAllowanceInfoFromPosition(
-          action.payload,
-          state.auth.roleAssignments,
-        ),
-      });
-
-    case types.CREATE_NEW_MULTIMODAL_STOP_FROM_EXISTING:
-      const { newStopPlace } = action.payload;
-      return Object.assign({}, state, {
-        allowanceInfo: getAllowanceInfoFromPosition(
-          newStopPlace.location,
           state.auth.roleAssignments,
         ),
       });

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import roleParser, {
+import {
   getRoleOptions,
   isModeOptionsValidForMode,
 } from "../roles/rolesParser";
@@ -110,18 +110,14 @@ export const getAllowanceInfoForGroup = ({ result }) => {
   };
 };
 
-export const getAllowanceInfoFromPosition = (latlng, roleAssignments) => {
-  let editStopRoles = roleParser.getEditStopRoles(roleAssignments);
-  let deleteRoles = roleParser.getDeleteStopRoles(roleAssignments);
-  let rolesAllowingGeo = roleParser.filterRolesByZoneRestriction(
-    editStopRoles,
-    latlng,
-  );
+export const getAllowanceInfoFromLocationPermissions = (
+  locationPermissions,
+) => {
   return {
-    legalStopPlaceTypes: getLegalStopPlaceTypes(rolesAllowingGeo),
-    legalSubmodes: getLegalSubmodes(rolesAllowingGeo),
-    canEdit: rolesAllowingGeo.length > 0,
-    canDeleteStop: deleteRoles.length > 0,
+    canEdit: locationPermissions.canEdit,
+    canDelete: locationPermissions.canDelete,
+    legalStopPlaceTypes: locationPermissions.allowedStopPlaceTypes,
+    legalSubmodes: locationPermissions.allowedSubmodes,
   };
 };
 
