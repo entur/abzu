@@ -76,7 +76,7 @@
     "@types/redux-logger": "3.0.13",
     "@vitejs/plugin-react": "4.3.3",
     "@vitest/coverage-v8": "2.1.5",
-    "caniuse-lite": "1.0.30001683",
+    "caniuse-lite": "1.0.30001684",
     "graphql-request": "6.1.0",
     "husky": "9.1.7",
     "jsdom": "25.0.1",
