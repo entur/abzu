@@ -203,7 +203,7 @@ const isStopTypeAllowed = (stopType, permissions) => {
 };
 
 const getSubmodesForStopType = (stopType, permissions) => {
-  const { transportMode, submodes } = stopTypes[stopType];
+  const { submodes } = stopTypes[stopType];
   if (!submodes) return [];
 
   if (permissions.bannedStopPlaceTypes.includes(stopType)) return [];
