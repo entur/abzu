@@ -174,70 +174,70 @@ export const getLegalStopPlaceTypes = (roles) => {
 };
 
 export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
-  let allStopTypes = Object.keys(stopTypes);
+  const allStopTypes = Object.keys(stopTypes);
+  const { allowedStopPlaceTypes, bannedStopPlaceTypes } = stopPlace.permissions;
 
-  if (stopPlace.permissions.allowedStopPlaceTypes.includes("*")) {
-    return allStopTypes;
-  } else if (stopPlace.permissions.bannedStopPlaceTypes.includes("*")) {
+  if (bannedStopPlaceTypes.includes("*")) {
     return [];
-  } else if (stopPlace.permissions.allowedStopPlaceTypes.length > 0) {
-    return allStopTypes.filter(
+  }
+
+  if (isWildcardOrEmpty(allowedStopPlaceTypes)) {
+    return allStopTypes.filter((type) => !bannedStopPlaceTypes.includes(type));
+  }
+
+  return allowedStopPlaceTypes.filter(
+    (type) => !bannedStopPlaceTypes.includes(type),
+  );
+};
+
+const isWildcardOrEmpty = (list) => {
+  return !list || list.length === 0 || (list.length > 0 && list[0] === "*");
+};
+
+const isStopTypeAllowed = (stopType, permissions) => {
+  const { allowedStopPlaceTypes } = permissions;
+  return (
+    isWildcardOrEmpty(allowedStopPlaceTypes) ||
+    allowedStopPlaceTypes.includes(stopType)
+  );
+};
+
+const getSubmodesForStopType = (stopType, permissions) => {
+  const { transportMode, submodes } = stopTypes[stopType];
+  if (!submodes) return [];
+
+  if (permissions.bannedStopPlaceTypes.includes(stopType)) return [];
+  if (!isStopTypeAllowed(stopType, permissions)) return [];
+
+  return submodes;
+};
+
+const filterBySubmodePermissions = (submodes, permissions) => {
+  const { allowedSubmodes, bannedSubmodes } = permissions;
+
+  if (allowedSubmodes.includes("*")) return submodes;
+  if (bannedSubmodes.includes("*")) return [];
+
+  if (allowedSubmodes.length > 0) {
+    return submodes.filter(
       (type) =>
-        stopPlace.permissions.allowedStopPlaceTypes.includes(type) &&
-        !stopPlace.permissions.bannedStopPlaceTypes.includes(type),
-    );
-  } else {
-    return allStopTypes.filter(
-      (type) => !stopPlace.permissions.bannedStopPlaceTypes.includes(type),
+        allowedSubmodes.includes(type) && !bannedSubmodes.includes(type),
     );
   }
+
+  return submodes.filter((type) => !bannedSubmodes.includes(type));
 };
 
 export const getLegalSubmodesForStopPlace = (stopPlace) => {
-  const applicableSubmodes = Object.entries(stopTypes).reduce(
-    (acc, [stopType, { transportMode, submodes }]) => {
-      if (stopPlace.permissions.bannedStopPlaceTypes.includes(stopType)) {
-        return acc;
-      }
-
-      if (
-        ((stopPlace.permissions.allowedStopPlaceTypes &&
-          stopPlace.permissions.allowedStopPlaceTypes.length === 0) ||
-          (stopPlace.permissions.allowedStopPlaceTypes.length > 0 &&
-            stopPlace.permissions.allowedStopPlaceTypes[0] === "*")) &&
-        submodes
-      ) {
-        return [...acc, ...submodes];
-      } else if (
-        stopPlace.permissions.allowedStopPlaceTypes &&
-        stopPlace.permissions.allowedStopPlaceTypes.length > 0 &&
-        stopPlace.permissions.allowedStopPlaceTypes[0] !== "*" &&
-        stopPlace.permissions.allowedStopPlaceTypes.includes(stopType) &&
-        submodes
-      ) {
-        return [...acc, ...submodes];
-      } else {
-        return acc;
-      }
-    },
+  const applicableSubmodes = Object.keys(stopTypes).reduce(
+    (acc, stopType) => [
+      ...acc,
+      ...getSubmodesForStopType(stopType, stopPlace.permissions),
+    ],
     [],
   );
 
-  if (stopPlace.permissions.allowedSubmodes.includes("*")) {
-    return applicableSubmodes;
-  } else if (stopPlace.permissions.bannedSubmodes.includes("*")) {
-    return [];
-  } else if (stopPlace.permissions.allowedSubmodes.length > 0) {
-    return applicableSubmodes.filter(
-      (type) =>
-        stopPlace.permissions.allowedSubmodes.includes(type) &&
-        !stopPlace.permissions.bannedSubmodes.includes(type),
-    );
-  } else {
-    return applicableSubmodes.filter(
-      (type) => !stopPlace.permissions.bannedSubmodes.includes(type),
-    );
-  }
+  return filterBySubmodePermissions(applicableSubmodes, stopPlace.permissions);
 };
 
 export const getAllowanceSearchInfo = (payload) => {

@@ -21,6 +21,7 @@ describe("getLegalStopPlaceTypesForStopPlace", () => {
       getLegalStopPlaceTypesForStopPlace({
         permissions: {
           allowedStopPlaceTypes: ["*"],
+          bannedStopPlaceTypes: [],
         },
       }),
     ).toEqual(Object.keys(stopTypes));
