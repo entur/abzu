@@ -2,7 +2,7 @@ import {
   getLegalStopPlaceTypesForStopPlace,
   getLegalSubmodesForStopPlace,
 } from "../../reducers/rolesReducerUtils";
-import stopTypes, { submodes } from "../../models/stopTypes";
+import stopTypes from "../../models/stopTypes";
 
 describe("getLegalStopPlaceTypesForStopPlace", () => {
   it("returns all stop types for empty allowed and banned stop place types", () => {
@@ -65,27 +65,42 @@ describe("getLegalSubmodesForStopPlace", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: [],
           allowedSubmodes: [],
           bannedSubmodes: [],
         },
       }),
-    ).toEqual(submodes);
+    ).toEqual(
+      Object.values(stopTypes).reduce((acc, stopType) => {
+        return [...acc, ...(stopType.submodes ? stopType.submodes : [])];
+      }, []),
+    );
   });
 
   it("returns all submodes for wildcarded allowedSubmodes", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: [],
           allowedSubmodes: ["*"],
+          bannedSubmodes: [],
         },
       }),
-    ).toEqual(submodes);
+    ).toEqual(
+      Object.values(stopTypes).reduce((acc, stopType) => {
+        return [...acc, ...(stopType.submodes ? stopType.submodes : [])];
+      }, []),
+    );
   });
 
   it("returns the empty list for wildcarded bannedSubmodes", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: [],
           allowedSubmodes: [],
           bannedSubmodes: ["*"],
         },
@@ -97,6 +112,8 @@ describe("getLegalSubmodesForStopPlace", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: [],
           allowedSubmodes: ["localBus", "nightBus"],
           bannedSubmodes: ["localBus"],
         },
@@ -108,10 +125,18 @@ describe("getLegalSubmodesForStopPlace", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: [],
           allowedSubmodes: [],
           bannedSubmodes: ["localBus"],
         },
       }),
-    ).toEqual(submodes.filter((type) => type !== "localBus"));
+    ).toEqual(
+      Object.values(stopTypes)
+        .reduce((acc, stopType) => {
+          return [...acc, ...(stopType.submodes ? stopType.submodes : [])];
+        }, [])
+        .filter((type) => type !== "localBus"),
+    );
   });
 });

@@ -194,20 +194,43 @@ export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
 };
 
 export const getLegalSubmodesForStopPlace = (stopPlace) => {
-  let allSubmodes = submodes;
+  const applicableSubmodes = Object.entries(stopTypes).reduce(
+    (acc, [stopType, { transportMode, submodes }]) => {
+      if (
+        ((stopPlace.permissions.allowedStopPlaceTypes &&
+          stopPlace.permissions.allowedStopPlaceTypes.length === 0) ||
+          (stopPlace.permissions.allowedStopPlaceTypes.length > 0 &&
+            stopPlace.permissions.allowedStopPlaceTypes[0] === "*")) &&
+        submodes
+      ) {
+        return [...acc, ...submodes];
+      } else if (
+        stopPlace.permissions.allowedStopPlaceTypes &&
+        stopPlace.permissions.allowedStopPlaceTypes.length > 0 &&
+        stopPlace.permissions.allowedStopPlaceTypes[0] !== "*" &&
+        stopPlace.permissions.allowedStopPlaceTypes.includes(stopType) &&
+        submodes
+      ) {
+        return [...acc, ...submodes];
+      } else {
+        return acc;
+      }
+    },
+    [],
+  );
 
   if (stopPlace.permissions.allowedSubmodes.includes("*")) {
-    return allSubmodes;
+    return applicableSubmodes;
   } else if (stopPlace.permissions.bannedSubmodes.includes("*")) {
     return [];
   } else if (stopPlace.permissions.allowedSubmodes.length > 0) {
-    return allSubmodes.filter(
+    return applicableSubmodes.filter(
       (type) =>
         stopPlace.permissions.allowedSubmodes.includes(type) &&
         !stopPlace.permissions.bannedSubmodes.includes(type),
     );
   } else {
-    return allSubmodes.filter(
+    return applicableSubmodes.filter(
       (type) => !stopPlace.permissions.bannedSubmodes.includes(type),
     );
   }
