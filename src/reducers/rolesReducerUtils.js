@@ -196,6 +196,10 @@ export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
 export const getLegalSubmodesForStopPlace = (stopPlace) => {
   const applicableSubmodes = Object.entries(stopTypes).reduce(
     (acc, [stopType, { transportMode, submodes }]) => {
+      if (stopPlace.permissions.bannedStopPlaceTypes.includes(stopType)) {
+        return acc;
+      }
+
       if (
         ((stopPlace.permissions.allowedStopPlaceTypes &&
           stopPlace.permissions.allowedStopPlaceTypes.length === 0) ||

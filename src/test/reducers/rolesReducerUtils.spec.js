@@ -139,4 +139,80 @@ describe("getLegalSubmodesForStopPlace", () => {
         .filter((type) => type !== "localBus"),
     );
   });
+
+  it("returns submodes only from allowed stop place types when specified", () => {
+    expect(
+      getLegalSubmodesForStopPlace({
+        permissions: {
+          allowedStopPlaceTypes: ["onstreetBus"],
+          bannedStopPlaceTypes: [],
+          allowedSubmodes: [],
+          bannedSubmodes: [],
+        },
+      }),
+    ).toEqual([
+      "expressBus",
+      "railReplacementBus",
+      "airportLinkBus",
+      "localBus",
+      "nightBus",
+      "regionalBus",
+      "shuttleBus",
+      "schoolBus",
+      "sightseeingBus",
+    ]);
+  });
+
+  it("excludes submodes from banned stop place types", () => {
+    expect(
+      getLegalSubmodesForStopPlace({
+        permissions: {
+          allowedStopPlaceTypes: [],
+          bannedStopPlaceTypes: ["onstreetBus"],
+          allowedSubmodes: [],
+          bannedSubmodes: [],
+        },
+      }),
+    ).toEqual(
+      Object.values(stopTypes)
+        .reduce((acc, stopType) => {
+          return [...acc, ...(stopType.submodes ? stopType.submodes : [])];
+        }, [])
+        .filter((submode) => !stopTypes.onstreetBus.submodes.includes(submode)),
+    );
+  });
+
+  it("correctly handles combination of allowed stop types and allowed submodes", () => {
+    expect(
+      getLegalSubmodesForStopPlace({
+        permissions: {
+          allowedStopPlaceTypes: ["onstreetBus"],
+          bannedStopPlaceTypes: [],
+          allowedSubmodes: ["localBus", "nightBus"],
+          bannedSubmodes: [],
+        },
+      }),
+    ).toEqual(["localBus", "nightBus"]);
+  });
+
+  it("correctly handles combination of allowed stop types and banned submodes", () => {
+    expect(
+      getLegalSubmodesForStopPlace({
+        permissions: {
+          allowedStopPlaceTypes: ["onstreetBus"],
+          bannedStopPlaceTypes: [],
+          allowedSubmodes: [],
+          bannedSubmodes: ["localBus", "nightBus"],
+        },
+      }),
+    ).toEqual([
+      "expressBus",
+      "railReplacementBus",
+      "airportLinkBus",
+      "regionalBus",
+      "shuttleBus",
+      "schoolBus",
+      "sightseeingBus",
+    ]);
+  });
 });
