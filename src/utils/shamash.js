@@ -1,6 +1,6 @@
 const getShamashBaseUrl = () =>
   window.config.OTPUrl.replace(
-    "/journey-planner/v2/graphql",
+    "/journey-planner/v3/graphql",
     "/graphql-explorer/journey-planner",
   );
 
