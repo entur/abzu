@@ -66,7 +66,6 @@ class SaveDialog extends React.Component {
 
   handleSave() {
     const { handleConfirm } = this.props;
-    const { comment } = this.state;
 
     let userInput = {
       comment: comment,
@@ -82,9 +81,11 @@ class SaveDialog extends React.Component {
   render() {
     const { open, intl, handleClose, errorMessage } = this.props;
     const { formatMessage } = intl;
-    const { isSaving, comment } = this.state;
+    const { isSaving } = this.state;
 
-    const errorMessageLabel = this.getErrorMessage();
+    const errorMessageLabel = this.getErrorMessage()
+      ? formatMessage({ id: this.getErrorMessage() })
+      : "";
 
     const translations = {
       use: formatMessage({ id: "use" }),
