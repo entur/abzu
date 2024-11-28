@@ -15,10 +15,10 @@ limitations under the Licence. */
 import * as types from "./Types";
 import { getCentroid } from "../utils/mapUtils";
 import { UserActions } from ".";
-import { getIn } from "../utils";
 import { updateURLWithId } from "../utils/URLhelpers";
 import { createThunk } from ".";
 import { Entities } from "../models/Entities";
+import { getLocationPermissionsForCoordinates } from "./TiamatActions";
 
 var StopPlaceActions = {};
 
@@ -62,9 +62,9 @@ StopPlaceActions.sortQuays = (attribute) => (dispatch) => {
 };
 
 StopPlaceActions.useNewStopAsCurrent = () => (dispatch, getState) => {
-  let state = getState();
-  let location = getIn(state, ["stopPlace", "newStop", "location"], null);
+  const { location } = getState().stopPlace;
   dispatch(createThunk(types.USE_NEW_STOP_AS_CURRENT, location));
+  dispatch(getLocationPermissionsForCoordinates(location[0], location[1]));
 };
 
 StopPlaceActions.changeStopName = (name) => (dispatch) => {
@@ -148,13 +148,19 @@ StopPlaceActions.createKeyValuesPair =
     );
   };
 
-StopPlaceActions.setMarkerOnMap = (data) => (dispatch) => {
+StopPlaceActions.setMarkerOnMap = (data) => (dispatch, getState) => {
   dispatch(
     createThunk(
       types.SET_ACTIVE_MARKER,
       Object.assign({}, data, { isActive: true }),
     ),
   );
+
+  const { location } = data;
+  if (location) {
+    dispatch(getLocationPermissionsForCoordinates(location[0], location[1]));
+  }
+
   if (data.entityType === Entities.STOP_PLACE) {
     updateURLWithId("stopPlaceId", data.id);
   } else if (data.entityType === Entities.GROUP_OF_STOP_PLACE) {
