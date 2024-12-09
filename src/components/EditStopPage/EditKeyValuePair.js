@@ -1,17 +1,3 @@
-/*
- *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
-
 import React from "react";
 import TextField from "@mui/material/TextField";
 import FlatButton from "@mui/material/Button";
@@ -20,9 +6,24 @@ import { injectIntl } from "react-intl";
 class EditKeyValuePair extends React.Component {
   constructor(props) {
     super(props);
+    const { keyValues, editingKey } = props;
+
     this.state = {
-      values: [],
+      values: this.getValuesByKey(keyValues, editingKey) || "", // Initialize with existing values
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { keyValues, editingKey } = this.props;
+
+    // Update the state if editingKey or keyValues have changed
+    if (
+      prevProps.editingKey !== editingKey ||
+      prevProps.keyValues !== keyValues
+    ) {
+      const updatedValues = this.getValuesByKey(keyValues, editingKey) || "";
+      this.setState({ values: updatedValues });
+    }
   }
 
   handleUpdate() {
@@ -32,18 +33,20 @@ class EditKeyValuePair extends React.Component {
   }
 
   getValuesByKey(keyValues, key) {
+    if (!keyValues || !Array.isArray(keyValues)) return ""; // Safeguard for undefined or invalid keyValues
+
     for (let i = 0; i < keyValues.length; i++) {
       if (keyValues[i].key === key) {
         return keyValues[i].values.join("\r\n");
       }
     }
-    return [];
+    return ""; // Return empty string if key not found
   }
 
   render() {
     const { editingKey, isOpen, intl } = this.props;
     const { formatMessage } = intl;
-    const { values = "" } = this.state;
+    const { values } = this.state;
 
     if (!isOpen) return null;
 
@@ -61,9 +64,9 @@ class EditKeyValuePair extends React.Component {
                 values: event.target.value,
               });
             }}
+            multiline
             value={values}
             fullWidth={true}
-            multiLine={true}
           />
         </div>
         <FlatButton
