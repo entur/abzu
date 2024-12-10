@@ -68,7 +68,7 @@ class SaveDialog extends React.Component {
     const { handleConfirm } = this.props;
 
     let userInput = {
-      comment: comment,
+      comment: this.comment,
     };
 
     this.setState({
