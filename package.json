@@ -25,7 +25,7 @@
     "@mui/icons-material": "5.16.11",
     "@mui/lab": "5.0.0-alpha.174",
     "@mui/material": "5.16.11",
-    "@mui/x-date-pickers": "7.23.1",
+    "@mui/x-date-pickers": "7.23.2",
     "@reduxjs/toolkit": "2.5.0",
     "@sentry/react": "7.120.1",
     "@sentry/tracing": "7.114.0",
