@@ -77,7 +77,7 @@ class NewStopMarker extends React.Component {
       >
         <Popup>
           <div>
-            <span onClick={handleOnClick}>{children}</span>
+            <span>{children}</span>
             {canEdit ? (
               <div>
                 <p style={{ fontWeight: "600" }}>

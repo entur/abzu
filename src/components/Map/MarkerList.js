@@ -69,9 +69,17 @@ class MarkerList extends React.Component {
     }
   }
 
-  handleNewStopClick() {
+  handleNewStopClick(position) {
     const { dispatch } = this.props;
     dispatch(StopPlaceActions.useNewStopAsCurrent());
+    if (position) {
+      dispatch(
+        StopPlaceActions.changeLocationNewStop({
+          lat: position[0],
+          lng: position[1],
+        }),
+      );
+    }
     dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, "new"));
   }
 
