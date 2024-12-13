@@ -15,8 +15,10 @@ limitations under the Licence. */
 import React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import { getInverseSubmodesWhitelist } from "../../models/submodes";
-import { getStopPlacesForSubmodes } from "../../utils/roleUtils";
+import {
+  getInverseSubmodesWhitelist,
+  getStopPlacesForSubmodes,
+} from "../../models/submodes";
 import MoreMenuItem from "../MainPage/MoreMenuItem";
 
 class ModalitiesMenuItems extends React.Component {
