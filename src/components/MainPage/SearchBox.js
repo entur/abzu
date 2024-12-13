@@ -52,7 +52,6 @@ import {
   Popover,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { isGuest } from "../../utils/roleUtils";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -367,11 +366,11 @@ class SearchBox extends React.Component {
       topoiChips,
       topographicalPlaces,
       canEdit,
-      roleAssignments,
       lookupCoordinatesOpen,
       newStopIsMultiModal,
       dataSource,
       showFutureAndExpired,
+      isGuest,
     } = this.props;
     const { coordinatesDialogOpen, showMoreFilterOptions, loading } =
       this.state;
@@ -686,7 +685,7 @@ class SearchBox extends React.Component {
                 formatMessage={formatMessage}
               />
             ) : null}
-            {!isGuest(roleAssignments) && (
+            {!isGuest && (
               <div style={{ marginTop: 10 }}>
                 {isCreatingNewStop ? (
                   <NewStopPlace
@@ -787,10 +786,10 @@ const mapStateToProps = (state) => {
       ["allowanceInfoSearchResult", "canEdit"],
       false,
     ),
-    roleAssignments: state.roles.auth.roleAssignments,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    isGuest: state.roles.isGuest,
   };
 };
 

@@ -835,3 +835,12 @@ export const getLocationPermissions = gql`
     }
   }
 `;
+
+export const getUserPermissionsQuery = gql`
+  query getUserPermissions {
+    userPermissions {
+      allowNewStopEverywhere
+      isGuest
+    }
+  }
+`;

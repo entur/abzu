@@ -215,8 +215,19 @@ const doesRoleGrantAccessToStop = (
   return false;
 };
 
-export const isGuest = (roleAssignments) => {
-  return getEditStopRoles(roleAssignments).length === 0;
+const getRolesFromTokenByType = (roleAssignments, type) => {
+  if (!roleAssignments) return [];
+
+  let roles = [];
+
+  roleAssignments.forEach((roleString) => {
+    let roleJSON = JSON.parse(roleString);
+    if (roleJSON.r === type) {
+      roles.push(roleJSON);
+    }
+  });
+
+  return roles;
 };
 export const getStopPlacesForSubmodes = (legalSubmodes) => {
   let result = [];

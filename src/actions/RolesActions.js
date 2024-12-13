@@ -1,5 +1,5 @@
 import { createThunk } from ".";
-import { getPolygons } from "./TiamatActions";
+import { getPolygons, getUserPermissions } from "./TiamatActions";
 import * as types from "./Types";
 
 const getAdministrativeZoneIds = (roles) => {
@@ -51,4 +51,8 @@ export const updateAllowNewStopsEverywhere =
 
 export const updateAuth = (auth) => (dispatch) => {
   dispatch(createThunk(types.UPDATED_AUTH, auth));
+};
+
+export const fetchUserPermissions = () => (dispatch, getState) => {
+  dispatch(getUserPermissions());
 };

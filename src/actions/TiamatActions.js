@@ -55,6 +55,7 @@ import {
   topopGraphicalPlacesReportQuery,
   neighbourStopPlaceQuays,
   getLocationPermissions,
+  getUserPermissionsQuery,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
@@ -629,6 +630,16 @@ export const getLocationPermissionsForCoordinates = (longitude, latitude) => {
       fetchPolicy: "no-cache",
       query: getLocationPermissions,
       variables: { longitude, latitude },
+      context: await getContext(getState().roles.auth),
+    })(dispatch);
+  };
+};
+
+export const getUserPermissions = () => {
+  return async (dispatch, getState) => {
+    return handleQuery(getTiamatClient(), {
+      fetchPolicy: "no-cache",
+      query: getUserPermissionsQuery,
       context: await getContext(getState().roles.auth),
     })(dispatch);
   };

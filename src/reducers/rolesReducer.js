@@ -23,6 +23,7 @@ import {
 export const initialState = {
   auth: {},
   fetchedPolygons: null,
+  isGuest: true,
   allowNewStopEverywhere: false,
 };
 
@@ -46,6 +47,12 @@ const rolesReducer = (state = initialState, action) => {
           allowanceInfo: getAllowanceInfoFromLocationPermissions(
             action.result.data.locationPermissions,
           ),
+        });
+      } else if (action.operationName === "getUserPermissions") {
+        return Object.assign({}, state, {
+          isGuest: action.result.data.userPermissions.isGuest,
+          allowNewStopEverywhere:
+            action.result.data.userPermissions.allowNewStopEverywhere,
         });
       } else {
         return state;

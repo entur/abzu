@@ -24,7 +24,11 @@ import { useDispatch } from "react-redux";
 import Header from "../components/Header";
 import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import { fetchPolygons, updateAuth } from "../actions/RolesActions";
+import {
+  fetchPolygons,
+  fetchUserPermissions,
+  updateAuth,
+} from "../actions/RolesActions";
 import { useAppSelector } from "../store/hooks";
 import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";
@@ -49,9 +53,11 @@ const App = ({ children }) => {
 
   useEffect(() => {
     dispatch(updateAuth(auth));
-
     if (auth.isAuthenticated) {
       dispatch(fetchPolygons());
+      dispatch(fetchUserPermissions());
+    } else if (!auth.isLoading) {
+      dispatch(fetchUserPermissions());
     }
   }, [auth]);
 
