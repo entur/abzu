@@ -43,7 +43,6 @@ import Menu from "@mui/material/Menu";
 import CheckBox from "@mui/material/Checkbox";
 import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
-import RoleParser from "../../roles/rolesParser";
 import {
   Box,
   Button,
@@ -53,6 +52,7 @@ import {
   Popover,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { isGuest } from "../../utils/roleUtils";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -686,7 +686,7 @@ class SearchBox extends React.Component {
                 formatMessage={formatMessage}
               />
             ) : null}
-            {!RoleParser.isGuest(roleAssignments) && (
+            {!isGuest(roleAssignments) && (
               <div style={{ marginTop: 10 }}>
                 {isCreatingNewStop ? (
                   <NewStopPlace

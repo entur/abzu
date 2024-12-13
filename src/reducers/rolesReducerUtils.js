@@ -12,12 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import {
-  getRoleOptions,
-  isModeOptionsValidForMode,
-} from "../roles/rolesParser";
-import { getIn } from "../utils/";
-import stopTypes, { submodes } from "../models/stopTypes";
+import stopTypes from "../models/stopTypes";
 
 export const reduceFetchedPolygons = (result) => {
   return Object.keys(result.data).reduce((fetchedPolygons, key) => {
@@ -121,58 +116,6 @@ export const getAllowanceInfoFromLocationPermissions = (
   };
 };
 
-export const getLegalSubmodes = (roles, restrict = false) => {
-  return filterByLegalMode(roles, submodes, "Submode", restrict);
-};
-
-const filterByLegalMode = (roles, completeList, key, restrict = false) => {
-  const typesFoundInRoles = new Set();
-  const blacklisted = new Set();
-
-  for (let i = 0; i < roles.length; i++) {
-    let role = roles[i];
-    if (role.e[key] && role.e[key].length) {
-      for (let i = 0; i < role.e[key].length; i++) {
-        let entityType = role.e[key][i];
-        if (entityType === "*") {
-          return completeList;
-        } else {
-          if (entityType.indexOf("!") > -1) {
-            const blacklistedEntity = entityType.substring(1);
-            completeList.forEach((item) => {
-              if (item !== blacklistedEntity) {
-                typesFoundInRoles.add(item);
-              }
-            });
-            blacklisted.add(blacklistedEntity);
-          } else {
-            typesFoundInRoles.add(entityType);
-          }
-        }
-      }
-    }
-  }
-
-  const whitelistedRoles = Array.from(typesFoundInRoles).filter((role) => {
-    return !blacklisted.has(role);
-  });
-
-  const options = getRoleOptions(Array.from(whitelistedRoles), completeList);
-
-  if (restrict) {
-    return Array.from(whitelistedRoles);
-  }
-
-  return completeList.filter((entityType) =>
-    isModeOptionsValidForMode(options, entityType),
-  );
-};
-
-export const getLegalStopPlaceTypes = (roles) => {
-  let allStopTypes = Object.keys(stopTypes);
-  return filterByLegalMode(roles, allStopTypes, "StopPlaceType");
-};
-
 export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
   const allStopTypes = Object.keys(stopTypes);
   const { allowedStopPlaceTypes, bannedStopPlaceTypes } = stopPlace.permissions;
@@ -245,14 +188,6 @@ export const getAllowanceSearchInfo = (payload) => {
   return {
     canEdit: payload.permissions.canEdit,
   };
-};
-
-export const getLatLng = (entity) => {
-  let lngLat = getIn(entity, ["geometry", "legacyCoordinates"], null);
-
-  if (!lngLat || !lngLat.length) return null;
-
-  return lngLat[0].slice().reverse();
 };
 
 export const getStopPlace = (result, childId) => {

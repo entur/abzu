@@ -16,10 +16,8 @@ import React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import ArrowDropRight from "@mui/icons-material/ArrowRight";
-import {
-  getStopPlacesForSubmodes,
-  getInverseSubmodesWhitelist,
-} from "../../roles/rolesParser";
+import { getInverseSubmodesWhitelist } from "../../utils/roleUtils";
+import { getStopPlacesForSubmodes } from "../../utils/roleUtils";
 import MoreMenuItem from "../MainPage/MoreMenuItem";
 
 class ModalitiesMenuItems extends React.Component {
