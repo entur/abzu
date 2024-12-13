@@ -17,12 +17,11 @@ import {
   getAllowanceInfoForGroup,
   getAllowanceSearchInfo,
   getAllowanceInfoForStop,
-  reduceFetchedPolygons,
+  getAllowanceInfoFromLocationPermissions,
 } from "./rolesReducerUtils";
 
 export const initialState = {
   auth: {},
-  fetchedPolygons: null,
   isGuest: true,
   allowNewStopEverywhere: false,
 };
@@ -37,10 +36,6 @@ const rolesReducer = (state = initialState, action) => {
       } else if (action.operationName === "getGroupOfStopPlaces") {
         return Object.assign({}, state, {
           allowanceInfo: getAllowanceInfoForGroup(action),
-        });
-      } else if (action.operationName === "getPolygons") {
-        return Object.assign({}, state, {
-          fetchedPolygons: reduceFetchedPolygons(action.result),
         });
       } else if (action.operationName === "getLocationPermissions") {
         return Object.assign({}, state, {

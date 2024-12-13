@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { connect } from "react-redux";
-import { isPointInPolygon } from "../../utils/mapUtils";
+import { fetchLocationPermissions } from "../../actions/RolesActions";
 
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
 import markerShadow from "../../static/icons/marker-shadow.png";
@@ -29,6 +29,11 @@ class NewStopMarker extends React.Component {
     handleDragEnd: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    const { position, fetchLocationPermissions } = this.props;
+    fetchLocationPermissions(position);
+  }
+
   render() {
     let {
       children,
@@ -37,8 +42,8 @@ class NewStopMarker extends React.Component {
       handleDragEnd,
       text,
       newStopIsMultiModal,
-      fetchedPolygons,
-      allowNewStopEverywhere,
+      allowanceInfo,
+      fetchLocationPermissions,
     } = this.props;
 
     var icon = L.icon({
@@ -51,18 +56,20 @@ class NewStopMarker extends React.Component {
       shadowSize: [36, 16],
     });
 
-    let latlngInside = isPointInPolygon(
-      position,
-      fetchedPolygons,
-      allowNewStopEverywhere,
-    );
+    console.log({ allowanceInfo });
+
+    const canEdit = allowanceInfo?.canEdit || false;
 
     return (
       <Marker
         ref="newstopMarker"
         key="newstop-key"
         eventHandlers={{
-          dragend: (e) => handleDragEnd(e),
+          dragend: (e) => {
+            const newPosition = e.target.getLatLng();
+            fetchLocationPermissions([newPosition.lat, newPosition.lng]);
+            handleDragEnd(e);
+          },
         }}
         draggable={true}
         position={position}
@@ -71,7 +78,7 @@ class NewStopMarker extends React.Component {
         <Popup>
           <div>
             <span onClick={handleOnClick}>{children}</span>
-            {latlngInside ? (
+            {canEdit ? (
               <div>
                 <p style={{ fontWeight: "600" }}>
                   {newStopIsMultiModal
@@ -117,7 +124,9 @@ class NewStopMarker extends React.Component {
   }
 }
 
-export default connect(({ roles }) => ({
-  fetchedPolygons: roles.fetchedPolygons,
-  allowNewStopEverywhere: roles.allowNewStopEverywhere,
-}))(NewStopMarker);
+export default connect(
+  ({ roles }) => ({
+    allowanceInfo: roles.allowanceInfo,
+  }),
+  { fetchLocationPermissions },
+)(NewStopMarker);

@@ -700,29 +700,6 @@ export const getStopPlacesById = (stopPlaceIds) => {
   `;
 };
 
-export const getPolygons = (ids) => {
-  let queryContent = "";
-
-  ids.forEach((id) => {
-    let alias = id.replace(":", "").replace(":", "");
-
-    queryContent += `
-        ${alias}: topographicPlace(id: "${id}") {
-           id
-            polygon {
-                legacyCoordinates
-            }
-        }
-    `;
-  });
-
-  return gql`
-      query getPolygons {
-          ${queryContent}
-      }
-  `;
-};
-
 export const getQueryTopographicPlaces = (ids) => {
   let queryContent = "";
 

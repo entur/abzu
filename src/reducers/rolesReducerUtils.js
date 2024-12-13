@@ -14,20 +14,6 @@ limitations under the Licence. */
 
 import stopTypes from "../models/stopTypes";
 
-export const reduceFetchedPolygons = (result) => {
-  return Object.keys(result.data).reduce((fetchedPolygons, key) => {
-    let resultItem = result.data[key][0];
-
-    if (resultItem) {
-      fetchedPolygons[resultItem.id] = resultItem.polygon
-        ? resultItem.polygon.legacyCoordinates
-        : [[]];
-    }
-
-    return fetchedPolygons;
-  }, {});
-};
-
 export const getAllowanceInfoForStop = ({ result, variables }) => {
   const requestedStopPlaceId = variables.id;
   const stopPlace = getStopPlace(result);

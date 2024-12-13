@@ -1,5 +1,8 @@
 import { createThunk } from ".";
-import { getPolygons, getUserPermissions } from "./TiamatActions";
+import {
+  getUserPermissions,
+  getLocationPermissionsForCoordinates,
+} from "./TiamatActions";
 import * as types from "./Types";
 
 const getAdministrativeZoneIds = (roles) => {
@@ -24,21 +27,6 @@ const getAdministrativeZoneIds = (roles) => {
   return [administrativeZoneIds, allowNewStopEverywhere];
 };
 
-export const fetchPolygons = () => (dispatch, getState) => {
-  if (getState().roles.auth) {
-    const [administrativeZoneIds, allowNewStopEverywhere] =
-      getAdministrativeZoneIds(getState().roles);
-
-    if (administrativeZoneIds.length) {
-      dispatch(getPolygons(administrativeZoneIds));
-    }
-
-    if (allowNewStopEverywhere !== getState().roles.allowNewStopEverywhere) {
-      dispatch(updateAllowNewStopsEverywhere(allowNewStopEverywhere));
-    }
-  }
-};
-
 export const updateAllowNewStopsEverywhere =
   (allowNewStopEverywhere) => (dispatch) => {
     dispatch(
@@ -55,4 +43,8 @@ export const updateAuth = (auth) => (dispatch) => {
 
 export const fetchUserPermissions = () => (dispatch, getState) => {
   dispatch(getUserPermissions());
+};
+
+export const fetchLocationPermissions = (position) => (dispatch) => {
+  dispatch(getLocationPermissionsForCoordinates(position[1], position[0]));
 };

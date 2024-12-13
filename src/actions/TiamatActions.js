@@ -42,7 +42,6 @@ import {
   topopGraphicalPlacesQuery,
   findStop,
   getStopPlacesById,
-  getPolygons as getPolygonsQuery,
   getTagsQuery,
   findTagByNameQuery,
   getStopById,
@@ -432,13 +431,6 @@ export const getNeighbourStops =
       },
       context: await getContext(getState().roles.auth),
     })(dispatch);
-
-export const getPolygons = (ids) => async (dispatch, getState) =>
-  handleQuery(getTiamatClient(), {
-    fetchPolicy: "network-only",
-    query: getPolygonsQuery(ids),
-    context: await getContext(getState().roles.auth),
-  })(dispatch);
 
 export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
