@@ -87,9 +87,6 @@ class NeighbourMarker extends React.Component {
       stopPlace,
       isEditingGroup,
       handleCreateGroup,
-      roleAssignments,
-      fetchedPolygons,
-      allowNewStopEverywhere,
     } = this.props;
 
     const { isAllowedToCreateFrom } = this.state;
@@ -134,12 +131,7 @@ class NeighbourMarker extends React.Component {
         eventHandlers={{
           popupopen: () => {
             this.setState({
-              isAllowedToCreateFrom: isLegalChildStopPlace(
-                stopPlace,
-                roleAssignments,
-                fetchedPolygons,
-                allowNewStopEverywhere,
-              ),
+              isAllowedToCreateFrom: isLegalChildStopPlace(stopPlace),
             });
           },
         }}
@@ -233,8 +225,4 @@ class NeighbourMarker extends React.Component {
   }
 }
 
-export default connect(({ roles }) => ({
-  roleAssignments: roles.auth.roleAssignments,
-  fetchedPolygons: roles.fetchedPolygons,
-  allowNewStopEverywhere: roles.allowNewStopEverywhere,
-}))(NeighbourMarker);
+export default connect()(NeighbourMarker);
