@@ -16,7 +16,6 @@ import { getAllowanceInfoForStop } from "../reducers/rolesReducerUtils";
 import mockRailReplacementStop from "./mock/mockRailReplacementStop";
 import mockRailStop from "./mock/mockRailStop";
 import mockBusStop from "./mock/mockBusStop";
-import mockStopWithoutModality from "./mock/mockStopWithoutModality";
 import { mockedAllowanceInfoAction } from "./mock/mockedAllowanceInfoAction";
 
 describe("User and roles - scenarios", () => {
