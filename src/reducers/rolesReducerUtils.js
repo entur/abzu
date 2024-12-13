@@ -215,7 +215,8 @@ const getSubmodesForStopType = (stopType, permissions) => {
 const filterBySubmodePermissions = (submodes, permissions) => {
   const { allowedSubmodes, bannedSubmodes } = permissions;
 
-  if (allowedSubmodes.includes("*")) return submodes;
+  if (allowedSubmodes.includes("*"))
+    return submodes.filter((type) => !bannedSubmodes.includes(type));
   if (bannedSubmodes.includes("*")) return [];
 
   if (allowedSubmodes.length > 0) {

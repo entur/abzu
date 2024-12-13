@@ -216,4 +216,24 @@ describe("getLegalSubmodesForStopPlace", () => {
       "sightseeingBus",
     ]);
   });
+  it("returns submodes correctly when wildcard in allowed submodesis used in combination with banned submodes", () => {
+    expect(
+      getLegalSubmodesForStopPlace({
+        permissions: {
+          allowedStopPlaceTypes: ["onstreetBus"],
+          bannedStopPlaceTypes: [],
+          allowedSubmodes: ["*"],
+          bannedSubmodes: ["localBus", "nightBus"],
+        },
+      }),
+    ).toEqual([
+      "expressBus",
+      "railReplacementBus",
+      "airportLinkBus",
+      "regionalBus",
+      "shuttleBus",
+      "schoolBus",
+      "sightseeingBus",
+    ]);
+  });
 });
