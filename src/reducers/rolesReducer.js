@@ -66,10 +66,6 @@ const rolesReducer = (state = initialState, action) => {
         auth: action.payload,
       });
 
-    case types.UPDATED_ALLOW_NEW_STOPS_EVERYWHERE:
-      return Object.assign({}, state, {
-        allowNewStopEverywhere: action.payload,
-      });
     default:
       return state;
   }
