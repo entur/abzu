@@ -15,8 +15,7 @@ limitations under the Licence. */
 import React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import ArrowDropRight from "@mui/icons-material/ArrowRight";
-import { getInverseSubmodesWhitelist } from "../../utils/roleUtils";
+import { getInverseSubmodesWhitelist } from "../../models/submodes";
 import { getStopPlacesForSubmodes } from "../../utils/roleUtils";
 import MoreMenuItem from "../MainPage/MoreMenuItem";
 

@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { LatLng } from "leaflet";
-import { isLegalChildStopPlace } from "../utils/roleUtils";
 
 export const getUniquePathLinks = (a, key) => {
   var seen = {};
@@ -120,4 +119,12 @@ export const getGroupMemberSuggestions = (
   );
 
   return legalSuggestions.slice(0, nFirst);
+};
+
+export const isLegalChildStopPlace = (stopPlace) => {
+  if (!stopPlace) {
+    return false;
+  }
+
+  return stopPlace.permissions?.canEdit || false;
 };

@@ -45,3 +45,7 @@ export const submodes = [
   "telecabin",
   "funicular",
 ];
+
+export const getInverseSubmodesWhitelist = (whitelist) => {
+  return submodes.filter((submode) => whitelist.indexOf(submode) === -1);
+};

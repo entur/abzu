@@ -20,7 +20,7 @@ import ReactDOM from "react-dom/server";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
 import PopupButton from "./PopupButton";
-import { isLegalChildStopPlace } from "../../utils/roleUtils";
+import { isLegalChildStopPlace } from "../../modelUtils/leafletUtils";
 import { connect } from "react-redux";
 
 class NeighbourMarker extends React.Component {
