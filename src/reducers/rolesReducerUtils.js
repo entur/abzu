@@ -97,15 +97,24 @@ export const getAllowanceInfoFromLocationPermissions = (
   return {
     canEdit: locationPermissions.canEdit,
     canDelete: locationPermissions.canDelete,
-    legalStopPlaceTypes: locationPermissions.allowedStopPlaceTypes,
-    legalSubmodes: locationPermissions.allowedSubmodes,
+    legalStopPlaceTypes: getLegalStopPlacesTypes(
+      locationPermissions.allowedStopPlaceTypes,
+      locationPermissions.bannedStopPlaceTypes,
+    ),
+    legalSubmodes: getLegalSubmodes(locationPermissions),
   };
 };
 
 export const getLegalStopPlaceTypesForStopPlace = (stopPlace) => {
-  const allStopTypes = Object.keys(stopTypes);
   const { allowedStopPlaceTypes, bannedStopPlaceTypes } = stopPlace.permissions;
+  return getLegalStopPlacesTypes(allowedStopPlaceTypes, bannedStopPlaceTypes);
+};
 
+export const getLegalStopPlacesTypes = (
+  allowedStopPlaceTypes,
+  bannedStopPlaceTypes,
+) => {
+  const allStopTypes = Object.keys(stopTypes);
   if (bannedStopPlaceTypes.includes("*")) {
     return [];
   }
@@ -159,15 +168,19 @@ const filterBySubmodePermissions = (submodes, permissions) => {
 };
 
 export const getLegalSubmodesForStopPlace = (stopPlace) => {
+  return getLegalSubmodes(stopPlace.permissions);
+};
+
+export const getLegalSubmodes = (permissions) => {
   const applicableSubmodes = Object.keys(stopTypes).reduce(
     (acc, stopType) => [
       ...acc,
-      ...getSubmodesForStopType(stopType, stopPlace.permissions),
+      ...getSubmodesForStopType(stopType, permissions),
     ],
     [],
   );
 
-  return filterBySubmodePermissions(applicableSubmodes, stopPlace.permissions);
+  return filterBySubmodePermissions(applicableSubmodes, permissions);
 };
 
 export const getAllowanceSearchInfo = (payload) => {

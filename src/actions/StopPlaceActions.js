@@ -61,12 +61,8 @@ StopPlaceActions.sortQuays = (attribute) => (dispatch) => {
   dispatch(createThunk(types.SORTED_QUAYS, attribute));
 };
 
-StopPlaceActions.useNewStopAsCurrent = () => (dispatch, getState) => {
-  const { location } = getState().stopPlace;
+StopPlaceActions.useNewStopAsCurrent = () => (dispatch) => {
   dispatch(createThunk(types.USE_NEW_STOP_AS_CURRENT, location));
-  if (location) {
-    dispatch(getLocationPermissionsForCoordinates(location[0], location[1]));
-  }
 };
 
 StopPlaceActions.changeStopName = (name) => (dispatch) => {
