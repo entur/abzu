@@ -107,6 +107,14 @@ export const stopPlaceBBQuery = gql`
         __typename
         stopPlaceType
         submode
+        permissions {
+          canEdit
+          canDelete
+          allowedStopPlaceTypes
+          allowedSubmodes
+          bannedStopPlaceTypes
+          bannedSubmodes
+        }
       }
       ... on ParentStopPlace {
         children {
@@ -122,21 +130,16 @@ export const stopPlaceBBQuery = gql`
             name {
               value
             }
-            topographicPlaceType
           }
-          validBetween {
-            fromDate
-            toDate
-          }
-          name {
-            value
-            lang
+          permissions {
+            canEdit
+            canDelete
+            allowedStopPlaceTypes
+            allowedSubmodes
+            bannedStopPlaceTypes
+            bannedSubmodes
           }
         }
-        name {
-          value
-        }
-        __typename
       }
     }
   }
