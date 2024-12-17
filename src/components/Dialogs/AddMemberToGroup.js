@@ -120,7 +120,7 @@ AddMemberToGroup.propTypes = {
 
 const mapStateToProps = ({ stopPlace, stopPlacesGroup }) => ({
   groupMembers: stopPlacesGroup.current.members || [],
-  stopPlaceCentroid: stopPlace.current.location,
+  stopPlaceCentroid: stopPlacesGroup.centerPosition,
   neighbourStops: stopPlace.neighbourStops || [],
 });
 
