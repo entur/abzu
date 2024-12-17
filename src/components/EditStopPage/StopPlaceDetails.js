@@ -57,12 +57,14 @@ import {
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
-import { Popover } from "@mui/material";
 import { Link } from "react-router-dom";
 import Routes from "../../routes";
-import { Signpost } from "@mui/icons-material";
 import TransportSign from "../../static/icons/TransportSign";
 import Menu from "@mui/material/Menu";
+import {
+  getStopPermissions,
+  getAllowanceInfoFromLocationPermissions,
+} from "../../utils/permissionsUtils";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -829,12 +831,18 @@ class StopPlaceDetails extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  stopPlace: state.stopPlace.current,
-  isPublicCodePrivateCodeEnabled:
-    state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
-  keyValuesDialogOpen: state.user.keyValuesDialogOpen,
-  allowsInfo: state.roles.allowanceInfo,
-});
+const mapStateToProps = (state) => {
+  const stopPlace = state.stopPlace.current;
+  const allowsInfo = stopPlace.permissions
+    ? getStopPermissions(state.stopPlace.current)
+    : getAllowanceInfoFromLocationPermissions(state.user.locationPermissions);
+  return {
+    stopPlace,
+    isPublicCodePrivateCodeEnabled:
+      state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
+    keyValuesDialogOpen: state.user.keyValuesDialogOpen,
+    allowsInfo,
+  };
+};
 
 export default connect(mapStateToProps)(StopPlaceDetails);

@@ -665,6 +665,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  auth: state.user.auth,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace:
     state.router.location.pathname.indexOf("/stop_place/") > -1,
@@ -672,7 +673,6 @@ const mapStateToProps = (state) => ({
   isPublicCodePrivateCodeOnStopPlacesEnabled:
     state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   isMultiPolylinesEnabled: state.stopPlace.enablePolylines,
-  auth: state.roles.auth,
   showExpiredStops: state.stopPlace.showExpiredStops,
   showMultimodalEdges: state.stopPlace.showMultimodalEdges,
   showPublicCode: state.user.showPublicCode,

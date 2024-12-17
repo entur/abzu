@@ -61,6 +61,9 @@ export const initialState = {
   },
   showPublicCode: Settings.getShowPublicCode(),
   adjacentStopDialogOpen: false,
+  auth: {},
+  isGuest: true,
+  allowNewStopEverywhere: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -301,6 +304,27 @@ const userReducer = (state = initialState, action) => {
     case types.TERMINATE_DELETE_STOP_DIALOG_WARNING:
       return Object.assign({}, state, {
         deleteStopDialogWarning: action.payload,
+      });
+
+    case types.APOLLO_QUERY_RESULT:
+      if (action.operationName === "getUserPermissions") {
+        return {
+          ...state,
+          isGuest: action.result.data.userPermissions.isGuest,
+          allowNewStopEverywhere:
+            action.result.data.userPermissions.allowNewStopEverywhere,
+        };
+      } else if (action.operationName === "getLocationPermissions") {
+        return {
+          ...state,
+          locationPermissions: action.result.data.locationPermissions,
+        };
+      }
+      return state;
+
+    case types.UPDATED_AUTH:
+      return Object.assign({}, state, {
+        auth: action.payload,
       });
 
     default:

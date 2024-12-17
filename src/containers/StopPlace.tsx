@@ -21,7 +21,6 @@ import { useIntl } from "react-intl";
 import InformationManager from "../singletons/InformationManager";
 import "../styles/main.css";
 import { UserActions } from "../actions";
-import { getIn } from "../utils";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import LoadingPage from "./LoadingPage";
@@ -31,20 +30,23 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { Helmet } from "react-helmet";
+import { getStopPermissions } from "../utils/permissionsUtils";
 
 const selectProps = createSelector(
   (state: RootState) => state,
-  (state) => ({
-    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-    disabled:
-      (state.stopPlace.current &&
-        state.stopPlace.current.permanentlyTerminated) ||
-      !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
-    stopPlace: state.stopPlace.current || state.stopPlace.newStop,
-    newStopCreated: state.user.newStopCreated,
-    originalStopPlace: state.stopPlace.originalCurrent,
-    stopPlaceLoading: state.stopPlace.loading,
-  }),
+  (state) => {
+    return {
+      isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+      disabled:
+        (state.stopPlace.current &&
+          state.stopPlace.current.permanentlyTerminated) ||
+        !getStopPermissions(state.stopPlace.current).canEdit,
+      stopPlace: state.stopPlace.current || state.stopPlace.newStop,
+      newStopCreated: state.user.newStopCreated,
+      originalStopPlace: state.stopPlace.originalCurrent,
+      stopPlaceLoading: state.stopPlace.loading,
+    };
+  },
 );
 
 export const StopPlace = () => {

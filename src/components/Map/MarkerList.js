@@ -32,11 +32,9 @@ import CoordinateMarker from "./CoordinateMarker";
 import Routes from "../../routes/";
 import * as MarkerStrings from "./markerText";
 import { Entities } from "../../models/Entities";
-import {
-  getNeighbourStopPlaceQuays,
-  getStopPlaceWithAll,
-} from "../../actions/TiamatActions";
+import { getNeighbourStopPlaceQuays } from "../../actions/TiamatActions";
 import BoardingPositionMarker from "./BoardingPositionMarker";
+import { getStopPermissions } from "../../utils/permissionsUtils";
 
 class MarkerList extends React.Component {
   static propTypes = {
@@ -628,15 +626,9 @@ const mapStateToProps = (state) => ({
   activeMap: state.mapUtils.activeMap,
   pathLink: state.stopPlace.pathLink,
   showExpiredStops: state.stopPlace.showExpiredStops,
-  disabled:
-    (state.stopPlace.current &&
-      state.stopPlace.current.permanentlyTerminated) ||
-    !getIn(state.roles, ["allowanceInfo", "canEdit"], false),
-  disabledForSearch: !getIn(
-    state.roles,
-    ["allowanceInfoSearchResult", "canEdit"],
-    false,
-  ),
+  disabled: !getStopPermissions(state.stopPlace.current).canEdit,
+  stopPlace: state.stopPlace.current,
+  disabledForSearch: !getStopPermissions(state.stopPlace.current).canEdit,
   newStopIsMultiModal: state.user.newStopIsMultiModal,
   currentStopIsMultiModal: getIn(
     state.stopPlace,

@@ -19,6 +19,8 @@ import SettingsManager from "../singletons/SettingsManager";
 import {
   getMergeInfoForStops,
   getAddStopPlaceInfo,
+  getLocationPermissionsForCoordinates,
+  getUserPermissions,
 } from "../actions/TiamatActions";
 import { getIn } from "../utils/";
 import ParentStopPlace from "../models/ParentStopPlace";
@@ -662,3 +664,15 @@ const getQuaysForMergeInfo = (stopPlace) => {
 };
 
 export default UserActions;
+
+export const updateAuth = (auth) => (dispatch) => {
+  dispatch(createThunk(types.UPDATED_AUTH, auth));
+};
+
+export const fetchUserPermissions = () => (dispatch, getState) => {
+  dispatch(getUserPermissions());
+};
+
+export const fetchLocationPermissions = (position) => (dispatch) => {
+  dispatch(getLocationPermissionsForCoordinates(position[1], position[0]));
+};

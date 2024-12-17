@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import Header from "../components/Header";
 import { getTheme, getV0Theme } from "../config/themeConfig";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import { fetchUserPermissions, updateAuth } from "../actions/RolesActions";
+import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAppSelector } from "../store/hooks";
 import configureLocalization from "../localization/localization";
 import { UserActions } from "../actions";

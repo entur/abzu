@@ -52,6 +52,7 @@ import {
   Popover,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { getStopPermissions } from "../../utils/permissionsUtils";
 
 class SearchBox extends React.Component {
   constructor(props) {
@@ -781,15 +782,11 @@ const mapStateToProps = (state) => {
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: getIn(
-      state.roles,
-      ["allowanceInfoSearchResult", "canEdit"],
-      false,
-    ),
+    canEdit: getStopPermissions(state.stopPlace.current).canEdit,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
-    isGuest: state.roles.isGuest,
+    isGuest: state.user.isGuest,
   };
 };
 

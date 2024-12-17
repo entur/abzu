@@ -17,10 +17,11 @@ import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { connect } from "react-redux";
-import { fetchLocationPermissions } from "../../actions/RolesActions";
+import { fetchLocationPermissions } from "../../actions/UserActions";
 
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
 import markerShadow from "../../static/icons/marker-shadow.png";
+import { getAllowanceInfoFromLocationPermissions } from "../../utils/permissionsUtils";
 
 class NewStopMarker extends React.Component {
   static propTypes = {
@@ -125,8 +126,10 @@ class NewStopMarker extends React.Component {
 }
 
 export default connect(
-  ({ roles }) => ({
-    allowanceInfo: roles.allowanceInfo,
+  ({ user }) => ({
+    allowanceInfo: getAllowanceInfoFromLocationPermissions(
+      user.locationPermissions,
+    ),
   }),
   { fetchLocationPermissions },
 )(NewStopMarker);
