@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import PropTypes from "prop-types";
+import React from "react";
+import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { fetchLocationPermissions } from "../../actions/UserActions";
 
-import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
 import markerShadow from "../../static/icons/marker-shadow.png";
+import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
 import { getAllowanceInfoFromLocationPermissions } from "../../utils/permissionsUtils";
 
 class NewStopMarker extends React.Component {

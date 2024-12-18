@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { injectIntl } from "react-intl";
-import EditorInsertLink from "@mui/icons-material/InsertLink";
 import MdDelete from "@mui/icons-material/Delete";
+import EditorInsertLink from "@mui/icons-material/InsertLink";
 import IconButton from "@mui/material/IconButton";
+import PropTypes from "prop-types";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
 
 class AdjacentStopConnection extends Component {
   handleRemoveAdjacentConnection = () => {

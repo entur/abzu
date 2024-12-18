@@ -12,11 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import AcceptChanges from "../EditStopPage/AcceptChanges";
-import ScrollableQuayList from "./ScrollableQuayList";
-import Spinner from "../../static/icons/spinner";
+import { Cancel, Merge } from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -24,7 +20,11 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Cancel, Merge } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import React from "react";
+import Spinner from "../../static/icons/spinner";
+import AcceptChanges from "../EditStopPage/AcceptChanges";
+import ScrollableQuayList from "./ScrollableQuayList";
 
 class MoveQuayNewStopDialog extends React.Component {
   constructor(props) {

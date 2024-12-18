@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
+import { FormControlLabel } from "@mui/material";
 import RaisedButton from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import Checkbox from "@mui/material/Checkbox";
-import { FormControlLabel, Popover } from "@mui/material";
+import Menu from "@mui/material/Menu";
+import React from "react";
 
 class ColumnFilterPopover extends React.Component {
   constructor(props) {

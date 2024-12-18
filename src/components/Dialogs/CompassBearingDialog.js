@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -8,6 +6,8 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import React from "react";
 import CompassBearingSelector from "./CompassBearingSelector";
 
 class CompassBearingDialog extends React.Component {

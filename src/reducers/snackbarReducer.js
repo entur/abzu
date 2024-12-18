@@ -14,9 +14,9 @@
 
 import {
   APOLLO_MUTATION_ERROR,
+  DISMISSED_SNACKBAR,
   ERROR,
   OPENED_SNACKBAR,
-  DISMISSED_SNACKBAR,
 } from "../actions/Types";
 
 export const initialState = {

@@ -12,18 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
 import Button from "@mui/material/Button";
-import { jsonArrayToCSV } from "../../utils/CSVHelper";
-import {
-  ColumnTransformersStopPlace,
-  ColumnTransformersQuays,
-} from "../../models/columnTransformers";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
+import React from "react";
 import { getDarkColor } from "../../config/themeConfig";
-import { Popover } from "@mui/material";
+import {
+  ColumnTransformersQuays,
+  ColumnTransformersStopPlace,
+} from "../../models/columnTransformers";
+import { jsonArrayToCSV } from "../../utils/CSVHelper";
 
 class ReportPageFooter extends React.Component {
   constructor(props) {

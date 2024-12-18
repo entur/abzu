@@ -12,25 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { StopPlaceActions, UserActions } from "../../actions/";
-import Warning from "@mui/icons-material/Warning";
 import MdDeleteForver from "@mui/icons-material/DeleteForever";
-import ToolTippable from "./ToolTippable";
-import { injectIntl } from "react-intl";
-import ConfirmDialog from "../Dialogs/ConfirmDialog";
-import { deleteParking } from "../../actions/TiamatActions";
-import * as types from "../../actions/Types";
+import Warning from "@mui/icons-material/Warning";
 import FlatButton from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import ParkingItemPayAndRideExpandedFields from "./ParkingItemPayAndRideExpandedFields";
-import ItemHeader from "./ItemHeader";
-import Item from "./Item";
-import Code from "./Code";
+import PropTypes from "prop-types";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { deleteParking } from "../../actions/TiamatActions";
+import * as types from "../../actions/Types";
 import PARKING_TYPE from "../../models/parkingType";
-import MdDelete from "@mui/icons-material/DeleteForever";
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import Code from "./Code";
+import Item from "./Item";
+import ItemHeader from "./ItemHeader";
+import ParkingItemPayAndRideExpandedFields from "./ParkingItemPayAndRideExpandedFields";
+import ToolTippable from "./ToolTippable";
 
 class ParkingItem extends React.Component {
   state = {

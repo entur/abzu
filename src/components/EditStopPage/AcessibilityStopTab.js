@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import ToolTipIcon from "./ToolTipIcon";
 import Divider from "@mui/material/Divider";
-import WheelChairPopover from "./WheelChairPopover";
-import StepFreePopover from "./StepFreePopover";
+import React from "react";
 import { connect } from "react-redux";
-import { getIn } from "../../utils";
 import { AssessmentActions } from "../../actions/";
+import { getIn } from "../../utils";
+import StepFreePopover from "./StepFreePopover";
+import ToolTipIcon from "./ToolTipIcon";
+import WheelChairPopover from "./WheelChairPopover";
 
 class AcessibilityStopTab extends React.Component {
   handleWheelChairChange(value) {

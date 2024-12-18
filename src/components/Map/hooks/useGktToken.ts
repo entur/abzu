@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
 import Axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "../../../config/ConfigContext";
 
 const INTERVAL_IN_MS = 60000;

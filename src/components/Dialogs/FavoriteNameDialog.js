@@ -12,10 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import { UserActions } from "../../actions/";
 import {
   Button,
   Dialog,
@@ -24,6 +20,10 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
 
 class FavoriteNameDialog extends React.Component {
   constructor(props) {

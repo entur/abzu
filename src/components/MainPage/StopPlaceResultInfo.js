@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
+import WheelChair from "@mui/icons-material/Accessible";
+import { Component } from "react";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { getIn } from "../../utils/";
+import Code from "../EditStopPage/Code";
+import BelongsToGroup from "./BelongsToGroup";
+import CircularNumber from "./CircularNumber";
 import HasExpiredInfo from "./HasExpiredInfo";
 import ModalityIconImg from "./ModalityIconImg";
-import CircularNumber from "./CircularNumber";
-import WheelChair from "@mui/icons-material/Accessible";
-import { getIn } from "../../utils/";
 import TagTray from "./TagTray";
-import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import BelongsToGroup from "./BelongsToGroup";
-import Code from "../EditStopPage/Code";
 
 class StopPlaceResultInfo extends Component {
   render() {

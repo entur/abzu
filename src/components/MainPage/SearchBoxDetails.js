@@ -12,14 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import SearchBoxEdit from "./SearchBoxEditActions";
-import SearchBoxUsingTempGeo from "./SearchBoxUsingTempGeo";
-import SearchBoxGeoWarning from "./SearchBoxGeoWarning";
-import StopPlaceResultInfo from "./StopPlaceResultInfo";
-import ParentStopPlaceResultInfo from "./ParentStopPlaceResultInfo";
-import GroupResultInfo from "./GroupResultInfo";
 import { Entities } from "../../models/Entities";
+import GroupResultInfo from "./GroupResultInfo";
+import ParentStopPlaceResultInfo from "./ParentStopPlaceResultInfo";
+import SearchBoxEdit from "./SearchBoxEditActions";
+import SearchBoxGeoWarning from "./SearchBoxGeoWarning";
+import SearchBoxUsingTempGeo from "./SearchBoxUsingTempGeo";
+import StopPlaceResultInfo from "./StopPlaceResultInfo";
 
 const SearchBoxDetails = ({
   text,

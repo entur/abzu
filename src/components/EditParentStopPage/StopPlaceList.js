@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import StopPlaceListItem from "./StopPlaceListItem";
-import Fab from "@mui/material/Fab";
 import ContentAdd from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import { injectIntl } from "react-intl";
-import Loader from "../Dialogs/Loader";
-import { StopPlaceActions, UserActions } from "../../actions/";
 import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
 import { getPrimaryColor } from "../../config/themeConfig";
+import Loader from "../Dialogs/Loader";
+import StopPlaceListItem from "./StopPlaceListItem";
 
 class StopPlaceList extends Component {
   constructor(props) {

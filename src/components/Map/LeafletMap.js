@@ -12,24 +12,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import MarkerList from "./MarkerList";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
+  LayersControl,
   MapContainer,
+  ScaleControl,
   TileLayer,
   ZoomControl,
-  LayersControl,
-  ScaleControl,
 } from "react-leaflet";
-import { GoogleLayer } from "@entur/react-leaflet-google";
-import MultiPolylineList from "./PathLink";
-import MultimodalStopEdges from "./MultimodalStopEdges";
-import StopPlaceGroupList from "./StopPlaceGroupList";
-import { MapEvents } from "./MapEvents";
-import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
+import { ConfigContext } from "../../config/ConfigContext";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
-import { ConfigContext } from "../../config/ConfigContext";
+import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
+import { MapEvents } from "./MapEvents";
+import MarkerList from "./MarkerList";
+import MultimodalStopEdges from "./MultimodalStopEdges";
+import MultiPolylineList from "./PathLink";
+import StopPlaceGroupList from "./StopPlaceGroupList";
 
 const lmapStyle = {
   border: "2px solid #eee",

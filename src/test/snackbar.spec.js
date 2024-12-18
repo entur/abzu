@@ -12,12 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import snackbarReducer, { initialState } from "../reducers/snackbarReducer";
 import {
   APOLLO_MUTATION_ERROR,
   ERROR,
   OPENED_SNACKBAR,
 } from "../actions/Types";
+import snackbarReducer, { initialState } from "../reducers/snackbarReducer";
 
 describe("snackbar", () => {
   test("Should open snackbar on Apollo error", () => {

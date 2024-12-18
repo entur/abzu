@@ -12,47 +12,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from "react-redux";
+import MdMore from "@mui/icons-material/ExpandMore";
+import MdLocationSearching from "@mui/icons-material/LocationSearching";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, Button, FormControlLabel, FormGroup } from "@mui/material";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import debounce from "lodash.debounce";
 import React from "react";
 import ReactDOM from "react-dom";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import MdMore from "@mui/icons-material/ExpandMore";
-import { StopPlaceActions, UserActions } from "../../actions/";
-import SearchBoxDetails from "./SearchBoxDetails";
-import NewStopPlace from "./CreateNewStop";
 import { injectIntl } from "react-intl";
-import MenuItem from "@mui/material/MenuItem";
-import SearchIcon from "@mui/icons-material/Search";
-import FavoriteManager from "../../singletons/FavoriteManager";
-import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
 import {
   findEntitiesWithFilters,
   findTopographicalPlace,
 } from "../../actions/TiamatActions";
-import FavoritePopover from "./FavoritePopover";
-import ModalityFilter from "../EditStopPage/ModalityFilter";
-import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";
-import TopographicalFilter from "./TopographicalFilter";
-import debounce from "lodash.debounce";
-import { getIn } from "../../utils/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import MdLocationSearching from "@mui/icons-material/LocationSearching";
-import MdSpinner from "../../static/icons/spinner";
-import { createSearchMenuItem } from "./SearchMenuItem";
-import Menu from "@mui/material/Menu";
-import CheckBox from "@mui/material/Checkbox";
-import Routes from "../../routes/";
 import { Entities } from "../../models/Entities";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Popover,
-} from "@mui/material";
-import TextField from "@mui/material/TextField";
+import Routes from "../../routes/";
+import FavoriteManager from "../../singletons/FavoriteManager";
+import MdSpinner from "../../static/icons/spinner";
 import { getStopPermissions } from "../../utils/permissionsUtils";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";
+import ModalityFilter from "../EditStopPage/ModalityFilter";
+import NewStopPlace from "./CreateNewStop";
+import FavoritePopover from "./FavoritePopover";
+import SearchBoxDetails from "./SearchBoxDetails";
+import { createSearchMenuItem } from "./SearchMenuItem";
+import TopographicalFilter from "./TopographicalFilter";
 
 class SearchBox extends React.Component {
   constructor(props) {

@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import ModalityIconSvg from "../MainPage/ModalityIconSvg";
-import stopTypes from "../../models/stopTypes";
 import Checkbox from "@mui/material/Checkbox";
+import React from "react";
+import stopTypes from "../../models/stopTypes";
+import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 
 class ModalityFilter extends React.Component {
   handleOnCheck(checked, value) {

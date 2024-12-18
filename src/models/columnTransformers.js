@@ -12,22 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import StopPlaceLink from "../components/ReportPage/StopPlaceLink";
-import ModalityIconSvg from "../components/MainPage/ModalityIconSvg";
-import CarParkingIcon from "../static/icons/ParkingIcon";
-import BikeParkingIcon from "../static/icons/facilities/BikeParking";
-import { getIn, getInTransform } from "../utils/";
-import accessibilityAssessments from "../models/accessibilityAssessments";
 import WheelChair from "@mui/icons-material/Accessible";
 import MdCheck from "@mui/icons-material/CheckCircle";
 import MdNotChecked from "@mui/icons-material/HighlightOff";
-import StairsIcon from "../static/icons/accessibility/Stairs";
-import ModalityIconTray from "../components/ReportPage/ModalityIconTray";
-import { darkColor } from "../config/themes/default/defaultTheme";
-import TagTray from "../components/MainPage/TagTray";
-import ToolTippable from "../components/EditStopPage/ToolTippable";
 import moment from "moment";
+import ToolTippable from "../components/EditStopPage/ToolTippable";
+import ModalityIconSvg from "../components/MainPage/ModalityIconSvg";
+import TagTray from "../components/MainPage/TagTray";
+import ModalityIconTray from "../components/ReportPage/ModalityIconTray";
+import StopPlaceLink from "../components/ReportPage/StopPlaceLink";
+import { darkColor } from "../config/themes/default/defaultTheme";
+import accessibilityAssessments from "../models/accessibilityAssessments";
+import CarParkingIcon from "../static/icons/ParkingIcon";
+import StairsIcon from "../static/icons/accessibility/Stairs";
+import BikeParkingIcon from "../static/icons/facilities/BikeParking";
+import { getIn, getInTransform } from "../utils/";
 
 const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {

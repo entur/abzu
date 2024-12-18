@@ -1,9 +1,9 @@
 import { renderHook } from "@testing-library/react";
 
-import { useAuth } from "./auth";
 import { ConfigContext } from "../config/ConfigContext";
+import { useAuth } from "./auth";
 
-import { describe, test, expect, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 vi.mock("react-oidc-context", async () => {
   return {

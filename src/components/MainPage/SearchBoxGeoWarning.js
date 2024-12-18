@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import Warning from "@mui/icons-material/Warning";
+import { Component } from "react";
+import { FormattedMessage } from "react-intl";
 
 class SearchBoxGeoWarning extends Component {
   render() {

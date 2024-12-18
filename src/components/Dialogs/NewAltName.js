@@ -12,11 +12,11 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
 import FlatButton from "@mui/material/Button";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { Component } from "react";
 import * as altNameConfig from "../../config/altNamesConfig";
 
 class NewAltName extends Component {

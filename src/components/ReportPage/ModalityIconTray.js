@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ModalityIconImg from "../MainPage/ModalityIconImg";
+import { Component } from "react";
 import { getUniqueStopPlaceTypes } from "../../models/stopPlaceUtils";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
 
 class ModalityIconTray extends Component {
   render() {

@@ -1,8 +1,8 @@
+import stopTypes from "../models/stopTypes";
 import {
   getLegalStopPlaceTypes,
   getLegalSubmodesForStopPlace,
 } from "./permissionsUtils";
-import stopTypes from "../models/stopTypes";
 
 describe("getLegalStopPlaceTypes", () => {
   it("returns all stop types for empty allowed and banned stop place types", () => {

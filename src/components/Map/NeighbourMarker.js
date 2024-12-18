@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Marker, Popup } from "react-leaflet";
 import { divIcon } from "leaflet";
+import PropTypes from "prop-types";
+import React from "react";
 import ReactDOM from "react-dom/server";
-import CustomMarkerIcon from "./CustomMarkerIcon";
-import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
-import PopupButton from "./PopupButton";
-import { isLegalChildStopPlace } from "../../modelUtils/leafletUtils";
+import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
+import { isLegalChildStopPlace } from "../../utils/roleUtils";
+import CustomMarkerIcon from "./CustomMarkerIcon";
+import PopupButton from "./PopupButton";
+import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
 
 class NeighbourMarker extends React.Component {
   constructor(props) {

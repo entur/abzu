@@ -13,12 +13,12 @@
  limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import { calculatePolygonCenter } from "../utils/mapUtils";
 import {
-  getGroupOfStopPlace,
   addMemberToGroup,
+  getGroupOfStopPlace,
   removeMemberFromGroup,
 } from "./groupReducerUtils";
-import { calculatePolygonCenter } from "../utils/mapUtils";
 
 const newGroup = {
   name: "",

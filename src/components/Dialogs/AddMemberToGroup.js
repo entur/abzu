@@ -12,12 +12,6 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import { injectIntl } from "react-intl";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getGroupMemberSuggestions } from "../../modelUtils/leafletUtils";
-import AddStopPlaceSuggestionList from "./AddStopPlaceSuggestionList";
 import {
   Box,
   Button,
@@ -26,6 +20,12 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { getGroupMemberSuggestions } from "../../modelUtils/leafletUtils";
+import AddStopPlaceSuggestionList from "./AddStopPlaceSuggestionList";
 
 class AddMemberToGroup extends Component {
   constructor(props) {

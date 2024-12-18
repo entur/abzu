@@ -12,13 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import LeafletMap from "../Map/LeafletMap";
-import { connect } from "react-redux";
 import debounce from "lodash.debounce";
+import { Component } from "react";
+import { connect } from "react-redux";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
-import { StopPlaceActions } from "../../actions";
+import LeafletMap from "../Map/LeafletMap";
 
 class GroupOfStopPlaceMap extends Component {
   constructor(props) {

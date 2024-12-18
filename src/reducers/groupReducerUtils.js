@@ -13,8 +13,8 @@
  limitations under the Licence. */
 
 import GroupOfStopPlace from "../models/GroupOfStopPlaces";
-import StopPlace from "../models/StopPlace";
 import ParentStopPlace from "../models/ParentStopPlace";
+import StopPlace from "../models/StopPlace";
 import { calculatePolygonCenter } from "../utils/mapUtils";
 
 export const getGroupOfStopPlace = (state, action) => {

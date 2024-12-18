@@ -12,59 +12,58 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import ModalityIconSvg from "../MainPage/ModalityIconSvg";
+import MdLanguage from "@mui/icons-material/Language";
+import MdTransfer from "@mui/icons-material/TransferWithinAStation";
+import MdKey from "@mui/icons-material/VpnKey";
+import MdWarning from "@mui/icons-material/Warning";
+import MdWC from "@mui/icons-material/Wc";
+import FlatButton from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import TextField from "@mui/material/TextField";
-import ImportedId from "./ImportedId";
+import debounce from "lodash.debounce";
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
-  StopPlaceActions,
   AssessmentActions,
   EquipmentActions,
+  StopPlaceActions,
   UserActions,
 } from "../../actions/";
-import { connect } from "react-redux";
-import TicketMachine from "../../static/icons/facilities/TicketMachine";
-import BusShelter from "../../static/icons/facilities/BusShelter";
-import debounce from "lodash.debounce";
-import Checkbox from "@mui/material/Checkbox";
-import stopTypes from "../../models/stopTypes";
-import MdWC from "@mui/icons-material/Wc";
-import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
-import WheelChairPopover from "./WheelChairPopover";
-import { getIn } from "../../utils";
-import equipmentHelpers from "../../modelUtils/equipmentHelpers";
-import MdLanguage from "@mui/icons-material/Language";
-import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import AltNamesDialog from "../Dialogs/AltNamesDialog";
-import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
-import MdTransfer from "@mui/icons-material/TransferWithinAStation";
-import WeightingPopover from "./WeightingPopover";
-import weightTypes, { weightColors } from "../../models/weightTypes";
-import Sign512 from "../../static/icons/TransportSign";
-import MdWarning from "@mui/icons-material/Warning";
-import ToolTippable from "./ToolTippable";
-import MdKey from "@mui/icons-material/VpnKey";
-import KeyValuesDialog from "../Dialogs/KeyValuesDialog";
-import ModalitiesMenuItems from "./ModalitiesMenuItems";
-import FlatButton from "@mui/material/Button";
-import TagsDialog from "./TagsDialog";
-import TagTray from "../MainPage/TagTray";
-import BelongsToGroup from "./../MainPage/BelongsToGroup";
 import {
   addTag,
   findTagByName,
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
-import { Link } from "react-router-dom";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import stopTypes from "../../models/stopTypes";
+import weightTypes, { weightColors } from "../../models/weightTypes";
+import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import Routes from "../../routes";
+import BusShelter from "../../static/icons/facilities/BusShelter";
+import TicketMachine from "../../static/icons/facilities/TicketMachine";
+import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import TransportSign from "../../static/icons/TransportSign";
-import Menu from "@mui/material/Menu";
+import { getIn } from "../../utils";
 import {
-  getStopPermissions,
   getAllowanceInfoFromLocationPermissions,
+  getStopPermissions,
 } from "../../utils/permissionsUtils";
+import AltNamesDialog from "../Dialogs/AltNamesDialog";
+import KeyValuesDialog from "../Dialogs/KeyValuesDialog";
+import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
+import ModalityIconSvg from "../MainPage/ModalityIconSvg";
+import TagTray from "../MainPage/TagTray";
+import BelongsToGroup from "./../MainPage/BelongsToGroup";
+import ImportedId from "./ImportedId";
+import ModalitiesMenuItems from "./ModalitiesMenuItems";
+import TagsDialog from "./TagsDialog";
+import ToolTippable from "./ToolTippable";
+import WeightingPopover from "./WeightingPopover";
+import WheelChairPopover from "./WheelChairPopover";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {

@@ -1,13 +1,12 @@
-import React from "react";
+import MdDelete from "@mui/icons-material/DeleteForever";
+import { IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { injectIntl } from "react-intl";
-import MdDelete from "@mui/icons-material/DeleteForever";
+import { BoardingPosition } from "./BoardingPositionsTab";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
-import { BoardingPosition } from "./BoardingPositionsTab";
 import ToolTippable from "./ToolTippable";
-import { IconButton } from "@mui/material";
 
 type Props = {
   boardingPosition: BoardingPosition;

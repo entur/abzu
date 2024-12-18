@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import MdSortByAlpha from "@mui/icons-material/SortByAlpha";
 import React from "react";
-import QuayItem from "./QuayItem";
-import ParkingItem from "./ParkingItem";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { CodeBadge } from "./Code";
-import MdSortByAlpha from "@mui/icons-material/SortByAlpha";
+import ParkingItem from "./ParkingItem";
+import QuayItem from "./QuayItem";
 
 class EditStopBoxTabs extends React.Component {
   handleLocateOnMap(position, index, type) {

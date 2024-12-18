@@ -1,7 +1,7 @@
+import Divider from "@mui/material/Divider";
 import React from "react";
 import { injectIntl } from "react-intl";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
-import Divider from "@mui/material/Divider";
 
 class Item extends React.Component {
   constructor(props) {

@@ -13,17 +13,15 @@
  limitations under the Licence. */
 
 import { getIn } from "../utils";
-import { getEnvColor as defaultEnvColor } from "./themes/default/defaultTheme";
 import {
-  getV0Theme as getV0DefaultTheme,
+  darkColor as defaultDarkColor,
+  getEnvColor as defaultEnvColor,
+  primary as defaultPrimary,
+  primaryDarker as defaultPrimaryDarker,
   getTheme as getDefaultTheme,
+  getV0Theme as getV0DefaultTheme,
 } from "./themes/default/defaultTheme";
 import defaultLogo from "./themes/default/logo.png";
-import { primary as defaultPrimary } from "./themes/default/defaultTheme";
-import {
-  primaryDarker as defaultPrimaryDarker,
-  darkColor as defaultDarkColor,
-} from "./themes/default/defaultTheme";
 
 export const getTiamatEnv = () => {
   return getIn(window, ["config", "tiamatEnv"], "development");

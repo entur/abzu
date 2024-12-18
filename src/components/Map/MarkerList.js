@@ -12,29 +12,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
 import PropTypes from "prop-types";
-import StopPlaceMarker from "./StopPlaceMarker";
-import NewStopMarker from "./NewStopMarker";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 import {
   StopPlaceActions,
-  UserActions,
   StopPlacesGroupActions,
+  UserActions,
 } from "../../actions/";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import NeighbourMarker from "./NeighbourMarker";
-import ParkAndRideMarker from "./ParkAndRideMarker";
-import CycleParkingMarker from "./CycleParkingMarker";
-import { setDecimalPrecision, getIn } from "../../utils";
-import QuayMarker from "./QuayMarker";
-import CoordinateMarker from "./CoordinateMarker";
-import Routes from "../../routes/";
-import * as MarkerStrings from "./markerText";
-import { Entities } from "../../models/Entities";
 import { getNeighbourStopPlaceQuays } from "../../actions/TiamatActions";
-import BoardingPositionMarker from "./BoardingPositionMarker";
+import { Entities } from "../../models/Entities";
+import Routes from "../../routes/";
+import { getIn, setDecimalPrecision } from "../../utils";
 import { getStopPermissions } from "../../utils/permissionsUtils";
+import BoardingPositionMarker from "./BoardingPositionMarker";
+import CoordinateMarker from "./CoordinateMarker";
+import CycleParkingMarker from "./CycleParkingMarker";
+import * as MarkerStrings from "./markerText";
+import NeighbourMarker from "./NeighbourMarker";
+import NewStopMarker from "./NewStopMarker";
+import ParkAndRideMarker from "./ParkAndRideMarker";
+import QuayMarker from "./QuayMarker";
+import StopPlaceMarker from "./StopPlaceMarker";
 
 class MarkerList extends React.Component {
   static propTypes = {

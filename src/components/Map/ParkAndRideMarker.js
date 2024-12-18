@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import classNames from "classnames";
+import L from "leaflet";
+import PropTypes from "prop-types";
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
-import PropTypes from "prop-types";
-import L from "leaflet";
 import { connect } from "react-redux";
-import classNames from "classnames";
 import ParkingIcon from "../../static/icons/parking-icon.png";
 
-import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { StopPlaceActions } from "../../actions/";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { shallowCompareParkNRide as shallowCompare } from "./shallowCompare/";
 
 class ParkingAndRideMarker extends React.Component {

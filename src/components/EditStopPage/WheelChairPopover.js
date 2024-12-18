@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import MenuItem from "@mui/material/MenuItem";
 import WheelChair from "@mui/icons-material/Accessible";
 import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
 
-import Menu from "@mui/material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
 
 class WheelChairPopover extends React.Component {
   constructor(props) {

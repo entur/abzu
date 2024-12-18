@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import ModalityIconImg from "../MainPage/ModalityIconImg";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import { injectIntl } from "react-intl";
 import HasExpiredInfo from "../MainPage/HasExpiredInfo";
-import { FormControlLabel } from "@mui/material";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
 
 class AddStopPlaceSuggestionListItem extends Component {
   render() {

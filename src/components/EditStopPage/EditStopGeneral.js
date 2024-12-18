@@ -12,58 +12,68 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from "react-redux";
+// React and Redux
 import React from "react";
-import FlatButton from "@mui/material/Button";
-import { StopPlaceActions, UserActions } from "../../actions/";
 import { injectIntl } from "react-intl";
-import ConfirmDialog from "../Dialogs/ConfirmDialog";
-import EditStopBoxTabs from "./EditStopBoxTabs";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import StopPlaceDetails from "./StopPlaceDetails";
-import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
-import * as types from "../../actions/Types";
-import EditStopAdditional from "./EditStopAdditional";
-import MdUndo from "@mui/icons-material/Undo";
-import MdSave from "@mui/icons-material/Save";
+import { connect } from "react-redux";
+import { replace } from "redux-first-history";
+
+// Material UI Icons
 import MdBack from "@mui/icons-material/ArrowBack";
 import MdLess from "@mui/icons-material/ExpandLess";
+import MdSave from "@mui/icons-material/Save";
+import MdUndo from "@mui/icons-material/Undo";
+
+// Material UI Components
+import FlatButton from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import SaveDialog from "../Dialogs/SaveDialog";
-import MergeStopDialog from "../Dialogs/MergeStopDialog";
-import MergeQuaysDialog from "../Dialogs/MergeQuaysDialog";
-import { MutationErrorCodes } from "../../models/ErrorCodes";
-import DeleteQuayDialog from "../Dialogs/DeleteQuayDialog";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+
+// Actions
+import { StopPlaceActions, UserActions } from "../../actions/";
 import {
   deleteQuay,
-  getStopPlaceVersions,
   deleteStopPlace,
-  mergeQuays,
+  getNeighbourStops,
+  getStopPlaceAndPathLinkByVersion,
+  getStopPlaceVersions,
   getStopPlaceWithAll,
   mergeAllQuaysFromStop,
-  moveQuaysToStop,
-  getNeighbourStops,
+  mergeQuays,
   moveQuaysToNewStop,
+  moveQuaysToStop,
+  saveParking,
+  savePathLink,
   saveStopPlaceBasedOnType,
   terminateStop,
-  getStopPlaceAndPathLinkByVersion,
-  savePathLink,
-  saveParking,
 } from "../../actions/TiamatActions";
-import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
+import * as types from "../../actions/Types";
+
+// Components
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import DeleteQuayDialog from "../Dialogs/DeleteQuayDialog";
+import MergeQuaysDialog from "../Dialogs/MergeQuaysDialog";
+import MergeStopDialog from "../Dialogs/MergeStopDialog";
 import MoveQuayDialog from "../Dialogs/MoveQuayDialog";
 import MoveQuayNewStopDialog from "../Dialogs/MoveQuayNewStopDialog";
-import Settings from "../../singletons/SettingsManager";
-import { getIn, getIsCurrentVersionMax } from "../../utils/";
-import VersionsPopover from "./VersionsPopover";
 import RequiredFieldsMissingDialog from "../Dialogs/RequiredFieldsMissingDialog";
-import Routes from "../../routes/";
+import SaveDialog from "../Dialogs/SaveDialog";
+import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
+import EditStopAdditional from "./EditStopAdditional";
+import EditStopBoxTabs from "./EditStopBoxTabs";
+import StopPlaceDetails from "./StopPlaceDetails";
+import VersionsPopover from "./VersionsPopover";
+
+// Utils
+import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import {
   shouldMutateParking,
   shouldMutatePathLinks,
 } from "../../modelUtils/shouldMutate";
-import { replace } from "redux-first-history";
+import Routes from "../../routes/";
+import Settings from "../../singletons/SettingsManager";
+import { getIsCurrentVersionMax } from "../../utils/";
 import { getStopPermissions } from "../../utils/permissionsUtils";
 
 class EditStopGeneral extends React.Component {

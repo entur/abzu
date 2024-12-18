@@ -12,18 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import MdSpinner from "../../static/icons/spinner";
+import { Cancel, Save } from "@mui/icons-material";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@mui/material";
-import { Cancel, Save } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import React from "react";
+import MdSpinner from "../../static/icons/spinner";
 
 class SaveDialog extends React.Component {
   constructor(props) {
@@ -66,10 +66,9 @@ class SaveDialog extends React.Component {
 
   handleSave() {
     const { handleConfirm } = this.props;
-    const { comment } = this.state;
 
     let userInput = {
-      comment: comment,
+      comment: this.comment,
     };
 
     this.setState({
@@ -82,9 +81,11 @@ class SaveDialog extends React.Component {
   render() {
     const { open, intl, handleClose, errorMessage } = this.props;
     const { formatMessage } = intl;
-    const { isSaving, comment } = this.state;
+    const { isSaving } = this.state;
 
-    const errorMessageLabel = this.getErrorMessage();
+    const errorMessageLabel = this.getErrorMessage()
+      ? formatMessage({ id: this.getErrorMessage() })
+      : "";
 
     const translations = {
       use: formatMessage({ id: "use" }),

@@ -12,24 +12,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import { styled } from "@mui/material/styles";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import { Accessible } from "@mui/icons-material/";
+import LocalParking from "@mui/icons-material/LocalParking";
+import Payment from "@mui/icons-material/Payment";
+import { Grid, ListSubheader, TextField } from "@mui/material";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
 import { injectIntl } from "react-intl";
-import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
 import { parkingLayouts } from "../../models/parkingLayout";
-import { TextField, ListSubheader } from "@mui/material";
+import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
 import RechargingAvailablePopover from "./RechargingAvailablePopover";
-import LocalParking from "@mui/icons-material/LocalParking";
-import { Accessible } from "@mui/icons-material/";
-import Payment from "@mui/icons-material/Payment";
-import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
 const PREFIX = "ParkingItemPayAndRideExpandedFields";
 
 const classes = {

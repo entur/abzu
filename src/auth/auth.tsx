@@ -1,7 +1,6 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   AuthProvider as OidcAuthProvider,
-  hasAuthParams,
   useAuth as useOidcAuth,
 } from "react-oidc-context";
 import { useConfig } from "../config/ConfigContext";

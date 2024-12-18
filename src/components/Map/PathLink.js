@@ -13,13 +13,13 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { Polyline, Popup, FeatureGroup } from "react-leaflet";
-import { connect } from "react-redux";
-import GenerateColor from "../../models/Colors";
-import { UserActions } from "../../actions";
 import { injectIntl } from "react-intl";
-import WalkingDistanceDialog from "../Dialogs/WalkingDistanceDialog";
+import { FeatureGroup, Polyline, Popup } from "react-leaflet";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions";
+import GenerateColor from "../../models/Colors";
 import { getIn } from "../../utils";
+import WalkingDistanceDialog from "../Dialogs/WalkingDistanceDialog";
 
 class PathLink extends React.Component {
   constructor(props) {

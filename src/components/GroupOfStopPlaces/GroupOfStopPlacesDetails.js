@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
-import GroupOfStopPlacesList from "./GroupOfStopPlacesList";
-import { StopPlacesGroupActions } from "../../actions/";
+import TextField from "@mui/material/TextField";
+import { Component } from "react";
 import { connect } from "react-redux";
+import { StopPlacesGroupActions } from "../../actions/";
+import GroupOfStopPlacesList from "./GroupOfStopPlacesList";
 
 class GroupOfStopPlacesDetails extends Component {
   handleChangeName(e, name) {

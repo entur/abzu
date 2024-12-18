@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
+import { Popover } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
+import React from "react";
 import accessibilityAssessments from "../../models/accessibilityAssessments";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
-import IconButton from "@mui/material/IconButton";
-import { Popover } from "@mui/material";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import WheelChair from "@mui/icons-material/Accessible";
-import ListItemText from "@mui/material/ListItemText";
 
 class StepFreePopover extends React.Component {
   constructor(props) {

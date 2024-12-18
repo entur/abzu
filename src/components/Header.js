@@ -12,35 +12,39 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import MoreMenuItem from "./MainPage/MoreMenuItem";
-import { connect } from "react-redux";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Typography from "@mui/material/Typography";
-import { getEnvColor, getLogo, getTheme } from "../config/themeConfig";
+import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
-import MdLanguage from "@mui/icons-material/Language";
-import MdSettings from "@mui/icons-material/Settings";
-import MdMap from "@mui/icons-material/Map";
-import { UserActions } from "../actions/";
-import { getIn } from "../utils";
-import MdReport from "@mui/icons-material/Report";
 import MdHelp from "@mui/icons-material/Help";
-import { getTiamatEnv } from "../config/themeConfig";
-import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import MdLanguage from "@mui/icons-material/Language";
+import MdMap from "@mui/icons-material/Map";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MdReport from "@mui/icons-material/Report";
+import MdSettings from "@mui/icons-material/Settings";
 import { Button } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { Helmet } from "react-helmet";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { UserActions } from "../actions/";
+import {
+  getEnvColor,
+  getLogo,
+  getTheme,
+  getTiamatEnv,
+} from "../config/themeConfig";
 import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
 } from "../reducers/zonesSlice";
-import { injectIntl } from "react-intl";
-import { Helmet } from "react-helmet";
-import Menu from "@mui/material/Menu";
-import { Check } from "@mui/icons-material";
+import { getIn } from "../utils";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import MoreMenuItem from "./MainPage/MoreMenuItem";
 
 class Header extends React.Component {
   constructor(props) {

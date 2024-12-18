@@ -12,16 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import { connect } from "react-redux";
-import MenuItem from "@mui/material/MenuItem";
-import FlatButton from "@mui/material/Button";
-import FavoriteManager from "../../singletons/FavoriteManager";
-import StarIcon from "@mui/icons-material/Star";
 import MdDelete from "@mui/icons-material/Delete";
-import { UserActions } from "../../actions/";
+import StarIcon from "@mui/icons-material/Star";
 import { Popover } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
+import FavoriteManager from "../../singletons/FavoriteManager";
 
 class FilterPopover extends React.Component {
   constructor(props) {

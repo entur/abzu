@@ -19,7 +19,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import React, { Component } from "react";
+import { Component } from "react";
 import { injectIntl } from "react-intl";
 
 class SaveGroupDialog extends Component {

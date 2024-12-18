@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import AddTagAutoComplete from "./AddTagAutoComplete";
-import TextField from "@mui/material/TextField";
 import FlatButton from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { Component } from "react";
+import AddTagAutoComplete from "./AddTagAutoComplete";
 
 class AddTagDialog extends Component {
   constructor(props) {

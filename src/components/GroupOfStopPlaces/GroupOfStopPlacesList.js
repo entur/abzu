@@ -12,15 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import StopPlaceListItem from "../EditParentStopPage/StopPlaceListItem";
-import { injectIntl } from "react-intl";
-import Fab from "@mui/material/Fab";
 import ContentAdd from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
-import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
 import { getPrimaryColor } from "../../config/themeConfig";
+import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
+import StopPlaceListItem from "../EditParentStopPage/StopPlaceListItem";
 
 class GroupOfStopPlacesList extends Component {
   constructor(props) {

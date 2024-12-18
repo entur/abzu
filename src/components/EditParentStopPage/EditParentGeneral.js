@@ -12,25 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import FlatButton from "@mui/material/Button";
-import ParentStopDetails from "./ParentStopDetails";
 import MdBack from "@mui/icons-material/ArrowBack";
-import VersionsPopover from "../EditStopPage/VersionsPopover";
-import MdUndo from "@mui/icons-material/Undo";
 import MdSave from "@mui/icons-material/Save";
-import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import MdUndo from "@mui/icons-material/Undo";
+import FlatButton from "@mui/material/Button";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
-import SaveDialog from "../Dialogs/SaveDialog";
-import AddAdjacentStopsDialog from "../Dialogs/AddAdjacentStopsDialog";
-import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
-import * as types from "../../actions/Types";
-import { MutationErrorCodes } from "../../models/ErrorCodes";
-import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
-import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
-import { getIn, getIsCurrentVersionMax } from "../../utils/";
 import {
   addToMultiModalStopPlace,
   createParentStopPlace,
@@ -42,8 +31,19 @@ import {
   saveParentStopPlace,
   terminateStop,
 } from "../../actions/TiamatActions";
+import * as types from "../../actions/Types";
+import { MutationErrorCodes } from "../../models/ErrorCodes";
+import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import SettingsManager from "../../singletons/SettingsManager";
+import { getIsCurrentVersionMax } from "../../utils/";
 import { getStopPermissions } from "../../utils/permissionsUtils";
+import AddAdjacentStopsDialog from "../Dialogs/AddAdjacentStopsDialog";
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
+import SaveDialog from "../Dialogs/SaveDialog";
+import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
+import VersionsPopover from "../EditStopPage/VersionsPopover";
+import ParentStopDetails from "./ParentStopDetails";
 
 class EditParentGeneral extends React.Component {
   constructor(props) {

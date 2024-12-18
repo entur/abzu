@@ -1,14 +1,14 @@
-import React from "react";
 import { ControlPosition } from "leaflet";
-import { Zones } from "./Zones";
-import { TariffZone } from "../../models/TariffZone";
-import { getColorByCodespace } from "./getColorByCodespace";
+import React from "react";
 import { useIntl } from "react-intl";
+import { TariffZone } from "../../models/TariffZone";
 import {
   getTariffZonesByIdsAction,
   getTariffZonesForFilterAction,
   setSelectedTariffZones,
 } from "../../reducers/zonesSlice";
+import { getColorByCodespace } from "./getColorByCodespace";
+import { Zones } from "./Zones";
 
 export interface TariffZonesProps {
   position: ControlPosition;

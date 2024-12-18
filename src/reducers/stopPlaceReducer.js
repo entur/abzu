@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getStateByOperation } from "./stopPlaceReducerUtils";
 import * as types from "../actions/Types";
-import formatHelpers from "../modelUtils/mapToClient";
-import limitationHelpers from "../modelUtils/limitationHelpers";
-import equipmentHelpers from "../modelUtils/equipmentHelpers";
-import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
-import { setDecimalPrecision } from "../utils/";
+import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
+import equipmentHelpers from "../modelUtils/equipmentHelpers";
+import limitationHelpers from "../modelUtils/limitationHelpers";
+import formatHelpers from "../modelUtils/mapToClient";
 import SettingsManager from "../singletons/SettingsManager";
+import { setDecimalPrecision } from "../utils/";
+import { getStateByOperation } from "./stopPlaceReducerUtils";
 
 const Settings = new SettingsManager();
 
