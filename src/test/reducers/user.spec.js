@@ -102,4 +102,162 @@ describe("user reducer", () => {
       activeBaselayer: newBaselayer,
     });
   });
+
+  describe("search filters", () => {
+    test("Should handle REMOVED_ALL_FILTERS", () => {
+      const stateWithFilters = {
+        ...initialState,
+        searchFilters: {
+          ...initialState.searchFilters,
+          topoiChips: [{ key: 1, text: "Test", type: "county", value: 1 }],
+          stopType: ["busStation"],
+        },
+      };
+      const action = { type: types.REMOVED_ALL_FILTERS };
+      const expectedState = {
+        ...stateWithFilters,
+        searchFilters: {
+          ...stateWithFilters.searchFilters,
+          topoiChips: [],
+          stopType: [],
+        },
+      };
+      expect(userReducer(stateWithFilters, action)).toEqual(expectedState);
+    });
+
+    test("Should handle TOGGLE_SHOW_FUTURE_AND_EXPIRED", () => {
+      const action = {
+        type: types.TOGGLE_SHOW_FUTURE_AND_EXPIRED,
+        payload: true,
+      };
+      const expectedState = {
+        ...initialState,
+        searchFilters: {
+          ...initialState.searchFilters,
+          showFutureAndExpired: true,
+        },
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
+
+    test("Should handle SET_SEARCH_TEXT", () => {
+      const action = {
+        type: types.SET_SEARCH_TEXT,
+        payload: "search query",
+      };
+      const expectedState = {
+        ...initialState,
+        searchFilters: {
+          ...initialState.searchFilters,
+          text: "search query",
+        },
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
+  });
+
+  describe("topographical place chips", () => {
+    test("Should handle ADDED_TOPOS_CHIP", () => {
+      const newChip = { text: "Test", type: "county", value: 1 };
+      const action = {
+        type: types.ADDED_TOPOS_CHIP,
+        payload: newChip,
+      };
+      const result = userReducer(initialState, action);
+      expect(result.searchFilters.topoiChips).toHaveLength(1);
+      expect(result.searchFilters.topoiChips[0]).toEqual({
+        ...newChip,
+        key: 1,
+      });
+    });
+
+    test("Should handle DELETED_TOPOS_CHIP", () => {
+      const stateWithChip = {
+        ...initialState,
+        searchFilters: {
+          ...initialState.searchFilters,
+          topoiChips: [{ key: 1, text: "Test", type: "county", value: 1 }],
+        },
+      };
+      const action = {
+        type: types.DELETED_TOPOS_CHIP,
+        payload: 1,
+      };
+      const expectedState = {
+        ...stateWithChip,
+        searchFilters: {
+          ...stateWithChip.searchFilters,
+          topoiChips: [],
+        },
+      };
+      expect(userReducer(stateWithChip, action)).toEqual(expectedState);
+    });
+  });
+
+  describe("user authentication", () => {
+    test("Should handle APOLLO_QUERY_RESULT for getUserPermissions", () => {
+      const action = {
+        type: types.APOLLO_QUERY_RESULT,
+        operationName: "getUserPermissions",
+        result: {
+          data: {
+            userPermissions: {
+              isGuest: false,
+              allowNewStopEverywhere: true,
+            },
+          },
+        },
+      };
+      const expectedState = {
+        ...initialState,
+        isGuest: false,
+        allowNewStopEverywhere: true,
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
+
+    test("Should handle UPDATED_AUTH", () => {
+      const authData = {
+        token: "test-token",
+        username: "test-user",
+      };
+      const action = {
+        type: types.UPDATED_AUTH,
+        payload: authData,
+      };
+      const expectedState = {
+        ...initialState,
+        auth: authData,
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
+  });
+
+  describe("UI state management", () => {
+    test("Should handle SHOW_EDIT_QUAY_ADDITIONAL", () => {
+      const action = {
+        type: types.SHOW_EDIT_QUAY_ADDITIONAL,
+      };
+      const expectedState = {
+        ...initialState,
+        showEditQuayAdditional: true,
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
+
+    test("Should handle HIDE_EDIT_QUAY_ADDITIONAL", () => {
+      const stateWithQuayEdit = {
+        ...initialState,
+        showEditQuayAdditional: true,
+      };
+      const action = {
+        type: types.HIDE_EDIT_QUAY_ADDITIONAL,
+      };
+      const expectedState = {
+        ...stateWithQuayEdit,
+        showEditQuayAdditional: false,
+      };
+      expect(userReducer(stateWithQuayEdit, action)).toEqual(expectedState);
+    });
+  });
 });
