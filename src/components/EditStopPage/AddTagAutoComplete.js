@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
 import AutoComplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import debounce from "lodash.debounce";
-import MenuItem from "@mui/material/MenuItem";
-import { toCamelCase } from "../../utils/";
+import { Component } from "react";
 import { injectIntl } from "react-intl";
+import { toCamelCase } from "../../utils/";
 
 class AddTagAutoComplete extends Component {
   constructor(props) {

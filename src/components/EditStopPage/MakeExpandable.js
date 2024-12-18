@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import MdExpand from "@mui/icons-material/ExpandMore";
 import MdCollapse from "@mui/icons-material/ExpandLess";
+import MdExpand from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 class MakeExpandable extends React.PureComponent {
   constructor(props) {

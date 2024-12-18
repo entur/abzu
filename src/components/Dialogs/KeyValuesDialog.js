@@ -12,18 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import Add from "@mui/icons-material/Add";
+import MdRemove from "@mui/icons-material/Delete";
+import MdEdit from "@mui/icons-material/ModeEdit";
+import Fab from "@mui/material/Fab";
 import React from "react";
 import { connect } from "react-redux";
-import MdEdit from "@mui/icons-material/ModeEdit";
-import MdRemove from "@mui/icons-material/Delete";
-import { getPrimaryColor } from "../../config/themeConfig";
-import EditKeyValuePair from "../EditStopPage/EditKeyValuePair";
-import CreateKeyValuePair from "../EditStopPage/CreateKeyValuePair";
 import { StopPlaceActions, UserActions } from "../../actions/";
-import Fab from "@mui/material/Fab";
+import { getPrimaryColor } from "../../config/themeConfig";
 import { selectKeyValuesDataSource } from "../../reducers/selectors";
+import CreateKeyValuePair from "../EditStopPage/CreateKeyValuePair";
+import EditKeyValuePair from "../EditStopPage/EditKeyValuePair";
 import DialogHeader from "./DialogHeader";
-import Add from "@mui/icons-material/Add";
 
 class KeyValuesDialog extends React.Component {
   constructor(props) {

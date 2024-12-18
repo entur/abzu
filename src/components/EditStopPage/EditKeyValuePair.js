@@ -1,6 +1,6 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
 import FlatButton from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import React from "react";
 import { injectIntl } from "react-intl";
 
 class EditKeyValuePair extends React.Component {

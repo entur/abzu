@@ -12,11 +12,11 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React from "react";
 import SvgIcon from "@mui/material/SvgIcon";
 import PropTypes from "prop-types";
-import "../../styles/menu.css";
+import React from "react";
 import svgSprite from "../../static/icons/svg-sprite.svg";
+import "../../styles/menu.css";
 
 class ModalityIconSvg extends React.Component {
   shouldComponentUpdate(nextProps) {

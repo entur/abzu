@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Polygon, Popup } from "react-leaflet";
 import { sortPolygonByAngles } from "../../utils/mapUtils";
 

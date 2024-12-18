@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import Checkbox from "@mui/material/Checkbox";
 import React from "react";
 import Code from "../EditStopPage/Code";
-import Checkbox from "@mui/material/Checkbox";
 
 class ScrollableQuayItem extends React.Component {
   render() {

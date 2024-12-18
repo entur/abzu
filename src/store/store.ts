@@ -13,11 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { configureStore } from "@reduxjs/toolkit";
-import { createReduxHistoryContext } from "redux-first-history";
+import * as Sentry from "@sentry/react";
 import { createBrowserHistory } from "history";
+import { createReduxHistoryContext } from "redux-first-history";
 import loggerMiddleware from "redux-logger";
 import { createRootReducer } from "../reducers";
-import * as Sentry from "@sentry/react";
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({

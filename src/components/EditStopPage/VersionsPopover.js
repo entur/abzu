@@ -12,13 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import { sortVersions } from "../../utils";
-import { Popover } from "@mui/material";
-import Divider from "@mui/material/Divider";
 
 class VersionsPopover extends Component {
   constructor(props) {

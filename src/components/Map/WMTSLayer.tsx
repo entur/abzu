@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from "react";
-import { TileLayer } from "react-leaflet";
 import L from "leaflet";
+import React, { useMemo } from "react";
+import { TileLayer } from "react-leaflet";
 
 export interface WMTSLayerProps {
   baseUrl: string;

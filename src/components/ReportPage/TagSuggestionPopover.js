@@ -12,19 +12,19 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import FlatButton from "@mui/material/Button";
-import { getTagsByName } from "../../actions/TiamatActions";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import Checkbox from "@mui/material/Checkbox";
-import ShowMoreMenuFooter from "./ShowMoreMenuFooter";
-import { injectIntl } from "react-intl";
-import TextField from "@mui/material/TextField";
 import MdAdd from "@mui/icons-material/Add";
-import { connect } from "react-redux";
-import { FormControlLabel, Popover } from "@mui/material";
+import { FormControlLabel } from "@mui/material";
+import FlatButton from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { getTagsByName } from "../../actions/TiamatActions";
+import ShowMoreMenuFooter from "./ShowMoreMenuFooter";
 
 class TagSuggestionPopover extends Component {
   constructor(props) {

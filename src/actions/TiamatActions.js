@@ -13,54 +13,54 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import {
-  mutateDeleteQuay,
-  mutateDeleteStopPlace,
-  mutateMergeQuays,
-  mutateMergeStopPlaces,
-  mutateMoveQuaysToStop,
-  mutateMoveQuaysToNewStop,
-  mutateParentStopPlace,
-  mutateAddToMultiModalStopPlace,
-  mutateCreateMultiModalStopPlace,
-  removeStopPlaceFromParent,
-  mutateStopPlace,
-  updateChildOfParentStop,
-  mutateRemoveTag,
-  mutateCreateTag,
-  mutateTerminateStopPlace,
-  mutateGroupOfStopPlaces,
   deleteGroupMutation,
   deleteParkingMutation,
-  mutatePathLink,
+  mutateAddToMultiModalStopPlace,
+  mutateCreateMultiModalStopPlace,
+  mutateCreateTag,
+  mutateDeleteQuay,
+  mutateDeleteStopPlace,
+  mutateGroupOfStopPlaces,
+  mutateMergeQuays,
+  mutateMergeStopPlaces,
+  mutateMoveQuaysToNewStop,
+  mutateMoveQuaysToStop,
+  mutateParentStopPlace,
   mutateParking,
+  mutatePathLink,
+  mutateRemoveTag,
+  mutateStopPlace,
+  mutateTerminateStopPlace,
+  removeStopPlaceFromParent,
+  updateChildOfParentStop,
 } from "../graphql/Tiamat/mutations";
 import {
-  allVersionsOfStopPlace,
   allEntities,
-  stopPlaceBBQuery,
-  getMergeInfoStopPlace,
-  topopGraphicalPlacesQuery,
+  allVersionsOfStopPlace,
   findStop,
-  getStopPlacesById,
-  getPolygons as getPolygonsQuery,
-  getTagsQuery,
-  findTagByNameQuery,
-  getStopById,
-  getQueryTopographicPlaces,
-  getTagsByNameQuery,
-  getGroupOfStopPlaceQuery,
-  stopPlaceAndPathLinkByVersion,
   findStopForReport as findStopForReportQuery,
+  findTagByNameQuery,
+  getGroupOfStopPlaceQuery,
+  getMergeInfoStopPlace,
   getParkingForMultipleStopPlaces as getParkingForMultipleStopPlacesQuery,
-  topopGraphicalPlacesReportQuery,
+  getPolygons as getPolygonsQuery,
+  getQueryTopographicPlaces,
+  getStopById,
+  getStopPlacesById,
+  getTagsByNameQuery,
+  getTagsQuery,
   neighbourStopPlaceQuays,
+  stopPlaceAndPathLinkByVersion,
+  stopPlaceBBQuery,
+  topopGraphicalPlacesQuery,
+  topopGraphicalPlacesReportQuery,
 } from "../graphql/Tiamat/queries";
 import mapToMutationVariables from "../modelUtils/mapToQueryVariables";
 
-import { createApolloErrorThunk, createApolloThunk } from ".";
-import * as types from "./Types";
 import { v4 as uuidv4 } from "uuid";
+import { createApolloErrorThunk, createApolloThunk } from ".";
 import { getTiamatClient } from "../graphql/clients";
+import * as types from "./Types";
 
 export const getContext = async (auth) => {
   let token;

@@ -1,9 +1,9 @@
+import { divIcon, DragEndEvent } from "leaflet";
 import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
-import { divIcon, DragEndEvent } from "leaflet";
-import BoardingPositionMarkerIcon from "./BoardingPositionMarkerIcon";
 import Code from "../EditStopPage/Code";
+import BoardingPositionMarkerIcon from "./BoardingPositionMarkerIcon";
 
 type Props = {
   position: [number, number];

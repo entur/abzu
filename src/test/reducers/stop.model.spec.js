@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import stopPlaceReducer from "./../../reducers/stopPlaceReducer";
-import stopPlaceMock from "./json/stopPlace.json";
-import stopPlaceMock10Quays from "./json/stopPlaceWith10Quays.json";
-import clientStop from "./json/clientStop.json";
 import QueryVariablesMapper from "../../modelUtils/mapToQueryVariables";
 import { hasExpired } from "../../modelUtils/validBetween";
+import stopPlaceReducer from "./../../reducers/stopPlaceReducer";
+import clientStop from "./json/clientStop.json";
+import stopPlaceMock from "./json/stopPlace.json";
+import stopPlaceMock10Quays from "./json/stopPlaceWith10Quays.json";
 
 window.config = {
   defaultLanguageCode: "nor",

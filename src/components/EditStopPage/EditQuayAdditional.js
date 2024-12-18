@@ -12,17 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { connect } from "react-redux";
-import FacilitiesQuayTab from "./FacilitiesQuayTab";
-import AccessiblityQuayTab from "./AcessibilityQuayTab";
+import Tabs from "@mui/material/Tabs";
+import React from "react";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import AccessiblityQuayTab from "./AcessibilityQuayTab";
 import BoardingPositionsTab from "./BoardingPositionsTab";
-import { UserActions } from "../../actions";
-import AcessibilityStopTab from "./AcessibilityStopTab";
-import FacilitiesStopTab from "./FacilitiesStopTab";
+import FacilitiesQuayTab from "./FacilitiesQuayTab";
 
 class EditQuayAdditional extends React.Component {
   constructor(props) {

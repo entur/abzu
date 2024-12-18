@@ -12,10 +12,10 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+import { findDuplicateImportedIds } from "../utils/";
+import DrammenOsloConflict from "./mock/DrammenOsloConflict";
 import StopWithDuplicateImportedIds from "./mock/StopWithDuplicateImportedIds";
 import StopsWithDuplicateImportedIds from "./mock/StopsWithSharedDupId";
-import DrammenOsloConflict from "./mock/DrammenOsloConflict";
-import { findDuplicateImportedIds } from "../utils/";
 
 describe("duplicateIds", () => {
   test("should find all duplicate Ids on quays within stopPlace", () => {

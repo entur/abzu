@@ -12,11 +12,10 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React from "react";
-import StopPlaceGroup from "./StopPlaceGroup";
+import { FeatureGroup } from "react-leaflet";
 import { connect } from "react-redux";
 import { Entities } from "../../models/Entities";
-import { FeatureGroup } from "react-leaflet";
+import StopPlaceGroup from "./StopPlaceGroup";
 
 const StopPlaceGroupList = ({ list }) => (
   <FeatureGroup>

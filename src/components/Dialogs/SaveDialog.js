@@ -12,18 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import MdSpinner from "../../static/icons/spinner";
+import { Cancel, Save } from "@mui/icons-material";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@mui/material";
-import { Cancel, Save } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import React from "react";
+import MdSpinner from "../../static/icons/spinner";
 
 class SaveDialog extends React.Component {
   constructor(props) {

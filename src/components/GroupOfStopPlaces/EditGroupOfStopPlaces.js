@@ -12,25 +12,25 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
 import MdBack from "@mui/icons-material/ArrowBack";
-import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
-import { injectIntl } from "react-intl";
-import FlatButton from "@mui/material/Button";
-import MdUndo from "@mui/icons-material/Undo";
 import MdSave from "@mui/icons-material/Save";
+import MdUndo from "@mui/icons-material/Undo";
+import FlatButton from "@mui/material/Button";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
-import mapHelper from "../../modelUtils/mapToQueryVariables";
+import { StopPlacesGroupActions, UserActions } from "../../actions/";
 import {
-  mutateGroupOfStopPlace,
   deleteGroupOfStopPlaces,
+  mutateGroupOfStopPlace,
 } from "../../actions/TiamatActions";
 import * as types from "../../actions/Types";
+import mapHelper from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes/";
-import { UserActions, StopPlacesGroupActions } from "../../actions/";
-import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import { getIn } from "../../utils/";
+import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
+import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
 
 class EditGroupOfStopPlaces extends Component {
   constructor(props) {

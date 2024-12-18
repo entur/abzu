@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import FlatButton from "@mui/material/Button";
 import InformationIcon from "@mui/icons-material/Info";
+import FlatButton from "@mui/material/Button";
+import PropTypes from "prop-types";
+import React from "react";
 
 class InformationBanner extends React.Component {
   constructor(props) {

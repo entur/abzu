@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
 import Edit from "@mui/icons-material/ModeEdit";
-import FlatButton from "@mui/material/Button";
 import MapsMyLocation from "@mui/icons-material/MyLocation";
+import FlatButton from "@mui/material/Button";
+import { Component } from "react";
 
 class SearchBoxEditAction extends Component {
   render() {

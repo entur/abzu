@@ -12,40 +12,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import MdSearch from "@mui/icons-material/Search";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import React from "react";
+import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import ReportPageFooter from "../components/ReportPage/ReportPageFooter";
-import ReportResultView from "../components/ReportPage/ReportResultView";
-import ReportFilterBox from "../components/ReportPage/ReportFilterBox";
-import ModalityFilter from "../components/EditStopPage/ModalityFilter";
-import TopographicalFilter from "../components/MainPage/TopographicalFilter";
-import AutoComplete from "@mui/material/Autocomplete";
 import {
   findStopForReport,
-  findTopographicalPlace,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
 } from "../actions/TiamatActions";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import MdSpinner from "../static/icons/spinner";
-import MdSearch from "@mui/icons-material/Search";
 import ColumnFilterPopover from "../components/EditStopPage/ColumnFilterPopover";
-import { injectIntl } from "react-intl";
+import ModalityFilter from "../components/EditStopPage/ModalityFilter";
+import TopographicalFilter from "../components/MainPage/TopographicalFilter";
+import AdvancedReportFilters from "../components/ReportPage/AdvancedReportFilters";
+import GeneralReportFilters from "../components/ReportPage/GeneralReportFilters";
+import ReportFilterBox from "../components/ReportPage/ReportFilterBox";
+import ReportPageFooter from "../components/ReportPage/ReportPageFooter";
+import ReportResultView from "../components/ReportPage/ReportResultView";
+import TagFilterTray from "../components/ReportPage/TagFilterTray";
 import {
   columnOptionsQuays,
   columnOptionsStopPlace,
 } from "../config/columnOptions";
+import MdSpinner from "../static/icons/spinner";
 import {
   buildReportSearchQuery,
   extractQueryParamsFromUrl,
 } from "../utils/URLhelpers";
-import TagFilterTray from "../components/ReportPage/TagFilterTray";
-import AdvancedReportFilters from "../components/ReportPage/AdvancedReportFilters";
-import GeneralReportFilters from "../components/ReportPage/GeneralReportFilters";
-import Autocomplete from "@mui/material/Autocomplete";
 
 class ReportPage extends React.Component {
   constructor(props) {

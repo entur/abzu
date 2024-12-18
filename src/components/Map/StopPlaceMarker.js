@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Marker, Popup } from "react-leaflet";
 import { divIcon } from "leaflet";
+import PropTypes from "prop-types";
+import React from "react";
 import ReactDOM from "react-dom/server";
+import { Marker, Popup } from "react-leaflet";
+import PopupButton from "../Map/PopupButton";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareStopPlaceMarker as shallowCompare } from "./shallowCompare/";
-import PopupButton from "../Map/PopupButton";
 
 class StopPlaceMarker extends React.Component {
   static propTypes = {

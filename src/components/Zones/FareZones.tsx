@@ -1,14 +1,14 @@
-import React from "react";
 import { ControlPosition } from "leaflet";
-import { FareZone } from "../../models/FareZone";
-import { Zones } from "./Zones";
-import { getColorByCodespace } from "./getColorByCodespace";
+import React from "react";
 import { useIntl } from "react-intl";
+import { FareZone } from "../../models/FareZone";
 import {
   getFareZonesByIdsAction,
   getFareZonesForFilterAction,
   setSelectedFareZones,
 } from "../../reducers/zonesSlice";
+import { Zones } from "./Zones";
+import { getColorByCodespace } from "./getColorByCodespace";
 
 export interface FareZonesProps {
   position: ControlPosition;

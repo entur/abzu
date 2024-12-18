@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { extractAlternativeNames, getImportedId } from "./stopPlaceUtils";
 import { getAssessmentSetBasedOnQuays } from "../modelUtils/limitationHelpers";
-import { setDecimalPrecision } from "../utils/";
 import { hasExpired, isFuture } from "../modelUtils/validBetween";
-import StopPlace from "./StopPlace";
+import { setDecimalPrecision } from "../utils/";
 import { Entities } from "./Entities";
+import StopPlace from "./StopPlace";
+import { extractAlternativeNames, getImportedId } from "./stopPlaceUtils";
 
 class ParentStopPlace {
   constructor(stop, isActive, parking, userDefinedCoordinates) {

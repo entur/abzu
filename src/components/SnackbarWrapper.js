@@ -12,16 +12,16 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import Snackbar from "@mui/material/Snackbar";
-import * as types from "../actions/Types";
 import MdCheck from "@mui/icons-material/Check";
 import MdError from "@mui/icons-material/Error";
-import { UserActions } from "../actions/";
-import Button from "@mui/material/Button";
 import MdInfo from "@mui/icons-material/InfoOutlined";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import { Component } from "react";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { UserActions } from "../actions/";
+import * as types from "../actions/Types";
 
 class SnackbarWrapper extends Component {
   constructor(props) {

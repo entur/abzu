@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import { injectIntl } from "react-intl";
 import MdDelete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
 import MdWarning from "@mui/icons-material/Warning";
-import StopPlaceListItemQuays from "./StopPlaceListItemQuays";
-import StopPlaceChildrenItems from "./StopPlaceChildrenItems";
-import AdjacentStopList from "./AdjacentStopList";
+import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
+import AdjacentStopList from "./AdjacentStopList";
+import StopPlaceChildrenItems from "./StopPlaceChildrenItems";
+import StopPlaceListItemQuays from "./StopPlaceListItemQuays";
 
 class StopPlaceListItemDetails extends Component {
   render() {

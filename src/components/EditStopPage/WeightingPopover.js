@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import MenuItem from "@mui/material/MenuItem";
 import MdTransfer from "@mui/icons-material/TransferWithinAStation";
-import weightTypes, { weightColors } from "../../models/weightTypes";
-import { injectIntl } from "react-intl";
-import Menu from "@mui/material/Menu";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+import { injectIntl } from "react-intl";
+import weightTypes, { weightColors } from "../../models/weightTypes";
 
 class WeightingPopover extends React.Component {
   render() {

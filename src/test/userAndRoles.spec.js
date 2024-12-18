@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { getAllowanceInfoForStop } from "../reducers/rolesReducerUtils";
+import mockBusStop from "./mock/mockBusStop";
 import mockRailReplacementStop from "./mock/mockRailReplacementStop";
 import mockRailStop from "./mock/mockRailStop";
-import mockBusStop from "./mock/mockBusStop";
 import mockStopWithoutModality from "./mock/mockStopWithoutModality";
 import { mockedAllowanceInfoAction } from "./mock/mockedAllowanceInfoAction";
 

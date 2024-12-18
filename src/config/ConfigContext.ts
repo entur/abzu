@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
 import { OidcClientSettings } from "oidc-client-ts";
+import React, { useContext } from "react";
 
 export interface Config {
   tiamatBaseUrl?: string;

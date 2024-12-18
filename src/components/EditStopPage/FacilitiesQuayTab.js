@@ -12,27 +12,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import MdLess from "@mui/icons-material/ExpandLess";
+import MdMore from "@mui/icons-material/ExpandMore";
+import MdWc from "@mui/icons-material/Wc";
+import { FormControlLabel } from "@mui/material";
+import FlatButton from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
 import React from "react";
 import { connect } from "react-redux";
-import Checkbox from "@mui/material/Checkbox";
-import TicketMachine from "../../static/icons/facilities/TicketMachine";
-import BusShelter from "../../static/icons/facilities/BusShelter";
-import Divider from "@mui/material/Divider";
-import ToolTipIcon from "./ToolTipIcon";
-import MdWc from "@mui/icons-material/Wc";
-import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
-import TextField from "@mui/material/TextField";
-import MdMore from "@mui/icons-material/ExpandMore";
-import MdLess from "@mui/icons-material/ExpandLess";
-import FlatButton from "@mui/material/Button";
+import { EquipmentActions } from "../../actions/";
+import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import StairsIcon from "../../static/icons/accessibility/Stairs";
+import BusShelter from "../../static/icons/facilities/BusShelter";
 import EnclosedIcon from "../../static/icons/facilities/Enclosed";
 import Heated from "../../static/icons/facilities/Heated";
-import equipmentHelpers from "../../modelUtils/equipmentHelpers";
-import { EquipmentActions } from "../../actions/";
-import { getIn } from "../../utils/";
+import TicketMachine from "../../static/icons/facilities/TicketMachine";
+import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
 import Sign512 from "../../static/icons/TransportSign";
-import { FormControlLabel } from "@mui/material";
+import { getIn } from "../../utils/";
+import ToolTipIcon from "./ToolTipIcon";
 
 class FacilitiesQuayTab extends React.Component {
   constructor(props) {

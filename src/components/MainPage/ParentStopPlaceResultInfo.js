@@ -12,17 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import WheelChair from "@mui/icons-material/Accessible";
+import { Component } from "react";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { getIn } from "../../utils/";
+import ModalityTray from "../ReportPage/ModalityIconTray";
+import StopPlaceLink from "../ReportPage/StopPlaceLink";
 import BelongsToGroup from "./BelongsToGroup";
 import CircularNumber from "./CircularNumber";
 import HasExpiredInfo from "./HasExpiredInfo";
-import ModalityTray from "../ReportPage/ModalityIconTray";
-import React, { Component } from "react";
-import StopPlaceLink from "../ReportPage/StopPlaceLink";
-import TagTray from "./TagTray";
-import WheelChair from "@mui/icons-material/Accessible";
-import { getIn } from "../../utils/";
-import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import ModalityIconImg from "./ModalityIconImg";
+import TagTray from "./TagTray";
 
 class ParentStopPlaceResultInfo extends Component {
   render() {

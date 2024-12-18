@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from "./Types";
-import { getCentroid } from "../utils/mapUtils";
-import { UserActions } from ".";
-import { getIn } from "../utils";
-import { updateURLWithId } from "../utils/URLhelpers";
-import { createThunk } from ".";
+import { createThunk, UserActions } from ".";
 import { Entities } from "../models/Entities";
+import { getIn } from "../utils";
+import { getCentroid } from "../utils/mapUtils";
+import { updateURLWithId } from "../utils/URLhelpers";
+import * as types from "./Types";
 
 var StopPlaceActions = {};
 

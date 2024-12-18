@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import Tag from "../MainPage/Tag";
-import moment from "moment";
 import MdDelete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import moment from "moment";
+import { Component } from "react";
+import Tag from "../MainPage/Tag";
 
 class TagItem extends Component {
   render() {

@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import L from "leaflet";
 import React from "react";
+import { injectIntl } from "react-intl";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
-import L from "leaflet";
 import coordinatesIcon from "../../static/icons/coordinates-marker.png";
-import { injectIntl } from "react-intl";
 import mapCenterIcon from "../../static/icons/map-center.png";
 import mapZoomIn from "../../static/icons/map-zoom-in.png";
 

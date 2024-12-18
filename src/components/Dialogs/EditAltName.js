@@ -12,15 +12,15 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
+import MdClose from "@mui/icons-material/Close";
 import FlatButton from "@mui/material/Button";
-import Select from "@mui/material/Select";
+import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { Component } from "react";
 import * as altNameConfig from "../../config/altNamesConfig";
 import { getIn } from "../../utils/";
-import MdClose from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
 
 class EditAltName extends Component {
   constructor(props) {

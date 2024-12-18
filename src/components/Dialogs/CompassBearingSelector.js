@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
 import { Box, Typography } from "@mui/material";
+import { useRef } from "react";
 
 const CompassBearingSelector = ({ bearing, onBearingChange }) => {
   const compassRef = useRef(null);

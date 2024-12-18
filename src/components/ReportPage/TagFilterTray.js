@@ -12,8 +12,8 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
 import Chip from "@mui/material/Chip";
+import { Component } from "react";
 import TagSuggestionPopover from "./TagSuggestionPopover";
 
 class TagFilterTray extends Component {
