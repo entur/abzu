@@ -5,6 +5,7 @@ import {
   getGroupMemberSuggestions,
   getUniquePathLinks,
   isChildTooFarAway,
+  isLegalChildStopPlace,
   isMemberTooFarAway,
 } from "./leafletUtils";
 
@@ -222,6 +223,28 @@ describe("leafletUtils", () => {
         1,
       );
       expect(result).toHaveLength(1);
+    });
+  });
+
+  describe("isLegalChildStopPlace", () => {
+    it("returns false when stopPlace is null", () => {
+      expect(isLegalChildStopPlace(null)).toBe(false);
+    });
+
+    it("returns false when stopPlace has no permissions", () => {
+      expect(isLegalChildStopPlace({})).toBe(false);
+    });
+
+    it("returns false when stopPlace has permissions but canEdit is false", () => {
+      expect(isLegalChildStopPlace({ permissions: { canEdit: false } })).toBe(
+        false,
+      );
+    });
+
+    it("returns true when stopPlace has permissions and canEdit is true", () => {
+      expect(isLegalChildStopPlace({ permissions: { canEdit: true } })).toBe(
+        true,
+      );
     });
   });
 });
