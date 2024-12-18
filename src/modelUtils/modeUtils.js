@@ -8,7 +8,7 @@ export const getInverseSubmodesWhitelist = (whitelist) => {
 export const getStopTypesForSubmodes = (legalSubmodes) => {
   let result = [];
 
-  if (!legalSubmodes || !legalSubmodes.length) return result;
+  if (!legalSubmodes?.length) return result;
 
   for (let stopType of Object.keys(stopTypes)) {
     const submodes = stopType.submodes || [];
