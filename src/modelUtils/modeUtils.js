@@ -10,15 +10,12 @@ export const getStopTypesForSubmodes = (legalSubmodes) => {
 
   if (!legalSubmodes || !legalSubmodes.length) return result;
 
-  const stopTypeKeys = Object.keys(stopTypes);
-
-  for (let i = 0; i < stopTypeKeys.length; i++) {
-    const stopType = stopTypes[stopTypeKeys[i]];
+  for (let stopType of Object.keys(stopTypes)) {
     const submodes = stopType.submodes || [];
     legalSubmodes.forEach((legalSubmode) => {
       if (submodes.indexOf(legalSubmode) > -1) {
-        if (result.indexOf(stopTypeKeys[i]) === -1 && legalSubmode !== null) {
-          result.push(stopTypeKeys[i]);
+        if (result.indexOf(stopType) === -1 && legalSubmode !== null) {
+          result.push(stopType);
         }
       }
     });
