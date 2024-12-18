@@ -18,7 +18,7 @@ import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
-import { isLegalChildStopPlace } from "../../utils/roleUtils";
+import { isLegalChildStopPlace } from "../../modelUtils/leafletUtils";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import PopupButton from "./PopupButton";
 import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
