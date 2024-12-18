@@ -150,3 +150,12 @@ export const getStopPermissions = (stopPlace) => {
   }
   return buildAllowanceInfoForStopPlace(stopPlace);
 };
+
+export const isStopFromSearch = (state, stopId) => {
+  if (!stopId) return false;
+
+  return (
+    state.stopPlace.searchResults?.some((result) => result.id === stopId) ||
+    state.stopPlace.activeSearchResult?.id === stopId
+  );
+};

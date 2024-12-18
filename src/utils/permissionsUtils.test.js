@@ -4,6 +4,7 @@ import {
   getLegalStopPlaceTypes,
   getLegalSubmodesForStopPlace,
   getStopPermissions,
+  isStopFromSearch,
 } from "./permissionsUtils";
 
 describe("getLegalStopPlaceTypes", () => {
@@ -317,5 +318,80 @@ describe("getStopPermissions", () => {
       legalStopPlaceTypes: [],
       legalSubmodes: [],
     });
+  });
+});
+
+describe("isStopFromSearch", () => {
+  const mockStopId = "NSR:StopPlace:123";
+  const baseState = {
+    stopPlace: {
+      searchResults: [],
+      activeSearchResult: null,
+    },
+  };
+
+  it("returns false when stopId is null", () => {
+    expect(isStopFromSearch(baseState, null)).toBe(false);
+  });
+
+  it("returns false when stopId is undefined", () => {
+    expect(isStopFromSearch(baseState, undefined)).toBe(false);
+  });
+
+  it("returns false when stop is not in search results and not active result", () => {
+    expect(isStopFromSearch(baseState, mockStopId)).toBe(false);
+  });
+
+  it("returns true when stop is the active search result", () => {
+    const state = {
+      ...baseState,
+      stopPlace: {
+        ...baseState.stopPlace,
+        activeSearchResult: { id: mockStopId },
+      },
+    };
+    expect(isStopFromSearch(state, mockStopId)).toBe(true);
+  });
+
+  it("returns true when stop is in search results", () => {
+    const state = {
+      ...baseState,
+      stopPlace: {
+        ...baseState.stopPlace,
+        searchResults: [{ id: mockStopId }],
+      },
+    };
+    expect(isStopFromSearch(state, mockStopId)).toBe(true);
+  });
+
+  it("returns true when stop is both in search results and active result", () => {
+    const state = {
+      ...baseState,
+      stopPlace: {
+        ...baseState.stopPlace,
+        searchResults: [{ id: mockStopId }],
+        activeSearchResult: { id: mockStopId },
+      },
+    };
+    expect(isStopFromSearch(state, mockStopId)).toBe(true);
+  });
+
+  it("handles undefined searchResults gracefully", () => {
+    const state = {
+      stopPlace: {
+        activeSearchResult: null,
+      },
+    };
+    expect(isStopFromSearch(state, mockStopId)).toBe(false);
+  });
+
+  it("returns false for a different stop id", () => {
+    const state = {
+      stopPlace: {
+        searchResults: [{ id: mockStopId }],
+        activeSearchResult: { id: mockStopId },
+      },
+    };
+    expect(isStopFromSearch(state, "NSR:StopPlace:456")).toBe(false);
   });
 });

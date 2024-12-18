@@ -20,7 +20,7 @@ import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../actions";
-import { updateAuth } from "../actions/UserActions";
+import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
 import Header from "../components/Header";
 import SnackbarWrapper from "../components/SnackbarWrapper";
@@ -46,7 +46,7 @@ const App = ({ children }) => {
   useEffect(() => {
     dispatch(updateAuth(auth));
     if (!auth.isLoading) {
-      dispatch(UserActions.fetchUserPermissions());
+      dispatch(fetchUserPermissions());
     }
   }, [auth]);
 

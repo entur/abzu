@@ -189,7 +189,6 @@ class MarkerList extends React.Component {
       missingCoordinatesMap,
       handleSetCompassBearing,
       disabled,
-      disabledForSearch,
       intl,
       showExpiredStops,
       isEditingStop,
@@ -229,7 +228,6 @@ class MarkerList extends React.Component {
               isMultimodalChild={false}
               isGroupMember={true}
               disabled={disabled}
-              disabledForSearch={disabledForSearch}
               handleDragEnd={() => {}}
               active={true}
               stopType={member.stopPlaceType}
@@ -288,7 +286,6 @@ class MarkerList extends React.Component {
                   isMultimodal={false}
                   isMultimodalChild={true}
                   disabled={disabled}
-                  disabledForSearch={disabledForSearch}
                   handleDragEnd={handleDragEnd}
                   active={false}
                   stopType={child.stopPlaceType}
@@ -379,7 +376,6 @@ class MarkerList extends React.Component {
               hasExpired={marker.hasExpired}
               isGroupMember={marker.isMemberOfGroup}
               handleCreateGroup={this.handleCreateGroup.bind(this)}
-              disabledForSearch={disabledForSearch}
               allowConnectToAdjacentStop={false}
             />,
           );
@@ -628,7 +624,6 @@ const mapStateToProps = (state) => ({
   showExpiredStops: state.stopPlace.showExpiredStops,
   disabled: !getStopPermissions(state.stopPlace.current).canEdit,
   stopPlace: state.stopPlace.current,
-  disabledForSearch: !getStopPermissions(state.stopPlace.current).canEdit,
   newStopIsMultiModal: state.user.newStopIsMultiModal,
   currentStopIsMultiModal: getIn(
     state.stopPlace,
