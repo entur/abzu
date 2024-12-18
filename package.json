@@ -1,6 +1,6 @@
 {
   "name": "abzu",
-  "version": "1.107.0",
+  "version": "1.108.0",
   "description": "Nasjonalt stoppestedregister",
   "main": "index.js",
   "scripts": {
@@ -63,9 +63,10 @@
       "prettier --write"
     ]
   },
-  "prettier":{
+  "prettier": {
     "plugins": [
-      "prettier-plugin-organize-imports"]
+      "prettier-plugin-organize-imports"
+    ]
   },
   "devDependencies": {
     "@mui/types": "7.2.20",
