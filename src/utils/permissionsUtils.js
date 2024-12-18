@@ -18,13 +18,16 @@ const buildAllowanceInfo = (permissions) => {
   const canEdit = permissions.canEdit;
   const canDeleteStop = permissions.canDelete;
 
-  let legalStopPlaceTypes = getLegalStopPlaceTypes(permissions);
+  let legalStopPlaceTypes = getLegalStopPlacesTypes(
+    permissions.allowedStopPlaceTypes || [],
+    permissions.bannedStopPlaceTypes || [],
+  );
   let legalSubmodes = getLegalSubmodes(permissions);
 
   return {
     legalStopPlaceTypes,
     legalSubmodes,
-    blacklistedStopPlaceTypes: permissions.bannedStopPlaceTypes,
+    blacklistedStopPlaceTypes: permissions.bannedStopPlaceTypes || [],
     canEdit,
     canDeleteStop,
   };

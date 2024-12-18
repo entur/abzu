@@ -1,7 +1,9 @@
 import stopTypes from "../models/stopTypes";
 import {
+  getAllowanceInfoFromLocationPermissions,
   getLegalStopPlaceTypes,
   getLegalSubmodesForStopPlace,
+  getStopPermissions,
 } from "./permissionsUtils";
 
 describe("getLegalStopPlaceTypes", () => {
@@ -206,7 +208,8 @@ describe("getLegalSubmodesForStopPlace", () => {
       "sightseeingBus",
     ]);
   });
-  it("returns submodes correctly when wildcard in allowed submodesis used in combination with banned submodes", () => {
+
+  it("returns submodes correctly when wildcard in allowed submodes is used in combination with banned submodes", () => {
     expect(
       getLegalSubmodesForStopPlace({
         permissions: {
@@ -225,5 +228,94 @@ describe("getLegalSubmodesForStopPlace", () => {
       "schoolBus",
       "sightseeingBus",
     ]);
+  });
+});
+
+describe("getAllowanceInfoFromLocationPermissions", () => {
+  it("returns default values when locationPermissions is null", () => {
+    expect(getAllowanceInfoFromLocationPermissions(null)).toEqual({
+      canEdit: false,
+      canDelete: false,
+      legalStopPlaceTypes: [],
+      legalSubmodes: [],
+    });
+  });
+
+  it("returns correct allowance info for valid permissions", () => {
+    const locationPermissions = {
+      canEdit: true,
+      canDelete: true,
+      allowedStopPlaceTypes: ["onstreetBus"],
+      bannedStopPlaceTypes: [],
+      allowedSubmodes: ["localBus"],
+      bannedSubmodes: [],
+    };
+    expect(
+      getAllowanceInfoFromLocationPermissions(locationPermissions),
+    ).toEqual({
+      canEdit: true,
+      canDelete: true,
+      legalStopPlaceTypes: ["onstreetBus"],
+      legalSubmodes: ["localBus"],
+    });
+  });
+
+  it("handles wildcard in banned types correctly", () => {
+    const locationPermissions = {
+      canEdit: true,
+      canDelete: true,
+      allowedStopPlaceTypes: ["onstreetBus"],
+      bannedStopPlaceTypes: ["*"],
+      allowedSubmodes: ["localBus"],
+      bannedSubmodes: [],
+    };
+    expect(
+      getAllowanceInfoFromLocationPermissions(locationPermissions),
+    ).toEqual({
+      canEdit: true,
+      canDelete: true,
+      legalStopPlaceTypes: [],
+      legalSubmodes: ["localBus"],
+    });
+  });
+});
+
+describe("getStopPermissions", () => {
+  it("returns default permissions when stopPlace is null", () => {
+    expect(getStopPermissions(null)).toEqual({
+      canEdit: false,
+      canDelete: false,
+      legalStopPlaceTypes: [],
+      legalSubmodes: [],
+    });
+  });
+
+  it("returns stopPlace permissions when available", () => {
+    const stopPlace = {
+      permissions: {
+        canEdit: true,
+        canDelete: true,
+        allowedStopPlaceTypes: ["onstreetBus"],
+        allowedSubmodes: ["localBus"],
+        bannedStopPlaceTypes: [],
+        bannedSubmodes: [],
+      },
+    };
+    expect(getStopPermissions(stopPlace)).toEqual({
+      blacklistedStopPlaceTypes: [],
+      canDeleteStop: true,
+      canEdit: true,
+      legalStopPlaceTypes: ["onstreetBus"],
+      legalSubmodes: ["localBus"],
+    });
+  });
+
+  it("returns default permissions when stopPlace has no permissions", () => {
+    expect(getStopPermissions({})).toEqual({
+      canEdit: false,
+      canDelete: false,
+      legalStopPlaceTypes: [],
+      legalSubmodes: [],
+    });
   });
 });
