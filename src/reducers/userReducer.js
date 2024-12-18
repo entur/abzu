@@ -323,9 +323,10 @@ const userReducer = (state = initialState, action) => {
       return state;
 
     case types.UPDATED_AUTH:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         auth: action.payload,
-      });
+      };
 
     default:
       return state;
