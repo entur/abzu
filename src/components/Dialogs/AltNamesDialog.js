@@ -12,18 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import { connect } from "react-redux";
 import MdDelete from "@mui/icons-material/Delete";
-import * as altNameConfig from "../../config/altNamesConfig";
 import MdEdit from "@mui/icons-material/ModeEdit";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
+import { connect } from "react-redux";
 import { StopPlaceActions } from "../../actions/";
-import ConfirmDialog from "./ConfirmDialog";
+import * as altNameConfig from "../../config/altNamesConfig";
 import { getPrimaryColor } from "../../config/themeConfig";
-import NewAltName from "./NewAltName";
-import EditAltName from "./EditAltName";
+import ConfirmDialog from "./ConfirmDialog";
 import DialogHeader from "./DialogHeader";
+import EditAltName from "./EditAltName";
+import NewAltName from "./NewAltName";
 
 class AltNamesDialog extends React.Component {
   constructor(props) {

@@ -12,21 +12,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Marker, Popup } from "react-leaflet";
 import { divIcon } from "leaflet";
+import PropTypes from "prop-types";
+import React from "react";
 import ReactDOM from "react-dom/server";
+import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
 import compassIcon from "../../static/icons/compass.png";
-import { UserActions, StopPlaceActions } from "../../actions/";
 import OSMIcon from "../../static/icons/osm_logo.png";
 import StreetViewIcon from "../../static/icons/street_view_logo.png";
 import { getIn } from "../../utils/";
 import Code from "../EditStopPage/Code";
-import { compareShallowQuayMarker as shallowCompare } from "./shallowCompare/";
-import QuayMarkerIcon from "./QuayMarkerIcon";
 import PopupButton from "./PopupButton";
+import QuayMarkerIcon from "./QuayMarkerIcon";
+import { compareShallowQuayMarker as shallowCompare } from "./shallowCompare/";
 
 class QuayMarker extends React.Component {
   static propTypes = {

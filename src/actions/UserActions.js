@@ -12,20 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as types from "./Types";
-import configureLocalization from "../localization/localization";
-import FavoriteManager from "../singletons/FavoriteManager";
-import SettingsManager from "../singletons/SettingsManager";
+import { push } from "redux-first-history";
 import {
-  getMergeInfoForStops,
   getAddStopPlaceInfo,
+  getMergeInfoForStops,
 } from "../actions/TiamatActions";
-import { getIn } from "../utils/";
+import { checkQuayUsage, checkStopPlaceUsage } from "../graphql/OTP/actions";
+import configureLocalization from "../localization/localization";
 import ParentStopPlace from "../models/ParentStopPlace";
 import Routes from "../routes/";
+import FavoriteManager from "../singletons/FavoriteManager";
+import SettingsManager from "../singletons/SettingsManager";
+import { getIn } from "../utils/";
 import { createThunk } from "./";
-import { checkStopPlaceUsage, checkQuayUsage } from "../graphql/OTP/actions";
-import { push } from "redux-first-history";
+import * as types from "./Types";
 
 var UserActions = {};
 

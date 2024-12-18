@@ -15,9 +15,9 @@ limitations under the Licence. */
 import * as types from "../actions/Types";
 import {
   getAllowanceInfoForGroup,
-  getAllowanceSearchInfo,
-  getAllowanceInfoFromPosition,
   getAllowanceInfoForStop,
+  getAllowanceInfoFromPosition,
+  getAllowanceSearchInfo,
   getLatLng,
   reduceFetchedPolygons,
 } from "./rolesReducerUtils";

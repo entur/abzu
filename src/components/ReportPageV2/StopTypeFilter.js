@@ -1,13 +1,12 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
-import { injectIntl } from "react-intl";
+import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
+import { injectIntl } from "react-intl";
 
 import stopTypes from "../../models/stopTypes";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";

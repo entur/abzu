@@ -12,15 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import ModalityIconImg from "../MainPage/ModalityIconImg";
-import Divider from "@mui/material/Divider";
-import NavigationExpandMore from "@mui/icons-material/ExpandMore";
 import NavigationExpandLess from "@mui/icons-material/ExpandLess";
+import NavigationExpandMore from "@mui/icons-material/ExpandMore";
 import EditorInsertLink from "@mui/icons-material/InsertLink";
-import StopPlaceListItemDetails from "./StopPlaceListItemDetails";
-import StopPlaceLink from "../ReportPage/StopPlaceLink";
+import Divider from "@mui/material/Divider";
+import { Component } from "react";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
 import ModalityIconTray from "../ReportPage/ModalityIconTray";
+import StopPlaceLink from "../ReportPage/StopPlaceLink";
+import StopPlaceListItemDetails from "./StopPlaceListItemDetails";
 
 class StopPlaceListItem extends Component {
   render() {

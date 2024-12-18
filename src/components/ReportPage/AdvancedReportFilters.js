@@ -12,13 +12,13 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import Checkbox from "@mui/material/Checkbox";
+import MdMore from "@mui/icons-material/ExpandMore";
+import { FormControlLabel } from "@mui/material";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { FormControlLabel, Popover } from "@mui/material";
-import MdMore from "@mui/icons-material/ExpandMore";
+import { Component } from "react";
 
 class AdvancedReportFilters extends Component {
   constructor(props) {

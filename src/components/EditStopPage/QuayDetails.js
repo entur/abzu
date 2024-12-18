@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
+import { injectIntl } from "react-intl";
 import Code from "./Code";
 import CompassBearingInfo from "./CompassBearingInfo";
-import { injectIntl } from "react-intl";
 
 class QuayDetails extends React.Component {
   render() {

@@ -1,13 +1,7 @@
-import {
-  ActionCreatorWithoutPayload,
-  ActionCreatorWithPayload,
-  AsyncThunk,
-  AsyncThunkAction,
-} from "@reduxjs/toolkit";
+import { ActionCreatorWithPayload, AsyncThunk } from "@reduxjs/toolkit";
 import { ControlPosition } from "leaflet";
-import { Dispatch } from "redux";
 import { TariffZone } from "../../models/TariffZone";
-import { AppDispatch, RootState } from "../../store/store";
+import { RootState } from "../../store/store";
 import { useZones } from "./useZones";
 import { ZonesControl } from "./ZonesControl";
 import { ZonesLayer } from "./ZonesLayer";

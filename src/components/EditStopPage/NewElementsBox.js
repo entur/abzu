@@ -13,17 +13,17 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 
-import quayIcon from "../../static/icons/pin-50x82-red-quay.png";
-import boardingPositionIcon from "../../static/icons/pin-50x82-purple-boardingPosition.png";
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";
-import parkAndRideIcon from "../../static/icons/pin-50x82-blue-parkAndRide.png";
 import bikeParkingIcon from "../../static/icons/pin-50x82-blue-bikepark.png";
+import parkAndRideIcon from "../../static/icons/pin-50x82-blue-parkAndRide.png";
+import boardingPositionIcon from "../../static/icons/pin-50x82-purple-boardingPosition.png";
+import quayIcon from "../../static/icons/pin-50x82-red-quay.png";
 
 class NewElementsBox extends React.Component {
   constructor(props) {

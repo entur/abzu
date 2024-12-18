@@ -12,19 +12,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import StopPlaceActions from "./StopPlaceActions";
-import UserActions from "./UserActions";
+import { getOperationAST } from "graphql";
 import AssessmentActions from "./AssessmentActions";
 import EquipmentActions from "./EquipmentActions";
+import StopPlaceActions from "./StopPlaceActions";
 import StopPlacesGroupActions from "./StopPlacesGroupActions";
-import { getOperationAST } from "graphql";
+import UserActions from "./UserActions";
 
 export {
-  StopPlaceActions,
-  UserActions,
   AssessmentActions,
   EquipmentActions,
+  StopPlaceActions,
   StopPlacesGroupActions,
+  UserActions,
 };
 
 export const createThunk = (type: string, payload: any) => ({

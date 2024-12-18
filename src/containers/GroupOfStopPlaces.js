@@ -12,14 +12,14 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
+import { StopPlacesGroupActions, UserActions } from "../actions/";
 import { getGroupOfStopPlacesById } from "../actions/TiamatActions";
-import GroupOfStopPlaceMap from "../components/GroupOfStopPlaces/GroupOfStopPlacesMap";
-import EditGroupOfStopPlace from "../components/GroupOfStopPlaces/EditGroupOfStopPlaces";
-import Loader from "../components/Dialogs/Loader";
 import GroupErrorDialog from "../components/Dialogs/GroupErrorDialog";
-import { UserActions, StopPlacesGroupActions } from "../actions/";
+import Loader from "../components/Dialogs/Loader";
+import EditGroupOfStopPlace from "../components/GroupOfStopPlaces/EditGroupOfStopPlaces";
+import GroupOfStopPlaceMap from "../components/GroupOfStopPlaces/GroupOfStopPlacesMap";
 
 class GroupOfStopPlaces extends Component {
   constructor(props) {

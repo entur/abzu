@@ -14,22 +14,22 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import SearchBox from "../components/MainPage/SearchBox";
-import StopPlacesMap from "../components/Map/StopPlacesMap";
-import {
-  getStopPlaceById,
-  getGroupOfStopPlacesById,
-} from "../actions/TiamatActions";
-import formatHelpers from "../modelUtils/mapToClient";
 import StopPlaceActions from "../actions/StopPlaceActions";
 import {
+  getGroupOfStopPlacesById,
+  getStopPlaceById,
+} from "../actions/TiamatActions";
+import Loader from "../components/Dialogs/Loader";
+import SearchBox from "../components/MainPage/SearchBox";
+import StopPlacesMap from "../components/Map/StopPlacesMap";
+import formatHelpers from "../modelUtils/mapToClient";
+import "../styles/main.css";
+import {
+  getGroupOfStopPlacesIdFromURL,
+  getStopPlaceIdFromURL,
   removeIdParamFromURL,
   updateURLWithId,
-  getStopPlaceIdFromURL,
-  getGroupOfStopPlacesIdFromURL,
 } from "../utils/URLhelpers";
-import "../styles/main.css";
-import Loader from "../components/Dialogs/Loader";
 
 class StopPlaces extends React.Component {
   constructor(props) {

@@ -12,25 +12,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import { createSelector } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import EditStopMap from "../components/Map/EditStopMap";
-import EditStopGeneral from "../components/EditStopPage/EditStopGeneral";
-import EditParentGeneral from "../components/EditParentStopPage/EditParentGeneral";
-import InformationBanner from "../components/EditStopPage/InformationBanner";
+import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
-import InformationManager from "../singletons/InformationManager";
-import "../styles/main.css";
 import { UserActions } from "../actions";
-import { getIn } from "../utils";
+import { getStopPlaceWithAll } from "../actions/TiamatActions";
+import EditParentGeneral from "../components/EditParentStopPage/EditParentGeneral";
+import EditStopGeneral from "../components/EditStopPage/EditStopGeneral";
+import InformationBanner from "../components/EditStopPage/InformationBanner";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
-import LoadingPage from "./LoadingPage";
-import { getStopPlaceWithAll } from "../actions/TiamatActions";
-import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import EditStopMap from "../components/Map/EditStopMap";
+import InformationManager from "../singletons/InformationManager";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import { Helmet } from "react-helmet";
+import "../styles/main.css";
+import { getIn } from "../utils";
+import LoadingPage from "./LoadingPage";
 
 const selectProps = createSelector(
   (state: RootState) => state,

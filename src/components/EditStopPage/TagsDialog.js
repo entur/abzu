@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
 import MdClose from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import TagItem from "./TagItem";
-import AddTagDialog from "./AddTagDialog";
 import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import { Component } from "react";
+import AddTagDialog from "./AddTagDialog";
+import TagItem from "./TagItem";
 
 class TagsDialog extends Component {
   constructor(props) {

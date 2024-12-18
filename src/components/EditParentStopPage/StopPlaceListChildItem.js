@@ -12,8 +12,8 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
 import Divider from "@mui/material/Divider";
+import { Component } from "react";
 import ModalityIcon from "../MainPage/ModalityIconSvg";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";
 

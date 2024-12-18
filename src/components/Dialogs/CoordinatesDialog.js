@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@mui/material";
-import { TextField } from "@mui/material";
+import PropTypes from "prop-types";
+import React from "react";
 import { extractCoordinates } from "../../utils/";
 
 class CoordinatesDialog extends React.Component {

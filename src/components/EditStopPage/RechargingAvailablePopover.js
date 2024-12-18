@@ -1,13 +1,12 @@
+import EvStation from "@mui/icons-material/EvStation";
+import { Popover } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 import { injectIntl } from "react-intl";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import EvStation from "@mui/icons-material/EvStation";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
-import { Popover } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import accessibilityAssessments from "../../models/accessibilityAssessments";
 
 class RechargingAvailablePopover extends React.Component {
   constructor(props) {

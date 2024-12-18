@@ -12,26 +12,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { setDecimalPrecision, getIn, getInTransform } from "../utils/";
-import * as types from "../actions/Types";
 import moment from "moment";
-import { hasExpired } from "../modelUtils/validBetween";
-import { getImportedId } from "../models/stopPlaceUtils";
+import * as types from "../actions/Types";
 import {
-  getUniquePathLinks,
   calculateDistance,
   calculateEstimate,
+  getUniquePathLinks,
 } from "../modelUtils/leafletUtils";
-import Quay from "../models/Quay";
-import StopPlace from "../models/StopPlace";
-import ParentStopPlace from "../models/ParentStopPlace";
-import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
-import PathLink from "../models/PathLink";
-import Parking from "../models/Parking";
+import { hasExpired } from "../modelUtils/validBetween";
 import ChildOfParentStopPlace from "../models/ChildOfParentStopPlace";
 import { Entities } from "../models/Entities";
+import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
+import ParentStopPlace from "../models/ParentStopPlace";
+import Parking from "../models/Parking";
+import PathLink from "../models/PathLink";
+import Quay from "../models/Quay";
+import StopPlace from "../models/StopPlace";
 import PARKING_TYPE from "../models/parkingType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
+import { getImportedId } from "../models/stopPlaceUtils";
+import { getIn, getInTransform, setDecimalPrecision } from "../utils/";
 
 const helpers = {};
 

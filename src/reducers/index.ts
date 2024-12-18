@@ -14,15 +14,15 @@ limitations under the Licence. */
 
 import { combineReducers } from "@reduxjs/toolkit";
 
-import userReducer from "./userReducer";
+import type { Reducer } from "redux";
+import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
 import mapReducer from "./mapReducer";
-import stopPlaceReducer from "./stopPlaceReducer";
 import reportReducer from "./reportReducer";
 import rolesReducer from "./rolesReducer";
 import snackbarReducer from "./snackbarReducer";
-import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
+import stopPlaceReducer from "./stopPlaceReducer";
+import userReducer from "./userReducer";
 import zonesSlice from "./zonesSlice";
-import type { Reducer } from "redux";
 
 export const createRootReducer = (routerReducer: Reducer) =>
   combineReducers({

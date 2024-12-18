@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import Routes from "../../routes/";
 import PropTypes from "prop-types";
+import Routes from "../../routes/";
 
 const GroupOfStopPlacesLink = ({ name, id, style }) => {
   const url = `${window.location.origin}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;

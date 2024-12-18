@@ -12,12 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import ModalityIconImg from "./ModalityIconImg";
-import ModalityIconTray from "../ReportPage/ModalityIconTray";
+import MdGroup from "@mui/icons-material/GroupWork";
 import { hasExpired, isFuture } from "../../modelUtils/validBetween";
 import { Entities } from "../../models/Entities";
-import MdGroup from "@mui/icons-material/GroupWork";
+import ModalityIconTray from "../ReportPage/ModalityIconTray";
+import ModalityIconImg from "./ModalityIconImg";
 
 export const createSearchMenuItem = (element, formatMessage) => {
   if (!element) return null;

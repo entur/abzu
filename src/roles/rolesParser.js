@@ -12,13 +12,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import stopTypes from "../models/stopTypes";
-import {
-  getLegalSubmodes,
-  getLegalStopPlaceTypes,
-} from "../reducers/rolesReducerUtils";
-import { submodes as allSubmodes } from "../models/submodes";
 import { Entities } from "../models/Entities";
+import stopTypes from "../models/stopTypes";
+import { submodes as allSubmodes } from "../models/submodes";
+import {
+  getLegalStopPlaceTypes,
+  getLegalSubmodes,
+} from "../reducers/rolesReducerUtils";
 import { isPointInPolygon } from "../utils/mapUtils";
 
 const RoleParser = {};

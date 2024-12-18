@@ -12,11 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import {
-  isModeOptionsValidForMode,
-  getRoleOptions,
-  doesStopTypeAllowEdit,
-} from "../../roles/rolesParser";
+import stopTypes, { submodes } from "../../models/stopTypes";
 import {
   getAllowanceInfoForStop,
   getLatLng,
@@ -24,12 +20,16 @@ import {
   getLegalSubmodes,
   getStopPlace,
 } from "../../reducers/rolesReducerUtils";
-import stopTypes, { submodes } from "../../models/stopTypes";
-import mockRailReplacementStop from "../mock/mockRailReplacementStop";
+import {
+  doesStopTypeAllowEdit,
+  getRoleOptions,
+  isModeOptionsValidForMode,
+} from "../../roles/rolesParser";
 import mockBusStop from "../mock/mockBusStop";
-import stopWithoutStopPlaceType from "../mock/stopWithoutStopPlaceType";
+import mockRailReplacementStop from "../mock/mockRailReplacementStop";
 import mockRailStop from "../mock/mockRailStop";
 import { mockedAllowanceInfoAction } from "../mock/mockedAllowanceInfoAction";
+import stopWithoutStopPlaceType from "../mock/stopWithoutStopPlaceType";
 
 const stopPlaceResult = {
   data: {

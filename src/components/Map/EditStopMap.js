@@ -12,17 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from "react-redux";
-import React from "react";
-import LeafletMap from "./LeafletMap";
-import { StopPlaceActions, UserActions } from "../../actions/";
-import { injectIntl } from "react-intl";
-import { setDecimalPrecision } from "../../utils";
-import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
-import CompassBearingDialog from "../Dialogs/CompassBearingDialog";
 import debounce from "lodash.debounce";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
+import { setDecimalPrecision } from "../../utils";
+import CompassBearingDialog from "../Dialogs/CompassBearingDialog";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import LeafletMap from "./LeafletMap";
 
 class EditStopMap extends React.Component {
   constructor(props) {

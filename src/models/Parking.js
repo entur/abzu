@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getIn } from "../utils/";
 import { hasExpired } from "../modelUtils/validBetween";
+import { getIn } from "../utils/";
 import PARKING_TYPE from "./parkingType";
 import PARKING_VEHICLE_TYPE from "./parkingVehicleType";
 

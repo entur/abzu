@@ -14,11 +14,11 @@ limitations under the Licence. */
 
 import moment from "moment";
 import { defaultLimitations } from "../models/Limitations";
-import {
-  netexifyPlaceEquipment,
-  netexifyBoardingPositions,
-} from "../models/stopPlaceUtils";
 import PARKING_TYPE from "../models/parkingType";
+import {
+  netexifyBoardingPositions,
+  netexifyPlaceEquipment,
+} from "../models/stopPlaceUtils";
 
 const helpers = {};
 

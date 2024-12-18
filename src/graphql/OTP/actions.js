@@ -1,5 +1,5 @@
 import { getOTPClient } from "../clients";
-import { findStopPlaceUsage, findQuayUsage } from "./queries";
+import { findQuayUsage, findStopPlaceUsage } from "./queries";
 
 export const checkStopPlaceUsage = (stopPlaceId) => {
   const client = getOTPClient();

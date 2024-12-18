@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { connect } from "react-redux";
-import React from "react";
-import LeafletMap from "./LeafletMap";
-import { StopPlaceActions, UserActions } from "../../actions/";
-import { getIn } from "../../utils/";
-import { injectIntl } from "react-intl";
-import { getNeighbourStops } from "../../actions/TiamatActions";
-import Settings from "../../singletons/SettingsManager";
 import debounce from "lodash.debounce";
+import React from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../actions/";
+import { getNeighbourStops } from "../../actions/TiamatActions";
 import { getMarkersForMap } from "../../selectors/StopPlaceMap";
+import Settings from "../../singletons/SettingsManager";
+import { getIn } from "../../utils/";
+import LeafletMap from "./LeafletMap";
 
 class StopPlacesMap extends React.Component {
   constructor(props) {

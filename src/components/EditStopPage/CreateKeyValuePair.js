@@ -12,9 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import TextField from "@mui/material/TextField";
 import FlatButton from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import React from "react";
 import { injectIntl } from "react-intl";
 
 class CreateKeyValuePair extends React.Component {

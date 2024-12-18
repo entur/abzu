@@ -12,14 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { Entities } from "../models/Entities";
+import stopTypes, { submodes } from "../models/stopTypes";
 import roleParser, {
   getRoleOptions,
-  isModeOptionsValidForMode,
   isInArrayIgnoreCase,
+  isModeOptionsValidForMode,
 } from "../roles/rolesParser";
 import { getIn } from "../utils/";
-import stopTypes, { submodes } from "../models/stopTypes";
-import { Entities } from "../models/Entities";
 
 export const reduceFetchedPolygons = (result) => {
   return Object.keys(result.data).reduce((fetchedPolygons, key) => {

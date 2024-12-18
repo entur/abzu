@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const ToolTippable = ({ children, toolTipText, toolTipStyle }) => {

@@ -12,27 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
-import MdWarning from "@mui/icons-material/Warning";
-import IconButton from "@mui/material/IconButton";
 import MdLanguage from "@mui/icons-material/Language";
-import ImportedId from "../EditStopPage/ImportedId";
-import { StopPlaceActions } from "../../actions/";
-import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
-import StopPlaceList from "./StopPlaceList";
+import MdWarning from "@mui/icons-material/Warning";
 import FlatButton from "@mui/material/Button";
-import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
-import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
-import TagsDialog from "../EditStopPage/TagsDialog";
-import TagTray from "../MainPage/TagTray";
-import BelongsToGroup from "./../MainPage/BelongsToGroup";
-import ToolTippable from "../EditStopPage/ToolTippable";
-import AltNamesDialog from "../Dialogs/AltNamesDialog";
-import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import UserActions from "../../actions/UserActions";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import { Component } from "react";
+import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
+import { StopPlaceActions } from "../../actions/";
 import {
   addTag,
   findTagByName,
@@ -40,6 +29,17 @@ import {
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
+import UserActions from "../../actions/UserActions";
+import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
+import AltNamesDialog from "../Dialogs/AltNamesDialog";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+import ImportedId from "../EditStopPage/ImportedId";
+import TagsDialog from "../EditStopPage/TagsDialog";
+import ToolTippable from "../EditStopPage/ToolTippable";
+import TagTray from "../MainPage/TagTray";
+import BelongsToGroup from "./../MainPage/BelongsToGroup";
+import StopPlaceList from "./StopPlaceList";
 
 class ParentStopDetails extends Component {
   constructor(props) {

@@ -12,10 +12,10 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import StopPlace from "./StopPlace";
-import ParentStopPlace from "./ParentStopPlace";
-import { Entities } from "./Entities";
 import { calculatePolygonCenter } from "../utils/mapUtils";
+import { Entities } from "./Entities";
+import ParentStopPlace from "./ParentStopPlace";
+import StopPlace from "./StopPlace";
 
 class GroupOfStopPlace {
   constructor(data) {

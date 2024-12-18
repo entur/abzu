@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Info } from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -7,7 +6,8 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Info } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import { Component } from "react";
 
 class RequiredFieldsMissingDialog extends Component {
   render() {

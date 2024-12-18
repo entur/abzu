@@ -12,16 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { getAssessmentSetBasedOnQuays } from "../modelUtils/limitationHelpers";
+import { hasExpired, isFuture } from "../modelUtils/validBetween";
+import { setDecimalPrecision } from "../utils/";
+import { Entities } from "./Entities";
+import Quay from "./Quay";
 import {
   extractAlternativeNames,
   getImportedId,
   simplifyPlaceEquipment,
 } from "./stopPlaceUtils";
-import { getAssessmentSetBasedOnQuays } from "../modelUtils/limitationHelpers";
-import { setDecimalPrecision } from "../utils/";
-import { hasExpired, isFuture } from "../modelUtils/validBetween";
-import Quay from "./Quay";
-import { Entities } from "./Entities";
 
 class StopPlace {
   constructor(stop, isActive, parking, userDefinedCoordinates) {

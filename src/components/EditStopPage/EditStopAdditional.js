@@ -12,12 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import FacilitiesStopTab from "./FacilitiesStopTab";
-import AcessibilityStopTab from "./AcessibilityStopTab";
+import Tabs from "@mui/material/Tabs";
+import React from "react";
 import { injectIntl } from "react-intl";
+import AcessibilityStopTab from "./AcessibilityStopTab";
+import FacilitiesStopTab from "./FacilitiesStopTab";
 
 class EditStopAdditional extends React.Component {
   constructor(props) {

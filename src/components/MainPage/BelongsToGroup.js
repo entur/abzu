@@ -1,4 +1,3 @@
-import React from "react";
 import GroupOfStopPlacesLink from "./GroupOfStopPlacesLink";
 
 const BelongsToGroup = ({ formatMessage, groups = [], style }) => {

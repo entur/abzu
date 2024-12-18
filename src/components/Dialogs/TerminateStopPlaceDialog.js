@@ -12,21 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import Checkbox from "@mui/material/Checkbox";
-import {
-  DatePicker,
-  MuiPickersAdapterContext,
-  TimePicker,
-} from "@mui/x-date-pickers/";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { getEarliestFromDate } from "../../utils/saveDialogUtils";
-import TextField from "@mui/material/TextField";
-import helpers from "../../modelUtils/mapToQueryVariables";
-import Spinner from "../../static/icons/spinner";
-import { getStopPlaceSearchUrl } from "../../utils/shamash";
+import { Cancel, Delete, DeleteForever, Warning } from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -36,8 +22,18 @@ import {
   FormControlLabel,
   FormGroup,
 } from "@mui/material";
-import { Cancel, Delete, DeleteForever, Warning } from "@mui/icons-material";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers/";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
+import PropTypes from "prop-types";
+import React from "react";
+import helpers from "../../modelUtils/mapToQueryVariables";
+import Spinner from "../../static/icons/spinner";
+import { getEarliestFromDate } from "../../utils/saveDialogUtils";
+import { getStopPlaceSearchUrl } from "../../utils/shamash";
 
 class TerminateStopPlaceDialog extends React.Component {
   static propTypes = {

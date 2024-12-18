@@ -12,12 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import MdGroup from "@mui/icons-material/GroupWork";
-import CircularNumber from "./CircularNumber";
+import PropTypes from "prop-types";
+import { Component } from "react";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import StopPlaceLink from "../ReportPage/StopPlaceLink";
+import CircularNumber from "./CircularNumber";
 
 class GroupResultInfo extends Component {
   render() {

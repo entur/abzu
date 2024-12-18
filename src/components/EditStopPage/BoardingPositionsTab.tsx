@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { StopPlaceActions } from "../../actions";

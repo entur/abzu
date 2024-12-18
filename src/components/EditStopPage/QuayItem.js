@@ -12,39 +12,39 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import React from "react";
-import PropTypes from "prop-types";
-import TextField from "@mui/material/TextField";
-import {
-  StopPlaceActions,
-  AssessmentActions,
-  EquipmentActions,
-  UserActions,
-} from "../../actions/";
-import { connect } from "react-redux";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import {
+  AssessmentActions,
+  EquipmentActions,
+  StopPlaceActions,
+  UserActions,
+} from "../../actions/";
 
-import TicketMachine from "../../static/icons/facilities/TicketMachine";
-import BusShelter from "../../static/icons/facilities/BusShelter";
-import { injectIntl } from "react-intl";
-import FlatButton from "@mui/material/Button";
-import ImportedId from "./ImportedId";
 import MdLess from "@mui/icons-material/ExpandLess";
-import EditQuayAdditional from "./EditQuayAdditional";
-import WheelChairPopover from "./WheelChairPopover";
-import StepFreePopover from "./StepFreePopover";
-import { getIn } from "../../utils/";
+import FlatButton from "@mui/material/Button";
+import { injectIntl } from "react-intl";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
+import BusShelter from "../../static/icons/facilities/BusShelter";
+import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import Sign512 from "../../static/icons/TransportSign";
+import { getIn } from "../../utils/";
+import EditQuayAdditional from "./EditQuayAdditional";
+import ImportedId from "./ImportedId";
+import StepFreePopover from "./StepFreePopover";
+import WheelChairPopover from "./WheelChairPopover";
 
-import ToolTippable from "./ToolTippable";
 import MdDelete from "@mui/icons-material/DeleteForever";
 import MdKey from "@mui/icons-material/VpnKey";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import Code from "./Code";
-import ItemHeader from "./ItemHeader";
 import Item from "./Item";
+import ItemHeader from "./ItemHeader";
+import ToolTippable from "./ToolTippable";
 
 class QuayItem extends React.Component {
   static propTypes = {

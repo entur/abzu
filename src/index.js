@@ -12,25 +12,25 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import React, { useContext } from "react";
-import { createRoot } from "react-dom/client";
-import { Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { ApolloProvider } from "@apollo/client";
-import { Provider } from "react-redux";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-import App from "./containers/App";
-import StopPlaces from "./containers/StopPlaces";
-import { StopPlace } from "./containers/StopPlace";
-import ReportPage from "./containers/ReportPage";
-import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-import AppRoutes from "./routes";
-import { getTiamatClient } from "./graphql/clients";
-import { store, history } from "./store/store";
-import { ConfigContext } from "./config/ConfigContext";
+import { useContext } from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { AuthProvider } from "./auth/auth";
+import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
+import App from "./containers/App";
+import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
+import ReportPage from "./containers/ReportPage";
+import { StopPlace } from "./containers/StopPlace";
+import StopPlaces from "./containers/StopPlaces";
+import { getTiamatClient } from "./graphql/clients";
+import AppRoutes from "./routes";
+import { history, store } from "./store/store";
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
