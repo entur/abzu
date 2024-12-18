@@ -24,5 +24,4 @@ export const getStopTypesForSubmodes = (legalSubmodes) => {
     });
   }
   return result;
-  return stopPlace.permissions?.canEdit || false;
 };
