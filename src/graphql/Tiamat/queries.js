@@ -107,14 +107,8 @@ export const stopPlaceBBQuery = gql`
         __typename
         stopPlaceType
         submode
-        permissions {
-          canEdit
-          canDelete
-          allowedStopPlaceTypes
-          allowedSubmodes
-          bannedStopPlaceTypes
-          bannedSubmodes
-        }
+
+        ...EntityPermissions
       }
       ... on ParentStopPlace {
         children {
@@ -131,18 +125,12 @@ export const stopPlaceBBQuery = gql`
               value
             }
           }
-          permissions {
-            canEdit
-            canDelete
-            allowedStopPlaceTypes
-            allowedSubmodes
-            bannedStopPlaceTypes
-            bannedSubmodes
-          }
+          ...EntityPermissions
         }
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const allEntities = gql`
@@ -263,8 +251,10 @@ export const getStopById = gql`
             value
           }
         }
+        ...EntityPermissions
       }
       ... on ParentStopPlace {
+        ...EntityPermissions
         geometry {
           legacyCoordinates
           type
@@ -283,10 +273,12 @@ export const getStopById = gql`
           geometry {
             legacyCoordinates
           }
+          ...EntityPermissions
         }
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const findStop = gql`

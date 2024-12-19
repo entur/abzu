@@ -228,6 +228,7 @@ class MarkerList extends React.Component {
               isMultimodalChild={false}
               isGroupMember={true}
               disabled={disabled}
+              canEdit={member.permissions.canEdit}
               handleDragEnd={() => {}}
               active={true}
               stopType={member.stopPlaceType}
@@ -286,6 +287,7 @@ class MarkerList extends React.Component {
                   isMultimodal={false}
                   isMultimodalChild={true}
                   disabled={disabled}
+                  canEdit={child.permissions.canEdit}
                   handleDragEnd={handleDragEnd}
                   active={false}
                   stopType={child.stopPlaceType}
@@ -355,6 +357,7 @@ class MarkerList extends React.Component {
               formattedStopType={localeStopType}
               isMultimodal={marker.isParent}
               disabled={disabled}
+              canEdit={marker.permissions.canEdit}
               handleDragEnd={handleDragEnd}
               active={!!marker.isActive}
               stopType={marker.stopPlaceType}

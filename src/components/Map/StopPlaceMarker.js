@@ -18,10 +18,7 @@ import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
-import {
-  getStopPermissions,
-  isStopFromSearch,
-} from "../../utils/permissionsUtils";
+import { isStopFromSearch } from "../../utils/permissionsUtils";
 import PopupButton from "../Map/PopupButton";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareStopPlaceMarker as shallowCompare } from "./shallowCompare/";
@@ -238,9 +235,7 @@ class StopPlaceMarker extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  disabledForSearch:
-    isStopFromSearch(state, ownProps.id) &&
-    !getStopPermissions(state.stopPlace.current).canEdit,
+  disabledForSearch: isStopFromSearch(state, ownProps.id) && !ownProps.canEdit,
 });
 
 export default connect(mapStateToProps)(StopPlaceMarker);
