@@ -107,8 +107,9 @@ export const stopPlaceBBQuery = gql`
         __typename
         stopPlaceType
         submode
-
-        ...EntityPermissions
+        permissions {
+          ...EntityPermissions
+        }
       }
       ... on ParentStopPlace {
         children {
@@ -125,7 +126,9 @@ export const stopPlaceBBQuery = gql`
               value
             }
           }
-          ...EntityPermissions
+          permissions {
+            ...EntityPermissions
+          }
         }
       }
     }
@@ -251,10 +254,14 @@ export const getStopById = gql`
             value
           }
         }
-        ...EntityPermissions
+        permissions {
+          ...EntityPermissions
+        }
       }
       ... on ParentStopPlace {
-        ...EntityPermissions
+        permissions {
+          ...EntityPermissions
+        }
         geometry {
           legacyCoordinates
           type
@@ -273,7 +280,9 @@ export const getStopById = gql`
           geometry {
             legacyCoordinates
           }
-          ...EntityPermissions
+          permissions {
+            ...EntityPermissions
+          }
         }
       }
     }
