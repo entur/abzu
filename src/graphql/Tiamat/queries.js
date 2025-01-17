@@ -433,6 +433,9 @@ export const findStop = gql`
           geometry {
             legacyCoordinates
           }
+          permissions {
+            canEdit
+          }
         }
       }
     }
