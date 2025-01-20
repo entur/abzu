@@ -320,13 +320,24 @@ StopPlaceActions.setBoardingPositionElementFocus =
     );
   };
 
-StopPlaceActions.createNewStop = (location) => (dispatch, getState) => {
+StopPlaceActions.createNewStop = (location) => async (dispatch, getState) => {
   const state = getState();
   const isMultimodal = state.user.newStopIsMultiModal;
+
+  // First get location permissions
+  await dispatch(
+    getLocationPermissionsForCoordinates(location.lng, location.lat),
+  );
+
+  // Get updated state after permissions are fetched
+  const updatedState = getState();
+  const locationPermissions = updatedState.user?.locationPermissions || {};
+
   dispatch(
     createThunk(types.CREATED_NEW_STOP, {
       isMultimodal,
       location: [Number(location.lat), Number(location.lng)],
+      locationPermissions,
     }),
   );
 };
