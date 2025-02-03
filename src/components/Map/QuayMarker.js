@@ -22,6 +22,7 @@ import { StopPlaceActions, UserActions } from "../../actions/";
 import compassIcon from "../../static/icons/compass.png";
 import OSMIcon from "../../static/icons/osm_logo.png";
 import StreetViewIcon from "../../static/icons/street_view_logo.png";
+import VegvesenIcon from "../../static/icons/vegvesen-logo.png";
 import { getIn } from "../../utils/";
 import Code from "../EditStopPage/Code";
 import PopupButton from "./PopupButton";
@@ -55,6 +56,11 @@ class QuayMarker extends React.Component {
   getStreetViewURL() {
     const { position } = this.props;
     return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${position[0]},${position[1]}`;
+  }
+
+  getVegvesenURL() {
+    const { position } = this.props;
+    return `https://vegbilder.atlas.vegvesen.no/?lat=${position[0]}&lng=${position[1]}&zoom=16&view=image`;
   }
 
   handleMergeFrom() {
@@ -254,6 +260,7 @@ class QuayMarker extends React.Component {
 
     const osmURL = this.getOSMURL();
     const streetViewURL = this.getStreetViewURL();
+    const vegvesenURL = this.getVegvesenURL();
     const shouldShowMoveQuay = this.getShouldShowMoveQuay();
     const hideMergingTo = this.getHideMergingTo();
     const hideMergingFrom = this.getHideMergingFrom();
@@ -395,6 +402,25 @@ class QuayMarker extends React.Component {
                       borderRadius: 50,
                     }}
                     src={StreetViewIcon}
+                  />
+                </a>
+              </div>
+              <div
+                style={{
+                  marginLeft: belongsToNeighbourStop ? 0 : 10,
+                  cursor: "pointer",
+                }}
+              >
+                <a href={vegvesenURL} target="_blank" rel="noopener noreferrer">
+                  <img
+                    alt=""
+                    style={{
+                      width: 20,
+                      height: 22,
+                      border: "1px solid grey",
+                      borderRadius: 50,
+                    }}
+                    src={VegvesenIcon}
                   />
                 </a>
               </div>
