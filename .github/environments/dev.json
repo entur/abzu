@@ -16,5 +16,8 @@
     "extraQueryParams": {
       "audience": "https://ror.api.dev.entur.io"
     }
+  },
+  "featureFlags": {
+    "SVVStreetViewLink": true
   }
 }
