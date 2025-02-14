@@ -18,7 +18,7 @@
   },
   "license": "EUPL-1.2 with modifications",
   "dependencies": {
-    "@apollo/client": "3.12.11",
+    "@apollo/client": "3.13.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
     "@entur/react-component-toggle": "0.0.2",
