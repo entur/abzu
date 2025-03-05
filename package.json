@@ -21,7 +21,7 @@
     "@apollo/client": "3.13.1",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
-    "@entur/react-component-toggle": "0.0.2",
+    "@entur/react-component-toggle": "0.0.3",
     "@entur/react-leaflet-google": "1.0.3",
     "@mui/icons-material": "5.16.14",
     "@mui/lab": "5.0.0-alpha.175",
