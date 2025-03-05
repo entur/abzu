@@ -4,6 +4,7 @@ import {defineConfig, transformWithEsbuild} from 'vite'
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
+import reactComponentToggle from "@entur/rollup-plugin-react-component-toggle";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,8 +16,11 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
-    rollupOptions: {
-      output: {
+  },
+  plugins: [
+    react(), viteTsconfigPaths(), svgrPlugin(),
+      reactComponentToggle({
+        componentsPath: "/src/ext",
         manualChunks: (id) => {
           if (id.includes("node_modules")) {
             return 'vendor';
@@ -24,11 +28,7 @@ export default defineConfig({
             return 'index';
           }
         }
-      }
-    }
-  },
-  plugins: [
-    react(), viteTsconfigPaths(), svgrPlugin(),
+      }),
     {
       name: 'treat-js-files-as-jsx',
       async transform(code, id) {

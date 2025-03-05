@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ComponentToggle } from "@entur/react-component-toggle";
 import { divIcon } from "leaflet";
 import PropTypes from "prop-types";
 import React from "react";
@@ -398,6 +399,13 @@ class QuayMarker extends React.Component {
                   />
                 </a>
               </div>
+              <ComponentToggle
+                feature="SVVStreetViewLink"
+                componentProps={{
+                  position,
+                  belongsToNeighbourStop,
+                }}
+              />
             </div>
             <div style={{ marginTop: 10 }}>
               <PopupButton

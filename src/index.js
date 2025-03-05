@@ -13,6 +13,7 @@
  limitations under the Licence. */
 
 import { ApolloProvider } from "@apollo/client";
+import { ComponentToggleProvider } from "@entur/react-component-toggle";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import { useContext } from "react";
@@ -87,12 +88,18 @@ const AuthenticatedApp = () => {
 function renderIndex(config) {
   const root = createRoot(document.getElementById("root"));
   root.render(
-    <ConfigContext.Provider value={config}>
-      <AuthProvider>
-        <AuthenticatedApp />
-      </AuthProvider>
-      ,
-    </ConfigContext.Provider>,
+    <ComponentToggleProvider
+      flags={config.featureFlags}
+      importFn={(featurePathComponents) =>
+        import(`./ext/${featurePathComponents[0]}/index.ts`)
+      }
+    >
+      <ConfigContext.Provider value={config}>
+        <AuthProvider>
+          <AuthenticatedApp />
+        </AuthProvider>
+      </ConfigContext.Provider>
+    </ComponentToggleProvider>,
   );
 }
 
