@@ -59,6 +59,9 @@ Fragments.groupOfStopPlaces = {
           legacyCoordinates
           type
         }
+        permissions {
+          ...EntityPermissions
+        }
         ... on StopPlace {
           stopPlaceType
           submode
@@ -91,6 +94,9 @@ Fragments.groupOfStopPlaces = {
             }
             name {
               value
+            }
+            permissions {
+              ...EntityPermissions
             }
           }
         }

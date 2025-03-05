@@ -306,7 +306,7 @@ export const findStop = gql`
         value
       }
       permissions {
-        canEdit
+        ...EntityPermissions
       }
       members {
         __typename
@@ -318,6 +318,9 @@ export const findStop = gql`
         geometry {
           type
           legacyCoordinates
+        }
+        permissions {
+          ...EntityPermissions
         }
         topographicPlace {
           id
@@ -336,7 +339,7 @@ export const findStop = gql`
           version
           stopPlaceType
           permissions {
-            canEdit
+            ...EntityPermissions
           }
         }
       }
@@ -440,6 +443,7 @@ export const findStop = gql`
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const findStopForReport = gql`
