@@ -107,6 +107,9 @@ export const stopPlaceBBQuery = gql`
         __typename
         stopPlaceType
         submode
+        permissions {
+          ...EntityPermissions
+        }
       }
       ... on ParentStopPlace {
         children {
@@ -122,24 +125,15 @@ export const stopPlaceBBQuery = gql`
             name {
               value
             }
-            topographicPlaceType
           }
-          validBetween {
-            fromDate
-            toDate
-          }
-          name {
-            value
-            lang
+          permissions {
+            ...EntityPermissions
           }
         }
-        name {
-          value
-        }
-        __typename
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const allEntities = gql`
@@ -260,8 +254,14 @@ export const getStopById = gql`
             value
           }
         }
+        permissions {
+          ...EntityPermissions
+        }
       }
       ... on ParentStopPlace {
+        permissions {
+          ...EntityPermissions
+        }
         geometry {
           legacyCoordinates
           type
@@ -280,10 +280,14 @@ export const getStopById = gql`
           geometry {
             legacyCoordinates
           }
+          permissions {
+            ...EntityPermissions
+          }
         }
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const findStop = gql`
@@ -301,6 +305,9 @@ export const findStop = gql`
       name {
         value
       }
+      permissions {
+        ...EntityPermissions
+      }
       members {
         __typename
         id
@@ -311,6 +318,9 @@ export const findStop = gql`
         geometry {
           type
           legacyCoordinates
+        }
+        permissions {
+          ...EntityPermissions
         }
         topographicPlace {
           id
@@ -328,6 +338,9 @@ export const findStop = gql`
           submode
           version
           stopPlaceType
+          permissions {
+            ...EntityPermissions
+          }
         }
       }
     }
@@ -389,6 +402,9 @@ export const findStop = gql`
         }
       }
       modificationEnumeration
+      permissions {
+        canEdit
+      }
       ... on StopPlace {
         stopPlaceType
         submode
@@ -420,10 +436,14 @@ export const findStop = gql`
           geometry {
             legacyCoordinates
           }
+          permissions {
+            canEdit
+          }
         }
       }
     }
   }
+  ${Fragments.entityPermissions}
 `;
 
 export const findStopForReport = gql`
@@ -691,29 +711,6 @@ export const getStopPlacesById = (stopPlaceIds) => {
   `;
 };
 
-export const getPolygons = (ids) => {
-  let queryContent = "";
-
-  ids.forEach((id) => {
-    let alias = id.replace(":", "").replace(":", "");
-
-    queryContent += `
-        ${alias}: topographicPlace(id: "${id}") {
-           id
-            polygon {
-                legacyCoordinates
-            }
-        }
-    `;
-  });
-
-  return gql`
-      query getPolygons {
-          ${queryContent}
-      }
-  `;
-};
-
 export const getQueryTopographicPlaces = (ids) => {
   let queryContent = "";
 
@@ -807,6 +804,31 @@ export const findFareZonesForFilter = gql`
       name {
         value
       }
+    }
+  }
+`;
+
+export const getLocationPermissions = gql`
+  query getLocationPermissions(
+    $longitude: BigDecimal!
+    $latitude: BigDecimal!
+  ) {
+    locationPermissions(longitude: $longitude, latitude: $latitude) {
+      allowedStopPlaceTypes
+      allowedSubmodes
+      bannedStopPlaceTypes
+      bannedSubmodes
+      canDelete
+      canEdit
+    }
+  }
+`;
+
+export const getUserPermissionsQuery = gql`
+  query getUserPermissions {
+    userPermissions {
+      allowNewStopEverywhere
+      isGuest
     }
   }
 `;

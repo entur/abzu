@@ -30,6 +30,17 @@ Fragments.accessibilityAssessment = {
   `,
 };
 
+Fragments.entityPermissions = gql`
+  fragment EntityPermissions on EntityPermissions {
+    allowedStopPlaceTypes
+    allowedSubmodes
+    bannedStopPlaceTypes
+    bannedSubmodes
+    canDelete
+    canEdit
+  }
+`;
+
 Fragments.groupOfStopPlaces = {
   verbose: gql`
     fragment GroupOfStopPlaces on GroupOfStopPlaces {
@@ -47,6 +58,9 @@ Fragments.groupOfStopPlaces = {
         geometry {
           legacyCoordinates
           type
+        }
+        permissions {
+          ...EntityPermissions
         }
         ... on StopPlace {
           stopPlaceType
@@ -81,6 +95,9 @@ Fragments.groupOfStopPlaces = {
             name {
               value
             }
+            permissions {
+              ...EntityPermissions
+            }
           }
         }
       }
@@ -90,7 +107,11 @@ Fragments.groupOfStopPlaces = {
       description {
         value
       }
+      permissions {
+        ...EntityPermissions
+      }
     }
+    ${Fragments.entityPermissions}
   `,
 };
 
@@ -270,10 +291,14 @@ Fragments.stopPlace = {
             toDate
         }
         modificationEnumeration
+        permissions {
+            ...EntityPermissions
+        }
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
     ${Fragments.accessibilityAssessment.verbose}
+    ${Fragments.entityPermissions}
   `,
   reportView: gql`
       fragment ReportStopPlace on StopPlace {
@@ -412,8 +437,12 @@ Fragments.parentStopPlace = {
               }
               topographicPlaceType
           }
+          permissions {
+              ...EntityPermissions
+          }
       },
       ${Fragments.stopPlace.verbose},
+      ${Fragments.entityPermissions},
   `,
   reportView: gql`
     fragment ReportParentStopPlace on ParentStopPlace {
