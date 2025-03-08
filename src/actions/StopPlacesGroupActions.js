@@ -26,17 +26,11 @@ var StopPlacesGroupActions = {};
 StopPlacesGroupActions.useStopPlaceIdForNewGroup =
   (stopPlaceId) => (dispatch) => {
     dispatch(createThunk(types.CREATED_NEW_GROUP_OF_STOP_PLACES, stopPlaceId));
-    // i.e already creating a new group of stop place, update state instead
-    if (
-      window.location.pathname.indexOf(`/${Routes.GROUP_OF_STOP_PLACE}/new`) >
-      -1
-    ) {
-      dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId));
-    } else {
+    dispatch(StopPlacesGroupActions.createNewGroup(stopPlaceId)).then(() => {
       dispatch(
         UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, "new"),
       );
-    }
+    });
   };
 
 StopPlacesGroupActions.changeName = (name) => (dispatch) => {
@@ -71,8 +65,8 @@ StopPlacesGroupActions.discardChanges = () => (dispatch) => {
   dispatch(createThunk(types.DISCARDED_GOS_CHANGES, null));
 };
 
-StopPlacesGroupActions.createNewGroup = (stopPlaceId) => (dispatch) => {
-  dispatch(getStopPlaceById(stopPlaceId))
+StopPlacesGroupActions.createNewGroup = (stopPlaceId) => async (dispatch) => {
+  return dispatch(getStopPlaceById(stopPlaceId))
     .then((result) => {
       if (
         result &&

@@ -27,7 +27,6 @@ import {
 import * as types from "../../actions/Types";
 import mapHelper from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes/";
-import { getStopPermissions } from "../../utils/permissionsUtils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
 import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
@@ -168,7 +167,7 @@ class EditGroupOfStopPlaces extends Component {
                 margin: "8 5",
                 zIndex: 999,
                 fontSize: "0.7em",
-                color: "#000",
+                color: !canDelete ? "#999" : "#000",
               }}
               disabled={!canDelete}
               onClick={() => {
@@ -288,8 +287,8 @@ const mapStateToProps = ({ stopPlacesGroup }) => ({
   isModified: stopPlacesGroup.isModified,
   groupOfStopPlaces: stopPlacesGroup.current,
   originalGOS: stopPlacesGroup.original,
-  canEdit: getStopPermissions(stopPlacesGroup.current).canEdit,
-  canDelete: getStopPermissions(stopPlacesGroup.current).canDelete,
+  canEdit: stopPlacesGroup.current.permissions?.canEdit,
+  canDelete: stopPlacesGroup.current.permissions?.canDelete,
 });
 
 export default connect(mapStateToProps)(injectIntl(EditGroupOfStopPlaces));

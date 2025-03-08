@@ -663,6 +663,9 @@ export const getStopPlacesById = (stopPlaceIds) => {
                 name {
                     value
                 }
+                permissions {
+                  ...EntityPermissions
+                }
                 submode
                 geometry {
                   legacyCoordinates
@@ -687,6 +690,9 @@ export const getStopPlacesById = (stopPlaceIds) => {
                 name {
                     value
                 }
+                permissions {
+                  ...EntityPermissions
+                }
                 geometry {
                   legacyCoordinates
                 }
@@ -708,6 +714,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
       query getAddStopPlaceInfo {
           ${queryContent}
       }
+      ${Fragments.entityPermissions}
   `;
 };
 

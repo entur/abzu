@@ -51,6 +51,11 @@ export const addMemberToGroup = (current, payload) => {
 
   newGroup.members = newGroup.members.concat(members);
 
+  newGroup.permissions = {
+    canEdit: true,
+    canDelete: true,
+  };
+
   return newGroup;
 };
 
