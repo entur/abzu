@@ -1,9 +1,6 @@
 import { OidcClientSettings } from "oidc-client-ts";
 import React, { useContext } from "react";
-
-type FeatureFlags = {
-  SVVStreetViewLink: boolean;
-};
+import { FeatureFlags } from "./FeatureFlags";
 
 export interface Config {
   tiamatBaseUrl?: string;
