@@ -12,10 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Accessible } from "@mui/icons-material/";
+import Accessible from "@mui/icons-material/Accessible";
 import LocalParking from "@mui/icons-material/LocalParking";
 import Payment from "@mui/icons-material/Payment";
-import { Grid, ListSubheader, TextField } from "@mui/material";
+import { Grid2, ListSubheader, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Input from "@mui/material/Input";
@@ -39,7 +39,7 @@ const classes = {
   info: `${PREFIX}-info`,
 };
 
-const StyledGrid = styled(Grid)(() => ({
+const StyledGrid = styled(Grid2)(() => ({
   [`&.${classes.mainGrid}`]: {
     marginTop: ".5rem",
   },
@@ -125,7 +125,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       spacing={2}
       className={classes.mainGrid}
     >
-      <Grid item className={classes.gridItemMargin}>
+      <Grid2 item className={classes.gridItemMargin}>
         <InputLabel htmlFor="select-parking-layout">
           {formatMessage({ id: "parking_layout" })}
         </InputLabel>
@@ -162,8 +162,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             </MenuItem>
           ))}
         </Select>
-      </Grid>
-      <Grid item>
+      </Grid2>
+      <Grid2 item>
         <Box
           display="flex"
           flexDirection="row"
@@ -239,8 +239,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             </Select>
           </Box>
         </Box>
-      </Grid>
-      <Grid item>
+      </Grid2>
+      <Grid2 item>
         <ListSubheader>
           {formatMessage({ id: "parking_parkAndRide_capacity_sub_header" })} (
           {`${totalCapacity}`})
@@ -290,8 +290,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             className={classes.textField}
           />
         </Box>
-      </Grid>
-      <Grid item>
+      </Grid2>
+      <Grid2 item>
         <ListSubheader>
           {formatMessage({ id: "parking_recharging_sub_header" })}
         </ListSubheader>
@@ -333,7 +333,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             style={{ marginTop: 0 }}
           />
         </Box>
-      </Grid>
+      </Grid2>
     </StyledGrid>
   );
 };
