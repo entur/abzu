@@ -15,6 +15,21 @@ export interface Config {
   claimsNamespace?: string;
   oidcConfig?: OidcClientSettings;
   featureFlags?: FeatureFlags;
+  mapConfig?: MapConfig;
+}
+
+export interface MapConfig {
+  supportedTiles: TileEnum[];
+  defaultTile: TileEnum;
+  center: [number, number];
+  zoom: number;
+}
+
+export enum TileEnum {
+  OSM = "OpenStreetMap",
+  KARTVERKET_TOPOGRAFISK = "Kartverket topografisk",
+  KARTVERKET_FLYFOTO = "Kartverket flyfoto",
+  DGT = "Digitransit",
 }
 
 export const ConfigContext = React.createContext<Config>({});

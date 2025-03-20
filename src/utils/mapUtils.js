@@ -13,8 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import L from "leaflet";
+import { fetchConfig } from "../config/fetchConfig";
 import { setDecimalPrecision } from "./";
-const defaultCenterPosition = [64.349421, 16.809082];
+export const defaultCenterPosition = [64.349421, 16.809082];
 
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
   if (!latlngs.length) {
@@ -54,16 +55,28 @@ export const sortPolygonByAngles = (points) => {
 };
 
 export const calculatePolygonCenter = (members) => {
-  if (!members || !members.length) {
-    return defaultCenterPosition;
-  }
-
-  if (members.length === 1) {
-    return members[0].location || defaultCenterPosition;
+  if (!members || !members.length || members.length === 1) {
+    return calculateDefaultCenter(members);
   }
 
   const points = [members.map((member) => member.location)];
   const polygon = L.polygon(points);
   const center = polygon.getBounds().getCenter();
   return [center.lat, center.lng];
+};
+
+const calculateDefaultCenter = (members) => {
+  fetchConfig().then((config) => {
+    const customDefaultCenter = config.mapConfig?.center;
+
+    if (!members || !members.length) {
+      return customDefaultCenter || defaultCenterPosition;
+    }
+
+    if (members.length === 1) {
+      return (
+        members[0].location || customDefaultCenter || defaultCenterPosition
+      );
+    }
+  });
 };

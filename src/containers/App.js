@@ -13,17 +13,18 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { createTheme, StyledEngineProvider } from "@mui/material/styles";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import MuiThemeProvider from "@mui/material/styles/ThemeProvider";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
-import { UserActions } from "../actions";
+import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
 import Header from "../components/Header";
 import SnackbarWrapper from "../components/SnackbarWrapper";
+import { ConfigContext } from "../config/ConfigContext";
 import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
 import { useAppSelector } from "../store/hooks";
@@ -33,6 +34,7 @@ const muiTheme = createTheme(getTheme());
 const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
+  const { mapConfig } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
@@ -49,6 +51,20 @@ const App = ({ children }) => {
       dispatch(fetchUserPermissions());
     }
   }, [auth]);
+
+  /**
+   * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values
+   */
+  useEffect(() => {
+    if (mapConfig?.center) {
+      dispatch(
+        StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
+      );
+    }
+    if (mapConfig?.defaultTile) {
+      dispatch(UserActions.changeActiveBaselayer(mapConfig.defaultTile));
+    }
+  }, [mapConfig]);
 
   if (localization.locale === null) {
     return null;

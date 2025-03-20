@@ -20,12 +20,16 @@ import limitationHelpers from "../modelUtils/limitationHelpers";
 import formatHelpers from "../modelUtils/mapToClient";
 import SettingsManager from "../singletons/SettingsManager";
 import { setDecimalPrecision } from "../utils/";
+import { defaultCenterPosition } from "../utils/mapUtils";
 import { getStateByOperation } from "./stopPlaceReducerUtils";
 
 const Settings = new SettingsManager();
 
+/**
+ * If a custom centerPosition is set in bootstrap.json, it's going to override this initial value
+ */
 const initialState = {
-  centerPosition: [64.349421, 16.809082],
+  centerPosition: defaultCenterPosition,
   zoom: 6,
   minZoom: 14,
   isCompassBearingEnabled: Settings.getShowCompassBearing(),
