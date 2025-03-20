@@ -20,7 +20,8 @@ import {
   TileLayer,
   ZoomControl,
 } from "react-leaflet";
-import { ConfigContext } from "../../config/ConfigContext";
+import { ConfigContext, TileEnum } from "../../config/ConfigContext";
+import { defaultCenterPosition } from "../../utils/mapUtils";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
@@ -51,9 +52,16 @@ export const LeafLetMap = ({
   handleBaselayerChanged,
   onMapReady = () => {},
 }) => {
+  const { mapConfig } = useContext(ConfigContext);
+  const defaultTiles = [
+    TileEnum.OSM,
+    TileEnum.KARTVERKET_TOPOGRAFISK,
+    TileEnum.KARTVERKET_TOPOGRAFISK,
+  ];
+  console.log(defaultTiles);
   const centerPosition = useMemo(() => {
     if (!position) {
-      return [64.349421, 16.809082];
+      return mapConfig?.center || defaultCenterPosition;
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
@@ -74,9 +82,38 @@ export const LeafLetMap = ({
     }
   }, [centerPosition[0], centerPosition[1], zoom]);
 
-  const { googleApiKey } = useContext(ConfigContext);
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
   const { BaseLayer } = LayersControl;
+
+  const getTileLayer = (tile) => {
+    switch (tile) {
+      case TileEnum.OSM:
+        return (
+          <TileLayer
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maxZoom="19"
+          />
+        );
+      case TileEnum.KARTVERKET_TOPOGRAFISK:
+        return (
+          <TileLayer
+            attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
+            url="https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png"
+            maxZoom="19"
+          />
+        );
+      case TileEnum.KARTVERKET_FLYFOTO:
+        return <KartverketFlyFotoLayer />;
+      case TileEnum.DGT:
+        return (
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://cdn.digitransit.fi/map/v2/hsl-map/{z}/{x}/{y}.png?digitransit-subscription-key=17771c2dff3e4225ae7daab22456b53e"
+          />
+        );
+    }
+  };
 
   return (
     <MapContainer
@@ -100,32 +137,13 @@ export const LeafLetMap = ({
         }}
       >
         <LayersControl position="topright">
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("OpenStreetMap")}
-            name="OpenStreetMap"
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Kartverket topografisk")}
-            name="Kartverket topografisk"
-          >
-            <TileLayer
-              attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-              url="https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
-            name="Kartverket flyfoto"
-          >
-            <KartverketFlyFotoLayer />
-          </BaseLayer>
+          {(mapConfig?.supportedTiles || defaultTiles).map((tile) => {
+            return (
+              <BaseLayer checked={getCheckedBaseLayerByValue(tile)} name={tile}>
+                {getTileLayer(tile)}
+              </BaseLayer>
+            );
+          })}
         </LayersControl>
         <FareZones position="topright" />
         <TariffZones position="topright" />
