@@ -15,7 +15,13 @@ limitations under the Licence. */
 import MdMore from "@mui/icons-material/ExpandMore";
 import MdLocationSearching from "@mui/icons-material/LocationSearching";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Button, FormControlLabel, FormGroup } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+} from "@mui/material";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
