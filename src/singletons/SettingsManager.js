@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { TileEnum } from "../config/ConfigContext";
+
 let instance = null;
 
 const rootKey = "ABZU::settings";
@@ -74,7 +76,7 @@ class SettingsManager {
   }
 
   getMapLayer() {
-    return localStorage.getItem(mapLayerKey) || "OpenStreetMap";
+    return localStorage.getItem(mapLayerKey) || TileEnum.OSM;
   }
 
   setMapLayer(value) {
