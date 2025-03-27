@@ -636,7 +636,7 @@ class SearchBox extends React.Component {
               noOptionsText={formatMessage({ id: "no_results_found" })}
               renderInput={(params) => (
                 <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                  <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                  <SearchIcon />
                   <TextField
                     {...params}
                     label={formatMessage({ id: "filter_by_name" })}
@@ -719,7 +719,6 @@ class SearchBox extends React.Component {
                           anchorEl: e.currentTarget,
                         });
                       }}
-                      color={"primary2Color"}
                       sx={{ color: "white" }}
                       startIcon={<MdMore style={{ width: 20, height: 20 }} />}
                     >

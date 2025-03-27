@@ -335,21 +335,6 @@ Fragments.stopPlace = {
               key
               values
           }
-          tariffZones {
-              name {
-                  value
-              }
-              id
-          }
-          fareZones {
-            name {
-              value
-            }
-            privateCode {
-              value
-            }
-            id
-          }
           topographicPlace {
               name {
                   value

@@ -1,18 +1,19 @@
 /*
  *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
+ *  the European Commission - subsequent versions of the EUPL (the "Licence");
+ *  You may not use this work except in compliance with the Licence.
+ *  You may obtain a copy of the Licence at:
+ *
+ *  https://joinup.ec.europa.eu/software/page/eupl
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the Licence is distributed on an "AS IS" basis,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the Licence for the specific language governing permissions and
+ *  limitations under the Licence.
+ */
 
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
-
-import { lighten } from "@mui/material/styles/";
+import { lighten } from "@mui/material/styles";
 import { getTiamatEnv } from "../../themeConfig";
 
 export const primary = "#5AC39A";
@@ -42,90 +43,59 @@ export const getEnvColor = (env) => {
   }
 };
 
-export const getV0Theme = () => ({
-  fontFamily: "Roboto, sans-serif",
-  palette: {
-    primary1Color: primary,
-    primary2Color: cyan700,
-    primary3Color: grey400,
-    accent1Color: primary,
-    accent2Color: grey100,
-    accent3Color: grey500,
-    textColor: darkBlack,
-    alternateTextColor: white,
-    canvasColor: white,
-    borderColor: grey300,
-    disabledColor: lighten(darkBlack, 0.3),
-    pickerHeaderColor: primary,
-    clockCircleColor: lighten(darkBlack, 0.07),
-    shadowColor: fullBlack,
-  },
-  datePicker: {
-    selectColor: primary,
-    selectTextColor: white,
-  },
-  checkbox: {
-    checkedColor: primaryDarker,
-  },
-  appBar: {
-    color: darkColor,
-  },
-});
-
+/*
+  In MUI v6 the theme structure follows a standard format.
+  - Typography options (such as fontFamily) now go under the `typography` key.
+  - The primary color is assigned to `palette.primary.main` and so on.
+  - Values not directly used by MUI can be kept in a custom key (here: `custom`).
+*/
 export const getTheme = () => ({
-  fontFamily: "Roboto, sans-serif",
+  typography: {
+    fontFamily: "Roboto, sans-serif",
+  },
   palette: {
-    primary1Color: {
+    primary: {
       main: primary,
     },
-    primary2Color: {
-      main: cyan700,
+
+    secondary: {
+      main: primaryDarker,
     },
-    primary3Color: {
-      main: grey400,
+    text: {
+      primary: darkBlack,
+      secondary: grey400,
     },
-    accent1Color: {
-      main: primary,
+    background: {
+      default: white,
     },
-    accent2Color: {
-      main: grey100,
-    },
-    accent3Color: {
-      main: grey500,
-    },
-    textColor: {
-      main: darkBlack,
-    },
-    alternateTextColor: {
-      main: white,
-    },
-    canvasColor: {
-      main: white,
-    },
-    borderColor: {
-      main: grey300,
-    },
-    disabledColor: {
-      main: lighten(darkBlack, 0.3),
-    },
-    pickerHeaderColor: {
-      main: primary,
-    },
-    clockCircleColor: {
-      main: lighten(darkBlack, 0.07),
-    },
-    shadowColor: {
-      main: fullBlack,
+    action: {
+      active: darkBlack,
     },
   },
-  datePicker: {
-    selectColor: primary,
-    selectTextColor: white,
-  },
-  checkbox: {
-    checkedColor: primaryDarker,
-  },
-  appBar: {
-    color: darkColor,
+  // Custom keys for values that do not have a default place in the MUI theme.
+  custom: {
+    // The extra palette colors
+    primary2Color: { main: cyan700 },
+    primary3Color: { main: grey400 },
+    accent1Color: { main: primary },
+    accent2Color: { main: grey100 },
+    accent3Color: { main: grey500 },
+    borderColor: { main: grey300 },
+    disabledColor: { main: lighten(darkBlack, 0.3) },
+    pickerHeaderColor: { main: primary },
+    clockCircleColor: { main: lighten(darkBlack, 0.07) },
+    shadowColor: { main: fullBlack },
+    alternateTextColor: { main: white },
+    // Other component-specific customizations
+    datePicker: {
+      selectColor: primary,
+      selectTextColor: white,
+    },
+    checkbox: {
+      checkedColor: primaryDarker,
+    },
+    appBar: {
+      color: darkColor,
+    },
   },
 });

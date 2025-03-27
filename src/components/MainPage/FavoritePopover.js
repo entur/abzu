@@ -63,11 +63,7 @@ class FilterPopover extends React.Component {
 
     return (
       <div>
-        <IconButton
-          onClick={this.handleTouchTap.bind(this)}
-          label={caption}
-          labelStyle={{ fontSize: 12 }}
-        >
+        <IconButton onClick={this.handleTouchTap.bind(this)} label={caption}>
           <StarIcon />
         </IconButton>
         <span>{caption.toUpperCase()}</span>
