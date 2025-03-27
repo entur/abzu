@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
@@ -20,7 +21,6 @@ import limitationHelpers from "../modelUtils/limitationHelpers";
 import formatHelpers from "../modelUtils/mapToClient";
 import SettingsManager from "../singletons/SettingsManager";
 import { setDecimalPrecision } from "../utils/";
-import { defaultCenterPosition } from "../utils/mapUtils";
 import { getStateByOperation } from "./stopPlaceReducerUtils";
 
 const Settings = new SettingsManager();

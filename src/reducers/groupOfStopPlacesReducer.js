@@ -13,10 +13,8 @@
  limitations under the Licence. */
 
 import * as types from "../actions/Types";
-import {
-  calculatePolygonCenter,
-  defaultCenterPosition,
-} from "../utils/mapUtils";
+import { defaultCenterPosition } from "../components/Map/mapDefaults";
+import { calculatePolygonCenter } from "../utils/mapUtils";
 import {
   addMemberToGroup,
   getGroupOfStopPlace,

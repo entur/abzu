@@ -24,9 +24,10 @@ import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
 import Header from "../components/Header";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import { ConfigContext } from "../config/ConfigContext";
+import { ConfigContext, TileProvider } from "../config/ConfigContext";
 import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
+import { getStoredMapLayer } from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
 
 const muiTheme = createTheme(getTheme());
@@ -53,17 +54,28 @@ const App = ({ children }) => {
   }, [auth]);
 
   /**
-   * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values
+   * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values;
+   * And determine the right map base layer;
    */
   useEffect(() => {
-    if (mapConfig?.center) {
+    if (mapConfig?.defaultCenter) {
       dispatch(
-        StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
+        StopPlaceActions.changeMapCenter(
+          mapConfig.defaultCenter,
+          mapConfig.defaultZoom || 7,
+        ),
       );
     }
-    if (mapConfig?.defaultTile) {
-      dispatch(UserActions.changeActiveBaselayer(mapConfig.defaultTile));
-    }
+
+    const layerBasedOnMapConfig =
+      mapConfig?.defaultTileProvider ||
+      (mapConfig?.supportedTiles?.length > 0 &&
+        mapConfig?.supportedTiles[0].name);
+    dispatch(
+      UserActions.changeActiveBaselayer(
+        getStoredMapLayer() || layerBasedOnMapConfig || TileProvider.OSM,
+      ),
+    );
   }, [mapConfig]);
 
   if (localization.locale === null) {

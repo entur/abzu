@@ -17,19 +17,19 @@ import {
   LayersControl,
   MapContainer,
   ScaleControl,
-  TileLayer,
   ZoomControl,
 } from "react-leaflet";
-import { ConfigContext, TileEnum } from "../../config/ConfigContext";
-import { defaultCenterPosition } from "../../utils/mapUtils";
+import { ConfigContext } from "../../config/ConfigContext";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
-import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import MultiPolylineList from "./PathLink";
 import StopPlaceGroupList from "./StopPlaceGroupList";
+import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
+import { DynamicTileLayer } from "./tiles/DynamicTileLayer";
+import { tileComponentMap } from "./tiles/tileComponentMap";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -53,15 +53,11 @@ export const LeafLetMap = ({
   onMapReady = () => {},
 }) => {
   const { mapConfig } = useContext(ConfigContext);
-  const defaultTiles = [
-    TileEnum.OSM,
-    TileEnum.KARTVERKET_TOPOGRAFISK,
-    TileEnum.KARTVERKET_TOPOGRAFISK,
-  ];
+  const defaultTiles = [defaultOSMTile];
 
   const centerPosition = useMemo(() => {
     if (!position) {
-      return mapConfig?.center || defaultCenterPosition;
+      return mapConfig?.defaultCenter || defaultCenterPosition;
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
@@ -84,36 +80,6 @@ export const LeafLetMap = ({
 
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
   const { BaseLayer } = LayersControl;
-
-  const getTileLayer = (tile) => {
-    switch (tile) {
-      case TileEnum.OSM:
-        return (
-          <TileLayer
-            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maxZoom="19"
-          />
-        );
-      case TileEnum.KARTVERKET_TOPOGRAFISK:
-        return (
-          <TileLayer
-            attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-            url="https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png"
-            maxZoom="19"
-          />
-        );
-      case TileEnum.KARTVERKET_FLYFOTO:
-        return <KartverketFlyFotoLayer />;
-      case TileEnum.DGT:
-        return (
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://cdn.digitransit.fi/map/v2/hsl-map/{z}/{x}/{y}.png?digitransit-subscription-key=17771c2dff3e4225ae7daab22456b53e"
-          />
-        );
-    }
-  };
 
   return (
     <MapContainer
@@ -139,8 +105,20 @@ export const LeafLetMap = ({
         <LayersControl position="topright">
           {(mapConfig?.supportedTiles || defaultTiles).map((tile) => {
             return (
-              <BaseLayer checked={getCheckedBaseLayerByValue(tile)} name={tile}>
-                {getTileLayer(tile)}
+              <BaseLayer
+                key={tile.name}
+                checked={getCheckedBaseLayerByValue(tile.name)}
+                name={tile.name}
+              >
+                {tile.component ? (
+                  tileComponentMap[tile.name]
+                ) : (
+                  <DynamicTileLayer
+                    attribution={tile.attribution}
+                    url={tile.url}
+                    maxZoom={tile.maxZoom}
+                  />
+                )}
               </BaseLayer>
             );
           })}

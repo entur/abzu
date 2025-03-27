@@ -12,8 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { TileEnum } from "../config/ConfigContext";
-
 let instance = null;
 
 const rootKey = "ABZU::settings";
@@ -27,6 +25,10 @@ const enablePublicCodePrivateCodeOnStopPlaces =
   rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
+
+export const getStoredMapLayer = () => {
+  return localStorage.getItem(mapLayerKey);
+};
 
 class SettingsManager {
   constructor() {
@@ -73,10 +75,6 @@ class SettingsManager {
 
   getShowMultimodalEdges() {
     return this.parseBoolean(localStorage.getItem(showMultimodalEdges), true);
-  }
-
-  getMapLayer() {
-    return localStorage.getItem(mapLayerKey) || TileEnum.OSM;
   }
 
   setMapLayer(value) {

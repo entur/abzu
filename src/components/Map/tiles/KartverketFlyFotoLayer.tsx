@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { useGktToken } from "./hooks/useGktToken";
-import { WMTSLayer } from "./WMTSLayer";
+import { useGktToken } from "../hooks/useGktToken";
+import { WMTSLayer } from "../WMTSLayer";
 
 const BASE_URL =
   "https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2";
