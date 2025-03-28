@@ -4,7 +4,7 @@ Render an icon-link for Statens Vegesen's StreetView service (link to service). 
 
 ## Props
 
-- belongsToNeighbourStop: ???
+- skipMarginLeft: Add left margin to the icon
 - position: coordinates to open in the street view service
 
 ## Enabling the feature
@@ -20,7 +20,7 @@ SVVStreetViewLink feature can be wired in as:
     <ComponentToggle<Features, SVVStreetViewLinkProps>
         feature="SVVStreetViewLink"
         componentProps={{
-          belongsToNeighbourStop: false,
+          skipMarginLeft: false,
           position: [69, 10];
         }}
     />
