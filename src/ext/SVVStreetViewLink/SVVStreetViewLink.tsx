@@ -7,13 +7,13 @@ const getVegvesenURL = (position: number[]) => {
 };
 
 export const SVVStreetViewLink: FeatureComponent<SVVStreetViewLinkProps> = ({
-  belongsToNeighbourStop,
+  skipMarginLeft = false,
   position,
 }) => {
   return (
     <div
       style={{
-        marginLeft: belongsToNeighbourStop ? 0 : 10,
+        marginLeft: skipMarginLeft ? 0 : 10,
         cursor: "pointer",
       }}
     >
