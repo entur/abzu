@@ -26,6 +26,10 @@ const enablePublicCodePrivateCodeOnStopPlaces =
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
 
+export const getStoredMapLayer = () => {
+  return localStorage.getItem(mapLayerKey);
+};
+
 class SettingsManager {
   constructor() {
     if (!instance) {
@@ -71,10 +75,6 @@ class SettingsManager {
 
   getShowMultimodalEdges() {
     return this.parseBoolean(localStorage.getItem(showMultimodalEdges), true);
-  }
-
-  getMapLayer() {
-    return localStorage.getItem(mapLayerKey) || "OpenStreetMap";
   }
 
   setMapLayer(value) {

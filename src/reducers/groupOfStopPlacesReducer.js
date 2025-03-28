@@ -13,6 +13,7 @@
  limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import { calculatePolygonCenter } from "../utils/mapUtils";
 import {
   addMemberToGroup,
@@ -26,12 +27,15 @@ const newGroup = {
   members: [],
 };
 
+/**
+ * If a custom centerPosition is set in bootstrap.json, it's going to override this initial value
+ */
 export const initialState = {
   current: Object.assign({}, newGroup),
   original: Object.assign({}, newGroup),
   isModified: false,
   isFetchingMember: false,
-  centerPosition: [64.349421, 16.809082],
+  centerPosition: defaultCenterPosition,
   sourceForNewGroup: null,
 };
 
@@ -121,6 +125,11 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
       } else {
         return state;
       }
+
+    case types.CHANGED_MAP_CENTER:
+      return Object.assign({}, state, {
+        centerPosition: action.payload.position,
+      });
 
     default:
       return state;

@@ -13,7 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
-import SettingsManager from "../singletons/SettingsManager";
+import SettingsManager, {
+  getStoredMapLayer,
+} from "../singletons/SettingsManager";
 
 const Settings = new SettingsManager();
 
@@ -41,7 +43,7 @@ export const initialState = {
   favoriteNameDialogIsOpen: false,
   removedFavorites: [],
   activeElementTab: 0,
-  activeBaselayer: Settings.getMapLayer(),
+  activeBaselayer: getStoredMapLayer(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
