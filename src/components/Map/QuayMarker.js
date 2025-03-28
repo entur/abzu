@@ -403,7 +403,7 @@ class QuayMarker extends React.Component {
                 feature="SVVStreetViewLink"
                 componentProps={{
                   position,
-                  belongsToNeighbourStop,
+                  skipMarginLeft: belongsToNeighbourStop,
                 }}
               />
             </div>
