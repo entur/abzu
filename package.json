@@ -93,10 +93,10 @@
     "redux-devtools": "3.7.0",
     "source-map-explorer": "2.5.3",
     "typescript": "5.8.2",
-    "vite": "6.2.3",
+    "vite": "6.2.4",
     "vite-plugin-svgr": "4.3.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.0.9",
+    "vitest": "3.1.1",
     "vitest-sonar-reporter": "2.0.0"
   }
 }
