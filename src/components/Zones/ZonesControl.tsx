@@ -30,7 +30,7 @@ export const ZonesControl = <T extends TariffZone>({
   setSelectedZones,
   getZoneLabel,
 }: ZonesControlProps<T>) => {
-  const itemsRef = useRef<Record<string, HTMLElement | null>>({});
+  const itemsRef = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const [expandedCodespace, setExpandedCodespace] = useState<
     string | undefined
@@ -129,7 +129,9 @@ export const ZonesControl = <T extends TariffZone>({
                   label={codespace}
                   control={
                     <Checkbox
-                      ref={(elm) => (itemsRef.current[codespace] = elm)}
+                      ref={(elm) => {
+                        itemsRef.current[codespace] = elm;
+                      }}
                       size="small"
                       onChange={(e) =>
                         toggleCodespaceSelection(codespace, e.target.checked)
