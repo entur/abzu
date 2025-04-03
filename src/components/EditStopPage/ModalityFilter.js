@@ -24,13 +24,11 @@ class ModalityFilter extends React.Component {
 
     if (checked) {
       newFilters.push(value);
-      // i.e. no filters: all modalities are selected
       if (newFilters.length === Object.keys(stopTypes).length) {
         newFilters = [];
       }
     } else {
       if (!newFilters.length) {
-        // if no filters are applied, onChange should select this
         newFilters.push(value);
       } else {
         const index = newFilters.indexOf(value);
@@ -47,8 +45,9 @@ class ModalityFilter extends React.Component {
 
     const wrapperStyle = {
       display: "flex",
+      flexWrap: "wrap",
       padding: 8,
-      justifyContent: "space-between",
+      justifyContent: "flex-start",
     };
 
     return (
@@ -63,7 +62,6 @@ class ModalityFilter extends React.Component {
                 checkedIcon={
                   <ModalityIconSvg
                     svgStyle={{ height: 20, width: 20 }}
-                    //style={{ color: "black" }}
                     type={item}
                     forceUpdate={true}
                   />

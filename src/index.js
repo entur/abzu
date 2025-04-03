@@ -15,7 +15,7 @@
 import { ApolloProvider } from "@apollo/client";
 import { ComponentToggleProvider } from "@entur/react-component-toggle";
 import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
+import { browserTracingIntegration } from "@sentry/react";
 import { useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
@@ -24,14 +24,14 @@ import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { AuthProvider } from "./auth/auth";
 import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
-import App from "./containers/App";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-import ReportPage from "./containers/ReportPage";
 import { StopPlace } from "./containers/StopPlace";
 import StopPlaces from "./containers/StopPlaces";
 import { getTiamatClient } from "./graphql/clients";
 import AppRoutes from "./routes";
 import { history, store } from "./store/store";
+import App from "./v2/containers/App";
+import ReportPage from "./v2/containers/ReportPage";
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
@@ -39,7 +39,7 @@ const AuthenticatedApp = () => {
   if (process.env.NODE_ENV === "production") {
     Sentry.init({
       dsn: config.sentryDSN,
-      integrations: [new BrowserTracing()],
+      integrations: [browserTracingIntegration()],
 
       // We recommend adjusting this value in production, or using tracesSampler
       // for finer control

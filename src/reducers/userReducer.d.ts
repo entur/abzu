@@ -5,6 +5,8 @@ interface UserState {
     stopPlaceId: string;
   };
   auth: any;
+  localization: any;
+  appliedLocale: any;
 }
 
 declare const initialState: UserState;
