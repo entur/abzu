@@ -1,8 +1,7 @@
 import { TileLayer } from "react-leaflet";
-import { TileProvider } from "../../../config/ConfigContext";
 
 type DynamicTileLayerProps = {
-  name: TileProvider;
+  name: string;
   attribution?: string;
   url?: string;
   maxZoom?: number;

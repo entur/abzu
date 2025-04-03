@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 
 type FeatureFlags = {
   SVVStreetViewLink: boolean;
+  KartverketFlyFotoLayer: boolean;
 };
 
 export interface Config {
@@ -20,20 +21,13 @@ export interface Config {
 
 export interface MapConfig {
   supportedTiles: Tile[];
-  defaultTileProvider: TileProvider;
-  defaultCenter: [number, number];
-  defaultZoom: number;
-}
-
-export enum TileProvider {
-  OSM = "OpenStreetMap",
-  KARTVERKET_TOPOGRAFISK = "Kartverket topografisk",
-  KARTVERKET_FLYFOTO = "Kartverket flyfoto",
-  DIGITRANSIT = "Digitransit",
+  defaultTile: string;
+  center: [number, number];
+  zoom: number;
 }
 
 export interface Tile {
-  name: TileProvider;
+  name: string;
   attribution?: string;
   url?: string;
   maxZoom?: number;

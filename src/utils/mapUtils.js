@@ -67,7 +67,7 @@ export const calculatePolygonCenter = (members) => {
 
 const calculateDefaultCenter = (members) => {
   fetchConfig().then((config) => {
-    const customDefaultCenter = config.mapConfig?.defaultCenter;
+    const customDefaultCenter = config.mapConfig?.center;
 
     if (!members || !members.length) {
       return customDefaultCenter || defaultCenterPosition;

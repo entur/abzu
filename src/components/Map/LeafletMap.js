@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ComponentToggle } from "@entur/react-component-toggle";
 import { useContext, useEffect, useMemo, useState } from "react";
 import {
   LayersControl,
@@ -22,14 +23,13 @@ import {
 import { ConfigContext } from "../../config/ConfigContext";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
+import { DynamicTileLayer } from "./DynamicTileLayer";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import MultiPolylineList from "./PathLink";
 import StopPlaceGroupList from "./StopPlaceGroupList";
 import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
-import { DynamicTileLayer } from "./tiles/DynamicTileLayer";
-import { tileComponentMap } from "./tiles/tileComponentMap";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -57,7 +57,7 @@ export const LeafLetMap = ({
 
   const centerPosition = useMemo(() => {
     if (!position) {
-      return mapConfig?.defaultCenter || defaultCenterPosition;
+      return mapConfig?.center || defaultCenterPosition;
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
@@ -111,7 +111,7 @@ export const LeafLetMap = ({
                 name={tile.name}
               >
                 {tile.component ? (
-                  tileComponentMap[tile.name]
+                  <ComponentToggle feature={tile.name} />
                 ) : (
                   <DynamicTileLayer
                     attribution={tile.attribution}

@@ -23,14 +23,16 @@ import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
 import Header from "../components/Header";
+import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import { ConfigContext, TileProvider } from "../config/ConfigContext";
+import { ConfigContext } from "../config/ConfigContext";
 import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
-import { getStoredMapLayer } from "../singletons/SettingsManager";
+import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
 
 const muiTheme = createTheme(getTheme());
+const Settings = new SettingsManager();
 
 const App = ({ children }) => {
   const auth = useAuth();
@@ -58,22 +60,19 @@ const App = ({ children }) => {
    * And determine the right map base layer;
    */
   useEffect(() => {
-    if (mapConfig?.defaultCenter) {
+    if (mapConfig?.center) {
       dispatch(
-        StopPlaceActions.changeMapCenter(
-          mapConfig.defaultCenter,
-          mapConfig.defaultZoom || 7,
-        ),
+        StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
       );
     }
 
     const layerBasedOnMapConfig =
-      mapConfig?.defaultTileProvider ||
+      mapConfig?.defaultTile ||
       (mapConfig?.supportedTiles?.length > 0 &&
         mapConfig?.supportedTiles[0].name);
     dispatch(
       UserActions.changeActiveBaselayer(
-        getStoredMapLayer() || layerBasedOnMapConfig || TileProvider.OSM,
+        Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,
       ),
     );
   }, [mapConfig]);
