@@ -1,4 +1,4 @@
 export type SVVStreetViewLinkProps = {
-  belongsToNeighbourStop: boolean;
+  skipMarginLeft?: boolean;
   position: number[];
 };

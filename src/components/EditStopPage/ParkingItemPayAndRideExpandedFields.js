@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Accessible } from "@mui/icons-material/";
+import Accessible from "@mui/icons-material/Accessible";
 import LocalParking from "@mui/icons-material/LocalParking";
 import Payment from "@mui/icons-material/Payment";
 import { Grid, ListSubheader, TextField } from "@mui/material";
