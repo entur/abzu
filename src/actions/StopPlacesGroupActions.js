@@ -12,13 +12,13 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import Routes from "../routes/";
-import { createThunk, UserActions } from "./";
 import {
   getAddStopPlaceInfo,
   getLocationPermissionsForCoordinates,
   getStopPlaceById,
-} from "./TiamatActions";
+} from "../actions/TiamatActions";
+import Routes from "../routes/";
+import { createThunk, UserActions } from "./";
 import * as types from "./Types";
 
 var StopPlacesGroupActions = {};
