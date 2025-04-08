@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
+import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
@@ -24,8 +25,11 @@ import { getStateByOperation } from "./stopPlaceReducerUtils";
 
 const Settings = new SettingsManager();
 
+/**
+ * If a custom centerPosition is set in bootstrap.json, it's going to override this initial value
+ */
 const initialState = {
-  centerPosition: [64.349421, 16.809082],
+  centerPosition: defaultCenterPosition,
   zoom: 6,
   minZoom: 14,
   isCompassBearingEnabled: Settings.getShowCompassBearing(),
