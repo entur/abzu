@@ -1,3 +1,4 @@
+import FilterListIcon from "@mui/icons-material/FilterList";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -73,7 +74,8 @@ const ReportPage: React.FC<Props> = ({
     useState<boolean>(false);
   const [withTags, setWithTags] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
+  const drawerWidth = 320;
 
   useEffect(() => {
     const fromURL = extractQueryParamsFromUrl();
@@ -359,35 +361,40 @@ const ReportPage: React.FC<Props> = ({
                 }}
               />
             )}
-            renderOption={(props, option: any, { selected }) => (
+            renderOption={(props, option: any, {}) => (
               <MenuItem {...props} key={option.id}>
                 {option.value}
               </MenuItem>
             )}
           />
         </div>
+        <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+          <FilterListIcon
+            color="inherit"
+            sx={{ color: "white" }}
+          ></FilterListIcon>
+        </IconButton>
       </div>,
     );
-  }, [setSearchBox, topographicPlaceFilterValue]);
+  }, [setSearchBox, topographicPlaceFilterValue, drawerOpen]);
   return (
     <div>
-      {/* Header with hamburger button below it */}
       <div style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
         <IconButton onClick={() => setDrawerOpen(true)}>
           <MenuIcon />
         </IconButton>
       </div>
 
-      {/* Filter Drawer */}
       <Drawer
         anchor="left"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        hideBackdrop
+        variant="persistent"
         slotProps={{
           paper: {
             sx: {
               top: { xs: "110px", sm: "64px" },
-              height: { xs: "calc(100% - 110px)", sm: "calc(100% - 64px)" },
             },
           },
         }}
@@ -415,8 +422,14 @@ const ReportPage: React.FC<Props> = ({
         />
       </Drawer>
 
-      {/* Main Content Area */}
-      <div style={{ marginTop: 20, padding: "0 20px" }}>
+      <div
+        style={{
+          marginTop: 20,
+          padding: "0 20px",
+          marginLeft: drawerOpen ? drawerWidth : 0,
+          transition: "margin 0.3s ease", // smooth transition when toggling
+        }}
+      >
         <div style={{ display: "flex", marginBottom: 10 }}>
           <ColumnFilterPopover
             style={{ marginRight: 2, transform: "scale(0.9)" }}
