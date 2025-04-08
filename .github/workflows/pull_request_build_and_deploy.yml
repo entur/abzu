@@ -5,7 +5,6 @@ name: Pull request build and deploy
 'on': pull_request
 jobs:
   build_and_preview:
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -51,6 +50,7 @@ jobs:
       - name: Copy bootstrap config
         run: cp .github/environments/dev.json build/bootstrap.json
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        if: github.event.pull_request.head.repo.fork == false
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}'
