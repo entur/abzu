@@ -51,6 +51,7 @@ const AuthenticatedApp = () => {
 
   const client = getTiamatClient();
 
+  const basename = import.meta.env.BASE_URL;
   const path = "/";
 
   return (
@@ -58,7 +59,7 @@ const AuthenticatedApp = () => {
       <Provider store={store}>
         <ApolloProvider client={client}>
           <App>
-            <Router history={history}>
+            <Router basename={basename} history={history}>
               <Routes>
                 <Route path={path} element={<StopPlaces />} />
                 <Route
