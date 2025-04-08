@@ -13,6 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { push } from "redux-first-history";
+import {
+  getAddStopPlaceInfo,
+  getLocationPermissionsForCoordinates,
+  getMergeInfoForStops,
+  getUserPermissions,
+} from "../actions/TiamatActions";
 import { checkQuayUsage, checkStopPlaceUsage } from "../graphql/OTP/actions";
 import configureLocalization from "../localization/localization";
 import ParentStopPlace from "../models/ParentStopPlace";
@@ -21,12 +27,6 @@ import FavoriteManager from "../singletons/FavoriteManager";
 import SettingsManager from "../singletons/SettingsManager";
 import { getIn } from "../utils/";
 import { createThunk } from "./";
-import {
-  getAddStopPlaceInfo,
-  getLocationPermissionsForCoordinates,
-  getMergeInfoForStops,
-  getUserPermissions,
-} from "./TiamatActions";
 import * as types from "./Types";
 
 var UserActions = {};

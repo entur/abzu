@@ -74,7 +74,7 @@ class SettingsManager {
   }
 
   getMapLayer() {
-    return localStorage.getItem(mapLayerKey);
+    return localStorage.getItem(mapLayerKey) || "OpenStreetMap";
   }
 
   setMapLayer(value) {

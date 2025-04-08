@@ -17,29 +17,24 @@ import {
   ThemeProvider as MuiThemeProvider,
   StyledEngineProvider,
 } from "@mui/material/styles";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
-import { StopPlaceActions, UserActions } from "../actions";
+import { UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
 import Header from "../components/Header";
-import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
-import { ConfigContext } from "../config/ConfigContext";
 import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
-import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
 
 const muiTheme = createTheme(getTheme());
-const Settings = new SettingsManager();
 
 const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
-  const { mapConfig } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
@@ -56,28 +51,6 @@ const App = ({ children }) => {
       dispatch(fetchUserPermissions());
     }
   }, [auth]);
-
-  /**
-   * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values;
-   * And determine the right map base layer;
-   */
-  useEffect(() => {
-    if (mapConfig?.center) {
-      dispatch(
-        StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
-      );
-    }
-
-    const layerBasedOnMapConfig =
-      mapConfig?.defaultTile ||
-      (mapConfig?.supportedTiles?.length > 0 &&
-        mapConfig?.supportedTiles[0].name);
-    dispatch(
-      UserActions.changeActiveBaselayer(
-        Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,
-      ),
-    );
-  }, [mapConfig]);
 
   if (localization.locale === null) {
     return null;
