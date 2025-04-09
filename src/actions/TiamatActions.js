@@ -573,7 +573,7 @@ export const findStopForReport =
 
 export const findStopForReportPaged =
   (queryVariables) => async (dispatch, getState) => {
-    const size = 200;
+    const size = 100;
     let page = 0;
     let accumulatedResults = [];
     let hasMore = true;
