@@ -21,7 +21,7 @@ import React from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import {
-  findStopForReport,
+  findStopForReportPaged,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
@@ -264,10 +264,10 @@ class ReportPage extends React.Component {
         .filter((topos) => topos.type === "country")
         .map((topos) => topos.id),
     };
-
-    dispatch(findStopForReport(queryVariables))
+    debugger;
+    dispatch(findStopForReportPaged(queryVariables))
       .then((response) => {
-        const stopPlaces = response.data.stopPlace;
+        const stopPlaces = response;
         const stopPlaceIds = [];
         for (let i = 0; i < stopPlaces.length; i++) {
           if (stopPlaces[i].__typename === "ParentStopPlace") {
@@ -574,22 +574,26 @@ class ReportPage extends React.Component {
             selectAllLabel={formatMessage({ id: "all" })}
           />
         </div>
-        <ReportResultView
-          activePageIndex={activePageIndex}
-          intl={intl}
-          results={results}
-          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
-          quaysColumnOptions={this.state.columnOptionsQuays}
-          duplicateInfo={duplicateInfo}
-        />
-        <ReportPageFooter
-          results={results}
-          intl={intl}
-          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
-          quaysColumnOptions={this.state.columnOptionsQuays}
-          handleSelectPage={this.handleSelectPage.bind(this)}
-          activePageIndex={activePageIndex}
-        />
+        {!isLoading && (
+          <>
+            <ReportResultView
+              activePageIndex={activePageIndex}
+              intl={intl}
+              results={results}
+              stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+              quaysColumnOptions={this.state.columnOptionsQuays}
+              duplicateInfo={duplicateInfo}
+            />
+            <ReportPageFooter
+              results={results}
+              intl={intl}
+              stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+              quaysColumnOptions={this.state.columnOptionsQuays}
+              handleSelectPage={this.handleSelectPage.bind(this)}
+              activePageIndex={activePageIndex}
+            />
+          </>
+        )}
       </div>
     );
   }

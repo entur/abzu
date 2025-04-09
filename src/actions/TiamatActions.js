@@ -571,6 +571,44 @@ export const findStopForReport =
       context: await getContext(getState().user.auth),
     })(dispatch);
 
+export const findStopForReportPaged =
+  (queryVariables) => async (dispatch, getState) => {
+    const size = 200;
+    let page = 0;
+    let accumulatedResults = [];
+    let hasMore = true;
+    const client = getTiamatClient();
+
+    while (hasMore) {
+      const pagedVariables = { ...queryVariables, page, size };
+
+      const response = await client.query({
+        query: findStopForReportQuery,
+        fetchPolicy: "network-only",
+        variables: pagedVariables,
+        context: await getContext(getState().user.auth),
+      });
+
+      const currentBatch = response?.data?.stopPlace ?? [];
+      accumulatedResults = accumulatedResults.concat(currentBatch);
+
+      if (currentBatch.length === 0) {
+        hasMore = false;
+      } else {
+        page++;
+      }
+    }
+
+    dispatch({
+      type: types.APOLLO_QUERY_RESULT,
+      operationName: "findStopForReportPaged",
+      result: { data: accumulatedResults },
+      variables: queryVariables,
+    });
+
+    return accumulatedResults;
+  };
+
 export const getParkingForMultipleStopPlaces =
   (stopPlaceIds) => async (dispatch, getState) =>
     handleQuery(getTiamatClient(), {

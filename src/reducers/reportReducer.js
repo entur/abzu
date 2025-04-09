@@ -1,16 +1,17 @@
 /*
  *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *  https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ */
 
 import * as types from "../actions/Types";
 import formatHelpers from "../modelUtils/mapToClient";
@@ -28,6 +29,8 @@ const reportReducer = (state = initialState, action) => {
         return reduceTopopGraphicalPlacesForReport(state, action);
       } else if (action.operationName === "findStopForReport") {
         return reduceSearchResultsForReport(state, action);
+      } else if (action.operationName === "findStopForReportPaged") {
+        return reduceSearchResultsForReportPaged(state, action);
       } else if (action.operationName === "ParkingForMultipleStopPlaces") {
         return populateStopPlacesWithParking(state, action.result.data);
       } else {
@@ -48,6 +51,16 @@ const reduceTopopGraphicalPlacesForReport = (state, action) => {
 const reduceSearchResultsForReport = (state, action) => {
   const stops = formatHelpers.mapReportSearchResultsToClientStop(
     action.result.data.stopPlace,
+  );
+  return Object.assign({}, state, {
+    results: stops,
+    duplicateInfo: findDuplicateImportedIds(stops),
+  });
+};
+
+const reduceSearchResultsForReportPaged = (state, action) => {
+  const stops = formatHelpers.mapReportSearchResultsToClientStop(
+    action.result.data,
   );
   return Object.assign({}, state, {
     results: stops,
