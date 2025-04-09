@@ -264,7 +264,7 @@ class ReportPage extends React.Component {
         .filter((topos) => topos.type === "country")
         .map((topos) => topos.id),
     };
-    debugger;
+
     dispatch(findStopForReportPaged(queryVariables))
       .then((response) => {
         const stopPlaces = response;
