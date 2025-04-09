@@ -574,7 +574,23 @@ class ReportPage extends React.Component {
             selectAllLabel={formatMessage({ id: "all" })}
           />
         </div>
-        {!isLoading && (
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "60vh", // Adjust height as needed
+            }}
+          >
+            <MdSpinner
+              style={{
+                fontSize: "80px", // Bigger spinner
+                animation: "spin 1s linear infinite", // Ensure the spinner spins
+              }}
+            />
+          </div>
+        ) : (
           <>
             <ReportResultView
               activePageIndex={activePageIndex}
