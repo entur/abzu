@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import L from "leaflet";
 import { defaultCenterPosition } from "../components/Map/mapDefaults";
-import { fetchConfig } from "../config/fetchConfig";
+import { getFetchedConfig } from "../config/fetchConfig";
 import { setDecimalPrecision } from "./";
 
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
@@ -66,17 +66,13 @@ export const calculatePolygonCenter = (members) => {
 };
 
 const calculateDefaultCenter = (members) => {
-  fetchConfig().then((config) => {
-    const customDefaultCenter = config.mapConfig?.center;
+  const customDefaultCenter = getFetchedConfig()?.mapConfig?.center;
 
-    if (!members || !members.length) {
-      return customDefaultCenter || defaultCenterPosition;
-    }
+  if (!members || !members.length) {
+    return customDefaultCenter || defaultCenterPosition;
+  }
 
-    if (members.length === 1) {
-      return (
-        members[0].location || customDefaultCenter || defaultCenterPosition
-      );
-    }
-  });
+  if (members.length === 1) {
+    return members[0].location || customDefaultCenter || defaultCenterPosition;
+  }
 };

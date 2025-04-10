@@ -18,3 +18,7 @@ export const fetchConfig = async (): Promise<Config> => {
 
   return Object.assign({}, fetchedConfig, overrides);
 };
+
+export const getFetchedConfig = () => {
+  return fetchedConfig;
+};
