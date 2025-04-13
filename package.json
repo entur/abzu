@@ -86,7 +86,7 @@
     "caniuse-lite": "1.0.30001713",
     "graphql-request": "7.1.2",
     "husky": "9.1.7",
-    "jsdom": "26.0.0",
+    "jsdom": "26.1.0",
     "lint-staged": "15.5.1",
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
