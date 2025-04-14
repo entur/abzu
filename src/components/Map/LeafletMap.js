@@ -12,23 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ComponentToggle } from "@entur/react-component-toggle";
 import { useContext, useEffect, useMemo, useState } from "react";
 import {
   LayersControl,
   MapContainer,
   ScaleControl,
-  TileLayer,
   ZoomControl,
 } from "react-leaflet";
 import { ConfigContext } from "../../config/ConfigContext";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
-import { KartverketFlyFotoLayer } from "./KartverketFlyFotoLayer";
+import { DynamicTileLayer } from "./DynamicTileLayer";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import MultiPolylineList from "./PathLink";
 import StopPlaceGroupList from "./StopPlaceGroupList";
+import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -51,9 +52,12 @@ export const LeafLetMap = ({
   handleBaselayerChanged,
   onMapReady = () => {},
 }) => {
+  const { mapConfig } = useContext(ConfigContext);
+  const defaultTiles = [defaultOSMTile];
+
   const centerPosition = useMemo(() => {
     if (!position) {
-      return [64.349421, 16.809082];
+      return mapConfig?.center || defaultCenterPosition;
     }
     return Array.isArray(position)
       ? position.map((pos) => Number(pos))
@@ -74,7 +78,6 @@ export const LeafLetMap = ({
     }
   }, [centerPosition[0], centerPosition[1], zoom]);
 
-  const { googleApiKey } = useContext(ConfigContext);
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
   const { BaseLayer } = LayersControl;
 
@@ -100,32 +103,25 @@ export const LeafLetMap = ({
         }}
       >
         <LayersControl position="topright">
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("OpenStreetMap")}
-            name="OpenStreetMap"
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Kartverket topografisk")}
-            name="Kartverket topografisk"
-          >
-            <TileLayer
-              attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-              url="https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png"
-              maxZoom="19"
-            />
-          </BaseLayer>
-          <BaseLayer
-            checked={getCheckedBaseLayerByValue("Kartverket flyfoto")}
-            name="Kartverket flyfoto"
-          >
-            <KartverketFlyFotoLayer />
-          </BaseLayer>
+          {(mapConfig?.supportedTiles || defaultTiles).map((tile) => {
+            return (
+              <BaseLayer
+                key={tile.name}
+                checked={getCheckedBaseLayerByValue(tile.name)}
+                name={tile.name}
+              >
+                {tile.component ? (
+                  <ComponentToggle feature={tile.name} />
+                ) : (
+                  <DynamicTileLayer
+                    attribution={tile.attribution}
+                    url={tile.url}
+                    maxZoom={tile.maxZoom}
+                  />
+                )}
+              </BaseLayer>
+            );
+          })}
         </LayersControl>
         <FareZones position="topright" />
         <TariffZones position="topright" />

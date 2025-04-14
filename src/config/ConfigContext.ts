@@ -12,6 +12,22 @@ export interface Config {
   claimsNamespace?: string;
   oidcConfig?: OidcClientSettings;
   featureFlags?: FeatureFlags;
+  mapConfig?: MapConfig;
+}
+
+export interface MapConfig {
+  supportedTiles: Tile[];
+  defaultTile: string;
+  center: [number, number];
+  zoom: number;
+}
+
+export interface Tile {
+  name: string;
+  attribution?: string;
+  url?: string;
+  maxZoom?: number;
+  component?: boolean;
 }
 
 export const ConfigContext = React.createContext<Config>({});

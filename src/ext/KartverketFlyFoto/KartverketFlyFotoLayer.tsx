@@ -1,11 +1,15 @@
-import React, { useMemo } from "react";
+import { FeatureComponent } from "@entur/react-component-toggle";
+import { useMemo } from "react";
+import { WMTSLayer } from "../../components/Map/WMTSLayer";
 import { useGktToken } from "./hooks/useGktToken";
-import { WMTSLayer } from "./WMTSLayer";
+import { KartverketFlyFotoLayerProps } from "./types";
 
 const BASE_URL =
   "https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2";
 
-export const KartverketFlyFotoLayer: React.FC = () => {
+export const KartverketFlyFotoLayer: FeatureComponent<
+  KartverketFlyFotoLayerProps
+> = () => {
   const token = useGktToken();
 
   const params = useMemo(() => {
