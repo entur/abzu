@@ -15,7 +15,6 @@ limitations under the Licence. */
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
 import MdHelp from "@mui/icons-material/Help";
-import MdLanguage from "@mui/icons-material/Language";
 import MdMap from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MdReport from "@mui/icons-material/Report";
@@ -31,20 +30,21 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import { UserActions } from "../actions/";
+import { UserActions } from "../../actions/";
 import {
   getEnvColor,
   getLogo,
   getTheme,
   getTiamatEnv,
-} from "../config/themeConfig";
+} from "../../config/themeConfig";
 import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
-} from "../reducers/zonesSlice";
-import { getIn } from "../utils";
-import ConfirmDialog from "./Dialogs/ConfirmDialog";
-import MoreMenuItem from "./MainPage/MoreMenuItem";
+} from "../../reducers/zonesSlice";
+import { getIn } from "../../utils";
+import ConfirmDialog from "./../Dialogs/ConfirmDialog";
+import MoreMenuItem from "./../MainPage/MoreMenuItem";
+import { LanguageMenu } from "./LanguageMenu";
 
 class Header extends React.Component {
   constructor(props) {
@@ -76,10 +76,6 @@ class Header extends React.Component {
     } else {
       next();
     }
-  }
-
-  handleSetLanguage(locale) {
-    this.props.dispatch(UserActions.applyLocale(locale));
   }
 
   handleConfirm() {
@@ -178,14 +174,9 @@ class Header extends React.Component {
       showTariffZones,
     } = this.props;
 
-    const { formatMessage, locale } = intl;
+    const { formatMessage } = intl;
 
     const title = formatMessage({ id: "_title" });
-    const language = formatMessage({ id: "language" });
-    const english = formatMessage({ id: "english" });
-    const norwegian = formatMessage({ id: "norwegian" });
-    const swedish = formatMessage({ id: "swedish" });
-    const french = formatMessage({ id: "french" });
     const logOut = formatMessage({ id: "log_out" });
     const logIn = formatMessage({ id: "log_in" });
     const settings = formatMessage({ id: "settings" });
@@ -524,91 +515,7 @@ class Header extends React.Component {
                   {showTariffZonesLabel}
                 </MenuItem>
               </MoreMenuItem>
-              <MoreMenuItem
-                openLeft={true}
-                leftIcon={<MdLanguage color="#41c0c4" />}
-                label={language}
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
-              >
-                <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
-                  onClick={() => this.handleSetLanguage("nb")}
-                  checked={locale === "nb"}
-                >
-                  {locale === "nb" ? (
-                    <Check />
-                  ) : (
-                    <div style={{ width: "24px", height: "24px" }} />
-                  )}
-                  {norwegian}
-                </MenuItem>
-                <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
-                  onClick={() => this.handleSetLanguage("en")}
-                  checked={locale === "en"}
-                >
-                  {locale === "en" ? (
-                    <Check />
-                  ) : (
-                    <div style={{ width: "24px", height: "24px" }} />
-                  )}
-                  {english}
-                </MenuItem>
-                <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
-                  onClick={() => this.handleSetLanguage("fr")}
-                  checked={locale === "fr"}
-                >
-                  {locale === "fr" ? (
-                    <Check />
-                  ) : (
-                    <div style={{ width: "24px", height: "24px" }} />
-                  )}
-                  {french}
-                </MenuItem>
-                <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
-                  onClick={() => this.handleSetLanguage("sv")}
-                  checked={locale === "sv"}
-                >
-                  {locale === "sv" ? (
-                    <Check />
-                  ) : (
-                    <div style={{ width: "24px", height: "24px" }} />
-                  )}
-                  {swedish}
-                </MenuItem>
-              </MoreMenuItem>
+              <LanguageMenu />
               <MenuItem
                 component={"a"}
                 href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
