@@ -103,7 +103,7 @@ export const LeafLetMap = ({
         }}
       >
         <LayersControl position="topright">
-          {(mapConfig?.supportedTiles || defaultTiles).map((tile) => {
+          {(mapConfig?.tiles || defaultTiles).map((tile) => {
             return (
               <BaseLayer
                 key={tile.name}

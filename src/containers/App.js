@@ -72,8 +72,7 @@ const App = ({ children }) => {
 
     const layerBasedOnMapConfig =
       mapConfig?.defaultTile ||
-      (mapConfig?.supportedTiles?.length > 0 &&
-        mapConfig?.supportedTiles[0].name);
+      (mapConfig?.tiles?.length > 0 && mapConfig?.tiles[0].name);
     dispatch(
       UserActions.changeActiveBaselayer(
         Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,

@@ -17,7 +17,7 @@ export interface Config {
 }
 
 export interface MapConfig {
-  supportedTiles: Tile[];
+  tiles: Tile[];
   defaultTile: string;
   center: [number, number];
   zoom: number;

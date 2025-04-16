@@ -22,7 +22,7 @@
     "KartverketFlyFoto": true
   },
   "mapConfig": {
-    "supportedTiles": [
+    "tiles": [
       {
         "name":"OpenStreetMap",
         "url": "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
