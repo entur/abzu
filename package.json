@@ -28,7 +28,7 @@
     "@mui/material": "7.0.2",
     "@mui/x-date-pickers": "7.28.3",
     "@reduxjs/toolkit": "2.7.0",
-    "@sentry/react": "7.120.3",
+    "@sentry/react": "9.13.0",
     "@sentry/tracing": "7.120.3",
     "axios": "1.8.4",
     "classnames": "2.5.1",
