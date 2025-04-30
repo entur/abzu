@@ -3,11 +3,7 @@
     {
       "target": "dev",
       "public": "build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
@@ -63,11 +59,7 @@
     {
       "target": "nordic-dev",
       "public": "build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
@@ -110,6 +102,17 @@
           ]
         },
         {
+          "source": "**/bootstrap.json",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            },
+            { "key": "Pragma", "value": "no-cache" },
+            { "key": "Expires", "value": "0" }
+          ]
+        },
+        {
           "source": "**/*.@(eot|otf|ttf|ttc|woff|woff2|css|js|map|json)",
           "headers": [
             {
@@ -123,11 +126,7 @@
     {
       "target": "staging",
       "public": "build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
@@ -183,11 +182,7 @@
     {
       "target": "prod",
       "public": "build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
