@@ -46,6 +46,17 @@
           ]
         },
         {
+          "source": "**/bootstrap.json",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            },
+            { "key": "Pragma", "value": "no-cache" },
+            { "key": "Expires", "value": "0" }
+          ]
+        },
+        {
           "source": "**/*.@(eot|otf|ttf|ttc|woff|woff2|css|js|map|json)",
           "headers": [
             {
