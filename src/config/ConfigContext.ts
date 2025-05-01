@@ -32,16 +32,8 @@ export interface Tile {
 }
 
 export interface LocaleConfig {
-  locales: Locale[];
-  defaultLocale: Locale;
-}
-
-export enum Locale {
-  NB = "nb",
-  EN = "en",
-  FI = "fi",
-  FR = "fr",
-  SV = "sv",
+  locales: string[];
+  defaultLocale: string;
 }
 
 export const ConfigContext = React.createContext<Config>({});
