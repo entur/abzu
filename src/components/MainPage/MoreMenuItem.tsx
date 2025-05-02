@@ -14,7 +14,7 @@ type MoreMenuItemProps = {
   button?: true;
   openLeft?: true;
   label: string;
-  leftIcon: unknown;
+  leftIcon: ReactNode;
   MenuProps?: Omit<MenuProps, "open" | "onClose" | "anchorEl" | "onKeyDown">;
 } & Omit<MenuItemProps, "onKeyDown" | "onMouseEnter" | "onMouseLeave">;
 
@@ -81,7 +81,7 @@ const MoreMenuItem: FC<MoreMenuItemProps> = ({
       id={normMenuItemId}
     >
       <div className="left-content">
-        {leftIcon as ReactNode}
+        {leftIcon}
         {label}
       </div>
       {children && (
