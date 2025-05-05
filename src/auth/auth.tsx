@@ -88,7 +88,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           window.location.pathname,
         );
       }}
-      redirect_uri={window.location.origin}
+      redirect_uri={
+        oidcConfig?.redirect_uri ||
+        window.location.origin + import.meta.env.BASE_URL
+      }
     >
       {children}
     </OidcAuthProvider>

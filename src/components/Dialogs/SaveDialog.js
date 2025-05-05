@@ -1,16 +1,17 @@
 /*
  *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
+ * subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ *   https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ */
 
 import { Cancel, Save } from "@mui/icons-material";
 import {
@@ -32,13 +33,8 @@ class SaveDialog extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState(this.getInitialState);
-  }
-
-  componentDidMount() {
-    if (this.commentInput) {
-      this.commentInput.focus();
-    }
+    // reset state if ever unmounted
+    this.setState(this.getInitialState());
   }
 
   static propTypes = {
@@ -46,6 +42,7 @@ class SaveDialog extends React.Component {
     handleClose: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    errorMessage: PropTypes.string,
   };
 
   getInitialState() {
@@ -57,35 +54,29 @@ class SaveDialog extends React.Component {
 
   getErrorMessage() {
     const { errorMessage, intl } = this.props;
-    const { formatMessage } = intl;
     if (errorMessage) {
-      return formatMessage({ id: `humanReadableErrorCodes.${errorMessage}` });
+      return intl.formatMessage({
+        id: `humanReadableErrorCodes.${errorMessage}`,
+      });
     }
     return "";
   }
 
   handleSave() {
     const { handleConfirm } = this.props;
+    const { comment } = this.state;
 
-    let userInput = {
-      comment: this.comment,
-    };
-
-    this.setState({
-      isSaving: true,
+    this.setState({ isSaving: true }, () => {
+      handleConfirm({ comment });
     });
-
-    handleConfirm(userInput);
   }
 
   render() {
     const { open, intl, handleClose, errorMessage } = this.props;
     const { formatMessage } = intl;
-    const { isSaving } = this.state;
+    const { isSaving, comment } = this.state;
 
-    const errorMessageLabel = this.getErrorMessage()
-      ? formatMessage({ id: this.getErrorMessage() })
-      : "";
+    const errorMessageLabel = this.getErrorMessage();
 
     const translations = {
       use: formatMessage({ id: "use" }),
@@ -99,31 +90,24 @@ class SaveDialog extends React.Component {
     };
 
     return (
-      <Dialog
-        open={open}
-        onClose={() => {
-          handleClose();
-        }}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{translations.title}</DialogTitle>
         <DialogContent>
           <div style={{ width: "90%", margin: "auto", marginBottom: 20 }}>
             <TextField
               label={translations.comment}
               variant="standard"
-              ref={(input) => {
-                this.commentInput = input;
-              }}
-              fullWidth={true}
-              multiline={true}
-              value={this.comment}
-              onChange={(event) =>
-                this.setState({ comment: event.target.value })
-              }
+              fullWidth
+              multiline
               rowsMax={4}
+              autoFocus
+              value={comment}
+              onChange={(e) => this.setState({ comment: e.target.value })}
             />
           </div>
-          <div style={{ color: "#bb271c" }}>{errorMessageLabel}</div>
+          {errorMessageLabel && (
+            <div style={{ color: "#bb271c" }}>{errorMessageLabel}</div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button
@@ -136,9 +120,7 @@ class SaveDialog extends React.Component {
           </Button>
           <Button
             variant="text"
-            startIcon={
-              isSaving && !errorMessage.length ? <MdSpinner /> : <Save />
-            }
+            startIcon={isSaving && !errorMessage ? <MdSpinner /> : <Save />}
             disabled={isSaving}
             onClick={() => this.handleSave()}
           >
