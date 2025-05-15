@@ -13,10 +13,11 @@ export interface Config {
   oidcConfig?: OidcClientSettings;
   featureFlags?: FeatureFlags;
   mapConfig?: MapConfig;
+  localeConfig?: LocaleConfig;
 }
 
 export interface MapConfig {
-  supportedTiles: Tile[];
+  tiles: Tile[];
   defaultTile: string;
   center: [number, number];
   zoom: number;
@@ -28,6 +29,11 @@ export interface Tile {
   url?: string;
   maxZoom?: number;
   component?: boolean;
+}
+
+export interface LocaleConfig {
+  locales: string[];
+  defaultLocale: string;
 }
 
 export const ConfigContext = React.createContext<Config>({});

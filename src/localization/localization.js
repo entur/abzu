@@ -12,10 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-const localization = async (locale) => {
+export const DEFAULT_LOCALE = "en";
+
+const localization = async (locale, localeConfigDefault) => {
   const localStorageKey = "ABZU::settings::locale";
   const preferredLocale =
-    locale || localStorage.getItem(localStorageKey) || "en";
+    locale ||
+    localStorage.getItem(localStorageKey) ||
+    localeConfigDefault ||
+    DEFAULT_LOCALE;
   const messages = await import(`../static/lang/${preferredLocale}.json`);
   localStorage.setItem(localStorageKey, preferredLocale);
   return { locale: preferredLocale, messages };
