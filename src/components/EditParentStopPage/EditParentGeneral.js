@@ -34,6 +34,7 @@ import {
 import * as types from "../../actions/Types";
 import { MutationErrorCodes } from "../../models/ErrorCodes";
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
+import Routes from "../../routes";
 import SettingsManager from "../../singletons/SettingsManager";
 import { getIsCurrentVersionMax } from "../../utils/";
 import { getStopPermissions } from "../../utils/permissionsUtils";
@@ -209,6 +210,10 @@ class EditParentGeneral extends React.Component {
     );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
+    // if current path is not the stop place page, navigate to stop place
+    if (window.location.pathname !== `/${Routes.STOP_PLACE}/${stopPlaceId}`) {
+      dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
+    }
   }
 
   handleSaveError(errorCode) {
