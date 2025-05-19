@@ -44,6 +44,7 @@ class ParentStopPlace {
       children: [childToAdd],
       versions: [],
       entityType: Entities.STOP_PLACE,
+      permissions: child.permissions,
     };
 
     if (child.geometry && child.geometry.legacyCoordinates) {
