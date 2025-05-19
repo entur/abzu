@@ -172,7 +172,7 @@ class MergeQuaysDialog extends React.Component {
               handleConfirm(versionComment);
             }}
             disabled={!enableConfirm || isLoading || OTPFetchIsLoading}
-            icon={isLoading ? <Spinner /> : <Merge />}
+            startIcon={isLoading ? <Spinner /> : <Merge />}
           >
             {translations.confirm}
           </Button>

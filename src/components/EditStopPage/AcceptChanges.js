@@ -1,19 +1,6 @@
-/*
- *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
-
-  https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
-
-import MdWarning from "@mui/icons-material/Warning";
+import WarningIcon from "@mui/icons-material/Warning";
 import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import React from "react";
 import { injectIntl } from "react-intl";
 import { getPrimaryColor } from "../../config/themeConfig";
@@ -35,14 +22,13 @@ class AcceptChanges extends React.Component {
         }}
       >
         <div style={{ marginTop: 10, display: "flex", alignItems: "center" }}>
-          <MdWarning color="orange" />
+          <WarningIcon sx={{ color: "orange" }} />
           <span style={{ fontWeight: 600, marginLeft: 5 }}>{infoLabel}</span>
         </div>
-        <Checkbox
-          style={{ marginLeft: 26, padding: 10, width: "80%" }}
-          checked={checked}
+        <FormControlLabel
+          sx={{ marginLeft: 3, width: "80%", padding: 1 }}
+          control={<Checkbox checked={checked} onChange={onChange} />}
           label={checkboxLabel}
-          onCheck={onChange}
         />
       </div>
     );
