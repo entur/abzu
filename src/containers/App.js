@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
@@ -39,16 +39,18 @@ const Settings = new SettingsManager();
 const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
-  const { mapConfig } = useContext(ConfigContext);
+  const { mapConfig, localeConfig } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
 
   useEffect(() => {
-    configureLocalization(appliedLocale).then((localization) => {
-      dispatch(UserActions.changeLocalization(localization));
-    });
-  }, [appliedLocale]);
+    configureLocalization(appliedLocale, localeConfig?.defaultLocale).then(
+      (localization) => {
+        dispatch(UserActions.changeLocalization(localization));
+      },
+    );
+  }, [appliedLocale, localeConfig?.defaultLocale]);
 
   useEffect(() => {
     dispatch(updateAuth(auth));
@@ -70,8 +72,7 @@ const App = ({ children }) => {
 
     const layerBasedOnMapConfig =
       mapConfig?.defaultTile ||
-      (mapConfig?.supportedTiles?.length > 0 &&
-        mapConfig?.supportedTiles[0].name);
+      (mapConfig?.tiles?.length > 0 && mapConfig?.tiles[0].name);
     dispatch(
       UserActions.changeActiveBaselayer(
         Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,
