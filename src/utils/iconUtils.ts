@@ -10,6 +10,7 @@ import noInformation from "../static/icons/modalities/no-information.png";
 import railReplacementBus from "../static/icons/modalities/railReplacement.png";
 import railStation from "../static/icons/modalities/rails-without-box.png";
 import onstreetTram from "../static/icons/modalities/tram-without-box.png";
+import ufo from "../static/icons/modalities/ufo.png";
 
 import airportSvg from "../static/icons/modalities/svg/airplane-withoutBox.svg";
 import onstreetBusSvg from "../static/icons/modalities/svg/bus-withoutBox.svg";
@@ -34,6 +35,7 @@ type Modalities =
   | "airport"
   | "harbourPort"
   | "liftStation"
+  | "ufo"
   | "other";
 
 export const getIconByTypeOrSubmode = (
@@ -63,6 +65,7 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
     airport,
     harbourPort,
     liftStation,
+    ufo,
     other: noInformation,
   };
 
@@ -92,6 +95,7 @@ export const getSvgIconIdByModality = (type: Modalities) => {
     airport: airportSvg,
     harbourPort: harbourPortSvg,
     liftStation: liftStationSvg,
+    ufo: noInformationSvg,
     other: noInformationSvg,
   };
   return modalityMap[type] || noInformationSvg;
