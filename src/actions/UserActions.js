@@ -34,7 +34,7 @@ var UserActions = {};
 let Settings = new SettingsManager();
 
 const goToRoute = (dispatch, path, id) => {
-  const basePath = "/";
+  const basePath = import.meta.env.BASE_URL;
   if (path.length && path[0] === "/") {
     path = path.slice(1);
   }
