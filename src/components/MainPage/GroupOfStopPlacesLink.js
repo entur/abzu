@@ -16,7 +16,8 @@ import PropTypes from "prop-types";
 import Routes from "../../routes/";
 
 const GroupOfStopPlacesLink = ({ name, id, style }) => {
-  const url = `${window.location.origin}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+  const basename = import.meta.env.BASE_URL;
+  const url = `${window.location.origin}/${basename}${basename.endsWith("/") ? "" : "/"}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
     <a

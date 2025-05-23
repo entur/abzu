@@ -134,12 +134,15 @@ class EditStopGeneral extends React.Component {
 
   async handleSaveSuccess(stopPlaceId) {
     const { dispatch, activeMap } = this.props;
-
+    const basename = import.meta.env.BASE_URL;
     this.setState({
       saveDialogOpen: false,
     });
-
-    await dispatch(replace(`/${Routes.STOP_PLACE}/${stopPlaceId}`));
+    await dispatch(
+      replace(
+        `${basename}${basename.endsWith("/") ? "" : "/"}${Routes.STOP_PLACE}/${stopPlaceId}`,
+      ),
+    );
 
     await dispatch(getStopPlaceVersions(stopPlaceId));
     await dispatch(
