@@ -66,6 +66,10 @@ const stopTypes = {
     submodes: ["domesticFlight", "internationalFlight", "helicopterService"],
   },
   liftStation: { transportMode: "cableway", submodes: ["telecabin"] },
+  other: {
+    transportMode: "unknown", // Or "other", depending on how you want to classify it
+    submodes: null, // Or [], if you prefer an empty array. No specific submodes for a generic "other".
+  },
 };
 
 export const submodes = [

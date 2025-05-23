@@ -456,6 +456,8 @@
   "stopTypes_railStation_submodes_touristRailway": "Tourist railway",
   "stopTypes_railStation_submodes_unspecified": "Not specified",
   "stopTypes_unknown": "Modality not defined",
+  "stopTypes_other_name": "Type not defined",
+  "stopTypes_other_submodes_unspecified": "Not specified",
   "stop_has_been_permanently_terminated": "This stop has been archived and exists only for historical records.",
   "stop_has_expired": "Current version has expired!",
   "stop_has_expired_last_version": "This stop has expired!",

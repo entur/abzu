@@ -455,6 +455,7 @@
   "stopTypes_railStation_submodes_regionalRail": "Regiontog (RT)",
   "stopTypes_railStation_submodes_touristRailway": "Museumtog",
   "stopTypes_railStation_submodes_unspecified": "Ikke spesifisert",
+  "stopTypes_other_name": "Type ikke spesifisert",
   "stopTypes_unknown": "Modalitet ikke satt",
   "stop_has_been_permanently_terminated": "Stoppestedet er arkivert og eksisterer kun som historisk data",
   "stop_has_expired": "Denne versjonen er utløpt!",

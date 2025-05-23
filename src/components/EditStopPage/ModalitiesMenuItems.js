@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
+import { injectIntl } from "react-intl";
 import {
   getInverseSubmodesWhitelist,
   getStopTypesForSubmodes,
@@ -45,6 +46,15 @@ class ModalitiesMenuItems extends React.Component {
     return (
       <div>
         {Object.keys(stopTypes).map((type, index) => {
+          const stopTypeEntry = stopTypes[type];
+
+          if (!stopTypeEntry || typeof stopTypeEntry !== "object") {
+            console.warn(
+              `ModalitiesMenuItems: Data for stop type "${type}" is missing, null, or not an object in the 'stopTypes' prop. Skipping this menu item.`,
+              stopTypeEntry,
+            );
+            return null;
+          }
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||
             legalStopPlaceTypes.indexOf(type) > -1;
@@ -167,4 +177,4 @@ class ModalitiesMenuItems extends React.Component {
   }
 }
 
-export default ModalitiesMenuItems;
+export default injectIntl(ModalitiesMenuItems);
