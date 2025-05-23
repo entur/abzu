@@ -456,6 +456,8 @@
   "stopTypes_railStation_submodes_touristRailway": "Kulturminne-tåg",
   "stopTypes_railStation_submodes_unspecified": "Ospecificerat",
   "stopTypes_unknown": "Modalitet inte vald",
+  "stopTypes_other_name": "Ospecificerat typ",
+  "stopTypes_other_submodes_unspecified": "Ospecificerat",
   "stop_has_been_permanently_terminated": "Hållplatsen är arkiverad och existerar endast som historisk data",
   "stop_has_expired": "Den här versionen är utlöpt!",
   "stop_has_expired_last_version": "Den här hållplatsens giltighet är utlöpt!",
