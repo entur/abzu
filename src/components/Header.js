@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ComponentToggle } from "@entur/react-component-toggle";
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
 import MdHelp from "@mui/icons-material/Help";
@@ -32,12 +33,8 @@ import { Helmet } from "react-helmet";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../actions/";
-import {
-  getEnvColor,
-  getLogo,
-  getTheme,
-  getTiamatEnv,
-} from "../config/themeConfig";
+import { getFetchedConfig } from "../config/fetchConfig";
+import { getEnvColor, getLogo, getTiamatEnv } from "../config/themeConfig";
 import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
@@ -212,9 +209,9 @@ class Header extends React.Component {
 
     const tiamatEnv = getTiamatEnv();
     const headerColor = getEnvColor(tiamatEnv);
-    const theme = getTheme();
     const logo = getLogo();
     const { anchorEl } = this.state;
+    const config = getFetchedConfig();
 
     return (
       <div>
@@ -237,10 +234,15 @@ class Header extends React.Component {
                 )
               }
             >
-              <img
-                alt=""
-                src={logo}
-                style={{ width: 40, height: "auto", cursor: "pointer" }}
+              <ComponentToggle
+                feature={`${config.extPath}/CustomLogo`}
+                renderFallback={() => (
+                  <img
+                    alt=""
+                    src={logo}
+                    style={{ width: 40, height: "auto", cursor: "pointer" }}
+                  />
+                )}
               />
             </IconButton>
 
@@ -253,7 +255,7 @@ class Header extends React.Component {
                   color: "#fff",
                 }}
               >
-                <div>
+                <div className={"appTitle"}>
                   {title}
                   {(tiamatEnv === "test" || tiamatEnv === "development") && (
                     <span
