@@ -210,8 +210,12 @@ class EditParentGeneral extends React.Component {
     );
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
+    const basename = import.meta.env.BASE_URL;
     // if current path is not the stop place page, navigate to stop place
-    if (window.location.pathname !== `/${Routes.STOP_PLACE}/${stopPlaceId}`) {
+    if (
+      window.location.pathname !==
+      `${basename}${basename.endsWith("/") ? "" : "/"}${Routes.STOP_PLACE}/${stopPlaceId}`
+    ) {
       dispatch(UserActions.navigateTo(`/${Routes.STOP_PLACE}/`, stopPlaceId));
     }
   }
