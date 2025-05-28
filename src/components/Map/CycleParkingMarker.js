@@ -115,6 +115,7 @@ class CycleParkingMarker extends Component {
               {hasExpired && translations.parkingExpired}
             </div>
             <div
+              className={"markerTitle"}
               style={{
                 fontWeight: 600,
                 textAlign: "center",
