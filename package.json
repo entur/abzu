@@ -76,7 +76,7 @@
     "@testing-library/react": "14.3.1",
     "@types/leaflet": "1.9.18",
     "@types/material-ui": "0.21.18",
-    "@types/node": "20.17.52",
+    "@types/node": "20.17.54",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
     "@types/react-helmet": "6.1.11",
