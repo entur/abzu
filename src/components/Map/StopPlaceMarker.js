@@ -143,7 +143,12 @@ class StopPlaceMarker extends React.Component {
               }}
               onClick={handleOnClick}
             >
-              <div style={{ display: "inline-block" }}>{name}</div>
+              <div
+                className={"markerTitle"}
+                style={{ display: "inline-block" }}
+              >
+                {name}
+              </div>
             </div>
             <div
               style={{

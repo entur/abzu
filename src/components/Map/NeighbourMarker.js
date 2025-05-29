@@ -149,7 +149,9 @@ class NeighbourMarker extends React.Component {
             >
               <div style={{ display: "inline-block" }}>
                 <div>
-                  <span style={titleStyle}>{name || id}</span>
+                  <span className={"markerTitle"} style={titleStyle}>
+                    {name || id}
+                  </span>
                   {hasExpired && (
                     <div
                       style={{

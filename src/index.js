@@ -13,7 +13,10 @@
  limitations under the Licence. */
 
 import { ApolloProvider } from "@apollo/client";
-import { ComponentToggleProvider } from "@entur/react-component-toggle";
+import {
+  ComponentToggle,
+  ComponentToggleProvider,
+} from "@entur/react-component-toggle";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import { useContext } from "react";
@@ -90,12 +93,22 @@ function renderIndex(config) {
   const root = createRoot(document.getElementById("root"));
   root.render(
     <ComponentToggleProvider
+      maxFeatureDepth={2}
       flags={config.featureFlags}
-      importFn={(featurePathComponents) =>
-        import(`./ext/${featurePathComponents[0]}/index.ts`)
-      }
+      importFn={(featurePathComponents) => {
+        if (featurePathComponents.length === 1) {
+          return import(`./ext/${featurePathComponents[0]}/index.ts`);
+        } else if (featurePathComponents.length === 2) {
+          return import(
+            `./ext/${featurePathComponents[0]}/${featurePathComponents[1]}/index.ts`
+          );
+        } else {
+          throw new Error("Max feature depth is 2");
+        }
+      }}
     >
       <ConfigContext.Provider value={config}>
+        <ComponentToggle feature={`${config.extPath}/CustomStyle`} />
         <AuthProvider>
           <AuthenticatedApp />
         </AuthProvider>

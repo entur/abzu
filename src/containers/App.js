@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ComponentToggle } from "@entur/react-component-toggle";
 import {
   createTheme,
   ThemeProvider as MuiThemeProvider,
@@ -39,7 +40,7 @@ const Settings = new SettingsManager();
 const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
-  const { mapConfig, localeConfig } = useContext(ConfigContext);
+  const { mapConfig, localeConfig, extPath } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
@@ -94,13 +95,24 @@ const App = ({ children }) => {
         <html lang={localization.locale} />
       </Helmet>
       <StyledEngineProvider injectFirst>
-        <MuiThemeProvider theme={muiTheme}>
+        <ComponentToggle
+          feature={`${extPath}/CustomThemeProvider`}
+          renderFallback={() => (
+            <MuiThemeProvider theme={muiTheme}>
+              <div>
+                <Header />
+                {children}
+                <SnackbarWrapper />
+              </div>
+            </MuiThemeProvider>
+          )}
+        >
           <div>
             <Header />
             {children}
             <SnackbarWrapper />
           </div>
-        </MuiThemeProvider>
+        </ComponentToggle>
       </StyledEngineProvider>
     </IntlProvider>
   );
