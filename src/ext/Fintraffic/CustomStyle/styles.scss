@@ -1,0 +1,106 @@
+@import "@fintraffic/fds-coreui-css/dist/fonts-public-sans";
+@import "@fintraffic/fds-coreui-css/dist/tokens";
+
+body {
+  font-family: "Public Sans", sans-serif !important;
+  font-size: var(--fds-typography-body-default-font-size);
+  font-weight: var(--fds-typography-body-default-font-weight);
+  line-height: var(--fds-typography-body-default-line-height);
+  color: var(--fds-typography-body-default-color);
+  text-align: var(--fds-typography-body-default-text-align);
+  background-color: var(--fds-typography-body-default-bg);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+header {
+  background-color: black !important;
+}
+
+.app-title--override {
+  color: #38f !important;
+  font-weight: 600;
+  font-size: 21px;
+}
+
+.app-title--override > span {
+  color: white !important;
+}
+
+.MuiButton-contained,
+.MuiButton-outlined {
+  background-color: white !important;
+  color: black;
+  font-weight: 700;
+  border-radius: var(--fds-radius-large);
+  border: 2px solid var(--fds-color-brand-black);
+  text-transform: capitalize;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+.MuiButton-text {
+  color: var(--fds-color-brand-black, #000000);
+  text-transform: capitalize;
+  font-size: 14px;
+  box-shadow: none;
+  font-weight: 700;
+  border: 2px solid transparent;
+  border-radius: var(--fds-radius-large, 8px);
+  align-items: center;
+  justify-content: center;
+  transition: 200ms;
+}
+
+.MuiButton-contained:hover,
+.MuiButton-outlined:hover,
+.MuiButton-text:hover {
+  background-color: #38f !important;
+  color: white;
+  font-weight: 700;
+  border-radius: var(--fds-radius-large);
+  border-color: transparent !important;
+  text-transform: capitalize !important;
+  font-size: 14px;
+}
+
+.favorites-title--override {
+  text-transform: capitalize !important;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.marker-popup-button {
+  background: black;
+  border-radius: var(--fds-radius-large);
+  transition: all 0.2s !important;
+  width: fit-content !important;
+  font-family: var(
+    --fds-typography-ui-label-font-family,
+    "Public Sans",
+    "PublicSans-Medium"
+  ) !important;
+  font-size: 13px;
+  font-weight: var(--fds-typography-ui-label-font-weight);
+  letter-spacing: var(--fds-typography-ui-label-letter-spacing);
+  line-height: var(--fds-typography-ui-label-line-height);
+  padding: 0.25rem 1rem;
+}
+
+.marker-popup-button:hover {
+  background: var(--fds-color-interactive-200);
+  color: var(--fds-color-brand-white);
+  border-color: transparent;
+}
+
+.marker-title--override {
+  font-weight: 700 !important;
+  color: var(--fds-color-interactive-200) !important;
+  font-size: 16px !important;
+}
+
+.new-map-element-text--override {
+  position: relative;
+  top: -12px;
+  font-weight: 600;
+}

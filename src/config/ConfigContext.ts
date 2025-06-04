@@ -14,6 +14,13 @@ export interface Config {
   featureFlags?: FeatureFlags;
   mapConfig?: MapConfig;
   localeConfig?: LocaleConfig;
+  /**
+   * Path to folder inder /ext that contains features or assets of a company that adopted NSR.
+   * This is used e.g. for:
+   *    CustomStyle, when determining the relevant custom style class;
+   *    CustomLogo;
+   */
+  extPath?: string;
 }
 
 export interface MapConfig {

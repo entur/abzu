@@ -130,7 +130,12 @@ class NewElementsBox extends React.Component {
                 }}
                 src={newStopIcon}
               />
-              <div style={titleStyle}>{newStopText}</div>
+              <div
+                className={"new-map-element-text--override"}
+                style={titleStyle}
+              >
+                {newStopText}
+              </div>
             </div>
           ) : null}
           <div style={elementStyle}>
@@ -143,7 +148,12 @@ class NewElementsBox extends React.Component {
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={quayIcon}
             />
-            <div style={titleStyle}>{quayText}</div>
+            <div
+              className={"new-map-element-text--override"}
+              style={titleStyle}
+            >
+              {quayText}
+            </div>
           </div>
           <div
             style={{
@@ -160,7 +170,12 @@ class NewElementsBox extends React.Component {
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={boardingPositionIcon}
             />
-            <div style={titleStyle}>{boardingPositionsText}</div>
+            <div
+              className={"new-map-element-text--override"}
+              style={titleStyle}
+            >
+              {boardingPositionsText}
+            </div>
           </div>
           <div style={elementStyle}>
             <img
@@ -172,7 +187,12 @@ class NewElementsBox extends React.Component {
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={parkAndRideIcon}
             />
-            <div style={titleStyle}>{parkAndRideText}</div>
+            <div
+              className={"new-map-element-text--override"}
+              style={titleStyle}
+            >
+              {parkAndRideText}
+            </div>
           </div>
           <div style={elementStyle}>
             <img
@@ -184,7 +204,12 @@ class NewElementsBox extends React.Component {
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={bikeParkingIcon}
             />
-            <div style={titleStyle}>{bikeParkingText}</div>
+            <div
+              className={"new-map-element-text--override"}
+              style={titleStyle}
+            >
+              {bikeParkingText}
+            </div>
           </div>
         </div>
       </div>
