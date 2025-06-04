@@ -17,13 +17,13 @@ header {
   background-color: black !important;
 }
 
-.appTitle {
+.app-title--override {
   color: #38f !important;
   font-weight: 600;
   font-size: 21px;
 }
 
-.appTitle > span {
+.app-title--override > span {
   color: white !important;
 }
 
@@ -64,7 +64,7 @@ header {
   font-size: 14px;
 }
 
-.favoritesTitle {
+.favorites-title--override {
   text-transform: capitalize !important;
   font-weight: 600;
   font-size: 15px;
@@ -93,13 +93,13 @@ header {
   border-color: transparent;
 }
 
-.markerTitle {
+.marker-title--override {
   font-weight: 700 !important;
   color: var(--fds-color-interactive-200) !important;
   font-size: 16px !important;
 }
 
-.newElementText {
+.new-map-element-text--override {
   position: relative;
   top: -12px;
   font-weight: 600;

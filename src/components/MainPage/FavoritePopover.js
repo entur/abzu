@@ -70,7 +70,9 @@ class FilterPopover extends React.Component {
         >
           <StarIcon />
         </IconButton>
-        <span className={"favoritesTitle"}>{caption.toUpperCase()}</span>
+        <span className={"favorites-title--override"}>
+          {caption.toUpperCase()}
+        </span>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}

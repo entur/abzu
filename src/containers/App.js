@@ -100,7 +100,7 @@ const App = ({ children }) => {
           renderFallback={() => (
             <MuiThemeProvider theme={muiTheme}>
               <div>
-                <Header />
+                <Header config={config} />
                 {children}
                 <SnackbarWrapper />
               </div>
@@ -108,7 +108,7 @@ const App = ({ children }) => {
           )}
         >
           <div>
-            <Header />
+            <Header config={config} />
             {children}
             <SnackbarWrapper />
           </div>

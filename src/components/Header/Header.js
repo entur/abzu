@@ -32,7 +32,6 @@ import { Helmet } from "react-helmet";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
-import { getFetchedConfig } from "../../config/fetchConfig";
 import { getEnvColor, getLogo, getTiamatEnv } from "../../config/themeConfig";
 import {
   toggleShowFareZonesInMap,
@@ -202,7 +201,6 @@ class Header extends React.Component {
     const headerColor = getEnvColor(tiamatEnv);
     const logo = getLogo();
     const { anchorEl } = this.state;
-    const config = getFetchedConfig();
 
     return (
       <div>
@@ -226,7 +224,7 @@ class Header extends React.Component {
               }
             >
               <ComponentToggle
-                feature={`${config.extPath}/CustomLogo`}
+                feature={`${this.props.config.extPath}/CustomLogo`}
                 renderFallback={() => (
                   <img
                     alt=""
@@ -246,7 +244,7 @@ class Header extends React.Component {
                   color: "#fff",
                 }}
               >
-                <div className={"appTitle"}>
+                <div className={"app-title--override"}>
                   {title}
                   {(tiamatEnv === "test" || tiamatEnv === "development") && (
                     <span
