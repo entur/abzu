@@ -94,6 +94,7 @@ const App = ({ children }) => {
       <Helmet>
         <html lang={localization.locale} />
       </Helmet>
+      <ComponentToggle feature="CookieInformation" />
       <StyledEngineProvider injectFirst>
         <ComponentToggle
           feature={`${extPath}/CustomThemeProvider`}
