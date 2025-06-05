@@ -3,6 +3,7 @@ export type FeatureFlags = {
   KartverketFlyFotoLayer: boolean;
   Fintraffic: boolean;
   CookieInformation: boolean;
+  MatomoTracker: boolean;
 };
 
 export type Features = keyof FeatureFlags;
