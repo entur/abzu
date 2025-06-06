@@ -447,8 +447,8 @@ export const findStop = gql`
 `;
 
 export const findStopForReport = gql`
-    query findStopForReport($query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $countryReference: [String], $withoutLocationOnly: Boolean!, $withDuplicateImportedIds: Boolean!, $pointInTime: DateTime, $withNearbySimilarDuplicates: Boolean, $hasParking: Boolean, $tags: [String], $withTags: Boolean, $versionValidity: VersionValidity) {
-        stopPlace(query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, countryReference: $countryReference, withoutLocationOnly: $withoutLocationOnly, withDuplicatedQuayImportedIds: $withDuplicateImportedIds, pointInTime: $pointInTime, size: 300, withNearbySimilarDuplicates: $withNearbySimilarDuplicates, hasParking:$hasParking, tags: $tags, withTags: $withTags, versionValidity: $versionValidity) {
+    query findStopForReport($page: Int, $size: Int, $query: String, $importedId: String, $municipalityReference: [String], $stopPlaceType: [StopPlaceType], $countyReference: [String], $countryReference: [String], $withoutLocationOnly: Boolean!, $withDuplicateImportedIds: Boolean!, $pointInTime: DateTime, $withNearbySimilarDuplicates: Boolean, $hasParking: Boolean, $tags: [String], $withTags: Boolean, $versionValidity: VersionValidity) {
+        stopPlace(page: $page, size: $size, query: $query, importedId: $importedId, municipalityReference: $municipalityReference, stopPlaceType: $stopPlaceType, countyReference: $countyReference, countryReference: $countryReference, withoutLocationOnly: $withoutLocationOnly, withDuplicatedQuayImportedIds: $withDuplicateImportedIds, pointInTime: $pointInTime, withNearbySimilarDuplicates: $withNearbySimilarDuplicates, hasParking:$hasParking, tags: $tags, withTags: $withTags, versionValidity: $versionValidity) {
             ...on StopPlace {
                 ...ReportStopPlace
             }
