@@ -17,34 +17,28 @@ import { getIn } from "../utils";
 
 const EquipmentHelpers = {};
 
-EquipmentHelpers.getTicketMachineState = (entity) => {
-  const equipmentState = getIn(
+EquipmentHelpers.isTicketMachinePresent = (entity) => {
+  return getIn(
     entity,
-    ["placeEquipments", "ticketingEquipment"],
+    ["placeEquipments", "ticketingEquipment", "ticketMachines"],
     null,
   );
-  return equipmentState !== null;
 };
 
-EquipmentHelpers.getShelterEquipmentState = (entity) => {
-  const equipmentState = getIn(
-    entity,
-    ["placeEquipments", "shelterEquipment"],
-    null,
-  );
-  return equipmentState !== null;
+EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
+  return getIn(entity, ["placeEquipments", "shelterEquipment", "seats"], null);
 };
 
-EquipmentHelpers.getSanitaryEquipmentState = (entity) => {
+EquipmentHelpers.isSanitaryEquipmentPresent = (entity) => {
   const sanitaryState = getIn(
     entity,
-    ["placeEquipments", "sanitaryEquipment"],
+    ["placeEquipments", "sanitaryEquipment", "numberOfToilets"],
     null,
   );
   return sanitaryState !== null;
 };
 
-EquipmentHelpers.get512SignEquipment = (entity) => {
+EquipmentHelpers.is512SignEquipmentPresent = (entity) => {
   const generalSign = getIn(entity, ["placeEquipments", "generalSign"], null);
   if (
     generalSign &&
@@ -62,22 +56,20 @@ EquipmentHelpers.update512SignEquipment = (entity, payload) => {
   return updateEquipmentForEntitity(copyOfEntity, payload, types.generalSign);
 };
 
-EquipmentHelpers.getWaitingRoomState = (entity) => {
-  const waitingRoomState = getIn(
+EquipmentHelpers.isWaitingRoomPresent = (entity) => {
+  return getIn(
     entity,
-    ["placeEquipments", "waitingRoomEquipment"],
+    ["placeEquipments", "waitingRoomEquipment", "seats"],
     null,
   );
-  return waitingRoomState !== null;
 };
 
-EquipmentHelpers.getCycleStorageEquipment = (entity) => {
-  const cycleStorageState = getIn(
+EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
+  return getIn(
     entity,
-    ["placeEquipments", "cycleStorageEquipment"],
+    ["placeEquipments", "cycleStorageEquipment", "numberOfSpaces"],
     null,
   );
-  return cycleStorageState !== null;
 };
 
 EquipmentHelpers.updateTicketMachineState = (stopPlace, payload) => {

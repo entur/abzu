@@ -25,50 +25,50 @@ equiptedStopPlace.placeEquipments = simplifyPlaceEquipment(
 
 describe("equipment helper", () => {
   test("should give binary representation of ticket machine based on data", () => {
-    const first = helpers.getTicketMachineState(equiptedStopPlace);
+    const first = helpers.isTicketMachinePresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.getTicketMachineState(unequiptedStopPlace);
+    const second = helpers.isTicketMachinePresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
   test("should give binary representation of shelterEquipment based on data", () => {
-    const first = helpers.getShelterEquipmentState(equiptedStopPlace);
+    const first = helpers.isShelterEquipmentPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.getShelterEquipmentState(unequiptedStopPlace);
+    const second = helpers.isShelterEquipmentPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
   test("should give binary representation of sanitaryEquipment based on data", () => {
-    const first = helpers.getSanitaryEquipmentState(equiptedStopPlace);
+    const first = helpers.isSanitaryEquipmentPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.getSanitaryEquipmentState(unequiptedStopPlace);
+    const second = helpers.isSanitaryEquipmentPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
   test("should give binary representation of waitingRoom based on data", () => {
-    const first = helpers.getWaitingRoomState(equiptedStopPlace);
+    const first = helpers.isWaitingRoomPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.getWaitingRoomState(unequiptedStopPlace);
+    const second = helpers.isWaitingRoomPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
   test("should give binary representation of cycleStorageEquipment based on data", () => {
-    const first = helpers.getCycleStorageEquipment(equiptedStopPlace);
+    const first = helpers.isCycleStorageEquipmentPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.getCycleStorageEquipment(unequiptedStopPlace);
+    const second = helpers.isCycleStorageEquipmentPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
   test("should give binary representation of sign512Equipment based on data", () => {
-    const first = helpers.get512SignEquipment(equiptedStopPlace);
+    const first = helpers.is512SignEquipmentPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.get512SignEquipment(unequiptedStopPlace);
+    const second = helpers.is512SignEquipmentPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
@@ -84,7 +84,7 @@ describe("equipment helper", () => {
       payloadTrue,
     );
 
-    const equipted = helpers.get512SignEquipment(stopPlace);
+    const equipted = helpers.is512SignEquipmentPresent(stopPlace);
     expect(equipted).toEqual(true);
   });
 
@@ -98,7 +98,7 @@ describe("equipment helper", () => {
       equiptedStopPlace,
       payloadFalse,
     );
-    const unequipted = helpers.get512SignEquipment(stopPlace);
+    const unequipted = helpers.is512SignEquipmentPresent(stopPlace);
     expect(unequipted).toEqual(false);
   });
 
@@ -111,7 +111,7 @@ describe("equipment helper", () => {
       unEquiptedWith512Sign.quays.push(unequiptedStopPlace);
     }
 
-    let equiptedWith512 = helpers.get512SignEquipment(
+    let equiptedWith512 = helpers.is512SignEquipmentPresent(
       unEquiptedWith512Sign.quays[0],
     );
     expect(equiptedWith512).toEqual(false);
@@ -127,8 +127,10 @@ describe("equipment helper", () => {
       payloadTrue,
     );
 
-    const equiptedQuay = helpers.get512SignEquipment(stopPlace.quays[1]);
-    const unEquiptedQuay = helpers.get512SignEquipment(stopPlace.quays[0]);
+    const equiptedQuay = helpers.is512SignEquipmentPresent(stopPlace.quays[1]);
+    const unEquiptedQuay = helpers.is512SignEquipmentPresent(
+      stopPlace.quays[0],
+    );
     expect(equiptedQuay).toEqual(true);
     expect(unEquiptedQuay).toEqual(false);
   });
