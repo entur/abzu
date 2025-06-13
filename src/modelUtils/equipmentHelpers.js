@@ -18,7 +18,7 @@ import { getIn } from "../utils";
 const EquipmentHelpers = {};
 
 EquipmentHelpers.isTicketMachinePresent = (entity) => {
-  return getIn(
+  return !!getIn(
     entity,
     ["placeEquipments", "ticketingEquipment", "ticketMachines"],
     null,
@@ -26,16 +26,19 @@ EquipmentHelpers.isTicketMachinePresent = (entity) => {
 };
 
 EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
-  return getIn(entity, ["placeEquipments", "shelterEquipment", "seats"], null);
+  return !!getIn(
+    entity,
+    ["placeEquipments", "shelterEquipment", "seats"],
+    null,
+  );
 };
 
 EquipmentHelpers.isSanitaryEquipmentPresent = (entity) => {
-  const sanitaryState = getIn(
+  return !!getIn(
     entity,
     ["placeEquipments", "sanitaryEquipment", "numberOfToilets"],
     null,
   );
-  return sanitaryState !== null;
 };
 
 EquipmentHelpers.is512SignEquipmentPresent = (entity) => {
@@ -57,7 +60,7 @@ EquipmentHelpers.update512SignEquipment = (entity, payload) => {
 };
 
 EquipmentHelpers.isWaitingRoomPresent = (entity) => {
-  return getIn(
+  return !!getIn(
     entity,
     ["placeEquipments", "waitingRoomEquipment", "seats"],
     null,
@@ -65,7 +68,7 @@ EquipmentHelpers.isWaitingRoomPresent = (entity) => {
 };
 
 EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
-  return getIn(
+  return !!getIn(
     entity,
     ["placeEquipments", "cycleStorageEquipment", "numberOfSpaces"],
     null,
