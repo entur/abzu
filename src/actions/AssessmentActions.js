@@ -36,6 +36,15 @@ AssessmentActions.setStopStepFreeAccess = (value) => (dispatch) => {
   );
 };
 
+AssessmentActions.setStopAudibleSignalsAvailable = (value) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_STOP_ACCESSIBLITY_ASSESSMENT, {
+      value: value,
+      limitationType: limitations.audibleSignalsAvailable,
+    }),
+  );
+};
+
 AssessmentActions.setQuayWheelchairAccess = (value, index) => (dispatch) => {
   dispatch(
     createThunk(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
@@ -55,5 +64,16 @@ AssessmentActions.setQuayStepFreeAccess = (value, index) => (dispatch) => {
     }),
   );
 };
+
+AssessmentActions.setQuayAudibleSignalsAvailable =
+  (value, index) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_QUAY_ACCESSIBLITY_ASSESSMENT, {
+        value: value,
+        index: index,
+        limitationType: limitations.audibleSignalsAvailable,
+      }),
+    );
+  };
 
 export default AssessmentActions;

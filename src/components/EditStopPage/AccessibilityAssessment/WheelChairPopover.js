@@ -12,16 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Popover } from "@mui/material";
+import WheelChair from "@mui/icons-material/Accessible";
 import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import accessibilityAssessments from "../../models/accessibilityAssessments";
-import StairsIcon from "../../static/icons/accessibility/Stairs";
+import { accessibilityAssessments } from "../../../models/accessibilityAssessments";
 
-class StepFreePopover extends React.Component {
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+
+class WheelChairPopover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +52,7 @@ class StepFreePopover extends React.Component {
   }
 
   render() {
-    const { intl, displayLabel, stepFreeAccess, disabled } = this.props;
+    const { intl, displayLabel, wheelchairAccess, disabled } = this.props;
     const { formatMessage } = intl;
     const { open, anchorEl } = this.state;
 
@@ -65,30 +66,30 @@ class StepFreePopover extends React.Component {
               if (!disabled) this.handleOpenPopover(e);
             }}
           >
-            <StairsIcon
+            <WheelChair
               style={{
-                color: accessibilityAssessments.colors[stepFreeAccess],
+                color: accessibilityAssessments.colors[wheelchairAccess],
               }}
             />
           </IconButton>
           {displayLabel ? (
             <div style={{ maginLeft: 5 }}>
               {formatMessage({
-                id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
+                id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
               })}
             </div>
           ) : (
             ""
           )}
         </div>
-        <Popover
+        <Menu
           open={open}
           anchorEl={anchorEl}
           anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
           targetOrigin={{ horizontal: "left", vertical: "top" }}
           onClose={this.handleClosePopover.bind(this)}
         >
-          {accessibilityAssessments.stepFreeAccess.options.map(
+          {accessibilityAssessments.wheelchairAccess.options.map(
             (option, index) => (
               <MenuItem
                 key={"wheelChairItem" + index}
@@ -99,7 +100,7 @@ class StepFreePopover extends React.Component {
                 }}
               >
                 <ListItemIcon>
-                  <StairsIcon
+                  <WheelChair
                     style={{
                       float: "left",
                       marginTop: 9,
@@ -110,16 +111,16 @@ class StepFreePopover extends React.Component {
                 </ListItemIcon>
                 <ListItemText>
                   {formatMessage({
-                    id: `accessibilityAssessments_stepFreeAccess_${option.toLowerCase()}`,
+                    id: `accessibilityAssessments_wheelchairAccess_${option.toLowerCase()}`,
                   })}
                 </ListItemText>
               </MenuItem>
             ),
           )}
-        </Popover>
+        </Menu>
       </div>
     );
   }
 }
 
-export default StepFreePopover;
+export default WheelChairPopover;

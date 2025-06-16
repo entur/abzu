@@ -33,14 +33,15 @@ import BusShelter from "../../static/icons/facilities/BusShelter";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import Sign512 from "../../static/icons/TransportSign";
 import { getIn } from "../../utils/";
+import StepFreePopover from "./AccessibilityAssessment/StepFreePopover";
+import WheelChairPopover from "./AccessibilityAssessment/WheelChairPopover";
 import EditQuayAdditional from "./EditQuayAdditional";
 import ImportedId from "./ImportedId";
-import StepFreePopover from "./StepFreePopover";
-import WheelChairPopover from "./WheelChairPopover";
 
 import MdDelete from "@mui/icons-material/DeleteForever";
 import MdKey from "@mui/icons-material/VpnKey";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { AccessibilityLimitationState } from "../../models/accessibilityAssessments";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
@@ -160,12 +161,12 @@ class QuayItem extends React.Component {
     const wheelchairAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     );
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay);
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay);

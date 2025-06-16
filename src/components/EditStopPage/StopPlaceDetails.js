@@ -39,6 +39,7 @@ import {
   removeTag,
 } from "../../actions/TiamatActions";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { AccessibilityLimitationState } from "../../models/accessibilityAssessments";
 import stopTypes from "../../models/stopTypes";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
@@ -58,12 +59,12 @@ import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
+import WheelChairPopover from "./AccessibilityAssessment/WheelChairPopover";
 import ImportedId from "./ImportedId";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
 import TagsDialog from "./TagsDialog";
 import ToolTippable from "./ToolTippable";
 import WeightingPopover from "./WeightingPopover";
-import WheelChairPopover from "./WheelChairPopover";
 
 class StopPlaceDetails extends React.Component {
   constructor(props) {
@@ -391,7 +392,7 @@ class StopPlaceDetails extends React.Component {
     const wheelchairAccess = getIn(
       stopPlace,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     );
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace);

@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import moment from "moment";
+import { AccessibilityLimitationState } from "../models/accessibilityAssessments";
 import { defaultLimitations } from "../models/Limitations";
 import PARKING_TYPE from "../models/parkingType";
 import {
@@ -28,7 +29,7 @@ helpers.mapQuayToVariables = (quay) => {
     geometry: null,
     compassBearing: quay.compassBearing,
     publicCode: quay.publicCode,
-    accessibilityAssessment: formatAccessibilityAssements(
+    accessibilityAssessment: formatAccessibilityAssessments(
       quay.accessibilityAssessment,
     ),
     keyValues: quay.keyValues,
@@ -182,7 +183,7 @@ helpers.mapStopToVariables = (original, userInput) => {
       : null,
     stopPlaceType: stop.stopPlaceType,
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
-    accessibilityAssessment: formatAccessibilityAssements(
+    accessibilityAssessment: formatAccessibilityAssessments(
       stop.accessibilityAssessment,
     ),
     keyValues: stop.keyValues,
@@ -349,15 +350,15 @@ const stripRedundantFields = (pathLink) => {
   return pathLink;
 };
 
-const formatAccessibilityAssements = (assements) => {
-  if (assements && assements.limitations) {
+const formatAccessibilityAssessments = (assessments) => {
+  if (assessments && assessments.limitations) {
     Object.keys(defaultLimitations).forEach((key) => {
-      if (!assements.limitations[key]) {
-        assements.limitations[key] = "UNKNOWN";
+      if (!assessments.limitations[key]) {
+        assessments.limitations[key] = AccessibilityLimitationState.UNKNOWN;
       }
     });
   }
-  return assements;
+  return assessments;
 };
 
 const isFloat = (n) => Number(n) === n && n % 1 !== 0;
