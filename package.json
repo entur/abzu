@@ -99,7 +99,7 @@
     "vite": "6.3.5",
     "vite-plugin-svgr": "4.3.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.2.3",
+    "vitest": "3.2.4",
     "vitest-sonar-reporter": "2.0.1"
   }
 }
