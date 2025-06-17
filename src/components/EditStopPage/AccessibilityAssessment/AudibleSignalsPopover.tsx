@@ -59,7 +59,7 @@ const AudibleSignalsPopover = ({
           />
         </IconButton>
         {displayLabel ? (
-          <div style={{ maginLeft: 5 }}>
+          <div style={{ marginLeft: 5 }}>
             {formatMessage({
               id: `accessibilityAssessments_audibleSignals_${audibleSignalsState.toLowerCase()}`,
             })}
@@ -72,7 +72,6 @@ const AudibleSignalsPopover = ({
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-        targetOrigin={{ horizontal: "left", vertical: "top" }}
         onClose={handleClosePopover}
       >
         {accessibilityAssessments.audibleSignalsAvailable.options.map(

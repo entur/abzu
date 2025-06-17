@@ -73,7 +73,7 @@ class WheelChairPopover extends React.Component {
             />
           </IconButton>
           {displayLabel ? (
-            <div style={{ maginLeft: 5 }}>
+            <div style={{ marginLeft: 5 }}>
               {formatMessage({
                 id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
               })}

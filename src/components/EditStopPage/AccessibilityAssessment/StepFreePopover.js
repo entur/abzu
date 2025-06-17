@@ -72,7 +72,7 @@ class StepFreePopover extends React.Component {
             />
           </IconButton>
           {displayLabel ? (
-            <div style={{ maginLeft: 5 }}>
+            <div style={{ marginLeft: 5 }}>
               {formatMessage({
                 id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
               })}
