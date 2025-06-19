@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import WheelChair from "@mui/icons-material/Accessible";
 import MdLanguage from "@mui/icons-material/Language";
 import MdTransfer from "@mui/icons-material/TransferWithinAStation";
 import MdKey from "@mui/icons-material/VpnKey";
@@ -39,7 +40,10 @@ import {
   removeTag,
 } from "../../actions/TiamatActions";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import { AccessibilityLimitationState } from "../../models/accessibilityAssessments";
+import {
+  AccessibilityLimitation,
+  AccessibilityLimitationType,
+} from "../../models/AccessibilityLimitation";
 import stopTypes from "../../models/stopTypes";
 import weightTypes, { weightColors } from "../../models/weightTypes";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
@@ -59,7 +63,7 @@ import TariffZonesDialog from "../Dialogs/TariffZonesDialog";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
-import WheelChairPopover from "./AccessibilityAssessment/WheelChairPopover";
+import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
 import ImportedId from "./ImportedId";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
 import TagsDialog from "./TagsDialog";
@@ -392,7 +396,7 @@ class StopPlaceDetails extends React.Component {
     const wheelchairAccess = getIn(
       stopPlace,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
 
     const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace);
@@ -706,10 +710,13 @@ class StopPlaceDetails extends React.Component {
             }}
           >
             <ToolTippable toolTipText={wheelChairHint}>
-              <WheelChairPopover
-                intl={intl}
+              <AccessibilityLimitationPopover
+                accessibilityLimitationState={wheelchairAccess}
                 handleChange={this.handleHandleWheelChair.bind(this)}
-                wheelchairAccess={wheelchairAccess}
+                accessibilityLimitationName={
+                  AccessibilityLimitation.WHEELCHAIR_ACCESS
+                }
+                icon={<WheelChair />}
               />
               <div
                 style={{

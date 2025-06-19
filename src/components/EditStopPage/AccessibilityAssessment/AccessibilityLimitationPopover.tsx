@@ -1,36 +1,45 @@
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useIntl } from "react-intl";
 import {
+  accessibilityAssessmentColors,
   accessibilityAssessments,
-  AccessibilityLimitationState,
 } from "../../../models/accessibilityAssessments";
+import {
+  AccessibilityLimitation,
+  AccessibilityLimitationType,
+} from "../../../models/AccessibilityLimitation";
 
 type Props = {
-  disabled: boolean;
-  displayLabel: boolean;
-  audibleSignalsState: AccessibilityLimitationState;
-  handleChange: (value: AccessibilityLimitationState) => {};
-  quayId: string;
+  disabled?: boolean;
+  displayLabel?: boolean;
+  accessibilityLimitationState: AccessibilityLimitationType;
+  accessibilityLimitationName: AccessibilityLimitation;
+  icon: ReactElement;
+  handleChange: (value: AccessibilityLimitationType) => {};
+  quayId?: string;
 };
 
-const AudibleSignalsPopover = ({
+const AccessibilityLimitationPopover = ({
   disabled,
   displayLabel,
-  audibleSignalsState,
+  accessibilityLimitationState,
+  accessibilityLimitationName,
   handleChange,
   quayId,
+  icon,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleAudibleSignalChange = (value: AccessibilityLimitationState) => {
+  const handleAccessibilityLimitationStateChange = (
+    value: AccessibilityLimitationType,
+  ) => {
     setOpen(false);
     handleChange(value);
   };
@@ -52,16 +61,20 @@ const AudibleSignalsPopover = ({
             if (!disabled) handleOpenPopover(e);
           }}
         >
-          <VolumeUpIcon
-            style={{
-              color: accessibilityAssessments.colors[audibleSignalsState],
-            }}
-          />
+          {React.cloneElement(icon, {
+            style: {
+              color:
+                accessibilityAssessmentColors[
+                  accessibilityLimitationState ||
+                    AccessibilityLimitationType.UNKNOWN
+                ],
+            },
+          })}
         </IconButton>
         {displayLabel ? (
           <div style={{ marginLeft: 5 }}>
             {formatMessage({
-              id: `accessibilityAssessments_audibleSignals_${audibleSignalsState.toLowerCase()}`,
+              id: `accessibilityAssessments_${accessibilityLimitationName}_${(accessibilityLimitationState || AccessibilityLimitationType.UNKNOWN).toLowerCase()}`,
             })}
           </div>
         ) : (
@@ -74,29 +87,29 @@ const AudibleSignalsPopover = ({
         anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
         onClose={handleClosePopover}
       >
-        {accessibilityAssessments.audibleSignalsAvailable.options.map(
-          (option, index) => (
+        {accessibilityAssessments[accessibilityLimitationName].options.map(
+          (option: AccessibilityLimitationType, index: number) => (
             <MenuItem
-              key={quayId + "-audioSignalsItem-" + index}
+              key={`${quayId}-${accessibilityLimitationName}-${index}`}
               value={option}
               style={{ padding: "0px 10px" }}
               onClick={() => {
-                handleAudibleSignalChange(option);
+                handleAccessibilityLimitationStateChange(option);
               }}
             >
               <ListItemIcon>
-                <VolumeUpIcon
-                  style={{
+                {React.cloneElement(icon, {
+                  style: {
                     float: "left",
                     marginTop: 9,
                     marginRight: 5,
-                    color: accessibilityAssessments.colors[option],
-                  }}
-                />
+                    color: accessibilityAssessmentColors[option],
+                  },
+                })}
               </ListItemIcon>
               <ListItemText>
                 {formatMessage({
-                  id: `accessibilityAssessments_audibleSignals_${option.toLowerCase()}`,
+                  id: `accessibilityAssessments_${accessibilityLimitationName}_${option.toLowerCase()}`,
                 })}
               </ListItemText>
             </MenuItem>
@@ -107,4 +120,4 @@ const AudibleSignalsPopover = ({
   );
 };
 
-export default AudibleSignalsPopover;
+export default AccessibilityLimitationPopover;

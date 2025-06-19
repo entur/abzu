@@ -26,10 +26,7 @@ import CarParkingIcon from "../static/icons/ParkingIcon";
 import StairsIcon from "../static/icons/accessibility/Stairs";
 import BikeParkingIcon from "../static/icons/facilities/BikeParking";
 import { getIn, getInTransform } from "../utils/";
-import {
-  accessibilityAssessments,
-  AccessibilityLimitationState,
-} from "./accessibilityAssessments";
+import { accessibilityAssessmentColors } from "./accessibilityAssessments";
 
 const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {
@@ -176,7 +173,7 @@ export const ColumnTransformerStopPlaceJsx = {
       AccessibilityLimitationState.UNKNOWN,
     );
     return (
-      <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
+      <WheelChair color={accessibilityAssessmentColors[wheelchairAccess]} />
     );
   },
   stepFreeAccess: (stop) => {
@@ -185,9 +182,7 @@ export const ColumnTransformerStopPlaceJsx = {
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
       AccessibilityLimitationState.UNKNOWN,
     );
-    return (
-      <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]} />
-    );
+    return <StairsIcon color={accessibilityAssessmentColors[stepFreeAccess]} />;
   },
   shelterEquipment: (stop) => {
     return isEquipted(stop, ["placeEquipments", "shelterEquipment"]) ? (

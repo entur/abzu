@@ -33,15 +33,19 @@ import BusShelter from "../../static/icons/facilities/BusShelter";
 import TicketMachine from "../../static/icons/facilities/TicketMachine";
 import Sign512 from "../../static/icons/TransportSign";
 import { getIn } from "../../utils/";
-import StepFreePopover from "./AccessibilityAssessment/StepFreePopover";
-import WheelChairPopover from "./AccessibilityAssessment/WheelChairPopover";
 import EditQuayAdditional from "./EditQuayAdditional";
 import ImportedId from "./ImportedId";
 
+import WheelChair from "@mui/icons-material/Accessible";
 import MdDelete from "@mui/icons-material/DeleteForever";
 import MdKey from "@mui/icons-material/VpnKey";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
-import { AccessibilityLimitationState } from "../../models/accessibilityAssessments";
+import {
+  AccessibilityLimitation,
+  AccessibilityLimitationType,
+} from "../../models/AccessibilityLimitation";
+import StairsIcon from "../../static/icons/accessibility/Stairs";
+import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
@@ -161,12 +165,12 @@ class QuayItem extends React.Component {
     const wheelchairAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     const ticketMachine = equipmentHelpers.getTicketMachineState(quay);
     const busShelter = equipmentHelpers.getShelterEquipmentState(quay);
@@ -312,19 +316,25 @@ class QuayItem extends React.Component {
                 }}
               >
                 <ToolTippable toolTipText={wheelChairHint}>
-                  <WheelChairPopover
+                  <AccessibilityLimitationPopover
                     disabled={disabled}
-                    intl={intl}
-                    wheelchairAccess={wheelchairAccess}
+                    accessibilityLimitationState={wheelchairAccess}
                     handleChange={this.handleWheelChairChange.bind(this)}
+                    accessibilityLimitationName={
+                      AccessibilityLimitation.WHEELCHAIR_ACCESS
+                    }
+                    icon={<WheelChair />}
                   />
                 </ToolTippable>
                 <ToolTippable toolTipText={stepFreeHint}>
-                  <StepFreePopover
-                    intl={intl}
+                  <AccessibilityLimitationPopover
                     disabled={disabled}
-                    stepFreeAccess={stepFreeAccess}
+                    accessibilityLimitationState={stepFreeAccess}
                     handleChange={this.handleStepFreeChange.bind(this)}
+                    accessibilityLimitationName={
+                      AccessibilityLimitation.STEP_FREE_ACCESS
+                    }
+                    icon={<StairsIcon />}
                   />
                 </ToolTippable>
                 <ToolTippable toolTipText={ticketMachineHint}>

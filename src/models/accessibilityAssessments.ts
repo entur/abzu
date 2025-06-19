@@ -12,50 +12,69 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export enum AccessibilityLimitationState {
-  TRUE = "TRUE",
-  FALSE = "FALSE",
-  UNKNOWN = "UNKNOWN",
-  PARTIAL = "PARTIAL",
+import {
+  AccessibilityLimitation,
+  AccessibilityLimitationType,
+} from "./AccessibilityLimitation";
+
+export interface AccessibilityLimitationMenu {
+  options: AccessibilityLimitationType[];
 }
 
-export interface AccessibilityLimitation {
-  options: AccessibilityLimitationState[];
-}
+export const accessibilityAssessmentColors: Record<
+  AccessibilityLimitationType,
+  string
+> = {
+  TRUE: "#181C56",
+  FALSE: "#F44336",
+  UNKNOWN: "#e8e3e3",
+  PARTIAL: "#FF9800",
+};
 
-export interface AccessibilityAssessments {
-  wheelchairAccess: AccessibilityLimitation;
-  stepFreeAccess: AccessibilityLimitation;
-  audibleSignalsAvailable: AccessibilityLimitation;
-  colors: Record<AccessibilityLimitationState, string>;
-}
-
-export const accessibilityAssessments: AccessibilityAssessments = {
+export const accessibilityAssessments: Record<
+  AccessibilityLimitation,
+  AccessibilityLimitationMenu
+> = {
   wheelchairAccess: {
     options: [
-      AccessibilityLimitationState.TRUE,
-      AccessibilityLimitationState.FALSE,
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
     ],
   },
   stepFreeAccess: {
     options: [
-      AccessibilityLimitationState.TRUE,
-      AccessibilityLimitationState.FALSE,
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
     ],
   },
   audibleSignalsAvailable: {
     options: [
-      AccessibilityLimitationState.TRUE,
-      AccessibilityLimitationState.FALSE,
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
     ],
   },
-  colors: {
-    TRUE: "#181C56",
-    FALSE: "#F44336",
-    UNKNOWN: "#e8e3e3",
-    PARTIAL: "#FF9800",
+  visualSignsAvailable: {
+    options: [
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
+    ],
+  },
+  escalatorFreeAccess: {
+    options: [
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
+    ],
+  },
+  liftFreeAccess: {
+    options: [
+      AccessibilityLimitationType.TRUE,
+      AccessibilityLimitationType.FALSE,
+      AccessibilityLimitationType.UNKNOWN,
+    ],
   },
 };

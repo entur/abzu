@@ -12,15 +12,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import WheelChair from "@mui/icons-material/Accessible";
+import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import React from "react";
 import { connect } from "react-redux";
 import { AssessmentActions } from "../../../actions/";
-import { AccessibilityLimitationState } from "../../../models/accessibilityAssessments";
+import {
+  AccessibilityLimitation as AccessibilityLimitationEnum,
+  AccessibilityLimitationType,
+} from "../../../models/AccessibilityLimitation";
+import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils/";
 import AccessibilityLimitation from "./AccessibilityLimitation";
-import AudibleSignalsPopover from "./AudibleSignalsPopover";
-import StepFreePopover from "./StepFreePopover";
-import WheelChairPopover from "./WheelChairPopover";
+import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
 
 class AccessibilityQuayTab extends React.Component {
   constructor(props) {
@@ -48,51 +53,88 @@ class AccessibilityQuayTab extends React.Component {
     );
   }
 
+  handleVisualSignsChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setQuayVisibleSignsAvailable(value, this.props.index),
+    );
+  }
+
   render() {
-    const { intl, quay, disabled } = this.props;
+    const { quay, disabled } = this.props;
 
     const wheelchairAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
     );
     const audibleSignalsAvailable = getIn(
       quay,
       ["accessibilityAssessment", "limitations", "audibleSignalsAvailable"],
-      AccessibilityLimitationState.UNKNOWN,
+      AccessibilityLimitationType.UNKNOWN,
+    );
+    const visualSignsAvailable = getIn(
+      quay,
+      ["accessibilityAssessment", "limitations", "visualSignsAvailable"],
+      AccessibilityLimitationType.UNKNOWN,
     );
 
     return (
       <div style={{ padding: 10 }}>
-        <AccessibilityLimitation tooltipTitle={"wheelChair_quay_hint"}>
-          <WheelChairPopover
+        <AccessibilityLimitation tooltipTitle={"wheelchair_quay_hint"}>
+          <AccessibilityLimitationPopover
             disabled={disabled}
             displayLabel={true}
-            intl={intl}
-            wheelchairAccess={wheelchairAccess}
+            accessibilityLimitationState={wheelchairAccess}
             handleChange={this.handleWheelChairChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.WHEELCHAIR_ACCESS
+            }
+            icon={<WheelChair />}
           />
         </AccessibilityLimitation>
         <AccessibilityLimitation tooltipTitle={"step_free_access_quay_hint"}>
-          <StepFreePopover
+          <AccessibilityLimitationPopover
             disabled={disabled}
             displayLabel={true}
-            intl={intl}
-            stepFreeAccess={stepFreeAccess}
+            accessibilityLimitationState={stepFreeAccess}
             handleChange={this.handleStepFreeChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.STEP_FREE_ACCESS
+            }
+            icon={<StairsIcon />}
           />
         </AccessibilityLimitation>
-        <AccessibilityLimitation tooltipTitle={"audibleSignals_quay_hint"}>
-          <AudibleSignalsPopover
+        <AccessibilityLimitation
+          tooltipTitle={"audibleSignalsAvailable_quay_hint"}
+        >
+          <AccessibilityLimitationPopover
             disabled={disabled}
             displayLabel={true}
-            audibleSignalsState={audibleSignalsAvailable}
+            accessibilityLimitationState={audibleSignalsAvailable}
             handleChange={this.handleAudibleSignalsChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE
+            }
+            icon={<VolumeUpIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation
+          tooltipTitle={"visualSignsAvailable_quay_hint"}
+        >
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={visualSignsAvailable}
+            handleChange={this.handleVisualSignsChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
+            }
+            icon={<FollowTheSignsIcon />}
           />
         </AccessibilityLimitation>
       </div>

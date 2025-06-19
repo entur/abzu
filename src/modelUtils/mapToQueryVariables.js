@@ -13,8 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import moment from "moment";
-import { AccessibilityLimitationState } from "../models/accessibilityAssessments";
-import { defaultLimitations } from "../models/Limitations";
+import {
+  AccessibilityLimitationType,
+  defaultLimitations,
+} from "../models/AccessibilityLimitation";
 import PARKING_TYPE from "../models/parkingType";
 import {
   netexifyBoardingPositions,
@@ -354,7 +356,7 @@ const formatAccessibilityAssessments = (assessments) => {
   if (assessments && assessments.limitations) {
     Object.keys(defaultLimitations).forEach((key) => {
       if (!assessments.limitations[key]) {
-        assessments.limitations[key] = AccessibilityLimitationState.UNKNOWN;
+        assessments.limitations[key] = AccessibilityLimitationType.UNKNOWN;
       }
     });
   }
