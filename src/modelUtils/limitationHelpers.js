@@ -12,7 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import * as Limitations from "../models/Limitations";
+import {
+  AccessibilityLimitationType,
+  defaultLimitations,
+} from "../models/AccessibilityLimitation";
 import { getIn } from "../utils";
 
 const LimitationHelpers = {};
@@ -55,7 +58,7 @@ LimitationHelpers.updateCurrentWithQuayLimitations = (current, payload) => {
 export const getAssessmentSetBasedOnQuays = (quays) => {
   const limitations = {};
 
-  Object.keys(Limitations.defaultLimitations).forEach((limitation) => {
+  Object.keys(defaultLimitations).forEach((limitation) => {
     let value = getLimitationForStopBasedOnQuays(quays, limitation);
     limitations[limitation] = value;
   });
@@ -71,15 +74,14 @@ const setLimitationForEntity = (source, limitationType, value) => {
     !entity.accessibilityAssessment.limitations
   ) {
     entity.accessibilityAssessment = {};
-    entity.accessibilityAssessment.limitations = Limitations.defaultLimitations;
+    entity.accessibilityAssessment.limitations = defaultLimitations;
   }
   entity.accessibilityAssessment.limitations[limitationType] = value;
   return entity;
 };
 
 const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
-  if (!quays || !quays.length)
-    return Limitations.defaultLimitations[limitationType];
+  if (!quays || !quays.length) return defaultLimitations[limitationType];
 
   let isUnknown = false;
   let isPartial = false;
@@ -93,29 +95,29 @@ const getLimitationForStopBasedOnQuays = (quays, limitationType) => {
       null,
     );
 
-    if (limitation === Limitations.availableTypes.UNKNOWN) {
+    if (limitation === AccessibilityLimitationType.UNKNOWN) {
       isUnknown = true;
-    } else if (limitation === Limitations.availableTypes.PARTIAL) {
+    } else if (limitation === AccessibilityLimitationType.PARTIAL) {
       isPartial = true;
-    } else if (limitation === Limitations.availableTypes.TRUE) {
+    } else if (limitation === AccessibilityLimitationType.TRUE) {
       trueCount += 1;
-    } else if (limitation === Limitations.availableTypes.FALSE) {
+    } else if (limitation === AccessibilityLimitationType.FALSE) {
       falseCount += 1;
     }
   });
 
-  if (isUnknown) return Limitations.availableTypes.UNKNOWN;
+  if (isUnknown) return AccessibilityLimitationType.UNKNOWN;
 
-  if (isPartial) return Limitations.availableTypes.PARTIAL;
+  if (isPartial) return AccessibilityLimitationType.PARTIAL;
 
-  if (trueCount === quays.length) return Limitations.availableTypes.TRUE;
+  if (trueCount === quays.length) return AccessibilityLimitationType.TRUE;
 
-  if (falseCount === quays.length) return Limitations.availableTypes.FALSE;
+  if (falseCount === quays.length) return AccessibilityLimitationType.FALSE;
 
   if (trueCount > 0 && falseCount > 0)
-    return Limitations.availableTypes.PARTIAL;
+    return AccessibilityLimitationType.PARTIAL;
 
-  return Limitations.availableTypes.UNKNOWN;
+  return AccessibilityLimitationType.UNKNOWN;
 };
 
 export default LimitationHelpers;

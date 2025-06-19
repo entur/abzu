@@ -25,6 +25,7 @@ Fragments.accessibilityAssessment = {
         escalatorFreeAccess
         liftFreeAccess
         audibleSignalsAvailable
+        visualSignsAvailable
       }
     }
   `,
