@@ -1,4 +1,10 @@
 {
   "extends": ["github>entur/ror-renovate-config"],
-  "npmrcMerge": true
+  "npmrcMerge": true,
+  "packageRules": [
+    {
+      "matchPackageNames": ["react-leaflet-custom-control"],
+      "allowedVersions": "<=1.4.1"
+    }
+  ]
 }
