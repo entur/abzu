@@ -16,7 +16,7 @@ import WheelChair from "@mui/icons-material/Accessible";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import accessibilityAssessments from "../../models/accessibilityAssessments";
+import { accessibilityAssessments } from "../../../models/accessibilityAssessments";
 
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -73,7 +73,7 @@ class WheelChairPopover extends React.Component {
             />
           </IconButton>
           {displayLabel ? (
-            <div style={{ maginLeft: 5 }}>
+            <div style={{ marginLeft: 5 }}>
               {formatMessage({
                 id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
               })}

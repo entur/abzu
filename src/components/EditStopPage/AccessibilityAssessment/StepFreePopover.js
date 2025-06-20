@@ -18,8 +18,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import accessibilityAssessments from "../../models/accessibilityAssessments";
-import StairsIcon from "../../static/icons/accessibility/Stairs";
+import { accessibilityAssessments } from "../../../models/accessibilityAssessments";
+import StairsIcon from "../../../static/icons/accessibility/Stairs";
 
 class StepFreePopover extends React.Component {
   constructor(props) {
@@ -72,7 +72,7 @@ class StepFreePopover extends React.Component {
             />
           </IconButton>
           {displayLabel ? (
-            <div style={{ maginLeft: 5 }}>
+            <div style={{ marginLeft: 5 }}>
               {formatMessage({
                 id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
               })}
