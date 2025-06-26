@@ -5,7 +5,6 @@ import {
 import { getTheme } from "./theme";
 
 const muiTheme = createTheme(getTheme());
-console.log("\n\n theme!", muiTheme);
 
 export const FintrafficThemeProvider = ({
   children,

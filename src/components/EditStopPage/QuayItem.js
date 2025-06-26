@@ -172,20 +172,22 @@ class QuayItem extends React.Component {
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
       AccessibilityLimitationType.UNKNOWN,
     );
-    const ticketMachine = equipmentHelpers.getTicketMachineState(quay);
-    const busShelter = equipmentHelpers.getShelterEquipmentState(quay);
-    const sign512 = equipmentHelpers.get512SignEquipment(quay);
+    const isTicketMachinePresent =
+      equipmentHelpers.isTicketMachinePresent(quay);
+    const isBusShelterPresent =
+      equipmentHelpers.isShelterEquipmentPresent(quay);
+    const isSign512Present = equipmentHelpers.is512SignEquipmentPresent(quay);
 
     const wheelChairHint = formatMessage({
       id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
-    const ticketMachineHint = ticketMachine
+    const ticketMachineHint = isTicketMachinePresent
       ? formatMessage({ id: "ticketMachine" })
       : formatMessage({ id: "ticketMachine_no" });
-    const busShelterHint = busShelter
+    const busShelterHint = isBusShelterPresent
       ? formatMessage({ id: "busShelter" })
       : formatMessage({ id: "busShelter_no" });
-    const transportSignHint = sign512
+    const transportSignHint = isSign512Present
       ? formatMessage({ id: "transport_sign" })
       : formatMessage({ id: "transport_sign_no" });
     const stepFreeHint = formatMessage({
@@ -347,7 +349,7 @@ class QuayItem extends React.Component {
                       />
                     }
                     style={{ width: "auto" }}
-                    checked={ticketMachine}
+                    checked={isTicketMachinePresent}
                     onChange={(e, v) => {
                       this.handleTicketMachineChange(v);
                     }}
@@ -361,7 +363,7 @@ class QuayItem extends React.Component {
                       <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                     }
                     style={{ width: "auto" }}
-                    checked={busShelter}
+                    checked={isBusShelterPresent}
                     onChange={(e, v) => {
                       this.handleBusShelterChange(v);
                     }}
@@ -380,7 +382,7 @@ class QuayItem extends React.Component {
                       />
                     }
                     style={{ width: "auto" }}
-                    checked={sign512}
+                    checked={isSign512Present}
                     onChange={(event, v) => {
                       this.handleTransportSignChange(v);
                     }}

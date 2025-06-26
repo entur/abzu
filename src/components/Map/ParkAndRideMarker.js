@@ -110,7 +110,7 @@ class ParkingAndRideMarker extends React.Component {
               {hasExpired && translations.parkingExpired}
             </div>
             <div
-              className={markerTitle}
+              className={"marker-title--override"}
               style={{
                 fontWeight: 600,
                 textAlign: "center",
