@@ -21,7 +21,7 @@ import React from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import {
-  findStopForReport,
+  findStopForReportPaged,
   getParkingForMultipleStopPlaces,
   getTopographicPlaces,
   topographicalPlaceSearch,
@@ -265,9 +265,9 @@ class ReportPage extends React.Component {
         .map((topos) => topos.id),
     };
 
-    dispatch(findStopForReport(queryVariables))
+    dispatch(findStopForReportPaged(queryVariables))
       .then((response) => {
-        const stopPlaces = response.data.stopPlace;
+        const stopPlaces = response;
         const stopPlaceIds = [];
         for (let i = 0; i < stopPlaces.length; i++) {
           if (stopPlaces[i].__typename === "ParentStopPlace") {
@@ -574,22 +574,42 @@ class ReportPage extends React.Component {
             selectAllLabel={formatMessage({ id: "all" })}
           />
         </div>
-        <ReportResultView
-          activePageIndex={activePageIndex}
-          intl={intl}
-          results={results}
-          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
-          quaysColumnOptions={this.state.columnOptionsQuays}
-          duplicateInfo={duplicateInfo}
-        />
-        <ReportPageFooter
-          results={results}
-          intl={intl}
-          stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
-          quaysColumnOptions={this.state.columnOptionsQuays}
-          handleSelectPage={this.handleSelectPage.bind(this)}
-          activePageIndex={activePageIndex}
-        />
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "60vh", // Adjust height as needed
+            }}
+          >
+            <MdSpinner
+              style={{
+                fontSize: "80px", // Bigger spinner
+                animation: "spin 1s linear infinite", // Ensure the spinner spins
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            <ReportResultView
+              activePageIndex={activePageIndex}
+              intl={intl}
+              results={results}
+              stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+              quaysColumnOptions={this.state.columnOptionsQuays}
+              duplicateInfo={duplicateInfo}
+            />
+            <ReportPageFooter
+              results={results}
+              intl={intl}
+              stopPlaceColumnOptions={this.state.columnOptionsStopPlace}
+              quaysColumnOptions={this.state.columnOptionsQuays}
+              handleSelectPage={this.handleSelectPage.bind(this)}
+              activePageIndex={activePageIndex}
+            />
+          </>
+        )}
       </div>
     );
   }
