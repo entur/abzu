@@ -15,19 +15,19 @@
 import stopTypes from "../models/stopTypes";
 
 const buildAllowanceInfo = (permissions) => {
-  const canEdit = permissions.canEdit;
-  const canDeleteStop = permissions.canDelete;
+  const canEdit = permissions?.canEdit;
+  const canDeleteStop = permissions?.canDelete;
 
   let legalStopPlaceTypes = getLegalStopPlacesTypes(
-    permissions.allowedStopPlaceTypes || [],
-    permissions.bannedStopPlaceTypes || [],
+    permissions?.allowedStopPlaceTypes || [],
+    permissions?.bannedStopPlaceTypes || [],
   );
   let legalSubmodes = getLegalSubmodes(permissions);
 
   return {
     legalStopPlaceTypes,
     legalSubmodes,
-    blacklistedStopPlaceTypes: permissions.bannedStopPlaceTypes || [],
+    blacklistedStopPlaceTypes: permissions?.bannedStopPlaceTypes || [],
     canEdit,
     canDeleteStop,
   };
@@ -100,7 +100,7 @@ const getSubmodesForStopType = (stopType, permissions) => {
   const { submodes } = stopTypes[stopType];
   if (!submodes) return [];
 
-  if (permissions.bannedStopPlaceTypes.includes(stopType)) return [];
+  if (permissions?.bannedStopPlaceTypes.includes(stopType)) return [];
   if (!isStopTypeAllowed(stopType, permissions)) return [];
 
   return submodes;

@@ -843,7 +843,7 @@ const mapStateToProps = (state) => {
   const stopPlace = state.stopPlace.current;
   const permissions = getStopPermissions(stopPlace);
   return {
-    canDeleteStop: permissions.canDelete,
+    canDeleteStop: permissions?.canDelete,
     stopPlace,
     mergeStopDialogOpen: state.stopPlace.mergeStopDialog
       ? state.stopPlace.mergeStopDialog.isOpen
@@ -868,7 +868,7 @@ const mapStateToProps = (state) => {
     movingQuay: state.mapUtils.movingQuay,
     movingQuayToNewStop: state.mapUtils.movingQuayToNewStop,
     activeMap: state.mapUtils.activeMap,
-    canEditParentStop: permissions.canEditParentStop || false,
+    canEditParentStop: permissions?.canEditParentStop || false,
     originalStopPlace: state.stopPlace.originalCurrent,
     serverTimeDiff: state.user.serverTimeDiff,
     isFetchingMergeInfo: state.stopPlace.isFetchingMergeInfo,
