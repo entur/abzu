@@ -21,6 +21,7 @@
       "stepFreeAccess": "UNKNOWN",
       "escalatorFreeAccess": "UNKNOWN",
       "liftFreeAccess": "UNKNOWN",
+      "visualSignsAvailable": "UNKNOWN",
       "audibleSignalsAvailable": "UNKNOWN"
     }
   },
