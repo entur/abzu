@@ -181,11 +181,15 @@ class FacilitiesStopTab extends React.Component {
     const { formatMessage } = intl;
     const { expandedIndex } = this.state;
 
-    const ticketMachine = equiptmentHelpers.getTicketMachineState(stopPlace);
-    const busShelter = equiptmentHelpers.getShelterEquipmentState(stopPlace);
-    const waitingRoom = equiptmentHelpers.getWaitingRoomState(stopPlace);
-    const WC = equiptmentHelpers.getSanitaryEquipmentState(stopPlace);
-    const sign512 = equiptmentHelpers.get512SignEquipment(stopPlace);
+    const isTicketMachinePresent =
+      equiptmentHelpers.isTicketMachinePresent(stopPlace);
+    const isBusShelterPresent =
+      equiptmentHelpers.isShelterEquipmentPresent(stopPlace);
+    const isWaitingRoomPresent =
+      equiptmentHelpers.isWaitingRoomPresent(stopPlace);
+    const isWCPresent = equiptmentHelpers.isSanitaryEquipmentPresent(stopPlace);
+    const isSign512Present =
+      equiptmentHelpers.is512SignEquipmentPresent(stopPlace);
 
     console.log(stopPlace);
 
@@ -232,7 +236,7 @@ class FacilitiesStopTab extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={sign512}
+                  checked={isSign512Present}
                   checkedIcon={<TransportSign style={{ fill: "#000" }} />}
                   icon={
                     <TransportSign
@@ -250,7 +254,7 @@ class FacilitiesStopTab extends React.Component {
               }
               label={
                 <div style={{ fontSize: "0.8em" }}>
-                  {sign512
+                  {isSign512Present
                     ? formatMessage({ id: "transport_sign" })
                     : formatMessage({ id: "transport_sign_no" })}
                 </div>
@@ -265,7 +269,7 @@ class FacilitiesStopTab extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={ticketMachine}
+                  checked={isTicketMachinePresent}
                   checkedIcon={<TicketMachine style={{ fill: "#000" }} />}
                   icon={
                     <TicketMachine
@@ -279,7 +283,7 @@ class FacilitiesStopTab extends React.Component {
               }
               label={
                 <div style={{ fontSize: "0.8em" }}>
-                  {ticketMachine
+                  {isTicketMachinePresent
                     ? formatMessage({ id: "ticketMachine" })
                     : formatMessage({ id: "ticketMachine_no" })}
                 </div>
@@ -329,7 +333,7 @@ class FacilitiesStopTab extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={busShelter}
+                  checked={isBusShelterPresent}
                   checkedIcon={<BusShelter style={{ fill: "#000" }} />}
                   icon={
                     <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
@@ -341,7 +345,7 @@ class FacilitiesStopTab extends React.Component {
               }
               label={
                 <div style={{ fontSize: "0.8em" }}>
-                  {busShelter
+                  {isBusShelterPresent
                     ? formatMessage({ id: "busShelter" })
                     : formatMessage({ id: "busShelter_no" })}
                 </div>
@@ -462,7 +466,7 @@ class FacilitiesStopTab extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={WC}
+                  checked={isWCPresent}
                   checkedIcon={<MdWc style={{ fill: "#000" }} />}
                   icon={<MdWc style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                   onChange={(e, v) => {
@@ -472,7 +476,7 @@ class FacilitiesStopTab extends React.Component {
               }
               label={
                 <div style={{ fontSize: "0.8em" }}>
-                  {WC
+                  {isWCPresent
                     ? formatMessage({ id: "wc" })
                     : formatMessage({ id: "wc_no" })}
                 </div>
@@ -487,7 +491,7 @@ class FacilitiesStopTab extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={waitingRoom}
+                  checked={isWaitingRoomPresent}
                   checkedIcon={<WaitingRoom style={{ fill: "#000" }} />}
                   icon={
                     <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
@@ -499,7 +503,7 @@ class FacilitiesStopTab extends React.Component {
               }
               label={
                 <div style={{ fontSize: "0.8em" }}>
-                  {waitingRoom
+                  {isWaitingRoomPresent
                     ? formatMessage({ id: "waiting_room" })
                     : formatMessage({ id: "waiting_room_no" })}
                 </div>

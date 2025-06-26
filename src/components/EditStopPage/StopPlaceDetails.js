@@ -395,11 +395,14 @@ class StopPlaceDetails extends React.Component {
       AccessibilityLimitationState.UNKNOWN,
     );
 
-    const ticketMachine = equipmentHelpers.getTicketMachineState(stopPlace);
-    const busShelter = equipmentHelpers.getShelterEquipmentState(stopPlace);
-    const waitingRoom = equipmentHelpers.getWaitingRoomState(stopPlace);
-    const WC = equipmentHelpers.getSanitaryEquipmentState(stopPlace);
-    const sign512 = equipmentHelpers.get512SignEquipment(stopPlace);
+    const isTicketMachinePresent =
+      equipmentHelpers.isTicketMachinePresent(stopPlace);
+    const isBusShelterPresent =
+      equipmentHelpers.isShelterEquipmentPresent(stopPlace);
+    const isWaitingRoomPresent =
+      equipmentHelpers.isWaitingRoomPresent(stopPlace);
+    const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(stopPlace);
+    const isSign512 = equipmentHelpers.is512SignEquipmentPresent(stopPlace);
 
     const hasAltNames = !!(
       stopPlace.alternativeNames && stopPlace.alternativeNames.length
@@ -419,19 +422,19 @@ class StopPlaceDetails extends React.Component {
     const wheelChairHint = formatMessage({
       id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
-    const ticketMachineHint = ticketMachine
+    const ticketMachineHint = isTicketMachinePresent
       ? formatMessage({ id: "ticketMachine" })
       : formatMessage({ id: "ticketMachine_no" });
-    const busShelterHint = busShelter
+    const busShelterHint = isBusShelterPresent
       ? formatMessage({ id: "busShelter" })
       : formatMessage({ id: "busShelter_no" });
-    const WCHint = WC
+    const WCHint = isWCPresent
       ? formatMessage({ id: "wc" })
       : formatMessage({ id: "wc_no" });
-    const waitingRoomHint = waitingRoom
+    const waitingRoomHint = isWaitingRoomPresent
       ? formatMessage({ id: "waiting_room" })
       : formatMessage({ id: "waiting_room_no" });
-    const transportSignHint = sign512
+    const transportSignHint = isSign512
       ? formatMessage({ id: "transport_sign" })
       : formatMessage({ id: "transport_sign_no" });
     const tariffZonesHint = formatMessage({ id: "tariffZones" });
@@ -725,7 +728,7 @@ class StopPlaceDetails extends React.Component {
                   <TicketMachine style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
-                checked={ticketMachine}
+                checked={isTicketMachinePresent}
                 onChange={(e, v) => {
                   this.handleTicketMachineChange(v);
                 }}
@@ -738,7 +741,7 @@ class StopPlaceDetails extends React.Component {
                   <BusShelter style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
-                checked={busShelter}
+                checked={isBusShelterPresent}
                 onChange={(e, v) => {
                   this.handleBusShelterChange(v);
                 }}
@@ -749,7 +752,7 @@ class StopPlaceDetails extends React.Component {
                 checkedIcon={<MdWC style={{ fill: "#000" }} />}
                 icon={<MdWC style={{ fill: "#8c8c8c", opacity: "0.8" }} />}
                 style={{ width: "auto" }}
-                checked={WC}
+                checked={isWCPresent}
                 onChange={(e, v) => {
                   this.handleWCChange(v);
                 }}
@@ -762,7 +765,7 @@ class StopPlaceDetails extends React.Component {
                   <WaitingRoom style={{ fill: "#8c8c8c", opacity: "0.8" }} />
                 }
                 style={{ width: "auto" }}
-                checked={waitingRoom}
+                checked={isWaitingRoomPresent}
                 onChange={(e, v) => {
                   this.handleWaitingRoomChange(v);
                 }}
@@ -780,7 +783,7 @@ class StopPlaceDetails extends React.Component {
                 }
                 checkedIcon={<TransportSign />}
                 style={{ width: "auto" }}
-                checked={sign512}
+                checked={isSign512}
                 onChange={(e, v) => {
                   this.handleChangeSign512(v);
                 }}
