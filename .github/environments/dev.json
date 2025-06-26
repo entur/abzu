@@ -41,5 +41,9 @@
     "defaultTile": "OpenStreetMap",
     "center": [64.349421, 16.809082],
     "zoom": 6
+  },
+  "localeConfig": {
+    "locales": ["nb", "en", "sv", "fi", "fr"],
+    "defaultLocale": "nb"
   }
 }
