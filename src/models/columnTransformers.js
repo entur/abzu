@@ -22,11 +22,14 @@ import TagTray from "../components/MainPage/TagTray";
 import ModalityIconTray from "../components/ReportPage/ModalityIconTray";
 import StopPlaceLink from "../components/ReportPage/StopPlaceLink";
 import { darkColor } from "../config/themes/default/defaultTheme";
-import accessibilityAssessments from "../models/accessibilityAssessments";
 import CarParkingIcon from "../static/icons/ParkingIcon";
 import StairsIcon from "../static/icons/accessibility/Stairs";
 import BikeParkingIcon from "../static/icons/facilities/BikeParking";
 import { getIn, getInTransform } from "../utils/";
+import {
+  accessibilityAssessments,
+  AccessibilityLimitationState,
+} from "./accessibilityAssessments";
 
 const getParkingElements = (parking = [], formatMessage) => {
   if (!parking || !parking.length) {
@@ -170,7 +173,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const wheelchairAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     );
     return (
       <WheelChair color={accessibilityAssessments.colors[wheelchairAccess]} />
@@ -180,7 +183,7 @@ export const ColumnTransformerStopPlaceJsx = {
     const stepFreeAccess = getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     );
     return (
       <StairsIcon color={accessibilityAssessments.colors[stepFreeAccess]} />
@@ -277,7 +280,7 @@ export const ColumnTransformersStopPlace = {
     getIn(
       stop,
       ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      "UNKNOWN",
+      AccessibilityLimitationState.UNKNOWN,
     ),
   generalSign: (stop) => {
     let signs = getIn(stop, ["placeEquipments", "generalSign"], null);
