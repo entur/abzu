@@ -16,7 +16,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { injectIntl } from "react-intl";
-import AcessibilityStopTab from "./AcessibilityStopTab";
+import AccessibilityStopTab from "./AccessibilityAssessment/AccessibilityStopTab";
 import FacilitiesStopTab from "./FacilitiesStopTab";
 
 class EditStopAdditional extends React.Component {
@@ -68,7 +68,7 @@ class EditStopAdditional extends React.Component {
           ></Tab>
         </Tabs>
         {activeTabIndex === 0 && (
-          <AcessibilityStopTab intl={intl} disabled={disabled} />
+          <AccessibilityStopTab intl={intl} disabled={disabled} />
         )}
         {activeTabIndex === 1 && (
           <FacilitiesStopTab intl={intl} disabled={disabled} />

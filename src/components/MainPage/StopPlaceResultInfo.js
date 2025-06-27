@@ -15,6 +15,7 @@ limitations under the Licence. */
 import WheelChair from "@mui/icons-material/Accessible";
 import { Component } from "react";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { AccessibilityLimitationType } from "../../models/AccessibilityLimitation";
 import { getIn } from "../../utils/";
 import Code from "../EditStopPage/Code";
 import BelongsToGroup from "./BelongsToGroup";
@@ -33,7 +34,7 @@ class StopPlaceResultInfo extends Component {
         result,
         ["accessibilityAssessment", "limitations", "wheelchairAccess"],
         null,
-      ) === "TRUE";
+      ) === AccessibilityLimitationType.TRUE;
 
     return (
       <div>

@@ -17,7 +17,7 @@ import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import AccessiblityQuayTab from "./AcessibilityQuayTab";
+import AccessibilityQuayTab from "./AccessibilityAssessment/AccessibilityQuayTab";
 import BoardingPositionsTab from "./BoardingPositionsTab";
 import FacilitiesQuayTab from "./FacilitiesQuayTab";
 
@@ -77,7 +77,7 @@ class EditQuayAdditional extends React.Component {
           ></Tab>
         </Tabs>
         {activeTabIndex === 0 && (
-          <AccessiblityQuayTab
+          <AccessibilityQuayTab
             intl={intl}
             quay={quay}
             index={index}
