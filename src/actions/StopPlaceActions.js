@@ -168,7 +168,7 @@ StopPlaceActions.setMarkerOnMap = (data) => (dispatch, getState) => {
 
   const { location } = data;
   if (location) {
-    dispatch(getLocationPermissionsForCoordinates(location[0], location[1]));
+    dispatch(getLocationPermissionsForCoordinates(location[1], location[0]));
   }
 
   if (data.entityType === Entities.STOP_PLACE) {
