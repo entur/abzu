@@ -50,11 +50,24 @@ StopPlaceActions.addChildrenToParenStopPlace =
     dispatch(createThunk(types.ADDED_STOP_PLACES_TO_PARENT, toAdd));
   };
 
-StopPlaceActions.changeLocationNewStop = (location) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_LOCATION_NEW_STOP, [location.lat, location.lng]),
-  );
-};
+StopPlaceActions.changeLocationNewStop =
+  (location) => async (dispatch, getState) => {
+    // First get location permissions
+    await dispatch(
+      getLocationPermissionsForCoordinates(location.lng, location.lat),
+    );
+
+    // Get updated state after permissions are fetched
+    const updatedState = getState();
+    const locationPermissions = updatedState.user?.locationPermissions || {};
+
+    dispatch(
+      createThunk(types.CHANGED_LOCATION_NEW_STOP, {
+        location: [location.lat, location.lng],
+        locationPermissions,
+      }),
+    );
+  };
 
 StopPlaceActions.sortQuays = (attribute) => (dispatch) => {
   dispatch(createThunk(types.SORTED_QUAYS, attribute));
@@ -155,7 +168,7 @@ StopPlaceActions.setMarkerOnMap = (data) => (dispatch, getState) => {
 
   const { location } = data;
   if (location) {
-    dispatch(getLocationPermissionsForCoordinates(location[0], location[1]));
+    dispatch(getLocationPermissionsForCoordinates(location[1], location[0]));
   }
 
   if (data.entityType === Entities.STOP_PLACE) {
@@ -244,13 +257,24 @@ StopPlaceActions.changePrivateCodeName = (index, name, type) => (dispatch) => {
   );
 };
 
-StopPlaceActions.changeCurrentStopPosition = (position) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
-      location: position,
-    }),
-  );
-};
+StopPlaceActions.changeCurrentStopPosition =
+  (position) => async (dispatch, getState) => {
+    // First get location permissions
+    await dispatch(
+      getLocationPermissionsForCoordinates(position[1], position[0]),
+    );
+
+    // Get updated state after permissions are fetched
+    const updatedState = getState();
+    const locationPermissions = updatedState.user?.locationPermissions || {};
+
+    dispatch(
+      createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
+        location: position,
+        locationPermissions,
+      }),
+    );
+  };
 
 StopPlaceActions.changeWeightingForStop = (value) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_WEIGHTING_STOP_PLACE, value));

@@ -557,9 +557,14 @@ helpers.updateCurrentStopWithSubMode = (
   });
 };
 
-helpers.updateCurrentStopWithPosition = (current, location) => {
+helpers.updateCurrentStopWithPositionAndPermissions = (
+  current,
+  location,
+  permissions,
+) => {
   return Object.assign({}, current, {
-    location: location,
+    location,
+    permissions,
   });
 };
 

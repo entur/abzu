@@ -185,7 +185,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CREATED_NEW_STOP:
+    case types.CREATED_NEW_STOP: {
       const { location, isMultimodal, locationPermissions } = action.payload;
       const stopToBeCreated = isMultimodal
         ? formatHelpers.createNewParentStopFromLocation(location)
@@ -202,7 +202,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         newStopIsMultiModal: isMultimodal,
         stopHasBeenModified: false,
       });
-
+    }
     case types.CHANGED_QUAY_COMPASS_BEARING:
       return Object.assign({}, state, {
         current: formatHelpers.updateCompassBearing(
@@ -244,12 +244,17 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_LOCATION_NEW_STOP:
+    case types.CHANGED_LOCATION_NEW_STOP: {
+      const { location, locationPermissions } = action.payload;
+      const newStop = formatHelpers.createNewStopFromLocation(location);
       return Object.assign({}, state, {
-        newStop: formatHelpers.createNewStopFromLocation(action.payload),
+        newStop: {
+          ...newStop,
+          permissions: locationPermissions,
+        },
         stopHasBeenModified: true,
       });
-
+    }
     case types.CHANGED_STOP_NAME:
       return {
         ...state,
@@ -310,14 +315,18 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_ACTIVE_STOP_POSITION:
+    case types.CHANGED_ACTIVE_STOP_POSITION: {
+      const { location, locationPermissions } = action.payload;
+
       return Object.assign({}, state, {
-        current: formatHelpers.updateCurrentStopWithPosition(
+        current: formatHelpers.updateCurrentStopWithPositionAndPermissions(
           state.current,
-          action.payload.location,
+          location,
+          locationPermissions,
         ),
         stopHasBeenModified: true,
       });
+    }
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
