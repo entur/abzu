@@ -257,13 +257,24 @@ StopPlaceActions.changePrivateCodeName = (index, name, type) => (dispatch) => {
   );
 };
 
-StopPlaceActions.changeCurrentStopPosition = (position) => (dispatch) => {
-  dispatch(
-    createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
-      location: position,
-    }),
-  );
-};
+StopPlaceActions.changeCurrentStopPosition =
+  (position) => async (dispatch, getState) => {
+    // First get location permissions
+    await dispatch(
+      getLocationPermissionsForCoordinates(position[1], position[0]),
+    );
+
+    // Get updated state after permissions are fetched
+    const updatedState = getState();
+    const locationPermissions = updatedState.user?.locationPermissions || {};
+
+    dispatch(
+      createThunk(types.CHANGED_ACTIVE_STOP_POSITION, {
+        location: position,
+        locationPermissions,
+      }),
+    );
+  };
 
 StopPlaceActions.changeWeightingForStop = (value) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_WEIGHTING_STOP_PLACE, value));

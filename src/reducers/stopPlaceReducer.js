@@ -315,14 +315,18 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_ACTIVE_STOP_POSITION:
+    case types.CHANGED_ACTIVE_STOP_POSITION: {
+      const { location, locationPermissions } = action.payload;
+
       return Object.assign({}, state, {
-        current: formatHelpers.updateCurrentStopWithPosition(
+        current: formatHelpers.updateCurrentStopWithPositionAndPermissions(
           state.current,
-          action.payload.location,
+          location,
+          locationPermissions,
         ),
         stopHasBeenModified: true,
       });
+    }
 
     case types.USE_NEW_STOP_AS_CURRENT:
       return Object.assign({}, state, {
