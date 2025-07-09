@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import WheelChair from "@mui/icons-material/Accessible";
+import EscalatorIcon from "@mui/icons-material/Escalator";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import React from "react";
@@ -48,27 +49,58 @@ class AccessibilityStopTab extends React.Component {
     );
   }
 
+  handleEscalatorFreeAccessChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setStopEscalatorFreeAccess(value, this.props.index),
+    );
+  }
+
   render() {
     const { stopPlace, disabled } = this.props;
 
     const wheelchairAccess = getIn(
       stopPlace,
-      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.WHEELCHAIR_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       stopPlace,
-      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.STEP_FREE_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const audibleSignalsAvailable = getIn(
       stopPlace,
-      ["accessibilityAssessment", "limitations", "audibleSignalsAvailable"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const visualSignsAvailable = getIn(
       stopPlace,
-      ["accessibilityAssessment", "limitations", "visualSignsAvailable"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE,
+      ],
+      AccessibilityLimitationType.UNKNOWN,
+    );
+    const escalatorFreeAccess = getIn(
+      stopPlace,
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
 
@@ -124,6 +156,18 @@ class AccessibilityStopTab extends React.Component {
               AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
             }
             icon={<FollowTheSignsIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation tooltipTitle={"escalatorFreeAccess_stop_hint"}>
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={escalatorFreeAccess}
+            handleChange={this.handleEscalatorFreeAccessChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
+            }
+            icon={<EscalatorIcon />}
           />
         </AccessibilityLimitation>
       </div>
