@@ -13,6 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import WheelChair from "@mui/icons-material/Accessible";
+import ElevatorIcon from "@mui/icons-material/Elevator";
+import EscalatorIcon from "@mui/icons-material/Escalator";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import React from "react";
@@ -59,27 +61,73 @@ class AccessibilityQuayTab extends React.Component {
     );
   }
 
+  handleEscalatorFreeAccessChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setQuayEscalatorFreeAccess(value, this.props.index),
+    );
+  }
+
+  handleLiftFreeAccessChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setQuayLiftFreeAccess(value, this.props.index),
+    );
+  }
+
   render() {
     const { quay, disabled } = this.props;
 
     const wheelchairAccess = getIn(
       quay,
-      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.WHEELCHAIR_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       quay,
-      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.STEP_FREE_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const audibleSignalsAvailable = getIn(
       quay,
-      ["accessibilityAssessment", "limitations", "audibleSignalsAvailable"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
     const visualSignsAvailable = getIn(
       quay,
-      ["accessibilityAssessment", "limitations", "visualSignsAvailable"],
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE,
+      ],
+      AccessibilityLimitationType.UNKNOWN,
+    );
+    const escalatorFreeAccess = getIn(
+      quay,
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS,
+      ],
+      AccessibilityLimitationType.UNKNOWN,
+    );
+    const liftFreeAccess = getIn(
+      quay,
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.LIFT_FREE_ACCESS,
+      ],
       AccessibilityLimitationType.UNKNOWN,
     );
 
@@ -135,6 +183,30 @@ class AccessibilityQuayTab extends React.Component {
               AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
             }
             icon={<FollowTheSignsIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation tooltipTitle={"escalatorFreeAccess_quay_hint"}>
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={escalatorFreeAccess}
+            handleChange={this.handleEscalatorFreeAccessChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
+            }
+            icon={<EscalatorIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation tooltipTitle={"liftFreeAccess_quay_hint"}>
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={liftFreeAccess}
+            handleChange={this.handleLiftFreeAccessChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.LIFT_FREE_ACCESS
+            }
+            icon={<ElevatorIcon />}
           />
         </AccessibilityLimitation>
       </div>
