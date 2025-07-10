@@ -13,10 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import WheelChair from "@mui/icons-material/Accessible";
+import ElevatorIcon from "@mui/icons-material/Elevator";
 import EscalatorIcon from "@mui/icons-material/Escalator";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import React from "react";
+import { connect } from "react-redux";
 import { AssessmentActions } from "../../../actions/";
 import {
   AccessibilityLimitation as AccessibilityLimitationEnum,
@@ -62,6 +64,12 @@ class AccessibilityQuayTab extends React.Component {
   handleEscalatorFreeAccessChange(value) {
     this.props.dispatch(
       AssessmentActions.setQuayEscalatorFreeAccess(value, this.props.index),
+    );
+  }
+
+  handleLiftFreeAccessChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setQuayLiftFreeAccess(value, this.props.index),
     );
   }
 
@@ -187,6 +195,18 @@ class AccessibilityQuayTab extends React.Component {
               AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
             }
             icon={<EscalatorIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation tooltipTitle={"liftFreeAccess_quay_hint"}>
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={liftFreeAccess}
+            handleChange={this.handleLiftFreeAccessChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.LIFT_FREE_ACCESS
+            }
+            icon={<ElevatorIcon />}
           />
         </AccessibilityLimitation>
       </div>

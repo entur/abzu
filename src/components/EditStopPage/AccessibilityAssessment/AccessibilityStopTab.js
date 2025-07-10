@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import WheelChair from "@mui/icons-material/Accessible";
+import ElevatorIcon from "@mui/icons-material/Elevator";
 import EscalatorIcon from "@mui/icons-material/Escalator";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -52,6 +53,12 @@ class AccessibilityStopTab extends React.Component {
   handleEscalatorFreeAccessChange(value) {
     this.props.dispatch(
       AssessmentActions.setStopEscalatorFreeAccess(value, this.props.index),
+    );
+  }
+
+  handleLiftFreeAccessChange(value) {
+    this.props.dispatch(
+      AssessmentActions.setStopLiftFreeAccess(value, this.props.index),
     );
   }
 
@@ -100,6 +107,15 @@ class AccessibilityStopTab extends React.Component {
         "accessibilityAssessment",
         "limitations",
         AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS,
+      ],
+      AccessibilityLimitationType.UNKNOWN,
+    );
+    const liftFreeAccess = getIn(
+      stopPlace,
+      [
+        "accessibilityAssessment",
+        "limitations",
+        AccessibilityLimitationEnum.LIFT_FREE_ACCESS,
       ],
       AccessibilityLimitationType.UNKNOWN,
     );
@@ -168,6 +184,18 @@ class AccessibilityStopTab extends React.Component {
               AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
             }
             icon={<EscalatorIcon />}
+          />
+        </AccessibilityLimitation>
+        <AccessibilityLimitation tooltipTitle={"liftFreeAccess_stop_hint"}>
+          <AccessibilityLimitationPopover
+            disabled={disabled}
+            displayLabel={true}
+            accessibilityLimitationState={liftFreeAccess}
+            handleChange={this.handleLiftFreeAccessChange.bind(this)}
+            accessibilityLimitationName={
+              AccessibilityLimitationEnum.LIFT_FREE_ACCESS
+            }
+            icon={<ElevatorIcon />}
           />
         </AccessibilityLimitation>
       </div>
