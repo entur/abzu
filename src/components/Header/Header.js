@@ -532,6 +532,11 @@ class Header extends React.Component {
                 {userGuide}
               </MenuItem>
 
+              <ComponentToggle
+                feature={`${this.props.config.extPath}/AdditionalMenuSection`}
+                renderFallback={() => <></>}
+              ></ComponentToggle>
+
               {this.props.auth.isAuthenticated && (
                 <MenuItem
                   leftIcon={<MdAccount color="#41c0c4" />}

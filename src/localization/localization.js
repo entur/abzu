@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 export const DEFAULT_LOCALE = "en";
 
-const localization = async (locale, localeConfigDefault) => {
+const localization = async (locale, localeConfigDefault, extPath) => {
   const localStorageKey = "ABZU::settings::locale";
   const preferredLocale =
     locale ||
@@ -22,8 +22,34 @@ const localization = async (locale, localeConfigDefault) => {
     localeConfigDefault ||
     DEFAULT_LOCALE;
   const messages = await import(`../static/lang/${preferredLocale}.json`);
+  const allMessages = await mixInExtMessages(
+    messages,
+    extPath,
+    preferredLocale,
+  );
+
   localStorage.setItem(localStorageKey, preferredLocale);
-  return { locale: preferredLocale, messages };
+  return { locale: preferredLocale, messages: allMessages };
+};
+
+const mixInExtMessages = async (messages, extPath, preferredLocale) => {
+  let extMessages;
+  if (extPath) {
+    try {
+      extMessages = await import(
+        `../ext/${extPath}/static/lang/${preferredLocale}.json`
+      );
+    } catch (error) {}
+  }
+
+  if (extMessages?.default) {
+    return {
+      ...messages,
+      ...extMessages.default,
+    };
+  }
+
+  return messages;
 };
 
 export default localization;

@@ -34,6 +34,7 @@ export const LanguageMenu = () => {
       {((localeConfig?.locales as string[]) || [DEFAULT_LOCALE]).map(
         (localeOption) => (
           <MenuItem
+            key={"language-menu-" + localeOption}
             style={{
               fontSize: 12,
               padding: 0,
