@@ -83,7 +83,7 @@
     "@types/react-helmet": "6.1.11",
     "@types/react-leaflet": "2.8.3",
     "@types/redux-logger": "3.0.13",
-    "@vitejs/plugin-react": "4.6.0",
+    "@vitejs/plugin-react": "4.7.0",
     "@vitest/coverage-v8": "2.1.9",
     "caniuse-lite": "1.0.30001727",
     "graphql-request": "7.2.0",
