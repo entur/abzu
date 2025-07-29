@@ -46,11 +46,13 @@ const App = ({ children }) => {
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
 
   useEffect(() => {
-    configureLocalization(appliedLocale, localeConfig?.defaultLocale).then(
-      (localization) => {
-        dispatch(UserActions.changeLocalization(localization));
-      },
-    );
+    configureLocalization(
+      appliedLocale,
+      localeConfig?.defaultLocale,
+      extPath,
+    ).then((localization) => {
+      dispatch(UserActions.changeLocalization(localization));
+    });
   }, [appliedLocale, localeConfig?.defaultLocale]);
 
   useEffect(() => {
