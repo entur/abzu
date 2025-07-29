@@ -779,7 +779,9 @@ const mapStateToProps = (state) => {
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: getStopPermissions(state.stopPlace.current).canEdit,
+    canEdit: state.stopPlace.activeSearchResult
+      ? getStopPermissions(state.stopPlace.activeSearchResult).canEdit
+      : getStopPermissions(state.stopPlace.current).canEdit,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
