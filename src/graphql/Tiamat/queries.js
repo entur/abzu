@@ -112,6 +112,9 @@ export const stopPlaceBBQuery = gql`
         }
       }
       ... on ParentStopPlace {
+        permissions {
+          ...EntityPermissions
+        }
         children {
           id
           version
