@@ -1,6 +1,5 @@
 {
   "defaultLanguageCode": "nor",
-  "sentryDSN": "https://2c74afd3e84f4dbf94232421f6b3f5dc@o209253.ingest.sentry.io/1354790",
   "tiamatBaseUrl": "https://api.entur.io/stop-places/v1/graphql",
   "OTPUrl": "https://api.entur.io/journey-planner/v3/graphql",
   "baatTokenProxyEndpoint": "https://api.entur.io/baat-token-proxy/v1/token",
