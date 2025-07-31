@@ -85,7 +85,7 @@ class AddMemberToGroup extends Component {
       : allSuggestions.filter((suggestion) => !suggestion.hasExpired);
 
     return (
-      <Dialog open={open} maxWidth="sm">
+      <Dialog open={open} maxWidth="lg">
         <DialogTitle>{formatMessage({ id: "add_stop_place" })}</DialogTitle>
         <DialogContent>
           <Box
@@ -110,10 +110,8 @@ class AddMemberToGroup extends Component {
             />
             <Box
               sx={{
-                maxHeight: 400,
                 overflowY: "auto",
                 pr: 2,
-                minWidth: 400,
               }}
             >
               <AddStopPlaceSuggestionList
