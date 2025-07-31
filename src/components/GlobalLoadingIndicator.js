@@ -6,7 +6,6 @@ const GlobalLoadingIndicator = ({ isLoading }) => {
     <Backdrop
       sx={{
         color: "#fff",
-        // Ensure it's on top of other UI elements
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
       open={isLoading}
