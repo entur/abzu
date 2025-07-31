@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import Warning from "@mui/icons-material/Warning";
+import Tooltip from "@mui/material/Tooltip";
 import { Component } from "react";
 import { injectIntl } from "react-intl";
 
@@ -24,12 +25,12 @@ class HasExpiredInfo extends Component {
     if (!show) return null;
 
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Warning color="orange" style={{ marginTop: -5 }} />
-        <span style={{ color: "#bb271c", marginLeft: 2 }}>
-          {formatMessage({ id: "stop_has_expired_last_version" })}
-        </span>
-      </div>
+      <Tooltip
+        title={formatMessage({ id: "stop_has_expired_last_version" })}
+        arrow
+      >
+        <Warning color="warning" style={{ marginTop: -5, cursor: "pointer" }} />
+      </Tooltip>
     );
   }
 }
