@@ -87,7 +87,6 @@ class ParkingAndRideMarker extends React.Component {
         eventHandlers={{
           dragend: (e) => handleDragEnd(index, "parking", e),
         }}
-        ref="marker"
       >
         <Popup
           autoPan={false}

@@ -108,7 +108,6 @@ class AddTagDialog extends Component {
           hintText={formatMessage({ id: "comment" })}
           style={{ marginLeft: 10, width: 350, marginTop: 10 }}
           fullWidth={true}
-          ref="comment"
           id={"comment-text"}
           onChange={(e) => this.setState({ comment: e.target.value || "" })}
         />

@@ -63,7 +63,6 @@ class NewStopMarker extends React.Component {
 
     return (
       <Marker
-        ref="newstopMarker"
         key="newstop-key"
         eventHandlers={{
           dragend: (e) => {
