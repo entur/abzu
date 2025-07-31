@@ -9,9 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { ControlPosition } from "leaflet";
-import { useCallback, useMemo, useRef, useState } from "react";
-import Control from "react-leaflet-custom-control";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TariffZone } from "../../models/TariffZone";
+import { CustomControl } from "./CustomControl";
 
 export interface ZonesControlProps<T extends TariffZone> {
   position: ControlPosition;
@@ -102,6 +102,12 @@ export const ZonesControl = <T extends TariffZone>({
     );
   }, []);
 
+  useEffect(() => {
+    return () => {
+      setExpandedCodespace(undefined);
+    };
+  }, []);
+
   const toggleFareZoneSelection = useCallback(
     (id: string, checked: boolean) => {
       setSelectedZones(
@@ -115,10 +121,7 @@ export const ZonesControl = <T extends TariffZone>({
 
   return (
     <>
-      <Control
-        position={position}
-        container={{ style: { backgroundColor: "white", padding: ".5rem" } }}
-      >
+      <CustomControl position={position}>
         <Typography variant="subtitle1">{title}</Typography>
         {zonesForFilter.length === 0 && <LinearProgress />}
         {zonesForFilter.length > 0 && (
@@ -148,8 +151,8 @@ export const ZonesControl = <T extends TariffZone>({
             ))}
           </Box>
         )}
-      </Control>
-      {expandedCodespace && (
+      </CustomControl>
+      {expandedCodespace && itemsRef.current[expandedCodespace] && (
         <Popover
           open
           anchorEl={() => itemsRef.current[expandedCodespace]!}
