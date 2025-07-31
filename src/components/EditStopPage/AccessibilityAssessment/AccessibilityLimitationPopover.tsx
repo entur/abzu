@@ -19,7 +19,7 @@ type Props = {
   displayLabel?: boolean;
   accessibilityLimitationState: AccessibilityLimitationType;
   accessibilityLimitationName: AccessibilityLimitation;
-  icon: ReactElement;
+  icon: ReactElement<any>;
   handleChange: (value: AccessibilityLimitationType) => {};
   quayId?: string;
 };
