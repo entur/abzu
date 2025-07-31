@@ -49,7 +49,6 @@ class MultimodalStopEdges extends Component {
             vertices.push(
               <Polyline
                 key={"vertex-" + index + "-" + childIndex}
-                ref="polyline"
                 positions={[marker.location, child.location]}
                 opacity={0.9}
                 color={"lime"}
