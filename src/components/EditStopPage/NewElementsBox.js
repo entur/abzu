@@ -31,6 +31,7 @@ class NewElementsBox extends React.Component {
     this.state = {
       confirmDialogOpen: false,
     };
+    this.refs = {};
   }
 
   handleDialogClose() {
@@ -119,7 +120,9 @@ class NewElementsBox extends React.Component {
             <div style={elementStyle}>
               <img
                 alt=""
-                ref="stop_place"
+                ref={(ref) => {
+                  if (ref) this.refs.stop_place = ref;
+                }}
                 id="drag-stop-place"
                 data-type="stop_place"
                 draggable
@@ -143,7 +146,9 @@ class NewElementsBox extends React.Component {
               alt=""
               id="drag-quay"
               data-type="quay"
-              ref="quay"
+              ref={(ref) => {
+                if (ref) this.refs.quay = ref;
+              }}
               draggable="true"
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={quayIcon}
@@ -165,7 +170,9 @@ class NewElementsBox extends React.Component {
               alt=""
               id="drag-boarding-position"
               data-type="boardingPosition"
-              ref="boardingPosition"
+              ref={(ref) => {
+                if (ref) this.refs.boardingPosition = ref;
+              }}
               draggable="true"
               style={{ height: 25, width: "auto", marginLeft: 0 }}
               src={boardingPositionIcon}
@@ -180,7 +187,9 @@ class NewElementsBox extends React.Component {
           <div style={elementStyle}>
             <img
               alt=""
-              ref="parkAndRide"
+              ref={(ref) => {
+                if (ref) this.refs.parkAndRide = ref;
+              }}
               data-type="parkAndRide"
               id="drag-park-and-ride"
               draggable
@@ -197,7 +206,9 @@ class NewElementsBox extends React.Component {
           <div style={elementStyle}>
             <img
               alt=""
-              ref="bikeParking"
+              ref={(ref) => {
+                if (ref) this.refs.bikeParking = ref;
+              }}
               data-type="bikeParking"
               id="drag-bike-parking"
               draggable
