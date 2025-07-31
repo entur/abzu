@@ -417,8 +417,11 @@ export const moveQuaysToNewStop =
     })(dispatch);
 
 export const getNeighbourStops =
-  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) =>
-    handleQuery(getTiamatClient(), {
+  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) => {
+    // Dispatch our custom "start" action to show the loader
+    dispatch({ type: "MAP_QUERY_START" });
+
+    const payload = {
       fetchPolicy: "network-only",
       query: stopPlaceBBQuery,
       variables: {
@@ -430,7 +433,31 @@ export const getNeighbourStops =
         lonMax: bounds.getNorthEast().lng,
       },
       context: await getContext(getState().user.auth),
-    })(dispatch);
+    };
+
+    try {
+      const result = await getTiamatClient().query(payload);
+      // Dispatch the original result action so the rest of the app works as before
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+      return result;
+    } catch (e) {
+      // In case of an error, we still want to hide the loader.
+      // The Apollo middleware will likely dispatch an APOLLO_QUERY_ERROR action,
+      // but our custom action ensures the UI is consistent.
+      console.error("Error fetching neighbour stops:", e);
+      throw e; // Re-throw the error for other handlers
+    } finally {
+      // ALWAYS dispatch the "end" action to hide the loader
+      dispatch({ type: "MAP_QUERY_END" });
+    }
+  };
 
 export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
