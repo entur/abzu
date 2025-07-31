@@ -35,9 +35,11 @@ import { StopPlaceActions, UserActions } from "../../actions/";
 import {
   findEntitiesWithFilters,
   findTopographicalPlace,
+  getStopPlaceById,
 } from "../../actions/TiamatActions";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { Entities } from "../../models/Entities";
+import formatHelpers from "../../modelUtils/mapToClient";
 import Routes from "../../routes/";
 import FavoriteManager from "../../singletons/FavoriteManager";
 import MdSpinner from "../../static/icons/spinner";
@@ -173,7 +175,25 @@ class SearchBox extends React.Component {
       typeof result.element !== "undefined" &&
       result.element !== null
     ) {
-      this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
+      // Load full stop place data instead of using limited search result data
+      const stopPlaceId = result.element.id;
+      if (stopPlaceId) {
+        this.props.dispatch(getStopPlaceById(stopPlaceId)).then(({ data }) => {
+          if (data.stopPlace && data.stopPlace.length) {
+            const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
+              data.stopPlace,
+            );
+            if (stopPlaces.length) {
+              this.props.dispatch(
+                StopPlaceActions.setMarkerOnMap(stopPlaces[0]),
+              );
+            }
+          }
+        });
+      } else {
+        // Fallback to original behavior if no ID
+        this.props.dispatch(StopPlaceActions.setMarkerOnMap(result.element));
+      }
       this.setState({ stopPlaceSearchValue: "" });
     }
   }
@@ -779,7 +799,9 @@ const mapStateToProps = (state) => {
     missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: getStopPermissions(state.stopPlace.current).canEdit,
+    canEdit: state.stopPlace.activeSearchResult
+      ? getStopPermissions(state.stopPlace.activeSearchResult).canEdit
+      : getStopPermissions(state.stopPlace.current).canEdit,
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
