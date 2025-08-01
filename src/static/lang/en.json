@@ -402,6 +402,7 @@
   "show_private_code": "Show private code",
   "show_public_code": "Show public code",
   "show_quays": "Show quays",
+  "show_inactive_stops": "Show inactive stops",
   "showing_results": "Showing $size of $total",
   "sign_out": "Sign out",
   "snackbar_message_failed": "Saving failed!",
