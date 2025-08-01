@@ -59,9 +59,18 @@ class EditParentGeneral extends React.Component {
   }
 
   getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
-    return stopPlace && stopPlace.id
-      ? `${originalStopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-      : formatMessage({ id: "new_stop_title" });
+    if (stopPlace && stopPlace.id) {
+      return (
+        <span>
+          {originalStopPlace.name}
+          <br />
+          {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
+          <br />
+          {`(${stopPlace.id})`}
+        </span>
+      );
+    }
+    return formatMessage({ id: "new_stop_title" });
   };
 
   handleLoadVersion({ id, version }) {
