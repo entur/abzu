@@ -150,6 +150,18 @@ class StopPlaceMarker extends React.Component {
                 {name}
               </div>
             </div>
+            {this.props.description && (
+              <div
+                style={{
+                  fontSize: "0.9em",
+                  marginBottom: 10,
+                  textAlign: "center",
+                  color: "#555",
+                }}
+              >
+                {this.props.description}
+              </div>
+            )}
             <div
               style={{
                 display: "block",

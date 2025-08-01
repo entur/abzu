@@ -446,9 +446,18 @@ class EditStopGeneral extends React.Component {
     const stopPlaceName = originalStopPlace
       ? originalStopPlace.name
       : stopPlace.name;
-    return stopPlace && stopPlace.id
-      ? `${stopPlaceName}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-      : formatMessage({ id: "new_stop_title" });
+    if (stopPlace && stopPlace.id) {
+      return (
+        <span>
+          {stopPlaceName}
+          <br />
+          {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
+          <br />
+          {`(${stopPlace.id})`}
+        </span>
+      );
+    }
+    return formatMessage({ id: "new_stop_title" });
   };
 
   getQuaysForMoveQuayToNewStop() {

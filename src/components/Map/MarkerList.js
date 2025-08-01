@@ -219,6 +219,7 @@ class MarkerList extends React.Component {
               index={stopIndex}
               position={member.location}
               name={member.name}
+              description={member.description}
               isShowingQuays={!!neighbourStopQuays[member.id]}
               handleShowQuays={this.handleShowQuays.bind(this)}
               handleHideQuays={this.handleHideQuays.bind(this)}
@@ -279,6 +280,7 @@ class MarkerList extends React.Component {
                   index={stopIndex}
                   position={child.location}
                   name={child.name || marker.name}
+                  description={child.description || marker.description}
                   isShowingQuays={!!neighbourStopQuays[child.id]}
                   handleShowQuays={this.handleShowQuays.bind(this)}
                   handleHideQuays={this.handleHideQuays.bind(this)}
@@ -353,6 +355,7 @@ class MarkerList extends React.Component {
               index={stopIndex}
               position={marker.location}
               name={marker.name}
+              description={marker.description}
               submode={marker.submode}
               formattedStopType={localeStopType}
               isMultimodal={marker.isParent}

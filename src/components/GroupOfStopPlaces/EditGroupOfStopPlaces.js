@@ -91,7 +91,13 @@ class EditGroupOfStopPlaces extends Component {
 
   getHeaderText(groupOfStopPlaces, formatMessage) {
     if (groupOfStopPlaces.id) {
-      return `${groupOfStopPlaces.name} (${groupOfStopPlaces.id})`;
+      return (
+        <span>
+          {groupOfStopPlaces.name}
+          <br />
+          {`(${groupOfStopPlaces.id})`}
+        </span>
+      );
     }
     return formatMessage({ id: "you_are_creating_group" });
   }

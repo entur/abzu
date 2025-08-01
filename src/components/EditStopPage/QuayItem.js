@@ -25,8 +25,10 @@ import {
   UserActions,
 } from "../../actions/";
 
+import ContentCopy from "@mui/icons-material/ContentCopy";
 import MdLess from "@mui/icons-material/ExpandLess";
 import FlatButton from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 import { injectIntl } from "react-intl";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import BusShelter from "../../static/icons/facilities/BusShelter";
@@ -65,8 +67,20 @@ class QuayItem extends React.Component {
     super(props);
     this.state = {
       coordinatesDialogOpen: false,
+      copied: false, // New state for copy feedback
     };
   }
+
+  handleCopy = (event, textToCopy) => {
+    event.stopPropagation(); // This prevents the click from bubbling up
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        this.setState({ copied: true });
+        // Reset the "copied" state after a short delay
+        setTimeout(() => this.setState({ copied: false }), 1500);
+      });
+    }
+  };
 
   handleDescriptionChange = (event) => {
     const { dispatch, index } = this.props;
@@ -217,6 +231,8 @@ class QuayItem extends React.Component {
       localReference: formatMessage({ id: "local_reference" }),
       privateCode: formatMessage({ id: "privateCode" }),
       notAssigned: formatMessage({ id: "not_assigned" }),
+      copyId: formatMessage({ id: "copy_id" }),
+      copied: formatMessage({ id: "copied" }),
     };
 
     const iconButtonStyle = {
@@ -267,6 +283,21 @@ class QuayItem extends React.Component {
           >
             {idTitle}
           </span>
+          <Tooltip
+            title={
+              this.state.copied ? translations.copied : translations.copyId
+            }
+            placement="top"
+            onClose={() => this.setState({ copied: false })}
+          >
+            <IconButton
+              size="small"
+              onClick={(e) => this.handleCopy(e, idTitle)}
+              style={{ marginLeft: 4, padding: 2 }}
+            >
+              <ContentCopy style={{ fontSize: "0.8em" }} />
+            </IconButton>
+          </Tooltip>
         </ItemHeader>
         {!expanded ? null : (
           <div className="quay-item-expanded">
