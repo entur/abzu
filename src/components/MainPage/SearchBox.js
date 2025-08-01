@@ -177,7 +177,7 @@ class SearchBox extends React.Component {
     ) {
       // Load full stop place data instead of using limited search result data
       const stopPlaceId = result.element.id;
-      if (stopPlaceId) {
+      if (stopPlaceId && result.element.entityType !== "GROUP_OF_STOP_PLACE") {
         this.props.dispatch(getStopPlaceById(stopPlaceId)).then(({ data }) => {
           if (data.stopPlace && data.stopPlace.length) {
             const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
