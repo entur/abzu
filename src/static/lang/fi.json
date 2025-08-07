@@ -113,6 +113,8 @@
   "connect_to_adjacent_stop_title": "Yhdistä viereiseen pysäkkiin",
   "connected_with_adjacent_stop_places": "Viereiset pysäkit",
   "coordinates": "Koordinaatit",
+  "copy_id": "Kopioi ID",
+  "copied": "Kopioitu!",
   "country": "Maa",
   "county": "Maakunta",
   "create": "Luo",
