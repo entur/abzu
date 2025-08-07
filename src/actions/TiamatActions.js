@@ -417,8 +417,10 @@ export const moveQuaysToNewStop =
     })(dispatch);
 
 export const getNeighbourStops =
-  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) =>
-    handleQuery(getTiamatClient(), {
+  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) => {
+    dispatch({ type: "MAP_QUERY_START" });
+
+    const payload = {
       fetchPolicy: "network-only",
       query: stopPlaceBBQuery,
       variables: {
@@ -430,7 +432,26 @@ export const getNeighbourStops =
         lonMax: bounds.getNorthEast().lng,
       },
       context: await getContext(getState().user.auth),
-    })(dispatch);
+    };
+
+    try {
+      const result = await getTiamatClient().query(payload);
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+      return result;
+    } catch (e) {
+      console.error("Error fetching neighbour stops:", e);
+      throw e;
+    } finally {
+      dispatch({ type: "MAP_QUERY_END" });
+    }
+  };
 
 export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {

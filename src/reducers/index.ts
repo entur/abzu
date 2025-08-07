@@ -16,6 +16,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import type { Reducer } from "redux";
 import groupOfStopPlaceReducer from "./groupOfStopPlacesReducer";
+import loadingReducer from "./loadingReducer";
 import mapReducer from "./mapReducer";
 import reportReducer from "./reportReducer";
 import snackbarReducer from "./snackbarReducer";
@@ -32,5 +33,6 @@ export const createRootReducer = (routerReducer: Reducer) =>
     report: reportReducer,
     snackbar: snackbarReducer,
     stopPlacesGroup: groupOfStopPlaceReducer,
+    loading: loadingReducer,
     zones: zonesSlice,
   });
