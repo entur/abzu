@@ -16,7 +16,7 @@ const GlobalLoadingIndicator = ({ isLoading }) => {
 };
 
 const mapStateToProps = ({ loading }) => ({
-  isLoading: loading.mapIsLoading,
+  isLoading: loading.globalIsLoading,
 });
 
 export default connect(mapStateToProps)(GlobalLoadingIndicator);

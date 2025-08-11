@@ -26,6 +26,7 @@ import { Route, Routes } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { AuthProvider } from "./auth/auth";
 import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator";
+import LocalLoadingIndicator from "./components/LocalLoadingIndicator";
 import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
 import App from "./containers/App";
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
         <ApolloProvider client={client}>
           <App>
             <GlobalLoadingIndicator />
+            <LocalLoadingIndicator />
             <Router basename={basename} history={history}>
               <Routes>
                 <Route path={path} element={<StopPlaces />} />
