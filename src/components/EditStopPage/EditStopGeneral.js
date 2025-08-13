@@ -361,11 +361,21 @@ class EditStopGeneral extends React.Component {
       });
   }
 
-  handleGoBack() {
+  async handleGoBack() {
+    const { dispatch, activeMap } = this.props;
     this.setState({
       confirmGoBack: false,
     });
-    this.props.dispatch(UserActions.navigateTo("/", ""));
+    if (activeMap) {
+      await dispatch(
+        getNeighbourStops(
+          null,
+          activeMap.getBounds(),
+          new Settings().getShowExpiredStops(),
+        ),
+      );
+    }
+    dispatch(UserActions.navigateTo("/", ""));
   }
 
   handleAllowUserToGoBack() {
