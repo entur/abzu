@@ -71,7 +71,7 @@
   "devDependencies": {
     "@entur/rollup-plugin-react-component-toggle": "0.0.2",
     "@mui/types": "7.4.5",
-    "@testing-library/jest-dom": "6.6.4",
+    "@testing-library/jest-dom": "6.7.0",
     "@testing-library/react": "14.3.1",
     "@types/leaflet": "1.9.20",
     "@types/material-ui": "0.21.18",
