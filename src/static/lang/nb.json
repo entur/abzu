@@ -213,6 +213,7 @@
   "last_child_warning_first": "Du fjerner siste stoppested fra dette multimodale stoppet.",
   "last_child_warning_second": "Det multimodale stoppestedet vil utløpe som en konsekvens av dette.",
   "loading": "Laster ...",
+  "loading_data": "Laster data",
   "local_reference": "Lokal referanse:",
   "local_reference_empty": "Ingen lokal referanse",
   "log_out": "Logg ut",

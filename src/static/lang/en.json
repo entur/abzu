@@ -213,6 +213,7 @@
   "last_child_warning_first": "You are removing the last stop place of this multimodal stop place.",
   "last_child_warning_second": "As a consequence of this, the current multimodal stop place will expire.",
   "loading": "Loading...",
+  "loading_data": "Loading data",
   "local_reference": "Local reference:",
   "local_reference_empty": "No local reference",
   "log_out": "Log out",

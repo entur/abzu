@@ -213,6 +213,7 @@
   "last_child_warning_first": "Du tar nu bort den sista hållplatsen från den här mulimodala hållplatsen.",
   "last_child_warning_second": "Den multimodala hållplatsen kommer att utlöpa som en konsekvens av det här.",
   "loading": "Laddar ...",
+  "loading_data": "Laddar data",
   "local_reference": "Lokal referens:",
   "local_reference_empty": "Ingen lokal referens",
   "log_out": "Logga ut",

@@ -11,10 +11,16 @@ const LocalLoadingIndicator = ({ isLoading }) => {
     <Box
       sx={{
         position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        zIndex: (theme) => theme.zIndex.tooltip + 1,
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        pointerEvents: "none",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <CustomLoadingAnimation />

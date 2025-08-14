@@ -1,61 +1,59 @@
-import { Box } from "@mui/material";
-import { getPrimaryDarkerColor } from "../config/themeConfig";
-import { getIconByModality } from "../utils/iconUtils";
+import { Box, Typography } from "@mui/material";
+import { injectIntl } from "react-intl";
 
-const modalities = [
-  "onstreetBus",
-  "onstreetTram",
-  "railStation",
-  "ferryStop",
-  "multiModal",
-];
+const CustomLoadingAnimation = ({ intl }) => {
+  const { formatMessage } = intl;
 
-const primaryDarker = getPrimaryDarkerColor();
+  const dotKeyframes = {
+    "@keyframes pulse": {
+      "0%, 100%": {
+        opacity: 0.2,
+      },
+      "50%": {
+        opacity: 1,
+      },
+    },
+  };
 
-const CustomLoadingAnimation = () => {
   return (
-    <Box sx={{ display: "flex", gap: "16px" }}>
-      {modalities.map((modality, index) => {
-        const iconUrl = getIconByModality(modality, modality === "multiModal");
-
-        return (
-          <Box
-            key={index}
-            sx={{
-              width: 48,
-              height: 48,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: primaryDarker,
-              borderRadius: "50%",
-              animation: "wave 1.8s ease-in-out infinite",
-              animationDelay: `${index * 0.15}s`,
-              "@keyframes wave": {
-                "0%, 100%": {
-                  transform: "translateY(0)",
-                },
-                "50%": {
-                  transform: "translateY(-20px)",
-                },
-              },
-            }}
-          >
-            <Box
-              sx={{
-                width: "60%",
-                height: "60%",
-                backgroundImage: `url(${iconUrl})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-              }}
-            />
-          </Box>
-        );
-      })}
+    <Box
+      sx={{
+        backgroundColor: "background.paper",
+        padding: (theme) => theme.spacing(2, 4),
+        marginBottom: (theme) => theme.spacing(2),
+        borderRadius: (theme) => theme.shape.borderRadius,
+        boxShadow: (theme) => theme.shadows[6],
+        display: "flex",
+        alignItems: "flex-end",
+        ...dotKeyframes,
+      }}
+    >
+      <Typography
+        variant="h5"
+        component="span"
+        sx={{
+          fontWeight: "bold",
+          color: "text.primary",
+        }}
+      >
+        {formatMessage({ id: "loading_data" })}
+      </Typography>
+      {[0, 1, 2].map((i) => (
+        <Typography
+          key={i}
+          variant="h5"
+          component="span"
+          sx={{
+            fontWeight: "bold",
+            animation: "pulse 1.5s infinite",
+            animationDelay: `${i * 0.25}s`,
+          }}
+        >
+          .
+        </Typography>
+      ))}
     </Box>
   );
 };
 
-export default CustomLoadingAnimation;
+export default injectIntl(CustomLoadingAnimation);
