@@ -1,16 +1,16 @@
 /*
  *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
+ the European Commission - subsequent versions of the EUPL (the "Licence");
+ You may not use this work except in compliance with the Licence.
+ You may obtain a copy of the Licence at:
 
-  https://joinup.ec.europa.eu/software/page/eupl
+ https://joinup.ec.europa.eu/software/page/eupl
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the Licence is distributed on an "AS IS" basis,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the Licence for the specific language governing permissions and
+ limitations under the Licence. */
 
 import {
   deleteGroupMutation,
@@ -97,42 +97,44 @@ const handleQuery = (client, payload) => (dispatch) => {
   });
 };
 
-const handleMutation = (client, payload) => (dispatch) =>
-  client
-    .mutate(payload)
-    .then((result) => {
-      if (result?.errors?.length > 0) {
-        dispatch(
-          createApolloErrorThunk(
-            types.APOLLO_MUTATION_ERROR,
-            result.errors,
-            payload.mutation,
-            payload.variables,
-          ),
-        );
-      } else {
-        dispatch(
-          createApolloThunk(
-            types.APOLLO_MUTATION_RESULT,
-            result,
-            payload.mutation,
-            payload.variables,
-          ),
-        );
-        return result;
-      }
-    })
-    .catch((e) => {
+const handleMutation = (client, payload) => async (dispatch) => {
+  dispatch({ type: "GLOBAL_LOADING_START" });
+  try {
+    const result = await client.mutate(payload);
+    if (result?.errors?.length > 0) {
       dispatch(
         createApolloErrorThunk(
           types.APOLLO_MUTATION_ERROR,
-          e,
+          result.errors,
           payload.mutation,
           payload.variables,
         ),
       );
-      throw e;
-    });
+    } else {
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_MUTATION_RESULT,
+          result,
+          payload.mutation,
+          payload.variables,
+        ),
+      );
+      return result;
+    }
+  } catch (e) {
+    dispatch(
+      createApolloErrorThunk(
+        types.APOLLO_MUTATION_ERROR,
+        e,
+        payload.mutation,
+        payload.variables,
+      ),
+    );
+    throw e;
+  } finally {
+    dispatch({ type: "GLOBAL_LOADING_END" });
+  }
+};
 
 export const findTagByName = (name) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {
@@ -417,8 +419,10 @@ export const moveQuaysToNewStop =
     })(dispatch);
 
 export const getNeighbourStops =
-  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) =>
-    handleQuery(getTiamatClient(), {
+  (ignoreStopPlaceId, bounds, includeExpired) => async (dispatch, getState) => {
+    dispatch({ type: "MAP_QUERY_START" });
+
+    const payload = {
       fetchPolicy: "network-only",
       query: stopPlaceBBQuery,
       variables: {
@@ -430,7 +434,26 @@ export const getNeighbourStops =
         lonMax: bounds.getNorthEast().lng,
       },
       context: await getContext(getState().user.auth),
-    })(dispatch);
+    };
+
+    try {
+      const result = await getTiamatClient().query(payload);
+      dispatch(
+        createApolloThunk(
+          types.APOLLO_QUERY_RESULT,
+          result,
+          payload.query,
+          payload.variables,
+        ),
+      );
+      return result;
+    } catch (e) {
+      console.error("Error fetching neighbour stops:", e);
+      throw e;
+    } finally {
+      dispatch({ type: "MAP_QUERY_END" });
+    }
+  };
 
 export const getTopographicPlaces = (ids) => async (dispatch, getState) =>
   handleQuery(getTiamatClient(), {

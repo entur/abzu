@@ -213,6 +213,7 @@
   "last_child_warning_first": "Olet poistamassa tämän monimuotopysäkin viimeistä pysäkkiä.",
   "last_child_warning_second": "Tämän seurauksena nykyinen monimuotopysäkki vanhenee.",
   "loading": "Ladataan...",
+  "loading_data": "Ladataan tietoja",
   "local_reference": "Paikallinen viite:",
   "local_reference_empty": "Ei paikallista viitettä",
   "log_out": "Kirjaudu ulos",
