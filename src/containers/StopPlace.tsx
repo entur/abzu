@@ -90,7 +90,14 @@ export const StopPlace = () => {
           setTitle(originalStopPlace.name);
         }
         if (stopPlace.topographicPlace) {
-          setTitle((prev) => prev + ", " + stopPlace.topographicPlace);
+          setTitle(
+            (prev) =>
+              prev +
+              ", " +
+              stopPlace.topographicPlace +
+              ", " +
+              stopPlace.parentTopographicPlace,
+          );
         }
       }
     }
