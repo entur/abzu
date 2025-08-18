@@ -399,6 +399,7 @@ class MarkerList extends React.Component {
                 popupMarkers.push(
                   <ParkAndRideMarker
                     position={parking.location}
+                    id={parking.id}
                     index={index}
                     name={parking.name || ""}
                     hasExpired={parking.hasExpired}
@@ -423,6 +424,7 @@ class MarkerList extends React.Component {
                 popupMarkers.push(
                   <CycleParkingMarker
                     position={parking.location}
+                    id={parking.id}
                     index={index}
                     name={parking.name || ""}
                     totalCapacity={parking.totalCapacity}
@@ -487,6 +489,7 @@ class MarkerList extends React.Component {
                 quay.boardingPositions.forEach((boardingPosition, bpIndex) => {
                   popupMarkers.push(
                     <BoardingPositionMarker
+                      id={boardingPosition.id}
                       key={
                         "boarding-position-" + (boardingPosition.id || bpIndex)
                       }

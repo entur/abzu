@@ -96,7 +96,7 @@ class EditGroupOfStopPlaces extends Component {
         <span>
           {groupOfStopPlaces.name}
           <br />
-          {`(${groupOfStopPlaces.id})`}
+          {`${groupOfStopPlaces.id}`}
         </span>
       );
     }
