@@ -36,7 +36,6 @@ import {
   deleteQuay,
   deleteStopPlace,
   getNeighbourStops,
-  getStopPlaceAndPathLinkByVersion,
   getStopPlaceVersions,
   getStopPlaceWithAll,
   mergeAllQuaysFromStop,
@@ -63,7 +62,6 @@ import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import EditStopAdditional from "./EditStopAdditional";
 import EditStopBoxTabs from "./EditStopBoxTabs";
 import StopPlaceDetails from "./StopPlaceDetails";
-import VersionsPopover from "./VersionsPopover";
 
 // Utils
 import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
@@ -438,11 +436,6 @@ class EditStopGeneral extends React.Component {
       });
   }
 
-  handleLoadVersion = ({ id, version }) => {
-    const { dispatch } = this.props;
-    dispatch(getStopPlaceAndPathLinkByVersion(id, version));
-  };
-
   getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
     const stopPlaceName = originalStopPlace
       ? originalStopPlace.name
@@ -583,14 +576,6 @@ class EditStopGeneral extends React.Component {
               <CopyIdButton idToCopy={stopPlace.id} color={"white"} />
             </div>
           </div>
-          <VersionsPopover
-            versions={versions}
-            buttonLabel={translations.versions}
-            disabled={!versions.length}
-            hide={stopPlace.isChildOfParent}
-            handleSelect={this.handleLoadVersion.bind(this)}
-            defaultValue={translations.notAssigned}
-          />
         </div>
         <div id="scroll-body" style={scrollable}>
           <div style={{ padding: "5 5" }}>

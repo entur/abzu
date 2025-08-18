@@ -43,7 +43,6 @@ import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
 import SaveDialog from "../Dialogs/SaveDialog";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
-import VersionsPopover from "../EditStopPage/VersionsPopover";
 import CopyIdButton from "../Shared/CopyIdButton";
 import ParentStopDetails from "./ParentStopDetails";
 
@@ -376,13 +375,6 @@ class EditParentGeneral extends React.Component {
               <CopyIdButton idToCopy={stopPlace.id} color={"white"} />
             </div>
           </div>
-          <VersionsPopover
-            versions={versions || []}
-            buttonLabel={formatMessage({ id: "versions" })}
-            disabled={!(versions || []).length}
-            handleSelect={this.handleLoadVersion.bind(this)}
-            hide={!(versions || []).length}
-          />
         </div>
         <ParentStopDetails
           handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(
