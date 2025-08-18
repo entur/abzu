@@ -25,6 +25,7 @@ import { deleteParking } from "../../actions/TiamatActions";
 import * as types from "../../actions/Types";
 import PARKING_TYPE from "../../models/parkingType";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import CopyIdButton from "../Shared/CopyIdButton";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
@@ -223,6 +224,7 @@ class ParkingItem extends React.Component {
             }}
           >
             {parking.id}
+            <CopyIdButton idToCopy={parking.id} />
           </span>
         </ItemHeader>
         {expanded && (
