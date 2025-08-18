@@ -29,6 +29,7 @@ import mapHelper from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes/";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
+import CopyIdButton from "../Shared/CopyIdButton";
 import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
 
 class EditGroupOfStopPlaces extends Component {
@@ -147,7 +148,10 @@ class EditGroupOfStopPlaces extends Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{this.getHeaderText(originalGOS, formatMessage)}</div>
+            <div>
+              {this.getHeaderText(originalGOS, formatMessage)}
+              <CopyIdButton idToCopy={originalGOS.id} color={"white"} />
+            </div>
           </div>
         </div>
         <div style={{ fontSize: "1em", fontWeight: 600, padding: 5 }}>

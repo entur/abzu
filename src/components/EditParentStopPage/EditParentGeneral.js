@@ -44,6 +44,7 @@ import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
 import SaveDialog from "../Dialogs/SaveDialog";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
 import VersionsPopover from "../EditStopPage/VersionsPopover";
+import CopyIdButton from "../Shared/CopyIdButton";
 import ParentStopDetails from "./ParentStopDetails";
 
 class EditParentGeneral extends React.Component {
@@ -220,7 +221,6 @@ class EditParentGeneral extends React.Component {
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
     const basename = import.meta.env.BASE_URL;
-    // if current path is not the stop place page, navigate to stop place
     if (
       window.location.pathname !==
       `${basename}${basename.endsWith("/") ? "" : "/"}${Routes.STOP_PLACE}/${stopPlaceId}`
@@ -371,7 +371,10 @@ class EditParentGeneral extends React.Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{stopPlaceLabel}</div>
+            <div>
+              {stopPlaceLabel}
+              <CopyIdButton idToCopy={stopPlace.id} color={"white"} />
+            </div>
           </div>
           <VersionsPopover
             versions={versions || []}

@@ -67,16 +67,15 @@ class QuayItem extends React.Component {
     super(props);
     this.state = {
       coordinatesDialogOpen: false,
-      copied: false, // New state for copy feedback
+      copied: false,
     };
   }
 
   handleCopy = (event, textToCopy) => {
-    event.stopPropagation(); // This prevents the click from bubbling up
+    event.stopPropagation();
     if (navigator.clipboard) {
       navigator.clipboard.writeText(textToCopy).then(() => {
         this.setState({ copied: true });
-        // Reset the "copied" state after a short delay
         setTimeout(() => this.setState({ copied: false }), 1500);
       });
     }

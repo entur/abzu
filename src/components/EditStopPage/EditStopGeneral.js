@@ -75,6 +75,7 @@ import Routes from "../../routes/";
 import Settings from "../../singletons/SettingsManager";
 import { getIsCurrentVersionMax } from "../../utils/";
 import { getStopPermissions } from "../../utils/permissionsUtils";
+import CopyIdButton from "../Shared/CopyIdButton";
 
 class EditStopGeneral extends React.Component {
   constructor(props) {
@@ -577,7 +578,10 @@ class EditStopGeneral extends React.Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{stopPlaceLabel}</div>
+            <div>
+              {stopPlaceLabel}
+              <CopyIdButton idToCopy={stopPlace.id} color={"white"} />
+            </div>
           </div>
           <VersionsPopover
             versions={versions}

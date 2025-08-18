@@ -83,12 +83,9 @@ class StopPlaceListItem extends Component {
                 )}
               <div style={{ fontSize: "0.8em" }}>{stopPlace.name}</div>
             </div>
-            <StopPlaceLink
-              style={{ fontSize: "0.8em", marginRight: 5 }}
-              id={stopPlace.id}
-            />
+            <StopPlaceLink style={{ fontSize: "0.8em" }} id={stopPlace.id} />
           </div>
-          <div style={{ marginRight: 5 }}>
+          <div style={{ marginRight: 2 }}>
             {expanded ? (
               <NavigationExpandLess onClick={handleCollapse} />
             ) : (

@@ -17,6 +17,7 @@ import PropTypes from "prop-types";
 import { Component } from "react";
 import { injectIntl } from "react-intl";
 import Code from "../EditStopPage/Code";
+import CopyIdButton from "../Shared/CopyIdButton";
 
 class StopPlaceListItemQuayItem extends Component {
   render() {
@@ -39,7 +40,10 @@ class StopPlaceListItemQuayItem extends Component {
             defaultValue={defaultValue}
           />
           <div style={{ display: "flex", alignItems: "center", marginLeft: 5 }}>
-            <div style={{ fontSize: "0.7em" }}>{quay.id}</div>
+            <div style={{ fontSize: "0.7em" }}>
+              {quay.id}
+              <CopyIdButton idToCopy={quay.id} />
+            </div>
           </div>
         </div>
         <Divider />
