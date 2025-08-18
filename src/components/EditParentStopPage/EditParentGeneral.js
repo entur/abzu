@@ -25,7 +25,6 @@ import {
   createParentStopPlace,
   deleteStopPlace,
   getNeighbourStops,
-  getStopPlaceAndPathLinkByVersion,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
@@ -66,16 +65,12 @@ class EditParentGeneral extends React.Component {
           <br />
           {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
           <br />
-          {`(${stopPlace.id})`}
+          {`${stopPlace.id}`}
         </span>
       );
     }
     return formatMessage({ id: "new_stop_title" });
   };
-
-  handleLoadVersion({ id, version }) {
-    this.props.dispatch(getStopPlaceAndPathLinkByVersion(id, version));
-  }
 
   handleCloseRemoveStopFromParent() {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
