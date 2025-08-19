@@ -213,6 +213,7 @@
   "last_child_warning_first": "Vous supprimez le dernier point d'arrêt de ce point d'arrêt multimodal.",
   "last_child_warning_second": "Par conséquent, ce point d'arrêt multimodal va expirer.",
   "loading": "Chargement...",
+  "loading_data": "Chargement des données",
   "local_reference": "Ref. locale :",
   "local_reference_empty": "Pas de référence locale",
   "log_out": "Se déconnecter",

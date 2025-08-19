@@ -19,6 +19,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { Component } from "react";
@@ -32,6 +34,7 @@ class AddMemberToGroup extends Component {
     super(props);
     this.state = {
       checkedItems: [],
+      showInactive: false,
     };
   }
 
@@ -50,6 +53,10 @@ class AddMemberToGroup extends Component {
     });
   }
 
+  handleShowInactiveChange = (event) => {
+    this.setState({ showInactive: event.target.checked });
+  };
+
   render() {
     const {
       open,
@@ -62,19 +69,23 @@ class AddMemberToGroup extends Component {
     } = this.props;
 
     const { formatMessage } = intl;
-    const { checkedItems } = this.state;
+    const { checkedItems, showInactive } = this.state;
 
-    let canSave = !!checkedItems.length;
+    const canSave = !!checkedItems.length;
 
-    const suggestions = getGroupMemberSuggestions(
+    const allSuggestions = getGroupMemberSuggestions(
       groupMembers,
       stopPlaceCentroid,
       neighbourStops,
-      10,
+      30,
     );
 
+    const suggestions = showInactive
+      ? allSuggestions
+      : allSuggestions.filter((suggestion) => !suggestion.hasExpired);
+
     return (
-      <Dialog open={open}>
+      <Dialog open={open} maxWidth="lg">
         <DialogTitle>{formatMessage({ id: "add_stop_place" })}</DialogTitle>
         <DialogContent>
           <Box
@@ -87,12 +98,29 @@ class AddMemberToGroup extends Component {
               width: "fit-content",
             }}
           >
-            <AddStopPlaceSuggestionList
-              suggestions={suggestions}
-              checkedItems={checkedItems}
-              formatMessage={formatMessage}
-              onItemCheck={this.handleOnItemCheck.bind(this)}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showInactive}
+                  onChange={this.handleShowInactiveChange}
+                />
+              }
+              label={formatMessage({ id: "show_inactive_stops" })}
+              sx={{ mb: 1, alignSelf: "flex-start", color: "text.secondary" }}
             />
+            <Box
+              sx={{
+                overflowY: "auto",
+                pr: 2,
+              }}
+            >
+              <AddStopPlaceSuggestionList
+                suggestions={suggestions}
+                checkedItems={checkedItems}
+                formatMessage={formatMessage}
+                onItemCheck={this.handleOnItemCheck.bind(this)}
+              />
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>

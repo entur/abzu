@@ -25,8 +25,17 @@ class AddStopPlaceSuggestionListItem extends Component {
     const { suggestion, checked, onCheck, intl, disabled } = this.props;
     const { formatMessage } = intl;
 
+    // Style for expired items to make them visually distinct
+    const itemStyle = {
+      display: "flex",
+      alignItems: "center",
+      padding: 4,
+      opacity: suggestion.hasExpired ? 0.6 : 1, // Dim expired items
+      transition: "opacity 0.3s",
+    };
+
     return (
-      <div style={{ display: "flex", alignItems: "center", padding: 4 }}>
+      <div style={itemStyle}>
         <FormControlLabel
           control={
             <Checkbox
