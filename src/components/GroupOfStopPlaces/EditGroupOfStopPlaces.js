@@ -150,7 +150,11 @@ class EditGroupOfStopPlaces extends Component {
             />
             <div>
               {this.getHeaderText(originalGOS, formatMessage)}
-              <CopyIdButton idToCopy={originalGOS.id} color={"white"} />
+              <CopyIdButton
+                idToCopy={originalGOS.id}
+                color={"white"}
+                style={{ marginLeft: 4 }}
+              />
             </div>
           </div>
         </div>

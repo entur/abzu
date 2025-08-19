@@ -573,7 +573,11 @@ class EditStopGeneral extends React.Component {
             />
             <div>
               {stopPlaceLabel}
-              <CopyIdButton idToCopy={stopPlace.id} color={"white"} />
+              <CopyIdButton
+                idToCopy={stopPlace.id}
+                color={"white"}
+                style={{ marginLeft: 4 }}
+              />
             </div>
           </div>
         </div>
