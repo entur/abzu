@@ -25,7 +25,6 @@ import {
   createParentStopPlace,
   deleteStopPlace,
   getNeighbourStops,
-  getStopPlaceAndPathLinkByVersion,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
   saveParentStopPlace,
@@ -43,7 +42,7 @@ import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import RemoveStopFromParentDialog from "../Dialogs/RemoveStopFromParentDialog";
 import SaveDialog from "../Dialogs/SaveDialog";
 import TerminateStopPlaceDialog from "../Dialogs/TerminateStopPlaceDialog";
-import VersionsPopover from "../EditStopPage/VersionsPopover";
+import CopyIdButton from "../Shared/CopyIdButton";
 import ParentStopDetails from "./ParentStopDetails";
 
 class EditParentGeneral extends React.Component {
@@ -59,14 +58,19 @@ class EditParentGeneral extends React.Component {
   }
 
   getTitleText = (stopPlace, originalStopPlace, formatMessage) => {
-    return stopPlace && stopPlace.id
-      ? `${originalStopPlace.name}, ${stopPlace.parentTopographicPlace} (${stopPlace.id})`
-      : formatMessage({ id: "new_stop_title" });
+    if (stopPlace && stopPlace.id) {
+      return (
+        <span>
+          {originalStopPlace.name}
+          <br />
+          {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
+          <br />
+          {`${stopPlace.id}`}
+        </span>
+      );
+    }
+    return formatMessage({ id: "new_stop_title" });
   };
-
-  handleLoadVersion({ id, version }) {
-    this.props.dispatch(getStopPlaceAndPathLinkByVersion(id, version));
-  }
 
   handleCloseRemoveStopFromParent() {
     this.props.dispatch(UserActions.hideRemoveStopPlaceFromParent());
@@ -211,7 +215,6 @@ class EditParentGeneral extends React.Component {
 
     dispatch(UserActions.openSnackbar(types.SUCCESS));
     const basename = import.meta.env.BASE_URL;
-    // if current path is not the stop place page, navigate to stop place
     if (
       window.location.pathname !==
       `${basename}${basename.endsWith("/") ? "" : "/"}${Routes.STOP_PLACE}/${stopPlaceId}`
@@ -362,15 +365,15 @@ class EditParentGeneral extends React.Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{stopPlaceLabel}</div>
+            <div>
+              {stopPlaceLabel}
+              <CopyIdButton
+                idToCopy={stopPlace.id}
+                color={"white"}
+                style={{ marginLeft: 4 }}
+              />
+            </div>
           </div>
-          <VersionsPopover
-            versions={versions || []}
-            buttonLabel={formatMessage({ id: "versions" })}
-            disabled={!(versions || []).length}
-            handleSelect={this.handleLoadVersion.bind(this)}
-            hide={!(versions || []).length}
-          />
         </div>
         <ParentStopDetails
           handleCreateNewParentStopPlace={this.handleCreateNewParentStopPlace.bind(

@@ -20,6 +20,7 @@ import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { isStopFromSearch } from "../../utils/permissionsUtils";
 import PopupButton from "../Map/PopupButton";
+import CopyIdButton from "../Shared/CopyIdButton";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareStopPlaceMarker as shallowCompare } from "./shallowCompare/";
 
@@ -149,6 +150,22 @@ class StopPlaceMarker extends React.Component {
               >
                 {name}
               </div>
+            </div>
+            {this.props.description && (
+              <div
+                style={{
+                  fontSize: "0.9em",
+                  marginBottom: 10,
+                  textAlign: "center",
+                  color: "#555",
+                }}
+              >
+                {this.props.description}
+              </div>
+            )}
+            <div className="marker-popup-id">
+              {id}
+              <CopyIdButton idToCopy={id} />
             </div>
             <div
               style={{

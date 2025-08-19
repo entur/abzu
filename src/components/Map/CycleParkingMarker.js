@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { StopPlaceActions } from "../../actions/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import CycleParkingIcon from "../../static/icons/cycle-parking-icon.png";
+import CopyIdButton from "../Shared/CopyIdButton";
 import { shallowCycleParkingMarker as shallowCompare } from "./shallowCompare/";
 
 class CycleParkingMarker extends Component {
@@ -56,6 +57,7 @@ class CycleParkingMarker extends Component {
   render() {
     const {
       position,
+      id,
       index,
       type,
       handleDragEnd,
@@ -135,6 +137,10 @@ class CycleParkingMarker extends Component {
               }}
             >
               {translations.title}{" "}
+            </div>
+            <div>
+              {id}
+              <CopyIdButton idToCopy={id} />
             </div>
             <div
               style={{

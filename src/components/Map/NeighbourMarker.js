@@ -19,6 +19,7 @@ import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { isLegalChildStopPlace } from "../../modelUtils/leafletUtils";
+import CopyIdButton from "../Shared/CopyIdButton";
 import CustomMarkerIcon from "./CustomMarkerIcon";
 import PopupButton from "./PopupButton";
 import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
@@ -167,6 +168,10 @@ class NeighbourMarker extends React.Component {
                   )}
                 </div>
               </div>
+            </div>
+            <div className="marker-popup-id">
+              {id}
+              <CopyIdButton idToCopy={id} />
             </div>
             <div
               style={{ display: "block", width: "auto", textAlign: "center" }}

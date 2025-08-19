@@ -26,6 +26,7 @@ import {
   addTag,
   findTagByName,
   getAddStopPlaceInfo,
+  getStopPlaceAndPathLinkByVersion,
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
@@ -37,6 +38,7 @@ import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import ImportedId from "../EditStopPage/ImportedId";
 import TagsDialog from "../EditStopPage/TagsDialog";
 import ToolTippable from "../EditStopPage/ToolTippable";
+import VersionsPopover from "../EditStopPage/VersionsPopover";
 import TagTray from "../MainPage/TagTray";
 import BelongsToGroup from "./../MainPage/BelongsToGroup";
 import StopPlaceList from "./StopPlaceList";
@@ -123,9 +125,12 @@ class ParentStopDetails extends Component {
       StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef),
     );
   }
+  handleLoadVersion({ id, version }) {
+    this.props.dispatch(getStopPlaceAndPathLinkByVersion(id, version));
+  }
 
   render() {
-    const { stopPlace, intl, disabled, dispatch } = this.props;
+    const { stopPlace, intl, disabled, dispatch, versions } = this.props;
     const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } =
       this.state;
     const { formatMessage } = intl;
@@ -169,9 +174,16 @@ class ParentStopDetails extends Component {
         <div>
           {!stopPlace.isNewStop && (
             <div style={{ display: "flex", alignItems: "center" }}>
-              <span style={{ fontWeight: 600 }}>
-                {formatMessage({ id: "version" })} {stopPlace.version}
-              </span>
+              <VersionsPopover
+                versions={versions || []}
+                buttonLabel={`${formatMessage({ id: "version" })} ${
+                  stopPlace.version
+                }`}
+                disabled={!(versions && versions.length)}
+                handleSelect={this.handleLoadVersion.bind(this)}
+                hide={!(versions && versions.length)}
+              />
+
               {stopPlace.hasExpired && (
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <MdWarning
@@ -294,6 +306,7 @@ class ParentStopDetails extends Component {
 
 const mapStateToProps = ({ stopPlace }) => ({
   stopPlace: stopPlace.current,
+  versions: stopPlace.versions,
 });
 
 export default connect(mapStateToProps)(injectIntl(ParentStopDetails));

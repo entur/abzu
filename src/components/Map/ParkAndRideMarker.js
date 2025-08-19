@@ -22,6 +22,7 @@ import ParkingIcon from "../../static/icons/parking-icon.png";
 
 import { StopPlaceActions } from "../../actions/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import CopyIdButton from "../Shared/CopyIdButton";
 import { shallowCompareParkNRide as shallowCompare } from "./shallowCompare/";
 
 class ParkingAndRideMarker extends React.Component {
@@ -56,6 +57,7 @@ class ParkingAndRideMarker extends React.Component {
       handleDragEnd,
       translations,
       name,
+      id,
       hasExpired,
       totalCapacity,
       draggable,
@@ -130,6 +132,10 @@ class ParkingAndRideMarker extends React.Component {
               }}
             >
               <div>{translations.title}</div>
+            </div>
+            <div>
+              {id}
+              <CopyIdButton idToCopy={id} />
             </div>
             <div
               style={{

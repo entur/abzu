@@ -56,10 +56,9 @@ class VersionsPopover extends Component {
           style={{
             marginRight: 10,
             zIndex: 999,
-            color: "#fff",
             cursor: "pointer",
             fontSize: "1em",
-            borderBottom: "1px dotted #fff",
+            borderBottom: "1px dotted",
             padding: 0,
           }}
           onClick={this.handleOpen.bind(this)}

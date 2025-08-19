@@ -12,14 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import Routes from "../../routes/";
+import CopyIdButton from "../Shared/CopyIdButton";
 
 export default ({ id, style }) => {
   const url = `/${Routes.STOP_PLACE}/${id}`;
   return (
-    <Link style={{ ...style }} to={url}>
-      {id}
-    </Link>
+    <Box sx={{ ...style, display: "inline-flex" }}>
+      <Link to={url}>{id}</Link>
+      <CopyIdButton idToCopy={id} />
+    </Box>
   );
 };

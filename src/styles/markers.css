@@ -78,7 +78,6 @@ limitations under the Licence. */
 .quay-marker-title,
 .boarding-position-marker-title {
   font-weight: 600;
-  color: #41c0c4;
   font-size: 1.2em;
   display: inline-block;
   width: 100%;
@@ -102,6 +101,10 @@ limitations under the Licence. */
   width: auto;
   text-align: center;
   font-size: 10;
+}
+
+.marker-popup-id {
+  text-align: center;
 }
 
 .marker-popup-change-coordinate-item {

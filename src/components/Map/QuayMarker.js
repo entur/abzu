@@ -25,6 +25,7 @@ import OSMIcon from "../../static/icons/osm_logo.png";
 import StreetViewIcon from "../../static/icons/street_view_logo.png";
 import { getIn } from "../../utils/";
 import Code from "../EditStopPage/Code";
+import CopyIdButton from "../Shared/CopyIdButton";
 import PopupButton from "./PopupButton";
 import QuayMarkerIcon from "./QuayMarkerIcon";
 import { compareShallowQuayMarker as shallowCompare } from "./shallowCompare/";
@@ -301,6 +302,10 @@ class QuayMarker extends React.Component {
                 value={privateCode}
                 defaultValue={translations.notAssigned}
               />
+            </div>
+            <div className="marker-popup-id">
+              {id}
+              <CopyIdButton idToCopy={id} />
             </div>
             <div
               className="marker-popup-change-coordinates-wrapper"

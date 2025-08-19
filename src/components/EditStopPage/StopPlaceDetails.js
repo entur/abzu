@@ -36,6 +36,7 @@ import {
 import {
   addTag,
   findTagByName,
+  getStopPlaceAndPathLinkByVersion,
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
@@ -68,6 +69,7 @@ import ImportedId from "./ImportedId";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
 import TagsDialog from "./TagsDialog";
 import ToolTippable from "./ToolTippable";
+import VersionsPopover from "./VersionsPopover";
 import WeightingPopover from "./WeightingPopover";
 
 class StopPlaceDetails extends React.Component {
@@ -365,6 +367,10 @@ class StopPlaceDetails extends React.Component {
     return formatMessage({ id: `stopTypes_unknown` });
   }
 
+  handleLoadVersion = ({ id, version }) => {
+    this.props.dispatch(getStopPlaceAndPathLinkByVersion(id, version));
+  };
+
   render() {
     const fixedHeader = {
       position: "relative",
@@ -378,6 +384,7 @@ class StopPlaceDetails extends React.Component {
       disabled,
       isPublicCodePrivateCodeEnabled,
       dispatch,
+      versions,
     } = this.props;
     const { formatMessage, locale } = intl;
 
@@ -476,7 +483,15 @@ class StopPlaceDetails extends React.Component {
                 }}
               >
                 <span style={{ fontWeight: 600 }}>
-                  {versionLabel} {stopPlace.version}
+                  <VersionsPopover
+                    versions={versions || []}
+                    buttonLabel={`${formatMessage({ id: "version" })} ${
+                      stopPlace.version
+                    }`}
+                    disabled={!(versions && versions.length)}
+                    handleSelect={this.handleLoadVersion}
+                    hide={stopPlace.isChildOfParent}
+                  />
                 </span>
                 {stopPlace.hasExpired && (
                   <div
@@ -848,6 +863,7 @@ const mapStateToProps = (state) => {
     : getAllowanceInfoFromLocationPermissions(state.user.locationPermissions);
   return {
     stopPlace,
+    versions: state.stopPlace.versions,
     isPublicCodePrivateCodeEnabled:
       state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
     keyValuesDialogOpen: state.user.keyValuesDialogOpen,

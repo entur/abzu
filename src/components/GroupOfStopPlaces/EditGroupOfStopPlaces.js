@@ -29,6 +29,7 @@ import mapHelper from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes/";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
+import CopyIdButton from "../Shared/CopyIdButton";
 import GroupOfStopPlaceDetails from "./GroupOfStopPlacesDetails";
 
 class EditGroupOfStopPlaces extends Component {
@@ -91,7 +92,13 @@ class EditGroupOfStopPlaces extends Component {
 
   getHeaderText(groupOfStopPlaces, formatMessage) {
     if (groupOfStopPlaces.id) {
-      return `${groupOfStopPlaces.name} (${groupOfStopPlaces.id})`;
+      return (
+        <span>
+          {groupOfStopPlaces.name}
+          <br />
+          {`${groupOfStopPlaces.id}`}
+        </span>
+      );
     }
     return formatMessage({ id: "you_are_creating_group" });
   }
@@ -141,7 +148,14 @@ class EditGroupOfStopPlaces extends Component {
               }}
               onClick={() => this.handleAllowUserToGoBack()}
             />
-            <div>{this.getHeaderText(originalGOS, formatMessage)}</div>
+            <div>
+              {this.getHeaderText(originalGOS, formatMessage)}
+              <CopyIdButton
+                idToCopy={originalGOS.id}
+                color={"white"}
+                style={{ marginLeft: 4 }}
+              />
+            </div>
           </div>
         </div>
         <div style={{ fontSize: "1em", fontWeight: 600, padding: 5 }}>
