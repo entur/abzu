@@ -18,7 +18,6 @@ const LocalLoadingIndicator = ({ isLoading }) => {
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.3)",
         pointerEvents: "none",
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
