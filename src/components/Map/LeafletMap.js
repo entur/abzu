@@ -108,10 +108,13 @@ export const LeafLetMap = ({
               <BaseLayer
                 key={tile.name}
                 checked={getCheckedBaseLayerByValue(tile.name)}
-                name={tile.title ?? tile.name}
+                name={tile.name}
               >
                 {tile.component ? (
-                  <ComponentToggle feature={tile.name} componentProps={tile} />
+                  <ComponentToggle
+                    feature={tile.componentName}
+                    componentProps={tile}
+                  />
                 ) : (
                   <DynamicTileLayer
                     attribution={tile.attribution}
