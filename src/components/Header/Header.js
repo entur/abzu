@@ -37,7 +37,6 @@ import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
 } from "../../reducers/zonesSlice";
-import { getIn } from "../../utils";
 import ConfirmDialog from "./../Dialogs/ConfirmDialog";
 import MoreMenuItem from "./../MainPage/MoreMenuItem";
 import { LanguageMenu } from "./LanguageMenu";
@@ -185,7 +184,7 @@ class Header extends React.Component {
     const reportSite = formatMessage({ id: "report_site" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const userGuide = formatMessage({ id: "user_guide" });
-    const username = getIn(auth, ["user", "name"], "");
+    const username = this.props.preferredName || "";
     const showMultimodalEdgesLabel = formatMessage({
       id: "show_multimodal_edges",
     });
@@ -582,6 +581,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   auth: state.user.auth,
+  preferredName: state.user.preferredName,
   isCompassBearingEnabled: state.stopPlace.isCompassBearingEnabled,
   isDisplayingEditStopPlace:
     state.router.location.pathname.indexOf("/stop_place/") > -1,
