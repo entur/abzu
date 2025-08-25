@@ -64,6 +64,7 @@ export const initialState = {
   auth: {},
   isGuest: true,
   allowNewStopEverywhere: false,
+  preferredName: "",
 };
 
 const userReducer = (state = initialState, action) => {
@@ -313,6 +314,7 @@ const userReducer = (state = initialState, action) => {
           isGuest: action.result.data.userPermissions.isGuest,
           allowNewStopEverywhere:
             action.result.data.userPermissions.allowNewStopEverywhere,
+          preferredName: action.result.data.userPermissions.preferredName || "",
         };
       } else if (action.operationName === "getLocationPermissions") {
         return {
