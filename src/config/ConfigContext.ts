@@ -36,6 +36,8 @@ export interface Tile {
   url?: string;
   maxZoom?: number;
   component?: boolean;
+  componentName?: string;
+  tms?: boolean;
 }
 
 export interface LocaleConfig {
