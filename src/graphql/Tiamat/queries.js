@@ -839,6 +839,7 @@ export const getUserPermissionsQuery = gql`
     userPermissions {
       allowNewStopEverywhere
       isGuest
+      preferredName
     }
   }
 `;
