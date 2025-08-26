@@ -7,30 +7,32 @@ import {
 } from "leaflet";
 
 export type AuthenticatedTileLayerBaseOptions = LeafletTileLayerOptions & {
-  accessToken: string;
+  getAccessToken: () => Promise<string>;
   url: string;
 };
 
 export class AuthenticatedTileLayerBase extends TileLayer {
-  private readonly accessToken: string | undefined;
+  private getAccessToken: () => Promise<string>;
 
-  constructor(
-    urlTemplate: string,
-    options?: AuthenticatedTileLayerBaseOptions,
-  ) {
+  constructor(urlTemplate: string, options: AuthenticatedTileLayerBaseOptions) {
     super(urlTemplate, options);
-    this.accessToken = options?.accessToken;
+    this.getAccessToken = options.getAccessToken;
   }
 
   createTile(coords: Coords, done: DoneCallback) {
     const imgEl = document.createElement("img");
     const url = this.getTileUrl(coords);
-    const headers: Record<string, string> = {};
-    if (this.accessToken) {
-      headers["Authorization"] = `Bearer ${this.accessToken}`;
-    }
 
-    Axios.get(url, { headers, responseType: "blob" })
+    // getAccessToken will resolve immediately
+    this.getAccessToken()
+      .then((accessToken) =>
+        Axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          responseType: "blob",
+        }),
+      )
       .then((res) => {
         const blob = new Blob([res.data], {
           type: res.headers["content-type"]?.toString(),

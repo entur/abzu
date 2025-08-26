@@ -3,7 +3,6 @@ import {
   createElementObject,
   createTileLayerComponent,
 } from "@react-leaflet/core";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Tile } from "../../config/ConfigContext";
 import { RootState } from "../../store/store";
@@ -22,33 +21,19 @@ const AuthenticatedTileLayerComponent = createTileLayerComponent<
 });
 
 export const AuthenticatedTileLayer: FeatureComponent<Tile> = (props: Tile) => {
-  const { getAccessToken } = useSelector((state: RootState) => ({
-    getAccessToken: state.user.auth.getAccessToken,
-  }));
-
-  const [accessToken, setAccessToken] = useState<string | undefined>();
-
-  useEffect(() => {
-    let isSubscribing = true;
-
-    const fetchToken = async () => {
-      const token = await getAccessToken();
-      if (isSubscribing) {
-        setAccessToken(token);
-      }
-    };
-    fetchToken().catch(console.error);
-
-    return () => {
-      isSubscribing = false;
-    };
-  }, [setAccessToken, getAccessToken]);
+  const isAuthenticated: boolean | undefined = useSelector(
+    (state: RootState) => state.user.auth.isAuthenticated,
+  );
+  const getAccessToken: (() => Promise<string>) | undefined = useSelector(
+    (state: RootState) => state.user.auth.getAccessToken,
+  );
 
   return (
-    accessToken &&
+    isAuthenticated &&
+    getAccessToken &&
     props.url && (
       <AuthenticatedTileLayerComponent
-        accessToken={accessToken}
+        getAccessToken={getAccessToken}
         tms={props.tms === true}
         url={props.url}
         attribution={props.attribution}
