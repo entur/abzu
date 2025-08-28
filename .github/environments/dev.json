@@ -33,8 +33,9 @@
         "attribution": "&copy; <a href=\"http://www.kartverket.no\">Kartverket"
       },
       {
-        "name": "KartverketFlyFoto",
-        "component": true
+        "name": "Kartverket flyfoto",
+        "component": true,
+        "componentName": "KartverketFlyFoto"
       }
     ],
     "defaultTile": "OpenStreetMap",
