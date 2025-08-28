@@ -111,7 +111,10 @@ export const LeafLetMap = ({
                 name={tile.name}
               >
                 {tile.component ? (
-                  <ComponentToggle feature={tile.name} />
+                  <ComponentToggle
+                    feature={tile.componentName}
+                    componentProps={tile}
+                  />
                 ) : (
                   <DynamicTileLayer
                     attribution={tile.attribution}
