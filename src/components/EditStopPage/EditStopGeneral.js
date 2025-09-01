@@ -809,14 +809,17 @@ class EditStopGeneral extends React.Component {
               </FlatButton>
             )}
           <FlatButton
-            disabled={!stopHasBeenModified}
+            disabled={!stopHasBeenModified && !stopPlace.hasExpired}
             label={formatMessage({ id: "undo_changes" })}
             style={{
               margin: "8 5",
               zIndex: 999,
               minWidth: "120px",
               fontSize: "0.7em",
-              color: disabled || !stopHasBeenModified ? "#999" : "#000",
+              color:
+                disabled || (!stopHasBeenModified && !stopPlace.hasExpired)
+                  ? "#999"
+                  : "#000",
             }}
             labelStyle={{ fontSize: "0.7em" }}
             onClick={() => {
@@ -827,13 +830,18 @@ class EditStopGeneral extends React.Component {
             {formatMessage({ id: "undo_changes" })}
           </FlatButton>
           <FlatButton
-            disabled={disabled || !stopHasBeenModified}
+            disabled={
+              disabled || (!stopHasBeenModified && !stopPlace.hasExpired)
+            }
             label={formatMessage({ id: "save_new_version" })}
             style={{
               margin: "8 5",
               zIndex: 999,
               fontSize: "0.7em",
-              color: disabled || !stopHasBeenModified ? "#999" : "#000",
+              color:
+                disabled || (!stopHasBeenModified && !stopPlace.hasExpired)
+                  ? "#999"
+                  : "#000",
             }}
             onClick={this.handleSave.bind(this)}
           >
