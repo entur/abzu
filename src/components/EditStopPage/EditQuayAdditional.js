@@ -19,7 +19,7 @@ import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import AccessibilityQuayTab from "./AccessibilityAssessment/AccessibilityQuayTab";
 import BoardingPositionsTab from "./BoardingPositionsTab";
-import FacilitiesQuayTab from "./FacilitiesQuayTab";
+import FacilitiesQuayTab from "./Facility/FacilitiesQuayTab";
 
 class EditQuayAdditional extends React.Component {
   constructor(props) {
