@@ -26,7 +26,7 @@ import {
 } from "../../../models/AccessibilityLimitation";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils/";
-import AccessibilityLimitation from "./AccessibilityLimitation";
+import ErsadItem from "../ErsadItem";
 import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
 
 class AccessibilityQuayTab extends React.Component {
@@ -76,139 +76,152 @@ class AccessibilityQuayTab extends React.Component {
   render() {
     const { quay, disabled } = this.props;
 
+    const accessibilityLimitationsKeys = [
+      "accessibilityAssessment",
+      "limitations",
+    ];
     const wheelchairAccess = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.WHEELCHAIR_ACCESS,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
     const stepFreeAccess = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.STEP_FREE_ACCESS,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
     const audibleSignalsAvailable = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
     const visualSignsAvailable = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
     const escalatorFreeAccess = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
     const liftFreeAccess = getIn(
       quay,
-      [
-        "accessibilityAssessment",
-        "limitations",
+      accessibilityLimitationsKeys.concat(
         AccessibilityLimitationEnum.LIFT_FREE_ACCESS,
-      ],
+      ),
       AccessibilityLimitationType.UNKNOWN,
     );
+    const entityType = "quay";
 
     return (
       <div style={{ padding: 10 }}>
-        <AccessibilityLimitation tooltipTitle={"wheelchair_quay_hint"}>
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={wheelchairAccess}
-            handleChange={this.handleWheelChairChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.WHEELCHAIR_ACCESS
-            }
-            icon={<WheelChair />}
-          />
-        </AccessibilityLimitation>
-        <AccessibilityLimitation tooltipTitle={"step_free_access_quay_hint"}>
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={stepFreeAccess}
-            handleChange={this.handleStepFreeChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.STEP_FREE_ACCESS
-            }
-            icon={<StairsIcon />}
-          />
-        </AccessibilityLimitation>
-        <AccessibilityLimitation
-          tooltipTitle={"audibleSignalsAvailable_quay_hint"}
-        >
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={audibleSignalsAvailable}
-            handleChange={this.handleAudibleSignalsChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE
-            }
-            icon={<VolumeUpIcon />}
-          />
-        </AccessibilityLimitation>
-        <AccessibilityLimitation
-          tooltipTitle={"visualSignsAvailable_quay_hint"}
-        >
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={visualSignsAvailable}
-            handleChange={this.handleVisualSignsChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
-            }
-            icon={<FollowTheSignsIcon />}
-          />
-        </AccessibilityLimitation>
-        <AccessibilityLimitation tooltipTitle={"escalatorFreeAccess_quay_hint"}>
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={escalatorFreeAccess}
-            handleChange={this.handleEscalatorFreeAccessChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
-            }
-            icon={<EscalatorIcon />}
-          />
-        </AccessibilityLimitation>
-        <AccessibilityLimitation tooltipTitle={"liftFreeAccess_quay_hint"}>
-          <AccessibilityLimitationPopover
-            disabled={disabled}
-            displayLabel={true}
-            accessibilityLimitationState={liftFreeAccess}
-            handleChange={this.handleLiftFreeAccessChange.bind(this)}
-            accessibilityLimitationName={
-              AccessibilityLimitationEnum.LIFT_FREE_ACCESS
-            }
-            icon={<ElevatorIcon />}
-          />
-        </AccessibilityLimitation>
+        <ErsadItem
+          name={AccessibilityLimitationEnum.WHEELCHAIR_ACCESS}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={wheelchairAccess}
+              handleChange={this.handleWheelChairChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.WHEELCHAIR_ACCESS
+              }
+              icon={<WheelChair />}
+            />
+          }
+        />
+        <ErsadItem
+          name={AccessibilityLimitationEnum.STEP_FREE_ACCESS}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={stepFreeAccess}
+              handleChange={this.handleStepFreeChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.STEP_FREE_ACCESS
+              }
+              icon={<StairsIcon />}
+            />
+          }
+        />
+        <ErsadItem
+          name={AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={audibleSignalsAvailable}
+              handleChange={this.handleAudibleSignalsChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE
+              }
+              icon={<VolumeUpIcon />}
+            />
+          }
+        />
+        <ErsadItem
+          name={AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={visualSignsAvailable}
+              handleChange={this.handleVisualSignsChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
+              }
+              icon={<FollowTheSignsIcon />}
+            />
+          }
+        />
+        <ErsadItem
+          name={AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={escalatorFreeAccess}
+              handleChange={this.handleEscalatorFreeAccessChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
+              }
+              icon={<EscalatorIcon />}
+            />
+          }
+        />
+        <ErsadItem
+          name={AccessibilityLimitationEnum.LIFT_FREE_ACCESS}
+          entityType={entityType}
+          item={
+            <AccessibilityLimitationPopover
+              disabled={disabled}
+              displayLabel={true}
+              accessibilityLimitationState={liftFreeAccess}
+              handleChange={this.handleLiftFreeAccessChange.bind(this)}
+              accessibilityLimitationName={
+                AccessibilityLimitationEnum.LIFT_FREE_ACCESS
+              }
+              icon={<ElevatorIcon />}
+            />
+          }
+        />
       </div>
     );
   }

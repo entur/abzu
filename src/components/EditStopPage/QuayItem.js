@@ -32,7 +32,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { injectIntl } from "react-intl";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import BusShelter from "../../static/icons/facilities/BusShelter";
-import TicketMachine from "../../static/icons/facilities/TicketMachine";
+import { TicketMachine } from "../../static/icons/facilities/TicketMachine";
 import Sign512 from "../../static/icons/TransportSign";
 import { getIn } from "../../utils/";
 import EditQuayAdditional from "./EditQuayAdditional";
@@ -195,14 +195,14 @@ class QuayItem extends React.Component {
       id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
     const ticketMachineHint = isTicketMachinePresent
-      ? formatMessage({ id: "ticketMachine" })
-      : formatMessage({ id: "ticketMachine_no" });
+      ? formatMessage({ id: "ticketMachines" })
+      : formatMessage({ id: "ticketMachines_no" });
     const busShelterHint = isBusShelterPresent
-      ? formatMessage({ id: "busShelter" })
-      : formatMessage({ id: "busShelter_no" });
+      ? formatMessage({ id: "shelterEquipment" })
+      : formatMessage({ id: "shelterEquipment_no" });
     const transportSignHint = isSign512Present
-      ? formatMessage({ id: "transport_sign" })
-      : formatMessage({ id: "transport_sign_no" });
+      ? formatMessage({ id: "generalSign" })
+      : formatMessage({ id: "generalSign_no" });
     const stepFreeHint = formatMessage({
       id: `accessibilityAssessments_stepFreeAccess_${stepFreeAccess.toLowerCase()}`,
     });
@@ -217,14 +217,14 @@ class QuayItem extends React.Component {
       unsaved: formatMessage({ id: "unsaved" }),
       none: formatMessage({ id: "none_no" }),
       quays: formatMessage({ id: "quays" }),
-      stepFreeAccess: formatMessage({ id: "step_free_access" }),
-      noStepFreeAccess: formatMessage({ id: "step_free_access_no" }),
+      stepFreeAccess: formatMessage({ id: "stepFree" }),
+      noStepFreeAccess: formatMessage({ id: "stepFree_no" }),
       wheelchairAccess: formatMessage({ id: "wheelchairAccess" }),
       noWheelchairAccess: formatMessage({ id: "wheelchairAccess_no" }),
-      ticketMachine: formatMessage({ id: "ticketMachine" }),
-      noTicketMachine: formatMessage({ id: "ticketMachine_no" }),
-      busShelter: formatMessage({ id: "busShelter" }),
-      noBusShelter: formatMessage({ id: "busShelter_no" }),
+      ticketMachine: formatMessage({ id: "ticketMachines" }),
+      noTicketMachine: formatMessage({ id: "ticketMachines_no" }),
+      busShelter: formatMessage({ id: "shelterEquipment" }),
+      noBusShelter: formatMessage({ id: "shelterEquipment_no" }),
       quayItemName: formatMessage({ id: quayItemName || "name" }),
       quayMissingLocation: formatMessage({ id: "quay_is_missing_location" }),
       localReference: formatMessage({ id: "local_reference" }),

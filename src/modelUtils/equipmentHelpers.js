@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { defaultEquipments, types } from "../models/Equipments";
+import { defaultEquipmentFacilities, Equipment } from "../models/Equipments";
 import { getIn } from "../utils";
 
 const EquipmentHelpers = {};
@@ -23,6 +23,18 @@ EquipmentHelpers.isTicketMachinePresent = (entity) => {
     ["placeEquipments", "ticketingEquipment", "ticketMachines"],
     null,
   );
+};
+
+EquipmentHelpers.isTicketOfficePresent = (entity) => {
+  return !!getIn(
+    entity,
+    ["placeEquipments", "ticketingEquipment", "ticketOffice"],
+    null,
+  );
+};
+
+EquipmentHelpers.getTicketingEquipment = (entity) => {
+  return getIn(entity, ["placeEquipments", "ticketingEquipment"], null);
 };
 
 EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
@@ -56,7 +68,11 @@ EquipmentHelpers.is512SignEquipmentPresent = (entity) => {
 
 EquipmentHelpers.update512SignEquipment = (entity, payload) => {
   const copyOfEntity = JSON.parse(JSON.stringify(entity));
-  return updateEquipmentForEntitity(copyOfEntity, payload, types.generalSign);
+  return updateEquipmentForEntity(
+    copyOfEntity,
+    payload,
+    Equipment.GENERAL_SIGN,
+  );
 };
 
 EquipmentHelpers.isWaitingRoomPresent = (entity) => {
@@ -77,46 +93,59 @@ EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
 
 EquipmentHelpers.updateTicketMachineState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(updatedStop, payload, types.ticketMachine);
+  return updateEquipmentForEntity(
+    updatedStop,
+    payload,
+    Equipment.TICKETING_EQUIPMENT,
+  );
+};
+
+EquipmentHelpers.updateTicketOfficeState = (stopPlace, payload) => {
+  let updatedStop = JSON.parse(JSON.stringify(stopPlace));
+  return updateEquipmentForEntity(
+    updatedStop,
+    payload,
+    Equipment.TICKETING_EQUIPMENT,
+  );
 };
 
 EquipmentHelpers.updateShelterEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(
+  return updateEquipmentForEntity(
     updatedStop,
     payload,
-    types.shelterEquipment,
+    Equipment.SHELTER_EQUIPMENT,
   );
 };
 
 EquipmentHelpers.updateSanitaryEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(
+  return updateEquipmentForEntity(
     updatedStop,
     payload,
-    types.sanitaryEquipment,
+    Equipment.SANITARY_EQUIPMENT,
   );
 };
 
 EquipmentHelpers.updateWaitingRoomState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(
+  return updateEquipmentForEntity(
     updatedStop,
     payload,
-    types.waitingRoomEquipment,
+    Equipment.WAITING_ROOM_EQUIPMENT,
   );
 };
 
 EquipmentHelpers.updateCycleStorageEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntitity(
+  return updateEquipmentForEntity(
     updatedStop,
     payload,
-    types.cycleStorageEquipment,
+    Equipment.CYCLE_STORAGE_EQUIPMENT,
   );
 };
 
-const updateEquipmentForEntitity = (entity, payload, typeOfEquipment) => {
+const updateEquipmentForEntity = (entity, payload, typeOfEquipment) => {
   const { state, type, id } = payload;
 
   let stateFromCheckbox = typeof state === "boolean";
@@ -125,9 +154,9 @@ const updateEquipmentForEntitity = (entity, payload, typeOfEquipment) => {
 
   if (stateFromCheckbox) {
     if (state) {
-      overrideState = defaultEquipments[typeOfEquipment].isChecked;
+      overrideState = defaultEquipmentFacilities[typeOfEquipment].isChecked;
     } else {
-      overrideState = defaultEquipments[typeOfEquipment].isUnChecked;
+      overrideState = defaultEquipmentFacilities[typeOfEquipment].isUnChecked;
     }
   } else {
     overrideState = state;
@@ -147,6 +176,7 @@ const updateEquipmentForEntitity = (entity, payload, typeOfEquipment) => {
       entity.quays[id].placeEquipments[typeOfEquipment] = overrideState;
     }
   }
+
   return entity;
 };
 

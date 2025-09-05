@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import SvgIcon from "@mui/material/SvgIcon";
 
-const TicketMachine = (props) => (
+export const TicketMachine = (props) => (
   <SvgIcon {...props} viewBox="0 0 41.94 125">
     <rect x="26.543" y="56.41" width="6.045" height="1.626" id="rect4" />
     <path
@@ -23,4 +23,3 @@ const TicketMachine = (props) => (
     />
   </SvgIcon>
 );
-export default TicketMachine;

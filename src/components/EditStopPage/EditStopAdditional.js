@@ -17,7 +17,7 @@ import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { injectIntl } from "react-intl";
 import AccessibilityStopTab from "./AccessibilityAssessment/AccessibilityStopTab";
-import FacilitiesStopTab from "./FacilitiesStopTab";
+import FacilitiesStopTab from "./Facility/FacilitiesStopTab";
 
 class EditStopAdditional extends React.Component {
   constructor(props) {

@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import SvgIcon from "@mui/material/SvgIcon";
 
-const WaitingRoom = (props) => (
+export const WaitingRoom = (props) => (
   <SvgIcon
     {...props}
     x="0px"
@@ -33,4 +33,3 @@ const WaitingRoom = (props) => (
     </g>
   </SvgIcon>
 );
-export default WaitingRoom;
