@@ -3,12 +3,15 @@ import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import { FacilityDetail as FacilityDetailEnum } from "../../../models/Facility";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../../static/icons/facilities/Enclosed";
 import { getIn } from "../../../utils";
 import FacilityCheckbox from "./FacilityCheckbox";
-import { FacilityProps, WaitingEquipmentDetails } from "./types";
+import {
+  FacilityDetail as FacilityDetailEnum,
+  FacilityProps,
+  WaitingEquipmentDetails,
+} from "./types";
 
 const ShelterDetails = ({
   entity,

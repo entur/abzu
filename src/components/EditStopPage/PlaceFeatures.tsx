@@ -6,27 +6,27 @@ import { ReactElement } from "react";
 import { useIntl } from "react-intl";
 import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../models/AccessibilityLimitation";
 import { EntityType } from "../../models/Entities";
-import { Facility as FacilityEnum } from "../../models/Facility";
+import { Facility as FacilityEnum } from "./Facility/types";
 import ToolTipIcon from "./ToolTipIcon";
 
 interface Props {
   entityType: EntityType;
   name: AccessibilityLimitationEnum | FacilityEnum;
-  item: ReactElement;
-  relatedItems?: ReactElement;
+  feature: ReactElement;
+  relatedFeatures?: ReactElement;
   isExpanded?: boolean;
   handleExpand?: () => void;
   handleCollapse?: () => void;
 }
 
-const ErsadItem = ({
+const PlaceFeatures = ({
   name,
   entityType,
   isExpanded,
   handleExpand,
   handleCollapse,
-  item,
-  relatedItems,
+  feature,
+  relatedFeatures,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -40,15 +40,15 @@ const ErsadItem = ({
             fontSize: "0.8em",
           }}
         >
-          {item}
+          {feature}
           <ToolTipIcon
             title={formatMessage({ id: `${name}_${entityType}_hint` })}
           />
         </div>
 
-        {isExpanded && relatedItems}
+        {isExpanded && relatedFeatures}
 
-        {relatedItems && (
+        {relatedFeatures && (
           <div style={{ textAlign: "center", marginBottom: 5 }}>
             {isExpanded ? (
               <FlatButton
@@ -74,4 +74,4 @@ const ErsadItem = ({
   );
 };
 
-export default ErsadItem;
+export default PlaceFeatures;

@@ -26,7 +26,7 @@ import {
 } from "../../../models/AccessibilityLimitation";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils";
-import ErsadItem from "../ErsadItem";
+import PlaceFeatures from "../PlaceFeatures";
 import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
 
 class AccessibilityStopTab extends React.Component {
@@ -115,10 +115,10 @@ class AccessibilityStopTab extends React.Component {
 
     return (
       <div style={{ padding: 10 }}>
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.WHEELCHAIR_ACCESS}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}
@@ -131,10 +131,10 @@ class AccessibilityStopTab extends React.Component {
             />
           }
         />
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.STEP_FREE_ACCESS}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}
@@ -147,10 +147,10 @@ class AccessibilityStopTab extends React.Component {
             />
           }
         />
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}
@@ -163,10 +163,10 @@ class AccessibilityStopTab extends React.Component {
             />
           }
         />
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}
@@ -179,10 +179,10 @@ class AccessibilityStopTab extends React.Component {
             />
           }
         />
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}
@@ -195,10 +195,10 @@ class AccessibilityStopTab extends React.Component {
             />
           }
         />
-        <ErsadItem
+        <PlaceFeatures
           name={AccessibilityLimitationEnum.LIFT_FREE_ACCESS}
           entityType={entityType}
-          item={
+          feature={
             <AccessibilityLimitationPopover
               disabled={disabled}
               displayLabel={true}

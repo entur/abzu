@@ -5,7 +5,7 @@ import { useIntl } from "react-intl";
 import {
   FacilityDetail as FacilityDetailEnum,
   Facility as FacilityEnum,
-} from "../../../models/Facility";
+} from "./types";
 
 interface Props {
   icon: ReactElement<any>;

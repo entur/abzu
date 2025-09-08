@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import { Facility } from "../../../models/Facility";
 import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { WaitingRoom as WaitingRoomIcon } from "../../../static/icons/facilities/WaitingRoom";
 import FacilityCheckbox from "./FacilityCheckbox";
-import { FacilityProps } from "./types";
+import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const WaitingRoom = ({
   entity,
@@ -34,7 +33,7 @@ const WaitingRoom = ({
     <FacilityCheckbox
       icon={<WaitingRoomIcon />}
       handleFacilityChange={handleWaitingRoomChange}
-      facilityName={Facility.WAITING_ROOM_EQUIPMENT}
+      facilityName={FacilityEnum.WAITING_ROOM_EQUIPMENT}
       isFacilityPresent={isWaitingRoomPresent}
     />
   );

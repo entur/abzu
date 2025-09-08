@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import { Facility as FacilityEnum } from "../../../models/Facility";
 import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
 import TransportSign from "../../../static/icons/TransportSign";
 import FacilityCheckbox from "./FacilityCheckbox";
-import { FacilityProps } from "./types";
+import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const GeneralSign = ({
   entity,

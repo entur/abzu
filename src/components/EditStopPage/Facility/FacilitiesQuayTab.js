@@ -14,8 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import { connect } from "react-redux";
-import { Facility as FacilityEnum } from "../../../models/Facility";
-import ErsadItem from "../ErsadItem";
+import PlaceFeatures from "../PlaceFeatures";
 import GeneralSign from "./GeneralSign";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
@@ -25,6 +24,7 @@ import TicketOffice from "./TicketOffice";
 import WC from "./WC";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
+import { Facility as FacilityEnum } from "./types";
 
 class FacilitiesQuayTab extends React.Component {
   constructor(props) {
@@ -47,10 +47,10 @@ class FacilitiesQuayTab extends React.Component {
 
     return (
       <div style={{ padding: 10 }}>
-        <ErsadItem
+        <PlaceFeatures
           name={FacilityEnum.GENERAL_SIGN}
           entityType={entityType}
-          item={
+          feature={
             <GeneralSign
               entity={quay}
               disabled={disabled}
@@ -60,13 +60,13 @@ class FacilitiesQuayTab extends React.Component {
           }
         />
 
-        <ErsadItem
+        <PlaceFeatures
           name={FacilityEnum.TICKET_MACHINES}
           entityType={entityType}
           isExpanded={expandedIndex === 2}
           handleExpand={() => this.setExpandedIndex(2)}
           handleCollapse={() => this.setExpandedIndex(-1)}
-          item={
+          feature={
             <TicketMachine
               entity={quay}
               disabled={disabled}
@@ -74,7 +74,7 @@ class FacilitiesQuayTab extends React.Component {
               entityType={entityType}
             />
           }
-          relatedItems={
+          relatedFeatures={
             <TicketMachineDetails
               entity={quay}
               disabled={disabled}
@@ -84,10 +84,10 @@ class FacilitiesQuayTab extends React.Component {
           }
         />
 
-        <ErsadItem
+        <PlaceFeatures
           name={FacilityEnum.TICKET_OFFICE}
           entityType={entityType}
-          item={
+          feature={
             <TicketOffice
               entity={quay}
               disabled={disabled}
@@ -97,10 +97,10 @@ class FacilitiesQuayTab extends React.Component {
           }
         />
 
-        <ErsadItem
+        <PlaceFeatures
           name={FacilityEnum.SHELTER_EQUIPMENT}
           entityType={entityType}
-          item={
+          feature={
             <Shelter
               entity={quay}
               disabled={disabled}
@@ -108,7 +108,7 @@ class FacilitiesQuayTab extends React.Component {
               entityType={entityType}
             />
           }
-          relatedItems={
+          relatedFeatures={
             <ShelterDetails
               entity={quay}
               disabled={disabled}
@@ -121,10 +121,10 @@ class FacilitiesQuayTab extends React.Component {
           handleCollapse={() => this.setExpandedIndex(-1)}
         />
 
-        <ErsadItem
+        <PlaceFeatures
           entityType={entityType}
           name={FacilityEnum.SANITARY_EQUIPMENT}
-          item={
+          feature={
             <WC
               entity={quay}
               disabled={disabled}
@@ -134,10 +134,10 @@ class FacilitiesQuayTab extends React.Component {
           }
         />
 
-        <ErsadItem
+        <PlaceFeatures
           entityType={entityType}
           name={FacilityEnum.WAITING_ROOM_EQUIPMENT}
-          item={
+          feature={
             <WaitingRoom
               entity={quay}
               disabled={disabled}
@@ -145,7 +145,7 @@ class FacilitiesQuayTab extends React.Component {
               entityType={entityType}
             />
           }
-          relatedItems={
+          relatedFeatures={
             <WaitingRoomDetails
               entity={quay}
               disabled={disabled}

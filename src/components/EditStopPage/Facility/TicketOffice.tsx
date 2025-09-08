@@ -3,13 +3,12 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import { defaultEquipmentFacilities } from "../../../models/Equipments";
-import { Facility as FacilityEnum } from "../../../models/Facility";
 import {
   default as equipmentHelpers,
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import FacilityCheckbox from "./FacilityCheckbox";
-import { FacilityProps } from "./types";
+import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const TicketOffice = ({
   entity,

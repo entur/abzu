@@ -3,12 +3,15 @@ import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import { FacilityDetail } from "../../../models/Facility";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import Heated from "../../../static/icons/facilities/Heated";
 import { getIn } from "../../../utils";
 import FacilityCheckbox from "./FacilityCheckbox";
-import { FacilityProps, WaitingEquipmentDetails } from "./types";
+import {
+  FacilityDetail as FacilityDetailEnum,
+  FacilityProps,
+  WaitingEquipmentDetails,
+} from "./types";
 
 const WaitingRoomDetails = ({
   entity,
@@ -23,17 +26,17 @@ const WaitingRoomDetails = ({
   const waitingRoomKeys = ["placeEquipments", "waitingRoomEquipment"];
   const waitingRoomSeats = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetail.SEATS),
+    waitingRoomKeys.concat(FacilityDetailEnum.SEATS),
     0,
   );
   const waitingRoomHeated = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetail.HEATED),
+    waitingRoomKeys.concat(FacilityDetailEnum.HEATED),
     false,
   );
   const waitingRoomStepFree = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetail.STEP_FREE),
+    waitingRoomKeys.concat(FacilityDetailEnum.STEP_FREE),
     false,
   );
 
@@ -44,15 +47,15 @@ const WaitingRoomDetails = ({
       newValue.seats = 0;
     }
     const oldValuesSet = {
-      seats: getIn(entity, waitingRoomKeys.concat(FacilityDetail.SEATS), 0),
+      seats: getIn(entity, waitingRoomKeys.concat(FacilityDetailEnum.SEATS), 0),
       heated: getIn(
         entity,
-        waitingRoomKeys.concat(FacilityDetail.HEATED),
+        waitingRoomKeys.concat(FacilityDetailEnum.HEATED),
         false,
       ),
       stepFree: getIn(
         entity,
-        waitingRoomKeys.concat(FacilityDetail.STEP_FREE),
+        waitingRoomKeys.concat(FacilityDetailEnum.STEP_FREE),
         false,
       ),
     };
@@ -95,7 +98,7 @@ const WaitingRoomDetails = ({
             handleFacilityChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ stepFree: value })
             }
-            facilityName={FacilityDetail.STEP_FREE}
+            facilityName={FacilityDetailEnum.STEP_FREE}
             isFacilityPresent={waitingRoomStepFree}
           />
           <FacilityCheckbox
@@ -103,7 +106,7 @@ const WaitingRoomDetails = ({
             handleFacilityChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ heated: value })
             }
-            facilityName={FacilityDetail.HEATED}
+            facilityName={FacilityDetailEnum.HEATED}
             isFacilityPresent={waitingRoomHeated}
           />
         </div>
