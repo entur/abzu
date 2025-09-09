@@ -25,6 +25,9 @@ const FacilityCheckbox = ({
   return (
     <>
       <FormControlLabel
+        style={{
+          marginLeft: 0,
+        }}
         control={
           <Checkbox
             checked={isFacilityPresent}

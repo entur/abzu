@@ -85,12 +85,7 @@ class EditQuayAdditional extends React.Component {
           />
         )}
         {activeTabIndex === 1 && (
-          <FacilitiesQuayTab
-            intl={intl}
-            quay={quay}
-            index={index}
-            disabled={disabled}
-          />
+          <FacilitiesQuayTab quay={quay} index={index} disabled={disabled} />
         )}
         {activeTabIndex === 2 && (
           <BoardingPositionsTab

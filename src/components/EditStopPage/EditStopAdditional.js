@@ -71,7 +71,10 @@ class EditStopAdditional extends React.Component {
           <AccessibilityStopTab intl={intl} disabled={disabled} />
         )}
         {activeTabIndex === 1 && (
-          <FacilitiesStopTab intl={intl} disabled={disabled} />
+          <FacilitiesStopTab
+            disabled={disabled}
+            stopPlace={this.props.stopPlace}
+          />
         )}
       </div>
     );

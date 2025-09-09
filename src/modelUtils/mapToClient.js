@@ -14,12 +14,6 @@ limitations under the Licence. */
 
 import moment from "moment";
 import * as types from "../actions/Types";
-import {
-  calculateDistance,
-  calculateEstimate,
-  getUniquePathLinks,
-} from "../modelUtils/leafletUtils";
-import { hasExpired } from "../modelUtils/validBetween";
 import ChildOfParentStopPlace from "../models/ChildOfParentStopPlace";
 import { Entities } from "../models/Entities";
 import GroupOfStopPlaces from "../models/GroupOfStopPlaces";
@@ -32,6 +26,12 @@ import PARKING_TYPE from "../models/parkingType";
 import PARKING_VEHICLE_TYPE from "../models/parkingVehicleType";
 import { getImportedId } from "../models/stopPlaceUtils";
 import { getIn, getInTransform, setDecimalPrecision } from "../utils/";
+import {
+  calculateDistance,
+  calculateEstimate,
+  getUniquePathLinks,
+} from "./leafletUtils";
+import { hasExpired } from "./validBetween";
 
 const helpers = {};
 
