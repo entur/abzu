@@ -290,7 +290,7 @@ class EditParentGeneral extends React.Component {
     if (!stopPlace.id && !stopPlace.children.length) {
       return false;
     }
-    return stopHasBeenModified;
+    return stopHasBeenModified || stopPlace.hasExpired;
   }
 
   addAdjacentStopReference(stopPlaceId1, stopPlaceId2) {
@@ -411,7 +411,7 @@ class EditParentGeneral extends React.Component {
               </div>
             </FlatButton>
             <FlatButton
-              disabled={!stopHasBeenModified}
+              disabled={!stopHasBeenModified && !stopPlace.hasExpired}
               label={formatMessage({ id: "undo_changes" })}
               style={{ margin: "8 5", zIndex: 999, fontSize: "0.7em" }}
               onClick={() => {
