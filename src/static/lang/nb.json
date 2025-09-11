@@ -499,7 +499,7 @@
   "ticketMachines_stopPlace_hint": "Er en billettautomat tilgjengelig for alle quayene til dette stoppet?",
   "ticketOffice": "Billettkontor",
   "ticketOffice_no": "Ingen billettkontor",
-  "ticketOffice_quay_hint": "Er en billettkontor tilgjengelig for denne quayen?",
+  "ticketOffice_quay_hint": "Er et billettkontor tilgjengelig for denne quayen?",
   "ticketOffice_stopPlace_hint": "Er en billettkontor tilgjengelig for alle quayene til dette stoppet?",
   "time": "Tidspunkt",
   "title_for_favorite": "Navngi ditt lagrede søk",
