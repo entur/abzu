@@ -601,7 +601,10 @@ class EditStopGeneral extends React.Component {
               showMoreStopPlace={this.showMoreStopPlace.bind(this)}
             />
             {showEditStopAdditional ? (
-              <EditStopAdditional disabled={disabled} />
+              <EditStopAdditional
+                disabled={disabled}
+                stopPlace={this.props.stopPlace}
+              />
             ) : null}
             <div style={{ textAlign: "center", marginBottom: 5 }}>
               {showEditStopAdditional ? (

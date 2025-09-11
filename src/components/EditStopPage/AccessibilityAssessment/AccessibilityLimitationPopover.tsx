@@ -55,7 +55,7 @@ const AccessibilityLimitationPopover = ({
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", fontSize: "0.8em" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <IconButton
           onClick={(e) => {
             if (!disabled) handleOpenPopover(e);
@@ -72,7 +72,7 @@ const AccessibilityLimitationPopover = ({
           })}
         </IconButton>
         {displayLabel ? (
-          <div style={{ marginLeft: 5 }}>
+          <div style={{ marginLeft: 2.5 }}>
             {formatMessage({
               id: `accessibilityAssessments_${accessibilityLimitationName}_${(accessibilityLimitationState || AccessibilityLimitationType.UNKNOWN).toLowerCase()}`,
             })}

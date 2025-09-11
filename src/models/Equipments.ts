@@ -12,14 +12,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-export const defaultEquipments = {
-  ticketingEquipment: {
+export const defaultEquipmentFacilities = {
+  ticketMachines: {
     isChecked: {
-      ticketOffice: true,
       ticketMachines: true,
       numberOfMachines: 1,
     },
-    isUnChecked: null,
+    isUnChecked: {
+      ticketMachines: false,
+      numberOfMachines: 0,
+    },
+  },
+  ticketOffice: {
+    isChecked: {
+      ticketOffice: true,
+    },
+    isUnChecked: {
+      ticketOffice: false,
+    },
   },
   shelterEquipment: {
     isChecked: {
@@ -60,11 +70,11 @@ export const defaultEquipments = {
   },
 };
 
-export const types = {
-  ticketMachine: "ticketingEquipment",
-  shelterEquipment: "shelterEquipment",
-  sanitaryEquipment: "sanitaryEquipment",
-  waitingRoomEquipment: "waitingRoomEquipment",
-  cycleStorageEquipment: "cycleStorageEquipment",
-  generalSign: "generalSign",
-};
+export enum Equipment {
+  TICKETING_EQUIPMENT = "ticketingEquipment",
+  SHELTER_EQUIPMENT = "shelterEquipment",
+  SANITARY_EQUIPMENT = "sanitaryEquipment",
+  WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
+  CYCLE_STORAGE_EQUIPMENT = "cycleStorageEquipment",
+  GENERAL_SIGN = "generalSign",
+}

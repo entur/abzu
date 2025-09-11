@@ -28,6 +28,17 @@ EquipmentActions.updateTicketMachineState =
     );
   };
 
+EquipmentActions.updateTicketOfficeState =
+  (state, entityType, id) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_TICKET_OFFICE_STATE, {
+        state: state,
+        type: entityType,
+        id: id,
+      }),
+    );
+  };
+
 EquipmentActions.updateShelterEquipmentState =
   (state, entityType, id) => (dispatch) => {
     dispatch(

@@ -50,8 +50,8 @@ import weightTypes, { weightColors } from "../../models/weightTypes";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import Routes from "../../routes";
 import BusShelter from "../../static/icons/facilities/BusShelter";
-import TicketMachine from "../../static/icons/facilities/TicketMachine";
-import WaitingRoom from "../../static/icons/facilities/WaitingRoom";
+import { TicketMachine } from "../../static/icons/facilities/TicketMachine";
+import { WaitingRoom } from "../../static/icons/facilities/WaitingRoom";
 import TransportSign from "../../static/icons/TransportSign";
 import { getIn } from "../../utils";
 import {
@@ -434,20 +434,20 @@ class StopPlaceDetails extends React.Component {
       id: `accessibilityAssessments_wheelchairAccess_${wheelchairAccess.toLowerCase()}`,
     });
     const ticketMachineHint = isTicketMachinePresent
-      ? formatMessage({ id: "ticketMachine" })
-      : formatMessage({ id: "ticketMachine_no" });
+      ? formatMessage({ id: "ticketMachines" })
+      : formatMessage({ id: "ticketMachines_no" });
     const busShelterHint = isBusShelterPresent
-      ? formatMessage({ id: "busShelter" })
-      : formatMessage({ id: "busShelter_no" });
+      ? formatMessage({ id: "shelterEquipment" })
+      : formatMessage({ id: "shelterEquipment_no" });
     const WCHint = isWCPresent
-      ? formatMessage({ id: "wc" })
-      : formatMessage({ id: "wc_no" });
+      ? formatMessage({ id: "sanitaryEquipment" })
+      : formatMessage({ id: "sanitaryEquipment_no" });
     const waitingRoomHint = isWaitingRoomPresent
-      ? formatMessage({ id: "waiting_room" })
-      : formatMessage({ id: "waiting_room_no" });
+      ? formatMessage({ id: "waitingRoomEquipment" })
+      : formatMessage({ id: "waitingRoomEquipment_no" });
     const transportSignHint = isSign512
-      ? formatMessage({ id: "transport_sign" })
-      : formatMessage({ id: "transport_sign_no" });
+      ? formatMessage({ id: "generalSign" })
+      : formatMessage({ id: "generalSign_no" });
     const tariffZonesHint = formatMessage({ id: "tariffZones" });
     const altNamesHint = formatMessage({ id: "alternative_names" });
     const belongsToParent = formatMessage({ id: "belongs_to_parent" });
