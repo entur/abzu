@@ -17,7 +17,8 @@ import Routes from "../../routes/";
 
 const GroupOfStopPlacesLink = ({ name, id, style }) => {
   const basename = import.meta.env.BASE_URL;
-  const url = `${window.location.origin}/${basename}${basename.endsWith("/") ? "" : "/"}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+  const cleanBasename = basename === "/" ? "" : basename;
+  const url = `${window.location.origin}${cleanBasename}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
     <a
