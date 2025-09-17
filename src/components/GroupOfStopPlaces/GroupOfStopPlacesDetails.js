@@ -35,9 +35,7 @@ class GroupOfStopPlacesDetails extends Component {
           purposeOfGroupingOptions: result.data.purposeOfGrouping,
         });
       }
-    } catch (error) {
-      console.error("Failed to fetch purpose of grouping options:", error);
-    }
+    } catch (error) {}
   }
 
   handleChangeName(e, name) {
