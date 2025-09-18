@@ -63,7 +63,10 @@ const App = ({ children }) => {
         const redirectPath = sessionStorage.getItem("redirectAfterLogin");
         if (redirectPath) {
           sessionStorage.removeItem("redirectAfterLogin");
-          dispatch(UserActions.navigateTo(redirectPath.replace("/", ""), ""));
+          const [pathname, search] = redirectPath.split("?");
+          const cleanPath = pathname.replace("/", "");
+          const queryString = search ? `?${search}` : "";
+          dispatch(UserActions.navigateTo(cleanPath, queryString));
         }
       }
     }
