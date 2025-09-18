@@ -59,6 +59,13 @@ const App = ({ children }) => {
     dispatch(updateAuth(auth));
     if (!auth.isLoading) {
       dispatch(fetchUserPermissions());
+      if (auth.isAuthenticated) {
+        const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+        if (redirectPath) {
+          sessionStorage.removeItem("redirectAfterLogin");
+          dispatch(UserActions.navigateTo(redirectPath.replace("/", ""), ""));
+        }
+      }
     }
   }, [auth]);
 
