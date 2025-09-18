@@ -13,21 +13,16 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Routes from "../../routes/";
 
 const GroupOfStopPlacesLink = ({ name, id, style }) => {
-  const basename = import.meta.env.BASE_URL;
-  const url = `${window.location.origin}/${basename}${basename.endsWith("/") ? "" : "/"}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+  const url = `/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
 
   return (
-    <a
-      style={{ fontSize: "0.9em", ...style }}
-      target="_blank"
-      rel="noopener noreferrer"
-      href={url}
-    >
+    <Link style={{ fontSize: "0.9em", ...style }} to={url}>
       {name}
-    </a>
+    </Link>
   );
 };
 
