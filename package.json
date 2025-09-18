@@ -88,7 +88,7 @@
     "jsdom": "26.1.0",
     "lint-staged": "16.1.6",
     "prettier": "3.6.2",
-    "prettier-plugin-organize-imports": "4.2.0",
+    "prettier-plugin-organize-imports": "4.3.0",
     "redux-devtools": "3.7.0",
     "sass-embedded": "1.92.1",
     "source-map-explorer": "2.5.3",
