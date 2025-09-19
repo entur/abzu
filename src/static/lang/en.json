@@ -333,6 +333,7 @@
   "permanently_terminate_warning": "This will irreversibly terminate this stop place. Use with caution.",
   "platform": "Platform",
   "port": "Port",
+  "private": "Private",
   "privateCode": "Private code",
   "publicCode": "Public code",
   "publicCode_privateCode_setting_label": "Public and private codes on stop places",

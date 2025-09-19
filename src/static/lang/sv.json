@@ -333,6 +333,7 @@
   "permanently_terminate_warning": "Det här kommer att lägga ner hållplatsen permanent. Kan ej reverseras. Använd varsamt.",
   "platform": "Plattform",
   "port": "Kaj",
+  "private": "Privat",
   "privateCode": "Internkod",
   "publicCode": "Visningskod",
   "publicCode_privateCode_setting_label": "Visningskod och internkod på hållplatser",
