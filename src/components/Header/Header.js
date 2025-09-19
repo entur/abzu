@@ -100,6 +100,10 @@ class Header extends React.Component {
 
   handleLogin() {
     if (this.props.auth) {
+      sessionStorage.setItem(
+        "redirectAfterLogin",
+        window.location.pathname + window.location.search,
+      );
       this.props.auth.login();
     }
   }
@@ -158,7 +162,6 @@ class Header extends React.Component {
   render() {
     const {
       intl,
-      auth,
       isPublicCodePrivateCodeOnStopPlacesEnabled,
       isMultiPolylinesEnabled,
       isCompassBearingEnabled,

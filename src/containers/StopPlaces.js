@@ -90,6 +90,20 @@ class StopPlaces extends React.Component {
   }
 
   componentDidMount() {
+    this.processUrlParameters();
+  }
+
+  componentDidUpdate(prevProps) {
+    const wasAuthenticated = prevProps.auth && prevProps.auth.isAuthenticated;
+    const isNowAuthenticated =
+      this.props.auth && this.props.auth.isAuthenticated;
+
+    if (!wasAuthenticated && isNowAuthenticated) {
+      this.processUrlParameters();
+    }
+  }
+
+  processUrlParameters() {
     const { lastMutatedStopPlaceId, activeSearchResult, dispatch } = this.props;
     const searchResultId = activeSearchResult ? activeSearchResult.id : null;
     const shouldRefreshStopPlace =
@@ -131,6 +145,7 @@ const mapStateToProps = ({ stopPlace, user }) => ({
   activeSearchResult: stopPlace.activeSearchResult,
   lastMutatedStopPlaceId: stopPlace.lastMutatedStopPlaceId,
   currentPath: user.path,
+  auth: user.auth,
 });
 
 export default connect(mapStateToProps)(StopPlaces);
