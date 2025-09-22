@@ -17,10 +17,14 @@ export const defaultEquipmentFacilities = {
     isChecked: {
       ticketMachines: true,
       numberOfMachines: 1,
+      audioInterfaceAvailable: false,
+      tactileInterfaceAvailable: false,
     },
     isUnChecked: {
       ticketMachines: false,
       numberOfMachines: 0,
+      audioInterfaceAvailable: false,
+      tactileInterfaceAvailable: false,
     },
   },
   ticketOffice: {
