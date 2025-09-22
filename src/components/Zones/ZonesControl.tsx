@@ -38,7 +38,7 @@ export const ZonesControl = <T extends TariffZone>({
 
   const groupedZonesForFilter = useMemo(() => {
     return zonesForFilter.reduce((acc: Record<string, T[]>, next: T) => {
-      const codespace = next.id.split(":")[0];
+      const codespace = next.id?.split(":")[0] || "default";
       acc[codespace] ? acc[codespace].push(next) : (acc[codespace] = [next]);
       return acc;
     }, {});

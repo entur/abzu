@@ -24,7 +24,7 @@ export const FareZones: React.FC<FareZonesProps> = ({ position }) => {
         `${fareZone.name.value} - ${fareZone.privateCode.value} (${fareZone.id})`
       }
       getZoneColor={(fareZone) =>
-        getColorByCodespace(fareZone.id.split(":")[0])
+        getColorByCodespace(fareZone.id?.split(":")[0] || "default")
       }
       showSelector={(state) => state.zones.showFareZones}
       zonesForFilterSelector={(state) => state.zones.fareZonesForFilter}
