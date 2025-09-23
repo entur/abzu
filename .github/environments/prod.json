@@ -34,7 +34,8 @@
       },
       {
         "name": "KartverketFlyFoto",
-        "component": true
+        "component": true,
+        "componentName": "KartverketFlyFoto"
       }
     ],
     "defaultTile": "OpenStreetMap",
