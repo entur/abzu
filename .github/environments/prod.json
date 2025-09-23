@@ -33,7 +33,7 @@
         "attribution": "&copy; <a href=\"http://www.kartverket.no\">Kartverket"
       },
       {
-        "name": "KartverketFlyFoto",
+        "name": "Kartverket FlyFoto",
         "component": true,
         "componentName": "KartverketFlyFoto"
       }
