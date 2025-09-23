@@ -8,6 +8,7 @@
   "hostname": "stoppested.entur.org",
   "googleApiKey": "AIzaSyAAa-ZJ7h6FNxDY-UcqTAB-3YSdRQm8Gsg",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
+  "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
     "authority": "https://auth2.entur.org",
     "client_id": "JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec",

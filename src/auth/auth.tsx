@@ -25,14 +25,8 @@ export interface Auth {
  * the auth state.
  */
 export const useAuth = (): Auth => {
-  const {
-    isLoading,
-    isAuthenticated,
-    activeNavigator,
-    user,
-    signoutRedirect,
-    signinRedirect,
-  } = useOidcAuth();
+  const { isLoading, isAuthenticated, user, signoutRedirect, signinRedirect } =
+    useOidcAuth();
 
   const { claimsNamespace, preferredNameNamespace } = useConfig();
 
@@ -63,9 +57,12 @@ export const useAuth = (): Auth => {
     isLoading,
     isAuthenticated,
     user: {
-      name: user?.profile[preferredNameNamespace!] as string,
+      name:
+        ((preferredNameNamespace &&
+          user?.profile?.[preferredNameNamespace]) as string) || "",
     },
-    roleAssignments: user?.profile[claimsNamespace!] as string[],
+    roleAssignments:
+      ((claimsNamespace && user?.profile?.[claimsNamespace]) as string[]) || [],
     getAccessToken,
     logout,
     login,
