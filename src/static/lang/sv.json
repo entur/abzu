@@ -334,6 +334,7 @@
   "platform": "Plattform",
   "port": "Kaj",
   "private": "Privat",
+  "log_in_to_view": "Logga in för att visa",
   "privateCode": "Internkod",
   "publicCode": "Visningskod",
   "publicCode_privateCode_setting_label": "Visningskod och internkod på hållplatser",

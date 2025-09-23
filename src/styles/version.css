@@ -19,3 +19,16 @@ limitations under the Licence. */
   color: white;
   font-size: 0.5em;
 }
+
+.hidden-user-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hidden-user {
+  filter: blur(3px);
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}

@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 import { Component } from "react";
 import { injectIntl } from "react-intl";
+import "../../styles/version.css";
 import { sortVersions } from "../../utils";
 
 class VersionsPopover extends Component {
@@ -49,6 +50,7 @@ class VersionsPopover extends Component {
     const { formatMessage } = intl;
 
     const privateMessage = formatMessage({ id: "private" });
+    const logInToViewMessage = formatMessage({ id: "log_in_to_view" });
 
     if (hide) return null;
 
@@ -94,8 +96,18 @@ class VersionsPopover extends Component {
                   <div>{version.name}</div>
                 </div>
                 <div style={{ marginTop: 10 }}>
-                  {version.changedBy || privateMessage}:{" "}
-                  {version.versionComment || ""}
+                  {version.changedBy ? (
+                    <span>
+                      {version.changedBy}: {version.versionComment || ""}
+                    </span>
+                  ) : (
+                    <span className="hidden-user-container">
+                      <span title={logInToViewMessage} className="hidden-user">
+                        {privateMessage}
+                      </span>
+                      <span>: {version.versionComment || ""}</span>
+                    </span>
+                  )}
                 </div>
               </div>
               <hr />

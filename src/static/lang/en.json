@@ -334,6 +334,7 @@
   "platform": "Platform",
   "port": "Port",
   "private": "Private",
+  "log_in_to_view": "Log in to view",
   "privateCode": "Private code",
   "publicCode": "Public code",
   "publicCode_privateCode_setting_label": "Public and private codes on stop places",
