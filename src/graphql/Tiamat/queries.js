@@ -760,6 +760,17 @@ export const getGroupOfStopPlaceQuery = gql`
   ${Fragments.groupOfStopPlaces.verbose}
 `;
 
+export const getPurposeOfGroupingQuery = gql`
+  query getPurposeOfGrouping {
+    purposeOfGrouping {
+      id
+      name {
+        value
+      }
+    }
+  }
+`;
+
 export const findTariffZonesByIds = gql`
   query findTariffZonesByIds($ids: [String]) {
     tariffZones(ids: $ids) {

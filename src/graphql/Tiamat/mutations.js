@@ -317,6 +317,7 @@ export const mutateGroupOfStopPlaces = gql`
     $name: EmbeddableMultilingualStringInput!
     $description: EmbeddableMultilingualStringInput
     $members: [VersionLessEntityRefInput]
+    $purposeOfGrouping: VersionLessEntityRefInput
   ) {
     mutateGroupOfStopPlaces(
       GroupOfStopPlaces: {
@@ -324,6 +325,7 @@ export const mutateGroupOfStopPlaces = gql`
         name: $name
         description: $description
         members: $members
+        purposeOfGrouping: $purposeOfGrouping
       }
     ) {
       ...GroupOfStopPlaces

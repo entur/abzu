@@ -106,6 +106,15 @@ const groupOfStopPlacesReducer = (state = initialState, action) => {
         isModified: true,
       });
 
+    case types.CHANGED_STOP_PLACE_GROUP_PURPOSE_OF_GROUPING:
+      return Object.assign({}, state, {
+        current: {
+          ...state.current,
+          purposeOfGrouping: action.payload,
+        },
+        isModified: true,
+      });
+
     case types.CREATED_NEW_GROUP_OF_STOP_PLACES:
       return Object.assign({}, state, {
         sourceForNewGroup: action.payload,
