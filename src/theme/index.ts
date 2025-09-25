@@ -14,9 +14,12 @@ limitations under the Licence. */
 
 import { createTheme, Theme } from "@mui/material/styles";
 import { getTiamatEnv } from "../config/themeConfig";
-import { baseTheme } from "./base";
-import { darkTheme } from "./variants/dark";
-import { lightTheme } from "./variants/light";
+import {
+  convertConfigToThemeOptions,
+  getEnvironmentOverrides,
+} from "./config/converter";
+import { createThemedConfig, loadThemeConfig } from "./config/loader";
+import { AbzuThemeConfig } from "./config/types";
 
 export type ThemeVariant = "light" | "dark";
 export type Environment = "development" | "test" | "prod";
@@ -24,11 +27,104 @@ export type Environment = "development" | "test" | "prod";
 export interface AbzuThemeOptions {
   variant?: ThemeVariant;
   environment?: Environment;
+  config?: AbzuThemeConfig;
 }
 
-export const createAbzuTheme = (options: AbzuThemeOptions = {}): Theme => {
+// Cache for loaded theme config
+let cachedThemeConfig: AbzuThemeConfig | null = null;
+
+/**
+ * Get theme configuration (cached)
+ */
+const getThemeConfig = async (): Promise<AbzuThemeConfig> => {
+  if (!cachedThemeConfig) {
+    cachedThemeConfig = await loadThemeConfig();
+  }
+  return cachedThemeConfig;
+};
+
+/**
+ * Create Abzu theme from configuration
+ */
+export const createAbzuTheme = async (
+  options: AbzuThemeOptions = {},
+): Promise<Theme> => {
+  const {
+    variant = "light",
+    environment = getTiamatEnv() as Environment,
+    config,
+  } = options;
+
+  // Use provided config or load from files
+  const baseConfig = config || (await getThemeConfig());
+
+  // Apply variant-specific overrides
+  const themedConfig = createThemedConfig(baseConfig, variant);
+
+  // Convert config to MUI ThemeOptions
+  const themeOptions = convertConfigToThemeOptions(themedConfig);
+
+  // Create base theme
+  let theme = createTheme(themeOptions);
+
+  // Apply environment-specific overrides
+  const environmentOverrides = getEnvironmentOverrides(
+    themedConfig,
+    environment,
+  );
+  if (Object.keys(environmentOverrides).length > 0) {
+    theme = createTheme(theme, environmentOverrides);
+  }
+
+  return theme;
+};
+
+/**
+ * Synchronous version for cases where config is already loaded
+ */
+export const createAbzuThemeSync = (
+  options: AbzuThemeOptions & { config: AbzuThemeConfig },
+): Theme => {
+  const {
+    variant = "light",
+    environment = getTiamatEnv() as Environment,
+    config,
+  } = options;
+
+  // Apply variant-specific overrides
+  const themedConfig = createThemedConfig(config, variant);
+
+  // Convert config to MUI ThemeOptions
+  const themeOptions = convertConfigToThemeOptions(themedConfig);
+
+  // Create base theme
+  let theme = createTheme(themeOptions);
+
+  // Apply environment-specific overrides
+  const environmentOverrides = getEnvironmentOverrides(
+    themedConfig,
+    environment,
+  );
+  if (Object.keys(environmentOverrides).length > 0) {
+    theme = createTheme(theme, environmentOverrides);
+  }
+
+  return theme;
+};
+
+/**
+ * Legacy function for backward compatibility
+ */
+export const createAbzuThemeLegacy = (
+  options: AbzuThemeOptions = {},
+): Theme => {
   const { variant = "light", environment = getTiamatEnv() as Environment } =
     options;
+
+  // Import legacy theme components
+  const { baseTheme } = require("./base");
+  const { lightTheme } = require("./variants/light");
+  const { darkTheme } = require("./variants/dark");
 
   // Start with base theme
   let theme = createTheme(baseTheme);
@@ -42,14 +138,14 @@ export const createAbzuTheme = (options: AbzuThemeOptions = {}): Theme => {
     palette: {
       primary: {
         ...theme.palette.primary,
-        main: getEnvironmentColor(environment),
+        main: getEnvironmentColorLegacy(environment),
       },
     },
     components: {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: getEnvironmentColor(environment),
+            backgroundColor: getEnvironmentColorLegacy(environment),
             "&::after":
               environment !== "prod"
                 ? {
@@ -72,7 +168,7 @@ export const createAbzuTheme = (options: AbzuThemeOptions = {}): Theme => {
   return theme;
 };
 
-const getEnvironmentColor = (env: Environment): string => {
+const getEnvironmentColorLegacy = (env: Environment): string => {
   switch (env.toLowerCase()) {
     case "development":
       return "#457645";
@@ -82,6 +178,13 @@ const getEnvironmentColor = (env: Environment): string => {
     default:
       return "#181C56";
   }
+};
+
+/**
+ * Clear theme config cache (useful for development/testing)
+ */
+export const clearThemeConfigCache = (): void => {
+  cachedThemeConfig = null;
 };
 
 export * from "./base";

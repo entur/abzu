@@ -13,15 +13,24 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { CssBaseline } from "@mui/material";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { ThemeProvider as MuiThemeProvider, Theme } from "@mui/material/styles";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getTiamatEnv } from "../config/themeConfig";
-import { createAbzuTheme, Environment, ThemeVariant } from "./index";
+import { loadThemeConfig } from "./config/loader";
+import { AbzuThemeConfig } from "./config/types";
+import {
+  createAbzuTheme,
+  createAbzuThemeLegacy,
+  Environment,
+  ThemeVariant,
+} from "./index";
 
 interface ThemeContextType {
   themeVariant: ThemeVariant;
   setThemeVariant: (variant: ThemeVariant) => void;
   environment: Environment;
+  themeConfig?: AbzuThemeConfig;
+  isConfigLoaded: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -37,11 +46,13 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: React.ReactNode;
   defaultVariant?: ThemeVariant;
+  useConfigFiles?: boolean;
 }
 
 export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   defaultVariant = "light",
+  useConfigFiles = true,
 }) => {
   const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
     // Check for saved theme preference
@@ -49,23 +60,89 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     return (saved as ThemeVariant) || defaultVariant;
   });
 
+  const [themeConfig, setThemeConfig] = useState<AbzuThemeConfig | undefined>(
+    undefined,
+  );
+  const [isConfigLoaded, setIsConfigLoaded] = useState(!useConfigFiles);
+  const [theme, setTheme] = useState<Theme | null>(null);
+
   const environment = getTiamatEnv() as Environment;
+
+  // Load theme configuration on mount
+  useEffect(() => {
+    if (useConfigFiles) {
+      loadThemeConfig()
+        .then((config) => {
+          setThemeConfig(config);
+          setIsConfigLoaded(true);
+        })
+        .catch((error) => {
+          console.warn(
+            "Failed to load theme config, falling back to legacy theme:",
+            error,
+          );
+          setIsConfigLoaded(true);
+        });
+    }
+  }, [useConfigFiles]);
+
+  // Create theme when config or variant changes
+  useEffect(() => {
+    if (isConfigLoaded) {
+      if (themeConfig && useConfigFiles) {
+        // Use new config-driven theme
+        createAbzuTheme({
+          variant: themeVariant,
+          environment,
+          config: themeConfig,
+        })
+          .then(setTheme)
+          .catch((error) => {
+            console.warn(
+              "Failed to create config-driven theme, falling back to legacy:",
+              error,
+            );
+            setTheme(
+              createAbzuThemeLegacy({ variant: themeVariant, environment }),
+            );
+          });
+      } else {
+        // Fallback to legacy theme
+        setTheme(createAbzuThemeLegacy({ variant: themeVariant, environment }));
+      }
+    }
+  }, [themeVariant, environment, themeConfig, isConfigLoaded, useConfigFiles]);
 
   // Save theme preference
   useEffect(() => {
     localStorage.setItem("abzu-theme-variant", themeVariant);
   }, [themeVariant]);
 
-  const theme = createAbzuTheme({
-    variant: themeVariant,
-    environment,
-  });
-
   const contextValue: ThemeContextType = {
     themeVariant,
     setThemeVariant,
     environment,
+    themeConfig,
+    isConfigLoaded,
   };
+
+  // Show loading state while theme is being created
+  if (!theme || !isConfigLoaded) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontFamily: "Roboto, sans-serif",
+          color: "#666",
+        }}
+      >
+        Loading theme...
+      </div>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={contextValue}>

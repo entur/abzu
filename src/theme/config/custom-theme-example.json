@@ -1,0 +1,107 @@
+{
+  "name": "Custom Abzu Theme",
+  "version": "1.0.0",
+  "description": "Example custom theme configuration showing how to customize colors and styling",
+  "author": "Custom Organization",
+
+  "palette": {
+    "primary": {
+      "main": "#1976d2",
+      "dark": "#115293",
+      "light": "#42a5f5",
+      "contrastText": "#fff"
+    },
+    "secondary": {
+      "main": "#dc004e",
+      "dark": "#9a0036",
+      "light": "#e33371",
+      "contrastText": "#fff"
+    },
+    "tertiary": {
+      "main": "#ed6c02",
+      "dark": "#a84b00",
+      "light": "#ff9800",
+      "contrastText": "#fff"
+    },
+    "success": {
+      "main": "#388e3c",
+      "dark": "#2e7d32",
+      "light": "#4caf50"
+    },
+    "background": {
+      "default": "#f8f9fa",
+      "paper": "#ffffff"
+    }
+  },
+
+  "typography": {
+    "fontFamily": "\"Inter\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    "h1": {
+      "fontSize": "3rem",
+      "fontWeight": 700,
+      "lineHeight": 1.1
+    },
+    "h2": {
+      "fontSize": "2.25rem",
+      "fontWeight": 600,
+      "lineHeight": 1.2
+    },
+    "button": {
+      "textTransform": "uppercase",
+      "fontWeight": 600
+    }
+  },
+
+  "shape": {
+    "borderRadius": 12
+  },
+
+  "spacing": 10,
+
+  "environment": {
+    "development": {
+      "color": "#9c27b0",
+      "showBadge": true
+    },
+    "test": {
+      "color": "#ff5722",
+      "showBadge": true
+    },
+    "prod": {
+      "color": "#1976d2",
+      "showBadge": false
+    }
+  },
+
+  "assets": {
+    "logo": "/custom-logo.png",
+    "favicon": "/custom-favicon.ico"
+  },
+
+  "components": {
+    "MuiButton": {
+      "borderRadius": 12,
+      "textTransform": "uppercase",
+      "fontWeight": 600
+    },
+    "MuiCard": {
+      "elevation": 2,
+      "borderRadius": 12
+    },
+    "MuiAppBar": {
+      "elevation": 0
+    },
+    "MuiTextField": {
+      "variant": "outlined",
+      "borderRadius": 12
+    }
+  },
+
+  "customProperties": {
+    "headerHeight": 72,
+    "sidebarWidth": 320,
+    "contentMaxWidth": 1400,
+    "primaryGradient": "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
+    "cardShadow": "0 4px 20px rgba(25, 118, 210, 0.15)"
+  }
+}
