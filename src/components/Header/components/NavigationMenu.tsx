@@ -21,6 +21,7 @@ import {
   Settings,
 } from "@mui/icons-material";
 import {
+  Box,
   Divider,
   IconButton,
   List,
@@ -60,6 +61,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [openSubmenu, setOpenSubmenu] = React.useState<string | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile) {
@@ -72,6 +74,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const handleClose = () => {
     setAnchorEl(null);
     setMobileMenuOpen(false);
+    setOpenSubmenu(null);
+  };
+
+  const handleSubmenuToggle = (submenuKey: string) => {
+    setOpenSubmenu(openSubmenu === submenuKey ? null : submenuKey);
   };
 
   // Translations
@@ -148,7 +155,14 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     }
 
     if (item.type === "custom") {
-      return <item.component key={item.key} onClose={handleClose} />;
+      return (
+        <item.component
+          key={item.key}
+          onClose={handleClose}
+          isOpen={openSubmenu === item.key}
+          onToggle={() => handleSubmenuToggle(item.key)}
+        />
+      );
     }
 
     if (item.type === "submenu") {
@@ -157,6 +171,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           key={item.key}
           onClose={handleClose}
           isMobile={isMobile}
+          isOpen={openSubmenu === item.key}
+          onToggle={() => handleSubmenuToggle(item.key)}
         />
       );
     }
@@ -211,15 +227,28 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           open={mobileMenuOpen}
           onClose={handleClose}
           onOpen={() => setMobileMenuOpen(true)}
-          PaperProps={{
-            sx: {
-              width: 280,
-              maxWidth: "80vw",
-              pt: 2,
+          slotProps={{
+            paper: {
+              sx: {
+                width: 320,
+                maxWidth: "90vw",
+                pt: 2,
+                display: "flex",
+                flexDirection: "column",
+                maxHeight: "100vh",
+              },
             },
           }}
         >
-          <List sx={{ px: 1 }}>{menuItems.map(renderMenuItem)}</List>
+          <List
+            sx={{
+              px: 1,
+              overflow: "auto",
+              flex: 1,
+            }}
+          >
+            {menuItems.map(renderMenuItem)}
+          </List>
 
           <ComponentToggle
             feature={`${config.extPath}/AdditionalMenuSection`}
@@ -252,15 +281,38 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 350,
+              maxHeight: "calc(100vh - 120px)",
+              borderRadius: 2,
+              boxShadow: theme.shadows[8],
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+        }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        disableAutoFocus
+        disableEnforceFocus
       >
-        {menuItems.map(renderMenuItem)}
+        <Box
+          sx={{
+            overflow: "auto",
+            flex: 1,
+            py: 1,
+          }}
+        >
+          {menuItems.map(renderMenuItem)}
 
-        <ComponentToggle
-          feature={`${config.extPath}/AdditionalMenuSection`}
-          renderFallback={() => <></>}
-        />
+          <ComponentToggle
+            feature={`${config.extPath}/AdditionalMenuSection`}
+            renderFallback={() => <></>}
+          />
+        </Box>
       </Menu>
     </>
   );

@@ -20,17 +20,20 @@ import { DEFAULT_LOCALE } from "../../localization/localization";
 interface LanguageMenuProps {
   onClose: () => void;
   isMobile?: boolean;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
 export const LanguageMenu: React.FC<LanguageMenuProps> = ({
   onClose,
   isMobile = false,
+  isOpen = false,
+  onToggle,
 }) => {
   const { localeConfig } = useConfig();
   const { formatMessage, locale } = useIntl();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const language = formatMessage({ id: "language" });
 
@@ -40,7 +43,7 @@ export const LanguageMenu: React.FC<LanguageMenuProps> = ({
   };
 
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    onToggle?.();
   };
 
   const settingItemStyle = {

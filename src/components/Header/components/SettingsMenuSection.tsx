@@ -36,15 +36,18 @@ import { useAppDispatch } from "../../../store/hooks";
 interface SettingsMenuSectionProps {
   onClose: () => void;
   isMobile: boolean;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
 export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   isMobile,
+  isOpen = false,
+  onToggle,
 }) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = React.useState(false);
 
   // Redux selectors
   const isPublicCodePrivateCodeOnStopPlacesEnabled = useSelector(
@@ -122,7 +125,7 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   };
 
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    onToggle?.();
   };
 
   const settingItemStyle = {
@@ -132,6 +135,10 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
     mx: 1,
     mb: 0.5,
     fontSize: "0.875rem",
+    minHeight: 40,
+    display: "flex",
+    alignItems: "center",
+    whiteSpace: "normal",
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
     },
@@ -231,7 +238,19 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
                     <Box sx={{ width: 20, height: 20 }} />
                   )}
                 </ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText
+                  primary={item.label}
+                  slotProps={{
+                    primary: {
+                      sx: {
+                        fontSize: "0.8125rem",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        overflow: "hidden",
+                      },
+                    },
+                  }}
+                />
               </MenuItem>
             ))}
           </MenuList>
