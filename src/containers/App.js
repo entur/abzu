@@ -13,11 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { ComponentToggle } from "@entur/react-component-toggle";
-import {
-  createTheme,
-  ThemeProvider as MuiThemeProvider,
-  StyledEngineProvider,
-} from "@mui/material/styles";
+import { StyledEngineProvider } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
@@ -29,12 +25,11 @@ import Header from "../components/Header/Header";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
-import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
 import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
+import { AbzuThemeProvider } from "../theme/ThemeProvider";
 
-const muiTheme = createTheme(getTheme());
 const Settings = new SettingsManager();
 
 const App = ({ children }) => {
@@ -112,17 +107,17 @@ const App = ({ children }) => {
         <ComponentToggle
           feature={`${extPath}/CustomThemeProvider`}
           renderFallback={() => (
-            <MuiThemeProvider theme={muiTheme}>
+            <AbzuThemeProvider>
               <div>
-                <Header config={config} />
+                <Header config={{ extPath, mapConfig, localeConfig }} />
                 {children}
                 <SnackbarWrapper />
               </div>
-            </MuiThemeProvider>
+            </AbzuThemeProvider>
           )}
         >
           <div>
-            <Header config={config} />
+            <Header config={{ extPath, mapConfig, localeConfig }} />
             {children}
             <SnackbarWrapper />
           </div>
