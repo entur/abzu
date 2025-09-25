@@ -45,7 +45,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { isMobile } = useResponsive();
   const { environmentBadge, environment } = useEnvironmentStyles();
 
-  // Redux selectors
   const stopHasBeenModified = useSelector(
     (state: any) => state.stopPlace.stopHasBeenModified,
   );
@@ -57,11 +56,9 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   );
   const preferredName = useSelector((state: any) => state.user.preferredName);
 
-  // Local state
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = React.useState(false);
   const [actionOnDone, setActionOnDone] = React.useState<string>("GoToMain");
 
-  // Handlers
   const handleConfirmChangeRoute = (nextAction: () => void, action: string) => {
     if (isDisplayingReports) {
       nextAction();
@@ -113,7 +110,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
     }
   };
 
-  // Theme and styling
   const title = formatMessage({ id: "_title" });
   const logo = getLogo();
 
@@ -142,7 +138,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               px: { xs: 1, sm: 2 },
             }}
           >
-            {/* Logo Section */}
             <AppLogo
               logo={logo}
               config={config}
@@ -150,7 +145,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               isMobile={isMobile}
             />
 
-            {/* Title Section */}
             <Box sx={{ flexGrow: 1, ml: { xs: 1, sm: 2 } }}>
               <Typography
                 variant="h6"
@@ -166,7 +160,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               >
                 <span className="app-title--override">{title}</span>
 
-                {/* Environment Badge */}
                 {environmentBadge && (
                   <EnvironmentBadge
                     environment={environment}
@@ -177,7 +170,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               </Typography>
             </Box>
 
-            {/* User Authentication Section */}
             <UserSection
               isAuthenticated={auth.isAuthenticated}
               preferredName={preferredName}
@@ -186,7 +178,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               isMobile={isMobile}
             />
 
-            {/* Navigation Menu */}
             <NavigationMenu
               config={config}
               onConfirmChangeRoute={handleConfirmChangeRoute}
@@ -202,7 +193,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
         </Container>
       </AppBar>
 
-      {/* Confirm Dialog */}
       <ConfirmDialog
         open={isConfirmDialogOpen}
         handleClose={() => setIsConfirmDialogOpen(false)}

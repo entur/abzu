@@ -13,8 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { getFetchedConfig } from "../../config/fetchConfig";
-import customThemeExample from "./custom-theme-example.json";
-import defaultThemeConfig from "./default-theme-config.json";
+import defaultThemeConfig from "./default-theme.json";
 import themeVariantsConfig from "./theme-variants-config.json";
 import {
   AbzuThemeConfig,
@@ -129,28 +128,24 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
   try {
     let config: AbzuThemeConfig;
 
-    // Check for theme config in runtime configuration (bootstrap.json)
-    const runtimeConfig = getFetchedConfig();
-    const runtimeThemeConfig = runtimeConfig?.themeConfig;
+    const appConfig = getFetchedConfig();
+    const themeConfigPath = appConfig?.themeConfig;
 
-    // Check for custom theme config via environment variable
-    const customThemeConfig =
-      import.meta.env.VITE_THEME_CONFIG || runtimeThemeConfig;
-
-    if (customThemeConfig) {
+    if (themeConfigPath) {
       try {
-        console.log(`Loading custom theme config: ${customThemeConfig}`);
+        console.log(`Loading custom theme config from: ${themeConfigPath}`);
 
-        // For development, use static imports with known theme configs
-        if (customThemeConfig.includes("custom-theme-example.json")) {
-          config = customThemeExample as AbzuThemeConfig;
-        } else {
-          // Fallback for unknown configs
-          console.warn(
-            `Unknown theme config: ${customThemeConfig}, using default`,
+        // Fetch the theme config JSON file
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}${themeConfigPath}`,
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch theme config: ${response.status} ${response.statusText}`,
           );
-          config = defaultThemeConfig as AbzuThemeConfig;
         }
+
+        config = await response.json();
 
         console.log("Successfully loaded custom theme config:", config.name);
         console.log("Theme palette:", config.palette);
@@ -162,6 +157,7 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
         config = defaultThemeConfig as AbzuThemeConfig;
       }
     } else {
+      console.warn("No theme config path found, using default");
       config = defaultThemeConfig as AbzuThemeConfig;
     }
 
