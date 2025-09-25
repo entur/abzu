@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { getFetchedConfig } from "../../config/fetchConfig";
+import customThemeExample from "./custom-theme-example.json";
 import defaultThemeConfig from "./default-theme-config.json";
 import themeVariantsConfig from "./theme-variants-config.json";
 import {
@@ -127,18 +129,35 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
   try {
     let config: AbzuThemeConfig;
 
+    // Check for theme config in runtime configuration (bootstrap.json)
+    const runtimeConfig = getFetchedConfig();
+    const runtimeThemeConfig = runtimeConfig?.themeConfig;
+
     // Check for custom theme config via environment variable
-    const customThemeConfig = import.meta.env.VITE_THEME_CONFIG;
+    const customThemeConfig =
+      import.meta.env.VITE_THEME_CONFIG || runtimeThemeConfig;
 
     if (customThemeConfig) {
       try {
-        // In a real implementation, you might load this from a URL or build-time asset
-        // For now, we'll use the default as fallback
-        console.log(`Custom theme config specified: ${customThemeConfig}`);
-        config = defaultThemeConfig as AbzuThemeConfig;
+        console.log(`Loading custom theme config: ${customThemeConfig}`);
+
+        // For development, use static imports with known theme configs
+        if (customThemeConfig.includes("custom-theme-example.json")) {
+          config = customThemeExample as AbzuThemeConfig;
+        } else {
+          // Fallback for unknown configs
+          console.warn(
+            `Unknown theme config: ${customThemeConfig}, using default`,
+          );
+          config = defaultThemeConfig as AbzuThemeConfig;
+        }
+
+        console.log("Successfully loaded custom theme config:", config.name);
+        console.log("Theme palette:", config.palette);
       } catch (error) {
         console.warn(
           "Failed to load custom theme config, falling back to default",
+          error,
         );
         config = defaultThemeConfig as AbzuThemeConfig;
       }

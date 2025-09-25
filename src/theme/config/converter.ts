@@ -23,19 +23,23 @@ export const convertConfigToThemeOptions = (
 ): ThemeOptions => {
   const themeOptions: ThemeOptions = {};
 
-  // Convert palette
+  // Convert palette - only assign defined properties
   if (config.palette) {
-    themeOptions.palette = {
-      primary: config.palette.primary,
-      secondary: config.palette.secondary,
-      tertiary: config.palette.tertiary,
-      error: config.palette.error,
-      warning: config.palette.warning,
-      info: config.palette.info,
-      success: config.palette.success,
-      background: config.palette.background,
-      text: config.palette.text,
-    };
+    themeOptions.palette = {};
+
+    if (config.palette.primary)
+      themeOptions.palette.primary = config.palette.primary;
+    if (config.palette.secondary)
+      themeOptions.palette.secondary = config.palette.secondary;
+    if (config.palette.error) themeOptions.palette.error = config.palette.error;
+    if (config.palette.warning)
+      themeOptions.palette.warning = config.palette.warning;
+    if (config.palette.info) themeOptions.palette.info = config.palette.info;
+    if (config.palette.success)
+      themeOptions.palette.success = config.palette.success;
+    if (config.palette.background)
+      themeOptions.palette.background = config.palette.background;
+    if (config.palette.text) themeOptions.palette.text = config.palette.text;
 
     // Add custom palette properties if needed
     if (config.palette.tertiary) {
@@ -295,18 +299,6 @@ export const getEnvironmentOverrides = (
         styleOverrides: {
           root: {
             backgroundColor: envConfig.color,
-            "&::after": envConfig.showBadge
-              ? {
-                  content: `"${environment.toUpperCase()}"`,
-                  position: "absolute",
-                  top: 8,
-                  right: 16,
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                  color: "rgba(255, 255, 255, 0.8)",
-                  textTransform: "uppercase",
-                }
-              : undefined,
           },
         },
       },

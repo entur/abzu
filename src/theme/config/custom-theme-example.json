@@ -28,9 +28,28 @@
       "dark": "#2e7d32",
       "light": "#4caf50"
     },
+    "error": {
+      "main": "#d32f2f",
+      "dark": "#c62828",
+      "light": "#ef5350"
+    },
+    "warning": {
+      "main": "#ed6c02",
+      "dark": "#e65100",
+      "light": "#ff9800"
+    },
+    "info": {
+      "main": "#0288d1",
+      "dark": "#01579b",
+      "light": "#03a9f4"
+    },
     "background": {
       "default": "#f8f9fa",
       "paper": "#ffffff"
+    },
+    "text": {
+      "primary": "rgba(0, 0, 0, 0.87)",
+      "secondary": "rgba(0, 0, 0, 0.6)"
     }
   },
 
@@ -53,14 +72,14 @@
   },
 
   "shape": {
-    "borderRadius": 12
+    "borderRadius": 1
   },
 
   "spacing": 10,
 
   "environment": {
     "development": {
-      "color": "#9c27b0",
+      "color": "#123456",
       "showBadge": true
     },
     "test": {
@@ -80,7 +99,7 @@
 
   "components": {
     "MuiButton": {
-      "borderRadius": 12,
+      "borderRadius": 1,
       "textTransform": "uppercase",
       "fontWeight": 600
     },
@@ -93,7 +112,7 @@
     },
     "MuiTextField": {
       "variant": "outlined",
-      "borderRadius": 12
+      "borderRadius": 1
     }
   },
 

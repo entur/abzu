@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
-import Header from "../components/Header/Header";
+import { ModernHeader } from "../components/Header/ModernHeader";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
@@ -109,7 +109,7 @@ const App = ({ children }) => {
           renderFallback={() => (
             <AbzuThemeProvider>
               <div>
-                <Header config={{ extPath, mapConfig, localeConfig }} />
+                <ModernHeader config={{ extPath, mapConfig, localeConfig }} />
                 {children}
                 <SnackbarWrapper />
               </div>
@@ -117,7 +117,7 @@ const App = ({ children }) => {
           )}
         >
           <div>
-            <Header config={{ extPath, mapConfig, localeConfig }} />
+            <ModernHeader config={{ extPath, mapConfig, localeConfig }} />
             {children}
             <SnackbarWrapper />
           </div>

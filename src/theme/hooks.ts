@@ -15,6 +15,9 @@ limitations under the Licence. */
 import { useTheme as useMuiTheme } from "@mui/material/styles";
 import { useResponsive } from "./utils";
 
+// Re-export useResponsive for convenience
+export { useResponsive } from "./utils";
+
 /**
  * Hook to access the current MUI theme with Abzu extensions
  */

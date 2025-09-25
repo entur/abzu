@@ -146,19 +146,6 @@ export const createAbzuThemeLegacy = (
         styleOverrides: {
           root: {
             backgroundColor: getEnvironmentColorLegacy(environment),
-            "&::after":
-              environment !== "prod"
-                ? {
-                    content: `"${environment.toUpperCase()}"`,
-                    position: "absolute",
-                    top: 8,
-                    right: 16,
-                    fontSize: "0.75rem",
-                    fontWeight: 500,
-                    color: "rgba(255, 255, 255, 0.8)",
-                    textTransform: "uppercase",
-                  }
-                : undefined,
           },
         },
       },

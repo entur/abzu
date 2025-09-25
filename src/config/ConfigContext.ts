@@ -21,6 +21,10 @@ export interface Config {
    *    CustomLogo;
    */
   extPath?: string;
+  /**
+   * Path to theme configuration file (e.g., "src/theme/config/custom-theme-example.json")
+   */
+  themeConfig?: string;
 }
 
 export interface MapConfig {

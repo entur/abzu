@@ -52,7 +52,7 @@ interface ThemeProviderProps {
 export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   defaultVariant = "light",
-  useConfigFiles = true,
+  useConfigFiles = true, // Re-enable new theme system
 }) => {
   const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
     // Check for saved theme preference
