@@ -333,8 +333,6 @@
   "permanently_terminate_warning": "Tämä pysäkin päätös on peruuttamaton. Käytä varoen.",
   "platform": "Laituri",
   "port": "Satama",
-  "private": "Yksityinen",
-  "log_in_to_view": "Kirjaudu sisään nähdäksesi",
   "privateCode": "Yksityinen koodi",
   "publicCode": "Julkinen koodi",
   "publicCode_privateCode_setting_label": "Pysäkkien julkiset ja yksityiset koodit",

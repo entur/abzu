@@ -333,8 +333,6 @@
   "permanently_terminate_warning": "Dette vil legge ned stoppstedet permanent. Det er ikke mulig å reversere.",
   "platform": "Plattform",
   "port": "Kai",
-  "private": "Privat",
-  "log_in_to_view": "Logg inn for å se",
   "privateCode": "Internkode",
   "publicCode": "Publikumskode",
   "publicCode_privateCode_setting_label": "Publikumskode og internkode på stoppesteder",

@@ -333,8 +333,6 @@
   "permanently_terminate_warning": "Cette action désactivera le point d'arrêt de manière définitive. À utiliser avec précaution.",
   "platform": "Plateforme",
   "port": "Port",
-  "private": "Privé",
-  "log_in_to_view": "Connectez-vous pour voir",
   "privateCode": "Code privé",
   "publicCode": "Code public",
   "publicCode_privateCode_setting_label": "Code public et code privé pour les points d'arrêt",
