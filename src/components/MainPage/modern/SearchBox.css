@@ -1,0 +1,316 @@
+/*
+ * Modern SearchBox Styles
+ * Using CSS custom properties for theming consistency
+ */
+
+.search-box-wrapper {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 12px !important;
+  overflow: visible;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.search-box-wrapper:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+}
+
+.search-box-wrapper.mobile {
+  margin: 0;
+}
+
+.search-box-wrapper.desktop {
+  max-width: 480px;
+}
+
+.search-box-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Favorite Section Styles */
+.favorite-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.favorite-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Filter Section Styles */
+.filter-section {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.filter-toggle {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.filter-toggle button {
+  font-size: 0.75rem;
+  text-transform: none;
+  padding: 4px 12px;
+}
+
+.filter-content {
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.filter-content .filter-header {
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+}
+
+.filter-content .MuiFormGroup-root {
+  margin-top: 12px;
+}
+
+.filter-content .MuiFormControlLabel-label {
+  font-size: 0.8125rem;
+}
+
+/* Search Box Header (Mobile) */
+.search-box-header {
+  position: relative;
+  min-height: 24px;
+  margin-bottom: 8px;
+}
+
+/* Search Input Styles */
+.search-input-container {
+  position: relative;
+}
+
+.search-input-container .MuiInputAdornment-root .MuiIconButton-root {
+  transition: color 0.2s ease-in-out;
+}
+
+.search-input-container .MuiInputAdornment-root .MuiIconButton-root:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.search-input-wrapper .MuiSvgIcon-root {
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 8px;
+}
+
+/* Search Results Menu Styles */
+.search-menu-item {
+  min-width: 280px;
+  max-width: 460px;
+  white-space: normal;
+  padding: 8px 16px;
+}
+
+.search-menu-item.loading {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  gap: 8px;
+}
+
+.search-menu-item.no-results {
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
+
+.search-menu-item.filter-notification {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.filter-notification-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0; /* Override any inherited min-width */
+  width: 100%;
+}
+
+.filter-notification-title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.filter-notification-action {
+  font-size: 0.8125rem;
+  color: var(--primary-color, #1976d2);
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease-in-out;
+}
+
+.filter-notification-action:hover {
+  color: var(--primary-dark-color, #115293);
+}
+
+/* Search Result Details Styles */
+.search-result-details {
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Action Buttons Styles */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.action-buttons.mobile {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-button-primary {
+  flex: 1;
+  min-width: 0;
+}
+
+.action-button-secondary {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Topographical Filter Styles */
+.topographical-filter {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topo-chip {
+  font-size: 0.8125rem;
+  height: 28px;
+}
+
+/* Loading Spinner */
+.search-loading-spinner {
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Floating Action Button Styles */
+.search-fab {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-fab:hover {
+  transform: scale(1.1);
+}
+
+/* Collapsible Search Box Animation */
+.search-box-wrapper {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 600px) {
+  .search-box-wrapper.mobile {
+    /* Ensure search box doesn't overlap with map controls */
+    right: 60px !important; /* Leave space for map layer selector */
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .search-box-content {
+    padding: 12px;
+    gap: 12px;
+    position: relative;
+  }
+
+  .search-box-header + * {
+    margin-top: 8px;
+  }
+
+  .favorite-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .favorite-actions {
+    justify-content: space-between;
+  }
+
+  .search-menu-item {
+    min-width: auto;
+    max-width: calc(100vw - 120px); /* Account for FAB and map controls */
+    padding: 6px 2px 6px 0; /* Reduced left padding on mobile */
+  }
+
+  .filter-content {
+    padding: 12px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .search-menu-item {
+    min-width: 260px;
+    max-width: 440px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .search-box-wrapper {
+    border: 2px solid;
+  }
+
+  .filter-section {
+    border: 2px solid;
+  }
+
+  .search-result-details {
+    border: 2px solid;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .search-box-wrapper {
+    transition: none;
+  }
+
+  .search-loading-spinner {
+    animation: none;
+  }
+
+  .filter-notification-action {
+    transition: none;
+  }
+}

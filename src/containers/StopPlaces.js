@@ -20,7 +20,7 @@ import {
   getStopPlaceById,
 } from "../actions/TiamatActions";
 import Loader from "../components/Dialogs/Loader";
-import SearchBox from "../components/MainPage/SearchBox";
+import { SearchBox } from "../components/MainPage/modern";
 import StopPlacesMap from "../components/Map/StopPlacesMap";
 import formatHelpers from "../modelUtils/mapToClient";
 import "../styles/main.css";
