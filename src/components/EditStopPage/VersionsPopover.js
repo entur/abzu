@@ -46,11 +46,7 @@ class VersionsPopover extends Component {
 
   render() {
     const { open, anchorEl } = this.state;
-    const { versions, buttonLabel, hide, intl } = this.props;
-    const { formatMessage } = intl;
-
-    const privateMessage = formatMessage({ id: "private" });
-    const logInToViewMessage = formatMessage({ id: "log_in_to_view" });
+    const { versions, buttonLabel, hide } = this.props;
 
     if (hide) return null;
 
@@ -101,12 +97,7 @@ class VersionsPopover extends Component {
                       {version.changedBy}: {version.versionComment || ""}
                     </span>
                   ) : (
-                    <span className="hidden-user-container">
-                      <span title={logInToViewMessage} className="hidden-user">
-                        {privateMessage}
-                      </span>
-                      <span>: {version.versionComment || ""}</span>
-                    </span>
+                    <span>{version.versionComment || ""}</span>
                   )}
                 </div>
               </div>
