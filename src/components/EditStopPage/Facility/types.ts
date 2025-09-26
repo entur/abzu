@@ -16,6 +16,9 @@ export enum FacilityDetail {
   SEATS = "seats",
   ENCLOSED = "enclosed",
   HEATED = "heated",
+  NUMBER_OF_MACHINES = "numberOfMachines",
+  AUDIO_INTERFACE_AVAILABLE = "audioInterfaceAvailable",
+  TACTILE_INTERFACE_AVAILABLE = "tactileInterfaceAvailable",
 }
 
 /**
@@ -30,9 +33,15 @@ export interface FacilityProps {
   id?: string;
 }
 
-export interface WaitingEquipmentDetails {
+export interface WaitingRoomDetailFields {
   stepFree?: boolean;
-  seats?: number | string;
+  seats?: number;
   heated?: boolean;
   enclosed?: boolean;
+}
+
+export interface TicketMachineDetailFields {
+  numberOfMachines?: number;
+  audioInterfaceAvailable?: boolean;
+  tactileInterfaceAvailable?: boolean;
 }

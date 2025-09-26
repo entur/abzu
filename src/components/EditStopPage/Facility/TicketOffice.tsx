@@ -25,7 +25,7 @@ const TicketOffice = ({
       return;
     }
 
-    const newTicketMachinesState = value
+    const newTicketOfficeState = value
       ? defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isChecked
       : defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isUnChecked;
     const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
@@ -34,7 +34,7 @@ const TicketOffice = ({
       EquipmentActions.updateTicketOfficeState(
         {
           ...ticketingEquipment,
-          ...newTicketMachinesState,
+          ...newTicketOfficeState,
         },
         entityType,
         id || index,

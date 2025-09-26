@@ -290,6 +290,8 @@ const mockBusStop = {
               ticketOffice: null,
               ticketMachines: null,
               numberOfMachines: 7,
+              audioInterfaceAvailable: false,
+              tactileInterfaceAvailable: false,
               __typename: "TicketingEquipment",
             },
           ],

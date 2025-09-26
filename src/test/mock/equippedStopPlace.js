@@ -32,6 +32,8 @@ export default {
         ticketOffice: true,
         ticketMachines: true,
         numberOfMachines: 7,
+        audioInterfaceAvailable: false,
+        tactileInterfaceAvailable: false,
       },
     ],
     cycleStorageEquipment: [
