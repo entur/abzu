@@ -35,6 +35,27 @@ export interface SearchResult {
   submode?: string;
   transportMode?: string;
   weighting?: string;
+
+  // Additional properties for detailed results
+  topographicPlace?: string;
+  parentTopographicPlace?: string;
+  belongsToGroup?: boolean;
+  groups?: Array<{ id: string; name: string }>;
+  importedId?: string[];
+  children?: SearchResult[];
+  members?: SearchResult[];
+  quays?: Array<{
+    id: string;
+    publicCode?: string;
+    privateCode?: { value: string };
+    importedId?: string[];
+  }>;
+  isMissingLocation?: boolean;
+  accessibilityAssessment?: {
+    limitations?: {
+      wheelchairAccess?: string;
+    };
+  };
 }
 
 export interface TopographicalPlace {

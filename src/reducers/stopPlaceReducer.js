@@ -352,6 +352,12 @@ const stopPlaceReducer = (state = initialState, action) => {
       return newState;
 
     case types.SET_ACTIVE_MARKER:
+      if (action.payload === null) {
+        // Handle clearing the active marker
+        return Object.assign({}, state, {
+          activeSearchResult: null,
+        });
+      }
       return Object.assign({}, state, {
         activeSearchResult: action.payload,
         centerPosition: getProperCenterLocation(action.payload.location),

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { Helmet } from "react-helmet";
@@ -28,6 +28,7 @@ import { AppLogo } from "./components/AppLogo";
 import { EnvironmentBadge } from "./components/EnvironmentBadge";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { UserSection } from "./components/UserSection";
+import { HeaderSearch } from "./HeaderSearch";
 
 interface ModernHeaderProps {
   config: {
@@ -130,67 +131,81 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             : "none",
         }}
       >
-        <Container maxWidth="xl">
-          <Toolbar
-            disableGutters
+        <Toolbar
+          disableGutters
+          sx={{
+            minHeight: { xs: 56, sm: 64 },
+            px: { xs: 1, sm: 2 },
+            width: "100%",
+          }}
+        >
+          <AppLogo
+            logo={logo}
+            config={config}
+            onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
+            isMobile={isMobile}
+          />
+
+          <Box sx={{ ml: { xs: 1, sm: 2 } }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
+                fontWeight: 500,
+                color: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              {/* Show title on desktop only */}
+              {!isMobile && (
+                <span className="app-title--override">{title}</span>
+              )}
+
+              {environmentBadge && (
+                <EnvironmentBadge
+                  environment={environment}
+                  badge={environmentBadge}
+                  isMobile={isMobile}
+                />
+              )}
+            </Typography>
+          </Box>
+
+          {/* Search component in the center */}
+          <Box
             sx={{
-              minHeight: { xs: 56, sm: 64 },
-              px: { xs: 1, sm: 2 },
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              mx: 2,
             }}
           >
-            <AppLogo
-              logo={logo}
-              config={config}
-              onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
-              isMobile={isMobile}
-            />
+            <HeaderSearch />
+          </Box>
 
-            <Box sx={{ flexGrow: 1, ml: { xs: 1, sm: 2 } }}>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
-                  fontWeight: 500,
-                  color: "inherit",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <span className="app-title--override">{title}</span>
+          <UserSection
+            isAuthenticated={auth.isAuthenticated}
+            preferredName={preferredName}
+            onLogin={handleLogin}
+            onLogout={handleLogOut}
+            isMobile={isMobile}
+          />
 
-                {environmentBadge && (
-                  <EnvironmentBadge
-                    environment={environment}
-                    badge={environmentBadge}
-                    isMobile={isMobile}
-                  />
-                )}
-              </Typography>
-            </Box>
-
-            <UserSection
-              isAuthenticated={auth.isAuthenticated}
-              preferredName={preferredName}
-              onLogin={handleLogin}
-              onLogout={handleLogOut}
-              isMobile={isMobile}
-            />
-
-            <NavigationMenu
-              config={config}
-              onConfirmChangeRoute={handleConfirmChangeRoute}
-              onGoToReports={() =>
-                handleConfirmChangeRoute(goToReports, "GoToReports")
-              }
-              isMobile={isMobile}
-              isAuthenticated={auth.isAuthenticated}
-              preferredName={preferredName}
-              onLogout={handleLogOut}
-            />
-          </Toolbar>
-        </Container>
+          <NavigationMenu
+            config={config}
+            onConfirmChangeRoute={handleConfirmChangeRoute}
+            onGoToReports={() =>
+              handleConfirmChangeRoute(goToReports, "GoToReports")
+            }
+            isMobile={isMobile}
+            isAuthenticated={auth.isAuthenticated}
+            preferredName={preferredName}
+            onLogout={handleLogOut}
+          />
+        </Toolbar>
       </AppBar>
 
       <ConfirmDialog

@@ -12,11 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useCallback, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
-// @ts-ignore - No types available for lodash.debounce
 import { MenuItem as MenuItemComponent } from "@mui/material";
 import debounce from "lodash.debounce";
+import { useCallback, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../../../actions/";
 import {
   findEntitiesWithFilters,
@@ -56,7 +55,7 @@ export const useSearchBox = ({
     useState("");
   const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
   const [createNewStopOpen, setCreateNewStopOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [anchorEl] = useState<HTMLElement | null>(null);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -128,7 +127,7 @@ export const useSearchBox = ({
   );
 
   const handleNewRequest = useCallback(
-    (event: any, result: MenuItem) => {
+    (_event: any, result: MenuItem) => {
       if (
         result &&
         typeof result.element !== "undefined" &&
@@ -153,6 +152,7 @@ export const useSearchBox = ({
           dispatch(StopPlaceActions.setMarkerOnMap(result.element));
         }
         setStopPlaceSearchValue("");
+        dispatch(UserActions.setSearchText(""));
       }
     },
     [dispatch],
@@ -185,7 +185,7 @@ export const useSearchBox = ({
 
   // Topographical place handlers
   const handleTopographicalPlaceInput = useCallback(
-    (event: any, searchText: string, reason?: string) => {
+    (_event: any, searchText: string, reason?: string) => {
       if (reason && reason === "clear") {
         setTopographicPlaceFilterValue("");
       } else {
@@ -198,7 +198,7 @@ export const useSearchBox = ({
   );
 
   const handleAddChip = useCallback(
-    (event: any, value: TopographicalDataSource | null) => {
+    (_event: any, value: TopographicalDataSource | null) => {
       if (value == null) return;
 
       const { text, type, id } = value;

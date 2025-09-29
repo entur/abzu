@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Default theme configuration for Abzu Stop Place Registry",
   "author": "Entur",
-
   "palette": {
     "primary": {
       "main": "#5AC39A",
@@ -23,120 +22,39 @@
       "light": "#64CCCE",
       "contrastText": "#fff"
     },
-    "error": {
-      "main": "#d32f2f",
-      "dark": "#c62828",
-      "light": "#ef5350"
-    },
-    "warning": {
-      "main": "#ed6c02",
-      "dark": "#e65100",
-      "light": "#ff9800"
-    },
-    "info": {
-      "main": "#0288d1",
-      "dark": "#01579b",
-      "light": "#03a9f4"
-    },
-    "success": {
-      "main": "#2e7d32",
-      "dark": "#1b5e20",
-      "light": "#4caf50"
-    },
-    "background": {
-      "default": "#fafafa",
-      "paper": "#ffffff"
-    },
+    "error": { "main": "#d32f2f", "dark": "#c62828", "light": "#ef5350" },
+    "warning": { "main": "#ed6c02", "dark": "#e65100", "light": "#ff9800" },
+    "info": { "main": "#0288d1", "dark": "#01579b", "light": "#03a9f4" },
+    "success": { "main": "#2e7d32", "dark": "#1b5e20", "light": "#4caf50" },
+    "background": { "default": "#fafafa", "paper": "#ffffff" },
     "text": {
       "primary": "rgba(0, 0, 0, 0.87)",
       "secondary": "rgba(0, 0, 0, 0.6)",
       "disabled": "rgba(0, 0, 0, 0.38)"
     }
   },
-
   "typography": {
     "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    "h1": {
-      "fontSize": "2.5rem",
-      "fontWeight": 300,
-      "lineHeight": 1.2
-    },
-    "h2": {
-      "fontSize": "2rem",
-      "fontWeight": 300,
-      "lineHeight": 1.2
-    },
-    "h3": {
-      "fontSize": "1.75rem",
-      "fontWeight": 400,
-      "lineHeight": 1.3
-    },
-    "h4": {
-      "fontSize": "1.5rem",
-      "fontWeight": 400,
-      "lineHeight": 1.4
-    },
-    "h5": {
-      "fontSize": "1.25rem",
-      "fontWeight": 500,
-      "lineHeight": 1.5
-    },
-    "h6": {
-      "fontSize": "1.125rem",
-      "fontWeight": 500,
-      "lineHeight": 1.6
-    },
-    "body1": {
-      "fontSize": "1rem",
-      "lineHeight": 1.5
-    },
-    "body2": {
-      "fontSize": "0.875rem",
-      "lineHeight": 1.43
-    },
-    "button": {
-      "textTransform": "none",
-      "fontWeight": 500
-    },
-    "caption": {
-      "fontSize": "0.75rem",
-      "lineHeight": 1.66
-    }
+    "h1": { "fontSize": "2.5rem", "fontWeight": 300, "lineHeight": 1.2 },
+    "h2": { "fontSize": "2rem", "fontWeight": 300, "lineHeight": 1.2 },
+    "h3": { "fontSize": "1.75rem", "fontWeight": 400, "lineHeight": 1.3 },
+    "h4": { "fontSize": "1.5rem", "fontWeight": 400, "lineHeight": 1.4 },
+    "h5": { "fontSize": "1.25rem", "fontWeight": 500, "lineHeight": 1.5 },
+    "h6": { "fontSize": "1.125rem", "fontWeight": 500, "lineHeight": 1.6 },
+    "body1": { "fontSize": "1rem", "lineHeight": 1.5 },
+    "body2": { "fontSize": "0.875rem", "lineHeight": 1.43 },
+    "button": { "textTransform": "none", "fontWeight": 500 },
+    "caption": { "fontSize": "0.75rem", "lineHeight": 1.66 }
   },
-
-  "shape": {
-    "borderRadius": 8
-  },
-
+  "shape": { "borderRadius": 8 },
   "spacing": 6,
-
-  "breakpoints": {
-    "xs": 0,
-    "sm": 600,
-    "md": 900,
-    "lg": 1200,
-    "xl": 1536
-  },
-
+  "breakpoints": { "xs": 0, "sm": 600, "md": 900, "lg": 1200, "xl": 1536 },
   "environment": {
-    "development": {
-      "color": "#457645",
-      "showBadge": true
-    },
-    "test": {
-      "color": "#d18e25",
-      "showBadge": true
-    },
-    "prod": {
-      "color": "#181C56",
-      "showBadge": false
-    }
+    "development": { "color": "#181C56", "showBadge": true },
+    "test": { "color": "#d18e25", "showBadge": true },
+    "prod": { "color": "#181C56", "showBadge": false }
   },
-
-  "assets": {
-    "logo": "/logo.png",
-    "favicon": "/favicon.ico"
-  },
+  "assets": { "logo": "/logo.png", "favicon": "/favicon.ico" },
 
   "components": {
     "MuiButton": {
@@ -144,16 +62,24 @@
       "textTransform": "none",
       "fontWeight": 500
     },
-    "MuiCard": {
-      "elevation": 1,
-      "borderRadius": 8
-    },
-    "MuiAppBar": {
-      "elevation": 2
-    },
-    "MuiTextField": {
-      "variant": "outlined",
-      "borderRadius": 8
+    "MuiCard": { "elevation": 1, "borderRadius": 8 },
+    "MuiAppBar": { "elevation": 2 },
+    "MuiTextField": { "variant": "outlined", "borderRadius": 8 },
+
+    "MuiAutocomplete": {
+      "styleOverrides": {
+        "root": {
+          "&.Mui-expanded .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            "border": "0 !important"
+          }
+        },
+        "paper": {
+          "borderTop": "none"
+        },
+        "popper": {
+          "[data-popper-placement*='bottom']": { "marginTop": 8 }
+        }
+      }
     }
   },
 

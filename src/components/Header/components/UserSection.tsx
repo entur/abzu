@@ -12,8 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { LoginOutlined } from "@mui/icons-material";
-import { Avatar, Box, Button, Chip, Tooltip } from "@mui/material";
+import {
+  alpha,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Tooltip,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 
@@ -32,6 +39,7 @@ export const UserSection: React.FC<UserSectionProps> = ({
   isMobile,
 }) => {
   const { formatMessage } = useIntl();
+  const theme = useTheme();
   const logIn = formatMessage({ id: "log_in" });
 
   if (!isAuthenticated) {
@@ -40,21 +48,23 @@ export const UserSection: React.FC<UserSectionProps> = ({
         <Button
           variant="contained"
           onClick={onLogin}
-          startIcon={!isMobile ? <LoginOutlined /> : undefined}
           size={isMobile ? "small" : "medium"}
           sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
-            color: "white",
+            color: theme.palette.common.white,
+            backgroundColor: alpha(theme.palette.common.white, 0.1),
             backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
+            border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
             textTransform: "none",
-            fontWeight: 500,
+            fontWeight: theme.typography.fontWeightMedium,
             "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.25)",
+              backgroundColor: alpha(theme.palette.common.white, 0.2),
+            },
+            "&:active": {
+              backgroundColor: alpha(theme.palette.common.white, 0.3),
             },
           }}
         >
-          {isMobile ? logIn.split(" ")[0] : logIn}
+          {logIn}
         </Button>
       </Box>
     );
@@ -67,10 +77,11 @@ export const UserSection: React.FC<UserSectionProps> = ({
           sx={{
             width: 32,
             height: 32,
-            fontSize: "0.875rem",
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
-            color: "white",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
+            fontSize: theme.typography.body2.fontSize,
+            backgroundColor: alpha(theme.palette.common.white, 0.15),
+            color: theme.palette.common.white,
+            border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
+            fontWeight: theme.typography.fontWeightMedium,
           }}
         >
           {preferredName ? preferredName.charAt(0).toUpperCase() : "U"}
@@ -84,22 +95,38 @@ export const UserSection: React.FC<UserSectionProps> = ({
       <Tooltip title={`Logged in as ${preferredName || "User"}`}>
         <Chip
           avatar={
-            <Avatar sx={{ width: 24, height: 24, fontSize: "0.75rem" }}>
+            <Avatar
+              sx={{
+                width: 24,
+                height: 24,
+                fontSize: theme.typography.caption.fontSize,
+                fontWeight: theme.typography.fontWeightMedium,
+              }}
+            >
               {preferredName ? preferredName.charAt(0).toUpperCase() : "U"}
             </Avatar>
           }
           label={preferredName || "User"}
           variant="outlined"
           sx={{
-            color: "white",
-            borderColor: "rgba(255, 255, 255, 0.3)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            color: theme.palette.common.white,
+            borderColor: alpha(theme.palette.common.white, 0.3),
+            backgroundColor: alpha(theme.palette.common.white, 0.1),
+            fontWeight: theme.typography.fontWeightRegular,
             "& .MuiChip-avatar": {
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
-              color: "white",
+              backgroundColor: alpha(theme.palette.common.white, 0.2),
+              color: theme.palette.common.white,
+            },
+            "& .MuiChip-label": {
+              fontWeight: theme.typography.fontWeightMedium,
+              fontSize: theme.typography.body2.fontSize,
             },
             "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              backgroundColor: alpha(theme.palette.common.white, 0.2),
+              borderColor: alpha(theme.palette.common.white, 0.4),
+            },
+            "&:active": {
+              backgroundColor: alpha(theme.palette.common.white, 0.3),
             },
           }}
         />

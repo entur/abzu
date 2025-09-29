@@ -13,6 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useTheme as useMuiTheme } from "@mui/material/styles";
+import defaultThemeConfig from "./config/default-theme.json";
+import { AbzuThemeConfig } from "./config/types";
 import { useResponsive } from "./utils";
 
 // Re-export useResponsive for convenience
@@ -41,21 +43,29 @@ export const useAbzuTheme = () => {
  */
 export const useEnvironmentStyles = () => {
   const environment = (window as any).config?.tiamatEnv || "development";
+  const themeConfig = defaultThemeConfig as AbzuThemeConfig;
+
+  const getEnvironmentConfig = () => {
+    const envKey = environment.toLowerCase();
+    const envConfigs = themeConfig.environment;
+
+    if (envKey === "development") return envConfigs?.development;
+    if (envKey === "test") return envConfigs?.test;
+    if (envKey === "prod") return envConfigs?.prod;
+
+    return null;
+  };
 
   const getEnvironmentColor = () => {
-    switch (environment.toLowerCase()) {
-      case "development":
-        return "#457645";
-      case "test":
-        return "#d18e25";
-      case "prod":
-      default:
-        return "#181C56";
-    }
+    const envConfig = getEnvironmentConfig();
+    return envConfig?.color || "#181C56";
   };
 
   const getEnvironmentBadge = () => {
-    if (environment === "prod") return null;
+    const envConfig = getEnvironmentConfig();
+
+    // Check if badge should be shown for this environment
+    if (!envConfig?.showBadge) return null;
 
     return {
       content: environment.toUpperCase(),
@@ -73,6 +83,7 @@ export const useEnvironmentStyles = () => {
     environment,
     environmentColor: getEnvironmentColor(),
     environmentBadge: getEnvironmentBadge(),
+    environmentConfig: getEnvironmentConfig(),
     isProduction: environment === "prod",
     isDevelopment: environment === "development",
     isTest: environment === "test",

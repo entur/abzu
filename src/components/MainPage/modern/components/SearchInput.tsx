@@ -74,9 +74,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             sx: {
               borderRadius: 2,
               boxShadow: theme.shadows[8],
-              border: `1px solid ${theme.palette.divider}`,
               mt: 1,
-              maxHeight: "60vh",
+              maxHeight: "80vh",
               overflow: "auto",
               maxWidth: { xs: "calc(100vw - 32px)", sm: "460px" },
               width: "100%",
@@ -84,7 +83,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           },
           popper: {
             sx: {
-              zIndex: theme.zIndex.modal + 1,
+              zIndex: theme.zIndex.modal + 10, // Higher than any dropdown content
               width: "100%",
               maxWidth: { xs: "calc(100vw - 32px)", sm: "460px" },
             },
@@ -97,40 +96,42 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             variant="outlined"
             fullWidth
             size="small"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                  {params.InputProps.endAdornment}
-                  {onToggleFilters && (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={onToggleFilters}
-                        size="small"
-                        sx={{
-                          marginRight: -1,
-                          color: showFilters
-                            ? theme.palette.primary.main
-                            : theme.palette.action.active,
-                        }}
-                        aria-label={formatMessage({ id: "toggle_filters" })}
-                      >
-                        {activeFilterCount > 0 ? (
-                          <Badge
-                            badgeContent={activeFilterCount}
-                            color="primary"
-                            variant="standard"
-                          >
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {params.InputProps.endAdornment}
+                    {onToggleFilters && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={onToggleFilters}
+                          size="small"
+                          sx={{
+                            marginRight: -1,
+                            color: showFilters
+                              ? theme.palette.primary.main
+                              : theme.palette.action.active,
+                          }}
+                          aria-label={formatMessage({ id: "toggle_filters" })}
+                        >
+                          {activeFilterCount > 0 ? (
+                            <Badge
+                              badgeContent={activeFilterCount}
+                              color="primary"
+                              variant="standard"
+                            >
+                              <FilterIcon fontSize="small" />
+                            </Badge>
+                          ) : (
                             <FilterIcon fontSize="small" />
-                          </Badge>
-                        ) : (
-                          <FilterIcon fontSize="small" />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  )}
-                </>
-              ),
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    )}
+                  </>
+                ),
+              },
             }}
             sx={{
               "& .MuiOutlinedInput-root": {
@@ -143,13 +144,20 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 },
                 "&.Mui-focused": {
                   "& > fieldset": {
-                    borderWidth: 2,
+                    borderWidth: 0,
+                    borderColor: theme.palette.primary.main,
+                  },
+                },
+                "&.Mui-expanded": {
+                  "& > fieldset": {
+                    borderWidth: 0,
+                    border: "none",
                   },
                 },
               },
               "& .MuiInputLabel-root": {
                 "&.Mui-focused": {
-                  color: theme.palette.primary.main,
+                  color: "transparent",
                 },
               },
             }}
