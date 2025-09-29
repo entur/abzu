@@ -139,12 +139,14 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             width: "100%",
           }}
         >
-          <AppLogo
-            logo={logo}
-            config={config}
-            onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
-            isMobile={isMobile}
-          />
+          <Box sx={{ ml: { xs: 2, sm: 2 } }}>
+            <AppLogo
+              logo={logo}
+              config={config}
+              onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
+              isMobile={isMobile}
+            />
+          </Box>
 
           <Box sx={{ ml: { xs: 1, sm: 2 } }}>
             <Typography
@@ -174,17 +176,22 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             </Typography>
           </Box>
 
-          {/* Search component in the center */}
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              justifyContent: "center",
-              mx: 2,
-            }}
-          >
-            <HeaderSearch />
-          </Box>
+          {/* Search component in the center - hidden on reports page */}
+          {!isDisplayingReports && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                justifyContent: "center",
+                mx: 2,
+              }}
+            >
+              <HeaderSearch />
+            </Box>
+          )}
+
+          {/* Spacer when search is hidden */}
+          {isDisplayingReports && <Box sx={{ flexGrow: 1 }} />}
 
           <UserSection
             isAuthenticated={auth.isAuthenticated}

@@ -291,7 +291,7 @@ export const HeaderSearch: React.FC = () => {
             elevation={8}
             sx={{
               position: "fixed",
-              top: 64, // Below app bar
+              top: 64,
               left: 8,
               right: 8,
               zIndex: theme.zIndex.modal + 2,
