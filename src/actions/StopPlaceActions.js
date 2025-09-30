@@ -93,6 +93,10 @@ StopPlaceActions.changeStopDescription = (description) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_STOP_DESCRIPTION, description));
 };
 
+StopPlaceActions.changeStopUrl = (url) => (dispatch) => {
+  dispatch(createThunk(types.CHANGED_STOP_URL, url));
+};
+
 StopPlaceActions.changeStopType = (type) => (dispatch) => {
   if (type === "busStation") {
     dispatch(
