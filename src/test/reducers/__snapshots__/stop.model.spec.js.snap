@@ -89,6 +89,7 @@ exports[`Model: map format from server to expected client model > should map Gra
   "tariffZones": [],
   "topographicPlace": "Aremark",
   "transportMode": null,
+  "url": null,
   "validBetween": {
     "fromDate": "2017-05-26T14:52:10.096+0200",
     "toDate": null,
@@ -181,6 +182,7 @@ exports[`Model: map format from server to expected client model > should map cli
   "submode": null,
   "tariffZones": [],
   "transportMode": null,
+  "url": null,
   "weighting": null,
 }
 `;
