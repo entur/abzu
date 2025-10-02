@@ -13,6 +13,7 @@
         "transportMode": null,
         "version": 1,
         "alternativeNames": [],
+        "url": null,
         "tags": [],
         "geometry": {
           "legacyCoordinates": [[5.435734, 60.260427]]

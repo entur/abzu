@@ -295,6 +295,16 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       };
 
+    case types.CHANGED_STOP_URL:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          url: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
     case types.CHANGED_STOP_TYPE:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithType(

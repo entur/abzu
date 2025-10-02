@@ -40,6 +40,7 @@ import {
   getTags,
   removeTag,
 } from "../../actions/TiamatActions";
+import { ConfigContext } from "../../config/ConfigContext";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import {
   AccessibilityLimitation,
@@ -73,6 +74,8 @@ import VersionsPopover from "./VersionsPopover";
 import WeightingPopover from "./WeightingPopover";
 
 class StopPlaceDetails extends React.Component {
+  static contextType = ConfigContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -85,6 +88,7 @@ class StopPlaceDetails extends React.Component {
       altNamesDialogOpen: false,
       tariffZoneOpen: false,
       tagsOpen: false,
+      url: props.stopPlace.url || "",
     };
 
     this.updateStopName = debounce((value) => {
@@ -101,6 +105,10 @@ class StopPlaceDetails extends React.Component {
 
     this.updateStopDescription = debounce((value) => {
       this.props.dispatch(StopPlaceActions.changeStopDescription(value));
+    }, 200);
+
+    this.updateStopUrl = debounce((value) => {
+      this.props.dispatch(StopPlaceActions.changeStopUrl(value));
     }, 200);
   }
 
@@ -123,6 +131,7 @@ class StopPlaceDetails extends React.Component {
       publicCode: nextProps.stopPlace.publicCode || "",
       privateCode: nextProps.stopPlace.privateCode || "",
       description: nextProps.stopPlace.description || "",
+      url: nextProps.stopPlace.url || "",
     });
     if (
       nextProps.keyValuesDialogOpen &&
@@ -264,6 +273,15 @@ class StopPlaceDetails extends React.Component {
     this.updateStopDescription(description);
   }
 
+  handleStopUrlChange(event) {
+    const url = event.target.value;
+    this.setState({
+      url: url,
+    });
+
+    this.updateStopUrl(url);
+  }
+
   handleHandleWheelChair(value) {
     if (!this.props.disabled)
       this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value));
@@ -378,6 +396,10 @@ class StopPlaceDetails extends React.Component {
     };
 
     const {
+      featureFlags: { StopPlaceUrl: featureStopPlaceUrlEnabled = false },
+    } = this.context;
+
+    const {
       stopPlace,
       intl,
       expanded,
@@ -398,6 +420,7 @@ class StopPlaceDetails extends React.Component {
       altNamesDialogOpen,
       weightingOpen,
       tariffZoneOpen,
+      url,
     } = this.state;
 
     const wheelchairAccess = getIn(
@@ -716,6 +739,19 @@ class StopPlaceDetails extends React.Component {
             />
           </ToolTippable>
         </div>
+        {featureStopPlaceUrlEnabled && (
+          <div>
+            <TextField
+              variant={"standard"}
+              hintText={formatMessage({ id: "url" })}
+              label={formatMessage({ id: "url" })}
+              fullWidth={true}
+              disabled={disabled}
+              value={url}
+              onChange={this.handleStopUrlChange.bind(this)}
+            />
+          </div>
+        )}
         {expanded ? null : (
           <div
             style={{
