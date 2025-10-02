@@ -92,7 +92,7 @@
     "redux-devtools": "3.7.0",
     "sass-embedded": "1.93.2",
     "source-map-explorer": "2.5.3",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "vite": "7.1.7",
     "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "5.1.4",
