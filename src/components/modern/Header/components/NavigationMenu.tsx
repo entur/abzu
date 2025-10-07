@@ -34,7 +34,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import { LanguageMenu } from "../LanguageMenu";
+import { LanguageMenu } from "../../../Header/LanguageMenu";
 import { SettingsMenuSection } from "./SettingsMenuSection";
 
 interface NavigationMenuProps {

@@ -213,9 +213,11 @@ export interface SearchInputProps {
   stopPlaceSearchValue: string;
   showFilters?: boolean;
   activeFilterCount?: number;
+  showFavorites?: boolean;
   onSearchUpdate: (event: any, searchText: string, reason?: string) => void;
   onNewRequest: (event: any, result: MenuItem, reason?: string) => void;
   onToggleFilters?: () => void;
+  onToggleFavorites?: () => void;
 }
 
 export interface SearchResultDetailsProps {

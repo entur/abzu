@@ -28,7 +28,7 @@ import {
 import React from "react";
 import { useIntl } from "react-intl";
 import ModalityFilter from "../../../EditStopPage/ModalityFilter";
-import TopographicalFilter from "../../TopographicalFilter";
+import TopographicalFilter from "../../../MainPage/TopographicalFilter";
 import { FilterSectionProps } from "../types";
 
 export const FilterSection: React.FC<FilterSectionProps> = ({

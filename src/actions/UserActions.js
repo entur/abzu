@@ -239,6 +239,11 @@ UserActions.changeActiveBaselayer = (layer) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_ACTIVE_BASELAYER, layer));
 };
 
+UserActions.changeUIMode = (mode) => (dispatch) => {
+  Settings.setUIMode(mode);
+  dispatch(createThunk(types.CHANGED_UI_MODE, mode));
+};
+
 UserActions.removeStopsNearbyForOverview = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null));
 };

@@ -16,6 +16,7 @@ import { ComponentToggle } from "@entur/react-component-toggle";
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
 import MdHelp from "@mui/icons-material/Help";
+import MdLanguage from "@mui/icons-material/Language";
 import MdMap from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MdReport from "@mui/icons-material/Report";
@@ -33,13 +34,13 @@ import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import { getEnvColor, getLogo, getTiamatEnv } from "../../config/themeConfig";
+import { DEFAULT_LOCALE } from "../../localization/localization";
 import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
 } from "../../reducers/zonesSlice";
 import ConfirmDialog from "./../Dialogs/ConfirmDialog";
 import MoreMenuItem from "./../MainPage/MoreMenuItem";
-import { LanguageMenu } from "./LanguageMenu";
 
 class Header extends React.Component {
   constructor(props) {
@@ -96,6 +97,10 @@ class Header extends React.Component {
     if (this.props.auth) {
       this.props.auth.logout({ returnTo: window.location.origin });
     }
+  }
+
+  handleChangeLanguage(locale) {
+    this.props.dispatch(UserActions.applyLocale(locale));
   }
 
   handleLogin() {
@@ -178,6 +183,7 @@ class Header extends React.Component {
     const logOut = formatMessage({ id: "log_out" });
     const logIn = formatMessage({ id: "log_in" });
     const settings = formatMessage({ id: "settings" });
+    const language = formatMessage({ id: "language" });
     const publicCodePrivateCodeSetting = formatMessage({
       id: "publicCode_privateCode_setting_label",
     });
@@ -517,7 +523,58 @@ class Header extends React.Component {
                   {showTariffZonesLabel}
                 </MenuItem>
               </MoreMenuItem>
-              <LanguageMenu />
+              <MenuItem
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+                onClick={() =>
+                  this.props.dispatch(UserActions.changeUIMode("modern"))
+                }
+              >
+                <MdSettings color="#41c0c4" />
+                Modern UI
+              </MenuItem>
+              <MoreMenuItem
+                openLeft={true}
+                leftIcon={<MdLanguage color="#41c0c4" />}
+                label={language}
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                {(
+                  this.props.config?.localeConfig?.locales || [DEFAULT_LOCALE]
+                ).map((localeOption) => (
+                  <MenuItem
+                    key={"language-menu-" + localeOption}
+                    style={{
+                      fontSize: 12,
+                      padding: 0,
+                      paddingBottom: 5,
+                      paddingTop: 5,
+                      width: 300,
+                    }}
+                    onClick={() => this.handleChangeLanguage(localeOption)}
+                  >
+                    {intl.locale === localeOption ? (
+                      <Check color="#41c0c4" style={{ marginLeft: 4 }} />
+                    ) : (
+                      <div
+                        style={{ width: "24px", height: "24px", marginLeft: 4 }}
+                      />
+                    )}
+                    {formatMessage({ id: localeOption })}
+                  </MenuItem>
+                ))}
+              </MoreMenuItem>
               <MenuItem
                 component={"a"}
                 href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"

@@ -22,18 +22,19 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
+import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ActionButtons,
   CoordinatesDialogs,
-  FavoriteSection,
   FilterSection,
   RootState,
   SearchInput,
   SearchResultDetails,
-} from "../MainPage/modern";
-import { useSearchBox } from "../MainPage/modern/hooks/useSearchBox";
+} from "../modern/MainPage";
+import { FavoriteStopPlaces } from "../modern/MainPage/components/FavoriteStopPlaces";
+import { useSearchBox } from "../modern/MainPage/hooks/useSearchBox";
 
 export const HeaderSearch: React.FC = () => {
   const theme = useTheme();
@@ -42,6 +43,7 @@ export const HeaderSearch: React.FC = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   const {
     chosenResult,
@@ -127,10 +129,43 @@ export const HeaderSearch: React.FC = () => {
 
   const handleCloseSearch = () => {
     setIsSearchExpanded(false);
+    setShowFavorites(false);
+    handleToggleFilter(false);
+    // Clear search input
+    handleSearchUpdate(null, "", "clear");
+    // Also clear any active search result
+    dispatch({
+      type: "SET_ACTIVE_MARKER",
+      payload: null,
+    });
   };
 
   const handleToggleFilters = () => {
-    handleToggleFilter(!showMoreFilterOptions);
+    // If filters are currently closed, we want to open them
+    if (!showMoreFilterOptions) {
+      // Close favorites first, then open filters
+      flushSync(() => {
+        setShowFavorites(false);
+      });
+      handleToggleFilter(true);
+    } else {
+      // Close filters
+      handleToggleFilter(false);
+    }
+  };
+
+  const handleToggleFavorites = () => {
+    // If favorites are currently closed, we want to open them
+    if (!showFavorites) {
+      // Close filters first, then open favorites
+      flushSync(() => {
+        handleToggleFilter(false);
+      });
+      setShowFavorites(true);
+    } else {
+      // Close favorites
+      setShowFavorites(false);
+    }
   };
 
   const handleCloseResultDetails = () => {
@@ -143,124 +178,83 @@ export const HeaderSearch: React.FC = () => {
       setIsSearchExpanded(false);
     } else {
       handleToggleFilter(false);
+      setShowFavorites(false);
     }
   };
 
-  if (!isTablet) {
+  // Unified content structure - SearchInput only for mobile
+  const renderSearchContent = () => {
     return (
-      <>
-        <CoordinatesDialogs
-          lookupCoordinatesOpen={lookupCoordinatesOpen}
-          coordinatesDialogOpen={coordinatesDialogOpen}
-          onCloseLookupCoordinates={handleCloseLookupCoordinatesDialog}
-          onSubmitLookupCoordinates={handleLookupCoordinates}
-          onCloseCoordinates={handleCloseCoordinatesDialog}
-          onSubmitCoordinates={handleSubmitCoordinates}
-        />
-
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            maxWidth: 480,
-            mx: 2,
-          }}
-        >
+      <Box sx={{ p: 2 }}>
+        {/* Only show SearchInput in dropdown for mobile */}
+        {isTablet && (
           <SearchInput
             menuItems={menuItems}
             loading={loading}
             stopPlaceSearchValue={stopPlaceSearchValue}
             showFilters={showMoreFilterOptions}
             activeFilterCount={activeFilterCount}
+            showFavorites={showFavorites}
             onSearchUpdate={handleSearchUpdate}
             onNewRequest={handleNewRequest}
             onToggleFilters={handleToggleFilters}
+            onToggleFavorites={handleToggleFavorites}
           />
+        )}
 
-          {(showMoreFilterOptions || chosenResult) && (
-            <ClickAwayListener onClickAway={handleCloseSearch}>
-              <Paper
-                elevation={8}
-                sx={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  right: 0,
-                  zIndex: theme.zIndex.modal + 2,
-                  mt: 1,
-                  maxHeight: "70vh",
-                  overflow: "auto",
-                }}
-              >
-                <Box sx={{ p: 2 }}>
-                  {showMoreFilterOptions && (
-                    <>
-                      <FavoriteSection
-                        favorited={favorited}
-                        stopTypeFilter={stopTypeFilter}
-                        onRetrieveFilter={handleRetrieveFilter}
-                        onSaveAsFavorite={handleSaveAsFavorite}
-                      />
+        {showFavorites && <FavoriteStopPlaces onClose={handleCloseSearch} />}
 
-                      <FilterSection
-                        showMoreFilterOptions={showMoreFilterOptions}
-                        stopTypeFilter={stopTypeFilter}
-                        topographicalPlacesDataSource={
-                          topographicalPlacesDataSource
-                        }
-                        topographicPlaceFilterValue={
-                          topographicPlaceFilterValue
-                        }
-                        topoiChips={topoiChips}
-                        showFutureAndExpired={showFutureAndExpired}
-                        onToggleFilter={handleToggleFilter}
-                        onApplyModalityFilters={handleApplyModalityFilters}
-                        onTopographicalPlaceInput={
-                          handleTopographicalPlaceInput
-                        }
-                        onAddChip={handleAddChip}
-                        onDeleteChip={handleDeleteChip}
-                        onToggleShowFutureAndExpired={
-                          toggleShowFutureAndExpired
-                        }
-                      />
-                    </>
-                  )}
+        {showMoreFilterOptions && (
+          <FilterSection
+            showMoreFilterOptions={showMoreFilterOptions}
+            stopTypeFilter={stopTypeFilter}
+            topographicalPlacesDataSource={topographicalPlacesDataSource}
+            topographicPlaceFilterValue={topographicPlaceFilterValue}
+            topoiChips={topoiChips}
+            showFutureAndExpired={showFutureAndExpired}
+            onToggleFilter={handleToggleFilter}
+            onApplyModalityFilters={handleApplyModalityFilters}
+            onTopographicalPlaceInput={handleTopographicalPlaceInput}
+            onAddChip={handleAddChip}
+            onDeleteChip={handleDeleteChip}
+            onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
+          />
+        )}
 
-                  {chosenResult && (
-                    <SearchResultDetails
-                      result={chosenResult}
-                      canEdit={canEdit}
-                      userSuppliedCoordinates={
-                        missingCoordinatesMap &&
-                        missingCoordinatesMap[chosenResult.id]
-                      }
-                      onEdit={handleEdit}
-                      onChangeCoordinates={handleOpenCoordinatesDialog}
-                      onClose={handleCloseResultDetails}
-                    />
-                  )}
+        {chosenResult && !showFavorites && !showMoreFilterOptions && (
+          <SearchResultDetails
+            result={chosenResult}
+            canEdit={canEdit}
+            userSuppliedCoordinates={
+              missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]
+            }
+            onEdit={handleEdit}
+            onChangeCoordinates={handleOpenCoordinatesDialog}
+            onClose={handleCloseResultDetails}
+          />
+        )}
 
-                  {!isGuest && (
-                    <ActionButtons
-                      isCreatingNewStop={isCreatingNewStop}
-                      newStopIsMultiModal={newStopIsMultiModal}
-                      createNewStopOpen={createNewStopOpen}
-                      anchorEl={anchorEl}
-                      onOpenLookupCoordinates={
-                        handleOpenLookupCoordinatesDialog
-                      }
-                      onNewStop={handleNewStop}
-                    />
-                  )}
-                </Box>
-              </Paper>
-            </ClickAwayListener>
-          )}
-        </Box>
-      </>
+        {!isGuest && (
+          <ActionButtons
+            isCreatingNewStop={isCreatingNewStop}
+            newStopIsMultiModal={newStopIsMultiModal}
+            createNewStopOpen={createNewStopOpen}
+            anchorEl={anchorEl}
+            onOpenLookupCoordinates={handleOpenLookupCoordinatesDialog}
+            onNewStop={handleNewStop}
+          />
+        )}
+      </Box>
     );
-  }
+  };
+
+  // Condition for when to show the search panel
+  const shouldShowSearchPanel = isTablet
+    ? isSearchExpanded ||
+      !!chosenResult ||
+      showFavorites ||
+      showMoreFilterOptions
+    : showMoreFilterOptions || showFavorites || !!chosenResult;
 
   return (
     <>
@@ -273,19 +267,87 @@ export const HeaderSearch: React.FC = () => {
         onSubmitCoordinates={handleSubmitCoordinates}
       />
 
-      <IconButton
-        color="inherit"
-        onClick={handleToggleSearch}
-        sx={{
-          color:
-            activeFilterCount > 0 ? theme.palette.primary.light : "inherit",
-        }}
-        aria-label={formatMessage({ id: "open_search" })}
-      >
-        <SearchIcon />
-      </IconButton>
+      {/* Desktop: Always show search input in header */}
+      {!isTablet && (
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            maxWidth: 480,
+            mx: 2,
+          }}
+        >
+          {shouldShowSearchPanel ? (
+            <ClickAwayListener onClickAway={handleCloseSearch}>
+              <Box>
+                <SearchInput
+                  menuItems={menuItems}
+                  loading={loading}
+                  stopPlaceSearchValue={stopPlaceSearchValue}
+                  showFilters={showMoreFilterOptions}
+                  activeFilterCount={activeFilterCount}
+                  showFavorites={showFavorites}
+                  onSearchUpdate={handleSearchUpdate}
+                  onNewRequest={handleNewRequest}
+                  onToggleFilters={handleToggleFilters}
+                  onToggleFavorites={handleToggleFavorites}
+                />
 
-      {isSearchExpanded && (
+                {/* Desktop dropdown - positioned relative to search input container */}
+                <Paper
+                  elevation={8}
+                  sx={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    right: 0,
+                    zIndex:
+                      showFavorites || showMoreFilterOptions
+                        ? theme.zIndex.modal + 5
+                        : theme.zIndex.modal + 2,
+                    mt: 1,
+                    maxHeight: "70vh",
+                    overflow: "auto",
+                  }}
+                >
+                  {renderSearchContent()}
+                </Paper>
+              </Box>
+            </ClickAwayListener>
+          ) : (
+            <SearchInput
+              menuItems={menuItems}
+              loading={loading}
+              stopPlaceSearchValue={stopPlaceSearchValue}
+              showFilters={showMoreFilterOptions}
+              activeFilterCount={activeFilterCount}
+              showFavorites={showFavorites}
+              onSearchUpdate={handleSearchUpdate}
+              onNewRequest={handleNewRequest}
+              onToggleFilters={handleToggleFilters}
+              onToggleFavorites={handleToggleFavorites}
+            />
+          )}
+        </Box>
+      )}
+
+      {/* Mobile: Show search icon */}
+      {isTablet && (
+        <IconButton
+          color="inherit"
+          onClick={handleToggleSearch}
+          sx={{
+            color:
+              activeFilterCount > 0 ? theme.palette.primary.light : "inherit",
+          }}
+          aria-label={formatMessage({ id: "open_search" })}
+        >
+          <SearchIcon />
+        </IconButton>
+      )}
+
+      {/* Mobile search panel */}
+      {isTablet && shouldShowSearchPanel && (
         <ClickAwayListener onClickAway={handleCloseSearch}>
           <Paper
             elevation={8}
@@ -294,72 +356,15 @@ export const HeaderSearch: React.FC = () => {
               top: 64,
               left: 8,
               right: 8,
-              zIndex: theme.zIndex.modal + 2,
+              zIndex:
+                showFavorites || showMoreFilterOptions
+                  ? theme.zIndex.modal + 5
+                  : theme.zIndex.modal + 2,
               maxHeight: "calc(100vh - 80px)",
               overflow: "auto",
             }}
           >
-            <Box sx={{ p: 2 }}>
-              <SearchInput
-                menuItems={menuItems}
-                loading={loading}
-                stopPlaceSearchValue={stopPlaceSearchValue}
-                showFilters={showMoreFilterOptions}
-                activeFilterCount={activeFilterCount}
-                onSearchUpdate={handleSearchUpdate}
-                onNewRequest={handleNewRequest}
-                onToggleFilters={handleToggleFilters}
-              />
-
-              <FavoriteSection
-                favorited={favorited}
-                stopTypeFilter={stopTypeFilter}
-                onRetrieveFilter={handleRetrieveFilter}
-                onSaveAsFavorite={handleSaveAsFavorite}
-              />
-
-              {showMoreFilterOptions && (
-                <FilterSection
-                  showMoreFilterOptions={showMoreFilterOptions}
-                  stopTypeFilter={stopTypeFilter}
-                  topographicalPlacesDataSource={topographicalPlacesDataSource}
-                  topographicPlaceFilterValue={topographicPlaceFilterValue}
-                  topoiChips={topoiChips}
-                  showFutureAndExpired={showFutureAndExpired}
-                  onToggleFilter={handleToggleFilter}
-                  onApplyModalityFilters={handleApplyModalityFilters}
-                  onTopographicalPlaceInput={handleTopographicalPlaceInput}
-                  onAddChip={handleAddChip}
-                  onDeleteChip={handleDeleteChip}
-                  onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
-                />
-              )}
-
-              {chosenResult && (
-                <SearchResultDetails
-                  result={chosenResult}
-                  canEdit={canEdit}
-                  userSuppliedCoordinates={
-                    missingCoordinatesMap &&
-                    missingCoordinatesMap[chosenResult.id]
-                  }
-                  onEdit={handleEdit}
-                  onChangeCoordinates={handleOpenCoordinatesDialog}
-                  onClose={handleCloseResultDetails}
-                />
-              )}
-
-              {!isGuest && (
-                <ActionButtons
-                  isCreatingNewStop={isCreatingNewStop}
-                  newStopIsMultiModal={newStopIsMultiModal}
-                  createNewStopOpen={createNewStopOpen}
-                  anchorEl={anchorEl}
-                  onOpenLookupCoordinates={handleOpenLookupCoordinatesDialog}
-                  onNewStop={handleNewStop}
-                />
-              )}
-            </Box>
+            {renderSearchContent()}
           </Paper>
         </ClickAwayListener>
       )}

@@ -15,7 +15,7 @@ limitations under the Licence. */
 import { Button } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import FavoritePopover from "../../FavoritePopover";
+import FavoritePopover from "../../../MainPage/FavoritePopover";
 import { FavoriteSectionProps } from "../types";
 
 export const FavoriteSection: React.FC<FavoriteSectionProps> = ({

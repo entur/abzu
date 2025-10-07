@@ -42,6 +42,7 @@ export const initialState = {
   removedFavorites: [],
   activeElementTab: 0,
   activeBaselayer: Settings.getMapLayer(),
+  uiMode: Settings.getUIMode(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
@@ -328,6 +329,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: action.payload,
+      };
+
+    case types.CHANGED_UI_MODE:
+      return {
+        ...state,
+        uiMode: action.payload,
       };
 
     default:

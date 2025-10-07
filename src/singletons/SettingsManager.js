@@ -25,6 +25,7 @@ const enablePublicCodePrivateCodeOnStopPlaces =
   rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
+const uiModeKey = rootKey + "::uiMode";
 
 class SettingsManager {
   constructor() {
@@ -120,6 +121,14 @@ class SettingsManager {
 
   setShowTariffZonesInMap(value) {
     localStorage.setItem(showTariffZonesInMapKey, value);
+  }
+
+  getUIMode() {
+    return localStorage.getItem(uiModeKey) || "modern";
+  }
+
+  setUIMode(value) {
+    localStorage.setItem(uiModeKey, value);
   }
 }
 

@@ -12,7 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { FilterList as FilterIcon } from "@mui/icons-material";
+import {
+  FilterList as FilterIcon,
+  Star as StarIcon,
+} from "@mui/icons-material";
 import {
   Autocomplete,
   Badge,
@@ -33,9 +36,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   stopPlaceSearchValue,
   showFilters = false,
   activeFilterCount = 0,
+  showFavorites = false,
   onSearchUpdate,
   onNewRequest,
   onToggleFilters,
+  onToggleFavorites,
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -46,6 +51,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         freeSolo
         options={menuItems}
         loading={loading}
+        value={null}
         filterOptions={(options) => options} // Disable client-side filtering
         loadingText={
           <MenuItem className="search-menu-item loading">
@@ -102,6 +108,23 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 endAdornment: (
                   <>
                     {params.InputProps.endAdornment}
+                    {onToggleFavorites && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={onToggleFavorites}
+                          size="small"
+                          sx={{
+                            marginRight: onToggleFilters ? 0 : -1,
+                            color: showFavorites
+                              ? theme.palette.warning.main
+                              : theme.palette.action.active,
+                          }}
+                          aria-label={formatMessage({ id: "toggle_favorites" })}
+                        >
+                          <StarIcon fontSize="small" />
+                        </IconButton>
+                      </InputAdornment>
+                    )}
                     {onToggleFilters && (
                       <InputAdornment position="end">
                         <IconButton
@@ -110,7 +133,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                           sx={{
                             marginRight: -1,
                             color: showFilters
-                              ? theme.palette.primary.main
+                              ? theme.palette.warning.main
                               : theme.palette.action.active,
                           }}
                           aria-label={formatMessage({ id: "toggle_filters" })}
@@ -121,7 +144,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                               color="primary"
                               variant="standard"
                             >
-                              <FilterIcon fontSize="small" />
+                              <FilterIcon
+                                fontSize="small"
+                                sx={{
+                                  color: showFilters
+                                    ? theme.palette.warning.main
+                                    : theme.palette.action.active,
+                                }}
+                              />
                             </Badge>
                           ) : (
                             <FilterIcon fontSize="small" />

@@ -1,25 +1,25 @@
 {
-  "name": "Abzu Default Theme",
+  "name": "Entur Theme",
   "version": "1.0.0",
-  "description": "Neutral default theme configuration for Abzu Stop Place Registry using Material Design 3 principles",
-  "author": "Abzu",
+  "description": "Entur's official theme configuration for Abzu Stop Place Registry",
+  "author": "Entur",
   "palette": {
     "primary": {
-      "main": "#1976d2",
-      "dark": "#115293",
-      "light": "#42a5f5",
+      "main": "#5AC39A",
+      "dark": "#3DA87A",
+      "light": "#7DCCAB",
       "contrastText": "#ffffff"
     },
     "secondary": {
-      "main": "#9c27b0",
-      "dark": "#6a1b9a",
-      "light": "#ba68c8",
+      "main": "#181C56",
+      "dark": "#0F1240",
+      "light": "#2D3168",
       "contrastText": "#ffffff"
     },
     "tertiary": {
-      "main": "#00796b",
-      "dark": "#004d40",
-      "light": "#26a69a",
+      "main": "#41c0c4",
+      "dark": "#2E9CA0",
+      "light": "#64CCCE",
       "contrastText": "#ffffff"
     },
     "error": {
@@ -102,7 +102,7 @@
     }
   },
   "shape": {
-    "borderRadius": 4
+    "borderRadius": 8
   },
   "spacing": 8,
   "breakpoints": {
@@ -114,15 +114,15 @@
   },
   "environment": {
     "development": {
-      "color": "#1976d2",
+      "color": "#181C56",
       "showBadge": true
     },
     "test": {
-      "color": "#ed6c02",
+      "color": "#d18e25",
       "showBadge": true
     },
     "prod": {
-      "color": "#2e7d32",
+      "color": "#181C56",
       "showBadge": false
     }
   },
@@ -132,20 +132,20 @@
   },
   "components": {
     "MuiButton": {
-      "borderRadius": 4,
+      "borderRadius": 8,
       "textTransform": "none",
       "fontWeight": 500
     },
     "MuiCard": {
       "elevation": 1,
-      "borderRadius": 4
+      "borderRadius": 8
     },
     "MuiAppBar": {
       "elevation": 2
     },
     "MuiTextField": {
       "variant": "outlined",
-      "borderRadius": 4
+      "borderRadius": 8
     },
     "MuiAutocomplete": {
       "styleOverrides": {
@@ -167,7 +167,9 @@
   },
   "customProperties": {
     "headerHeight": 64,
-    "sidebarWidth": 260,
-    "contentMaxWidth": 1200
+    "sidebarWidth": 280,
+    "contentMaxWidth": 1200,
+    "brandGradient": "linear-gradient(135deg, #5AC39A 0%, #41c0c4 100%)",
+    "accentShadow": "0 4px 20px rgba(90, 195, 154, 0.2)"
   }
 }

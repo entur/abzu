@@ -20,6 +20,8 @@ import {
   getStopPlaceById,
 } from "../actions/TiamatActions";
 import Loader from "../components/Dialogs/Loader";
+import SearchBox from "../components/MainPage/SearchBox";
+import { MapControls } from "../components/Map/MapControls";
 import StopPlacesMap from "../components/Map/StopPlacesMap";
 import formatHelpers from "../modelUtils/mapToClient";
 import "../styles/main.css";
@@ -130,11 +132,17 @@ class StopPlaces extends React.Component {
 
   render() {
     const { isLoading } = this.state;
+    const { uiMode } = this.props;
+    const showLegacySearchBox = uiMode === "legacy";
+
     return (
       <div>
         {isLoading && <Loader />}
-        {/* SearchBox moved to Header */}
-        <StopPlacesMap />
+        {showLegacySearchBox && <SearchBox />}
+        <div style={{ position: "relative" }}>
+          <StopPlacesMap />
+          <MapControls />
+        </div>
       </div>
     );
   }
@@ -145,6 +153,7 @@ const mapStateToProps = ({ stopPlace, user }) => ({
   lastMutatedStopPlaceId: stopPlace.lastMutatedStopPlaceId,
   currentPath: user.path,
   auth: user.auth,
+  uiMode: user.uiMode,
 });
 
 export default connect(mapStateToProps)(StopPlaces);

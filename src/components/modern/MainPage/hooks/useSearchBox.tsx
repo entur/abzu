@@ -25,7 +25,7 @@ import {
 import { Entities } from "../../../../models/Entities";
 import formatHelpers from "../../../../modelUtils/mapToClient";
 import Routes from "../../../../routes/";
-import { createSearchMenuItem } from "../../SearchMenuItem";
+import { createSearchMenuItem } from "../../../MainPage/SearchMenuItem";
 import {
   FavoriteFilter,
   MenuItem,
@@ -153,6 +153,7 @@ export const useSearchBox = ({
         }
         setStopPlaceSearchValue("");
         dispatch(UserActions.setSearchText(""));
+        dispatch(UserActions.clearSearchResults());
       }
     },
     [dispatch],
@@ -248,6 +249,11 @@ export const useSearchBox = ({
   // Action handlers
   const handleEdit = useCallback(
     (id: string, entityType: keyof typeof Entities) => {
+      // Clear search input
+      setStopPlaceSearchValue("");
+      dispatch(UserActions.setSearchText(""));
+      dispatch(UserActions.clearSearchResults());
+
       const route =
         entityType === Entities.STOP_PLACE
           ? Routes.STOP_PLACE

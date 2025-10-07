@@ -18,17 +18,17 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import { UserActions } from "../../actions";
-import { useAuth } from "../../auth/auth";
-import { getLogo } from "../../config/themeConfig";
-import { useAppDispatch } from "../../store/hooks";
-import { useEnvironmentStyles, useResponsive } from "../../theme/hooks";
-import ConfirmDialog from "../Dialogs/ConfirmDialog";
+import { UserActions } from "../../../actions";
+import { useAuth } from "../../../auth/auth";
+import { getLogo } from "../../../config/themeConfig";
+import { useAppDispatch } from "../../../store/hooks";
+import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
+import ConfirmDialog from "../../Dialogs/ConfirmDialog";
+import { HeaderSearch } from "../../Header/HeaderSearch";
 import { AppLogo } from "./components/AppLogo";
 import { EnvironmentBadge } from "./components/EnvironmentBadge";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { UserSection } from "./components/UserSection";
-import { HeaderSearch } from "./HeaderSearch";
 
 interface ModernHeaderProps {
   config: {

@@ -21,8 +21,9 @@ import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
-import { ModernHeader } from "../components/Header/ModernHeader";
+import Header from "../components/Header/Header";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
+import { ModernHeader } from "../components/modern/Header/ModernHeader";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
 import configureLocalization from "../localization/localization";
@@ -39,6 +40,7 @@ const App = ({ children }) => {
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
+  const uiMode = useAppSelector((state) => state.user.uiMode);
 
   useEffect(() => {
     configureLocalization(
@@ -92,6 +94,15 @@ const App = ({ children }) => {
     return null;
   }
 
+  const renderHeader = () => {
+    const config = { extPath, mapConfig, localeConfig };
+    return uiMode === "legacy" ? (
+      <Header config={config} />
+    ) : (
+      <ModernHeader config={config} />
+    );
+  };
+
   return (
     <IntlProvider
       key={localization.locale}
@@ -109,7 +120,7 @@ const App = ({ children }) => {
           renderFallback={() => (
             <AbzuThemeProvider>
               <div>
-                <ModernHeader config={{ extPath, mapConfig, localeConfig }} />
+                {renderHeader()}
                 {children}
                 <SnackbarWrapper />
               </div>
@@ -117,7 +128,7 @@ const App = ({ children }) => {
           )}
         >
           <div>
-            <ModernHeader config={{ extPath, mapConfig, localeConfig }} />
+            {renderHeader()}
             {children}
             <SnackbarWrapper />
           </div>

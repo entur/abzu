@@ -17,7 +17,7 @@ import MdLocationSearching from "@mui/icons-material/LocationSearching";
 import { Button, Menu, MenuItem, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
-import NewStopPlace from "../../CreateNewStop";
+import NewStopPlace from "../../../MainPage/CreateNewStop";
 import { ActionButtonsProps } from "../types";
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({

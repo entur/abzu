@@ -32,12 +32,12 @@ import { AccessibilityLimitationType } from "../../../../models/AccessibilityLim
 import { Entities } from "../../../../models/Entities";
 import { getIn } from "../../../../utils/";
 import Code from "../../../EditStopPage/Code";
+import BelongsToGroup from "../../../MainPage/BelongsToGroup";
+import CircularNumber from "../../../MainPage/CircularNumber";
+import HasExpiredInfo from "../../../MainPage/HasExpiredInfo";
+import ModalityIconImg from "../../../MainPage/ModalityIconImg";
+import TagTray from "../../../MainPage/TagTray";
 import ModalityTray from "../../../ReportPage/ModalityIconTray";
-import BelongsToGroup from "../../BelongsToGroup";
-import CircularNumber from "../../CircularNumber";
-import HasExpiredInfo from "../../HasExpiredInfo";
-import ModalityIconImg from "../../ModalityIconImg";
-import TagTray from "../../TagTray";
 import { SearchResultDetailsProps } from "../types";
 import { SearchBoxEdit } from "./SearchBoxEdit";
 import { SearchBoxGeoWarning } from "./SearchBoxGeoWarning";
@@ -406,6 +406,7 @@ export const SearchResultDetails: React.FC<
       <SearchBoxEdit
         canEdit={canEdit}
         handleEdit={onEdit}
+        onClose={onClose}
         text={text}
         result={result}
       />
