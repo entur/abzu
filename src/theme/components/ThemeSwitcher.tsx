@@ -12,169 +12,112 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import CheckIcon from "@mui/icons-material/Check";
-import PaletteIcon from "@mui/icons-material/Palette";
 import {
-  Box,
-  CircularProgress,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
+  FormControl,
+  InputLabel,
   MenuItem,
-  Typography,
+  Select,
+  SelectChangeEvent,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useThemeSwitcher } from "../hooks";
+import React from "react";
+import { useTheme } from "../ThemeProvider";
 
 interface ThemeSwitcherProps {
-  showLabel?: boolean;
-  variant?: "icon" | "button";
+  variant?: "standard" | "outlined" | "filled";
+  size?: "small" | "medium";
+  fullWidth?: boolean;
+  label?: string;
 }
 
 /**
- * Theme switcher component that allows users to switch between different theme configs
- * and light/dark mode at runtime.
+ * Theme Switcher Component
+ *
+ * Allows users to switch between different theme configurations at runtime.
+ *
+ * @example
+ * ```tsx
+ * import { ThemeSwitcher } from '../theme/components/ThemeSwitcher';
+ *
+ * function SettingsMenu() {
+ *   return (
+ *     <ThemeSwitcher
+ *       variant="outlined"
+ *       size="small"
+ *       label="Select Theme"
+ *     />
+ *   );
+ * }
+ * ```
  */
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
-  showLabel = false,
-  variant = "icon",
+  variant = "outlined",
+  size = "small",
+  fullWidth = false,
+  label = "Theme",
 }) => {
-  const {
-    currentThemeId,
-    availableThemes,
-    switchTheme,
-    themeVariant,
-    setThemeVariant,
-  } = useThemeSwitcher();
+  const { availableThemes, switchThemeConfig, themeConfig } = useTheme();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [loading, setLoading] = useState(false);
-  const open = Boolean(anchorEl);
+  // Extract theme names from paths for display
+  const getThemeDisplayName = (themePath: string): string => {
+    const fileName = themePath.split("/").pop()?.replace(".json", "") || "";
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    // Convert kebab-case to Title Case
+    return fileName
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  // Find current theme path from config name
+  const getCurrentThemePath = (): string => {
+    if (!themeConfig) return "";
+
+    // Try to match by theme name
+    const matchingTheme = availableThemes.find((path) => {
+      const displayName = getThemeDisplayName(path);
+      return (
+        displayName.toLowerCase() === themeConfig.name.toLowerCase() ||
+        path.includes(themeConfig.name.toLowerCase().replace(/\s+/g, "-"))
+      );
+    });
+
+    return matchingTheme || availableThemes[0] || "";
   };
 
-  const handleThemeChange = async (themeId: string) => {
-    if (themeId === currentThemeId) {
-      handleClose();
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await switchTheme(themeId);
-    } catch (error) {
-      console.error("Failed to switch theme:", error);
-    } finally {
-      setLoading(false);
-      handleClose();
-    }
+  const handleChange = async (event: SelectChangeEvent<string>) => {
+    const newThemePath = event.target.value;
+    await switchThemeConfig(newThemePath);
   };
 
-  const handleVariantToggle = () => {
-    setThemeVariant(themeVariant === "light" ? "dark" : "light");
-  };
-
-  const currentTheme = availableThemes.find((t) => t.id === currentThemeId);
+  if (availableThemes.length === 0) {
+    return null;
+  }
 
   return (
-    <>
-      <IconButton
-        onClick={handleClick}
-        color="inherit"
-        aria-label="switch theme"
-        aria-controls={open ? "theme-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        disabled={loading}
+    <FormControl variant={variant} size={size} fullWidth={fullWidth}>
+      <InputLabel id="theme-switcher-label">{label}</InputLabel>
+      <Select
+        labelId="theme-switcher-label"
+        id="theme-switcher"
+        value={getCurrentThemePath()}
+        label={label}
+        onChange={handleChange}
       >
-        {loading ? (
-          <CircularProgress size={24} color="inherit" />
-        ) : (
-          <PaletteIcon />
-        )}
-      </IconButton>
-
-      <Menu
-        id="theme-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "theme-button",
-        }}
-        PaperProps={{
-          sx: {
-            minWidth: 240,
-            maxWidth: 320,
-          },
-        }}
-      >
-        <Box sx={{ px: 2, py: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            THEME
-          </Typography>
-          {currentTheme && (
-            <Typography variant="body2" fontWeight={500}>
-              {currentTheme.name}
-            </Typography>
-          )}
-        </Box>
-
-        <Divider />
-
-        {availableThemes.map((theme) => (
-          <MenuItem
-            key={theme.id}
-            onClick={() => handleThemeChange(theme.id)}
-            selected={theme.id === currentThemeId}
-          >
-            <ListItemIcon>
-              {theme.id === currentThemeId && <CheckIcon fontSize="small" />}
-            </ListItemIcon>
-            <ListItemText
-              primary={theme.name}
-              secondary={theme.description}
-              primaryTypographyProps={{
-                variant: "body2",
-                fontWeight: theme.id === currentThemeId ? 600 : 400,
-              }}
-              secondaryTypographyProps={{
-                variant: "caption",
-              }}
-            />
+        {availableThemes.map((themePath) => (
+          <MenuItem key={themePath} value={themePath}>
+            {getThemeDisplayName(themePath)}
           </MenuItem>
         ))}
-
-        <Divider />
-
-        <MenuItem onClick={handleVariantToggle}>
-          <ListItemIcon>
-            {themeVariant === "light" ? (
-              <Brightness4Icon fontSize="small" />
-            ) : (
-              <Brightness7Icon fontSize="small" />
-            )}
-          </ListItemIcon>
-          <ListItemText
-            primary={`Switch to ${themeVariant === "light" ? "Dark" : "Light"} Mode`}
-            primaryTypographyProps={{
-              variant: "body2",
-            }}
-          />
-        </MenuItem>
-      </Menu>
-    </>
+      </Select>
+    </FormControl>
   );
 };
 
-export default ThemeSwitcher;
+/**
+ * Compact Theme Switcher for use in menus or toolbars
+ */
+export const CompactThemeSwitcher: React.FC = () => {
+  return (
+    <ThemeSwitcher variant="standard" size="small" fullWidth label="Theme" />
+  );
+};

@@ -18,7 +18,8 @@
   },
   "featureFlags": {
     "SVVStreetViewLink": true,
-    "KartverketFlyFoto": true
+    "KartverketFlyFoto": true,
+    "ModernUI": true
   },
   "mapConfig": {
     "tiles": [

@@ -14,19 +14,9 @@ limitations under the Licence. */
 
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider, Theme } from "@mui/material/styles";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { getTiamatEnv } from "../config/themeConfig";
-import {
-  getAvailableThemes,
-  loadSpecificThemeConfig,
-  loadThemeConfig,
-} from "./config/loader";
+import { loadThemeConfig } from "./config/loader";
 import { AbzuThemeConfig } from "./config/types";
 import {
   createAbzuTheme,
@@ -41,9 +31,9 @@ interface ThemeContextType {
   environment: Environment;
   themeConfig?: AbzuThemeConfig;
   isConfigLoaded: boolean;
-  currentThemeId?: string;
-  switchTheme: (themeIdOrPath: string) => Promise<void>;
-  availableThemes: any[];
+  availableThemes: string[];
+  currentThemeName: string;
+  switchThemeConfig: (themePath: string) => Promise<void>;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -73,62 +63,92 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     return (saved as ThemeVariant) || defaultVariant;
   });
 
-  const [currentThemeId, setCurrentThemeId] = useState<string | undefined>(
-    () => {
-      // Check for saved theme ID preference
-      const saved = localStorage.getItem("abzu-theme-id");
-      return saved || undefined;
-    },
-  );
-
   const [themeConfig, setThemeConfig] = useState<AbzuThemeConfig | undefined>(
     undefined,
   );
   const [isConfigLoaded, setIsConfigLoaded] = useState(!useConfigFiles);
   const [theme, setTheme] = useState<Theme | null>(null);
-  const [availableThemes] = useState(getAvailableThemes());
+  const [availableThemes, setAvailableThemes] = useState<string[]>([]);
+  const [currentThemeName, setCurrentThemeName] = useState<string>("");
+  const [currentThemePath, setCurrentThemePath] = useState<string>("");
 
   const environment = getTiamatEnv() as Environment;
 
-  // Function to switch theme
-  const switchTheme = useCallback(async (themeIdOrPath: string) => {
+  // Load theme configuration helper
+  const loadThemeFromPath = async (themePath: string) => {
     try {
-      setIsConfigLoaded(false);
-      const config = await loadSpecificThemeConfig(themeIdOrPath);
+      console.log(`Loading theme config from: ${themePath}`);
+      const response = await fetch(`${import.meta.env.BASE_URL}${themePath}`);
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch theme config: ${response.status} ${response.statusText}`,
+        );
+      }
+
+      const config = await response.json();
+      console.log("Successfully loaded theme config:", config.name);
+
       setThemeConfig(config);
-      setCurrentThemeId(themeIdOrPath);
-      localStorage.setItem("abzu-theme-id", themeIdOrPath);
-      setIsConfigLoaded(true);
+      setCurrentThemeName(config.name);
+      setCurrentThemePath(themePath);
+
+      // Save the selected theme to localStorage
+      localStorage.setItem("abzu-selected-theme", themePath);
+
+      return config;
     } catch (error) {
-      console.error("Failed to switch theme:", error);
-      setIsConfigLoaded(true);
+      console.error("Failed to load theme from path:", themePath, error);
       throw error;
     }
-  }, []);
+  };
+
+  // Switch theme configuration dynamically
+  const switchThemeConfig = async (themePath: string) => {
+    try {
+      await loadThemeFromPath(themePath);
+    } catch (error) {
+      console.error("Failed to switch theme:", error);
+    }
+  };
 
   // Load theme configuration on mount
   useEffect(() => {
     if (useConfigFiles) {
-      const loadInitialTheme = async () => {
-        // Check if user has a saved theme preference
-        if (currentThemeId) {
-          try {
-            const config = await loadSpecificThemeConfig(currentThemeId);
-            setThemeConfig(config);
-            setIsConfigLoaded(true);
-            return;
-          } catch (error) {
-            console.warn(
-              "Failed to load saved theme, falling back to default:",
-              error,
-            );
-          }
-        }
+      // Check for saved theme selection
+      const savedThemePath = localStorage.getItem("abzu-selected-theme");
 
-        // Load default theme from config
+      // Get available themes from config or use defaults
+      const defaultThemes = [
+        "src/theme/config/default-theme.json",
+        "src/theme/config/entur-theme.json",
+        "src/theme/config/custom-theme-example.json",
+      ];
+      setAvailableThemes(defaultThemes);
+
+      // Determine which theme to load
+      const themeToLoad = savedThemePath || undefined;
+
+      if (themeToLoad && defaultThemes.includes(themeToLoad)) {
+        // Load saved custom theme
+        loadThemeFromPath(themeToLoad)
+          .then(() => setIsConfigLoaded(true))
+          .catch((error) => {
+            console.warn("Failed to load saved theme, using default:", error);
+            loadThemeConfig()
+              .then((config) => {
+                setThemeConfig(config);
+                setCurrentThemeName(config.name);
+                setIsConfigLoaded(true);
+              })
+              .catch(() => setIsConfigLoaded(true));
+          });
+      } else {
+        // Load from environment config
         loadThemeConfig()
           .then((config) => {
             setThemeConfig(config);
+            setCurrentThemeName(config.name);
             setIsConfigLoaded(true);
           })
           .catch((error) => {
@@ -138,11 +158,9 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
             );
             setIsConfigLoaded(true);
           });
-      };
-
-      loadInitialTheme();
+      }
     }
-  }, [useConfigFiles, currentThemeId]);
+  }, [useConfigFiles]);
 
   // Create theme when config or variant changes
   useEffect(() => {
@@ -182,9 +200,9 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     environment,
     themeConfig,
     isConfigLoaded,
-    currentThemeId,
-    switchTheme,
     availableThemes,
+    currentThemeName,
+    switchThemeConfig,
   };
 
   // Show loading state while theme is being created

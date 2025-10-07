@@ -379,6 +379,60 @@ The `custom-theme-example.json` demonstrates advanced customization including:
 - Custom spacing
 - Extended custom properties
 
+## Runtime Theme Switching
+
+The theme system supports switching between different themes at runtime without reloading the application.
+
+### Switching Between Theme Configs
+
+You can allow users to switch between different theme configurations (e.g., from Default to Entur theme):
+
+```tsx
+import { ThemeSwitcher } from "../theme/components/ThemeSwitcher";
+
+function SettingsMenu() {
+  return <ThemeSwitcher variant="outlined" size="small" label="Select Theme" />;
+}
+```
+
+The `ThemeSwitcher` component provides a dropdown menu with all available themes. The selected theme is automatically saved to localStorage and persisted across sessions.
+
+**Available Props:**
+
+- `variant`: "standard" | "outlined" | "filled" (default: "outlined")
+- `size`: "small" | "medium" (default: "small")
+- `fullWidth`: boolean (default: false)
+- `label`: string (default: "Theme")
+
+### Programmatic Theme Switching
+
+You can also switch themes programmatically:
+
+```tsx
+import { useTheme } from "../theme/ThemeProvider";
+
+function MyComponent() {
+  const { switchThemeConfig, availableThemes, currentThemeName } = useTheme();
+
+  const handleSwitchToEntur = async () => {
+    await switchThemeConfig("src/theme/config/entur-theme.json");
+  };
+
+  return (
+    <div>
+      <p>Current theme: {currentThemeName}</p>
+      <button onClick={handleSwitchToEntur}>Switch to Entur Theme</button>
+    </div>
+  );
+}
+```
+
+**Available Context Values:**
+
+- `availableThemes`: Array of theme file paths
+- `currentThemeName`: Name of the currently loaded theme
+- `switchThemeConfig(themePath)`: Function to switch to a different theme
+
 ## Light and Dark Mode
 
 The theme system supports both light and dark modes. Configure variant-specific overrides in `theme-variants-config.json`:
@@ -412,123 +466,36 @@ The theme system supports both light and dark modes. Configure variant-specific 
 }
 ```
 
-## Runtime Theme Switching
+### Switching Light/Dark Mode
 
-The theme system supports switching between different theme configurations at runtime, allowing users to choose their preferred theme without restarting the application.
-
-### Using the Theme Switcher Component
-
-Add the ThemeSwitcher component to your header or settings menu:
+Use the `ThemeModeSwitcher` component for toggling between light and dark modes:
 
 ```tsx
-import { ThemeSwitcher } from "../theme/components/ThemeSwitcher";
+import { ThemeModeSwitcher } from "../theme/components/ThemeModeSwitcher";
 
 function Header() {
-  return (
-    <AppBar>
-      <Toolbar>
-        <Typography variant="h6">My App</Typography>
-        <ThemeSwitcher />
-      </Toolbar>
-    </AppBar>
-  );
+  return <ThemeModeSwitcher showTooltip size="medium" />;
 }
 ```
 
-### Using the Theme Switcher Hook
-
-For custom UI implementations:
+Or programmatically:
 
 ```tsx
-import { useThemeSwitcher } from "../theme/hooks";
-
-function CustomThemeSelector() {
-  const {
-    currentThemeId,
-    availableThemes,
-    switchTheme,
-    themeVariant,
-    setThemeVariant,
-  } = useThemeSwitcher();
-
-  return (
-    <div>
-      <h3>Select Theme</h3>
-      {availableThemes.map((theme) => (
-        <button
-          key={theme.id}
-          onClick={() => switchTheme(theme.id)}
-          disabled={theme.id === currentThemeId}
-        >
-          {theme.name}
-        </button>
-      ))}
-
-      <button
-        onClick={() =>
-          setThemeVariant(themeVariant === "light" ? "dark" : "light")
-        }
-      >
-        Toggle {themeVariant === "light" ? "Dark" : "Light"} Mode
-      </button>
-    </div>
-  );
-}
-```
-
-### Programmatic Theme Switching
-
-Switch themes programmatically:
-
-```tsx
-import { useThemeSwitcher } from "../theme/hooks";
+import { useTheme } from "../theme/ThemeProvider";
 
 function MyComponent() {
-  const { switchTheme } = useThemeSwitcher();
+  const { themeVariant, setThemeVariant } = useTheme();
 
-  const handleSwitchToEntur = async () => {
-    try {
-      await switchTheme("entur");
-      console.log("Theme switched successfully");
-    } catch (error) {
-      console.error("Failed to switch theme:", error);
-    }
+  const toggleMode = () => {
+    setThemeVariant(themeVariant === "light" ? "dark" : "light");
   };
 
-  return <button onClick={handleSwitchToEntur}>Use Entur Theme</button>;
+  return (
+    <button onClick={toggleMode}>
+      Switch to {themeVariant === "light" ? "Dark" : "Light"} Mode
+    </button>
+  );
 }
-```
-
-### Theme Persistence
-
-Theme preferences are automatically saved to localStorage:
-
-- Selected theme config is saved under `abzu-theme-id`
-- Light/dark mode preference is saved under `abzu-theme-variant`
-- Preferences persist across browser sessions
-
-### Adding Custom Themes to the Switcher
-
-Edit `src/theme/config/loader.ts` to add your theme to the available themes list:
-
-```typescript
-export const getAvailableThemes = (): AvailableTheme[] => {
-  return [
-    {
-      id: "default",
-      name: "Default Theme",
-      description: "Neutral Material Design theme",
-      path: "src/theme/config/default-theme.json",
-    },
-    {
-      id: "my-theme",
-      name: "My Custom Theme",
-      description: "My organization's theme",
-      path: "src/theme/config/my-theme.json",
-    },
-    // Add more themes here
-  ];
-};
 ```
 
 ## Development
@@ -546,12 +513,7 @@ export const getAvailableThemes = (): AvailableTheme[] => {
    - Add `"themeConfig": "src/theme/config/my-theme.json"`
    - Run `npm start`
 
-3. **Using Runtime Switcher:**
-   - Add the ThemeSwitcher component to your app
-   - Select different themes from the dropdown
-   - Changes apply immediately without page refresh
-
-4. **Hot Reload:**
+3. **Hot Reload:**
    - Theme changes require a page refresh
    - Save your theme JSON file
    - Refresh the browser to see changes
@@ -596,6 +558,10 @@ src/theme/
 │   ├── types.ts                        # TypeScript type definitions
 │   ├── loader.ts                       # Theme loading logic
 │   └── converter.ts                    # Theme conversion utilities
+├── components/
+│   ├── ThemeSwitcher.tsx               # Theme config switcher component
+│   ├── ThemeModeSwitcher.tsx           # Light/dark mode toggle component
+│   └── index.ts                        # Component exports
 ├── ThemeProvider.tsx                   # React theme provider
 ├── base.ts                             # Base theme configuration
 ├── variants/

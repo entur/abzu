@@ -15,27 +15,10 @@ limitations under the Licence. */
 import { useTheme as useMuiTheme } from "@mui/material/styles";
 import defaultThemeConfig from "./config/default-theme.json";
 import { AbzuThemeConfig } from "./config/types";
-import { useTheme as useAbzuThemeContext } from "./ThemeProvider";
 import { useResponsive } from "./utils";
 
 // Re-export useResponsive for convenience
 export { useResponsive } from "./utils";
-
-/**
- * Hook to access theme switching functionality
- */
-export const useThemeSwitcher = () => {
-  const context = useAbzuThemeContext();
-
-  return {
-    currentThemeId: context.currentThemeId,
-    availableThemes: context.availableThemes,
-    switchTheme: context.switchTheme,
-    themeConfig: context.themeConfig,
-    themeVariant: context.themeVariant,
-    setThemeVariant: context.setThemeVariant,
-  };
-};
 
 /**
  * Hook to access the current MUI theme with Abzu extensions

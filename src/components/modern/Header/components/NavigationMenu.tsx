@@ -17,6 +17,7 @@ import {
   Help,
   Logout,
   Menu as MenuIcon,
+  Palette,
   Report,
   Settings,
 } from "@mui/icons-material";
@@ -36,6 +37,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { LanguageMenu } from "../../../Header/LanguageMenu";
 import { SettingsMenuSection } from "./SettingsMenuSection";
+import { UICustomizationSection } from "./UICustomizationSection";
 
 interface NavigationMenuProps {
   config: {
@@ -84,6 +86,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   // Translations
   const reportSite = formatMessage({ id: "report_site" });
   const settings = formatMessage({ id: "settings" });
+  const appearance = formatMessage({ id: "appearance" }) || "Appearance";
   const userGuide = formatMessage({ id: "user_guide" });
   const logOut = formatMessage({ id: "log_out" });
 
@@ -100,6 +103,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     {
       key: "divider1",
       type: "divider",
+    },
+    {
+      key: "appearance",
+      icon: <Palette />,
+      text: appearance,
+      type: "submenu",
+      component: UICustomizationSection,
     },
     {
       key: "settings",

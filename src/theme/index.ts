@@ -175,5 +175,6 @@ export const clearThemeConfigCache = (): void => {
 };
 
 export * from "./base";
+export * from "./components";
 export * from "./variants/dark";
 export * from "./variants/light";

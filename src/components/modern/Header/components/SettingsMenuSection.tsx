@@ -70,7 +70,6 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   const showTariffZones = useSelector(
     (state: any) => state.zones.showTariffZones,
   );
-  const uiMode = useSelector((state: any) => state.user.uiMode);
 
   // Translations
   const settings = formatMessage({ id: "settings" });
@@ -89,7 +88,6 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   const showTariffZonesLabel = formatMessage({
     id: "show_tariff_zones_label",
   });
-  const uiModeLabel = "Modern UI";
 
   // Handlers
   const handleTogglePublicCodePrivateCodeOnStopPlaces = (value: boolean) => {
@@ -124,11 +122,6 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   const handleToggleShowTariffZones = (value: boolean) => {
     dispatch(toggleShowFareZonesInMap(false));
     dispatch(toggleShowTariffZonesInMap(value));
-  };
-
-  const handleToggleUIMode = (value: boolean) => {
-    const newMode = value ? "modern" : "legacy";
-    dispatch(UserActions.changeUIMode(newMode));
   };
 
   const handleClick = () => {
@@ -199,12 +192,6 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
       label: showTariffZonesLabel,
       checked: showTariffZones,
       onChange: handleToggleShowTariffZones,
-    },
-    {
-      key: "uiMode",
-      label: uiModeLabel,
-      checked: uiMode === "modern",
-      onChange: handleToggleUIMode,
     },
   ];
 

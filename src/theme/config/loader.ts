@@ -122,90 +122,6 @@ export const validateThemeConfig = (
 };
 
 /**
- * Available theme configurations
- */
-export interface AvailableTheme {
-  id: string;
-  name: string;
-  description: string;
-  path: string;
-}
-
-/**
- * Get list of available themes
- */
-export const getAvailableThemes = (): AvailableTheme[] => {
-  return [
-    {
-      id: "default",
-      name: "Default Theme",
-      description: "Neutral Material Design theme",
-      path: "src/theme/config/default-theme.json",
-    },
-    {
-      id: "entur",
-      name: "Entur Theme",
-      description: "Entur branded theme",
-      path: "src/theme/config/entur-theme.json",
-    },
-    {
-      id: "custom",
-      name: "Custom Theme",
-      description: "Example custom theme",
-      path: "src/theme/config/custom-theme-example.json",
-    },
-  ];
-};
-
-/**
- * Load a specific theme configuration by ID or path
- */
-export const loadSpecificThemeConfig = async (
-  themeIdOrPath: string,
-): Promise<AbzuThemeConfig> => {
-  try {
-    let themePath: string;
-
-    // Check if it's a theme ID
-    const availableThemes = getAvailableThemes();
-    const themeById = availableThemes.find((t) => t.id === themeIdOrPath);
-
-    if (themeById) {
-      themePath = themeById.path;
-    } else {
-      themePath = themeIdOrPath;
-    }
-
-    console.log(`Loading theme config from: ${themePath}`);
-
-    // Fetch the theme config JSON file
-    const response = await fetch(`${import.meta.env.BASE_URL}${themePath}`);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch theme config: ${response.status} ${response.statusText}`,
-      );
-    }
-
-    const config = await response.json();
-
-    // Validate configuration
-    const validationErrors = validateThemeConfig(config);
-    if (validationErrors.length > 0) {
-      console.warn("Theme configuration validation errors:", validationErrors);
-      if (import.meta.env.DEV) {
-        console.error("Theme validation failed:", validationErrors);
-      }
-    }
-
-    console.log("Successfully loaded theme config:", config.name);
-    return config;
-  } catch (error) {
-    console.error("Failed to load specific theme configuration:", error);
-    throw error;
-  }
-};
-
-/**
  * Load and validate theme configuration
  */
 export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
@@ -217,7 +133,22 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
 
     if (themeConfigPath) {
       try {
-        config = await loadSpecificThemeConfig(themeConfigPath);
+        console.log(`Loading custom theme config from: ${themeConfigPath}`);
+
+        // Fetch the theme config JSON file
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}${themeConfigPath}`,
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch theme config: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        config = await response.json();
+
+        console.log("Successfully loaded custom theme config:", config.name);
+        console.log("Theme palette:", config.palette);
       } catch (error) {
         console.warn(
           "Failed to load custom theme config, falling back to default",
@@ -228,6 +159,17 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
     } else {
       console.warn("No theme config path found, using default");
       config = defaultThemeConfig as AbzuThemeConfig;
+    }
+
+    // Validate configuration
+    const validationErrors = validateThemeConfig(config);
+    if (validationErrors.length > 0) {
+      console.warn("Theme configuration validation errors:", validationErrors);
+      // In development, you might want to throw an error
+      // In production, continue with warnings
+      if (import.meta.env.DEV) {
+        console.error("Theme validation failed:", validationErrors);
+      }
     }
 
     return config;
