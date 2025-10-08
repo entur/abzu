@@ -44,9 +44,7 @@ class VersionsPopover extends Component {
 
   render() {
     const { open, anchorEl } = this.state;
-    const { versions, buttonLabel, disabled, hide, defaultValue } = this.props;
-
-    const notAvailableMessage = defaultValue;
+    const { versions, buttonLabel, hide } = this.props;
 
     if (hide) return null;
 
@@ -92,17 +90,20 @@ class VersionsPopover extends Component {
                   <div>{version.name}</div>
                 </div>
                 <div style={{ marginTop: 10 }}>
-                  {version.changedBy || notAvailableMessage}:{" "}
-                  {version.versionComment || notAvailableMessage}
+                  {version.changedBy ? (
+                    <span>
+                      {version.changedBy}: {version.versionComment || ""}
+                    </span>
+                  ) : (
+                    <span>{version.versionComment || ""}</span>
+                  )}
                 </div>
               </div>
               <hr />
               <div
                 style={{ transform: "translateY(-19px)", textAlign: "right" }}
               >
-                {`${
-                  version.fromDate || notAvailableMessage
-                } - ${version.toDate || notAvailableMessage}`}
+                {`${version.fromDate || ""} - ${version.toDate || ""}`}
               </div>
             </MenuItem>
           ))}
@@ -119,4 +120,4 @@ VersionsPopover.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
 };
 
-export default VersionsPopover;
+export default injectIntl(VersionsPopover);
