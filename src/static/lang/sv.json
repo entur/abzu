@@ -590,5 +590,7 @@
   "configure_initial_view": "Konfigurera initial kartposition och zoom",
   "default_map_settings_description": "Konfigurera den initiala kartpositionen och zoomnivån när du öppnar applikationen.",
   "go": "Gå",
-  "coordinates_format_hint": "Format: latitud, longitud"
+  "coordinates_format_hint": "Format: latitud, longitud",
+  "open_search": "Öppna sökning",
+  "close_filters": "Stäng filter"
 }

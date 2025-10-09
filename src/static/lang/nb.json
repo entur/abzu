@@ -593,5 +593,7 @@
   "configure_initial_view": "Konfigurer innledende kartposisjon og zoom",
   "default_map_settings_description": "Konfigurer den innledende kartposisjonen og zoomnivået når du åpner applikasjonen.",
   "go": "Gå",
-  "coordinates_format_hint": "Format: breddegrad, lengdegrad"
+  "coordinates_format_hint": "Format: breddegrad, lengdegrad",
+  "open_search": "Åpne søk",
+  "close_filters": "Lukk filtre"
 }

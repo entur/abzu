@@ -593,5 +593,7 @@
   "default_map_settings": "Default Map Settings",
   "configure_initial_view": "Configure initial map position and zoom",
   "default_map_settings_description": "Configure the initial map position and zoom level when opening the application.",
-  "go": "Go"
+  "go": "Go",
+  "open_search": "Open Search",
+  "close_filters": "Close Filters"
 }

@@ -592,5 +592,7 @@
   "configure_initial_view": "Määritä alkuperäinen karttasijainti ja zoomaus",
   "default_map_settings_description": "Määritä alkuperäinen karttasijainti ja zoomaus taso sovellusta avattaessa.",
   "go": "Mene",
-  "coordinates_format_hint": "Muoto: leveysaste, pituusaste"
+  "coordinates_format_hint": "Muoto: leveysaste, pituusaste",
+  "open_search": "Avaa haku",
+  "close_filters": "Sulje suodattimet"
 }

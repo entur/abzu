@@ -592,5 +592,7 @@
   "configure_initial_view": "Configurer la position initiale de la carte et le zoom",
   "default_map_settings_description": "Configurer la position initiale de la carte et le niveau de zoom lors de l'ouverture de l'application.",
   "go": "Aller",
-  "coordinates_format_hint": "Format : latitude, longitude"
+  "coordinates_format_hint": "Format : latitude, longitude",
+  "open_search": "Ouvrir la recherche",
+  "close_filters": "Fermer les filtres"
 }
