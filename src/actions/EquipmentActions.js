@@ -39,6 +39,17 @@ EquipmentActions.updateTicketOfficeState =
     );
   };
 
+EquipmentActions.updateTicketCounterState =
+  (state, entityType, id) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_TICKET_COUNTER_STATE, {
+        state: state,
+        type: entityType,
+        id: id,
+      }),
+    );
+  };
+
 EquipmentActions.updateShelterEquipmentState =
   (state, entityType, id) => (dispatch) => {
     dispatch(
