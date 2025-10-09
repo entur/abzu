@@ -83,7 +83,7 @@ class StopPlacesMap extends React.Component {
   }
 
   render() {
-    const { position, markers, zoom } = this.props;
+    const { position, markers, zoom, uiMode } = this.props;
 
     return (
       <LeafletMap
@@ -98,6 +98,7 @@ class StopPlacesMap extends React.Component {
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
         enablePolylines={false}
+        uiMode={uiMode}
       />
     );
   }
@@ -113,6 +114,7 @@ const mapStateToProps = (state) => ({
   isCreatingNewStop: state.user.isCreatingNewStop,
   activeBaselayer: state.user.activeBaselayer,
   ignoreStopId: getIn(state.stopPlace, ["activeSearchResult", "id"], undefined),
+  uiMode: state.user.uiMode,
 });
 
 export default injectIntl(connect(mapStateToProps)(StopPlacesMap));

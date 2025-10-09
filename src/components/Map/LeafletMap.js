@@ -24,6 +24,7 @@ import { ConfigContext } from "../../config/ConfigContext";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { DynamicTileLayer } from "./DynamicTileLayer";
+import { MapControls } from "./MapControls";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
@@ -51,6 +52,7 @@ export const LeafLetMap = ({
   activeBaselayer,
   handleBaselayerChanged,
   onMapReady = () => {},
+  uiMode,
 }) => {
   const { mapConfig } = useContext(ConfigContext);
   const defaultTiles = [defaultOSMTile];
@@ -102,32 +104,59 @@ export const LeafLetMap = ({
           handleMapMoveEnd(event, map);
         }}
       >
-        <LayersControl position="topright">
-          {(mapConfig?.tiles || defaultTiles).map((tile) => {
-            return (
-              <BaseLayer
-                key={tile.name}
-                checked={getCheckedBaseLayerByValue(tile.name)}
-                name={tile.name}
-              >
-                {tile.component ? (
+        {uiMode === "modern" ? (
+          <>
+            {/* Render active base layer directly without LayersControl in modern UI */}
+            {(mapConfig?.tiles || defaultTiles)
+              .filter((tile) => getCheckedBaseLayerByValue(tile.name))
+              .map((tile) =>
+                tile.component ? (
                   <ComponentToggle
+                    key={tile.name}
                     feature={tile.componentName}
                     componentProps={tile}
                   />
                 ) : (
                   <DynamicTileLayer
+                    key={tile.name}
                     attribution={tile.attribution}
                     url={tile.url}
                     maxZoom={tile.maxZoom}
                   />
-                )}
-              </BaseLayer>
-            );
-          })}
-        </LayersControl>
-        <FareZones position="topright" />
-        <TariffZones position="topright" />
+                ),
+              )}
+            <MapControls />
+          </>
+        ) : (
+          <>
+            <LayersControl position="topright">
+              {(mapConfig?.tiles || defaultTiles).map((tile) => {
+                return (
+                  <BaseLayer
+                    key={tile.name}
+                    checked={getCheckedBaseLayerByValue(tile.name)}
+                    name={tile.name}
+                  >
+                    {tile.component ? (
+                      <ComponentToggle
+                        feature={tile.componentName}
+                        componentProps={tile}
+                      />
+                    ) : (
+                      <DynamicTileLayer
+                        attribution={tile.attribution}
+                        url={tile.url}
+                        maxZoom={tile.maxZoom}
+                      />
+                    )}
+                  </BaseLayer>
+                );
+              })}
+            </LayersControl>
+            <FareZones position="topright" />
+            <TariffZones position="topright" />
+          </>
+        )}
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList

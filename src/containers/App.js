@@ -72,9 +72,14 @@ const App = ({ children }) => {
   /**
    * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values;
    * And determine the right map base layer;
+   * Note: User's custom initial position/zoom from localStorage takes precedence over mapConfig
    */
   useEffect(() => {
-    if (mapConfig?.center) {
+    // Only use mapConfig center/zoom if user hasn't set custom values in localStorage
+    const hasCustomPosition = Settings.getInitialPosition() !== null;
+    const hasCustomZoom = Settings.getInitialZoom() !== null;
+
+    if (mapConfig?.center && !hasCustomPosition && !hasCustomZoom) {
       dispatch(
         StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
       );

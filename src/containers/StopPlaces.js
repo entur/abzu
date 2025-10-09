@@ -21,7 +21,6 @@ import {
 } from "../actions/TiamatActions";
 import Loader from "../components/Dialogs/Loader";
 import SearchBox from "../components/MainPage/SearchBox";
-import { MapControls } from "../components/Map/MapControls";
 import StopPlacesMap from "../components/Map/StopPlacesMap";
 import formatHelpers from "../modelUtils/mapToClient";
 import "../styles/main.css";
@@ -55,7 +54,7 @@ class StopPlaces extends React.Component {
         }
         this.setState({ isLoading: false });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ isLoading: false });
       });
   }
@@ -81,7 +80,7 @@ class StopPlaces extends React.Component {
             removeIdParamFromURL("stopPlaceId");
           }
         })
-        .catch((err) => {
+        .catch(() => {
           removeIdParamFromURL("stopPlaceId");
           this.setState({ isLoading: false });
         });
@@ -141,7 +140,6 @@ class StopPlaces extends React.Component {
         {showLegacySearchBox && <SearchBox />}
         <div style={{ position: "relative" }}>
           <StopPlacesMap />
-          <MapControls />
         </div>
       </div>
     );

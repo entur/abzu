@@ -86,7 +86,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   // Translations
   const reportSite = formatMessage({ id: "report_site" });
   const settings = formatMessage({ id: "settings" });
-  const appearance = formatMessage({ id: "appearance" }) || "Appearance";
+  const appearance = formatMessage({ id: "appearance" });
   const userGuide = formatMessage({ id: "user_guide" });
   const logOut = formatMessage({ id: "log_out" });
 
@@ -112,6 +112,10 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       component: UICustomizationSection,
     },
     {
+      key: "divider2",
+      type: "divider",
+    },
+    {
       key: "settings",
       icon: <Settings />,
       text: settings,
@@ -119,13 +123,17 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       component: SettingsMenuSection,
     },
     {
-      key: "divider2",
+      key: "divider3",
       type: "divider",
     },
     {
       key: "language",
       type: "custom",
       component: LanguageMenu,
+    },
+    {
+      key: "divider4",
+      type: "divider",
     },
     {
       key: "help",
@@ -144,7 +152,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   if (isAuthenticated) {
     menuItems.push(
       {
-        key: "divider3",
+        key: "divider5",
         type: "divider",
       },
       {

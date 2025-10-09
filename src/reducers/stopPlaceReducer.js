@@ -27,10 +27,21 @@ const Settings = new SettingsManager();
 
 /**
  * If a custom centerPosition is set in bootstrap.json, it's going to override this initial value
+ * User's custom initial position/zoom from localStorage will also override the defaults
  */
+const getInitialCenterPosition = () => {
+  const customPosition = Settings.getInitialPosition();
+  return customPosition || defaultCenterPosition;
+};
+
+const getInitialZoom = () => {
+  const customZoom = Settings.getInitialZoom();
+  return customZoom !== null ? customZoom : 6;
+};
+
 const initialState = {
-  centerPosition: defaultCenterPosition,
-  zoom: 6,
+  centerPosition: getInitialCenterPosition(),
+  zoom: getInitialZoom(),
   minZoom: 14,
   isCompassBearingEnabled: Settings.getShowCompassBearing(),
   isCreatingPolylines: false,
@@ -147,6 +158,8 @@ const stopPlaceReducer = (state = initialState, action) => {
           pathLink: [],
           current: null,
           newStop: null,
+          centerPosition: getInitialCenterPosition(),
+          zoom: getInitialZoom(),
         });
       } else {
         return state;

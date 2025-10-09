@@ -5,51 +5,55 @@
   "author": "Entur",
   "palette": {
     "primary": {
-      "main": "#5AC39A",
-      "dark": "#3DA87A",
-      "light": "#7DCCAB",
+      "main": "#181c56",
+      "dark": "#11143c",
+      "light": "#aeb7e2",
       "contrastText": "#ffffff"
     },
     "secondary": {
-      "main": "#181C56",
-      "dark": "#0F1240",
-      "light": "#2D3168",
+      "main": "#5ac39a",
+      "dark": "#022015",
+      "light": "#e6f6f0",
       "contrastText": "#ffffff"
     },
     "tertiary": {
-      "main": "#41c0c4",
-      "dark": "#2E9CA0",
-      "light": "#64CCCE",
+      "main": "#64b3e7",
+      "dark": "#011a23",
+      "light": "#e1eff8",
       "contrastText": "#ffffff"
     },
     "error": {
-      "main": "#d32f2f",
-      "dark": "#c62828",
-      "light": "#ef5350"
+      "main": "#ff5959",
+      "dark": "#370606",
+      "light": "#ffe5e5",
+      "contrastText": "#ffffff"
     },
     "warning": {
-      "main": "#ed6c02",
-      "dark": "#e65100",
-      "light": "#ff9800"
+      "main": "#ffe082",
+      "dark": "#483705",
+      "light": "#fff4cd",
+      "contrastText": "#000000"
     },
     "info": {
-      "main": "#0288d1",
-      "dark": "#01579b",
-      "light": "#03a9f4"
+      "main": "#64b3e7",
+      "dark": "#011a23",
+      "light": "#e1eff8",
+      "contrastText": "#ffffff"
     },
     "success": {
-      "main": "#2e7d32",
-      "dark": "#1b5e20",
-      "light": "#4caf50"
+      "main": "#5ac39a",
+      "dark": "#022015",
+      "light": "#e6f6f0",
+      "contrastText": "#ffffff"
     },
     "background": {
-      "default": "#fafafa",
+      "default": "#f6f6f9",
       "paper": "#ffffff"
     },
     "text": {
-      "primary": "rgba(0, 0, 0, 0.87)",
-      "secondary": "rgba(0, 0, 0, 0.6)",
-      "disabled": "rgba(0, 0, 0, 0.38)"
+      "primary": "#08091c",
+      "secondary": "#81828f",
+      "disabled": "#b6b8ba"
     }
   },
   "typography": {
@@ -114,15 +118,15 @@
   },
   "environment": {
     "development": {
-      "color": "#181C56",
+      "color": "#181c56",
       "showBadge": true
     },
     "test": {
-      "color": "#d18e25",
+      "color": "#ffe082",
       "showBadge": true
     },
     "prod": {
-      "color": "#181C56",
+      "color": "#181c56",
       "showBadge": false
     }
   },
@@ -169,7 +173,7 @@
     "headerHeight": 64,
     "sidebarWidth": 280,
     "contentMaxWidth": 1200,
-    "brandGradient": "linear-gradient(135deg, #5AC39A 0%, #41c0c4 100%)",
-    "accentShadow": "0 4px 20px rgba(90, 195, 154, 0.2)"
+    "brandGradient": "linear-gradient(135deg, #181c56 0%, #64b3e7 100%)",
+    "accentShadow": "0 4px 20px rgba(24, 28, 86, 0.2)"
   }
 }

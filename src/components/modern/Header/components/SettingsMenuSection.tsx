@@ -27,10 +27,6 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
-import {
-  toggleShowFareZonesInMap,
-  toggleShowTariffZonesInMap,
-} from "../../../../reducers/zonesSlice";
 import { useAppDispatch } from "../../../../store/hooks";
 
 interface SettingsMenuSectionProps {
@@ -51,24 +47,7 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
 
   // Redux selectors
   const isPublicCodePrivateCodeOnStopPlacesEnabled = useSelector(
-    (state: any) => state.stopPlace.isPublicCodePrivateCodeOnStopPlacesEnabled,
-  );
-  const isMultiPolylinesEnabled = useSelector(
-    (state: any) => state.stopPlace.enablePolylines,
-  );
-  const isCompassBearingEnabled = useSelector(
-    (state: any) => state.stopPlace.isCompassBearingEnabled,
-  );
-  const showExpiredStops = useSelector(
-    (state: any) => state.stopPlace.showExpiredStops,
-  );
-  const showMultimodalEdges = useSelector(
-    (state: any) => state.stopPlace.showMultimodalEdges,
-  );
-  const showPublicCode = useSelector((state: any) => state.user.showPublicCode);
-  const showFareZones = useSelector((state: any) => state.zones.showFareZones);
-  const showTariffZones = useSelector(
-    (state: any) => state.zones.showTariffZones,
+    (state: any) => state.stopPlace.enablePublicCodePrivateCodeOnStopPlaces,
   );
 
   // Translations
@@ -76,52 +55,10 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
   const publicCodePrivateCodeSetting = formatMessage({
     id: "publicCode_privateCode_setting_label",
   });
-  const showPathLinks = formatMessage({ id: "show_path_links" });
-  const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
-  const showExpiredStopsLabel = formatMessage({ id: "show_expired_stops" });
-  const showMultimodalEdgesLabel = formatMessage({
-    id: "show_multimodal_edges",
-  });
-  const showPublicCodeLabel = formatMessage({ id: "show_public_code" });
-  const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
-  const showFareZonesLabel = formatMessage({ id: "show_fare_zones_label" });
-  const showTariffZonesLabel = formatMessage({
-    id: "show_tariff_zones_label",
-  });
 
   // Handlers
   const handleTogglePublicCodePrivateCodeOnStopPlaces = (value: boolean) => {
     dispatch(UserActions.toggleEnablePublicCodePrivateCodeOnStopPlaces(value));
-  };
-
-  const handleToggleMultiPolylines = (value: boolean) => {
-    dispatch(UserActions.togglePathLinksEnabled(value));
-  };
-
-  const handleToggleCompassBearing = (value: boolean) => {
-    dispatch(UserActions.toggleCompassBearingEnabled(value));
-  };
-
-  const handleToggleShowExpiredStops = (value: boolean) => {
-    dispatch(UserActions.toggleExpiredShowExpiredStops(value));
-  };
-
-  const handleToggleMultimodalEdges = (value: boolean) => {
-    dispatch(UserActions.toggleMultimodalEdges(value));
-  };
-
-  const handleToggleShowPublicCode = (value: boolean) => {
-    dispatch(UserActions.toggleShowPublicCode(value));
-  };
-
-  const handleToggleShowFareZones = (value: boolean) => {
-    dispatch(toggleShowTariffZonesInMap(false));
-    dispatch(toggleShowFareZonesInMap(value));
-  };
-
-  const handleToggleShowTariffZones = (value: boolean) => {
-    dispatch(toggleShowFareZonesInMap(false));
-    dispatch(toggleShowTariffZonesInMap(value));
   };
 
   const handleClick = () => {
@@ -150,48 +87,6 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
       label: publicCodePrivateCodeSetting,
       checked: isPublicCodePrivateCodeOnStopPlacesEnabled,
       onChange: handleTogglePublicCodePrivateCodeOnStopPlaces,
-    },
-    {
-      key: "pathLinks",
-      label: showPathLinks,
-      checked: isMultiPolylinesEnabled,
-      onChange: handleToggleMultiPolylines,
-    },
-    {
-      key: "compassBearing",
-      label: showCompassBearing,
-      checked: isCompassBearingEnabled,
-      onChange: handleToggleCompassBearing,
-    },
-    {
-      key: "expiredStops",
-      label: showExpiredStopsLabel,
-      checked: showExpiredStops,
-      onChange: handleToggleShowExpiredStops,
-    },
-    {
-      key: "multimodalEdges",
-      label: showMultimodalEdgesLabel,
-      checked: showMultimodalEdges,
-      onChange: handleToggleMultimodalEdges,
-    },
-    {
-      key: "publicCode",
-      label: showPublicCode ? showPublicCodeLabel : showPrivateCodeLabel,
-      checked: showPublicCode,
-      onChange: handleToggleShowPublicCode,
-    },
-    {
-      key: "fareZones",
-      label: showFareZonesLabel,
-      checked: showFareZones,
-      onChange: handleToggleShowFareZones,
-    },
-    {
-      key: "tariffZones",
-      label: showTariffZonesLabel,
-      checked: showTariffZones,
-      onChange: handleToggleShowTariffZones,
     },
   ];
 

@@ -13,9 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { useIntl } from "react-intl";
-import CoordinatesDialog from "../../../Dialogs/CoordinatesDialog";
 import FavoriteNameDialog from "../../../Dialogs/FavoriteNameDialog";
+import { CoordinatesDialog } from "../../Dialogs/CoordinatesDialog";
 import { CoordinatesDialogsProps } from "../types";
 
 export const CoordinatesDialogs: React.FC<CoordinatesDialogsProps> = ({
@@ -26,8 +25,6 @@ export const CoordinatesDialogs: React.FC<CoordinatesDialogsProps> = ({
   onCloseCoordinates,
   onSubmitCoordinates,
 }) => {
-  const { formatMessage, locale } = useIntl();
-
   return (
     <>
       <CoordinatesDialog
@@ -35,14 +32,12 @@ export const CoordinatesDialogs: React.FC<CoordinatesDialogsProps> = ({
         handleClose={onCloseLookupCoordinates}
         handleConfirm={onSubmitLookupCoordinates}
         titleId="lookup_coordinates"
-        intl={{ formatMessage, locale }}
       />
 
       <CoordinatesDialog
         open={coordinatesDialogOpen}
         handleClose={onCloseCoordinates}
         handleConfirm={onSubmitCoordinates}
-        intl={{ formatMessage, locale }}
       />
 
       <FavoriteNameDialog />

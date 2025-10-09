@@ -320,33 +320,32 @@ UserActions.changeQuayAdditionalTypeTabByType = (type) => (dispatch) => {
   dispatch(UserActions.changeQuayAdditionalTypeTab(value));
 };
 
-UserActions.showMergeStopDialog =
-  (fromStopPlaceID, name) => (dispatch, getState) => {
-    dispatch(
-      createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-        id: fromStopPlaceID,
-        name: name,
-      }),
-    );
+UserActions.showMergeStopDialog = (fromStopPlaceID, name) => (dispatch) => {
+  dispatch(
+    createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+      id: fromStopPlaceID,
+      name: name,
+    }),
+  );
 
-    dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
+  dispatch(createThunk(types.REQUESTED_QUAYS_MERGE_INFO, null));
 
-    dispatch(getMergeInfoForStops(fromStopPlaceID))
-      .then((response) => {
-        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-        dispatch(
-          createThunk(types.OPENED_MERGE_STOP_DIALOG, {
-            id: fromStopPlaceID,
-            name,
-            quays: getQuaysForMergeInfo(response.data.stopPlace),
-          }),
-        );
-      })
-      .catch((err) => {
-        dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
-        console.log(err);
-      });
-  };
+  dispatch(getMergeInfoForStops(fromStopPlaceID))
+    .then((response) => {
+      dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+      dispatch(
+        createThunk(types.OPENED_MERGE_STOP_DIALOG, {
+          id: fromStopPlaceID,
+          name,
+          quays: getQuaysForMergeInfo(response.data.stopPlace),
+        }),
+      );
+    })
+    .catch((err) => {
+      dispatch(createThunk(types.RECEIVED_QUAYS_MERGE_INFO, null));
+      console.log(err);
+    });
+};
 
 UserActions.hideMergeStopDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_MERGE_STOP_DIALOG, null));
@@ -672,10 +671,20 @@ export const updateAuth = (auth) => (dispatch) => {
   dispatch(createThunk(types.UPDATED_AUTH, auth));
 };
 
-export const fetchUserPermissions = () => (dispatch, getState) => {
+export const fetchUserPermissions = () => (dispatch) => {
   dispatch(getUserPermissions());
 };
 
 export const fetchLocationPermissions = (position) => (dispatch) => {
   dispatch(getLocationPermissionsForCoordinates(position[1], position[0]));
+};
+
+UserActions.setInitialPosition = (lat, lng) => (dispatch) => {
+  Settings.setInitialPosition(lat, lng);
+  dispatch(createThunk(types.SET_INITIAL_POSITION, { lat, lng }));
+};
+
+UserActions.setInitialZoom = (zoom) => (dispatch) => {
+  Settings.setInitialZoom(zoom);
+  dispatch(createThunk(types.SET_INITIAL_ZOOM, zoom));
 };

@@ -26,6 +26,9 @@ const enablePublicCodePrivateCodeOnStopPlaces =
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
 const uiModeKey = rootKey + "::uiMode";
+const initialLatitudeKey = rootKey + "::initialLatitude";
+const initialLongitudeKey = rootKey + "::initialLongitude";
+const initialZoomKey = rootKey + "::initialZoom";
 
 class SettingsManager {
   constructor() {
@@ -129,6 +132,44 @@ class SettingsManager {
 
   setUIMode(value) {
     localStorage.setItem(uiModeKey, value);
+  }
+
+  getInitialLatitude() {
+    const value = localStorage.getItem(initialLatitudeKey);
+    return value ? parseFloat(value) : null;
+  }
+
+  setInitialLatitude(value) {
+    localStorage.setItem(initialLatitudeKey, value);
+  }
+
+  getInitialLongitude() {
+    const value = localStorage.getItem(initialLongitudeKey);
+    return value ? parseFloat(value) : null;
+  }
+
+  setInitialLongitude(value) {
+    localStorage.setItem(initialLongitudeKey, value);
+  }
+
+  getInitialZoom() {
+    const value = localStorage.getItem(initialZoomKey);
+    return value ? parseInt(value, 10) : null;
+  }
+
+  setInitialZoom(value) {
+    localStorage.setItem(initialZoomKey, value);
+  }
+
+  getInitialPosition() {
+    const lat = this.getInitialLatitude();
+    const lng = this.getInitialLongitude();
+    return lat !== null && lng !== null ? [lat, lng] : null;
+  }
+
+  setInitialPosition(lat, lng) {
+    this.setInitialLatitude(lat);
+    this.setInitialLongitude(lng);
   }
 }
 
