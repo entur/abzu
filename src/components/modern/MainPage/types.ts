@@ -116,8 +116,6 @@ export interface UseSearchBoxReturn {
   stopPlaceSearchValue: string;
   topographicPlaceFilterValue: string;
   coordinatesDialogOpen: boolean;
-  createNewStopOpen: boolean;
-  anchorEl: HTMLElement | null;
 
   // Handlers
   handleSearchUpdate: (event: any, searchText: string, reason?: string) => void;
@@ -129,11 +127,9 @@ export interface UseSearchBoxReturn {
   handleSaveAsFavorite: () => void;
   handleRetrieveFilter: (filter: FavoriteFilter) => void;
   handleEdit: (id: string, entityType: keyof typeof Entities) => void;
-  handleNewStop: (isMultiModal: boolean) => void;
   handleLookupCoordinates: (position: [number, number]) => void;
   handleSubmitCoordinates: (position: [number, number]) => void;
   handleOpenCoordinatesDialog: () => void;
-  handleOpenLookupCoordinatesDialog: () => void;
   handleCloseLookupCoordinatesDialog: () => void;
   handleCloseCoordinatesDialog: () => void;
   handleTopographicalPlaceInput: (

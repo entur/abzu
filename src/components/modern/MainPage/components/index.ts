@@ -16,4 +16,5 @@ export { CoordinatesDialogs } from "./CoordinatesDialogs";
 export { FavoriteSection } from "./FavoriteSection";
 export { FilterSection } from "./FilterSection";
 export { SearchInput } from "./SearchInput";
+export { createSearchMenuItem } from "./SearchMenuItem";
 export { SearchResultDetails } from "./SearchResultDetails";

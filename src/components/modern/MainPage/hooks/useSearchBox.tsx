@@ -25,7 +25,7 @@ import {
 import { Entities } from "../../../../models/Entities";
 import formatHelpers from "../../../../modelUtils/mapToClient";
 import Routes from "../../../../routes/";
-import { createSearchMenuItem } from "../../../MainPage/SearchMenuItem";
+import { createSearchMenuItem } from "../components";
 import {
   FavoriteFilter,
   MenuItem,
