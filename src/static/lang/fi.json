@@ -594,5 +594,6 @@
   "go": "Mene",
   "coordinates_format_hint": "Muoto: leveysaste, pituusaste",
   "open_search": "Avaa haku",
-  "close_filters": "Sulje suodattimet"
+  "close_filters": "Sulje suodattimet",
+  "click_to_logout": "Napsauta kirjautuaksesi ulos"
 }

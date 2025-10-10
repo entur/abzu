@@ -15,7 +15,6 @@ limitations under the Licence. */
 import { ComponentToggle } from "@entur/react-component-toggle";
 import {
   Help,
-  Logout,
   Menu as MenuIcon,
   Palette,
   Report,
@@ -35,7 +34,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import { LanguageMenu } from "../../../Header/LanguageMenu";
+import { LanguageMenu } from "./LanguageMenu";
 import { SettingsMenuSection } from "./SettingsMenuSection";
 import { UICustomizationSection } from "./UICustomizationSection";
 
@@ -46,18 +45,12 @@ interface NavigationMenuProps {
   onConfirmChangeRoute: (action: () => void, actionName: string) => void;
   onGoToReports: () => void;
   isMobile: boolean;
-  isAuthenticated: boolean;
-  preferredName?: string;
-  onLogout: () => void;
 }
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   config,
   onGoToReports,
   isMobile,
-  isAuthenticated,
-  preferredName,
-  onLogout,
 }) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
@@ -88,7 +81,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const settings = formatMessage({ id: "settings" });
   const appearance = formatMessage({ id: "appearance" });
   const userGuide = formatMessage({ id: "user_guide" });
-  const logOut = formatMessage({ id: "log_out" });
 
   const menuItems = [
     {
@@ -148,24 +140,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       },
     },
   ];
-
-  if (isAuthenticated) {
-    menuItems.push(
-      {
-        key: "divider5",
-        type: "divider",
-      },
-      {
-        key: "logout",
-        icon: <Logout />,
-        text: `${logOut} ${preferredName || ""}`,
-        onClick: () => {
-          handleClose();
-          onLogout();
-        },
-      },
-    );
-  }
 
   const renderMenuItem = (item: any) => {
     if (item.type === "divider") {

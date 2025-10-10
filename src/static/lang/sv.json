@@ -592,5 +592,6 @@
   "go": "Gå",
   "coordinates_format_hint": "Format: latitud, longitud",
   "open_search": "Öppna sökning",
-  "close_filters": "Stäng filter"
+  "close_filters": "Stäng filter",
+  "click_to_logout": "Klicka för att logga ut"
 }

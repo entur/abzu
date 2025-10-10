@@ -595,5 +595,6 @@
   "go": "Gå",
   "coordinates_format_hint": "Format: breddegrad, lengdegrad",
   "open_search": "Åpne søk",
-  "close_filters": "Lukk filtre"
+  "close_filters": "Lukk filtre",
+  "click_to_logout": "Klikk for å logge ut"
 }

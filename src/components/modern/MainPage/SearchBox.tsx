@@ -25,7 +25,6 @@ import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import {
-  ActionButtons,
   CoordinatesDialogs,
   FavoriteSection,
   FilterSection,
@@ -59,7 +58,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
   const {
     // State selectors
     chosenResult,
-    isCreatingNewStop,
     favorited,
     missingCoordinatesMap,
     stopTypeFilter,
@@ -67,15 +65,12 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     topographicalPlaces,
     canEdit,
     lookupCoordinatesOpen,
-    newStopIsMultiModal,
     dataSource,
     showFutureAndExpired,
-    isGuest,
     searchText,
   } = useSelector((state: RootState) => ({
     chosenResult: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults || [],
-    isCreatingNewStop: state.user.isCreatingNewStop,
     stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
     favorited: state.user.favorited, // This will need to be computed
@@ -86,9 +81,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
       ? (state.stopPlace.permissions?.canEdit ?? false)
       : (state.stopPlace.current?.permissions?.canEdit ?? false),
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
-    newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
-    isGuest: state.user.isGuest,
   }));
 
   const {
@@ -98,8 +91,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
     coordinatesDialogOpen,
-    createNewStopOpen,
-    anchorEl,
 
     // Handlers
     handleSearchUpdate,
@@ -111,11 +102,9 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     handleSaveAsFavorite,
     handleRetrieveFilter,
     handleEdit,
-    handleNewStop,
     handleLookupCoordinates,
     handleSubmitCoordinates,
     handleOpenCoordinatesDialog,
-    handleOpenLookupCoordinatesDialog,
     handleCloseLookupCoordinatesDialog,
     handleCloseCoordinatesDialog,
     handleTopographicalPlaceInput,
@@ -257,17 +246,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
                 }
                 onEdit={handleEdit}
                 onChangeCoordinates={handleOpenCoordinatesDialog}
-              />
-            )}
-
-            {!isGuest && (
-              <ActionButtons
-                isCreatingNewStop={isCreatingNewStop}
-                newStopIsMultiModal={newStopIsMultiModal}
-                createNewStopOpen={createNewStopOpen}
-                anchorEl={anchorEl}
-                onOpenLookupCoordinates={handleOpenLookupCoordinatesDialog}
-                onNewStop={handleNewStop}
               />
             )}
           </div>

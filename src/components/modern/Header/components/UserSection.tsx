@@ -12,12 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { Logout } from "@mui/icons-material";
 import {
   alpha,
   Avatar,
   Box,
   Button,
   Chip,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Tooltip,
   useTheme,
 } from "@mui/material";
@@ -36,11 +41,27 @@ export const UserSection: React.FC<UserSectionProps> = ({
   isAuthenticated,
   preferredName,
   onLogin,
+  onLogout,
   isMobile,
 }) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const logIn = formatMessage({ id: "log_in" });
+  const logOut = formatMessage({ id: "log_out" });
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    onLogout();
+  };
 
   if (!isAuthenticated) {
     return (
@@ -72,65 +93,126 @@ export const UserSection: React.FC<UserSectionProps> = ({
 
   if (isMobile) {
     return (
-      <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-        <Avatar
-          sx={{
-            width: 32,
-            height: 32,
-            fontSize: theme.typography.body2.fontSize,
-            backgroundColor: alpha(theme.palette.common.white, 0.15),
-            color: theme.palette.common.white,
-            border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-            fontWeight: theme.typography.fontWeightMedium,
-          }}
-        >
-          {preferredName ? preferredName.charAt(0).toUpperCase() : "U"}
-        </Avatar>
-      </Box>
-    );
-  }
-
-  return (
-    <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
-      <Tooltip title={`Logged in as ${preferredName || "User"}`}>
-        <Chip
-          avatar={
+      <>
+        <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
+          <Tooltip title={formatMessage({ id: "click_to_logout" })}>
             <Avatar
+              onClick={handleClick}
               sx={{
-                width: 24,
-                height: 24,
-                fontSize: theme.typography.caption.fontSize,
+                width: 32,
+                height: 32,
+                fontSize: theme.typography.body2.fontSize,
+                backgroundColor: alpha(theme.palette.common.white, 0.15),
+                color: theme.palette.common.white,
+                border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
                 fontWeight: theme.typography.fontWeightMedium,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: alpha(theme.palette.common.white, 0.25),
+                },
               }}
             >
               {preferredName ? preferredName.charAt(0).toUpperCase() : "U"}
             </Avatar>
-          }
-          label={preferredName || "User"}
-          variant="outlined"
-          sx={{
-            color: theme.palette.common.white,
-            borderColor: alpha(theme.palette.common.white, 0.3),
-            backgroundColor: alpha(theme.palette.common.white, 0.1),
-            fontWeight: theme.typography.fontWeightRegular,
-            "& .MuiChip-avatar": {
-              backgroundColor: alpha(theme.palette.common.white, 0.2),
-              color: theme.palette.common.white,
-            },
-            "& .MuiChip-label": {
-              fontWeight: theme.typography.fontWeightMedium,
-              fontSize: theme.typography.body2.fontSize,
-            },
-            "&:hover": {
-              backgroundColor: alpha(theme.palette.common.white, 0.2),
-              borderColor: alpha(theme.palette.common.white, 0.4),
-            },
-            "&:active": {
-              backgroundColor: alpha(theme.palette.common.white, 0.3),
+          </Tooltip>
+        </Box>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          slotProps={{
+            paper: {
+              sx: {
+                minWidth: 180,
+                borderRadius: 2,
+                boxShadow: theme.shadows[8],
+              },
             },
           }}
-        />
-      </Tooltip>
-    </Box>
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>{logOut}</ListItemText>
+          </MenuItem>
+        </Menu>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
+        <Tooltip title={formatMessage({ id: "click_to_logout" })}>
+          <Chip
+            avatar={
+              <Avatar
+                sx={{
+                  width: 24,
+                  height: 24,
+                  fontSize: theme.typography.caption.fontSize,
+                  fontWeight: theme.typography.fontWeightMedium,
+                }}
+              >
+                {preferredName ? preferredName.charAt(0).toUpperCase() : "U"}
+              </Avatar>
+            }
+            label={preferredName || "User"}
+            variant="outlined"
+            onClick={handleClick}
+            sx={{
+              color: theme.palette.common.white,
+              borderColor: alpha(theme.palette.common.white, 0.3),
+              backgroundColor: alpha(theme.palette.common.white, 0.1),
+              fontWeight: theme.typography.fontWeightRegular,
+              cursor: "pointer",
+              "& .MuiChip-avatar": {
+                backgroundColor: alpha(theme.palette.common.white, 0.2),
+                color: theme.palette.common.white,
+              },
+              "& .MuiChip-label": {
+                fontWeight: theme.typography.fontWeightMedium,
+                fontSize: theme.typography.body2.fontSize,
+              },
+              "&:hover": {
+                backgroundColor: alpha(theme.palette.common.white, 0.2),
+                borderColor: alpha(theme.palette.common.white, 0.4),
+              },
+              "&:active": {
+                backgroundColor: alpha(theme.palette.common.white, 0.3),
+              },
+            }}
+          />
+        </Tooltip>
+      </Box>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        slotProps={{
+          paper: {
+            sx: {
+              minWidth: 180,
+              borderRadius: 2,
+              boxShadow: theme.shadows[8],
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>{logOut}</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
   );
 };

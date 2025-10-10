@@ -54,8 +54,6 @@ export const useSearchBox = ({
   const [topographicPlaceFilterValue, setTopographicPlaceFilterValue] =
     useState("");
   const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
-  const [createNewStopOpen, setCreateNewStopOpen] = useState(false);
-  const [anchorEl] = useState<HTMLElement | null>(null);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -280,22 +278,10 @@ export const useSearchBox = ({
     handleSearchUpdate(null, searchText);
   }, [dispatch, handleSearchUpdate, searchText]);
 
-  const handleNewStop = useCallback(
-    (isMultiModal: boolean) => {
-      dispatch(UserActions.toggleIsCreatingNewStop(isMultiModal));
-      setCreateNewStopOpen(false);
-    },
-    [dispatch],
-  );
-
   // Coordinates handlers
   const handleOpenCoordinatesDialog = useCallback(() => {
     setCoordinatesDialogOpen(true);
   }, []);
-
-  const handleOpenLookupCoordinatesDialog = useCallback(() => {
-    dispatch(UserActions.openLookupCoordinatesDialog());
-  }, [dispatch]);
 
   const handleCloseLookupCoordinatesDialog = useCallback(() => {
     dispatch(UserActions.closeLookupCoordinatesDialog());
@@ -471,8 +457,6 @@ export const useSearchBox = ({
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
     coordinatesDialogOpen,
-    createNewStopOpen,
-    anchorEl,
 
     // Handlers
     handleSearchUpdate,
@@ -484,11 +468,9 @@ export const useSearchBox = ({
     handleSaveAsFavorite,
     handleRetrieveFilter,
     handleEdit,
-    handleNewStop,
     handleLookupCoordinates,
     handleSubmitCoordinates,
     handleOpenCoordinatesDialog,
-    handleOpenLookupCoordinatesDialog,
     handleCloseLookupCoordinatesDialog,
     handleCloseCoordinatesDialog,
     handleTopographicalPlaceInput,

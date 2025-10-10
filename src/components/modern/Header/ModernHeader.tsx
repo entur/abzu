@@ -24,11 +24,13 @@ import { getLogo } from "../../../config/themeConfig";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
 import ConfirmDialog from "../../Dialogs/ConfirmDialog";
-import { HeaderSearch } from "../../Header/HeaderSearch";
-import { AppLogo } from "./components/AppLogo";
-import { EnvironmentBadge } from "./components/EnvironmentBadge";
-import { NavigationMenu } from "./components/NavigationMenu";
-import { UserSection } from "./components/UserSection";
+import {
+  AppLogo,
+  EnvironmentBadge,
+  HeaderSearch,
+  NavigationMenu,
+  UserSection,
+} from "./components";
 
 interface ModernHeaderProps {
   config: {
@@ -208,9 +210,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
               handleConfirmChangeRoute(goToReports, "GoToReports")
             }
             isMobile={isMobile}
-            isAuthenticated={auth.isAuthenticated}
-            preferredName={preferredName}
-            onLogout={handleLogOut}
           />
         </Toolbar>
       </AppBar>

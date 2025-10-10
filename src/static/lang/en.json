@@ -595,5 +595,6 @@
   "default_map_settings_description": "Configure the initial map position and zoom level when opening the application.",
   "go": "Go",
   "open_search": "Open Search",
-  "close_filters": "Close Filters"
+  "close_filters": "Close Filters",
+  "click_to_logout": "Click to logout"
 }

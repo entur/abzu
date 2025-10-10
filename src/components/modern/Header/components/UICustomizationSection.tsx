@@ -28,7 +28,7 @@ import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
-import { ThemeSwitcher } from "../../../../theme/components/ThemeSwitcher";
+import { ThemeSwitcher } from "../../../../theme";
 
 interface UICustomizationSectionProps {
   onClose: () => void;

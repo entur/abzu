@@ -594,5 +594,6 @@
   "go": "Aller",
   "coordinates_format_hint": "Format : latitude, longitude",
   "open_search": "Ouvrir la recherche",
-  "close_filters": "Fermer les filtres"
+  "close_filters": "Fermer les filtres",
+  "click_to_logout": "Cliquez pour vous déconnecter"
 }
