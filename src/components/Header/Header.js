@@ -104,10 +104,19 @@ class Header extends React.Component {
   }
 
   handleLogin() {
+    let pathname = window.location.pathname;
+    if (import.meta.env.BASE_URL) {
+      const basename = import.meta.env.BASE_URL;
+      // Extract the base path out, or else it will be applied twice after redirect
+      const pagePath = pathname.split(basename)[1];
+      // if base path ended with '/', it was stripped away in previous step - and needs to be added back unless it's an empty pagePath
+      pathname = `${pagePath && basename.endsWith("/") ? "/" : ""}${pagePath}`;
+    }
+
     if (this.props.auth) {
       sessionStorage.setItem(
         "redirectAfterLogin",
-        window.location.pathname + window.location.search,
+        pathname + window.location.search,
       );
       this.props.auth.login();
     }

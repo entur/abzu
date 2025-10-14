@@ -10,7 +10,7 @@ import FacilityCheckbox from "./FacilityCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
-  WaitingEquipmentDetails,
+  WaitingRoomDetailFields,
 } from "./types";
 
 const ShelterDetails = ({
@@ -39,7 +39,7 @@ const ShelterDetails = ({
     false,
   );
 
-  const handleValueForShelterChange = (newValue: WaitingEquipmentDetails) => {
+  const handleValueForShelterChange = (newValue: WaitingRoomDetailFields) => {
     if (disabled) {
       return;
     }
@@ -84,7 +84,7 @@ const ShelterDetails = ({
         disabled={disabled}
         onChange={(event) => {
           handleValueForShelterChange({
-            seats: event.target.value,
+            seats: event.target.value as unknown as number,
           });
         }}
         fullWidth={true}

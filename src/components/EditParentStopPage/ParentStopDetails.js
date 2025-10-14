@@ -31,6 +31,7 @@ import {
   removeTag,
 } from "../../actions/TiamatActions";
 import UserActions from "../../actions/UserActions";
+import { ConfigContext } from "../../config/ConfigContext";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
@@ -44,6 +45,8 @@ import BelongsToGroup from "./../MainPage/BelongsToGroup";
 import StopPlaceList from "./StopPlaceList";
 
 class ParentStopDetails extends Component {
+  static contextType = ConfigContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -120,6 +123,10 @@ class ParentStopDetails extends Component {
     this.props.dispatch(StopPlaceActions.changeStopDescription(e.target.value));
   }
 
+  handleChangeUrl(e, value) {
+    this.props.dispatch(StopPlaceActions.changeStopUrl(e.target.value));
+  }
+
   handleRemoveAdjacentConnection(stopPlaceId, adjacentRef) {
     this.props.dispatch(
       StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef),
@@ -134,6 +141,10 @@ class ParentStopDetails extends Component {
     const { changePositionOpen, addStopPlaceOpen, altNamesDialogOpen } =
       this.state;
     const { formatMessage } = intl;
+
+    const {
+      featureFlags: { StopPlaceUrl: featureStopPlaceUrlEnabled = false },
+    } = this.context;
 
     const hasAltNames = !!(
       stopPlace.alternativeNames && stopPlace.alternativeNames.length
@@ -248,6 +259,17 @@ class ParentStopDetails extends Component {
             value={stopPlace.description || ""}
             onChange={this.handleChangeDescription.bind(this)}
           />
+          {featureStopPlaceUrlEnabled && (
+            <TextField
+              variant={"standard"}
+              hintText={formatMessage({ id: "url" })}
+              label={formatMessage({ id: "url" })}
+              fullWidth={true}
+              disabled={disabled}
+              value={stopPlace.url || ""}
+              onChange={this.handleChangeUrl.bind(this)}
+            />
+          )}
           <Divider />
         </div>
         <StopPlaceList

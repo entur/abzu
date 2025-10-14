@@ -10,7 +10,7 @@ import FacilityCheckbox from "./FacilityCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
-  WaitingEquipmentDetails,
+  WaitingRoomDetailFields,
 } from "./types";
 
 const WaitingRoomDetails = ({
@@ -41,7 +41,7 @@ const WaitingRoomDetails = ({
   );
 
   const handleValueForWaitingRoomChange = (
-    newValue: WaitingEquipmentDetails,
+    newValue: WaitingRoomDetailFields,
   ) => {
     if ((newValue.seats as number) < 0) {
       newValue.seats = 0;
@@ -59,6 +59,7 @@ const WaitingRoomDetails = ({
         false,
       ),
     };
+
     const newValuesSet = { ...oldValuesSet, ...newValue };
     dispatch(
       EquipmentActions.updateWaitingRoomState(
@@ -79,7 +80,7 @@ const WaitingRoomDetails = ({
         disabled={disabled}
         onChange={(event) => {
           handleValueForWaitingRoomChange({
-            seats: event.target.value,
+            seats: event.target.value as unknown as number,
           });
         }}
         fullWidth={true}
