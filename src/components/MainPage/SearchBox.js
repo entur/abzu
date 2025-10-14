@@ -727,7 +727,7 @@ class SearchBox extends React.Component {
                           style={{ width: 20, height: 20 }}
                         />
                       }
-                      sx={{ color: "black" }}
+                      sx={{ color: "black", textTransform: "uppercase" }}
                     >
                       {formatMessage({ id: "lookup_coordinates" })}
                     </Button>
@@ -739,8 +739,14 @@ class SearchBox extends React.Component {
                           anchorEl: e.currentTarget,
                         });
                       }}
-                      color={"primary2Color"}
-                      sx={{ color: "white" }}
+                      sx={{
+                        bgcolor: "#5AC39A",
+                        color: "#ffffff",
+                        textTransform: "uppercase",
+                        "&:hover": {
+                          bgcolor: "#4db085",
+                        },
+                      }}
                       startIcon={<MdMore style={{ width: 20, height: 20 }} />}
                     >
                       {formatMessage({ id: "new_stop" })}

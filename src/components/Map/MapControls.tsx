@@ -15,7 +15,6 @@ limitations under the Licence. */
 import {
   Close as CloseIcon,
   Layers as LayersIcon,
-  LocationSearching as LocationSearchingIcon,
   Map as MapIcon,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
@@ -23,7 +22,6 @@ import { Box, Fab, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { UserActions } from "../../actions";
 import { toggleShowTariffZonesInMap } from "../../reducers/zonesSlice";
 import { MapLayersPanel } from "./MapLayersPanel";
 import { MapSettingsPanel } from "./MapSettingsPanel";
@@ -35,10 +33,6 @@ export const MapControls: React.FC = () => {
   const { formatMessage } = useIntl();
   const dispatch = useDispatch() as any;
   const [activePanel, setActivePanel] = useState<PanelType>(null);
-
-  const handleOpenLookupCoordinates = () => {
-    dispatch(UserActions.openLookupCoordinatesDialog());
-  };
 
   const handleTogglePanel = (panel: PanelType) => {
     setActivePanel((prev) => (prev === panel ? null : panel));
@@ -77,13 +71,6 @@ export const MapControls: React.FC = () => {
       icon: <MapIcon />,
       label: formatMessage({ id: "show_tariff_zones_label" }) || "Tariff Zones",
       onClick: handleToggleTariffZones,
-    },
-    {
-      key: "coordinates",
-      icon: <LocationSearchingIcon />,
-      label:
-        formatMessage({ id: "lookup_coordinates" }) || "Lookup Coordinates",
-      onClick: handleOpenLookupCoordinates,
     },
   ];
 

@@ -25,7 +25,6 @@ import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import {
-  CoordinatesDialogs,
   FavoriteSection,
   FilterSection,
   SearchInput,
@@ -64,7 +63,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     topoiChips,
     topographicalPlaces,
     canEdit,
-    lookupCoordinatesOpen,
     dataSource,
     showFutureAndExpired,
     searchText,
@@ -90,7 +88,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     loading,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
-    coordinatesDialogOpen,
 
     // Handlers
     handleSearchUpdate,
@@ -102,11 +99,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     handleSaveAsFavorite,
     handleRetrieveFilter,
     handleEdit,
-    handleLookupCoordinates,
-    handleSubmitCoordinates,
     handleOpenCoordinatesDialog,
-    handleCloseLookupCoordinatesDialog,
-    handleCloseCoordinatesDialog,
     handleTopographicalPlaceInput,
     toggleShowFutureAndExpired,
 
@@ -135,15 +128,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
 
   return (
     <>
-      <CoordinatesDialogs
-        lookupCoordinatesOpen={lookupCoordinatesOpen}
-        coordinatesDialogOpen={coordinatesDialogOpen}
-        onCloseLookupCoordinates={handleCloseLookupCoordinatesDialog}
-        onSubmitLookupCoordinates={handleLookupCoordinates}
-        onCloseCoordinates={handleCloseCoordinatesDialog}
-        onSubmitCoordinates={handleSubmitCoordinates}
-      />
-
       {/* Floating Search Button for Mobile (when collapsed) */}
       {isMobile && !isExpanded && (
         <Fab

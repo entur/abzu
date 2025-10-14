@@ -30,7 +30,13 @@ import { useAppDispatch } from "../../../../store/hooks";
 
 const Settings = new SettingsManager();
 
-export const InitialMapSettingsForm: React.FC = () => {
+interface InitialMapSettingsFormProps {
+  onSave?: () => void;
+}
+
+export const InitialMapSettingsForm: React.FC<InitialMapSettingsFormProps> = ({
+  onSave,
+}) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const dispatch = useAppDispatch();
@@ -74,6 +80,9 @@ export const InitialMapSettingsForm: React.FC = () => {
     if (!isNaN(lat) && !isNaN(lng) && !isNaN(zoomLevel)) {
       dispatch(UserActions.setInitialPosition(lat, lng));
       dispatch(UserActions.setInitialZoom(zoomLevel));
+      if (onSave) {
+        onSave();
+      }
     }
   };
 

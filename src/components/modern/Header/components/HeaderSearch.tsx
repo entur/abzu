@@ -26,7 +26,6 @@ import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  CoordinatesDialogs,
   FilterSection,
   RootState,
   SearchInput,
@@ -51,7 +50,6 @@ export const HeaderSearch: React.FC = () => {
     topoiChips,
     topographicalPlaces,
     canEdit,
-    lookupCoordinatesOpen,
     dataSource,
     showFutureAndExpired,
     searchText,
@@ -79,7 +77,6 @@ export const HeaderSearch: React.FC = () => {
     loading,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
-    coordinatesDialogOpen,
     handleSearchUpdate,
     handleNewRequest,
     handleApplyModalityFilters,
@@ -87,11 +84,7 @@ export const HeaderSearch: React.FC = () => {
     handleAddChip,
     handleDeleteChip,
     handleEdit,
-    handleLookupCoordinates,
-    handleSubmitCoordinates,
     handleOpenCoordinatesDialog,
-    handleCloseLookupCoordinatesDialog,
-    handleCloseCoordinatesDialog,
     handleTopographicalPlaceInput,
     toggleShowFutureAndExpired,
     menuItems,
@@ -236,15 +229,6 @@ export const HeaderSearch: React.FC = () => {
 
   return (
     <>
-      <CoordinatesDialogs
-        lookupCoordinatesOpen={lookupCoordinatesOpen}
-        coordinatesDialogOpen={coordinatesDialogOpen}
-        onCloseLookupCoordinates={handleCloseLookupCoordinatesDialog}
-        onSubmitLookupCoordinates={handleLookupCoordinates}
-        onCloseCoordinates={handleCloseCoordinatesDialog}
-        onSubmitCoordinates={handleSubmitCoordinates}
-      />
-
       {/* Desktop: Always show search input in header */}
       {!isTablet && (
         <Box

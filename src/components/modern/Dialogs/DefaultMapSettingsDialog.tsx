@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import { InitialMapSettingsForm } from "../Header/components/InitialMapSettingsForm";
+import { InitialMapSettingsForm } from "../Header/components";
 
 interface DefaultMapSettingsDialogProps {
   open: boolean;
@@ -38,8 +38,8 @@ export const DefaultMapSettingsDialog: React.FC<
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
         <Typography variant="h6" sx={{ flex: 1 }}>
-          {formatMessage({ id: "default_map_settings" }) ||
-            "Default Map Settings"}
+          {formatMessage({ id: "default_map_location" }) ||
+            "Default map location"}
         </Typography>
         <IconButton
           onClick={onClose}
@@ -54,7 +54,7 @@ export const DefaultMapSettingsDialog: React.FC<
           {formatMessage({ id: "default_map_settings_description" }) ||
             "Configure the initial map position and zoom level when opening the application."}
         </Typography>
-        <InitialMapSettingsForm />
+        <InitialMapSettingsForm onSave={onClose} />
       </DialogContent>
     </Dialog>
   );

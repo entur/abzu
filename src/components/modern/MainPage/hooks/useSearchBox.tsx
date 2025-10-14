@@ -25,6 +25,7 @@ import {
 import { Entities } from "../../../../models/Entities";
 import formatHelpers from "../../../../modelUtils/mapToClient";
 import Routes from "../../../../routes/";
+import { extractCoordinates } from "../../../../utils/";
 import { createSearchMenuItem } from "../components";
 import {
   FavoriteFilter,
@@ -131,6 +132,20 @@ export const useSearchBox = ({
         typeof result.element !== "undefined" &&
         result.element !== null
       ) {
+        // Check if this is a coordinate result
+        if (
+          result.id === "coordinates" &&
+          (result.element as any).coordinates
+        ) {
+          const coords = (result.element as any).coordinates;
+          // Center map on coordinates without creating a marker (zoom 14 = neighborhood view)
+          dispatch(UserActions.setCenterAndZoom(coords, 14));
+          setStopPlaceSearchValue("");
+          dispatch(UserActions.setSearchText(""));
+          dispatch(UserActions.clearSearchResults());
+          return;
+        }
+
         const stopPlaceId = result.element.id;
         if (
           stopPlaceId &&
@@ -329,7 +344,40 @@ export const useSearchBox = ({
   const menuItems = useMemo((): MenuItem[] => {
     let items: MenuItem[] = [];
 
-    if (dataSource && dataSource.length) {
+    // Check if searchText contains valid coordinates
+    const coordinates = searchText ? extractCoordinates(searchText) : null;
+
+    if (coordinates) {
+      // If valid coordinates detected, show "Go to coordinates" option
+      items = [
+        {
+          element: { coordinates } as any,
+          text: `Go to ${coordinates[0]}, ${coordinates[1]}`,
+          id: "coordinates",
+          menuDiv: (
+            <MenuItemComponent className="search-menu-item">
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    marginLeft: 10,
+                    display: "flex",
+                    flexDirection: "column",
+                    minWidth: 360,
+                  }}
+                >
+                  <div style={{ fontSize: "0.9em", fontWeight: 500 }}>
+                    {formatMessage({ id: "go_to_coordinates" })}
+                  </div>
+                  <div style={{ fontSize: "0.7em", color: "grey" }}>
+                    {coordinates[0]}, {coordinates[1]}
+                  </div>
+                </div>
+              </div>
+            </MenuItemComponent>
+          ),
+        },
+      ];
+    } else if (dataSource && dataSource.length) {
       const searchItems = dataSource.map((element) =>
         createSearchMenuItem(element, formatMessage),
       );
@@ -352,8 +400,8 @@ export const useSearchBox = ({
       ];
     }
 
-    // Add filter notification if filters are applied
-    if (stopTypeFilter.length || topoiChips.length) {
+    // Add filter notification if filters are applied (but not for coordinates)
+    if ((stopTypeFilter.length || topoiChips.length) && !coordinates) {
       const filterNotification: MenuItem = {
         element: null,
         text: searchText,

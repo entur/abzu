@@ -12,16 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check } from "@mui/icons-material";
+import { Check, Settings as SettingsIcon } from "@mui/icons-material";
 import {
   Box,
+  Divider,
   ListItemIcon,
   ListItemText,
   MenuItem,
   MenuList,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../actions";
@@ -30,11 +31,13 @@ import {
   toggleShowTariffZonesInMap,
 } from "../../reducers/zonesSlice";
 import { useAppDispatch } from "../../store/hooks";
+import { DefaultMapSettingsDialog } from "../modern/Dialogs/DefaultMapSettingsDialog";
 
 export const MapSettingsPanel: React.FC = () => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const [showSettingsDialog, setShowSettingsDialog] = useState(false);
 
   // Redux selectors
   const isMultiPolylinesEnabled = useSelector(
@@ -160,22 +163,24 @@ export const MapSettingsPanel: React.FC = () => {
   ];
 
   return (
-    <MenuList sx={{ p: 0 }}>
-      {settingItems.map((item) => (
+    <>
+      <MenuList sx={{ p: 0 }}>
+        {/* Default Map Settings - at the top */}
         <MenuItem
-          key={item.key}
-          onClick={() => item.onChange(!item.checked)}
+          onClick={() => setShowSettingsDialog(true)}
           sx={settingItemStyle}
         >
           <ListItemIcon sx={{ minWidth: 32 }}>
-            {item.checked ? (
-              <Check fontSize="small" color="primary" />
-            ) : (
-              <Box sx={{ width: 20, height: 20 }} />
-            )}
+            <SettingsIcon
+              fontSize="small"
+              sx={{ color: theme.palette.text.secondary }}
+            />
           </ListItemIcon>
           <ListItemText
-            primary={item.label}
+            primary={
+              formatMessage({ id: "default_map_location" }) ||
+              "Default map location"
+            }
             slotProps={{
               primary: {
                 sx: {
@@ -185,7 +190,41 @@ export const MapSettingsPanel: React.FC = () => {
             }}
           />
         </MenuItem>
-      ))}
-    </MenuList>
+
+        <Divider sx={{ my: 1 }} />
+
+        {/* Other settings items */}
+        {settingItems.map((item) => (
+          <MenuItem
+            key={item.key}
+            onClick={() => item.onChange(!item.checked)}
+            sx={settingItemStyle}
+          >
+            <ListItemIcon sx={{ minWidth: 32 }}>
+              {item.checked ? (
+                <Check fontSize="small" color="primary" />
+              ) : (
+                <Box sx={{ width: 20, height: 20 }} />
+              )}
+            </ListItemIcon>
+            <ListItemText
+              primary={item.label}
+              slotProps={{
+                primary: {
+                  sx: {
+                    fontSize: "0.875rem",
+                  },
+                },
+              }}
+            />
+          </MenuItem>
+        ))}
+      </MenuList>
+
+      <DefaultMapSettingsDialog
+        open={showSettingsDialog}
+        onClose={() => setShowSettingsDialog(false)}
+      />
+    </>
   );
 };
