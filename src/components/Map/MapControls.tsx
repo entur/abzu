@@ -15,14 +15,15 @@ limitations under the Licence. */
 import {
   Close as CloseIcon,
   Layers as LayersIcon,
-  Map as MapIcon,
+  GridOn as MapIcon,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
 import { Box, Fab, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { toggleShowTariffZonesInMap } from "../../reducers/zonesSlice";
+import { toggleShowFareZonesInMap } from "../../reducers/zonesSlice";
+import { FareZonesPanel } from "../modern/Map/FareZonesPanel";
 import { MapLayersPanel } from "./MapLayersPanel";
 import { MapSettingsPanel } from "./MapSettingsPanel";
 
@@ -40,12 +41,7 @@ export const MapControls: React.FC = () => {
 
   const handleClosePanel = () => {
     setActivePanel(null);
-  };
-
-  const handleToggleTariffZones = () => {
-    // Toggle tariff zones visibility and close panel
-    dispatch(toggleShowTariffZonesInMap(true));
-    setActivePanel(null);
+    // Keep fare zones visible when closing panel (zones remain on map)
   };
 
   const panelWidth = 320;
@@ -69,8 +65,15 @@ export const MapControls: React.FC = () => {
     {
       key: "zones",
       icon: <MapIcon />,
-      label: formatMessage({ id: "show_tariff_zones_label" }) || "Tariff Zones",
-      onClick: handleToggleTariffZones,
+      label: formatMessage({ id: "show_fare_zones_label" }) || "Fare Zones",
+      onClick: () => {
+        const newPanel = activePanel === "zones" ? null : "zones";
+        setActivePanel(newPanel);
+        // Enable fare zones when opening panel (keep zones visible when closing)
+        if (newPanel === "zones") {
+          dispatch(toggleShowFareZonesInMap(true));
+        }
+      },
     },
   ];
 
@@ -137,6 +140,11 @@ export const MapControls: React.FC = () => {
               },
             },
           }}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
         >
           {/* Panel Header */}
           <Box
@@ -154,8 +162,8 @@ export const MapControls: React.FC = () => {
               {activePanel === "settings" &&
                 (formatMessage({ id: "map_settings" }) || "Map Settings")}
               {activePanel === "zones" &&
-                (formatMessage({ id: "show_tariff_zones_label" }) ||
-                  "Tariff Zones")}
+                (formatMessage({ id: "show_fare_zones_label" }) ||
+                  "Fare Zones")}
             </Box>
             <IconButton size="small" onClick={handleClosePanel}>
               <CloseIcon fontSize="small" />
@@ -167,11 +175,17 @@ export const MapControls: React.FC = () => {
             sx={{
               flex: 1,
               overflow: "auto",
-              p: 2,
+              p: 0,
             }}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
           >
             {activePanel === "layers" && <MapLayersPanel />}
             {activePanel === "settings" && <MapSettingsPanel />}
+            {activePanel === "zones" && <FareZonesPanel />}
           </Box>
         </Paper>
       )}

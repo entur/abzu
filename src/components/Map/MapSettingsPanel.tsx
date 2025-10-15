@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check, Settings as SettingsIcon } from "@mui/icons-material";
+import { Check, MyLocationOutlined } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -26,10 +26,6 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../actions";
-import {
-  toggleShowFareZonesInMap,
-  toggleShowTariffZonesInMap,
-} from "../../reducers/zonesSlice";
 import { useAppDispatch } from "../../store/hooks";
 import { DefaultMapSettingsDialog } from "../modern/Dialogs/DefaultMapSettingsDialog";
 
@@ -53,10 +49,6 @@ export const MapSettingsPanel: React.FC = () => {
     (state: any) => state.stopPlace.showMultimodalEdges,
   );
   const showPublicCode = useSelector((state: any) => state.user.showPublicCode);
-  const showFareZones = useSelector((state: any) => state.zones.showFareZones);
-  const showTariffZones = useSelector(
-    (state: any) => state.zones.showTariffZones,
-  );
 
   // Translations
   const showPathLinks = formatMessage({ id: "show_path_links" });
@@ -67,10 +59,6 @@ export const MapSettingsPanel: React.FC = () => {
   });
   const showPublicCodeLabel = formatMessage({ id: "show_public_code" });
   const showPrivateCodeLabel = formatMessage({ id: "show_private_code" });
-  const showFareZonesLabel = formatMessage({ id: "show_fare_zones_label" });
-  const showTariffZonesLabel = formatMessage({
-    id: "show_tariff_zones_label",
-  });
 
   // Handlers
   const handleToggleMultiPolylines = (value: boolean) => {
@@ -91,16 +79,6 @@ export const MapSettingsPanel: React.FC = () => {
 
   const handleToggleShowPublicCode = (value: boolean) => {
     dispatch(UserActions.toggleShowPublicCode(value));
-  };
-
-  const handleToggleShowFareZones = (value: boolean) => {
-    dispatch(toggleShowTariffZonesInMap(false));
-    dispatch(toggleShowFareZonesInMap(value));
-  };
-
-  const handleToggleShowTariffZones = (value: boolean) => {
-    dispatch(toggleShowFareZonesInMap(false));
-    dispatch(toggleShowTariffZonesInMap(value));
   };
 
   const settingItemStyle = {
@@ -148,18 +126,6 @@ export const MapSettingsPanel: React.FC = () => {
       checked: showPublicCode,
       onChange: handleToggleShowPublicCode,
     },
-    {
-      key: "fareZones",
-      label: showFareZonesLabel,
-      checked: showFareZones,
-      onChange: handleToggleShowFareZones,
-    },
-    {
-      key: "tariffZones",
-      label: showTariffZonesLabel,
-      checked: showTariffZones,
-      onChange: handleToggleShowTariffZones,
-    },
   ];
 
   return (
@@ -171,7 +137,7 @@ export const MapSettingsPanel: React.FC = () => {
           sx={settingItemStyle}
         >
           <ListItemIcon sx={{ minWidth: 32 }}>
-            <SettingsIcon
+            <MyLocationOutlined
               fontSize="small"
               sx={{ color: theme.palette.text.secondary }}
             />

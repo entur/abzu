@@ -21,16 +21,17 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import { ConfigContext } from "../../config/ConfigContext";
+import { FareZonesLayer } from "../modern/Map/FareZonesLayer";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { DynamicTileLayer } from "./DynamicTileLayer";
 import { MapControls } from "./MapControls";
+import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
 import MultiPolylineList from "./PathLink";
 import StopPlaceGroupList from "./StopPlaceGroupList";
-import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
 
 const lmapStyle = {
   border: "2px solid #eee",
@@ -126,6 +127,7 @@ export const LeafLetMap = ({
                 ),
               )}
             <MapControls />
+            <FareZonesLayer />
           </>
         ) : (
           <>
