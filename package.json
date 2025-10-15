@@ -83,7 +83,7 @@
     "@vitejs/plugin-react": "4.7.0",
     "@vitest/coverage-v8": "3.2.4",
     "caniuse-lite": "1.0.30001750",
-    "graphql-request": "7.2.0",
+    "graphql-request": "7.3.0",
     "husky": "9.1.7",
     "jsdom": "26.1.0",
     "lint-staged": "16.2.4",
