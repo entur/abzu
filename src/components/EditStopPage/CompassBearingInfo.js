@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import icon from "../../static/icons/compass.png";
 
-const CompassBearingInfo = ({ value }, { defaultValue }) => {
+const CompassBearingInfo = ({ value, defaultValue }) => {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <img
