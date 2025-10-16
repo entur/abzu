@@ -192,7 +192,7 @@ export const allEntities = gql`
 
 export const getStopById = gql`
   query getStopById($id: String!) {
-    stopPlace(id: $id, allVersions: true) {
+    stopPlace(id: $id, versionValidity: MAX_VERSION) {
       id
       version
       __typename
