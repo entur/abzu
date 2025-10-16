@@ -24,6 +24,14 @@ import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { toggleShowFareZonesInMap } from "../../reducers/zonesSlice";
 import { FareZonesPanel } from "../modern/Map/FareZonesPanel";
+import "../modern/modern.css";
+import {
+  mapControlButton,
+  mapControlPanelContainer,
+  mapControlPanelContent,
+  mapControlPanelHeader,
+  mapControlPanelHeaderTitle,
+} from "../modern/styles";
 import { MapLayersPanel } from "./MapLayersPanel";
 import { MapSettingsPanel } from "./MapSettingsPanel";
 
@@ -45,8 +53,6 @@ export const MapControls: React.FC = () => {
   };
 
   const panelWidth = 320;
-  const buttonSize = 40;
-  const buttonSpacing = 8;
   const rightOffset = activePanel ? panelWidth + 24 : 16;
 
   const buttons = [
@@ -81,15 +87,9 @@ export const MapControls: React.FC = () => {
     <>
       {/* Control Buttons - stacked vertically */}
       <Box
+        className="modern-map-controls-buttons"
         sx={{
-          position: "absolute",
-          top: 16,
           right: rightOffset,
-          zIndex: 1000,
-          display: "flex",
-          flexDirection: "column",
-          gap: `${buttonSpacing}px`,
-          transition: "right 0.3s ease-in-out",
         }}
       >
         {buttons.map((button) => (
@@ -99,14 +99,8 @@ export const MapControls: React.FC = () => {
               onClick={button.onClick}
               aria-label={button.label}
               color={activePanel === button.key ? "primary" : "default"}
-              sx={{
-                width: buttonSize,
-                height: buttonSize,
-                boxShadow: theme.shadows[6],
-                "&:hover": {
-                  boxShadow: theme.shadows[8],
-                },
-              }}
+              className="modern-map-control-button"
+              sx={mapControlButton(theme)}
             >
               {button.icon}
             </Fab>
@@ -118,28 +112,7 @@ export const MapControls: React.FC = () => {
       {activePanel && (
         <Paper
           elevation={8}
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            width: panelWidth,
-            maxHeight: "calc(100vh - 200px)",
-            zIndex: 999,
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            animation: "slideIn 0.3s ease-in-out",
-            "@keyframes slideIn": {
-              from: {
-                opacity: 0,
-                transform: "translateX(20px)",
-              },
-              to: {
-                opacity: 1,
-                transform: "translateX(0)",
-              },
-            },
-          }}
+          sx={mapControlPanelContainer(theme)}
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
           onTouchEnd={(e) => e.stopPropagation()}
@@ -147,16 +120,8 @@ export const MapControls: React.FC = () => {
           onWheel={(e) => e.stopPropagation()}
         >
           {/* Panel Header */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              p: 2,
-              borderBottom: `1px solid ${theme.palette.divider}`,
-            }}
-          >
-            <Box sx={{ fontWeight: 600, fontSize: "1rem" }}>
+          <Box sx={mapControlPanelHeader(theme)}>
+            <Box sx={mapControlPanelHeaderTitle}>
               {activePanel === "layers" &&
                 (formatMessage({ id: "map_layers" }) || "Map Layers")}
               {activePanel === "settings" &&
@@ -172,11 +137,7 @@ export const MapControls: React.FC = () => {
 
           {/* Panel Content */}
           <Box
-            sx={{
-              flex: 1,
-              overflow: "auto",
-              p: 0,
-            }}
+            sx={mapControlPanelContent}
             onTouchStart={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}

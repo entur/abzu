@@ -27,6 +27,14 @@ import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import SettingsManager from "../../../../singletons/SettingsManager";
 import { useAppDispatch } from "../../../../store/hooks";
+import "../../modern.css";
+import {
+  formButtonContainer,
+  formFieldContainer,
+  formFieldDivider,
+  formFieldLabel,
+  formFieldRow,
+} from "../../styles";
 
 const Settings = new SettingsManager();
 
@@ -95,20 +103,13 @@ export const InitialMapSettingsForm: React.FC<InitialMapSettingsFormProps> = ({
     !isNaN(parseInt(zoom, 10));
 
   return (
-    <Box sx={{ px: 2, py: 1 }}>
-      <Divider sx={{ my: 1 }} />
-      <Typography
-        variant="body2"
-        sx={{
-          fontWeight: 600,
-          mb: 1.5,
-          color: theme.palette.text.secondary,
-        }}
-      >
+    <Box sx={formFieldContainer}>
+      <Divider sx={formFieldDivider} />
+      <Typography variant="body2" sx={formFieldLabel(theme)}>
         {formatMessage({ id: "initial_map_position" })}
       </Typography>
 
-      <Box sx={{ display: "flex", gap: 1, mb: 1.5 }}>
+      <Box sx={formFieldRow}>
         <TextField
           label={formatMessage({ id: "latitude" })}
           value={latitude}
@@ -140,7 +141,7 @@ export const InitialMapSettingsForm: React.FC<InitialMapSettingsFormProps> = ({
         slotProps={{ htmlInput: { min: 1, max: 20 } }}
       />
 
-      <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
+      <Box sx={formButtonContainer}>
         <Button
           variant="outlined"
           size="small"

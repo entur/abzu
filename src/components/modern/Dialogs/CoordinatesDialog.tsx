@@ -28,6 +28,15 @@ import {
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { extractCoordinates } from "../../../utils/";
+import "../modern.css";
+import {
+  dialogCloseButton,
+  dialogTitleContainer,
+  dialogTitleText,
+  formFieldContainer,
+  formFieldDivider,
+  formFieldLabel,
+} from "../styles";
 
 interface CoordinatesDialogProps {
   open: boolean;
@@ -80,29 +89,22 @@ export const CoordinatesDialog: React.FC<CoordinatesDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Box component="span" sx={{ flex: 1 }}>
+      <DialogTitle sx={dialogTitleContainer}>
+        <Box component="span" sx={dialogTitleText}>
           {formatMessage({ id: titleId || "change_coordinates" })}
         </Box>
         <IconButton
           onClick={onClose}
           size="small"
-          sx={{ color: "text.secondary" }}
+          sx={dialogCloseButton(theme)}
         >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ px: 2, py: 1 }}>
-          <Divider sx={{ my: 1 }} />
-          <Typography
-            variant="body2"
-            sx={{
-              fontWeight: 600,
-              mb: 1.5,
-              color: theme.palette.text.secondary,
-            }}
-          >
+        <Box sx={formFieldContainer}>
+          <Divider sx={formFieldDivider} />
+          <Typography variant="body2" sx={formFieldLabel(theme)}>
             {formatMessage({ id: "where_do_you_want_to_go" }) ||
               "Where do you want to go?"}
           </Typography>

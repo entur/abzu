@@ -24,6 +24,14 @@ import { getLogo } from "../../../config/themeConfig";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
 import ConfirmDialog from "../../Dialogs/ConfirmDialog";
+import "../modern.css";
+import {
+  headerLogoContainer,
+  headerSearchContainer,
+  headerSpacer,
+  headerTitle,
+  headerToolbar,
+} from "../styles";
 import {
   AppLogo,
   EnvironmentBadge,
@@ -133,15 +141,8 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             : "none",
         }}
       >
-        <Toolbar
-          disableGutters
-          sx={{
-            minHeight: { xs: 56, sm: 64 },
-            px: { xs: 1, sm: 2 },
-            width: "100%",
-          }}
-        >
-          <Box sx={{ ml: { xs: 2, sm: 2 } }}>
+        <Toolbar disableGutters sx={headerToolbar}>
+          <Box sx={headerLogoContainer}>
             <AppLogo
               logo={logo}
               config={config}
@@ -151,18 +152,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
           </Box>
 
           <Box sx={{ ml: { xs: 1, sm: 2 } }}>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
-                fontWeight: 500,
-                color: "inherit",
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
+            <Typography variant="h6" component="div" sx={headerTitle}>
               {/* Show title on desktop only */}
               {!isMobile && (
                 <span className="app-title--override">{title}</span>
@@ -180,20 +170,13 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
 
           {/* Search component in the center - hidden on reports page */}
           {!isDisplayingReports && (
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                justifyContent: "center",
-                mx: 2,
-              }}
-            >
+            <Box sx={headerSearchContainer}>
               <HeaderSearch />
             </Box>
           )}
 
           {/* Spacer when search is hidden */}
-          {isDisplayingReports && <Box sx={{ flexGrow: 1 }} />}
+          {isDisplayingReports && <Box sx={headerSpacer} />}
 
           <UserSection
             isAuthenticated={auth.isAuthenticated}

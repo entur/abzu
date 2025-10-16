@@ -15,6 +15,8 @@ limitations under the Licence. */
 import { ComponentToggle } from "@entur/react-component-toggle";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
+import "../../modern.css";
+import { appLogoButton, appLogoImage } from "../../styles";
 
 interface AppLogoProps {
   logo: string;
@@ -38,30 +40,12 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       color="inherit"
       aria-label="home"
       onClick={onClick}
-      sx={{
-        p: { xs: 1, sm: 1.5 },
-        "&:hover": {
-          backgroundColor: "rgba(255, 255, 255, 0.08)",
-        },
-      }}
+      sx={appLogoButton}
     >
       <ComponentToggle
         feature={`${config.extPath}/CustomLogo`}
         renderFallback={() => (
-          <Box
-            component="img"
-            src={logo}
-            alt="Abzu Logo"
-            sx={{
-              width: { xs: 32, sm: 40 },
-              height: "auto",
-              cursor: "pointer",
-              transition: "transform 0.2s ease-in-out",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
-          />
+          <Box component="img" src={logo} alt="Abzu Logo" sx={appLogoImage} />
         )}
       />
     </IconButton>

@@ -14,6 +14,8 @@ limitations under the Licence. */
 
 import { Chip, useTheme } from "@mui/material";
 import React from "react";
+import "../../modern.css";
+import { environmentBadgeChip } from "../../styles";
 
 interface EnvironmentBadgeProps {
   environment: string;
@@ -43,20 +45,7 @@ export const EnvironmentBadge: React.FC<EnvironmentBadgeProps> = ({
     <Chip
       label={badge.content}
       size={isMobile ? "small" : "medium"}
-      sx={{
-        backgroundColor: badge.backgroundColor,
-        color: badge.color,
-        fontSize: isMobile ? "0.625rem" : badge.fontSize,
-        fontWeight: badge.fontWeight,
-        textTransform: badge.textTransform,
-        height: { xs: 20, sm: 24 },
-        "& .MuiChip-label": {
-          px: { xs: 0.5, sm: 1 },
-          py: 0,
-        },
-        boxShadow: theme.shadows[1],
-        border: `1px solid rgba(255, 255, 255, 0.2)`,
-      }}
+      sx={environmentBadgeChip(theme, badge, isMobile)}
     />
   );
 };

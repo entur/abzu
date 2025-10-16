@@ -33,6 +33,14 @@ import {
 } from "../../MainPage";
 import { FavoriteStopPlaces } from "../../MainPage/components/FavoriteStopPlaces";
 import { useSearchBox } from "../../MainPage/hooks/useSearchBox";
+import "../../modern.css";
+import {
+  headerSearchContentContainer,
+  headerSearchDesktopContainer,
+  headerSearchDesktopDropdown,
+  headerSearchIconButton,
+  headerSearchMobilePanel,
+} from "../../styles";
 
 export const HeaderSearch: React.FC = () => {
   const theme = useTheme();
@@ -167,7 +175,7 @@ export const HeaderSearch: React.FC = () => {
   // Unified content structure - SearchInput only for mobile
   const renderSearchContent = () => {
     return (
-      <Box sx={{ p: 2 }}>
+      <Box sx={headerSearchContentContainer}>
         {/* Only show SearchInput in dropdown for mobile */}
         {isTablet && (
           <SearchInput
@@ -227,18 +235,13 @@ export const HeaderSearch: React.FC = () => {
       showMoreFilterOptions
     : showMoreFilterOptions || showFavorites || !!chosenResult;
 
+  const isElevated = showFavorites || showMoreFilterOptions;
+
   return (
     <>
       {/* Desktop: Always show search input in header */}
       {!isTablet && (
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            maxWidth: 480,
-            mx: 2,
-          }}
-        >
+        <Box sx={headerSearchDesktopContainer}>
           {shouldShowSearchPanel ? (
             <ClickAwayListener onClickAway={handleCloseSearch}>
               <Box>
@@ -258,19 +261,7 @@ export const HeaderSearch: React.FC = () => {
                 {/* Desktop dropdown - positioned relative to search input container */}
                 <Paper
                   elevation={8}
-                  sx={{
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    right: 0,
-                    zIndex:
-                      showFavorites || showMoreFilterOptions
-                        ? theme.zIndex.modal + 5
-                        : theme.zIndex.modal + 2,
-                    mt: 1,
-                    maxHeight: "70vh",
-                    overflow: "auto",
-                  }}
+                  sx={headerSearchDesktopDropdown(theme, isElevated)}
                 >
                   {renderSearchContent()}
                 </Paper>
@@ -298,10 +289,7 @@ export const HeaderSearch: React.FC = () => {
         <IconButton
           color="inherit"
           onClick={handleToggleSearch}
-          sx={{
-            color:
-              activeFilterCount > 0 ? theme.palette.primary.light : "inherit",
-          }}
+          sx={headerSearchIconButton(theme, activeFilterCount > 0)}
           aria-label={formatMessage({ id: "open_search" })}
         >
           <SearchIcon />
@@ -311,21 +299,7 @@ export const HeaderSearch: React.FC = () => {
       {/* Mobile search panel */}
       {isTablet && shouldShowSearchPanel && (
         <ClickAwayListener onClickAway={handleCloseSearch}>
-          <Paper
-            elevation={8}
-            sx={{
-              position: "fixed",
-              top: 64,
-              left: 8,
-              right: 8,
-              zIndex:
-                showFavorites || showMoreFilterOptions
-                  ? theme.zIndex.modal + 5
-                  : theme.zIndex.modal + 2,
-              maxHeight: "calc(100vh - 80px)",
-              overflow: "auto",
-            }}
-          >
+          <Paper elevation={8} sx={headerSearchMobilePanel(theme, isElevated)}>
             {renderSearchContent()}
           </Paper>
         </ClickAwayListener>

@@ -35,6 +35,14 @@ import {
   setSelectedFareZones,
 } from "../../../reducers/zonesSlice";
 import { useAppDispatch } from "../../../store/hooks";
+import "../modern.css";
+import {
+  fareZoneExpandButton,
+  fareZoneListItem,
+  fareZoneLoadingContainer,
+  panelMenuItem,
+  panelMenuList,
+} from "../styles";
 
 export const FareZonesPanel: React.FC = () => {
   const { formatMessage } = useIntl();
@@ -141,30 +149,9 @@ export const FareZonesPanel: React.FC = () => {
     setExpandedCodespace((prev) => (prev === codespace ? null : codespace));
   }, []);
 
-  const settingItemStyle = {
-    py: 0.5,
-    px: 1.5,
-    borderRadius: 1,
-    mb: 0,
-    fontSize: "0.875rem",
-    minHeight: 36,
-    display: "flex",
-    alignItems: "center",
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  };
-
   if (fareZonesForFilter.length === 0) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          p: 3,
-        }}
-      >
+      <Box sx={fareZoneLoadingContainer}>
         <CircularProgress size={24} />
         <Typography variant="body2" sx={{ ml: 2 }}>
           {formatMessage({ id: "loading" }) || "Loading..."}
@@ -174,12 +161,12 @@ export const FareZonesPanel: React.FC = () => {
   }
 
   return (
-    <MenuList sx={{ p: 0 }}>
+    <MenuList sx={panelMenuList}>
       {sortedCodespaces.map((codespace) => (
         <Box key={codespace}>
           <MenuItem
             sx={{
-              ...settingItemStyle,
+              ...panelMenuItem(theme),
               display: "flex",
               justifyContent: "space-between",
               pr: 0.5,
@@ -205,17 +192,17 @@ export const FareZonesPanel: React.FC = () => {
                   {codespace}
                 </Typography>
               }
-              sx={{ flex: 1, m: 0 }}
+              className="modern-form-control-label"
             />
             <IconButton
               size="small"
               onClick={() => handleToggleExpansion(codespace)}
               sx={{
+                ...fareZoneExpandButton,
                 transform:
                   expandedCodespace === codespace
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
-                transition: "transform 0.3s",
               }}
             >
               <ExpandMore fontSize="small" />
@@ -223,7 +210,7 @@ export const FareZonesPanel: React.FC = () => {
           </MenuItem>
 
           <Collapse in={expandedCodespace === codespace} timeout={300}>
-            <Box sx={{ pl: 4, pr: 1.5 }}>
+            <Box className="modern-fare-zones-expanded-list">
               {groupedZones[codespace].map((zone) => (
                 <FormControlLabel
                   key={zone.id}
@@ -250,15 +237,7 @@ export const FareZonesPanel: React.FC = () => {
                       }}
                     />
                   }
-                  sx={{
-                    display: "flex",
-                    mb: 0,
-                    my: 0.25,
-                    "&:hover": {
-                      backgroundColor: theme.palette.action.hover,
-                      borderRadius: 1,
-                    },
-                  }}
+                  sx={fareZoneListItem(theme)}
                 />
               ))}
             </Box>

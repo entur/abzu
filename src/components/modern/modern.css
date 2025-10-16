@@ -1,0 +1,102 @@
+/*
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/software/page/eupl
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and
+limitations under the Licence. */
+
+/**
+ * Static styles for modern UI components
+ * Use this for non-theme-dependent layout and positioning
+ */
+
+/* ============================================================================
+   Map Controls
+   ============================================================================ */
+
+.modern-map-controls-buttons {
+  position: absolute;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+}
+
+.modern-map-control-button {
+  width: 40px;
+  height: 40px;
+}
+
+/* ============================================================================
+   Fare Zones Panel
+   ============================================================================ */
+
+.modern-fare-zones-expanded-list {
+  padding-left: 32px;
+  padding-right: 12px;
+}
+
+/* ============================================================================
+   General Panel Utilities
+   ============================================================================ */
+
+.modern-panel-divider {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* ============================================================================
+   Form Controls
+   ============================================================================ */
+
+.modern-form-control-label {
+  flex: 1;
+  margin: 0;
+}
+
+.modern-form-control-label-compact {
+  display: flex;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+/* ============================================================================
+   SearchBox
+   ============================================================================ */
+
+.search-box-wrapper {
+  /* Static layout classes */
+}
+
+.search-box-content {
+  /* Static layout classes */
+}
+
+.search-box-header {
+  position: relative;
+}
+
+/* ============================================================================
+   Header
+   ============================================================================ */
+
+.modern-header-container {
+  width: 100%;
+}
+
+/* ============================================================================
+   Dialog Content
+   ============================================================================ */
+
+.modern-dialog-content-padding {
+  padding: 16px;
+}

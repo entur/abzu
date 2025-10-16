@@ -19,10 +19,17 @@ import {
   DialogTitle,
   IconButton,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { InitialMapSettingsForm } from "../Header/components";
+import "../modern.css";
+import {
+  dialogCloseButton,
+  dialogTitleContainer,
+  dialogTitleText,
+} from "../styles";
 
 interface DefaultMapSettingsDialogProps {
   open: boolean;
@@ -33,18 +40,19 @@ export const DefaultMapSettingsDialog: React.FC<
   DefaultMapSettingsDialogProps
 > = ({ open, onClose }) => {
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+      <DialogTitle sx={dialogTitleContainer}>
+        <Typography variant="h6" sx={dialogTitleText}>
           {formatMessage({ id: "default_map_location" }) ||
             "Default map location"}
         </Typography>
         <IconButton
           onClick={onClose}
           size="small"
-          sx={{ color: "text.secondary" }}
+          sx={dialogCloseButton(theme)}
         >
           <CloseIcon />
         </IconButton>
