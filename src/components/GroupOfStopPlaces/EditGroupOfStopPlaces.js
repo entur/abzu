@@ -120,6 +120,7 @@ class EditGroupOfStopPlaces extends Component {
       border: "1px solid #000",
       marginTop: 1,
       marginLeft: 2,
+      width: 400,
     };
 
     const stopBoxBar = {
