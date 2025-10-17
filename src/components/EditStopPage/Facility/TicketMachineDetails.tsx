@@ -54,15 +54,30 @@ const TicketMachineDetails = ({
     }
 
     const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
+    const updatedTicketingEquipment = {
+      ...ticketingEquipment,
+      ...newValue,
+    };
+
+    if (!updatedTicketingEquipment.ticketMachines) {
+      updatedTicketingEquipment.ticketMachines =
+        ((newValue.numberOfMachines as number) ||
+          ticketingEquipment.numberOfMachines) > 0 ||
+        updatedTicketingEquipment.audioInterfaceAvailable ||
+        updatedTicketingEquipment.tactileInterfaceAvailable;
+    }
+
+    if (
+      updatedTicketingEquipment.ticketMachines &&
+      !updatedTicketingEquipment.numberOfMachines
+    ) {
+      updatedTicketingEquipment.numberOfMachines = 1;
+    }
 
     dispatch(
       EquipmentActions.updateTicketMachineState(
         {
-          ...ticketingEquipment,
-          ...newValue,
-          ticketMachines:
-            ((newValue.numberOfMachines as number) ||
-              ticketingEquipment.numberOfMachines) > 0,
+          ...updatedTicketingEquipment,
         },
         entityType,
         id || index,

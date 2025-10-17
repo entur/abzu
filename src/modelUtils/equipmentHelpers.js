@@ -33,6 +33,14 @@ EquipmentHelpers.isTicketOfficePresent = (entity) => {
   );
 };
 
+EquipmentHelpers.isTicketCounterPresent = (entity) => {
+  return !!getIn(
+    entity,
+    ["placeEquipments", "ticketingEquipment", "ticketCounter"],
+    null,
+  );
+};
+
 EquipmentHelpers.getTicketingEquipment = (entity) => {
   return getIn(entity, ["placeEquipments", "ticketingEquipment"], null);
 };
@@ -91,16 +99,7 @@ EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
   );
 };
 
-EquipmentHelpers.updateTicketMachineState = (stopPlace, payload) => {
-  let updatedStop = JSON.parse(JSON.stringify(stopPlace));
-  return updateEquipmentForEntity(
-    updatedStop,
-    payload,
-    Equipment.TICKETING_EQUIPMENT,
-  );
-};
-
-EquipmentHelpers.updateTicketOfficeState = (stopPlace, payload) => {
+EquipmentHelpers.updateTicketingEquipmentState = (stopPlace, payload) => {
   let updatedStop = JSON.parse(JSON.stringify(stopPlace));
   return updateEquipmentForEntity(
     updatedStop,

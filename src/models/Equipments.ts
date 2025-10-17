@@ -35,6 +35,18 @@ export const defaultEquipmentFacilities = {
       ticketOffice: false,
     },
   },
+  ticketCounter: {
+    isChecked: {
+      ticketCounter: true,
+      inductionLoops: false,
+      lowCounterAccess: false,
+    },
+    isUnChecked: {
+      ticketCounter: false,
+      inductionLoops: false,
+      lowCounterAccess: false,
+    },
+  },
   shelterEquipment: {
     isChecked: {
       seats: 1,
