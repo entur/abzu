@@ -139,9 +139,12 @@ Fragments.placeEquipments = {
       ticketingEquipment {
         ticketOffice
         ticketMachines
+        ticketCounter
         numberOfMachines
         audioInterfaceAvailable
         tactileInterfaceAvailable
+        inductionLoops
+        lowCounterAccess
       }
       cycleStorageEquipment {
         numberOfSpaces
