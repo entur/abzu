@@ -136,19 +136,27 @@ export interface AbzuThemeConfig {
     development?: {
       color: string;
       showBadge?: boolean;
+      label?: string;
     };
     test?: {
       color: string;
       showBadge?: boolean;
+      label?: string;
     };
     prod?: {
       color: string;
       showBadge?: boolean;
+      label?: string;
     };
   };
 
   assets?: {
     logo?: string;
+    logoHeight?: {
+      xs?: number;
+      sm?: number;
+      md?: number;
+    };
     favicon?: string;
   };
 

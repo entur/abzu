@@ -280,15 +280,25 @@ export const appLogoButton: SxProps<Theme> = {
   },
 };
 
-export const appLogoImage: SxProps<Theme> = {
-  width: { xs: 32, sm: 40 },
-  height: "auto",
+export const appLogoImage = (logoHeight?: {
+  xs?: number;
+  sm?: number;
+  md?: number;
+}): SxProps<Theme> => ({
+  height: logoHeight
+    ? {
+        xs: logoHeight.xs || 32,
+        sm: logoHeight.sm || 40,
+        md: logoHeight.md || 48,
+      }
+    : { xs: 32, sm: 40, md: 48 },
+  width: "auto",
   cursor: "pointer",
   transition: "transform 0.2s ease-in-out",
   "&:hover": {
     transform: "scale(1.05)",
   },
-};
+});
 
 export const environmentBadgeChip = (
   theme: Theme,

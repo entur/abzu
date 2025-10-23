@@ -38,8 +38,14 @@ class GroupOfStopPlaceMap extends Component {
   }
 
   render() {
-    const { position, activeBaselayer, enablePolylines, zoom, markers } =
-      this.props;
+    const {
+      position,
+      activeBaselayer,
+      enablePolylines,
+      zoom,
+      markers,
+      uiMode,
+    } = this.props;
 
     return (
       <LeafletMap
@@ -53,6 +59,7 @@ class GroupOfStopPlaceMap extends Component {
         activeBaselayer={activeBaselayer}
         enablePolylines={enablePolylines}
         handleDragEnd={() => {}}
+        uiMode={uiMode}
       />
     );
   }
@@ -65,6 +72,7 @@ const mapStateToProps = ({ stopPlace, user, stopPlacesGroup }) => ({
   markers: stopPlacesGroup.current.members
     .concat(stopPlace.neighbourStops || [])
     .filter((m) => !m.permanentlyTerminated),
+  uiMode: user.uiMode,
 });
 
 export default connect(mapStateToProps)(GroupOfStopPlaceMap);

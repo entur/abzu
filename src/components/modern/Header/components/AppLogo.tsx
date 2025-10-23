@@ -20,6 +20,11 @@ import { appLogoButton, appLogoImage } from "../../styles";
 
 interface AppLogoProps {
   logo: string;
+  logoHeight?: {
+    xs?: number;
+    sm?: number;
+    md?: number;
+  };
   config: {
     extPath?: string;
   };
@@ -29,6 +34,7 @@ interface AppLogoProps {
 
 export const AppLogo: React.FC<AppLogoProps> = ({
   logo,
+  logoHeight,
   config,
   onClick,
   isMobile,
@@ -45,7 +51,12 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       <ComponentToggle
         feature={`${config.extPath}/CustomLogo`}
         renderFallback={() => (
-          <Box component="img" src={logo} alt="Abzu Logo" sx={appLogoImage} />
+          <Box
+            component="img"
+            src={logo}
+            alt="Abzu Logo"
+            sx={appLogoImage(logoHeight)}
+          />
         )}
       />
     </IconButton>

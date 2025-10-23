@@ -13,11 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useTheme as useMuiTheme } from "@mui/material/styles";
-import defaultThemeConfig from "./config/default-theme.json";
-import { AbzuThemeConfig } from "./config/types";
+import { useTheme } from "./ThemeProvider";
 import { useResponsive } from "./utils";
 
-// Re-export useResponsive for convenience
 export { useResponsive } from "./utils";
 
 /**
@@ -40,14 +38,15 @@ export const useAbzuTheme = () => {
 
 /**
  * Hook to get environment-specific styling
+ * Reads from the currently active theme config
  */
 export const useEnvironmentStyles = () => {
   const environment = (window as any).config?.tiamatEnv || "development";
-  const themeConfig = defaultThemeConfig as AbzuThemeConfig;
+  const { themeConfig } = useTheme();
 
   const getEnvironmentConfig = () => {
     const envKey = environment.toLowerCase();
-    const envConfigs = themeConfig.environment;
+    const envConfigs = themeConfig?.environment;
 
     if (envKey === "development") return envConfigs?.development;
     if (envKey === "test") return envConfigs?.test;
@@ -64,11 +63,12 @@ export const useEnvironmentStyles = () => {
   const getEnvironmentBadge = () => {
     const envConfig = getEnvironmentConfig();
 
-    // Check if badge should be shown for this environment
     if (!envConfig?.showBadge) return null;
 
+    const label = envConfig.label || environment.toUpperCase();
+
     return {
-      content: environment.toUpperCase(),
+      content: label,
       backgroundColor: getEnvironmentColor(),
       color: "white",
       fontSize: "0.75rem",
@@ -98,7 +98,6 @@ export const useSpacing = () => {
   const { isMobile, isTablet } = useResponsive();
 
   return {
-    // Basic spacing units
     xs: theme.spacing(0.5),
     sm: theme.spacing(1),
     md: theme.spacing(2),
@@ -106,7 +105,6 @@ export const useSpacing = () => {
     xl: theme.spacing(4),
     xxl: theme.spacing(6),
 
-    // Responsive spacing
     responsive: {
       padding: {
         container: isMobile

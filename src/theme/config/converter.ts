@@ -276,34 +276,16 @@ export const convertConfigToThemeOptions = (
 
 /**
  * Get environment-specific overrides from config
+ * NOTE: Environment colors should ONLY affect the environment badge,
+ * NOT the theme's primary color or AppBar background
  */
 export const getEnvironmentOverrides = (
   config: AbzuThemeConfig,
   environment: string,
 ): ThemeOptions => {
-  const envConfig =
-    config.environment?.[environment as keyof typeof config.environment];
-
-  if (!envConfig) {
-    return {};
-  }
-
-  return {
-    palette: {
-      primary: {
-        main: envConfig.color,
-      },
-    },
-    components: {
-      MuiAppBar: {
-        styleOverrides: {
-          root: {
-            backgroundColor: envConfig.color,
-          },
-        },
-      },
-    },
-  };
+  // Environment colors are now only used by useEnvironmentStyles hook
+  // for the environment badge. No theme overrides should be applied.
+  return {};
 };
 
 /**

@@ -38,19 +38,19 @@ export const GroupOfStopPlacesHeader: React.FC<
         display: "flex",
         alignItems: "center",
         gap: 1,
-        py: 1.5,
+        py: 2,
         px: 2,
-        bgcolor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
+        bgcolor: theme.palette.background.paper,
+        borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
       <IconButton
         size="small"
         onClick={onGoBack}
         sx={{
-          color: theme.palette.primary.contrastText,
+          color: theme.palette.text.primary,
           "&:hover": {
-            bgcolor: "rgba(255, 255, 255, 0.1)",
+            bgcolor: theme.palette.action.hover,
           },
         }}
       >
@@ -58,11 +58,20 @@ export const GroupOfStopPlacesHeader: React.FC<
       </IconButton>
 
       <Box sx={{ flex: 1 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: theme.palette.text.primary,
+          }}
+        >
           {headerText}
         </Typography>
         {groupOfStopPlaces.id && (
-          <Typography variant="caption" sx={{ opacity: 0.9 }}>
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             {groupOfStopPlaces.id}
           </Typography>
         )}
@@ -71,7 +80,7 @@ export const GroupOfStopPlacesHeader: React.FC<
       {groupOfStopPlaces.id && (
         <CopyIdButton
           idToCopy={groupOfStopPlaces.id}
-          color={theme.palette.primary.contrastText}
+          color={theme.palette.text.secondary}
         />
       )}
     </Box>

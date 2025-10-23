@@ -114,20 +114,28 @@
   },
   "environment": {
     "development": {
-      "color": "#1976d2",
-      "showBadge": true
+      "color": "#457645",
+      "showBadge": true,
+      "label": "DEV"
     },
     "test": {
       "color": "#ed6c02",
-      "showBadge": true
+      "showBadge": true,
+      "label": "TEST"
     },
     "prod": {
       "color": "#2e7d32",
-      "showBadge": false
+      "showBadge": false,
+      "label": "PROD"
     }
   },
   "assets": {
-    "logo": "/logo.png",
+    "logo": "/nsr-logo.png",
+    "logoHeight": {
+      "xs": 32,
+      "sm": 40,
+      "md": 48
+    },
     "favicon": "/favicon.ico"
   },
   "components": {

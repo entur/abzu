@@ -57,9 +57,9 @@ export const CopyIdButton: React.FC<CopyIdButtonProps> = ({
           size={size}
           onClick={handleCopy}
           disabled={!idToCopy}
-          sx={{ padding: 0.25 }}
+          sx={{ padding: 0.25, color }}
         >
-          <ContentCopy sx={{ fontSize: "0.9em", color }} />
+          <ContentCopy sx={{ fontSize: "0.9em" }} />
         </IconButton>
       </span>
     </Tooltip>

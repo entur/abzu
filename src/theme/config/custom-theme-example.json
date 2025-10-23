@@ -1,32 +1,26 @@
 {
-  "name": "Custom Abzu Theme",
+  "name": "Abzu Default Theme",
   "version": "1.0.0",
-  "description": "Example custom theme configuration showing how to customize colors and styling",
-  "author": "Custom Organization",
-
+  "description": "Neutral default theme configuration for Abzu Stop Place Registry using Material Design 3 principles",
+  "author": "Abzu",
   "palette": {
     "primary": {
       "main": "#1976d2",
       "dark": "#115293",
       "light": "#42a5f5",
-      "contrastText": "#fff"
+      "contrastText": "#ffffff"
     },
     "secondary": {
-      "main": "#dc004e",
-      "dark": "#9a0036",
-      "light": "#e33371",
-      "contrastText": "#fff"
+      "main": "#9c27b0",
+      "dark": "#6a1b9a",
+      "light": "#ba68c8",
+      "contrastText": "#ffffff"
     },
     "tertiary": {
-      "main": "#ed6c02",
-      "dark": "#a84b00",
-      "light": "#ff9800",
-      "contrastText": "#fff"
-    },
-    "success": {
-      "main": "#388e3c",
-      "dark": "#2e7d32",
-      "light": "#4caf50"
+      "main": "#00796b",
+      "dark": "#004d40",
+      "light": "#26a69a",
+      "contrastText": "#ffffff"
     },
     "error": {
       "main": "#d32f2f",
@@ -43,84 +37,103 @@
       "dark": "#01579b",
       "light": "#03a9f4"
     },
+    "success": {
+      "main": "#2e7d32",
+      "dark": "#1b5e20",
+      "light": "#4caf50"
+    },
     "background": {
-      "default": "#f8f9fa",
+      "default": "#fafafa",
       "paper": "#ffffff"
     },
     "text": {
       "primary": "rgba(0, 0, 0, 0.87)",
-      "secondary": "rgba(0, 0, 0, 0.6)"
+      "secondary": "rgba(0, 0, 0, 0.6)",
+      "disabled": "rgba(0, 0, 0, 0.38)"
     }
   },
-
   "typography": {
-    "fontFamily": "\"Inter\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
     "h1": {
-      "fontSize": "3rem",
-      "fontWeight": 700,
-      "lineHeight": 1.1
-    },
-    "h2": {
-      "fontSize": "2.25rem",
-      "fontWeight": 600,
+      "fontSize": "2.5rem",
+      "fontWeight": 300,
       "lineHeight": 1.2
     },
+    "h2": {
+      "fontSize": "2rem",
+      "fontWeight": 300,
+      "lineHeight": 1.2
+    },
+    "h3": {
+      "fontSize": "1.75rem",
+      "fontWeight": 400,
+      "lineHeight": 1.3
+    },
+    "h4": {
+      "fontSize": "1.5rem",
+      "fontWeight": 400,
+      "lineHeight": 1.4
+    },
+    "h5": {
+      "fontSize": "1.25rem",
+      "fontWeight": 500,
+      "lineHeight": 1.5
+    },
+    "h6": {
+      "fontSize": "1.125rem",
+      "fontWeight": 500,
+      "lineHeight": 1.6
+    },
+    "body1": {
+      "fontSize": "1rem",
+      "lineHeight": 1.5
+    },
+    "body2": {
+      "fontSize": "0.875rem",
+      "lineHeight": 1.43
+    },
     "button": {
-      "textTransform": "uppercase",
-      "fontWeight": 600
+      "textTransform": "none",
+      "fontWeight": 500
+    },
+    "caption": {
+      "fontSize": "0.75rem",
+      "lineHeight": 1.66
     }
   },
-
   "shape": {
-    "borderRadius": 1
+    "borderRadius": 4
   },
-
-  "spacing": 10,
-
+  "spacing": 8,
+  "breakpoints": {
+    "xs": 0,
+    "sm": 600,
+    "md": 900,
+    "lg": 1200,
+    "xl": 1536
+  },
   "environment": {
     "development": {
-      "color": "#123456",
+      "color": "#1976d2",
       "showBadge": true
     },
     "test": {
-      "color": "#ff5722",
+      "color": "#ed6c02",
       "showBadge": true
     },
     "prod": {
-      "color": "#1976d2",
+      "color": "#2e7d32",
       "showBadge": false
     }
   },
-
   "assets": {
-    "logo": "/custom-logo.png",
-    "favicon": "/custom-favicon.ico"
-  },
-
-  "components": {
-    "MuiButton": {
-      "borderRadius": 1,
-      "textTransform": "uppercase",
-      "fontWeight": 600
-    },
-    "MuiCard": {
-      "elevation": 2,
-      "borderRadius": 12
-    },
-    "MuiAppBar": {
-      "elevation": 0
-    },
-    "MuiTextField": {
-      "variant": "outlined",
-      "borderRadius": 1
-    }
+    "logo": "/logo.png",
+    "favicon": "/favicon.ico"
   },
 
   "customProperties": {
-    "headerHeight": 172,
-    "sidebarWidth": 320,
-    "contentMaxWidth": 1400,
-    "primaryGradient": "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
-    "cardShadow": "0 4px 20px rgba(25, 118, 210, 0.15)"
+    "headerHeight": 64,
+    "sidebarWidth": 260,
+    "contentMaxWidth": 1200
   }
 }

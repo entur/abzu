@@ -118,20 +118,28 @@
   },
   "environment": {
     "development": {
-      "color": "#181c56",
-      "showBadge": true
+      "color": "#457645",
+      "showBadge": true,
+      "label": "DEV"
     },
     "test": {
       "color": "#ffe082",
-      "showBadge": true
+      "showBadge": true,
+      "label": "TEST"
     },
     "prod": {
       "color": "#181c56",
-      "showBadge": false
+      "showBadge": false,
+      "label": "PROD"
     }
   },
   "assets": {
-    "logo": "/logo.png",
+    "logo": "/entur-logo.png",
+    "logoHeight": {
+      "xs": 20,
+      "sm": 24,
+      "md": 24
+    },
     "favicon": "/favicon.ico"
   },
   "components": {

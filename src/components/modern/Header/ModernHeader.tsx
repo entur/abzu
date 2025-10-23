@@ -20,9 +20,9 @@ import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../actions";
 import { useAuth } from "../../../auth/auth";
-import { getLogo } from "../../../config/themeConfig";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEnvironmentStyles, useResponsive } from "../../../theme/hooks";
+import { useTheme as useAbzuTheme } from "../../../theme/ThemeProvider";
 import ConfirmDialog from "../../Dialogs/ConfirmDialog";
 import "../modern.css";
 import {
@@ -55,6 +55,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const theme = useTheme();
   const { isMobile } = useResponsive();
   const { environmentBadge, environment } = useEnvironmentStyles();
+  const { themeConfig } = useAbzuTheme();
 
   const stopHasBeenModified = useSelector(
     (state: any) => state.stopPlace.stopHasBeenModified,
@@ -122,7 +123,8 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   };
 
   const title = formatMessage({ id: "_title" });
-  const logo = getLogo();
+  const logo = themeConfig?.assets?.logo || "/logo.png";
+  const logoHeight = themeConfig?.assets?.logoHeight;
 
   return (
     <>
@@ -136,15 +138,13 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
         elevation={2}
         sx={{
           zIndex: theme.zIndex.drawer + 1,
-          borderBottom: isMobile
-            ? `1px solid ${theme.palette.divider}`
-            : "none",
         }}
       >
         <Toolbar disableGutters sx={headerToolbar}>
           <Box sx={headerLogoContainer}>
             <AppLogo
               logo={logo}
+              logoHeight={logoHeight}
               config={config}
               onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
               isMobile={isMobile}
