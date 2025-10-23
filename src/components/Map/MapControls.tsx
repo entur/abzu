@@ -49,7 +49,6 @@ export const MapControls: React.FC = () => {
 
   const handleClosePanel = () => {
     setActivePanel(null);
-    // Keep fare zones visible when closing panel (zones remain on map)
   };
 
   const panelWidth = 320;
@@ -75,7 +74,6 @@ export const MapControls: React.FC = () => {
       onClick: () => {
         const newPanel = activePanel === "zones" ? null : "zones";
         setActivePanel(newPanel);
-        // Enable fare zones when opening panel (keep zones visible when closing)
         if (newPanel === "zones") {
           dispatch(toggleShowFareZonesInMap(true));
         }

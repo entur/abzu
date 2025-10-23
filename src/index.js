@@ -22,21 +22,25 @@ import { BrowserTracing } from "@sentry/tracing";
 import { useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { AuthProvider } from "./auth/auth";
-import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator";
-import LocalLoadingIndicator from "./components/LocalLoadingIndicator";
 import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
-import App from "./containers/App";
-import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
-import ReportPage from "./containers/ReportPage";
-import { StopPlace } from "./containers/StopPlace";
-import StopPlaces from "./containers/StopPlaces";
+import LegacyApp from "./containers/LegacyApp";
+import ModernApp from "./containers/modern/App";
 import { getTiamatClient } from "./graphql/clients";
-import AppRoutes from "./routes";
-import { history, store } from "./store/store";
+import { useAppSelector } from "./store/hooks";
+import { store } from "./store/store";
+
+/**
+ * AppRouter - Switches between Legacy and Modern App based on uiMode
+ * This component sits inside Redux Provider so it can access the uiMode state
+ */
+const AppRouter = () => {
+  const uiMode = useAppSelector((state) => state.user.uiMode);
+
+  // Render Modern App when uiMode is 'modern', otherwise Legacy App
+  return uiMode === "modern" ? <ModernApp /> : <LegacyApp />;
+};
 
 const AuthenticatedApp = () => {
   const config = useContext(ConfigContext);
@@ -56,37 +60,11 @@ const AuthenticatedApp = () => {
 
   const client = getTiamatClient();
 
-  const basename = import.meta.env.BASE_URL;
-  const path = "/";
-
   return (
     <Sentry.ErrorBoundary showDialog>
       <Provider store={store}>
         <ApolloProvider client={client}>
-          <App>
-            <GlobalLoadingIndicator />
-            <LocalLoadingIndicator />
-            <Router basename={basename} history={history}>
-              <Routes>
-                <Route path={path} element={<StopPlaces />} />
-                <Route
-                  exact
-                  path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                  element={<StopPlace />}
-                />
-                <Route
-                  exact
-                  path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                  element={<GroupOfStopPlaces />}
-                />
-                <Route
-                  exact
-                  path={path + AppRoutes.REPORTS}
-                  element={<ReportPage />}
-                />
-              </Routes>
-            </Router>
-          </App>
+          <AppRouter />
         </ApolloProvider>
       </Provider>
     </Sentry.ErrorBoundary>
