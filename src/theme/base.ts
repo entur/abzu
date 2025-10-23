@@ -15,14 +15,6 @@ limitations under the Licence. */
 import { ThemeOptions } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
-  interface Palette {
-    tertiary: Palette["primary"];
-  }
-
-  interface PaletteOptions {
-    tertiary?: PaletteOptions["primary"];
-  }
-
   interface BreakpointOverrides {
     xs: true;
     sm: true;

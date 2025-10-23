@@ -12,10 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Brightness4, Brightness7 } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
 import React from "react";
-import { useTheme } from "../ThemeProvider";
 
 interface ThemeModeSwitcherProps {
   showTooltip?: boolean;
@@ -25,44 +22,11 @@ interface ThemeModeSwitcherProps {
 /**
  * Theme Mode Switcher Component
  *
- * Toggles between light and dark mode.
- *
- * @example
- * ```tsx
- * import { ThemeModeSwitcher } from '../theme/components/ThemeModeSwitcher';
- *
- * function Header() {
- *   return (
- *     <ThemeModeSwitcher showTooltip size="medium" />
- *   );
- * }
- * ```
+ * NOTE: Dark/light mode toggle has been removed in the refactored theme system.
+ * This component is kept for backward compatibility but does nothing.
+ * Themes are now fully defined in JSON config files.
  */
-export const ThemeModeSwitcher: React.FC<ThemeModeSwitcherProps> = ({
-  showTooltip = true,
-  size = "medium",
-}) => {
-  const { themeVariant, setThemeVariant } = useTheme();
-
-  const handleToggle = () => {
-    setThemeVariant(themeVariant === "light" ? "dark" : "light");
-  };
-
-  const button = (
-    <IconButton onClick={handleToggle} color="inherit" size={size}>
-      {themeVariant === "light" ? <Brightness4 /> : <Brightness7 />}
-    </IconButton>
-  );
-
-  if (showTooltip) {
-    return (
-      <Tooltip
-        title={`Switch to ${themeVariant === "light" ? "dark" : "light"} mode`}
-      >
-        {button}
-      </Tooltip>
-    );
-  }
-
-  return button;
+export const ThemeModeSwitcher: React.FC<ThemeModeSwitcherProps> = () => {
+  // No-op component - variant system has been removed
+  return null;
 };

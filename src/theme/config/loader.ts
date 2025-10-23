@@ -14,12 +14,13 @@ limitations under the Licence. */
 
 import { getFetchedConfig } from "../../config/fetchConfig";
 import defaultThemeConfig from "./default-theme.json";
-import themeVariantsConfig from "./theme-variants-config.json";
-import {
-  AbzuThemeConfig,
-  ThemeConfigValidationError,
-  ThemeVariantConfig,
-} from "./types";
+import { AbzuThemeConfig } from "./theme-config";
+
+export type ThemeConfigValidationError = {
+  field: string;
+  message: string;
+  value?: any;
+};
 
 /**
  * Deep merge utility for theme configurations
@@ -178,56 +179,4 @@ export const loadThemeConfig = async (): Promise<AbzuThemeConfig> => {
     // Fallback to default configuration
     return defaultThemeConfig as AbzuThemeConfig;
   }
-};
-
-/**
- * Get theme variant configuration
- */
-export const getThemeVariantConfig = (
-  variant: "light" | "dark",
-): Partial<AbzuThemeConfig> => {
-  const variants = themeVariantsConfig as unknown as ThemeVariantConfig;
-  return (variants[variant] || {}) as Partial<AbzuThemeConfig>;
-};
-
-/**
- * Merge base theme config with variant-specific overrides
- */
-export const createThemedConfig = (
-  baseConfig: AbzuThemeConfig,
-  variant: "light" | "dark",
-): AbzuThemeConfig => {
-  const variantConfig = getThemeVariantConfig(variant);
-  return deepMerge(baseConfig, variantConfig) as AbzuThemeConfig;
-};
-
-/**
- * Load theme configuration for a specific environment
- */
-export const loadEnvironmentThemeConfig = async (
-  environment?: string,
-): Promise<AbzuThemeConfig> => {
-  const baseConfig = await loadThemeConfig();
-
-  // Apply environment-specific overrides if needed
-  if (
-    environment &&
-    baseConfig.environment?.[environment as keyof typeof baseConfig.environment]
-  ) {
-    const envConfig =
-      baseConfig.environment[
-        environment as keyof typeof baseConfig.environment
-      ];
-    if (envConfig) {
-      return deepMerge(baseConfig, {
-        palette: {
-          primary: {
-            main: envConfig.color,
-          },
-        },
-      });
-    }
-  }
-
-  return baseConfig;
 };

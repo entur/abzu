@@ -16,18 +16,12 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider, Theme } from "@mui/material/styles";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getTiamatEnv } from "../config/themeConfig";
+import { createThemeFromConfig } from "./config/createThemeFromConfig";
 import { loadThemeConfig } from "./config/loader";
-import { AbzuThemeConfig } from "./config/types";
-import {
-  createAbzuTheme,
-  createAbzuThemeLegacy,
-  Environment,
-  ThemeVariant,
-} from "./index";
+import { AbzuThemeConfig } from "./config/theme-config";
+import { createAbzuThemeLegacy, Environment } from "./index";
 
 interface ThemeContextType {
-  themeVariant: ThemeVariant;
-  setThemeVariant: (variant: ThemeVariant) => void;
   environment: Environment;
   themeConfig?: AbzuThemeConfig;
   isConfigLoaded: boolean;
@@ -48,21 +42,13 @@ export const useTheme = () => {
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  defaultVariant?: ThemeVariant;
   useConfigFiles?: boolean;
 }
 
 export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
-  defaultVariant = "light",
-  useConfigFiles = true, // Re-enable new theme system
+  useConfigFiles = true, // Use new theme system by default
 }) => {
-  const [themeVariant, setThemeVariant] = useState<ThemeVariant>(() => {
-    // Check for saved theme preference
-    const saved = localStorage.getItem("abzu-theme-variant");
-    return (saved as ThemeVariant) || defaultVariant;
-  });
-
   const [themeConfig, setThemeConfig] = useState<AbzuThemeConfig | undefined>(
     undefined,
   );
@@ -70,7 +56,7 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   const [theme, setTheme] = useState<Theme | null>(null);
   const [availableThemes, setAvailableThemes] = useState<string[]>([]);
   const [currentThemeName, setCurrentThemeName] = useState<string>("");
-  const [currentThemePath, setCurrentThemePath] = useState<string>("");
+  const [setCurrentThemePath] = useState<string>("");
 
   const environment = getTiamatEnv() as Environment;
 
@@ -162,41 +148,29 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [useConfigFiles]);
 
-  // Create theme when config or variant changes
+  // Create theme when config changes
   useEffect(() => {
     if (isConfigLoaded) {
       if (themeConfig && useConfigFiles) {
-        // Use new config-driven theme
-        createAbzuTheme({
-          variant: themeVariant,
-          environment,
-          config: themeConfig,
-        })
-          .then(setTheme)
-          .catch((error) => {
-            console.warn(
-              "Failed to create config-driven theme, falling back to legacy:",
-              error,
-            );
-            setTheme(
-              createAbzuThemeLegacy({ variant: themeVariant, environment }),
-            );
-          });
+        // Use new simplified config-driven theme
+        try {
+          const newTheme = createThemeFromConfig(themeConfig);
+          setTheme(newTheme);
+        } catch (error) {
+          console.warn(
+            "Failed to create config-driven theme, falling back to legacy:",
+            error,
+          );
+          setTheme(createAbzuThemeLegacy({ environment }));
+        }
       } else {
         // Fallback to legacy theme
-        setTheme(createAbzuThemeLegacy({ variant: themeVariant, environment }));
+        setTheme(createAbzuThemeLegacy({ environment }));
       }
     }
-  }, [themeVariant, environment, themeConfig, isConfigLoaded, useConfigFiles]);
-
-  // Save theme preference
-  useEffect(() => {
-    localStorage.setItem("abzu-theme-variant", themeVariant);
-  }, [themeVariant]);
+  }, [environment, themeConfig, isConfigLoaded, useConfigFiles]);
 
   const contextValue: ThemeContextType = {
-    themeVariant,
-    setThemeVariant,
     environment,
     themeConfig,
     isConfigLoaded,
