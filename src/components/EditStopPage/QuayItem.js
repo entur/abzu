@@ -175,16 +175,18 @@ class QuayItem extends React.Component {
     } = this.props;
     const { formatMessage } = intl;
 
-    const wheelchairAccess = getIn(
-      quay,
-      ["accessibilityAssessment", "limitations", "wheelchairAccess"],
-      AccessibilityLimitationType.UNKNOWN,
-    );
-    const stepFreeAccess = getIn(
-      quay,
-      ["accessibilityAssessment", "limitations", "stepFreeAccess"],
-      AccessibilityLimitationType.UNKNOWN,
-    );
+    const wheelchairAccess =
+      getIn(
+        quay,
+        ["accessibilityAssessment", "limitations", "wheelchairAccess"],
+        AccessibilityLimitationType.UNKNOWN,
+      ) ?? AccessibilityLimitationType.UNKNOWN;
+    const stepFreeAccess =
+      getIn(
+        quay,
+        ["accessibilityAssessment", "limitations", "stepFreeAccess"],
+        AccessibilityLimitationType.UNKNOWN,
+      ) ?? AccessibilityLimitationType.UNKNOWN;
     const isTicketMachinePresent =
       equipmentHelpers.isTicketMachinePresent(quay);
     const isBusShelterPresent =
