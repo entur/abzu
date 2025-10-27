@@ -26,6 +26,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -39,6 +40,7 @@ import {
   FavoriteStopPlacesManager,
 } from "../../../../utils/favoriteStopPlaces";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
+import { modernCard } from "../../styles";
 
 interface FavoriteStopPlacesProps {
   onClose?: () => void;
@@ -103,7 +105,7 @@ export const FavoriteStopPlaces: React.FC<FavoriteStopPlacesProps> = ({
   }
 
   return (
-    <Box>
+    <Paper elevation={0} sx={modernCard(theme)}>
       <Box
         sx={{
           display: "flex",
@@ -204,6 +206,6 @@ export const FavoriteStopPlaces: React.FC<FavoriteStopPlacesProps> = ({
           </React.Fragment>
         ))}
       </List>
-    </Box>
+    </Paper>
   );
 };

@@ -134,7 +134,7 @@
     "logoHeight": {
       "xs": 32,
       "sm": 40,
-      "md": 48
+      "md": 40
     },
     "favicon": "/favicon.ico"
   },

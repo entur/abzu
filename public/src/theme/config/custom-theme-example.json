@@ -1,126 +1,176 @@
 {
-  "name": "Custom Abzu Theme",
-  "version": "1.0.0",
-  "description": "Example custom theme configuration showing how to customize colors and styling",
-  "author": "Custom Organization",
-
-  "palette": {
-    "primary": {
-      "main": "#1976d2",
-      "dark": "#115293",
-      "light": "#42a5f5",
-      "contrastText": "#fff"
-    },
-    "secondary": {
-      "main": "#dc004e",
-      "dark": "#9a0036",
-      "light": "#e33371",
-      "contrastText": "#fff"
-    },
-    "tertiary": {
-      "main": "#ed6c02",
-      "dark": "#a84b00",
-      "light": "#ff9800",
-      "contrastText": "#fff"
-    },
-    "success": {
-      "main": "#388e3c",
-      "dark": "#2e7d32",
-      "light": "#4caf50"
-    },
-    "error": {
-      "main": "#d32f2f",
-      "dark": "#c62828",
-      "light": "#ef5350"
-    },
-    "warning": {
-      "main": "#ed6c02",
-      "dark": "#e65100",
-      "light": "#ff9800"
-    },
-    "info": {
-      "main": "#0288d1",
-      "dark": "#01579b",
-      "light": "#03a9f4"
-    },
-    "background": {
-      "default": "#f8f9fa",
-      "paper": "#ffffff"
-    },
-    "text": {
-      "primary": "rgba(0, 0, 0, 0.87)",
-      "secondary": "rgba(0, 0, 0, 0.6)"
-    }
-  },
-
-  "typography": {
-    "fontFamily": "\"Inter\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    "h1": {
-      "fontSize": "3rem",
-      "fontWeight": 700,
-      "lineHeight": 1.1
-    },
-    "h2": {
-      "fontSize": "2.25rem",
-      "fontWeight": 600,
-      "lineHeight": 1.2
-    },
-    "button": {
-      "textTransform": "uppercase",
-      "fontWeight": 600
-    }
-  },
-
-  "shape": {
-    "borderRadius": 1
-  },
-
-  "spacing": 10,
-
+  "name": "Entur Theme 2.0",
+  "version": "2.0.0",
+  "description": "Entur's official theme configuration for Abzu Stop Place Registry",
+  "author": "Entur AS",
   "environment": {
     "development": {
-      "color": "#123456",
-      "showBadge": true
+      "color": "#457645",
+      "showBadge": true,
+      "label": "DEV"
     },
     "test": {
-      "color": "#ff5722",
-      "showBadge": true
+      "color": "#ffe082",
+      "showBadge": true,
+      "label": "TEST"
     },
     "prod": {
-      "color": "#1976d2",
-      "showBadge": false
+      "color": "#181c56",
+      "showBadge": false,
+      "label": "PROD"
     }
   },
-
   "assets": {
-    "logo": "/custom-logo.png",
-    "favicon": "/custom-favicon.ico"
-  },
-
-  "components": {
-    "MuiButton": {
-      "borderRadius": 1,
-      "textTransform": "uppercase",
-      "fontWeight": 600
+    "logo": "/entur-logo.png",
+    "logoHeight": {
+      "xs": 20,
+      "sm": 24,
+      "md": 24
     },
-    "MuiCard": {
-      "elevation": 2,
-      "borderRadius": 12
+    "favicon": "/favicon.ico"
+  },
+  "palette": {
+    "mode": "light",
+    "primary": {
+      "main": "#181C56",
+      "dark": "#11143C",
+      "light": "#262F7D",
+      "contrastText": "#FFFFFF"
+    },
+    "secondary": {
+      "main": "#FF5959",
+      "dark": "#D31B1B",
+      "light": "#FF9494",
+      "contrastText": "#FFFFFF"
+    },
+    "info": {
+      "main": "#AEB7E2",
+      "dark": "#8794D4",
+      "light": "#C7CDEB",
+      "contrastText": "#181C56"
+    },
+    "success": {
+      "main": "#5AC39A",
+      "dark": "#1A8E60",
+      "light": "#9CD9C2",
+      "contrastText": "#08091C"
+    },
+    "warning": {
+      "main": "#FFCA28",
+      "dark": "#E9B10C",
+      "light": "#FFE082",
+      "contrastText": "#08091C"
+    },
+    "error": {
+      "main": "#D31B1B",
+      "dark": "#8A1414",
+      "light": "#FFCECE",
+      "contrastText": "#FFFFFF"
+    },
+    "background": {
+      "default": "#FFFFFF",
+      "paper": "#FFFFFF",
+      "tint": "#F6F6F9"
+    },
+    "text": {
+      "primary": "#08091C",
+      "secondary": "#3D3E40",
+      "disabled": "#949699"
+    },
+    "divider": "#E3E6E8",
+    "action": {
+      "hover": "#AEB7E2",
+      "selected": "#EAEAF1",
+      "focus": "#AEB7E2",
+      "active": "#AEB7E2",
+      "disabled": "#949699",
+      "disabledBackground": "#F2F5F7"
+    }
+  },
+  "typography": {
+    "fontFamily": "\"Nationale\", Arial, \"Gotham Rounded\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen-Sans, Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif",
+    "h1": { "fontSize": "3rem", "fontWeight": 700, "color": "#181C56" },
+    "h2": { "fontSize": "2.25rem", "fontWeight": 700, "color": "#181C56" },
+    "h3": { "fontSize": "1.75rem", "fontWeight": 700, "color": "#181C56" },
+    "subtitle1": { "fontSize": "1rem", "fontWeight": 600, "color": "#08091C" },
+    "body1": { "fontSize": "1rem", "color": "#08091C" },
+    "body2": { "fontSize": "0.875rem", "color": "#3D3E40" },
+    "button": { "textTransform": "none", "fontWeight": 600 }
+  },
+  "shape": {
+    "borderRadius": 4
+  },
+  "components": {
+    "MuiCssBaseline": {
+      "styleOverrides": {
+        "body": {
+          "backgroundColor": "#FFFFFF",
+          "color": "#08091C"
+        }
+      }
+    },
+    "MuiButton": {
+      "styleOverrides": {
+        "root": {
+          "textTransform": "none",
+          "borderRadius": 4,
+          "fontWeight": 600
+        },
+        "containedPrimary": {
+          "backgroundColor": "#181C56",
+          "color": "#FFFFFF"
+        },
+        "outlinedPrimary": {
+          "borderColor": "#181C56",
+          "color": "#181C56"
+        }
+      },
+      "defaultProps": {
+        "disableElevation": true
+      }
+    },
+    "MuiLink": {
+      "styleOverrides": {
+        "root": {
+          "color": "#181C56"
+        }
+      }
+    },
+    "MuiChip": {
+      "styleOverrides": {
+        "filled": { "backgroundColor": "#F6F6F9" },
+        "filledPrimary": { "backgroundColor": "#181C56", "color": "#FFFFFF" },
+        "outlined": { "borderColor": "#E3E6E8" }
+      }
     },
     "MuiAppBar": {
-      "elevation": 0
+      "styleOverrides": {
+        "colorPrimary": {
+          "backgroundColor": "#181C56",
+          "color": "#FFFFFF"
+        }
+      }
     },
-    "MuiTextField": {
-      "variant": "outlined",
-      "borderRadius": 1
+    "MuiPaper": {
+      "styleOverrides": {
+        "root": { "backgroundImage": "none" }
+      }
+    },
+    "MuiFab": {
+      "styleOverrides": {
+        "primary": {
+          "backgroundColor": "#181C56",
+          "color": "#FFFFFF"
+        }
+      }
+    },
+    "MuiAlert": {
+      "styleOverrides": {
+        "standardSuccess": { "backgroundColor": "#E6F6F0", "color": "#034029" },
+        "standardWarning": { "backgroundColor": "#FFF4CD", "color": "#775B09" },
+        "standardError": { "backgroundColor": "#FFE5E5", "color": "#5D0E0E" },
+        "standardInfo": { "backgroundColor": "#F0F1FA", "color": "#181C56" }
+      }
     }
-  },
-
-  "customProperties": {
-    "headerHeight": 172,
-    "sidebarWidth": 320,
-    "contentMaxWidth": 1400,
-    "primaryGradient": "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
-    "cardShadow": "0 4px 20px rgba(25, 118, 210, 0.15)"
   }
 }

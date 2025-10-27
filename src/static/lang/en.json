@@ -221,6 +221,7 @@
   "last_child_warning_second": "As a consequence of this, the current multimodal stop place will expire.",
   "loading": "Loading...",
   "loading_data": "Loading data",
+  "loading_stop_place": "Loading stop place...",
   "local_reference": "Local reference:",
   "local_reference_empty": "No local reference",
   "log_out": "Log out",

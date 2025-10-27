@@ -33,6 +33,7 @@ import {
 } from "../../MainPage";
 import { FavoriteStopPlaces } from "../../MainPage/components/FavoriteStopPlaces";
 import { useSearchBox } from "../../MainPage/hooks/useSearchBox";
+import { ModalityLoadingAnimation } from "../../Shared";
 import "../../modern.css";
 import {
   headerSearchContentContainer,
@@ -46,7 +47,7 @@ export const HeaderSearch: React.FC = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const dispatch = useDispatch() as any;
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
 
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
@@ -83,6 +84,7 @@ export const HeaderSearch: React.FC = () => {
   const {
     showMoreFilterOptions,
     loading,
+    loadingSelection,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
     handleSearchUpdate,
@@ -211,18 +213,30 @@ export const HeaderSearch: React.FC = () => {
           />
         )}
 
-        {chosenResult && !showFavorites && !showMoreFilterOptions && (
-          <SearchResultDetails
-            result={chosenResult}
-            canEdit={canEdit}
-            userSuppliedCoordinates={
-              missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]
+        {loadingSelection && !showFavorites && !showMoreFilterOptions && (
+          <ModalityLoadingAnimation
+            message={
+              formatMessage({ id: "loading_stop_place" }) ||
+              "Loading stop place..."
             }
-            onEdit={handleEdit}
-            onChangeCoordinates={handleOpenCoordinatesDialog}
-            onClose={handleCloseResultDetails}
           />
         )}
+
+        {chosenResult &&
+          !showFavorites &&
+          !showMoreFilterOptions &&
+          !loadingSelection && (
+            <SearchResultDetails
+              result={chosenResult}
+              canEdit={canEdit}
+              userSuppliedCoordinates={
+                missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]
+              }
+              onEdit={handleEdit}
+              onChangeCoordinates={handleOpenCoordinatesDialog}
+              onClose={handleCloseResultDetails}
+            />
+          )}
       </Box>
     );
   };
@@ -232,8 +246,12 @@ export const HeaderSearch: React.FC = () => {
     ? isSearchExpanded ||
       !!chosenResult ||
       showFavorites ||
-      showMoreFilterOptions
-    : showMoreFilterOptions || showFavorites || !!chosenResult;
+      showMoreFilterOptions ||
+      loadingSelection
+    : showMoreFilterOptions ||
+      showFavorites ||
+      !!chosenResult ||
+      loadingSelection;
 
   const isElevated = showFavorites || showMoreFilterOptions;
 

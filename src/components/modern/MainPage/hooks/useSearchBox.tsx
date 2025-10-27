@@ -51,6 +51,7 @@ export const useSearchBox = ({
   // Local state
   const [showMoreFilterOptions, setShowMoreFilterOptions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingSelection, setLoadingSelection] = useState(false);
   const [stopPlaceSearchValue, setStopPlaceSearchValue] = useState("");
   const [topographicPlaceFilterValue, setTopographicPlaceFilterValue] =
     useState("");
@@ -146,23 +147,31 @@ export const useSearchBox = ({
           return;
         }
 
+        // Set loading state when selecting an item
+        setLoadingSelection(true);
+
         const stopPlaceId = result.element.id;
         if (
           stopPlaceId &&
           result.element.entityType !== "GROUP_OF_STOP_PLACE"
         ) {
-          dispatch(getStopPlaceById(stopPlaceId)).then(({ data }: any) => {
-            if (data.stopPlace && data.stopPlace.length) {
-              const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
-                data.stopPlace,
-              );
-              if (stopPlaces.length) {
-                dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+          dispatch(getStopPlaceById(stopPlaceId))
+            .then(({ data }: any) => {
+              if (data.stopPlace && data.stopPlace.length) {
+                const stopPlaces = formatHelpers.mapSearchResultToStopPlaces(
+                  data.stopPlace,
+                );
+                if (stopPlaces.length) {
+                  dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
+                }
               }
-            }
-          });
+            })
+            .finally(() => {
+              setLoadingSelection(false);
+            });
         } else {
           dispatch(StopPlaceActions.setMarkerOnMap(result.element));
+          setLoadingSelection(false);
         }
         setStopPlaceSearchValue("");
         dispatch(UserActions.setSearchText(""));
@@ -502,6 +511,7 @@ export const useSearchBox = ({
     // Local state
     showMoreFilterOptions,
     loading,
+    loadingSelection,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
     coordinatesDialogOpen,

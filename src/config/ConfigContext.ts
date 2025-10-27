@@ -23,8 +23,16 @@ export interface Config {
   extPath?: string;
   /**
    * Path to theme configuration file (e.g., "src/theme/config/custom-theme-example.json")
+   * @deprecated Use themeConfigs array instead for multi-theme support
    */
   themeConfig?: string;
+  /**
+   * Array of theme configuration file paths.
+   * First theme in array is the default theme.
+   * If only one theme provided, theme switcher will be hidden.
+   * If empty or missing, standard MUI theme is used.
+   */
+  themeConfigs?: string[];
 }
 
 export interface MapConfig {

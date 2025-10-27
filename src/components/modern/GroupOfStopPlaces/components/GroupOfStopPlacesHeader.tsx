@@ -12,7 +12,8 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
@@ -20,11 +21,11 @@ import { GroupOfStopPlacesHeaderProps } from "../types";
 
 /**
  * Header component for group of stop places editor
- * Shows back button, title, ID, and copy button
+ * Shows title, ID, copy button, close button, and collapse button (mobile only)
  */
 export const GroupOfStopPlacesHeader: React.FC<
   GroupOfStopPlacesHeaderProps
-> = ({ groupOfStopPlaces, onGoBack }) => {
+> = ({ groupOfStopPlaces, onGoBack, onCollapse, isMobile }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
@@ -44,19 +45,6 @@ export const GroupOfStopPlacesHeader: React.FC<
         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
-      <IconButton
-        size="small"
-        onClick={onGoBack}
-        sx={{
-          color: theme.palette.text.primary,
-          "&:hover": {
-            bgcolor: theme.palette.action.hover,
-          },
-        }}
-      >
-        <ArrowBackIcon />
-      </IconButton>
-
       <Box sx={{ flex: 1 }}>
         <Typography
           variant="h6"
@@ -68,21 +56,48 @@ export const GroupOfStopPlacesHeader: React.FC<
           {headerText}
         </Typography>
         {groupOfStopPlaces.id && (
-          <Typography
-            variant="caption"
-            sx={{ color: theme.palette.text.secondary }}
-          >
-            {groupOfStopPlaces.id}
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <Typography
+              variant="caption"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              {groupOfStopPlaces.id}
+            </Typography>
+            <CopyIdButton
+              idToCopy={groupOfStopPlaces.id}
+              color={theme.palette.text.secondary}
+            />
+          </Box>
         )}
       </Box>
 
-      {groupOfStopPlaces.id && (
-        <CopyIdButton
-          idToCopy={groupOfStopPlaces.id}
-          color={theme.palette.text.secondary}
-        />
+      {isMobile && onCollapse && (
+        <IconButton
+          size="small"
+          onClick={onCollapse}
+          sx={{
+            color: theme.palette.text.primary,
+            "&:hover": {
+              bgcolor: theme.palette.action.hover,
+            },
+          }}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
       )}
+
+      <IconButton
+        size="small"
+        onClick={onGoBack}
+        sx={{
+          color: theme.palette.text.primary,
+          "&:hover": {
+            bgcolor: theme.palette.action.hover,
+          },
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
     </Box>
   );
 };

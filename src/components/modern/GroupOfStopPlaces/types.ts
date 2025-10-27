@@ -72,6 +72,8 @@ export interface EditGroupOfStopPlacesProps {
 export interface GroupOfStopPlacesHeaderProps {
   groupOfStopPlaces: GroupOfStopPlaces;
   onGoBack: () => void;
+  onCollapse?: () => void;
+  isMobile?: boolean;
 }
 
 export interface GroupOfStopPlacesDetailsProps {

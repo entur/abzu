@@ -26,7 +26,6 @@ import { toggleShowFareZonesInMap } from "../../reducers/zonesSlice";
 import { FareZonesPanel } from "../modern/Map/FareZonesPanel";
 import "../modern/modern.css";
 import {
-  mapControlButton,
   mapControlPanelContainer,
   mapControlPanelContent,
   mapControlPanelHeader,
@@ -93,12 +92,11 @@ export const MapControls: React.FC = () => {
         {buttons.map((button) => (
           <Tooltip key={button.key} title={button.label} placement="left">
             <Fab
-              size="medium"
+              size="small"
               onClick={button.onClick}
               aria-label={button.label}
               color={activePanel === button.key ? "primary" : "default"}
               className="modern-map-control-button"
-              sx={mapControlButton(theme)}
             >
               {button.icon}
             </Fab>

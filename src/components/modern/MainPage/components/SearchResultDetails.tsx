@@ -31,13 +31,16 @@ import { getPrimaryDarkerColor } from "../../../../config/themeConfig";
 import { AccessibilityLimitationType } from "../../../../models/AccessibilityLimitation";
 import { Entities } from "../../../../models/Entities";
 import { getIn } from "../../../../utils/";
-import Code from "../../../EditStopPage/Code";
-import BelongsToGroup from "../../../MainPage/BelongsToGroup";
-import CircularNumber from "../../../MainPage/CircularNumber";
-import HasExpiredInfo from "../../../MainPage/HasExpiredInfo";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
-import TagTray from "../../../MainPage/TagTray";
 import ModalityTray from "../../../ReportPage/ModalityIconTray";
+import {
+  CountBadge,
+  ExpiredWarning,
+  GroupMembership,
+  QuayCode,
+  Tags,
+} from "../../Shared";
+import { modernCard } from "../../styles";
 import { SearchResultDetailsProps } from "../types";
 import { SearchBoxEdit } from "./SearchBoxEdit";
 import { SearchBoxGeoWarning } from "./SearchBoxGeoWarning";
@@ -97,7 +100,7 @@ export const SearchResultDetails: React.FC<
               }
             />
           </Box>
-          <HasExpiredInfo show={result.hasExpired} />
+          <ExpiredWarning show={result.hasExpired} />
           <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
             <Box
               sx={{
@@ -121,11 +124,7 @@ export const SearchResultDetails: React.FC<
           </Box>
           {result.belongsToGroup && (
             <Box sx={{ ml: 1 }}>
-              <BelongsToGroup
-                formatMessage={formatMessage}
-                groups={(result.groups as any) || []}
-                style={{}}
-              />
+              <GroupMembership groups={(result.groups as any) || []} />
             </Box>
           )}
           {result.importedId && result.importedId.length > 0 && (
@@ -134,13 +133,13 @@ export const SearchResultDetails: React.FC<
               {result.importedId.join(", ")}
             </Typography>
           )}
-          <TagTray tags={result.tags} style={{ marginLeft: 8 }} />
+          <Tags tags={result.tags} />
           <Box sx={{ display: "flex", justifyContent: "space-between", p: 1 }}>
             <Typography variant="body2" sx={{ textTransform: "capitalize" }}>
               {formatMessage({ id: "stop_places" })}
             </Typography>
-            <CircularNumber
-              number={result.children?.length || 0}
+            <CountBadge
+              count={result.children?.length || 0}
               color={primaryDarker}
             />
           </Box>
@@ -154,14 +153,17 @@ export const SearchResultDetails: React.FC<
             }}
           >
             {result.children?.map((childStopPlace: any, i: number) => (
-              <Paper
+              <Box
                 key={`child-${childStopPlace.id}`}
-                variant="outlined"
                 sx={{
-                  p: 0.5,
+                  p: 1,
                   mb: 0.5,
+                  borderRadius: 1,
                   backgroundColor:
                     i % 2 ? theme.palette.grey[50] : "transparent",
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                  },
                 }}
               >
                 <Box
@@ -190,7 +192,7 @@ export const SearchResultDetails: React.FC<
                     ? childStopPlace.importedId.join(", ")
                     : ""}
                 </Typography>
-              </Paper>
+              </Box>
             ))}
           </Box>
         </>
@@ -214,7 +216,7 @@ export const SearchResultDetails: React.FC<
               type={result.stopPlaceType}
             />
           </Box>
-          <HasExpiredInfo show={result.hasExpired} />
+          <ExpiredWarning show={result.hasExpired} />
           <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
             {result.topographicPlace && result.parentTopographicPlace && (
               <Typography variant="body1">
@@ -222,11 +224,7 @@ export const SearchResultDetails: React.FC<
               </Typography>
             )}
             {result.belongsToGroup && (
-              <BelongsToGroup
-                formatMessage={formatMessage}
-                groups={(result.groups as any) || []}
-                style={{}}
-              />
+              <GroupMembership groups={(result.groups as any) || []} />
             )}
             <Typography variant="body2" color="text.secondary">
               {result.id}
@@ -238,14 +236,14 @@ export const SearchResultDetails: React.FC<
               {result.importedId.join(", ")}
             </Typography>
           )}
-          <TagTray tags={result.tags} style={{ marginLeft: 8 }} />
+          <Tags tags={result.tags} />
           <Box sx={{ display: "flex", justifyItems: "center", p: 1 }}>
             <Typography variant="body2" sx={{ textTransform: "capitalize" }}>
               {formatMessage({ id: "quays" })}
             </Typography>
             <Box sx={{ ml: 1 }}>
-              <CircularNumber
-                number={result.quays?.length || 0}
+              <CountBadge
+                count={result.quays?.length || 0}
                 color={primaryDarker}
               />
             </Box>
@@ -260,33 +258,45 @@ export const SearchResultDetails: React.FC<
             }}
           >
             {result.quays?.map((quay: any, i: number) => (
-              <Paper
+              <Box
                 key={`quay-${quay.id}`}
-                variant="outlined"
                 sx={{
-                  p: 0.5,
+                  p: 1,
                   mb: 0.5,
+                  borderRadius: 1,
                   backgroundColor:
                     i % 2 ? theme.palette.grey[50] : "transparent",
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                  },
                 }}
               >
-                <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                  {quay.id}
-                  <Code
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 0.5,
+                  }}
+                >
+                  <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                    {quay.id}
+                  </Typography>
+                  <QuayCode
                     type="publicCode"
                     value={quay.publicCode}
                     defaultValue={formatMessage({ id: "not_assigned" })}
                   />
-                  <Code
+                  <QuayCode
                     type="privateCode"
                     value={quay.privateCode ? quay.privateCode.value : ""}
                     defaultValue={formatMessage({ id: "not_assigned" })}
                   />
-                </Typography>
+                </Box>
                 <Typography variant="caption">
                   {quay.importedId ? quay.importedId.join(", ") : ""}
                 </Typography>
-              </Paper>
+              </Box>
             ))}
           </Box>
         </>
@@ -311,10 +321,7 @@ export const SearchResultDetails: React.FC<
         <Typography variant="body2" sx={{ textTransform: "capitalize" }}>
           {formatMessage({ id: "stop_places" })}
         </Typography>
-        <CircularNumber
-          number={result.members?.length || 0}
-          color={primaryDarker}
-        />
+        <CountBadge count={result.members?.length || 0} color={primaryDarker} />
       </Box>
       <Box
         sx={{
@@ -326,13 +333,16 @@ export const SearchResultDetails: React.FC<
         }}
       >
         {result.members?.map((member: any, i: number) => (
-          <Paper
+          <Box
             key={`member-${member.id}`}
-            variant="outlined"
             sx={{
-              p: 0.5,
+              p: 1,
               mb: 0.5,
+              borderRadius: 1,
               backgroundColor: i % 2 ? theme.palette.grey[50] : "transparent",
+              "&:hover": {
+                backgroundColor: theme.palette.action.hover,
+              },
             }}
           >
             <Box
@@ -345,22 +355,14 @@ export const SearchResultDetails: React.FC<
               <Typography variant="caption">{member.name}</Typography>
               <SimpleStopPlaceLink id={member.id} />
             </Box>
-          </Paper>
+          </Box>
         ))}
       </Box>
     </>
   );
 
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        p: 2,
-        border: `1px dotted ${theme.palette.primary.light}`,
-        backgroundColor: theme.palette.background.paper,
-        position: "relative",
-      }}
-    >
+    <Paper elevation={0} sx={modernCard(theme)}>
       {onClose && (
         <IconButton
           onClick={onClose}

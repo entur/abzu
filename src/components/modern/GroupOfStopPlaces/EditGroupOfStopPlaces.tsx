@@ -31,6 +31,7 @@ import {
   GroupOfStopPlacesDetails,
   GroupOfStopPlacesHeader,
   GroupOfStopPlacesList,
+  MinimizedBar,
 } from "./components";
 import { useEditGroupOfStopPlaces } from "./hooks/useEditGroupOfStopPlaces";
 import { EditGroupOfStopPlacesProps } from "./types";
@@ -106,29 +107,40 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
 
   return (
     <>
-      {/* Toggle Button (only shown when drawer is closed) */}
-      {!isOpen && (
+      {/* Minimized Bar (only shown when drawer is collapsed on mobile) */}
+      {!isOpen && isMobile && (
+        <MinimizedBar
+          name={originalGOS.name}
+          id={originalGOS.id}
+          onExpand={handleToggle}
+        />
+      )}
+
+      {/* Collapse Button (Desktop/Tablet) - Floats outside panel at header height */}
+      {!isMobile && (
         <Fab
-          color="primary"
           size="small"
           onClick={handleToggle}
           sx={{
             position: "fixed",
-            left: 16,
-            top: 80,
-            zIndex: theme.zIndex.drawer - 1,
+            left: isOpen
+              ? typeof drawerWidth === "number"
+                ? drawerWidth + 8
+                : 458 // fallback
+              : 16, // When closed, position at left edge
+            top: 80, // Aligned with header height
+            zIndex: theme.zIndex.drawer + 1,
           }}
         >
-          <ChevronRightIcon />
+          {isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </Fab>
       )}
 
       {/* Main Drawer */}
       <Drawer
-        variant={isMobile ? "temporary" : "persistent"}
+        variant="persistent"
         anchor="left"
         open={isOpen}
-        onClose={handleToggle}
         sx={{
           width: isOpen ? drawerWidth : 0,
           flexShrink: 0,
@@ -148,32 +160,13 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
             bgcolor: "background.paper",
           }}
         >
-          {/* Header with back button and close drawer button */}
-          <Box sx={{ position: "relative" }}>
-            <GroupOfStopPlacesHeader
-              groupOfStopPlaces={originalGOS}
-              onGoBack={handleAllowUserToGoBack}
-            />
-            {!isMobile && (
-              <Fab
-                size="small"
-                onClick={handleToggle}
-                sx={{
-                  position: "absolute",
-                  right: 8,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  bgcolor: "background.paper",
-                  boxShadow: 1,
-                  "&:hover": {
-                    bgcolor: "background.default",
-                  },
-                }}
-              >
-                <ChevronLeftIcon />
-              </Fab>
-            )}
-          </Box>
+          {/* Header with close button and collapse button (mobile) */}
+          <GroupOfStopPlacesHeader
+            groupOfStopPlaces={originalGOS}
+            onGoBack={handleAllowUserToGoBack}
+            onCollapse={isMobile ? handleToggle : undefined}
+            isMobile={isMobile}
+          />
 
           <Divider />
 

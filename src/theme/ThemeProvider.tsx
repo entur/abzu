@@ -13,11 +13,15 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { CssBaseline } from "@mui/material";
-import { ThemeProvider as MuiThemeProvider, Theme } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+  Theme,
+} from "@mui/material/styles";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { getFetchedConfig } from "../config/fetchConfig";
 import { getTiamatEnv } from "../config/themeConfig";
 import { createThemeFromConfig } from "./config/createThemeFromConfig";
-import { loadThemeConfig } from "./config/loader";
 import { AbzuThemeConfig } from "./config/theme-config";
 import { createAbzuThemeLegacy, Environment } from "./index";
 
@@ -56,7 +60,7 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   const [theme, setTheme] = useState<Theme | null>(null);
   const [availableThemes, setAvailableThemes] = useState<string[]>([]);
   const [currentThemeName, setCurrentThemeName] = useState<string>("");
-  const [setCurrentThemePath] = useState<string>("");
+  const [currentThemePath, setCurrentThemePath] = useState<string>("");
 
   const environment = getTiamatEnv() as Environment;
 
@@ -104,46 +108,54 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
       // Check for saved theme selection
       const savedThemePath = localStorage.getItem("abzu-selected-theme");
 
-      // Get available themes from config or use defaults
-      const defaultThemes = [
-        "src/theme/config/default-theme.json",
-        "src/theme/config/entur-theme.json",
-        "src/theme/config/custom-theme-example.json",
-      ];
-      setAvailableThemes(defaultThemes);
+      // Get available themes from bootstrap.json config
+      const appConfig = getFetchedConfig();
+      let configuredThemes: string[] = [];
 
-      // Determine which theme to load
-      const themeToLoad = savedThemePath || undefined;
+      // Priority: use themeConfigs array if present
+      if (appConfig?.themeConfigs && appConfig.themeConfigs.length > 0) {
+        configuredThemes = appConfig.themeConfigs;
+      }
+      // Fallback: use old singular themeConfig field for backward compatibility
+      else if (appConfig?.themeConfig) {
+        configuredThemes = [appConfig.themeConfig];
+      }
+      // If no themes configured, use empty array (will trigger standard MUI theme)
 
-      if (themeToLoad && defaultThemes.includes(themeToLoad)) {
-        // Load saved custom theme
+      setAvailableThemes(configuredThemes);
+
+      // Validate theme paths and log warnings
+      configuredThemes.forEach((themePath) => {
+        if (!themePath || typeof themePath !== "string") {
+          console.error(
+            `Invalid theme path in bootstrap.json themeConfigs: ${themePath}`,
+          );
+        }
+      });
+
+      // Default theme is the first in the array
+      const defaultTheme = configuredThemes[0];
+
+      // Validate saved theme still exists in config
+      const themeToLoad =
+        savedThemePath && configuredThemes.includes(savedThemePath)
+          ? savedThemePath
+          : defaultTheme;
+
+      if (themeToLoad) {
+        // Load the selected theme
         loadThemeFromPath(themeToLoad)
           .then(() => setIsConfigLoaded(true))
           .catch((error) => {
-            console.warn("Failed to load saved theme, using default:", error);
-            loadThemeConfig()
-              .then((config) => {
-                setThemeConfig(config);
-                setCurrentThemeName(config.name);
-                setIsConfigLoaded(true);
-              })
-              .catch(() => setIsConfigLoaded(true));
+            console.error("Failed to load theme, using fallback:", error);
+            setIsConfigLoaded(true);
           });
       } else {
-        // Load from environment config
-        loadThemeConfig()
-          .then((config) => {
-            setThemeConfig(config);
-            setCurrentThemeName(config.name);
-            setIsConfigLoaded(true);
-          })
-          .catch((error) => {
-            console.warn(
-              "Failed to load theme config, falling back to legacy theme:",
-              error,
-            );
-            setIsConfigLoaded(true);
-          });
+        // No themes configured - use standard MUI theme
+        console.log(
+          "No themes configured in bootstrap.json, using standard MUI theme",
+        );
+        setIsConfigLoaded(true);
       }
     }
   }, [useConfigFiles]);
@@ -158,17 +170,27 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
           setTheme(newTheme);
         } catch (error) {
           console.warn(
-            "Failed to create config-driven theme, falling back to legacy:",
+            "Failed to create config-driven theme, falling back to standard MUI:",
             error,
           );
-          setTheme(createAbzuThemeLegacy({ environment }));
+          setTheme(createTheme());
         }
+      } else if (useConfigFiles && availableThemes.length === 0) {
+        // No themes configured - use standard MUI theme
+        console.log("Using standard MUI theme (no custom themes configured)");
+        setTheme(createTheme());
       } else {
         // Fallback to legacy theme
         setTheme(createAbzuThemeLegacy({ environment }));
       }
     }
-  }, [environment, themeConfig, isConfigLoaded, useConfigFiles]);
+  }, [
+    environment,
+    themeConfig,
+    isConfigLoaded,
+    useConfigFiles,
+    availableThemes,
+  ]);
 
   const contextValue: ThemeContextType = {
     environment,

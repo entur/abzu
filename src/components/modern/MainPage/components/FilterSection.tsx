@@ -22,6 +22,7 @@ import {
   FormGroup,
   IconButton,
   MenuItem,
+  Paper,
   TextField,
   useTheme,
 } from "@mui/material";
@@ -29,6 +30,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import ModalityFilter from "../../../EditStopPage/ModalityFilter";
 import TopographicalFilter from "../../../MainPage/TopographicalFilter";
+import { modernCard } from "../../styles";
 import { FilterSectionProps } from "../types";
 
 export const FilterSection: React.FC<FilterSectionProps> = ({
@@ -49,9 +51,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
   const { formatMessage, locale } = useIntl();
 
   return (
-    <div className="filter-section">
+    <Paper elevation={0} sx={modernCard(theme)}>
       {showMoreFilterOptions ? (
-        <div className="filter-content">
+        <Box>
           <Box
             sx={{
               display: "flex",
@@ -150,9 +152,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             topoiChips={topoiChips}
             handleDeleteChip={onDeleteChip}
           />
-        </div>
+        </Box>
       ) : (
-        <>
+        <Box>
           <Box
             sx={{
               "& > div": {
@@ -171,7 +173,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               handleApplyFilters={onApplyModalityFilters}
             />
           </Box>
-          <div className="filter-toggle">
+          <Box sx={{ display: "flex", justifyContent: "center", pt: 1 }}>
             <Button
               onClick={() => onToggleFilter(true)}
               size="small"
@@ -183,9 +185,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             >
               {formatMessage({ id: "filters_more" })}
             </Button>
-          </div>
-        </>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Paper>
   );
 };

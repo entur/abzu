@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { ThemeSwitcher } from "../../../../theme";
+import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
 
 interface UICustomizationSectionProps {
   onClose: () => void;
@@ -45,9 +46,13 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const { availableThemes } = useAbzuTheme();
 
   // Redux selectors
   const uiMode = useSelector((state: any) => state.user.uiMode);
+
+  // Show theme switcher only if 2+ themes available
+  const showThemeSwitcher = availableThemes.length >= 2;
 
   // Translations
   const appearance = formatMessage({ id: "appearance" }) || "Appearance";
@@ -137,44 +142,46 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
               />
             </MenuItem>
 
-            <MenuItem
-              sx={{
-                ...settingItemStyle,
-                flexDirection: "column",
-                alignItems: "flex-start",
-              }}
-            >
-              <Box
+            {showThemeSwitcher && (
+              <MenuItem
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  mb: 1,
+                  ...settingItemStyle,
+                  flexDirection: "column",
+                  alignItems: "flex-start",
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 32 }}>
-                  <Palette fontSize="small" color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Theme"
-                  slotProps={{
-                    primary: {
-                      sx: {
-                        fontSize: "0.8125rem",
-                      },
-                    },
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    mb: 1,
                   }}
-                />
-              </Box>
-              <Box sx={{ width: "100%", pl: 4 }}>
-                <ThemeSwitcher
-                  variant="standard"
-                  size="small"
-                  fullWidth
-                  label=""
-                />
-              </Box>
-            </MenuItem>
+                >
+                  <ListItemIcon sx={{ minWidth: 32 }}>
+                    <Palette fontSize="small" color="primary" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Theme"
+                    slotProps={{
+                      primary: {
+                        sx: {
+                          fontSize: "0.8125rem",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ width: "100%", pl: 4 }}>
+                  <ThemeSwitcher
+                    variant="standard"
+                    size="small"
+                    fullWidth
+                    label=""
+                  />
+                </Box>
+              </MenuItem>
+            )}
           </MenuList>
         </Collapse>
       </Box>
@@ -223,35 +230,37 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
             <ListItemText primary={modernUILabel} />
           </MenuItem>
 
-          <MenuItem
-            sx={{
-              ...settingItemStyle,
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
-            <Box
+          {showThemeSwitcher && (
+            <MenuItem
               sx={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                mb: 1,
+                ...settingItemStyle,
+                flexDirection: "column",
+                alignItems: "flex-start",
               }}
             >
-              <ListItemIcon sx={{ minWidth: 32 }}>
-                <Palette fontSize="small" color="primary" />
-              </ListItemIcon>
-              <ListItemText primary="Theme" />
-            </Box>
-            <Box sx={{ width: "100%", pl: 4 }}>
-              <ThemeSwitcher
-                variant="standard"
-                size="small"
-                fullWidth
-                label=""
-              />
-            </Box>
-          </MenuItem>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 1,
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <Palette fontSize="small" color="primary" />
+                </ListItemIcon>
+                <ListItemText primary="Theme" />
+              </Box>
+              <Box sx={{ width: "100%", pl: 4 }}>
+                <ThemeSwitcher
+                  variant="standard"
+                  size="small"
+                  fullWidth
+                  label=""
+                />
+              </Box>
+            </MenuItem>
+          )}
         </MenuList>
       </Collapse>
     </Box>

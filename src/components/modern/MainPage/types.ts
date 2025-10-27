@@ -113,6 +113,7 @@ export interface UseSearchBoxReturn {
   // Local state
   showMoreFilterOptions: boolean;
   loading: boolean;
+  loadingSelection: boolean;
   stopPlaceSearchValue: string;
   topographicPlaceFilterValue: string;
   coordinatesDialogOpen: boolean;

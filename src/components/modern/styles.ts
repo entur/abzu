@@ -65,13 +65,6 @@ export const mapControlPanelContent: SxProps<Theme> = {
   p: 0,
 };
 
-export const mapControlButton = (theme: Theme): SxProps<Theme> => ({
-  boxShadow: theme.shadows[6],
-  "&:hover": {
-    boxShadow: theme.shadows[8],
-  },
-});
-
 // ============================================================================
 // Menu Item Styles (used in panels)
 // ============================================================================
@@ -414,3 +407,69 @@ export const flexColumn: SxProps<Theme> = {
   display: "flex",
   flexDirection: "column",
 };
+
+// ============================================================================
+// Modern Card Styles (Cohesive Design System)
+// ============================================================================
+
+/**
+ * Modern card container with subtle border and hover effect
+ * Use this for consistent card styling across the application
+ */
+export const modernCard = (theme: Theme): SxProps<Theme> => ({
+  p: 2,
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 2,
+  backgroundColor: theme.palette.background.paper,
+  position: "relative",
+  transition: "all 0.2s ease-in-out",
+  "&:hover": {
+    boxShadow: theme.shadows[2],
+    borderColor: theme.palette.primary.main,
+  },
+});
+
+/**
+ * Modern card without hover effect (for static content)
+ */
+export const modernCardStatic = (theme: Theme): SxProps<Theme> => ({
+  p: 2,
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 2,
+  backgroundColor: theme.palette.background.paper,
+  position: "relative",
+});
+
+/**
+ * Modern list item with hover effect
+ * Use inside cards for list items (quays, members, etc.)
+ */
+export const modernListItem = (
+  theme: Theme,
+  isAlternate: boolean,
+): SxProps<Theme> => ({
+  p: 1,
+  mb: 0.5,
+  borderRadius: 1,
+  backgroundColor: isAlternate ? theme.palette.grey[50] : "transparent",
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
+});
+
+// ============================================================================
+// Map Control Button Styles
+// ============================================================================
+
+/**
+ * Floating action button for map controls
+ */
+export const mapControlButton = (theme: Theme): SxProps<Theme> => ({
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  boxShadow: theme.shadows[3],
+  "&:hover": {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[6],
+  },
+});

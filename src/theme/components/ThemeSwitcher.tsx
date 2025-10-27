@@ -89,7 +89,8 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     await switchThemeConfig(newThemePath);
   };
 
-  if (availableThemes.length === 0) {
+  // Hide theme switcher if 0 or 1 themes available
+  if (availableThemes.length <= 1) {
     return null;
   }
 
