@@ -145,8 +145,6 @@ export const SearchResultDetails: React.FC<
           </Box>
           <Box
             sx={{
-              maxHeight: 150,
-              overflow: "auto",
               width: "95%",
               mx: "auto",
               mb: 2,
@@ -250,8 +248,6 @@ export const SearchResultDetails: React.FC<
           </Box>
           <Box
             sx={{
-              maxHeight: 120,
-              overflow: "auto",
               width: "95%",
               mx: "auto",
               mb: 2,
@@ -325,8 +321,6 @@ export const SearchResultDetails: React.FC<
       </Box>
       <Box
         sx={{
-          maxHeight: 150,
-          overflow: "auto",
           width: "95%",
           mx: "auto",
           mb: 2,

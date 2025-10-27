@@ -39,7 +39,11 @@ export const GroupMembership: React.FC<GroupMembershipProps> = ({ groups }) => {
   const basename = import.meta.env.BASE_URL;
 
   const getGroupUrl = (id: string) => {
-    return `${window.location.origin}/${basename}${basename.endsWith("/") ? "" : "/"}${Routes.GROUP_OF_STOP_PLACE}/${id}`;
+    // Remove trailing slash from basename if present, then construct clean path
+    const cleanBasename = basename.endsWith("/")
+      ? basename.slice(0, -1)
+      : basename;
+    return `${window.location.origin}${cleanBasename}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
   };
 
   return (
