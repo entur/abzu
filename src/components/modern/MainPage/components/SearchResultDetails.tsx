@@ -168,28 +168,23 @@ export const SearchResultDetails: React.FC<
                   sx={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "space-between",
                     fontSize: "0.8rem",
                   }}
                 >
-                  <ModalityIconImg
-                    type={childStopPlace.stopPlaceType}
-                    submode={childStopPlace.submode}
-                    svgStyle={{ transform: "scale(0.8)" }}
-                    style={{ marginRight: 4 }}
-                  />
-                  <Typography variant="caption" sx={{ flexGrow: 1 }}>
-                    {childStopPlace.name}
-                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+                    <ModalityIconImg
+                      type={childStopPlace.stopPlaceType}
+                      submode={childStopPlace.submode}
+                      svgStyle={{ transform: "scale(0.8)" }}
+                      style={{ marginRight: 8 }}
+                    />
+                    <Typography variant="caption">
+                      {childStopPlace.name}
+                    </Typography>
+                  </Box>
                   <SimpleStopPlaceLink id={childStopPlace.id} />
                 </Box>
-                <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                  {formatMessage({ id: "local_reference" }).replace(":", "")}
-                </Typography>
-                <Typography variant="caption">
-                  {childStopPlace.importedId
-                    ? childStopPlace.importedId.join(", ")
-                    : ""}
-                </Typography>
               </Box>
             ))}
           </Box>

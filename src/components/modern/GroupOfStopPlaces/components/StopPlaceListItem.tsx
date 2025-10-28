@@ -13,32 +13,27 @@
  limitations under the Licence. */
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import {
   Box,
-  Collapse,
   Divider,
   IconButton,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import { useIntl } from "react-intl";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import ModalityIconTray from "../../../ReportPage/ModalityIconTray";
-import StopPlaceLink from "../../../ReportPage/StopPlaceLink";
+import { StopPlaceLink } from "../../Shared";
 import { StopPlaceListItemProps } from "../types";
 
 /**
  * Modern stop place list item component
- * Shows stop place with expand/collapse functionality
+ * Shows stop place with inline delete button
  */
 export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
   stopPlace,
-  expanded,
-  onExpand,
-  onCollapse,
   onRemove,
   disabled = false,
 }) => {
@@ -109,52 +104,31 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
           </Box>
         </Box>
 
-        {/* Expand/Collapse Button */}
-        <IconButton
-          size="small"
-          onClick={expanded ? onCollapse : onExpand}
-          sx={{ ml: 1 }}
-        >
-          {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </IconButton>
-      </Box>
-
-      {/* Expanded Details */}
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <Box
-          sx={{
-            px: 2,
-            py: 1.5,
-            bgcolor: "background.default",
-          }}
-        >
-          {/* Remove Button */}
-          {onRemove && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: 1,
-              }}
-            >
-              <Typography variant="body2" sx={{ fontSize: "0.85em" }}>
-                {formatMessage({ id: "remove_stop_from_parent_title" })}
-              </Typography>
+        {/* Delete Button */}
+        {onRemove && (
+          <Tooltip
+            title={formatMessage({ id: "remove_stop_from_parent_title" })}
+            arrow
+          >
+            <span>
               <IconButton
                 size="small"
                 disabled={disabled}
                 onClick={() => onRemove(stopPlace.id)}
                 sx={{
+                  ml: 1,
                   color: theme.palette.error.main,
+                  "&:hover": {
+                    color: theme.palette.error.dark,
+                  },
                 }}
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
-            </Box>
-          )}
-        </Box>
-      </Collapse>
+            </span>
+          </Tooltip>
+        )}
+      </Box>
       <Divider />
     </Box>
   );

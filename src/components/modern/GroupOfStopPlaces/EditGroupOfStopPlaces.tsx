@@ -12,13 +12,11 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   Box,
   Divider,
   Drawer,
-  Fab,
+  Slide,
   Typography,
   useMediaQuery,
   useTheme,
@@ -107,33 +105,41 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
 
   return (
     <>
-      {/* Minimized Bar (only shown when drawer is collapsed on mobile) */}
-      {!isOpen && isMobile && (
-        <MinimizedBar
-          name={originalGOS.name}
-          id={originalGOS.id}
-          onExpand={handleToggle}
-        />
-      )}
-
-      {/* Collapse Button (Desktop/Tablet) - Floats outside panel at header height */}
-      {!isMobile && (
-        <Fab
-          size="small"
-          onClick={handleToggle}
-          sx={{
-            position: "fixed",
-            left: isOpen
-              ? typeof drawerWidth === "number"
-                ? drawerWidth + 8
-                : 458 // fallback
-              : 16, // When closed, position at left edge
-            top: 80, // Aligned with header height
-            zIndex: theme.zIndex.drawer + 1,
-          }}
-        >
-          {isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-        </Fab>
+      {/* Minimized Bar - Mobile: bottom, Desktop/Tablet: below header */}
+      {!isOpen && (
+        <>
+          {isMobile ? (
+            <Slide direction="up" in={!isOpen} mountOnEnter unmountOnExit>
+              <Box>
+                <MinimizedBar
+                  name={originalGOS.name}
+                  id={originalGOS.id}
+                  onExpand={handleToggle}
+                  onClose={handleAllowUserToGoBack}
+                  isMobile={true}
+                />
+              </Box>
+            </Slide>
+          ) : (
+            <Box
+              sx={{
+                position: "fixed",
+                left: 0,
+                top: 64,
+                width: drawerWidth,
+                zIndex: theme.zIndex.drawer,
+              }}
+            >
+              <MinimizedBar
+                name={originalGOS.name}
+                id={originalGOS.id}
+                onExpand={handleToggle}
+                onClose={handleAllowUserToGoBack}
+                isMobile={false}
+              />
+            </Box>
+          )}
+        </>
       )}
 
       {/* Main Drawer */}
@@ -141,14 +147,24 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
         variant="persistent"
         anchor="left"
         open={isOpen}
+        transitionDuration={0} // Disable default drawer transition
         sx={{
-          width: isOpen ? drawerWidth : 0,
+          width: drawerWidth, // Always maintain width
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            top: isMobile ? 0 : 64, // Account for header on desktop
-            height: isMobile ? "100%" : "calc(100% - 64px)",
+            top: { xs: 56, sm: 64 }, // Match header height (56px mobile, 64px desktop)
+            height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
+            // Custom slide animation
+            transform: isMobile
+              ? isOpen
+                ? "translateY(0)"
+                : "translateY(100%)"
+              : isOpen
+                ? "translateY(0)"
+                : "translateY(calc(-100% + 65px))", // 65px = minimized bar height
+            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           },
         }}
       >
@@ -160,12 +176,11 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
             bgcolor: "background.paper",
           }}
         >
-          {/* Header with close button and collapse button (mobile) */}
+          {/* Header with close button and collapse button */}
           <GroupOfStopPlacesHeader
             groupOfStopPlaces={originalGOS}
             onGoBack={handleAllowUserToGoBack}
-            onCollapse={isMobile ? handleToggle : undefined}
-            isMobile={isMobile}
+            onCollapse={handleToggle}
           />
 
           <Divider />

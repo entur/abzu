@@ -13,7 +13,14 @@
  limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Divider, Fab, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { AddMemberToGroup } from "../../Dialogs";
@@ -32,7 +39,6 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const [expandedIndex, setExpandedIndex] = useState<number>(-1);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const handleAddMembers = (memberIds: string[]) => {
@@ -56,19 +62,27 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           {formatMessage({ id: "stop_places" })}
         </Typography>
-        <Fab
-          size="small"
-          onClick={() => setAddDialogOpen(true)}
-          disabled={!canEdit}
-          sx={{
-            bgcolor: theme.palette.primary.main,
-            "&:hover": {
-              bgcolor: theme.palette.primary.dark,
-            },
-          }}
-        >
-          <AddIcon />
-        </Fab>
+        <Tooltip title={formatMessage({ id: "add_stop_place_to_group" })} arrow>
+          <span>
+            <IconButton
+              size="small"
+              onClick={() => setAddDialogOpen(true)}
+              disabled={!canEdit}
+              sx={{
+                color: theme.palette.primary.main,
+                bgcolor: theme.palette.action.hover,
+                "&:hover": {
+                  bgcolor: theme.palette.action.selected,
+                },
+                "&:disabled": {
+                  bgcolor: theme.palette.action.disabledBackground,
+                },
+              }}
+            >
+              <AddIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       </Box>
       <Divider />
 
@@ -78,13 +92,10 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
           overflowY: "auto",
         }}
       >
-        {stopPlaces.map((stopPlace, index) => (
+        {stopPlaces.map((stopPlace) => (
           <StopPlaceListItem
             key={`stop-place-${stopPlace.id}`}
             stopPlace={stopPlace}
-            expanded={expandedIndex === index}
-            onExpand={() => setExpandedIndex(index)}
-            onCollapse={() => setExpandedIndex(-1)}
             onRemove={onRemoveMember}
             disabled={!canEdit}
           />

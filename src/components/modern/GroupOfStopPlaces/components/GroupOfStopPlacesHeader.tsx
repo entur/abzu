@@ -13,21 +13,29 @@
  limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps } from "../types";
 
 /**
  * Header component for group of stop places editor
- * Shows title, ID, copy button, close button, and collapse button (mobile only)
+ * Shows title, ID, copy button, collapse button, and close button
  */
 export const GroupOfStopPlacesHeader: React.FC<
   GroupOfStopPlacesHeaderProps
-> = ({ groupOfStopPlaces, onGoBack, onCollapse, isMobile }) => {
+> = ({ groupOfStopPlaces, onGoBack, onCollapse }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const headerText = groupOfStopPlaces.id
     ? groupOfStopPlaces.name
@@ -71,7 +79,7 @@ export const GroupOfStopPlacesHeader: React.FC<
         )}
       </Box>
 
-      {isMobile && onCollapse && (
+      {onCollapse && (
         <IconButton
           size="small"
           onClick={onCollapse}
@@ -82,7 +90,7 @@ export const GroupOfStopPlacesHeader: React.FC<
             },
           }}
         >
-          <ExpandMoreIcon />
+          {isMobile ? <ExpandMoreIcon /> : <ExpandLessIcon />}
         </IconButton>
       )}
 

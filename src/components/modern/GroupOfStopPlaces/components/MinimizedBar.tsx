@@ -12,7 +12,9 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+import CloseIcon from "@mui/icons-material/Close";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import { useIntl } from "react-intl";
 
@@ -20,16 +22,21 @@ interface MinimizedBarProps {
   name?: string;
   id?: string;
   onExpand: () => void;
+  onClose: () => void;
+  isMobile: boolean;
 }
 
 /**
- * Minimized bar shown at bottom of screen when drawer is collapsed on mobile
- * Displays group name/ID and expand button
+ * Minimized bar shown when drawer is collapsed
+ * Mobile: Bottom of screen (slides up)
+ * Desktop/Tablet: Below header at fixed width (always visible)
  */
 export const MinimizedBar: React.FC<MinimizedBarProps> = ({
   name,
   id,
   onExpand,
+  onClose,
+  isMobile,
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -40,20 +47,29 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
 
   return (
     <Paper
-      elevation={8}
+      elevation={isMobile ? 8 : 0}
       sx={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: theme.zIndex.drawer - 1,
+        ...(isMobile
+          ? {
+              // Mobile: bottom of screen
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: theme.zIndex.drawer - 1,
+              borderTop: `1px solid ${theme.palette.divider}`,
+            }
+          : {
+              // Desktop/Tablet: below header
+              borderBottom: `1px solid ${theme.palette.divider}`,
+              borderRight: `1px solid ${theme.palette.divider}`,
+            }),
         display: "flex",
         alignItems: "center",
         gap: 1,
         py: 1.5,
         px: 2,
         bgcolor: theme.palette.background.paper,
-        borderTop: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -86,6 +102,7 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
       </Box>
 
       <IconButton
+        size="small"
         onClick={onExpand}
         sx={{
           color: theme.palette.primary.main,
@@ -95,7 +112,20 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
           },
         }}
       >
-        <ExpandLessIcon />
+        {isMobile ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </IconButton>
+
+      <IconButton
+        size="small"
+        onClick={onClose}
+        sx={{
+          color: theme.palette.text.primary,
+          "&:hover": {
+            bgcolor: theme.palette.action.hover,
+          },
+        }}
+      >
+        <CloseIcon />
       </IconButton>
     </Paper>
   );

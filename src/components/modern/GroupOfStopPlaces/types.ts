@@ -73,7 +73,6 @@ export interface GroupOfStopPlacesHeaderProps {
   groupOfStopPlaces: GroupOfStopPlaces;
   onGoBack: () => void;
   onCollapse?: () => void;
-  isMobile?: boolean;
 }
 
 export interface GroupOfStopPlacesDetailsProps {
@@ -104,9 +103,6 @@ export interface GroupOfStopPlacesActionsProps {
 
 export interface StopPlaceListItemProps {
   stopPlace: StopPlace;
-  expanded: boolean;
-  onExpand: () => void;
-  onCollapse: () => void;
   onRemove?: (stopPlaceId: string) => void;
   disabled?: boolean;
 }
@@ -177,4 +173,12 @@ export interface CopyIdButtonProps {
   idToCopy?: string;
   size?: "small" | "medium" | "large";
   color?: string;
+}
+
+export interface MinimizedBarProps {
+  name?: string;
+  id?: string;
+  onExpand: () => void;
+  onClose: () => void;
+  isMobile: boolean;
 }

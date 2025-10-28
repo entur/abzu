@@ -27,6 +27,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -185,20 +186,25 @@ export const FavoriteStopPlaces: React.FC<FavoriteStopPlacesProps> = ({
                   }
                 />
               </Box>
-              <IconButton
-                aria-label="remove from favorites"
-                onClick={(event) => handleRemoveFavorite(favorite.id, event)}
-                size="small"
-                sx={{
-                  color: theme.palette.action.active,
-                  "&:hover": {
-                    color: theme.palette.error.main,
-                  },
-                  ml: 1,
-                }}
+              <Tooltip
+                title={formatMessage({ id: "remove_from_favorites" })}
+                arrow
               >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
+                <IconButton
+                  aria-label="remove from favorites"
+                  onClick={(event) => handleRemoveFavorite(favorite.id, event)}
+                  size="small"
+                  sx={{
+                    color: theme.palette.error.main,
+                    "&:hover": {
+                      color: theme.palette.error.dark,
+                    },
+                    ml: 1,
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
             </ListItem>
             {index < favorites.length - 1 && (
               <Divider variant="inset" component="li" />

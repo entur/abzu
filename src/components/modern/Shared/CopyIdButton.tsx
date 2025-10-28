@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import ContentCopy from "@mui/icons-material/ContentCopy";
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { CopyIdButtonProps } from "../GroupOfStopPlaces";
@@ -25,10 +25,11 @@ import { CopyIdButtonProps } from "../GroupOfStopPlaces";
 export const CopyIdButton: React.FC<CopyIdButtonProps> = ({
   idToCopy,
   size = "small",
-  color = "inherit",
+  color,
 }) => {
   const [copied, setCopied] = useState(false);
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   const handleCopy = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -57,7 +58,13 @@ export const CopyIdButton: React.FC<CopyIdButtonProps> = ({
           size={size}
           onClick={handleCopy}
           disabled={!idToCopy}
-          sx={{ padding: 0.25, color }}
+          sx={{
+            padding: 0.25,
+            color: color || theme.palette.primary.main,
+            "&:hover": {
+              color: color || theme.palette.primary.dark,
+            },
+          }}
         >
           <ContentCopy sx={{ fontSize: "0.9em" }} />
         </IconButton>
