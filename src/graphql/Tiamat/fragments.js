@@ -108,6 +108,12 @@ Fragments.groupOfStopPlaces = {
       description {
         value
       }
+      purposeOfGrouping {
+        id
+        name {
+          value
+        }
+      }
       permissions {
         ...EntityPermissions
       }
