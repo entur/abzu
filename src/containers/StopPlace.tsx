@@ -25,6 +25,7 @@ import InformationBanner from "../components/EditStopPage/InformationBanner";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import EditStopMap from "../components/Map/EditStopMap";
+import { EditParentStopPlace } from "../components/modern/EditParentStopPlace";
 import InformationManager from "../singletons/InformationManager";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store/store";
@@ -45,6 +46,7 @@ const selectProps = createSelector(
       newStopCreated: state.user.newStopCreated,
       originalStopPlace: state.stopPlace.originalCurrent,
       stopPlaceLoading: state.stopPlace.loading,
+      uiMode: state.user.uiMode,
     };
   },
 );
@@ -57,6 +59,7 @@ export const StopPlace = () => {
     disabled,
     newStopCreated,
     stopPlaceLoading,
+    uiMode,
   } = useAppSelector(selectProps);
 
   const [error, setError] = useState({
@@ -197,7 +200,11 @@ export const StopPlace = () => {
       )}
       {stopPlace && stopPlace.isParent && (
         <div>
-          <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+          {uiMode === "modern" ? (
+            <EditParentStopPlace />
+          ) : (
+            <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+          )}
           <EditStopMap disabled={disabled || stopPlaceLoading} />
         </div>
       )}
