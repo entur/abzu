@@ -1,12 +1,12 @@
 {
   "defaultLanguageCode": "nor",
   "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/sweden/graphql",
-  "OTPUrl": "https://api.dev.entur.io/journey-planner/v3/graphql",
-  "baatTokenProxyEndpoint": "https://api.dev.entur.io/baat-token-proxy/v1/token",
-  "tiamatEnv": "development",
+  "OTPUrl": "https://api.entur.io/journey-planner/v3/graphql",
+  "baatTokenProxyEndpoint": "https://api.entur.io/baat-token-proxy/v1/token",
+  "tiamatEnv": "production",
   "netexPrefix": "SSR",
-  "hostname": "stoppested-sweden.dev.entur.org",
-  "googleApiKey": "AIzaSyB_8bdt2skRkdsyQO19m_gqTzr0_2gqo8U",
+  "hostname": "stoppested-sweden.entur.org",
+  "googleApiKey": "AIzaSyAAa-ZJ7h6FNxDY-UcqTAB-3YSdRQm8Gsg",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
