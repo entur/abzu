@@ -1,0 +1,39 @@
+{
+  "defaultLanguageCode": "nor",
+  "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/sweden/graphql",
+  "OTPUrl": "https://api.dev.entur.io/journey-planner/v3/graphql",
+  "baatTokenProxyEndpoint": "https://api.dev.entur.io/baat-token-proxy/v1/token",
+  "tiamatEnv": "development",
+  "netexPrefix": "SSR",
+  "hostname": "stoppested-sweden.dev.entur.org",
+  "googleApiKey": "AIzaSyB_8bdt2skRkdsyQO19m_gqTzr0_2gqo8U",
+  "claimsNamespace": "https://ror.entur.io/role_assignments",
+  "preferredNameNamespace": "https://ror.entur.io/preferred_name",
+  "oidcConfig": {
+    "authority": "https://partner.dev.entur.org",
+    "client_id": "UAtVevtgwrRgf9pSZeMDPzrd8gPNUQ9C",
+    "extraQueryParams": {
+      "audience": "https://ror.api.dev.entur.io"
+    }
+  },
+  "featureFlags": {
+    "SVVStreetViewLink": true,
+    "KartverketFlyFoto": false
+  },
+  "mapConfig": {
+    "tiles": [
+      {
+        "name":"OpenStreetMap",
+        "url": "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attribution": "&copy; <a href=\"https://osm.org/copyright\">OpenStreetMap</a> contributors"
+      }
+    ],
+    "defaultTile": "OpenStreetMap",
+    "center": [62.2315, 16.1932],
+    "zoom": 6
+  },
+  "localeConfig": {
+    "locales": ["nb", "en", "sv", "fi", "fr"],
+    "defaultLocale": "nb"
+  }
+}
