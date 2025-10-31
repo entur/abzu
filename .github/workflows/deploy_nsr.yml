@@ -1,0 +1,40 @@
+name: Deploy norwegian NSR
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
+
+jobs:
+  dev:
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: dev
+      favicon: nsr-d.ico
+      config: dev.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV
+      project: ent-ror-abzu-dev
+      target: dev
+
+  tst:
+    needs: [dev]
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: staging
+      favicon: nsr-s.ico
+      config: test.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST
+      project: ent-ror-abzu-tst
+      target: staging
+
+  prd:
+    needs: [dev, tst]
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: prod
+      favicon: nsr-p.ico
+      config: prod.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD
+      project: ent-ror-abzu-prd
+      target: prod
