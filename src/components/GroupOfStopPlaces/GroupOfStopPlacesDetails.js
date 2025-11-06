@@ -38,11 +38,11 @@ class GroupOfStopPlacesDetails extends Component {
     } catch (error) {}
   }
 
-  handleChangeName(e, name) {
+  handleChangeName(e) {
     this.props.dispatch(StopPlacesGroupActions.changeName(e.target.value));
   }
 
-  handleChangeDescription(e, description) {
+  handleChangeDescription(e) {
     this.props.dispatch(
       StopPlacesGroupActions.changeDescription(e.target.value),
     );
@@ -55,6 +55,26 @@ class GroupOfStopPlacesDetails extends Component {
     this.props.dispatch(
       StopPlacesGroupActions.changePurposeOfGrouping(selectedOption || null),
     );
+  }
+
+  getPurposeOfGroupingLabel(option) {
+    const { formatMessage } = this.props;
+    const translationKey = `purpose_of_grouping_type_${option.name?.value}`;
+    console.log("purpose of grouping: " + translationKey);
+    try {
+      const translated = formatMessage({ id: translationKey });
+      console.log("purpose of grouping2: " + translated);
+      // If translation exists and is not the key itself, use it
+      if (translated && translated !== translationKey) {
+        return translated;
+      }
+    } catch (error) {
+      // Fall through to fallback
+      console.log("purpose of grouping ERROR: " + translationKey);
+    }
+
+    // Fallback to API value or ID
+    return option.name?.value || option.id;
   }
 
   render() {
@@ -98,7 +118,7 @@ class GroupOfStopPlacesDetails extends Component {
           >
             {purposeOfGroupingOptions.map((option) => (
               <MenuItem key={option.id} value={option.id}>
-                {option.name?.value || option.id}
+                {this.getPurposeOfGroupingLabel(option)}
               </MenuItem>
             ))}
           </Select>

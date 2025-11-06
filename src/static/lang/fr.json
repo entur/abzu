@@ -142,6 +142,7 @@
   "description": "Description pour les voyageurs",
   "purpose_of_grouping": "Objectif du groupement",
   "purpose_of_grouping_is_required": "L'objectif du groupement est requis",
+  "purpose_of_grouping_type_placeCentroid": "Groupe d'arrêts principaux de ville/localité",
   "discard_changes_body": "Des modifications sur ce point d'arrêt ne sont pas enregistrées",
   "discard_changes_cancel": "Annuler l'action en cours et poursuivre mes modifications",
   "discard_changes_confirm": "J'ai compris, abandonner mes modifications",

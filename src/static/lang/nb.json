@@ -142,6 +142,7 @@
   "description": "Beskrivelse for reisende",
   "purpose_of_grouping": "Formål med gruppering",
   "purpose_of_grouping_is_required": "Formål med gruppering er påkrevd",
+  "purpose_of_grouping_type_placeCentroid": "By/tettsted hovedstoppklynge",
   "discard_changes_body": "Du har gjort endringer på dette stoppet som ikke er lagret.",
   "discard_changes_cancel": "Avbryt",
   "discard_changes_confirm": "Forkast endringer",

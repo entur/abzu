@@ -142,6 +142,7 @@
   "description": "Description for travellers",
   "purpose_of_grouping": "Purpose of grouping",
   "purpose_of_grouping_is_required": "Purpose of grouping is required",
+  "purpose_of_grouping_type_placeCentroid": "City/town main stops group",
   "discard_changes_body": "You have done modifications to this stop place that are unsaved.",
   "discard_changes_cancel": "Cancel",
   "discard_changes_confirm": "Discard changes",
