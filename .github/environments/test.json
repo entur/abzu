@@ -10,8 +10,8 @@
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
-    "authority": "https://ror-entur-staging.eu.auth0.com",
-    "client_id": "WrqQUHAVuMS3MbKdGcw91TBFTqLLpnUh",
+    "authority": "https://partner.staging.entur.org",
+    "client_id": "xEzjNAjK0Forxk6wQH57yObMVwN1qQIt",
     "extraQueryParams": {
       "audience": "https://ror.api.staging.entur.io"
     }

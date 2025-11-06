@@ -13,6 +13,7 @@ jobs:
       env_name: dev
       favicon: nsr-d.ico
       config: nordic-dev.json
-      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV
       project: ent-ror-abzu-dev
       target: nordic-dev
+    secrets:
+      firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}

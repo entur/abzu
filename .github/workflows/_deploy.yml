@@ -5,9 +5,10 @@ on:
       env_name: { required: true, type: string }
       favicon: { required: true, type: string }
       config: { required: true, type: string }
-      firebase_secret: { required: true, type: string }
       project: { required: true, type: string }
       target: { required: true, type: string }
+    secrets:
+      firebase_service_account: { required: true }
 
 jobs:
   deploy:
@@ -29,7 +30,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets[inputs.firebase_secret] }}
+          firebaseServiceAccount: ${{ secrets.firebase_service_account }}
           channelId: live
           projectId: ${{ inputs.project }}
           target: ${{ inputs.target }}

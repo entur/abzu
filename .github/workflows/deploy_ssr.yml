@@ -12,9 +12,10 @@ jobs:
       env_name: dev
       favicon: nsr-d.ico
       config: sweden-dev.json
-      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV
       project: ent-ror-abzu-dev
       target: sweden-dev
+    secrets:
+      firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}
 
   tst:
     needs: [dev]
@@ -23,9 +24,10 @@ jobs:
       env_name: staging
       favicon: nsr-s.ico
       config: sweden-tst.json
-      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST
       project: ent-ror-abzu-tst
       target: sweden-tst
+    secrets:
+      firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST }}
 
   prd:
     needs: [dev, tst]
@@ -34,6 +36,7 @@ jobs:
       env_name: prod
       favicon: nsr-p.ico
       config: sweden-prd.json
-      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD
       project: ent-ror-abzu-prd
       target: sweden-prd
+    secrets:
+      firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD }}
