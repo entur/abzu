@@ -16,7 +16,6 @@ jobs:
       target: sweden-dev
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
 
   tst:
     needs: [dev]
@@ -29,7 +28,6 @@ jobs:
       target: sweden-tst
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
 
   prd:
     needs: [dev, tst]
@@ -42,4 +40,3 @@ jobs:
       target: sweden-prd
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}

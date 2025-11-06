@@ -9,7 +9,6 @@ on:
       target: { required: true, type: string }
     secrets:
       firebase_service_account: { required: true }
-      github_token: { required: true }
 
 jobs:
   deploy:
@@ -23,14 +22,14 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           name: build
           path: build
-          github-token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy favicon
         run: cp .github/environments/${{ inputs.favicon }} build/favicon.ico
       - name: Copy bootstrap config
         run: cp .github/environments/${{ inputs.config }} build/bootstrap.json
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.github_token }}
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.firebase_service_account }}
           channelId: live
           projectId: ${{ inputs.project }}
