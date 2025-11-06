@@ -5,9 +5,11 @@ on:
       env_name: { required: true, type: string }
       favicon: { required: true, type: string }
       config: { required: true, type: string }
-      firebase_secret: { required: true, type: string }
       project: { required: true, type: string }
       target: { required: true, type: string }
+    secrets:
+      firebase_service_account: { required: true, type: string }
+      github_token: { required: true, type: string }
 
 jobs:
   deploy:
@@ -21,15 +23,15 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           name: build
           path: build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.github_token }}
       - name: Copy favicon
         run: cp .github/environments/${{ inputs.favicon }} build/favicon.ico
       - name: Copy bootstrap config
         run: cp .github/environments/${{ inputs.config }} build/bootstrap.json
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets[inputs.firebase_secret] }}
+          repoToken: ${{ secrets.github_token }}
+          firebaseServiceAccount: ${{ secrets.firebase_service_account }}
           channelId: live
           projectId: ${{ inputs.project }}
           target: ${{ inputs.target }}
