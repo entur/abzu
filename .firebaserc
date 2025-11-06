@@ -13,6 +13,9 @@
         ],
         "dev": [
           "ent-ror-abzu-dev"
+        ],
+        "sweden-dev": [
+          "ent-ror-abzu-sweden-dev"
         ]
       }
     },
@@ -20,6 +23,9 @@
       "hosting": {
         "staging": [
           "ent-ror-abzu-tst"
+        ],
+        "sweden-tst": [
+          "ent-ror-abzu-sweden-tst"
         ]
       }
     },
@@ -27,6 +33,9 @@
       "hosting": {
         "prod": [
           "ent-ror-abzu-prd"
+        ],
+        "sweden-prd": [
+          "ent-ror-abzu-sweden-prd"
         ]
       }
     }
