@@ -5,6 +5,7 @@ import StopPlace from "../../../models/StopPlace";
 export enum Facility {
   TICKET_MACHINES = "ticketMachines",
   TICKET_OFFICE = "ticketOffice",
+  TICKET_COUNTER = "ticketCounter",
   SHELTER_EQUIPMENT = "shelterEquipment",
   SANITARY_EQUIPMENT = "sanitaryEquipment",
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
@@ -19,6 +20,8 @@ export enum FacilityDetail {
   NUMBER_OF_MACHINES = "numberOfMachines",
   AUDIO_INTERFACE_AVAILABLE = "audioInterfaceAvailable",
   TACTILE_INTERFACE_AVAILABLE = "tactileInterfaceAvailable",
+  INDUCTION_LOOPS = "inductionLoops",
+  LOW_COUNTER_ACCESS = "lowCounterAccess",
 }
 
 /**
@@ -44,4 +47,9 @@ export interface TicketMachineDetailFields {
   numberOfMachines?: number;
   audioInterfaceAvailable?: boolean;
   tactileInterfaceAvailable?: boolean;
+}
+
+export interface TicketCounterDetailFields {
+  inductionLoops?: boolean;
+  lowCounterAccess?: boolean;
 }

@@ -536,7 +536,7 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.CHANGED_TICKET_MACHINE_STATE:
       return Object.assign({}, state, {
-        current: equipmentHelpers.updateTicketMachineState(
+        current: equipmentHelpers.updateTicketingEquipmentState(
           state.current,
           action.payload,
         ),
@@ -545,7 +545,16 @@ const stopPlaceReducer = (state = initialState, action) => {
 
     case types.CHANGED_TICKET_OFFICE_STATE:
       return Object.assign({}, state, {
-        current: equipmentHelpers.updateTicketOfficeState(
+        current: equipmentHelpers.updateTicketingEquipmentState(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_TICKET_COUNTER_STATE:
+      return Object.assign({}, state, {
+        current: equipmentHelpers.updateTicketingEquipmentState(
           state.current,
           action.payload,
         ),
