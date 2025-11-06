@@ -17,4 +17,3 @@ jobs:
       target: nordic-dev
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}

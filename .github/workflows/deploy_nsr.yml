@@ -17,7 +17,6 @@ jobs:
       target: dev
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
 
   tst:
     needs: [dev]
@@ -30,7 +29,6 @@ jobs:
       target: staging
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
 
   prd:
     needs: [dev, tst]
@@ -43,4 +41,3 @@ jobs:
       target: prod
     secrets:
       firebase_service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
