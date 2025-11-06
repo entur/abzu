@@ -25,6 +25,7 @@ export const mutateParentStopPlace = gql`
     $legacyCoordinates: legacyCoordinates
     $alternativeNames: [AlternativeNameInput]
     $children: [StopPlaceInput]
+    $url: String
   ) {
     mutateParentStopPlace(
       ParentStopPlace: {
@@ -36,6 +37,7 @@ export const mutateParentStopPlace = gql`
         geometry: { type: Point, legacyCoordinates: $legacyCoordinates }
         alternativeNames: $alternativeNames
         children: $children
+        url: $url
       }
     ) {
       ...VerboseParentStopPlace
@@ -152,6 +154,7 @@ export const mutateStopPlace = gql`
     $submode: SubmodeType
     $transportMode: TransportModeType
     $tariffZones: [VersionLessEntityRefInput]
+    $url: String
   ) {
     mutateStopPlace(
       StopPlace: {
@@ -173,6 +176,7 @@ export const mutateStopPlace = gql`
         placeEquipments: $placeEquipments
         tariffZones: $tariffZones
         stopPlaceType: $stopPlaceType
+        url: $url
       }
     ) {
       ...VerboseStopPlace

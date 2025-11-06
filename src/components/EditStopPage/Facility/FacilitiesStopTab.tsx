@@ -18,6 +18,8 @@ import PlaceFeatures from "../PlaceFeatures";
 import GeneralSign from "./GeneralSign";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
+import TicketCounter from "./TicketCounter";
+import TicketCounterDetails from "./TicketCounterDetails";
 import TicketMachine from "./TicketMachine";
 import TicketMachineDetails from "./TicketMachineDetails";
 import TicketOffice from "./TicketOffice";
@@ -90,6 +92,30 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
+        name={FacilityEnum.TICKET_COUNTER}
+        entityType={entityType}
+        isExpanded={expandedIndex === 4}
+        handleExpand={() => setExpandedIndex(4)}
+        handleCollapse={() => setExpandedIndex(-1)}
+        feature={
+          <TicketCounter
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+        relatedFeatures={
+          <TicketCounterDetails
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+      />
+
+      <PlaceFeatures
         name={FacilityEnum.SHELTER_EQUIPMENT}
         entityType={entityType}
         feature={
@@ -108,8 +134,8 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
             entityType={entityType}
           />
         }
-        isExpanded={expandedIndex === 4}
-        handleExpand={() => setExpandedIndex(4)}
+        isExpanded={expandedIndex === 5}
+        handleExpand={() => setExpandedIndex(5)}
         handleCollapse={() => setExpandedIndex(-1)}
       />
 
@@ -145,8 +171,8 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
             entityType={entityType}
           />
         }
-        isExpanded={expandedIndex === 6}
-        handleExpand={() => setExpandedIndex(6)}
+        isExpanded={expandedIndex === 7}
+        handleExpand={() => setExpandedIndex(7)}
         handleCollapse={() => setExpandedIndex(-1)}
       />
     </div>

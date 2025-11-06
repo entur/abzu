@@ -24,7 +24,7 @@ export const TariffZones: React.FC<TariffZonesProps> = ({ position }) => {
         `${fareZone.name.value} (${fareZone.id})`
       }
       getZoneColor={(fareZone) =>
-        getColorByCodespace(fareZone.id.split(":")[0])
+        getColorByCodespace(fareZone.id?.split(":")[0] || "default")
       }
       showSelector={(state) => state.zones.showTariffZones}
       zonesForFilterSelector={(state) => state.zones.tariffZonesForFilter}

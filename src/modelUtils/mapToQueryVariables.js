@@ -133,6 +133,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
       : null,
     alternativeNames: stop.alternativeNames || null,
     children: children,
+    url: stop.url,
   };
 
   if (stop.id) {
@@ -206,6 +207,7 @@ helpers.mapStopToVariables = (original, userInput) => {
       ref: tz.id,
     })),
     adjacentSites: stop.adjacentSites,
+    url: stop.url,
   };
 
   stopVariables.privateCode = {

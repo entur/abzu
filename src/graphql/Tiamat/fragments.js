@@ -145,7 +145,12 @@ Fragments.placeEquipments = {
       ticketingEquipment {
         ticketOffice
         ticketMachines
+        ticketCounter
         numberOfMachines
+        audioInterfaceAvailable
+        tactileInterfaceAvailable
+        inductionLoops
+        lowCounterAccess
       }
       cycleStorageEquipment {
         numberOfSpaces
@@ -301,6 +306,7 @@ Fragments.stopPlace = {
         permissions {
             ...EntityPermissions
         }
+        url
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
@@ -432,6 +438,7 @@ Fragments.parentStopPlace = {
           permissions {
               ...EntityPermissions
           }
+          url
       },
       ${Fragments.stopPlace.verbose},
       ${Fragments.entityPermissions},

@@ -1,0 +1,39 @@
+name: Deploy swedish NSR
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+
+jobs:
+  dev:
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: dev
+      favicon: nsr-d.ico
+      config: sweden-dev.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV
+      project: ent-ror-abzu-dev
+      target: sweden-dev
+
+  tst:
+    needs: [dev]
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: staging
+      favicon: nsr-s.ico
+      config: sweden-tst.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_TST
+      project: ent-ror-abzu-tst
+      target: sweden-tst
+
+  prd:
+    needs: [dev, tst]
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      env_name: prod
+      favicon: nsr-p.ico
+      config: sweden-prd.json
+      firebase_secret: FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_PRD
+      project: ent-ror-abzu-prd
+      target: sweden-prd

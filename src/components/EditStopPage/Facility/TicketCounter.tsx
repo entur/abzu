@@ -1,4 +1,4 @@
-import BusinessIcon from "@mui/icons-material/Business";
+import CountertopsIcon from "@mui/icons-material/Countertops";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
@@ -10,7 +10,7 @@ import {
 import FacilityCheckbox from "./FacilityCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
-const TicketOffice = ({
+const TicketCounter = ({
   entity,
   disabled,
   id,
@@ -18,23 +18,27 @@ const TicketOffice = ({
   entityType,
 }: FacilityProps) => {
   const dispatch = useDispatch();
-  const isTicketOfficePresent = equipmentHelpers.isTicketOfficePresent(entity);
+  const isTicketCounterPresent =
+    equipmentHelpers.isTicketCounterPresent(entity);
 
-  const handleTicketOfficeChange = (value: boolean) => {
+  const handleTicketCounterChange = (value: boolean) => {
     if (disabled) {
       return;
     }
 
-    const newTicketOfficeState = value
-      ? defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isChecked
-      : defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isUnChecked;
+    const newTicketCounterState = value
+      ? defaultEquipmentFacilities[FacilityEnum.TICKET_COUNTER].isChecked
+      : defaultEquipmentFacilities[FacilityEnum.TICKET_COUNTER].isUnChecked;
     const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
+    const updatedTicketingEquipment = {
+      ...ticketingEquipment,
+      ...newTicketCounterState,
+    };
 
     dispatch(
-      EquipmentActions.updateTicketOfficeState(
+      EquipmentActions.updateTicketCounterState(
         {
-          ...ticketingEquipment,
-          ...newTicketOfficeState,
+          ...updatedTicketingEquipment,
         },
         entityType,
         id || index,
@@ -44,12 +48,12 @@ const TicketOffice = ({
 
   return (
     <FacilityCheckbox
-      isFacilityPresent={isTicketOfficePresent}
-      handleFacilityChange={handleTicketOfficeChange}
-      icon={<BusinessIcon />}
-      facilityName={FacilityEnum.TICKET_OFFICE}
+      isFacilityPresent={isTicketCounterPresent}
+      handleFacilityChange={handleTicketCounterChange}
+      icon={<CountertopsIcon />}
+      facilityName={FacilityEnum.TICKET_COUNTER}
     />
   );
 };
 
-export default TicketOffice;
+export default TicketCounter;

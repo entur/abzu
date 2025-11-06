@@ -4,6 +4,7 @@ export type FeatureFlags = {
   Fintraffic: boolean;
   CookieInformation: boolean;
   MatomoTracker: boolean;
+  StopPlaceUrl: boolean;
 };
 
 export type Features = keyof FeatureFlags;

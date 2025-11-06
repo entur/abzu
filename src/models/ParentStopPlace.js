@@ -76,6 +76,7 @@ class ParentStopPlace {
         version: stop.version,
         weighting: stop.weighting,
         permissions: stop.permissions,
+        url: stop.url,
       };
 
       if (stop.topographicPlace) {

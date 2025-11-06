@@ -14,6 +14,7 @@
   "tariffZones": [],
   "submode": null,
   "transportMode": null,
+  "url": null,
   "location": [59.587427, 11.170963],
   "accessibilityAssessment": {
     "limitations": {

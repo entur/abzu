@@ -17,10 +17,14 @@ export const defaultEquipmentFacilities = {
     isChecked: {
       ticketMachines: true,
       numberOfMachines: 1,
+      audioInterfaceAvailable: false,
+      tactileInterfaceAvailable: false,
     },
     isUnChecked: {
       ticketMachines: false,
       numberOfMachines: 0,
+      audioInterfaceAvailable: false,
+      tactileInterfaceAvailable: false,
     },
   },
   ticketOffice: {
@@ -29,6 +33,18 @@ export const defaultEquipmentFacilities = {
     },
     isUnChecked: {
       ticketOffice: false,
+    },
+  },
+  ticketCounter: {
+    isChecked: {
+      ticketCounter: true,
+      inductionLoops: false,
+      lowCounterAccess: false,
+    },
+    isUnChecked: {
+      ticketCounter: false,
+      inductionLoops: false,
+      lowCounterAccess: false,
     },
   },
   shelterEquipment: {
