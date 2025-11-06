@@ -8,8 +8,8 @@ on:
       project: { required: true, type: string }
       target: { required: true, type: string }
     secrets:
-      firebase_service_account: { required: true, type: string }
-      github_token: { required: true, type: string }
+      firebase_service_account: { required: true }
+      github_token: { required: true }
 
 jobs:
   deploy:
