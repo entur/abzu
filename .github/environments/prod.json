@@ -42,6 +42,9 @@
     "center": [64.349421, 16.809082],
     "zoom": 6
   },
+  "modalityConfig": {
+    "hiddenStopTypes": ["other"]
+  },
     "localeConfig": {
     "locales": ["nb", "en", "sv", "fi", "fr"],
     "defaultLocale": "nb"
