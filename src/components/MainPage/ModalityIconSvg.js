@@ -91,6 +91,7 @@ const getIconIdByModality = (type) => {
     airport: "airplane-withoutBox",
     harbourPort: "harbour_port",
     liftStation: "lift",
+    funicular: "funicular",
     other: "no-information",
   };
   return modalityMap[type] || "no-information";

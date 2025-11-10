@@ -55,6 +55,11 @@ class ModalitiesMenuItems extends React.Component {
             );
             return null;
           }
+
+          // Skip hidden stop types (e.g., "other")
+          if (stopTypeEntry.hidden) {
+            return null;
+          }
           let isLegal =
             adHocStopPlaceTypes.indexOf(type) > -1 ||
             legalStopPlaceTypes.indexOf(type) > -1;
