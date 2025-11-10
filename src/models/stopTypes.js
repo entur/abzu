@@ -69,7 +69,6 @@ const stopTypes = {
   other: {
     transportMode: "unknown", // Or "other", depending on how you want to classify it
     submodes: null, // Or [], if you prefer an empty array. No specific submodes for a generic "other".
-    hidden: true, // Hide from modality selection menu
   },
 };
 
