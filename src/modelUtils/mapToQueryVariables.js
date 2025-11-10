@@ -153,6 +153,15 @@ const createEmbeddableMultilingualString = (string) => ({
   lang: window.config.defaultLanguageCode,
 });
 
+// Maps UI stopPlaceType to backend stopPlaceType
+// Some stop types in the UI need to be mapped to different types in the backend
+const mapStopPlaceTypeForBackend = (stopPlaceType) => {
+  const stopPlaceTypeMapping = {
+    funicular: "liftStation",
+  };
+  return stopPlaceTypeMapping[stopPlaceType] || stopPlaceType;
+};
+
 // properly maps object when Object is used as InputObject and not shallow variables for query
 helpers.mapDeepStopToVariables = (original) => {
   let stopPlace = helpers.mapStopToVariables(original, null);
@@ -184,7 +193,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     description: stop.description
       ? createEmbeddableMultilingualString(stop.description)
       : null,
-    stopPlaceType: stop.stopPlaceType,
+    stopPlaceType: mapStopPlaceTypeForBackend(stop.stopPlaceType),
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssessments(
       stop.accessibilityAssessment,

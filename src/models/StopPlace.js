@@ -23,6 +23,16 @@ import {
   simplifyPlaceEquipment,
 } from "./stopPlaceUtils";
 
+// Maps backend stopPlaceType to UI stopPlaceType
+// Reverse of the mapping in mapToQueryVariables.js
+const mapStopPlaceTypeForUI = (stopPlaceType, submode) => {
+  // If it's a liftStation with funicular submode, show it as funicular in the UI
+  if (stopPlaceType === "liftStation" && submode === "funicular") {
+    return "funicular";
+  }
+  return stopPlaceType;
+};
+
 class StopPlace {
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;
@@ -42,7 +52,7 @@ class StopPlace {
         id: stop.id,
         isActive: isActive,
         name: stop.name ? stop.name.value : "",
-        stopPlaceType: stop.stopPlaceType,
+        stopPlaceType: mapStopPlaceTypeForUI(stop.stopPlaceType, stop.submode),
         submode: stop.submode,
         tags: stop.tags,
         transportMode: stop.transportMode,
