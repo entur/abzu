@@ -159,6 +159,17 @@ Fragments.placeEquipments = {
   `,
 };
 
+Fragments.localServices = {
+  verbose: gql`
+    fragment LocalServices on LocalServices {
+      assistanceService {
+        assistanceFacilityList
+        assistanceAvailability
+      }
+    }
+  `,
+};
+
 Fragments.boardingPosition = {
   verbose: gql`
     fragment VerboseBoardingPosition on BoardingPosition {
@@ -292,6 +303,9 @@ Fragments.stopPlace = {
         placeEquipments {
             ...PlaceEquipments
         }
+        localServices {
+            ...LocalServices
+        }
         validBetween {
             fromDate
             toDate
@@ -304,6 +318,7 @@ Fragments.stopPlace = {
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
+    ${Fragments.localServices.verbose},
     ${Fragments.accessibilityAssessment.verbose}
     ${Fragments.entityPermissions}
   `,
@@ -359,6 +374,9 @@ Fragments.stopPlace = {
           placeEquipments {
               ...PlaceEquipments
           }
+          localServices {
+            ...LocalServices
+          }
           validBetween {
               fromDate
               toDate
@@ -368,6 +386,7 @@ Fragments.stopPlace = {
       ${Fragments.quay.verbose},
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
+      ${Fragments.localServices.verbose}
   `,
 };
 

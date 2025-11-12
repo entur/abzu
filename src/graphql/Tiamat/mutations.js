@@ -147,6 +147,7 @@ export const mutateStopPlace = gql`
     $validBetween: ValidBetweenInput
     $accessibilityAssessment: AccessibilityAssessmentInput
     $placeEquipments: PlaceEquipmentsInput
+    $localServices: LocalServicesInput
     $alternativeNames: [AlternativeNameInput]
     $versionComment: String
     $weighting: InterchangeWeightingType
@@ -174,6 +175,7 @@ export const mutateStopPlace = gql`
         validBetween: $validBetween
         accessibilityAssessment: $accessibilityAssessment
         placeEquipments: $placeEquipments
+        localServices: $localServices
         tariffZones: $tariffZones
         stopPlaceType: $stopPlaceType
         url: $url

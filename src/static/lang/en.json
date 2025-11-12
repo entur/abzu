@@ -586,5 +586,15 @@
   "liftFreeAccess_stopPlace_hint": "Are all quays for this stop place accessible by lift?",
   "liftFreeAccess_hint": "Lift accessibility",
   "liftFreeAccess": "Access by lift",
-  "liftFreeAccess_no": "No access by lift"
+  "liftFreeAccess_no": "No access by lift",
+  "assistanceService": "Assistance service",
+  "assistanceService_no": "No assistance service",
+  "assistanceServiceAvailability": "Assistance availability",
+  "assistanceServiceAvailability_availableIfBooked": "Requires booking",
+  "assistanceServiceAvailability_availableAtCertainTimes": "Available at certain time",
+  "assistanceServiceAvailability_available": "Available",
+  "assistanceServiceAvailability_unknown": "Unknown",
+  "assistanceServiceAvailability_none": "None",
+  "assistance": "Assistance",
+  "assistanceService_stopPlace_hint": "Does stop place have assistance services, and what kind?"
 }

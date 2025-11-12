@@ -15,7 +15,7 @@ limitations under the Licence. */
 import { useState } from "react";
 import { EntityType } from "../../../models/Entities";
 import Quay from "../../../models/Quay";
-import PlaceFeatures from "../PlaceFeatures";
+import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import GeneralSign from "./GeneralSign";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";

@@ -585,5 +585,15 @@
   "liftFreeAccess_stopPlace_hint": "Pääseekö kaikkiin tämän pysähdyspaikan laitureihin hissillä?",
   "liftFreeAccess_hint": "Hissin saavutettavuus",
   "liftFreeAccess": "Pääsy hissillä",
-  "liftFreeAccess_no": "Ei pääsyä hissillä"
+  "liftFreeAccess_no": "Ei pääsyä hissillä",
+  "assistanceService": "Avustuspalvelu",
+  "assistanceService_no": "Ei avustuspalvelua",
+  "assistanceServiceAvailability": "Avun saatavuus",
+  "assistanceServiceAvailability_availableIfBooked": "Vaatii varauksen",
+  "assistanceServiceAvailability_availableAtCertainTimes": "Saatavilla tiettynä aikana",
+  "assistanceServiceAvailability_available": "Saatavilla",
+  "assistanceServiceAvailability_unknown": "Tuntematon",
+  "assistanceServiceAvailability_none": "Ei mitään",
+  "assistance": "Tuki",
+  "assistanceService_stopPlace_hint": "Onko pysähdyspaikalla avustuspalveluita ja millaisia?"
 }
