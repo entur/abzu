@@ -11,7 +11,7 @@
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
     "authority": "https://partner.dev.entur.org",
-    "client_id": "UAtVevtgwrRgf9pSZeMDPzrd8gPNUQ9C",
+    "client_id": "Sx0NqOCpqRSKmZwDjZPTVPJQ6dpEkY2H",
     "extraQueryParams": {
       "audience": "https://ror.api.dev.entur.io"
     }
