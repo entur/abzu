@@ -35,6 +35,16 @@ import { hasExpired } from "./validBetween";
 
 const helpers = {};
 
+// Maps backend stopPlaceType to UI stopPlaceType
+// Reverse of the mapping in mapToQueryVariables.js
+const mapStopPlaceTypeForUI = (stopPlaceType, submode) => {
+  // If it's a liftStation with funicular submode, show it as funicular in the UI
+  if (stopPlaceType === "liftStation" && submode === "funicular") {
+    return "funicular";
+  }
+  return stopPlaceType;
+};
+
 helpers.mapParkingToClient = (parkingObjs = []) =>
   parkingObjs.map((parking) => new Parking(parking).toClient());
 
@@ -322,7 +332,7 @@ helpers.mapSearchResultParentStopPlace = (stop) => {
       id: stop.id,
       name: stop.name.value,
       isMissingLocation: !stop.geometry,
-      stopPlaceType: stop.stopPlaceType,
+      stopPlaceType: mapStopPlaceTypeForUI(stop.stopPlaceType, stop.submode),
       submode: stop.submode,
       transportMode: stop.transportMode,
       topographicPlace: topographicPlace,

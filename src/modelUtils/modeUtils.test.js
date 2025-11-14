@@ -71,11 +71,11 @@ describe("modeUtils", () => {
       ];
       const result = getStopTypesForSubmodes(waterSubmodes);
 
-      // ferryStop should be included as it supports passenger ferry submodes
+      // ferryStop should be included as it supports all these passenger ferry submodes
       expect(result).toContain("ferryStop");
 
-      // harbourPort should be included as it supports highSpeedPassengerService
-      expect(result).toContain("harbourPort");
+      // harbourPort should NOT be included - highSpeedPassengerService was removed from it
+      expect(result).not.toContain("harbourPort");
 
       // These stop types should not be included
       expect(result).not.toContain("onstreetBus");
