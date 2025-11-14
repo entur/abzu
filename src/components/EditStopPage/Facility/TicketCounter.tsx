@@ -7,7 +7,7 @@ import {
   default as equipmentHelpers,
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const TicketCounter = ({
@@ -47,11 +47,11 @@ const TicketCounter = ({
   };
 
   return (
-    <FacilityCheckbox
-      isFacilityPresent={isTicketCounterPresent}
-      handleFacilityChange={handleTicketCounterChange}
+    <FeatureCheckbox
+      isFeaturePresent={isTicketCounterPresent}
+      handleFeatureStateChange={handleTicketCounterChange}
       icon={<CountertopsIcon />}
-      facilityName={FacilityEnum.TICKET_COUNTER}
+      name={FacilityEnum.TICKET_COUNTER}
     />
   );
 };

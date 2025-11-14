@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
+import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import BusShelter from "../../../static/icons/facilities/BusShelter";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const Shelter = ({
@@ -14,7 +14,7 @@ const Shelter = ({
   entityType,
 }: FacilityProps) => {
   const dispatch = useDispatch();
-  const isShelterPresent = equiptmentHelpers.isShelterEquipmentPresent(entity);
+  const isShelterPresent = equipmentHelpers.isShelterEquipmentPresent(entity);
 
   const handleShelterChange = (value: boolean) => {
     if (disabled) {
@@ -31,11 +31,11 @@ const Shelter = ({
   };
 
   return (
-    <FacilityCheckbox
+    <FeatureCheckbox
       icon={<BusShelter />}
-      handleFacilityChange={handleShelterChange}
-      facilityName={FacilityEnum.SHELTER_EQUIPMENT}
-      isFacilityPresent={isShelterPresent}
+      handleFeatureStateChange={handleShelterChange}
+      name={FacilityEnum.SHELTER_EQUIPMENT}
+      isFeaturePresent={isShelterPresent}
     />
   );
 };

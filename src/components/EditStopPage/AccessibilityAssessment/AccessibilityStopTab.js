@@ -26,7 +26,7 @@ import {
 } from "../../../models/AccessibilityLimitation";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils";
-import PlaceFeatures from "../PlaceFeatures";
+import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
 
 class AccessibilityStopTab extends React.Component {

@@ -7,7 +7,7 @@ import {
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import { TicketMachine as TicketMachineIcon } from "../../../static/icons/facilities/TicketMachine";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const TicketMachine = ({
@@ -44,11 +44,11 @@ const TicketMachine = ({
   };
 
   return (
-    <FacilityCheckbox
-      isFacilityPresent={isTicketMachinePresent}
-      handleFacilityChange={handleTicketMachineChange}
+    <FeatureCheckbox
+      isFeaturePresent={isTicketMachinePresent}
+      handleFeatureStateChange={handleTicketMachineChange}
       icon={<TicketMachineIcon />}
-      facilityName={FacilityEnum.TICKET_MACHINES}
+      name={FacilityEnum.TICKET_MACHINES}
     />
   );
 };

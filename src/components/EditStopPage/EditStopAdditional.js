@@ -17,6 +17,7 @@ import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { injectIntl } from "react-intl";
 import AccessibilityStopTab from "./AccessibilityAssessment/AccessibilityStopTab";
+import AssistanceStopTab from "./Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "./Facility/FacilitiesStopTab";
 
 class EditStopAdditional extends React.Component {
@@ -66,12 +67,23 @@ class EditStopAdditional extends React.Component {
             label={formatMessage({ id: "facilities" })}
             value={1}
           ></Tab>
+          <Tab
+            style={tabStyle}
+            label={formatMessage({ id: "assistance" })}
+            value={2}
+          ></Tab>
         </Tabs>
         {activeTabIndex === 0 && (
           <AccessibilityStopTab intl={intl} disabled={disabled} />
         )}
         {activeTabIndex === 1 && (
           <FacilitiesStopTab
+            disabled={disabled}
+            stopPlace={this.props.stopPlace}
+          />
+        )}
+        {activeTabIndex === 2 && (
+          <AssistanceStopTab
             disabled={disabled}
             stopPlace={this.props.stopPlace}
           />

@@ -7,7 +7,7 @@ import {
   default as equipmentHelpers,
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const TicketOffice = ({
@@ -43,11 +43,11 @@ const TicketOffice = ({
   };
 
   return (
-    <FacilityCheckbox
-      isFacilityPresent={isTicketOfficePresent}
-      handleFacilityChange={handleTicketOfficeChange}
+    <FeatureCheckbox
+      isFeaturePresent={isTicketOfficePresent}
+      handleFeatureStateChange={handleTicketOfficeChange}
       icon={<BusinessIcon />}
-      facilityName={FacilityEnum.TICKET_OFFICE}
+      name={FacilityEnum.TICKET_OFFICE}
     />
   );
 };

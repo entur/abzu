@@ -56,6 +56,24 @@ export const simplifyPlaceEquipment = (placeEquipments) => {
   return null;
 };
 
+/* Following the NeTEx localService model, all placeEquipment sub-items contains at least one item.
+ *  An abstraction of this concept in UI and in the client model (a clearly pragmatic approach) has been chosen in Abzu.
+ */
+export const simplifyLocalService = (localServices) => {
+  if (localServices !== null) {
+    let simpleRepresentation = {};
+    Object.keys(localServices).forEach((key) => {
+      if (Array.isArray(localServices[key]) && localServices[key].length) {
+        if (localServices[key][0]) {
+          simpleRepresentation[key] = localServices[key][0];
+        }
+      }
+    });
+    return simpleRepresentation;
+  }
+  return null;
+};
+
 /*
  * Simplify place equipment before sending it to the GraphQL API
  * Please note that the GraphQL API is not strictly Netex, so the method name is misleading.
@@ -78,6 +96,7 @@ export const netexifyPlaceEquipment = (placeEquipments) => {
         }
       }
     });
+
     return netexRepresentation;
   }
   return null;

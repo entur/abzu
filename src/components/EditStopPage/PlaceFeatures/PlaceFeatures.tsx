@@ -4,14 +4,15 @@ import FlatButton from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { ReactElement } from "react";
 import { useIntl } from "react-intl";
-import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../models/AccessibilityLimitation";
-import { EntityType } from "../../models/Entities";
-import { Facility as FacilityEnum } from "./Facility/types";
-import ToolTipIcon from "./ToolTipIcon";
+import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../../models/AccessibilityLimitation";
+import { EntityType } from "../../../models/Entities";
+import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
+import { Facility as FacilityEnum } from "../Facility/types";
+import ToolTipIcon from "../ToolTipIcon";
 
 interface Props {
   entityType: EntityType;
-  name: AccessibilityLimitationEnum | FacilityEnum;
+  name: AccessibilityLimitationEnum | FacilityEnum | AssistanceEnum;
   feature: ReactElement;
   relatedFeatures?: ReactElement;
   isExpanded?: boolean;

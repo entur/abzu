@@ -2,13 +2,13 @@ import MdWc from "@mui/icons-material/Wc";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
-import FacilityCheckbox from "./FacilityCheckbox";
+import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const WC = ({ entity, disabled, id, index, entityType }: FacilityProps) => {
   const dispatch = useDispatch();
-  const isWCPresent = equiptmentHelpers.isSanitaryEquipmentPresent(entity);
+  const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(entity);
 
   const handleWCChange = (value: boolean) => {
     if (disabled) {
@@ -25,11 +25,11 @@ const WC = ({ entity, disabled, id, index, entityType }: FacilityProps) => {
   };
 
   return (
-    <FacilityCheckbox
-      isFacilityPresent={isWCPresent}
-      handleFacilityChange={handleWCChange}
+    <FeatureCheckbox
+      isFeaturePresent={isWCPresent}
+      handleFeatureStateChange={handleWCChange}
       icon={<MdWc />}
-      facilityName={FacilityEnum.SANITARY_EQUIPMENT}
+      name={FacilityEnum.SANITARY_EQUIPMENT}
     />
   );
 };

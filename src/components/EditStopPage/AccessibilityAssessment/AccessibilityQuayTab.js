@@ -26,7 +26,7 @@ import {
 } from "../../../models/AccessibilityLimitation";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils/";
-import PlaceFeatures from "../PlaceFeatures";
+import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
 
 class AccessibilityQuayTab extends React.Component {
@@ -139,6 +139,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.WHEELCHAIR_ACCESS
               }
               icon={<WheelChair />}
+              quayId={quay.id}
             />
           }
         />
@@ -155,6 +156,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.STEP_FREE_ACCESS
               }
               icon={<StairsIcon />}
+              quayId={quay.id}
             />
           }
         />
@@ -171,6 +173,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.AUDIBLE_SIGNALS_AVAILABLE
               }
               icon={<VolumeUpIcon />}
+              quayId={quay.id}
             />
           }
         />
@@ -187,6 +190,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.VISUAL_SIGNS_AVAILABLE
               }
               icon={<FollowTheSignsIcon />}
+              quayId={quay.id}
             />
           }
         />
@@ -203,6 +207,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.ESCALATOR_FREE_ACCESS
               }
               icon={<EscalatorIcon />}
+              quayId={quay.id}
             />
           }
         />
@@ -219,6 +224,7 @@ class AccessibilityQuayTab extends React.Component {
                 AccessibilityLimitationEnum.LIFT_FREE_ACCESS
               }
               icon={<ElevatorIcon />}
+              quayId={quay.id}
             />
           }
         />

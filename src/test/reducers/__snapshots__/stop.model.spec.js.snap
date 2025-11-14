@@ -125,6 +125,7 @@ exports[`Model: map format from server to expected client model > should map cli
       59.587427,
     ],
   ],
+  "localServices": null,
   "name": {
     "lang": "nor",
     "value": "Aspelundsveien",

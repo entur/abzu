@@ -2,23 +2,24 @@ import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import React, { ReactElement } from "react";
 import { useIntl } from "react-intl";
+import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
 import {
   FacilityDetail as FacilityDetailEnum,
   Facility as FacilityEnum,
-} from "./types";
+} from "../Facility/types";
 
 interface Props {
   icon: ReactElement<any>;
-  handleFacilityChange: (newState: boolean) => void;
-  facilityName: FacilityEnum | FacilityDetailEnum;
-  isFacilityPresent: boolean;
+  handleFeatureStateChange: (newState: boolean) => void;
+  name: FacilityEnum | FacilityDetailEnum | AssistanceEnum;
+  isFeaturePresent: boolean;
 }
 
-const FacilityCheckbox = ({
+const FeatureCheckbox = ({
   icon,
-  handleFacilityChange,
-  isFacilityPresent,
-  facilityName,
+  handleFeatureStateChange,
+  isFeaturePresent,
+  name,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -30,7 +31,7 @@ const FacilityCheckbox = ({
         }}
         control={
           <Checkbox
-            checked={isFacilityPresent}
+            checked={isFeaturePresent}
             checkedIcon={
               React.cloneElement(icon, {
                 style: {
@@ -48,15 +49,15 @@ const FacilityCheckbox = ({
             }
             style={{ width: "auto" }}
             onChange={(e, v) => {
-              handleFacilityChange(v);
+              handleFeatureStateChange(v);
             }}
           />
         }
         label={
           <div style={{ fontSize: "0.8em" }}>
-            {isFacilityPresent
-              ? formatMessage({ id: facilityName })
-              : formatMessage({ id: `${facilityName}_no` })}
+            {isFeaturePresent
+              ? formatMessage({ id: name })
+              : formatMessage({ id: `${name}_no` })}
           </div>
         }
       />
@@ -64,4 +65,4 @@ const FacilityCheckbox = ({
   );
 };
 
-export default FacilityCheckbox;
+export default FeatureCheckbox;

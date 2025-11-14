@@ -7,7 +7,7 @@ import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import EquipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { getIn } from "../../../utils";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
@@ -108,25 +108,25 @@ const TicketMachineDetails = ({
             justifyContent: "space-around",
           }}
         >
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<VolumeUpIcon />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForTicketMachineChange({
                 audioInterfaceAvailable: value,
               })
             }
-            facilityName={FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE}
-            isFacilityPresent={audioInterfaceAvailable}
+            name={FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE}
+            isFeaturePresent={audioInterfaceAvailable}
           />
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<TouchAppIcon />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForTicketMachineChange({
                 tactileInterfaceAvailable: value,
               })
             }
-            facilityName={FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE}
-            isFacilityPresent={tactileInterfaceAvailable}
+            name={FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE}
+            isFeaturePresent={tactileInterfaceAvailable}
           />
         </div>
       </div>

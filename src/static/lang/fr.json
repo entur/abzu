@@ -589,5 +589,15 @@
   "liftFreeAccess_stopPlace_hint": "Tous les quais de cet arrêt sont-ils accessibles par ascenseur ?",
   "liftFreeAccess_hint": "Accessibilité des ascenseurs",
   "liftFreeAccess": "Accès par ascenseur",
-  "liftFreeAccess_no": "Pas d'accès par ascenseur"
+  "liftFreeAccess_no": "Pas d'accès par ascenseur",
+  "assistanceService": "Service d'assistance",
+  "assistanceService_no": "Aucun service d'assistance",
+  "assistanceServiceAvailability": "Disponibilité de l'assistance",
+  "assistanceServiceAvailability_availableIfBooked": "Réservation requise",
+  "assistanceServiceAvailability_availableAtCertainTimes": "Disponible à certaines heures",
+  "assistanceServiceAvailability_available": "Disponible",
+  "assistanceServiceAvailability_unknown": "Inconnu",
+  "assistanceServiceAvailability_none": "Aucun",
+  "assistance": "Assistance",
+  "assistanceService_stopPlace_hint": "L'aire d'arrêt propose-t-elle des services d'assistance ? Si oui, de quel type ?"
 }

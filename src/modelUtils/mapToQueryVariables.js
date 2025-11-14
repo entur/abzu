@@ -22,6 +22,7 @@ import {
   netexifyBoardingPositions,
   netexifyPlaceEquipment,
 } from "../models/stopPlaceUtils";
+import { netexifyLocalServices } from "./localServicesHelpers";
 
 const helpers = {};
 
@@ -199,6 +200,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     ),
     keyValues: stop.keyValues,
     placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),
+    localServices: netexifyLocalServices(stop.localServices),
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,

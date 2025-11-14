@@ -6,7 +6,7 @@ import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../../static/icons/facilities/Enclosed";
 import { getIn } from "../../../utils";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
@@ -97,22 +97,22 @@ const ShelterDetails = ({
             justifyContent: "space-around",
           }}
         >
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<StairsIcon />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForShelterChange({ stepFree: value })
             }
-            facilityName={FacilityDetailEnum.STEP_FREE}
-            isFacilityPresent={shelterStepFree}
+            name={FacilityDetailEnum.STEP_FREE}
+            isFeaturePresent={shelterStepFree}
           />
 
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<EnclosedIcon />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForShelterChange({ enclosed: value })
             }
-            facilityName={FacilityDetailEnum.ENCLOSED}
-            isFacilityPresent={shelterEnclosed}
+            name={FacilityDetailEnum.ENCLOSED}
+            isFeaturePresent={shelterEnclosed}
           />
         </div>
       </div>

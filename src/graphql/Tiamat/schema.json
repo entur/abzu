@@ -287,7 +287,19 @@
       { "kind": "ENUM", "name": "gender", "possibleTypes": null },
       { "kind": "SCALAR", "name": "legacyCoordinates", "possibleTypes": null },
       { "kind": "ENUM", "name": "nameType", "possibleTypes": null },
-      { "kind": "ENUM", "name": "signContentType", "possibleTypes": null }
+      { "kind": "ENUM", "name": "signContentType", "possibleTypes": null },
+      { "kind": "OBJECT", "name": "LocalServices", "possibleTypes": null },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "LocalServicesInput",
+        "possibleTypes": null
+      },
+      { "kind": "OBJECT", "name": "AssistanceService", "possibleTypes": null },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AssistanceServiceInput",
+        "possibleTypes": null
+      }
     ]
   }
 }
