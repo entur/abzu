@@ -50,6 +50,8 @@ jobs:
       - run: npm run build
       - name: Copy bootstrap config
         run: cp .github/environments/dev.json build/bootstrap.json
+      - name: Copy firebase config
+        run: cp .github/environments/firebase.json firebase.json
       - uses: FirebaseExtended/action-hosting-deploy@v0
         if: github.event.pull_request.head.repo.fork == false
         with:
