@@ -60,4 +60,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}'
           projectId: ent-ror-abzu-dev
+          target: dev
           expires: 3d
