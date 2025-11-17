@@ -21,7 +21,7 @@
     "@apollo/client": "4.0.9",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
-    "@entur/react-component-toggle": "0.0.3",
+    "@entur/react-component-toggle": "1.0.0",
     "@fintraffic/fds-coreui-css": "0.1.3",
     "@mui/icons-material": "7.3.5",
     "@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
@@ -69,7 +69,7 @@
     ]
   },
   "devDependencies": {
-    "@entur/rollup-plugin-react-component-toggle": "0.0.2",
+    "@entur/rollup-plugin-react-component-toggle": "1.0.0",
     "@mui/types": "7.4.8",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
