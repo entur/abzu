@@ -26,6 +26,7 @@ import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import EditStopMap from "../components/Map/EditStopMap";
 import { EditParentStopPlace } from "../components/modern/EditParentStopPlace";
+import { LoadingDialog } from "../components/modern/Shared";
 import InformationManager from "../singletons/InformationManager";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store/store";
@@ -184,29 +185,49 @@ export const StopPlace = () => {
         />
       )}
 
-      {!stopPlace && !error.showErrorDialog && (
+      {!stopPlace && !error.showErrorDialog && uiMode === "modern" && (
+        <>
+          <LoadingDialog
+            open={true}
+            message={formatMessage({ id: "loading" })}
+          />
+          <EditStopMap disabled />
+        </>
+      )}
+      {!stopPlace && !error.showErrorDialog && uiMode !== "modern" && (
         <>
           <LoadingPage />
           <EditStopMap disabled />
         </>
       )}
-      {stopPlaceLoading && <LoadingPage />}
-      {stopPlace && !stopPlace.isParent && (
-        <div>
-          <NewElementsBox disabled={disabled || stopPlaceLoading} />
-          <EditStopGeneral disabled={disabled || stopPlaceLoading} />
-          <EditStopMap disabled={disabled || stopPlaceLoading} />
-        </div>
+      {stopPlaceLoading && uiMode === "modern" && (
+        <LoadingDialog open={true} message={formatMessage({ id: "loading" })} />
       )}
-      {stopPlace && stopPlace.isParent && (
-        <div>
-          {uiMode === "modern" ? (
-            <EditParentStopPlace />
-          ) : (
-            <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+      {stopPlaceLoading && uiMode !== "modern" && <LoadingPage />}
+      {stopPlace && !stopPlace.isParent && (
+        <>
+          {!(stopPlaceLoading && uiMode === "modern") && (
+            <>
+              <NewElementsBox disabled={disabled || stopPlaceLoading} />
+              <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+            </>
           )}
           <EditStopMap disabled={disabled || stopPlaceLoading} />
-        </div>
+        </>
+      )}
+      {stopPlace && stopPlace.isParent && (
+        <>
+          {!(stopPlaceLoading && uiMode === "modern") && (
+            <>
+              {uiMode === "modern" ? (
+                <EditParentStopPlace />
+              ) : (
+                <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+              )}
+            </>
+          )}
+          <EditStopMap disabled={disabled || stopPlaceLoading} />
+        </>
       )}
     </div>
   );

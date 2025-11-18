@@ -24,12 +24,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import {
-  FavoriteSection,
-  FilterSection,
-  SearchInput,
-  SearchResultDetails,
-} from "./components";
+import { LoadingDialog } from "../Shared";
+import { FavoriteSection, FilterSection, SearchInput } from "./components";
 import { useSearchBox } from "./hooks/useSearchBox";
 import "./SearchBox.css";
 import { RootState, SearchBoxProps } from "./types";
@@ -56,36 +52,31 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
 
   const {
     // State selectors
-    chosenResult,
     favorited,
-    missingCoordinatesMap,
     stopTypeFilter,
     topoiChips,
     topographicalPlaces,
-    canEdit,
     dataSource,
     showFutureAndExpired,
     searchText,
+    stopPlaceLoading,
   } = useSelector((state: RootState) => ({
-    chosenResult: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults || [],
     stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
-    favorited: state.user.favorited, // This will need to be computed
-    missingCoordinatesMap: state.user.missingCoordsMap,
+    favorited: state.user.favorited,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: state.stopPlace.activeSearchResult
-      ? (state.stopPlace.permissions?.canEdit ?? false)
-      : (state.stopPlace.current?.permissions?.canEdit ?? false),
-    lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    stopPlaceLoading: state.stopPlace.loading,
   }));
 
   const {
     // Local state
     showMoreFilterOptions,
     loading,
+    loadingSelection,
+    loadingStopPlaceName,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
 
@@ -98,8 +89,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     handleDeleteChip,
     handleSaveAsFavorite,
     handleRetrieveFilter,
-    handleEdit,
-    handleOpenCoordinatesDialog,
     handleTopographicalPlaceInput,
     toggleShowFutureAndExpired,
 
@@ -107,7 +96,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
     menuItems,
     topographicalPlacesDataSource,
   } = useSearchBox({
-    chosenResult,
     dataSource,
     stopTypeFilter,
     topoiChips,
@@ -128,6 +116,16 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
 
   return (
     <>
+      {/* Loading Dialog */}
+      <LoadingDialog
+        open={loadingSelection || stopPlaceLoading}
+        message={
+          loadingStopPlaceName
+            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
+
       {/* Floating Search Button for Mobile (when collapsed) */}
       {isMobile && !isExpanded && (
         <Fab
@@ -219,19 +217,6 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
               onNewRequest={handleNewRequest}
               onToggleFilters={handleToggleFilters}
             />
-
-            {chosenResult && (
-              <SearchResultDetails
-                result={chosenResult}
-                canEdit={canEdit}
-                userSuppliedCoordinates={
-                  missingCoordinatesMap &&
-                  missingCoordinatesMap[chosenResult.id]
-                }
-                onEdit={handleEdit}
-                onChangeCoordinates={handleOpenCoordinatesDialog}
-              />
-            )}
           </div>
         </Paper>
       </Collapse>

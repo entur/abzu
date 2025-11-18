@@ -77,7 +77,7 @@ export const LeafLetMap = ({
 
   useEffect(() => {
     if (map) {
-      map.setView(centerPosition, zoom);
+      map.setView(centerPosition, zoom, { animate: true, duration: 0.25 });
     }
   }, [centerPosition[0], centerPosition[1], zoom]);
 

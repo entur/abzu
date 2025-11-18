@@ -25,15 +25,10 @@ import React, { useState } from "react";
 import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FilterSection,
-  RootState,
-  SearchInput,
-  SearchResultDetails,
-} from "../../MainPage";
+import { FilterSection, RootState, SearchInput } from "../../MainPage";
 import { FavoriteStopPlaces } from "../../MainPage/components/FavoriteStopPlaces";
 import { useSearchBox } from "../../MainPage/hooks/useSearchBox";
-import { ModalityLoadingAnimation } from "../../Shared";
+import { LoadingDialog } from "../../Shared";
 import "../../modern.css";
 import {
   headerSearchContentContainer,
@@ -53,38 +48,28 @@ export const HeaderSearch: React.FC = () => {
   const [showFavorites, setShowFavorites] = useState(false);
 
   const {
-    chosenResult,
-    missingCoordinatesMap,
     stopTypeFilter,
     topoiChips,
     topographicalPlaces,
-    canEdit,
     dataSource,
     showFutureAndExpired,
     searchText,
+    stopPlaceLoading,
   } = useSelector((state: RootState) => ({
-    chosenResult: state.stopPlace.activeSearchResult,
     dataSource: state.stopPlace.searchResults || [],
-    isCreatingNewStop: state.user.isCreatingNewStop,
     stopTypeFilter: state.user.searchFilters.stopType,
     topoiChips: state.user.searchFilters.topoiChips,
-    favorited: state.user.favorited,
-    missingCoordinatesMap: state.user.missingCoordsMap,
     searchText: state.user.searchFilters.text,
     topographicalPlaces: state.stopPlace.topographicalPlaces || [],
-    canEdit: state.stopPlace.activeSearchResult
-      ? (state.stopPlace.permissions?.canEdit ?? false)
-      : (state.stopPlace.current?.permissions?.canEdit ?? false),
-    lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
-    newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
-    isGuest: state.user.isGuest,
+    stopPlaceLoading: state.stopPlace.loading,
   }));
 
   const {
     showMoreFilterOptions,
     loading,
     loadingSelection,
+    loadingStopPlaceName,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
     handleSearchUpdate,
@@ -93,14 +78,11 @@ export const HeaderSearch: React.FC = () => {
     handleToggleFilter,
     handleAddChip,
     handleDeleteChip,
-    handleEdit,
-    handleOpenCoordinatesDialog,
     handleTopographicalPlaceInput,
     toggleShowFutureAndExpired,
     menuItems,
     topographicalPlacesDataSource,
   } = useSearchBox({
-    chosenResult,
     dataSource,
     stopTypeFilter,
     topoiChips,
@@ -160,20 +142,6 @@ export const HeaderSearch: React.FC = () => {
     }
   };
 
-  const handleCloseResultDetails = () => {
-    dispatch({
-      type: "SET_ACTIVE_MARKER",
-      payload: null,
-    });
-
-    if (isTablet) {
-      setIsSearchExpanded(false);
-    } else {
-      handleToggleFilter(false);
-      setShowFavorites(false);
-    }
-  };
-
   // Unified content structure - SearchInput only for mobile
   const renderSearchContent = () => {
     return (
@@ -212,51 +180,29 @@ export const HeaderSearch: React.FC = () => {
             onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
           />
         )}
-
-        {loadingSelection && !showFavorites && !showMoreFilterOptions && (
-          <ModalityLoadingAnimation
-            message={
-              formatMessage({ id: "loading_stop_place" }) ||
-              "Loading stop place..."
-            }
-          />
-        )}
-
-        {chosenResult &&
-          !showFavorites &&
-          !showMoreFilterOptions &&
-          !loadingSelection && (
-            <SearchResultDetails
-              result={chosenResult}
-              canEdit={canEdit}
-              userSuppliedCoordinates={
-                missingCoordinatesMap && missingCoordinatesMap[chosenResult.id]
-              }
-              onEdit={handleEdit}
-              onChangeCoordinates={handleOpenCoordinatesDialog}
-              onClose={handleCloseResultDetails}
-            />
-          )}
       </Box>
     );
   };
 
   // Condition for when to show the search panel
   const shouldShowSearchPanel = isTablet
-    ? isSearchExpanded ||
-      !!chosenResult ||
-      showFavorites ||
-      showMoreFilterOptions ||
-      loadingSelection
-    : showMoreFilterOptions ||
-      showFavorites ||
-      !!chosenResult ||
-      loadingSelection;
+    ? isSearchExpanded || showFavorites || showMoreFilterOptions
+    : showMoreFilterOptions || showFavorites;
 
   const isElevated = showFavorites || showMoreFilterOptions;
 
   return (
     <>
+      {/* Loading Dialog */}
+      <LoadingDialog
+        open={loadingSelection || stopPlaceLoading}
+        message={
+          loadingStopPlaceName
+            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
+
       {/* Desktop: Always show search input in header */}
       {!isTablet && (
         <Box sx={headerSearchDesktopContainer}>

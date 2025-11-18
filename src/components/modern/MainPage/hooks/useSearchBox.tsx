@@ -22,7 +22,6 @@ import {
   findTopographicalPlace,
   getStopPlaceById,
 } from "../../../../actions/TiamatActions";
-import { Entities } from "../../../../models/Entities";
 import formatHelpers from "../../../../modelUtils/mapToClient";
 import Routes from "../../../../routes/";
 import { extractCoordinates } from "../../../../utils/";
@@ -37,7 +36,6 @@ import {
 } from "../types";
 
 export const useSearchBox = ({
-  chosenResult,
   dataSource,
   stopTypeFilter,
   topoiChips,
@@ -52,10 +50,10 @@ export const useSearchBox = ({
   const [showMoreFilterOptions, setShowMoreFilterOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingSelection, setLoadingSelection] = useState(false);
+  const [loadingStopPlaceName, setLoadingStopPlaceName] = useState<string>("");
   const [stopPlaceSearchValue, setStopPlaceSearchValue] = useState("");
   const [topographicPlaceFilterValue, setTopographicPlaceFilterValue] =
     useState("");
-  const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
 
   // Debounced search function
   const debouncedSearch = useMemo(
@@ -149,12 +147,18 @@ export const useSearchBox = ({
 
         // Set loading state when selecting an item
         setLoadingSelection(true);
+        setLoadingStopPlaceName(result.element.name || "");
 
         const stopPlaceId = result.element.id;
-        if (
-          stopPlaceId &&
-          result.element.entityType !== "GROUP_OF_STOP_PLACE"
-        ) {
+        const entityType = result.element.entityType;
+
+        // Determine the route for navigation
+        const route =
+          entityType === "GROUP_OF_STOP_PLACE"
+            ? Routes.GROUP_OF_STOP_PLACE
+            : Routes.STOP_PLACE;
+
+        if (stopPlaceId && entityType !== "GROUP_OF_STOP_PLACE") {
           dispatch(getStopPlaceById(stopPlaceId))
             .then(({ data }: any) => {
               if (data.stopPlace && data.stopPlace.length) {
@@ -165,13 +169,19 @@ export const useSearchBox = ({
                   dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
                 }
               }
+              // Navigate to edit page after setting marker
+              dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
             })
             .finally(() => {
               setLoadingSelection(false);
+              setLoadingStopPlaceName("");
             });
         } else {
           dispatch(StopPlaceActions.setMarkerOnMap(result.element));
+          // Navigate to edit page after setting marker
+          dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
           setLoadingSelection(false);
+          setLoadingStopPlaceName("");
         }
         setStopPlaceSearchValue("");
         dispatch(UserActions.setSearchText(""));
@@ -269,22 +279,6 @@ export const useSearchBox = ({
   );
 
   // Action handlers
-  const handleEdit = useCallback(
-    (id: string, entityType: keyof typeof Entities) => {
-      // Clear search input
-      setStopPlaceSearchValue("");
-      dispatch(UserActions.setSearchText(""));
-      dispatch(UserActions.clearSearchResults());
-
-      const route =
-        entityType === Entities.STOP_PLACE
-          ? Routes.STOP_PLACE
-          : Routes.GROUP_OF_STOP_PLACE;
-      dispatch(UserActions.navigateTo(`/${route}/`, id));
-    },
-    [dispatch],
-  );
-
   const handleSaveAsFavorite = useCallback(() => {
     dispatch(UserActions.openFavoriteNameDialog());
   }, [dispatch]);
@@ -301,38 +295,6 @@ export const useSearchBox = ({
     dispatch(UserActions.removeAllFilters());
     handleSearchUpdate(null, searchText);
   }, [dispatch, handleSearchUpdate, searchText]);
-
-  // Coordinates handlers
-  const handleOpenCoordinatesDialog = useCallback(() => {
-    setCoordinatesDialogOpen(true);
-  }, []);
-
-  const handleCloseLookupCoordinatesDialog = useCallback(() => {
-    dispatch(UserActions.closeLookupCoordinatesDialog());
-  }, [dispatch]);
-
-  const handleCloseCoordinatesDialog = useCallback(() => {
-    setCoordinatesDialogOpen(false);
-  }, []);
-
-  const handleLookupCoordinates = useCallback(
-    (position: [number, number]) => {
-      dispatch(UserActions.lookupCoordinates(position, false));
-      handleCloseLookupCoordinatesDialog();
-    },
-    [dispatch, handleCloseLookupCoordinatesDialog],
-  );
-
-  const handleSubmitCoordinates = useCallback(
-    (position: [number, number]) => {
-      dispatch(StopPlaceActions.changeMapCenter(position, 11));
-      if (chosenResult) {
-        dispatch(UserActions.setMissingCoordinates(position, chosenResult.id));
-      }
-      setCoordinatesDialogOpen(false);
-    },
-    [dispatch, chosenResult],
-  );
 
   // Helper function for topographical names
   const getTopographicalNames = useCallback(
@@ -512,9 +474,9 @@ export const useSearchBox = ({
     showMoreFilterOptions,
     loading,
     loadingSelection,
+    loadingStopPlaceName,
     stopPlaceSearchValue,
     topographicPlaceFilterValue,
-    coordinatesDialogOpen,
 
     // Handlers
     handleSearchUpdate,
@@ -525,12 +487,6 @@ export const useSearchBox = ({
     handleDeleteChip,
     handleSaveAsFavorite,
     handleRetrieveFilter,
-    handleEdit,
-    handleLookupCoordinates,
-    handleSubmitCoordinates,
-    handleOpenCoordinatesDialog,
-    handleCloseLookupCoordinatesDialog,
-    handleCloseCoordinatesDialog,
     handleTopographicalPlaceInput,
     removeFiltersAndSearch,
     toggleShowFutureAndExpired,

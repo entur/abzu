@@ -12,6 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
+/**
+ * @deprecated This component is no longer used in the search flow since we navigate
+ * directly to the edit page when selecting a search result. It may be used elsewhere
+ * or removed in a future cleanup. Marked for potential deletion.
+ */
+
 import {
   Close as CloseIcon,
   GroupWork as GroupIcon,

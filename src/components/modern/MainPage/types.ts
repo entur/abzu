@@ -99,7 +99,6 @@ export interface FavoriteFilter {
 }
 
 export interface UseSearchBoxProps {
-  chosenResult: SearchResult | null;
   dataSource: SearchResult[];
   stopTypeFilter: string[];
   topoiChips: TopoChip[];
@@ -114,9 +113,9 @@ export interface UseSearchBoxReturn {
   showMoreFilterOptions: boolean;
   loading: boolean;
   loadingSelection: boolean;
+  loadingStopPlaceName: string;
   stopPlaceSearchValue: string;
   topographicPlaceFilterValue: string;
-  coordinatesDialogOpen: boolean;
 
   // Handlers
   handleSearchUpdate: (event: any, searchText: string, reason?: string) => void;
@@ -127,12 +126,6 @@ export interface UseSearchBoxReturn {
   handleDeleteChip: (chipValue: string) => void;
   handleSaveAsFavorite: () => void;
   handleRetrieveFilter: (filter: FavoriteFilter) => void;
-  handleEdit: (id: string, entityType: keyof typeof Entities) => void;
-  handleLookupCoordinates: (position: [number, number]) => void;
-  handleSubmitCoordinates: (position: [number, number]) => void;
-  handleOpenCoordinatesDialog: () => void;
-  handleCloseLookupCoordinatesDialog: () => void;
-  handleCloseCoordinatesDialog: () => void;
   handleTopographicalPlaceInput: (
     event: any,
     searchText: string,
@@ -152,6 +145,7 @@ export interface RootState {
     activeSearchResult: SearchResult | null;
     searchResults: SearchResult[];
     topographicalPlaces: TopographicalPlace[];
+    loading: boolean;
     current: {
       permissions?: {
         canEdit: boolean;

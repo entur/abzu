@@ -389,7 +389,11 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
       {/* Coordinates Dialog */}
       <CoordinatesDialog
         open={coordinatesDialogOpen}
-        coordinates={stopPlace?.position}
+        coordinates={
+          stopPlace?.position
+            ? `${stopPlace.position[0]}, ${stopPlace.position[1]}`
+            : undefined
+        }
         handleClose={handleCloseCoordinatesDialog}
         handleConfirm={handleSetCoordinates}
       />

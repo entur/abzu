@@ -3,6 +3,7 @@ export { CountBadge } from "./CountBadge";
 export { ExpiredWarning } from "./ExpiredWarning";
 export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";
+export { LoadingDialog } from "./LoadingDialog";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";
 export { QuayCode } from "./QuayCode";
 export { StopPlaceLink } from "./StopPlaceLink";

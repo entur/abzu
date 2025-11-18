@@ -28,8 +28,11 @@ export interface AdjacentSite {
 }
 
 export interface AlternativeName {
-  name: string;
-  language: string;
+  name: {
+    value: string;
+    lang: string;
+  };
+  nameType: string;
 }
 
 export interface Tag {
