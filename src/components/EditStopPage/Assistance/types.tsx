@@ -1,4 +1,3 @@
-import { EntityType } from "../../../models/Entities";
 import StopPlace from "../../../models/StopPlace";
 
 export enum AssistanceTabItem {
@@ -11,8 +10,6 @@ export enum AssistanceTabItem {
  */
 export interface AssistanceProps {
   entity: StopPlace;
-  entityType: EntityType;
   disabled: boolean;
-  index?: number;
   id?: string;
 }

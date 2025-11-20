@@ -1,6 +1,6 @@
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { LocalServiceActions } from "../../../actions";
 import LocalServicesHelpers from "../../../modelUtils/localServicesHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
@@ -10,6 +10,7 @@ import { AssistanceProps, AssistanceTabItem } from "./types";
  * Handles AssistanceService's assistanceFacilityList field;
  * The idea is that in UI we don't go into detail what kind of assistance is available,
  * just yes or no;
+ * Note: assistance service is meant to be defined only on a stop place level.
  * @param entity
  * @param disabled
  * @param id
@@ -27,9 +28,8 @@ const AssistanceService = ({ entity, disabled, id }: AssistanceProps) => {
     dispatch(
       LocalServiceActions.updateAssistanceService(
         value,
-        "stopPlace",
         id,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 

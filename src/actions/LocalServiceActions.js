@@ -3,23 +3,20 @@ import * as types from "./Types";
 
 const LocalServiceActions = {};
 
-LocalServiceActions.updateAssistanceService =
-  (state, entityType, id) => (dispatch) => {
-    dispatch(
-      createThunk(types.CHANGED_ASSISTANCE_SERVICE_STATE, {
-        state,
-        type: entityType,
-        id,
-      }),
-    );
-  };
+LocalServiceActions.updateAssistanceService = (state, id) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_ASSISTANCE_SERVICE_STATE, {
+      state,
+      id,
+    }),
+  );
+};
 
 LocalServiceActions.updateAssistanceServiceAvailability =
-  (state, entityType, id) => (dispatch) => {
+  (state, id) => (dispatch) => {
     dispatch(
       createThunk(types.CHANGED_ASSISTANCE_SERVICE_AVAILABILITY_STATE, {
         state,
-        type: entityType,
         id,
       }),
     );

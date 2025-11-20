@@ -13,7 +13,7 @@ interface Props {
 
 /**
  * At the moment, contains contents of "localServices" field of a stop place,
- * but been made to be more general, so that something outside "localServices"
+ * but is meant to be more general, so that something outside "localServices"
  * also could be placed here if it fits in the meaning
  * @param disabled
  * @param stopPlace
@@ -21,7 +21,6 @@ interface Props {
 const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
   const entityType: EntityType = "stopPlace";
-  console.log(stopPlace);
 
   return (
     <div style={{ padding: 10 }}>
@@ -36,7 +35,6 @@ const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
             entity={stopPlace}
             disabled={disabled}
             id={stopPlace.id}
-            entityType={entityType}
           />
         }
         relatedFeatures={
@@ -44,7 +42,6 @@ const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
             entity={stopPlace}
             disabled={disabled}
             id={stopPlace.id}
-            entityType={entityType}
           />
         }
       />

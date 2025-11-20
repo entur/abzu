@@ -36,7 +36,7 @@ LocalServicesHelpers.updateAssistanceServiceState = (stopPlace, payload) => {
 };
 
 const updateLocalServiceForEntity = (entity, payload, typeOfService) => {
-  const { state, type, id } = payload;
+  const { state } = payload;
 
   let stateFromCheckbox = typeof state === "boolean";
 
@@ -52,20 +52,11 @@ const updateLocalServiceForEntity = (entity, payload, typeOfService) => {
     overrideState = state;
   }
 
-  if (type === "stopPlace") {
-    if (!entity.localServices) {
-      entity.localServices = {};
-    }
-
-    entity.localServices[typeOfService] = overrideState;
-  } else if (type === "quay") {
-    if (entity.quays && entity.quays[id]) {
-      if (!entity.quays[id].localServices) {
-        entity.quays[id].localServices = {};
-      }
-      entity.quays[id].localServices[typeOfEquipment] = overrideState;
-    }
+  if (!entity.localServices) {
+    entity.localServices = {};
   }
+
+  entity.localServices[typeOfService] = overrideState;
 
   return entity;
 };

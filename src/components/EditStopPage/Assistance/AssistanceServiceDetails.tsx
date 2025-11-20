@@ -2,9 +2,9 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { LocalServiceActions } from "../../../actions";
 import { AssistanceAvailability as AssistanceAvailabilityEnum } from "../../../models/LocalServices";
 import LocalServicesHelpers from "../../../modelUtils/localServicesHelpers";
@@ -23,7 +23,7 @@ const AssistanceServiceDetails = ({
     LocalServicesHelpers.isAssistanceServicePresent(entity);
   const assistanceAvailability: AssistanceAvailabilityEnum = getIn(
     entity,
-    ["localServices", "assistanceService", "assistanceAvailability"],
+    ["localServices", "assistanceService", inputName],
     null,
   );
   const canBeEdited = !disabled && isAssistanceServicePresent;
@@ -39,9 +39,8 @@ const AssistanceServiceDetails = ({
           ...LocalServicesHelpers.getAssistanceService(entity),
           assistanceAvailability: event.target.value,
         },
-        "stopPlace",
         id,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -57,7 +56,7 @@ const AssistanceServiceDetails = ({
     <FormControl variant="filled" fullWidth>
       <InputLabel id="demo-simple-select-label">
         {formatMessage({
-          id: "assistanceServiceAvailability",
+          id: inputName,
         })}
       </InputLabel>
       <Select
