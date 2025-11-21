@@ -62,7 +62,7 @@ const TicketMachineDetails = ({
     if (!updatedTicketingEquipment.ticketMachines) {
       updatedTicketingEquipment.ticketMachines =
         ((newValue.numberOfMachines as number) ||
-          ticketingEquipment.numberOfMachines) > 0 ||
+          ticketingEquipment?.numberOfMachines) > 0 ||
         updatedTicketingEquipment.audioInterfaceAvailable ||
         updatedTicketingEquipment.tactileInterfaceAvailable;
     }
