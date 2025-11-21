@@ -17,22 +17,26 @@ import {
   Divider,
   Drawer,
   Slide,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
+import { useSelector } from "react-redux";
+import { Entities } from "../../../models/Entities";
 import { ConfirmDialog, SaveGroupDialog } from "../Dialogs";
 import {
   GroupOfStopPlacesActions,
   GroupOfStopPlacesDetails,
   GroupOfStopPlacesHeader,
   GroupOfStopPlacesList,
+  InfoDialog,
   MinimizedBar,
+  NameDescriptionDialog,
+  StopPlacesDialog,
 } from "./components";
 import { useEditGroupOfStopPlaces } from "./hooks/useEditGroupOfStopPlaces";
-import { EditGroupOfStopPlacesProps } from "./types";
+import { EditGroupOfStopPlacesProps, RootState } from "./types";
 
 const DRAWER_WIDTH_DESKTOP = 450;
 const DRAWER_WIDTH_TABLET = 380;
@@ -40,8 +44,7 @@ const DRAWER_WIDTH_MOBILE = "100%";
 
 /**
  * Modern Edit Group of Stop Places component
- * Features a collapsible drawer on the left side for editing
- * while allowing the map to remain visible
+ * Features a collapsible drawer with minimized bar and full edit view
  */
 export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   open: controlledOpen,
@@ -52,8 +55,12 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Local state for drawer
-  const [internalOpen, setInternalOpen] = useState(true);
+  // Local state for drawer and dialogs (default: collapsed)
+  const [internalOpen, setInternalOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
+    useState(false);
+  const [stopPlacesDialogOpen, setStopPlacesDialogOpen] = useState(false);
 
   // Determine if we're using controlled or uncontrolled mode
   const isControlled = controlledOpen !== undefined;
@@ -96,6 +103,11 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
     handleRemoveMember,
   } = useEditGroupOfStopPlaces();
 
+  // Get centerPosition from Redux for InfoDialog
+  const centerPosition = useSelector(
+    (state: RootState) => state.stopPlacesGroup.centerPosition,
+  );
+
   // Determine drawer width based on screen size
   const drawerWidth = isMobile
     ? DRAWER_WIDTH_MOBILE
@@ -114,9 +126,23 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
                 <MinimizedBar
                   name={originalGOS.name}
                   id={originalGOS.id}
+                  entityType={Entities.GROUP_OF_STOP_PLACE}
+                  hasId={!!groupOfStopPlaces.id}
+                  isModified={isModified}
+                  canEdit={canEdit}
+                  canDelete={canDelete}
+                  hasName={!!groupOfStopPlaces.name}
+                  isMobile={true}
                   onExpand={handleToggle}
                   onClose={handleAllowUserToGoBack}
-                  isMobile={true}
+                  onOpenInfo={() => setInfoDialogOpen(true)}
+                  onOpenNameDescription={() =>
+                    setNameDescriptionDialogOpen(true)
+                  }
+                  onOpenStopPlaces={() => setStopPlacesDialogOpen(true)}
+                  onSave={handleOpenSaveDialog}
+                  onUndo={handleOpenUndoDialog}
+                  onRemove={handleOpenDeleteDialog}
                 />
               </Box>
             </Slide>
@@ -133,9 +159,21 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
               <MinimizedBar
                 name={originalGOS.name}
                 id={originalGOS.id}
+                entityType={Entities.GROUP_OF_STOP_PLACE}
+                hasId={!!groupOfStopPlaces.id}
+                isModified={isModified}
+                canEdit={canEdit}
+                canDelete={canDelete}
+                hasName={!!groupOfStopPlaces.name}
+                isMobile={false}
                 onExpand={handleToggle}
                 onClose={handleAllowUserToGoBack}
-                isMobile={false}
+                onOpenInfo={() => setInfoDialogOpen(true)}
+                onOpenNameDescription={() => setNameDescriptionDialogOpen(true)}
+                onOpenStopPlaces={() => setStopPlacesDialogOpen(true)}
+                onSave={handleOpenSaveDialog}
+                onUndo={handleOpenUndoDialog}
+                onRemove={handleOpenDeleteDialog}
               />
             </Box>
           )}
@@ -147,23 +185,22 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
         variant="persistent"
         anchor="left"
         open={isOpen}
-        transitionDuration={0} // Disable default drawer transition
+        transitionDuration={0}
         sx={{
-          width: drawerWidth, // Always maintain width
+          width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            top: { xs: 56, sm: 64 }, // Match header height (56px mobile, 64px desktop)
+            top: { xs: 56, sm: 64 },
             height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
-            // Custom slide animation
             transform: isMobile
               ? isOpen
                 ? "translateY(0)"
                 : "translateY(100%)"
               : isOpen
                 ? "translateY(0)"
-                : "translateY(calc(-100% + 65px))", // 65px = minimized bar height
+                : "translateY(calc(-100% + 65px))",
             transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           },
         }}
@@ -176,21 +213,12 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
             bgcolor: "background.paper",
           }}
         >
-          {/* Header with close button and collapse button */}
+          {/* Header with close and collapse buttons */}
           <GroupOfStopPlacesHeader
             groupOfStopPlaces={originalGOS}
             onGoBack={handleAllowUserToGoBack}
             onCollapse={handleToggle}
           />
-
-          <Divider />
-
-          {/* Section Title */}
-          <Box sx={{ py: 1.5, px: 2, bgcolor: "background.default" }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {formatMessage({ id: "group_of_stop_places" })}
-            </Typography>
-          </Box>
 
           <Divider />
 
@@ -233,6 +261,39 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
           />
         </Box>
       </Drawer>
+
+      {/* Info Dialog */}
+      <InfoDialog
+        open={infoDialogOpen}
+        name={originalGOS.name}
+        id={originalGOS.id || ""}
+        centerPosition={centerPosition}
+        created={originalGOS.created}
+        modified={originalGOS.modified}
+        version={originalGOS.version}
+        onClose={() => setInfoDialogOpen(false)}
+      />
+
+      {/* Name and Description Dialog */}
+      <NameDescriptionDialog
+        open={nameDescriptionDialogOpen}
+        name={groupOfStopPlaces.name}
+        description={groupOfStopPlaces.description || ""}
+        canEdit={canEdit}
+        onClose={() => setNameDescriptionDialogOpen(false)}
+        onNameChange={handleNameChange}
+        onDescriptionChange={handleDescriptionChange}
+      />
+
+      {/* Stop Places Dialog */}
+      <StopPlacesDialog
+        open={stopPlacesDialogOpen}
+        stopPlaces={groupOfStopPlaces.members || []}
+        canEdit={canEdit}
+        onClose={() => setStopPlacesDialogOpen(false)}
+        onAddMembers={handleAddMembers}
+        onRemoveMember={handleRemoveMember}
+      />
 
       {/* Save Confirmation Dialog */}
       <SaveGroupDialog

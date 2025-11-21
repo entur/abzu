@@ -1,6 +1,7 @@
 export { CopyIdButton } from "./CopyIdButton";
 export { CountBadge } from "./CountBadge";
 export { ExpiredWarning } from "./ExpiredWarning";
+export { FavoriteButton } from "./FavoriteButton";
 export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";
 export { LoadingDialog } from "./LoadingDialog";

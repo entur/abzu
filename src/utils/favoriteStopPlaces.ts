@@ -18,6 +18,7 @@ export interface FavoriteStopPlace {
   stopPlaceType?: string;
   submode?: string;
   entityType: string;
+  isParent?: boolean;
   topographicPlace?: string;
   parentTopographicPlace?: string;
   location?: [number, number];

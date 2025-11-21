@@ -23,7 +23,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { useIntl } from "react-intl";
-import { CopyIdButton } from "../../Shared";
+import { Entities } from "../../../../models/Entities";
+import { CopyIdButton, FavoriteButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps } from "../types";
 
 /**
@@ -78,6 +79,14 @@ export const GroupOfStopPlacesHeader: React.FC<
           </Box>
         )}
       </Box>
+
+      {groupOfStopPlaces.id && (
+        <FavoriteButton
+          id={groupOfStopPlaces.id}
+          name={groupOfStopPlaces.name}
+          entityType={Entities.GROUP_OF_STOP_PLACE}
+        />
+      )}
 
       {onCollapse && (
         <IconButton

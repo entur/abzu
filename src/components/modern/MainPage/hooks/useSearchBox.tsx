@@ -20,6 +20,7 @@ import { StopPlaceActions, UserActions } from "../../../../actions/";
 import {
   findEntitiesWithFilters,
   findTopographicalPlace,
+  getGroupOfStopPlacesById,
   getStopPlaceById,
 } from "../../../../actions/TiamatActions";
 import formatHelpers from "../../../../modelUtils/mapToClient";
@@ -158,7 +159,19 @@ export const useSearchBox = ({
             ? Routes.GROUP_OF_STOP_PLACE
             : Routes.STOP_PLACE;
 
-        if (stopPlaceId && entityType !== "GROUP_OF_STOP_PLACE") {
+        if (stopPlaceId && entityType === "GROUP_OF_STOP_PLACE") {
+          // Fetch group of stop places data
+          dispatch(getGroupOfStopPlacesById(stopPlaceId))
+            .then(() => {
+              // Navigate to edit page after fetching group data
+              dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
+            })
+            .finally(() => {
+              setLoadingSelection(false);
+              setLoadingStopPlaceName("");
+            });
+        } else if (stopPlaceId) {
+          // Fetch stop place data
           dispatch(getStopPlaceById(stopPlaceId))
             .then(({ data }: any) => {
               if (data.stopPlace && data.stopPlace.length) {

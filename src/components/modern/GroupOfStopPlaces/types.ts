@@ -46,6 +46,9 @@ export interface GroupOfStopPlaces {
   description?: string;
   members: StopPlace[];
   permissions?: GroupOfStopPlacesPermissions;
+  created?: string;
+  modified?: string;
+  version?: string;
 }
 
 // Redux state interfaces

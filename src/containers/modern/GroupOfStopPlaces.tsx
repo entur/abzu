@@ -12,7 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { StopPlacesGroupActions, UserActions } from "../../actions/";
 import { getGroupOfStopPlacesById } from "../../actions/TiamatActions";
 import GroupErrorDialog from "../../components/Dialogs/GroupErrorDialog";
@@ -60,47 +61,52 @@ const GroupOfStopPlaces: React.FC = () => {
     });
   };
 
-  const handleNewGroupOfStopPlace = () => {
+  const handleNewGroupOfStopPlace = useCallback(() => {
     if (sourceForNewGroup) {
       dispatch(StopPlacesGroupActions.createNewGroup(sourceForNewGroup));
     } else {
       dispatch(UserActions.navigateTo("/", ""));
     }
-  };
+  }, [dispatch, sourceForNewGroup]);
 
-  const handleFetchGroup = (groupId: string) => {
-    setIsLoadingGroup(true);
+  const handleFetchGroup = useCallback(
+    (groupId: string) => {
+      setIsLoadingGroup(true);
 
-    dispatch(getGroupOfStopPlacesById(groupId))
-      .then(({ data }: any) => {
-        setIsLoadingGroup(false);
-        if (data.groupOfStopPlaces && !data.groupOfStopPlaces.length) {
+      dispatch(getGroupOfStopPlacesById(groupId))
+        .then(({ data }: any) => {
+          setIsLoadingGroup(false);
+          if (data.groupOfStopPlaces && !data.groupOfStopPlaces.length) {
+            setErrorDialog({
+              open: true,
+              type: "NOT_FOUND",
+            });
+          }
+        })
+        .catch(() => {
           setErrorDialog({
             open: true,
-            type: "NOT_FOUND",
+            type: "SERVER_ERROR",
           });
-        }
-      })
-      .catch(() => {
-        setErrorDialog({
-          open: true,
-          type: "SERVER_ERROR",
         });
-      });
-  };
+    },
+    [dispatch],
+  );
+
+  // Get groupId from route params
+  const { groupId } = useParams<{ groupId: string }>();
 
   useEffect(() => {
-    const idFromPath = window.location.pathname
-      .substring(window.location.pathname.lastIndexOf("/"))
-      .replace("/", "");
-    const isNewGroup = idFromPath === "new";
+    if (!groupId) return;
+
+    const isNewGroup = groupId === "new";
 
     if (isNewGroup) {
       handleNewGroupOfStopPlace();
-    } else if (idFromPath) {
-      handleFetchGroup(idFromPath);
+    } else {
+      handleFetchGroup(groupId);
     }
-  }, []);
+  }, [groupId, handleNewGroupOfStopPlace, handleFetchGroup]); // Re-fetch when groupId changes
 
   return (
     <div>

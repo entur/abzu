@@ -120,6 +120,7 @@ export const ParentStopPlaceChildren: React.FC<
               <ListItemText
                 primary={child.name}
                 secondary={<StopPlaceLink id={child.id} />}
+                secondaryTypographyProps={{ component: "div" }}
               />
             </Box>
             {canEdit && (

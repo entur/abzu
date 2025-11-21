@@ -23,7 +23,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { useIntl } from "react-intl";
-import { CopyIdButton } from "../../Shared";
+import { Entities } from "../../../../models/Entities";
+import { CopyIdButton, FavoriteButton } from "../../Shared";
 import { ParentStopPlaceHeaderProps } from "../types";
 
 /**
@@ -92,6 +93,18 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
           </Box>
         )}
       </Box>
+
+      {stopPlace.id && (
+        <FavoriteButton
+          id={stopPlace.id}
+          name={originalStopPlace.name}
+          entityType={Entities.STOP_PLACE}
+          isParent={true}
+          topographicPlace={stopPlace.topographicPlace}
+          parentTopographicPlace={stopPlace.parentTopographicPlace}
+          location={stopPlace.position}
+        />
+      )}
 
       {onCollapse && (
         <IconButton

@@ -95,104 +95,109 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             },
           },
         }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={formatMessage({ id: "filter_by_name" })}
-            variant="outlined"
-            fullWidth
-            size="small"
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                endAdornment: (
-                  <>
-                    {params.InputProps.endAdornment}
-                    {onToggleFavorites && (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={onToggleFavorites}
-                          size="small"
-                          sx={{
-                            marginRight: onToggleFilters ? 0 : -1,
-                            color: showFavorites
-                              ? theme.palette.warning.main
-                              : theme.palette.action.active,
-                          }}
-                          aria-label={formatMessage({ id: "toggle_favorites" })}
-                        >
-                          <StarIcon fontSize="small" />
-                        </IconButton>
-                      </InputAdornment>
-                    )}
-                    {onToggleFilters && (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={onToggleFilters}
-                          size="small"
-                          sx={{
-                            marginRight: -1,
-                            color: showFilters
-                              ? theme.palette.warning.main
-                              : theme.palette.action.active,
-                          }}
-                          aria-label={formatMessage({ id: "toggle_filters" })}
-                        >
-                          {activeFilterCount > 0 ? (
-                            <Badge
-                              badgeContent={activeFilterCount}
-                              color="primary"
-                              variant="standard"
-                            >
-                              <FilterIcon
-                                fontSize="small"
-                                sx={{
-                                  color: showFilters
-                                    ? theme.palette.warning.main
-                                    : theme.palette.action.active,
-                                }}
-                              />
-                            </Badge>
-                          ) : (
-                            <FilterIcon fontSize="small" />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    )}
-                  </>
-                ),
-              },
-            }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: 2,
-                backgroundColor: theme.palette.background.default,
-                "&:hover": {
-                  "& > fieldset": {
-                    borderColor: theme.palette.primary.main,
+        renderInput={(params) => {
+          const { borderRadius, ...textFieldProps } = params as any;
+          return (
+            <TextField
+              {...textFieldProps}
+              label={formatMessage({ id: "filter_by_name" })}
+              variant="outlined"
+              fullWidth
+              size="small"
+              slotProps={{
+                input: {
+                  ...params.InputProps,
+                  endAdornment: (
+                    <>
+                      {params.InputProps.endAdornment}
+                      {onToggleFavorites && (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={onToggleFavorites}
+                            size="small"
+                            sx={{
+                              marginRight: onToggleFilters ? 0 : -1,
+                              color: showFavorites
+                                ? theme.palette.warning.main
+                                : theme.palette.action.active,
+                            }}
+                            aria-label={formatMessage({
+                              id: "toggle_favorites",
+                            })}
+                          >
+                            <StarIcon fontSize="small" />
+                          </IconButton>
+                        </InputAdornment>
+                      )}
+                      {onToggleFilters && (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={onToggleFilters}
+                            size="small"
+                            sx={{
+                              marginRight: -1,
+                              color: showFilters
+                                ? theme.palette.warning.main
+                                : theme.palette.action.active,
+                            }}
+                            aria-label={formatMessage({ id: "toggle_filters" })}
+                          >
+                            {activeFilterCount > 0 ? (
+                              <Badge
+                                badgeContent={activeFilterCount}
+                                color="primary"
+                                variant="standard"
+                              >
+                                <FilterIcon
+                                  fontSize="small"
+                                  sx={{
+                                    color: showFilters
+                                      ? theme.palette.warning.main
+                                      : theme.palette.action.active,
+                                  }}
+                                />
+                              </Badge>
+                            ) : (
+                              <FilterIcon fontSize="small" />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )}
+                    </>
+                  ),
+                },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.background.default,
+                  "&:hover": {
+                    "& > fieldset": {
+                      borderColor: theme.palette.primary.main,
+                    },
+                  },
+                  "&.Mui-focused": {
+                    "& > fieldset": {
+                      borderWidth: 0,
+                      borderColor: theme.palette.primary.main,
+                    },
+                  },
+                  "&.Mui-expanded": {
+                    "& > fieldset": {
+                      borderWidth: 0,
+                      border: "none",
+                    },
                   },
                 },
-                "&.Mui-focused": {
-                  "& > fieldset": {
-                    borderWidth: 0,
-                    borderColor: theme.palette.primary.main,
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: "transparent",
                   },
                 },
-                "&.Mui-expanded": {
-                  "& > fieldset": {
-                    borderWidth: 0,
-                    border: "none",
-                  },
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: "transparent",
-                },
-              },
-            }}
-          />
-        )}
+              }}
+            />
+          );
+        }}
       />
     </div>
   );
