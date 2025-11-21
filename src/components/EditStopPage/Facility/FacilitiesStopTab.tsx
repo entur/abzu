@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import { useState } from "react";
 import { EntityType } from "../../../models/Entities";
-import PlaceFeatures from "../PlaceFeatures";
+import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import GeneralSign from "./GeneralSign";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
@@ -37,7 +37,6 @@ interface Props {
 const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
   const entityType: EntityType = "stopPlace";
-  console.log(stopPlace);
 
   return (
     <div style={{ padding: 10 }}>

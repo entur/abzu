@@ -587,5 +587,15 @@
   "liftFreeAccess_stopPlace_hint": "Är alla kajer för denna hållplats tillgängliga via hiss?",
   "liftFreeAccess_hint": "Tillgänglighet till hiss",
   "liftFreeAccess": "Tillträde via hiss",
-  "liftFreeAccess_no": "Ingen tillgång via hiss"
+  "liftFreeAccess_no": "Ingen tillgång via hiss",
+  "assistanceService": "Assistanstjänst",
+  "assistanceService_no": "Ingen assistanstjänst",
+  "assistanceServiceAvailability": "Assistanstillgänglighet",
+  "assistanceServiceAvailability_availableIfBooked": "Kräver bokning",
+  "assistanceServiceAvailability_availableAtCertainTimes": "Tillgänglig vid en viss tidpunkt",
+  "assistanceServiceAvailability_available": "Tillgänglig",
+  "assistanceServiceAvailability_unknown": "Okänd",
+  "assistanceServiceAvailability_none": "Ingen",
+  "assistance": "Assistans",
+  "assistanceService_stopPlace_hint": "Har hållplatsen assistanstjänster, och vilken typ?"
 }

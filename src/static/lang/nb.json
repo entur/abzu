@@ -590,5 +590,15 @@
   "liftFreeAccess_stopPlace_hint": "Er alle quayene for dette stoppestedet tilgjengelige med heis?",
   "liftFreeAccess_hint": "Tilgjengelighet til heis",
   "liftFreeAccess": "Tilgang via heis",
-  "liftFreeAccess_no": "Ingen tilgang via heis"
+  "liftFreeAccess_no": "Ingen tilgang via heis",
+  "assistanceService": "Assistansetjeneste",
+  "assistanceService_no": "Ingen assistansetjeneste",
+  "assistanceServiceAvailability": "Assistansetilgjengelighet",
+  "assistanceServiceAvailability_availableIfBooked": "Krever bestilling",
+  "assistanceServiceAvailability_availableAtCertainTimes": "Tilgjengelig på bestemte tidspunkter",
+  "assistanceServiceAvailability_available": "Tilgjengelig",
+  "assistanceServiceAvailability_unknown": "Ukjent",
+  "assistanceServiceAvailability_none": "Ingen",
+  "assistance": "Assistanse",
+  "assistanceService_stopPlace_hint": "Tilbyr holdeplassen assistansetjenester, og hva slags?"
 }
