@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { MenuItem as MenuItemComponent } from "@mui/material";
+import { Box } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { extractCoordinates } from "../../../../../utils/";
 import { createSearchMenuItem } from "../../components";
@@ -65,7 +65,7 @@ export const useSearchMenuItems = (
           text: `Go to ${coordinates[0]}, ${coordinates[1]}`,
           id: "coordinates",
           menuDiv: (
-            <MenuItemComponent className="search-menu-item">
+            <Box className="search-menu-item" sx={{ py: 1, px: 2 }}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div
                   style={{
@@ -83,7 +83,7 @@ export const useSearchMenuItems = (
                   </div>
                 </div>
               </div>
-            </MenuItemComponent>
+            </Box>
           ),
         },
       ];
@@ -99,12 +99,17 @@ export const useSearchMenuItems = (
           text: searchText,
           id: null,
           menuDiv: (
-            <MenuItemComponent
-              disabled={true}
+            <Box
               className="search-menu-item no-results"
+              sx={{
+                py: 1,
+                px: 2,
+                color: "text.disabled",
+                cursor: "default",
+              }}
             >
               {formatMessage({ id: "no_results_found" })}
-            </MenuItemComponent>
+            </Box>
           ),
         },
       ];
@@ -117,9 +122,17 @@ export const useSearchMenuItems = (
         text: searchText,
         id: "filter-notification",
         menuDiv: (
-          <MenuItemComponent
+          <Box
             onClick={removeFiltersAndSearch}
             className="search-menu-item filter-notification"
+            sx={{
+              py: 1,
+              px: 2,
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "action.hover",
+              },
+            }}
           >
             <div className="filter-notification-content">
               <div className="filter-notification-title">
@@ -129,7 +142,7 @@ export const useSearchMenuItems = (
                 {formatMessage({ id: "remove" })}
               </div>
             </div>
-          </MenuItemComponent>
+          </Box>
         ),
       };
 

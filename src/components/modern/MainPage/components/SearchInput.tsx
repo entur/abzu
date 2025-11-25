@@ -19,9 +19,9 @@ import {
 import {
   Autocomplete,
   Badge,
+  Box,
   IconButton,
   InputAdornment,
-  MenuItem,
   TextField,
   useTheme,
 } from "@mui/material";
@@ -54,21 +54,20 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         value={null}
         filterOptions={(options) => options} // Disable client-side filtering
         loadingText={
-          <MenuItem className="search-menu-item loading">
+          <Box
+            className="search-menu-item loading"
+            sx={{ py: 1, px: 2, display: "flex", alignItems: "center", gap: 1 }}
+          >
             <MdSpinner className="search-loading-spinner" />
             <span>{formatMessage({ id: "loading" })}</span>
-          </MenuItem>
+          </Box>
         }
         onInputChange={onSearchUpdate}
         inputValue={stopPlaceSearchValue}
         renderOption={(props, option) => (
-          <MenuItem
-            {...props}
-            key={option.id || option.text}
-            className="search-menu-item"
-          >
+          <li {...props} key={option.id || option.text}>
             {option.menuDiv}
-          </MenuItem>
+          </li>
         )}
         onChange={(event, value) => onNewRequest(event, value as any)}
         getOptionLabel={(option) =>
