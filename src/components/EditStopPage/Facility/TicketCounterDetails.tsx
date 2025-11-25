@@ -5,7 +5,7 @@ import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import EquipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { getIn } from "../../../utils";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
@@ -74,25 +74,25 @@ const TicketCounterDetails = ({
         padding: "3px 15px",
       }}
     >
-      <FacilityCheckbox
+      <FeatureCheckbox
         icon={<HearingIcon />}
-        handleFacilityChange={(value: boolean) =>
+        handleFeatureStateChange={(value: boolean) =>
           handleValueForTicketCounterChange({
             inductionLoops: value,
           })
         }
-        facilityName={FacilityDetailEnum.INDUCTION_LOOPS}
-        isFacilityPresent={inductionLoopsAvailable}
+        name={FacilityDetailEnum.INDUCTION_LOOPS}
+        isFeaturePresent={inductionLoopsAvailable}
       />
-      <FacilityCheckbox
+      <FeatureCheckbox
         icon={<WheelChair />}
-        handleFacilityChange={(value: boolean) =>
+        handleFeatureStateChange={(value: boolean) =>
           handleValueForTicketCounterChange({
             lowCounterAccess: value,
           })
         }
-        facilityName={FacilityDetailEnum.LOW_COUNTER_ACCESS}
-        isFacilityPresent={lowCounterAccessAvailable}
+        name={FacilityDetailEnum.LOW_COUNTER_ACCESS}
+        isFeaturePresent={lowCounterAccessAvailable}
       />
     </div>
   );

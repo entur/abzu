@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
+import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { WaitingRoom as WaitingRoomIcon } from "../../../static/icons/facilities/WaitingRoom";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const WaitingRoom = ({
@@ -14,7 +14,7 @@ const WaitingRoom = ({
   entityType,
 }: FacilityProps) => {
   const dispatch = useDispatch();
-  const isWaitingRoomPresent = equiptmentHelpers.isWaitingRoomPresent(entity);
+  const isWaitingRoomPresent = equipmentHelpers.isWaitingRoomPresent(entity);
 
   const handleWaitingRoomChange = (value: boolean) => {
     if (disabled) {
@@ -30,11 +30,11 @@ const WaitingRoom = ({
   };
 
   return (
-    <FacilityCheckbox
+    <FeatureCheckbox
       icon={<WaitingRoomIcon />}
-      handleFacilityChange={handleWaitingRoomChange}
-      facilityName={FacilityEnum.WAITING_ROOM_EQUIPMENT}
-      isFacilityPresent={isWaitingRoomPresent}
+      handleFeatureStateChange={handleWaitingRoomChange}
+      name={FacilityEnum.WAITING_ROOM_EQUIPMENT}
+      isFeaturePresent={isWaitingRoomPresent}
     />
   );
 };

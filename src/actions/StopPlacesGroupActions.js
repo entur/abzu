@@ -43,6 +43,16 @@ StopPlacesGroupActions.changeDescription = (description) => (dispatch) => {
   );
 };
 
+StopPlacesGroupActions.changePurposeOfGrouping =
+  (purposeOfGrouping) => (dispatch) => {
+    dispatch(
+      createThunk(
+        types.CHANGED_STOP_PLACE_GROUP_PURPOSE_OF_GROUPING,
+        purposeOfGrouping,
+      ),
+    );
+  };
+
 StopPlacesGroupActions.removeMemberFromGroup = (stopPlaceId) => (dispatch) => {
   dispatch(createThunk(types.REMOVED_GROUP_MEMBER, stopPlaceId));
 };

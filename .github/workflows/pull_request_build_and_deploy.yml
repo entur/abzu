@@ -10,7 +10,7 @@ jobs:
       checks: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v4
@@ -34,7 +34,7 @@ jobs:
       - run: npm run test -- run --coverage --coverage.reporter=lcov --reporter=vitest-sonar-reporter --outputFile.vitest-sonar-reporter=test-report.xml --reporter=default
       - name: SonarQube Scan
         if: github.event.pull_request.head.repo.fork == false
-        uses: sonarsource/sonarqube-scan-action@v5.3.2
+        uses: sonarsource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
           SONAR_HOST_URL: https://sonarcloud.io
@@ -50,6 +50,10 @@ jobs:
       - run: npm run build
       - name: Copy bootstrap config
         run: cp .github/environments/dev.json build/bootstrap.json
+      - name: Copy firebase config
+        run: cp .github/environments/firebase.json firebase.json
+      - name: Copy firebase config
+        run: cp .github/environments/.firebaserc .firebaserc
       - uses: FirebaseExtended/action-hosting-deploy@v0
         if: github.event.pull_request.head.repo.fork == false
         with:
@@ -57,3 +61,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_ROR_ABZU_DEV }}'
           projectId: ent-ror-abzu-dev
           target: dev
+          expires: 3d

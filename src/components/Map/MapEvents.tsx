@@ -7,7 +7,7 @@ export interface MapEventsProps {
   onDblclick: () => void;
   onZoomEnd: () => void;
   onMoveEnd: () => void;
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export const MapEvents: React.FC<MapEventsProps> = ({

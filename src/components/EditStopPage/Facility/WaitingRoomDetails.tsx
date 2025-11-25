@@ -6,7 +6,7 @@ import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import Heated from "../../../static/icons/facilities/Heated";
 import { getIn } from "../../../utils";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
   FacilityDetail as FacilityDetailEnum,
   FacilityProps,
@@ -94,21 +94,21 @@ const WaitingRoomDetails = ({
             justifyContent: "space-around",
           }}
         >
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<StairsIcon />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ stepFree: value })
             }
-            facilityName={FacilityDetailEnum.STEP_FREE}
-            isFacilityPresent={waitingRoomStepFree}
+            name={FacilityDetailEnum.STEP_FREE}
+            isFeaturePresent={waitingRoomStepFree}
           />
-          <FacilityCheckbox
+          <FeatureCheckbox
             icon={<Heated />}
-            handleFacilityChange={(value: boolean) =>
+            handleFeatureStateChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ heated: value })
             }
-            facilityName={FacilityDetailEnum.HEATED}
-            isFacilityPresent={waitingRoomHeated}
+            name={FacilityDetailEnum.HEATED}
+            isFeaturePresent={waitingRoomHeated}
           />
         </div>
       </div>

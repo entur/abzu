@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
 import schema from "./Tiamat/schema.json";
 
@@ -33,7 +33,13 @@ let otpClient = null;
 export const getTiamatClient = () => {
   if (tiamatClient === null) {
     tiamatClient = new ApolloClient({
-      uri: window.config.tiamatBaseUrl,
+      link: new HttpLink({
+        uri: window.config.tiamatBaseUrl,
+        headers: {
+          "ET-Client-Name": CLIENT_NAME,
+          "Et-Client-Id": window.config.hostname,
+        },
+      }),
       cache: new InMemoryCache({
         typePolicies: {
           StopPlace: {
@@ -45,10 +51,6 @@ export const getTiamatClient = () => {
         },
         possibleTypes,
       }),
-      headers: {
-        "ET-Client-Name": CLIENT_NAME,
-        "Et-Client-Id": window.config.hostname,
-      },
     });
   }
 
@@ -58,12 +60,14 @@ export const getTiamatClient = () => {
 export const getOTPClient = () => {
   if (otpClient === null) {
     otpClient = new ApolloClient({
-      uri: window.config.OTPUrl,
+      link: new HttpLink({
+        uri: window.config.OTPUrl,
+        headers: {
+          "ET-Client-Name": CLIENT_NAME,
+          "Et-Client-Id": window.config.hostname,
+        },
+      }),
       cache: new InMemoryCache(),
-      headers: {
-        "ET-Client-Name": CLIENT_NAME,
-        "Et-Client-Id": window.config.hostname,
-      },
     });
   }
 

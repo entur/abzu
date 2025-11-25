@@ -18,6 +18,7 @@ import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
 import limitationHelpers from "../modelUtils/limitationHelpers";
+import localServicesHelpers from "../modelUtils/localServicesHelpers";
 import formatHelpers from "../modelUtils/mapToClient";
 import SettingsManager from "../singletons/SettingsManager";
 import { setDecimalPrecision } from "../utils/";
@@ -727,6 +728,24 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.SET_STOP_PLACE_LOADING:
       return Object.assign({}, state, {
         loading: action.payload,
+      });
+
+    case types.CHANGED_ASSISTANCE_SERVICE_STATE:
+      return Object.assign({}, state, {
+        current: localServicesHelpers.updateAssistanceServiceState(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_ASSISTANCE_SERVICE_AVAILABILITY_STATE:
+      return Object.assign({}, state, {
+        current: localServicesHelpers.updateAssistanceServiceState(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
       });
 
     default:

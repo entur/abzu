@@ -9,10 +9,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22.21.1
+          node-version: 24.11.1
       - name: Configure git user
         run: |
           git config --global user.name 'Latest version bot'
@@ -39,7 +39,7 @@ jobs:
       - run: npm run check
       - run: npm run test -- run --coverage --coverage.reporter=lcov --reporter=vitest-sonar-reporter --outputFile.vitest-sonar-reporter=test-report.xml --reporter=default
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v5.3.2
+        uses: sonarsource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
           SONAR_HOST_URL: https://sonarcloud.io
@@ -60,7 +60,7 @@ jobs:
         env:
           REACT_APP_VERSION: ${{ env.VERSION }}
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build
           path: |
