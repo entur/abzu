@@ -6,7 +6,6 @@ export interface Config {
   tiamatBaseUrl?: string;
   baatTokenProxyEndpoint?: string;
   sentryDSN?: string;
-  googleApiKey?: string;
   tiamatEnv?: string;
   preferredNameNamespace?: string;
   claimsNamespace?: string;
