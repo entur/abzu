@@ -12,15 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
-import { Box, Button, Divider, useTheme } from "@mui/material";
+import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { ParentStopPlaceActionsProps } from "../types";
 
 /**
  * Actions section for parent stop place
  * Contains Terminate, Undo, and Save buttons
+ * Aligned with GroupOfStopPlacesActions design
  */
 export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
   hasId,
@@ -34,7 +36,6 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
   onUndo,
   onSave,
 }) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
 
   // Can't save if:
@@ -42,17 +43,17 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
   // - New stop with no children
   // - Not modified (unless expired)
   // - Can't edit
-  const canSave =
-    hasName && (hasId || hasChildren) && (isModified || hasExpired) && canEdit;
-
-  // Can terminate if:
-  // - Has ID (not new)
-  // - Can delete
-  // - Not already expired
-  const canTerminate = hasId && canDelete && !hasExpired;
+  const isSaveDisabled =
+    !hasName ||
+    (!hasId && !hasChildren) ||
+    (!isModified && !hasExpired) ||
+    !canEdit;
 
   // Can undo if modified or expired
-  const canUndo = (isModified || hasExpired) && canEdit;
+  const isUndoDisabled = (!isModified && !hasExpired) || !canEdit;
+
+  // Can terminate if has delete permission and not expired
+  const isTerminateDisabled = !canDelete || hasExpired;
 
   return (
     <>
@@ -60,36 +61,34 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
       <Box
         sx={{
           display: "flex",
+          justifyContent: "space-around",
           gap: 1,
-          p: 2,
+          p: 1.5,
           bgcolor: "background.paper",
-          borderTop: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Button
-          variant="outlined"
-          size="small"
-          disabled={!canTerminate}
-          onClick={onTerminate}
-          sx={{
-            flex: 1,
-            textTransform: "none",
-            fontSize: "0.75rem",
-          }}
-        >
-          {formatMessage({ id: "terminate_stop_place" })}
-        </Button>
+        {hasId && (
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            startIcon={<DeleteIcon />}
+            onClick={onTerminate}
+            disabled={isTerminateDisabled}
+            sx={{ flex: 1 }}
+          >
+            {formatMessage({
+              id: hasExpired ? "delete_stop_place" : "terminate_stop_place",
+            })}
+          </Button>
+        )}
         <Button
           variant="outlined"
           size="small"
           startIcon={<UndoIcon />}
-          disabled={!canUndo}
           onClick={onUndo}
-          sx={{
-            flex: 1,
-            textTransform: "none",
-            fontSize: "0.75rem",
-          }}
+          disabled={isUndoDisabled}
+          sx={{ flex: 1 }}
         >
           {formatMessage({ id: "undo_changes" })}
         </Button>
@@ -97,15 +96,11 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
           variant="contained"
           size="small"
           startIcon={<SaveIcon />}
-          disabled={!canSave}
           onClick={onSave}
-          sx={{
-            flex: 1,
-            textTransform: "none",
-            fontSize: "0.75rem",
-          }}
+          disabled={isSaveDisabled}
+          sx={{ flex: 1 }}
         >
-          {formatMessage({ id: "save_new_version" })}
+          {formatMessage({ id: "save" })}
         </Button>
       </Box>
     </>

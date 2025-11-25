@@ -12,361 +12,120 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
-import { StopPlaceActions, UserActions } from "../../../../actions";
-import {
-  addTag,
-  addToMultiModalStopPlace,
-  createParentStopPlace,
-  deleteStopPlace,
-  findTagByName,
-  getNeighbourStops,
-  getStopPlaceVersions,
-  getTags,
-  removeStopPlaceFromMultiModalStop,
-  removeTag,
-  saveParentStopPlace,
-  terminateStop,
-} from "../../../../actions/TiamatActions";
-import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
-import { useAppDispatch } from "../../../../store/hooks";
-import { getStopPermissions } from "../../../../utils/permissionsUtils";
-import { RootState, UseEditParentStopPlaceReturn } from "../types";
+import { useCallback } from "react";
+import { UseEditParentStopPlaceReturn } from "../types";
+import { useParentStopPlaceChildren } from "./editParent/useParentStopPlaceChildren";
+import { useParentStopPlaceCRUD } from "./editParent/useParentStopPlaceCRUD";
+import { useParentStopPlaceDialogs } from "./editParent/useParentStopPlaceDialogs";
+import { useParentStopPlaceForm } from "./editParent/useParentStopPlaceForm";
+import { useParentStopPlaceState } from "./editParent/useParentStopPlaceState";
 
+/**
+ * Main orchestrator hook for parent stop place editing
+ * Combines all sub-hooks and provides unified interface
+ * Refactored from 427 lines into 6 focused hooks
+ */
 export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
-  const dispatch = useAppDispatch();
+  // 1. State management (Redux selectors, permissions)
+  const {
+    stopPlace,
+    originalStopPlace,
+    isModified,
+    versions,
+    isLoading,
+    activeMap,
+    canEdit,
+    canDelete,
+  } = useParentStopPlaceState();
 
-  // Redux selectors
-  const stopPlace = useSelector((state: RootState) => state.stopPlace.current);
-  const originalStopPlace = useSelector(
-    (state: RootState) => state.stopPlace.originalCurrent,
-  );
-  const isModified = useSelector(
-    (state: RootState) => state.stopPlace.stopHasBeenModified,
-  );
-  const versions = useSelector((state: RootState) => state.stopPlace.versions);
-  const isLoading = useSelector((state: RootState) => state.stopPlace.loading);
-  const activeMap = useSelector((state: RootState) => state.mapUtils.activeMap);
+  // 2. Dialog state management
+  const {
+    confirmSaveDialogOpen,
+    confirmGoBackOpen,
+    confirmUndoOpen,
+    terminateStopDialogOpen,
+    removeChildDialogOpen,
+    addChildDialogOpen,
+    addAdjacentDialogOpen,
+    altNamesDialogOpen,
+    tagsDialogOpen,
+    coordinatesDialogOpen,
+    removingChildId,
+    handleOpenSaveDialog,
+    handleCloseSaveDialog,
+    handleOpenGoBackDialog,
+    handleCloseGoBackDialog,
+    handleOpenUndoDialog,
+    handleCloseUndoDialog,
+    handleOpenRemoveChildDialog,
+    handleCloseRemoveChildDialog,
+    handleOpenAddChildDialog,
+    handleCloseAddChildDialog,
+    handleOpenAltNamesDialog,
+    handleCloseAltNamesDialog,
+    handleOpenTagsDialog,
+    handleCloseTagsDialog,
+    handleOpenCoordinatesDialog,
+    handleCloseCoordinatesDialog,
+  } = useParentStopPlaceDialogs();
 
-  const permissions = getStopPermissions(stopPlace) as any;
-  const canEdit = permissions.canEdit;
-  const canDelete = permissions.canDelete || permissions.canDeleteStop || false;
-
-  // Dialog states
-  const [confirmSaveDialogOpen, setConfirmSaveDialogOpen] = useState(false);
-  const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
-  const [confirmUndoOpen, setConfirmUndoOpen] = useState(false);
-  const [terminateStopDialogOpen, setTerminateStopDialogOpen] = useState(false);
-  const [removeChildDialogOpen, setRemoveChildDialogOpen] = useState(false);
-  const [addChildDialogOpen, setAddChildDialogOpen] = useState(false);
-  const [addAdjacentDialogOpen, setAddAdjacentDialogOpen] = useState(false);
-  const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
-  const [tagsDialogOpen, setTagsDialogOpen] = useState(false);
-  const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
-  const [removingChildId, setRemovingChildId] = useState("");
-
-  // Save handlers
-  const handleOpenSaveDialog = useCallback(() => {
-    setConfirmSaveDialogOpen(true);
-  }, []);
-
-  const handleCloseSaveDialog = useCallback(() => {
-    setConfirmSaveDialogOpen(false);
-  }, []);
-
-  const handleSave = useCallback(
-    (userInput: any) => {
-      if (!stopPlace) return;
-
-      setConfirmSaveDialogOpen(false);
-
-      if (stopPlace.isNewStop) {
-        const variables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace as any,
-          userInput,
-        );
-        dispatch(createParentStopPlace(variables as any)).then(({ data }) => {
-          if (data && data.createMultiModalStopPlace) {
-            const id = data.createMultiModalStopPlace.id;
-            dispatch(UserActions.navigateTo(`/stop_place/`, id));
-          }
-        });
-      } else {
-        const childrenToAdd = stopPlace.children
-          .filter((child) => child.notSaved)
-          .map((child) => child.id);
-
-        const variables = mapToMutationVariables.mapParentStopToVariables(
-          stopPlace as any,
-          userInput,
-        );
-
-        if (childrenToAdd.length) {
-          dispatch(addToMultiModalStopPlace(stopPlace.id!, childrenToAdd)).then(
-            () => {
-              dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-                if (data?.mutateParentStopPlace?.[0]?.id) {
-                  dispatch(
-                    getStopPlaceVersions(data.mutateParentStopPlace[0].id),
-                  );
-                  dispatch(
-                    getNeighbourStops(
-                      data.mutateParentStopPlace[0].id,
-                      activeMap?.getBounds(),
-                    ),
-                  );
-                }
-              });
-            },
-          );
-        } else {
-          dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-            if (data?.mutateParentStopPlace?.[0]?.id) {
-              dispatch(getStopPlaceVersions(data.mutateParentStopPlace[0].id));
-              dispatch(
-                getNeighbourStops(
-                  data.mutateParentStopPlace[0].id,
-                  activeMap?.getBounds(),
-                ),
-              );
-            }
-          });
-        }
-      }
-    },
-    [stopPlace, dispatch, activeMap],
+  // 3. CRUD operations (save, undo, go back, terminate)
+  const {
+    handleSave,
+    handleAllowUserToGoBack: handleGoBackCheck,
+    handleGoBack,
+    handleUndo,
+    handleOpenTerminateDialog,
+    handleCloseTerminateDialog,
+    handleTerminate,
+  } = useParentStopPlaceCRUD(
+    stopPlace,
+    isModified,
+    activeMap,
+    handleCloseSaveDialog,
+    handleCloseGoBackDialog,
+    handleCloseUndoDialog,
   );
 
-  // Go back handlers
+  // 4. Children and adjacent sites management
+  const {
+    handleRemoveChild,
+    handleAddChildren,
+    handleOpenAddAdjacentDialog,
+    handleCloseAddAdjacentDialog,
+    handleAddAdjacentSite,
+    handleRemoveAdjacentSite,
+  } = useParentStopPlaceChildren(
+    stopPlace,
+    removingChildId,
+    handleCloseRemoveChildDialog,
+    handleCloseAddChildDialog,
+  );
+
+  // 5. Form fields, coordinates, and tags
+  const {
+    handleNameChange,
+    handleDescriptionChange,
+    handleUrlChange,
+    handleSetCoordinates,
+    handleAddTag,
+    handleGetTags,
+    handleRemoveTag,
+    handleFindTagByName,
+  } = useParentStopPlaceForm(handleCloseCoordinatesDialog);
+
+  // Wrapper for go back that opens dialog if modified
   const handleAllowUserToGoBack = useCallback(() => {
-    if (isModified) {
-      setConfirmGoBackOpen(true);
-    } else {
-      dispatch(UserActions.navigateTo("/", ""));
+    const shouldShowDialog = handleGoBackCheck();
+    if (shouldShowDialog) {
+      handleOpenGoBackDialog();
     }
-  }, [isModified, dispatch]);
+  }, [handleGoBackCheck, handleOpenGoBackDialog]);
 
-  const handleGoBack = useCallback(() => {
-    setConfirmGoBackOpen(false);
-    dispatch(UserActions.navigateTo("/", ""));
-  }, [dispatch]);
-
+  // Wrapper for cancel go back
   const handleCancelGoBack = useCallback(() => {
-    setConfirmGoBackOpen(false);
-  }, []);
-
-  // Undo handlers
-  const handleOpenUndoDialog = useCallback(() => {
-    setConfirmUndoOpen(true);
-  }, []);
-
-  const handleCloseUndoDialog = useCallback(() => {
-    setConfirmUndoOpen(false);
-  }, []);
-
-  const handleUndo = useCallback(() => {
-    setConfirmUndoOpen(false);
-    dispatch(StopPlaceActions.discardChangesForEditingStop());
-  }, [dispatch]);
-
-  // Terminate/Delete handlers
-  const handleOpenTerminateDialog = useCallback(() => {
-    if (stopPlace?.id) {
-      dispatch(UserActions.requestTerminateStopPlace(stopPlace.id));
-    }
-  }, [stopPlace, dispatch]);
-
-  const handleCloseTerminateDialog = useCallback(() => {
-    dispatch(UserActions.hideDeleteStopDialog());
-  }, [dispatch]);
-
-  const handleTerminate = useCallback(
-    (
-      shouldHardDelete: boolean,
-      shouldTerminatePermanently: boolean,
-      comment: string,
-      dateTime: string,
-    ) => {
-      if (!stopPlace?.id) return;
-
-      if (shouldHardDelete) {
-        dispatch(deleteStopPlace(stopPlace.id)).then((response) => {
-          dispatch(UserActions.hideDeleteStopDialog());
-          if (response.data.deleteStopPlace) {
-            dispatch(UserActions.navigateToMainAfterDelete());
-          }
-        });
-      } else {
-        dispatch(
-          terminateStop(
-            stopPlace.id,
-            shouldTerminatePermanently,
-            comment,
-            dateTime,
-          ),
-        ).then(() => {
-          dispatch(getStopPlaceVersions(stopPlace.id!));
-          dispatch(UserActions.hideDeleteStopDialog());
-        });
-      }
-    },
-    [stopPlace, dispatch],
-  );
-
-  // Child handlers
-  const handleOpenRemoveChildDialog = useCallback((stopPlaceId: string) => {
-    setRemovingChildId(stopPlaceId);
-    setRemoveChildDialogOpen(true);
-  }, []);
-
-  const handleCloseRemoveChildDialog = useCallback(() => {
-    setRemoveChildDialogOpen(false);
-    setRemovingChildId("");
-  }, []);
-
-  const handleRemoveChild = useCallback(() => {
-    if (!stopPlace?.id || !removingChildId) return;
-
-    dispatch(
-      removeStopPlaceFromMultiModalStop(stopPlace.id, removingChildId),
-    ).then(() => {
-      dispatch(getStopPlaceVersions(stopPlace.id!));
-      setRemoveChildDialogOpen(false);
-      setRemovingChildId("");
-    });
-  }, [stopPlace, removingChildId, dispatch]);
-
-  const handleOpenAddChildDialog = useCallback(() => {
-    setAddChildDialogOpen(true);
-  }, []);
-
-  const handleCloseAddChildDialog = useCallback(() => {
-    setAddChildDialogOpen(false);
-  }, []);
-
-  const handleAddChildren = useCallback(
-    (stopPlaceIds: string[]) => {
-      // TODO: Implement add children logic
-      setAddChildDialogOpen(false);
-    },
-    [dispatch],
-  );
-
-  // Adjacent site handlers
-  const handleOpenAddAdjacentDialog = useCallback(() => {
-    dispatch(UserActions.showAddAdjacentStopDialog());
-  }, [dispatch]);
-
-  const handleCloseAddAdjacentDialog = useCallback(() => {
-    dispatch(UserActions.hideAddAdjacentStopDialog());
-  }, [dispatch]);
-
-  const handleAddAdjacentSite = useCallback(
-    (stopPlaceId1: string, stopPlaceId2: string) => {
-      dispatch(
-        StopPlaceActions.addAdjacentConnection(stopPlaceId1, stopPlaceId2),
-      );
-      dispatch(UserActions.hideAddAdjacentStopDialog());
-    },
-    [dispatch],
-  );
-
-  // Alt names handlers
-  const handleOpenAltNamesDialog = useCallback(() => {
-    setAltNamesDialogOpen(true);
-  }, []);
-
-  const handleCloseAltNamesDialog = useCallback(() => {
-    setAltNamesDialogOpen(false);
-  }, []);
-
-  // Tags handlers
-  const handleOpenTagsDialog = useCallback(() => {
-    setTagsDialogOpen(true);
-  }, []);
-
-  const handleCloseTagsDialog = useCallback(() => {
-    setTagsDialogOpen(false);
-  }, []);
-
-  // Coordinates handlers
-  const handleOpenCoordinatesDialog = useCallback(() => {
-    setCoordinatesDialogOpen(true);
-  }, []);
-
-  const handleCloseCoordinatesDialog = useCallback(() => {
-    setCoordinatesDialogOpen(false);
-  }, []);
-
-  const handleSetCoordinates = useCallback(
-    (position: [number, number]) => {
-      dispatch(StopPlaceActions.changeCurrentStopPosition(position));
-      dispatch(StopPlaceActions.changeMapCenter(position, 14));
-      setCoordinatesDialogOpen(false);
-    },
-    [dispatch],
-  );
-
-  // Field change handlers
-  const handleNameChange = useCallback(
-    (value: string) => {
-      dispatch(StopPlaceActions.changeStopName(value));
-    },
-    [dispatch],
-  );
-
-  const handleDescriptionChange = useCallback(
-    (value: string) => {
-      dispatch(StopPlaceActions.changeStopDescription(value));
-    },
-    [dispatch],
-  );
-
-  const handleUrlChange = useCallback(
-    (value: string) => {
-      dispatch(StopPlaceActions.changeStopUrl(value));
-    },
-    [dispatch],
-  );
-
-  const handleRemoveAdjacentSite = useCallback(
-    (stopPlaceId: string, adjacentRef: string) => {
-      dispatch(
-        StopPlaceActions.removeAdjacentConnection(stopPlaceId, adjacentRef),
-      );
-    },
-    [dispatch],
-  );
-
-  // Tag handlers
-  const handleAddTag = useCallback(
-    (idReference: string, name: string, comment: string) => {
-      return dispatch(addTag(idReference, name, comment));
-    },
-    [dispatch],
-  );
-
-  const handleGetTags = useCallback(
-    (idReference: string) => {
-      return dispatch(getTags(idReference));
-    },
-    [dispatch],
-  );
-
-  const handleRemoveTag = useCallback(
-    (name: string, idReference: string) => {
-      return dispatch(removeTag(name, idReference));
-    },
-    [dispatch],
-  );
-
-  const handleFindTagByName = useCallback(
-    (name: string) => {
-      return dispatch(findTagByName(name));
-    },
-    [dispatch],
-  );
+    handleCloseGoBackDialog();
+  }, [handleCloseGoBackDialog]);
 
   return {
     stopPlace,

@@ -1,16 +1,16 @@
 /*
  *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
-the European Commission - subsequent versions of the EUPL (the "Licence");
-You may not use this work except in compliance with the Licence.
-You may obtain a copy of the Licence at:
+ the European Commission - subsequent versions of the EUPL (the "Licence");
+ You may not use this work except in compliance with the Licence.
+ You may obtain a copy of the Licence at:
 
   https://joinup.ec.europa.eu/software/page/eupl
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the Licence is distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the Licence for the specific language governing permissions and
-limitations under the Licence. */
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the Licence is distributed on an "AS IS" basis,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the Licence for the specific language governing permissions and
+ limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -30,21 +30,21 @@ export interface InfoDialogProps {
   open: boolean;
   name?: string;
   id: string;
-  centerPosition?: [number, number];
+  position?: [number, number];
   created?: string;
   modified?: string;
-  version?: string;
+  version?: number;
   onClose: () => void;
 }
 
 /**
- * Dialog for displaying group of stop places metadata
+ * Dialog for displaying parent stop place metadata
  */
 export const InfoDialog: React.FC<InfoDialogProps> = ({
   open,
   name,
   id,
-  centerPosition,
+  position,
   created,
   modified,
   version,
@@ -132,7 +132,7 @@ export const InfoDialog: React.FC<InfoDialogProps> = ({
           </Box>
 
           {/* Coordinates */}
-          {centerPosition && (
+          {position && (
             <Box>
               <Typography variant="caption" color="text.secondary">
                 {formatMessage({ id: "coordinates" })}
@@ -141,7 +141,7 @@ export const InfoDialog: React.FC<InfoDialogProps> = ({
                 variant="body1"
                 sx={{ fontFamily: "monospace", fontSize: "0.9em" }}
               >
-                {formatCoordinates(centerPosition)}
+                {formatCoordinates(position)}
               </Typography>
             </Box>
           )}
@@ -167,7 +167,7 @@ export const InfoDialog: React.FC<InfoDialogProps> = ({
           )}
 
           {/* Version */}
-          {version && (
+          {version !== undefined && (
             <Box>
               <Typography variant="caption" color="text.secondary">
                 {formatMessage({ id: "version" })}

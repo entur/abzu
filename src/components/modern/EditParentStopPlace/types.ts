@@ -249,7 +249,24 @@ export interface UseEditParentStopPlaceReturn {
 export interface MinimizedBarProps {
   name?: string;
   id?: string;
+  entityType: string;
+  hasId: boolean;
+  isModified: boolean;
+  canEdit: boolean;
+  canDelete: boolean;
+  hasName: boolean;
+  hasExpired: boolean;
+  hasChildren: boolean;
+  isMobile: boolean;
   onExpand: () => void;
   onClose: () => void;
-  isMobile: boolean;
+  onOpenInfo: () => void;
+  onOpenNameDescription: () => void;
+  onOpenChildren: () => void;
+  onOpenAltNames: () => void;
+  onOpenTags: () => void;
+  onOpenCoordinates: () => void;
+  onSave: () => void;
+  onUndo: () => void;
+  onTerminate: () => void;
 }

@@ -5,6 +5,7 @@ export { FavoriteButton } from "./FavoriteButton";
 export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";
 export { LoadingDialog } from "./LoadingDialog";
+export * from "./MinimizedBar";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";
 export { QuayCode } from "./QuayCode";
 export { StopPlaceLink } from "./StopPlaceLink";

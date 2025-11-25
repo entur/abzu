@@ -1,5 +1,10 @@
-export { MinimizedBar } from "./MinimizedBar";
+export { ChildrenDialog } from "./ChildrenDialog";
+export { InfoDialog } from "./InfoDialog";
+export { NameDescriptionDialog } from "./NameDescriptionDialog";
 export { ParentStopPlaceActions } from "./ParentStopPlaceActions";
 export { ParentStopPlaceChildren } from "./ParentStopPlaceChildren";
 export { ParentStopPlaceDetails } from "./ParentStopPlaceDetails";
+export { ParentStopPlaceDialogs } from "./ParentStopPlaceDialogs";
+export { ParentStopPlaceDrawerContent } from "./ParentStopPlaceDrawerContent";
 export { ParentStopPlaceHeader } from "./ParentStopPlaceHeader";
+export { ParentStopPlaceMinimizedBar } from "./ParentStopPlaceMinimizedBar";
