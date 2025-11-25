@@ -6,7 +6,6 @@
   "tiamatEnv": "development",
   "netexPrefix": "NSR",
   "hostname": "stoppested.dev.entur.org",
-  "googleApiKey": "AIzaSyB_8bdt2skRkdsyQO19m_gqTzr0_2gqo8U",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
