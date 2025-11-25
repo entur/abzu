@@ -75,6 +75,144 @@ JSON config → MUI Theme via module augmentation (`theme-config.d.ts`). Custom 
 **GroupOfStopPlaces**: X = close, chevron = collapse (horizontal on desktop, vertical on mobile)
 **Loading States**: Use LoadingDialog (modern UI) for data fetching, shows ModalityLoadingAnimation with optional message
 
+## Component Refactoring Best Practices
+
+**When to Refactor**: Components over ~300 lines, multiple responsibilities, difficult to test, or hard to understand.
+
+### The Refactoring Pattern
+
+Follow this consistent pattern for splitting large components into maintainable pieces:
+
+**1. Directory Structure**
+```
+ComponentName/
+├── hooks/
+│   └── useComponentName.ts      # Business logic and state
+├── components/
+│   ├── SubComponent1.tsx        # Focused UI components
+│   ├── SubComponent2.tsx
+│   └── index.ts                 # Barrel exports
+└── types.ts (optional)          # Shared types
+```
+
+**2. Extract Business Logic into Hooks**
+- Move all state management (`useState`, `useEffect`) into custom hook
+- Extract event handlers and business logic
+- Use `useCallback` for handlers to prevent unnecessary re-renders
+- Use `useMemo` for expensive computations or data transformations
+- Return clean interface for component consumption
+
+**Hook Pattern Example:**
+```typescript
+export const useComponentName = ({ prop1, prop2 }) => {
+  const [state, setState] = useState(initialState);
+
+  const handleAction = useCallback(() => {
+    // Business logic here
+  }, [dependencies]);
+
+  return {
+    state,
+    handleAction,
+    // Other handlers and computed values
+  };
+};
+```
+
+**3. Split UI into Focused Components**
+- Each component should have **single responsibility**
+- Break down by UI section or logical grouping
+- Keep components small (~50-150 lines)
+- Pass only needed props (avoid prop drilling)
+- Add JSDoc comments explaining purpose
+
+**Component Pattern Example:**
+```typescript
+interface SubComponentProps {
+  data: DataType;
+  onAction: () => void;
+}
+
+/**
+ * Brief description of what this component does
+ */
+export const SubComponent: React.FC<SubComponentProps> = ({
+  data,
+  onAction,
+}) => {
+  // Render focused UI section
+};
+```
+
+**4. Create Orchestrator Component**
+- Main component becomes clean orchestrator
+- Uses hook for business logic
+- Composes sub-components
+- Handles conditional rendering
+- Delegates responsibilities to focused components
+
+**Orchestrator Pattern Example:**
+```typescript
+export const MainComponent: React.FC<Props> = ({ prop1, prop2 }) => {
+  const {
+    state,
+    handleAction,
+  } = useMainComponent({ prop1, prop2 });
+
+  return (
+    <>
+      <SubComponent1 data={state.data1} onAction={handleAction} />
+      <SubComponent2 data={state.data2} />
+    </>
+  );
+};
+```
+
+**5. Use Barrel Exports**
+```typescript
+// components/index.ts
+export { SubComponent1 } from "./SubComponent1";
+export { SubComponent2 } from "./SubComponent2";
+```
+
+### Refactoring Examples
+
+**Completed Refactorings:**
+1. **EditGroupOfStopPlaces** (410 → 183 lines, 56% reduction)
+   - Pattern: MinimizedBar, DrawerContent, Dialogs separation
+   - Location: `src/components/modern/MainPage/components/EditGroupOfStopPlaces/`
+
+2. **FavoriteStopPlaces** (318 → 62 lines, 81% reduction)
+   - Pattern: Hook + EmptyState + List + ListItem
+   - Location: `src/components/modern/MainPage/components/FavoriteStopPlaces/`
+
+3. **TagsDialog** (323 → 106 lines, 67% reduction)
+   - Pattern: Hook + List + AddForm + Item
+   - Location: `src/components/modern/Dialogs/TagsDialog/`
+
+4. **TerminateStopPlaceDialog** (374 → 184 lines, 51% reduction)
+   - Pattern: Hook + Info + Warning + DateTime + Options
+   - Location: `src/components/modern/Dialogs/TerminateStopPlaceDialog/`
+
+5. **NavigationMenu** (311 → 81 lines, 74% reduction)
+   - Pattern: Hook + Mobile + Desktop + ItemRenderer
+   - Location: `src/components/modern/Header/components/NavigationMenu/`
+
+### Naming Conventions
+
+- **Hooks**: `useComponentName` (e.g., `useTagsDialog`, `useNavigationMenu`)
+- **Components**: `PascalCase` descriptive names (e.g., `DateTimeSelection`, `UsageWarning`)
+- **Files**: Match component/hook names exactly
+- **Directories**: Match main component name
+
+### Benefits
+
+- **Maintainability**: Small, focused files easy to understand
+- **Testability**: Isolated logic and UI can be tested independently
+- **Reusability**: Focused components can be reused elsewhere
+- **Readability**: Clear separation of concerns
+- **Type Safety**: Explicit prop interfaces prevent errors
+
 ## Recent Work
 
 - Dual-app architecture (LegacyApp.js / modern/App.tsx)
