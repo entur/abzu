@@ -394,6 +394,8 @@
   "search_result_permanently_terminated": "Désactivé de manière définitive",
   "second": "seconde",
   "seconds": "secondes",
+  "session_expired_title": "Session expirée",
+  "session_expired_body": "Veuillez vous reconnecter pour continuer à utiliser le service",
   "set_centroid": "Modifier les coordonnées",
   "set_coordinates_prompt": "Définir les coordonnées pour ce point",
   "settings": "Paramètres",

@@ -394,6 +394,8 @@
   "search_result_future": "Voimassa tulevaisuudessa",
   "second": "sekunti",
   "seconds": "sekuntia",
+  "session_expired_title": "Sessio on vanhentunut",
+  "session_expired_body": "Kirjaudu uudelleen sisään jatkaaksesi palvelun käyttöä",
   "set_centroid": "Vaihda koordinaatit",
   "set_coordinates_prompt": "Aseta pysäkin koordinaatit",
   "settings": "Asetukset",

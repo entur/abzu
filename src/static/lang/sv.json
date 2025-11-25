@@ -394,6 +394,8 @@
   "search_result_permanently_terminated": "Nedlagd",
   "second": "sekund",
   "seconds": "sekunder",
+  "session_expired_title": "Sessionen har löpt ut",
+  "session_expired_body": "Logga in igen för att fortsätta använda tjänsten",
   "set_centroid": "Ändra koordinater",
   "set_coordinates_prompt": "Ändra koordinater för hållplats",
   "settings": "Inställningar",
