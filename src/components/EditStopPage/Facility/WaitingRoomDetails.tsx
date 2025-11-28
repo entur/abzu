@@ -8,8 +8,8 @@ import Heated from "../../../static/icons/facilities/Heated";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityDetail as FacilityDetailEnum,
-  FacilityProps,
+  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemProps,
   WaitingRoomDetailFields,
 } from "./types";
 
@@ -19,7 +19,7 @@ const WaitingRoomDetails = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
 

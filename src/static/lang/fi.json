@@ -595,5 +595,10 @@
   "assistanceServiceAvailability_unknown": "Tuntematon",
   "assistanceServiceAvailability_none": "Ei saatavilla",
   "assistance": "Avustaminen",
-  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?"
+  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?",
+  "mobilityFacility_tactile_all": "Kävelypinnan indikaattorit laiturin varrella ja reunoilla",
+  "mobilityFacility_tactile_tactileplatformedges": "Walking surface indicators on the platform edges",
+  "mobilityFacility_tactile_tactileguidingstrips": "Walking surface indicators along the platform",
+  "mobilityFacility_tactile_none": "No walking surface indicators",
+  "mobilityFacility_tactile_quay_hint": "What kind of walking surface indicators does the platform have?"
 }

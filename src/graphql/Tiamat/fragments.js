@@ -170,6 +170,14 @@ Fragments.localServices = {
   `,
 };
 
+Fragments.facilities = {
+  verbose: gql`
+    fragment SiteFacilitySet on SiteFacilitySet {
+      mobilityFacilityList
+    }
+  `,
+};
+
 Fragments.boardingPosition = {
   verbose: gql`
     fragment VerboseBoardingPosition on BoardingPosition {
@@ -208,12 +216,16 @@ Fragments.quay = {
           placeEquipments {
               ...PlaceEquipments
           }
+          facilities {
+            ...SiteFacilitySet
+          }
           boardingPositions {
               ...VerboseBoardingPosition
           }
       },
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
+      ${Fragments.facilities.verbose}
       ${Fragments.boardingPosition.verbose}
   `,
 };
