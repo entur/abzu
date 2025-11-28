@@ -4,7 +4,7 @@ import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import TransportSign from "../../../static/icons/TransportSign";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
 const GeneralSign = ({
   entity,
@@ -12,7 +12,7 @@ const GeneralSign = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isSign512Present = equipmentHelpers.is512SignEquipmentPresent(entity);
 

@@ -26,7 +26,7 @@ import TicketOffice from "./TicketOffice";
 import WC from "./WC";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
-import { Facility as FacilityEnum } from "./types";
+import { FacilityTabItem as FacilityEnum } from "./types";
 
 interface Props {
   disabled: boolean;

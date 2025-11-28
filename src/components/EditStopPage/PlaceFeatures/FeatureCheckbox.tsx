@@ -4,8 +4,8 @@ import React, { ReactElement } from "react";
 import { useIntl } from "react-intl";
 import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
 import {
-  FacilityDetail as FacilityDetailEnum,
-  Facility as FacilityEnum,
+  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItem as FacilityEnum,
 } from "../Facility/types";
 
 interface Props {

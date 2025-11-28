@@ -4,7 +4,7 @@ import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import BusShelter from "../../../static/icons/facilities/BusShelter";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
 const Shelter = ({
   entity,
@@ -12,7 +12,7 @@ const Shelter = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isShelterPresent = equipmentHelpers.isShelterEquipmentPresent(entity);
 

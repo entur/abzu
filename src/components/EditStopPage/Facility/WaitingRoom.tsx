@@ -4,7 +4,7 @@ import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { WaitingRoom as WaitingRoomIcon } from "../../../static/icons/facilities/WaitingRoom";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
 const WaitingRoom = ({
   entity,
@@ -12,7 +12,7 @@ const WaitingRoom = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isWaitingRoomPresent = equipmentHelpers.isWaitingRoomPresent(entity);
 
