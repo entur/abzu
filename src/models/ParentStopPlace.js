@@ -92,6 +92,17 @@ class ParentStopPlace {
         }
       }
 
+      if (stop.postalAddress) {
+        if (stop.postalAddress.addressLine1) {
+          clientStop.postalAddressAddressLine1 =
+            stop.postalAddress.addressLine1.value;
+        }
+        if (stop.postalAddress.town) {
+          clientStop.postalAddressTown = stop.postalAddress.town.value;
+        }
+        clientStop.postalAddressPostCode = stop.postalAddress.postCode;
+      }
+
       if (stop.validBetween) {
         clientStop.validBetween = stop.validBetween;
       }

@@ -135,6 +135,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     alternativeNames: stop.alternativeNames || null,
     children: children,
     url: stop.url,
+    postalAddress: createPostalAddress(stop),
   };
 
   if (stop.id) {
@@ -154,6 +155,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     parentStopVariables.versionComment = comment;
   }
   helpers.removeTypeNameRecursively(parentStopVariables);
+  console.log(parentStopVariables);
   return parentStopVariables;
 };
 
@@ -161,6 +163,21 @@ const createEmbeddableMultilingualString = (string) => ({
   value: string || "",
   lang: window.config.defaultLanguageCode,
 });
+
+const createPostalAddress = (stop) => {
+  const addressLine1 = stop.postalAddressAddressLine1;
+  const town = stop.postalAddressTown;
+  const postCode = stop.postalAddressPostCode;
+  // Return null if all the fields are undefined, null, or empty string
+  if (!addressLine1 && !town && !postCode) {
+    return null;
+  }
+  return {
+    addressLine1: createEmbeddableMultilingualString(addressLine1),
+    town: createEmbeddableMultilingualString(town),
+    postCode: postCode,
+  };
+};
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
 helpers.mapDeepStopToVariables = (original) => {
@@ -210,6 +227,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     })),
     adjacentSites: stop.adjacentSites,
     url: stop.url,
+    postalAddress: createPostalAddress(stop),
   };
 
   stopVariables.privateCode = {
