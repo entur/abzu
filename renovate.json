@@ -1,4 +1,21 @@
 {
-  "extends": ["github>entur/ror-renovate-config"],
-  "npmrcMerge": true
+  "extends": [
+    "github>entur/ror-renovate-config",
+    "group:allNonMajor",
+    "schedule:weekly"
+  ],
+  "npmrcMerge": true,
+  "timezone": "Europe/Oslo",
+  "packageRules": [
+    {
+      "groupName": "vite",
+      "matchPackageNames": [
+        "vite-*",
+        "@vitejs/*",
+        "vitest",
+        "@vitest/*"
+      ]
+    }
+  ]
+
 }

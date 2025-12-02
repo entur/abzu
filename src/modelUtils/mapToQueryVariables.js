@@ -22,6 +22,7 @@ import {
   netexifyBoardingPositions,
   netexifyPlaceEquipment,
 } from "../models/stopPlaceUtils";
+import { netexifyLocalServices } from "./localServicesHelpers";
 
 const helpers = {};
 
@@ -74,7 +75,7 @@ helpers.getFullUTCString = (time, date) => {
 };
 
 helpers.mapGroupOfStopPlaceToVariables = (groupOfStopPlace) => {
-  return {
+  const variables = {
     id: groupOfStopPlace.id,
     name: createEmbeddableMultilingualString(groupOfStopPlace.name),
     description: createEmbeddableMultilingualString(
@@ -84,6 +85,14 @@ helpers.mapGroupOfStopPlaceToVariables = (groupOfStopPlace) => {
       ref: member.id,
     })),
   };
+
+  if (groupOfStopPlace.purposeOfGrouping) {
+    variables.purposeOfGrouping = {
+      ref: groupOfStopPlace.purposeOfGrouping.id,
+    };
+  }
+
+  return variables;
 };
 
 helpers.mapChildStopToVariables = (original, userInput) => {
@@ -200,6 +209,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     ),
     keyValues: stop.keyValues,
     placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),
+    localServices: netexifyLocalServices(stop.localServices),
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,

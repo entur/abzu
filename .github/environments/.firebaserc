@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "dev": "ent-ror-abzu-dev"
+  },
+  "targets": {
+    "ent-ror-abzu-dev": {
+      "hosting": {
+        "dev": [
+          "ent-ror-abzu-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

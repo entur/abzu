@@ -147,6 +147,7 @@ export const mutateStopPlace = gql`
     $validBetween: ValidBetweenInput
     $accessibilityAssessment: AccessibilityAssessmentInput
     $placeEquipments: PlaceEquipmentsInput
+    $localServices: LocalServicesInput
     $alternativeNames: [AlternativeNameInput]
     $versionComment: String
     $weighting: InterchangeWeightingType
@@ -174,6 +175,7 @@ export const mutateStopPlace = gql`
         validBetween: $validBetween
         accessibilityAssessment: $accessibilityAssessment
         placeEquipments: $placeEquipments
+        localServices: $localServices
         tariffZones: $tariffZones
         stopPlaceType: $stopPlaceType
         url: $url
@@ -321,6 +323,7 @@ export const mutateGroupOfStopPlaces = gql`
     $name: EmbeddableMultilingualStringInput!
     $description: EmbeddableMultilingualStringInput
     $members: [VersionLessEntityRefInput]
+    $purposeOfGrouping: VersionLessEntityRefInput
   ) {
     mutateGroupOfStopPlaces(
       GroupOfStopPlaces: {
@@ -328,6 +331,7 @@ export const mutateGroupOfStopPlaces = gql`
         name: $name
         description: $description
         members: $members
+        purposeOfGrouping: $purposeOfGrouping
       }
     ) {
       ...GroupOfStopPlaces

@@ -20,6 +20,7 @@ import Quay from "./Quay";
 import {
   extractAlternativeNames,
   getImportedId,
+  simplifyLocalService,
   simplifyPlaceEquipment,
 } from "./stopPlaceUtils";
 
@@ -141,6 +142,10 @@ class StopPlace {
         clientStop.placeEquipments = simplifyPlaceEquipment(
           stop.placeEquipments,
         );
+      }
+
+      if (stop.localServices) {
+        clientStop.localServices = simplifyLocalService(stop.localServices);
       }
 
       if (stop.geometry && stop.geometry.legacyCoordinates) {

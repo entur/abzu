@@ -108,6 +108,12 @@ Fragments.groupOfStopPlaces = {
       description {
         value
       }
+      purposeOfGrouping {
+        id
+        name {
+          value
+        }
+      }
       permissions {
         ...EntityPermissions
       }
@@ -154,6 +160,17 @@ Fragments.placeEquipments = {
         seats
         stepFree
         enclosed
+      }
+    }
+  `,
+};
+
+Fragments.localServices = {
+  verbose: gql`
+    fragment LocalServices on LocalServices {
+      assistanceService {
+        assistanceFacilityList
+        assistanceAvailability
       }
     }
   `,
@@ -292,6 +309,9 @@ Fragments.stopPlace = {
         placeEquipments {
             ...PlaceEquipments
         }
+        localServices {
+            ...LocalServices
+        }
         validBetween {
             fromDate
             toDate
@@ -304,6 +324,7 @@ Fragments.stopPlace = {
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
+    ${Fragments.localServices.verbose},
     ${Fragments.accessibilityAssessment.verbose}
     ${Fragments.entityPermissions}
   `,
@@ -359,6 +380,9 @@ Fragments.stopPlace = {
           placeEquipments {
               ...PlaceEquipments
           }
+          localServices {
+            ...LocalServices
+          }
           validBetween {
               fromDate
               toDate
@@ -368,6 +392,7 @@ Fragments.stopPlace = {
       ${Fragments.quay.verbose},
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
+      ${Fragments.localServices.verbose}
   `,
 };
 

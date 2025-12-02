@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import equiptmentHelpers from "../../../modelUtils/equipmentHelpers";
+import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import TransportSign from "../../../static/icons/TransportSign";
-import FacilityCheckbox from "./FacilityCheckbox";
+import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { Facility as FacilityEnum, FacilityProps } from "./types";
 
 const GeneralSign = ({
@@ -14,7 +14,7 @@ const GeneralSign = ({
   entityType,
 }: FacilityProps) => {
   const dispatch = useDispatch();
-  const isSign512Present = equiptmentHelpers.is512SignEquipmentPresent(entity);
+  const isSign512Present = equipmentHelpers.is512SignEquipmentPresent(entity);
 
   const handle512Sign = (value: boolean) => {
     if (disabled) {
@@ -30,11 +30,11 @@ const GeneralSign = ({
   };
 
   return (
-    <FacilityCheckbox
-      isFacilityPresent={isSign512Present}
-      handleFacilityChange={handle512Sign}
+    <FeatureCheckbox
+      isFeaturePresent={isSign512Present}
+      handleFeatureStateChange={handle512Sign}
       icon={<TransportSign />}
-      facilityName={FacilityEnum.GENERAL_SIGN}
+      name={FacilityEnum.GENERAL_SIGN}
     />
   );
 };
