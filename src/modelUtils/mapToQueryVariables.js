@@ -166,7 +166,7 @@ const createEmbeddableMultilingualString = (string) => ({
 // Some stop types in the UI need to be mapped to different types in the backend
 const mapStopPlaceTypeForBackend = (stopPlaceType) => {
   const stopPlaceTypeMapping = {
-    funicular: "liftStation",
+    funicular: "other",
   };
   return stopPlaceTypeMapping[stopPlaceType] || stopPlaceType;
 };

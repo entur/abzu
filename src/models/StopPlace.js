@@ -27,8 +27,8 @@ import {
 // Maps backend stopPlaceType to UI stopPlaceType
 // Reverse of the mapping in mapToQueryVariables.js
 const mapStopPlaceTypeForUI = (stopPlaceType, submode) => {
-  // If it's a liftStation with funicular submode, show it as funicular in the UI
-  if (stopPlaceType === "liftStation" && submode === "funicular") {
+  // If it's "other" with funicular submode, show it as funicular in the UI
+  if (stopPlaceType === "other" && submode === "funicular") {
     return "funicular";
   }
   return stopPlaceType;
