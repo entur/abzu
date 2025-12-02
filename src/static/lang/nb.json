@@ -596,5 +596,10 @@
   "assistanceServiceAvailability_unknown": "Ukjent",
   "assistanceServiceAvailability_none": "Ingen",
   "assistance": "Assistanse",
-  "assistanceService_stopPlace_hint": "Tilbyr holdeplassen assistansetjenester, og hva slags?"
+  "assistanceService_stopPlace_hint": "Tilbyr holdeplassen assistansetjenester, og hva slags?",
+  "mobilityFacility_tactile_all": "Gangflateindikatorer langs plattformen og kantene",
+  "mobilityFacility_tactile_tactileplatformedges": "Gangflateindikatorer på plattformkantene",
+  "mobilityFacility_tactile_tactileguidingstrips": "Gangflateindikatorer langs plattformen",
+  "mobilityFacility_tactile_none": "Ingen gangflateindikatorer",
+  "mobilityFacility_tactile_quay_hint": "Hva slags gangflateindikatorer har plattformen?"
 }

@@ -85,7 +85,7 @@ const FeaturePopoverMenu = ({
         {options.map((option: FeaturePopoverMenuOption, index: number) => (
           <MenuItem
             key={`${quayId}-${featureName}-popoverOptionValue-${option.value}-${index}`}
-            value={option}
+            value={option as unknown as string}
             style={{ padding: "0px 10px" }}
             onClick={() => {
               handleSelectedValueChange(option.value);

@@ -30,6 +30,11 @@
     {
       "id": "NSR:Quay:30025",
       "compassBearing": 212,
+      "facilities": [
+        {
+          "mobileFacilityList": ["tactileGuidanceStrips"]
+        }
+      ],
       "publicCode": null,
       "description": "",
       "keyValues": [],

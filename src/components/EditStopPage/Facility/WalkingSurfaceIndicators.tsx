@@ -11,7 +11,7 @@ import {
   FeaturePopoverMenuValue,
   iconColorStates,
 } from "../PlaceFeatures/types";
-import { FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const allTactileIndicatorsOption: FeaturePopoverMenuOption = {
   value: FeaturePopoverMenuDefaults.ALL,
@@ -116,7 +116,7 @@ const WalkingSurfaceIndicators = ({
 
   return (
     <FeaturePopoverMenu
-      featureName={"mobilityFacility_tactile"}
+      featureName={FacilityTabItem.WALKING_SURFACE_INDICATORS}
       options={popupMenuOptions}
       disabled={disabled}
       handleChange={handleChange}
