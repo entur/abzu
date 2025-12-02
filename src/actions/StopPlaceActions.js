@@ -97,6 +97,24 @@ StopPlaceActions.changeStopUrl = (url) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_STOP_URL, url));
 };
 
+StopPlaceActions.changeStopPostalAddressAddressLine1 =
+  (addressLine1) => (dispatch) => {
+    dispatch(
+      createThunk(
+        types.CHANGED_STOP_POSTAL_ADDRESS_ADDRESS_LINE1,
+        addressLine1,
+      ),
+    );
+  };
+
+StopPlaceActions.changeStopPostalAddressTown = (town) => (dispatch) => {
+  dispatch(createThunk(types.CHANGED_STOP_POSTAL_ADDRESS_TOWN, town));
+};
+
+StopPlaceActions.changeStopPostalAddressPostCode = (postCode) => (dispatch) => {
+  dispatch(createThunk(types.CHANGED_STOP_POSTAL_ADDRESS_POST_CODE, postCode));
+};
+
 StopPlaceActions.changeStopType = (type) => (dispatch) => {
   if (type === "busStation") {
     dispatch(

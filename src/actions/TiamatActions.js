@@ -302,6 +302,8 @@ export const createParentStopPlace =
     legacyCoordinates,
     validBetween,
     stopPlaceIds,
+    url,
+    postalAddress,
   }) =>
   async (dispatch, getState) =>
     handleMutation(getTiamatClient(), {
@@ -313,6 +315,8 @@ export const createParentStopPlace =
         legacyCoordinates,
         validBetween,
         stopPlaceIds,
+        url,
+        postalAddress,
       },
       fetchPolicy: "no-cache",
       context: await getContext(getState().user.auth),

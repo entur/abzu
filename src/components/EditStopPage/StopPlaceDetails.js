@@ -89,6 +89,10 @@ class StopPlaceDetails extends React.Component {
       tariffZoneOpen: false,
       tagsOpen: false,
       url: props.stopPlace.url || "",
+      postalAddressAddressLine1:
+        props.stopPlace.postalAddressAddressLine1 || "",
+      postalAddressTown: props.stopPlace.postalAddressTown || "",
+      postalAddressPostCode: props.stopPlace.postalAddressPostCode || "",
     };
 
     this.updateStopName = debounce((value) => {
@@ -109,6 +113,22 @@ class StopPlaceDetails extends React.Component {
 
     this.updateStopUrl = debounce((value) => {
       this.props.dispatch(StopPlaceActions.changeStopUrl(value));
+    }, 200);
+
+    this.updateStopPostalAddressAddressLine1 = debounce((value) => {
+      this.props.dispatch(
+        StopPlaceActions.changeStopPostalAddressAddressLine1(value),
+      );
+    }, 200);
+
+    this.updateStopPostalAddressTown = debounce((value) => {
+      this.props.dispatch(StopPlaceActions.changeStopPostalAddressTown(value));
+    }, 200);
+
+    this.updateStopPostalAddressPostCode = debounce((value) => {
+      this.props.dispatch(
+        StopPlaceActions.changeStopPostalAddressPostCode(value),
+      );
     }, 200);
   }
 
@@ -282,6 +302,33 @@ class StopPlaceDetails extends React.Component {
     this.updateStopUrl(url);
   }
 
+  handleStopPostalAddressAddressLine1Change(event) {
+    const addressLine1 = event.target.value;
+    this.setState({
+      postalAddressAddressLine1: addressLine1,
+    });
+
+    this.updateStopPostalAddressAddressLine1(addressLine1);
+  }
+
+  handleStopPostalAddressTownChange(event) {
+    const town = event.target.value;
+    this.setState({
+      postalAddressTown: town,
+    });
+
+    this.updateStopPostalAddressTown(town);
+  }
+
+  handleStopPostalAddressPostCodeChange(event) {
+    const postCode = event.target.value;
+    this.setState({
+      postalAddressPostCode: postCode,
+    });
+
+    this.updateStopPostalAddressPostCode(postCode);
+  }
+
   handleHandleWheelChair(value) {
     if (!this.props.disabled)
       this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value));
@@ -396,7 +443,10 @@ class StopPlaceDetails extends React.Component {
     };
 
     const {
-      featureFlags: { StopPlaceUrl: featureStopPlaceUrlEnabled = false },
+      featureFlags: {
+        StopPlaceUrl: featureStopPlaceUrlEnabled = false,
+        StopPlacePostalAddress: featureStopPlacePostalAddressEnabled = false,
+      },
     } = this.context;
 
     const {
@@ -421,6 +471,9 @@ class StopPlaceDetails extends React.Component {
       weightingOpen,
       tariffZoneOpen,
       url,
+      postalAddressAddressLine1,
+      postalAddressTown,
+      postalAddressPostCode,
     } = this.state;
 
     const wheelchairAccess = getIn(
@@ -749,6 +802,39 @@ class StopPlaceDetails extends React.Component {
               disabled={disabled}
               value={url}
               onChange={this.handleStopUrlChange.bind(this)}
+            />
+          </div>
+        )}
+        {featureStopPlacePostalAddressEnabled && (
+          <div>
+            <TextField
+              variant={"standard"}
+              hintText={formatMessage({ id: "postalAddress_addressLine1" })}
+              label={formatMessage({ id: "postalAddress_addressLine1" })}
+              fullWidth={true}
+              disabled={disabled}
+              value={postalAddressAddressLine1}
+              onChange={this.handleStopPostalAddressAddressLine1Change.bind(
+                this,
+              )}
+            />
+            <TextField
+              variant={"standard"}
+              hintText={formatMessage({ id: "postalAddress_town" })}
+              label={formatMessage({ id: "postalAddress_town" })}
+              fullWidth={true}
+              disabled={disabled}
+              value={postalAddressTown}
+              onChange={this.handleStopPostalAddressTownChange.bind(this)}
+            />
+            <TextField
+              variant={"standard"}
+              hintText={formatMessage({ id: "postalAddress_postCode" })}
+              label={formatMessage({ id: "postalAddress_postCode" })}
+              fullWidth={true}
+              disabled={disabled}
+              value={postalAddressPostCode}
+              onChange={this.handleStopPostalAddressPostCodeChange.bind(this)}
             />
           </div>
         )}

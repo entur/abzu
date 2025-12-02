@@ -5,6 +5,7 @@ export type FeatureFlags = {
   CookieInformation: boolean;
   MatomoTracker: boolean;
   StopPlaceUrl: boolean;
+  StopPlacePostalAddress: boolean;
 };
 
 export type Features = keyof FeatureFlags;
