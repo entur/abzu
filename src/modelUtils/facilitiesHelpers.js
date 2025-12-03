@@ -18,15 +18,13 @@ FacilitiesHelpers.updateFacilitiesForEntity = (entity, payload) => {
   const { state, type, id } = payload;
 
   if (type === "quay") {
-    if (!entity.quays[id].facilities) {
-      entity.quays[id].facilities = [defaultSiteFacilitySet];
-    } else {
-      const newSiteFacilitySet = {
-        ...entity.quays[id].facilities[0],
-        ...state,
-      };
-      updatedEntity.quays[id].facilities = [newSiteFacilitySet];
-    }
+    const newSiteFacilitySet = entity.quays[id].facilities
+      ? {
+          ...entity.quays[id].facilities[0],
+          ...state,
+        }
+      : { ...defaultSiteFacilitySet, ...state };
+    updatedEntity.quays[id].facilities = [newSiteFacilitySet];
   }
 
   return updatedEntity;
