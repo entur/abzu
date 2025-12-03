@@ -1,9 +1,12 @@
-import PowerInputIcon from "@mui/icons-material/PowerInput";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import facilityActions from "../../../actions/FacilityActions";
 import FacilitiesHelpers from "../../../modelUtils/facilitiesHelpers";
 import { MobilityFacility } from "../../../models/Facilities";
+import WalkingSurfaceIndicatorsAll from "../../../static/icons/facilities/WalkingSurfaceIndicatorsAll";
+import WalkingSurfaceIndicatorsAlong from "../../../static/icons/facilities/WalkingSurfaceIndicatorsAlong";
+import WalkingSurfaceIndicatorsEdges from "../../../static/icons/facilities/WalkingSurfaceIndicatorsEdges";
+import WalkingSurfaceIndicatorsNone from "../../../static/icons/facilities/WalkingSurfaceIndicatorsNone";
 import FeaturePopoverMenu from "../PlaceFeatures/FeaturePopoverMenu";
 import {
   FeaturePopoverMenuDefaults,
@@ -15,26 +18,26 @@ import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const allTactileIndicatorsOption: FeaturePopoverMenuOption = {
   value: FeaturePopoverMenuDefaults.ALL,
-  icon: <PowerInputIcon />,
-  color: iconColorStates.TRUE,
+  icon: <WalkingSurfaceIndicatorsAll />,
+  color: iconColorStates.DEFAULT,
 };
 
 const tactilePlatformEdgesOption: FeaturePopoverMenuOption = {
   value: MobilityFacility.TACTILE_PLATFORM_EDGES,
-  icon: <PowerInputIcon />,
-  color: iconColorStates.PARTIAL,
+  icon: <WalkingSurfaceIndicatorsEdges />,
+  color: iconColorStates.DEFAULT,
 };
 
 const tactileGuidingStripsOption: FeaturePopoverMenuOption = {
   value: MobilityFacility.TACTILE_GUIDING_STRIPS,
-  icon: <PowerInputIcon />,
-  color: iconColorStates.PARTIAL,
+  icon: <WalkingSurfaceIndicatorsAlong />,
+  color: iconColorStates.DEFAULT,
 };
 
 const noTactileIndicatorsOption: FeaturePopoverMenuOption = {
   value: FeaturePopoverMenuDefaults.NONE,
-  icon: <PowerInputIcon />,
-  color: iconColorStates["NONE"],
+  icon: <WalkingSurfaceIndicatorsNone />,
+  color: iconColorStates.NONE,
 };
 
 const getMenuSelectedValue = (mobilityFacilityList: MobilityFacility[]) => {

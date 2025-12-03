@@ -95,7 +95,8 @@ const FeaturePopoverMenu = ({
               {React.cloneElement(option.icon, {
                 style: {
                   float: "left",
-                  marginTop: 9,
+                  marginTop: 4.5,
+                  marginBottom: 4.5,
                   marginRight: 5,
                   color: option.color || iconColorStates["DEFAULT"],
                 },
