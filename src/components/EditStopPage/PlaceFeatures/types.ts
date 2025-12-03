@@ -13,7 +13,7 @@ export const iconColorStates: Record<string, string> = {
   UNKNOWN: "#e8e3e3",
   NONE: "#BEBEBE",
   PARTIAL: "#FF9800",
-  DEFAULT: "#181C56",
+  DEFAULT: "#000000",
 };
 
 /**
