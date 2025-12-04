@@ -15,7 +15,7 @@ Updates to stop place modalities and submodes, including adding funicular mode, 
 - **Transport mode**: `funicular`
 - **Translations**: Added to all 5 language files (en, nb, fi, fr, sv)
   - English: "Funicular"
-  - Norwegian: "Kabelbane"
+  - Norwegian: "Bergbane"
   - Finnish: "Funikulaari"
   - French: "Funiculaire"
   - Swedish: "Bergbana"
