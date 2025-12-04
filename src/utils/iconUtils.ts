@@ -25,7 +25,7 @@ import railReplacementBusSvg from "../static/icons/modalities/svg/railReplacemen
 import metroStationSvg from "../static/icons/modalities/svg/subway-withoutBox.svg";
 import onstreetTramSvg from "../static/icons/modalities/svg/tram-withoutBox.svg";
 
-type Submodes = "railReplacementBus";
+type Submodes = "railReplacementBus" | "funicular";
 type Modalities =
   | "onstreetBus"
   | "onstreetTram"
@@ -46,6 +46,7 @@ export const getIconByTypeOrSubmode = (
 ) => {
   const submodeMap = {
     railReplacementBus,
+    funicular,
   };
 
   return submodeMap[submode] || getIconByModality(type, isMultimodal);
@@ -81,6 +82,7 @@ export const getSvgIconByTypeOrSubmode = (
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,
+    funicular: funicularSvg,
   };
   return submodeMap[submode] || getSvgIconIdByModality(type);
 };

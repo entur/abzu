@@ -76,6 +76,7 @@ ModalityIconSvg.propTypes = {
 const getIconIdByTypeOrSubmode = (submode, type) => {
   const submodeMap = {
     railReplacementBus: "railReplacement",
+    funicular: "funicular",
   };
   return submodeMap[submode] || getIconIdByModality(type);
 };

@@ -449,7 +449,7 @@
   "stopTypes_liftStation_quayItemName": "platform",
   "stopTypes_liftStation_submodes_telecabin": "Telecabin",
   "stopTypes_liftStation_submodes_unspecified": "Not specified",
-  "stopTypes_funicular_name": "Funicular",
+  "stopTypes_funicular_name": "Funicular stop",
   "stopTypes_funicular_quayItemName": "platform",
   "stopTypes_funicular_submodes_funicular": "Funicular",
   "stopTypes_funicular_submodes_unspecified": "Not specified",
