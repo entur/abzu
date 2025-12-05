@@ -2,7 +2,7 @@ import { EntityType } from "../../../models/Entities";
 import Quay from "../../../models/Quay";
 import StopPlace from "../../../models/StopPlace";
 
-export enum Facility {
+export enum FacilityTabItem {
   TICKET_MACHINES = "ticketMachines",
   TICKET_OFFICE = "ticketOffice",
   TICKET_COUNTER = "ticketCounter",
@@ -10,9 +10,10 @@ export enum Facility {
   SANITARY_EQUIPMENT = "sanitaryEquipment",
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
   GENERAL_SIGN = "generalSign",
+  WALKING_SURFACE_INDICATORS = "mobilityFacility_tactile",
 }
 
-export enum FacilityDetail {
+export enum FacilityTabItemDetail {
   STEP_FREE = "stepFree",
   SEATS = "seats",
   ENCLOSED = "enclosed",
@@ -28,7 +29,7 @@ export enum FacilityDetail {
  * Re-used between all facilities, whether on stop place or quay level;
  * id is relevant for a stop place, while index is for quay
  */
-export interface FacilityProps {
+export interface FacilityTabItemProps {
   entity: StopPlace | Quay;
   entityType: EntityType;
   disabled: boolean;

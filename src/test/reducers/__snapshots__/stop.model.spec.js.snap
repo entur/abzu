@@ -50,6 +50,13 @@ exports[`Model: map format from server to expected client model > should map Gra
       "boardingPositions": [],
       "compassBearing": 344,
       "description": "",
+      "facilities": [
+        {
+          "mobileFacilityList": [
+            "tactileGuidanceStrips",
+          ],
+        },
+      ],
       "id": "NSR:Quay:1694",
       "importedId": [],
       "keyValues": [],
@@ -73,6 +80,7 @@ exports[`Model: map format from server to expected client model > should map Gra
       "boardingPositions": [],
       "compassBearing": 164,
       "description": "",
+      "facilities": [],
       "id": "NSR:Quay:1695",
       "importedId": [],
       "keyValues": [],
@@ -140,6 +148,13 @@ exports[`Model: map format from server to expected client model > should map cli
       "accessibilityAssessment": undefined,
       "compassBearing": 212,
       "description": null,
+      "facilities": [
+        {
+          "mobileFacilityList": [
+            "tactileGuidanceStrips",
+          ],
+        },
+      ],
       "geometry": {
         "legacyCoordinates": [
           [
@@ -161,6 +176,7 @@ exports[`Model: map format from server to expected client model > should map cli
       "accessibilityAssessment": undefined,
       "compassBearing": 38,
       "description": null,
+      "facilities": undefined,
       "geometry": {
         "legacyCoordinates": [
           [

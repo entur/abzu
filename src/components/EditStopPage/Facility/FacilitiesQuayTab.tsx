@@ -27,7 +27,8 @@ import TicketOffice from "./TicketOffice";
 import WC from "./WC";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
-import { Facility as FacilityEnum } from "./types";
+import WalkingSurfaceIndicators from "./WalkingSurfaceIndicators";
+import { FacilityTabItem as FacilityEnum } from "./types";
 
 interface Props {
   disabled: boolean;
@@ -174,6 +175,19 @@ const FacilitiesQuayTab = ({ disabled, quay, index }: Props) => {
         isExpanded={expandedIndex === 7}
         handleExpand={() => setExpandedIndex(7)}
         handleCollapse={() => setExpandedIndex(-1)}
+      />
+
+      <PlaceFeatures
+        entityType={entityType}
+        name={FacilityEnum.WALKING_SURFACE_INDICATORS}
+        feature={
+          <WalkingSurfaceIndicators
+            entity={quay}
+            disabled={disabled}
+            index={index}
+            entityType={entityType}
+          />
+        }
       />
     </div>
   );

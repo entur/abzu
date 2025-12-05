@@ -8,7 +8,7 @@ import {
 } from "../../../modelUtils/equipmentHelpers";
 import { TicketMachine as TicketMachineIcon } from "../../../static/icons/facilities/TicketMachine";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
 const TicketMachine = ({
   entity,
@@ -16,7 +16,7 @@ const TicketMachine = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isTicketMachinePresent =
     equipmentHelpers.isTicketMachinePresent(entity);

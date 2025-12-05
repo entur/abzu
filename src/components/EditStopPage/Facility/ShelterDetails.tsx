@@ -8,8 +8,8 @@ import EnclosedIcon from "../../../static/icons/facilities/Enclosed";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityDetail as FacilityDetailEnum,
-  FacilityProps,
+  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemProps,
   WaitingRoomDetailFields,
 } from "./types";
 
@@ -19,7 +19,7 @@ const ShelterDetails = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const shelterEquipmentKeys = ["placeEquipments", "shelterEquipment"];

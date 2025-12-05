@@ -8,7 +8,7 @@ export enum AssistanceTabItem {
  * Re-used between all services, whether on stop place or quay level;
  * id is relevant for a stop place, while index is for quay
  */
-export interface AssistanceProps {
+export interface AssistanceTabItemProps {
   entity: StopPlace;
   disabled: boolean;
   id?: string;

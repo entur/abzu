@@ -8,7 +8,7 @@ import {
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
 const TicketOffice = ({
   entity,
@@ -16,7 +16,7 @@ const TicketOffice = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isTicketOfficePresent = equipmentHelpers.isTicketOfficePresent(entity);
 

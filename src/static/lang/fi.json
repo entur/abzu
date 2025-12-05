@@ -604,5 +604,10 @@
   "assistanceServiceAvailability_unknown": "Tuntematon",
   "assistanceServiceAvailability_none": "Ei saatavilla",
   "assistance": "Avustaminen",
-  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?"
+  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?",
+  "mobilityFacility_tactile_all": " Kohonastat laiturin varrella ja reunoilla",
+  "mobilityFacility_tactile_tactileplatformedges": "Kohonastat laiturien reunoilla",
+  "mobilityFacility_tactile_tactileguidingstrips": "Kohonastat laiturialueella",
+  "mobilityFacility_tactile_none": "Ei maassa olevia kohonastoja",
+  "mobilityFacility_tactile_quay_hint": "Millaiset kohonastat laiturilla on?"
 }

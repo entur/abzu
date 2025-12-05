@@ -605,5 +605,10 @@
   "assistanceServiceAvailability_unknown": "Unknown",
   "assistanceServiceAvailability_none": "None",
   "assistance": "Assistance",
-  "assistanceService_stopPlace_hint": "Does stop place have assistance services, and what kind?"
+  "assistanceService_stopPlace_hint": "Does stop place have assistance services, and what kind?",
+  "mobilityFacility_tactile_all": "Walking surface indicators along the platform and edges",
+  "mobilityFacility_tactile_tactileplatformedges": "Walking surface indicators on the platform edges",
+  "mobilityFacility_tactile_tactileguidingstrips": "Walking surface indicators along the platform",
+  "mobilityFacility_tactile_none": "No walking surface indicators",
+  "mobilityFacility_tactile_quay_hint": "What kind of walking surface indicators does the platform have?"
 }

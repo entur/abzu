@@ -602,5 +602,10 @@
   "assistanceServiceAvailability_unknown": "Okänd",
   "assistanceServiceAvailability_none": "Ingen",
   "assistance": "Assistans",
-  "assistanceService_stopPlace_hint": "Har hållplatsen assistanstjänster, och vilken typ?"
+  "assistanceService_stopPlace_hint": "Har hållplatsen assistanstjänster, och vilken typ?",
+  "mobilityFacility_tactile_all": "Indikatorer för gångytor längs plattformen och kanterna",
+  "mobilityFacility_tactile_tactileplatformedges": "Indikatorer för gångytor på plattformskanterna",
+  "mobilityFacility_tactile_tactileguidingstrips": "Gångytindikatorer längs plattformen",
+  "mobilityFacility_tactile_none": "Inga gångytindikatorer",
+  "mobilityFacility_tactile_quay_hint": "Vilken typ av taktila ytindikatorer har plattformen?"
 }

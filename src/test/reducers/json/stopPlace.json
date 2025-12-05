@@ -44,6 +44,11 @@
         "quays": [
           {
             "id": "NSR:Quay:1694",
+            "facilities": [
+              {
+                "mobileFacilityList": ["tactileGuidanceStrips"]
+              }
+            ],
             "geometry": {
               "legacyCoordinates": [[5.435734, 60.260427]]
             },
@@ -54,6 +59,7 @@
           },
           {
             "id": "NSR:Quay:1695",
+            "facilities": [],
             "geometry": {
               "legacyCoordinates": [[5.435734, 60.260427]]
             },
