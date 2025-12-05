@@ -139,8 +139,11 @@ export const ColumnTransformerStopPlaceJsx = {
   },
   modality: (stop) => {
     if (!stop.isParent) {
+      // Don't show red for "other" if it has a valid submode (like funicular)
       const iconColor =
-        !stop.stopPlaceType || stop.stopPlaceType === "other" ? "red" : "#000";
+        !stop.stopPlaceType || (stop.stopPlaceType === "other" && !stop.submode)
+          ? "red"
+          : "#000";
       return (
         <ModalityIconSvg
           submode={stop.submode}

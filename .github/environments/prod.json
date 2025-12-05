@@ -1,18 +1,19 @@
 {
   "defaultLanguageCode": "nor",
-  "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/graphql",
-  "OTPUrl": "https://api.dev.entur.io/journey-planner/v3/graphql",
-  "baatTokenProxyEndpoint": "https://api.dev.entur.io/baat-token-proxy/v1/token",
-  "tiamatEnv": "development",
+  "tiamatBaseUrl": "https://api.entur.io/stop-places/v1/graphql",
+  "OTPUrl": "https://api.entur.io/journey-planner/v3/graphql",
+  "baatTokenProxyEndpoint": "https://api.entur.io/baat-token-proxy/v1/token",
+  "tiamatEnv": "production",
   "netexPrefix": "NSR",
-  "hostname": "stoppested.dev.entur.org",
+  "hostname": "stoppested.entur.org",
+  "googleApiKey": "AIzaSyAAa-ZJ7h6FNxDY-UcqTAB-3YSdRQm8Gsg",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
-    "authority": "https://partner.dev.entur.org",
-    "client_id": "IAjOS4VshfCvu5K3OJ37B9LHqPTEwxG7",
+    "authority": "https://auth2.entur.org",
+    "client_id": "JgqiRlgcz55298GNUv6tMo2q1RNSm5Ec",
     "extraQueryParams": {
-      "audience": "https://ror.api.dev.entur.io"
+      "audience": "https://ror.api.entur.io"
     }
   },
   "featureFlags": {
@@ -32,7 +33,7 @@
         "attribution": "&copy; <a href=\"http://www.kartverket.no\">Kartverket"
       },
       {
-        "name": "Kartverket flyfoto",
+        "name": "Kartverket FlyFoto",
         "component": true,
         "componentName": "KartverketFlyFoto"
       }
@@ -44,7 +45,7 @@
   "modalityConfig": {
     "hiddenStopTypes": ["other"]
   },
-  "localeConfig": {
+    "localeConfig": {
     "locales": ["nb", "en", "sv", "fi", "fr"],
     "defaultLocale": "nb"
   }

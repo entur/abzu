@@ -1,16 +1,17 @@
 {
   "defaultLanguageCode": "nor",
-  "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/graphql",
+  "tiamatBaseUrl": "https://api.dev.entur.io/stop-places/v1/nordic/graphql",
   "OTPUrl": "https://api.dev.entur.io/journey-planner/v3/graphql",
   "baatTokenProxyEndpoint": "https://api.dev.entur.io/baat-token-proxy/v1/token",
   "tiamatEnv": "development",
   "netexPrefix": "NSR",
-  "hostname": "stoppested.dev.entur.org",
+  "hostname": "stoppested-nordic.dev.entur.org",
+  "googleApiKey": "AIzaSyB_8bdt2skRkdsyQO19m_gqTzr0_2gqo8U",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
   "oidcConfig": {
-    "authority": "https://partner.dev.entur.org",
-    "client_id": "IAjOS4VshfCvu5K3OJ37B9LHqPTEwxG7",
+    "authority": "https://ror-entur-dev.eu.auth0.com",
+    "client_id": "l3Vv5g3WIvuh9mHSly5rxR4EzzpCZlZM",
     "extraQueryParams": {
       "audience": "https://ror.api.dev.entur.io"
     }
@@ -32,9 +33,8 @@
         "attribution": "&copy; <a href=\"http://www.kartverket.no\">Kartverket"
       },
       {
-        "name": "Kartverket flyfoto",
-        "component": true,
-        "componentName": "KartverketFlyFoto"
+        "name": "KartverketFlyFoto",
+        "component": true
       }
     ],
     "defaultTile": "OpenStreetMap",

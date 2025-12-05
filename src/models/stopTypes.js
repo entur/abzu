@@ -31,7 +31,6 @@ const stopTypes = {
   harbourPort: {
     transportMode: "water",
     submodes: [
-      "highSpeedPassengerService",
       "nationalCarFerry",
       "localCarFerry",
       "internationalCarFerry",
@@ -59,13 +58,14 @@ const stopTypes = {
       "regionalRail",
     ],
   },
-  onstreetTram: { transportMode: "tram", submodes: ["localTram"] },
+  onstreetTram: { transportMode: "tram", submodes: ["localTram", "cityTram"] },
   metroStation: { transportMode: "metro", submodes: ["metro"] },
   airport: {
     transportMode: "air",
     submodes: ["domesticFlight", "internationalFlight", "helicopterService"],
   },
   liftStation: { transportMode: "cableway", submodes: ["telecabin"] },
+  funicular: { transportMode: "funicular", submodes: ["funicular"] },
   other: {
     transportMode: "unknown", // Or "other", depending on how you want to classify it
     submodes: null, // Or [], if you prefer an empty array. No specific submodes for a generic "other".
@@ -83,6 +83,7 @@ export const submodes = [
   "shuttleBus",
   "sightseeingBus",
   "localTram",
+  "cityTram",
   "internationalRail",
   "interregionalRail",
   "local",
