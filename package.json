@@ -82,7 +82,7 @@
     "@types/react-helmet": "6.1.11",
     "@types/redux-logger": "3.0.13",
     "@vitejs/plugin-react": "5.1.1",
-    "@vitest/coverage-v8": "4.0.14",
+    "@vitest/coverage-v8": "4.0.15",
     "caniuse-lite": "1.0.30001757",
     "graphql-request": "7.3.5",
     "husky": "9.1.7",
@@ -97,7 +97,7 @@
     "vite": "7.2.6",
     "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.0.14",
+    "vitest": "4.0.15",
     "vitest-sonar-reporter": "3.0.0"
   }
 }
