@@ -24,7 +24,7 @@ const WalkingSurfaceIndicatorsAlong = (props) => (
     preserveAspectRatio="xMidYMid meet"
   >
     <g id="Layer_1-2" data-name="Layer 1" focusable="false">
-      <path d="M0,0v13.58h20.62V0H0ZM10.56,5.79h4.03v2h-4.03v-2ZM10.06,7.79h-4.03v-2h4.03v2ZM1.5,5.79h4.03v2H1.5v-2ZM19.12,7.79h-4.03v-2h4.03v2Z" />
+      <path d="M0,0v13.58h20.62V0H0ZM5.53,7.65H1.5v-1.8h4.03v1.8ZM10.06,7.65h-4.03v-1.8h4.03v1.8ZM14.59,7.65h-4.03v-1.8h4.03v1.8ZM19.12,7.65h-4.03v-1.8h4.03v1.8Z" />
     </g>
   </SvgIcon>
 );
