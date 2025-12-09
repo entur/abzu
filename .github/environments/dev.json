@@ -12,7 +12,7 @@
     "authority": "https://partner.dev.entur.org",
     "client_id": "IAjOS4VshfCvu5K3OJ37B9LHqPTEwxG7",
     "extraQueryParams": {
-      "audience": "https://ror.api.dev.entur.io"
+      "audience": "https://api.dev.entur.io"
     }
   },
   "featureFlags": {
