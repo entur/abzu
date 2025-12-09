@@ -84,25 +84,15 @@ const WalkingSurfaceIndicators = ({
 
   const handleChange = (newValue: FeaturePopoverMenuValue) => {
     const newMobilityFacilityList: MobilityFacility[] =
-      mobilityFacilityList.filter(
-        (v) =>
-          !(
-            // Wipe out tactiles related values from the newMobilityFacilityList array:
-            (
-              v === MobilityFacility.TACTILE_GUIDING_STRIPS ||
-              v === MobilityFacility.TACTILE_PLATFORM_EDGES ||
-              // Clean-up the "unknown" value in case new value is something other than "none", basically meaning the state isn't "unknown" anymore:
-              (newValue !== FeaturePopoverMenuDefaults.NONE &&
-                v === MobilityFacility.UNKNOWN)
-            )
-          ),
+      FacilitiesHelpers.onTactilesUpdatedGetMobilityFacilityListCleanState(
+        mobilityFacilityList,
       );
 
     if (newValue === MobilityFacility.TACTILE_GUIDING_STRIPS) {
       newMobilityFacilityList.push(MobilityFacility.TACTILE_GUIDING_STRIPS);
     } else if (newValue === MobilityFacility.TACTILE_PLATFORM_EDGES) {
       newMobilityFacilityList.push(MobilityFacility.TACTILE_PLATFORM_EDGES);
-    } else if (newValue == FeaturePopoverMenuDefaults.ALL) {
+    } else if (newValue === FeaturePopoverMenuDefaults.ALL) {
       newMobilityFacilityList.push(MobilityFacility.TACTILE_GUIDING_STRIPS);
       newMobilityFacilityList.push(MobilityFacility.TACTILE_PLATFORM_EDGES);
     }
