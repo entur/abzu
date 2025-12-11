@@ -62,9 +62,9 @@ const updateLocalServiceForEntity = (entity, payload, typeOfService) => {
 };
 
 /*
- * Simplify place equipment before sending it to the GraphQL API
+ * Simplify local services before sending it to the GraphQL API
  * Please note that the GraphQL API is not strictly Netex, so the method name is misleading.
- * This method removes id fields from place equipments, as this is not supported by the GraphQL APIs input type. (ROR-467)
+ * This method removes id fields from local services, as this is not supported by the GraphQL APIs input type. (ROR-467)
  */
 export const netexifyLocalServices = (localServices) => {
   if (localServices) {

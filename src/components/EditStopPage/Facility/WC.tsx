@@ -4,9 +4,15 @@ import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
 
-const WC = ({ entity, disabled, id, index, entityType }: FacilityProps) => {
+const WC = ({
+  entity,
+  disabled,
+  id,
+  index,
+  entityType,
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(entity);
 
