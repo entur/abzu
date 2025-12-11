@@ -18,6 +18,7 @@ export interface Auth {
   getAccessToken: () => Promise<string>;
   logout: ({ returnTo }: { returnTo?: string }) => Promise<void>;
   login: (redirectUri?: string) => Promise<void>;
+  addAccessTokenExpiredCallback: (cb: () => void) => () => void;
 }
 
 /**
@@ -25,8 +26,14 @@ export interface Auth {
  * the auth state.
  */
 export const useAuth = (): Auth => {
-  const { isLoading, isAuthenticated, user, signoutRedirect, signinRedirect } =
-    useOidcAuth();
+  const {
+    isLoading,
+    isAuthenticated,
+    user,
+    signoutRedirect,
+    signinRedirect,
+    events,
+  } = useOidcAuth();
 
   const { claimsNamespace, preferredNameNamespace } = useConfig();
 
@@ -66,6 +73,7 @@ export const useAuth = (): Auth => {
     getAccessToken,
     logout,
     login,
+    addAccessTokenExpiredCallback: events.addAccessTokenExpired.bind(events),
   };
 };
 
