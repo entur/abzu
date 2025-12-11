@@ -107,6 +107,7 @@ export const stopPlaceBBQuery = gql`
         __typename
         stopPlaceType
         submode
+        transportMode
         permissions {
           ...EntityPermissions
         }
