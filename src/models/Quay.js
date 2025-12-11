@@ -61,6 +61,10 @@ class Quay {
       clientQuay.placeEquipments = simplifyPlaceEquipment(quay.placeEquipments);
     }
 
+    if (quay.facilities) {
+      clientQuay.facilities = [...quay.facilities];
+    }
+
     return clientQuay;
   }
 }

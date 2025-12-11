@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { LocalServiceActions } from "../../../actions";
 import LocalServicesHelpers from "../../../modelUtils/localServicesHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { AssistanceProps, AssistanceTabItem } from "./types";
+import { AssistanceTabItem, AssistanceTabItemProps } from "./types";
 
 /**
  * Handles AssistanceService's assistanceFacilityList field;
@@ -16,7 +16,11 @@ import { AssistanceProps, AssistanceTabItem } from "./types";
  * @param id
  * @constructor
  */
-const AssistanceService = ({ entity, disabled, id }: AssistanceProps) => {
+const AssistanceService = ({
+  entity,
+  disabled,
+  id,
+}: AssistanceTabItemProps) => {
   const dispatch = useDispatch();
   const isAssistanceServicePresent =
     LocalServicesHelpers.isAssistanceServicePresent(entity);

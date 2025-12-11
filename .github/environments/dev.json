@@ -12,7 +12,7 @@
     "authority": "https://partner.dev.entur.org",
     "client_id": "IAjOS4VshfCvu5K3OJ37B9LHqPTEwxG7",
     "extraQueryParams": {
-      "audience": "https://ror.api.dev.entur.io"
+      "audience": "https://api.dev.entur.io"
     }
   },
   "featureFlags": {
@@ -40,6 +40,9 @@
     "defaultTile": "OpenStreetMap",
     "center": [64.349421, 16.809082],
     "zoom": 6
+  },
+  "modalityConfig": {
+    "hiddenStopTypes": ["other"]
   },
   "localeConfig": {
     "locales": ["nb", "en", "sv", "fi", "fr"],

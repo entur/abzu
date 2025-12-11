@@ -7,8 +7,8 @@ import EquipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityDetail as FacilityDetailEnum,
-  FacilityProps,
+  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemProps,
   TicketCounterDetailFields,
 } from "./types";
 
@@ -18,7 +18,7 @@ const TicketCounterDetails = ({
   entity,
   disabled,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const ticketingEquipmentKeys = ["placeEquipments", "ticketingEquipment"];
 

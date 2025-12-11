@@ -17,6 +17,7 @@ import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
+import facilitiesHelpers from "../modelUtils/facilitiesHelpers";
 import limitationHelpers from "../modelUtils/limitationHelpers";
 import localServicesHelpers from "../modelUtils/localServicesHelpers";
 import formatHelpers from "../modelUtils/mapToClient";
@@ -753,6 +754,15 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.CHANGED_ASSISTANCE_SERVICE_AVAILABILITY_STATE:
       return Object.assign({}, state, {
         current: localServicesHelpers.updateAssistanceServiceState(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_MOBILITY_FACILITY_LIST_STATE:
+      return Object.assign({}, state, {
+        current: facilitiesHelpers.updateFacilitiesForEntity(
           state.current,
           action.payload,
         ),

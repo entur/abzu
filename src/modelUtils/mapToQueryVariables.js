@@ -37,6 +37,7 @@ helpers.mapQuayToVariables = (quay) => {
     ),
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
+    facilities: quay.facilities,
     description: quay.description
       ? createEmbeddableMultilingualString(quay.description)
       : null,
@@ -177,6 +178,13 @@ const createPostalAddress = (stop) => {
     town: createEmbeddableMultilingualString(town),
     postCode: postCode,
   };
+// Maps UI stopPlaceType to backend stopPlaceType
+// Some stop types in the UI need to be mapped to different types in the backend
+const mapStopPlaceTypeForBackend = (stopPlaceType) => {
+  const stopPlaceTypeMapping = {
+    funicular: "other",
+  };
+  return stopPlaceTypeMapping[stopPlaceType] || stopPlaceType;
 };
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
@@ -210,7 +218,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     description: stop.description
       ? createEmbeddableMultilingualString(stop.description)
       : null,
-    stopPlaceType: stop.stopPlaceType,
+    stopPlaceType: mapStopPlaceTypeForBackend(stop.stopPlaceType),
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssessments(
       stop.accessibilityAssessment,

@@ -13,6 +13,7 @@ export interface Config {
   featureFlags?: FeatureFlags;
   mapConfig?: MapConfig;
   localeConfig?: LocaleConfig;
+  modalityConfig?: ModalityConfig;
   /**
    * Path to folder inder /ext that contains features or assets of a company that adopted NSR.
    * This is used e.g. for:
@@ -42,6 +43,16 @@ export interface Tile {
 export interface LocaleConfig {
   locales: string[];
   defaultLocale: string;
+}
+
+export interface ModalityConfig {
+  /**
+   * List of stop types to hide from the modality selection menu.
+   * These stop types will still exist in the system for backwards compatibility,
+   * but will not be available for selection when creating new stops.
+   * Example: ["other", "someOtherType"]
+   */
+  hiddenStopTypes?: string[];
 }
 
 export const ConfigContext = React.createContext<Config>({});

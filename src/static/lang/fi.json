@@ -451,6 +451,10 @@
   "stopTypes_liftStation_quayItemName": "laituri",
   "stopTypes_liftStation_submodes_telecabin": "Gondolihissi",
   "stopTypes_liftStation_submodes_unspecified": "Ei määritelty",
+  "stopTypes_funicular_name": "Funikulaari",
+  "stopTypes_funicular_quayItemName": "laituri",
+  "stopTypes_funicular_submodes_funicular": "Funikulaari",
+  "stopTypes_funicular_submodes_unspecified": "Ei määritelty",
   "stopTypes_metroStation_name": "Metroasema",
   "stopTypes_metroStation_quayItemName": "raide",
   "stopTypes_metroStation_submodes_metro": "Metro",
@@ -470,6 +474,7 @@
   "stopTypes_onstreetTram_name": "Kaupunkiraitiovaunu",
   "stopTypes_onstreetTram_quayItemName": "laituri",
   "stopTypes_onstreetTram_submodes_localTram": "Paikallisraitiovaunu",
+  "stopTypes_onstreetTram_submodes_cityTram": "Kaupunkiraitiovaunu",
   "stopTypes_onstreetTram_submodes_unspecified": "Ei määritelty",
   "stopTypes_railStation_name": "Rautatieasema",
   "stopTypes_railStation_quayItemName": "raide",
@@ -602,5 +607,10 @@
   "assistanceServiceAvailability_unknown": "Tuntematon",
   "assistanceServiceAvailability_none": "Ei saatavilla",
   "assistance": "Avustaminen",
-  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?"
+  "assistanceService_stopPlace_hint": "Onko asemalla saatavilla avustamispalveluita?",
+  "mobilityFacility_tactile_all": " Kohonastat laiturin varrella ja reunoilla",
+  "mobilityFacility_tactile_tactileplatformedges": "Kohonastat laiturien reunoilla",
+  "mobilityFacility_tactile_tactileguidingstrips": "Kohonastat laiturialueella",
+  "mobilityFacility_tactile_none": "Ei maassa olevia kohonastoja",
+  "mobilityFacility_tactile_quay_hint": "Millaiset kohonastat laiturilla on?"
 }

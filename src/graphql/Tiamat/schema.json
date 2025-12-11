@@ -304,6 +304,13 @@
         "kind": "INPUT_OBJECT",
         "name": "AssistanceServiceInput",
         "possibleTypes": null
+      },
+      { "kind": "OBJECT", "name": "Facilities", "possibleTypes": null },
+      { "kind": "OBJECT", "name": "SiteFacilitySet", "possibleTypes": null },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "SiteFacilitySetInput",
+        "possibleTypes": null
       }
     ]
   }
