@@ -15,6 +15,9 @@
   "submode": null,
   "transportMode": null,
   "url": null,
+  "postalAddressAddressLine1": "Aspelundsveien 19744",
+  "postalAddressPostCode": "1807",
+  "postalAddressTown": "Askim",
   "location": [59.587427, 11.170963],
   "accessibilityAssessment": {
     "limitations": {

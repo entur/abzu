@@ -333,6 +333,15 @@ Fragments.stopPlace = {
             ...EntityPermissions
         }
         url
+        postalAddress {
+            addressLine1 {
+                value
+            }
+            town {
+                value
+            }
+            postCode
+        }
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
@@ -470,6 +479,15 @@ Fragments.parentStopPlace = {
               ...EntityPermissions
           }
           url
+          postalAddress {
+            addressLine1 {
+                value
+            }
+            town {
+                value
+            }
+            postCode
+        }
       },
       ${Fragments.stopPlace.verbose},
       ${Fragments.entityPermissions},
