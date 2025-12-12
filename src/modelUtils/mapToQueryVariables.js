@@ -178,6 +178,8 @@ const createPostalAddress = (stop) => {
     town: createEmbeddableMultilingualString(town),
     postCode: postCode,
   };
+};
+
 // Maps UI stopPlaceType to backend stopPlaceType
 // Some stop types in the UI need to be mapped to different types in the backend
 const mapStopPlaceTypeForBackend = (stopPlaceType) => {
