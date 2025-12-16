@@ -327,6 +327,8 @@
   "parking_recharging_available_info": "Number of spaces with recharge point is not in addition to number of spaces specified above. Spaces for registered disabled may also have recharge points. The type of recharge point is not specified.",
   "parking_recharging_available_true": "Recharging available",
   "parking_recharging_sub_header": "Recharge point",
+  "parking_accessibility": "Accessibility",
+  "stepFreeAccess_parking_hint": "Is parking accessible without steps?",
   "pathLink": "Path link",
   "pathLinks_body": "You can define your own path from own point to another by clicking in the map. Path links may at all time be cancelled by clicking on the start point of the path link. As soon as a path link is made, you can remove it by clicking on the path link and click 'remove'",
   "pathLinks_closeButtonTitle": "Close",

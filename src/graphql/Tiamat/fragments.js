@@ -587,7 +587,11 @@ Fragments.parking = {
           numberOfSpacesWithRechargePoint
         }
       }
+      accessibilityAssessment {
+        ...AccessibilityAssessment
+      }
     }
+    ${Fragments.accessibilityAssessment.verbose}
   `,
 };
 

@@ -327,6 +327,8 @@
   "parking_recharging_available_info": "Antall ladestasjoner er ikke i tillegg til antall parkeringsplasser. De kan også gjelde på plasser for forflytningshemmede. Type av ladestasjon defineres ikke.",
   "parking_recharging_available_true": "Ladestasjon tilgjengelig",
   "parking_recharging_sub_header": "Ladestasjon",
+  "parking_accessibility": "Fremkommelighet",
+  "stepFreeAccess_parking_hint": "Har denne parkering trinnfri adgang?",
   "pathLink": "Ganglenke",
   "pathLinks_body": "Du definerer selv stien fra et punkt til et punkt ved å klikke i kartet. Ganglenken kan til enhver tid avbrytes ved å klikke på startstedet for ganglenken. Så fort en ganglenke er opprettet, kan du klikke på ganglenken og deretter 'fjern'.",
   "pathLinks_closeButtonTitle": "Lukk",

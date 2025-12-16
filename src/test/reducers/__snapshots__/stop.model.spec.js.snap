@@ -207,6 +207,16 @@ exports[`Model: map format from server to expected client model > should map cli
 exports[`Model: map format from server to expected client model > should map parking to schema validated query variables 1`] = `
 [
   {
+    "accessibilityAssessment": {
+      "limitations": {
+        "audibleSignalsAvailable": "UNKNOWN",
+        "escalatorFreeAccess": "UNKNOWN",
+        "liftFreeAccess": "UNKNOWN",
+        "stepFreeAccess": "TRUE",
+        "visualSignsAvailable": "UNKNOWN",
+        "wheelchairAccess": "UNKNOWN",
+      },
+    },
     "geometry": {
       "legacyCoordinates": [
         [
