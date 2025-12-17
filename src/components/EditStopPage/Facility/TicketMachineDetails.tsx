@@ -1,3 +1,4 @@
+import WheelChair from "@mui/icons-material/Accessible";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import TextField from "@mui/material/TextField";
@@ -42,6 +43,11 @@ const TicketMachineDetails = ({
     ),
     false,
   );
+  const wheelchairSuitable = getIn(
+    entity,
+    ticketingEquipmentKeys.concat(FacilityDetailEnum.WHEELCHAIR_SUITABLE),
+    false,
+  );
 
   const handleValueForTicketMachineChange = (
     newValue: TicketMachineDetailFields,
@@ -64,7 +70,8 @@ const TicketMachineDetails = ({
         ((newValue.numberOfMachines as number) ||
           ticketingEquipment?.numberOfMachines) > 0 ||
         updatedTicketingEquipment.audioInterfaceAvailable ||
-        updatedTicketingEquipment.tactileInterfaceAvailable;
+        updatedTicketingEquipment.tactileInterfaceAvailable ||
+        updatedTicketingEquipment.wheelchairSuitable;
     }
 
     if (
@@ -103,31 +110,46 @@ const TicketMachineDetails = ({
       <div style={{ display: "block" }}>
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
+            display: "grid",
             justifyContent: "space-around",
+            rowGap: "5px",
           }}
         >
-          <FeatureCheckbox
-            icon={<VolumeUpIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForTicketMachineChange({
-                audioInterfaceAvailable: value,
-              })
-            }
-            name={FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE}
-            isFeaturePresent={audioInterfaceAvailable}
-          />
-          <FeatureCheckbox
-            icon={<TouchAppIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForTicketMachineChange({
-                tactileInterfaceAvailable: value,
-              })
-            }
-            name={FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE}
-            isFeaturePresent={tactileInterfaceAvailable}
-          />
+          <div>
+            <FeatureCheckbox
+              icon={<VolumeUpIcon />}
+              handleFeatureStateChange={(value: boolean) =>
+                handleValueForTicketMachineChange({
+                  audioInterfaceAvailable: value,
+                })
+              }
+              name={FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE}
+              isFeaturePresent={audioInterfaceAvailable}
+            />
+            <FeatureCheckbox
+              icon={<TouchAppIcon />}
+              handleFeatureStateChange={(value: boolean) =>
+                handleValueForTicketMachineChange({
+                  tactileInterfaceAvailable: value,
+                })
+              }
+              name={FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE}
+              isFeaturePresent={tactileInterfaceAvailable}
+            />
+          </div>
+          <div>
+            <FeatureCheckbox
+              icon={<WheelChair />}
+              handleFeatureStateChange={(value: boolean) =>
+                handleValueForTicketMachineChange({
+                  wheelchairSuitable: value,
+                })
+              }
+              name={FacilityDetailEnum.WHEELCHAIR_SUITABLE}
+              isFeaturePresent={wheelchairSuitable}
+            />
+            <div></div>
+          </div>
         </div>
       </div>
     </div>

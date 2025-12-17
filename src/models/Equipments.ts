@@ -19,12 +19,14 @@ export const defaultEquipmentFacilities = {
       numberOfMachines: 1,
       audioInterfaceAvailable: false,
       tactileInterfaceAvailable: false,
+      wheelchairSuitable: false,
     },
     isUnChecked: {
       ticketMachines: false,
       numberOfMachines: 0,
       audioInterfaceAvailable: false,
       tactileInterfaceAvailable: false,
+      wheelchairSuitable: false,
     },
   },
   ticketOffice: {

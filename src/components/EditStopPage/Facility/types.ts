@@ -23,6 +23,7 @@ export enum FacilityTabItemDetail {
   TACTILE_INTERFACE_AVAILABLE = "tactileInterfaceAvailable",
   INDUCTION_LOOPS = "inductionLoops",
   LOW_COUNTER_ACCESS = "lowCounterAccess",
+  WHEELCHAIR_SUITABLE = "wheelchairSuitable",
 }
 
 /**
@@ -48,6 +49,7 @@ export interface TicketMachineDetailFields {
   numberOfMachines?: number;
   audioInterfaceAvailable?: boolean;
   tactileInterfaceAvailable?: boolean;
+  wheelchairSuitable?: boolean;
 }
 
 export interface TicketCounterDetailFields {

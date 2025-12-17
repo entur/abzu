@@ -522,6 +522,8 @@
   "inductionLoops_no": "No induction loops",
   "lowCounterAccess": "Wheelchair accessible",
   "lowCounterAccess_no": "Not wheelchair accessible",
+  "wheelchairSuitable": "Wheelchair accessible",
+  "wheelchairSuitable_no": "Not wheelchair accessible",
   "time": "Hour",
   "title_for_favorite": "Select a name for your saved search",
   "totalCapacity": "Total capacity",
