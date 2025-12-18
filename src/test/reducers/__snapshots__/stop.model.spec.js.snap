@@ -139,6 +139,17 @@ exports[`Model: map format from server to expected client model > should map cli
     "value": "Aspelundsveien",
   },
   "placeEquipments": null,
+  "postalAddress": {
+    "addressLine1": {
+      "lang": "nor",
+      "value": "Aspelundsveien 19744",
+    },
+    "postCode": "1807",
+    "town": {
+      "lang": "nor",
+      "value": "Askim",
+    },
+  },
   "privateCode": {
     "value": "private",
   },

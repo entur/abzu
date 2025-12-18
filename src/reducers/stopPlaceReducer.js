@@ -307,6 +307,36 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       };
 
+    case types.CHANGED_STOP_POSTAL_ADDRESS_ADDRESS_LINE1:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressAddressLine1: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
+    case types.CHANGED_STOP_POSTAL_ADDRESS_TOWN:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressTown: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
+    case types.CHANGED_STOP_POSTAL_ADDRESS_POST_CODE:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressPostCode: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
     case types.CHANGED_STOP_TYPE:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithType(

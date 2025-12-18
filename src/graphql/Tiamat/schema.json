@@ -212,6 +212,11 @@
       { "kind": "ENUM", "name": "SubmodeType", "possibleTypes": null },
       { "kind": "OBJECT", "name": "Tag", "possibleTypes": null },
       { "kind": "OBJECT", "name": "TariffZone", "possibleTypes": null },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "PostalAddressInput",
+        "possibleTypes": null
+      },
       { "kind": "OBJECT", "name": "TicketingEquipment", "possibleTypes": null },
       {
         "kind": "INPUT_OBJECT",
