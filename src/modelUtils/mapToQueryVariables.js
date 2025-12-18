@@ -156,7 +156,6 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     parentStopVariables.versionComment = comment;
   }
   helpers.removeTypeNameRecursively(parentStopVariables);
-  console.log(parentStopVariables);
   return parentStopVariables;
 };
 
