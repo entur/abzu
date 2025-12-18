@@ -37,6 +37,7 @@ import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import ImportedId from "../EditStopPage/ImportedId";
+import PostalAddress from "../EditStopPage/PostalAddress";
 import TagsDialog from "../EditStopPage/TagsDialog";
 import ToolTippable from "../EditStopPage/ToolTippable";
 import VersionsPopover from "../EditStopPage/VersionsPopover";
@@ -161,10 +162,7 @@ class ParentStopDetails extends Component {
     const { formatMessage } = intl;
 
     const {
-      featureFlags: {
-        StopPlaceUrl: featureStopPlaceUrlEnabled = false,
-        StopPlacePostalAddress: featureStopPlacePostalAddressEnabled = false,
-      },
+      featureFlags: { StopPlaceUrl: featureStopPlaceUrlEnabled = false },
     } = this.context;
 
     const hasAltNames = !!(
@@ -291,37 +289,17 @@ class ParentStopDetails extends Component {
               onChange={this.handleChangeUrl.bind(this)}
             />
           )}
-          {featureStopPlacePostalAddressEnabled && (
-            <>
-              <TextField
-                variant={"standard"}
-                hintText={formatMessage({ id: "postalAddress_addressLine1" })}
-                label={formatMessage({ id: "postalAddress_addressLine1" })}
-                fullWidth={true}
-                disabled={disabled}
-                value={stopPlace.postalAddressAddressLine1 || ""}
-                onChange={this.handleChangePostalAddressAddressLine1.bind(this)}
-              />
-              <TextField
-                variant={"standard"}
-                hintText={formatMessage({ id: "postalAddress_town" })}
-                label={formatMessage({ id: "postalAddress_town" })}
-                fullWidth={true}
-                disabled={disabled}
-                value={stopPlace.postalAddressTown || ""}
-                onChange={this.handleChangePostalAddressTown.bind(this)}
-              />
-              <TextField
-                variant={"standard"}
-                hintText={formatMessage({ id: "postalAddress_postCode" })}
-                label={formatMessage({ id: "postalAddress_postCode" })}
-                fullWidth={true}
-                disabled={disabled}
-                value={stopPlace.postalAddressPostCode || ""}
-                onChange={this.handleChangePostalAddressPostCode.bind(this)}
-              />
-            </>
-          )}
+          <PostalAddress
+            addressLine1={stopPlace.postalAddressAddressLine1 || ""}
+            town={stopPlace.postalAddressTown || ""}
+            postCode={stopPlace.postalAddressPostCode || ""}
+            onAddressLine1Change={this.handleChangePostalAddressAddressLine1.bind(
+              this,
+            )}
+            onTownChange={this.handleChangePostalAddressTown.bind(this)}
+            onPostCodeChange={this.handleChangePostalAddressPostCode.bind(this)}
+            disabled={disabled}
+          />
           <Divider />
         </div>
         <StopPlaceList

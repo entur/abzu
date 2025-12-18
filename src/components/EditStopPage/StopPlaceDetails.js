@@ -68,6 +68,7 @@ import BelongsToGroup from "./../MainPage/BelongsToGroup";
 import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
 import ImportedId from "./ImportedId";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
+import PostalAddress from "./PostalAddress";
 import TagsDialog from "./TagsDialog";
 import ToolTippable from "./ToolTippable";
 import VersionsPopover from "./VersionsPopover";
@@ -443,10 +444,7 @@ class StopPlaceDetails extends React.Component {
     };
 
     const {
-      featureFlags: {
-        StopPlaceUrl: featureStopPlaceUrlEnabled = false,
-        StopPlacePostalAddress: featureStopPlacePostalAddressEnabled = false,
-      },
+      featureFlags: { StopPlaceUrl: featureStopPlaceUrlEnabled = false },
     } = this.context;
 
     const {
@@ -805,39 +803,19 @@ class StopPlaceDetails extends React.Component {
             />
           </div>
         )}
-        {featureStopPlacePostalAddressEnabled && (
-          <div>
-            <TextField
-              variant={"standard"}
-              hintText={formatMessage({ id: "postalAddress_addressLine1" })}
-              label={formatMessage({ id: "postalAddress_addressLine1" })}
-              fullWidth={true}
-              disabled={disabled}
-              value={postalAddressAddressLine1}
-              onChange={this.handleStopPostalAddressAddressLine1Change.bind(
-                this,
-              )}
-            />
-            <TextField
-              variant={"standard"}
-              hintText={formatMessage({ id: "postalAddress_town" })}
-              label={formatMessage({ id: "postalAddress_town" })}
-              fullWidth={true}
-              disabled={disabled}
-              value={postalAddressTown}
-              onChange={this.handleStopPostalAddressTownChange.bind(this)}
-            />
-            <TextField
-              variant={"standard"}
-              hintText={formatMessage({ id: "postalAddress_postCode" })}
-              label={formatMessage({ id: "postalAddress_postCode" })}
-              fullWidth={true}
-              disabled={disabled}
-              value={postalAddressPostCode}
-              onChange={this.handleStopPostalAddressPostCodeChange.bind(this)}
-            />
-          </div>
-        )}
+        <PostalAddress
+          addressLine1={postalAddressAddressLine1}
+          town={postalAddressTown}
+          postCode={postalAddressPostCode}
+          onAddressLine1Change={this.handleStopPostalAddressAddressLine1Change.bind(
+            this,
+          )}
+          onTownChange={this.handleStopPostalAddressTownChange.bind(this)}
+          onPostCodeChange={this.handleStopPostalAddressPostCodeChange.bind(
+            this,
+          )}
+          disabled={disabled}
+        />
         {expanded ? null : (
           <div
             style={{
