@@ -71,7 +71,7 @@ const WaitingRoomDetails = ({
   };
 
   return (
-    <div>
+    <div style={{ padding: "3px 15px" }}>
       <TextField
         label={formatMessage({ id: "number_of_seats" })}
         variant="filled"

@@ -59,6 +59,7 @@ export const defaultEquipmentFacilities = {
     isChecked: {
       gender: "both",
       numberOfToilets: 1,
+      sanitaryFacilityList: [],
     },
     isUnChecked: null,
   },
@@ -93,4 +94,16 @@ export enum Equipment {
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
   CYCLE_STORAGE_EQUIPMENT = "cycleStorageEquipment",
   GENERAL_SIGN = "generalSign",
+}
+
+export enum SanitaryFacility {
+  NONE = "none",
+  TOILET = "toilet",
+  WHEEL_CHAIR_ACCESS_TOILET = "wheelChairAccessToilet",
+  SHOWER = "shower",
+  WASHING_AND_CHANGE_FACILITIES = "washingAndChangeFacilities",
+  BABY_CHANGE = "babyChange",
+  WHEELCHAIR_BABY_CHANGE = "wheelchairBabyChange",
+  SHOE_SHINER = "shoeShiner",
+  OTHER = "other",
 }

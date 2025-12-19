@@ -24,6 +24,7 @@ import TicketMachine from "./TicketMachine";
 import TicketMachineDetails from "./TicketMachineDetails";
 import TicketOffice from "./TicketOffice";
 import WC from "./WC";
+import WCDetails from "./WCDetails";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
 import { FacilityTabItem as FacilityEnum } from "./types";
@@ -149,6 +150,17 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
             entityType={entityType}
           />
         }
+        relatedFeatures={
+          <WCDetails
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+        isExpanded={expandedIndex === 6}
+        handleExpand={() => setExpandedIndex(6)}
+        handleCollapse={() => setExpandedIndex(-1)}
       />
 
       <PlaceFeatures

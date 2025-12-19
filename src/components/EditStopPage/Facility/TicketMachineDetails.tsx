@@ -86,7 +86,7 @@ const TicketMachineDetails = ({
   };
 
   return (
-    <div>
+    <div style={{ padding: "3px 15px" }}>
       <TextField
         label={formatMessage({ id: "number_of_ticket_machines" })}
         type="number"

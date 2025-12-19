@@ -141,6 +141,7 @@ Fragments.placeEquipments = {
       sanitaryEquipment {
         numberOfToilets
         gender
+        sanitaryFacilityList
       }
       ticketingEquipment {
         ticketOffice

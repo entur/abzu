@@ -558,6 +558,8 @@
   "sanitaryEquipment_no": "Ei WC:tä saatavilla",
   "sanitaryEquipment_stopPlace_hint": "Onko tällä pysäkillä WC?",
   "sanitaryEquipment_quay_hint": "Onko tällä pysäkillä WC?",
+  "wheelChairAccessToilet": "Pääsy pyörätuolilla",
+  "wheelChairAccessToilet_no": "Ei pääsyä pyörätuolilla",
   "weightTypes_interchangeAllowed": "Vaihdettaessa sallittu (oletus)",
   "weightTypes_noInterchange": "Ei vaihtomahdollisuutta",
   "weightTypes_noValue": "Vaihtotietoa ei asetettu",

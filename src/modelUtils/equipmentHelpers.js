@@ -12,7 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { defaultEquipmentFacilities, Equipment } from "../models/Equipments";
+import {
+  defaultEquipmentFacilities,
+  Equipment,
+  SanitaryFacility,
+} from "../models/Equipments";
 import { getIn } from "../utils";
 
 const EquipmentHelpers = {};
@@ -53,11 +57,38 @@ EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
   );
 };
 
+EquipmentHelpers.getSanitaryEquipmentPresent = (entity) => {
+  return getIn(entity, ["placeEquipments", "sanitaryEquipment"], null);
+};
+
 EquipmentHelpers.isSanitaryEquipmentPresent = (entity) => {
   return !!getIn(
     entity,
     ["placeEquipments", "sanitaryEquipment", "numberOfToilets"],
     null,
+  );
+};
+
+EquipmentHelpers.getSanitaryFacilityList = (entity) => {
+  return getIn(
+    entity,
+    ["placeEquipments", "sanitaryEquipment", "sanitaryFacilityList"],
+    [],
+  );
+};
+
+Equipment.getSanitaryFacilityList = (entity) => {
+  return getIn(
+    entity,
+    ["placeEquipments", "sanitaryEquipment", "sanitaryFacilityList"],
+    [],
+  );
+};
+
+EquipmentHelpers.isSanitaryFacilityWheelchairAccessible = (entity) => {
+  const sanitaryFacilityList = Equipment.getSanitaryFacilityList(entity);
+  return sanitaryFacilityList.includes(
+    SanitaryFacility.WHEEL_CHAIR_ACCESS_TOILET,
   );
 };
 
