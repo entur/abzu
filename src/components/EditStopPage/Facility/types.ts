@@ -30,7 +30,7 @@ export enum FacilityTabItemDetail {
   INDUCTION_LOOPS = "inductionLoops",
   LOW_COUNTER_ACCESS = "lowCounterAccess",
   WHEELCHAIR_ACCESSIBLE_TOILET = "wheelChairAccessToilet",
-  WHEELCHAIR_SUITABLE = "wheelchairSuitable"
+  WHEELCHAIR_SUITABLE = "wheelchairSuitable",
 }
 
 /**
