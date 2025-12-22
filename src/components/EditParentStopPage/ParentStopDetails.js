@@ -37,6 +37,7 @@ import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import ImportedId from "../EditStopPage/ImportedId";
+import PostalAddress from "../EditStopPage/PostalAddress";
 import TagsDialog from "../EditStopPage/TagsDialog";
 import ToolTippable from "../EditStopPage/ToolTippable";
 import VersionsPopover from "../EditStopPage/VersionsPopover";
@@ -125,6 +126,24 @@ class ParentStopDetails extends Component {
 
   handleChangeUrl(e, value) {
     this.props.dispatch(StopPlaceActions.changeStopUrl(e.target.value));
+  }
+
+  handleChangePostalAddressAddressLine1(e, value) {
+    this.props.dispatch(
+      StopPlaceActions.changeStopPostalAddressAddressLine1(e.target.value),
+    );
+  }
+
+  handleChangePostalAddressTown(e, value) {
+    this.props.dispatch(
+      StopPlaceActions.changeStopPostalAddressTown(e.target.value),
+    );
+  }
+
+  handleChangePostalAddressPostCode(e, value) {
+    this.props.dispatch(
+      StopPlaceActions.changeStopPostalAddressPostCode(e.target.value),
+    );
   }
 
   handleRemoveAdjacentConnection(stopPlaceId, adjacentRef) {
@@ -270,6 +289,17 @@ class ParentStopDetails extends Component {
               onChange={this.handleChangeUrl.bind(this)}
             />
           )}
+          <PostalAddress
+            addressLine1={stopPlace.postalAddressAddressLine1 || ""}
+            town={stopPlace.postalAddressTown || ""}
+            postCode={stopPlace.postalAddressPostCode || ""}
+            onAddressLine1Change={this.handleChangePostalAddressAddressLine1.bind(
+              this,
+            )}
+            onTownChange={this.handleChangePostalAddressTown.bind(this)}
+            onPostCodeChange={this.handleChangePostalAddressPostCode.bind(this)}
+            disabled={disabled}
+          />
           <Divider />
         </div>
         <StopPlaceList

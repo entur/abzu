@@ -28,6 +28,7 @@ import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import { getIn } from "../../../utils";
 import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import AccessibilityLimitationPopover from "./AccessibilityLimitationPopover";
+import { accessibilityLimitationsKeys } from "./types";
 
 class AccessibilityStopTab extends React.Component {
   handleWheelChairChange(value) {
@@ -65,10 +66,6 @@ class AccessibilityStopTab extends React.Component {
   render() {
     const { stopPlace, disabled } = this.props;
 
-    const accessibilityLimitationsKeys = [
-      "accessibilityAssessment",
-      "limitations",
-    ];
     const wheelchairAccess = getIn(
       stopPlace,
       accessibilityLimitationsKeys.concat(
@@ -114,7 +111,7 @@ class AccessibilityStopTab extends React.Component {
     const entityType = "stopPlace";
 
     return (
-      <div style={{ padding: 10 }}>
+      <div style={{ paddingTop: 10, paddingBottom: 10 }}>
         <PlaceFeatures
           name={AccessibilityLimitationEnum.WHEELCHAIR_ACCESS}
           entityType={entityType}

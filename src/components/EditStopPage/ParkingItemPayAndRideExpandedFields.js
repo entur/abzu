@@ -25,8 +25,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { injectIntl } from "react-intl";
+import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../models/AccessibilityLimitation";
 import { parkingLayouts } from "../../models/parkingLayout";
 import { parkingPaymentProcesses } from "../../models/parkingPaymentProcess";
+import StairsIcon from "../../static/icons/accessibility/Stairs";
+import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
+import PlaceFeatures from "./PlaceFeatures/PlaceFeatures";
 import RechargingAvailablePopover from "./RechargingAvailablePopover";
 const PREFIX = "ParkingItemPayAndRideExpandedFields";
 
@@ -37,6 +41,7 @@ const classes = {
   textField: `${PREFIX}-textField`,
   selectInput: `${PREFIX}-selectInput`,
   info: `${PREFIX}-info`,
+  block: `${PREFIX}-block`,
 };
 
 const StyledGrid = styled(Grid)(() => ({
@@ -58,6 +63,10 @@ const StyledGrid = styled(Grid)(() => ({
 
   [`& .${classes.selectInput}`]: {
     width: "100%",
+  },
+
+  [`& .${classes.block}`]: {
+    display: "block",
   },
 
   [`& .${classes.info}`]: {
@@ -115,6 +124,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
     handleSetNumberOfSpaces,
     handleSetNumberOfSpacesWithRechargePoint,
     handleSetNumberOfSpacesForRegisteredDisabledUserType,
+    stepFreeAccess,
+    handleStepFreeChange,
   } = props;
 
   return (
@@ -331,6 +342,34 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
             fullWidth
             className={classes.textField}
             style={{ marginTop: 0 }}
+          />
+        </Box>
+      </Grid>
+
+      <Grid item>
+        <ListSubheader>
+          {formatMessage({ id: "parking_accessibility" })}
+        </ListSubheader>
+        <Box
+          display="flex"
+          flexDirection="row"
+          className={`${classes.boxFullWidth} ${classes.block}`}
+        >
+          <PlaceFeatures
+            name={AccessibilityLimitationEnum.STEP_FREE_ACCESS}
+            entityType={"parking"}
+            feature={
+              <AccessibilityLimitationPopover
+                disabled={disabled}
+                displayLabel={true}
+                accessibilityLimitationState={stepFreeAccess}
+                handleChange={handleStepFreeChange}
+                accessibilityLimitationName={
+                  AccessibilityLimitationEnum.STEP_FREE_ACCESS
+                }
+                icon={<StairsIcon />}
+              />
+            }
           />
         </Box>
       </Grid>

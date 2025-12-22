@@ -35,6 +35,7 @@ export default {
         numberOfMachines: 7,
         audioInterfaceAvailable: false,
         tactileInterfaceAvailable: false,
+        wheelchairSuitable: false,
       },
     ],
     cycleStorageEquipment: [

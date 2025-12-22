@@ -31,6 +31,7 @@ import {
   calculateEstimate,
   getUniquePathLinks,
 } from "./leafletUtils";
+import { setLimitationForEntity } from "./limitationHelpers";
 import { hasExpired } from "./validBetween";
 
 const helpers = {};
@@ -896,6 +897,17 @@ helpers.changeParkingTotalCapacity = (original, payload) => {
   const { index, totalCapacity } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].totalCapacity = Number(totalCapacity);
+  return copy;
+};
+
+helpers.changeParkingAccessibilityAssessment = (original, payload) => {
+  const { index, value, limitationType } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index] = setLimitationForEntity(
+    copy.parking[index],
+    limitationType,
+    value,
+  );
   return copy;
 };
 

@@ -11,7 +11,7 @@ import { FacilityTabItem as FacilityEnum } from "../Facility/types";
 import ToolTipIcon from "../ToolTipIcon";
 
 interface Props {
-  entityType: EntityType;
+  entityType: EntityType | "parking";
   name: AccessibilityLimitationEnum | FacilityEnum | AssistanceEnum;
   feature: ReactElement;
   relatedFeatures?: ReactElement;
@@ -32,7 +32,7 @@ const PlaceFeatures = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}>
       <div>
         <div
           style={{
