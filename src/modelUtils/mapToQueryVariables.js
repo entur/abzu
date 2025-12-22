@@ -370,7 +370,11 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     } else {
       parking.geometry = null;
     }
+
+    parking.accessibilityAssessment = source.accessibilityAssessment;
+
     helpers.removeTypeNameRecursively(parking);
+
     return parking;
   });
 };

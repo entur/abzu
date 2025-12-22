@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { createThunk, UserActions } from ".";
+import { AccessibilityLimitation } from "../models/AccessibilityLimitation";
 import { Entities } from "../models/Entities";
 import { getCentroid } from "../utils/mapUtils";
 import { updateURLWithId } from "../utils/URLhelpers";
@@ -546,6 +547,16 @@ StopPlaceActions.adjustCentroid = () => (dispatch, getState) => {
 
 StopPlaceActions.setStopPlaceLoading = (state) => (dispatch) => {
   dispatch(createThunk(types.SET_STOP_PLACE_LOADING, state));
+};
+
+StopPlaceActions.setParkingStepFreeAccess = (index, value) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_PARKING_ACCESSIBILITY_ASSESSMENT, {
+      index,
+      value,
+      limitationType: AccessibilityLimitation.STEP_FREE_ACCESS,
+    }),
+  );
 };
 
 export default StopPlaceActions;

@@ -327,6 +327,8 @@
   "parking_recharging_available_info": "Antalet laddstationer är inte i tillägg till antalet parkeringsplatser. De kan också innefatta förflyttningshämmade. Laddstationens typ defineras ej.",
   "parking_recharging_available_true": "Laddstation tilgänglig",
   "parking_recharging_sub_header": "Laddstation",
+  "parking_accessibility": "Framkomlighet",
+  "stepFreeAccess_parking_hint": "Har den här parkering trappri åtkomst?",
   "pathLink": "Gånglänk",
   "pathLinks_body": "Du definerar själv gångvägen från punkt till punkt genom att klicka i kartan. Gånglänken kan när som helst avbrytas genom att klicka på dess startpunkt. När en gånglänk har skapats kan du klicka på den och därefter välja \"ta bort\".",
   "pathLinks_closeButtonTitle": "Stäng",
