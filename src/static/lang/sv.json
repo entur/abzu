@@ -565,6 +565,8 @@
   "sanitaryEquipment_no": "Inga toaletter",
   "sanitaryEquipment_stopPlace_hint": "Har hållplatsen toaletter?",
   "sanitaryEquipment_quay_hint": "Har hållplatsen toaletter?",
+  "wheelChairAccessToilet": "Rullstolsanpassad",
+  "wheelChairAccessToilet_no": "Inte rullstolsanpassad",
   "weightTypes_interchangeAllowed": "Byte tillåtet (normal)",
   "weightTypes_noInterchange": "Byte tillåts ej",
   "weightTypes_noValue": "Ospecificerat",

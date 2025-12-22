@@ -2,6 +2,9 @@ import { EntityType } from "../../../models/Entities";
 import Quay from "../../../models/Quay";
 import StopPlace from "../../../models/StopPlace";
 
+/**
+ * In UI appears as a row in the facilities tab
+ */
 export enum FacilityTabItem {
   TICKET_MACHINES = "ticketMachines",
   TICKET_OFFICE = "ticketOffice",
@@ -13,6 +16,9 @@ export enum FacilityTabItem {
   WALKING_SURFACE_INDICATORS = "mobilityFacility_tactile",
 }
 
+/**
+ * In UI appears as additional fields shown upon expanding a row containing FacilityTabItem
+ */
 export enum FacilityTabItemDetail {
   STEP_FREE = "stepFree",
   SEATS = "seats",
@@ -23,6 +29,7 @@ export enum FacilityTabItemDetail {
   TACTILE_INTERFACE_AVAILABLE = "tactileInterfaceAvailable",
   INDUCTION_LOOPS = "inductionLoops",
   LOW_COUNTER_ACCESS = "lowCounterAccess",
+  WHEELCHAIR_ACCESSIBLE_TOILET = "wheelChairAccessToilet",
   WHEELCHAIR_SUITABLE = "wheelchairSuitable",
 }
 
@@ -55,4 +62,8 @@ export interface TicketMachineDetailFields {
 export interface TicketCounterDetailFields {
   inductionLoops?: boolean;
   lowCounterAccess?: boolean;
+}
+
+export interface WCDetailFields {
+  isWheelchairAccessible?: boolean;
 }

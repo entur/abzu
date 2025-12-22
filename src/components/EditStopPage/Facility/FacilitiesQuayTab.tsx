@@ -25,6 +25,7 @@ import TicketMachine from "./TicketMachine";
 import TicketMachineDetails from "./TicketMachineDetails";
 import TicketOffice from "./TicketOffice";
 import WC from "./WC";
+import WCDetails from "./WCDetails";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
 import WalkingSurfaceIndicators from "./WalkingSurfaceIndicators";
@@ -151,6 +152,17 @@ const FacilitiesQuayTab = ({ disabled, quay, index }: Props) => {
             entityType={entityType}
           />
         }
+        relatedFeatures={
+          <WCDetails
+            entity={quay}
+            disabled={disabled}
+            index={index}
+            entityType={entityType}
+          />
+        }
+        isExpanded={expandedIndex === 6}
+        handleExpand={() => setExpandedIndex(6)}
+        handleCollapse={() => setExpandedIndex(-1)}
       />
 
       <PlaceFeatures

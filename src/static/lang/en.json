@@ -566,6 +566,8 @@
   "sanitaryEquipment_no": "No WC available",
   "sanitaryEquipment_stopPlace_hint": "Does this stop place have a WC?",
   "sanitaryEquipment_quay_hint": "Does this stop place have a WC?",
+  "wheelChairAccessToilet": "Wheelchair accessible",
+  "wheelChairAccessToilet_no": "Not wheelchair accessible",
   "weightTypes_interchangeAllowed": "Interchange allowed (default)",
   "weightTypes_noInterchange": "No interchange",
   "weightTypes_noValue": "No interchange set",

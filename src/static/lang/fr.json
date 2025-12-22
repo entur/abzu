@@ -565,6 +565,8 @@
   "sanitaryEquipment_no": "Aucun WC disponible",
   "sanitaryEquipment_stopPlace_hint": "Ce point d'arrêt possède-t-il des WC ?",
   "sanitaryEquipment_quay_hint": "Ce point d'arrêt possède-t-il des WC ?",
+  "wheelChairAccessToilet": "Accessible aux fauteuils roulants",
+  "wheelChairAccessToilet_no": "Non accessible aux fauteuils roulants",
   "weightTypes_interchangeAllowed": "Correspondance autorisée",
   "weightTypes_noInterchange": "Pas de transfert",
   "weightTypes_noValue": "Pas de correspondance",

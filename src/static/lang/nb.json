@@ -566,6 +566,8 @@
   "sanitaryEquipment_no": "Ingen toaletter",
   "sanitaryEquipment_stopPlace_hint": "Har dette stoppestedet toaletter?",
   "sanitaryEquipment_quay_hint": "Har dette stoppestedet toaletter?",
+  "wheelChairAccessToilet": "Tilgjengelig for rullestol",
+  "wheelChairAccessToilet_no": "Ikke tilgjengelig for rullestol",
   "weightTypes_interchangeAllowed": "Overgang tillatt (normal)",
   "weightTypes_noInterchange": "Ingen overgang",
   "weightTypes_noValue": "Overgang ikke satt",
