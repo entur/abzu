@@ -526,6 +526,8 @@
   "inductionLoops_no": "Inga induktionsslingor",
   "lowCounterAccess": "Rullstolsanpassad",
   "lowCounterAccess_no": "Inte rullstolsanpassad",
+  "wheelchairSuitable": "Rullstolsanpassad",
+  "wheelchairSuitable_no": "Inte rullstolsanpassad",
   "time": "Tidspunkt",
   "title_for_favorite": "Namnge ditt sparade sök",
   "totalCapacity": "Total kapacitet",

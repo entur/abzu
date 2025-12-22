@@ -526,6 +526,8 @@
   "inductionLoops_no": "Pas de boucles d'induction",
   "lowCounterAccess": "Accessible aux fauteuils roulants",
   "lowCounterAccess_no": "Non accessible aux fauteuils roulants",
+  "wheelchairSuitable": "Accessible aux fauteuils roulants",
+  "wheelchairSuitable_no": "Non accessible aux fauteuils roulants",
   "time": "Horaire",
   "title_for_favorite": "Comment souhaitez-vous nommer votre recherche ?",
   "totalCapacity": "Total capacity",

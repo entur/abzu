@@ -526,6 +526,8 @@
   "inductionLoops_no": "Ei induktiosilmukoita",
   "lowCounterAccess": "Pääsy pyörätuolilla",
   "lowCounterAccess_no": "Ei pääsyä pyörätuolilla",
+  "wheelchairSuitable": "Pääsy pyörätuolilla",
+  "wheelchairSuitable_no": "Ei pääsyä pyörätuolilla",
   "time": "Tunti",
   "title_for_favorite": "Valitse nimi tallennetulle haulle",
   "totalCapacity": "Kokonaiskapasiteetti",

@@ -151,6 +151,7 @@ Fragments.placeEquipments = {
         tactileInterfaceAvailable
         inductionLoops
         lowCounterAccess
+        wheelchairSuitable
       }
       cycleStorageEquipment {
         numberOfSpaces

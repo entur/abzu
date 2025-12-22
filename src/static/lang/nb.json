@@ -527,6 +527,8 @@
   "inductionLoops_no": "Ingen teleslynge",
   "lowCounterAccess": "Tilgjengelig for rullestol",
   "lowCounterAccess_no": "Ikke tilgjengelig for rullestol",
+  "wheelchairSuitable": "Tilgjengelig for rullestol",
+  "wheelchairSuitable_no": "Ikke tilgjengelig for rullestol",
   "time": "Tidspunkt",
   "title_for_favorite": "Navngi ditt lagrede søk",
   "totalCapacity": "Total kapasitet",
