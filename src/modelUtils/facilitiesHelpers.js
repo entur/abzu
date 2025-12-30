@@ -42,6 +42,16 @@ FacilitiesHelpers.onTactilesUpdatedGetMobilityFacilityListCleanState = (
   );
 };
 
+FacilitiesHelpers.getPassengerInformationFacilityList = (entity) => {
+  const siteFacilitySet = FacilitiesHelpers.getSiteFacilitySet(entity);
+  return siteFacilitySet?.passengerInformationFacilityList || [];
+};
+
+FacilitiesHelpers.getPassengerInformationEquipmentList = (entity) => {
+  const siteFacilitySet = FacilitiesHelpers.getSiteFacilitySet(entity);
+  return siteFacilitySet?.passengerInformationEquipmentList || [];
+};
+
 FacilitiesHelpers.updateFacilitiesForEntity = (entity, payload) => {
   const updatedEntity = { ...entity };
   const { state, type, id } = payload;
@@ -54,6 +64,14 @@ FacilitiesHelpers.updateFacilitiesForEntity = (entity, payload) => {
         }
       : { ...defaultSiteFacilitySet, ...state };
     updatedEntity.quays[id].facilities = [newSiteFacilitySet];
+  } else {
+    const newSiteFacilitySet = entity.facilities
+      ? {
+          ...entity.facilities[0],
+          ...state,
+        }
+      : { ...defaultSiteFacilitySet, ...state };
+    updatedEntity.facilities = [newSiteFacilitySet];
   }
 
   return updatedEntity;
