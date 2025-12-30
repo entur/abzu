@@ -174,6 +174,8 @@ Fragments.facilities = {
   verbose: gql`
     fragment SiteFacilitySet on SiteFacilitySet {
       mobilityFacilityList
+      passengerInformationFacilityList
+      passengerInformationEquipmentList
     }
   `,
 };
@@ -318,6 +320,9 @@ Fragments.stopPlace = {
         localServices {
             ...LocalServices
         }
+        facilities {
+            ...SiteFacilitySet
+        }
         validBetween {
             fromDate
             toDate
@@ -331,6 +336,7 @@ Fragments.stopPlace = {
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
     ${Fragments.localServices.verbose},
+    ${Fragments.facilities.verbose},
     ${Fragments.accessibilityAssessment.verbose}
     ${Fragments.entityPermissions}
   `,
@@ -389,6 +395,9 @@ Fragments.stopPlace = {
           localServices {
             ...LocalServices
           }
+          facilities {
+            ...SiteFacilitySet
+          }
           validBetween {
               fromDate
               toDate
@@ -399,6 +408,7 @@ Fragments.stopPlace = {
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
       ${Fragments.localServices.verbose}
+      ${Fragments.facilities.verbose},
   `,
 };
 

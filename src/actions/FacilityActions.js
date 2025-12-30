@@ -14,4 +14,31 @@ FacilityActions.updateMobilityFacilityList =
     );
   };
 
+FacilityActions.updatePassengerInformationFacilityList =
+  (newPassengerInformationFacilityList, entityType, id) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PASSENGER_INFORMATION_FACILITY_LIST_STATE, {
+        state: {
+          passengerInformationFacilityList: newPassengerInformationFacilityList,
+        },
+        type: entityType,
+        id,
+      }),
+    );
+  };
+
+FacilityActions.updatePassengerInformationEquipmentList =
+  (newPassengerInformationEquipmentList, entityType, id) => (dispatch) => {
+    dispatch(
+      createThunk(types.CHANGED_PASSENGER_INFORMATION_EQUIPMENT_LIST_STATE, {
+        state: {
+          passengerInformationEquipmentList:
+            newPassengerInformationEquipmentList,
+        },
+        type: entityType,
+        id,
+      }),
+    );
+  };
+
 export default FacilityActions;

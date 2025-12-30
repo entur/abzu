@@ -601,5 +601,11 @@
   "mobilityFacility_tactile_tactileplatformedges": "Gangflateindikatorer på plattformkantene",
   "mobilityFacility_tactile_tactileguidingstrips": "Gangflateindikatorer langs plattformen",
   "mobilityFacility_tactile_none": "Ingen gangflateindikatorer",
-  "mobilityFacility_tactile_quay_hint": "Hva slags gangflateindikatorer har plattformen?"
+  "mobilityFacility_tactile_quay_hint": "Hva slags gangflateindikatorer har plattformen?",
+  "passengerInformationDisplay": "Informasjonsskjerm",
+  "passengerInformationDisplay_no": "Ingen informasjonsskjerm",
+  "passengerInformationDisplay_stopPlace_hint": "Har holdeplassen en informasjonsskjerm?",
+  "informationDesk": "Informasjonsskranke",
+  "informationDesk_no": "Ingen informasjonsskranke",
+  "informationDesk_stopPlace_hint": "Har holdeplassen en informasjonsskranke?"
 }

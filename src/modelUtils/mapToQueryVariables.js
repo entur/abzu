@@ -194,6 +194,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     keyValues: stop.keyValues,
     placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),
     localServices: netexifyLocalServices(stop.localServices),
+    facilities: stop.facilities,
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,

@@ -3,6 +3,7 @@ import { EntityType } from "../../../models/Entities";
 import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import AssistanceService from "./AssistanceService";
 import AssistanceServiceDetails from "./AssistanceServiceDetails";
+import InformationDesk from "./InformationDesk";
 import { AssistanceTabItem } from "./types";
 
 interface Props {
@@ -35,6 +36,7 @@ const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
             entity={stopPlace}
             disabled={disabled}
             id={stopPlace.id}
+            entityType={entityType}
           />
         }
         relatedFeatures={
@@ -42,6 +44,20 @@ const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
             entity={stopPlace}
             disabled={disabled}
             id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+      />
+
+      <PlaceFeatures
+        name={AssistanceTabItem.INFORMATION_DESK}
+        entityType={entityType}
+        feature={
+          <InformationDesk
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
           />
         }
       />

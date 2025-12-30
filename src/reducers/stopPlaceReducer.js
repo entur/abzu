@@ -731,6 +731,8 @@ const stopPlaceReducer = (state = initialState, action) => {
       });
 
     case types.CHANGED_MOBILITY_FACILITY_LIST_STATE:
+    case types.CHANGED_PASSENGER_INFORMATION_FACILITY_LIST_STATE:
+    case types.CHANGED_PASSENGER_INFORMATION_EQUIPMENT_LIST_STATE:
       return Object.assign({}, state, {
         current: facilitiesHelpers.updateFacilitiesForEntity(
           state.current,

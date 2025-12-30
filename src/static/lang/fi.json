@@ -600,5 +600,11 @@
   "mobilityFacility_tactile_tactileplatformedges": "Kohonastat laiturien reunoilla",
   "mobilityFacility_tactile_tactileguidingstrips": "Kohonastat laiturialueella",
   "mobilityFacility_tactile_none": "Ei maassa olevia kohonastoja",
-  "mobilityFacility_tactile_quay_hint": "Millaiset kohonastat laiturilla on?"
+  "mobilityFacility_tactile_quay_hint": "Millaiset kohonastat laiturilla on?",
+  "passengerInformationDisplay": "Informaationäyttö",
+  "passengerInformationDisplay_no": "Ei informaationäyttöä",
+  "passengerInformationDisplay_stopPlace_hint": "Onko pysäkillä informaationäyttö?",
+  "informationDesk": "Infopiste",
+  "informationDesk_no": "Ei infopistettä",
+  "informationDesk_stopPlace_hint": "Onko pysäkillä infopistettä?"
 }

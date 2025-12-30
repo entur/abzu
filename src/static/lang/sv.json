@@ -598,5 +598,11 @@
   "mobilityFacility_tactile_tactileplatformedges": "Indikatorer för gångytor på plattformskanterna",
   "mobilityFacility_tactile_tactileguidingstrips": "Gångytindikatorer längs plattformen",
   "mobilityFacility_tactile_none": "Inga gångytindikatorer",
-  "mobilityFacility_tactile_quay_hint": "Vilken typ av taktila ytindikatorer har plattformen?"
+  "mobilityFacility_tactile_quay_hint": "Vilken typ av taktila ytindikatorer har plattformen?",
+  "passengerInformationDisplay": "Informationsdisplay",
+  "passengerInformationDisplay_no": "Ingen informationsdisplay",
+  "passengerInformationDisplay_stopPlace_hint": "Har hållplatsen en informationsdisplay?",
+  "informationDesk": "Informationsdisk",
+  "informationDesk_no": "Ingen informationsdisk",
+  "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?"
 }
