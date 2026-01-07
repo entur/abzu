@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
+import SessionExpiredDialog from "../components/Dialogs/SessionExpiredDialog";
 import Header from "../components/Header/Header";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
 import SnackbarWrapper from "../components/SnackbarWrapper";
@@ -125,6 +126,7 @@ const App = ({ children }) => {
             <Header config={config} />
             {children}
             <SnackbarWrapper />
+            <SessionExpiredDialog />
           </div>
         </ComponentToggle>
       </StyledEngineProvider>
