@@ -16,6 +16,16 @@ exports[`Model: map format from server to expected client model > should map Gra
   "alternativeNames": [],
   "belongsToGroup": false,
   "entityType": "STOP_PLACE",
+  "facilities": [
+    {
+      "passengerInformationEquipmentList": [
+        "informationDesk",
+      ],
+      "passengerInformationFacilityList": [
+        "passengerInformationDisplay",
+      ],
+    },
+  ],
   "fareZones": [],
   "groups": [],
   "hasExpired": false,
@@ -125,6 +135,7 @@ exports[`Model: map format from server to expected client model > should map cli
     "lang": "nor",
     "value": "Beskrivelse",
   },
+  "facilities": undefined,
   "id": "NSR:StopPlace:19744",
   "keyValues": [],
   "legacyCoordinates": [
