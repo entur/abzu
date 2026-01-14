@@ -64,7 +64,7 @@ FacilitiesHelpers.updateFacilitiesForEntity = (entity, payload) => {
         }
       : { ...defaultSiteFacilitySet, ...state };
     updatedEntity.quays[id].facilities = [newSiteFacilitySet];
-  } else {
+  } else if (type === "stopPlace") {
     const newSiteFacilitySet = entity.facilities
       ? {
           ...entity.facilities[0],

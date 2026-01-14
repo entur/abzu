@@ -38,11 +38,11 @@ export enum PassengerInformationFacility {
 export interface SiteFacilitySet {
   mobilityFacilityList: MobilityFacility[];
   passengerInformationFacilityList: PassengerInformationFacility[];
-  passengerInformationEquipmentList: PassengerInformationEquipment | null;
+  passengerInformationEquipmentList: PassengerInformationEquipment[];
 }
 
 export const defaultSiteFacilitySet: SiteFacilitySet = {
   mobilityFacilityList: [],
   passengerInformationFacilityList: [],
-  passengerInformationEquipmentList: null,
+  passengerInformationEquipmentList: [],
 };
