@@ -50,11 +50,7 @@ EquipmentHelpers.getTicketingEquipment = (entity) => {
 };
 
 EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
-  return !!getIn(
-    entity,
-    ["placeEquipments", "shelterEquipment", "seats"],
-    null,
-  );
+  return !!getIn(entity, ["placeEquipments", "shelterEquipment"], null);
 };
 
 EquipmentHelpers.getSanitaryEquipmentPresent = (entity) => {
@@ -115,11 +111,7 @@ EquipmentHelpers.update512SignEquipment = (entity, payload) => {
 };
 
 EquipmentHelpers.isWaitingRoomPresent = (entity) => {
-  return !!getIn(
-    entity,
-    ["placeEquipments", "waitingRoomEquipment", "seats"],
-    null,
-  );
+  return !!getIn(entity, ["placeEquipments", "waitingRoomEquipment"], null);
 };
 
 EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
