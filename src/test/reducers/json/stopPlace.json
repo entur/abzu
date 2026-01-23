@@ -41,6 +41,12 @@
         "permissions": {
           "canEdit": true
         },
+        "facilities": [
+          {
+            "passengerInformationEquipmentList": ["informationDesk"],
+            "passengerInformationFacilityList": ["passengerInformationDisplay"]
+          }
+        ],
         "quays": [
           {
             "id": "NSR:Quay:1694",

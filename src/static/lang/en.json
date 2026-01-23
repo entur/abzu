@@ -621,5 +621,11 @@
   "mobilityFacility_tactile_tactileplatformedges": "Walking surface indicators on the platform edges",
   "mobilityFacility_tactile_tactileguidingstrips": "Walking surface indicators along the platform",
   "mobilityFacility_tactile_none": "No walking surface indicators",
-  "mobilityFacility_tactile_quay_hint": "What kind of walking surface indicators does the platform have?"
+  "mobilityFacility_tactile_quay_hint": "What kind of walking surface indicators does the platform have?",
+  "passengerInformationDisplay": "Information display",
+  "passengerInformationDisplay_no": "No information display",
+  "passengerInformationDisplay_stopPlace_hint": "Does stop place have an information display?",
+  "informationDesk": "Information desk",
+  "informationDesk_no": "No information desk",
+  "informationDesk_stopPlace_hint": "Does stop place have an information desk?"
 }
