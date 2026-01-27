@@ -1,14 +1,14 @@
 import TextField from "@mui/material/TextField";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import Heated from "../../../static/icons/facilities/Heated";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemDetail,
   FacilityTabItemProps,
   WaitingRoomDetailFields,
 } from "./types";
@@ -26,17 +26,17 @@ const WaitingRoomDetails = ({
   const waitingRoomKeys = ["placeEquipments", "waitingRoomEquipment"];
   const waitingRoomSeats = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetailEnum.SEATS),
+    waitingRoomKeys.concat(FacilityTabItemDetail.SEATS),
     0,
   );
   const waitingRoomHeated = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetailEnum.HEATED),
+    waitingRoomKeys.concat(FacilityTabItemDetail.HEATED),
     false,
   );
   const waitingRoomStepFree = getIn(
     entity,
-    waitingRoomKeys.concat(FacilityDetailEnum.STEP_FREE),
+    waitingRoomKeys.concat(FacilityTabItemDetail.STEP_FREE),
     false,
   );
 
@@ -47,15 +47,19 @@ const WaitingRoomDetails = ({
       newValue.seats = 0;
     }
     const oldValuesSet = {
-      seats: getIn(entity, waitingRoomKeys.concat(FacilityDetailEnum.SEATS), 0),
+      seats: getIn(
+        entity,
+        waitingRoomKeys.concat(FacilityTabItemDetail.SEATS),
+        0,
+      ),
       heated: getIn(
         entity,
-        waitingRoomKeys.concat(FacilityDetailEnum.HEATED),
+        waitingRoomKeys.concat(FacilityTabItemDetail.HEATED),
         false,
       ),
       stepFree: getIn(
         entity,
-        waitingRoomKeys.concat(FacilityDetailEnum.STEP_FREE),
+        waitingRoomKeys.concat(FacilityTabItemDetail.STEP_FREE),
         false,
       ),
     };
@@ -66,7 +70,7 @@ const WaitingRoomDetails = ({
         newValuesSet,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -99,7 +103,7 @@ const WaitingRoomDetails = ({
             handleFeatureStateChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ stepFree: value })
             }
-            name={FacilityDetailEnum.STEP_FREE}
+            name={FacilityTabItemDetail.STEP_FREE}
             isFeaturePresent={waitingRoomStepFree}
           />
           <FeatureCheckbox
@@ -107,7 +111,7 @@ const WaitingRoomDetails = ({
             handleFeatureStateChange={(value: boolean) =>
               handleValueForWaitingRoomChange({ heated: value })
             }
-            name={FacilityDetailEnum.HEATED}
+            name={FacilityTabItemDetail.HEATED}
             isFeaturePresent={waitingRoomHeated}
           />
         </div>

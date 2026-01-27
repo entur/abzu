@@ -1,10 +1,10 @@
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import BusShelter from "../../../static/icons/facilities/BusShelter";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const Shelter = ({
   entity,
@@ -26,7 +26,7 @@ const Shelter = ({
         value,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -34,7 +34,7 @@ const Shelter = ({
     <FeatureCheckbox
       icon={<BusShelter />}
       handleFeatureStateChange={handleShelterChange}
-      name={FacilityEnum.SHELTER_EQUIPMENT}
+      name={FacilityTabItem.SHELTER_EQUIPMENT}
       isFeaturePresent={isShelterPresent}
     />
   );

@@ -3,15 +3,12 @@ import Checkbox from "@mui/material/Checkbox";
 import React, { ReactElement } from "react";
 import { useIntl } from "react-intl";
 import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
-import {
-  FacilityTabItemDetail as FacilityDetailEnum,
-  FacilityTabItem as FacilityEnum,
-} from "../Facility/types";
+import { FacilityTabItem, FacilityTabItemDetail } from "../Facility/types";
 
 interface Props {
   icon: ReactElement<any>;
   handleFeatureStateChange: (newState: boolean) => void;
-  name: FacilityEnum | FacilityDetailEnum | AssistanceEnum;
+  name: FacilityTabItem | FacilityTabItemDetail | AssistanceEnum;
   isFeaturePresent: boolean;
 }
 

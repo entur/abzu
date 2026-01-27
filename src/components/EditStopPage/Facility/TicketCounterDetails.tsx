@@ -1,13 +1,13 @@
 import WheelChair from "@mui/icons-material/Accessible";
 import HearingIcon from "@mui/icons-material/Hearing";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import EquipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemDetail,
   FacilityTabItemProps,
   TicketCounterDetailFields,
 } from "./types";
@@ -24,12 +24,12 @@ const TicketCounterDetails = ({
 
   const inductionLoopsAvailable = getIn(
     entity,
-    ticketingEquipmentKeys.concat(FacilityDetailEnum.INDUCTION_LOOPS),
+    ticketingEquipmentKeys.concat(FacilityTabItemDetail.INDUCTION_LOOPS),
     false,
   );
   const lowCounterAccessAvailable = getIn(
     entity,
-    ticketingEquipmentKeys.concat(FacilityDetailEnum.LOW_COUNTER_ACCESS),
+    ticketingEquipmentKeys.concat(FacilityTabItemDetail.LOW_COUNTER_ACCESS),
     false,
   );
 
@@ -61,7 +61,7 @@ const TicketCounterDetails = ({
         },
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -81,7 +81,7 @@ const TicketCounterDetails = ({
             inductionLoops: value,
           })
         }
-        name={FacilityDetailEnum.INDUCTION_LOOPS}
+        name={FacilityTabItemDetail.INDUCTION_LOOPS}
         isFeaturePresent={inductionLoopsAvailable}
       />
       <FeatureCheckbox
@@ -91,7 +91,7 @@ const TicketCounterDetails = ({
             lowCounterAccess: value,
           })
         }
-        name={FacilityDetailEnum.LOW_COUNTER_ACCESS}
+        name={FacilityTabItemDetail.LOW_COUNTER_ACCESS}
         isFeaturePresent={lowCounterAccessAvailable}
       />
     </div>

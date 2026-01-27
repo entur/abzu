@@ -1,6 +1,6 @@
 import BusinessIcon from "@mui/icons-material/Business";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import { defaultEquipmentFacilities } from "../../../models/Equipments";
 import {
@@ -8,7 +8,7 @@ import {
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const TicketOffice = ({
   entity,
@@ -26,8 +26,8 @@ const TicketOffice = ({
     }
 
     const newTicketOfficeState = value
-      ? defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isChecked
-      : defaultEquipmentFacilities[FacilityEnum.TICKET_OFFICE].isUnChecked;
+      ? defaultEquipmentFacilities[FacilityTabItem.TICKET_OFFICE].isChecked
+      : defaultEquipmentFacilities[FacilityTabItem.TICKET_OFFICE].isUnChecked;
     const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
 
     dispatch(
@@ -38,7 +38,7 @@ const TicketOffice = ({
         },
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -47,7 +47,7 @@ const TicketOffice = ({
       isFeaturePresent={isTicketOfficePresent}
       handleFeatureStateChange={handleTicketOfficeChange}
       icon={<BusinessIcon />}
-      name={FacilityEnum.TICKET_OFFICE}
+      name={FacilityTabItem.TICKET_OFFICE}
     />
   );
 };
