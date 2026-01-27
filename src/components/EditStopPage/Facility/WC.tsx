@@ -1,10 +1,10 @@
 import MdWc from "@mui/icons-material/Wc";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const WC = ({
   entity,
@@ -14,19 +14,22 @@ const WC = ({
   entityType,
 }: FacilityTabItemProps) => {
   const dispatch = useDispatch();
-  const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(entity);
+  const isWCPresent = equipmentHelpers.isWCPresent(entity);
 
   const handleWCChange = (value: boolean) => {
     if (disabled) {
       return;
     }
 
+    const newSanitaryEquipmentState =
+      equipmentHelpers.getNewSanitaryEquipmentStateOnWCUpdate(entity, value);
+
     dispatch(
-      EquipmentActions.updateSanitaryState(
-        value,
+      EquipmentActions.updateWCState(
+        newSanitaryEquipmentState,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -35,7 +38,7 @@ const WC = ({
       isFeaturePresent={isWCPresent}
       handleFeatureStateChange={handleWCChange}
       icon={<MdWc />}
-      name={FacilityEnum.SANITARY_EQUIPMENT}
+      name={FacilityTabItem.WC}
     />
   );
 };
