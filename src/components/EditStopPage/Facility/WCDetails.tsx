@@ -1,6 +1,6 @@
 import WheelChair from "@mui/icons-material/Accessible";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import {
   defaultEquipmentFacilities,
@@ -12,8 +12,8 @@ import {
 } from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityTabItemDetail as FacilityDetailEnum,
-  FacilityTabItem as FacilityEnum,
+  FacilityTabItem,
+  FacilityTabItemDetail,
   FacilityTabItemProps,
   WCDetailFields,
 } from "./types";
@@ -26,18 +26,17 @@ const WCDetails = ({
   entityType,
 }: FacilityTabItemProps) => {
   const dispatch = useDispatch();
-  const sanitaryEquipment =
-    EquipmentHelpers.getSanitaryEquipmentPresent(entity);
-  const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(entity);
+  const sanitaryEquipment = EquipmentHelpers.getSanitaryEquipment(entity);
+  const isWCPresent = equipmentHelpers.isWCPresent(entity);
   const sanitaryFacilityList = EquipmentHelpers.getSanitaryFacilityList(entity);
   const isWheelchairAccessible: boolean =
-    EquipmentHelpers.isSanitaryFacilityWheelchairAccessible(entity);
+    EquipmentHelpers.isWCWheelchairAccessible(entity);
 
   const handleValueForWCChange = (newValue: WCDetailFields) => {
     let newSanitaryEquipment;
     if (!isWCPresent && newValue.isWheelchairAccessible) {
       newSanitaryEquipment =
-        defaultEquipmentFacilities[FacilityEnum.SANITARY_EQUIPMENT].isChecked;
+        defaultEquipmentFacilities[FacilityTabItem.WC].isChecked;
     } else {
       newSanitaryEquipment = {
         ...sanitaryEquipment,
@@ -57,11 +56,11 @@ const WCDetails = ({
     newSanitaryEquipment.sanitaryFacilityList = newSanitaryFacilityList;
 
     dispatch(
-      EquipmentActions.updateSanitaryState(
+      EquipmentActions.updateWCState(
         newSanitaryEquipment,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -77,7 +76,7 @@ const WCDetails = ({
         handleFeatureStateChange={(value: boolean) =>
           handleValueForWCChange({ isWheelchairAccessible: value })
         }
-        name={FacilityDetailEnum.WHEELCHAIR_ACCESSIBLE_TOILET}
+        name={FacilityTabItemDetail.WHEELCHAIR_ACCESSIBLE_TOILET}
         isFeaturePresent={isWheelchairAccessible}
       />
     </div>

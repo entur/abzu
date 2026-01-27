@@ -22,6 +22,7 @@ import TagTray from "../components/MainPage/TagTray";
 import ModalityIconTray from "../components/ReportPage/ModalityIconTray";
 import StopPlaceLink from "../components/ReportPage/StopPlaceLink";
 import { darkColor } from "../config/themes/default/defaultTheme";
+import equipmentHelpers from "../modelUtils/equipmentHelpers";
 import CarParkingIcon from "../static/icons/ParkingIcon";
 import StairsIcon from "../static/icons/accessibility/Stairs";
 import BikeParkingIcon from "../static/icons/facilities/BikeParking";
@@ -201,8 +202,8 @@ export const ColumnTransformerStopPlaceJsx = {
       <MdNotChecked sx={{ color: "#B71C1C" }} />
     );
   },
-  sanitaryEquipment: (stop) => {
-    return isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]) ? (
+  wc: (stop) => {
+    return equipmentHelpers.isWCPresent(stop) ? (
       <MdCheck sx={{ color: "#1B5E20" }} />
     ) : (
       <MdNotChecked sx={{ color: "#B71C1C" }} />
@@ -268,8 +269,7 @@ export const ColumnTransformersStopPlace = {
       ["accessibilityAssessment", "limitations", "wheelchairAccess"],
       "UKNOWN",
     ),
-  sanitaryEquipment: (stop) =>
-    isEquipted(stop, ["placeEquipments", "sanitaryEquipment"]),
+  wc: (stop) => equipmentHelpers.isWCPresent(stop),
   waitingRoomEquipment: (stop) =>
     isEquipted(stop, ["placeEquipments", "waitingRoomEquipment"]),
   shelterEquipment: (stop) =>
@@ -375,8 +375,7 @@ export const ColumnTransformerQuaysJsx = {
   privateCode: (quay) => quay.privateCode,
   wheelchairAccess: (quay) =>
     ColumnTransformerStopPlaceJsx.wheelchairAccess(quay),
-  sanitaryEquipment: (quay) =>
-    ColumnTransformerStopPlaceJsx.sanitaryEquipment(quay),
+  wc: (quay) => ColumnTransformerStopPlaceJsx.wc(quay),
   shelterEquipment: (quay) =>
     ColumnTransformerStopPlaceJsx.shelterEquipment(quay),
   stepFreeAccess: (quay) => ColumnTransformerStopPlaceJsx.stepFreeAccess(quay),
@@ -392,8 +391,7 @@ export const ColumnTransformersQuays = {
   importedId: (quay) => quay.importedId.join(","),
   wheelchairAccess: (quay) =>
     ColumnTransformersStopPlace.wheelchairAccess(quay),
-  sanitaryEquipment: (quay) =>
-    ColumnTransformersStopPlace.sanitaryEquipment(quay),
+  wc: (quay) => ColumnTransformersStopPlace.wc(quay),
   shelterEquipment: (quay) =>
     ColumnTransformersStopPlace.shelterEquipment(quay),
   stepFreeAccess: (quay) => ColumnTransformersStopPlace.stepFreeAccess(quay),

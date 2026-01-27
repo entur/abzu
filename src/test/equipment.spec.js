@@ -40,11 +40,11 @@ describe("equipment helper", () => {
     expect(second).toEqual(false);
   });
 
-  test("should give binary representation of sanitaryEquipment based on data", () => {
-    const first = helpers.isSanitaryEquipmentPresent(equiptedStopPlace);
+  test("should give binary representation of WC based on data", () => {
+    const first = helpers.isWCPresent(equiptedStopPlace);
     expect(first).toEqual(true);
 
-    const second = helpers.isSanitaryEquipmentPresent(unequiptedStopPlace);
+    const second = helpers.isWCPresent(unequiptedStopPlace);
     expect(second).toEqual(false);
   });
 
