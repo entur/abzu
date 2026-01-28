@@ -583,7 +583,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_SANITARY_EQUIPMENT_STATE:
+    case types.CHANGED_WC_STATE:
       return Object.assign({}, state, {
         current: equipmentHelpers.updateSanitaryEquipmentState(
           state.current,

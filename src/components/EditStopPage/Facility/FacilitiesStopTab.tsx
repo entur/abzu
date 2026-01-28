@@ -27,7 +27,7 @@ import WC from "./WC";
 import WCDetails from "./WCDetails";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
-import { FacilityTabItem as FacilityEnum } from "./types";
+import { FacilityTabItem } from "./types";
 
 interface Props {
   disabled: boolean;
@@ -42,7 +42,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
   return (
     <div style={{ padding: 10 }}>
       <PlaceFeatures
-        name={FacilityEnum.GENERAL_SIGN}
+        name={FacilityTabItem.GENERAL_SIGN}
         entityType={entityType}
         feature={
           <GeneralSign
@@ -55,7 +55,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_MACHINES}
+        name={FacilityTabItem.TICKET_MACHINES}
         entityType={entityType}
         isExpanded={expandedIndex === 2}
         handleExpand={() => setExpandedIndex(2)}
@@ -79,7 +79,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_OFFICE}
+        name={FacilityTabItem.TICKET_OFFICE}
         entityType={entityType}
         feature={
           <TicketOffice
@@ -92,7 +92,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_COUNTER}
+        name={FacilityTabItem.TICKET_COUNTER}
         entityType={entityType}
         isExpanded={expandedIndex === 4}
         handleExpand={() => setExpandedIndex(4)}
@@ -116,7 +116,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.SHELTER_EQUIPMENT}
+        name={FacilityTabItem.SHELTER_EQUIPMENT}
         entityType={entityType}
         feature={
           <Shelter
@@ -141,7 +141,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
 
       <PlaceFeatures
         entityType={entityType}
-        name={FacilityEnum.SANITARY_EQUIPMENT}
+        name={FacilityTabItem.WC}
         feature={
           <WC
             entity={stopPlace}
@@ -165,7 +165,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
 
       <PlaceFeatures
         entityType={entityType}
-        name={FacilityEnum.WAITING_ROOM_EQUIPMENT}
+        name={FacilityTabItem.WAITING_ROOM_EQUIPMENT}
         feature={
           <WaitingRoom
             entity={stopPlace}

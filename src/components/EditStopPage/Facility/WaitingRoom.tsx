@@ -1,10 +1,10 @@
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { WaitingRoom as WaitingRoomIcon } from "../../../static/icons/facilities/WaitingRoom";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const WaitingRoom = ({
   entity,
@@ -25,7 +25,7 @@ const WaitingRoom = ({
         value,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -33,7 +33,7 @@ const WaitingRoom = ({
     <FeatureCheckbox
       icon={<WaitingRoomIcon />}
       handleFeatureStateChange={handleWaitingRoomChange}
-      name={FacilityEnum.WAITING_ROOM_EQUIPMENT}
+      name={FacilityTabItem.WAITING_ROOM_EQUIPMENT}
       isFeaturePresent={isWaitingRoomPresent}
     />
   );

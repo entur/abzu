@@ -2,15 +2,15 @@ import WheelChair from "@mui/icons-material/Accessible";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import TextField from "@mui/material/TextField";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import EquipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemDetail,
   FacilityTabItemProps,
   TicketMachineDetailFields,
 } from "./types";
@@ -28,24 +28,26 @@ const TicketMachineDetails = ({
 
   const ticketMachineNumber = getIn(
     entity,
-    ticketingEquipmentKeys.concat(FacilityDetailEnum.NUMBER_OF_MACHINES),
+    ticketingEquipmentKeys.concat(FacilityTabItemDetail.NUMBER_OF_MACHINES),
     0,
   );
   const audioInterfaceAvailable = getIn(
     entity,
-    ticketingEquipmentKeys.concat(FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE),
+    ticketingEquipmentKeys.concat(
+      FacilityTabItemDetail.AUDIO_INTERFACE_AVAILABLE,
+    ),
     false,
   );
   const tactileInterfaceAvailable = getIn(
     entity,
     ticketingEquipmentKeys.concat(
-      FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE,
+      FacilityTabItemDetail.TACTILE_INTERFACE_AVAILABLE,
     ),
     false,
   );
   const wheelchairSuitable = getIn(
     entity,
-    ticketingEquipmentKeys.concat(FacilityDetailEnum.WHEELCHAIR_SUITABLE),
+    ticketingEquipmentKeys.concat(FacilityTabItemDetail.WHEELCHAIR_SUITABLE),
     false,
   );
 
@@ -88,7 +90,7 @@ const TicketMachineDetails = ({
         },
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -123,7 +125,7 @@ const TicketMachineDetails = ({
                   audioInterfaceAvailable: value,
                 })
               }
-              name={FacilityDetailEnum.AUDIO_INTERFACE_AVAILABLE}
+              name={FacilityTabItemDetail.AUDIO_INTERFACE_AVAILABLE}
               isFeaturePresent={audioInterfaceAvailable}
             />
             <FeatureCheckbox
@@ -133,7 +135,7 @@ const TicketMachineDetails = ({
                   tactileInterfaceAvailable: value,
                 })
               }
-              name={FacilityDetailEnum.TACTILE_INTERFACE_AVAILABLE}
+              name={FacilityTabItemDetail.TACTILE_INTERFACE_AVAILABLE}
               isFeaturePresent={tactileInterfaceAvailable}
             />
           </div>
@@ -145,7 +147,7 @@ const TicketMachineDetails = ({
                   wheelchairSuitable: value,
                 })
               }
-              name={FacilityDetailEnum.WHEELCHAIR_SUITABLE}
+              name={FacilityTabItemDetail.WHEELCHAIR_SUITABLE}
               isFeaturePresent={wheelchairSuitable}
             />
             <div></div>

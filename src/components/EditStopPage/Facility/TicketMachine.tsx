@@ -1,14 +1,13 @@
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
-import { defaultEquipmentFacilities } from "../../../models/Equipments";
 import {
   default as equipmentHelpers,
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import { TicketMachine as TicketMachineIcon } from "../../../static/icons/facilities/TicketMachine";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const TicketMachine = ({
   entity,
@@ -26,20 +25,18 @@ const TicketMachine = ({
       return;
     }
 
-    const newTicketMachinesState = value
-      ? defaultEquipmentFacilities[FacilityEnum.TICKET_MACHINES].isChecked
-      : defaultEquipmentFacilities[FacilityEnum.TICKET_MACHINES].isUnChecked;
-    const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
+    const newTicketingEquipmentState =
+      EquipmentHelpers.getNewTicketingEquipmentStateOnTicketMachinesUpdate(
+        entity,
+        value,
+      );
 
     dispatch(
       EquipmentActions.updateTicketMachineState(
-        {
-          ...ticketingEquipment,
-          ...newTicketMachinesState,
-        },
+        newTicketingEquipmentState,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -48,7 +45,7 @@ const TicketMachine = ({
       isFeaturePresent={isTicketMachinePresent}
       handleFeatureStateChange={handleTicketMachineChange}
       icon={<TicketMachineIcon />}
-      name={FacilityEnum.TICKET_MACHINES}
+      name={FacilityTabItem.TICKET_MACHINES}
     />
   );
 };
