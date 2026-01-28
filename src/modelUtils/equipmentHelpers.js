@@ -64,7 +64,7 @@ EquipmentHelpers.getSanitaryEquipment = (entity) => {
 
 EquipmentHelpers.isWCPresent = (entity) => {
   const sanitaryEquipment = EquipmentHelpers.getSanitaryEquipment(entity);
-  return (
+  return !!(
     sanitaryEquipment &&
     (sanitaryEquipment.numberOfToilets ||
       sanitaryEquipment.sanitaryFacilityList?.includes(
