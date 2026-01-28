@@ -83,6 +83,10 @@ const WalkingSurfaceIndicators = ({
   ];
 
   const handleChange = (newValue: FeaturePopoverMenuValue) => {
+    if (disabled) {
+      return;
+    }
+
     const newMobilityFacilityList: MobilityFacility[] =
       FacilitiesHelpers.onTactilesUpdatedGetMobilityFacilityListCleanState(
         mobilityFacilityList,
