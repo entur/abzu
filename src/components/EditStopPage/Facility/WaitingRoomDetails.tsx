@@ -78,6 +78,7 @@ const WaitingRoomDetails = ({
         style={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <FeatureCheckbox
