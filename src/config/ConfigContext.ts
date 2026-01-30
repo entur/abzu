@@ -21,6 +21,7 @@ export interface Config {
    *    CustomLogo;
    */
   extPath?: string;
+  extUserGuideLink?: string;
 }
 
 export interface MapConfig {

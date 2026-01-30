@@ -23,19 +23,19 @@ const About = () => {
     >
       <ExternalLinkMenuItem
         href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/joukkoliikenteen-tietopalvelut"
+          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
         }
         localisationId={"Fintraffic-instructions"}
       />
       <ExternalLinkMenuItem
         href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/joukkoliikenteen-tietopalvelut"
+          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
         }
         localisationId={"Fintraffic-terms"}
       />
       <ExternalLinkMenuItem
         href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/joukkoliikenteen-tietopalvelut"
+          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
         }
         localisationId={"Fintraffic-privacy"}
       />
