@@ -283,7 +283,7 @@
   "nb": "Norvégien",
   "not_assigned": "N/R",
   "seats": "Places assises disponibles",
-  "seats": "Places assises indisponibles",
+  "seats_no": "Places assises indisponibles",
   "number_of_spaces": "Nombre d'espaces",
   "number_of_ticket_machines": "Nombre de distributeurs de tickets",
   "ok": "OK",
