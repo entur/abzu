@@ -154,6 +154,7 @@ export const mutateStopPlace = gql`
     $accessibilityAssessment: AccessibilityAssessmentInput
     $placeEquipments: PlaceEquipmentsInput
     $localServices: LocalServicesInput
+    $facilities: [SiteFacilitySetInput]
     $alternativeNames: [AlternativeNameInput]
     $versionComment: String
     $weighting: InterchangeWeightingType
@@ -183,6 +184,7 @@ export const mutateStopPlace = gql`
         accessibilityAssessment: $accessibilityAssessment
         placeEquipments: $placeEquipments
         localServices: $localServices
+        facilities: $facilities
         tariffZones: $tariffZones
         stopPlaceType: $stopPlaceType
         url: $url

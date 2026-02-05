@@ -16,6 +16,7 @@ export enum FacilityTabItem {
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
   GENERAL_SIGN = "generalSign",
   WALKING_SURFACE_INDICATORS = "mobilityFacility_tactile",
+  PASSENGER_INFORMATION_DISPLAY = "passengerInformationDisplay",
 }
 
 /**

@@ -620,5 +620,11 @@
   "mobilityFacility_tactile_tactileplatformedges": "Indicateurs tactiles sur la surface de marche aux bords du quai",
   "mobilityFacility_tactile_tactileguidingstrips": "Indicateurs de surface de marche le long du quai",
   "mobilityFacility_tactile_none": "Aucun indicateur de surface de marche",
-  "mobilityFacility_tactile_quay_hint": "De quel type d'indicateurs tactiles le quai est-il équipé ?"
+  "mobilityFacility_tactile_quay_hint": "De quel type d'indicateurs tactiles le quai est-il équipé ?",
+  "passengerInformationDisplay": "Affichage des informations",
+  "passengerInformationDisplay_no": "Pas d'affichage des informations",
+  "passengerInformationDisplay_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un affichage des informations ?",
+  "informationDesk": "Bureau d'information",
+  "informationDesk_no": "Pas de bureau d'information",
+  "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?"
 }

@@ -181,6 +181,10 @@ class StopPlace {
         }
       }
 
+      if (stop.facilities) {
+        clientStop.facilities = stop.facilities;
+      }
+
       if (stop.keyValues) {
         clientStop.importedId = getImportedId(stop.keyValues);
         clientStop.keyValues = stop.keyValues;

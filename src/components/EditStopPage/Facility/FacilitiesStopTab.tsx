@@ -16,6 +16,7 @@ import { useState } from "react";
 import { EntityType } from "../../../models/Entities";
 import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import GeneralSign from "./GeneralSign";
+import PassengerInformationDisplay from "./PassengerInformationDisplay";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
 import TicketCounter from "./TicketCounter";
@@ -185,6 +186,19 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
         isExpanded={expandedIndex === 7}
         handleExpand={() => setExpandedIndex(7)}
         handleCollapse={() => setExpandedIndex(-1)}
+      />
+
+      <PlaceFeatures
+        entityType={entityType}
+        name={FacilityTabItem.PASSENGER_INFORMATION_DISPLAY}
+        feature={
+          <PassengerInformationDisplay
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
       />
     </div>
   );
