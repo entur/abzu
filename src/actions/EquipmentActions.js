@@ -61,16 +61,15 @@ EquipmentActions.updateShelterEquipmentState =
     );
   };
 
-EquipmentActions.updateSanitaryState =
-  (state, entityType, id) => (dispatch) => {
-    dispatch(
-      createThunk(types.CHANGED_SANITARY_EQUIPMENT_STATE, {
-        state: state,
-        type: entityType,
-        id: id,
-      }),
-    );
-  };
+EquipmentActions.updateWCState = (state, entityType, id) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_WC_STATE, {
+      state: state,
+      type: entityType,
+      id: id,
+    }),
+  );
+};
 
 EquipmentActions.updateWaitingRoomState =
   (state, entityType, id) => (dispatch) => {
