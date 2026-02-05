@@ -39,6 +39,12 @@ const About = () => {
         }
         localisationId={"Fintraffic-privacy"}
       />
+      <ExternalLinkMenuItem
+        href={
+          "https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
+        }
+        localisationId={"Entur-cooperation"}
+      />
     </MoreMenuItem>
   );
 };
