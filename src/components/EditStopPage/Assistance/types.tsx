@@ -1,7 +1,9 @@
+import { EntityType } from "../../../models/Entities";
 import StopPlace from "../../../models/StopPlace";
 
 export enum AssistanceTabItem {
   ASSISTANCE_SERVICE = "assistanceService",
+  INFORMATION_DESK = "informationDesk",
 }
 
 /**
@@ -12,4 +14,5 @@ export interface AssistanceTabItemProps {
   entity: StopPlace;
   disabled: boolean;
   id?: string;
+  entityType: EntityType;
 }

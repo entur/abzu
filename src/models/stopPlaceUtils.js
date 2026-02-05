@@ -56,7 +56,7 @@ export const simplifyPlaceEquipment = (placeEquipments) => {
   return null;
 };
 
-/* Following the NeTEx localService model, all localService sub-items contains at least one item.
+/* Following the NeTEx localService model, all localServices sub-items contains at least one item.
  *  An abstraction of this concept in UI and in the client model (a clearly pragmatic approach) has been chosen in Abzu.
  */
 export const simplifyLocalService = (localServices) => {
