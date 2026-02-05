@@ -15,7 +15,6 @@ limitations under the Licence. */
 import { ComponentToggle } from "@entur/react-component-toggle";
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
-import MdHelp from "@mui/icons-material/Help";
 import MdMap from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MdReport from "@mui/icons-material/Report";
@@ -40,6 +39,7 @@ import {
 import ConfirmDialog from "./../Dialogs/ConfirmDialog";
 import MoreMenuItem from "./../MainPage/MoreMenuItem";
 import { LanguageMenu } from "./LanguageMenu";
+import UserGuide from "./UserGuide";
 
 class Header extends React.Component {
   constructor(props) {
@@ -195,7 +195,6 @@ class Header extends React.Component {
     const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
     const reportSite = formatMessage({ id: "report_site" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
-    const userGuide = formatMessage({ id: "user_guide" });
     const username = this.props.preferredName || "";
     const showMultimodalEdgesLabel = formatMessage({
       id: "show_multimodal_edges",
@@ -527,21 +526,7 @@ class Header extends React.Component {
                 </MenuItem>
               </MoreMenuItem>
               <LanguageMenu />
-              <MenuItem
-                component={"a"}
-                href="https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry"
-                target="_blank"
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
-              >
-                <MdHelp color="#41c0c4" />
-                {userGuide}
-              </MenuItem>
+              <UserGuide />
 
               <ComponentToggle
                 feature={`${this.props.config.extPath}/AdditionalMenuSection`}
