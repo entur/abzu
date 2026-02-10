@@ -21,6 +21,11 @@ export interface Config {
    *    CustomLogo;
    */
   extPath?: string;
+  /**
+   * With this it's possible to specify a link that will be shown in User Guide section of the header menu;
+   * By default, Entur's user guide is used there.
+   */
+  extUserGuideLink?: string;
 }
 
 export interface MapConfig {
