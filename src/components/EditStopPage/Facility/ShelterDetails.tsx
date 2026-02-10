@@ -1,6 +1,5 @@
-
-import { UnknownAction } from "@reduxjs/toolkit";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
