@@ -33,6 +33,10 @@ const WCDetails = ({
     EquipmentHelpers.isWCWheelchairAccessible(entity);
 
   const handleValueForWCChange = (newValue: WCDetailFields) => {
+    if (disabled) {
+      return;
+    }
+
     let newSanitaryEquipment;
     if (!isWCPresent && newValue.isWheelchairAccessible) {
       newSanitaryEquipment =

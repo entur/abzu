@@ -67,7 +67,7 @@ export const defaultEquipmentFacilities = {
   },
   shelterEquipment: {
     isChecked: {
-      seats: 1,
+      seats: 0,
       stepFree: false,
       enclosed: false,
     },
@@ -89,7 +89,7 @@ export const defaultEquipmentFacilities = {
   waitingRoomEquipment: {
     isChecked: {
       heated: false,
-      seats: 1,
+      seats: 0,
       stepFree: false,
     },
     isUnChecked: null,

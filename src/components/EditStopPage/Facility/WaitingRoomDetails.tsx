@@ -1,6 +1,5 @@
-import TextField from "@mui/material/TextField";
 import { UnknownAction } from "@reduxjs/toolkit";
-import { useIntl } from "react-intl";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { useDispatch } from "react-redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
@@ -21,7 +20,6 @@ const WaitingRoomDetails = ({
   entityType,
 }: FacilityTabItemProps) => {
   const dispatch = useDispatch();
-  const { formatMessage } = useIntl();
 
   const waitingRoomKeys = ["placeEquipments", "waitingRoomEquipment"];
   const waitingRoomSeats = getIn(
@@ -43,6 +41,10 @@ const WaitingRoomDetails = ({
   const handleValueForWaitingRoomChange = (
     newValue: WaitingRoomDetailFields,
   ) => {
+    if (disabled) {
+      return;
+    }
+
     if ((newValue.seats as number) < 0) {
       newValue.seats = 0;
     }
@@ -76,46 +78,40 @@ const WaitingRoomDetails = ({
 
   return (
     <div style={{ padding: "3px 15px" }}>
-      <TextField
-        label={formatMessage({ id: "number_of_seats" })}
-        variant="filled"
-        type="number"
-        value={waitingRoomSeats}
-        disabled={disabled}
-        onChange={(event) => {
-          handleValueForWaitingRoomChange({
-            seats: event.target.value as unknown as number,
-          });
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
-        fullWidth={true}
-        InputLabelProps={{ shrink: true }}
-      />
-      <div style={{ display: "block" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
+      >
+        <FeatureCheckbox
+          icon={<EventSeatIcon />}
+          handleFeatureStateChange={(value: boolean) => {
+            handleValueForWaitingRoomChange({
+              seats: value ? 1 : 0,
+            });
           }}
-        >
-          <FeatureCheckbox
-            icon={<StairsIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForWaitingRoomChange({ stepFree: value })
-            }
-            name={FacilityTabItemDetail.STEP_FREE}
-            isFeaturePresent={waitingRoomStepFree}
-          />
-          <FeatureCheckbox
-            icon={<Heated />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForWaitingRoomChange({ heated: value })
-            }
-            name={FacilityTabItemDetail.HEATED}
-            isFeaturePresent={waitingRoomHeated}
-          />
-        </div>
+          name={FacilityTabItemDetail.SEATS}
+          isFeaturePresent={!!waitingRoomSeats}
+        />
+        <FeatureCheckbox
+          icon={<Heated />}
+          handleFeatureStateChange={(value: boolean) =>
+            handleValueForWaitingRoomChange({ heated: value })
+          }
+          name={FacilityTabItemDetail.HEATED}
+          isFeaturePresent={waitingRoomHeated}
+        />
       </div>
+      <FeatureCheckbox
+        icon={<StairsIcon />}
+        handleFeatureStateChange={(value: boolean) =>
+          handleValueForWaitingRoomChange({ stepFree: value })
+        }
+        name={FacilityTabItemDetail.STEP_FREE}
+        isFeaturePresent={waitingRoomStepFree}
+      />
     </div>
   );
 };

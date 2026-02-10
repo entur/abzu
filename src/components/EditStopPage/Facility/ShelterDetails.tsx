@@ -1,6 +1,6 @@
-import TextField from "@mui/material/TextField";
+
 import { UnknownAction } from "@reduxjs/toolkit";
-import { useIntl } from "react-intl";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { useDispatch } from "react-redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
@@ -21,7 +21,6 @@ const ShelterDetails = ({
   entityType,
 }: FacilityTabItemProps) => {
   const dispatch = useDispatch();
-  const { formatMessage } = useIntl();
   const shelterEquipmentKeys = ["placeEquipments", "shelterEquipment"];
   const shelterSeats = getIn(
     entity,
@@ -76,46 +75,40 @@ const ShelterDetails = ({
 
   return (
     <div style={{ padding: "3px 15px" }}>
-      <TextField
-        label={formatMessage({ id: "number_of_seats" })}
-        variant="filled"
-        value={shelterSeats}
-        type="number"
-        disabled={disabled}
-        onChange={(event) => {
-          handleValueForShelterChange({
-            seats: event.target.value as unknown as number,
-          });
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
-        fullWidth={true}
-      />
-      <div style={{ display: "block" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
+      >
+        <FeatureCheckbox
+          icon={<EventSeatIcon />}
+          handleFeatureStateChange={(value: boolean) => {
+            handleValueForShelterChange({
+              seats: value ? 1 : 0,
+            });
           }}
-        >
-          <FeatureCheckbox
-            icon={<StairsIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForShelterChange({ stepFree: value })
-            }
-            name={FacilityTabItemDetail.STEP_FREE}
-            isFeaturePresent={shelterStepFree}
-          />
-
-          <FeatureCheckbox
-            icon={<EnclosedIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForShelterChange({ enclosed: value })
-            }
-            name={FacilityTabItemDetail.ENCLOSED}
-            isFeaturePresent={shelterEnclosed}
-          />
-        </div>
+          name={FacilityTabItemDetail.SEATS}
+          isFeaturePresent={!!shelterSeats}
+        />
+        <FeatureCheckbox
+          icon={<EnclosedIcon />}
+          handleFeatureStateChange={(value: boolean) =>
+            handleValueForShelterChange({ enclosed: value })
+          }
+          name={FacilityTabItemDetail.ENCLOSED}
+          isFeaturePresent={shelterEnclosed}
+        />
       </div>
+      <FeatureCheckbox
+        icon={<StairsIcon />}
+        handleFeatureStateChange={(value: boolean) =>
+          handleValueForShelterChange({ stepFree: value })
+        }
+        name={FacilityTabItemDetail.STEP_FREE}
+        isFeaturePresent={shelterStepFree}
+      />
     </div>
   );
 };

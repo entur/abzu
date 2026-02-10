@@ -22,9 +22,7 @@ const Support = () => {
       }}
     >
       <ExternalLinkMenuItem
-        href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/joukkoliikenteen-tietopalvelut"
-        }
+        href={"https://www.fintraffic.fi/fi/feedback"}
         localisationId={"Fintraffic-channels"}
       />
     </MoreMenuItem>
