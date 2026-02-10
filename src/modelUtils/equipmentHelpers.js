@@ -156,10 +156,9 @@ EquipmentHelpers.getNewSanitaryEquipmentStateOnWCUpdate = (entity, value) => {
 
   // sanitaryFacilityList to be handled separately here, to not overwrite the values that are not related to WC
   if (value) {
-    newSanitaryEquipmentState.sanitaryFacilityList = [
-      ...sanitaryFacilityList,
-      SanitaryFacility.TOILET,
-    ];
+    newSanitaryEquipmentState.sanitaryFacilityList = Array.from(
+      new Set([...sanitaryFacilityList, SanitaryFacility.TOILET]),
+    );
   } else {
     newSanitaryEquipmentState.sanitaryFacilityList =
       sanitaryFacilityList.filter(
