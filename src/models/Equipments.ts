@@ -12,6 +12,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+export enum SanitaryFacility {
+  NONE = "none",
+  TOILET = "toilet",
+  WHEEL_CHAIR_ACCESS_TOILET = "wheelChairAccessToilet",
+  SHOWER = "shower",
+  WASHING_AND_CHANGE_FACILITIES = "washingAndChangeFacilities",
+  BABY_CHANGE = "babyChange",
+  WHEELCHAIR_BABY_CHANGE = "wheelchairBabyChange",
+  SHOE_SHINER = "shoeShiner",
+  OTHER = "other",
+}
+
+/**
+ * Equipment's data used as part of Facilities tab;
+ * Each item matches to FacilityTabItem enum value
+ */
 export const defaultEquipmentFacilities = {
   ticketMachines: {
     isChecked: {
@@ -57,13 +73,18 @@ export const defaultEquipmentFacilities = {
     },
     isUnChecked: null,
   },
-  sanitaryEquipment: {
+  wc: {
     isChecked: {
       gender: "both",
       numberOfToilets: 1,
-      sanitaryFacilityList: [],
+      sanitaryFacilityList: [] as SanitaryFacility[],
+      // note: sanitaryFacilityList is handled on a component level to not overwrite the values that are not related to WC
     },
-    isUnChecked: null,
+    isUnChecked: {
+      gender: null,
+      numberOfToilets: 0,
+      sanitaryFacilityList: [] as SanitaryFacility[],
+    },
   },
   waitingRoomEquipment: {
     isChecked: {
@@ -96,16 +117,4 @@ export enum Equipment {
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
   CYCLE_STORAGE_EQUIPMENT = "cycleStorageEquipment",
   GENERAL_SIGN = "generalSign",
-}
-
-export enum SanitaryFacility {
-  NONE = "none",
-  TOILET = "toilet",
-  WHEEL_CHAIR_ACCESS_TOILET = "wheelChairAccessToilet",
-  SHOWER = "shower",
-  WASHING_AND_CHANGE_FACILITIES = "washingAndChangeFacilities",
-  BABY_CHANGE = "babyChange",
-  WHEELCHAIR_BABY_CHANGE = "wheelchairBabyChange",
-  SHOE_SHINER = "shoeShiner",
-  OTHER = "other",
 }

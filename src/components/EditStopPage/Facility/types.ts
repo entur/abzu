@@ -3,14 +3,16 @@ import Quay from "../../../models/Quay";
 import StopPlace from "../../../models/StopPlace";
 
 /**
- * In UI appears as a row in the facilities tab
+ * In UI appears as a row in the facilities tab;
+ * In some cases it covers an item from model/Equipment type fully (e.g. shelterEquipment, waitingRoomEquipment),
+ * and in some the focus goes on a subset of it (e.g. ticket machines/counter as part of ticket equipment, or wc part of sanitary equipment)
  */
 export enum FacilityTabItem {
   TICKET_MACHINES = "ticketMachines",
   TICKET_OFFICE = "ticketOffice",
   TICKET_COUNTER = "ticketCounter",
   SHELTER_EQUIPMENT = "shelterEquipment",
-  SANITARY_EQUIPMENT = "sanitaryEquipment",
+  WC = "wc",
   WAITING_ROOM_EQUIPMENT = "waitingRoomEquipment",
   GENERAL_SIGN = "generalSign",
   WALKING_SURFACE_INDICATORS = "mobilityFacility_tactile",

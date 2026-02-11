@@ -142,7 +142,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
 
       <PlaceFeatures
         entityType={entityType}
-        name={FacilityTabItem.SANITARY_EQUIPMENT}
+        name={FacilityTabItem.WC}
         feature={
           <WC
             entity={stopPlace}

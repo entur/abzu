@@ -1,13 +1,13 @@
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../../static/icons/facilities/Enclosed";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityTabItemDetail as FacilityDetailEnum,
+  FacilityTabItemDetail,
   FacilityTabItemProps,
   WaitingRoomDetailFields,
 } from "./types";
@@ -23,17 +23,17 @@ const ShelterDetails = ({
   const shelterEquipmentKeys = ["placeEquipments", "shelterEquipment"];
   const shelterSeats = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.SEATS),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.SEATS),
     0,
   );
   const shelterStepFree = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.STEP_FREE),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.STEP_FREE),
     false,
   );
   const shelterEnclosed = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.ENCLOSED),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.ENCLOSED),
     false,
   );
 
@@ -48,17 +48,17 @@ const ShelterDetails = ({
     const oldValuesSet = {
       seats: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.SEATS),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.SEATS),
         0,
       ),
       stepFree: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.STEP_FREE),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.STEP_FREE),
         false,
       ),
       enclosed: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.ENCLOSED),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.ENCLOSED),
         false,
       ),
     };
@@ -68,7 +68,7 @@ const ShelterDetails = ({
         newValuesSet,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -88,7 +88,7 @@ const ShelterDetails = ({
               seats: value ? 1 : 0,
             });
           }}
-          name={FacilityDetailEnum.SEATS}
+          name={FacilityTabItemDetail.SEATS}
           isFeaturePresent={!!shelterSeats}
         />
         <FeatureCheckbox
@@ -96,7 +96,7 @@ const ShelterDetails = ({
           handleFeatureStateChange={(value: boolean) =>
             handleValueForShelterChange({ enclosed: value })
           }
-          name={FacilityDetailEnum.ENCLOSED}
+          name={FacilityTabItemDetail.ENCLOSED}
           isFeaturePresent={shelterEnclosed}
         />
       </div>
@@ -105,7 +105,7 @@ const ShelterDetails = ({
         handleFeatureStateChange={(value: boolean) =>
           handleValueForShelterChange({ stepFree: value })
         }
-        name={FacilityDetailEnum.STEP_FREE}
+        name={FacilityTabItemDetail.STEP_FREE}
         isFeaturePresent={shelterStepFree}
       />
     </div>

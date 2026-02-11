@@ -127,7 +127,16 @@ class QuayItem extends React.Component {
   handleTicketMachineChange(value) {
     const { dispatch, disabled, index } = this.props;
     if (!disabled) {
-      dispatch(EquipmentActions.updateTicketMachineState(value, "quay", index));
+      dispatch(
+        EquipmentActions.updateTicketMachineState(
+          equipmentHelpers.getNewTicketingEquipmentStateOnTicketMachinesUpdate(
+            this.props.quay,
+            value,
+          ),
+          "quay",
+          index,
+        ),
+      );
     }
   }
 

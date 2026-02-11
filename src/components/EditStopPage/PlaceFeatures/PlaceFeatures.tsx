@@ -7,12 +7,12 @@ import { useIntl } from "react-intl";
 import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../../models/AccessibilityLimitation";
 import { EntityType } from "../../../models/Entities";
 import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
-import { FacilityTabItem as FacilityEnum } from "../Facility/types";
+import { FacilityTabItem } from "../Facility/types";
 import ToolTipIcon from "../ToolTipIcon";
 
 interface Props {
   entityType: EntityType | "parking";
-  name: AccessibilityLimitationEnum | FacilityEnum | AssistanceEnum;
+  name: AccessibilityLimitationEnum | FacilityTabItem | AssistanceEnum;
   feature: ReactElement;
   relatedFeatures?: ReactElement;
   isExpanded?: boolean;

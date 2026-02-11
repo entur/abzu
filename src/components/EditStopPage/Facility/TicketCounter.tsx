@@ -1,6 +1,6 @@
 import CountertopsIcon from "@mui/icons-material/Countertops";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import { defaultEquipmentFacilities } from "../../../models/Equipments";
 import {
@@ -8,7 +8,7 @@ import {
   default as EquipmentHelpers,
 } from "../../../modelUtils/equipmentHelpers";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { FacilityTabItem as FacilityEnum, FacilityTabItemProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const TicketCounter = ({
   entity,
@@ -27,8 +27,8 @@ const TicketCounter = ({
     }
 
     const newTicketCounterState = value
-      ? defaultEquipmentFacilities[FacilityEnum.TICKET_COUNTER].isChecked
-      : defaultEquipmentFacilities[FacilityEnum.TICKET_COUNTER].isUnChecked;
+      ? defaultEquipmentFacilities[FacilityTabItem.TICKET_COUNTER].isChecked
+      : defaultEquipmentFacilities[FacilityTabItem.TICKET_COUNTER].isUnChecked;
     const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
     const updatedTicketingEquipment = {
       ...ticketingEquipment,
@@ -42,7 +42,7 @@ const TicketCounter = ({
         },
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -51,7 +51,7 @@ const TicketCounter = ({
       isFeaturePresent={isTicketCounterPresent}
       handleFeatureStateChange={handleTicketCounterChange}
       icon={<CountertopsIcon />}
-      name={FacilityEnum.TICKET_COUNTER}
+      name={FacilityTabItem.TICKET_COUNTER}
     />
   );
 };
