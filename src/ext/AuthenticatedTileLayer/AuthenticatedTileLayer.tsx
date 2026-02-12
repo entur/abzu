@@ -4,6 +4,7 @@ import {
   createTileLayerComponent,
 } from "@react-leaflet/core";
 import { useSelector } from "react-redux";
+import { DEFAULT_TILE_LAYER_MAX_ZOOM } from "../../components/Map/DynamicTileLayer";
 import { Tile } from "../../config/ConfigContext";
 import { RootState } from "../../store/store";
 import {
@@ -37,6 +38,8 @@ export const AuthenticatedTileLayer: FeatureComponent<Tile> = (props: Tile) => {
         tms={props.tms === true}
         url={props.url}
         attribution={props.attribution}
+        maxZoom={props.maxZoom || DEFAULT_TILE_LAYER_MAX_ZOOM}
+        maxNativeZoom={props.maxNativeZoom}
       />
     )
   );

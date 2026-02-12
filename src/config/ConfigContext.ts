@@ -40,6 +40,7 @@ export interface Tile {
   attribution?: string;
   url?: string;
   maxZoom?: number;
+  maxNativeZoom?: number;
   component?: boolean;
   componentName?: string;
   tms?: boolean;
