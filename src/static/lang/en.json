@@ -270,6 +270,8 @@
   "new_stop_question": "Do you wish to create a new stop here?",
   "new_stop_title": "You are now creating a new stop place",
   "new_tag_hint": "(New tag)",
+  "unknown_topographic_place": "Municipality unknown",
+  "unknown_parent_topographic_place": "county unknown",
   "noTariffZones": "No tariff zones",
   "no_favorites_found": "You have currenly no saved searches",
   "no_merged_quay": "No quays were moved",

@@ -270,6 +270,8 @@
   "new_stop_question": "Vill du skapa en hållplats här?",
   "new_stop_title": "Du skapar en ny hållplats",
   "new_tag_hint": "(Ny tag)",
+  "unknown_topographic_place": "Okänd kommun",
+  "unknown_parent_topographic_place": "okänt län",
   "noTariffZones": "Inga tariffzoner",
   "no_favorites_found": "Du har för tillfället inga favoritsök",
   "no_merged_quay": "Inga quays flyttade",

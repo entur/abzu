@@ -270,6 +270,8 @@
   "new_stop_question": "Haluatko luoda uuden pysäkin tähän?",
   "new_stop_title": "Olet luomassa uutta pysäkkiä",
   "new_tag_hint": "(Uusi tunniste)",
+  "unknown_topographic_place": "Kunta tuntematon",
+  "unknown_parent_topographic_place": "maakunta tuntematon",
   "noTariffZones": "Ei tariffivyöhykkeitä",
   "no_favorites_found": "Sinulla ei ole tallennettuja hakuja",
   "no_merged_quay": "Yhtään laituria ei siirretty",

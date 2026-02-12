@@ -270,6 +270,8 @@
   "new_stop_question": "Vil du opprette et stoppested her?",
   "new_stop_title": "Du oppretter et nytt stoppested",
   "new_tag_hint": "(Ny tag)",
+  "unknown_topographic_place": "Ukjent kommune",
+  "unknown_parent_topographic_place": "ukjent fylke",
   "noTariffZones": "Ingen tariffsoner",
   "no_favorites_found": "Du har foreløpig ingen favorittsøk",
   "no_merged_quay": "Ingen quayer flyttet",

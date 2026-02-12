@@ -270,6 +270,8 @@
   "new_stop_question": "Souhaitez-vous créer un nouveau point d'arrêt ici ?",
   "new_stop_title": "Vous êtes en train de créer un point d'arrêt",
   "new_tag_hint": "(Nouvelle étiquette)",
+  "unknown_topographic_place": "Municipalité inconnue",
+  "unknown_parent_topographic_place": "comté inconnu",
   "noTariffZones": "Aucune zone tarifaire",
   "no_favorites_found": "Aucune recherche enregistrée",
   "no_merged_quay": "Aucun quai déplacé",
