@@ -6,6 +6,8 @@ export interface WMTSLayerProps {
   baseUrl: string;
   params: Record<string, string>;
   attribution: string;
+  maxZoom?: number;
+  maxNativeZoom?: number;
 }
 
 const DEFAULT_PARAMS = {
@@ -23,6 +25,8 @@ export const WMTSLayer: React.FC<WMTSLayerProps> = ({
   baseUrl,
   params,
   attribution,
+  maxZoom,
+  maxNativeZoom,
 }) => {
   const wmtsParams: string = useMemo(() => {
     const newParams: Record<string, string> = Object.assign({}, DEFAULT_PARAMS);
@@ -39,5 +43,12 @@ export const WMTSLayer: React.FC<WMTSLayerProps> = ({
     [wmtsParams],
   );
 
-  return <TileLayer attribution={attribution} url={url} maxZoom={19} />;
+  return (
+    <TileLayer
+      attribution={attribution}
+      url={url}
+      maxZoom={maxZoom || 19}
+      maxNativeZoom={maxNativeZoom}
+    />
+  );
 };
