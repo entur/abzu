@@ -11,36 +11,36 @@ import {
   iconColorStates,
 } from "./types";
 
-type Props = {
+type Props<T = FeaturePopoverMenuValue> = {
   featureName: string;
-  options: FeaturePopoverMenuOption[];
-  selectedValue: FeaturePopoverMenuValue;
+  options: FeaturePopoverMenuOption<T>[];
+  selectedValue: T;
   disabled?: boolean;
-  handleChange: (value: FeaturePopoverMenuValue) => void;
+  handleChange: (value: T) => void;
   quayId?: string;
 };
 
-const findOptionByValue = (
-  value: FeaturePopoverMenuValue,
-  options: FeaturePopoverMenuOption[],
+const findOptionByValue = <T,>(
+  value: T,
+  options: FeaturePopoverMenuOption<T>[],
 ) => {
   return options.find((o) => o.value === value);
 };
 
-const FeaturePopoverMenu = ({
+const FeaturePopoverMenu = <T = FeaturePopoverMenuValue,>({
   disabled,
   featureName,
   options,
   selectedValue,
   handleChange,
   quayId,
-}: Props) => {
+}: Props<T>) => {
   const { formatMessage } = useIntl();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const selectedOption = findOptionByValue(selectedValue, options);
 
-  const handleSelectedValueChange = (value: FeaturePopoverMenuValue) => {
+  const handleSelectedValueChange = (value: T) => {
     setOpen(false);
     handleChange(value);
   };
@@ -72,7 +72,7 @@ const FeaturePopoverMenu = ({
 
         <div style={{ marginLeft: 2.5 }}>
           {formatMessage({
-            id: `${featureName}_${selectedValue.toLowerCase()}`,
+            id: `${featureName}_${String(selectedValue).toLowerCase()}`,
           })}
         </div>
       </div>
@@ -82,7 +82,7 @@ const FeaturePopoverMenu = ({
         anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
         onClose={handleClosePopover}
       >
-        {options.map((option: FeaturePopoverMenuOption, index: number) => (
+        {options.map((option: FeaturePopoverMenuOption<T>, index: number) => (
           <MenuItem
             key={`${quayId}-${featureName}-popoverOptionValue-${option.value}-${index}`}
             value={option as unknown as string}
@@ -104,7 +104,7 @@ const FeaturePopoverMenu = ({
             </ListItemIcon>
             <ListItemText>
               {formatMessage({
-                id: `${featureName}_${option.value.toLowerCase()}`,
+                id: `${featureName}_${String(option.value).toLowerCase()}`,
               })}
             </ListItemText>
           </MenuItem>

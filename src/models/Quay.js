@@ -65,6 +65,10 @@ class Quay {
       clientQuay.facilities = [...quay.facilities];
     }
 
+    if (quay.lighting) {
+      clientQuay.lighting = quay.lighting;
+    }
+
     return clientQuay;
   }
 }

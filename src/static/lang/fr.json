@@ -629,5 +629,11 @@
   "passengerInformationDisplay_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un affichage des informations ?",
   "informationDesk": "Bureau d'information",
   "informationDesk_no": "Pas de bureau d'information",
-  "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?"
+  "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?",
+  "lighting_welllit": "Bien éclairé",
+  "lighting_poorlylit": "Mal éclairé",
+  "lighting_unlit": "Non éclairé",
+  "lighting_unknown": "Éclairage inconnu",
+  "lighting_other": "Autre éclairage",
+  "lighting_quay_hint": "Ce quai est-il éclairé ?"
 }

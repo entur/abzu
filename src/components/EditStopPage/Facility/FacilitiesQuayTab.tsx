@@ -17,6 +17,7 @@ import { EntityType } from "../../../models/Entities";
 import Quay from "../../../models/Quay";
 import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import GeneralSign from "./GeneralSign";
+import Lighting from "./Lighting";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
 import TicketCounter from "./TicketCounter";
@@ -194,6 +195,19 @@ const FacilitiesQuayTab = ({ disabled, quay, index }: Props) => {
         name={FacilityTabItem.WALKING_SURFACE_INDICATORS}
         feature={
           <WalkingSurfaceIndicators
+            entity={quay}
+            disabled={disabled}
+            index={index}
+            entityType={entityType}
+          />
+        }
+      />
+
+      <PlaceFeatures
+        entityType={entityType}
+        name={FacilityEnum.LIGHTING}
+        feature={
+          <Lighting
             entity={quay}
             disabled={disabled}
             index={index}

@@ -23,8 +23,8 @@ export type FeaturePopoverMenuValue =
   | FeaturePopoverMenuDefaults
   | MobilityFacility;
 
-export interface FeaturePopoverMenuOption {
-  value: FeaturePopoverMenuValue;
+export interface FeaturePopoverMenuOption<T = FeaturePopoverMenuValue> {
+  value: T;
   color?: string;
   icon: ReactElement<any>;
 }

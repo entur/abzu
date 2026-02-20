@@ -627,5 +627,11 @@
   "passengerInformationDisplay_stopPlace_hint": "Har hållplatsen en informationsdisplay?",
   "informationDesk": "Informationsdisk",
   "informationDesk_no": "Ingen informationsdisk",
-  "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?"
+  "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?",
+  "lighting_welllit": "Väl belyst",
+  "lighting_poorlylit": "Dåligt belyst",
+  "lighting_unlit": "Obelyst",
+  "lighting_unknown": "Belysning okänd",
+  "lighting_other": "Annan belysning",
+  "lighting_quay_hint": "Är denna plattform belyst?"
 }

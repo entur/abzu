@@ -188,6 +188,7 @@ exports[`Model: map format from server to expected client model > should map cli
       },
       "id": "NSR:Quay:30025",
       "keyValues": [],
+      "lighting": null,
       "placeEquipments": null,
       "privateCode": {
         "value": "",
@@ -210,6 +211,7 @@ exports[`Model: map format from server to expected client model > should map cli
       },
       "id": "NSR:Quay:30026",
       "keyValues": [],
+      "lighting": null,
       "placeEquipments": null,
       "privateCode": {
         "value": "",

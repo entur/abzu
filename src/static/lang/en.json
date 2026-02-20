@@ -630,5 +630,11 @@
   "passengerInformationDisplay_stopPlace_hint": "Does stop place have an information display?",
   "informationDesk": "Information desk",
   "informationDesk_no": "No information desk",
-  "informationDesk_stopPlace_hint": "Does stop place have an information desk?"
+  "informationDesk_stopPlace_hint": "Does stop place have an information desk?",
+  "lighting_welllit": "Well lit",
+  "lighting_poorlylit": "Poorly lit",
+  "lighting_unlit": "Unlit",
+  "lighting_unknown": "Lighting unknown",
+  "lighting_other": "Other lighting",
+  "lighting_quay_hint": "Is this quay lit?"
 }
