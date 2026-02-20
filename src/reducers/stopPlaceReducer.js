@@ -214,6 +214,15 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.CHANGED_QUAY_LIGHTING:
+      return Object.assign({}, state, {
+        current: formatHelpers.updateQuayLighting(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.UPDATED_KEY_VALUES_FOR_KEY:
       return Object.assign({}, state, {
         current: formatHelpers.updateKeyValuesByKey(
