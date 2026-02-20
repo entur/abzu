@@ -229,6 +229,7 @@ Fragments.quay = {
           facilities {
             ...SiteFacilitySet
           }
+          lighting
           boardingPositions {
               ...VerboseBoardingPosition
           }

@@ -41,4 +41,13 @@ FacilityActions.updatePassengerInformationEquipmentList =
     );
   };
 
+FacilityActions.updateQuayLighting = (lighting, index) => (dispatch) => {
+  dispatch(
+    createThunk(types.CHANGED_QUAY_LIGHTING, {
+      lighting,
+      index,
+    }),
+  );
+};
+
 export default FacilityActions;
