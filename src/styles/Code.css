@@ -14,29 +14,33 @@ limitations under the Licence. */
 .publicCode {
   margin-left: 5px;
   background: #f5e527;
-  text-align: center;
-  border-radius: 50%;
+  border-radius: 5px;
   color: #000;
   height: 17px;
   padding: 2px 3px 2px 3px;
-  text-align: center;
   min-width: 16px;
+  max-width: 100px;
   cursor: pointer;
   font-size: 12px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .privateCode {
   background: #777;
   color: #fff;
   margin-left: 5px;
-  text-align: center;
-  border-radius: 50%;
+  border-radius: 5px;
   height: 17px;
   padding: 2px 3px 2px 3px;
-  text-align: center;
   min-width: 16px;
+  max-width: 100px;
   cursor: pointer;
   font-size: 12px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
