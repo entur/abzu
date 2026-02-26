@@ -545,7 +545,7 @@ class EditStopGeneral extends React.Component {
       overflowY: "auto",
       overflowX: "hidden",
       width: "100%",
-      height: "82vh",
+      height: "72vh",
       position: "relative",
       display: "block",
       marginTop: 2,
