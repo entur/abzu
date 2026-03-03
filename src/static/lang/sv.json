@@ -609,12 +609,12 @@
   "liftFreeAccess_no": "Ingen tillgång via hiss",
   "assistanceService": "Assistanstjänst",
   "assistanceService_no": "Ingen assistanstjänst",
-  "assistanceServiceAvailability": "Assistanstillgänglighet",
-  "assistanceServiceAvailability_availableIfBooked": "Kräver bokning",
-  "assistanceServiceAvailability_availableAtCertainTimes": "Tillgänglig vid en viss tidpunkt",
-  "assistanceServiceAvailability_available": "Tillgänglig",
-  "assistanceServiceAvailability_unknown": "Okänd",
-  "assistanceServiceAvailability_none": "Ingen",
+  "assistanceAvailability": "Assistanstillgänglighet",
+  "assistanceAvailability_availableIfBooked": "Kräver bokning",
+  "assistanceAvailability_availableAtCertainTimes": "Tillgänglig vid en viss tidpunkt",
+  "assistanceAvailability_available": "Tillgänglig",
+  "assistanceAvailability_unknown": "Okänd",
+  "assistanceAvailability_none": "Ingen",
   "assistance": "Assistans",
   "assistanceService_stopPlace_hint": "Har hållplatsen assistanstjänster, och vilken typ?",
   "mobilityFacility_tactile_all": "Indikatorer för gångytor längs plattformen och kanterna",
@@ -627,5 +627,7 @@
   "passengerInformationDisplay_stopPlace_hint": "Har hållplatsen en informationsdisplay?",
   "informationDesk": "Informationsdisk",
   "informationDesk_no": "Ingen informationsdisk",
-  "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?"
+  "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?",
+  "stepFreeAccess": "Trappfri åtkomst",
+  "stepFreeAccess_no": "Endast åtkomlig via trappor"
 }

@@ -611,12 +611,12 @@
   "liftFreeAccess_no": "Pas d'accès par ascenseur",
   "assistanceService": "Service d'assistance",
   "assistanceService_no": "Aucun service d'assistance",
-  "assistanceServiceAvailability": "Disponibilité de l'assistance",
-  "assistanceServiceAvailability_availableIfBooked": "Réservation requise",
-  "assistanceServiceAvailability_availableAtCertainTimes": "Disponible à certaines heures",
-  "assistanceServiceAvailability_available": "Disponible",
-  "assistanceServiceAvailability_unknown": "Inconnu",
-  "assistanceServiceAvailability_none": "Aucun",
+  "assistanceAvailability": "Disponibilité de l'assistance",
+  "assistanceAvailability_availableIfBooked": "Réservation requise",
+  "assistanceAvailability_availableAtCertainTimes": "Disponible à certaines heures",
+  "assistanceAvailability_available": "Disponible",
+  "assistanceAvailability_unknown": "Inconnu",
+  "assistanceAvailability_none": "Aucun",
   "assistance": "Assistance",
   "assistanceService_stopPlace_hint": "L'aire d'arrêt propose-t-elle des services d'assistance ? Si oui, de quel type ?",
   "mobilityFacility_tactile_all": "Indicateurs tactiles sur la surface de marche le long du quai et des bords",
@@ -629,5 +629,7 @@
   "passengerInformationDisplay_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un affichage des informations ?",
   "informationDesk": "Bureau d'information",
   "informationDesk_no": "Pas de bureau d'information",
-  "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?"
+  "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?",
+  "stepFreeAccess": "Accessible de plain pied",
+  "stepFreeAccess_no": "Seulement accessible par des marches"
 }

@@ -1,9 +1,11 @@
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { FacilityActions } from "../../../actions";
+import facilityActions from "../../../actions/FacilityActions";
 import facilitiesHelpers from "../../../modelUtils/facilitiesHelpers";
-import { PassengerInformationEquipment } from "../../../models/Facilities";
+import { MobilityFacility } from "../../../models/Facilities";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import { AssistanceTabItem, AssistanceTabItemProps } from "./types";
 
@@ -18,24 +20,18 @@ const InformationDesk = ({
   entityType,
 }: AssistanceTabItemProps) => {
   const dispatch = useDispatch();
-  const passengerInformationEquipmentList: PassengerInformationEquipment[] =
-    facilitiesHelpers.getPassengerInformationEquipmentList(entity);
-  const isInformationDeskPresent = passengerInformationEquipmentList.includes(
-    PassengerInformationEquipment.INFORMATION_DESK,
-  );
+  const isInformationDeskPresent =
+    facilitiesHelpers.isInformationDeskPresent(entity);
 
   const handlePassengerInformationDisplayChange = (newValue: boolean) => {
     if (disabled) {
       return;
     }
-    const newPassengerInformationFacilityList = newValue
-      ? [
-          ...passengerInformationEquipmentList,
-          PassengerInformationEquipment.INFORMATION_DESK,
-        ]
-      : passengerInformationEquipmentList.filter(
-          (v) => v !== PassengerInformationEquipment.INFORMATION_DESK,
-        );
+    const newPassengerInformationFacilityList =
+      facilitiesHelpers.onPassengerInformationEquipmentListInformationDeskUpdateNewState(
+        entity,
+        newValue,
+      );
 
     dispatch(
       FacilityActions.updatePassengerInformationEquipmentList(
@@ -44,6 +40,28 @@ const InformationDesk = ({
         id,
       ) as unknown as AnyAction,
     );
+
+    /**
+     * If infodesk becomes unavailable, its step free access feature also needs to be gone.
+     * WARNING: if at some point stepFreeAccess becomes applicable for something else within a facility,
+     * this would mean a change in how <facilities> are handled, just relying on the first element of the facilities
+     * array only would not be enough anymore
+     */
+    if (!newValue && facilitiesHelpers.isMobilityFacilityListStepFree(entity)) {
+      const newMobilityFacilityList: MobilityFacility[] =
+        facilitiesHelpers.onMobilityFacilityStepFreeAccessUpdateNewState(
+          entity,
+          false,
+        );
+
+      dispatch(
+        facilityActions.updateMobilityFacilityList(
+          newMobilityFacilityList,
+          entityType,
+          id,
+        ) as unknown as UnknownAction,
+      );
+    }
   };
 
   return (
