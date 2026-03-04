@@ -630,5 +630,11 @@
   "passengerInformationDisplay_stopPlace_hint": "Har holdeplassen en informasjonsskjerm?",
   "informationDesk": "Informasjonsskranke",
   "informationDesk_no": "Ingen informasjonsskranke",
-  "informationDesk_stopPlace_hint": "Har holdeplassen en informasjonsskranke?"
+  "informationDesk_stopPlace_hint": "Har holdeplassen en informasjonsskranke?",
+  "lighting_welllit": "Godt opplyst",
+  "lighting_poorlylit": "Dårlig opplyst",
+  "lighting_unlit": "Ikke opplyst",
+  "lighting_unknown": "Belysning ukjent",
+  "lighting_other": "Annen belysning",
+  "lighting_quay_hint": "Er denne plattformen opplyst?"
 }

@@ -38,6 +38,7 @@ helpers.mapQuayToVariables = (quay) => {
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
     facilities: quay.facilities,
+    lighting: quay.lighting || null,
     description: quay.description
       ? createEmbeddableMultilingualString(quay.description)
       : null,

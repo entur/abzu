@@ -743,6 +743,16 @@ helpers.updateCompassBearing = (current, payload) => {
   };
 };
 
+helpers.updateQuayLighting = (current, payload) => {
+  const { lighting, index } = payload;
+  const quaysCopy = current.quays.slice();
+  quaysCopy[index].lighting = lighting;
+  return {
+    ...current,
+    quays: quaysCopy,
+  };
+};
+
 helpers.updateCurrentWithElementDescriptionChange = (current, payload) => {
   const { index, type, description } = payload;
   const copy = JSON.parse(JSON.stringify(current));
