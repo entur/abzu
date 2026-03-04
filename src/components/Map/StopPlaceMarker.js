@@ -170,11 +170,13 @@ class StopPlaceMarker extends React.Component {
             <div
               style={{
                 display: "block",
-                cursor: "pointer",
+                cursor:
+                  !disabled && handleChangeCoordinates ? "pointer" : "auto",
                 width: "auto",
                 textAlign: "center",
               }}
               onClick={() =>
+                !disabled &&
                 handleChangeCoordinates &&
                 handleChangeCoordinates(
                   { type: "stop-place", markerIndex: index },
@@ -207,14 +209,19 @@ class StopPlaceMarker extends React.Component {
               label={translations.adjustCentroid}
             />
             <PopupButton
-              hidden={isMultimodalChild || isGroupMember || disabledForSearch}
+              hidden={
+                disabled ||
+                isMultimodalChild ||
+                isGroupMember ||
+                disabledForSearch
+              }
               onClick={() => {
                 handleCreateGroup(id);
               }}
               label={translations.createGOS}
             />
             <PopupButton
-              hidden={!isMultimodalChild}
+              hidden={disabled || !isMultimodalChild}
               onClick={() =>
                 isShowingQuays ? handleHideQuays(id) : handleShowQuays(id)
               }
@@ -223,13 +230,14 @@ class StopPlaceMarker extends React.Component {
               }
             />
             <PopupButton
-              hidden={!isEditingGroup || !isGroupMember}
+              hidden={disabled || !isEditingGroup || !isGroupMember}
               labelStyle={{ background: "rgb(152,51,47)" }}
               onClick={() => this.props.removeFromGroup(id)}
               label={translations.removeFromGroup}
             />
             <PopupButton
               hidden={
+                disabled ||
                 isMultimodalChild ||
                 isMultimodal ||
                 disabledForSearch ||
@@ -240,6 +248,7 @@ class StopPlaceMarker extends React.Component {
             />
             <PopupButton
               hidden={
+                disabled ||
                 !allowConnectToAdjacentStop ||
                 !isMultimodalChild ||
                 isMultimodal ||

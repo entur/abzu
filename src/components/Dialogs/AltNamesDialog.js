@@ -306,24 +306,26 @@ class AltNamesDialog extends React.Component {
             }}
           />
         ) : (
-          <NewAltName
-            translations={translations}
-            handleAddAltName={this.handleAddAltName.bind(this)}
-            handleTypeChange={(event, key, type) => {
-              this.setState({ type: event.target.value });
-            }}
-            onLanguageChange={(event, key, lang) => {
-              this.setState({ lang: event.target.value });
-            }}
-            onValueChange={(event) => {
-              this.setState({ value: event.target.value });
-            }}
-            lang={lang}
-            type={type}
-            formatMessage={formatMessage}
-            value={value}
-            valid={!!lang && !!type && !!value}
-          />
+          !disabled && (
+            <NewAltName
+              translations={translations}
+              handleAddAltName={this.handleAddAltName.bind(this)}
+              handleTypeChange={(event, key, type) => {
+                this.setState({ type: event.target.value });
+              }}
+              onLanguageChange={(event, key, lang) => {
+                this.setState({ lang: event.target.value });
+              }}
+              onValueChange={(event) => {
+                this.setState({ value: event.target.value });
+              }}
+              lang={lang}
+              type={type}
+              formatMessage={formatMessage}
+              value={value}
+              valid={!!lang && !!type && !!value}
+            />
+          )
         )}
       </div>
     );
