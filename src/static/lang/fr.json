@@ -631,7 +631,7 @@
   "informationDesk_no": "Pas de bureau d'information",
   "informationDesk_stopPlace_hint": "Le lieu d'arrêt dispose-t-il d'un bureau d'information ?",
   "stepFreeAccess": "Accessible de plain pied",
-  "stepFreeAccess_no": "Seulement accessible par des marches"
+  "stepFreeAccess_no": "Seulement accessible par des marches",
   "lighting_welllit": "Bien éclairé",
   "lighting_poorlylit": "Mal éclairé",
   "lighting_unlit": "Non éclairé",
