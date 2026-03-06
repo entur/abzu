@@ -43,6 +43,16 @@ describe("Model: map format from server to expected client model", () => {
         totalCapacity: "100",
         parkingVehicleTypes: ["car"],
         validBetween: null,
+        accessibilityAssessment: {
+          limitations: {
+            wheelchairAccess: "UNKNOWN",
+            stepFreeAccess: "TRUE",
+            escalatorFreeAccess: "UNKNOWN",
+            liftFreeAccess: "UNKNOWN",
+            audibleSignalsAvailable: "UNKNOWN",
+            visualSignsAvailable: "UNKNOWN",
+          },
+        },
       },
     ];
 

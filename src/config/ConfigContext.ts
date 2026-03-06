@@ -6,7 +6,6 @@ export interface Config {
   tiamatBaseUrl?: string;
   baatTokenProxyEndpoint?: string;
   sentryDSN?: string;
-  googleApiKey?: string;
   tiamatEnv?: string;
   preferredNameNamespace?: string;
   claimsNamespace?: string;
@@ -14,6 +13,7 @@ export interface Config {
   featureFlags?: FeatureFlags;
   mapConfig?: MapConfig;
   localeConfig?: LocaleConfig;
+  modalityConfig?: ModalityConfig;
   /**
    * Path to folder inder /ext that contains features or assets of a company that adopted NSR.
    * This is used e.g. for:
@@ -22,17 +22,10 @@ export interface Config {
    */
   extPath?: string;
   /**
-   * Path to theme configuration file (e.g., "src/theme/config/custom-theme-example.json")
-   * @deprecated Use themeConfigs array instead for multi-theme support
+   * With this it's possible to specify a link that will be shown in User Guide section of the header menu;
+   * By default, Entur's user guide is used there.
    */
-  themeConfig?: string;
-  /**
-   * Array of theme configuration file paths.
-   * First theme in array is the default theme.
-   * If only one theme provided, theme switcher will be hidden.
-   * If empty or missing, standard MUI theme is used.
-   */
-  themeConfigs?: string[];
+  extUserGuideLink?: string;
 }
 
 export interface MapConfig {
@@ -47,6 +40,7 @@ export interface Tile {
   attribution?: string;
   url?: string;
   maxZoom?: number;
+  maxNativeZoom?: number;
   component?: boolean;
   componentName?: string;
   tms?: boolean;
@@ -55,6 +49,16 @@ export interface Tile {
 export interface LocaleConfig {
   locales: string[];
   defaultLocale: string;
+}
+
+export interface ModalityConfig {
+  /**
+   * List of stop types to hide from the modality selection menu.
+   * These stop types will still exist in the system for backwards compatibility,
+   * but will not be available for selection when creating new stops.
+   * Example: ["other", "someOtherType"]
+   */
+  hiddenStopTypes?: string[];
 }
 
 export const ConfigContext = React.createContext<Config>({});

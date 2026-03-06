@@ -1,9 +1,9 @@
 import { Check } from "@mui/icons-material";
 import MdLanguage from "@mui/icons-material/Language";
 import MenuItem from "@mui/material/MenuItem";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { UserActions } from "../../actions";
 import { useConfig } from "../../config/ConfigContext";
 import { DEFAULT_LOCALE } from "../../localization/localization";
@@ -15,7 +15,7 @@ export const LanguageMenu = () => {
   const language = formatMessage({ id: "language" });
   const dispatch = useDispatch();
   const updateSelectedLocale = (localeOption: string) => {
-    dispatch(UserActions.applyLocale(localeOption) as unknown as AnyAction);
+    dispatch(UserActions.applyLocale(localeOption) as unknown as UnknownAction);
   };
 
   return (

@@ -141,6 +141,7 @@ Fragments.placeEquipments = {
       sanitaryEquipment {
         numberOfToilets
         gender
+        sanitaryFacilityList
       }
       ticketingEquipment {
         ticketOffice
@@ -151,6 +152,7 @@ Fragments.placeEquipments = {
         tactileInterfaceAvailable
         inductionLoops
         lowCounterAccess
+        wheelchairSuitable
       }
       cycleStorageEquipment {
         numberOfSpaces
@@ -172,6 +174,16 @@ Fragments.localServices = {
         assistanceFacilityList
         assistanceAvailability
       }
+    }
+  `,
+};
+
+Fragments.facilities = {
+  verbose: gql`
+    fragment SiteFacilitySet on SiteFacilitySet {
+      mobilityFacilityList
+      passengerInformationFacilityList
+      passengerInformationEquipmentList
     }
   `,
 };
@@ -214,12 +226,16 @@ Fragments.quay = {
           placeEquipments {
               ...PlaceEquipments
           }
+          facilities {
+            ...SiteFacilitySet
+          }
           boardingPositions {
               ...VerboseBoardingPosition
           }
       },
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
+      ${Fragments.facilities.verbose}
       ${Fragments.boardingPosition.verbose}
   `,
 };
@@ -312,6 +328,9 @@ Fragments.stopPlace = {
         localServices {
             ...LocalServices
         }
+        facilities {
+            ...SiteFacilitySet
+        }
         validBetween {
             fromDate
             toDate
@@ -321,10 +340,20 @@ Fragments.stopPlace = {
             ...EntityPermissions
         }
         url
+        postalAddress {
+            addressLine1 {
+                value
+            }
+            town {
+                value
+            }
+            postCode
+        }
     }
     ${Fragments.quay.verbose},
     ${Fragments.placeEquipments.verbose},
     ${Fragments.localServices.verbose},
+    ${Fragments.facilities.verbose},
     ${Fragments.accessibilityAssessment.verbose}
     ${Fragments.entityPermissions}
   `,
@@ -383,6 +412,9 @@ Fragments.stopPlace = {
           localServices {
             ...LocalServices
           }
+          facilities {
+            ...SiteFacilitySet
+          }
           validBetween {
               fromDate
               toDate
@@ -393,6 +425,7 @@ Fragments.stopPlace = {
       ${Fragments.placeEquipments.verbose},
       ${Fragments.accessibilityAssessment.verbose}
       ${Fragments.localServices.verbose}
+      ${Fragments.facilities.verbose},
   `,
 };
 
@@ -458,6 +491,15 @@ Fragments.parentStopPlace = {
               ...EntityPermissions
           }
           url
+          postalAddress {
+            addressLine1 {
+                value
+            }
+            town {
+                value
+            }
+            postCode
+        }
       },
       ${Fragments.stopPlace.verbose},
       ${Fragments.entityPermissions},
@@ -575,7 +617,11 @@ Fragments.parking = {
           numberOfSpacesWithRechargePoint
         }
       }
+      accessibilityAssessment {
+        ...AccessibilityAssessment
+      }
     }
+    ${Fragments.accessibilityAssessment.verbose}
   `,
 };
 

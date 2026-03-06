@@ -31,9 +31,21 @@ import {
   calculateEstimate,
   getUniquePathLinks,
 } from "./leafletUtils";
+import { setLimitationForEntity } from "./limitationHelpers";
 import { hasExpired } from "./validBetween";
 
 const helpers = {};
+
+// Maps backend stopPlaceType to UI stopPlaceType
+// Reverse of the mapping in mapToQueryVariables.js
+const mapStopPlaceTypeForUI = (stopPlaceType, submode, transportMode) => {
+  // If it's "other" with funicular transport mode, show it as funicular in the UI
+  // This handles both when submode is "funicular" or when submode is unspecified
+  if (stopPlaceType === "other" && transportMode === "funicular") {
+    return "funicular";
+  }
+  return stopPlaceType;
+};
 
 helpers.mapParkingToClient = (parkingObjs = []) =>
   parkingObjs.map((parking) => new Parking(parking).toClient());
@@ -322,7 +334,11 @@ helpers.mapSearchResultParentStopPlace = (stop) => {
       id: stop.id,
       name: stop.name.value,
       isMissingLocation: !stop.geometry,
-      stopPlaceType: stop.stopPlaceType,
+      stopPlaceType: mapStopPlaceTypeForUI(
+        stop.stopPlaceType,
+        stop.submode,
+        stop.transportMode,
+      ),
       submode: stop.submode,
       transportMode: stop.transportMode,
       topographicPlace: topographicPlace,
@@ -881,6 +897,17 @@ helpers.changeParkingTotalCapacity = (original, payload) => {
   const { index, totalCapacity } = payload;
   const copy = JSON.parse(JSON.stringify(original));
   copy.parking[index].totalCapacity = Number(totalCapacity);
+  return copy;
+};
+
+helpers.changeParkingAccessibilityAssessment = (original, payload) => {
+  const { index, value, limitationType } = payload;
+  const copy = JSON.parse(JSON.stringify(original));
+  copy.parking[index] = setLimitationForEntity(
+    copy.parking[index],
+    limitationType,
+    value,
+  );
   return copy;
 };
 

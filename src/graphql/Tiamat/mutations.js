@@ -26,6 +26,7 @@ export const mutateParentStopPlace = gql`
     $alternativeNames: [AlternativeNameInput]
     $children: [StopPlaceInput]
     $url: String
+    $postalAddress: PostalAddressInput
   ) {
     mutateParentStopPlace(
       ParentStopPlace: {
@@ -38,6 +39,7 @@ export const mutateParentStopPlace = gql`
         alternativeNames: $alternativeNames
         children: $children
         url: $url
+        postalAddress: $postalAddress
       }
     ) {
       ...VerboseParentStopPlace
@@ -93,6 +95,8 @@ export const mutateCreateMultiModalStopPlace = gql`
     $legacyCoordinates: legacyCoordinates
     $versionComment: String
     $validBetween: ValidBetweenInput
+    $url: String
+    $postalAddress: PostalAddressInput
   ) {
     createMultiModalStopPlace(
       input: {
@@ -102,6 +106,8 @@ export const mutateCreateMultiModalStopPlace = gql`
         geometry: { type: Point, legacyCoordinates: $legacyCoordinates }
         versionComment: $versionComment
         validBetween: $validBetween
+        url: $url
+        postalAddress: $postalAddress
       }
     ) {
       ...VerboseParentStopPlace
@@ -148,6 +154,7 @@ export const mutateStopPlace = gql`
     $accessibilityAssessment: AccessibilityAssessmentInput
     $placeEquipments: PlaceEquipmentsInput
     $localServices: LocalServicesInput
+    $facilities: [SiteFacilitySetInput]
     $alternativeNames: [AlternativeNameInput]
     $versionComment: String
     $weighting: InterchangeWeightingType
@@ -156,6 +163,7 @@ export const mutateStopPlace = gql`
     $transportMode: TransportModeType
     $tariffZones: [VersionLessEntityRefInput]
     $url: String
+    $postalAddress: PostalAddressInput
   ) {
     mutateStopPlace(
       StopPlace: {
@@ -176,9 +184,11 @@ export const mutateStopPlace = gql`
         accessibilityAssessment: $accessibilityAssessment
         placeEquipments: $placeEquipments
         localServices: $localServices
+        facilities: $facilities
         tariffZones: $tariffZones
         stopPlaceType: $stopPlaceType
         url: $url
+        postalAddress: $postalAddress
       }
     ) {
       ...VerboseStopPlace

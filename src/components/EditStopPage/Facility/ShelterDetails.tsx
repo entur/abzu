@@ -1,15 +1,14 @@
-import TextField from "@mui/material/TextField";
-import { useIntl } from "react-intl";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import StairsIcon from "../../../static/icons/accessibility/Stairs";
 import EnclosedIcon from "../../../static/icons/facilities/Enclosed";
 import { getIn } from "../../../utils";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
 import {
-  FacilityDetail as FacilityDetailEnum,
-  FacilityProps,
+  FacilityTabItemDetail,
+  FacilityTabItemProps,
   WaitingRoomDetailFields,
 } from "./types";
 
@@ -19,23 +18,22 @@ const ShelterDetails = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
-  const { formatMessage } = useIntl();
   const shelterEquipmentKeys = ["placeEquipments", "shelterEquipment"];
   const shelterSeats = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.SEATS),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.SEATS),
     0,
   );
   const shelterStepFree = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.STEP_FREE),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.STEP_FREE),
     false,
   );
   const shelterEnclosed = getIn(
     entity,
-    shelterEquipmentKeys.concat(FacilityDetailEnum.ENCLOSED),
+    shelterEquipmentKeys.concat(FacilityTabItemDetail.ENCLOSED),
     false,
   );
 
@@ -50,17 +48,17 @@ const ShelterDetails = ({
     const oldValuesSet = {
       seats: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.SEATS),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.SEATS),
         0,
       ),
       stepFree: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.STEP_FREE),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.STEP_FREE),
         false,
       ),
       enclosed: getIn(
         entity,
-        shelterEquipmentKeys.concat(FacilityDetailEnum.ENCLOSED),
+        shelterEquipmentKeys.concat(FacilityTabItemDetail.ENCLOSED),
         false,
       ),
     };
@@ -70,52 +68,46 @@ const ShelterDetails = ({
         newValuesSet,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
   return (
-    <div>
-      <TextField
-        label={formatMessage({ id: "number_of_seats" })}
-        variant="filled"
-        value={shelterSeats}
-        type="number"
-        disabled={disabled}
-        onChange={(event) => {
-          handleValueForShelterChange({
-            seats: event.target.value as unknown as number,
-          });
+    <div style={{ padding: "3px 15px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
-        fullWidth={true}
-      />
-      <div style={{ display: "block" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
+      >
+        <FeatureCheckbox
+          icon={<EventSeatIcon />}
+          handleFeatureStateChange={(value: boolean) => {
+            handleValueForShelterChange({
+              seats: value ? 1 : 0,
+            });
           }}
-        >
-          <FeatureCheckbox
-            icon={<StairsIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForShelterChange({ stepFree: value })
-            }
-            name={FacilityDetailEnum.STEP_FREE}
-            isFeaturePresent={shelterStepFree}
-          />
-
-          <FeatureCheckbox
-            icon={<EnclosedIcon />}
-            handleFeatureStateChange={(value: boolean) =>
-              handleValueForShelterChange({ enclosed: value })
-            }
-            name={FacilityDetailEnum.ENCLOSED}
-            isFeaturePresent={shelterEnclosed}
-          />
-        </div>
+          name={FacilityTabItemDetail.SEATS}
+          isFeaturePresent={!!shelterSeats}
+        />
+        <FeatureCheckbox
+          icon={<EnclosedIcon />}
+          handleFeatureStateChange={(value: boolean) =>
+            handleValueForShelterChange({ enclosed: value })
+          }
+          name={FacilityTabItemDetail.ENCLOSED}
+          isFeaturePresent={shelterEnclosed}
+        />
       </div>
+      <FeatureCheckbox
+        icon={<StairsIcon />}
+        handleFeatureStateChange={(value: boolean) =>
+          handleValueForShelterChange({ stepFree: value })
+        }
+        name={FacilityTabItemDetail.STEP_FREE}
+        isFeaturePresent={shelterStepFree}
+      />
     </div>
   );
 };

@@ -292,6 +292,7 @@ const mockBusStop = {
               numberOfMachines: 7,
               audioInterfaceAvailable: false,
               tactileInterfaceAvailable: false,
+              wheelchairSuitable: false,
               __typename: "TicketingEquipment",
             },
           ],

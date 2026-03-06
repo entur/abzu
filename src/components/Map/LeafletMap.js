@@ -123,6 +123,7 @@ export const LeafLetMap = ({
                     attribution={tile.attribution}
                     url={tile.url}
                     maxZoom={tile.maxZoom}
+                    maxNativeZoom={tile.maxNativeZoom}
                   />
                 ),
               )}

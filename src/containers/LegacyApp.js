@@ -13,44 +13,38 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { ComponentToggle } from "@entur/react-component-toggle";
-import { StyledEngineProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
 import { useDispatch } from "react-redux";
-import { Route, Routes } from "react-router-dom";
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { StopPlaceActions, UserActions } from "../actions";
 import { fetchUserPermissions, updateAuth } from "../actions/UserActions";
 import { useAuth } from "../auth/auth";
-import GlobalLoadingIndicator from "../components/GlobalLoadingIndicator";
+import SessionExpiredDialog from "../components/Dialogs/SessionExpiredDialog";
 import Header from "../components/Header/Header";
-import LocalLoadingIndicator from "../components/LocalLoadingIndicator";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
-import { ModernHeader } from "../components/modern/Header/ModernHeader";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
+import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
-import AppRoutes from "../routes";
 import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
-import { history } from "../store/store";
-import { AbzuThemeProvider } from "../theme/ThemeProvider";
-import GroupOfStopPlaces from "./GroupOfStopPlaces";
-import ReportPage from "./ReportPage";
-import { StopPlace } from "./StopPlace";
-import StopPlaces from "./StopPlaces";
 
+const muiTheme = createTheme(getTheme());
 const Settings = new SettingsManager();
 
-const LegacyApp = () => {
+const App = ({ children }) => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const { mapConfig, localeConfig, extPath } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
-  const uiMode = useAppSelector((state) => state.user.uiMode);
 
   useEffect(() => {
     configureLocalization(
@@ -82,14 +76,9 @@ const LegacyApp = () => {
   /**
    * To override the initial state in stopPlaceReducer/stopPlacesGroupReducer with bootstrapped custom values;
    * And determine the right map base layer;
-   * Note: User's custom initial position/zoom from localStorage takes precedence over mapConfig
    */
   useEffect(() => {
-    // Only use mapConfig center/zoom if user hasn't set custom values in localStorage
-    const hasCustomPosition = Settings.getInitialPosition() !== null;
-    const hasCustomZoom = Settings.getInitialZoom() !== null;
-
-    if (mapConfig?.center && !hasCustomPosition && !hasCustomZoom) {
+    if (mapConfig?.center) {
       dispatch(
         StopPlaceActions.changeMapCenter(mapConfig.center, mapConfig.zoom || 7),
       );
@@ -109,18 +98,6 @@ const LegacyApp = () => {
     return null;
   }
 
-  const renderHeader = () => {
-    const config = { extPath, mapConfig, localeConfig };
-    return uiMode === "legacy" ? (
-      <Header config={config} />
-    ) : (
-      <ModernHeader config={config} />
-    );
-  };
-
-  const basename = import.meta.env.BASE_URL;
-  const path = "/";
-
   return (
     <IntlProvider
       key={localization.locale}
@@ -136,55 +113,20 @@ const LegacyApp = () => {
         <ComponentToggle
           feature={`${extPath}/CustomThemeProvider`}
           renderFallback={() => (
-            <AbzuThemeProvider>
+            <MuiThemeProvider theme={muiTheme}>
               <div>
-                {renderHeader()}
-                <GlobalLoadingIndicator />
-                <LocalLoadingIndicator />
-                <Router basename={basename} history={history}>
-                  <Routes>
-                    <Route path={path} element={<StopPlaces />} />
-                    <Route
-                      path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                      element={<StopPlace />}
-                    />
-                    <Route
-                      path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                      element={<GroupOfStopPlaces />}
-                    />
-                    <Route
-                      path={path + AppRoutes.REPORTS}
-                      element={<ReportPage />}
-                    />
-                  </Routes>
-                </Router>
+                <Header config={config} />
+                {children}
                 <SnackbarWrapper />
               </div>
-            </AbzuThemeProvider>
+            </MuiThemeProvider>
           )}
         >
           <div>
-            {renderHeader()}
-            <GlobalLoadingIndicator />
-            <LocalLoadingIndicator />
-            <Router basename={basename} history={history}>
-              <Routes>
-                <Route path={path} element={<StopPlaces />} />
-                <Route
-                  path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                  element={<StopPlace />}
-                />
-                <Route
-                  path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                  element={<GroupOfStopPlaces />}
-                />
-                <Route
-                  path={path + AppRoutes.REPORTS}
-                  element={<ReportPage />}
-                />
-              </Routes>
-            </Router>
+            <Header config={config} />
+            {children}
             <SnackbarWrapper />
+            <SessionExpiredDialog />
           </div>
         </ComponentToggle>
       </StyledEngineProvider>
@@ -192,4 +134,4 @@ const LegacyApp = () => {
   );
 };
 
-export default LegacyApp;
+export default App;

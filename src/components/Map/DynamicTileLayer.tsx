@@ -5,13 +5,17 @@ type DynamicTileLayerProps = {
   attribution?: string;
   url?: string;
   maxZoom?: number;
+  maxNativeZoom?: number;
 };
+
+export const DEFAULT_TILE_LAYER_MAX_ZOOM = 19;
 
 export const DynamicTileLayer = ({
   name,
   attribution,
   url,
   maxZoom,
+  maxNativeZoom,
 }: DynamicTileLayerProps) => {
   const isValidLayer = attribution && url;
   if (!isValidLayer) {
@@ -23,7 +27,12 @@ export const DynamicTileLayer = ({
 
   return (
     isValidLayer && (
-      <TileLayer attribution={attribution} url={url} maxZoom={maxZoom || 19} />
+      <TileLayer
+        attribution={attribution}
+        url={url}
+        maxZoom={maxZoom || DEFAULT_TILE_LAYER_MAX_ZOOM}
+        maxNativeZoom={maxNativeZoom}
+      />
     )
   );
 };

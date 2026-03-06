@@ -16,6 +16,7 @@ import { useState } from "react";
 import { EntityType } from "../../../models/Entities";
 import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import GeneralSign from "./GeneralSign";
+import PassengerInformationDisplay from "./PassengerInformationDisplay";
 import Shelter from "./Shelter";
 import ShelterDetails from "./ShelterDetails";
 import TicketCounter from "./TicketCounter";
@@ -24,9 +25,10 @@ import TicketMachine from "./TicketMachine";
 import TicketMachineDetails from "./TicketMachineDetails";
 import TicketOffice from "./TicketOffice";
 import WC from "./WC";
+import WCDetails from "./WCDetails";
 import WaitingRoom from "./WaitingRoom";
 import WaitingRoomDetails from "./WaitingRoomDetails";
-import { Facility as FacilityEnum } from "./types";
+import { FacilityTabItem } from "./types";
 
 interface Props {
   disabled: boolean;
@@ -41,7 +43,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
   return (
     <div style={{ padding: 10 }}>
       <PlaceFeatures
-        name={FacilityEnum.GENERAL_SIGN}
+        name={FacilityTabItem.GENERAL_SIGN}
         entityType={entityType}
         feature={
           <GeneralSign
@@ -54,7 +56,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_MACHINES}
+        name={FacilityTabItem.TICKET_MACHINES}
         entityType={entityType}
         isExpanded={expandedIndex === 2}
         handleExpand={() => setExpandedIndex(2)}
@@ -78,7 +80,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_OFFICE}
+        name={FacilityTabItem.TICKET_OFFICE}
         entityType={entityType}
         feature={
           <TicketOffice
@@ -91,7 +93,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.TICKET_COUNTER}
+        name={FacilityTabItem.TICKET_COUNTER}
         entityType={entityType}
         isExpanded={expandedIndex === 4}
         handleExpand={() => setExpandedIndex(4)}
@@ -115,7 +117,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
       />
 
       <PlaceFeatures
-        name={FacilityEnum.SHELTER_EQUIPMENT}
+        name={FacilityTabItem.SHELTER_EQUIPMENT}
         entityType={entityType}
         feature={
           <Shelter
@@ -140,7 +142,7 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
 
       <PlaceFeatures
         entityType={entityType}
-        name={FacilityEnum.SANITARY_EQUIPMENT}
+        name={FacilityTabItem.WC}
         feature={
           <WC
             entity={stopPlace}
@@ -149,11 +151,22 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
             entityType={entityType}
           />
         }
+        relatedFeatures={
+          <WCDetails
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+        isExpanded={expandedIndex === 6}
+        handleExpand={() => setExpandedIndex(6)}
+        handleCollapse={() => setExpandedIndex(-1)}
       />
 
       <PlaceFeatures
         entityType={entityType}
-        name={FacilityEnum.WAITING_ROOM_EQUIPMENT}
+        name={FacilityTabItem.WAITING_ROOM_EQUIPMENT}
         feature={
           <WaitingRoom
             entity={stopPlace}
@@ -173,6 +186,19 @@ const FacilitiesStopTab = ({ disabled, stopPlace }: Props) => {
         isExpanded={expandedIndex === 7}
         handleExpand={() => setExpandedIndex(7)}
         handleCollapse={() => setExpandedIndex(-1)}
+      />
+
+      <PlaceFeatures
+        entityType={entityType}
+        name={FacilityTabItem.PASSENGER_INFORMATION_DISPLAY}
+        feature={
+          <PassengerInformationDisplay
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
       />
     </div>
   );

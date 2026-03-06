@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { getOperationAST } from "graphql";
 import AssessmentActions from "./AssessmentActions";
 import EquipmentActions from "./EquipmentActions";
+import FacilityActions from "./FacilityActions";
 import LocalServiceActions from "./LocalServiceActions";
 import StopPlaceActions from "./StopPlaceActions";
 import StopPlacesGroupActions from "./StopPlacesGroupActions";
@@ -23,6 +24,7 @@ import UserActions from "./UserActions";
 export {
   AssessmentActions,
   EquipmentActions,
+  FacilityActions,
   LocalServiceActions,
   StopPlaceActions,
   StopPlacesGroupActions,

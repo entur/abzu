@@ -21,6 +21,9 @@ vi.mock("react-oidc-context", async () => {
       },
       signoutRedirect: () => Promise.resolve(),
       signinRedirect: () => Promise.resolve(),
+      events: {
+        addAccessTokenExpired: () => {},
+      },
     }),
   };
 });
@@ -78,5 +81,12 @@ describe("useAuth", () => {
     await expect(
       result.current.logout({ returnTo: "/" }),
     ).resolves.not.toThrowError();
+  });
+
+  test("addAccessTokenExpiredCb", async () => {
+    const { result } = testHook();
+    expect(
+      typeof result.current.addAccessTokenExpiredCallback === "function",
+    ).toBeTruthy();
   });
 });

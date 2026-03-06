@@ -24,6 +24,17 @@ import {
   simplifyPlaceEquipment,
 } from "./stopPlaceUtils";
 
+// Maps backend stopPlaceType to UI stopPlaceType
+// Reverse of the mapping in mapToQueryVariables.js
+const mapStopPlaceTypeForUI = (stopPlaceType, submode, transportMode) => {
+  // If it's "other" with funicular transport mode, show it as funicular in the UI
+  // This handles both when submode is "funicular" or when submode is unspecified
+  if (stopPlaceType === "other" && transportMode === "funicular") {
+    return "funicular";
+  }
+  return stopPlaceType;
+};
+
 class StopPlace {
   constructor(stop, isActive, parking, userDefinedCoordinates) {
     this.stop = stop;
@@ -43,7 +54,11 @@ class StopPlace {
         id: stop.id,
         isActive: isActive,
         name: stop.name ? stop.name.value : "",
-        stopPlaceType: stop.stopPlaceType,
+        stopPlaceType: mapStopPlaceTypeForUI(
+          stop.stopPlaceType,
+          stop.submode,
+          stop.transportMode,
+        ),
         submode: stop.submode,
         tags: stop.tags,
         transportMode: stop.transportMode,
@@ -80,6 +95,17 @@ class StopPlace {
           clientStop.parentTopographicPlace =
             stop.topographicPlace.parentTopographicPlace.name.value;
         }
+      }
+
+      if (stop.postalAddress) {
+        if (stop.postalAddress.addressLine1) {
+          clientStop.postalAddressAddressLine1 =
+            stop.postalAddress.addressLine1.value;
+        }
+        if (stop.postalAddress.town) {
+          clientStop.postalAddressTown = stop.postalAddress.town.value;
+        }
+        clientStop.postalAddressPostCode = stop.postalAddress.postCode;
       }
 
       if (stop.validBetween) {
@@ -153,6 +179,10 @@ class StopPlace {
         ) {
           clientStop.location = userDefinedCoordinates.position.slice();
         }
+      }
+
+      if (stop.facilities) {
+        clientStop.facilities = stop.facilities;
       }
 
       if (stop.keyValues) {

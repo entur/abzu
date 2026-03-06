@@ -17,6 +17,7 @@ import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
+import facilitiesHelpers from "../modelUtils/facilitiesHelpers";
 import limitationHelpers from "../modelUtils/limitationHelpers";
 import localServicesHelpers from "../modelUtils/localServicesHelpers";
 import formatHelpers from "../modelUtils/mapToClient";
@@ -319,6 +320,36 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       };
 
+    case types.CHANGED_STOP_POSTAL_ADDRESS_ADDRESS_LINE1:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressAddressLine1: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
+    case types.CHANGED_STOP_POSTAL_ADDRESS_TOWN:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressTown: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
+    case types.CHANGED_STOP_POSTAL_ADDRESS_POST_CODE:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          postalAddressPostCode: action.payload,
+        },
+        stopHasBeenModified: true,
+      };
+
     case types.CHANGED_STOP_TYPE:
       return Object.assign({}, state, {
         current: formatHelpers.updateCurrentStopWithType(
@@ -571,7 +602,7 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
-    case types.CHANGED_SANITARY_EQUIPMENT_STATE:
+    case types.CHANGED_WC_STATE:
       return Object.assign({}, state, {
         current: equipmentHelpers.updateSanitaryEquipmentState(
           state.current,
@@ -695,6 +726,15 @@ const stopPlaceReducer = (state = initialState, action) => {
         stopHasBeenModified: true,
       });
 
+    case types.CHANGED_PARKING_ACCESSIBILITY_ASSESSMENT:
+      return Object.assign({}, state, {
+        current: formatHelpers.changeParkingAccessibilityAssessment(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
     case types.OPENED_MERGE_STOP_DIALOG:
       return Object.assign({}, state, {
         mergeStopDialog: {
@@ -742,6 +782,17 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.CHANGED_ASSISTANCE_SERVICE_AVAILABILITY_STATE:
       return Object.assign({}, state, {
         current: localServicesHelpers.updateAssistanceServiceState(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_MOBILITY_FACILITY_LIST_STATE:
+    case types.CHANGED_PASSENGER_INFORMATION_FACILITY_LIST_STATE:
+    case types.CHANGED_PASSENGER_INFORMATION_EQUIPMENT_LIST_STATE:
+      return Object.assign({}, state, {
+        current: facilitiesHelpers.updateFacilitiesForEntity(
           state.current,
           action.payload,
         ),

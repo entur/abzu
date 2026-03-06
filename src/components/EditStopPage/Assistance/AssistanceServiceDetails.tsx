@@ -9,13 +9,13 @@ import { LocalServiceActions } from "../../../actions";
 import { AssistanceAvailability as AssistanceAvailabilityEnum } from "../../../models/LocalServices";
 import LocalServicesHelpers from "../../../modelUtils/localServicesHelpers";
 import { getIn } from "../../../utils";
-import { AssistanceProps } from "./types";
+import { AssistanceTabItemProps } from "./types";
 
 const AssistanceServiceDetails = ({
   entity,
   disabled,
   id,
-}: AssistanceProps) => {
+}: AssistanceTabItemProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useDispatch();
   const inputName = "assistanceServiceAvailability";
@@ -23,7 +23,7 @@ const AssistanceServiceDetails = ({
     LocalServicesHelpers.isAssistanceServicePresent(entity);
   const assistanceAvailability: AssistanceAvailabilityEnum = getIn(
     entity,
-    ["localServices", "assistanceService", inputName],
+    ["localServices", "assistanceService", "assistanceAvailability"],
     null,
   );
   const canBeEdited = !disabled && isAssistanceServicePresent;

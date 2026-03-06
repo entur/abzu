@@ -68,6 +68,7 @@ import BelongsToGroup from "./../MainPage/BelongsToGroup";
 import AccessibilityLimitationPopover from "./AccessibilityAssessment/AccessibilityLimitationPopover";
 import ImportedId from "./ImportedId";
 import ModalitiesMenuItems from "./ModalitiesMenuItems";
+import PostalAddress from "./PostalAddress";
 import TagsDialog from "./TagsDialog";
 import ToolTippable from "./ToolTippable";
 import VersionsPopover from "./VersionsPopover";
@@ -89,6 +90,10 @@ class StopPlaceDetails extends React.Component {
       tariffZoneOpen: false,
       tagsOpen: false,
       url: props.stopPlace.url || "",
+      postalAddressAddressLine1:
+        props.stopPlace.postalAddressAddressLine1 || "",
+      postalAddressTown: props.stopPlace.postalAddressTown || "",
+      postalAddressPostCode: props.stopPlace.postalAddressPostCode || "",
     };
 
     this.updateStopName = debounce((value) => {
@@ -109,6 +114,22 @@ class StopPlaceDetails extends React.Component {
 
     this.updateStopUrl = debounce((value) => {
       this.props.dispatch(StopPlaceActions.changeStopUrl(value));
+    }, 200);
+
+    this.updateStopPostalAddressAddressLine1 = debounce((value) => {
+      this.props.dispatch(
+        StopPlaceActions.changeStopPostalAddressAddressLine1(value),
+      );
+    }, 200);
+
+    this.updateStopPostalAddressTown = debounce((value) => {
+      this.props.dispatch(StopPlaceActions.changeStopPostalAddressTown(value));
+    }, 200);
+
+    this.updateStopPostalAddressPostCode = debounce((value) => {
+      this.props.dispatch(
+        StopPlaceActions.changeStopPostalAddressPostCode(value),
+      );
     }, 200);
   }
 
@@ -282,6 +303,33 @@ class StopPlaceDetails extends React.Component {
     this.updateStopUrl(url);
   }
 
+  handleStopPostalAddressAddressLine1Change(event) {
+    const addressLine1 = event.target.value;
+    this.setState({
+      postalAddressAddressLine1: addressLine1,
+    });
+
+    this.updateStopPostalAddressAddressLine1(addressLine1);
+  }
+
+  handleStopPostalAddressTownChange(event) {
+    const town = event.target.value;
+    this.setState({
+      postalAddressTown: town,
+    });
+
+    this.updateStopPostalAddressTown(town);
+  }
+
+  handleStopPostalAddressPostCodeChange(event) {
+    const postCode = event.target.value;
+    this.setState({
+      postalAddressPostCode: postCode,
+    });
+
+    this.updateStopPostalAddressPostCode(postCode);
+  }
+
   handleHandleWheelChair(value) {
     if (!this.props.disabled)
       this.props.dispatch(AssessmentActions.setStopWheelchairAccess(value));
@@ -303,7 +351,10 @@ class StopPlaceDetails extends React.Component {
     if (!this.props.disabled) {
       this.props.dispatch(
         EquipmentActions.updateTicketMachineState(
-          value,
+          equipmentHelpers.getNewTicketingEquipmentStateOnTicketMachinesUpdate(
+            this.props.stopPlace,
+            value,
+          ),
           "stopPlace",
           this.props.stopPlace.id,
         ),
@@ -326,8 +377,11 @@ class StopPlaceDetails extends React.Component {
   handleWCChange(value) {
     if (!this.props.disabled) {
       this.props.dispatch(
-        EquipmentActions.updateSanitaryState(
-          value,
+        EquipmentActions.updateWCState(
+          equipmentHelpers.getNewSanitaryEquipmentStateOnWCUpdate(
+            this.props.stopPlace,
+            value,
+          ),
           "stopPlace",
           this.props.stopPlace.id,
         ),
@@ -421,6 +475,9 @@ class StopPlaceDetails extends React.Component {
       weightingOpen,
       tariffZoneOpen,
       url,
+      postalAddressAddressLine1,
+      postalAddressTown,
+      postalAddressPostCode,
     } = this.state;
 
     const wheelchairAccess = getIn(
@@ -435,7 +492,7 @@ class StopPlaceDetails extends React.Component {
       equipmentHelpers.isShelterEquipmentPresent(stopPlace);
     const isWaitingRoomPresent =
       equipmentHelpers.isWaitingRoomPresent(stopPlace);
-    const isWCPresent = equipmentHelpers.isSanitaryEquipmentPresent(stopPlace);
+    const isWCPresent = equipmentHelpers.isWCPresent(stopPlace);
     const isSign512 = equipmentHelpers.is512SignEquipmentPresent(stopPlace);
 
     const hasAltNames = !!(
@@ -463,8 +520,8 @@ class StopPlaceDetails extends React.Component {
       ? formatMessage({ id: "shelterEquipment" })
       : formatMessage({ id: "shelterEquipment_no" });
     const WCHint = isWCPresent
-      ? formatMessage({ id: "sanitaryEquipment" })
-      : formatMessage({ id: "sanitaryEquipment_no" });
+      ? formatMessage({ id: "wc" })
+      : formatMessage({ id: "wc_no" });
     const waitingRoomHint = isWaitingRoomPresent
       ? formatMessage({ id: "waitingRoomEquipment" })
       : formatMessage({ id: "waitingRoomEquipment_no" });
@@ -752,6 +809,19 @@ class StopPlaceDetails extends React.Component {
             />
           </div>
         )}
+        <PostalAddress
+          addressLine1={postalAddressAddressLine1}
+          town={postalAddressTown}
+          postCode={postalAddressPostCode}
+          onAddressLine1Change={this.handleStopPostalAddressAddressLine1Change.bind(
+            this,
+          )}
+          onTownChange={this.handleStopPostalAddressTownChange.bind(this)}
+          onPostCodeChange={this.handleStopPostalAddressPostCodeChange.bind(
+            this,
+          )}
+          disabled={disabled}
+        />
         {expanded ? null : (
           <div
             style={{

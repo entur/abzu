@@ -37,6 +37,7 @@ helpers.mapQuayToVariables = (quay) => {
     ),
     keyValues: quay.keyValues,
     placeEquipments: netexifyPlaceEquipment(quay.placeEquipments),
+    facilities: quay.facilities,
     description: quay.description
       ? createEmbeddableMultilingualString(quay.description)
       : null,
@@ -135,6 +136,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     alternativeNames: stop.alternativeNames || null,
     children: children,
     url: stop.url,
+    postalAddress: createPostalAddress(stop),
   };
 
   if (stop.id) {
@@ -161,6 +163,30 @@ const createEmbeddableMultilingualString = (string) => ({
   value: string || "",
   lang: window.config.defaultLanguageCode,
 });
+
+const createPostalAddress = (stop) => {
+  const addressLine1 = stop.postalAddressAddressLine1;
+  const town = stop.postalAddressTown;
+  const postCode = stop.postalAddressPostCode;
+  // Return null if all the fields are undefined, null, or empty string
+  if (!addressLine1 && !town && !postCode) {
+    return null;
+  }
+  return {
+    addressLine1: createEmbeddableMultilingualString(addressLine1),
+    town: createEmbeddableMultilingualString(town),
+    postCode: postCode,
+  };
+};
+
+// Maps UI stopPlaceType to backend stopPlaceType
+// Some stop types in the UI need to be mapped to different types in the backend
+const mapStopPlaceTypeForBackend = (stopPlaceType) => {
+  const stopPlaceTypeMapping = {
+    funicular: "other",
+  };
+  return stopPlaceTypeMapping[stopPlaceType] || stopPlaceType;
+};
 
 // properly maps object when Object is used as InputObject and not shallow variables for query
 helpers.mapDeepStopToVariables = (original) => {
@@ -193,7 +219,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     description: stop.description
       ? createEmbeddableMultilingualString(stop.description)
       : null,
-    stopPlaceType: stop.stopPlaceType,
+    stopPlaceType: mapStopPlaceTypeForBackend(stop.stopPlaceType),
     quays: stop.quays.map((quay) => helpers.mapQuayToVariables(quay)),
     accessibilityAssessment: formatAccessibilityAssessments(
       stop.accessibilityAssessment,
@@ -201,6 +227,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     keyValues: stop.keyValues,
     placeEquipments: netexifyPlaceEquipment(stop.placeEquipments),
     localServices: netexifyLocalServices(stop.localServices),
+    facilities: stop.facilities,
     alternativeNames: stop.alternativeNames,
     weighting: stop.weighting,
     submode: stop.submode,
@@ -210,6 +237,7 @@ helpers.mapStopToVariables = (original, userInput) => {
     })),
     adjacentSites: stop.adjacentSites,
     url: stop.url,
+    postalAddress: createPostalAddress(stop),
   };
 
   stopVariables.privateCode = {
@@ -343,7 +371,11 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
     } else {
       parking.geometry = null;
     }
+
+    parking.accessibilityAssessment = source.accessibilityAssessment;
+
     helpers.removeTypeNameRecursively(parking);
+
     return parking;
   });
 };

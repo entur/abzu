@@ -95,6 +95,7 @@ class Parking {
       parkingVehicleTypes: parking.parkingVehicleTypes,
       hasExpired: hasExpired(parking.validBetween),
       validBetween: parking.validBetween,
+      accessibilityAssessment: parking.accessibilityAssessment,
     };
     let coordinates = getIn(parking, ["geometry", "legacyCoordinates"], null);
 

@@ -12,7 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { defaultEquipmentFacilities, Equipment } from "../models/Equipments";
+import { FacilityTabItem } from "../components/EditStopPage/Facility/types";
+import {
+  defaultEquipmentFacilities,
+  Equipment,
+  SanitaryFacility,
+} from "../models/Equipments";
 import { getIn } from "../utils";
 
 const EquipmentHelpers = {};
@@ -46,18 +51,37 @@ EquipmentHelpers.getTicketingEquipment = (entity) => {
 };
 
 EquipmentHelpers.isShelterEquipmentPresent = (entity) => {
-  return !!getIn(
-    entity,
-    ["placeEquipments", "shelterEquipment", "seats"],
-    null,
+  return !!getIn(entity, ["placeEquipments", "shelterEquipment"], null);
+};
+
+EquipmentHelpers.getSanitaryEquipment = (entity) => {
+  return getIn(entity, ["placeEquipments", "sanitaryEquipment"], null);
+};
+
+EquipmentHelpers.isWCPresent = (entity) => {
+  const sanitaryEquipment = EquipmentHelpers.getSanitaryEquipment(entity);
+  return !!(
+    sanitaryEquipment &&
+    (sanitaryEquipment.numberOfToilets ||
+      sanitaryEquipment.sanitaryFacilityList?.includes(
+        SanitaryFacility.TOILET,
+      ) ||
+      EquipmentHelpers.isWCWheelchairAccessible(entity))
   );
 };
 
-EquipmentHelpers.isSanitaryEquipmentPresent = (entity) => {
-  return !!getIn(
+EquipmentHelpers.getSanitaryFacilityList = (entity) => {
+  return getIn(
     entity,
-    ["placeEquipments", "sanitaryEquipment", "numberOfToilets"],
-    null,
+    ["placeEquipments", "sanitaryEquipment", "sanitaryFacilityList"],
+    [],
+  );
+};
+
+EquipmentHelpers.isWCWheelchairAccessible = (entity) => {
+  const sanitaryFacilityList = EquipmentHelpers.getSanitaryFacilityList(entity);
+  return sanitaryFacilityList.includes(
+    SanitaryFacility.WHEEL_CHAIR_ACCESS_TOILET,
   );
 };
 
@@ -84,11 +108,7 @@ EquipmentHelpers.update512SignEquipment = (entity, payload) => {
 };
 
 EquipmentHelpers.isWaitingRoomPresent = (entity) => {
-  return !!getIn(
-    entity,
-    ["placeEquipments", "waitingRoomEquipment", "seats"],
-    null,
-  );
+  return !!getIn(entity, ["placeEquipments", "waitingRoomEquipment"], null);
 };
 
 EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
@@ -97,6 +117,58 @@ EquipmentHelpers.isCycleStorageEquipmentPresent = (entity) => {
     ["placeEquipments", "cycleStorageEquipment", "numberOfSpaces"],
     null,
   );
+};
+
+/**
+ * Ticketing equipment contains other items than ticket machines thar are shown in facilities tab separately,
+ * the method's purpose to make sure not overwrite those
+ */
+EquipmentHelpers.getNewTicketingEquipmentStateOnTicketMachinesUpdate = (
+  entity,
+  value,
+) => {
+  const newTicketMachinesState = value
+    ? defaultEquipmentFacilities[FacilityTabItem.TICKET_MACHINES].isChecked
+    : defaultEquipmentFacilities[FacilityTabItem.TICKET_MACHINES].isUnChecked;
+  const ticketingEquipment = EquipmentHelpers.getTicketingEquipment(entity);
+
+  return {
+    ...ticketingEquipment,
+    ...newTicketMachinesState,
+  };
+};
+
+/**
+ * Sanitary equipment isn't just necessarily a WC,
+ * the method's purpose to make sure not overwrite the other values of the sanitaryFacilityList
+ */
+EquipmentHelpers.getNewSanitaryEquipmentStateOnWCUpdate = (entity, value) => {
+  const sanitaryEquipment = EquipmentHelpers.getSanitaryEquipment(entity);
+  const sanitaryFacilityList = EquipmentHelpers.getSanitaryFacilityList(entity);
+
+  const newWCState = value
+    ? defaultEquipmentFacilities[FacilityTabItem.WC].isChecked
+    : defaultEquipmentFacilities[FacilityTabItem.WC].isUnChecked;
+  const newSanitaryEquipmentState = {
+    ...sanitaryEquipment,
+    ...newWCState,
+  };
+
+  // sanitaryFacilityList to be handled separately here, to not overwrite the values that are not related to WC
+  if (value) {
+    newSanitaryEquipmentState.sanitaryFacilityList = Array.from(
+      new Set([...sanitaryFacilityList, SanitaryFacility.TOILET]),
+    );
+  } else {
+    newSanitaryEquipmentState.sanitaryFacilityList =
+      sanitaryFacilityList.filter(
+        (f) =>
+          f !== SanitaryFacility.TOILET &&
+          f !== SanitaryFacility.WHEEL_CHAIR_ACCESS_TOILET,
+      );
+  }
+
+  return newSanitaryEquipmentState;
 };
 
 EquipmentHelpers.updateTicketingEquipmentState = (stopPlace, payload) => {

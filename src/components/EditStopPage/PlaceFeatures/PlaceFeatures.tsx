@@ -7,12 +7,12 @@ import { useIntl } from "react-intl";
 import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../../models/AccessibilityLimitation";
 import { EntityType } from "../../../models/Entities";
 import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
-import { Facility as FacilityEnum } from "../Facility/types";
+import { FacilityTabItem } from "../Facility/types";
 import ToolTipIcon from "../ToolTipIcon";
 
 interface Props {
-  entityType: EntityType;
-  name: AccessibilityLimitationEnum | FacilityEnum | AssistanceEnum;
+  entityType: EntityType | "parking";
+  name: AccessibilityLimitationEnum | FacilityTabItem | AssistanceEnum;
   feature: ReactElement;
   relatedFeatures?: ReactElement;
   isExpanded?: boolean;
@@ -32,7 +32,7 @@ const PlaceFeatures = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}>
       <div>
         <div
           style={{

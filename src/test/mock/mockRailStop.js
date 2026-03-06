@@ -239,6 +239,7 @@ const mockRailStop = {
             {
               numberOfToilets: null,
               gender: "both",
+              sanitaryFacilityList: ["wheelChairAccessToilet"],
               __typename: "SanitaryEquipment",
             },
           ],

@@ -16,6 +16,16 @@ exports[`Model: map format from server to expected client model > should map Gra
   "alternativeNames": [],
   "belongsToGroup": false,
   "entityType": "STOP_PLACE",
+  "facilities": [
+    {
+      "passengerInformationEquipmentList": [
+        "informationDesk",
+      ],
+      "passengerInformationFacilityList": [
+        "passengerInformationDisplay",
+      ],
+    },
+  ],
   "fareZones": [],
   "groups": [],
   "hasExpired": false,
@@ -50,6 +60,13 @@ exports[`Model: map format from server to expected client model > should map Gra
       "boardingPositions": [],
       "compassBearing": 344,
       "description": "",
+      "facilities": [
+        {
+          "mobileFacilityList": [
+            "tactileGuidanceStrips",
+          ],
+        },
+      ],
       "id": "NSR:Quay:1694",
       "importedId": [],
       "keyValues": [],
@@ -73,6 +90,7 @@ exports[`Model: map format from server to expected client model > should map Gra
       "boardingPositions": [],
       "compassBearing": 164,
       "description": "",
+      "facilities": [],
       "id": "NSR:Quay:1695",
       "importedId": [],
       "keyValues": [],
@@ -117,6 +135,7 @@ exports[`Model: map format from server to expected client model > should map cli
     "lang": "nor",
     "value": "Beskrivelse",
   },
+  "facilities": undefined,
   "id": "NSR:StopPlace:19744",
   "keyValues": [],
   "legacyCoordinates": [
@@ -131,6 +150,17 @@ exports[`Model: map format from server to expected client model > should map cli
     "value": "Aspelundsveien",
   },
   "placeEquipments": null,
+  "postalAddress": {
+    "addressLine1": {
+      "lang": "nor",
+      "value": "Aspelundsveien 19744",
+    },
+    "postCode": "1807",
+    "town": {
+      "lang": "nor",
+      "value": "Askim",
+    },
+  },
   "privateCode": {
     "value": "private",
   },
@@ -140,6 +170,13 @@ exports[`Model: map format from server to expected client model > should map cli
       "accessibilityAssessment": undefined,
       "compassBearing": 212,
       "description": null,
+      "facilities": [
+        {
+          "mobileFacilityList": [
+            "tactileGuidanceStrips",
+          ],
+        },
+      ],
       "geometry": {
         "legacyCoordinates": [
           [
@@ -161,6 +198,7 @@ exports[`Model: map format from server to expected client model > should map cli
       "accessibilityAssessment": undefined,
       "compassBearing": 38,
       "description": null,
+      "facilities": undefined,
       "geometry": {
         "legacyCoordinates": [
           [
@@ -191,6 +229,16 @@ exports[`Model: map format from server to expected client model > should map cli
 exports[`Model: map format from server to expected client model > should map parking to schema validated query variables 1`] = `
 [
   {
+    "accessibilityAssessment": {
+      "limitations": {
+        "audibleSignalsAvailable": "UNKNOWN",
+        "escalatorFreeAccess": "UNKNOWN",
+        "liftFreeAccess": "UNKNOWN",
+        "stepFreeAccess": "TRUE",
+        "visualSignsAvailable": "UNKNOWN",
+        "wheelchairAccess": "UNKNOWN",
+      },
+    },
     "geometry": {
       "legacyCoordinates": [
         [

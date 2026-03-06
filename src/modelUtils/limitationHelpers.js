@@ -66,7 +66,7 @@ export const getAssessmentSetBasedOnQuays = (quays) => {
   return { limitations: limitations };
 };
 
-const setLimitationForEntity = (source, limitationType, value) => {
+export const setLimitationForEntity = (source, limitationType, value) => {
   let entity = JSON.parse(JSON.stringify(source));
 
   if (

@@ -455,7 +455,7 @@ class EditStopGeneral extends React.Component {
         <span>
           {stopPlaceName}
           <br />
-          {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
+          {`${stopPlace.topographicPlace || formatMessage({ id: "unknown_topographic_place" })}, ${stopPlace.parentTopographicPlace || formatMessage({ id: "unknown_parent_topographic_place" })}`}
           <br />
           {`${stopPlace.id}`}
         </span>

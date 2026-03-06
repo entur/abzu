@@ -23,9 +23,15 @@ import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { deleteParking } from "../../actions/TiamatActions";
 import * as types from "../../actions/Types";
+import {
+  AccessibilityLimitation as AccessibilityLimitationEnum,
+  AccessibilityLimitationType,
+} from "../../models/AccessibilityLimitation";
 import PARKING_TYPE from "../../models/parkingType";
+import { getIn } from "../../utils";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import CopyIdButton from "../Shared/CopyIdButton";
+import { accessibilityLimitationsKeys } from "./AccessibilityAssessment/types";
 import Code from "./Code";
 import Item from "./Item";
 import ItemHeader from "./ItemHeader";
@@ -143,6 +149,11 @@ class ParkingItem extends React.Component {
     handleLocateOnMap(position);
   }
 
+  handleStepFreeChange(value) {
+    const { dispatch, index } = this.props;
+    dispatch(StopPlaceActions.setParkingStepFreeAccess(index, value));
+  }
+
   render() {
     const {
       parking,
@@ -159,6 +170,14 @@ class ParkingItem extends React.Component {
     const { formatMessage } = intl;
 
     let totalCapacity = parking.totalCapacity || 0;
+
+    const stepFreeAccess = getIn(
+      parking,
+      accessibilityLimitationsKeys.concat(
+        AccessibilityLimitationEnum.STEP_FREE_ACCESS,
+      ),
+      AccessibilityLimitationType.UNKNOWN,
+    );
 
     if (parkingType === PARKING_TYPE.PARK_AND_RIDE) {
       const numberOfSpaces = Number(parking.numberOfSpaces);
@@ -271,6 +290,8 @@ class ParkingItem extends React.Component {
                 handleSetNumberOfSpacesForRegisteredDisabledUserType={this.handleSetNumberOfSpacesForRegisteredDisabledUserType.bind(
                   this,
                 )}
+                stepFreeAccess={stepFreeAccess}
+                handleStepFreeChange={this.handleStepFreeChange.bind(this)}
               />
             ) : (
               <TextField

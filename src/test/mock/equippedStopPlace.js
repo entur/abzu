@@ -25,6 +25,7 @@ export default {
       {
         numberOfToilets: 8,
         gender: "both",
+        sanitaryFacilityList: ["wheelChairAccessToilet"],
       },
     ],
     ticketingEquipment: [
@@ -34,6 +35,7 @@ export default {
         numberOfMachines: 7,
         audioInterfaceAvailable: false,
         tactileInterfaceAvailable: false,
+        wheelchairSuitable: false,
       },
     ],
     cycleStorageEquipment: [

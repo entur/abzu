@@ -1,10 +1,10 @@
+import { UnknownAction } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
 import { EquipmentActions } from "../../../actions";
 import equipmentHelpers from "../../../modelUtils/equipmentHelpers";
 import TransportSign from "../../../static/icons/TransportSign";
 import FeatureCheckbox from "../PlaceFeatures/FeatureCheckbox";
-import { Facility as FacilityEnum, FacilityProps } from "./types";
+import { FacilityTabItem, FacilityTabItemProps } from "./types";
 
 const GeneralSign = ({
   entity,
@@ -12,7 +12,7 @@ const GeneralSign = ({
   id,
   index,
   entityType,
-}: FacilityProps) => {
+}: FacilityTabItemProps) => {
   const dispatch = useDispatch();
   const isSign512Present = equipmentHelpers.is512SignEquipmentPresent(entity);
 
@@ -25,7 +25,7 @@ const GeneralSign = ({
         value,
         entityType,
         id || index,
-      ) as unknown as AnyAction,
+      ) as unknown as UnknownAction,
     );
   };
 
@@ -34,7 +34,7 @@ const GeneralSign = ({
       isFeaturePresent={isSign512Present}
       handleFeatureStateChange={handle512Sign}
       icon={<TransportSign />}
-      name={FacilityEnum.GENERAL_SIGN}
+      name={FacilityTabItem.GENERAL_SIGN}
     />
   );
 };
