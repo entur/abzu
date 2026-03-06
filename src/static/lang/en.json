@@ -633,4 +633,10 @@
   "informationDesk_stopPlace_hint": "Does stop place have an information desk?",
   "stepFreeAccess": "Step free access",
   "stepFreeAccess_no": "Only available by steps"
+  "lighting_welllit": "Well lit",
+  "lighting_poorlylit": "Poorly lit",
+  "lighting_unlit": "Unlit",
+  "lighting_unknown": "Lighting unknown",
+  "lighting_other": "Other lighting",
+  "lighting_quay_hint": "Is this quay lit?"
 }

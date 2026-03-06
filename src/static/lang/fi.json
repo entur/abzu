@@ -632,4 +632,10 @@
   "informationDesk_stopPlace_hint": "Onko pysäkillä infopistettä?",
   "stepFreeAccess": "Portaaton pääsy",
   "stepFreeAccess_no": "Pääsy vain portaita pitkin"
+  "lighting_welllit": "Valaistu",
+  "lighting_poorlylit": "Heikosti valaistu",
+  "lighting_unlit": "Ei valaistu",
+  "lighting_unknown": "Valaistus tuntematon",
+  "lighting_other": "Muu valaistus",
+  "lighting_quay_hint": "Onko tämä laituri valaistu?"
 }

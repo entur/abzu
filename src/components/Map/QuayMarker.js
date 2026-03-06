@@ -260,6 +260,7 @@ class QuayMarker extends React.Component {
     const hideMergingTo = this.getHideMergingTo();
     const hideMergingFrom = this.getHideMergingFrom();
     const hideCancelMergingFromThis = this.getCancelMergingFromThis();
+    const canInteract = !disabled && !belongsToNeighbourStop;
 
     return (
       <Marker
@@ -309,8 +310,11 @@ class QuayMarker extends React.Component {
             </div>
             <div
               className="marker-popup-change-coordinates-wrapper"
+              style={{
+                cursor: canInteract ? "pointer" : "auto",
+              }}
               onClick={() =>
-                !belongsToNeighbourStop &&
+                canInteract &&
                 handleChangeCoordinates(
                   { type: "quay", markerIndex: index },
                   position,

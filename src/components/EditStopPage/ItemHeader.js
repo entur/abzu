@@ -8,6 +8,7 @@ const locationStyle = {
   height: 16,
   width: 16,
   fill: "#000",
+  alignSelf: "center",
 };
 
 export default ({

@@ -630,4 +630,10 @@
   "informationDesk_stopPlace_hint": "Finns det en informationsdisk vid hållplatsen?",
   "stepFreeAccess": "Trappfri åtkomst",
   "stepFreeAccess_no": "Endast åtkomlig via trappor"
+  "lighting_welllit": "Väl belyst",
+  "lighting_poorlylit": "Dåligt belyst",
+  "lighting_unlit": "Obelyst",
+  "lighting_unknown": "Belysning okänd",
+  "lighting_other": "Annan belysning",
+  "lighting_quay_hint": "Är denna plattform belyst?"
 }

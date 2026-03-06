@@ -61,8 +61,8 @@ class QuayMarkerIcon extends React.Component {
       isCompassBearingEnabled,
       defaultValueIcon,
     } = this.props;
-    const quayShortName = getShortQuayName(displayCode) || defaultValueIcon;
-    const nameLen = quayShortName.length;
+    const quayName = displayCode || defaultValueIcon;
+    const nameLen = quayName.length;
 
     const quayStyle = {
       color: "#fff",
@@ -84,9 +84,10 @@ class QuayMarkerIcon extends React.Component {
               width: 30,
               fontSize: nameLen > 2 ? 10 : 12,
               textAlign: "center",
+              textShadow: nameLen > 3 ? "0 0 3px rgba(0, 0, 0, 1)" : "none",
             }}
           >
-            {quayShortName}
+            {quayName}
           </div>
         </div>
       </div>
@@ -95,8 +96,3 @@ class QuayMarkerIcon extends React.Component {
 }
 
 export default QuayMarkerIcon;
-
-const getShortQuayName = (quayName) => {
-  if (!isNaN(quayName)) return quayName;
-  return quayName.length > 3 ? quayName.substring(0, 3) : quayName;
-};

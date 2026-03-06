@@ -56,6 +56,7 @@ class TagsDialog extends Component {
       addTag,
       getTags,
       findTagByName,
+      disabled,
     } = this.props;
     const { formatMessage } = intl;
     const { isLoading } = this.state;
@@ -123,6 +124,7 @@ class TagsDialog extends Component {
                   handleDelete={this.handleDeleteTag.bind(this)}
                   tag={tag}
                   intl={this.props.intl}
+                  disabled={disabled}
                 />
                 <div
                   style={{
@@ -150,18 +152,20 @@ class TagsDialog extends Component {
             </span>
           )}
         </div>
-        <AddTagDialog
-          idReference={idReference}
-          addTag={addTag}
-          getTags={getTags}
-          handleLoading={(isLoading) => {
-            this.setState({
-              isLoading,
-            });
-          }}
-          intl={this.props.intl}
-          findTagByName={findTagByName}
-        />
+        {!disabled && (
+          <AddTagDialog
+            idReference={idReference}
+            addTag={addTag}
+            getTags={getTags}
+            handleLoading={(isLoading) => {
+              this.setState({
+                isLoading,
+              });
+            }}
+            intl={this.props.intl}
+            findTagByName={findTagByName}
+          />
+        )}
       </div>
     );
   }

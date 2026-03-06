@@ -66,22 +66,13 @@ const AssistanceServiceDetails = ({
           id: `${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}_${assistanceAvailability}`,
         })}
         onChange={handleChange}
+        disabled={!canBeEdited}
       >
-        {(canBeEdited
-          ? assistanceAvailabilityOptions
-          : [AssistanceAvailability.NONE]
-        ).map((option) => {
-          return (
-            <MenuItem
-              key={`${id}_${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}-option-${option}`}
-              value={option}
-            >
-              {formatMessage({
-                id: `${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}_${option}`,
-              })}
-            </MenuItem>
-          );
-        })}
+        {assistanceAvailabilityOptions.map((option) => (
+          <MenuItem key={`${id}_${inputName}-option-${option}`} value={option}>
+            {formatMessage({ id: `${inputName}_${option}` })}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
