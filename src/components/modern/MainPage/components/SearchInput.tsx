@@ -141,24 +141,19 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                             }}
                             aria-label={formatMessage({ id: "toggle_filters" })}
                           >
-                            {activeFilterCount > 0 ? (
-                              <Badge
-                                badgeContent={activeFilterCount}
-                                color="primary"
-                                variant="standard"
-                              >
-                                <FilterIcon
-                                  fontSize="small"
-                                  sx={{
-                                    color: showFilters
-                                      ? theme.palette.warning.main
-                                      : theme.palette.action.active,
-                                  }}
-                                />
-                              </Badge>
-                            ) : (
-                              <FilterIcon fontSize="small" />
-                            )}
+                            <Badge
+                              badgeContent={activeFilterCount}
+                              color="error"
+                            >
+                              <FilterIcon
+                                fontSize="small"
+                                sx={{
+                                  color: showFilters
+                                    ? theme.palette.warning.main
+                                    : theme.palette.action.active,
+                                }}
+                              />
+                            </Badge>
                           </IconButton>
                         </InputAdornment>
                       )}

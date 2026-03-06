@@ -28,7 +28,6 @@ import "../modern.css";
 import {
   headerLogoContainer,
   headerSearchContainer,
-  headerSpacer,
   headerTitle,
   headerToolbar,
 } from "../styles";
@@ -39,6 +38,7 @@ import {
   NavigationMenu,
   UserSection,
 } from "./components";
+import { useHeaderSlotContent } from "./HeaderSlotContext";
 
 interface ModernHeaderProps {
   config: {
@@ -56,6 +56,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
   const { isMobile } = useResponsive();
   const { environmentBadge, environment } = useEnvironmentStyles();
   const { themeConfig } = useAbzuTheme();
+  const headerSlotContent = useHeaderSlotContent();
 
   const stopHasBeenModified = useSelector(
     (state: any) => state.stopPlace.stopHasBeenModified,
@@ -168,15 +169,10 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             </Typography>
           </Box>
 
-          {/* Search component in the center - hidden on reports page */}
-          {!isDisplayingReports && (
-            <Box sx={headerSearchContainer}>
-              <HeaderSearch />
-            </Box>
-          )}
-
-          {/* Spacer when search is hidden */}
-          {isDisplayingReports && <Box sx={headerSpacer} />}
+          {/* Header center: page-injected slot content, or the default stop-place search */}
+          <Box sx={headerSearchContainer}>
+            {headerSlotContent ?? (!isDisplayingReports && <HeaderSearch />)}
+          </Box>
 
           <UserSection
             isAuthenticated={auth.isAuthenticated}

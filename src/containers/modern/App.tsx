@@ -25,6 +25,7 @@ import { useAuth } from "../../auth/auth";
 import GlobalLoadingIndicator from "../../components/GlobalLoadingIndicator";
 import LocalLoadingIndicator from "../../components/LocalLoadingIndicator";
 import { OPEN_STREET_MAP } from "../../components/Map/mapDefaults";
+import { HeaderSlotProvider } from "../../components/modern/Header/HeaderSlotContext";
 import { ModernHeader } from "../../components/modern/Header/ModernHeader";
 import SnackbarWrapper from "../../components/SnackbarWrapper";
 import { ConfigContext } from "../../config/ConfigContext";
@@ -34,10 +35,10 @@ import SettingsManager from "../../singletons/SettingsManager";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { history } from "../../store/store";
 import { AbzuThemeProvider } from "../../theme/ThemeProvider";
-import ReportPage from "../ReportPage";
 import { StopPlace } from "../StopPlace";
 import StopPlaces from "../StopPlaces";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
+import ReportPage from "./ReportPage";
 
 const Settings = new SettingsManager();
 
@@ -138,55 +139,61 @@ const App: React.FC<ModernAppProps> = () => {
           feature={`${extPath}/CustomThemeProvider`}
           renderFallback={() => (
             <AbzuThemeProvider>
-              <div>
-                <ModernHeader config={config} />
-                <GlobalLoadingIndicator />
-                <LocalLoadingIndicator />
-                <Router basename={basename} history={history}>
-                  <Routes>
-                    <Route path={path} element={<StopPlaces />} />
-                    <Route
-                      path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                      element={<StopPlace />}
-                    />
-                    <Route
-                      path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                      element={<GroupOfStopPlaces />}
-                    />
-                    <Route
-                      path={path + AppRoutes.REPORTS}
-                      element={<ReportPage />}
-                    />
-                  </Routes>
-                </Router>
-                <SnackbarWrapper />
-              </div>
+              <HeaderSlotProvider>
+                <div>
+                  <ModernHeader config={config} />
+                  <GlobalLoadingIndicator />
+                  <LocalLoadingIndicator />
+                  <Router basename={basename} history={history}>
+                    <Routes>
+                      <Route path={path} element={<StopPlaces />} />
+                      <Route
+                        path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+                        element={<StopPlace />}
+                      />
+                      <Route
+                        path={
+                          path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"
+                        }
+                        element={<GroupOfStopPlaces />}
+                      />
+                      <Route
+                        path={path + AppRoutes.REPORTS}
+                        element={<ReportPage />}
+                      />
+                    </Routes>
+                  </Router>
+                  <SnackbarWrapper />
+                </div>
+              </HeaderSlotProvider>
             </AbzuThemeProvider>
           )}
         >
-          <div>
-            <ModernHeader config={config} />
-            <GlobalLoadingIndicator />
-            <LocalLoadingIndicator />
-            <Router basename={basename} history={history}>
-              <Routes>
-                <Route path={path} element={<StopPlaces />} />
-                <Route
-                  path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                  element={<StopPlace />}
-                />
-                <Route
-                  path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                  element={<GroupOfStopPlaces />}
-                />
-                <Route
-                  path={path + AppRoutes.REPORTS}
-                  element={<ReportPage />}
-                />
-              </Routes>
-            </Router>
-            <SnackbarWrapper />
-          </div>
+          <HeaderSlotProvider>
+            <div>
+              <ModernHeader config={config} />
+              <GlobalLoadingIndicator />
+              <LocalLoadingIndicator />
+              <Router basename={basename} history={history}>
+                <Routes>
+                  <Route path={path} element={<StopPlaces />} />
+                  <Route
+                    path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+                    element={<StopPlace />}
+                  />
+                  <Route
+                    path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
+                    element={<GroupOfStopPlaces />}
+                  />
+                  <Route
+                    path={path + AppRoutes.REPORTS}
+                    element={<ReportPage />}
+                  />
+                </Routes>
+              </Router>
+              <SnackbarWrapper />
+            </div>
+          </HeaderSlotProvider>
         </ComponentToggle>
       </StyledEngineProvider>
     </IntlProvider>
