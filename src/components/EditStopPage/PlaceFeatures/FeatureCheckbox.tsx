@@ -2,13 +2,20 @@ import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import React, { ReactElement } from "react";
 import { useIntl } from "react-intl";
-import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
+import {
+  AssistanceTabItem,
+  AssistanceTabItemDetail,
+} from "../Assistance/types";
 import { FacilityTabItem, FacilityTabItemDetail } from "../Facility/types";
 
 interface Props {
   icon: ReactElement<any>;
   handleFeatureStateChange: (newState: boolean) => void;
-  name: FacilityTabItem | FacilityTabItemDetail | AssistanceEnum;
+  name:
+    | FacilityTabItem
+    | FacilityTabItemDetail
+    | AssistanceTabItem
+    | AssistanceTabItemDetail;
   isFeaturePresent: boolean;
 }
 
