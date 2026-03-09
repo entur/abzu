@@ -125,6 +125,10 @@ class EditStopMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
+  handleOverlaysChanged(overlayNames) {
+    this.props.dispatch(UserActions.changeActiveOverlays(overlayNames));
+  }
+
   handleChangeCoordinates(coordinatesOwner, position) {
     this.setState({
       coordinatesDialogOpen: true,
@@ -193,6 +197,8 @@ class EditStopMap extends React.Component {
           dragableMarkers={!disabled}
           activeBaselayer={this.props.activeBaselayer}
           handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+          activeOverlays={this.props.activeOverlays}
+          handleOverlaysChanged={this.handleOverlaysChanged.bind(this)}
           enablePolylines={this.props.enablePolylines}
           minZoom={minZoom}
           handleZoomEnd={this.handleZoomEnd.bind(this)}
@@ -237,6 +243,7 @@ const mapStateToProps = (state) => {
     position: state.stopPlace.centerPosition,
     zoom: state.stopPlace.zoom,
     activeBaselayer: state.user.activeBaselayer,
+    activeOverlays: state.user.activeOverlays,
     enablePolylines: state.stopPlace.enablePolylines,
     isCreatingPolylines: state.stopPlace.isCreatingPolylines,
     missingCoordsMap: state.user.missingCoordsMap,

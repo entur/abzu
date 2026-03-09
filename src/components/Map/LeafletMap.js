@@ -50,6 +50,8 @@ export const LeafLetMap = ({
   handleZoomEnd,
   activeBaselayer,
   handleBaselayerChanged,
+  activeOverlays = [],
+  handleOverlaysChanged,
   onMapReady = () => {},
 }) => {
   const { mapConfig } = useContext(ConfigContext);
@@ -79,6 +81,22 @@ export const LeafLetMap = ({
   }, [centerPosition[0], centerPosition[1], zoom]);
 
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
+  const getCheckedOverlayByValue = (value) =>
+    Array.isArray(activeOverlays) && activeOverlays.includes(value);
+
+  const handleOverlayAdd = (name) => {
+    if (!handleOverlaysChanged) return;
+    const next = activeOverlays.includes(name)
+      ? activeOverlays
+      : [...activeOverlays, name];
+    handleOverlaysChanged(next);
+  };
+
+  const handleOverlayRemove = (name) => {
+    if (!handleOverlaysChanged) return;
+    handleOverlaysChanged(activeOverlays.filter((n) => n !== name));
+  };
+
   const { BaseLayer, Overlay } = LayersControl;
 
   return (
@@ -93,6 +111,8 @@ export const LeafLetMap = ({
     >
       <MapEvents
         handleBaselayerChanged={handleBaselayerChanged}
+        handleOverlayAdd={handleOverlayAdd}
+        handleOverlayRemove={handleOverlayRemove}
         onDblclick={(e) => onDoubleClick && onDoubleClick(e, map)}
         onClick={(event) => {
           handleOnClick && handleOnClick(event, map);
@@ -127,7 +147,11 @@ export const LeafLetMap = ({
             );
           })}
           {mapConfig?.overlays?.map((overlay) => (
-            <Overlay key={overlay.name} name={overlay.name}>
+            <Overlay
+              key={overlay.name}
+              name={overlay.name}
+              checked={getCheckedOverlayByValue(overlay.name)}
+            >
               {overlay.component ? (
                 <ComponentToggle
                   feature={overlay.componentName}

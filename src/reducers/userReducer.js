@@ -42,6 +42,7 @@ export const initialState = {
   removedFavorites: [],
   activeElementTab: 0,
   activeBaselayer: Settings.getMapLayer(),
+  activeOverlays: Settings.getActiveOverlays(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
@@ -209,6 +210,9 @@ const userReducer = (state = initialState, action) => {
 
     case types.CHANGED_ACTIVE_BASELAYER:
       return Object.assign({}, state, { activeBaselayer: action.payload });
+
+    case types.CHANGED_ACTIVE_OVERLAYS:
+      return Object.assign({}, state, { activeOverlays: action.payload });
 
     case types.SET_MISSING_COORDINATES:
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);

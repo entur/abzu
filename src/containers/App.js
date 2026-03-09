@@ -92,6 +92,8 @@ const App = ({ children }) => {
         Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,
       ),
     );
+
+    dispatch(UserActions.changeActiveOverlays(Settings.getActiveOverlays()));
   }, [mapConfig]);
 
   if (localization.locale === null) {
