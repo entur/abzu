@@ -58,6 +58,11 @@ const stopPlaceReducer = (state = initialState, action) => {
         searchResults: [],
       });
 
+    case types.CLEAR_ACTIVE_SEARCH_RESULT:
+      return Object.assign({}, state, {
+        activeSearchResult: null,
+      });
+
     case types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE:
       return Object.assign({}, state, {
         current: formatHelpers.updateParenStopWithoutStopPlace(

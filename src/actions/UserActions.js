@@ -75,6 +75,10 @@ UserActions.clearSearchResults = () => (dispatch) => {
   dispatch(createThunk(types.CLEAR_SEARCH_RESULTS, null));
 };
 
+UserActions.clearActiveSearchResults = () => (dispatch) => {
+  dispatch(createThunk(types.CLEAR_ACTIVE_SEARCH_RESULT, null));
+};
+
 UserActions.hideEditStopAdditional = () => (dispatch) => {
   dispatch(createThunk(types.HID_EDIT_STOP_ADDITIONAL, null));
 };

@@ -120,4 +120,22 @@ describe("stop place reducer", () => {
 
     expect(finalState.originalCurrent).toEqual(finalState.current);
   });
+
+  test("Should clear search results", () => {
+    const stateWithResults = {
+      searchResults: [{ id: "NSR:StopPlace:1" }, { id: "NSR:StopPlace:2" }],
+    };
+    const action = { type: types.CLEAR_SEARCH_RESULTS };
+    const result = stopPlaceReducer(stateWithResults, action);
+    expect(result.searchResults).toEqual([]);
+  });
+
+  test("Should clear active search result", () => {
+    const stateWithActiveResult = {
+      activeSearchResult: { id: "NSR:StopPlace:1", name: "Test Stop" },
+    };
+    const action = { type: types.CLEAR_ACTIVE_SEARCH_RESULT };
+    const result = stopPlaceReducer(stateWithActiveResult, action);
+    expect(result.activeSearchResult).toBeNull();
+  });
 });

@@ -91,6 +91,15 @@ class SearchBox extends React.Component {
     this.debouncedSearch = debounce(searchStop, 500);
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.searchText !== this.props.searchText &&
+      this.props.searchText === ""
+    ) {
+      this.setState({ stopPlaceSearchValue: this.props.searchText });
+    }
+  }
+
   handleSearchUpdate = (event, searchText, reason) => {
     // prevents ghost clicks
     if (event && event.source === "click") {
