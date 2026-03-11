@@ -12,11 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import FavoritePopover from "../../../MainPage/FavoritePopover";
 import { FavoriteSectionProps } from "../types";
+import {
+  favoriteActionsContainer,
+  favoriteSectionContainer,
+} from "./FavoriteSection.styles";
 
 export const FavoriteSection: React.FC<FavoriteSectionProps> = ({
   favorited,
@@ -32,7 +36,7 @@ export const FavoriteSection: React.FC<FavoriteSectionProps> = ({
   };
 
   return (
-    <div className="favorite-section">
+    <Box sx={favoriteSectionContainer}>
       <FavoritePopover
         caption={formatMessage({ id: "favorites" })}
         items={[]}
@@ -42,7 +46,7 @@ export const FavoriteSection: React.FC<FavoriteSectionProps> = ({
         text={favoriteText}
       />
 
-      <div className="favorite-actions">
+      <Box sx={favoriteActionsContainer}>
         <Button
           disabled={favorited}
           onClick={onSaveAsFavorite}
@@ -55,7 +59,7 @@ export const FavoriteSection: React.FC<FavoriteSectionProps> = ({
         >
           {formatMessage({ id: "filter_save_favorite" })}
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };

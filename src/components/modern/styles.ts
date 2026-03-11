@@ -23,7 +23,7 @@ import { SxProps, Theme } from "@mui/material";
 // Map Controls Panel Styles
 // ============================================================================
 
-export const mapControlPanelContainer = (theme: Theme): SxProps<Theme> => ({
+export const mapControlPanelContainer = (_theme: Theme): SxProps<Theme> => ({
   position: "absolute",
   top: 2,
   right: 2,
@@ -83,12 +83,11 @@ export const panelMenuItem = (theme: Theme): SxProps<Theme> => ({
   },
 });
 
-export const panelMenuItemIcon: SxProps<Theme> = {
-  minWidth: 32,
-};
-
-export const panelMenuItemText: SxProps<Theme> = {
-  fontSize: "0.875rem",
+/**
+ * Common styles for MUI MenuList in panels
+ */
+export const panelMenuList: SxProps<Theme> = {
+  p: 0,
 };
 
 // ============================================================================
@@ -135,24 +134,6 @@ export const dialogCloseButton = (theme: Theme): SxProps<Theme> => ({
 });
 
 // ============================================================================
-// Helper Functions
-// ============================================================================
-
-/**
- * Get expanded state transform for expand/collapse buttons
- */
-export const getExpandTransform = (expanded: boolean): SxProps<Theme> => ({
-  transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-});
-
-/**
- * Common styles for MUI MenuList in panels
- */
-export const panelMenuList: SxProps<Theme> = {
-  p: 0,
-};
-
-// ============================================================================
 // Header Styles
 // ============================================================================
 
@@ -180,41 +161,6 @@ export const headerSearchContainer: SxProps<Theme> = {
   display: "flex",
   justifyContent: "center",
   mx: 2,
-};
-
-export const headerSpacer: SxProps<Theme> = {
-  flexGrow: 1,
-};
-
-// ============================================================================
-// SearchBox Styles
-// ============================================================================
-
-export const searchBoxFab = (theme: Theme): SxProps<Theme> => ({
-  position: "absolute",
-  top: 80,
-  left: 16,
-  zIndex: 1000,
-  boxShadow: theme.shadows[6],
-});
-
-export const searchBoxPaper = (theme: Theme): SxProps<Theme> => ({
-  position: "absolute",
-  top: { xs: 70, sm: 70 },
-  left: { xs: 8, sm: 8 },
-  right: { xs: 8, sm: "auto" },
-  width: { xs: "auto", sm: 480 },
-  maxWidth: { xs: "calc(100vw - 16px)", sm: 480 },
-  zIndex: 999,
-  backgroundColor: theme.palette.background.paper,
-  border: `1px solid ${theme.palette.divider}`,
-});
-
-export const searchBoxCloseButton: SxProps<Theme> = {
-  position: "absolute",
-  top: 8,
-  right: 8,
-  zIndex: 1,
 };
 
 // ============================================================================
@@ -389,26 +335,6 @@ export const formButtonContainer: SxProps<Theme> = {
 };
 
 // ============================================================================
-// Common Layout Utilities
-// ============================================================================
-
-export const flexCenter: SxProps<Theme> = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-export const flexSpaceBetween: SxProps<Theme> = {
-  display: "flex",
-  justifyContent: "space-between",
-};
-
-export const flexColumn: SxProps<Theme> = {
-  display: "flex",
-  flexDirection: "column",
-};
-
-// ============================================================================
 // Modern Card Styles (Cohesive Design System)
 // ============================================================================
 
@@ -426,50 +352,5 @@ export const modernCard = (theme: Theme): SxProps<Theme> => ({
   "&:hover": {
     boxShadow: theme.shadows[2],
     borderColor: theme.palette.primary.main,
-  },
-});
-
-/**
- * Modern card without hover effect (for static content)
- */
-export const modernCardStatic = (theme: Theme): SxProps<Theme> => ({
-  p: 2,
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: 2,
-  backgroundColor: theme.palette.background.paper,
-  position: "relative",
-});
-
-/**
- * Modern list item with hover effect
- * Use inside cards for list items (quays, members, etc.)
- */
-export const modernListItem = (
-  theme: Theme,
-  isAlternate: boolean,
-): SxProps<Theme> => ({
-  p: 1,
-  mb: 0.5,
-  borderRadius: 1,
-  backgroundColor: isAlternate ? theme.palette.grey[50] : "transparent",
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-  },
-});
-
-// ============================================================================
-// Map Control Button Styles
-// ============================================================================
-
-/**
- * Floating action button for map controls
- */
-export const mapControlButton = (theme: Theme): SxProps<Theme> => ({
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  boxShadow: theme.shadows[3],
-  "&:hover": {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[6],
   },
 });

@@ -20,6 +20,7 @@ import {
   Autocomplete,
   Badge,
   Box,
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -27,8 +28,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import MdSpinner from "../../../../static/icons/spinner";
 import { SearchInputProps } from "../types";
+import { searchInputContainer, searchLoadingText } from "./SearchInput.styles";
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   menuItems,
@@ -46,7 +47,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const { formatMessage } = useIntl();
 
   return (
-    <div className="search-input-container">
+    <Box sx={searchInputContainer}>
       <Autocomplete
         freeSolo
         options={menuItems}
@@ -54,11 +55,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         value={null}
         filterOptions={(options) => options} // Disable client-side filtering
         loadingText={
-          <Box
-            className="search-menu-item loading"
-            sx={{ py: 1, px: 2, display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <MdSpinner className="search-loading-spinner" />
+          <Box sx={searchLoadingText}>
+            <CircularProgress size={16} sx={{ color: "action.active" }} />
             <span>{formatMessage({ id: "loading" })}</span>
           </Box>
         }
@@ -193,6 +191,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           );
         }}
       />
-    </div>
+    </Box>
   );
 };

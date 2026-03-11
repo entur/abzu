@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import { Close as CloseIcon, Search as SearchIcon } from "@mui/icons-material";
 import {
+  Box,
   Collapse,
   Fab,
   IconButton,
@@ -27,7 +28,12 @@ import { useSelector } from "react-redux";
 import { LoadingDialog } from "../Shared";
 import { FavoriteSection, FilterSection, SearchInput } from "./components";
 import { useSearchBox } from "./hooks/useSearchBox";
-import "./SearchBox.css";
+import {
+  searchBoxContent,
+  searchBoxHeader,
+  searchBoxPaper,
+  searchFab,
+} from "./SearchBox.styles";
 import { RootState, SearchBoxProps } from "./types";
 
 export const SearchBox: React.FC<SearchBoxProps> = () => {
@@ -132,14 +138,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
           color="primary"
           size="medium"
           onClick={handleToggleSearchBox}
-          className="search-fab"
-          sx={{
-            position: "absolute",
-            top: 80,
-            left: 16,
-            zIndex: 1000,
-            boxShadow: theme.shadows[6],
-          }}
+          sx={searchFab(theme)}
           aria-label={formatMessage({ id: "open_search" })}
         >
           <SearchIcon />
@@ -148,25 +147,11 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
 
       {/* Collapsible Search Box */}
       <Collapse in={isExpanded} timeout={300}>
-        <Paper
-          elevation={3}
-          className={`search-box-wrapper ${isMobile ? "mobile" : "desktop"}`}
-          sx={{
-            position: "absolute",
-            top: { xs: 70, sm: 70 },
-            left: { xs: 8, sm: 8 },
-            right: { xs: 8, sm: "auto" },
-            width: { xs: "auto", sm: 480 },
-            maxWidth: { xs: "calc(100vw - 16px)", sm: 480 },
-            zIndex: 999,
-            backgroundColor: theme.palette.background.paper,
-            border: `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <div className="search-box-content">
+        <Paper elevation={0} sx={searchBoxPaper(theme)}>
+          <Box sx={searchBoxContent}>
             {/* Mobile Close Button */}
             {isMobile && (
-              <div className="search-box-header">
+              <Box sx={searchBoxHeader}>
                 <IconButton
                   onClick={handleToggleSearchBox}
                   size="small"
@@ -180,7 +165,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
                 >
                   <CloseIcon />
                 </IconButton>
-              </div>
+              </Box>
             )}
 
             <FavoriteSection
@@ -217,7 +202,7 @@ export const SearchBox: React.FC<SearchBoxProps> = () => {
               onNewRequest={handleNewRequest}
               onToggleFilters={handleToggleFilters}
             />
-          </div>
+          </Box>
         </Paper>
       </Collapse>
     </>

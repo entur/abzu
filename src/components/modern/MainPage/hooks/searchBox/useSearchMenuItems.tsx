@@ -21,6 +21,14 @@ import {
   TopographicalDataSource,
   TopographicalPlace,
 } from "../../types";
+import {
+  filterNotificationAction,
+  filterNotificationBox,
+  filterNotificationContent,
+  filterNotificationTitle,
+  searchMenuItem,
+  searchMenuItemNoResults,
+} from "./searchMenuItems.styles";
 
 /**
  * Hook for computing menu items and topographical data sources
@@ -65,7 +73,7 @@ export const useSearchMenuItems = (
           text: `Go to ${coordinates[0]}, ${coordinates[1]}`,
           id: "coordinates",
           menuDiv: (
-            <Box className="search-menu-item" sx={{ py: 1, px: 2 }}>
+            <Box sx={searchMenuItem}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div
                   style={{
@@ -99,15 +107,7 @@ export const useSearchMenuItems = (
           text: searchText,
           id: null,
           menuDiv: (
-            <Box
-              className="search-menu-item no-results"
-              sx={{
-                py: 1,
-                px: 2,
-                color: "text.disabled",
-                cursor: "default",
-              }}
-            >
+            <Box sx={searchMenuItemNoResults}>
               {formatMessage({ id: "no_results_found" })}
             </Box>
           ),
@@ -122,26 +122,15 @@ export const useSearchMenuItems = (
         text: searchText,
         id: "filter-notification",
         menuDiv: (
-          <Box
-            onClick={removeFiltersAndSearch}
-            className="search-menu-item filter-notification"
-            sx={{
-              py: 1,
-              px: 2,
-              cursor: "pointer",
-              "&:hover": {
-                backgroundColor: "action.hover",
-              },
-            }}
-          >
-            <div className="filter-notification-content">
-              <div className="filter-notification-title">
+          <Box onClick={removeFiltersAndSearch} sx={filterNotificationBox}>
+            <Box sx={filterNotificationContent}>
+              <Box sx={filterNotificationTitle}>
                 {formatMessage({ id: "filters_are_applied" })}
-              </div>
-              <div className="filter-notification-action">
+              </Box>
+              <Box sx={filterNotificationAction}>
                 {formatMessage({ id: "remove" })}
-              </div>
-            </div>
+              </Box>
+            </Box>
           </Box>
         ),
       };
