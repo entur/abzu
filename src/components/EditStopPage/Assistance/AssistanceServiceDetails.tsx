@@ -69,8 +69,8 @@ const AssistanceServiceDetails = ({
         disabled={!canBeEdited}
       >
         {assistanceAvailabilityOptions.map((option) => (
-          <MenuItem key={`${id}_${inputName}-option-${option}`} value={option}>
-            {formatMessage({ id: `${inputName}_${option}` })}
+          <MenuItem key={`${id}_${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}-option-${option}`} value={option}>
+            {formatMessage({ id: `${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}_${option}` })}
           </MenuItem>
         ))}
       </Select>
