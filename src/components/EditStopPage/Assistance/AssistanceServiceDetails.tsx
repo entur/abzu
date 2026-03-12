@@ -11,6 +11,9 @@ import LocalServicesHelpers from "../../../modelUtils/localServicesHelpers";
 import { getIn } from "../../../utils";
 import { AssistanceTabItemDetail, AssistanceTabItemProps } from "./types";
 
+/**
+ * Step free access of info desk
+ */
 const AssistanceServiceDetails = ({
   entity,
   disabled,
@@ -69,8 +72,13 @@ const AssistanceServiceDetails = ({
         disabled={!canBeEdited}
       >
         {assistanceAvailabilityOptions.map((option) => (
-          <MenuItem key={`${id}_${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}-option-${option}`} value={option}>
-            {formatMessage({ id: `${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}_${option}` })}
+          <MenuItem
+            key={`${id}_${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}-option-${option}`}
+            value={option}
+          >
+            {formatMessage({
+              id: `${AssistanceTabItemDetail.ASSISTANCE_AVAILABILITY}_${option}`,
+            })}
           </MenuItem>
         ))}
       </Select>
