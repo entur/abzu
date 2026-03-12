@@ -6,13 +6,13 @@ import { ReactElement } from "react";
 import { useIntl } from "react-intl";
 import { AccessibilityLimitation as AccessibilityLimitationEnum } from "../../../models/AccessibilityLimitation";
 import { EntityType } from "../../../models/Entities";
-import { AssistanceTabItem as AssistanceEnum } from "../Assistance/types";
+import { AssistanceTabItem } from "../Assistance/types";
 import { FacilityTabItem } from "../Facility/types";
 import ToolTipIcon from "../ToolTipIcon";
 
 interface Props {
   entityType: EntityType | "parking";
-  name: AccessibilityLimitationEnum | FacilityTabItem | AssistanceEnum;
+  name: AccessibilityLimitationEnum | FacilityTabItem | AssistanceTabItem;
   feature: ReactElement;
   relatedFeatures?: ReactElement;
   isExpanded?: boolean;
