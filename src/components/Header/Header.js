@@ -57,6 +57,7 @@ class Header extends React.Component {
     this.props.dispatch(UserActions.removeAllFilters());
     this.props.dispatch(UserActions.navigateTo("/", ""));
     this.props.dispatch(UserActions.toggleShowFutureAndExpired(false));
+    this.props.dispatch(UserActions.setShowMoreFilterOptions(false));
   }
 
   handleConfirmChangeRoute(next, action) {

@@ -212,6 +212,10 @@ UserActions.setSearchText = (text) => (dispatch) => {
   dispatch(createThunk(types.SET_SEARCH_TEXT, text));
 };
 
+UserActions.setShowMoreFilterOptions = (value) => (dispatch) => {
+  dispatch(createThunk(types.SET_SHOW_MORE_FILTER_OPTIONS, value));
+};
+
 UserActions.setMissingCoordinates = (position, stopPlaceId) => (dispatch) => {
   dispatch(
     createThunk(types.SET_MISSING_COORDINATES, {

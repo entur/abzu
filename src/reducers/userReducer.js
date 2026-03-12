@@ -28,6 +28,7 @@ export const initialState = {
     ],
     text: "",
     showFutureAndExpired: false,
+    showMoreFilterOptions: false,
   },
   snackbarOptions: {
     isOpen: false,
@@ -183,6 +184,14 @@ const userReducer = (state = initialState, action) => {
         searchFilters: {
           ...state.searchFilters,
           text: action.payload,
+        },
+      });
+
+    case types.SET_SHOW_MORE_FILTER_OPTIONS:
+      return Object.assign({}, state, {
+        searchFilters: {
+          ...state.searchFilters,
+          showMoreFilterOptions: action.payload,
         },
       });
 

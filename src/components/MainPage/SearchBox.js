@@ -57,7 +57,6 @@ class SearchBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showMoreFilterOptions: false,
       createNewStopOpen: false,
       coordinatesDialogOpen: false,
       loading: false,
@@ -96,7 +95,7 @@ class SearchBox extends React.Component {
       prevProps.searchText !== this.props.searchText &&
       this.props.searchText === ""
     ) {
-      this.setState({ stopPlaceSearchValue: this.props.searchText });
+      this.setState({ stopPlaceSearchValue: "" });
     }
   }
 
@@ -303,9 +302,7 @@ class SearchBox extends React.Component {
   }
 
   handleToggleFilter(value) {
-    this.setState({
-      showMoreFilterOptions: value,
-    });
+    this.props.dispatch(UserActions.setShowMoreFilterOptions(value));
   }
 
   getTopographicalNames(topographicalPlace) {
@@ -398,9 +395,9 @@ class SearchBox extends React.Component {
       dataSource,
       showFutureAndExpired,
       isGuest,
+      showMoreFilterOptions,
     } = this.props;
-    const { coordinatesDialogOpen, showMoreFilterOptions, loading } =
-      this.state;
+    const { coordinatesDialogOpen, loading } = this.state;
 
     const { formatMessage, locale } = intl;
     const menuItems = this.getMenuItems(this.props);
@@ -814,6 +811,7 @@ const mapStateToProps = (state) => {
     lookupCoordinatesOpen: state.user.lookupCoordinatesOpen,
     newStopIsMultiModal: state.user.newStopIsMultiModal,
     showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    showMoreFilterOptions: state.user.searchFilters.showMoreFilterOptions,
     isGuest: state.user.isGuest,
   };
 };
