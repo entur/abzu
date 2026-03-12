@@ -239,6 +239,11 @@ UserActions.changeActiveBaselayer = (layer) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_ACTIVE_BASELAYER, layer));
 };
 
+UserActions.changeActiveOverlays = (overlayNames) => (dispatch) => {
+  Settings.setActiveOverlays(overlayNames);
+  dispatch(createThunk(types.CHANGED_ACTIVE_OVERLAYS, overlayNames));
+};
+
 UserActions.removeStopsNearbyForOverview = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null));
 };
