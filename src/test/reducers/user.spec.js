@@ -154,6 +154,21 @@ describe("user reducer", () => {
       };
       expect(userReducer(initialState, action)).toEqual(expectedState);
     });
+
+    test("Should handle SET_SHOW_MORE_FILTER_OPTIONS", () => {
+      const action = {
+        type: types.SET_SHOW_MORE_FILTER_OPTIONS,
+        payload: true,
+      };
+      const expectedState = {
+        ...initialState,
+        searchFilters: {
+          ...initialState.searchFilters,
+          showMoreFilterOptions: true,
+        },
+      };
+      expect(userReducer(initialState, action)).toEqual(expectedState);
+    });
   });
 
   describe("topographical place chips", () => {

@@ -25,6 +25,7 @@ const enablePublicCodePrivateCodeOnStopPlaces =
   rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
+const activeOverlaysKey = rootKey + "::activeOverlays";
 
 class SettingsManager {
   constructor() {
@@ -120,6 +121,20 @@ class SettingsManager {
 
   setShowTariffZonesInMap(value) {
     localStorage.setItem(showTariffZonesInMapKey, value);
+  }
+
+  getActiveOverlays() {
+    const raw = localStorage.getItem(activeOverlaysKey);
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  setActiveOverlays(overlayNames) {
+    localStorage.setItem(activeOverlaysKey, JSON.stringify(overlayNames));
   }
 }
 

@@ -60,6 +60,10 @@ class StopPlacesMap extends React.Component {
     this.props.dispatch(UserActions.changeActiveBaselayer(value));
   }
 
+  handleOverlaysChanged(overlayNames) {
+    this.props.dispatch(UserActions.changeActiveOverlays(overlayNames));
+  }
+
   handleMapMoveEnd(event, map) {
     const zoom = map.getZoom();
     const center = map.getCenter();
@@ -97,6 +101,8 @@ class StopPlacesMap extends React.Component {
         dragableMarkers={false}
         activeBaselayer={this.props.activeBaselayer}
         handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+        activeOverlays={this.props.activeOverlays}
+        handleOverlaysChanged={this.handleOverlaysChanged.bind(this)}
         enablePolylines={false}
       />
     );
@@ -112,6 +118,7 @@ const mapStateToProps = (state) => ({
   zoom: state.stopPlace.zoom,
   isCreatingNewStop: state.user.isCreatingNewStop,
   activeBaselayer: state.user.activeBaselayer,
+  activeOverlays: state.user.activeOverlays,
   ignoreStopId: getIn(state.stopPlace, ["activeSearchResult", "id"], undefined),
 });
 

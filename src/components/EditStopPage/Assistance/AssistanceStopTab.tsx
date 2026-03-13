@@ -4,6 +4,7 @@ import PlaceFeatures from "../PlaceFeatures/PlaceFeatures";
 import AssistanceService from "./AssistanceService";
 import AssistanceServiceDetails from "./AssistanceServiceDetails";
 import InformationDesk from "./InformationDesk";
+import InformationDeskDetails from "./InformationDeskDetails";
 import { AssistanceTabItem } from "./types";
 
 interface Props {
@@ -52,8 +53,19 @@ const AssistanceStopTab = ({ disabled, stopPlace }: Props) => {
       <PlaceFeatures
         name={AssistanceTabItem.INFORMATION_DESK}
         entityType={entityType}
+        isExpanded={expandedIndex === 2}
+        handleExpand={() => setExpandedIndex(2)}
+        handleCollapse={() => setExpandedIndex(-1)}
         feature={
           <InformationDesk
+            entity={stopPlace}
+            disabled={disabled}
+            id={stopPlace.id}
+            entityType={entityType}
+          />
+        }
+        relatedFeatures={
+          <InformationDeskDetails
             entity={stopPlace}
             disabled={disabled}
             id={stopPlace.id}
