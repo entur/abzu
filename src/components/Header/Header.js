@@ -51,13 +51,13 @@ class Header extends React.Component {
   }
 
   goToMain() {
+    this.props.dispatch(UserActions.navigateTo("/", ""));
+    this.props.dispatch(UserActions.toggleShowFutureAndExpired(false));
+    this.props.dispatch(UserActions.setShowMoreFilterOptions(false));
     this.props.dispatch(UserActions.clearSearchResults());
     this.props.dispatch(UserActions.clearActiveSearchResults());
     this.props.dispatch(UserActions.setSearchText(""));
     this.props.dispatch(UserActions.removeAllFilters());
-    this.props.dispatch(UserActions.navigateTo("/", ""));
-    this.props.dispatch(UserActions.toggleShowFutureAndExpired(false));
-    this.props.dispatch(UserActions.setShowMoreFilterOptions(false));
   }
 
   handleConfirmChangeRoute(next, action) {
