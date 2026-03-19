@@ -13,26 +13,46 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Typography } from "@mui/material";
+import React from "react";
+import { CopyIdButton } from "./CopyIdButton";
 
 export interface ImportedIdProps {
   text: string;
   id?: string | string[];
+  showCopyButtons?: boolean;
 }
 
-export const ImportedId: React.FC<ImportedIdProps> = ({ text, id = [] }) => {
-  const idArray = Array.isArray(id) ? id : [id];
-  const displayText = idArray.join(", ");
+export const ImportedId: React.FC<ImportedIdProps> = ({
+  text,
+  id = [],
+  showCopyButtons = false,
+}) => {
+  const idArray = (Array.isArray(id) ? id : [id]).filter(Boolean);
 
-  if (!displayText) return null;
+  if (idArray.length === 0) return null;
 
   return (
     <Box sx={{ mb: 1 }}>
       <Typography variant="caption" sx={{ fontWeight: 600, display: "block" }}>
         {text}
       </Typography>
-      <Typography variant="caption" sx={{ color: "text.secondary" }}>
-        {displayText}
-      </Typography>
+      {showCopyButtons ? (
+        idArray.map((importedId, i) => (
+          <Box
+            key={i}
+            sx={{ display: "flex", alignItems: "center", gap: 0.25 }}
+          >
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              {importedId}
+            </Typography>
+            <CopyIdButton idToCopy={importedId} size="small" />
+          </Box>
+        ))
+      ) : (
+        <Typography variant="caption" sx={{ color: "text.secondary" }}>
+          {idArray.join(", ")}
+        </Typography>
+      )}
     </Box>
   );
 };

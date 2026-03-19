@@ -13,13 +13,17 @@
  limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PlaceIcon from "@mui/icons-material/Place";
 import {
   Box,
+  Chip,
+  Collapse,
   Divider,
   IconButton,
   Tooltip,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
@@ -28,8 +32,7 @@ import { GroupOfStopPlacesListProps } from "../types";
 import { StopPlaceListItem } from "./StopPlaceListItem";
 
 /**
- * List component for stop places in a group
- * Shows stop places with add/remove functionality
+ * Collapsible list of stop places in a group — matches QuaysSection pattern
  */
 export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
   stopPlaces,
@@ -37,8 +40,8 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
   onAddMembers,
   onRemoveMember,
 }) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
+  const [expanded, setExpanded] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const handleAddMembers = (memberIds: string[]) => {
@@ -49,72 +52,68 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
   return (
     <Box>
       <Divider />
+
+      {/* Section header — click to toggle */}
       <Box
+        onClick={() => setExpanded((v) => !v)}
         sx={{
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
-          py: 1.5,
+          gap: 1,
           px: 2,
+          py: 1.5,
           bgcolor: "background.default",
+          cursor: "pointer",
+          userSelect: "none",
         }}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <PlaceIcon fontSize="small" color="action" />
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
           {formatMessage({ id: "stop_places" })}
         </Typography>
-        <Tooltip title={formatMessage({ id: "add_stop_place_to_group" })} arrow>
+        <Chip label={stopPlaces.length} size="small" />
+        {expanded ? (
+          <ExpandLessIcon fontSize="small" color="action" />
+        ) : (
+          <ExpandMoreIcon fontSize="small" color="action" />
+        )}
+        <Tooltip title={formatMessage({ id: "add_stop_place_to_group" })}>
           <span>
             <IconButton
               size="small"
-              onClick={() => setAddDialogOpen(true)}
-              disabled={!canEdit}
-              sx={{
-                color: theme.palette.primary.main,
-                bgcolor: theme.palette.action.hover,
-                "&:hover": {
-                  bgcolor: theme.palette.action.selected,
-                },
-                "&:disabled": {
-                  bgcolor: theme.palette.action.disabledBackground,
-                },
+              color="primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                setAddDialogOpen(true);
               }}
+              disabled={!canEdit}
             >
-              <AddIcon />
+              <AddIcon fontSize="small" />
             </IconButton>
           </span>
         </Tooltip>
       </Box>
-      <Divider />
 
-      <Box
-        sx={{
-          maxHeight: 500,
-          overflowY: "auto",
-        }}
-      >
-        {stopPlaces.map((stopPlace) => (
-          <StopPlaceListItem
-            key={`stop-place-${stopPlace.id}`}
-            stopPlace={stopPlace}
-            onRemove={onRemoveMember}
-            disabled={!canEdit}
-          />
-        ))}
-      </Box>
-
-      {stopPlaces.length === 0 && (
-        <Box
-          sx={{
-            p: 3,
-            textAlign: "center",
-            color: "text.secondary",
-          }}
-        >
-          <Typography variant="body2">
-            {formatMessage({ id: "no_stop_places" })}
-          </Typography>
-        </Box>
-      )}
+      {/* Collapsible list */}
+      <Collapse in={expanded}>
+        <Divider />
+        {stopPlaces.length === 0 ? (
+          <Box sx={{ p: 3, textAlign: "center", color: "text.secondary" }}>
+            <Typography variant="body2">
+              {formatMessage({ id: "no_stop_places" })}
+            </Typography>
+          </Box>
+        ) : (
+          stopPlaces.map((stopPlace) => (
+            <StopPlaceListItem
+              key={`stop-place-${stopPlace.id}`}
+              stopPlace={stopPlace}
+              onRemove={onRemoveMember}
+              disabled={!canEdit}
+            />
+          ))
+        )}
+      </Collapse>
 
       <AddMemberToGroup
         open={addDialogOpen}

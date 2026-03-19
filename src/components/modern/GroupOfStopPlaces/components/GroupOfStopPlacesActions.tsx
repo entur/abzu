@@ -21,7 +21,7 @@ import { GroupOfStopPlacesActionsProps } from "../types";
 
 /**
  * Action buttons component for group of stop places
- * Shows Remove, Undo, and Save buttons
+ * Matches EditStopPage footer pattern: Terminate left, Undo+Save right
  */
 export const GroupOfStopPlacesActions: React.FC<
   GroupOfStopPlacesActionsProps
@@ -47,10 +47,11 @@ export const GroupOfStopPlacesActions: React.FC<
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-around",
           gap: 1,
-          p: 1.5,
+          px: 2,
+          py: 1.5,
           bgcolor: "background.paper",
+          flexWrap: "wrap",
         }}
       >
         {hasId && (
@@ -61,31 +62,34 @@ export const GroupOfStopPlacesActions: React.FC<
             startIcon={<DeleteIcon />}
             onClick={onRemove}
             disabled={isRemoveDisabled}
-            sx={{ flex: 1 }}
           >
             {formatMessage({ id: "remove" })}
           </Button>
         )}
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<UndoIcon />}
-          onClick={onUndo}
-          disabled={isUndoDisabled}
-          sx={{ flex: 1 }}
-        >
-          {formatMessage({ id: "undo_changes" })}
-        </Button>
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<SaveIcon />}
-          onClick={onSave}
-          disabled={isSaveDisabled}
-          sx={{ flex: 1 }}
-        >
-          {formatMessage({ id: "save" })}
-        </Button>
+        {canEdit && (
+          <>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<UndoIcon />}
+              onClick={onUndo}
+              disabled={isUndoDisabled}
+              sx={{ ml: "auto" }}
+            >
+              {formatMessage({ id: "undo_changes" })}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              startIcon={<SaveIcon />}
+              onClick={onSave}
+              disabled={isSaveDisabled}
+            >
+              {formatMessage({ id: "save" })}
+            </Button>
+          </>
+        )}
       </Box>
     </>
   );

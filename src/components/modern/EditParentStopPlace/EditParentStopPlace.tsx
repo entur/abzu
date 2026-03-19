@@ -162,7 +162,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         canDelete={canDelete}
         isMobile={isMobile}
         drawerWidth={drawerWidth}
-        formatMessage={formatMessage}
         onGoBack={handleAllowUserToGoBack}
         onCollapse={handleToggle}
         onNameChange={handleNameChange}

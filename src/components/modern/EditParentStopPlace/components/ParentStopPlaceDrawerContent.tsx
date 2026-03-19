@@ -12,8 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Box, Divider, Drawer, Typography } from "@mui/material";
-import { IntlShape } from "react-intl";
+import { Box, Divider, Drawer } from "@mui/material";
 import {
   ParentStopPlaceActions,
   ParentStopPlaceChildren,
@@ -30,7 +29,6 @@ interface ParentStopPlaceDrawerContentProps {
   canDelete: boolean;
   isMobile: boolean;
   drawerWidth: string | number;
-  formatMessage: IntlShape["formatMessage"];
   onGoBack: () => void;
   onCollapse: () => void;
   onNameChange: (value: string) => void;
@@ -63,7 +61,6 @@ export const ParentStopPlaceDrawerContent: React.FC<
   canDelete,
   isMobile,
   drawerWidth,
-  formatMessage,
   onGoBack,
   onCollapse,
   onNameChange,
@@ -123,15 +120,6 @@ export const ParentStopPlaceDrawerContent: React.FC<
             onCollapse={onCollapse}
           />
         )}
-
-        <Divider />
-
-        {/* Section Title */}
-        <Box sx={{ py: 1.5, px: 2, bgcolor: "background.default" }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-            {formatMessage({ id: "parentStopPlace" })}
-          </Typography>
-        </Box>
 
         <Divider />
 

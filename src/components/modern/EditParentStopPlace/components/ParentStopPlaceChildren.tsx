@@ -12,28 +12,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AddIcon from "@mui/icons-material/Add";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
+  Chip,
   CircularProgress,
+  Collapse,
   Divider,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   Tooltip,
   Typography,
-  useTheme,
 } from "@mui/material";
+import { useState } from "react";
 import { useIntl } from "react-intl";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
-import { StopPlaceLink } from "../../Shared";
+import { CopyIdButton, StopPlaceLink } from "../../Shared";
 import { ParentStopPlaceChildrenProps } from "../types";
 
 /**
- * Children list component for parent stop place
- * Shows child stop places and adjacent sites
+ * Collapsible children + adjacent sites sections — matches QuaysSection pattern
  */
 export const ParentStopPlaceChildren: React.FC<
   ParentStopPlaceChildrenProps
@@ -47,185 +49,215 @@ export const ParentStopPlaceChildren: React.FC<
   onRemoveAdjacentSite,
   onAddAdjacentSite,
 }) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
+  const [childrenExpanded, setChildrenExpanded] = useState(true);
+  const [adjacentExpanded, setAdjacentExpanded] = useState(true);
 
   return (
     <Box>
       <Divider />
 
-      {/* Children Section */}
+      {/* ── Children section header ── */}
       <Box
+        onClick={() => setChildrenExpanded((v) => !v)}
         sx={{
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
-          py: 1.5,
+          gap: 1,
           px: 2,
+          py: 1.5,
           bgcolor: "background.default",
+          cursor: "pointer",
+          userSelect: "none",
         }}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <AccountTreeIcon fontSize="small" color="action" />
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
           {formatMessage({ id: "children" })}
         </Typography>
-        <Tooltip title={formatMessage({ id: "add_stop_place" })} arrow>
+        <Chip label={children.length} size="small" />
+        {childrenExpanded ? (
+          <ExpandLessIcon fontSize="small" color="action" />
+        ) : (
+          <ExpandMoreIcon fontSize="small" color="action" />
+        )}
+        <Tooltip title={formatMessage({ id: "add_stop_place" })}>
           <span>
             <IconButton
               size="small"
-              onClick={onAddChildren}
-              disabled={!canEdit || isLoading}
-              sx={{
-                color: theme.palette.primary.main,
-                bgcolor: theme.palette.action.hover,
-                "&:hover": {
-                  bgcolor: theme.palette.action.selected,
-                },
-                "&:disabled": {
-                  bgcolor: theme.palette.action.disabledBackground,
-                },
+              color="primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddChildren();
               }}
+              disabled={!canEdit || isLoading}
             >
-              <AddIcon />
+              <AddIcon fontSize="small" />
             </IconButton>
           </span>
         </Tooltip>
       </Box>
 
-      <Divider />
-
-      {isLoading && (
-        <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-          <CircularProgress size={24} />
-        </Box>
-      )}
-
-      <List disablePadding>
+      {/* Children list */}
+      <Collapse in={childrenExpanded}>
+        <Divider />
+        {isLoading && (
+          <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+            <CircularProgress size={24} />
+          </Box>
+        )}
+        {!isLoading && children.length === 0 && (
+          <Box sx={{ p: 3, textAlign: "center", color: "text.secondary" }}>
+            <Typography variant="body2">
+              {formatMessage({ id: "no_children" })}
+            </Typography>
+          </Box>
+        )}
         {children.map((child) => (
-          <ListItem
+          <Box
             key={child.id}
             sx={{
-              borderBottom: `1px solid ${theme.palette.divider}`,
-              "&:hover": {
-                bgcolor: theme.palette.action.hover,
-              },
+              display: "flex",
+              alignItems: "center",
+              px: 2,
+              py: 1,
+              borderBottom: "1px solid",
+              borderColor: "divider",
+              "&:hover": { bgcolor: "action.hover" },
             }}
           >
-            <Box
-              sx={{ display: "flex", alignItems: "center", flex: 1, gap: 1 }}
-            >
+            <Box sx={{ flexShrink: 0, mr: 1 }}>
               <ModalityIconImg
                 type={child.stopPlaceType}
                 submode={child.submode}
+                svgStyle={{ width: 20, height: 20 }}
               />
-              <ListItemText
-                primary={child.name}
-                secondary={<StopPlaceLink id={child.id} />}
-                secondaryTypographyProps={{ component: "div" }}
-              />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography variant="body2" fontWeight={600} noWrap>
+                {child.name}
+              </Typography>
+              {child.id && (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
+                  <StopPlaceLink
+                    style={{ fontSize: "0.75rem" }}
+                    id={child.id}
+                  />
+                  <CopyIdButton idToCopy={child.id} size="small" />
+                </Box>
+              )}
             </Box>
             {canEdit && (
               <Tooltip
                 title={formatMessage({ id: "remove_stop_from_parent_title" })}
-                arrow
               >
-                <span>
-                  <IconButton
-                    size="small"
-                    onClick={() => onRemoveChild(child.id)}
-                    sx={{
-                      color: theme.palette.error.main,
-                      "&:hover": {
-                        color: theme.palette.error.dark,
-                      },
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </span>
+                <IconButton
+                  size="small"
+                  color="error"
+                  onClick={() => onRemoveChild(child.id)}
+                  sx={{ ml: 0.5 }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
               </Tooltip>
             )}
-          </ListItem>
+          </Box>
         ))}
-      </List>
+      </Collapse>
 
-      {children.length === 0 && !isLoading && (
-        <Box sx={{ p: 3, textAlign: "center", color: "text.secondary" }}>
-          <Typography variant="body2">
-            {formatMessage({ id: "no_children" })}
-          </Typography>
-        </Box>
-      )}
-
-      {/* Adjacent Sites Section */}
+      {/* ── Adjacent Sites section ── */}
       {adjacentSites && adjacentSites.length > 0 && (
         <>
           <Divider />
           <Box
+            onClick={() => setAdjacentExpanded((v) => !v)}
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
-              py: 1.5,
+              gap: 1,
               px: 2,
+              py: 1.5,
               bgcolor: "background.default",
+              cursor: "pointer",
+              userSelect: "none",
             }}
           >
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            <CompareArrowsIcon fontSize="small" color="action" />
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
               {formatMessage({ id: "adjacent_sites" })}
             </Typography>
-            <Tooltip title={formatMessage({ id: "add_adjacent_site" })} arrow>
+            <Chip label={adjacentSites.length} size="small" />
+            {adjacentExpanded ? (
+              <ExpandLessIcon fontSize="small" color="action" />
+            ) : (
+              <ExpandMoreIcon fontSize="small" color="action" />
+            )}
+            <Tooltip title={formatMessage({ id: "add_adjacent_site" })}>
               <span>
                 <IconButton
                   size="small"
-                  onClick={onAddAdjacentSite}
-                  disabled={!canEdit}
-                  sx={{
-                    color: theme.palette.primary.main,
-                    bgcolor: theme.palette.action.hover,
-                    "&:hover": {
-                      bgcolor: theme.palette.action.selected,
-                    },
+                  color="primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAddAdjacentSite();
                   }}
+                  disabled={!canEdit}
                 >
-                  <AddIcon />
+                  <AddIcon fontSize="small" />
                 </IconButton>
               </span>
             </Tooltip>
           </Box>
-          <Divider />
-          <List disablePadding>
+
+          <Collapse in={adjacentExpanded}>
+            <Divider />
             {adjacentSites.map((site) => (
-              <ListItem
+              <Box
                 key={site.ref}
                 sx={{
-                  borderBottom: `1px solid ${theme.palette.divider}`,
-                  "&:hover": {
-                    bgcolor: theme.palette.action.hover,
-                  },
+                  display: "flex",
+                  alignItems: "center",
+                  px: 2,
+                  py: 1,
+                  borderBottom: "1px solid",
+                  borderColor: "divider",
+                  "&:hover": { bgcolor: "action.hover" },
                 }}
               >
-                <ListItemText primary={site.name} secondary={site.id} />
-                {canEdit && (
-                  <Tooltip title={formatMessage({ id: "remove" })} arrow>
-                    <span>
-                      <IconButton
-                        size="small"
-                        onClick={() => onRemoveAdjacentSite(site.id, site.ref)}
-                        sx={{
-                          color: theme.palette.error.main,
-                          "&:hover": {
-                            color: theme.palette.error.dark,
-                          },
-                        }}
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography variant="body2" fontWeight={600} noWrap>
+                    {site.name}
+                  </Typography>
+                  {site.id && (
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.25 }}
+                    >
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        noWrap
                       >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </span>
+                        {site.id}
+                      </Typography>
+                      <CopyIdButton idToCopy={site.id} size="small" />
+                    </Box>
+                  )}
+                </Box>
+                {canEdit && (
+                  <Tooltip title={formatMessage({ id: "remove" })}>
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={() => onRemoveAdjacentSite(site.id, site.ref)}
+                      sx={{ ml: 0.5 }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
                   </Tooltip>
                 )}
-              </ListItem>
+              </Box>
             ))}
-          </List>
+          </Collapse>
         </>
       )}
     </Box>

@@ -16,7 +16,6 @@ import airportSvg from "../static/icons/modalities/svg/airplane-withoutBox.svg";
 import onstreetBusSvg from "../static/icons/modalities/svg/bus-withoutBox.svg";
 import busStationSvg from "../static/icons/modalities/svg/busstation-withoutBox.svg";
 import ferryStopSvg from "../static/icons/modalities/svg/ferry-withoutBox.svg";
-import funicularSvg from "../static/icons/modalities/svg/funicular.svg";
 import harbourPortSvg from "../static/icons/modalities/svg/harbour_port.svg";
 import liftStationSvg from "../static/icons/modalities/svg/lift.svg";
 import noInformationSvg from "../static/icons/modalities/svg/no-information.svg";
@@ -82,7 +81,8 @@ export const getSvgIconByTypeOrSubmode = (
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,
-    funicular: funicularSvg,
+    // funicular.svg has white fills — use the PNG which is visible on light backgrounds
+    funicular: funicular,
   };
   return submodeMap[submode] || getSvgIconIdByModality(type);
 };
@@ -98,7 +98,8 @@ export const getSvgIconIdByModality = (type: Modalities) => {
     airport: airportSvg,
     harbourPort: harbourPortSvg,
     liftStation: liftStationSvg,
-    funicular: funicularSvg,
+    // funicular.svg has white fills — use the PNG which is visible on light backgrounds
+    funicular: funicular,
     other: noInformationSvg,
   };
   return modalityMap[type] || noInformationSvg;

@@ -12,16 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import { CopyIdButton, FavoriteButton } from "../../Shared";
@@ -29,7 +22,7 @@ import { ParentStopPlaceHeaderProps } from "../types";
 
 /**
  * Header component for parent stop place editor
- * Shows title, location, ID, copy button, collapse button, and close button
+ * Matches EditStopPage header pattern: ArrowBack left, name+ID centre, actions right
  */
 export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
   stopPlace,
@@ -37,9 +30,7 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
   onGoBack,
   onCollapse,
 }) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const headerText = stopPlace.id
     ? originalStopPlace.name
@@ -50,46 +41,40 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        gap: 1,
-        py: 2,
-        px: 2,
-        bgcolor: theme.palette.background.paper,
-        borderBottom: `1px solid ${theme.palette.divider}`,
+        px: 1,
+        py: 0.5,
+        minHeight: 48,
+        gap: 0.5,
       }}
     >
-      <Box sx={{ flex: 1 }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 600,
-            color: theme.palette.text.primary,
-          }}
-        >
+      <Tooltip title={formatMessage({ id: "go_back" })}>
+        <IconButton size="small" onClick={onGoBack}>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
           {headerText}
         </Typography>
         {stopPlace.topographicPlace && (
           <Typography
             variant="caption"
-            sx={{
-              color: theme.palette.text.secondary,
-              display: "block",
-            }}
+            color="text.secondary"
+            noWrap
+            display="block"
           >
             {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
           </Typography>
         )}
         {stopPlace.id && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <Typography
-              variant="caption"
-              sx={{ color: theme.palette.text.secondary }}
-            >
+          <Box
+            sx={{ display: "flex", alignItems: "center", gap: 0.25, mt: -0.25 }}
+          >
+            <Typography variant="caption" color="text.secondary" noWrap>
               {stopPlace.id}
             </Typography>
-            <CopyIdButton
-              idToCopy={stopPlace.id}
-              color={theme.palette.text.secondary}
-            />
+            <CopyIdButton idToCopy={stopPlace.id} size="small" />
           </Box>
         )}
       </Box>
@@ -107,32 +92,12 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
       )}
 
       {onCollapse && (
-        <IconButton
-          size="small"
-          onClick={onCollapse}
-          sx={{
-            color: theme.palette.text.primary,
-            "&:hover": {
-              bgcolor: theme.palette.action.hover,
-            },
-          }}
-        >
-          {isMobile ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-        </IconButton>
+        <Tooltip title={formatMessage({ id: "collapse" })}>
+          <IconButton size="small" onClick={onCollapse}>
+            <ExpandLessIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       )}
-
-      <IconButton
-        size="small"
-        onClick={onGoBack}
-        sx={{
-          color: theme.palette.text.primary,
-          "&:hover": {
-            bgcolor: theme.palette.action.hover,
-          },
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
     </Box>
   );
 };

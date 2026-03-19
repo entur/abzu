@@ -26,6 +26,7 @@ import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import EditStopMap from "../components/Map/EditStopMap";
 import { EditParentStopPlace } from "../components/modern/EditParentStopPlace";
+import { EditStopPage } from "../components/modern/EditStopPage";
 import { LoadingDialog } from "../components/modern/Shared";
 import InformationManager from "../singletons/InformationManager";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -208,8 +209,14 @@ export const StopPlace = () => {
         <>
           {!(stopPlaceLoading && uiMode === "modern") && (
             <>
-              <NewElementsBox disabled={disabled || stopPlaceLoading} />
-              <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+              {uiMode === "modern" ? (
+                <EditStopPage />
+              ) : (
+                <>
+                  <NewElementsBox disabled={disabled || stopPlaceLoading} />
+                  <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+                </>
+              )}
             </>
           )}
           <EditStopMap disabled={disabled || stopPlaceLoading} />

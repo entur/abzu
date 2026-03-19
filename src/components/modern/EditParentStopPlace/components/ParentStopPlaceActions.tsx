@@ -21,8 +21,7 @@ import { ParentStopPlaceActionsProps } from "../types";
 
 /**
  * Actions section for parent stop place
- * Contains Terminate, Undo, and Save buttons
- * Aligned with GroupOfStopPlacesActions design
+ * Matches EditStopPage footer pattern: Terminate left, Undo+Save right
  */
 export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
   hasId,
@@ -38,21 +37,13 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  // Can't save if:
-  // - No name
-  // - New stop with no children
-  // - Not modified (unless expired)
-  // - Can't edit
   const isSaveDisabled =
     !hasName ||
     (!hasId && !hasChildren) ||
     (!isModified && !hasExpired) ||
     !canEdit;
 
-  // Can undo if modified or expired
   const isUndoDisabled = (!isModified && !hasExpired) || !canEdit;
-
-  // Can terminate if has delete permission and not expired
   const isTerminateDisabled = !canDelete || hasExpired;
 
   return (
@@ -61,10 +52,11 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-around",
           gap: 1,
-          p: 1.5,
+          px: 2,
+          py: 1.5,
           bgcolor: "background.paper",
+          flexWrap: "wrap",
         }}
       >
         {hasId && (
@@ -75,33 +67,36 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
             startIcon={<DeleteIcon />}
             onClick={onTerminate}
             disabled={isTerminateDisabled}
-            sx={{ flex: 1 }}
           >
             {formatMessage({
               id: hasExpired ? "delete_stop_place" : "terminate_stop_place",
             })}
           </Button>
         )}
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={<UndoIcon />}
-          onClick={onUndo}
-          disabled={isUndoDisabled}
-          sx={{ flex: 1 }}
-        >
-          {formatMessage({ id: "undo_changes" })}
-        </Button>
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<SaveIcon />}
-          onClick={onSave}
-          disabled={isSaveDisabled}
-          sx={{ flex: 1 }}
-        >
-          {formatMessage({ id: "save" })}
-        </Button>
+        {canEdit && (
+          <>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<UndoIcon />}
+              onClick={onUndo}
+              disabled={isUndoDisabled}
+              sx={{ ml: "auto" }}
+            >
+              {formatMessage({ id: "undo_changes" })}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              startIcon={<SaveIcon />}
+              onClick={onSave}
+              disabled={isSaveDisabled}
+            >
+              {formatMessage({ id: "save" })}
+            </Button>
+          </>
+        )}
       </Box>
     </>
   );
