@@ -104,10 +104,10 @@ const App: React.FC<ModernAppProps> = () => {
     }
 
     const layerBasedOnMapConfig =
-      mapConfig?.defaultTile ||
-      (mapConfig?.tiles &&
-        mapConfig.tiles.length > 0 &&
-        mapConfig.tiles[0].name);
+      mapConfig?.defaultBaseLayer ||
+      (mapConfig?.baseLayers &&
+        mapConfig.baseLayers.length > 0 &&
+        mapConfig.baseLayers[0].name);
     dispatch(
       UserActions.changeActiveBaselayer(
         Settings.getMapLayer() || layerBasedOnMapConfig || OPEN_STREET_MAP,

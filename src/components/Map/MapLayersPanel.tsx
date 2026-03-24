@@ -25,7 +25,7 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../../actions";
 import { ConfigContext } from "../../config/ConfigContext";
-import { defaultOSMTile } from "./mapDefaults";
+import { defaultOSMTileLayer } from "./mapDefaults";
 
 export const MapLayersPanel: React.FC = () => {
   const theme = useTheme();
@@ -36,8 +36,8 @@ export const MapLayersPanel: React.FC = () => {
     (state: any) => state.user.activeBaselayer,
   );
 
-  const defaultTiles = [defaultOSMTile];
-  const tiles = mapConfig?.tiles || defaultTiles;
+  const defaultTiles = [defaultOSMTileLayer];
+  const tiles = mapConfig?.baseLayers || defaultTiles;
 
   const handleLayerChange = (layerName: string) => {
     dispatch(UserActions.changeActiveBaselayer(layerName));
