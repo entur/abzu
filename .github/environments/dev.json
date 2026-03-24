@@ -17,7 +17,7 @@
   },
   "featureFlags": {
     "SVVStreetViewLink": true,
-    "KartverketFlyFoto": true,
+    "KartverketFlyFoto": false,
     "ModernUI": true
   },
   "mapConfig": {
