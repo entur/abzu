@@ -128,7 +128,7 @@ export const LeafLetMap = ({
         {uiMode === "modern" ? (
           <>
             {/* Render active base layer directly without LayersControl in modern UI */}
-            {(mapConfig?.tiles || defaultTiles)
+            {(mapConfig?.baseLayers || defaultBaseLayers)
               .filter((tile) => getCheckedBaseLayerByValue(tile.name))
               .map((tile) =>
                 tile.component ? (
@@ -153,7 +153,7 @@ export const LeafLetMap = ({
         ) : (
           <>
             <LayersControl position="topright">
-              {(mapConfig?.tiles || defaultTiles).map((tile) => {
+              {(mapConfig?.baseLayers || defaultBaseLayers).map((tile) => {
                 return (
                   <BaseLayer
                     key={tile.name}
