@@ -25,8 +25,10 @@ import { useIntl } from "react-intl";
 import { ParentStopPlaceChildrenProps } from "../types";
 import { ParentStopPlaceChildren } from "./ParentStopPlaceChildren";
 
-export interface ChildrenDialogProps
-  extends Omit<ParentStopPlaceChildrenProps, "isLoading"> {
+export interface ChildrenDialogProps extends Omit<
+  ParentStopPlaceChildrenProps,
+  "isLoading"
+> {
   open: boolean;
   onClose: () => void;
 }
