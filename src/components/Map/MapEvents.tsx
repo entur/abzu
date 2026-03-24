@@ -3,6 +3,8 @@ import { useMapEvents } from "react-leaflet";
 
 export interface MapEventsProps {
   handleBaselayerChanged: (name: string) => void;
+  handleOverlayAdd: (name: string) => void;
+  handleOverlayRemove: (name: string) => void;
   onClick: () => void;
   onDblclick: () => void;
   onZoomEnd: () => void;
@@ -13,6 +15,8 @@ export interface MapEventsProps {
 export const MapEvents: React.FC<MapEventsProps> = ({
   children,
   handleBaselayerChanged = () => {},
+  handleOverlayAdd = () => {},
+  handleOverlayRemove = () => {},
   onClick = () => {},
   onDblclick = () => {},
   onZoomEnd = () => {},
@@ -21,6 +25,12 @@ export const MapEvents: React.FC<MapEventsProps> = ({
   useMapEvents({
     baselayerchange: ({ name }) => {
       handleBaselayerChanged(name);
+    },
+    overlayadd: ({ name }) => {
+      handleOverlayAdd(name);
+    },
+    overlayremove: ({ name }) => {
+      handleOverlayRemove(name);
     },
     click: onClick,
     dblclick: onDblclick,

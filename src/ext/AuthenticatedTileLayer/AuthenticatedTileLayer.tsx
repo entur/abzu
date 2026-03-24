@@ -5,7 +5,7 @@ import {
 } from "@react-leaflet/core";
 import { useSelector } from "react-redux";
 import { DEFAULT_TILE_LAYER_MAX_ZOOM } from "../../components/Map/DynamicTileLayer";
-import { Tile } from "../../config/ConfigContext";
+import { TileLayer } from "../../config/ConfigContext";
 import { RootState } from "../../store/store";
 import {
   AuthenticatedTileLayerBase,
@@ -21,7 +21,9 @@ const AuthenticatedTileLayerComponent = createTileLayerComponent<
   return createElementObject(layer, context);
 });
 
-export const AuthenticatedTileLayer: FeatureComponent<Tile> = (props: Tile) => {
+export const AuthenticatedTileLayer: FeatureComponent<TileLayer> = (
+  props: TileLayer,
+) => {
   const isAuthenticated: boolean | undefined = useSelector(
     (state: RootState) => state.user.auth.isAuthenticated,
   );

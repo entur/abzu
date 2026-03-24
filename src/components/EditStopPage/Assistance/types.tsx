@@ -6,8 +6,13 @@ export enum AssistanceTabItem {
   INFORMATION_DESK = "informationDesk",
 }
 
+export enum AssistanceTabItemDetail {
+  ASSISTANCE_AVAILABILITY = "assistanceAvailability",
+  STEP_FREE_ACCESS = "stepFreeAccess",
+}
+
 /**
- * Re-used between all services, whether on stop place or quay level;
+ * Re-used between all assistance items, whether on stop place or quay level;
  * id is relevant for a stop place, while index is for quay
  */
 export interface AssistanceTabItemProps {
@@ -15,4 +20,8 @@ export interface AssistanceTabItemProps {
   disabled: boolean;
   id?: string;
   entityType: EntityType;
+}
+
+export interface InformationDeskDetailFields {
+  stepFreeAccess?: boolean;
 }

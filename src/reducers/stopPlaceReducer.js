@@ -69,6 +69,11 @@ const stopPlaceReducer = (state = initialState, action) => {
         searchResults: [],
       });
 
+    case types.CLEAR_ACTIVE_SEARCH_RESULT:
+      return Object.assign({}, state, {
+        activeSearchResult: null,
+      });
+
     case types.REMOVED_CHILD_FROM_PARENT_STOP_PLACE:
       return Object.assign({}, state, {
         current: formatHelpers.updateParenStopWithoutStopPlace(
@@ -221,6 +226,15 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.CHANGED_QUAY_COMPASS_BEARING:
       return Object.assign({}, state, {
         current: formatHelpers.updateCompassBearing(
+          state.current,
+          action.payload,
+        ),
+        stopHasBeenModified: true,
+      });
+
+    case types.CHANGED_QUAY_LIGHTING:
+      return Object.assign({}, state, {
+        current: formatHelpers.updateQuayLighting(
           state.current,
           action.payload,
         ),

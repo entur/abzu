@@ -38,13 +38,14 @@ export interface Config {
 }
 
 export interface MapConfig {
-  tiles: Tile[];
-  defaultTile: string;
+  baseLayers: TileLayer[];
+  defaultBaseLayer: string;
+  overlays?: TileLayer[];
   center: [number, number];
   zoom: number;
 }
 
-export interface Tile {
+export interface TileLayer {
   name: string;
   attribution?: string;
   url?: string;

@@ -14,15 +14,16 @@ limitations under the Licence. */
 
 export default ({ number, color }) => {
   let numberCircleStyle = {
-    display: "block",
+    display: "flex",
     height: 20,
     width: 20,
-    lineHeight: "25px",
     borderRadius: 10,
     backgroundColor: color || "#000",
     color: "#fff",
     textAlign: "center",
     fontSize: 12,
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   const offSet = !isNaN(number) && String(number).length === 2 ? -2 : 0;

@@ -21,7 +21,7 @@
     "ModernUI": true
   },
   "mapConfig": {
-    "tiles": [
+    "baseLayers": [
       {
         "name":"OpenStreetMap",
         "url": "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -38,7 +38,7 @@
         "componentName": "KartverketFlyFoto"
       }
     ],
-    "defaultTile": "OpenStreetMap",
+    "defaultBaseLayer": "OpenStreetMap",
     "center": [64.349421, 16.809082],
     "zoom": 6
   },

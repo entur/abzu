@@ -21,11 +21,7 @@ type CodeBadgeProps = {
 };
 
 export const CodeBadge = ({ icon, type }: CodeBadgeProps) => {
-  return (
-    <div className={type}>
-      <div style={{ marginTop: 2 }}>{icon}</div>
-    </div>
-  );
+  return <div className={type}>{icon}</div>;
 };
 
 type CodeProps = {
@@ -36,14 +32,20 @@ type CodeProps = {
 
 const Code = ({ type, value, defaultValue }: CodeProps) => {
   const valueIsSet = isSet(value);
+  const displayValue = String((valueIsSet ? value : defaultValue) ?? "");
 
   return (
     <div className={type}>
-      {valueIsSet ? (
-        <div style={{ marginTop: 2 }}>{value}</div>
-      ) : (
-        <div style={{ marginTop: 4, fontSize: 8 }}>{defaultValue}</div>
-      )}
+      <span
+        title={displayValue}
+        style={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {displayValue}
+      </span>
     </div>
   );
 };

@@ -20,7 +20,7 @@ import Tag from "../MainPage/Tag";
 
 class TagItem extends Component {
   render() {
-    const { tag, handleDelete, intl } = this.props;
+    const { tag, handleDelete, intl, disabled } = this.props;
     const columnStyle = {
       flex: 1,
       fontSize: "0.8em",
@@ -48,11 +48,13 @@ class TagItem extends Component {
         <div style={{ ...columnStyle, flex: 3, fontSize: "0.7em" }}>
           {moment(tag.created).locale("nb").format("DD-MM-YYYY HH:mm")}
         </div>
-        <div style={{ ...columnStyle, flex: 1, padding: 0 }}>
-          <IconButton onClick={() => handleDelete(tag.name, tag.idReference)}>
-            <MdDelete style={{ color: "rgb(223, 84, 74)" }} />
-          </IconButton>
-        </div>
+        {!disabled && (
+          <div style={{ ...columnStyle, flex: 1, padding: 0 }}>
+            <IconButton onClick={() => handleDelete(tag.name, tag.idReference)}>
+              <MdDelete style={{ color: "rgb(223, 84, 74)" }} />
+            </IconButton>
+          </div>
+        )}
       </div>
     );
   }

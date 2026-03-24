@@ -15,6 +15,7 @@
 import debounce from "lodash.debounce";
 import { Component } from "react";
 import { connect } from "react-redux";
+import { UserActions } from "../../actions/";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
 import LeafletMap from "../Map/LeafletMap";
@@ -37,10 +38,19 @@ class GroupOfStopPlaceMap extends Component {
     this.handleMapMoveEnd = debounce(mapEnd, 500);
   }
 
+  handleBaselayerChanged(value) {
+    this.props.dispatch(UserActions.changeActiveBaselayer(value));
+  }
+
+  handleOverlaysChanged(overlayNames) {
+    this.props.dispatch(UserActions.changeActiveOverlays(overlayNames));
+  }
+
   render() {
     const {
       position,
       activeBaselayer,
+      activeOverlays,
       enablePolylines,
       zoom,
       markers,
@@ -57,6 +67,9 @@ class GroupOfStopPlaceMap extends Component {
         handleMapMoveEnd={this.handleMapMoveEnd.bind(this)}
         dragableMarkers={false}
         activeBaselayer={activeBaselayer}
+        handleBaselayerChanged={this.handleBaselayerChanged.bind(this)}
+        activeOverlays={activeOverlays}
+        handleOverlaysChanged={this.handleOverlaysChanged.bind(this)}
         enablePolylines={enablePolylines}
         handleDragEnd={() => {}}
         uiMode={uiMode}
@@ -67,6 +80,7 @@ class GroupOfStopPlaceMap extends Component {
 
 const mapStateToProps = ({ stopPlace, user, stopPlacesGroup }) => ({
   activeBaselayer: user.activeBaselayer,
+  activeOverlays: user.activeOverlays,
   enablePolylines: stopPlace.enablePolylines,
   ignoreStopId: stopPlacesGroup.current.id,
   markers: stopPlacesGroup.current.members

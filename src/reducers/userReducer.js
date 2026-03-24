@@ -28,6 +28,7 @@ export const initialState = {
     ],
     text: "",
     showFutureAndExpired: false,
+    showMoreFilterOptions: false,
   },
   snackbarOptions: {
     isOpen: false,
@@ -43,6 +44,7 @@ export const initialState = {
   activeElementTab: 0,
   activeBaselayer: Settings.getMapLayer(),
   uiMode: Settings.getUIMode(),
+  activeOverlays: Settings.getActiveOverlays(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
   showEditStopAdditional: false,
@@ -186,6 +188,14 @@ const userReducer = (state = initialState, action) => {
         },
       });
 
+    case types.SET_SHOW_MORE_FILTER_OPTIONS:
+      return Object.assign({}, state, {
+        searchFilters: {
+          ...state.searchFilters,
+          showMoreFilterOptions: action.payload,
+        },
+      });
+
     case types.OPENED_FAVORITE_NAME_DIALOG:
       return Object.assign({}, state, { favoriteNameDialogIsOpen: true });
 
@@ -210,6 +220,9 @@ const userReducer = (state = initialState, action) => {
 
     case types.CHANGED_ACTIVE_BASELAYER:
       return Object.assign({}, state, { activeBaselayer: action.payload });
+
+    case types.CHANGED_ACTIVE_OVERLAYS:
+      return Object.assign({}, state, { activeOverlays: action.payload });
 
     case types.SET_MISSING_COORDINATES:
       let newMissingCoordsMap = Object.assign({}, state.missingCoordsMap);

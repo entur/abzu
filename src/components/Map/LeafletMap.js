@@ -26,7 +26,7 @@ import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { DynamicTileLayer } from "./DynamicTileLayer";
 import { MapControls } from "./MapControls";
-import { defaultCenterPosition, defaultOSMTile } from "./mapDefaults";
+import { defaultCenterPosition, defaultOSMTileLayer } from "./mapDefaults";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";
@@ -52,11 +52,13 @@ export const LeafLetMap = ({
   handleZoomEnd,
   activeBaselayer,
   handleBaselayerChanged,
+  activeOverlays = [],
+  handleOverlaysChanged,
   onMapReady = () => {},
   uiMode,
 }) => {
   const { mapConfig } = useContext(ConfigContext);
-  const defaultTiles = [defaultOSMTile];
+  const defaultBaseLayers = [defaultOSMTileLayer];
 
   const centerPosition = useMemo(() => {
     if (!position) {
@@ -82,7 +84,23 @@ export const LeafLetMap = ({
   }, [centerPosition[0], centerPosition[1], zoom]);
 
   const getCheckedBaseLayerByValue = (value) => activeBaselayer === value;
-  const { BaseLayer } = LayersControl;
+  const getCheckedOverlayByValue = (value) =>
+    Array.isArray(activeOverlays) && activeOverlays.includes(value);
+
+  const handleOverlayAdd = (name) => {
+    if (!handleOverlaysChanged) return;
+    const next = activeOverlays.includes(name)
+      ? activeOverlays
+      : [...activeOverlays, name];
+    handleOverlaysChanged(next);
+  };
+
+  const handleOverlayRemove = (name) => {
+    if (!handleOverlaysChanged) return;
+    handleOverlaysChanged(activeOverlays.filter((n) => n !== name));
+  };
+
+  const { BaseLayer, Overlay } = LayersControl;
 
   return (
     <MapContainer
@@ -96,6 +114,8 @@ export const LeafLetMap = ({
     >
       <MapEvents
         handleBaselayerChanged={handleBaselayerChanged}
+        handleOverlayAdd={handleOverlayAdd}
+        handleOverlayRemove={handleOverlayRemove}
         onDblclick={(e) => onDoubleClick && onDoubleClick(e, map)}
         onClick={(event) => {
           handleOnClick && handleOnClick(event, map);
@@ -160,6 +180,54 @@ export const LeafLetMap = ({
             <TariffZones position="topright" />
           </>
         )}
+        <LayersControl position="topright">
+          {(mapConfig?.baseLayers || defaultBaseLayers).map((layer) => {
+            return (
+              <BaseLayer
+                key={layer.name}
+                checked={getCheckedBaseLayerByValue(layer.name)}
+                name={layer.name}
+              >
+                {layer.component ? (
+                  <ComponentToggle
+                    feature={layer.componentName}
+                    componentProps={layer}
+                  />
+                ) : (
+                  <DynamicTileLayer
+                    attribution={layer.attribution}
+                    url={layer.url}
+                    maxZoom={layer.maxZoom}
+                    maxNativeZoom={layer.maxNativeZoom}
+                  />
+                )}
+              </BaseLayer>
+            );
+          })}
+          {mapConfig?.overlays?.map((overlay) => (
+            <Overlay
+              key={overlay.name}
+              name={overlay.name}
+              checked={getCheckedOverlayByValue(overlay.name)}
+            >
+              {overlay.component ? (
+                <ComponentToggle
+                  feature={overlay.componentName}
+                  componentProps={overlay}
+                />
+              ) : (
+                <DynamicTileLayer
+                  attribution={overlay.attribution}
+                  url={overlay.url}
+                  maxZoom={overlay.maxZoom}
+                  maxNativeZoom={overlay.maxNativeZoom}
+                />
+              )}
+            </Overlay>
+          ))}
+        </LayersControl>
+        <FareZones position="topright" />
+        <TariffZones position="topright" />
         <ScaleControl imperial={false} position="bottomright" />
         <ZoomControl position="bottomright" />
         <MarkerList

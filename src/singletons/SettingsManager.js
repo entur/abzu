@@ -29,6 +29,7 @@ const uiModeKey = rootKey + "::uiMode";
 const initialLatitudeKey = rootKey + "::initialLatitude";
 const initialLongitudeKey = rootKey + "::initialLongitude";
 const initialZoomKey = rootKey + "::initialZoom";
+const activeOverlaysKey = rootKey + "::activeOverlays";
 
 class SettingsManager {
   constructor() {
@@ -170,6 +171,20 @@ class SettingsManager {
   setInitialPosition(lat, lng) {
     this.setInitialLatitude(lat);
     this.setInitialLongitude(lng);
+  }
+
+  getActiveOverlays() {
+    const raw = localStorage.getItem(activeOverlaysKey);
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  setActiveOverlays(overlayNames) {
+    localStorage.setItem(activeOverlaysKey, JSON.stringify(overlayNames));
   }
 }
 
