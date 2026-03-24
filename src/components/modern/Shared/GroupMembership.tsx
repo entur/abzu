@@ -13,10 +13,15 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { GroupWork as GroupIcon } from "@mui/icons-material";
-import { Box, Chip, Link, Typography } from "@mui/material";
-import React from "react";
+import { Box, Chip, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
+import { useDispatch } from "react-redux";
+import { UserActions } from "../../../actions";
+import { getGroupOfStopPlacesById } from "../../../actions/TiamatActions";
 import Routes from "../../../routes/";
+import { LoadingDialog } from "./LoadingDialog";
 
 interface Group {
   id: string;
@@ -29,22 +34,37 @@ interface GroupMembershipProps {
 
 /**
  * Modern replacement for BelongsToGroup component
- * Shows group memberships as clickable chips
+ * Shows group memberships as clickable chips with in-app navigation
  */
 export const GroupMembership: React.FC<GroupMembershipProps> = ({ groups }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useDispatch() as any;
+  const [loading, setLoading] = useState(false);
+  const [loadingName, setLoadingName] = useState("");
+
+  const handleNavigate = useCallback(
+    (id: string, name: string) => {
+      flushSync(() => {
+        setLoading(true);
+        setLoadingName(name);
+      });
+
+      dispatch(getGroupOfStopPlacesById(id))
+        .then(() => {
+          dispatch(
+            UserActions.navigateTo(`/${Routes.GROUP_OF_STOP_PLACE}/`, id),
+          );
+          // Loading stays true — component unmounts when new panel renders
+        })
+        .catch(() => {
+          setLoading(false);
+          setLoadingName("");
+        });
+    },
+    [dispatch],
+  );
 
   if (!groups || groups.length === 0) return null;
-
-  const basename = import.meta.env.BASE_URL;
-
-  const getGroupUrl = (id: string) => {
-    // Remove trailing slash from basename if present, then construct clean path
-    const cleanBasename = basename.endsWith("/")
-      ? basename.slice(0, -1)
-      : basename;
-    return `${window.location.origin}${cleanBasename}/${Routes.GROUP_OF_STOP_PLACE}/${id}`;
-  };
 
   return (
     <Box
@@ -56,26 +76,28 @@ export const GroupMembership: React.FC<GroupMembershipProps> = ({ groups }) => {
         mb: 1,
       }}
     >
+      <LoadingDialog
+        open={loading}
+        message={
+          loadingName
+            ? `${formatMessage({ id: "loading" })} ${loadingName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
       <Typography variant="body2" sx={{ fontWeight: 600, mr: 0.5 }}>
         {formatMessage({ id: "belongs_to_groups" })}:
       </Typography>
       {groups.map((group) => (
-        <Link
+        <Chip
           key={group.id}
-          href={getGroupUrl(group.id)}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{ textDecoration: "none" }}
-        >
-          <Chip
-            icon={<GroupIcon />}
-            label={group.name}
-            size="small"
-            clickable
-            color="primary"
-            variant="outlined"
-          />
-        </Link>
+          icon={<GroupIcon />}
+          label={group.name}
+          size="small"
+          clickable
+          color="primary"
+          variant="outlined"
+          onClick={() => handleNavigate(group.id, group.name)}
+        />
       ))}
     </Box>
   );

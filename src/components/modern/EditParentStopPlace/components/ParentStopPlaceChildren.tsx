@@ -31,7 +31,11 @@ import {
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
-import { CopyIdButton, StopPlaceLink } from "../../Shared";
+import {
+  CopyIdButton,
+  LoadingDialog,
+  useNavigateToStopPlace,
+} from "../../Shared";
 import { ParentStopPlaceChildrenProps } from "../types";
 
 /**
@@ -52,9 +56,19 @@ export const ParentStopPlaceChildren: React.FC<
   const { formatMessage } = useIntl();
   const [childrenExpanded, setChildrenExpanded] = useState(true);
   const [adjacentExpanded, setAdjacentExpanded] = useState(true);
+  const { loading, loadingName, navigateTo } = useNavigateToStopPlace();
 
   return (
     <Box>
+      <LoadingDialog
+        open={loading}
+        message={
+          loadingName
+            ? `${formatMessage({ id: "loading" })} ${loadingName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
+
       <Divider />
 
       {/* ── Children section header ── */}
@@ -116,6 +130,7 @@ export const ParentStopPlaceChildren: React.FC<
         {children.map((child) => (
           <Box
             key={child.id}
+            onClick={() => navigateTo(child.id, child.name)}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -123,6 +138,7 @@ export const ParentStopPlaceChildren: React.FC<
               py: 1,
               borderBottom: "1px solid",
               borderColor: "divider",
+              cursor: "pointer",
               "&:hover": { bgcolor: "action.hover" },
             }}
           >
@@ -139,10 +155,13 @@ export const ParentStopPlaceChildren: React.FC<
               </Typography>
               {child.id && (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-                  <StopPlaceLink
-                    style={{ fontSize: "0.75rem" }}
-                    id={child.id}
-                  />
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ fontFamily: "monospace" }}
+                  >
+                    {child.id}
+                  </Typography>
                   <CopyIdButton idToCopy={child.id} size="small" />
                 </Box>
               )}
@@ -151,14 +170,16 @@ export const ParentStopPlaceChildren: React.FC<
               <Tooltip
                 title={formatMessage({ id: "remove_stop_from_parent_title" })}
               >
-                <IconButton
-                  size="small"
-                  color="error"
-                  onClick={() => onRemoveChild(child.id)}
-                  sx={{ ml: 0.5 }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
+                <span onClick={(e) => e.stopPropagation()}>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => onRemoveChild(child.id)}
+                    sx={{ ml: 0.5 }}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </span>
               </Tooltip>
             )}
           </Box>
@@ -214,6 +235,7 @@ export const ParentStopPlaceChildren: React.FC<
             {adjacentSites.map((site) => (
               <Box
                 key={site.ref}
+                onClick={() => site.id && navigateTo(site.id, site.name)}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -221,6 +243,7 @@ export const ParentStopPlaceChildren: React.FC<
                   py: 1,
                   borderBottom: "1px solid",
                   borderColor: "divider",
+                  cursor: site.id ? "pointer" : "default",
                   "&:hover": { bgcolor: "action.hover" },
                 }}
               >
@@ -236,6 +259,7 @@ export const ParentStopPlaceChildren: React.FC<
                         variant="caption"
                         color="text.secondary"
                         noWrap
+                        sx={{ fontFamily: "monospace" }}
                       >
                         {site.id}
                       </Typography>
@@ -245,14 +269,16 @@ export const ParentStopPlaceChildren: React.FC<
                 </Box>
                 {canEdit && (
                   <Tooltip title={formatMessage({ id: "remove" })}>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={() => onRemoveAdjacentSite(site.id, site.ref)}
-                      sx={{ ml: 0.5 }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    <span onClick={(e) => e.stopPropagation()}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => onRemoveAdjacentSite(site.id, site.ref)}
+                        sx={{ ml: 0.5 }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </span>
                   </Tooltip>
                 )}
               </Box>

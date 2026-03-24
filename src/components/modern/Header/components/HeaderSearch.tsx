@@ -46,6 +46,8 @@ export const HeaderSearch: React.FC = () => {
 
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
+  const [favoritesLoadingName, setFavoritesLoadingName] = useState("");
 
   const {
     stopTypeFilter,
@@ -162,7 +164,15 @@ export const HeaderSearch: React.FC = () => {
           />
         )}
 
-        {showFavorites && <FavoriteStopPlaces onClose={handleCloseSearch} />}
+        {showFavorites && (
+          <FavoriteStopPlaces
+            onClose={handleCloseSearch}
+            onLoadingChange={(loading, name) => {
+              setFavoritesLoading(loading);
+              setFavoritesLoadingName(name);
+            }}
+          />
+        )}
 
         {showMoreFilterOptions && (
           <FilterSection
@@ -193,12 +203,12 @@ export const HeaderSearch: React.FC = () => {
 
   return (
     <>
-      {/* Loading Dialog */}
+      {/* Loading Dialog — covers search, favorites, and stop place loading */}
       <LoadingDialog
-        open={loadingSelection || stopPlaceLoading}
+        open={loadingSelection || favoritesLoading || stopPlaceLoading}
         message={
-          loadingStopPlaceName
-            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName}`
+          loadingStopPlaceName || favoritesLoadingName
+            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName || favoritesLoadingName}`
             : formatMessage({ id: "loading" })
         }
       />

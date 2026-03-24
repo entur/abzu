@@ -24,6 +24,7 @@ import {
   SaveDialog,
   TagsDialog,
   TerminateStopPlaceDialog,
+  VersionsDialog,
 } from "../../Dialogs";
 
 interface ParentStopPlaceDialogsProps {
@@ -48,6 +49,8 @@ interface ParentStopPlaceDialogsProps {
   infoDialogOpen: boolean;
   nameDescriptionDialogOpen: boolean;
   childrenDialogOpen: boolean;
+  versionsDialogOpen: boolean;
+  versions: any[];
 
   // Dialog handlers
   handleSave: (userInput: any) => void;
@@ -87,6 +90,7 @@ interface ParentStopPlaceDialogsProps {
   onCloseInfoDialog: () => void;
   onCloseNameDescriptionDialog: () => void;
   onCloseChildrenDialog: () => void;
+  handleCloseVersionsDialog: () => void;
 }
 
 /**
@@ -113,6 +117,8 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   infoDialogOpen,
   nameDescriptionDialogOpen,
   childrenDialogOpen,
+  versionsDialogOpen,
+  versions,
   handleSave,
   handleCloseSaveDialog,
   handleGoBack,
@@ -145,6 +151,7 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   onCloseInfoDialog,
   onCloseNameDescriptionDialog,
   onCloseChildrenDialog,
+  handleCloseVersionsDialog,
 }) => {
   return (
     <>
@@ -274,6 +281,13 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
         onNameChange={handleNameChange}
         onDescriptionChange={handleDescriptionChange}
         onUrlChange={handleUrlChange}
+      />
+
+      {/* Versions Dialog */}
+      <VersionsDialog
+        open={versionsDialogOpen}
+        versions={versions}
+        handleClose={handleCloseVersionsDialog}
       />
 
       {/* Children Dialog */}

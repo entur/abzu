@@ -129,6 +129,7 @@ export interface ParentStopPlaceDetailsProps {
   onOpenAltNames: () => void;
   onOpenTags: () => void;
   onOpenCoordinates: () => void;
+  onOpenVersions: () => void;
 }
 
 export interface ParentStopPlaceChildrenProps {
@@ -189,6 +190,7 @@ export interface UseEditParentStopPlaceReturn {
   altNamesDialogOpen: boolean;
   tagsDialogOpen: boolean;
   coordinatesDialogOpen: boolean;
+  versionsDialogOpen: boolean;
 
   // Handlers
   handleOpenSaveDialog: () => void;
@@ -232,6 +234,8 @@ export interface UseEditParentStopPlaceReturn {
 
   handleOpenCoordinatesDialog: () => void;
   handleCloseCoordinatesDialog: () => void;
+  handleOpenVersionsDialog: () => void;
+  handleCloseVersionsDialog: () => void;
   handleSetCoordinates: (position: [number, number]) => void;
 
   handleNameChange: (value: string) => void;

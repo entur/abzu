@@ -22,6 +22,8 @@ import {
   TerminateStopPlaceDialog,
   VersionsDialog,
 } from "../../Dialogs";
+import { InfoDialog } from "../../EditParentStopPlace/components/InfoDialog";
+import { NameDescriptionDialog } from "../../EditParentStopPlace/components/NameDescriptionDialog";
 import { StopPlaceDialogsProps } from "../types";
 
 /**
@@ -44,6 +46,8 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   altNamesDialogOpen,
   keyValuesDialogOpen,
   versionsDialogOpen,
+  infoDialogOpen,
+  nameDescriptionDialogOpen,
   versions,
   handleSave,
   handleCloseSaveDialog,
@@ -66,6 +70,10 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   handleCloseAltNamesDialog,
   handleCloseKeyValuesDialog,
   handleCloseVersionsDialog,
+  handleCloseInfoDialog,
+  handleCloseNameDescriptionDialog,
+  handleNameChange,
+  handleDescriptionChange,
 }) => {
   return (
     <>
@@ -178,6 +186,27 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         open={versionsDialogOpen}
         versions={versions}
         handleClose={handleCloseVersionsDialog}
+      />
+
+      {/* 12. Info Dialog */}
+      <InfoDialog
+        open={infoDialogOpen}
+        name={stopPlace?.name}
+        id={stopPlace?.id || ""}
+        position={stopPlace?.location as [number, number] | undefined}
+        version={stopPlace?.version}
+        onClose={handleCloseInfoDialog}
+      />
+
+      {/* 13. Name / Description Dialog */}
+      <NameDescriptionDialog
+        open={nameDescriptionDialogOpen}
+        name={stopPlace?.name || ""}
+        description={stopPlace?.description}
+        canEdit={canEdit}
+        onClose={handleCloseNameDescriptionDialog}
+        onNameChange={handleNameChange}
+        onDescriptionChange={handleDescriptionChange}
       />
     </>
   );

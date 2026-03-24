@@ -87,6 +87,7 @@
   "audioInterfaceAvailable_no": "Ei audiojärjestelmää",
   "back": "Takaisin",
   "belongs_to_groups": "Pysäkkiryhmä:",
+  "parent_stop_place": "Vanhaspysäkki",
   "belongs_to_parent": "Kuuluu monimuotopysäkkiin",
   "beta_functionality": " (BETA)",
   "bike_parking": "Pyöräteline",

@@ -13,8 +13,6 @@
  limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Box,
@@ -85,13 +83,15 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
         bgcolor: theme.palette.background.paper,
       }}
     >
-      {/* Name - First Row */}
+      {/* Name + Expand - First Row */}
       <MinimizedBarHeader
         icon={icon}
         name={name}
         id={id}
         entityType={entityType}
         hasId={hasId}
+        isMobile={isMobile}
+        onExpand={onExpand}
       />
 
       {/* Icons - Second Row */}
@@ -121,27 +121,6 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
             />
           </>
         )}
-
-        {/* Expand/Collapse */}
-        <Tooltip title={formatMessage({ id: "expand" })} arrow>
-          <IconButton
-            size="small"
-            onClick={onExpand}
-            sx={{
-              color: theme.palette.primary.main,
-              bgcolor: theme.palette.action.hover,
-              "&:hover": {
-                bgcolor: theme.palette.action.selected,
-              },
-            }}
-          >
-            {isMobile ? (
-              <ExpandLessIcon fontSize="small" />
-            ) : (
-              <ExpandMoreIcon fontSize="small" />
-            )}
-          </IconButton>
-        </Tooltip>
 
         {/* Close */}
         <Tooltip title={formatMessage({ id: "close" })} arrow>

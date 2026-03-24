@@ -91,6 +91,8 @@ export interface StopPlace {
   isParent?: boolean;
   isNewStop?: boolean;
   isChildOfParent?: boolean;
+  parentStop?: { id: string; name: string };
+  groups?: Array<{ id: string; name: string }>;
   hasExpired?: boolean;
   permanentlyTerminated?: boolean;
   validBetween?: ValidBetween;
@@ -194,6 +196,8 @@ export interface StopPlaceDialogsProps {
   altNamesDialogOpen: boolean;
   keyValuesDialogOpen: boolean;
   versionsDialogOpen: boolean;
+  infoDialogOpen: boolean;
+  nameDescriptionDialogOpen: boolean;
   versions: any[];
   handleSave: (userInput: any) => void;
   handleCloseSaveDialog: () => void;
@@ -221,6 +225,10 @@ export interface StopPlaceDialogsProps {
   handleCloseAltNamesDialog: () => void;
   handleCloseKeyValuesDialog: () => void;
   handleCloseVersionsDialog: () => void;
+  handleCloseInfoDialog: () => void;
+  handleCloseNameDescriptionDialog: () => void;
+  handleNameChange: (name: string) => void;
+  handleDescriptionChange: (description: string) => void;
 }
 
 // --- Hook return types ---
@@ -248,6 +256,8 @@ export interface UseEditStopPageReturn {
   altNamesDialogOpen: boolean;
   keyValuesDialogOpen: boolean;
   versionsDialogOpen: boolean;
+  infoDialogOpen: boolean;
+  nameDescriptionDialogOpen: boolean;
 
   // Dialog handlers
   handleOpenSaveDialog: () => void;
@@ -281,6 +291,10 @@ export interface UseEditStopPageReturn {
   handleCloseKeyValuesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
+  handleOpenInfoDialog: () => void;
+  handleCloseInfoDialog: () => void;
+  handleOpenNameDescriptionDialog: () => void;
+  handleCloseNameDescriptionDialog: () => void;
 
   // Form handlers
   handleNameChange: (value: string) => void;

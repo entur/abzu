@@ -12,8 +12,11 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import { Box, Typography, useTheme } from "@mui/material";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import React from "react";
+import { useIntl } from "react-intl";
 import { FavoriteButton } from "../FavoriteButton";
 import { MinimizedBarHeaderProps } from "./types";
 
@@ -27,8 +30,11 @@ export const MinimizedBarHeader: React.FC<MinimizedBarHeaderProps> = ({
   id,
   entityType,
   hasId,
+  isMobile,
+  onExpand,
 }) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
 
   return (
     <Box
@@ -66,6 +72,25 @@ export const MinimizedBarHeader: React.FC<MinimizedBarHeaderProps> = ({
       {hasId && id && entityType && (
         <FavoriteButton id={id} name={name || ""} entityType={entityType} />
       )}
+
+      {/* Expand Button */}
+      <Tooltip title={formatMessage({ id: "expand" })} arrow>
+        <IconButton
+          size="small"
+          onClick={onExpand}
+          sx={{
+            color: theme.palette.primary.main,
+            bgcolor: theme.palette.action.hover,
+            "&:hover": { bgcolor: theme.palette.action.selected },
+          }}
+        >
+          {isMobile ? (
+            <ExpandLessIcon fontSize="small" />
+          ) : (
+            <ExpandMoreIcon fontSize="small" />
+          )}
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 };

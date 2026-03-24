@@ -30,6 +30,9 @@ export const useStopPlaceDialogs = () => {
   const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
   const [keyValuesDialogOpen, setKeyValuesDialogOpen] = useState(false);
   const [versionsDialogOpen, setVersionsDialogOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
+    useState(false);
 
   // Save dialog
   const handleOpenSaveDialog = useCallback(() => {
@@ -121,6 +124,24 @@ export const useStopPlaceDialogs = () => {
     setVersionsDialogOpen(false);
   }, []);
 
+  // Info dialog
+  const handleOpenInfoDialog = useCallback(() => {
+    setInfoDialogOpen(true);
+  }, []);
+
+  const handleCloseInfoDialog = useCallback(() => {
+    setInfoDialogOpen(false);
+  }, []);
+
+  // Name/description dialog
+  const handleOpenNameDescriptionDialog = useCallback(() => {
+    setNameDescriptionDialogOpen(true);
+  }, []);
+
+  const handleCloseNameDescriptionDialog = useCallback(() => {
+    setNameDescriptionDialogOpen(false);
+  }, []);
+
   return {
     confirmSaveDialogOpen,
     confirmGoBackOpen,
@@ -152,5 +173,11 @@ export const useStopPlaceDialogs = () => {
     versionsDialogOpen,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
+    infoDialogOpen,
+    handleOpenInfoDialog,
+    handleCloseInfoDialog,
+    nameDescriptionDialogOpen,
+    handleOpenNameDescriptionDialog,
+    handleCloseNameDescriptionDialog,
   };
 };

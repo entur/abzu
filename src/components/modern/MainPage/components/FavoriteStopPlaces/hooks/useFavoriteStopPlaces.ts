@@ -13,6 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useCallback, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../../../../../actions";
 import {
@@ -31,7 +32,10 @@ import {
  * Hook for managing favorite stop places
  * Handles fetching favorites, navigation, and CRUD operations
  */
-export const useFavoriteStopPlaces = (onClose?: () => void) => {
+export const useFavoriteStopPlaces = (
+  onClose?: () => void,
+  onLoadingChange?: (loading: boolean, name: string) => void,
+) => {
   const dispatch = useDispatch() as any;
   const favoriteManager = FavoriteStopPlacesManager.getInstance();
 
@@ -52,9 +56,15 @@ export const useFavoriteStopPlaces = (onClose?: () => void) => {
         onClose();
       }
 
-      // Set loading state
-      setLoadingSelection(true);
-      setLoadingStopPlaceName(favorite.name || "");
+      if (onLoadingChange) {
+        onLoadingChange(true, favorite.name || "");
+      } else {
+        // Fallback: force a synchronous render when no external handler is provided.
+        flushSync(() => {
+          setLoadingSelection(true);
+          setLoadingStopPlaceName(favorite.name || "");
+        });
+      }
 
       const stopPlaceId = favorite.id;
       const entityType = favorite.entityType;
@@ -74,6 +84,7 @@ export const useFavoriteStopPlaces = (onClose?: () => void) => {
           .finally(() => {
             setLoadingSelection(false);
             setLoadingStopPlaceName("");
+            onLoadingChange?.(false, "");
           });
       } else if (stopPlaceId) {
         // Fetch stop place data
@@ -92,10 +103,11 @@ export const useFavoriteStopPlaces = (onClose?: () => void) => {
           .finally(() => {
             setLoadingSelection(false);
             setLoadingStopPlaceName("");
+            onLoadingChange?.(false, "");
           });
       }
     },
-    [dispatch, onClose, favoriteManager],
+    [dispatch, onClose, onLoadingChange, favoriteManager],
   );
 
   // Handle removing a single favorite

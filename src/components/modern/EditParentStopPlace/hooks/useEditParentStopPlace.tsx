@@ -50,6 +50,7 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
+    versionsDialogOpen,
     removingChildId,
     handleOpenSaveDialog,
     handleCloseSaveDialog,
@@ -67,6 +68,8 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleCloseTagsDialog,
     handleOpenCoordinatesDialog,
     handleCloseCoordinatesDialog,
+    handleOpenVersionsDialog,
+    handleCloseVersionsDialog,
   } = useParentStopPlaceDialogs();
 
   // 3. CRUD operations (save, undo, go back, terminate)
@@ -145,6 +148,7 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
+    versionsDialogOpen,
     handleOpenSaveDialog,
     handleCloseSaveDialog,
     handleSave,
@@ -172,6 +176,8 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleCloseTagsDialog,
     handleOpenCoordinatesDialog,
     handleCloseCoordinatesDialog,
+    handleOpenVersionsDialog,
+    handleCloseVersionsDialog,
     handleSetCoordinates,
     handleNameChange,
     handleDescriptionChange,

@@ -34,7 +34,7 @@ export interface NameDescriptionDialogProps {
   onClose: () => void;
   onNameChange: (name: string) => void;
   onDescriptionChange: (description: string) => void;
-  onUrlChange: (url: string) => void;
+  onUrlChange?: (url: string) => void;
 }
 
 /**
@@ -105,14 +105,16 @@ export const NameDescriptionDialog: React.FC<NameDescriptionDialogProps> = ({
           />
 
           {/* URL Field */}
-          <TextField
-            label={formatMessage({ id: "url" })}
-            value={url || ""}
-            onChange={(e) => onUrlChange(e.target.value)}
-            disabled={!canEdit}
-            fullWidth
-            type="url"
-          />
+          {onUrlChange !== undefined && (
+            <TextField
+              label={formatMessage({ id: "url" })}
+              value={url || ""}
+              onChange={(e) => onUrlChange(e.target.value)}
+              disabled={!canEdit}
+              fullWidth
+              type="url"
+            />
+          )}
         </Box>
       </DialogContent>
     </Dialog>

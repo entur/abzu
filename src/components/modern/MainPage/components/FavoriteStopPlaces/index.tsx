@@ -13,13 +13,12 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { useIntl } from "react-intl";
-import { LoadingDialog } from "../../../Shared";
 import { EmptyFavorites, FavoritesList } from "./components";
 import { useFavoriteStopPlaces } from "./hooks/useFavoriteStopPlaces";
 
 interface FavoriteStopPlacesProps {
   onClose?: () => void;
+  onLoadingChange?: (loading: boolean, name: string) => void;
 }
 
 /**
@@ -29,29 +28,17 @@ interface FavoriteStopPlacesProps {
  */
 export const FavoriteStopPlaces: React.FC<FavoriteStopPlacesProps> = ({
   onClose,
+  onLoadingChange,
 }) => {
-  const { formatMessage } = useIntl();
-
   const {
     favorites,
-    loadingSelection,
-    loadingStopPlaceName,
     handleSelectFavorite,
     handleRemoveFavorite,
     handleClearAll,
-  } = useFavoriteStopPlaces(onClose);
+  } = useFavoriteStopPlaces(onClose, onLoadingChange);
 
   return (
     <>
-      <LoadingDialog
-        open={loadingSelection}
-        message={
-          loadingStopPlaceName
-            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName}`
-            : formatMessage({ id: "loading" })
-        }
-      />
-
       {favorites.length === 0 ? (
         <EmptyFavorites />
       ) : (

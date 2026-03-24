@@ -12,7 +12,7 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import { IconButton, Tooltip, useTheme } from "@mui/material";
+import { Divider, IconButton, Tooltip, useTheme } from "@mui/material";
 import React from "react";
 import { MinimizedBarActionsProps } from "./types";
 
@@ -52,26 +52,38 @@ export const MinimizedBarActions: React.FC<MinimizedBarActionsProps> = ({
     }
   };
 
+  const infoActions = desktopActions.filter(
+    (a) => (a.group ?? "info") === "info",
+  );
+  const actionActions = desktopActions.filter((a) => a.group === "action");
+  const showDivider = infoActions.length > 0 && actionActions.length > 0;
+
+  const renderButton = (action: (typeof desktopActions)[0]) => (
+    <Tooltip key={action.id} title={action.tooltip || action.label} arrow>
+      <span>
+        <IconButton
+          size="small"
+          onClick={action.onClick}
+          disabled={action.disabled}
+          sx={{
+            color: getButtonColor(action.color, action.disabled),
+            "&:hover": { bgcolor: theme.palette.action.hover },
+            fontSize: "1.25rem",
+          }}
+        >
+          {action.icon}
+        </IconButton>
+      </span>
+    </Tooltip>
+  );
+
   return (
     <>
-      {desktopActions.map((action) => (
-        <Tooltip key={action.id} title={action.tooltip || action.label} arrow>
-          <span>
-            <IconButton
-              size="small"
-              onClick={action.onClick}
-              disabled={action.disabled}
-              sx={{
-                color: getButtonColor(action.color, action.disabled),
-                "&:hover": { bgcolor: theme.palette.action.hover },
-                fontSize: "1.25rem",
-              }}
-            >
-              {action.icon}
-            </IconButton>
-          </span>
-        </Tooltip>
-      ))}
+      {infoActions.map(renderButton)}
+      {showDivider && (
+        <Divider orientation="vertical" flexItem sx={{ mx: 0.25 }} />
+      )}
+      {actionActions.map(renderButton)}
     </>
   );
 };

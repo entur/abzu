@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import HistoryIcon from "@mui/icons-material/History";
 import LabelIcon from "@mui/icons-material/Label";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import ShortTextIcon from "@mui/icons-material/ShortText";
@@ -52,25 +53,19 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
   onOpenAltNames,
   onOpenTags,
   onOpenCoordinates,
+  onOpenVersions,
 }) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
-      {/* Version + Expired Warning */}
-      {version && (
+      {/* Expired Warning */}
+      {hasExpired && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            {formatMessage({ id: "version" })} {version}
+          <WarningIcon sx={{ color: "warning.main", fontSize: "1rem" }} />
+          <Typography variant="caption" color="error.main">
+            {formatMessage({ id: "stop_has_expired" })}
           </Typography>
-          {hasExpired && (
-            <>
-              <WarningIcon sx={{ color: "warning.main", fontSize: "1rem" }} />
-              <Typography variant="caption" color="error.main">
-                {formatMessage({ id: "stop_has_expired" })}
-              </Typography>
-            </>
-          )}
         </Box>
       )}
 
@@ -147,7 +142,7 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
         />
       )}
 
-      {/* Button row: Alt Names + Tags */}
+      {/* Button row: Alt Names + Tags + Version */}
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
         <Button
           size="small"
@@ -165,6 +160,16 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
             variant="outlined"
           >
             {formatMessage({ id: "tags" })}
+          </Button>
+        )}
+        {version !== undefined && version !== null && (
+          <Button
+            size="small"
+            startIcon={<HistoryIcon fontSize="small" />}
+            onClick={onOpenVersions}
+            variant="outlined"
+          >
+            {formatMessage({ id: "version" })} {version}
           </Button>
         )}
       </Box>

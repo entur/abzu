@@ -70,6 +70,12 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     versionsDialogOpen,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
+    infoDialogOpen,
+    handleOpenInfoDialog,
+    handleCloseInfoDialog,
+    nameDescriptionDialogOpen,
+    handleOpenNameDescriptionDialog,
+    handleCloseNameDescriptionDialog,
   } = useStopPlaceDialogs();
 
   // 3. CRUD (save, undo, go back, terminate)
@@ -191,6 +197,12 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleCloseKeyValuesDialog,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
+    infoDialogOpen,
+    handleOpenInfoDialog,
+    handleCloseInfoDialog,
+    nameDescriptionDialogOpen,
+    handleOpenNameDescriptionDialog,
+    handleCloseNameDescriptionDialog,
 
     handleNameChange,
     handleDescriptionChange,

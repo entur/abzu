@@ -16,6 +16,10 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import {
+  getDrawerPreference,
+  setDrawerPreference,
+} from "../Shared/drawerPreference";
+import {
   ParentStopPlaceDialogs,
   ParentStopPlaceDrawerContent,
   ParentStopPlaceMinimizedBar,
@@ -42,8 +46,8 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Local state for drawer and mini dialogs (default: collapsed)
-  const [internalOpen, setInternalOpen] = useState(false);
+  // Local state for drawer and mini dialogs (sticky: remembers user preference)
+  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
     useState(false);
@@ -57,7 +61,9 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     if (isControlled && controlledOnClose) {
       controlledOnClose();
     } else {
-      setInternalOpen(!internalOpen);
+      const next = !internalOpen;
+      setDrawerPreference(next);
+      setInternalOpen(next);
     }
   };
 
@@ -66,6 +72,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     stopPlace,
     originalStopPlace,
     isModified,
+    versions,
     canEdit,
     canDelete,
     confirmSaveDialogOpen,
@@ -78,6 +85,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
+    versionsDialogOpen,
     handleOpenSaveDialog,
     handleCloseSaveDialog,
     handleSave,
@@ -105,6 +113,8 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     handleCloseTagsDialog,
     handleOpenCoordinatesDialog,
     handleCloseCoordinatesDialog,
+    handleOpenVersionsDialog,
+    handleCloseVersionsDialog,
     handleSetCoordinates,
     handleNameChange,
     handleDescriptionChange,
@@ -146,7 +156,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         onOpenChildren={() => setChildrenDialogOpen(true)}
         onOpenAltNames={handleOpenAltNamesDialog}
         onOpenTags={handleOpenTagsDialog}
-        onOpenCoordinates={handleOpenCoordinatesDialog}
+        onOpenVersions={handleOpenVersionsDialog}
         onOpenTerminate={handleOpenTerminateDialog}
         onOpenUndo={handleOpenUndoDialog}
         onOpenSave={handleOpenSaveDialog}
@@ -170,6 +180,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         onOpenAltNames={handleOpenAltNamesDialog}
         onOpenTags={handleOpenTagsDialog}
         onOpenCoordinates={handleOpenCoordinatesDialog}
+        onOpenVersions={handleOpenVersionsDialog}
         onOpenAddChild={handleOpenAddChildDialog}
         onOpenRemoveChild={handleOpenRemoveChildDialog}
         onRemoveAdjacentSite={handleRemoveAdjacentSite}
@@ -200,6 +211,8 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         infoDialogOpen={infoDialogOpen}
         nameDescriptionDialogOpen={nameDescriptionDialogOpen}
         childrenDialogOpen={childrenDialogOpen}
+        versionsDialogOpen={versionsDialogOpen}
+        versions={versions}
         handleSave={handleSave}
         handleCloseSaveDialog={handleCloseSaveDialog}
         handleGoBack={handleGoBack}
@@ -232,6 +245,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         onCloseInfoDialog={() => setInfoDialogOpen(false)}
         onCloseNameDescriptionDialog={() => setNameDescriptionDialogOpen(false)}
         onCloseChildrenDialog={() => setChildrenDialogOpen(false)}
+        handleCloseVersionsDialog={handleCloseVersionsDialog}
       />
     </>
   );

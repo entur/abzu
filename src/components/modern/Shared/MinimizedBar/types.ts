@@ -15,7 +15,9 @@
 import React from "react";
 
 /**
- * Represents a single action button in the minimized bar
+ * Represents a single action button in the minimized bar.
+ * group="info"   → informational/navigational icon (default)
+ * group="action" → destructive or save/undo button; rendered after a divider
  */
 export interface MinimizedBarAction {
   id: string;
@@ -26,6 +28,7 @@ export interface MinimizedBarAction {
   color?: "primary" | "secondary" | "error" | "default";
   tooltip?: string;
   showOnDesktop?: boolean; // If false, only shows in mobile menu
+  group?: "info" | "action";
 }
 
 /**
@@ -62,6 +65,8 @@ export interface MinimizedBarHeaderProps {
   id?: string;
   entityType?: string;
   hasId: boolean;
+  isMobile: boolean;
+  onExpand: () => void;
 }
 
 /**

@@ -37,6 +37,7 @@ interface ParentStopPlaceDrawerContentProps {
   onOpenAltNames: () => void;
   onOpenTags: () => void;
   onOpenCoordinates: () => void;
+  onOpenVersions: () => void;
   onOpenAddChild: () => void;
   onOpenRemoveChild: (childId: string) => void;
   onRemoveAdjacentSite: (stopPlaceId: string, adjacentRef: string) => void;
@@ -69,6 +70,7 @@ export const ParentStopPlaceDrawerContent: React.FC<
   onOpenAltNames,
   onOpenTags,
   onOpenCoordinates,
+  onOpenVersions,
   onOpenAddChild,
   onOpenRemoveChild,
   onRemoveAdjacentSite,
@@ -151,6 +153,7 @@ export const ParentStopPlaceDrawerContent: React.FC<
             onOpenAltNames={onOpenAltNames}
             onOpenTags={onOpenTags}
             onOpenCoordinates={onOpenCoordinates}
+            onOpenVersions={onOpenVersions}
           />
 
           {/* Children List */}

@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import debounce from "lodash.debounce";
 import { useCallback, useMemo } from "react";
+import { flushSync } from "react-dom";
 import { useDispatch } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../../../../actions/";
 import {
@@ -132,12 +133,16 @@ export const useSearchHandlers = (
           return;
         }
 
-        // Set loading state when selecting an item
-        setLoadingSelection(true);
-        setLoadingStopPlaceName(result.element.name || "");
+        const element = result.element;
+        const stopPlaceId = element.id;
+        const entityType = element.entityType;
 
-        const stopPlaceId = result.element.id;
-        const entityType = result.element.entityType;
+        // Force a synchronous render so the dialog is visible before the async fetch starts.
+        // React 18 batching can otherwise collapse loading=true/false into a single frame.
+        flushSync(() => {
+          setLoadingSelection(true);
+          setLoadingStopPlaceName(element.name || "");
+        });
 
         // Determine the route for navigation
         const route =
@@ -176,7 +181,7 @@ export const useSearchHandlers = (
               setLoadingStopPlaceName("");
             });
         } else {
-          dispatch(StopPlaceActions.setMarkerOnMap(result.element));
+          dispatch(StopPlaceActions.setMarkerOnMap(element));
           // Navigate to edit page after setting marker
           dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
           setLoadingSelection(false);

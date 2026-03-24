@@ -87,6 +87,7 @@
   "audioInterfaceAvailable_no": "Ingen audiointerface",
   "back": "Tillbaka",
   "belongs_to_groups": "Hållplatsgrupper:",
+  "parent_stop_place": "Förälderhållplats",
   "belongs_to_parent": "Tillhör multimodal hållplats",
   "beta_functionality": " (BETA)",
   "bike_parking": "Cykelparkering",

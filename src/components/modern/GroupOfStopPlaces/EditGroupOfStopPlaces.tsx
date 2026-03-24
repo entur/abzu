@@ -17,6 +17,10 @@ import { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import {
+  getDrawerPreference,
+  setDrawerPreference,
+} from "../Shared/drawerPreference";
+import {
   GroupOfStopPlacesDialogs,
   GroupOfStopPlacesDrawerContent,
   GroupOfStopPlacesMinimizedBar,
@@ -42,8 +46,8 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Local state for drawer and mini dialogs (default: collapsed)
-  const [internalOpen, setInternalOpen] = useState(false);
+  // Local state for drawer and mini dialogs (sticky: remembers user preference)
+  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
     useState(false);
@@ -57,7 +61,9 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
     if (isControlled && controlledOnClose) {
       controlledOnClose();
     } else {
-      setInternalOpen(!internalOpen);
+      const next = !internalOpen;
+      setDrawerPreference(next);
+      setInternalOpen(next);
     }
   };
 

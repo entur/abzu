@@ -15,6 +15,7 @@ limitations under the Licence. */
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DescriptionIcon from "@mui/icons-material/Description";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import HistoryIcon from "@mui/icons-material/History";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -22,7 +23,6 @@ import LabelIcon from "@mui/icons-material/Label";
 import SaveIcon from "@mui/icons-material/Save";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import UndoIcon from "@mui/icons-material/Undo";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
@@ -46,12 +46,17 @@ import BusShelter from "../../../static/icons/facilities/BusShelter";
 import AccessibilityStopTab from "../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../EditStopPage/Facility/FacilitiesStopTab";
+import ModalityIconImg from "../../MainPage/ModalityIconImg";
 import {
   CopyIdButton,
   FavoriteButton,
   MinimizedBar,
   MinimizedBarAction,
 } from "../Shared";
+import {
+  getDrawerPreference,
+  setDrawerPreference,
+} from "../Shared/drawerPreference";
 import {
   ParkingPanel,
   ParkingSection,
@@ -85,14 +90,18 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [internalOpen, setInternalOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
 
   const [view, setView] = useState<View>({ type: "stopPlace" });
   const [activeStopTab, setActiveStopTab] = useState(0);
   const [timetableDialogOpen, setTimetableDialogOpen] = useState(false);
 
-  const handleToggle = () => setInternalOpen((prev) => !prev);
+  const handleToggle = () => {
+    const next = !internalOpen;
+    setDrawerPreference(next);
+    setInternalOpen(next);
+  };
   const handleBackToStopPlace = useCallback(
     () => setView({ type: "stopPlace" }),
     [],
@@ -116,6 +125,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     altNamesDialogOpen,
     keyValuesDialogOpen,
     versionsDialogOpen,
+    infoDialogOpen,
+    nameDescriptionDialogOpen,
     handleOpenSaveDialog,
     handleCloseSaveDialog,
     handleSave,
@@ -141,6 +152,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleCloseKeyValuesDialog,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
+    handleOpenInfoDialog,
+    handleCloseInfoDialog,
+    handleOpenNameDescriptionDialog,
+    handleCloseNameDescriptionDialog,
     handleNameChange,
     handleDescriptionChange,
     handleTypeChange,
@@ -214,6 +229,20 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   // Actions for MinimizedBar
   const minimizedBarActions: MinimizedBarAction[] = [
     {
+      id: "info",
+      icon: <InfoOutlinedIcon fontSize="small" />,
+      label: formatMessage({ id: "information" }),
+      onClick: handleOpenInfoDialog,
+      tooltip: formatMessage({ id: "information" }),
+    },
+    {
+      id: "name-description",
+      icon: <DescriptionIcon fontSize="small" />,
+      label: formatMessage({ id: "edit_name_and_description" }),
+      onClick: handleOpenNameDescriptionDialog,
+      tooltip: formatMessage({ id: "edit_name_and_description" }),
+    },
+    {
       id: "tags",
       icon: <LabelIcon fontSize="small" />,
       label: formatMessage({ id: "tags" }),
@@ -254,6 +283,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
             onClick: handleOpenTerminateDialog,
             disabled: !canDelete && !stopPlace.hasExpired,
             color: "error" as const,
+            group: "action" as const,
             tooltip: formatMessage({
               id: stopPlace.hasExpired
                 ? "delete_stop_place"
@@ -270,6 +300,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
             label: formatMessage({ id: "undo_changes" }),
             onClick: handleOpenUndoDialog,
             disabled: !isModified,
+            group: "action" as const,
             tooltip: formatMessage({ id: "undo_changes" }),
           },
           {
@@ -279,6 +310,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
             onClick: handleOpenSaveDialog,
             disabled: !isModified || !stopPlace.name,
             color: "primary" as const,
+            group: "action" as const,
             tooltip: formatMessage({ id: "save" }),
           },
         ]
@@ -287,7 +319,14 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   const minimizedBar = (
     <MinimizedBar
-      icon={<TrafficIcon />}
+      icon={
+        <ModalityIconImg
+          type={stopPlace.stopPlaceType || "other"}
+          submode={stopPlace.submode}
+          svgStyle={{ width: 24, height: 24 }}
+          iconStyle={{ display: "flex" }}
+        />
+      }
       name={stopName}
       id={originalStopPlace?.id}
       entityType={Entities.STOP_PLACE}
@@ -633,6 +672,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         altNamesDialogOpen={altNamesDialogOpen}
         keyValuesDialogOpen={keyValuesDialogOpen}
         versionsDialogOpen={versionsDialogOpen}
+        infoDialogOpen={infoDialogOpen}
+        nameDescriptionDialogOpen={nameDescriptionDialogOpen}
         versions={versions}
         handleSave={handleSave}
         handleCloseSaveDialog={handleCloseSaveDialog}
@@ -655,6 +696,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         handleCloseAltNamesDialog={handleCloseAltNamesDialog}
         handleCloseKeyValuesDialog={handleCloseKeyValuesDialog}
         handleCloseVersionsDialog={handleCloseVersionsDialog}
+        handleCloseInfoDialog={handleCloseInfoDialog}
+        handleCloseNameDescriptionDialog={handleCloseNameDescriptionDialog}
+        handleNameChange={handleNameChange}
+        handleDescriptionChange={handleDescriptionChange}
       />
     </>
   );

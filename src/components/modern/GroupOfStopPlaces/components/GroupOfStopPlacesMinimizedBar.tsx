@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DescriptionIcon from "@mui/icons-material/Description";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import InfoIcon from "@mui/icons-material/Info";
-import PlaceIcon from "@mui/icons-material/Place";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Slide, useTheme } from "@mui/material";
@@ -91,7 +91,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
       },
       {
         id: "stop-places",
-        icon: <PlaceIcon fontSize="small" />,
+        icon: <AccountTreeIcon fontSize="small" />,
         label: formatMessage({ id: "manage_stop_places" }),
         onClick: onOpenStopPlaces,
         tooltip: formatMessage({ id: "manage_stop_places" }),
@@ -105,6 +105,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
               onClick: onOpenDelete,
               disabled: !canDelete,
               color: "error" as const,
+              group: "action" as const,
               tooltip: formatMessage({ id: "remove" }),
             },
           ]
@@ -117,6 +118,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
               label: formatMessage({ id: "undo_changes" }),
               onClick: onOpenUndo,
               disabled: !isModified,
+              group: "action" as const,
               tooltip: formatMessage({ id: "undo_changes" }),
             },
             {
@@ -126,6 +128,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
               onClick: onOpenSave,
               disabled: !isModified || !groupOfStopPlaces.name,
               color: "primary" as const,
+              group: "action" as const,
               tooltip: formatMessage({ id: "save" }),
             },
           ]

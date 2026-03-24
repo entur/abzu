@@ -15,10 +15,10 @@ limitations under the Licence. */
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DescriptionIcon from "@mui/icons-material/Description";
+import HistoryIcon from "@mui/icons-material/History";
 import InfoIcon from "@mui/icons-material/Info";
 import LabelIcon from "@mui/icons-material/Label";
 import Link from "@mui/icons-material/Link";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SaveIcon from "@mui/icons-material/Save";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import UndoIcon from "@mui/icons-material/Undo";
@@ -45,7 +45,7 @@ interface ParentStopPlaceMinimizedBarProps {
   onOpenChildren: () => void;
   onOpenAltNames: () => void;
   onOpenTags: () => void;
-  onOpenCoordinates: () => void;
+  onOpenVersions: () => void;
   onOpenTerminate: () => void;
   onOpenUndo: () => void;
   onOpenSave: () => void;
@@ -74,7 +74,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
   onOpenChildren,
   onOpenAltNames,
   onOpenTags,
-  onOpenCoordinates,
+  onOpenVersions,
   onOpenTerminate,
   onOpenUndo,
   onOpenSave,
@@ -106,13 +106,6 @@ export const ParentStopPlaceMinimizedBar: React.FC<
         tooltip: formatMessage({ id: "children" }),
       },
       {
-        id: "alt-names",
-        icon: <ShortTextIcon fontSize="small" />,
-        label: formatMessage({ id: "alternative_names" }),
-        onClick: onOpenAltNames,
-        tooltip: formatMessage({ id: "alternative_names" }),
-      },
-      {
         id: "tags",
         icon: <LabelIcon fontSize="small" />,
         label: formatMessage({ id: "tags" }),
@@ -120,11 +113,18 @@ export const ParentStopPlaceMinimizedBar: React.FC<
         tooltip: formatMessage({ id: "tags" }),
       },
       {
-        id: "coordinates",
-        icon: <LocationOnIcon fontSize="small" />,
-        label: formatMessage({ id: "coordinates" }),
-        onClick: onOpenCoordinates,
-        tooltip: formatMessage({ id: "coordinates" }),
+        id: "alt-names",
+        icon: <ShortTextIcon fontSize="small" />,
+        label: formatMessage({ id: "alternative_names" }),
+        onClick: onOpenAltNames,
+        tooltip: formatMessage({ id: "alternative_names" }),
+      },
+      {
+        id: "versions",
+        icon: <HistoryIcon fontSize="small" />,
+        label: formatMessage({ id: "versions" }),
+        onClick: onOpenVersions,
+        tooltip: formatMessage({ id: "versions" }),
       },
       ...(stopPlace?.id
         ? [
@@ -139,6 +139,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
               onClick: onOpenTerminate,
               disabled: !canDelete && !stopPlace?.hasExpired,
               color: "error" as const,
+              group: "action" as const,
               tooltip: formatMessage({
                 id: stopPlace?.hasExpired
                   ? "delete_stop_place"
@@ -155,6 +156,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
               label: formatMessage({ id: "undo_changes" }),
               onClick: onOpenUndo,
               disabled: !isModified,
+              group: "action" as const,
               tooltip: formatMessage({ id: "undo_changes" }),
             },
             {
@@ -164,6 +166,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
               onClick: onOpenSave,
               disabled: !isModified || !stopPlace?.name,
               color: "primary" as const,
+              group: "action" as const,
               tooltip: formatMessage({ id: "save" }),
             },
           ]
@@ -182,7 +185,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
       onOpenChildren,
       onOpenAltNames,
       onOpenTags,
-      onOpenCoordinates,
+      onOpenVersions,
       onOpenTerminate,
       onOpenUndo,
       onOpenSave,

@@ -29,6 +29,7 @@ export const useParentStopPlaceDialogs = () => {
   const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
   const [tagsDialogOpen, setTagsDialogOpen] = useState(false);
   const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
+  const [versionsDialogOpen, setVersionsDialogOpen] = useState(false);
   const [removingChildId, setRemovingChildId] = useState("");
 
   // Save dialog
@@ -105,6 +106,15 @@ export const useParentStopPlaceDialogs = () => {
     setCoordinatesDialogOpen(false);
   }, []);
 
+  // Versions dialog
+  const handleOpenVersionsDialog = useCallback(() => {
+    setVersionsDialogOpen(true);
+  }, []);
+
+  const handleCloseVersionsDialog = useCallback(() => {
+    setVersionsDialogOpen(false);
+  }, []);
+
   return {
     // States
     confirmSaveDialogOpen,
@@ -117,6 +127,7 @@ export const useParentStopPlaceDialogs = () => {
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
+    versionsDialogOpen,
     removingChildId,
 
     // Handlers
@@ -136,5 +147,7 @@ export const useParentStopPlaceDialogs = () => {
     handleCloseTagsDialog,
     handleOpenCoordinatesDialog,
     handleCloseCoordinatesDialog,
+    handleOpenVersionsDialog,
+    handleCloseVersionsDialog,
   };
 };

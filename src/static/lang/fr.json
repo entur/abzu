@@ -87,6 +87,7 @@
   "audioInterfaceAvailable_no": "Pas d'interface audio",
   "back": "Retour",
   "belongs_to_groups": "Groupe de point d'arrêts : ",
+  "parent_stop_place": "Arrêt parent",
   "belongs_to_parent": "Appartient à un point d'arrêt multimodal",
   "beta_functionality": " (BETA)",
   "bike_parking": "Rack à vélos",

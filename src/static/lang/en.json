@@ -87,6 +87,7 @@
   "audioInterfaceAvailable_no": "No audio interface",
   "back": "Back",
   "belongs_to_groups": "Group of stop places:",
+  "parent_stop_place": "Parent stop place",
   "belongs_to_parent": "Belongs to multimodal stop place",
   "beta_functionality": " (BETA)",
   "bike_parking": "Bike rack",

@@ -87,6 +87,7 @@
   "audioInterfaceAvailable_no": "Ingen audio grensesnitt",
   "back": "Tilbake",
   "belongs_to_groups": "Stoppestedsgrupper:",
+  "parent_stop_place": "Foreldreholleplass",
   "belongs_to_parent": "Tilhører multimodalt stoppested",
   "beta_functionality": " (BETA)",
   "bike_parking": "Sykkelparking",
