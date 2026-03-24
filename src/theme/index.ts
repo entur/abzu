@@ -14,6 +14,8 @@ limitations under the Licence. */
 
 import { createTheme, Theme } from "@mui/material/styles";
 import { getTiamatEnv } from "../config/themeConfig";
+import { baseTheme } from "./base";
+import { lightTheme } from "./variants/light";
 
 export type Environment = "development" | "test" | "prod";
 
@@ -29,10 +31,6 @@ export const createAbzuThemeLegacy = (
   options: AbzuThemeOptions = {},
 ): Theme => {
   const { environment = getTiamatEnv() as Environment } = options;
-
-  // Import legacy theme components
-  const { baseTheme } = require("./base");
-  const { lightTheme } = require("./variants/light");
 
   // Start with base theme
   let theme = createTheme(baseTheme);

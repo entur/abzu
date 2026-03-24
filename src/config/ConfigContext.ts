@@ -26,6 +26,15 @@ export interface Config {
    * By default, Entur's user guide is used there.
    */
   extUserGuideLink?: string;
+  /**
+   * Path to a single custom theme config JSON file (legacy singular field).
+   */
+  themeConfig?: string;
+  /**
+   * Paths to one or more custom theme config JSON files.
+   * Takes priority over the singular themeConfig field.
+   */
+  themeConfigs?: string[];
 }
 
 export interface MapConfig {
