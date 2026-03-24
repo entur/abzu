@@ -42,5 +42,11 @@
   "localeConfig": {
     "locales": ["nb", "en", "sv", "fi", "fr"],
     "defaultLocale": "nb"
-  }
+  },
+  "themeConfigs": [
+    "src/theme/config/default-theme.json",
+    "src/theme/config/entur-theme.json",
+    "src/theme/config/fintraffic-theme.json",
+    "src/theme/config/custom-theme-example.json"
+  ]
 }
