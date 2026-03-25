@@ -187,7 +187,7 @@ export default {
 Copy `custom-theme-example.json` as a starting point:
 
 ```bash
-cp src/theme/config/custom-theme-example.json my-custom-theme.json
+cp src/theme/config/entur-theme.json my-custom-theme.json
 ```
 
 ### 2. Customize Colors

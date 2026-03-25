@@ -415,7 +415,7 @@ function MyComponent() {
   const { switchThemeConfig, availableThemes, currentThemeName } = useTheme();
 
   const handleSwitchToEntur = async () => {
-    await switchThemeConfig("src/theme/config/entur-theme.json");
+    await switchThemeConfig("src/theme/config/entur-theme_v0.json");
   };
 
   return (
