@@ -73,11 +73,12 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     if (!themeConfig) return "";
 
     // Try to match by theme name
+    const themeName = themeConfig.name?.toLowerCase() ?? "";
     const matchingTheme = availableThemes.find((path) => {
       const displayName = getThemeDisplayName(path);
       return (
-        displayName.toLowerCase() === themeConfig.name.toLowerCase() ||
-        path.includes(themeConfig.name.toLowerCase().replace(/\s+/g, "-"))
+        displayName.toLowerCase() === themeName ||
+        path.includes(themeName.replace(/\s+/g, "-"))
       );
     });
 
