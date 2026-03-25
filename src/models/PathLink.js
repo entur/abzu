@@ -31,22 +31,22 @@ class PathLink {
 
     let startCoordinates = getIn(
       clientPathLink,
-      ["from", "placeRef", "addressablePlace", "geometry", "legacyCoordinates"],
+      ["from", "placeRef", "addressablePlace", "geometry", "coordinates"],
       null,
     );
     let inBetweenCoordinates = getIn(clientPathLink, [
       "geometry",
-      "legacyCoordinates",
+      "coordinates",
     ]);
     let endCoordinates = getIn(
       clientPathLink,
-      ["to", "placeRef", "addressablePlace", "geometry", "legacyCoordinates"],
+      ["to", "placeRef", "addressablePlace", "geometry", "coordinates"],
       null,
     );
 
     if (startCoordinates) {
-      startCoordinates[0].reverse();
-      latlngCoordinates.push(startCoordinates[0]);
+      startCoordinates.reverse();
+      latlngCoordinates.push(startCoordinates);
     }
 
     if (inBetweenCoordinates) {
@@ -56,8 +56,8 @@ class PathLink {
     }
 
     if (endCoordinates) {
-      endCoordinates[0].reverse();
-      latlngCoordinates.push(endCoordinates[0]);
+      endCoordinates.reverse();
+      latlngCoordinates.push(endCoordinates);
     }
 
     clientPathLink.distance = calculateDistance(latlngCoordinates);
