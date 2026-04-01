@@ -638,5 +638,18 @@
   "lighting_unlit": "Ikke opplyst",
   "lighting_unknown": "Belysning ukjent",
   "lighting_other": "Annen belysning",
-  "lighting_quay_hint": "Er denne plattformen opplyst?"
+  "lighting_quay_hint": "Er denne plattformen opplyst?",
+  "changelog": "Endringslogg",
+  "changelog_search_label": "Stoppested-ID (f.eks. NSR:StopPlace:1234)",
+  "changelog_search_button": "Søk",
+  "changelog_no_results": "Ingen versjoner funnet for dette stoppestedet.",
+  "changelog_changed_by": "Endret av",
+  "changelog_version_comment": "Kommentar",
+  "changelog_valid_from": "Gyldig fra",
+  "changelog_valid_to": "Gyldig til",
+  "changelog_stop_name": "Stoppestedsnavn",
+  "changelog_municipality": "Kommune",
+  "changelog_expand_versions": "Vis alle versjoner",
+  "changelog_loading_versions": "Laster versjoner...",
+  "changelog_changed_at": "Endret"
 }

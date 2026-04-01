@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { ComponentToggle } from "@entur/react-component-toggle";
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
+import MdHistory from "@mui/icons-material/History";
 import MdMap from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MdReport from "@mui/icons-material/Report";
@@ -92,6 +93,9 @@ class Header extends React.Component {
       case "GoToReports":
         this.goToReports();
         break;
+      case "GoToChangelog":
+        this.goToChangelog();
+        break;
       default:
         console.info("Invalid action", actionOnDone, " ignored");
         break;
@@ -125,6 +129,10 @@ class Header extends React.Component {
 
   goToReports() {
     this.props.dispatch(UserActions.navigateTo("reports", ""));
+  }
+
+  goToChangelog() {
+    this.props.dispatch(UserActions.navigateTo("changelog", ""));
   }
 
   handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
@@ -200,6 +208,7 @@ class Header extends React.Component {
     const showPathLinks = formatMessage({ id: "show_path_links" });
     const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
     const reportSite = formatMessage({ id: "report_site" });
+    const changelogLabel = formatMessage({ id: "changelog" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const username = this.props.preferredName || "";
     const showMultimodalEdgesLabel = formatMessage({
@@ -316,6 +325,24 @@ class Header extends React.Component {
               >
                 <MdReport color="#41c0c4" />
                 {reportSite}
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  this.handleConfirmChangeRoute(
+                    this.goToChangelog.bind(this),
+                    "GoToChangelog",
+                  )
+                }
+                style={{
+                  fontSize: 12,
+                  padding: 0,
+                  paddingBottom: 5,
+                  paddingTop: 5,
+                  width: 300,
+                }}
+              >
+                <MdHistory color="#41c0c4" />
+                {changelogLabel}
               </MenuItem>
               <MoreMenuItem
                 openLeft={true}

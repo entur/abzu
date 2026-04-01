@@ -638,5 +638,18 @@
   "lighting_unlit": "Unlit",
   "lighting_unknown": "Lighting unknown",
   "lighting_other": "Other lighting",
-  "lighting_quay_hint": "Is this quay lit?"
+  "lighting_quay_hint": "Is this quay lit?",
+  "changelog": "Changelog",
+  "changelog_search_label": "Stop place ID (e.g. NSR:StopPlace:1234)",
+  "changelog_search_button": "Search",
+  "changelog_no_results": "No versions found for this stop place.",
+  "changelog_changed_by": "Changed by",
+  "changelog_version_comment": "Comment",
+  "changelog_valid_from": "Valid from",
+  "changelog_valid_to": "Valid to",
+  "changelog_stop_name": "Stop place name",
+  "changelog_municipality": "Municipality",
+  "changelog_expand_versions": "Show all versions",
+  "changelog_loading_versions": "Loading versions...",
+  "changelog_changed_at": "Changed at"
 }

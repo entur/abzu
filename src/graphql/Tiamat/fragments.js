@@ -389,6 +389,8 @@ Fragments.stopPlace = {
           submode
           transportMode
           version
+          changedBy
+          versionComment
           keyValues {
               key
               values
@@ -513,6 +515,8 @@ Fragments.parentStopPlace = {
         value
       }
       version
+      changedBy
+      versionComment
       tags {
         name
         comment

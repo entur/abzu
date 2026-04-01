@@ -30,6 +30,7 @@ import LocalLoadingIndicator from "./components/LocalLoadingIndicator";
 import { ConfigContext } from "./config/ConfigContext";
 import { fetchConfig } from "./config/fetchConfig";
 import App from "./containers/App";
+import ChangelogPage from "./containers/ChangelogPage";
 import GroupOfStopPlaces from "./containers/GroupOfStopPlaces";
 import ReportPage from "./containers/ReportPage";
 import { StopPlace } from "./containers/StopPlace";
@@ -83,6 +84,11 @@ const AuthenticatedApp = () => {
                   exact
                   path={path + AppRoutes.REPORTS}
                   element={<ReportPage />}
+                />
+                <Route
+                  exact
+                  path={path + AppRoutes.CHANGELOG}
+                  element={<ChangelogPage />}
                 />
               </Routes>
             </Router>
