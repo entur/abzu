@@ -651,5 +651,10 @@
   "changelog_municipality": "Municipality",
   "changelog_expand_versions": "Show all versions",
   "changelog_loading_versions": "Loading versions...",
-  "changelog_changed_at": "Changed at"
+  "changelog_changed_at": "Changed at",
+  "changelog_save_filter": "Save filter",
+  "changelog_saved_filters": "Saved filters",
+  "changelog_no_saved_filters": "No saved filters",
+  "changelog_save_filter_title": "Name your filter",
+  "changelog_delete_filter": "Delete filter"
 }

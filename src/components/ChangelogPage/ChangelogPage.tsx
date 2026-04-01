@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MdSearch from "@mui/icons-material/Search";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -19,6 +21,10 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,12 +39,20 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { WrappedComponentProps, injectIntl } from "react-intl";
 import ModalityFilter from "../EditStopPage/ModalityFilter";
+import ChangelogFavoritePopover from "./ChangelogFavoritePopover.tsx";
 
 export interface TopoChip {
   id: string;
   text: string;
   type: "municipality" | "county" | "country";
   value: React.ReactNode;
+}
+
+export interface ChangelogFavorite {
+  title: string;
+  searchQuery: string;
+  stopTypeFilter: string[];
+  topoiChips: Omit<TopoChip, "value">[];
 }
 
 export interface StopPlaceVersion {
@@ -90,6 +104,13 @@ interface Props extends WrappedComponentProps {
   onDeleteChip: (id: string) => void;
   onSearch: () => void;
   onToggleVersions: (stopId: string) => void;
+  favorites: ChangelogFavorite[];
+  favoriteNameDialogOpen: boolean;
+  onOpenSaveDialog: () => void;
+  onCloseSaveDialog: () => void;
+  onSaveFavorite: (title: string) => void;
+  onLoadFavorite: (fav: ChangelogFavorite) => void;
+  onDeleteFavorite: (title: string) => void;
 }
 
 // Number of columns in the results table (used for colSpan on expanded rows)
@@ -107,7 +128,22 @@ const getMunicipality = (stop: StopPlaceResult): string => {
   return countyName ? `${topo.name.value}, ${countyName}` : topo.name.value;
 };
 
-class ChangelogPage extends React.Component<Props> {
+interface LocalState {
+  favoritesAnchorEl: HTMLElement | null;
+  saveDialogTitleText: string;
+  saveDialogError: string;
+}
+
+class ChangelogPage extends React.Component<Props, LocalState> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      favoritesAnchorEl: null,
+      saveDialogTitleText: "",
+      saveDialogError: "",
+    };
+  }
+
   render() {
     const {
       intl,
@@ -126,7 +162,16 @@ class ChangelogPage extends React.Component<Props> {
       onDeleteChip,
       onSearch,
       onToggleVersions,
+      favorites,
+      favoriteNameDialogOpen,
+      onOpenSaveDialog,
+      onCloseSaveDialog,
+      onSaveFavorite,
+      onLoadFavorite,
+      onDeleteFavorite,
     } = this.props;
+    const { favoritesAnchorEl, saveDialogTitleText, saveDialogError } =
+      this.state;
     const { locale, formatMessage } = intl;
 
     return (
@@ -160,7 +205,7 @@ class ChangelogPage extends React.Component<Props> {
             style={{
               padding: "16px",
               display: "grid",
-              gridTemplateColumns: "1fr 1fr auto",
+              gridTemplateColumns: "1fr 1fr auto auto auto",
               gap: 16,
               alignItems: "flex-end",
             }}
@@ -261,6 +306,27 @@ class ChangelogPage extends React.Component<Props> {
             >
               {formatMessage({ id: "changelog_search_button" })}
             </Button>
+
+            {/* Save filter button */}
+            <Button
+              variant="outlined"
+              onClick={onOpenSaveDialog}
+              startIcon={<BookmarkAddIcon />}
+              style={{ height: 40, whiteSpace: "nowrap" }}
+            >
+              {formatMessage({ id: "changelog_save_filter" })}
+            </Button>
+
+            {/* Load saved filters */}
+            <IconButton
+              onClick={(e) =>
+                this.setState({ favoritesAnchorEl: e.currentTarget })
+              }
+              title={formatMessage({ id: "changelog_saved_filters" })}
+              style={{ height: 40, width: 40, alignSelf: "flex-end" }}
+            >
+              <BookmarkIcon />
+            </IconButton>
           </div>
         </Paper>
 
@@ -488,6 +554,92 @@ class ChangelogPage extends React.Component<Props> {
             </Table>
           </Paper>
         )}
+
+        {/* ── Save filter dialog ── */}
+        <Dialog
+          open={favoriteNameDialogOpen}
+          onClose={onCloseSaveDialog}
+          maxWidth="xs"
+          fullWidth
+        >
+          <DialogTitle>
+            {formatMessage({ id: "changelog_save_filter_title" })}
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              fullWidth
+              value={saveDialogTitleText}
+              onChange={(e) =>
+                this.setState({
+                  saveDialogTitleText: e.target.value,
+                  saveDialogError: "",
+                })
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (!saveDialogTitleText.trim()) {
+                    this.setState({
+                      saveDialogError: formatMessage({
+                        id: "field_is_required",
+                      }),
+                    });
+                  } else {
+                    onSaveFavorite(saveDialogTitleText.trim());
+                    this.setState({
+                      saveDialogTitleText: "",
+                      saveDialogError: "",
+                    });
+                  }
+                }
+              }}
+              error={Boolean(saveDialogError)}
+              helperText={saveDialogError}
+              variant="outlined"
+              size="small"
+              style={{ marginTop: 8 }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={() => {
+                onCloseSaveDialog();
+                this.setState({ saveDialogTitleText: "", saveDialogError: "" });
+              }}
+            >
+              {formatMessage({ id: "cancel" })}
+            </Button>
+            <Button
+              variant="text"
+              onClick={() => {
+                if (!saveDialogTitleText.trim()) {
+                  this.setState({
+                    saveDialogError: formatMessage({ id: "field_is_required" }),
+                  });
+                } else {
+                  onSaveFavorite(saveDialogTitleText.trim());
+                  this.setState({
+                    saveDialogTitleText: "",
+                    saveDialogError: "",
+                  });
+                }
+              }}
+            >
+              {formatMessage({ id: "use" })}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* ── Favourites popover ── */}
+        <ChangelogFavoritePopover
+          anchorEl={favoritesAnchorEl}
+          favorites={favorites}
+          onLoad={onLoadFavorite}
+          onDelete={onDeleteFavorite}
+          onClose={() => this.setState({ favoritesAnchorEl: null })}
+        />
       </div>
     );
   }

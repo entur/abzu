@@ -23,6 +23,7 @@ import {
   topographicalPlaceSearch,
 } from "../actions/TiamatActions";
 import ChangelogPageComponent, {
+  ChangelogFavorite,
   StopPlaceResult,
   StopPlaceVersion,
   TopoChip,
@@ -40,6 +41,21 @@ interface ReduxProps {
 
 type Props = ReduxProps & WrappedComponentProps;
 
+const CHANGELOG_FAVORITES_KEY = "ABZU::changelog-favorites";
+
+function loadFavoritesFromStorage(): ChangelogFavorite[] {
+  try {
+    const raw = localStorage.getItem(CHANGELOG_FAVORITES_KEY);
+    return raw ? (JSON.parse(raw) as ChangelogFavorite[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveFavoritesToStorage(favs: ChangelogFavorite[]) {
+  localStorage.setItem(CHANGELOG_FAVORITES_KEY, JSON.stringify(favs));
+}
+
 interface State {
   stopTypeFilter: string[];
   topoiChips: TopoChip[];
@@ -48,6 +64,8 @@ interface State {
   isLoading: boolean;
   results: StopPlaceResult[] | null;
   versionsMap: Record<string, VersionEntry>;
+  favorites: ChangelogFavorite[];
+  favoriteNameDialogOpen: boolean;
 }
 
 class ChangelogPage extends React.Component<Props, State> {
@@ -63,6 +81,8 @@ class ChangelogPage extends React.Component<Props, State> {
       isLoading: false,
       results: null,
       versionsMap: {},
+      favorites: loadFavoritesFromStorage(),
+      favoriteNameDialogOpen: false,
     };
   }
 
@@ -194,6 +214,54 @@ class ChangelogPage extends React.Component<Props, State> {
     });
   }
 
+  handleOpenSaveDialog() {
+    this.setState({ favoriteNameDialogOpen: true });
+  }
+
+  handleCloseSaveDialog() {
+    this.setState({ favoriteNameDialogOpen: false });
+  }
+
+  handleSaveFavorite(title: string) {
+    const { searchQuery, stopTypeFilter, topoiChips } = this.state;
+    const newFav: ChangelogFavorite = {
+      title,
+      searchQuery,
+      stopTypeFilter,
+      // Strip JSX `value` — it's not JSON-serialisable; rebuilt on load
+      topoiChips: topoiChips.map(({ id, text, type }) => ({ id, text, type })),
+    };
+    const updated = [
+      ...this.state.favorites.filter((f) => f.title !== title),
+      newFav,
+    ];
+    saveFavoritesToStorage(updated);
+    this.setState({ favorites: updated, favoriteNameDialogOpen: false });
+  }
+
+  handleLoadFavorite(fav: ChangelogFavorite) {
+    const { intl } = this.props;
+    const { formatMessage } = intl;
+    // Rebuild JSX value for each chip
+    const restoredChips: TopoChip[] = fav.topoiChips.map((c) =>
+      this.createTopographicPlaceMenuItem(
+        { id: c.id, name: { value: c.text }, topographicPlaceType: c.type },
+        formatMessage,
+      ),
+    );
+    this.setState({
+      searchQuery: fav.searchQuery,
+      stopTypeFilter: fav.stopTypeFilter,
+      topoiChips: restoredChips,
+    });
+  }
+
+  handleDeleteFavorite(title: string) {
+    const updated = this.state.favorites.filter((f) => f.title !== title);
+    saveFavoritesToStorage(updated);
+    this.setState({ favorites: updated });
+  }
+
   handleSearch() {
     const { searchQuery, topoiChips, stopTypeFilter } = this.state;
     const { dispatch } = this.props;
@@ -307,6 +375,8 @@ class ChangelogPage extends React.Component<Props, State> {
       isLoading,
       results,
       versionsMap,
+      favorites,
+      favoriteNameDialogOpen,
     } = this.state;
     const { intl, topographicalPlaces } = this.props;
     const { formatMessage } = intl;
@@ -340,6 +410,13 @@ class ChangelogPage extends React.Component<Props, State> {
         onDeleteChip={(id) => this.handleDeleteChipById(id)}
         onSearch={() => this.handleSearch()}
         onToggleVersions={(id) => this.handleToggleVersions(id)}
+        favorites={favorites}
+        favoriteNameDialogOpen={favoriteNameDialogOpen}
+        onOpenSaveDialog={() => this.handleOpenSaveDialog()}
+        onCloseSaveDialog={() => this.handleCloseSaveDialog()}
+        onSaveFavorite={(title) => this.handleSaveFavorite(title)}
+        onLoadFavorite={(fav) => this.handleLoadFavorite(fav)}
+        onDeleteFavorite={(title) => this.handleDeleteFavorite(title)}
       />
     );
   }

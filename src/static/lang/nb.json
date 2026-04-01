@@ -651,5 +651,10 @@
   "changelog_municipality": "Kommune",
   "changelog_expand_versions": "Vis alle versjoner",
   "changelog_loading_versions": "Laster versjoner...",
-  "changelog_changed_at": "Endret"
+  "changelog_changed_at": "Endret",
+  "changelog_save_filter": "Lagre filter",
+  "changelog_saved_filters": "Lagrede filter",
+  "changelog_no_saved_filters": "Ingen lagrede filter",
+  "changelog_save_filter_title": "Gi filteret et navn",
+  "changelog_delete_filter": "Slett filter"
 }
