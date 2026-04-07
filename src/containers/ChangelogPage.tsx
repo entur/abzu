@@ -17,7 +17,7 @@ import { WrappedComponentProps, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  findStopForReport,
+  findStopForChangelog,
   getStopPlaceVersions,
   getTopographicPlaces,
   topographicalPlaceSearch,
@@ -280,15 +280,8 @@ class ChangelogPage extends React.Component<Props, State> {
 
     const queryVariables = {
       query: searchQuery,
-      withoutLocationOnly: false,
-      withDuplicateImportedIds: false,
       stopPlaceType: stopTypeFilter,
-      withNearbySimilarDuplicates: false,
-      hasParking: false,
-      withTags: false,
-      tags: [],
       versionValidity: "MAX_VERSION",
-      pointInTime: null,
       municipalityReference,
       countyReference,
       countryReference,
@@ -303,7 +296,7 @@ class ChangelogPage extends React.Component<Props, State> {
       countryReference,
     });
 
-    (dispatch as any)(findStopForReport(queryVariables))
+    (dispatch as any)(findStopForChangelog(queryVariables))
       .then((response: any) => {
         const stops: StopPlaceResult[] = (response.data.stopPlace || [])
           .slice()

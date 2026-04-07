@@ -465,6 +465,86 @@ export const findStopForReport = gql`
   ${Fragments.parentStopPlace.reportView}
 `;
 
+export const findStopForChangelog = gql`
+  query findStopForChangelog(
+    $query: String
+    $municipalityReference: [String]
+    $stopPlaceType: [StopPlaceType]
+    $countyReference: [String]
+    $countryReference: [String]
+    $versionValidity: VersionValidity
+  ) {
+    stopPlace(
+      query: $query
+      municipalityReference: $municipalityReference
+      stopPlaceType: $stopPlaceType
+      countyReference: $countyReference
+      countryReference: $countryReference
+      withoutLocationOnly: false
+      withDuplicatedQuayImportedIds: false
+      size: 300
+      versionValidity: $versionValidity
+    ) {
+      ... on StopPlace {
+        __typename
+        id
+        name {
+          value
+        }
+        stopPlaceType
+        version
+        changedBy
+        versionComment
+        validBetween {
+          fromDate
+          toDate
+        }
+        topographicPlace {
+          name {
+            value
+          }
+          topographicPlaceType
+          parentTopographicPlace {
+            name {
+              value
+            }
+          }
+        }
+      }
+      ... on ParentStopPlace {
+        __typename
+        id
+        name {
+          value
+        }
+        version
+        changedBy
+        versionComment
+        validBetween {
+          fromDate
+          toDate
+        }
+        topographicPlace {
+          name {
+            value
+          }
+          topographicPlaceType
+          parentTopographicPlace {
+            name {
+              value
+            }
+          }
+        }
+        children {
+          id
+          version
+          stopPlaceType
+        }
+      }
+    }
+  }
+`;
+
 export const allVersionsOfStopPlace = gql`
   query stopPlaceAllVersions($id: String!) {
     versions: stopPlace(id: $id, allVersions: true, size: 100) {

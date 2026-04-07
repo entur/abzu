@@ -656,5 +656,6 @@
   "changelog_saved_filters": "Saved filters",
   "changelog_no_saved_filters": "No saved filters",
   "changelog_save_filter_title": "Name your filter",
-  "changelog_delete_filter": "Delete filter"
+  "changelog_delete_filter": "Delete filter",
+  "changelog_results_count": "stop places found"
 }

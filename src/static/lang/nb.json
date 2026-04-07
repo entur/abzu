@@ -656,5 +656,6 @@
   "changelog_saved_filters": "Lagrede filter",
   "changelog_no_saved_filters": "Ingen lagrede filter",
   "changelog_save_filter_title": "Gi filteret et navn",
-  "changelog_delete_filter": "Slett filter"
+  "changelog_delete_filter": "Slett filter",
+  "changelog_results_count": "stoppesteder funnet"
 }

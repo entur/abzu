@@ -39,6 +39,8 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { WrappedComponentProps, injectIntl } from "react-intl";
 import ModalityFilter from "../EditStopPage/ModalityFilter";
+import ModalityIconImg from "../MainPage/ModalityIconImg";
+import ModalityIconTray from "../ReportPage/ModalityIconTray";
 import ChangelogFavoritePopover from "./ChangelogFavoritePopover.tsx";
 
 export interface TopoChip {
@@ -82,6 +84,7 @@ export interface StopPlaceResult {
     topographicPlaceType: string;
     parentTopographicPlace?: { name: { value: string } } | null;
   } | null;
+  children?: { stopPlaceType?: string | null }[] | null;
 }
 
 interface Props extends WrappedComponentProps {
@@ -207,7 +210,7 @@ class ChangelogPage extends React.Component<Props, LocalState> {
               display: "grid",
               gridTemplateColumns: "1fr 1fr auto auto auto",
               gap: 16,
-              alignItems: "flex-end",
+              alignItems: "flex-start",
             }}
           >
             {/* Topographical autocomplete */}
@@ -289,7 +292,7 @@ class ChangelogPage extends React.Component<Props, LocalState> {
               />
             </div>
 
-            {/* Search button */}
+            {/* Search button — marginTop offsets the overline label above the inputs */}
             <Button
               variant="contained"
               color="primary"
@@ -302,7 +305,7 @@ class ChangelogPage extends React.Component<Props, LocalState> {
                   <MdSearch />
                 )
               }
-              style={{ height: 40, whiteSpace: "nowrap" }}
+              style={{ height: 40, whiteSpace: "nowrap", marginTop: 24 }}
             >
               {formatMessage({ id: "changelog_search_button" })}
             </Button>
@@ -312,7 +315,7 @@ class ChangelogPage extends React.Component<Props, LocalState> {
               variant="outlined"
               onClick={onOpenSaveDialog}
               startIcon={<BookmarkAddIcon />}
-              style={{ height: 40, whiteSpace: "nowrap" }}
+              style={{ height: 40, whiteSpace: "nowrap", marginTop: 24 }}
             >
               {formatMessage({ id: "changelog_save_filter" })}
             </Button>
@@ -323,7 +326,7 @@ class ChangelogPage extends React.Component<Props, LocalState> {
                 this.setState({ favoritesAnchorEl: e.currentTarget })
               }
               title={formatMessage({ id: "changelog_saved_filters" })}
-              style={{ height: 40, width: 40, alignSelf: "flex-end" }}
+              style={{ height: 40, width: 40, marginTop: 24 }}
             >
               <BookmarkIcon />
             </IconButton>
@@ -334,6 +337,16 @@ class ChangelogPage extends React.Component<Props, LocalState> {
         {results !== null && results.length === 0 && !isLoading && (
           <Typography color="text.secondary" style={{ marginTop: 8 }}>
             {formatMessage({ id: "changelog_no_results" })}
+          </Typography>
+        )}
+
+        {results && results.length > 0 && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            style={{ marginBottom: 8 }}
+          >
+            {results.length} {formatMessage({ id: "changelog_results_count" })}
           </Typography>
         )}
 
@@ -403,7 +416,31 @@ class ChangelogPage extends React.Component<Props, LocalState> {
                           {stop.id}
                         </TableCell>
                         <TableCell>{getMunicipality(stop)}</TableCell>
-                        <TableCell>{stop.stopPlaceType || "—"}</TableCell>
+                        <TableCell>
+                          {stop.__typename === "ParentStopPlace" ? (
+                            <span
+                              aria-label={formatMessage({ id: "multimodal" })}
+                              title={formatMessage({ id: "multimodal" })}
+                              style={{ fontWeight: 600, fontSize: "0.85em" }}
+                            >
+                              MM
+                            </span>
+                          ) : stop.stopPlaceType ? (
+                            <span
+                              role="img"
+                              aria-label={stop.stopPlaceType}
+                              title={stop.stopPlaceType}
+                            >
+                              <ModalityIconImg
+                                type={stop.stopPlaceType}
+                                svgStyle={{ width: 24, height: 20 }}
+                                iconStyle={{}}
+                              />
+                            </span>
+                          ) : (
+                            "—"
+                          )}
+                        </TableCell>
                         <TableCell>{stop.version}</TableCell>
                         <TableCell
                           sx={{ whiteSpace: "nowrap", fontSize: "0.8rem" }}
@@ -441,6 +478,31 @@ class ChangelogPage extends React.Component<Props, LocalState> {
                                 padding: "0 0 0 48px",
                               }}
                             >
+                              {stop.__typename === "ParentStopPlace" &&
+                                stop.children &&
+                                stop.children.length > 0 && (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 4,
+                                      padding: "8px 0 4px",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="caption"
+                                      color="text.secondary"
+                                      style={{ marginRight: 4 }}
+                                    >
+                                      {formatMessage({ id: "stop_places" })}:
+                                    </Typography>
+                                    <ModalityIconTray
+                                      modalities={stop.children.map((c) => ({
+                                        stopPlaceType: c.stopPlaceType,
+                                      }))}
+                                    />
+                                  </div>
+                                )}
                               {entry?.loading ? (
                                 <div
                                   style={{
