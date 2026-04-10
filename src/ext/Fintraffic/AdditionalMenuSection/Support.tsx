@@ -4,7 +4,7 @@ import MoreMenuItem from "../../../components/MainPage/MoreMenuItem";
 import ExternalLinkMenuItem from "./ExternalLinkMenuItem";
 
 const Support = () => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   return (
     <MoreMenuItem
@@ -22,7 +22,7 @@ const Support = () => {
       }}
     >
       <ExternalLinkMenuItem
-        href={"https://www.fintraffic.fi/fi/feedback"}
+        href={`https://www.fintraffic.fi/${locale}/feedback`}
         localisationId={"Fintraffic-channels"}
       />
     </MoreMenuItem>

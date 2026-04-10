@@ -4,7 +4,11 @@ import MoreMenuItem from "../../../components/MainPage/MoreMenuItem";
 import ExternalLinkMenuItem from "./ExternalLinkMenuItem";
 
 const About = () => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
+  const swedishLink = "https://www.fintraffic.fi/sv/digitalatjanster/peti";
+  // also used for English:
+  const defaultLink =
+    "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti";
 
   return (
     <MoreMenuItem
@@ -22,21 +26,15 @@ const About = () => {
       }}
     >
       <ExternalLinkMenuItem
-        href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
-        }
+        href={locale == "sv" ? swedishLink : defaultLink}
         localisationId={"Fintraffic-instructions"}
       />
       <ExternalLinkMenuItem
-        href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
-        }
+        href={locale == "sv" ? swedishLink : defaultLink}
         localisationId={"Fintraffic-terms"}
       />
       <ExternalLinkMenuItem
-        href={
-          "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti"
-        }
+        href={locale == "sv" ? swedishLink : defaultLink}
         localisationId={"Fintraffic-privacy"}
       />
       <ExternalLinkMenuItem
