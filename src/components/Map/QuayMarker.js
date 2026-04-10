@@ -20,6 +20,7 @@ import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
+import { ConfigContext } from "../../config/ConfigContext";
 import compassIcon from "../../static/icons/compass.png";
 import OSMIcon from "../../static/icons/osm_logo.png";
 import StreetViewIcon from "../../static/icons/street_view_logo.png";
@@ -48,6 +49,7 @@ class QuayMarker extends React.Component {
     draggable: PropTypes.bool.isRequired,
     handleSetCompassBearing: PropTypes.func,
   };
+  static contextType = ConfigContext;
 
   getOSMURL() {
     const { position } = this.props;
@@ -205,6 +207,7 @@ class QuayMarker extends React.Component {
       disabled,
       showPublicCode,
     } = this.props;
+    const { disableMoveQuaysToNewStopPlace } = this.context;
 
     if (!position) return null;
 
@@ -438,6 +441,7 @@ class QuayMarker extends React.Component {
                 />
                 {!disabled &&
                   isEditingStop &&
+                  !disableMoveQuaysToNewStopPlace &&
                   !this.props.currentStopIsMultimodal &&
                   id && (
                     <div style={{ marginTop: 10 }}>
