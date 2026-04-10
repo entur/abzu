@@ -26,6 +26,10 @@ export interface Config {
    * By default, Entur's user guide is used there.
    */
   extUserGuideLink?: string;
+  /**
+   * Hides "Move quays to new stop place" button
+   */
+  disableMoveQuaysToNewStopPlace?: boolean;
 }
 
 export interface MapConfig {
