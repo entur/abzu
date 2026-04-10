@@ -15,6 +15,8 @@ limitations under the Licence. */
 import gql from "graphql-tag";
 import Fragments from "./fragments";
 
+export const CHANGELOG_RESULT_LIMIT = 300;
+
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
     stopPlace(id: $id) {
@@ -480,9 +482,7 @@ export const findStopForChangelog = gql`
       stopPlaceType: $stopPlaceType
       countyReference: $countyReference
       countryReference: $countryReference
-      withoutLocationOnly: false
-      withDuplicatedQuayImportedIds: false
-      size: 300
+      size: ${CHANGELOG_RESULT_LIMIT}
       versionValidity: $versionValidity
     ) {
       ... on StopPlace {

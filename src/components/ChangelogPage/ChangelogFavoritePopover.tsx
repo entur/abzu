@@ -20,11 +20,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import React from "react";
-import { WrappedComponentProps, injectIntl } from "react-intl";
-import { ChangelogFavorite } from "./ChangelogPage.tsx";
+import { useIntl } from "react-intl";
+import type { ChangelogFavorite } from "./types";
 
-interface Props extends WrappedComponentProps {
+interface Props {
   anchorEl: HTMLElement | null;
   favorites: ChangelogFavorite[];
   onLoad: (fav: ChangelogFavorite) => void;
@@ -32,15 +31,14 @@ interface Props extends WrappedComponentProps {
   onClose: () => void;
 }
 
-const ChangelogFavoritePopover: React.FC<Props> = ({
+export const ChangelogFavoritePopover = ({
   anchorEl,
   favorites,
   onLoad,
   onDelete,
   onClose,
-  intl,
-}) => {
-  const { formatMessage } = intl;
+}: Props) => {
+  const { formatMessage } = useIntl();
 
   return (
     <Popover
@@ -98,5 +96,3 @@ const ChangelogFavoritePopover: React.FC<Props> = ({
     </Popover>
   );
 };
-
-export default injectIntl(ChangelogFavoritePopover);

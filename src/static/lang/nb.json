@@ -640,12 +640,10 @@
   "lighting_other": "Annen belysning",
   "lighting_quay_hint": "Er denne plattformen opplyst?",
   "changelog": "Endringslogg",
-  "changelog_search_label": "Stoppested-ID (f.eks. NSR:StopPlace:1234)",
   "changelog_search_button": "Søk",
   "changelog_no_results": "Ingen versjoner funnet for dette stoppestedet.",
   "changelog_changed_by": "Endret av",
   "changelog_version_comment": "Kommentar",
-  "changelog_valid_from": "Gyldig fra",
   "changelog_valid_to": "Gyldig til",
   "changelog_stop_name": "Stoppestedsnavn",
   "changelog_municipality": "Kommune",
@@ -657,5 +655,6 @@
   "changelog_no_saved_filters": "Ingen lagrede filter",
   "changelog_save_filter_title": "Gi filteret et navn",
   "changelog_delete_filter": "Slett filter",
-  "changelog_results_count": "stoppesteder funnet"
+  "changelog_results_count": "stoppesteder funnet",
+  "changelog_results_truncated": "(viser de første 300 resultatene — innsnevre søket for å se mer)"
 }
