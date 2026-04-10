@@ -17,7 +17,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useMatch } from "react-router-dom";
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import { StopPlaceActions, UserActions } from "../../actions";
 import { fetchUserPermissions, updateAuth } from "../../actions/UserActions";
@@ -27,6 +27,7 @@ import LocalLoadingIndicator from "../../components/LocalLoadingIndicator";
 import { OPEN_STREET_MAP } from "../../components/Map/mapDefaults";
 import { HeaderSlotProvider } from "../../components/modern/Header/HeaderSlotContext";
 import { ModernHeader } from "../../components/modern/Header/ModernHeader";
+import { ModernEditStopMap } from "../../components/modern/Map/ModernEditStopMap";
 import SnackbarWrapper from "../../components/SnackbarWrapper";
 import { ConfigContext } from "../../config/ConfigContext";
 import configureLocalization from "../../localization/localization";
@@ -39,6 +40,16 @@ import { StopPlace } from "../StopPlace";
 import StopPlaces from "../StopPlaces";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 import ReportPage from "./ReportPage";
+
+/**
+ * Persistent map — always mounted on stop and group routes, never torn down
+ * between navigations. Lives inside <Router> so useMatch is available.
+ */
+const PersistentMap = () => {
+  const matchReports = useMatch(`/${AppRoutes.REPORTS}`);
+  if (matchReports) return null;
+  return <ModernEditStopMap />;
+};
 
 const Settings = new SettingsManager();
 
@@ -69,6 +80,12 @@ const App: React.FC<ModernAppProps> = () => {
       dispatch(UserActions.changeLocalization(localization));
     });
   }, [appliedLocale, localeConfig?.defaultLocale, extPath, dispatch]);
+
+  // Always enforce modern mode when the modern app is running,
+  // regardless of any stale localStorage value
+  useEffect(() => {
+    dispatch(UserActions.changeUIMode("modern"));
+  }, []);
 
   useEffect(() => {
     dispatch(updateAuth(auth));
@@ -123,6 +140,31 @@ const App: React.FC<ModernAppProps> = () => {
   const path = "/";
   const config = { extPath, mapConfig, localeConfig };
 
+  const appShell = (
+    <div>
+      <ModernHeader config={config} />
+      <GlobalLoadingIndicator />
+      <LocalLoadingIndicator />
+      <Router basename={basename} history={history}>
+        {/* Persistent map: mounted once, never torn down on route changes */}
+        <PersistentMap />
+        <Routes>
+          <Route path={path} element={<StopPlaces />} />
+          <Route
+            path={path + AppRoutes.STOP_PLACE + "/:stopId"}
+            element={<StopPlace />}
+          />
+          <Route
+            path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
+            element={<GroupOfStopPlaces />}
+          />
+          <Route path={path + AppRoutes.REPORTS} element={<ReportPage />} />
+        </Routes>
+      </Router>
+      <SnackbarWrapper />
+    </div>
+  );
+
   return (
     <IntlProvider
       key={localization.locale}
@@ -139,61 +181,11 @@ const App: React.FC<ModernAppProps> = () => {
           feature={`${extPath}/CustomThemeProvider`}
           renderFallback={() => (
             <AbzuThemeProvider>
-              <HeaderSlotProvider>
-                <div>
-                  <ModernHeader config={config} />
-                  <GlobalLoadingIndicator />
-                  <LocalLoadingIndicator />
-                  <Router basename={basename} history={history}>
-                    <Routes>
-                      <Route path={path} element={<StopPlaces />} />
-                      <Route
-                        path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                        element={<StopPlace />}
-                      />
-                      <Route
-                        path={
-                          path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"
-                        }
-                        element={<GroupOfStopPlaces />}
-                      />
-                      <Route
-                        path={path + AppRoutes.REPORTS}
-                        element={<ReportPage />}
-                      />
-                    </Routes>
-                  </Router>
-                  <SnackbarWrapper />
-                </div>
-              </HeaderSlotProvider>
+              <HeaderSlotProvider>{appShell}</HeaderSlotProvider>
             </AbzuThemeProvider>
           )}
         >
-          <HeaderSlotProvider>
-            <div>
-              <ModernHeader config={config} />
-              <GlobalLoadingIndicator />
-              <LocalLoadingIndicator />
-              <Router basename={basename} history={history}>
-                <Routes>
-                  <Route path={path} element={<StopPlaces />} />
-                  <Route
-                    path={path + AppRoutes.STOP_PLACE + "/:stopId"}
-                    element={<StopPlace />}
-                  />
-                  <Route
-                    path={path + AppRoutes.GROUP_OF_STOP_PLACE + "/:groupId"}
-                    element={<GroupOfStopPlaces />}
-                  />
-                  <Route
-                    path={path + AppRoutes.REPORTS}
-                    element={<ReportPage />}
-                  />
-                </Routes>
-              </Router>
-              <SnackbarWrapper />
-            </div>
-          </HeaderSlotProvider>
+          <HeaderSlotProvider>{appShell}</HeaderSlotProvider>
         </ComponentToggle>
       </StyledEngineProvider>
     </IntlProvider>

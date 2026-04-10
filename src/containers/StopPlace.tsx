@@ -187,13 +187,7 @@ export const StopPlace = () => {
       )}
 
       {!stopPlace && !error.showErrorDialog && uiMode === "modern" && (
-        <>
-          <LoadingDialog
-            open={true}
-            message={formatMessage({ id: "loading" })}
-          />
-          <EditStopMap disabled />
-        </>
+        <LoadingDialog open={true} message={formatMessage({ id: "loading" })} />
       )}
       {!stopPlace && !error.showErrorDialog && uiMode !== "modern" && (
         <>
@@ -219,7 +213,9 @@ export const StopPlace = () => {
               )}
             </>
           )}
-          <EditStopMap disabled={disabled || stopPlaceLoading} />
+          {uiMode !== "modern" && (
+            <EditStopMap disabled={disabled || stopPlaceLoading} />
+          )}
         </>
       )}
       {stopPlace && stopPlace.isParent && (
@@ -233,7 +229,9 @@ export const StopPlace = () => {
               )}
             </>
           )}
-          <EditStopMap disabled={disabled || stopPlaceLoading} />
+          {uiMode !== "modern" && (
+            <EditStopMap disabled={disabled || stopPlaceLoading} />
+          )}
         </>
       )}
     </div>

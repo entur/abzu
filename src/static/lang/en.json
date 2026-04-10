@@ -114,6 +114,8 @@
   "connected_with_adjacent_stop_places": "Adjacent stop places",
   "coordinates": "Coordinates",
   "copy_id": "Copy ID",
+  "edit_stop_in_osm": "Edit in OpenStreetMap",
+  "google_street_view": "Open in Google Street View",
   "copied": "Copied!",
   "country": "Country",
   "county": "County",
@@ -713,5 +715,6 @@
   "toggle_favorites": "Toggle favorites",
   "toggle_filters": "Toggle filters",
   "where_do_you_want_to_go": "Where do you want to go?",
-  "zoom_level": "Zoom Level"
+  "zoom_level": "Zoom Level",
+  "map_layer_switcher": "Switch map layer"
 }

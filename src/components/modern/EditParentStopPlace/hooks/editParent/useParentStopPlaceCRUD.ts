@@ -20,11 +20,14 @@ import {
   deleteStopPlace,
   getNeighbourStops,
   getStopPlaceVersions,
+  getStopPlaceWithAll,
   saveParentStopPlace,
+  savePathLink,
   terminateStop,
 } from "../../../../../actions/TiamatActions";
 import mapToMutationVariables from "../../../../../modelUtils/mapToQueryVariables";
-import { useAppDispatch } from "../../../../../store/hooks";
+import { shouldMutatePathLinks } from "../../../../../modelUtils/shouldMutate";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 /**
  * Hook for managing CRUD operations for parent stop place
@@ -39,6 +42,40 @@ export const useParentStopPlaceCRUD = (
   onCloseUndoDialog: () => void,
 ) => {
   const dispatch = useAppDispatch();
+
+  const pathLink = useAppSelector((state) => (state.stopPlace as any).pathLink);
+  const originalPathLink = useAppSelector(
+    (state) => (state.stopPlace as any).originalPathLink,
+  );
+
+  const savePathLinkIfNeeded = useCallback(
+    (id: string) => {
+      const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
+        pathLink ?? [],
+      );
+      const needsSave = shouldMutatePathLinks(
+        pathLinkVariables,
+        pathLink,
+        originalPathLink,
+      );
+      if (needsSave) {
+        return dispatch(savePathLink(pathLinkVariables));
+      }
+      return Promise.resolve();
+    },
+    [dispatch, pathLink, originalPathLink],
+  );
+
+  const finishSave = useCallback(
+    (id: string) => {
+      savePathLinkIfNeeded(id).then(() => {
+        dispatch(getStopPlaceVersions(id));
+        dispatch(getNeighbourStops(id, activeMap?.getBounds()));
+        dispatch(getStopPlaceWithAll(id));
+      });
+    },
+    [dispatch, activeMap, savePathLinkIfNeeded],
+  );
 
   // Save handler
   const handleSave = useCallback(
@@ -72,47 +109,29 @@ export const useParentStopPlaceCRUD = (
           dispatch(addToMultiModalStopPlace(stopPlace.id!, childrenToAdd)).then(
             () => {
               dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-                if (data?.mutateParentStopPlace?.[0]?.id) {
-                  dispatch(
-                    getStopPlaceVersions(data.mutateParentStopPlace[0].id),
-                  );
-                  dispatch(
-                    getNeighbourStops(
-                      data.mutateParentStopPlace[0].id,
-                      activeMap?.getBounds(),
-                    ),
-                  );
-                }
+                const id = data?.mutateParentStopPlace?.[0]?.id;
+                if (id) finishSave(id);
               });
             },
           );
         } else {
           dispatch(saveParentStopPlace(variables)).then(({ data }) => {
-            if (data?.mutateParentStopPlace?.[0]?.id) {
-              dispatch(getStopPlaceVersions(data.mutateParentStopPlace[0].id));
-              dispatch(
-                getNeighbourStops(
-                  data.mutateParentStopPlace[0].id,
-                  activeMap?.getBounds(),
-                ),
-              );
-            }
+            const id = data?.mutateParentStopPlace?.[0]?.id;
+            if (id) finishSave(id);
           });
         }
       }
     },
-    [stopPlace, dispatch, activeMap, onCloseSaveDialog],
+    [stopPlace, dispatch, activeMap, onCloseSaveDialog, finishSave],
   );
 
   // Go back handlers
   const handleAllowUserToGoBack = useCallback(() => {
     if (isModified) {
-      // Caller should open the dialog
-      return true; // Indicates dialog should be shown
-    } else {
-      dispatch(UserActions.navigateTo("/", ""));
-      return false;
+      return true;
     }
+    dispatch(UserActions.navigateTo("/", ""));
+    return false;
   }, [isModified, dispatch]);
 
   const handleGoBack = useCallback(() => {

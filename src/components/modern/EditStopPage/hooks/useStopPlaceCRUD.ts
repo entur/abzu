@@ -19,10 +19,17 @@ import {
   getNeighbourStops,
   getStopPlaceVersions,
   getStopPlaceWithAll,
+  saveParking,
+  savePathLink,
   saveStopPlaceBasedOnType,
   terminateStop,
 } from "../../../../actions/TiamatActions";
-import { useAppDispatch } from "../../../../store/hooks";
+import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
+import {
+  shouldMutateParking,
+  shouldMutatePathLinks,
+} from "../../../../modelUtils/shouldMutate";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 /**
  * Hook for CRUD operations on regular stop places
@@ -39,6 +46,11 @@ export const useStopPlaceCRUD = (
 ) => {
   const dispatch = useAppDispatch();
 
+  const pathLink = useAppSelector((state) => (state.stopPlace as any).pathLink);
+  const originalPathLink = useAppSelector(
+    (state) => (state.stopPlace as any).originalPathLink,
+  );
+
   const handleSave = useCallback(
     (userInput: any) => {
       if (!stopPlace) return;
@@ -51,16 +63,49 @@ export const useStopPlaceCRUD = (
 
       onCloseSaveDialog();
 
+      const pathLinkVariables = mapToMutationVariables.mapPathLinkToVariables(
+        pathLink ?? [],
+      );
+      const needsPathLinkSave = shouldMutatePathLinks(
+        pathLinkVariables,
+        pathLink,
+        originalPathLink,
+      );
+      const needsParkingSave = shouldMutateParking(stopPlace.parking);
+
       dispatch(saveStopPlaceBasedOnType(stopPlace, userInput)).then(
         (id: string) => {
-          dispatch(getStopPlaceVersions(id));
-          dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-          dispatch(getStopPlaceWithAll(id));
+          const parkingVariables = mapToMutationVariables.mapParkingToVariables(
+            stopPlace.parking,
+            stopPlace.id || id,
+          );
+
+          const finish = () => {
+            dispatch(getStopPlaceVersions(id));
+            dispatch(getNeighbourStops(id, activeMap?.getBounds()));
+            dispatch(getStopPlaceWithAll(id));
+          };
+
+          if (needsPathLinkSave) {
+            dispatch(savePathLink(pathLinkVariables)).then(() => {
+              if (needsParkingSave) {
+                dispatch(saveParking(parkingVariables)).then(finish);
+              } else {
+                finish();
+              }
+            });
+          } else if (needsParkingSave) {
+            dispatch(saveParking(parkingVariables)).then(finish);
+          } else {
+            finish();
+          }
         },
       );
     },
     [
       stopPlace,
+      pathLink,
+      originalPathLink,
       dispatch,
       activeMap,
       onCloseSaveDialog,

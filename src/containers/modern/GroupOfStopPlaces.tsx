@@ -18,7 +18,6 @@ import { StopPlacesGroupActions, UserActions } from "../../actions/";
 import { getGroupOfStopPlacesById } from "../../actions/TiamatActions";
 import GroupErrorDialog from "../../components/Dialogs/GroupErrorDialog";
 import Loader from "../../components/Dialogs/Loader";
-import GroupOfStopPlaceMap from "../../components/GroupOfStopPlaces/GroupOfStopPlacesMap";
 import { EditGroupOfStopPlaces } from "../../components/modern/GroupOfStopPlaces";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
@@ -42,10 +41,6 @@ const GroupOfStopPlaces: React.FC = () => {
   });
 
   // Redux state
-  const position = useAppSelector(
-    (state) => state.stopPlacesGroup.centerPosition,
-  );
-  const zoom = useAppSelector((state) => state.stopPlacesGroup.zoom);
   const isFetchingMember = useAppSelector(
     (state) => state.stopPlacesGroup.isFetchingMember,
   );
@@ -116,9 +111,6 @@ const GroupOfStopPlaces: React.FC = () => {
         <EditGroupOfStopPlaces />
       )}
       {isFetchingMember && <Loader />}
-      {!isLoadingGroup && zoom && (
-        <GroupOfStopPlaceMap position={position} zoom={zoom} />
-      )}
 
       <GroupErrorDialog
         open={errorDialog.open}

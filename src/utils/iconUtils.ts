@@ -76,15 +76,18 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
 };
 
 export const getSvgIconByTypeOrSubmode = (
-  submode: Submodes,
-  type: Modalities,
+  submode: Submodes | string | undefined,
+  type: Modalities | string | undefined,
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,
     // funicular.svg has white fills — use the PNG which is visible on light backgrounds
     funicular: funicular,
   };
-  return submodeMap[submode] || getSvgIconIdByModality(type);
+  return (
+    (submode ? submodeMap[submode as Submodes] : undefined) ||
+    getSvgIconIdByModality(type as Modalities)
+  );
 };
 
 export const getSvgIconIdByModality = (type: Modalities) => {
