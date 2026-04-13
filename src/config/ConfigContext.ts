@@ -27,6 +27,10 @@ export interface Config {
    */
   extUserGuideLink?: string;
   /**
+   * Hides "Move quays to new stop place" button
+   */
+  disableMoveQuaysToNewStopPlace?: boolean;
+  /**
    * Path to a single custom theme config JSON file (legacy singular field).
    */
   themeConfig?: string;

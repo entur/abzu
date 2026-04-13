@@ -22,9 +22,9 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
       ...rest,
       polygon: {
         ...polygon,
-        legacyCoordinates: polygon.legacyCoordinates.map((lnglat: number[]) =>
-          lnglat.slice().reverse(),
-        ),
+        coordinates: (
+          polygon.coordinates as unknown as [number, number][][]
+        )[0].map((lnglat: number[]) => lnglat.slice().reverse()),
       },
     }))
     .forEach((item) => map.set(item.id, { ...map.get(item.id), ...item }));

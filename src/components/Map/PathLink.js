@@ -160,18 +160,18 @@ const arrayOfPolylinesFromPolyline = (line) => {
     "placeRef",
     "addressablePlace",
     "geometry",
-    "legacyCoordinates",
+    "coordinates",
   ]);
   let endPosition = getIn(line, [
     "to",
     "placeRef",
     "addressablePlace",
     "geometry",
-    "legacyCoordinates",
+    "coordinates",
   ]);
 
   if (startPosition) {
-    arrayOfPolylines.push(startPosition[0]);
+    arrayOfPolylines.push(startPosition);
   }
 
   if (line.inBetween) {
@@ -179,7 +179,7 @@ const arrayOfPolylinesFromPolyline = (line) => {
   }
 
   if (endPosition) {
-    arrayOfPolylines.push(endPosition[0]);
+    arrayOfPolylines.push(endPosition);
   }
 
   return arrayOfPolylines;

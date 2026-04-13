@@ -97,10 +97,10 @@ class Parking {
       validBetween: parking.validBetween,
       accessibilityAssessment: parking.accessibilityAssessment,
     };
-    let coordinates = getIn(parking, ["geometry", "legacyCoordinates"], null);
+    let coordinates = getIn(parking, ["geometry", "coordinates"], null);
 
     if (coordinates && coordinates.length) {
-      clientParking.location = [coordinates[0][1], coordinates[0][0]];
+      clientParking.location = [coordinates[1], coordinates[0]];
     }
 
     return clientParking;
