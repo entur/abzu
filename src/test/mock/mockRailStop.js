@@ -27,14 +27,14 @@ const mockRailStop = {
         weighting: "interchangeAllowed",
         description: null,
         geometry: {
-          legacyCoordinates: [[11.118251, 59.2860146]],
+          coordinates: [11.118251, 59.2860146],
           __typename: "GeoJSON",
         },
         quays: [
           {
             id: "NSR:Quay:144",
             geometry: {
-              legacyCoordinates: [[11.118263, 59.28602]],
+              coordinates: [11.118263, 59.28602],
               __typename: "GeoJSON",
             },
             version: "1",
@@ -62,7 +62,7 @@ const mockRailStop = {
           {
             id: "NSR:Quay:145",
             geometry: {
-              legacyCoordinates: [[11.118263, 59.28602]],
+              coordinates: [11.118263, 59.28602],
               __typename: "GeoJSON",
             },
             version: "1",
@@ -90,7 +90,7 @@ const mockRailStop = {
           {
             id: "NSR:Quay:146",
             geometry: {
-              legacyCoordinates: [[11.118263, 59.28602]],
+              coordinates: [11.118263, 59.28602],
               __typename: "GeoJSON",
             },
             version: "1",
@@ -118,7 +118,7 @@ const mockRailStop = {
           {
             id: "NSR:Quay:147",
             geometry: {
-              legacyCoordinates: [[11.118263, 59.28602]],
+              coordinates: [11.118263, 59.28602],
               __typename: "GeoJSON",
             },
             version: "1",
@@ -146,7 +146,7 @@ const mockRailStop = {
           {
             id: "NSR:Quay:149",
             geometry: {
-              legacyCoordinates: [[11.118203, 59.285993]],
+              coordinates: [11.118203, 59.285993],
               __typename: "GeoJSON",
             },
             version: "1",
@@ -272,7 +272,7 @@ const mockRailStop = {
           __typename: "EmbeddableMultilingualString",
         },
         geometry: {
-          legacyCoordinates: [[11.118263, 59.28602]],
+          coordinates: [11.118263, 59.28602],
           __typename: "GeoJSON",
         },
         parkingVehicleTypes: ["pedalCycle"],
@@ -287,7 +287,7 @@ const mockRailStop = {
           __typename: "EmbeddableMultilingualString",
         },
         geometry: {
-          legacyCoordinates: [[11.118263, 59.28602]],
+          coordinates: [11.118263, 59.28602],
           __typename: "GeoJSON",
         },
         parkingVehicleTypes: ["car"],

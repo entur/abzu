@@ -50,7 +50,7 @@ helpers.mapQuayToVariables = (quay) => {
 
   if (quay.location) {
     quayVariables.geometry = {
-      legacyCoordinates: [[quay.location[1], quay.location[0]]],
+      coordinates: [quay.location[1], quay.location[0]],
       type: "Point",
     };
   }
@@ -109,8 +109,9 @@ helpers.mapChildStopToVariables = (original, userInput) => {
   };
 
   if (stop.parentStop.location) {
-    variables.legacyCoordinates = [
-      [stop.parentStop.location[1], stop.parentStop.location[0]],
+    variables.coordinates = [
+      stop.parentStop.location[1],
+      stop.parentStop.location[0],
     ];
   }
 
@@ -146,9 +147,7 @@ helpers.mapParentStopToVariables = (original, userInput) => {
     parentStopVariables.stopPlaceIds = stop.children.map((child) => child.id);
   }
   if (stop.location) {
-    parentStopVariables.legacyCoordinates = [
-      [stop.location[1], stop.location[0]],
-    ];
+    parentStopVariables.coordinates = [stop.location[1], stop.location[0]];
   }
 
   if (userInput) {
@@ -193,12 +192,12 @@ const mapStopPlaceTypeForBackend = (stopPlaceType) => {
 helpers.mapDeepStopToVariables = (original) => {
   let stopPlace = helpers.mapStopToVariables(original, null);
 
-  if (stopPlace.legacyCoordinates) {
+  if (stopPlace.coordinates) {
     stopPlace.geometry = {
-      legacyCoordinates: stopPlace.legacyCoordinates.slice(),
+      coordinates: stopPlace.coordinates.slice(),
       type: "Point",
     };
-    delete stopPlace.legacyCoordinates;
+    delete stopPlace.coordinates;
   }
   return stopPlace;
 };
@@ -251,7 +250,7 @@ helpers.mapStopToVariables = (original, userInput) => {
   }
 
   if (stop.location) {
-    stopVariables.legacyCoordinates = [[stop.location[1], stop.location[0]]];
+    stopVariables.coordinates = [stop.location[1], stop.location[0]];
   }
   helpers.removeTypeNameRecursively(stopVariables);
   return stopVariables;
@@ -282,7 +281,7 @@ helpers.mapPathLinkToVariables = (pathLinks) => {
     if (pathLink.inBetween && pathLink.inBetween.length) {
       pathLink.geometry = {
         type: "LineString",
-        legacyCoordinates: pathLink.inBetween.map((latlng) => latlng.reverse()),
+        coordinates: pathLink.inBetween.map((latlng) => latlng.reverse()),
       };
     }
     helpers.removeTypeNameRecursively(pathLink);
@@ -367,7 +366,7 @@ helpers.mapParkingToVariables = (parkingArr, parentRef) => {
 
       parking.geometry = {
         type: "Point",
-        legacyCoordinates: [coordinates],
+        coordinates: coordinates,
       };
     } else {
       parking.geometry = null;

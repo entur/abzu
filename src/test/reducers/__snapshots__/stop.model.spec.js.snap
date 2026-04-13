@@ -131,6 +131,10 @@ exports[`Model: map format from server to expected client model > should map cli
   },
   "adjacentSites": undefined,
   "alternativeNames": [],
+  "coordinates": [
+    11.170963,
+    59.587427,
+  ],
   "description": {
     "lang": "nor",
     "value": "Beskrivelse",
@@ -138,12 +142,6 @@ exports[`Model: map format from server to expected client model > should map cli
   "facilities": undefined,
   "id": "NSR:StopPlace:19744",
   "keyValues": [],
-  "legacyCoordinates": [
-    [
-      11.170963,
-      59.587427,
-    ],
-  ],
   "localServices": null,
   "name": {
     "lang": "nor",
@@ -178,11 +176,9 @@ exports[`Model: map format from server to expected client model > should map cli
         },
       ],
       "geometry": {
-        "legacyCoordinates": [
-          [
-            11.17094,
-            59.587486,
-          ],
+        "coordinates": [
+          11.17094,
+          59.587486,
         ],
         "type": "Point",
       },
@@ -201,11 +197,9 @@ exports[`Model: map format from server to expected client model > should map cli
       "description": null,
       "facilities": undefined,
       "geometry": {
-        "legacyCoordinates": [
-          [
-            11.170986,
-            59.587368,
-          ],
+        "coordinates": [
+          11.170986,
+          59.587368,
         ],
         "type": "Point",
       },
@@ -242,11 +236,9 @@ exports[`Model: map format from server to expected client model > should map par
       },
     },
     "geometry": {
-      "legacyCoordinates": [
-        [
-          11.088595,
-          63.207698,
-        ],
+      "coordinates": [
+        11.088595,
+        63.207698,
       ],
       "type": "Point",
     },
