@@ -19,6 +19,8 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import { useIntl } from "react-intl";
+import { Link } from "react-router-dom";
+import Routes from "../../routes/";
 import ModalityIconImg from "../MainPage/ModalityIconImg";
 import { ChangelogVersionHistory } from "./ChangelogVersionHistory";
 import type { StopPlaceResult, VersionEntry } from "./types";
@@ -68,7 +70,13 @@ export const ChangelogResultRow = ({
           </IconButton>
         </TableCell>
         <TableCell sx={{ fontWeight: 500 }}>
-          {stop.name?.value || "—"}
+          {stop.name?.value ? (
+            <Link to={`/${Routes.STOP_PLACE}/${stop.id}`}>
+              {stop.name.value}
+            </Link>
+          ) : (
+            "—"
+          )}
         </TableCell>
         <TableCell
           sx={{
