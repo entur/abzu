@@ -15,6 +15,8 @@ limitations under the Licence. */
 import gql from "graphql-tag";
 import Fragments from "./fragments";
 
+export const CHANGELOG_RESULT_LIMIT = 300;
+
 export const neighbourStopPlaceQuays = gql`
   query neighbourStopPlaceQuays($id: String!) {
     stopPlace(id: $id) {
@@ -463,6 +465,84 @@ export const findStopForReport = gql`
     },
   ${Fragments.stopPlace.reportView},
   ${Fragments.parentStopPlace.reportView}
+`;
+
+export const findStopForChangelog = gql`
+  query findStopForChangelog(
+    $query: String
+    $municipalityReference: [String]
+    $stopPlaceType: [StopPlaceType]
+    $countyReference: [String]
+    $countryReference: [String]
+    $versionValidity: VersionValidity
+  ) {
+    stopPlace(
+      query: $query
+      municipalityReference: $municipalityReference
+      stopPlaceType: $stopPlaceType
+      countyReference: $countyReference
+      countryReference: $countryReference
+      size: ${CHANGELOG_RESULT_LIMIT}
+      versionValidity: $versionValidity
+    ) {
+      ... on StopPlace {
+        __typename
+        id
+        name {
+          value
+        }
+        stopPlaceType
+        version
+        changedBy
+        versionComment
+        validBetween {
+          fromDate
+          toDate
+        }
+        topographicPlace {
+          name {
+            value
+          }
+          topographicPlaceType
+          parentTopographicPlace {
+            name {
+              value
+            }
+          }
+        }
+      }
+      ... on ParentStopPlace {
+        __typename
+        id
+        name {
+          value
+        }
+        version
+        changedBy
+        versionComment
+        validBetween {
+          fromDate
+          toDate
+        }
+        topographicPlace {
+          name {
+            value
+          }
+          topographicPlaceType
+          parentTopographicPlace {
+            name {
+              value
+            }
+          }
+        }
+        children {
+          id
+          version
+          stopPlaceType
+        }
+      }
+    }
+  }
 `;
 
 export const allVersionsOfStopPlace = gql`
