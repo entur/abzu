@@ -22,7 +22,11 @@ export default defineConfig({
       reactComponentToggle({
         componentsPath: "/src/ext",
         manualChunks: (id) => {
-          if (id.includes("node_modules")) {
+          // maplibre-gl must be its own chunk to avoid Rollup TDZ initialization
+          // errors caused by circular references when it's merged into vendor.
+          if (id.includes("maplibre-gl") || id.includes("react-map-gl")) {
+            return 'maplibre';
+          } else if (id.includes("node_modules")) {
             return 'vendor';
           } else if (!id.includes("/static/lang/")) {
             return 'index';
