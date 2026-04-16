@@ -118,7 +118,7 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         stopHasBeenModified: false,
         current: JSON.parse(JSON.stringify(state.originalCurrent)),
-        pathLink: JSON.parse(JSON.stringify(state.originalPathLink)),
+        pathLink: JSON.parse(JSON.stringify(state.originalPathLink ?? [])),
       });
 
     case types.ADD_ADJACENT_SITE:
