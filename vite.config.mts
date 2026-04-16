@@ -16,6 +16,19 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        // maplibre-gl must be isolated in its own chunk at the Rollup level.
+        // Merging it into vendor causes TDZ "Cannot access 'X' before initialization"
+        // errors because Rollup cannot resolve the circular init order within a
+        // single large chunk containing both the library and its consumers.
+        manualChunks: (id) => {
+          if (id.includes("maplibre-gl") || id.includes("react-map-gl")) {
+            return "maplibre";
+          }
+        },
+      },
+    },
   },
   plugins: [
     react(), viteTsconfigPaths(), svgrPlugin(),
