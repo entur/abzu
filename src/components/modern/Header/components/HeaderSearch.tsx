@@ -21,22 +21,21 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { FilterSection, RootState, SearchInput } from "../../MainPage";
-import { FavoriteStopPlaces } from "../../MainPage/components/FavoriteStopPlaces";
+import { RootState, SearchInput } from "../../MainPage";
 import { useSearchBox } from "../../MainPage/hooks/useSearchBox";
 import { LoadingDialog } from "../../Shared";
 import "../../modern.css";
 import {
-  headerSearchContentContainer,
   headerSearchDesktopContainer,
   headerSearchDesktopDropdown,
   headerSearchIconButton,
   headerSearchMobilePanel,
 } from "../../styles";
+import { SearchDropdownContent } from "./SearchDropdownContent";
 
 export const HeaderSearch: React.FC = () => {
   const theme = useTheme();
@@ -48,6 +47,23 @@ export const HeaderSearch: React.FC = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const [favoritesLoading, setFavoritesLoading] = useState(false);
   const [favoritesLoadingName, setFavoritesLoadingName] = useState("");
+  const [pendingFavoriteId, setPendingFavoriteId] = useState<string | null>(
+    null,
+  );
+
+  // FavoriteStopPlaces unmounts when the panel closes, so clearing favoritesLoading
+  // must live here (HeaderSearch never unmounts). We watch currentStopId — the same
+  // signal that triggers map flyTo — and clear loading the instant they match.
+  const currentStopId = useSelector(
+    (state: any) => (state.stopPlace as any)?.current?.id as string | undefined,
+  );
+  useEffect(() => {
+    if (pendingFavoriteId && currentStopId === pendingFavoriteId) {
+      setFavoritesLoading(false);
+      setFavoritesLoadingName("");
+      setPendingFavoriteId(null);
+    }
+  }, [currentStopId, pendingFavoriteId]);
 
   const {
     stopTypeFilter,
@@ -144,54 +160,35 @@ export const HeaderSearch: React.FC = () => {
     }
   };
 
-  // Unified content structure - SearchInput only for mobile
-  const renderSearchContent = () => {
-    return (
-      <Box sx={headerSearchContentContainer}>
-        {/* Only show SearchInput in dropdown for mobile */}
-        {isTablet && (
-          <SearchInput
-            menuItems={menuItems}
-            loading={loading}
-            stopPlaceSearchValue={stopPlaceSearchValue}
-            showFilters={showMoreFilterOptions}
-            activeFilterCount={activeFilterCount}
-            showFavorites={showFavorites}
-            onSearchUpdate={handleSearchUpdate}
-            onNewRequest={handleNewRequest}
-            onToggleFilters={handleToggleFilters}
-            onToggleFavorites={handleToggleFavorites}
-          />
-        )}
-
-        {showFavorites && (
-          <FavoriteStopPlaces
-            onClose={handleCloseSearch}
-            onLoadingChange={(loading, name) => {
-              setFavoritesLoading(loading);
-              setFavoritesLoadingName(name);
-            }}
-          />
-        )}
-
-        {showMoreFilterOptions && (
-          <FilterSection
-            showMoreFilterOptions={showMoreFilterOptions}
-            stopTypeFilter={stopTypeFilter}
-            topographicalPlacesDataSource={topographicalPlacesDataSource}
-            topographicPlaceFilterValue={topographicPlaceFilterValue}
-            topoiChips={topoiChips}
-            showFutureAndExpired={showFutureAndExpired}
-            onToggleFilter={handleToggleFilter}
-            onApplyModalityFilters={handleApplyModalityFilters}
-            onTopographicalPlaceInput={handleTopographicalPlaceInput}
-            onAddChip={handleAddChip}
-            onDeleteChip={handleDeleteChip}
-            onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
-          />
-        )}
-      </Box>
-    );
+  const dropdownContentProps = {
+    isTablet,
+    menuItems,
+    loading,
+    stopPlaceSearchValue,
+    showMoreFilterOptions,
+    showFavorites,
+    activeFilterCount,
+    onSearchUpdate: handleSearchUpdate,
+    onNewRequest: handleNewRequest,
+    onToggleFilters: handleToggleFilters,
+    onToggleFavorites: handleToggleFavorites,
+    onClose: handleCloseSearch,
+    onLoadingChange: (isLoading: boolean, name: string) => {
+      setFavoritesLoading(isLoading);
+      setFavoritesLoadingName(name);
+    },
+    onPendingNavigation: setPendingFavoriteId,
+    stopTypeFilter,
+    topographicalPlacesDataSource,
+    topographicPlaceFilterValue,
+    topoiChips,
+    showFutureAndExpired,
+    onToggleFilter: handleToggleFilter,
+    onApplyModalityFilters: handleApplyModalityFilters,
+    onTopographicalPlaceInput: handleTopographicalPlaceInput,
+    onAddChip: handleAddChip,
+    onDeleteChip: handleDeleteChip,
+    onToggleShowFutureAndExpired: toggleShowFutureAndExpired,
   };
 
   // Condition for when to show the search panel
@@ -237,7 +234,7 @@ export const HeaderSearch: React.FC = () => {
                   elevation={8}
                   sx={headerSearchDesktopDropdown(theme, isElevated)}
                 >
-                  {renderSearchContent()}
+                  <SearchDropdownContent {...dropdownContentProps} />
                 </Paper>
               </Box>
             </ClickAwayListener>
@@ -274,7 +271,7 @@ export const HeaderSearch: React.FC = () => {
       {isTablet && shouldShowSearchPanel && (
         <ClickAwayListener onClickAway={handleCloseSearch}>
           <Paper elevation={8} sx={headerSearchMobilePanel(theme, isElevated)}>
-            {renderSearchContent()}
+            <SearchDropdownContent {...dropdownContentProps} />
           </Paper>
         </ClickAwayListener>
       )}

@@ -142,6 +142,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
       <ParentStopPlaceMinimizedBar
         stopPlace={stopPlace}
         originalStopPlace={originalStopPlace}
+        centerLocation={stopPlace.location}
         isOpen={isOpen}
         isModified={isModified}
         canEdit={canEdit}

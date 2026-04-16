@@ -13,20 +13,18 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import NavigationIcon from "@mui/icons-material/Navigation";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { useState } from "react";
-import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
-import { MarkerPopup } from "./MarkerPopup";
-import { QuayPathLinkActions } from "./QuayPathLinkActions";
+import { QuayPopup } from "./QuayPopup";
 import type { FocusedElement, MapQuay, MapStopPlace } from "./types";
 
-const QUAY_SIZE = 24;
+const QUAY_SIZE = 28;
 
 interface QuayMarkerItemProps {
   quay: MapQuay;
@@ -42,7 +40,6 @@ const QuayMarkerItem = ({
   focused,
 }: QuayMarkerItemProps) => {
   const dispatch = useAppDispatch();
-  const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
 
   if (!quay.location) return null;
@@ -87,7 +84,10 @@ const QuayMarkerItem = ({
             />
           )}
           <Box
-            onClick={(e) => setPopupAnchor(e.currentTarget)}
+            onClick={(e) => {
+              dispatch(StopPlaceActions.setElementFocus(index, "quay"));
+              setPopupAnchor(e.currentTarget);
+            }}
             sx={(theme) => ({
               width: QUAY_SIZE,
               height: QUAY_SIZE,
@@ -102,8 +102,9 @@ const QuayMarkerItem = ({
               boxShadow: focused
                 ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
                 : "0 2px 4px rgba(0,0,0,0.35)",
+              transform: focused ? "scale(1.2)" : "none",
               transition: "all 0.15s",
-              "&:hover": { transform: "scale(1.12)" },
+              "&:hover": { transform: "scale(1.25)" },
             })}
           >
             <Typography
@@ -111,9 +112,10 @@ const QuayMarkerItem = ({
                 color: focused
                   ? "warning.contrastText"
                   : "success.contrastText",
-                fontWeight: 700,
-                fontSize: "0.6rem",
+                fontWeight: 800,
+                fontSize: "0.7rem",
                 lineHeight: 1,
+                letterSpacing: "0.01em",
                 userSelect: "none",
               }}
             >
@@ -123,33 +125,15 @@ const QuayMarkerItem = ({
         </Box>
       </Marker>
 
-      <MarkerPopup
+      <QuayPopup
         anchorEl={popupAnchor}
         onClose={() => setPopupAnchor(null)}
-        title={`${formatMessage({ id: "quay" })} ${label}`}
-        id={quay.id}
+        quay={quay}
+        index={index}
+        disabled={disabled}
         lat={lat}
         lng={lng}
-      >
-        {hasBearing && (
-          <>
-            <Divider sx={{ my: 0.75 }} />
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              {formatMessage({ id: "compass_bearing" })}: {quay.compassBearing}°
-            </Typography>
-          </>
-        )}
-        {!disabled && (
-          <>
-            <Divider sx={{ my: 0.75 }} />
-            <QuayPathLinkActions
-              quayId={quay.id}
-              location={quay.location}
-              onAction={() => setPopupAnchor(null)}
-            />
-          </>
-        )}
-      </MarkerPopup>
+      />
     </>
   );
 };

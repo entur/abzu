@@ -74,6 +74,7 @@ export interface EditGroupOfStopPlacesProps {
 
 export interface GroupOfStopPlacesHeaderProps {
   groupOfStopPlaces: GroupOfStopPlaces;
+  centerPosition?: [number, number];
   onGoBack: () => void;
   onCollapse?: () => void;
 }

@@ -15,20 +15,32 @@ limitations under the Licence. */
 import debounce from "lodash.debounce";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
-import Map, { MapRef, ViewStateChangeEvent } from "react-map-gl/maplibre";
+import Map, {
+  MapLayerMouseEvent,
+  MapRef,
+  ViewStateChangeEvent,
+} from "react-map-gl/maplibre";
+import { useNavigate } from "react-router-dom";
 import { StopPlaceActions, UserActions } from "../../../actions";
 import { getNeighbourStops } from "../../../actions/TiamatActions";
 import { ConfigContext, MapConfig } from "../../../config/ConfigContext";
+import AppRoutes from "../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { MapControls } from "../../Map/MapControls";
+import { AddElementFab } from "./controls/AddElementFab";
+import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
+import { StopGroupLayer } from "./layers/StopGroupLayer";
+import { TariffZonesLayer } from "./layers/TariffZonesLayer";
 import { BoardingPositionMarkers } from "./markers/BoardingPositionMarkers";
 import { NeighbourMarkers } from "./markers/NeighbourMarkers";
 import { ParkingMarkers } from "./markers/ParkingMarkers";
 import { QuayMarkers } from "./markers/QuayMarkers";
 import { StopPlaceMarker } from "./markers/StopPlaceMarker";
 import { buildMaplibreStyle } from "./tile-sources/buildMaplibreStyle";
+
+const NEIGHBOUR_STOPS_MIN_ZOOM = 13;
 
 const DEFAULT_MAP_CONFIG: MapConfig = {
   baseLayers: [
@@ -46,6 +58,7 @@ const DEFAULT_MAP_CONFIG: MapConfig = {
 
 export const ModernEditStopMap = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const mapRef = useRef<MapRef>(null);
   const { mapConfig } = useContext(ConfigContext);
   const config = mapConfig ?? DEFAULT_MAP_CONFIG;
@@ -67,8 +80,21 @@ export const ModernEditStopMap = () => {
         | [number, number]
         | undefined,
   );
+  const currentGroupId = useAppSelector(
+    (state) =>
+      (state as any).stopPlacesGroup?.current?.id as string | undefined,
+  );
+  const groupCenterPosition = useAppSelector(
+    (state) =>
+      (state as any).stopPlacesGroup?.centerPosition as
+        | [number, number]
+        | undefined,
+  );
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
+  );
+  const isCreatingNewStop = useAppSelector(
+    (state) => (state.user as any).isCreatingNewStop as boolean,
   );
 
   // Ref so the stable debounce callback always reads the latest values
@@ -100,7 +126,7 @@ export const ModernEditStopMap = () => {
         const { latitude, longitude, zoom: newZoom } = event.viewState;
         dispatch(UserActions.setCenterAndZoom([latitude, longitude], newZoom));
 
-        if (newZoom > 14) {
+        if (newZoom > NEIGHBOUR_STOPS_MIN_ZOOM) {
           const map = mapRef.current?.getMap();
           if (map) {
             const {
@@ -132,6 +158,32 @@ export const ModernEditStopMap = () => {
     mapRef.current.flyTo({ center: [lng, lat], zoom: 15, duration: 800 });
   }, [currentStopId]);
 
+  useEffect(() => {
+    if (!currentGroupId || !groupCenterPosition || !mapRef.current) return;
+    const [lat, lng] = groupCenterPosition;
+    mapRef.current.flyTo({ center: [lng, lat], zoom: 14, duration: 800 });
+    // groupCenterPosition is included so re-navigating to the same group (same currentGroupId)
+    // still triggers flyTo — the reducer always produces a new array reference on fetch.
+  }, [currentGroupId, groupCenterPosition]);
+
+  // Ref so the stable callback always reads the latest isCreatingNewStop value
+  const isCreatingNewStopRef = useRef(isCreatingNewStop);
+  useEffect(() => {
+    isCreatingNewStopRef.current = isCreatingNewStop;
+  }, [isCreatingNewStop]);
+
+  const handleDblClick = useCallback(
+    (event: MapLayerMouseEvent) => {
+      if (!isCreatingNewStopRef.current) return;
+      const { lat, lng } = event.lngLat;
+      dispatch(StopPlaceActions.createNewStop({ lat, lng }));
+      navigate(`/${AppRoutes.STOP_PLACE}/new`);
+    },
+    // navigate and dispatch are stable; isCreatingNewStopRef is a stable ref
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dispatch, navigate],
+  );
+
   const mapStyle = useMemo(
     () => buildMaplibreStyle(config, activeBaseLayer),
     [config, activeBaseLayer],
@@ -155,10 +207,16 @@ export const ModernEditStopMap = () => {
         mapStyle={mapStyle}
         onLoad={handleMapLoad}
         onMoveEnd={handleMoveEnd}
+        onDblClick={handleDblClick}
+        doubleClickZoom={!isCreatingNewStop}
         pitchWithRotate={false}
         dragRotate={false}
       >
         <MapControls />
+        <AddElementFab />
+        <FareZonesLayer />
+        <TariffZonesLayer />
+        <StopGroupLayer />
         <MultimodalEdgesLayer />
         <PathLinkLayer />
         <NeighbourMarkers />

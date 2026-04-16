@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { UseSearchBoxProps, UseSearchBoxReturn } from "../types";
 import { useFavoriteHandlers } from "./searchBox/useFavoriteHandlers";
 import { useFilterHandlers } from "./searchBox/useFilterHandlers";
@@ -48,6 +50,8 @@ export const useSearchBox = ({
     topographicPlaceFilterValue,
     setTopographicPlaceFilterValue,
     handleToggleFilter,
+    pendingNavigationId,
+    setPendingNavigationId,
   } = useSearchState();
 
   // 2. Search handlers (includes debounced search)
@@ -60,6 +64,7 @@ export const useSearchBox = ({
       setLoadingSelection,
       setLoadingStopPlaceName,
       setStopPlaceSearchValue,
+      setPendingNavigationId,
     );
 
   // 3. Filter handlers
@@ -89,6 +94,26 @@ export const useSearchBox = ({
   // 5. Favorite handlers
   const { handleSaveAsFavorite, handleRetrieveFilter } =
     useFavoriteHandlers(handleSearchUpdate);
+
+  // Clear loadingSelection once the navigated stop's full data has landed in Redux.
+  // Watching currentStopId === pendingNavigationId is robust across all cases:
+  // same-stop re-selection (clears immediately), fresh stops, and parent stops.
+  const currentStopId = useSelector(
+    (state: any) => (state.stopPlace as any)?.current?.id as string | undefined,
+  );
+  useEffect(() => {
+    if (pendingNavigationId && currentStopId === pendingNavigationId) {
+      setLoadingSelection(false);
+      setLoadingStopPlaceName("");
+      setPendingNavigationId(null);
+    }
+  }, [
+    currentStopId,
+    pendingNavigationId,
+    setLoadingSelection,
+    setLoadingStopPlaceName,
+    setPendingNavigationId,
+  ]);
 
   // 6. Computed values (menu items and topographical data sources)
   const { menuItems, topographicalPlacesDataSource } = useSearchMenuItems(

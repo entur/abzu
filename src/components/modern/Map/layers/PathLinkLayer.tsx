@@ -36,21 +36,21 @@ const colorForIndex = (index: number) =>
  * Builds an ordered [lng, lat] coordinate array for a single path link.
  *
  * Coordinate conventions in Redux state:
- *  - legacyCoordinates: [lng, lat]  → GeoJSON order, use as-is
- *  - inBetween:         [lat, lng]  → Redux order, must swap
+ *  - geometry.coordinates: [lat, lng]  → PathLink.js reverses the API value in-place; must swap
+ *  - inBetween:            [lat, lng]  → Redux order, must swap
  */
 const buildLineCoordinates = (pathLink: PathLink): [number, number][] => {
   const coords: [number, number][] = [];
 
-  const fromLegacy =
-    pathLink.from?.placeRef?.addressablePlace?.geometry?.legacyCoordinates?.[0];
-  if (fromLegacy) coords.push([fromLegacy[1], fromLegacy[0]]); // [lat,lng] → [lng,lat]
+  const fromCoords =
+    pathLink.from?.placeRef?.addressablePlace?.geometry?.coordinates;
+  if (fromCoords) coords.push([fromCoords[1], fromCoords[0]]); // [lat,lng] → [lng,lat]
 
   (pathLink.inBetween ?? []).forEach(([lat, lng]) => coords.push([lng, lat]));
 
-  const toLegacy =
-    pathLink.to?.placeRef?.addressablePlace?.geometry?.legacyCoordinates?.[0];
-  if (toLegacy) coords.push([toLegacy[1], toLegacy[0]]); // [lat,lng] → [lng,lat]
+  const toCoords =
+    pathLink.to?.placeRef?.addressablePlace?.geometry?.coordinates;
+  if (toCoords) coords.push([toCoords[1], toCoords[0]]); // [lat,lng] → [lng,lat]
 
   return coords;
 };

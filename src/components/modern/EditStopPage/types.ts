@@ -180,6 +180,32 @@ export interface ParkingPanelProps {
   onCapacityChange: (index: number, value: string) => void;
 }
 
+export interface StopPlaceViewProps {
+  stopPlace: StopPlace;
+  stopName: string;
+  canEdit: boolean;
+  canDelete: boolean;
+  isModified: boolean;
+  onGoBack: () => void;
+  onToggle: () => void;
+  onAddQuay: () => void;
+  onAddParking: (type: string) => void;
+  onDeleteQuay: (index: number) => void;
+  onDeleteParking: (index: number) => void;
+  onNameChange: (value: string) => void;
+  onDescriptionChange: (value: string) => void;
+  onTypeChange: (type: string) => void;
+  onSubmodeChange: (stopPlaceType: string, submode: string) => void;
+  onWeightingChange: (value: string) => void;
+  onOpenSaveDialog: () => void;
+  onOpenUndoDialog: () => void;
+  onOpenTerminateDialog: () => void;
+  onOpenTagsDialog: () => void;
+  onOpenAltNamesDialog: () => void;
+  onOpenKeyValuesDialog: () => void;
+  onOpenVersionsDialog: () => void;
+}
+
 export interface StopPlaceDialogsProps {
   stopPlace: StopPlace | null;
   canEdit: boolean;

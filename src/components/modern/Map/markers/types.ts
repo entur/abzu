@@ -18,9 +18,9 @@ export type LatLng = [number, number];
 /** Coordinates in GeoJSON / MapLibre format: [longitude, latitude] */
 export type LngLat = [number, number];
 
-/** Legacy geometry from the Tiamat API — coordinates are [lng, lat] (GeoJSON order) */
-export interface LegacyGeometry {
-  legacyCoordinates?: LngLat[];
+/** Point geometry from the Tiamat API — single [lng, lat] coordinate (GeoJSON order) */
+export interface PointGeometry {
+  coordinates?: LngLat;
 }
 
 export interface BoardingPosition {
@@ -44,12 +44,13 @@ export interface MapParking {
   parkingType: string;
   location?: LatLng;
   totalCapacity?: number;
+  hasExpired?: boolean;
 }
 
 export interface ChildStop {
   id: string;
   location?: LatLng;
-  geometry?: LegacyGeometry;
+  geometry?: PointGeometry;
 }
 
 export interface MapStopPlace {
@@ -59,6 +60,9 @@ export interface MapStopPlace {
   submode?: string;
   location?: LatLng;
   isParent?: boolean;
+  isChildOfParent?: boolean;
+  hasExpired?: boolean;
+  belongsToGroup?: boolean;
   permanentlyTerminated?: boolean;
   quays?: MapQuay[];
   parking?: MapParking[];
@@ -69,7 +73,7 @@ interface PlaceRef {
   ref?: string;
   addressablePlace?: {
     id?: string;
-    geometry?: LegacyGeometry;
+    geometry?: PointGeometry;
   };
 }
 
@@ -90,10 +94,14 @@ export interface NeighbourStop {
   submode?: string;
   location?: LatLng;
   isParent?: boolean;
+  isChildOfParent?: boolean;
+  hasExpired?: boolean;
+  belongsToGroup?: boolean;
+  permissions?: { canEdit: boolean };
 }
 
 export interface FocusedElement {
-  type: "quay" | "parking";
+  type: "quay" | "parking" | "parkAndRide" | "bikeParking" | "boardingPosition";
   index: number;
 }
 

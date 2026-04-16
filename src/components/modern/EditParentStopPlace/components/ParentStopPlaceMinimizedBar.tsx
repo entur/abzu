@@ -31,6 +31,7 @@ import { MinimizedBar, MinimizedBarAction } from "../../Shared";
 interface ParentStopPlaceMinimizedBarProps {
   stopPlace: any;
   originalStopPlace: any;
+  centerLocation?: [number, number];
   isOpen: boolean;
   isModified: boolean;
   canEdit: boolean;
@@ -60,6 +61,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
 > = ({
   stopPlace,
   originalStopPlace,
+  centerLocation,
   isOpen,
   isModified,
   canEdit,
@@ -213,6 +215,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
               actions={minimizedBarActions}
               onExpand={onExpand}
               onClose={onClose}
+              centerLocation={centerLocation}
               isMobile={true}
             />
           </Box>
@@ -241,6 +244,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
             actions={minimizedBarActions}
             onExpand={onExpand}
             onClose={onClose}
+            centerLocation={centerLocation}
             isMobile={false}
           />
         </Box>

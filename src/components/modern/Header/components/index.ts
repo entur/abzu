@@ -18,6 +18,7 @@ export { HeaderSearch } from "./HeaderSearch";
 export { InitialMapSettingsForm } from "./InitialMapSettingsForm";
 export { LanguageMenu } from "./LanguageMenu";
 export { NavigationMenu } from "./NavigationMenu";
+export { SearchDropdownContent } from "./SearchDropdownContent";
 export { SettingsMenuSection } from "./SettingsMenuSection";
 export { UICustomizationSection } from "./UICustomizationSection";
 export { UserSection } from "./UserSection";

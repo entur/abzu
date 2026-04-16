@@ -19,6 +19,7 @@ import { useFavoriteStopPlaces } from "./hooks/useFavoriteStopPlaces";
 interface FavoriteStopPlacesProps {
   onClose?: () => void;
   onLoadingChange?: (loading: boolean, name: string) => void;
+  onPendingNavigation?: (id: string | null) => void;
 }
 
 /**
@@ -29,13 +30,14 @@ interface FavoriteStopPlacesProps {
 export const FavoriteStopPlaces: React.FC<FavoriteStopPlacesProps> = ({
   onClose,
   onLoadingChange,
+  onPendingNavigation,
 }) => {
   const {
     favorites,
     handleSelectFavorite,
     handleRemoveFavorite,
     handleClearAll,
-  } = useFavoriteStopPlaces(onClose, onLoadingChange);
+  } = useFavoriteStopPlaces(onClose, onLoadingChange, onPendingNavigation);
 
   return (
     <>

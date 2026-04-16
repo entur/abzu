@@ -47,6 +47,9 @@ export const MapControls: React.FC = () => {
   };
 
   const handleClosePanel = () => {
+    if (activePanel === "zones") {
+      dispatch(toggleShowFareZonesInMap(false));
+    }
     setActivePanel(null);
   };
 
@@ -71,11 +74,9 @@ export const MapControls: React.FC = () => {
       icon: <MapIcon />,
       label: formatMessage({ id: "show_fare_zones_label" }) || "Fare Zones",
       onClick: () => {
-        const newPanel = activePanel === "zones" ? null : "zones";
-        setActivePanel(newPanel);
-        if (newPanel === "zones") {
-          dispatch(toggleShowFareZonesInMap(true));
-        }
+        const opening = activePanel !== "zones";
+        setActivePanel(opening ? "zones" : null);
+        dispatch(toggleShowFareZonesInMap(opening));
       },
     },
   ];

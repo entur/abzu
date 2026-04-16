@@ -1,3 +1,4 @@
+export { CenterMapButton } from "./CenterMapButton";
 export { CopyIdButton } from "./CopyIdButton";
 export { CountBadge } from "./CountBadge";
 export { ExpiredWarning } from "./ExpiredWarning";

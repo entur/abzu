@@ -13,7 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import AccessibleIcon from "@mui/icons-material/Accessible";
-import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -22,7 +21,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import {
   Box,
   Button,
-  Chip,
   Divider,
   IconButton,
   Tab,
@@ -31,15 +29,15 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import { StopPlaceActions } from "../../../../actions";
 import BusShelter from "../../../../static/icons/facilities/BusShelter";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppSelector } from "../../../../store/hooks";
 import AccessibilityQuayTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityQuayTab";
 import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab";
 import { CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
+import { BoardingPositionsTab } from "./BoardingPositionsTab";
 
 /**
  * Full quay editor panel.
@@ -60,9 +58,29 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   onPrivateCodeChange,
   onDescriptionChange,
 }) => {
+  const BOARDING_POSITIONS_TAB = 3;
+
   const { formatMessage } = useIntl();
-  const dispatch = useAppDispatch();
+
   const [activeTab, setActiveTab] = useState(0);
+
+  const focusedBoardingPosition = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedBoardingPositionElement as
+        | { index: number; quayIndex: number }
+        | undefined,
+  );
+
+  // Switch to boarding positions tab when a boarding position marker is clicked
+  useEffect(() => {
+    if (
+      focusedBoardingPosition &&
+      focusedBoardingPosition.quayIndex === quayIndex &&
+      focusedBoardingPosition.index >= 0
+    ) {
+      setActiveTab(BOARDING_POSITIONS_TAB);
+    }
+  }, [focusedBoardingPosition, quayIndex]);
 
   const quay = stopPlace.quays?.[quayIndex];
   if (!quay) return null;
@@ -220,128 +238,12 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
 
         {/* Tab 3 — Boarding Positions */}
         {activeTab === 3 && (
-          <Box>
-            {/* Sub-header with add button */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                px: 2,
-                py: 1,
-                bgcolor: "background.default",
-              }}
-            >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ flex: 1, fontWeight: 600 }}
-              >
-                {formatMessage({ id: "boarding_positions_tab_label" })}
-              </Typography>
-              <Chip label={quay.boardingPositions?.length ?? 0} size="small" />
-              <Tooltip title={formatMessage({ id: "new_boarding_position" })}>
-                <span>
-                  <IconButton
-                    size="small"
-                    color="primary"
-                    disabled={!canEdit}
-                    onClick={() => {
-                      dispatch(
-                        StopPlaceActions.setElementFocus(quayIndex, "quay"),
-                      );
-                      dispatch(
-                        StopPlaceActions.addElementToStop(
-                          "boardingPosition",
-                          quay.location || stopPlace.location || [0, 0],
-                        ),
-                      );
-                    }}
-                  >
-                    <AddIcon fontSize="small" />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            </Box>
-            <Divider />
-
-            {/* Boarding position list */}
-            {!quay.boardingPositions || quay.boardingPositions.length === 0 ? (
-              <Box sx={{ px: 2, py: 1 }}>
-                <Typography variant="body2" color="text.secondary">
-                  {formatMessage({ id: "no_boarding_positions" })}
-                </Typography>
-              </Box>
-            ) : (
-              quay.boardingPositions.map((bp, bpIndex) => (
-                <Box
-                  key={bp.id || `bp-${bpIndex}`}
-                  sx={{
-                    px: 2,
-                    py: 1,
-                    borderBottom: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}
-                  >
-                    <TextField
-                      label={formatMessage({ id: "publicCode" })}
-                      value={bp.publicCode || ""}
-                      onChange={(e) =>
-                        dispatch(
-                          StopPlaceActions.changeBoardingPositionPublicCode(
-                            bpIndex,
-                            quayIndex,
-                            e.target.value.substring(0, 3),
-                          ),
-                        )
-                      }
-                      disabled={!canEdit}
-                      size="small"
-                      sx={{ flex: 1 }}
-                      inputProps={{ maxLength: 3 }}
-                    />
-                    {canEdit && (
-                      <Tooltip title={formatMessage({ id: "delete" })}>
-                        <IconButton
-                          size="small"
-                          color="error"
-                          sx={{ mt: 0.5 }}
-                          onClick={() =>
-                            dispatch(
-                              StopPlaceActions.removeBoardingPositionElement(
-                                bpIndex,
-                                quayIndex,
-                              ),
-                            )
-                          }
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                  </Box>
-                  {bp.id && (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.25,
-                        mt: 0.5,
-                      }}
-                    >
-                      <Typography variant="caption" color="text.secondary">
-                        {bp.id}
-                      </Typography>
-                      <CopyIdButton idToCopy={bp.id} size="small" />
-                    </Box>
-                  )}
-                </Box>
-              ))
-            )}
-          </Box>
+          <BoardingPositionsTab
+            quay={quay}
+            quayIndex={quayIndex}
+            stopPlace={stopPlace}
+            canEdit={canEdit}
+          />
         )}
       </Box>
 

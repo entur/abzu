@@ -52,6 +52,9 @@ export interface MinimizedBarProps {
   onExpand: () => void;
   onClose: () => void;
 
+  // Optional map centering
+  centerLocation?: [number, number];
+
   // Display mode
   isMobile: boolean;
 }

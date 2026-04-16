@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import { Box, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { useState } from "react";
 import { useIntl } from "react-intl";
@@ -26,7 +26,7 @@ import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
 
-const PARKING_SIZE = 26;
+const PARKING_SIZE = 30;
 const BIKE_PARKING_TYPE = "bikeParking";
 
 interface ParkingMarkerItemProps {
@@ -74,16 +74,20 @@ const ParkingMarkerItem = ({
         anchor="center"
       >
         <Box
-          onClick={(e) => setPopupAnchor(e.currentTarget)}
+          onClick={(e) => {
+            dispatch(
+              StopPlaceActions.setElementFocus(
+                index,
+                isBike ? "bikeParking" : "parkAndRide",
+              ),
+            );
+            setPopupAnchor(e.currentTarget);
+          }}
           sx={(theme) => ({
             width: PARKING_SIZE,
             height: PARKING_SIZE,
             borderRadius: "50%",
-            bgcolor: focused
-              ? "warning.main"
-              : isBike
-                ? "info.main"
-                : "tertiary.main",
+            bgcolor: focused ? "warning.main" : "info.main",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -93,8 +97,9 @@ const ParkingMarkerItem = ({
             boxShadow: focused
               ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
               : "0 2px 4px rgba(0,0,0,0.35)",
+            transform: focused ? "scale(1.2)" : "none",
             transition: "all 0.15s",
-            "&:hover": { transform: "scale(1.1)" },
+            "&:hover": { transform: "scale(1.25)" },
           })}
         >
           {isBike ? (
@@ -103,7 +108,7 @@ const ParkingMarkerItem = ({
             />
           ) : (
             <LocalParkingIcon
-              sx={{ fontSize: "0.9rem", color: "tertiary.contrastText" }}
+              sx={{ fontSize: "0.9rem", color: "info.contrastText" }}
             />
           )}
         </Box>
@@ -117,13 +122,31 @@ const ParkingMarkerItem = ({
         lat={lat}
         lng={lng}
       >
+        <Typography
+          variant="caption"
+          sx={{ color: "text.secondary", display: "block", mt: 0.5 }}
+        >
+          {formatMessage({
+            id: isBike
+              ? "parking_item_title_bikeParking"
+              : "parking_item_title_parkAndRide",
+          })}
+        </Typography>
         {parking.totalCapacity != null && (
           <Typography
             variant="caption"
-            sx={{ color: "text.secondary", display: "block", mt: 0.5 }}
+            sx={{ color: "text.secondary", display: "block" }}
           >
             {formatMessage({ id: "total_capacity" })}: {parking.totalCapacity}
           </Typography>
+        )}
+        {parking.hasExpired && (
+          <Chip
+            label={formatMessage({ id: "expired" })}
+            size="small"
+            color="error"
+            sx={{ mt: 0.5, height: 18, fontSize: "0.65rem" }}
+          />
         )}
       </MarkerPopup>
     </>
@@ -153,7 +176,8 @@ export const ParkingMarkers = () => {
           index={index}
           disabled={disabled}
           focused={
-            focusedElement?.type === "parking" &&
+            (focusedElement?.type === "parkAndRide" ||
+              focusedElement?.type === "bikeParking") &&
             focusedElement?.index === index
           }
         />

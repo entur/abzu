@@ -15,6 +15,7 @@
 export { AdvancedFiltersMenu } from "./AdvancedFiltersMenu";
 export { ColumnSelector } from "./ColumnSelector";
 export { FilterPanel } from "./FilterPanel";
+export { GeneralFiltersSection } from "./GeneralFiltersSection";
 export { ReportActionBar } from "./ReportActionBar";
 export { ReportFilters } from "./ReportFilters";
 export { ReportFooter } from "./ReportFooter";
@@ -24,3 +25,4 @@ export { ReportResultsTable } from "./ReportResultsTable";
 export { ReportSearchBar } from "./ReportSearchBar";
 export { SearchSection } from "./SearchSection";
 export { TagFilter } from "./TagFilter";
+export { TopographicFilterSection } from "./TopographicFilterSection";

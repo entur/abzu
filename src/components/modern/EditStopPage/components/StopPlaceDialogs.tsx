@@ -17,6 +17,10 @@ import {
   AltNamesDialog,
   ConfirmDialog,
   KeyValuesDialog,
+  MergeQuayDialog,
+  MergeStopPlaceDialog,
+  MoveQuayDialog,
+  MoveQuayNewStopDialog,
   SaveDialog,
   TagsDialog,
   TerminateStopPlaceDialog,
@@ -208,6 +212,18 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         onNameChange={handleNameChange}
         onDescriptionChange={handleDescriptionChange}
       />
+
+      {/* 14. Merge Stop Place Dialog */}
+      <MergeStopPlaceDialog />
+
+      {/* 15. Merge Quay Dialog */}
+      <MergeQuayDialog />
+
+      {/* 16. Move Quay to Current Stop Dialog */}
+      <MoveQuayDialog />
+
+      {/* 17. Move Quay to New Stop Dialog */}
+      <MoveQuayNewStopDialog />
     </>
   );
 };

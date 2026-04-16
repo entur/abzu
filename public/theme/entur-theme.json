@@ -1,49 +1,49 @@
 {
   "name": "Entur Theme",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Entur's official theme configuration for Abzu Stop Place Registry",
   "author": "Entur",
   "palette": {
     "primary": {
       "main": "#181c56",
-      "dark": "#11143c",
+      "dark": "#08091c",
       "light": "#aeb7e2",
       "contrastText": "#ffffff"
     },
     "secondary": {
-      "main": "#5ac39a",
-      "dark": "#022015",
-      "light": "#e6f6f0",
+      "main": "#ff5959",
+      "dark": "#d31b1b",
+      "light": "#ffcece",
       "contrastText": "#ffffff"
     },
     "tertiary": {
-      "main": "#64b3e7",
+      "main": "#067eb2",
       "dark": "#011a23",
       "light": "#e1eff8",
       "contrastText": "#ffffff"
     },
     "error": {
-      "main": "#ff5959",
-      "dark": "#370606",
-      "light": "#ffe5e5",
+      "main": "#d31b1b",
+      "dark": "#8b0000",
+      "light": "#ffcece",
       "contrastText": "#ffffff"
     },
     "warning": {
-      "main": "#ffe082",
+      "main": "#e9b10c",
       "dark": "#483705",
       "light": "#fff4cd",
       "contrastText": "#000000"
     },
     "info": {
-      "main": "#64b3e7",
+      "main": "#067eb2",
       "dark": "#011a23",
       "light": "#e1eff8",
       "contrastText": "#ffffff"
     },
     "success": {
-      "main": "#5ac39a",
+      "main": "#1a8e60",
       "dark": "#022015",
-      "light": "#e6f6f0",
+      "light": "#d0f1e3",
       "contrastText": "#ffffff"
     },
     "background": {
@@ -52,9 +52,10 @@
     },
     "text": {
       "primary": "#08091c",
-      "secondary": "#81828f",
-      "disabled": "#b6b8ba"
-    }
+      "secondary": "#949699",
+      "disabled": "#cfd2d4"
+    },
+    "divider": "#e3e6e8"
   },
   "typography": {
     "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
@@ -118,12 +119,12 @@
   },
   "environment": {
     "development": {
-      "color": "#457645",
+      "color": "#1a8e60",
       "showBadge": true,
       "label": "DEV"
     },
     "test": {
-      "color": "#ffe082",
+      "color": "#e9b10c",
       "showBadge": true,
       "label": "TEST"
     },
@@ -181,7 +182,7 @@
     "headerHeight": 64,
     "sidebarWidth": 280,
     "contentMaxWidth": 1200,
-    "brandGradient": "linear-gradient(135deg, #181c56 0%, #64b3e7 100%)",
+    "brandGradient": "linear-gradient(135deg, #181c56 0%, #067eb2 100%)",
     "accentShadow": "0 4px 20px rgba(24, 28, 86, 0.2)"
   }
 }

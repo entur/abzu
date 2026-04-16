@@ -28,6 +28,7 @@ import { MinimizedBar, MinimizedBarAction } from "../../Shared";
 interface GroupOfStopPlacesMinimizedBarProps {
   groupOfStopPlaces: any;
   originalGOS: any;
+  centerLocation?: [number, number];
   isOpen: boolean;
   isModified: boolean;
   canEdit: boolean;
@@ -54,6 +55,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
 > = ({
   groupOfStopPlaces,
   originalGOS,
+  centerLocation,
   isOpen,
   isModified,
   canEdit,
@@ -171,6 +173,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
               actions={minimizedBarActions}
               onExpand={onExpand}
               onClose={onClose}
+              centerLocation={centerLocation}
               isMobile={true}
             />
           </Box>
@@ -199,6 +202,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
             actions={minimizedBarActions}
             onExpand={onExpand}
             onClose={onClose}
+            centerLocation={centerLocation}
             isMobile={false}
           />
         </Box>

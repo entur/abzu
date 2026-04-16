@@ -114,6 +114,7 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
       <GroupOfStopPlacesMinimizedBar
         groupOfStopPlaces={groupOfStopPlaces}
         originalGOS={originalGOS}
+        centerLocation={centerPosition}
         isOpen={isOpen}
         isModified={isModified}
         canEdit={canEdit}
@@ -135,6 +136,7 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
       <GroupOfStopPlacesDrawerContent
         groupOfStopPlaces={groupOfStopPlaces}
         originalGOS={originalGOS}
+        centerPosition={centerPosition}
         isOpen={isOpen}
         isModified={isModified}
         canEdit={canEdit}

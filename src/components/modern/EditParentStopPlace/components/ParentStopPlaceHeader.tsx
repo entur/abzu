@@ -17,7 +17,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
-import { CopyIdButton, FavoriteButton } from "../../Shared";
+import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { ParentStopPlaceHeaderProps } from "../types";
 
 /**
@@ -79,6 +79,7 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
         )}
       </Box>
 
+      <CenterMapButton location={stopPlace.location} />
       {stopPlace.id && (
         <FavoriteButton
           id={stopPlace.id}

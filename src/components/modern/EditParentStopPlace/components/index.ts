@@ -1,4 +1,6 @@
+export { AdjacentSitesSection } from "./AdjacentSitesSection";
 export { ChildrenDialog } from "./ChildrenDialog";
+export { ChildrenSection } from "./ChildrenSection";
 export { InfoDialog } from "./InfoDialog";
 export { NameDescriptionDialog } from "./NameDescriptionDialog";
 export { ParentStopPlaceActions } from "./ParentStopPlaceActions";

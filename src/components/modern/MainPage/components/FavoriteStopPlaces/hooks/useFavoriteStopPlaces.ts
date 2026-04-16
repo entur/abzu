@@ -35,6 +35,7 @@ import {
 export const useFavoriteStopPlaces = (
   onClose?: () => void,
   onLoadingChange?: (loading: boolean, name: string) => void,
+  onPendingNavigation?: (id: string | null) => void,
 ) => {
   const dispatch = useDispatch() as any;
   const favoriteManager = FavoriteStopPlacesManager.getInstance();
@@ -87,7 +88,9 @@ export const useFavoriteStopPlaces = (
             onLoadingChange?.(false, "");
           });
       } else if (stopPlaceId) {
-        // Fetch stop place data
+        // Loading is cleared in HeaderSearch once state.stopPlace.current.id
+        // matches stopPlaceId — HeaderSearch never unmounts, so the effect is
+        // guaranteed to fire even though this component closes before the fetch ends.
         dispatch(getStopPlaceById(stopPlaceId))
           .then(({ data }: any) => {
             if (data.stopPlace && data.stopPlace.length) {
@@ -99,15 +102,17 @@ export const useFavoriteStopPlaces = (
               }
             }
             dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
+            onPendingNavigation?.(stopPlaceId);
           })
-          .finally(() => {
+          .catch(() => {
             setLoadingSelection(false);
             setLoadingStopPlaceName("");
+            onPendingNavigation?.(null);
             onLoadingChange?.(false, "");
           });
       }
     },
-    [dispatch, onClose, onLoadingChange, favoriteManager],
+    [dispatch, onClose, onLoadingChange, onPendingNavigation, favoriteManager],
   );
 
   // Handle removing a single favorite

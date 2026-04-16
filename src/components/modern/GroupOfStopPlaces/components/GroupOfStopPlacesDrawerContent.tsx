@@ -23,6 +23,7 @@ import {
 interface GroupOfStopPlacesDrawerContentProps {
   groupOfStopPlaces: any;
   originalGOS: any;
+  centerPosition?: [number, number];
   isOpen: boolean;
   isModified: boolean;
   canEdit: boolean;
@@ -49,6 +50,7 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
 > = ({
   groupOfStopPlaces,
   originalGOS,
+  centerPosition,
   isOpen,
   isModified,
   canEdit,
@@ -101,6 +103,7 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
         {/* Header with close and collapse buttons */}
         <GroupOfStopPlacesHeader
           groupOfStopPlaces={originalGOS}
+          centerPosition={centerPosition}
           onGoBack={onGoBack}
           onCollapse={onCollapse}
         />

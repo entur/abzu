@@ -38,6 +38,7 @@ export const useSearchHandlers = (
   setLoadingSelection: (loading: boolean) => void,
   setLoadingStopPlaceName: (name: string) => void,
   setStopPlaceSearchValue: (value: string) => void,
+  setPendingNavigationId: (id: string | null) => void,
 ) => {
   const dispatch = useDispatch() as any;
 
@@ -162,7 +163,9 @@ export const useSearchHandlers = (
               setLoadingStopPlaceName("");
             });
         } else if (stopPlaceId) {
-          // Fetch stop place data
+          // Loading is cleared by the useSearchBox effect when state.stopPlace.current.id
+          // changes to stopPlaceId — i.e., when the full stop data has landed in Redux.
+          // This keeps the dialog visible until both the panel and map have updated.
           dispatch(getStopPlaceById(stopPlaceId))
             .then(({ data }: any) => {
               if (data.stopPlace && data.stopPlace.length) {
@@ -173,12 +176,13 @@ export const useSearchHandlers = (
                   dispatch(StopPlaceActions.setMarkerOnMap(stopPlaces[0]));
                 }
               }
-              // Navigate to edit page after setting marker
               dispatch(UserActions.navigateTo(`/${route}/`, stopPlaceId));
+              setPendingNavigationId(stopPlaceId);
             })
-            .finally(() => {
+            .catch(() => {
               setLoadingSelection(false);
               setLoadingStopPlaceName("");
+              setPendingNavigationId(null);
             });
         } else {
           dispatch(StopPlaceActions.setMarkerOnMap(element));
@@ -197,6 +201,7 @@ export const useSearchHandlers = (
       setLoadingSelection,
       setLoadingStopPlaceName,
       setStopPlaceSearchValue,
+      setPendingNavigationId,
     ],
   );
 

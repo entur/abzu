@@ -20,12 +20,12 @@ import type { ChildStop, LatLng, MapStopPlace } from "../markers/types";
 
 const MULTIMODAL_EDGE_COLOR = "#76ff03";
 
-/** Returns the location of a child stop, falling back to legacyCoordinates geometry. */
+/** Returns the location of a child stop, falling back to geometry.coordinates. */
 const resolveChildLocation = (child: ChildStop): LatLng | null => {
   if (child.location) return child.location;
 
-  const legacy = child.geometry?.legacyCoordinates?.[0];
-  if (legacy) return [legacy[1], legacy[0]]; // swap [lng, lat] → [lat, lng]
+  const coords = child.geometry?.coordinates;
+  if (coords) return [coords[1], coords[0]]; // swap [lng, lat] → [lat, lng]
 
   return null;
 };

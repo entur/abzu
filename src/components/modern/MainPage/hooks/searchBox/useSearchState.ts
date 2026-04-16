@@ -26,6 +26,9 @@ export const useSearchState = () => {
   const [stopPlaceSearchValue, setStopPlaceSearchValue] = useState("");
   const [topographicPlaceFilterValue, setTopographicPlaceFilterValue] =
     useState("");
+  const [pendingNavigationId, setPendingNavigationId] = useState<string | null>(
+    null,
+  );
 
   const handleToggleFilter = useCallback((value: boolean) => {
     setShowMoreFilterOptions(value);
@@ -44,5 +47,7 @@ export const useSearchState = () => {
     topographicPlaceFilterValue,
     setTopographicPlaceFilterValue,
     handleToggleFilter,
+    pendingNavigationId,
+    setPendingNavigationId,
   };
 };

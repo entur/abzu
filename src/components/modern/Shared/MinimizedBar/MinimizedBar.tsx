@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
+import { CenterMapButton } from "../CenterMapButton";
 import { MinimizedBarActions } from "./MinimizedBarActions";
 import { MinimizedBarHeader } from "./MinimizedBarHeader";
 import { MinimizedBarMenu } from "./MinimizedBarMenu";
@@ -43,6 +44,7 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
   actions,
   onExpand,
   onClose,
+  centerLocation,
   isMobile,
 }) => {
   const theme = useTheme();
@@ -121,6 +123,9 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
             />
           </>
         )}
+
+        {/* Center map */}
+        <CenterMapButton location={centerLocation} />
 
         {/* Close */}
         <Tooltip title={formatMessage({ id: "close" })} arrow>

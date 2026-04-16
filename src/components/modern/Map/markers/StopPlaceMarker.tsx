@@ -12,28 +12,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Box, Divider, Link, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
-import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
-import { MarkerPopup } from "./MarkerPopup";
+import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
 
-const MARKER_SIZE = 28;
+const MARKER_SIZE = 36;
 
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
-  const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
 
   const current = useAppSelector(
-    (state) => state.stopPlace.current as MapStopPlace | null,
+    (state) =>
+      ((state.stopPlace.current as MapStopPlace | null) ??
+        (state.stopPlace as any).newStop) as MapStopPlace | null,
   );
 
   if (!current?.location) return null;
@@ -65,79 +64,55 @@ export const StopPlaceMarker = () => {
         onDragEnd={handleDragEnd}
         anchor="bottom"
       >
-        <Box
-          onClick={(e) => setPopupAnchor(e.currentTarget)}
-          sx={{
-            width: MARKER_SIZE,
-            height: MARKER_SIZE,
-            borderRadius: "50%",
-            bgcolor: "primary.main",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
-            border: "2px solid",
-            borderColor: "background.paper",
-            "&:hover": { transform: "scale(1.1)" },
-            transition: "transform 0.15s",
-          }}
-        >
-          {isParent ? (
-            <Typography
-              sx={{
-                color: "primary.contrastText",
-                fontWeight: 700,
-                fontSize: "0.65rem",
-                lineHeight: 1,
-                userSelect: "none",
-              }}
-            >
-              MM
-            </Typography>
-          ) : (
-            <img
-              src={icon}
-              alt=""
-              style={{ width: 18, height: 18, filter: "brightness(10)" }}
-            />
-          )}
-        </Box>
+        <Tooltip title={current.name || ""} placement="top" arrow>
+          <Box
+            onClick={(e) => {
+              dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+              setPopupAnchor(e.currentTarget);
+            }}
+            sx={{
+              width: MARKER_SIZE,
+              height: MARKER_SIZE,
+              borderRadius: "50%",
+              bgcolor: "background.paper",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+              border: "3px solid",
+              borderColor: "primary.main",
+              "&:hover": { transform: "scale(1.1)" },
+              transition: "transform 0.15s",
+            }}
+          >
+            {isParent ? (
+              <Typography
+                sx={{
+                  color: "text.primary",
+                  fontWeight: 800,
+                  fontSize: "0.8rem",
+                  lineHeight: 1,
+                  letterSpacing: "0.05em",
+                  userSelect: "none",
+                }}
+              >
+                MM
+              </Typography>
+            ) : (
+              <img src={icon} alt="" style={{ width: 22, height: 22 }} />
+            )}
+          </Box>
+        </Tooltip>
       </Marker>
 
-      <MarkerPopup
+      <StopPlacePopup
         anchorEl={popupAnchor}
         onClose={() => setPopupAnchor(null)}
-        title={current.name || formatMessage({ id: "untitled" })}
-        id={current.id}
+        stopPlace={current}
         lat={lat}
         lng={lng}
-        minWidth={220}
-      >
-        <Divider sx={{ my: 1 }} />
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-          <Link
-            href={`https://www.openstreetmap.org/edit#map=18/${lat}/${lng}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="caption"
-            sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-          >
-            <OpenInNewIcon sx={{ fontSize: "0.85rem" }} />
-            {formatMessage({ id: "edit_stop_in_osm" })}
-          </Link>
-          <Link
-            href={`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="caption"
-            sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-          >
-            <OpenInNewIcon sx={{ fontSize: "0.85rem" }} />
-            {formatMessage({ id: "google_street_view" })}
-          </Link>
-        </Box>
-      </MarkerPopup>
+      />
     </>
   );
 };

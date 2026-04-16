@@ -13,23 +13,13 @@
  * limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  Chip,
-  Divider,
-  Drawer,
-  FormControlLabel,
-  IconButton,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import ModalityFilter from "../../../../components/EditStopPage/ModalityFilter";
 import { FilterState, TopographicChip } from "../types";
+import { GeneralFiltersSection } from "./GeneralFiltersSection";
 import { TagFilter } from "./TagFilter";
+import { TopographicFilterSection } from "./TopographicFilterSection";
 
 const PANEL_WIDTH = 288;
 
@@ -71,6 +61,20 @@ const FilterPanelContent: React.FC<
 }) => {
   const { formatMessage, locale } = useIntl();
 
+  const sectionLabel = (labelId: string) => (
+    <Typography
+      variant="caption"
+      fontWeight={600}
+      display="block"
+      mb={0.5}
+      color="text.secondary"
+      textTransform="uppercase"
+      letterSpacing={0.5}
+    >
+      {formatMessage({ id: labelId })}
+    </Typography>
+  );
+
   return (
     <Box
       sx={{
@@ -105,17 +109,7 @@ const FilterPanelContent: React.FC<
       <Divider sx={{ mb: 2 }} />
 
       {/* Modality */}
-      <Typography
-        variant="caption"
-        fontWeight={600}
-        display="block"
-        mb={0.5}
-        color="text.secondary"
-        textTransform="uppercase"
-        letterSpacing={0.5}
-      >
-        {formatMessage({ id: "filter_report_by_modality" })}
-      </Typography>
+      {sectionLabel("filter_report_by_modality")}
       {/* Wrap to override ModalityFilter's inline flex container so icons wrap on small panels */}
       <Box sx={{ "& > div": { flexWrap: "wrap", gap: "2px" } }}>
         <ModalityFilter
@@ -130,91 +124,21 @@ const FilterPanelContent: React.FC<
       <Divider sx={{ my: 2 }} />
 
       {/* Topographic */}
-      <Typography
-        variant="caption"
-        fontWeight={600}
-        display="block"
-        mb={0.5}
-        color="text.secondary"
-        textTransform="uppercase"
-        letterSpacing={0.5}
-      >
-        {formatMessage({ id: "filter_report_by_topography" })}
-      </Typography>
-      <Autocomplete
-        freeSolo
-        getOptionLabel={(option) =>
-          typeof option === "string" ? option : option.text
-        }
-        options={topographicalPlacesDataSource}
-        onInputChange={onTopographicSearch}
-        inputValue={filters.topographicPlaceFilterValue}
-        onChange={onAddTopographicChip}
-        noOptionsText={formatMessage({ id: "no_results_found" })}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            size="small"
-            label={formatMessage({ id: "filter_by_topography" })}
-            onChange={(e) => {
-              if (e.target.value !== null) {
-                onFilterChange("topographicPlaceFilterValue", e.target.value);
-              }
-            }}
-          />
-        )}
-        renderOption={(props, option) => (
-          <MenuItem {...props} key={(option as TopographicChip).id}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              width="100%"
-              gap={1}
-            >
-              <Typography variant="body2">
-                {(option as TopographicChip).text}
-              </Typography>
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                flexShrink={0}
-              >
-                {formatMessage({ id: (option as TopographicChip).type })}
-              </Typography>
-            </Box>
-          </MenuItem>
-        )}
+      {sectionLabel("filter_report_by_topography")}
+      <TopographicFilterSection
+        topographicalPlacesDataSource={topographicalPlacesDataSource}
+        topographicPlaceFilterValue={filters.topographicPlaceFilterValue}
+        topoiChips={filters.topoiChips}
+        onTopographicSearch={onTopographicSearch}
+        onAddTopographicChip={onAddTopographicChip}
+        onDeleteTopographicChip={onDeleteTopographicChip}
+        onFilterChange={onFilterChange}
       />
-      <Box display="flex" flexWrap="wrap" mt={1} gap={0.5}>
-        {filters.topoiChips.map((chip) => (
-          <Chip
-            key={chip.id}
-            label={chip.text}
-            onDelete={() => onDeleteTopographicChip(chip.id)}
-            size="small"
-            sx={{
-              bgcolor: chip.type === "county" ? "#73919b" : "#cde7eb",
-              color: chip.type === "county" ? "#fff" : "#000",
-            }}
-          />
-        ))}
-      </Box>
 
       <Divider sx={{ my: 2 }} />
 
       {/* Tags */}
-      <Typography
-        variant="caption"
-        fontWeight={600}
-        display="block"
-        mb={0.5}
-        color="text.secondary"
-        textTransform="uppercase"
-        letterSpacing={0.5}
-      >
-        {formatMessage({ id: "filter_by_tags" })}
-      </Typography>
+      {sectionLabel("filter_by_tags")}
       <TagFilter
         selectedTags={filters.tags}
         availableTags={availableTags}
@@ -224,123 +148,10 @@ const FilterPanelContent: React.FC<
 
       <Divider sx={{ my: 2 }} />
 
-      {/* General + Advanced filters as inline checkboxes */}
-      <Typography
-        variant="caption"
-        fontWeight={600}
-        display="block"
-        mb={0.5}
-        color="text.secondary"
-        textTransform="uppercase"
-        letterSpacing={0.5}
-      >
-        {formatMessage({ id: "filters_general" })}
-      </Typography>
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.hasParking}
-            onChange={(_e, v) => onFilterChange("hasParking", v)}
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "has_parking" })}
-          </Typography>
-        }
-      />
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.showFutureAndExpired}
-            onChange={(_e, v) => onFilterChange("showFutureAndExpired", v)}
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "show_future_expired_and_terminated" })}
-          </Typography>
-        }
-      />
-
-      <Divider sx={{ my: 2 }} />
-
-      <Typography
-        variant="caption"
-        fontWeight={600}
-        display="block"
-        mb={0.5}
-        color="text.secondary"
-        textTransform="uppercase"
-        letterSpacing={0.5}
-      >
-        {formatMessage({ id: "filters_admin" })}
-      </Typography>
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.withoutLocationOnly}
-            onChange={(_e, v) => onFilterChange("withoutLocationOnly", v)}
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "only_without_coordinates" })}
-          </Typography>
-        }
-      />
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.withDuplicateImportedIds}
-            onChange={(_e, v) => onFilterChange("withDuplicateImportedIds", v)}
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "only_duplicate_importedIds" })}
-          </Typography>
-        }
-      />
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.withNearbySimilarDuplicates}
-            onChange={(_e, v) =>
-              onFilterChange("withNearbySimilarDuplicates", v)
-            }
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "with_nearby_similar_duplicates" })}
-          </Typography>
-        }
-      />
-      <FormControlLabel
-        sx={{ ml: 0 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={filters.withTags}
-            onChange={(_e, v) => onFilterChange("withTags", v)}
-          />
-        }
-        label={
-          <Typography variant="body2">
-            {formatMessage({ id: "only_with_tags" })}
-          </Typography>
-        }
+      {/* General + Admin checkboxes */}
+      <GeneralFiltersSection
+        filters={filters}
+        onFilterChange={onFilterChange}
       />
     </Box>
   );

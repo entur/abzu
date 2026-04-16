@@ -17,7 +17,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
-import { CopyIdButton, FavoriteButton } from "../../Shared";
+import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps } from "../types";
 
 /**
@@ -26,7 +26,7 @@ import { GroupOfStopPlacesHeaderProps } from "../types";
  */
 export const GroupOfStopPlacesHeader: React.FC<
   GroupOfStopPlacesHeaderProps
-> = ({ groupOfStopPlaces, onGoBack, onCollapse }) => {
+> = ({ groupOfStopPlaces, centerPosition, onGoBack, onCollapse }) => {
   const { formatMessage } = useIntl();
 
   const headerText = groupOfStopPlaces.id
@@ -66,6 +66,7 @@ export const GroupOfStopPlacesHeader: React.FC<
         )}
       </Box>
 
+      <CenterMapButton location={centerPosition} />
       {groupOfStopPlaces.id && (
         <FavoriteButton
           id={groupOfStopPlaces.id}

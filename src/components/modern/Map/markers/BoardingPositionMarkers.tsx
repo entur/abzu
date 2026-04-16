@@ -27,7 +27,7 @@ import type {
   MapStopPlace,
 } from "./types";
 
-const BP_SIZE = 18;
+const BP_SIZE = 22;
 
 interface BoardingPositionItemProps {
   boardingPosition: BoardingPosition;
@@ -75,28 +75,28 @@ const BoardingPositionItem = ({
             width: BP_SIZE,
             height: BP_SIZE,
             borderRadius: "50%",
-            bgcolor: focused ? "warning.main" : "secondary.main",
+            bgcolor: focused ? "warning.main" : "background.paper",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
             border: "2px solid",
-            borderColor: "background.paper",
+            borderColor: focused ? "warning.main" : "secondary.main",
             boxShadow: focused
               ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 4px rgba(0,0,0,0.4)`
               : "0 1px 3px rgba(0,0,0,0.35)",
+            transform: focused ? "scale(1.2)" : "none",
             transition: "all 0.15s",
-            "&:hover": { transform: "scale(1.15)" },
+            "&:hover": { transform: "scale(1.25)" },
           })}
         >
           <Typography
             sx={{
-              color: focused
-                ? "warning.contrastText"
-                : "secondary.contrastText",
-              fontWeight: 700,
-              fontSize: "0.5rem",
+              color: focused ? "warning.contrastText" : "secondary.main",
+              fontWeight: 800,
+              fontSize: "0.65rem",
               lineHeight: 1,
+              letterSpacing: "0.01em",
               userSelect: "none",
             }}
           >
