@@ -12,7 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { StopPlaceActions } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { UseEditStopPageReturn } from "../types";
 import { useStopPlaceCRUD } from "./useStopPlaceCRUD";
 import { useStopPlaceDialogs } from "./useStopPlaceDialogs";
@@ -26,6 +28,8 @@ import { useStopPlaceState } from "./useStopPlaceState";
  * Combines 6 focused sub-hooks into a unified interface
  */
 export const useEditStopPage = (): UseEditStopPageReturn => {
+  const dispatch = useAppDispatch();
+
   // 1. State (Redux selectors + permissions)
   const {
     stopPlace,
@@ -37,6 +41,21 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     terminateStopDialogOpen,
     versions,
   } = useStopPlaceState();
+
+  // Promote newStop → current when a freshly placed stop first loads.
+  // This ensures all field-change reducers (CHANGED_STOP_NAME, etc.) that
+  // write to `current` have a valid base object to spread into.
+  const hasCurrentInRedux = useAppSelector(
+    (state) =>
+      state.stopPlace.current !== null && state.stopPlace.current !== undefined,
+  );
+  useEffect(() => {
+    if (stopPlace?.isNewStop && !hasCurrentInRedux) {
+      dispatch(StopPlaceActions.useNewStopAsCurrent());
+    }
+    // Only run once on mount — after promotion, hasCurrentInRedux becomes true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 2. Dialog state management (local boolean flags)
   const {

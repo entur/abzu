@@ -63,9 +63,9 @@ export const AddStopPlaceToParentDialog: React.FC<
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const stopPlaceChildren =
-    useSelector((state: RootState) => state.stopPlace.current.children) || [];
+    useSelector((state: RootState) => state.stopPlace.current?.children) ?? [];
   const stopPlaceCentroid = useSelector(
-    (state: RootState) => state.stopPlace.current.location,
+    (state: RootState) => state.stopPlace.current?.location,
   );
   const neighbourStops =
     useSelector((state: RootState) => state.stopPlace.neighbourStops) || [];

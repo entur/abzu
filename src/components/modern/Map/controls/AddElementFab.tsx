@@ -75,6 +75,10 @@ export const AddElementFab = () => {
   const [pendingElementType, setPendingElementType] =
     useState<ElementType | null>(null);
 
+  const isAuthenticated = useAppSelector(
+    (state) => (state.user as any).auth?.isAuthenticated as boolean | undefined,
+  );
+
   const currentStopId = useAppSelector(
     (state) => (state.stopPlace.current as any)?.id as string | undefined,
   );
@@ -108,6 +112,15 @@ export const AddElementFab = () => {
   }, [parkingCount]);
 
   useEffect(() => {
+    if (!mapRef || !isCreatingNewStop) return;
+    const map = mapRef.getMap();
+    map.getCanvas().style.cursor = "crosshair";
+    return () => {
+      map.getCanvas().style.cursor = "";
+    };
+  }, [mapRef, isCreatingNewStop]);
+
+  useEffect(() => {
     if (!mapRef || !pendingElementType) return;
     const map = mapRef.getMap();
 
@@ -135,6 +148,8 @@ export const AddElementFab = () => {
     };
   }, [mapRef, pendingElementType, dispatch]);
 
+  if (!isAuthenticated) return null;
+
   const hasStopSelected = Boolean(currentStopId);
 
   const handleStartElementPlacement = (elementType: ElementType) => {
@@ -159,6 +174,20 @@ export const AddElementFab = () => {
     }
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!pendingElementType && !isCreatingNewStop) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleCancelPlacement();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // handleCancelPlacement is recreated each render; pendingElementType and isCreatingNewStop
+    // control when the listener is active
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingElementType, isCreatingNewStop]);
 
   const placementLabelKey = pendingElementType
     ? (STOP_ELEMENT_ACTIONS.find((a) => a.elementType === pendingElementType)
@@ -205,7 +234,9 @@ export const AddElementFab = () => {
               <SpeedDialAction
                 key={action.elementType}
                 icon={action.icon}
-                tooltipTitle={formatMessage({ id: action.labelKey })}
+                slotProps={{
+                  tooltip: { title: formatMessage({ id: action.labelKey }) },
+                }}
                 onClick={() => handleStartElementPlacement(action.elementType)}
                 sx={{
                   "& .MuiSpeedDialAction-fab": {
@@ -219,7 +250,11 @@ export const AddElementFab = () => {
               <SpeedDialAction
                 key="new-stop"
                 icon={<StopPlaceIcon />}
-                tooltipTitle={formatMessage({ id: "map_add_stop_place" })}
+                slotProps={{
+                  tooltip: {
+                    title: formatMessage({ id: "map_add_stop_place" }),
+                  },
+                }}
                 onClick={handleAddNewStop}
               />,
               <SpeedDialAction
@@ -237,7 +272,11 @@ export const AddElementFab = () => {
                     MM
                   </Typography>
                 }
-                tooltipTitle={formatMessage({ id: "map_add_multimodal_stop" })}
+                slotProps={{
+                  tooltip: {
+                    title: formatMessage({ id: "map_add_multimodal_stop" }),
+                  },
+                }}
                 onClick={handleAddNewMultimodalStop}
               />,
             ]}

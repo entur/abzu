@@ -173,10 +173,13 @@ export const ModernEditStopMap = () => {
   }, [isCreatingNewStop]);
 
   const handleDblClick = useCallback(
-    (event: MapLayerMouseEvent) => {
+    async (event: MapLayerMouseEvent) => {
       if (!isCreatingNewStopRef.current) return;
       const { lat, lng } = event.lngLat;
-      dispatch(StopPlaceActions.createNewStop({ lat, lng }));
+      // Await so that CREATED_NEW_STOP is dispatched (and newStop is in Redux)
+      // before navigating — StopPlace.tsx guards against null stopPlace on mount.
+      await dispatch(StopPlaceActions.createNewStop({ lat, lng }));
+      dispatch(UserActions.clearNewStopCreationMode());
       navigate(`/${AppRoutes.STOP_PLACE}/new`);
     },
     // navigate and dispatch are stable; isCreatingNewStopRef is a stable ref

@@ -67,7 +67,7 @@ export const AddAdjacentStopsDialog: React.FC<AddAdjacentStopsDialogProps> = ({
   const [selectedStopPlace, setSelectedStopPlace] = useState<string>("NONE");
 
   const stopPlaceChildren =
-    useSelector((state: RootState) => state.stopPlace.current.children) || [];
+    useSelector((state: RootState) => state.stopPlace.current?.children) ?? [];
   const currentStopPlaceId = useSelector(
     (state: RootState) => state.user.adjacentStopDialogStopPlace,
   );

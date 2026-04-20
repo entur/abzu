@@ -20,6 +20,7 @@ import {
   setDrawerPreference,
 } from "../Shared/drawerPreference";
 import {
+  NewParentStopWizard,
   ParentStopPlaceDialogs,
   ParentStopPlaceDrawerContent,
   ParentStopPlaceMinimizedBar,
@@ -48,6 +49,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
 
   // Local state for drawer and mini dialogs (sticky: remembers user preference)
   const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
+  const [wizardConfirmed, setWizardConfirmed] = useState(false);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
     useState(false);
@@ -189,6 +191,16 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         onOpenTerminate={handleOpenTerminateDialog}
         onOpenUndo={handleOpenUndoDialog}
         onOpenSave={handleOpenSaveDialog}
+      />
+
+      {/* New multimodal stop wizard — shown automatically when a freshly placed parent stop loads */}
+      <NewParentStopWizard
+        open={!!stopPlace.isNewStop && !wizardConfirmed}
+        onConfirm={(name) => {
+          handleNameChange(name);
+          setWizardConfirmed(true);
+        }}
+        onCancel={handleGoBack}
       />
 
       {/* All Dialogs */}

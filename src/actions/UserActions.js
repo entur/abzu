@@ -106,6 +106,13 @@ UserActions.toggleIsCreatingNewStop =
     dispatch(createThunk(types.TOGGLED_IS_CREATING_NEW_STOP, isMultiModal));
   };
 
+// Clears the "creating new stop" mode after the stop has been placed on the map.
+// Unlike toggleIsCreatingNewStop, this does NOT dispatch DESTROYED_NEW_STOP so the
+// newly placed stop data remains in Redux for EditStopPage to render.
+UserActions.clearNewStopCreationMode = () => (dispatch) => {
+  dispatch(createThunk(types.TOGGLED_IS_CREATING_NEW_STOP, null));
+};
+
 UserActions.toggleMultimodalEdges = (value) => (dispatch) => {
   Settings.setShowMultimodalEdges(value);
   dispatch(createThunk(types.TOGGLED_IS_MULTIMODAL_EDGES_ENABLED, value));

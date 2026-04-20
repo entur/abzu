@@ -12,7 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { StopPlaceActions } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { UseEditParentStopPlaceReturn } from "../types";
 import { useParentStopPlaceChildren } from "./editParent/useParentStopPlaceChildren";
 import { useParentStopPlaceCRUD } from "./editParent/useParentStopPlaceCRUD";
@@ -26,6 +28,8 @@ import { useParentStopPlaceState } from "./editParent/useParentStopPlaceState";
  * Refactored from 427 lines into 6 focused hooks
  */
 export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
+  const dispatch = useAppDispatch();
+
   // 1. State management (Redux selectors, permissions)
   const {
     stopPlace,
@@ -37,6 +41,18 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     canEdit,
     canDelete,
   } = useParentStopPlaceState();
+
+  // Promote newStop → current when a freshly placed parent stop first loads.
+  const hasCurrentInRedux = useAppSelector(
+    (state) =>
+      state.stopPlace.current !== null && state.stopPlace.current !== undefined,
+  );
+  useEffect(() => {
+    if (stopPlace?.isNewStop && !hasCurrentInRedux) {
+      dispatch(StopPlaceActions.useNewStopAsCurrent());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 2. Dialog state management
   const {

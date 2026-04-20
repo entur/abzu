@@ -22,7 +22,12 @@ import { RootState } from "../../types";
  */
 export const useParentStopPlaceState = () => {
   // Redux selectors
-  const stopPlace = useSelector((state: RootState) => state.stopPlace.current);
+  // For freshly placed stops the data lives in `newStop` until saved; fall back to it
+  // so the wizard and drawer render immediately without needing USE_NEW_STOP_AS_CURRENT.
+  const stopPlace = useSelector(
+    (state: RootState) =>
+      state.stopPlace.current ?? (state.stopPlace as any).newStop,
+  );
   const originalStopPlace = useSelector(
     (state: RootState) => state.stopPlace.originalCurrent,
   );

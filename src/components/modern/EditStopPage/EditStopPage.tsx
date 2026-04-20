@@ -24,6 +24,7 @@ import {
   setDrawerPreference,
 } from "../Shared/drawerPreference";
 import {
+  NewStopWizard,
   ParkingPanel,
   QuayPanel,
   StopPlaceDialogs,
@@ -58,6 +59,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const [view, setView] = useState<View>({ type: "stopPlace" });
+  const [wizardConfirmed, setWizardConfirmed] = useState(false);
 
   const focusedElement = useAppSelector(
     (state) =>
@@ -373,6 +375,17 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           {renderDrawerContent()}
         </Box>
       </Drawer>
+
+      {/* New stop wizard — shown automatically when a freshly placed stop loads */}
+      <NewStopWizard
+        open={!!stopPlace.isNewStop && !wizardConfirmed}
+        onConfirm={(name, stopType) => {
+          handleNameChange(name);
+          handleTypeChange(stopType);
+          setWizardConfirmed(true);
+        }}
+        onCancel={handleGoBack}
+      />
 
       {/* All dialogs */}
       <StopPlaceDialogs
