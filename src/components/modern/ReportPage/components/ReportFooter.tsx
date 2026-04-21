@@ -57,22 +57,24 @@ export const ReportFooter: React.FC<ReportFooterProps> = ({
       }}
     >
       <Box display="flex" alignItems="center" gap={1}>
-        <Typography variant="body2" color="white">
+        <Typography variant="body2" color="primary.contrastText">
           {formatMessage({ id: "page" })}:
         </Typography>
         {pages.map((page) => (
           <Box
             key={"page-" + page}
             onClick={() => onSelectPage(page)}
-            sx={{
-              color: "#fff",
+            sx={(theme) => ({
+              color: theme.palette.primary.contrastText,
               cursor: "pointer",
               fontSize: 14,
               px: 0.5,
               fontWeight: activePageIndex === page ? 700 : 400,
               borderBottom:
-                activePageIndex === page ? "1px solid #41c0c4" : "none",
-            }}
+                activePageIndex === page
+                  ? `1px solid ${theme.palette.info.light}`
+                  : "none",
+            })}
           >
             {page + 1}
           </Box>

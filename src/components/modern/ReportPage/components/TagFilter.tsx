@@ -68,15 +68,15 @@ export const TagFilter: React.FC<TagFilterProps> = ({
         >
           {formatMessage({ id: "add_tag" })}
         </Button>
-        {selectedTags.map((tag, i) => (
+        {selectedTags.map((tag) => (
           <Chip
-            key={"tag-filter-" + i}
+            key={tag}
             label={tag}
             size="small"
             onDelete={() => onTagCheck(tag, false)}
             sx={{
               bgcolor: "warning.main",
-              color: "#fff",
+              color: "warning.contrastText",
               textTransform: "uppercase",
               fontSize: "0.7rem",
             }}

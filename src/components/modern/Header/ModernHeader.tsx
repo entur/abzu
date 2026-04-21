@@ -94,7 +94,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
         goToReports();
         break;
       default:
-        console.info("Invalid action", actionOnDone, "ignored");
         break;
     }
   };

@@ -54,8 +54,7 @@ export const useTagsDialog = ({
           if (result && result.data && result.data.tags) {
             setSuggestions(result.data.tags.slice(0, 5)); // Limit to 5 suggestions
           }
-        } catch (error) {
-          console.error("Error searching tags:", error);
+        } catch {
           setSuggestions([]);
         }
       } else {
@@ -85,8 +84,8 @@ export const useTagsDialog = ({
       setComment("");
       setSearchText("");
       setSuggestions([]);
-    } catch (error) {
-      console.error("Error adding tag:", error);
+    } catch {
+      // error intentionally swallowed; loading state cleaned up in finally
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +99,8 @@ export const useTagsDialog = ({
       try {
         await removeTag(name, idReference);
         await getTags(idReference);
-      } catch (error) {
-        console.error("Error removing tag:", error);
+      } catch {
+        // error intentionally swallowed; loading state cleaned up in finally
       } finally {
         setIsLoading(false);
       }

@@ -124,10 +124,14 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
                 label={chip.text}
                 onDelete={() => onDeleteTopographicChip(chip.id)}
                 size="small"
-                sx={{
-                  bgcolor: isCounty ? "#73919b" : "#cde7eb",
-                  color: isCounty ? "#fff" : "#000",
-                }}
+                sx={(theme) => ({
+                  bgcolor: isCounty
+                    ? theme.palette.secondary.main
+                    : theme.palette.info.light,
+                  color: isCounty
+                    ? theme.palette.secondary.contrastText
+                    : theme.palette.text.primary,
+                })}
               />
             );
           })}

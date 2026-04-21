@@ -23,10 +23,26 @@ import {
 import stopTypes from "../../../../models/stopTypes";
 import { useAppDispatch } from "../../../../store/hooks";
 
+interface UseStopPlaceFormReturn {
+  handleNameChange: (value: string) => void;
+  handleDescriptionChange: (value: string) => void;
+  handleTypeChange: (type: string) => void;
+  handleSubmodeChange: (stopPlaceType: string, submode: string) => void;
+  handleWeightingChange: (value: string) => void;
+  handleAddTag: (
+    idReference: string,
+    name: string,
+    comment: string,
+  ) => Promise<unknown>;
+  handleGetTags: (idReference: string) => Promise<unknown>;
+  handleRemoveTag: (name: string, idReference: string) => Promise<unknown>;
+  handleFindTagByName: (name: string) => Promise<unknown>;
+}
+
 /**
  * Hook for managing stop place general field changes and tags
  */
-export const useStopPlaceForm = () => {
+export const useStopPlaceForm = (): UseStopPlaceFormReturn => {
   const dispatch = useAppDispatch();
 
   const handleNameChange = useCallback(

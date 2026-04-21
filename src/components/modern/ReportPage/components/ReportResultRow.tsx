@@ -14,7 +14,7 @@
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Collapse, IconButton } from "@mui/material";
+import { alpha, Box, Collapse, IconButton } from "@mui/material";
 import { useIntl } from "react-intl";
 import { ColumnTransformerStopPlaceJsx } from "../../../../models/columnTransformers";
 import { ColumnOption, DuplicateInfo, ReportResult } from "../types";
@@ -55,24 +55,22 @@ export const ReportResultRow: React.FC<ReportResultRowProps> = ({
   const containsError =
     duplicateInfo.stopPlacesWithConflict?.includes(item.id) ?? false;
 
-  let bgcolor = index % 2 ? "rgba(213, 228, 236, 0.37)" : "#fff";
-  let border = "none";
-
-  if (containsError) {
-    bgcolor = "#ffcfcd";
-    border = "1px solid red";
-  }
-
   return (
     <Box>
       <Box
         display="flex"
         alignItems="center"
-        sx={{
-          background: bgcolor,
+        sx={(theme) => ({
+          background: containsError
+            ? theme.palette.error.light
+            : index % 2
+              ? alpha(theme.palette.primary.light, 0.18)
+              : theme.palette.background.paper,
+          border: containsError
+            ? `1px solid ${theme.palette.error.main}`
+            : "none",
           px: 1.25,
-          border,
-        }}
+        })}
       >
         {columns.map((column) => (
           <Box key={"cell-" + column} sx={cellSx}>

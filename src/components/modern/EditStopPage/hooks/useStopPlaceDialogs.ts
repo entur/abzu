@@ -14,11 +14,50 @@ limitations under the Licence. */
 
 import { useCallback, useState } from "react";
 
+interface UseStopPlaceDialogsReturn {
+  confirmSaveDialogOpen: boolean;
+  confirmGoBackOpen: boolean;
+  confirmUndoOpen: boolean;
+  deleteQuayDialogOpen: boolean;
+  deleteParkingDialogOpen: boolean;
+  requiredFieldsMissingOpen: boolean;
+  tagsDialogOpen: boolean;
+  altNamesDialogOpen: boolean;
+  keyValuesDialogOpen: boolean;
+  versionsDialogOpen: boolean;
+  infoDialogOpen: boolean;
+  nameDescriptionDialogOpen: boolean;
+  handleOpenSaveDialog: () => void;
+  handleCloseSaveDialog: () => void;
+  handleOpenGoBackDialog: () => void;
+  handleCloseGoBackDialog: () => void;
+  handleOpenUndoDialog: () => void;
+  handleCloseUndoDialog: () => void;
+  handleOpenDeleteQuayDialog: () => void;
+  handleCloseDeleteQuayDialog: () => void;
+  handleOpenDeleteParkingDialog: () => void;
+  handleCloseDeleteParkingDialog: () => void;
+  handleOpenRequiredFieldsMissing: () => void;
+  handleCloseRequiredFieldsMissing: () => void;
+  handleOpenTagsDialog: () => void;
+  handleCloseTagsDialog: () => void;
+  handleOpenAltNamesDialog: () => void;
+  handleCloseAltNamesDialog: () => void;
+  handleOpenKeyValuesDialog: () => void;
+  handleCloseKeyValuesDialog: () => void;
+  handleOpenVersionsDialog: () => void;
+  handleCloseVersionsDialog: () => void;
+  handleOpenInfoDialog: () => void;
+  handleCloseInfoDialog: () => void;
+  handleOpenNameDescriptionDialog: () => void;
+  handleCloseNameDescriptionDialog: () => void;
+}
+
 /**
  * Hook for managing all dialog open/close state in the stop place editor
  * Note: terminateStopDialogOpen is managed by Redux (via useStopPlaceState)
  */
-export const useStopPlaceDialogs = () => {
+export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
   const [confirmSaveDialogOpen, setConfirmSaveDialogOpen] = useState(false);
   const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
   const [confirmUndoOpen, setConfirmUndoOpen] = useState(false);

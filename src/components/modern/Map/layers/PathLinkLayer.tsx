@@ -12,25 +12,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { useTheme } from "@mui/material";
 import type { FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import type { PathLink } from "../markers/types";
 
-/** Distinct colours for each path link — index-matched, wraps around */
-const PATH_LINK_COLORS = [
-  "#e53935",
-  "#7b1fa2",
-  "#1565c0",
-  "#2e7d32",
-  "#e65100",
-  "#00695c",
-  "#880e4f",
-];
-
-const colorForIndex = (index: number) =>
-  PATH_LINK_COLORS[index % PATH_LINK_COLORS.length];
+const colorForIndex = (colors: string[], index: number) =>
+  colors[index % colors.length];
 
 /**
  * Builds an ordered [lng, lat] coordinate array for a single path link.
@@ -57,6 +47,7 @@ const buildLineCoordinates = (pathLink: PathLink): [number, number][] => {
 
 const buildGeoJson = (
   pathLinks: PathLink[],
+  colors: string[],
 ): FeatureCollection<LineString> => ({
   type: "FeatureCollection",
   features: pathLinks
@@ -67,7 +58,7 @@ const buildGeoJson = (
         type: "Feature" as const,
         geometry: { type: "LineString" as const, coordinates },
         properties: {
-          color: colorForIndex(index),
+          color: colorForIndex(colors, index),
           complete: pathLink.to != null,
         },
       };
@@ -76,6 +67,7 @@ const buildGeoJson = (
 });
 
 export const PathLinkLayer = () => {
+  const theme = useTheme();
   const pathLinks = useAppSelector(
     (state) => (state.stopPlace as any).pathLink as PathLink[],
   );
@@ -83,7 +75,24 @@ export const PathLinkLayer = () => {
     (state) => (state.stopPlace as any).enablePolylines as boolean,
   );
 
-  const geoJson = useMemo(() => buildGeoJson(pathLinks ?? []), [pathLinks]);
+  /** Distinct colours for each path link — index-matched, wraps around */
+  const pathLinkColors = useMemo(
+    () => [
+      theme.palette.error.main,
+      theme.palette.secondary.main,
+      theme.palette.primary.dark,
+      theme.palette.success.dark,
+      theme.palette.warning.dark,
+      theme.palette.info.dark,
+      theme.palette.secondary.dark,
+    ],
+    [theme],
+  );
+
+  const geoJson = useMemo(
+    () => buildGeoJson(pathLinks ?? [], pathLinkColors),
+    [pathLinks, pathLinkColors],
+  );
 
   if (!enabled || !pathLinks?.length) return null;
 

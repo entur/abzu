@@ -12,13 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { useTheme } from "@mui/material";
 import type { FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import type { ChildStop, LatLng, MapStopPlace } from "../markers/types";
-
-const MULTIMODAL_EDGE_COLOR = "#76ff03";
 
 /** Returns the location of a child stop, falling back to geometry.coordinates. */
 const resolveChildLocation = (child: ChildStop): LatLng | null => {
@@ -64,6 +63,7 @@ const buildGeoJson = (
 };
 
 export const MultimodalEdgesLayer = () => {
+  const theme = useTheme();
   const current = useAppSelector(
     (state) => state.stopPlace.current as MapStopPlace | null,
   );
@@ -82,7 +82,7 @@ export const MultimodalEdgesLayer = () => {
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
         paint={{
-          "line-color": MULTIMODAL_EDGE_COLOR,
+          "line-color": theme.palette.success.light,
           "line-width": 3,
           "line-dasharray": [8, 2],
           "line-opacity": 0.9,
