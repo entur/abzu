@@ -93,7 +93,15 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           },
         }}
         renderInput={(params) => {
-          const { borderRadius, ...textFieldProps } = params as any;
+          const {
+            InputProps: rawInputProps,
+            inputProps: nativeInputProps,
+            ...textFieldProps
+          } = params;
+          const { borderRadius: _brInput, ...InputProps } =
+            rawInputProps as any;
+          const { borderRadius: _brNative, ...safeNativeInputProps } =
+            nativeInputProps as any;
           return (
             <TextField
               {...textFieldProps}
@@ -103,10 +111,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
               size="small"
               slotProps={{
                 input: {
-                  ...params.InputProps,
+                  ...InputProps,
                   endAdornment: (
                     <>
-                      {params.InputProps.endAdornment}
+                      {InputProps.endAdornment}
                       {onToggleFavorites && (
                         <InputAdornment position="end">
                           <IconButton
@@ -158,6 +166,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                     </>
                   ),
                 },
+                htmlInput: safeNativeInputProps,
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {

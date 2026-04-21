@@ -145,20 +145,28 @@
   },
   "components": {
     "MuiButton": {
-      "borderRadius": 8,
-      "textTransform": "none",
-      "fontWeight": 500
+      "styleOverrides": {
+        "root": {
+          "borderRadius": 8,
+          "textTransform": "none",
+          "fontWeight": 500
+        }
+      }
     },
     "MuiCard": {
-      "elevation": 1,
-      "borderRadius": 8
+      "defaultProps": { "elevation": 1 },
+      "styleOverrides": {
+        "root": { "borderRadius": 8 }
+      }
     },
     "MuiAppBar": {
-      "elevation": 2
+      "defaultProps": { "elevation": 2 }
     },
     "MuiTextField": {
-      "variant": "outlined",
-      "borderRadius": 8
+      "defaultProps": { "variant": "outlined" },
+      "styleOverrides": {
+        "root": { "borderRadius": 8 }
+      }
     },
     "MuiAutocomplete": {
       "styleOverrides": {
