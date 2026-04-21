@@ -44,7 +44,7 @@ export const SaveGroupDialog: React.FC<SaveGroupDialogProps> = ({
           pr: 1,
         }}
       >
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "save_group_of_stop_places" })}
         </Typography>
         <IconButton onClick={onClose} size="small">

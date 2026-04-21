@@ -46,7 +46,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           pr: 1,
         }}
       >
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {title}
         </Typography>
         <IconButton onClick={onClose} size="small">

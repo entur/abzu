@@ -97,7 +97,7 @@ export const AddMemberToGroup: React.FC<AddMemberToGroupProps> = ({
           pr: 1,
         }}
       >
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "add_stop_place" })}
         </Typography>
         <IconButton onClick={handleClose} size="small">

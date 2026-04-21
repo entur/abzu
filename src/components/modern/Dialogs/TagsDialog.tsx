@@ -77,7 +77,7 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "tags" })}
         </Typography>
         {isLoading && <CircularProgress size={24} sx={{ mr: 1 }} />}

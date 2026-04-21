@@ -110,7 +110,7 @@ export const TerminateStopPlaceDialog: React.FC<
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "terminate_stop_title" })}
         </Typography>
         <IconButton onClick={handleClose} size="small">

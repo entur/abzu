@@ -62,7 +62,7 @@ export const RemoveStopFromParentDialog: React.FC<
   return (
     <Dialog open={open} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "remove_stop_from_parent_title" })}
         </Typography>
         <IconButton onClick={handleCloseDialog} size="small">

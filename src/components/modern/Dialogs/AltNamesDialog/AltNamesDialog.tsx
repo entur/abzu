@@ -58,7 +58,7 @@ export const AltNamesDialog: React.FC<AltNamesDialogProps> = ({
     <>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-          <Typography variant="h6" sx={{ flex: 1 }}>
+          <Typography variant="h6" component="span" sx={{ flex: 1 }}>
             {formatMessage({ id: "alternative_names" })}
           </Typography>
           <IconButton onClick={handleClose} size="small">

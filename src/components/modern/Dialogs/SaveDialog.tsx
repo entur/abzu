@@ -70,7 +70,7 @@ export const SaveDialog: React.FC<SaveDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "save_dialog_title" })}
         </Typography>
         <IconButton onClick={handleCloseDialog} size="small">

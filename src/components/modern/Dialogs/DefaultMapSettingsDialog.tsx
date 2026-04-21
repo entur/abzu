@@ -45,7 +45,7 @@ export const DefaultMapSettingsDialog: React.FC<
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={dialogTitleContainer}>
-        <Typography variant="h6" sx={dialogTitleText}>
+        <Typography variant="h6" component="span" sx={dialogTitleText}>
           {formatMessage({ id: "default_map_location" }) ||
             "Default map location"}
         </Typography>

@@ -109,7 +109,7 @@ export const AddAdjacentStopsDialog: React.FC<AddAdjacentStopsDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-        <Typography variant="h6" sx={{ flex: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "connect_to_adjacent_stop_title" })}
         </Typography>
         <IconButton onClick={handleCloseDialog} size="small">
