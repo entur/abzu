@@ -56,6 +56,16 @@ export const MapControls: React.FC = () => {
   const panelWidth = 320;
   const rightOffset = activePanel ? panelWidth + 24 : 16;
 
+  const mapControlButtonSx = {
+    bgcolor: theme.palette.grey.A100,
+    color: theme.palette.text.primary,
+    transition: "background-color 0.2s, color 0.2s",
+    "&:hover": {
+      bgcolor: theme.palette.grey[800],
+      color: theme.palette.common.white,
+    },
+  };
+
   const buttons = [
     {
       key: "layers",
@@ -98,6 +108,7 @@ export const MapControls: React.FC = () => {
               aria-label={button.label}
               color={activePanel === button.key ? "primary" : "default"}
               className="modern-map-control-button"
+              sx={activePanel !== button.key ? mapControlButtonSx : undefined}
             >
               {button.icon}
             </Fab>

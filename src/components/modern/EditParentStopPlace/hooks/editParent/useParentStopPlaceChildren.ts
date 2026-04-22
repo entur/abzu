@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../../actions";
 import {
+  getAddStopPlaceInfo,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
 } from "../../../../../actions/TiamatActions";
@@ -44,11 +45,16 @@ export const useParentStopPlaceChildren = (
     });
   }, [stopPlace, removingChildId, dispatch, onCloseRemoveChildDialog]);
 
-  // Add children handler
+  // Add children handler — fetches full stop place data and adds to local state
+  // with notSaved: true so the save button can persist them via addToMultiModalStopPlace
   const handleAddChildren = useCallback(
     (stopPlaceIds: string[]) => {
-      // TODO: Implement add children logic
-      onCloseAddChildDialog();
+      if (stopPlaceIds.length === 0) return;
+
+      dispatch(getAddStopPlaceInfo(stopPlaceIds)).then((result: any) => {
+        dispatch(StopPlaceActions.addChildrenToParenStopPlace(result));
+        onCloseAddChildDialog();
+      });
     },
     [dispatch, onCloseAddChildDialog],
   );

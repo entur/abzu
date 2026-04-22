@@ -14,9 +14,9 @@ limitations under the Licence. */
 
 import {
   DirectionsBike as BikeParkingIcon,
-  PersonPin as BoardingPositionIcon,
+  Navigation as BoardingPositionIcon,
   LocalParking as ParkAndRideIcon,
-  Train as QuayIcon,
+  LocationOn as QuayIcon,
   DirectionsBus as StopPlaceIcon,
 } from "@mui/icons-material";
 import {
@@ -69,6 +69,17 @@ const PARKING_TYPES = new Set<ElementType>(["parkAndRide", "bikeParking"]);
 export const AddElementFab = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+
+  /** Passed via slotProps.fab to directly style the internal Fab on each action */
+  const actionFabSx = {
+    bgcolor: theme.palette.grey.A100,
+    color: theme.palette.text.primary,
+    transition: "background-color 0.2s, color 0.2s",
+    "&:hover": {
+      bgcolor: theme.palette.grey[800],
+      color: theme.palette.common.white,
+    },
+  };
   const dispatch = useAppDispatch();
   const { current: mapRef } = useMap();
   const [open, setOpen] = useState(false);
@@ -236,14 +247,9 @@ export const AddElementFab = () => {
                 icon={action.icon}
                 slotProps={{
                   tooltip: { title: formatMessage({ id: action.labelKey }) },
+                  fab: { sx: actionFabSx },
                 }}
                 onClick={() => handleStartElementPlacement(action.elementType)}
-                sx={{
-                  "& .MuiSpeedDialAction-fab": {
-                    bgcolor: theme.palette.background.paper,
-                    color: "text.primary",
-                  },
-                }}
               />
             ))
           : [
@@ -254,6 +260,7 @@ export const AddElementFab = () => {
                   tooltip: {
                     title: formatMessage({ id: "map_add_stop_place" }),
                   },
+                  fab: { sx: actionFabSx },
                 }}
                 onClick={handleAddNewStop}
               />,
@@ -276,6 +283,7 @@ export const AddElementFab = () => {
                   tooltip: {
                     title: formatMessage({ id: "map_add_multimodal_stop" }),
                   },
+                  fab: { sx: actionFabSx },
                 }}
                 onClick={handleAddNewMultimodalStop}
               />,

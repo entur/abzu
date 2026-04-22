@@ -21,10 +21,11 @@ import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useMarkerScale } from "../hooks/useMarkerScale";
 import { QuayPopup } from "./QuayPopup";
 import type { FocusedElement, MapQuay, MapStopPlace } from "./types";
 
-const QUAY_SIZE = 28;
+const QUAY_SIZE = 32;
 
 interface QuayMarkerItemProps {
   quay: MapQuay;
@@ -41,6 +42,7 @@ const QuayMarkerItem = ({
 }: QuayMarkerItemProps) => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
 
   if (!quay.location) return null;
 
@@ -76,7 +78,7 @@ const QuayMarkerItem = ({
           {hasBearing && (
             <NavigationIcon
               sx={{
-                fontSize: "0.9rem",
+                fontSize: `${scale}rem`,
                 color: focused ? "warning.main" : "text.disabled",
                 transform: `rotate(${quay.compassBearing}deg)`,
                 mb: "-4px",
@@ -89,8 +91,8 @@ const QuayMarkerItem = ({
               setPopupAnchor(e.currentTarget);
             }}
             sx={(theme) => ({
-              width: QUAY_SIZE,
-              height: QUAY_SIZE,
+              width: Math.round(QUAY_SIZE * scale),
+              height: Math.round(QUAY_SIZE * scale),
               borderRadius: "50%",
               bgcolor: focused ? "warning.main" : "success.main",
               display: "flex",
@@ -113,7 +115,7 @@ const QuayMarkerItem = ({
                   ? "warning.contrastText"
                   : "success.contrastText",
                 fontWeight: 800,
-                fontSize: "0.7rem",
+                fontSize: `${0.75 * scale}rem`,
                 lineHeight: 1,
                 letterSpacing: "0.01em",
                 userSelect: "none",

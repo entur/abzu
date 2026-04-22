@@ -23,10 +23,11 @@ import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
 
-const PARKING_SIZE = 30;
+const PARKING_SIZE = 34;
 const BIKE_PARKING_TYPE = "bikeParking";
 
 interface ParkingMarkerItemProps {
@@ -45,6 +46,7 @@ const ParkingMarkerItem = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
 
   if (!parking.location) return null;
 
@@ -84,8 +86,8 @@ const ParkingMarkerItem = ({
             setPopupAnchor(e.currentTarget);
           }}
           sx={(theme) => ({
-            width: PARKING_SIZE,
-            height: PARKING_SIZE,
+            width: Math.round(PARKING_SIZE * scale),
+            height: Math.round(PARKING_SIZE * scale),
             borderRadius: "50%",
             bgcolor: focused ? "warning.main" : "info.main",
             display: "flex",
@@ -104,11 +106,11 @@ const ParkingMarkerItem = ({
         >
           {isBike ? (
             <DirectionsBikeIcon
-              sx={{ fontSize: "0.9rem", color: "info.contrastText" }}
+              sx={{ fontSize: `${1.1 * scale}rem`, color: "info.contrastText" }}
             />
           ) : (
             <LocalParkingIcon
-              sx={{ fontSize: "0.9rem", color: "info.contrastText" }}
+              sx={{ fontSize: `${1.1 * scale}rem`, color: "info.contrastText" }}
             />
           )}
         </Box>

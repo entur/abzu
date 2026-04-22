@@ -18,10 +18,11 @@ import { useState } from "react";
 import { Marker } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
+import { useMarkerScale } from "../hooks/useMarkerScale";
 import { NeighbourStopPopup } from "./NeighbourStopPopup";
 import type { NeighbourStop } from "./types";
 
-const NEIGHBOUR_SIZE = 28;
+const NEIGHBOUR_SIZE = 36;
 
 interface NeighbourMarkerItemProps {
   stop: NeighbourStop;
@@ -29,6 +30,7 @@ interface NeighbourMarkerItemProps {
 
 const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
 
   if (!stop.location) return null;
 
@@ -42,8 +44,8 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
             sx={(theme) => ({
-              width: NEIGHBOUR_SIZE,
-              height: NEIGHBOUR_SIZE,
+              width: Math.round(NEIGHBOUR_SIZE * scale),
+              height: Math.round(NEIGHBOUR_SIZE * scale),
               borderRadius: "50%",
               bgcolor: "background.paper",
               display: "flex",
@@ -62,7 +64,7 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
                 sx={{
                   color: "text.disabled",
                   fontWeight: 800,
-                  fontSize: "0.6rem",
+                  fontSize: `${0.7 * scale}rem`,
                   lineHeight: 1,
                   letterSpacing: "0.05em",
                   userSelect: "none",
@@ -74,7 +76,11 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
               <img
                 src={icon}
                 alt=""
-                style={{ width: 16, height: 16, opacity: 0.6 }}
+                style={{
+                  width: Math.round(20 * scale),
+                  height: Math.round(20 * scale),
+                  opacity: 0.6,
+                }}
               />
             )}
           </Box>

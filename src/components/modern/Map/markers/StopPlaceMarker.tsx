@@ -20,14 +20,16 @@ import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import { useMarkerScale } from "../hooks/useMarkerScale";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
 
-const MARKER_SIZE = 36;
+const MARKER_SIZE = 40;
 
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
 
   const current = useAppSelector(
     (state) =>
@@ -71,8 +73,8 @@ export const StopPlaceMarker = () => {
               setPopupAnchor(e.currentTarget);
             }}
             sx={{
-              width: MARKER_SIZE,
-              height: MARKER_SIZE,
+              width: Math.round(MARKER_SIZE * scale),
+              height: Math.round(MARKER_SIZE * scale),
               borderRadius: "50%",
               bgcolor: "background.paper",
               display: "flex",
@@ -91,7 +93,7 @@ export const StopPlaceMarker = () => {
                 sx={{
                   color: "text.primary",
                   fontWeight: 800,
-                  fontSize: "0.8rem",
+                  fontSize: `${0.85 * scale}rem`,
                   lineHeight: 1,
                   letterSpacing: "0.05em",
                   userSelect: "none",
@@ -100,7 +102,14 @@ export const StopPlaceMarker = () => {
                 MM
               </Typography>
             ) : (
-              <img src={icon} alt="" style={{ width: 22, height: 22 }} />
+              <img
+                src={icon}
+                alt=""
+                style={{
+                  width: Math.round(24 * scale),
+                  height: Math.round(24 * scale),
+                }}
+              />
             )}
           </Box>
         </Tooltip>

@@ -62,7 +62,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
             noWrap
             display="block"
           >
-            {formatMessage({ id: parking.parkingType })}
+            {formatMessage({ id: `parking_item_title_${parking.parkingType}` })}
           </Typography>
         )}
         {parking.id && (

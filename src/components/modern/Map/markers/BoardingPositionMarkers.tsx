@@ -20,6 +20,7 @@ import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type {
   BoardingPosition,
@@ -27,7 +28,7 @@ import type {
   MapStopPlace,
 } from "./types";
 
-const BP_SIZE = 22;
+const BP_SIZE = 26;
 
 interface BoardingPositionItemProps {
   boardingPosition: BoardingPosition;
@@ -45,6 +46,7 @@ const BoardingPositionItem = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
 
   if (!boardingPosition.location) return null;
 
@@ -72,8 +74,8 @@ const BoardingPositionItem = ({
         <Box
           onClick={(e) => setPopupAnchor(e.currentTarget)}
           sx={(theme) => ({
-            width: BP_SIZE,
-            height: BP_SIZE,
+            width: Math.round(BP_SIZE * scale),
+            height: Math.round(BP_SIZE * scale),
             borderRadius: "50%",
             bgcolor: focused ? "warning.main" : "background.paper",
             display: "flex",
@@ -94,7 +96,7 @@ const BoardingPositionItem = ({
             sx={{
               color: focused ? "warning.contrastText" : "secondary.main",
               fontWeight: 800,
-              fontSize: "0.65rem",
+              fontSize: `${0.7 * scale}rem`,
               lineHeight: 1,
               letterSpacing: "0.01em",
               userSelect: "none",
