@@ -21,10 +21,13 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import { ConfigContext } from "../../config/ConfigContext";
+import {
+  defaultCenterPosition,
+  defaultOSMTileLayer,
+} from "../../config/mapDefaults";
 import { FareZones } from "../Zones/FareZones";
 import { TariffZones } from "../Zones/TariffZones";
 import { DynamicTileLayer } from "./DynamicTileLayer";
-import { defaultCenterPosition, defaultOSMTileLayer } from "./mapDefaults";
 import { MapEvents } from "./MapEvents";
 import MarkerList from "./MarkerList";
 import MultimodalStopEdges from "./MultimodalStopEdges";

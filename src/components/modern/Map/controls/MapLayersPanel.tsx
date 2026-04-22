@@ -25,7 +25,7 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { ConfigContext } from "../../../../config/ConfigContext";
-import { defaultOSMTileLayer } from "../../../Map/mapDefaults";
+import { defaultOSMTileLayer } from "../../../../config/mapDefaults";
 
 export const MapLayersPanel: React.FC = () => {
   const theme = useTheme();

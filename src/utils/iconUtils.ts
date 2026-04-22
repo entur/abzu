@@ -10,6 +10,7 @@ import multiModal from "../static/icons/modalities/multiModal.png";
 import noInformation from "../static/icons/modalities/no-information.png";
 import railReplacementBus from "../static/icons/modalities/railReplacement.png";
 import railStation from "../static/icons/modalities/rails-without-box.png";
+import funicularSvg from "../static/icons/modalities/svg/funicular.svg";
 import onstreetTram from "../static/icons/modalities/tram-without-box.png";
 
 import airportSvg from "../static/icons/modalities/svg/airplane-withoutBox.svg";
@@ -70,9 +71,7 @@ export const getIconByModality = (type: Modalities, isMultimodal: boolean) => {
     other: noInformation,
   };
 
-  const stopType = modalityMap[type] || noInformation;
-
-  return stopType;
+  return modalityMap[type] || noInformation;
 };
 
 export const getSvgIconByTypeOrSubmode = (
@@ -81,8 +80,7 @@ export const getSvgIconByTypeOrSubmode = (
 ) => {
   const submodeMap = {
     railReplacementBus: railReplacementBusSvg,
-    // funicular.svg has white fills — use the PNG which is visible on light backgrounds
-    funicular: funicular,
+    funicular: funicularSvg,
   };
   return (
     (submode ? submodeMap[submode as Submodes] : undefined) ||
@@ -101,8 +99,7 @@ export const getSvgIconIdByModality = (type: Modalities) => {
     airport: airportSvg,
     harbourPort: harbourPortSvg,
     liftStation: liftStationSvg,
-    // funicular.svg has white fills — use the PNG which is visible on light backgrounds
-    funicular: funicular,
+    funicular: funicularSvg,
     other: noInformationSvg,
   };
   return modalityMap[type] || noInformationSvg;

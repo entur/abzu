@@ -75,7 +75,7 @@ export function buildMaplibreStyle(
         tiles,
         tileSize: 256,
         attribution,
-        maxzoom: layer.maxZoom ?? 19,
+        maxzoom: layer.maxNativeZoom ?? layer.maxZoom ?? 19,
       },
     },
     layers: [{ id: "base-layer", type: "raster", source: "base-layer" }],

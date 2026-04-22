@@ -13,7 +13,7 @@
  limitations under the Licence. */
 
 import * as types from "../actions/Types";
-import { defaultCenterPosition } from "../components/Map/mapDefaults";
+import { defaultCenterPosition } from "../config/mapDefaults";
 import { calculatePolygonCenter } from "../utils/mapUtils";
 import {
   addMemberToGroup,

@@ -192,6 +192,13 @@ export const ModernEditStopMap = () => {
     [config, activeBaseLayer],
   );
 
+  const activeLayerMaxZoom = useMemo(() => {
+    const layer =
+      config.baseLayers.find((l) => l.name === activeBaseLayer) ??
+      config.baseLayers[0];
+    return layer?.maxZoom ?? 20;
+  }, [config, activeBaseLayer]);
+
   return (
     <div
       style={{
@@ -212,6 +219,7 @@ export const ModernEditStopMap = () => {
         onMoveEnd={handleMoveEnd}
         onDblClick={handleDblClick}
         doubleClickZoom={!isCreatingNewStop}
+        maxZoom={activeLayerMaxZoom}
         pitchWithRotate={false}
         dragRotate={false}
       >

@@ -12,15 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { SearchBox } from "../../components/modern/MainPage";
 import { useStopPlacesUrlParams } from "./hooks/useStopPlacesUrlParams";
 
 /**
  * Modern main page (landing / stop place search route).
- * Handles URL param pre-loading and renders the search box overlay.
+ * Handles URL param pre-loading only — the search UI lives in ModernHeader.
  * The persistent map is rendered separately in App.tsx (PersistentMap).
  */
-export const StopPlaces = (): React.ReactElement | null => {
+export const StopPlaces = (): null => {
   useStopPlacesUrlParams();
-  return <SearchBox />;
+  return null;
 };

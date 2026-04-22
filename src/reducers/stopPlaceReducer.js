@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
-import { defaultCenterPosition } from "../components/Map/mapDefaults";
+import { defaultCenterPosition } from "../config/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
