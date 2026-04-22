@@ -131,18 +131,14 @@ class StopPlaces extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { uiMode } = this.props;
-    const showLegacySearchBox = uiMode === "legacy";
 
     return (
       <div>
         {isLoading && <Loader />}
-        {showLegacySearchBox && <SearchBox />}
-        {uiMode !== "modern" && (
-          <div style={{ position: "relative" }}>
-            <StopPlacesMap />
-          </div>
-        )}
+        <SearchBox />
+        <div style={{ position: "relative" }}>
+          <StopPlacesMap />
+        </div>
       </div>
     );
   }
@@ -153,7 +149,6 @@ const mapStateToProps = ({ stopPlace, user }) => ({
   lastMutatedStopPlaceId: stopPlace.lastMutatedStopPlaceId,
   currentPath: user.path,
   auth: user.auth,
-  uiMode: user.uiMode,
 });
 
 export default connect(mapStateToProps)(StopPlaces);

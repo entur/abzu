@@ -28,7 +28,6 @@ import GlobalLoadingIndicator from "../components/GlobalLoadingIndicator";
 import Header from "../components/Header/Header";
 import LocalLoadingIndicator from "../components/LocalLoadingIndicator";
 import { OPEN_STREET_MAP } from "../components/Map/mapDefaults";
-import { ModernHeader } from "../components/modern/Header/ModernHeader";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
 import configureLocalization from "../localization/localization";
@@ -51,8 +50,6 @@ const LegacyApp = () => {
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
-  const uiMode = useAppSelector((state) => state.user.uiMode);
-
   useEffect(() => {
     configureLocalization(
       appliedLocale,
@@ -112,15 +109,7 @@ const LegacyApp = () => {
     return null;
   }
 
-  const renderHeader = () => {
-    const config = { extPath, mapConfig, localeConfig };
-    return uiMode === "legacy" ? (
-      <Header config={config} />
-    ) : (
-      <ModernHeader config={config} />
-    );
-  };
-
+  const config = { extPath, mapConfig, localeConfig };
   const basename = import.meta.env.BASE_URL;
   const path = "/";
 
@@ -141,7 +130,7 @@ const LegacyApp = () => {
           renderFallback={() => (
             <AbzuThemeProvider>
               <div>
-                {renderHeader()}
+                <Header config={config} />
                 <GlobalLoadingIndicator />
                 <LocalLoadingIndicator />
                 <Router basename={basename} history={history}>
@@ -168,7 +157,7 @@ const LegacyApp = () => {
           )}
         >
           <div>
-            {renderHeader()}
+            <Header config={config} />
             <GlobalLoadingIndicator />
             <LocalLoadingIndicator />
             <Router basename={basename} history={history}>

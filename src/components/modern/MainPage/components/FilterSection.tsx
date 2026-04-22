@@ -28,8 +28,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
-import ModalityFilter from "../../../EditStopPage/ModalityFilter";
 import TopographicalFilter from "../../../MainPage/TopographicalFilter";
+import { ModalityFilter } from "../../Shared";
 import { modernCard } from "../../styles";
 import { FilterSectionProps } from "../types";
 

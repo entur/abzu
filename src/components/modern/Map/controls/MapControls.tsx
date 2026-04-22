@@ -22,15 +22,15 @@ import { Box, Fab, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { toggleShowFareZonesInMap } from "../../reducers/zonesSlice";
-import { FareZonesPanel } from "../modern/Map/FareZonesPanel";
-import "../modern/modern.css";
+import { toggleShowFareZonesInMap } from "../../../../reducers/zonesSlice";
+import "../../modern.css";
 import {
   mapControlPanelContainer,
   mapControlPanelContent,
   mapControlPanelHeader,
   mapControlPanelHeaderTitle,
-} from "../modern/styles";
+} from "../../styles";
+import { FareZonesPanel } from "../FareZonesPanel";
 import { MapLayersPanel } from "./MapLayersPanel";
 import { MapSettingsPanel } from "./MapSettingsPanel";
 

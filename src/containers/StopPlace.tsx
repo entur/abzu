@@ -25,9 +25,6 @@ import InformationBanner from "../components/EditStopPage/InformationBanner";
 import NewElementsBox from "../components/EditStopPage/NewElementsBox";
 import NewStopPlaceInfo from "../components/EditStopPage/NewStopPlaceInfo";
 import EditStopMap from "../components/Map/EditStopMap";
-import { EditParentStopPlace } from "../components/modern/EditParentStopPlace";
-import { EditStopPage } from "../components/modern/EditStopPage";
-import { LoadingDialog } from "../components/modern/Shared";
 import InformationManager from "../singletons/InformationManager";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store/store";
@@ -37,20 +34,17 @@ import LoadingPage from "./LoadingPage";
 
 const selectProps = createSelector(
   (state: RootState) => state,
-  (state) => {
-    return {
-      isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-      disabled:
-        (state.stopPlace.current &&
-          state.stopPlace.current.permanentlyTerminated) ||
-        !getStopPermissions(state.stopPlace.current).canEdit,
-      stopPlace: state.stopPlace.current || state.stopPlace.newStop,
-      newStopCreated: state.user.newStopCreated,
-      originalStopPlace: state.stopPlace.originalCurrent,
-      stopPlaceLoading: state.stopPlace.loading,
-      uiMode: state.user.uiMode,
-    };
-  },
+  (state) => ({
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+    disabled:
+      (state.stopPlace.current &&
+        state.stopPlace.current.permanentlyTerminated) ||
+      !getStopPermissions(state.stopPlace.current).canEdit,
+    stopPlace: state.stopPlace.current || state.stopPlace.newStop,
+    newStopCreated: state.user.newStopCreated,
+    originalStopPlace: state.stopPlace.originalCurrent,
+    stopPlaceLoading: state.stopPlace.loading,
+  }),
 );
 
 export const StopPlace = () => {
@@ -61,7 +55,6 @@ export const StopPlace = () => {
     disabled,
     newStopCreated,
     stopPlaceLoading,
-    uiMode,
   } = useAppSelector(selectProps);
 
   const [error, setError] = useState({
@@ -148,12 +141,9 @@ export const StopPlace = () => {
       <Helmet title={title} />
       <Dialog
         open={error.showErrorDialog}
-        onClose={() => {
-          setError((prev) => ({
-            ...prev,
-            showErrorDialog: false,
-          }));
-        }}
+        onClose={() =>
+          setError((prev) => ({ ...prev, showErrorDialog: false }))
+        }
       >
         <DialogContent>
           {error.resourceNotFound
@@ -179,59 +169,34 @@ export const StopPlace = () => {
           title={formatMessage({ id: `pathLinks.title` })}
           ingress={formatMessage({ id: `pathLinks.ingress` })}
           body={formatMessage({ id: `pathLinks.body` })}
-          closeButtonTitle={formatMessage({
-            id: `pathLinks.closeButtonTitle`,
-          })}
+          closeButtonTitle={formatMessage({ id: `pathLinks.closeButtonTitle` })}
           handleOnClick={handleOnClickPathLinkInfo}
         />
       )}
-
-      {!stopPlace && !error.showErrorDialog && uiMode === "modern" && (
-        <LoadingDialog open={true} message={formatMessage({ id: "loading" })} />
-      )}
-      {!stopPlace && !error.showErrorDialog && uiMode !== "modern" && (
+      {!stopPlace && !error.showErrorDialog && (
         <>
           <LoadingPage />
           <EditStopMap disabled />
         </>
       )}
-      {stopPlaceLoading && uiMode === "modern" && (
-        <LoadingDialog open={true} message={formatMessage({ id: "loading" })} />
-      )}
-      {stopPlaceLoading && uiMode !== "modern" && <LoadingPage />}
+      {stopPlaceLoading && <LoadingPage />}
       {stopPlace && !stopPlace.isParent && (
         <>
-          {!(stopPlaceLoading && uiMode === "modern") && (
+          {!stopPlaceLoading && (
             <>
-              {uiMode === "modern" ? (
-                <EditStopPage />
-              ) : (
-                <>
-                  <NewElementsBox disabled={disabled || stopPlaceLoading} />
-                  <EditStopGeneral disabled={disabled || stopPlaceLoading} />
-                </>
-              )}
+              <NewElementsBox disabled={disabled || stopPlaceLoading} />
+              <EditStopGeneral disabled={disabled || stopPlaceLoading} />
             </>
           )}
-          {uiMode !== "modern" && (
-            <EditStopMap disabled={disabled || stopPlaceLoading} />
-          )}
+          <EditStopMap disabled={disabled || stopPlaceLoading} />
         </>
       )}
       {stopPlace && stopPlace.isParent && (
         <>
-          {!(stopPlaceLoading && uiMode === "modern") && (
-            <>
-              {uiMode === "modern" ? (
-                <EditParentStopPlace />
-              ) : (
-                <EditParentGeneral disabled={disabled || stopPlaceLoading} />
-              )}
-            </>
+          {!stopPlaceLoading && (
+            <EditParentGeneral disabled={disabled || stopPlaceLoading} />
           )}
-          {uiMode !== "modern" && (
-            <EditStopMap disabled={disabled || stopPlaceLoading} />
-          )}
+          <EditStopMap disabled={disabled || stopPlaceLoading} />
         </>
       )}
     </div>

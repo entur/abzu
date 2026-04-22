@@ -36,10 +36,10 @@ import SettingsManager from "../../singletons/SettingsManager";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { history } from "../../store/store";
 import { AbzuThemeProvider } from "../../theme/ThemeProvider";
-import { StopPlace } from "../StopPlace";
-import StopPlaces from "../StopPlaces";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 import ReportPage from "./ReportPage";
+import { StopPlace } from "./StopPlace";
+import { StopPlaces } from "./StopPlaces";
 
 /**
  * Persistent map — always mounted on stop and group routes, never torn down

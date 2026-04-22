@@ -22,7 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useIntl } from "react-intl";
-import ModalityFilter from "../../../../components/EditStopPage/ModalityFilter";
+import { ModalityFilter } from "../../Shared";
 import { FilterState, TopographicChip } from "../types";
 
 interface ReportFiltersProps {

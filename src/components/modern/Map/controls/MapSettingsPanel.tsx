@@ -25,9 +25,9 @@ import {
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import { UserActions } from "../../actions";
-import { useAppDispatch } from "../../store/hooks";
-import { DefaultMapSettingsDialog } from "../modern/Dialogs/DefaultMapSettingsDialog";
+import { UserActions } from "../../../../actions";
+import { useAppDispatch } from "../../../../store/hooks";
+import { DefaultMapSettingsDialog } from "../../Dialogs/DefaultMapSettingsDialog";
 
 export const MapSettingsPanel: React.FC = () => {
   const { formatMessage } = useIntl();

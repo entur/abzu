@@ -7,6 +7,7 @@ export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";
 export { LoadingDialog } from "./LoadingDialog";
 export * from "./MinimizedBar";
+export { ModalityFilter } from "./ModalityFilter";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";
 export { ParentMembership } from "./ParentMembership";
 export { QuayCode } from "./QuayCode";

@@ -15,7 +15,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
-import ModalityFilter from "../../../../components/EditStopPage/ModalityFilter";
+import { ModalityFilter } from "../../Shared";
 import { FilterState, TopographicChip } from "../types";
 import { GeneralFiltersSection } from "./GeneralFiltersSection";
 import { TagFilter } from "./TagFilter";
