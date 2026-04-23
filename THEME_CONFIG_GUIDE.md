@@ -1,9 +1,120 @@
 # Abzu Theme Configuration Guide
 
-Theme files are JSON documents placed in `public/theme/`. The bundled fallback lives at
-`src/theme/config/default-theme.json` (statically imported; used before the runtime fetch
-completes). All files are loaded by `src/theme/config/loader.ts` and turned into a MUI
-`Theme` object via `src/theme/config/createThemeFromConfig.ts`.
+This guide covers two things:
+
+1. **Bootstrap config** (`public/bootstrap.json`) — controls which UI mode is shown and which
+   themes are available. Start here when setting up a new deployment.
+2. **Theme files** (`public/theme/*.json`) — define colours, typography, and component
+   overrides. Read this when creating or customising a theme.
+
+---
+
+## Bootstrap Config — `uiMode`
+
+`uiMode` lives in the environment bootstrap JSON (e.g. `public/bootstrap.json`),
+**not** inside a theme file. It controls which UI is rendered at startup.
+
+| Value | Behaviour |
+|-------|-----------|
+| *(absent)* | Same as `"legacy"` — safe default; nothing breaks when upgrading |
+| `"legacy"` | Always renders the legacy UI. The modern UI is never loaded. |
+| `"modern"` | Always renders the modern UI. The legacy UI is never loaded. |
+| `"dual"` | User can switch between legacy and modern via the **Appearance** menu. The last choice is saved in `localStorage`. |
+
+### Setting `uiMode` in your bootstrap file
+
+```jsonc
+// public/bootstrap.json — always show the modern UI
+{
+  "uiMode": "modern",
+  ...
+}
+```
+
+```jsonc
+// public/bootstrap.json — let users choose (power-user / migration scenario)
+{
+  "uiMode": "dual",
+  ...
+}
+```
+
+```jsonc
+// public/bootstrap.json — stay on legacy (or omit the key entirely)
+{
+  "uiMode": "legacy",
+  ...
+}
+```
+
+### Effect on the Appearance menu
+
+The **Appearance** item in the navigation menu is shown only when there is something to
+configure. It is hidden automatically when both of the following are true:
+
+- `uiMode` is **not** `"dual"` (no UI-mode toggle to show), **and**
+- fewer than 2 themes are registered in `themeConfigs` (no theme switcher to show).
+
+This means a deployment with `"uiMode": "modern"` and a single theme will have a clean
+navigation menu with no empty Appearance entry.
+
+---
+
+## Bootstrap Config — `themeConfigs`
+
+`themeConfigs` is an array of paths (relative to `public/`) pointing to theme JSON files.
+The **first entry** is the default theme applied on a user's first visit. Subsequent entries
+are available in the theme switcher inside the Appearance menu.
+
+```jsonc
+// public/bootstrap.json
+{
+  "themeConfigs": [
+    "theme/default-theme.json",      // ← applied on first visit
+    "theme/entur-theme.json",
+    "theme/fintraffic-theme.json"
+  ],
+  ...
+}
+```
+
+The theme switcher appears in the Appearance menu only when **two or more** themes are
+listed. A deployment with a single entry gets no switcher UI.
+
+### Adding your own theme
+
+1. Create `public/theme/my-theme.json` following the schema described in this guide.
+2. Add the path to `themeConfigs` in your bootstrap file:
+
+```jsonc
+{
+  "themeConfigs": [
+    "theme/default-theme.json",
+    "theme/my-theme.json"
+  ]
+}
+```
+
+3. Restart the dev server (or redeploy) — the new theme appears in the switcher immediately.
+
+### Minimal single-theme deployment
+
+Omit `themeConfigs` entirely, or provide exactly one entry. The bundled fallback
+(`src/theme/config/default-theme.json`) is used if the key is absent or the fetch fails.
+
+```jsonc
+// Single theme — no switcher shown
+{
+  "themeConfigs": ["theme/my-theme.json"],
+  ...
+}
+```
+
+### Which file to edit during local development?
+
+The dev server (`npm start`) loads config from **`public/bootstrap.json`**, not
+`build/bootstrap.json`. Always edit `public/bootstrap.json` when testing config changes
+locally.
 
 ---
 
@@ -15,9 +126,8 @@ completes). All files are loaded by `src/theme/config/loader.ts` and turned into
 | `public/theme/<tenant>-theme.json` | Tenant-specific override |
 | `src/theme/config/default-theme.json` | Bundled fallback; must stay in sync with the public copy |
 
-Register a new theme file by adding its filename to `themeConfigs` in the relevant
-environment bootstrap JSON (e.g. `public/dev.json`, `public/config.json`). The first entry
-in the array is the default on first visit.
+All files are loaded by `src/theme/config/loader.ts` and turned into a MUI `Theme` object
+via `src/theme/config/createThemeFromConfig.ts`.
 
 ---
 
@@ -315,15 +425,3 @@ Minimum viable tenant theme:
     "prod":        { "color": "#005ea5", "showBadge": false, "label": "PROD" }
   }
 }
-```
-
----
-
-## Pitfalls Checklist
-
-- [ ] **CSS props directly in component config** — use `styleOverrides.root`, not the component top level
-- [ ] **Missing `tertiary` palette** — the app uses it for map markers and UI tokens; always define it
-- [ ] **Missing `contrastText`** — always set explicitly on `tertiary`; MUI won't derive it automatically
-- [ ] **Hardcoded colours in `styleOverrides`** — prefer palette tokens where possible (e.g. `containedPrimary` can reference `"$palette.primary.main"` in some setups, but plain hex is accepted)
-- [ ] **`typography.button.textTransform` missing** — without this, all buttons render in ALL CAPS
-- [ ] **Out-of-sync `public/` and `src/theme/config/` copies** — when editing `default-theme.json`, update both files

@@ -13,8 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Help, Palette, Report, Settings } from "@mui/icons-material";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
+import { ConfigContext } from "../../../../../../config/ConfigContext";
+import { useTheme as useAbzuTheme } from "../../../../../../theme/ThemeProvider";
 
 interface UseNavigationMenuProps {
   isMobile: boolean;
@@ -26,6 +28,8 @@ export const useNavigationMenu = ({
   onGoToReports,
 }: UseNavigationMenuProps) => {
   const { formatMessage } = useIntl();
+  const config = useContext(ConfigContext);
+  const { availableThemes } = useAbzuTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -63,6 +67,9 @@ export const useNavigationMenu = ({
   const settingsIcon = React.createElement(Settings);
   const helpIcon = React.createElement(Help);
 
+  const showUICustomization =
+    availableThemes.length >= 2 || config.uiMode === "dual";
+
   const menuItems = useMemo(
     () => [
       {
@@ -78,17 +85,21 @@ export const useNavigationMenu = ({
         key: "divider1",
         type: "divider",
       },
-      {
-        key: "appearance",
-        icon: paletteIcon,
-        text: appearance,
-        type: "submenu",
-        componentName: "UICustomizationSection",
-      },
-      {
-        key: "divider2",
-        type: "divider",
-      },
+      ...(showUICustomization
+        ? [
+            {
+              key: "appearance",
+              icon: paletteIcon,
+              text: appearance,
+              type: "submenu",
+              componentName: "UICustomizationSection",
+            },
+            {
+              key: "divider2",
+              type: "divider",
+            },
+          ]
+        : []),
       {
         key: "settings",
         icon: settingsIcon,
@@ -123,6 +134,7 @@ export const useNavigationMenu = ({
       },
     ],
     [
+      showUICustomization,
       reportSite,
       appearance,
       settings,

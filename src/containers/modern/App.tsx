@@ -81,12 +81,6 @@ const App: React.FC<ModernAppProps> = () => {
     });
   }, [appliedLocale, localeConfig?.defaultLocale, extPath, dispatch]);
 
-  // Always enforce modern mode when the modern app is running,
-  // regardless of any stale localStorage value
-  useEffect(() => {
-    dispatch(UserActions.changeUIMode("modern"));
-  }, []);
-
   useEffect(() => {
     dispatch(updateAuth(auth));
     if (!auth.isLoading) {

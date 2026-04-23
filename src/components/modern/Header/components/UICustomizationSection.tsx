@@ -23,10 +23,11 @@ import {
   MenuList,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
+import { ConfigContext } from "../../../../config/ConfigContext";
 import { useAppDispatch } from "../../../../store/hooks";
 import { ThemeSwitcher } from "../../../../theme";
 import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
@@ -47,12 +48,17 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const { availableThemes } = useAbzuTheme();
+  const config = useContext(ConfigContext);
 
   // Redux selectors
   const uiMode = useSelector((state: any) => state.user.uiMode);
 
   // Show theme switcher only if 2+ themes available
   const showThemeSwitcher = availableThemes.length >= 2;
+  // Show UI mode toggle only when config allows switching
+  const showUiModeToggle = config.uiMode === "dual";
+
+  if (!showThemeSwitcher && !showUiModeToggle) return null;
 
   // Translations
   const appearance = formatMessage({ id: "appearance" }) || "Appearance";
@@ -116,31 +122,35 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <MenuList sx={{ pl: 2 }}>
-            <MenuItem
-              onClick={() => handleToggleUIMode(!uiMode || uiMode !== "modern")}
-              sx={settingItemStyle}
-            >
-              <ListItemIcon sx={{ minWidth: 32 }}>
-                {uiMode === "modern" ? (
-                  <Check fontSize="small" color="primary" />
-                ) : (
-                  <Box sx={{ width: 20, height: 20 }} />
-                )}
-              </ListItemIcon>
-              <ListItemText
-                primary={modernUILabel}
-                slotProps={{
-                  primary: {
-                    sx: {
-                      fontSize: "0.8125rem",
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      overflow: "hidden",
+            {showUiModeToggle && (
+              <MenuItem
+                onClick={() =>
+                  handleToggleUIMode(!uiMode || uiMode !== "modern")
+                }
+                sx={settingItemStyle}
+              >
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  {uiMode === "modern" ? (
+                    <Check fontSize="small" color="primary" />
+                  ) : (
+                    <Box sx={{ width: 20, height: 20 }} />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={modernUILabel}
+                  slotProps={{
+                    primary: {
+                      sx: {
+                        fontSize: "0.8125rem",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        overflow: "hidden",
+                      },
                     },
-                  },
-                }}
-              />
-            </MenuItem>
+                  }}
+                />
+              </MenuItem>
+            )}
 
             {showThemeSwitcher && (
               <MenuItem
@@ -216,19 +226,21 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
         <MenuList sx={{ pl: 2 }}>
-          <MenuItem
-            onClick={() => handleToggleUIMode(!uiMode || uiMode !== "modern")}
-            sx={settingItemStyle}
-          >
-            <ListItemIcon sx={{ minWidth: 32 }}>
-              {uiMode === "modern" ? (
-                <Check fontSize="small" color="primary" />
-              ) : (
-                <Box sx={{ width: 20, height: 20 }} />
-              )}
-            </ListItemIcon>
-            <ListItemText primary={modernUILabel} />
-          </MenuItem>
+          {showUiModeToggle && (
+            <MenuItem
+              onClick={() => handleToggleUIMode(!uiMode || uiMode !== "modern")}
+              sx={settingItemStyle}
+            >
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                {uiMode === "modern" ? (
+                  <Check fontSize="small" color="primary" />
+                ) : (
+                  <Box sx={{ width: 20, height: 20 }} />
+                )}
+              </ListItemIcon>
+              <ListItemText primary={modernUILabel} />
+            </MenuItem>
+          )}
 
           {showThemeSwitcher && (
             <MenuItem

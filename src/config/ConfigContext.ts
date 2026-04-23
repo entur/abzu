@@ -39,6 +39,13 @@ export interface Config {
    * Takes priority over the singular themeConfig field.
    */
   themeConfigs?: string[];
+  /**
+   * Controls which UI is available.
+   * "legacy" (default) — only the legacy UI, no toggle shown.
+   * "dual" — both UIs available; user can switch via the header menu.
+   * "modern" — only the modern UI, no toggle shown.
+   */
+  uiMode?: "legacy" | "dual" | "modern";
 }
 
 export interface MapConfig {

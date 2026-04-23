@@ -539,21 +539,23 @@ class Header extends React.Component {
                   {showTariffZonesLabel}
                 </MenuItem>
               </MoreMenuItem>
-              <MenuItem
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
-                onClick={() =>
-                  this.props.dispatch(UserActions.changeUIMode("modern"))
-                }
-              >
-                <MdSettings color="#41c0c4" />
-                Modern UI
-              </MenuItem>
+              {this.props.config?.uiMode === "dual" && (
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.props.dispatch(UserActions.changeUIMode("modern"))
+                  }
+                >
+                  <MdSettings color="#41c0c4" />
+                  Modern UI
+                </MenuItem>
+              )}
               <LanguageMenu />
               <UserGuide />
 

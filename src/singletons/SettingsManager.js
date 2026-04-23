@@ -128,7 +128,7 @@ class SettingsManager {
   }
 
   getUIMode() {
-    return localStorage.getItem(uiModeKey) || "modern";
+    return localStorage.getItem(uiModeKey) || "legacy";
   }
 
   setUIMode(value) {

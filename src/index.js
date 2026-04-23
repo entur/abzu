@@ -32,14 +32,21 @@ import { useAppSelector } from "./store/hooks";
 import { store } from "./store/store";
 
 /**
- * AppRouter - Switches between Legacy and Modern App based on uiMode
- * This component sits inside Redux Provider so it can access the uiMode state
+ * AppRouter - Switches between Legacy and Modern App.
+ * The config's uiMode field is the authority:
+ *   "legacy" (default) — always renders LegacyApp
+ *   "modern"           — always renders ModernApp
+ *   "dual"             — user can switch; Redux uiMode remembers their choice
  */
 const AppRouter = () => {
-  const uiMode = useAppSelector((state) => state.user.uiMode);
+  const config = useContext(ConfigContext);
+  const configUiMode = config.uiMode ?? "legacy";
 
-  // Render Modern App when uiMode is 'modern', otherwise Legacy App
-  return uiMode === "modern" ? <ModernApp /> : <LegacyApp />;
+  const reduxUiMode = useAppSelector((state) => state.user.uiMode);
+
+  if (configUiMode === "modern") return <ModernApp />;
+  if (configUiMode === "legacy") return <LegacyApp />;
+  return reduxUiMode === "modern" ? <ModernApp /> : <LegacyApp />;
 };
 
 const AuthenticatedApp = () => {

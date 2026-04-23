@@ -46,7 +46,12 @@ const Settings = new SettingsManager();
 const LegacyApp = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
-  const { mapConfig, localeConfig, extPath } = useContext(ConfigContext);
+  const {
+    mapConfig,
+    localeConfig,
+    extPath,
+    uiMode: configUiMode,
+  } = useContext(ConfigContext);
 
   const localization = useAppSelector((state) => state.user.localization);
   const appliedLocale = useAppSelector((state) => state.user.appliedLocale);
@@ -109,7 +114,7 @@ const LegacyApp = () => {
     return null;
   }
 
-  const config = { extPath, mapConfig, localeConfig };
+  const config = { extPath, mapConfig, localeConfig, uiMode: configUiMode };
   const basename = import.meta.env.BASE_URL;
   const path = "/";
 
