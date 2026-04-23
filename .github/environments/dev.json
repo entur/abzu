@@ -8,6 +8,7 @@
   "hostname": "stoppested.dev.entur.org",
   "claimsNamespace": "https://ror.entur.io/role_assignments",
   "preferredNameNamespace": "https://ror.entur.io/preferred_name",
+  "uiMode": "dual",
   "oidcConfig": {
     "authority": "https://partner.dev.entur.org",
     "client_id": "IAjOS4VshfCvu5K3OJ37B9LHqPTEwxG7",
