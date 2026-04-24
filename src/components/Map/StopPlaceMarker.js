@@ -118,6 +118,8 @@ class StopPlaceMarker extends React.Component {
 
     const multiModalStopPlaceCreationDisabled =
       !!this.context?.modalityConfig?.disableMultiModalStopPlaceCreation;
+    const groupOfStopPlacesCreationDisabled =
+      !!this.context?.modalityConfig?.disableGroupOfStopPlacesCreation;
     const name = this.props.name ? this.props.name : translations.untitled;
 
     const icon = this._icon;
@@ -218,7 +220,8 @@ class StopPlaceMarker extends React.Component {
                 disabled ||
                 isMultimodalChild ||
                 isGroupMember ||
-                disabledForSearch
+                disabledForSearch ||
+                groupOfStopPlacesCreationDisabled
               }
               onClick={() => {
                 handleCreateGroup(id);

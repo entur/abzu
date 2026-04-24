@@ -65,6 +65,11 @@ export interface ModalityConfig {
    * Existing MultiModal StopPlaces can still be viewed and edited.
    */
   disableMultiModalStopPlaceCreation?: boolean;
+  /**
+   * When true, all UI controls for creating new Group of Stop Places are hidden.
+   * Existing Groups of Stop Places can still be viewed and edited.
+   */
+  disableGroupOfStopPlacesCreation?: boolean;
 }
 
 export const ConfigContext = React.createContext<Config>({});

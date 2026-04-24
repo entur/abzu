@@ -96,6 +96,8 @@ class NeighbourMarker extends React.Component {
     const { isAllowedToCreateFrom } = this.state;
     const multiModalStopPlaceCreationDisabled =
       !!this.context?.modalityConfig?.disableMultiModalStopPlaceCreation;
+    const groupOfStopPlacesCreationDisabled =
+      !!this.context?.modalityConfig?.disableGroupOfStopPlacesCreation;
 
     if (!position) return null;
 
@@ -196,7 +198,11 @@ class NeighbourMarker extends React.Component {
               label={translations.addToGroup}
             />
             <PopupButton
-              hidden={isChildOfParent || !isAllowedToCreateFrom}
+              hidden={
+                isChildOfParent ||
+                !isAllowedToCreateFrom ||
+                groupOfStopPlacesCreationDisabled
+              }
               onClick={() => {
                 handleCreateGroup(id);
               }}
