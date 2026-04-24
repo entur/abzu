@@ -37,6 +37,7 @@ import {
   findTopographicalPlace,
   getStopPlaceById,
 } from "../../actions/TiamatActions";
+import { ConfigContext } from "../../config/ConfigContext";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { Entities } from "../../models/Entities";
 import formatHelpers from "../../modelUtils/mapToClient";
@@ -54,6 +55,8 @@ import { createSearchMenuItem } from "./SearchMenuItem";
 import TopographicalFilter from "./TopographicalFilter";
 
 class SearchBox extends React.Component {
+  static contextType = ConfigContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -398,6 +401,8 @@ class SearchBox extends React.Component {
       showMoreFilterOptions,
     } = this.props;
     const { coordinatesDialogOpen, loading } = this.state;
+    const multiModalStopPlaceCreationDisabled =
+      !!this.context?.modalityConfig?.disableMultiModalStopPlaceCreation;
 
     const { formatMessage, locale } = intl;
     const menuItems = this.getMenuItems(this.props);
@@ -767,7 +772,10 @@ class SearchBox extends React.Component {
                       <MenuItem onClick={() => this.handleNewStop(false)}>
                         {formatMessage({ id: "new_stop" })}
                       </MenuItem>
-                      <MenuItem onClick={() => this.handleNewStop(true)}>
+                      <MenuItem
+                        disabled={multiModalStopPlaceCreationDisabled}
+                        onClick={() => this.handleNewStop(true)}
+                      >
                         {formatMessage({
                           id: "new__multi_stop",
                         })}

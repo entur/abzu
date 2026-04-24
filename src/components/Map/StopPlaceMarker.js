@@ -18,6 +18,7 @@ import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
+import { ConfigContext } from "../../config/ConfigContext";
 import { isStopFromSearch } from "../../utils/permissionsUtils";
 import PopupButton from "../Map/PopupButton";
 import CopyIdButton from "../Shared/CopyIdButton";
@@ -25,6 +26,8 @@ import CustomMarkerIcon from "./CustomMarkerIcon";
 import { shallowCompareStopPlaceMarker as shallowCompare } from "./shallowCompare/";
 
 class StopPlaceMarker extends React.Component {
+  static contextType = ConfigContext;
+
   static propTypes = {
     position: PropTypes.arrayOf(Number),
     handleDragEnd: PropTypes.func.isRequired,
@@ -113,6 +116,8 @@ class StopPlaceMarker extends React.Component {
 
     if (!markerLocation) return null;
 
+    const multiModalStopPlaceCreationDisabled =
+      !!this.context?.modalityConfig?.disableMultiModalStopPlaceCreation;
     const name = this.props.name ? this.props.name : translations.untitled;
 
     const icon = this._icon;
@@ -241,7 +246,8 @@ class StopPlaceMarker extends React.Component {
                 isMultimodalChild ||
                 isMultimodal ||
                 disabledForSearch ||
-                hasExpired
+                hasExpired ||
+                multiModalStopPlaceCreationDisabled
               }
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}

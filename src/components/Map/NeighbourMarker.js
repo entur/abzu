@@ -18,6 +18,7 @@ import React from "react";
 import ReactDOM from "react-dom/server";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
+import { ConfigContext } from "../../config/ConfigContext";
 import { isLegalChildStopPlace } from "../../modelUtils/leafletUtils";
 import CopyIdButton from "../Shared/CopyIdButton";
 import CustomMarkerIcon from "./CustomMarkerIcon";
@@ -25,6 +26,8 @@ import PopupButton from "./PopupButton";
 import { shallowCompareNeighbourMarker as shallowCompare } from "./shallowCompare/";
 
 class NeighbourMarker extends React.Component {
+  static contextType = ConfigContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -91,6 +94,8 @@ class NeighbourMarker extends React.Component {
     } = this.props;
 
     const { isAllowedToCreateFrom } = this.state;
+    const multiModalStopPlaceCreationDisabled =
+      !!this.context?.modalityConfig?.disableMultiModalStopPlaceCreation;
 
     if (!position) return null;
 
@@ -220,7 +225,8 @@ class NeighbourMarker extends React.Component {
                 isMultimodal ||
                 isChildOfParent ||
                 !isAllowedToCreateFrom ||
-                hasExpired
+                hasExpired ||
+                multiModalStopPlaceCreationDisabled
               }
               onClick={() => this.props.createNewMultimodalStopFrom(id)}
               label={translations.createMultimodal}

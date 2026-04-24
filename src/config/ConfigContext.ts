@@ -60,6 +60,11 @@ export interface ModalityConfig {
    * Example: ["other", "someOtherType"]
    */
   hiddenStopTypes?: string[];
+  /**
+   * When true, all UI controls for creating new MultiModal (parent) StopPlaces are hidden.
+   * Existing MultiModal StopPlaces can still be viewed and edited.
+   */
+  disableMultiModalStopPlaceCreation?: boolean;
 }
 
 export const ConfigContext = React.createContext<Config>({});
