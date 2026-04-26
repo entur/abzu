@@ -50,7 +50,7 @@
     "react-router-dom": "7.13.2",
     "redux-first-history": "5.2.0",
     "redux-logger": "3.0.6",
-    "uuid": "13.0.0"
+    "uuid": "14.0.0"
   },
   "browserslist": [
     ">0.2%",
