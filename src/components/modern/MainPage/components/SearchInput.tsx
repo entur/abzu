@@ -1,0 +1,205 @@
+/*
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/software/page/eupl
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and
+limitations under the Licence. */
+
+import {
+  FilterList as FilterIcon,
+  Star as StarIcon,
+} from "@mui/icons-material";
+import {
+  Autocomplete,
+  Badge,
+  Box,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+  useTheme,
+} from "@mui/material";
+import React from "react";
+import { useIntl } from "react-intl";
+import { SearchInputProps } from "../types";
+import { searchInputContainer, searchLoadingText } from "./SearchInput.styles";
+
+export const SearchInput: React.FC<SearchInputProps> = ({
+  menuItems,
+  loading,
+  stopPlaceSearchValue,
+  showFilters = false,
+  activeFilterCount = 0,
+  showFavorites = false,
+  onSearchUpdate,
+  onNewRequest,
+  onToggleFilters,
+  onToggleFavorites,
+}) => {
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+
+  return (
+    <Box sx={searchInputContainer}>
+      <Autocomplete
+        freeSolo
+        options={menuItems}
+        loading={loading}
+        value={null}
+        filterOptions={(options) => options} // Disable client-side filtering
+        loadingText={
+          <Box sx={searchLoadingText}>
+            <CircularProgress size={16} sx={{ color: "action.active" }} />
+            <span>{formatMessage({ id: "loading" })}</span>
+          </Box>
+        }
+        onInputChange={onSearchUpdate}
+        inputValue={stopPlaceSearchValue}
+        renderOption={(props, option) => (
+          <li {...props} key={option.id || option.text}>
+            {option.menuDiv}
+          </li>
+        )}
+        onChange={(event, value) => onNewRequest(event, value as any)}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option?.text || ""
+        }
+        noOptionsText={formatMessage({ id: "no_results_found" })}
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: 2,
+              boxShadow: theme.shadows[8],
+              mt: 1,
+              maxHeight: "80vh",
+              overflow: "auto",
+              maxWidth: { xs: "calc(100vw - 32px)", sm: "460px" },
+              width: "100%",
+            },
+          },
+          popper: {
+            sx: {
+              zIndex: theme.zIndex.modal + 10, // Higher than any dropdown content
+              width: "100%",
+              maxWidth: { xs: "calc(100vw - 32px)", sm: "460px" },
+            },
+          },
+        }}
+        renderInput={(params) => {
+          const {
+            InputProps: rawInputProps,
+            inputProps: nativeInputProps,
+            ...textFieldProps
+          } = params;
+          const { borderRadius: _brInput, ...InputProps } =
+            rawInputProps as any;
+          const { borderRadius: _brNative, ...safeNativeInputProps } =
+            nativeInputProps as any;
+          return (
+            <TextField
+              {...textFieldProps}
+              label={formatMessage({ id: "filter_by_name" })}
+              variant="outlined"
+              fullWidth
+              size="small"
+              slotProps={{
+                input: {
+                  ...InputProps,
+                  endAdornment: (
+                    <>
+                      {InputProps.endAdornment}
+                      {onToggleFavorites && (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={onToggleFavorites}
+                            size="small"
+                            sx={{
+                              marginRight: onToggleFilters ? 0 : -1,
+                              color: showFavorites
+                                ? theme.palette.warning.main
+                                : theme.palette.action.active,
+                            }}
+                            aria-label={formatMessage({
+                              id: "toggle_favorites",
+                            })}
+                          >
+                            <StarIcon fontSize="small" />
+                          </IconButton>
+                        </InputAdornment>
+                      )}
+                      {onToggleFilters && (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={onToggleFilters}
+                            size="small"
+                            sx={{
+                              marginRight: -1,
+                              color: showFilters
+                                ? theme.palette.warning.main
+                                : theme.palette.action.active,
+                            }}
+                            aria-label={formatMessage({ id: "toggle_filters" })}
+                          >
+                            <Badge
+                              badgeContent={activeFilterCount}
+                              color="error"
+                            >
+                              <FilterIcon
+                                fontSize="small"
+                                sx={{
+                                  color: showFilters
+                                    ? theme.palette.warning.main
+                                    : theme.palette.action.active,
+                                }}
+                              />
+                            </Badge>
+                          </IconButton>
+                        </InputAdornment>
+                      )}
+                    </>
+                  ),
+                },
+                htmlInput: safeNativeInputProps,
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.background.default,
+                  "&:hover": {
+                    "& > fieldset": {
+                      borderColor: theme.palette.primary.main,
+                    },
+                  },
+                  "&.Mui-focused": {
+                    "& > fieldset": {
+                      borderWidth: 0,
+                      borderColor: theme.palette.primary.main,
+                    },
+                  },
+                  "&.Mui-expanded": {
+                    "& > fieldset": {
+                      borderWidth: 0,
+                      border: "none",
+                    },
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: "transparent",
+                  },
+                },
+              }}
+            />
+          );
+        }}
+      />
+    </Box>
+  );
+};

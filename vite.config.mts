@@ -21,13 +21,6 @@ export default defineConfig({
     react(), viteTsconfigPaths(), svgrPlugin(),
       reactComponentToggle({
         componentsPath: "/src/ext",
-        manualChunks: (id) => {
-          if (id.includes("node_modules")) {
-            return 'vendor';
-          } else if (!id.includes("/static/lang/")) {
-            return 'index';
-          }
-        }
       }),
     {
       name: 'treat-js-files-as-jsx',

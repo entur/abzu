@@ -1,0 +1,280 @@
+/*
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/software/page/eupl
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and
+limitations under the Licence. */
+
+import { Search as SearchIcon } from "@mui/icons-material";
+import {
+  Box,
+  ClickAwayListener,
+  IconButton,
+  Paper,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
+import { useIntl } from "react-intl";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, SearchInput } from "../../MainPage";
+import { useSearchBox } from "../../MainPage/hooks/useSearchBox";
+import { LoadingDialog } from "../../Shared";
+import "../../modern.css";
+import {
+  headerSearchDesktopContainer,
+  headerSearchDesktopDropdown,
+  headerSearchIconButton,
+  headerSearchMobilePanel,
+} from "../../styles";
+import { SearchDropdownContent } from "./SearchDropdownContent";
+
+export const HeaderSearch: React.FC = () => {
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const dispatch = useDispatch() as any;
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
+
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
+  const [favoritesLoadingName, setFavoritesLoadingName] = useState("");
+  const [pendingFavoriteId, setPendingFavoriteId] = useState<string | null>(
+    null,
+  );
+
+  // FavoriteStopPlaces unmounts when the panel closes, so clearing favoritesLoading
+  // must live here (HeaderSearch never unmounts). We watch currentStopId — the same
+  // signal that triggers map flyTo — and clear loading the instant they match.
+  const currentStopId = useSelector(
+    (state: any) => (state.stopPlace as any)?.current?.id as string | undefined,
+  );
+  useEffect(() => {
+    if (pendingFavoriteId && currentStopId === pendingFavoriteId) {
+      setFavoritesLoading(false);
+      setFavoritesLoadingName("");
+      setPendingFavoriteId(null);
+    }
+  }, [currentStopId, pendingFavoriteId]);
+
+  const {
+    stopTypeFilter,
+    topoiChips,
+    topographicalPlaces,
+    dataSource,
+    showFutureAndExpired,
+    searchText,
+    stopPlaceLoading,
+  } = useSelector((state: RootState) => ({
+    dataSource: state.stopPlace.searchResults || [],
+    stopTypeFilter: state.user.searchFilters.stopType,
+    topoiChips: state.user.searchFilters.topoiChips,
+    searchText: state.user.searchFilters.text,
+    topographicalPlaces: state.stopPlace.topographicalPlaces || [],
+    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    stopPlaceLoading: state.stopPlace.loading,
+  }));
+
+  const {
+    showMoreFilterOptions,
+    loading,
+    loadingSelection,
+    loadingStopPlaceName,
+    stopPlaceSearchValue,
+    topographicPlaceFilterValue,
+    handleSearchUpdate,
+    handleNewRequest,
+    handleApplyModalityFilters,
+    handleToggleFilter,
+    handleAddChip,
+    handleDeleteChip,
+    handleTopographicalPlaceInput,
+    toggleShowFutureAndExpired,
+    menuItems,
+    topographicalPlacesDataSource,
+  } = useSearchBox({
+    dataSource,
+    stopTypeFilter,
+    topoiChips,
+    topographicalPlaces,
+    showFutureAndExpired,
+    searchText,
+    formatMessage,
+  });
+
+  const activeFilterCount =
+    stopTypeFilter.length + topoiChips.length + (showFutureAndExpired ? 1 : 0);
+
+  const handleToggleSearch = () => {
+    if (isTablet) {
+      setIsSearchExpanded(!isSearchExpanded);
+    }
+  };
+
+  const handleCloseSearch = () => {
+    setIsSearchExpanded(false);
+    setShowFavorites(false);
+    handleToggleFilter(false);
+    // Clear search input
+    handleSearchUpdate(null, "", "clear");
+    // Also clear any active search result
+    dispatch({
+      type: "SET_ACTIVE_MARKER",
+      payload: null,
+    });
+  };
+
+  const handleToggleFilters = () => {
+    // If filters are currently closed, we want to open them
+    if (!showMoreFilterOptions) {
+      // Close favorites first, then open filters
+      flushSync(() => {
+        setShowFavorites(false);
+      });
+      handleToggleFilter(true);
+    } else {
+      // Close filters
+      handleToggleFilter(false);
+    }
+  };
+
+  const handleToggleFavorites = () => {
+    // If favorites are currently closed, we want to open them
+    if (!showFavorites) {
+      // Close filters first, then open favorites
+      flushSync(() => {
+        handleToggleFilter(false);
+      });
+      setShowFavorites(true);
+    } else {
+      // Close favorites
+      setShowFavorites(false);
+    }
+  };
+
+  const dropdownContentProps = {
+    isTablet,
+    menuItems,
+    loading,
+    stopPlaceSearchValue,
+    showMoreFilterOptions,
+    showFavorites,
+    activeFilterCount,
+    onSearchUpdate: handleSearchUpdate,
+    onNewRequest: handleNewRequest,
+    onToggleFilters: handleToggleFilters,
+    onToggleFavorites: handleToggleFavorites,
+    onClose: handleCloseSearch,
+    onLoadingChange: (isLoading: boolean, name: string) => {
+      setFavoritesLoading(isLoading);
+      setFavoritesLoadingName(name);
+    },
+    onPendingNavigation: setPendingFavoriteId,
+    stopTypeFilter,
+    topographicalPlacesDataSource,
+    topographicPlaceFilterValue,
+    topoiChips,
+    showFutureAndExpired,
+    onToggleFilter: handleToggleFilter,
+    onApplyModalityFilters: handleApplyModalityFilters,
+    onTopographicalPlaceInput: handleTopographicalPlaceInput,
+    onAddChip: handleAddChip,
+    onDeleteChip: handleDeleteChip,
+    onToggleShowFutureAndExpired: toggleShowFutureAndExpired,
+  };
+
+  // Condition for when to show the search panel
+  const shouldShowSearchPanel = isTablet
+    ? isSearchExpanded || showFavorites || showMoreFilterOptions
+    : showMoreFilterOptions || showFavorites;
+
+  const isElevated = showFavorites || showMoreFilterOptions;
+
+  return (
+    <>
+      {/* Loading Dialog — covers search, favorites, and stop place loading */}
+      <LoadingDialog
+        open={loadingSelection || favoritesLoading || stopPlaceLoading}
+        message={
+          loadingStopPlaceName || favoritesLoadingName
+            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName || favoritesLoadingName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
+
+      {/* Desktop: Always show search input in header */}
+      {!isTablet && (
+        <Box sx={headerSearchDesktopContainer}>
+          {shouldShowSearchPanel ? (
+            <ClickAwayListener onClickAway={handleCloseSearch}>
+              <Box>
+                <SearchInput
+                  menuItems={menuItems}
+                  loading={loading}
+                  stopPlaceSearchValue={stopPlaceSearchValue}
+                  showFilters={showMoreFilterOptions}
+                  activeFilterCount={activeFilterCount}
+                  showFavorites={showFavorites}
+                  onSearchUpdate={handleSearchUpdate}
+                  onNewRequest={handleNewRequest}
+                  onToggleFilters={handleToggleFilters}
+                  onToggleFavorites={handleToggleFavorites}
+                />
+
+                {/* Desktop dropdown - positioned relative to search input container */}
+                <Paper
+                  elevation={8}
+                  sx={headerSearchDesktopDropdown(theme, isElevated)}
+                >
+                  <SearchDropdownContent {...dropdownContentProps} />
+                </Paper>
+              </Box>
+            </ClickAwayListener>
+          ) : (
+            <SearchInput
+              menuItems={menuItems}
+              loading={loading}
+              stopPlaceSearchValue={stopPlaceSearchValue}
+              showFilters={showMoreFilterOptions}
+              activeFilterCount={activeFilterCount}
+              showFavorites={showFavorites}
+              onSearchUpdate={handleSearchUpdate}
+              onNewRequest={handleNewRequest}
+              onToggleFilters={handleToggleFilters}
+              onToggleFavorites={handleToggleFavorites}
+            />
+          )}
+        </Box>
+      )}
+
+      {/* Mobile: Show search icon */}
+      {isTablet && (
+        <IconButton
+          color="inherit"
+          onClick={handleToggleSearch}
+          sx={headerSearchIconButton(theme, activeFilterCount > 0)}
+          aria-label={formatMessage({ id: "open_search" })}
+        >
+          <SearchIcon />
+        </IconButton>
+      )}
+
+      {/* Mobile search panel */}
+      {isTablet && shouldShowSearchPanel && (
+        <ClickAwayListener onClickAway={handleCloseSearch}>
+          <Paper elevation={8} sx={headerSearchMobilePanel(theme, isElevated)}>
+            <SearchDropdownContent {...dropdownContentProps} />
+          </Paper>
+        </ClickAwayListener>
+      )}
+    </>
+  );
+};
