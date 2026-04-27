@@ -70,9 +70,15 @@ export interface ModalityConfig {
   hiddenStopTypes?: string[];
 }
 
+export type MandatoryKeyValuesSupportedTransportMode =
+  | "rail"
+  | "bus"
+  | "tram"
+  | "all";
+
 export interface MandatoryKeyValuesSet {
-  stopPlace: string[];
-  quay: string[];
+  stopPlace: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
+  quay: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
 }
 
 export const ConfigContext = React.createContext<Config>({});

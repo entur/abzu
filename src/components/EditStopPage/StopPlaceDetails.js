@@ -956,7 +956,7 @@ class StopPlaceDetails extends React.Component {
             this.setState({ tariffZoneOpen: false });
           }}
         />
-        <KeyValuesDialog intl={intl} disabled={disabled} />
+        <KeyValuesDialog disabled={disabled} />
       </div>
     );
   }

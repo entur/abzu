@@ -24,7 +24,10 @@ import { StopPlaceActions, UserActions } from "../../actions/";
 import { useConfig } from "../../config/ConfigContext";
 import { getPrimaryColor } from "../../config/themeConfig";
 import { KeyValues } from "../../models/KeyValues";
-import { selectKeyValuesDataSource } from "../../reducers/selectors";
+import {
+  selectKeyValuesDataSource,
+  selectMandatoryKeyValuesDataSource,
+} from "../../reducers/selectors";
 import CreateKeyValuePair from "../EditStopPage/CreateKeyValuePair";
 import EditKeyValuePair from "../EditStopPage/EditKeyValuePair";
 import DialogHeader from "./DialogHeader";
@@ -49,12 +52,14 @@ const KeyValuesDialog = ({ disabled }: KeyValuesDialogProps) => {
   disabled = false;
 
   const { mandatoryKeyValuesSet } = useConfig();
-  const mandatoryKeys =
-    keyValuesOrigin && mandatoryKeyValuesSet
-      ? keyValuesOrigin == "stopPlace"
-        ? mandatoryKeyValuesSet.stopPlace
-        : mandatoryKeyValuesSet.quay
-      : [];
+
+  const mandatoryKeys: string[] = useSelector((state: any) =>
+    selectMandatoryKeyValuesDataSource(
+      state.user.keyValuesOrigin,
+      state.stopPlace.current,
+      mandatoryKeyValuesSet,
+    ),
+  );
 
   // Because some of the mandatory keys may already be in use in keyValues and have a value there:
   const mandatoryKeyValues: KeyValues[] = mandatoryKeys
