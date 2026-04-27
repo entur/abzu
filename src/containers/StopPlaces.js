@@ -136,9 +136,7 @@ class StopPlaces extends React.Component {
       <div>
         {isLoading && <Loader />}
         <SearchBox />
-        <div style={{ position: "relative" }}>
-          <StopPlacesMap />
-        </div>
+        <StopPlacesMap />
       </div>
     );
   }

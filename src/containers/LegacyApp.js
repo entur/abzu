@@ -13,7 +13,11 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { ComponentToggle } from "@entur/react-component-toggle";
-import { StyledEngineProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { IntlProvider } from "react-intl";
@@ -30,16 +34,18 @@ import LocalLoadingIndicator from "../components/LocalLoadingIndicator";
 import SnackbarWrapper from "../components/SnackbarWrapper";
 import { ConfigContext } from "../config/ConfigContext";
 import { OPEN_STREET_MAP } from "../config/mapDefaults";
+import { getTheme } from "../config/themeConfig";
 import configureLocalization from "../localization/localization";
 import AppRoutes from "../routes";
 import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
 import { history } from "../store/store";
-import { AbzuThemeProvider } from "../theme/ThemeProvider";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 import ReportPage from "./ReportPage";
 import { StopPlace } from "./StopPlace";
 import StopPlaces from "./StopPlaces";
+
+const muiTheme = createTheme(getTheme());
 
 const Settings = new SettingsManager();
 
@@ -133,7 +139,7 @@ const LegacyApp = () => {
         <ComponentToggle
           feature={`${extPath}/CustomThemeProvider`}
           renderFallback={() => (
-            <AbzuThemeProvider>
+            <MuiThemeProvider theme={muiTheme}>
               <div>
                 <Header config={config} />
                 <GlobalLoadingIndicator />
@@ -158,7 +164,7 @@ const LegacyApp = () => {
                 <SnackbarWrapper />
                 <SessionExpiredDialog />
               </div>
-            </AbzuThemeProvider>
+            </MuiThemeProvider>
           )}
         >
           <div>
