@@ -28,6 +28,7 @@ import AppRoutes from "../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
+import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
@@ -95,6 +96,11 @@ export const ModernEditStopMap = () => {
   );
   const isCreatingNewStop = useAppSelector(
     (state) => (state.user as any).isCreatingNewStop as boolean,
+  );
+
+  const { resolvedComponentUrl, transformRequest } = useMapComponentLayers(
+    config,
+    activeBaseLayer,
   );
 
   // Ref so the stable debounce callback always reads the latest values
@@ -188,8 +194,8 @@ export const ModernEditStopMap = () => {
   );
 
   const mapStyle = useMemo(
-    () => buildMaplibreStyle(config, activeBaseLayer),
-    [config, activeBaseLayer],
+    () => buildMaplibreStyle(config, activeBaseLayer, resolvedComponentUrl),
+    [config, activeBaseLayer, resolvedComponentUrl],
   );
 
   const activeLayerMaxZoom = useMemo(() => {
@@ -215,6 +221,7 @@ export const ModernEditStopMap = () => {
         initialViewState={initialViewState}
         style={{ width: "100%", height: "100%" }}
         mapStyle={mapStyle}
+        transformRequest={transformRequest}
         onLoad={handleMapLoad}
         onMoveEnd={handleMoveEnd}
         onDblClick={handleDblClick}
