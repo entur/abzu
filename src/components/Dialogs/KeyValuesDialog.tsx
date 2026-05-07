@@ -46,10 +46,6 @@ const KeyValuesDialog = ({ disabled }: KeyValuesDialogProps) => {
       state.stopPlace.current,
     ),
   );
-  const keyValuesOrigin = useSelector(
-    (state: any) => state.user.keyValuesOrigin?.type,
-  );
-  disabled = false;
 
   const { mandatoryKeyValuesSet } = useConfig();
 
@@ -119,6 +115,7 @@ const KeyValuesDialog = ({ disabled }: KeyValuesDialogProps) => {
           values,
         ) as unknown as UnknownAction,
       );
+      return;
     }
 
     dispatch(
