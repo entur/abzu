@@ -27,3 +27,34 @@ export const selectKeyValuesDataSource = (keyValuesOrigin, stopPlace) => {
   }
   return keyValues;
 };
+
+export const selectMandatoryKeyValuesDataSource = (
+  keyValuesOrigin,
+  stopPlace,
+  mandatoryKeyValuesSet,
+) => {
+  if (!keyValuesOrigin || !keyValuesOrigin.type) return [];
+  const transportMode = stopPlace?.transportMode;
+  if (!transportMode) {
+    return [];
+  }
+
+  const mandatoryKeysPerEntityType =
+    keyValuesOrigin && mandatoryKeyValuesSet
+      ? keyValuesOrigin.type === "stopPlace"
+        ? mandatoryKeyValuesSet.stopPlace
+        : mandatoryKeyValuesSet.quay
+      : null;
+
+  const mandatoryKeysForAll =
+    mandatoryKeysPerEntityType && mandatoryKeysPerEntityType["all"]
+      ? mandatoryKeysPerEntityType["all"]
+      : [];
+
+  const mandatoryKeysForTransportMode =
+    mandatoryKeysPerEntityType && mandatoryKeysPerEntityType[transportMode]
+      ? mandatoryKeysPerEntityType[transportMode]
+      : [];
+
+  return [...mandatoryKeysForAll, ...mandatoryKeysForTransportMode];
+};
