@@ -108,7 +108,7 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
               size="small"
               onClick={handleMenuOpen}
               sx={{
-                color: theme.palette.text.secondary,
+                color: theme.palette.text.primary,
                 "&:hover": { bgcolor: theme.palette.action.hover },
               }}
             >

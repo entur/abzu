@@ -15,10 +15,12 @@
 import CallMergeIcon from "@mui/icons-material/CallMerge";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
+import ExploreIcon from "@mui/icons-material/Explore";
+import ExploreOffIcon from "@mui/icons-material/ExploreOff";
 import MergeTypeIcon from "@mui/icons-material/MergeType";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
-import { UserActions } from "../../../../actions";
+import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { MarkerPopup } from "./MarkerPopup";
 import { QuayPathLinkActions } from "./QuayPathLinkActions";
@@ -32,6 +34,9 @@ interface QuayPopupProps {
   disabled: boolean;
   lat: number;
   lng: number;
+  isEditingBearing: boolean;
+  onStartEditBearing: () => void;
+  onEndEditBearing: () => void;
 }
 
 /**
@@ -46,6 +51,9 @@ export const QuayPopup = ({
   disabled,
   lat,
   lng,
+  isEditingBearing,
+  onStartEditBearing,
+  onEndEditBearing,
 }: QuayPopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -112,13 +120,61 @@ export const QuayPopup = ({
       lat={lat}
       lng={lng}
     >
-      {quay.compassBearing != null && (
-        <>
-          <Divider sx={{ my: 0.75 }} />
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            {formatMessage({ id: "compass_bearing" })}: {quay.compassBearing}°
-          </Typography>
-        </>
+      <Divider sx={{ my: 0.75 }} />
+      {isEditingBearing ? (
+        <Button
+          size="small"
+          variant="contained"
+          color="success"
+          startIcon={<ExploreIcon />}
+          onClick={onEndEditBearing}
+          fullWidth
+        >
+          {formatMessage({ id: "change_compass_bearing_confirm" })}
+        </Button>
+      ) : (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+          {quay.compassBearing != null && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <ExploreIcon sx={{ fontSize: "0.9rem", color: "success.main" }} />
+              <Typography
+                variant="caption"
+                sx={{ flex: 1, color: "text.secondary" }}
+              >
+                {formatMessage({ id: "compass_bearing" })}:{" "}
+                {quay.compassBearing}°
+              </Typography>
+              {!disabled && (
+                <Button
+                  size="small"
+                  variant="text"
+                  color="error"
+                  startIcon={<ExploreOffIcon />}
+                  onClick={() =>
+                    dispatch(
+                      StopPlaceActions.changeQuayCompassBearing(index, null),
+                    )
+                  }
+                  sx={{ minWidth: 0, px: 0.5, fontSize: "0.65rem" }}
+                >
+                  {formatMessage({ id: "remove" })}
+                </Button>
+              )}
+            </Box>
+          )}
+          {!disabled && (
+            <Button
+              size="small"
+              variant="outlined"
+              color="success"
+              startIcon={<ExploreIcon />}
+              onClick={onStartEditBearing}
+              fullWidth
+            >
+              {formatMessage({ id: "change_compass_bearing" })}
+            </Button>
+          )}
+        </Box>
       )}
 
       {!disabled && (

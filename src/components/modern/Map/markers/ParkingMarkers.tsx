@@ -118,7 +118,10 @@ const ParkingMarkerItem = ({
 
       <MarkerPopup
         anchorEl={popupAnchor}
-        onClose={() => setPopupAnchor(null)}
+        onClose={() => {
+          setPopupAnchor(null);
+          dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+        }}
         title={title}
         id={parking.id}
         lat={lat}

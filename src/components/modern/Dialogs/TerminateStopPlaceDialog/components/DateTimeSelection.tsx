@@ -20,6 +20,8 @@ import moment, { Moment } from "moment";
 import React from "react";
 import { useIntl } from "react-intl";
 
+const DATE_FORMAT = "LL";
+
 interface DateTimeSelectionProps {
   date: Moment;
   time: Moment;
@@ -44,7 +46,7 @@ export const DateTimeSelection: React.FC<DateTimeSelectionProps> = ({
   onTimeChange,
   onCommentChange,
 }) => {
-  const { formatMessage, locale } = useIntl();
+  const { formatMessage } = useIntl();
 
   return (
     <>
@@ -56,13 +58,7 @@ export const DateTimeSelection: React.FC<DateTimeSelectionProps> = ({
             minDate={moment(earliestFrom)}
             value={date}
             onChange={onDateChange}
-            format={
-              new Intl.DateTimeFormat(locale, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }).format as any
-            }
+            format={DATE_FORMAT}
             slotProps={{
               textField: {
                 fullWidth: true,

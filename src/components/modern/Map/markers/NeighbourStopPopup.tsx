@@ -17,6 +17,7 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import LinkIcon from "@mui/icons-material/Link";
 import MergeIcon from "@mui/icons-material/MergeType";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +72,7 @@ export const NeighbourStopPopup = ({
     (groupCurrent.members ?? []).some((m: { id: string }) => m.id === stop.id);
 
   const showAddToGroup = isEditingGroup && canEdit && !isGroupMember;
+  const showRemoveFromGroup = isEditingGroup && canEdit && isGroupMember;
 
   const showCreateGroup =
     hasSavedId &&
@@ -97,7 +99,11 @@ export const NeighbourStopPopup = ({
     isEditingStop;
 
   const hasActions =
-    showAddToGroup || showCreateGroup || showCreateMultimodal || showMergeStop;
+    showAddToGroup ||
+    showRemoveFromGroup ||
+    showCreateGroup ||
+    showCreateMultimodal ||
+    showMergeStop;
 
   const handleOpen = () => {
     onClose();
@@ -108,6 +114,11 @@ export const NeighbourStopPopup = ({
   const handleAddToGroup = () => {
     onClose();
     dispatch(StopPlacesGroupActions.addMemberToGroup(stop.id));
+  };
+
+  const handleRemoveFromGroup = () => {
+    onClose();
+    dispatch(StopPlacesGroupActions.removeMemberFromGroup(stop.id));
   };
 
   const handleCreateGroup = () => {
@@ -160,6 +171,18 @@ export const NeighbourStopPopup = ({
                 fullWidth
               >
                 {formatMessage({ id: "add_to_group" })}
+              </Button>
+            )}
+            {showRemoveFromGroup && (
+              <Button
+                size="small"
+                variant="outlined"
+                color="error"
+                startIcon={<RemoveCircleOutlineIcon />}
+                onClick={handleRemoveFromGroup}
+                fullWidth
+              >
+                {formatMessage({ id: "remove_from_group" })}
               </Button>
             )}
             {showCreateGroup && (

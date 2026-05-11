@@ -17,7 +17,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useAppSelector } from "../../../store/hooks";
 
-const FLY_TO_ZOOM = 15;
+const FLY_TO_ZOOM = 17;
 const FLY_TO_DURATION = 800;
 
 interface Props {
@@ -47,7 +47,11 @@ export const CenterMapButton = ({ location }: Props) => {
       title={formatMessage({ id: "center_map_on_stop" })}
       placement="bottom"
     >
-      <IconButton size="small" onClick={handleClick}>
+      <IconButton
+        size="small"
+        onClick={handleClick}
+        sx={{ color: "text.primary" }}
+      >
         <MyLocationIcon fontSize="small" />
       </IconButton>
     </Tooltip>

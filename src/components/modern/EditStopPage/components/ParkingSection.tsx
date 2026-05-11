@@ -32,13 +32,11 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
+import { StopPlaceActions } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { Parking, ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
 
-/**
- * Section header + collapsible list of navigable parking rows.
- * Collapsed by default. The + button opens a type-selection menu.
- */
 export const ParkingSection: React.FC<ParkingSectionProps> = ({
   parking,
   canEdit,
@@ -47,6 +45,13 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
   onAddParking,
 }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
+  const focusedElement = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedElement as
+        | { type: string; index: number }
+        | undefined,
+  );
   const [expanded, setExpanded] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
 
@@ -65,7 +70,10 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
       <Divider />
       {/* Section header — click to toggle */}
       <Box
-        onClick={() => setExpanded((v) => !v)}
+        onClick={() => {
+          if (expanded) dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+          setExpanded((v) => !v);
+        }}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -136,6 +144,11 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
             parking={p}
             index={index}
             canEdit={canEdit}
+            focused={
+              (focusedElement?.type === "parkAndRide" ||
+                focusedElement?.type === "bikeParking") &&
+              focusedElement?.index === index
+            }
             onDelete={() => onDeleteParking(index)}
             onNavigate={() => onNavigateToParking(index)}
           />

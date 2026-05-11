@@ -13,42 +13,39 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { useTheme } from "@mui/material";
-import type { FeatureCollection, LineString } from "geojson";
+import type { Feature, FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
-import type { ChildStop, LatLng, MapStopPlace } from "../markers/types";
+import type {
+  ChildStop,
+  LatLng,
+  MapStopPlace,
+  NeighbourStop,
+} from "../markers/types";
 
-/** Returns the location of a child stop, falling back to geometry.coordinates. */
 const resolveChildLocation = (child: ChildStop): LatLng | null => {
   if (child.location) return child.location;
-
   const coords = child.geometry?.coordinates;
-  if (coords) return [coords[1], coords[0]]; // swap [lng, lat] → [lat, lng]
-
+  if (coords) return [coords[1], coords[0]];
   return null;
 };
 
-const buildGeoJson = (
-  current: MapStopPlace | null,
-): FeatureCollection<LineString> => {
-  if (!current?.isParent || !current.location || !current.children?.length) {
-    return { type: "FeatureCollection", features: [] };
-  }
+const buildEdgesForParent = (
+  parentLocation: LatLng,
+  children: ChildStop[],
+): Feature<LineString>[] => {
+  const [parentLat, parentLng] = parentLocation;
 
-  const [parentLat, parentLng] = current.location;
-
-  const features = current.children
+  return children
     .map((child) => {
       const childLocation = resolveChildLocation(child);
       if (!childLocation) return null;
-
       const [childLat, childLng] = childLocation;
       return {
         type: "Feature" as const,
         geometry: {
           type: "LineString" as const,
-          // MapLibre expects [lng, lat]
           coordinates: [
             [parentLng, parentLat],
             [childLng, childLat],
@@ -57,7 +54,24 @@ const buildGeoJson = (
         properties: {},
       };
     })
-    .filter(Boolean) as FeatureCollection<LineString>["features"];
+    .filter(Boolean) as Feature<LineString>[];
+};
+
+const buildGeoJson = (
+  current: MapStopPlace | null,
+  neighbours: NeighbourStop[],
+): FeatureCollection<LineString> => {
+  const features: Feature<LineString>[] = [];
+
+  if (current?.isParent && current.location && current.children?.length) {
+    features.push(...buildEdgesForParent(current.location, current.children));
+  }
+
+  for (const stop of neighbours) {
+    if (stop.isParent && stop.location && stop.children?.length) {
+      features.push(...buildEdgesForParent(stop.location, stop.children));
+    }
+  }
 
   return { type: "FeatureCollection", features };
 };
@@ -67,11 +81,17 @@ export const MultimodalEdgesLayer = () => {
   const current = useAppSelector(
     (state) => state.stopPlace.current as MapStopPlace | null,
   );
+  const neighbours = useAppSelector(
+    (state) => (state.stopPlace as any).neighbourStops as NeighbourStop[],
+  );
   const showEdges = useAppSelector(
     (state) => (state.stopPlace as any).showMultimodalEdges as boolean,
   );
 
-  const geoJson = useMemo(() => buildGeoJson(current), [current]);
+  const geoJson = useMemo(
+    () => buildGeoJson(current, neighbours ?? []),
+    [current, neighbours],
+  );
 
   if (!showEdges || !geoJson.features.length) return null;
 
@@ -82,7 +102,7 @@ export const MultimodalEdgesLayer = () => {
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
         paint={{
-          "line-color": theme.palette.success.light,
+          "line-color": theme.palette.primary.main,
           "line-width": 3,
           "line-dasharray": [8, 2],
           "line-opacity": 0.9,

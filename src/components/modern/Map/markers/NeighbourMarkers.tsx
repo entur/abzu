@@ -55,8 +55,9 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
               border: "2px solid",
               borderColor: alpha(theme.palette.primary.main, 0.6),
               boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-              transition: "transform 0.15s",
-              "&:hover": { transform: "scale(1.15)" },
+              opacity: 0.7,
+              transition: "transform 0.15s, opacity 0.15s",
+              "&:hover": { transform: "scale(1.15)", opacity: 1 },
             })}
           >
             {stop.isParent ? (
@@ -105,9 +106,11 @@ export const NeighbourMarkers = () => {
 
   if (!neighbourStops?.length) return null;
 
+  const visibleStops = neighbourStops;
+
   return (
     <>
-      {neighbourStops.map((stop) => (
+      {visibleStops.map((stop) => (
         <NeighbourMarkerItem key={stop.id} stop={stop} />
       ))}
     </>

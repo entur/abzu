@@ -136,6 +136,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
+    handleQuayCompassBearingChange,
     handleAddQuay,
   } = useStopPlaceQuays(
     stopPlace,
@@ -237,6 +238,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
+    handleQuayCompassBearingChange,
     handleAddQuay,
 
     handleDeleteParking,

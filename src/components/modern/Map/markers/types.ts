@@ -98,6 +98,7 @@ export interface NeighbourStop {
   hasExpired?: boolean;
   belongsToGroup?: boolean;
   permissions?: { canEdit: boolean };
+  children?: ChildStop[];
 }
 
 export interface FocusedElement {

@@ -30,6 +30,7 @@ import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
 import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
+import { GroupEdgesLayer } from "./layers/GroupEdgesLayer";
 import { MultimodalEdgesLayer } from "./layers/MultimodalEdgesLayer";
 import { PathLinkLayer } from "./layers/PathLinkLayer";
 import { StopGroupLayer } from "./layers/StopGroupLayer";
@@ -42,6 +43,8 @@ import { StopPlaceMarker } from "./markers/StopPlaceMarker";
 import { buildMaplibreStyle } from "./tile-sources/buildMaplibreStyle";
 
 const NEIGHBOUR_STOPS_MIN_ZOOM = 13;
+const STOP_PLACE_FLY_TO_ZOOM = 17;
+const GROUP_FLY_TO_ZOOM = 16;
 
 const DEFAULT_MAP_CONFIG: MapConfig = {
   baseLayers: [
@@ -161,13 +164,21 @@ export const ModernEditStopMap = () => {
   useEffect(() => {
     if (!currentStopId || !currentLocation || !mapRef.current) return;
     const [lat, lng] = currentLocation;
-    mapRef.current.flyTo({ center: [lng, lat], zoom: 15, duration: 800 });
+    mapRef.current.flyTo({
+      center: [lng, lat],
+      zoom: STOP_PLACE_FLY_TO_ZOOM,
+      duration: 800,
+    });
   }, [currentStopId]);
 
   useEffect(() => {
     if (!currentGroupId || !groupCenterPosition || !mapRef.current) return;
     const [lat, lng] = groupCenterPosition;
-    mapRef.current.flyTo({ center: [lng, lat], zoom: 14, duration: 800 });
+    mapRef.current.flyTo({
+      center: [lng, lat],
+      zoom: GROUP_FLY_TO_ZOOM,
+      duration: 800,
+    });
     // groupCenterPosition is included so re-navigating to the same group (same currentGroupId)
     // still triggers flyTo — the reducer always produces a new array reference on fetch.
   }, [currentGroupId, groupCenterPosition]);
@@ -236,6 +247,7 @@ export const ModernEditStopMap = () => {
         <TariffZonesLayer />
         <StopGroupLayer />
         <MultimodalEdgesLayer />
+        <GroupEdgesLayer />
         <PathLinkLayer />
         <NeighbourMarkers />
         <StopPlaceMarker />

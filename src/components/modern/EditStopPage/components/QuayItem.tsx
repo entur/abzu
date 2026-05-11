@@ -27,6 +27,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
   quay,
   index,
   canEdit,
+  focused,
   onDelete,
   onNavigate,
 }) => {
@@ -47,7 +48,11 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         cursor: "pointer",
         borderBottom: "1px solid",
         borderColor: "divider",
-        "&:hover": { bgcolor: "action.hover" },
+        bgcolor: focused ? "action.selected" : "transparent",
+        borderLeft: "3px solid",
+        borderLeftColor: focused ? "success.main" : "transparent",
+        transition: "background-color 0.15s",
+        "&:hover": { bgcolor: focused ? "action.selected" : "action.hover" },
       }}
       onClick={onNavigate}
     >

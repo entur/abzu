@@ -48,7 +48,7 @@ export const MinimizedBarActions: React.FC<MinimizedBarActionsProps> = ({
       case "secondary":
         return theme.palette.text.secondary;
       default:
-        return theme.palette.text.secondary;
+        return theme.palette.text.primary;
     }
   };
 

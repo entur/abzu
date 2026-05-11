@@ -27,13 +27,11 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
+import { StopPlaceActions } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { Quay, QuaysSectionProps } from "../types";
 import { QuayItem } from "./QuayItem";
 
-/**
- * Section header + collapsible list of navigable quay rows.
- * Collapsed by default.
- */
 export const QuaysSection: React.FC<QuaysSectionProps> = ({
   quays,
   canEdit,
@@ -42,14 +40,26 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
   onAddQuay,
 }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
+  const focusedElement = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedElement as
+        | { type: string; index: number }
+        | undefined,
+  );
   const [expanded, setExpanded] = useState(false);
+
+  const handleToggle = () => {
+    if (expanded) dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+    setExpanded((v) => !v);
+  };
 
   return (
     <Box>
       <Divider />
       {/* Section header — click to toggle */}
       <Box
-        onClick={() => setExpanded((v) => !v)}
+        onClick={handleToggle}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -97,6 +107,9 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
             quay={quay}
             index={index}
             canEdit={canEdit}
+            focused={
+              focusedElement?.type === "quay" && focusedElement?.index === index
+            }
             onDelete={() => onDeleteQuay(index)}
             onNavigate={() => onNavigateToQuay(index)}
           />

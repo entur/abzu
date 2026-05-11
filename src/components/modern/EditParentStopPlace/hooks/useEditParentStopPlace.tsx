@@ -54,12 +54,17 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // terminate dialog is driven by Redux (requestTerminateStopPlace → deleteStopDialogOpen)
+  const terminateStopDialogOpen = useAppSelector(
+    (state) =>
+      ((state as any).mapUtils?.deleteStopDialogOpen as boolean) ?? false,
+  );
+
   // 2. Dialog state management
   const {
     confirmSaveDialogOpen,
     confirmGoBackOpen,
     confirmUndoOpen,
-    terminateStopDialogOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
     addAdjacentDialogOpen,

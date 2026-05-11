@@ -22,16 +22,21 @@ import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
 import { useMarkerScale } from "../hooks/useMarkerScale";
+import { QuayBearingIndicator } from "./QuayBearingIndicator";
 import { QuayPopup } from "./QuayPopup";
 import type { FocusedElement, MapQuay, MapStopPlace } from "./types";
 
 const QUAY_SIZE = 32;
+/** Distance from quay dot edge to the center of the orbiting icon, in unscaled px. */
+const QUAY_ORBIT_OFFSET = 4;
 
 interface QuayMarkerItemProps {
   quay: MapQuay;
   index: number;
   disabled: boolean;
   focused: boolean;
+  showCompassBearing: boolean;
+  showPublicCode: boolean;
 }
 
 const QuayMarkerItem = ({
@@ -39,16 +44,30 @@ const QuayMarkerItem = ({
   index,
   disabled,
   focused,
+  showCompassBearing,
+  showPublicCode,
 }: QuayMarkerItemProps) => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isEditingBearing, setIsEditingBearing] = useState(false);
   const scale = useMarkerScale();
 
   if (!quay.location) return null;
 
   const [lat, lng] = quay.location;
   const hasBearing = quay.compassBearing != null;
-  const label = quay.publicCode || String(index + 1);
+  const label =
+    (showPublicCode ? quay.publicCode : quay.privateCode) || String(index + 1);
+
+  const handleStartEditBearing = () => {
+    if (quay.compassBearing == null) {
+      dispatch(StopPlaceActions.changeQuayCompassBearing(index, 0));
+    }
+    setIsEditingBearing(true);
+    setPopupAnchor(null);
+  };
+
+  const handleEndEditBearing = () => setIsEditingBearing(false);
 
   const handleDragEnd = (event: MarkerDragEvent) => {
     dispatch(
@@ -61,6 +80,14 @@ const QuayMarkerItem = ({
 
   return (
     <>
+      <QuayBearingIndicator
+        quay={quay}
+        index={index}
+        focused={focused}
+        disabled={disabled}
+        isEditing={isEditingBearing}
+        onEndEditing={handleEndEditBearing}
+      />
       <Marker
         latitude={lat}
         longitude={lng}
@@ -68,20 +95,17 @@ const QuayMarkerItem = ({
         onDragEnd={handleDragEnd}
         anchor="center"
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {hasBearing && (
+        <Box sx={{ position: "relative", display: "inline-flex" }}>
+          {showCompassBearing && hasBearing && !isEditingBearing && (
             <NavigationIcon
               sx={{
+                position: "absolute",
                 fontSize: `${scale}rem`,
-                color: focused ? "warning.main" : "text.disabled",
-                transform: `rotate(${quay.compassBearing}deg)`,
-                mb: "-4px",
+                color: focused ? "warning.main" : "success.main",
+                left: "50%",
+                top: "50%",
+                pointerEvents: "none",
+                transform: `translate(-50%, -50%) rotate(${quay.compassBearing}deg) translateY(-${Math.round((QUAY_SIZE / 2 + QUAY_ORBIT_OFFSET) * scale)}px)`,
               }}
             />
           )}
@@ -129,12 +153,18 @@ const QuayMarkerItem = ({
 
       <QuayPopup
         anchorEl={popupAnchor}
-        onClose={() => setPopupAnchor(null)}
+        onClose={() => {
+          setPopupAnchor(null);
+          dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+        }}
         quay={quay}
         index={index}
         disabled={disabled}
         lat={lat}
         lng={lng}
+        isEditingBearing={isEditingBearing}
+        onStartEditBearing={handleStartEditBearing}
+        onEndEditBearing={handleEndEditBearing}
       />
     </>
   );
@@ -147,6 +177,12 @@ export const QuayMarkers = () => {
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as FocusedElement | undefined,
+  );
+  const isCompassBearingEnabled = useAppSelector(
+    (state) => (state.stopPlace as any).isCompassBearingEnabled as boolean,
+  );
+  const showPublicCode = useAppSelector(
+    (state) => (state.user as any).showPublicCode as boolean,
   );
 
   if (!current?.quays?.length) return null;
@@ -165,6 +201,8 @@ export const QuayMarkers = () => {
           focused={
             focusedElement?.type === "quay" && focusedElement?.index === index
           }
+          showCompassBearing={isCompassBearingEnabled}
+          showPublicCode={showPublicCode}
         />
       ))}
     </>

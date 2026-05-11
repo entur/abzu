@@ -22,7 +22,6 @@ export const useParentStopPlaceDialogs = () => {
   const [confirmSaveDialogOpen, setConfirmSaveDialogOpen] = useState(false);
   const [confirmGoBackOpen, setConfirmGoBackOpen] = useState(false);
   const [confirmUndoOpen, setConfirmUndoOpen] = useState(false);
-  const [terminateStopDialogOpen, setTerminateStopDialogOpen] = useState(false);
   const [removeChildDialogOpen, setRemoveChildDialogOpen] = useState(false);
   const [addChildDialogOpen, setAddChildDialogOpen] = useState(false);
   const [addAdjacentDialogOpen, setAddAdjacentDialogOpen] = useState(false);
@@ -120,7 +119,6 @@ export const useParentStopPlaceDialogs = () => {
     confirmSaveDialogOpen,
     confirmGoBackOpen,
     confirmUndoOpen,
-    terminateStopDialogOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
     addAdjacentDialogOpen,
