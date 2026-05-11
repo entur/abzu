@@ -39,7 +39,6 @@ export const GroupOfStopPlacesActions: React.FC<
 
   const isSaveDisabled = !isModified || !hasName || !canEdit;
   const isUndoDisabled = !isModified || !canEdit;
-  const isRemoveDisabled = !canDelete;
 
   return (
     <>
@@ -54,14 +53,13 @@ export const GroupOfStopPlacesActions: React.FC<
           flexWrap: "wrap",
         }}
       >
-        {hasId && (
+        {hasId && canDelete && (
           <Button
             variant="outlined"
             color="error"
             size="small"
             startIcon={<DeleteIcon />}
             onClick={onRemove}
-            disabled={isRemoveDisabled}
           >
             {formatMessage({ id: "remove" })}
           </Button>

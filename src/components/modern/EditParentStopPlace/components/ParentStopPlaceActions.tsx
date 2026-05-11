@@ -44,7 +44,6 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
     !canEdit;
 
   const isUndoDisabled = (!isModified && !hasExpired) || !canEdit;
-  const isTerminateDisabled = !canDelete || hasExpired;
 
   return (
     <>
@@ -59,14 +58,13 @@ export const ParentStopPlaceActions: React.FC<ParentStopPlaceActionsProps> = ({
           flexWrap: "wrap",
         }}
       >
-        {hasId && (
+        {hasId && canDelete && (
           <Button
             variant="outlined"
             color="error"
             size="small"
             startIcon={<DeleteIcon />}
             onClick={onTerminate}
-            disabled={isTerminateDisabled}
           >
             {formatMessage({
               id: hasExpired ? "delete_stop_place" : "terminate_stop_place",

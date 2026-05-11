@@ -110,28 +110,28 @@ export const useMinimizedBarActions = ({
     },
   ];
 
-  const terminateAction: MinimizedBarAction[] = stopPlace.id
-    ? [
-        {
-          id: "terminate",
-          icon: React.createElement(DeleteIcon, { fontSize: "small" }),
-          label: formatMessage({
-            id: stopPlace.hasExpired
-              ? "delete_stop_place"
-              : "terminate_stop_place",
-          }),
-          onClick: onOpenTerminateDialog,
-          disabled: !canDelete && !stopPlace.hasExpired,
-          color: "error" as const,
-          group: "action" as const,
-          tooltip: formatMessage({
-            id: stopPlace.hasExpired
-              ? "delete_stop_place"
-              : "terminate_stop_place",
-          }),
-        },
-      ]
-    : [];
+  const terminateAction: MinimizedBarAction[] =
+    stopPlace.id && canDelete
+      ? [
+          {
+            id: "terminate",
+            icon: React.createElement(DeleteIcon, { fontSize: "small" }),
+            label: formatMessage({
+              id: stopPlace.hasExpired
+                ? "delete_stop_place"
+                : "terminate_stop_place",
+            }),
+            onClick: onOpenTerminateDialog,
+            color: "error" as const,
+            group: "action" as const,
+            tooltip: formatMessage({
+              id: stopPlace.hasExpired
+                ? "delete_stop_place"
+                : "terminate_stop_place",
+            }),
+          },
+        ]
+      : [];
 
   const editActions: MinimizedBarAction[] = canEdit
     ? [

@@ -128,7 +128,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
         onClick: onOpenVersions,
         tooltip: formatMessage({ id: "versions" }),
       },
-      ...(stopPlace?.id
+      ...(stopPlace?.id && canDelete
         ? [
             {
               id: "terminate",
@@ -139,7 +139,6 @@ export const ParentStopPlaceMinimizedBar: React.FC<
                   : "terminate_stop_place",
               }),
               onClick: onOpenTerminate,
-              disabled: !canDelete && !stopPlace?.hasExpired,
               color: "error" as const,
               group: "action" as const,
               tooltip: formatMessage({
