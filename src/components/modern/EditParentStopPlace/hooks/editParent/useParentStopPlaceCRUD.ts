@@ -24,7 +24,7 @@ import {
   saveParentStopPlace,
   savePathLink,
   terminateStop,
-} from "../../../../../actions/TiamatActions";
+} from "../../../../../actions/TiamatActions.modern";
 import mapToMutationVariables from "../../../../../modelUtils/mapToQueryVariables";
 import { shouldMutatePathLinks } from "../../../../../modelUtils/shouldMutate";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -71,7 +71,7 @@ export const useParentStopPlaceCRUD = (
       savePathLinkIfNeeded(id).then(() => {
         dispatch(getStopPlaceVersions(id));
         dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-        dispatch(getStopPlaceWithAll(id));
+        dispatch(getStopPlaceWithAll(id, true));
       });
     },
     [dispatch, activeMap, savePathLinkIfNeeded],

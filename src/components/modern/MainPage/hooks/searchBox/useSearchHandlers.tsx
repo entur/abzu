@@ -21,7 +21,7 @@ import {
   findEntitiesWithFilters,
   getGroupOfStopPlacesById,
   getStopPlaceById,
-} from "../../../../../actions/TiamatActions";
+} from "../../../../../actions/TiamatActions.modern";
 import formatHelpers from "../../../../../modelUtils/mapToClient";
 import Routes from "../../../../../routes/";
 import { MenuItem } from "../../types";

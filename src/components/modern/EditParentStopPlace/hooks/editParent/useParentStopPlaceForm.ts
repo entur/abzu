@@ -19,7 +19,7 @@ import {
   findTagByName,
   getTags,
   removeTag,
-} from "../../../../../actions/TiamatActions";
+} from "../../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../../store/hooks";
 
 /**

@@ -18,10 +18,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../actions";
-import { getStopPlaceWithAll } from "../../actions/TiamatActions";
+import { getStopPlaceWithAll } from "../../actions/TiamatActions.modern";
 import { EditParentStopPlace } from "../../components/modern/EditParentStopPlace";
 import { EditStopPage } from "../../components/modern/EditStopPage";
 import { LoadingDialog } from "../../components/modern/Shared";
+import { LoadTimerBadge } from "../../components/modern/Shared/LoadTimerBadge";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { RootState } from "../../store/store";
 
@@ -135,6 +136,7 @@ export const StopPlace = () => {
       {stopPlace &&
         !stopPlaceLoading &&
         (stopPlace.isParent ? <EditParentStopPlace /> : <EditStopPage />)}
+      <LoadTimerBadge />
     </div>
   );
 };

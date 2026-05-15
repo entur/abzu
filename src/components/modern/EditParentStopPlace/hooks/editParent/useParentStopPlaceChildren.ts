@@ -18,7 +18,7 @@ import {
   getAddStopPlaceInfo,
   getStopPlaceVersions,
   removeStopPlaceFromMultiModalStop,
-} from "../../../../../actions/TiamatActions";
+} from "../../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../../store/hooks";
 
 /**
@@ -91,8 +91,6 @@ export const useParentStopPlaceChildren = (
     handleRemoveChild,
     handleAddChildren,
     handleOpenAddAdjacentDialog,
-    handleCloseAddAdjacentDialog,
-    handleAddAdjacentSite,
     handleRemoveAdjacentSite,
   };
 };

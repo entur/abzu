@@ -124,28 +124,78 @@ const stopPlaceReducer = (state = initialState, action) => {
     case types.ADD_ADJACENT_SITE:
       const stopPlaceId1 = action.payload.stopPlaceId1;
       const stopPlaceId2 = action.payload.stopPlaceId2;
+
+      if (state.current.isChildOfParent && state.current.parentStop) {
+        const mutableParent = JSON.parse(
+          JSON.stringify(state.current.parentStop),
+        );
+        AdjacentStopAdder.addAdjacentStopReference(
+          mutableParent,
+          stopPlaceId1,
+          stopPlaceId2,
+        );
+        const updatedChild = mutableParent.children.find(
+          (c) => c.id === state.current.id,
+        );
+        return Object.assign({}, state, {
+          current: {
+            ...state.current,
+            adjacentSites:
+              updatedChild?.adjacentSites ?? state.current.adjacentSites,
+            parentStop: mutableParent,
+          },
+          stopHasBeenModified: true,
+        });
+      }
+
+      const mutableCurrentForAdd = JSON.parse(JSON.stringify(state.current));
       AdjacentStopAdder.addAdjacentStopReference(
-        state.current,
+        mutableCurrentForAdd,
         stopPlaceId1,
         stopPlaceId2,
       );
-
       return Object.assign({}, state, {
+        current: mutableCurrentForAdd,
         stopHasBeenModified: true,
       });
 
     case types.REMOVE_ADJACENT_SITE:
       const adjacentStopPlaceRef = action.payload.adjacentStopPlaceRef;
       const stopPlaceIdForRemovingAdjacentSite = action.payload.stopPlaceId;
-      const changedStopPlace = AdjacentStopRemover.removeAdjacentStop(
-        state.current,
+
+      if (state.current.isChildOfParent && state.current.parentStop) {
+        const mutableParentForRemove = JSON.parse(
+          JSON.stringify(state.current.parentStop),
+        );
+        AdjacentStopRemover.removeAdjacentStop(
+          mutableParentForRemove,
+          adjacentStopPlaceRef,
+          stopPlaceIdForRemovingAdjacentSite,
+        );
+        const updatedChildForRemove = mutableParentForRemove.children.find(
+          (c) => c.id === state.current.id,
+        );
+        return Object.assign({}, state, {
+          current: {
+            ...state.current,
+            adjacentSites:
+              updatedChildForRemove?.adjacentSites ??
+              state.current.adjacentSites,
+            parentStop: mutableParentForRemove,
+          },
+          stopHasBeenModified: true,
+        });
+      }
+
+      const mutableCurrentForRemove = JSON.parse(JSON.stringify(state.current));
+      AdjacentStopRemover.removeAdjacentStop(
+        mutableCurrentForRemove,
         adjacentStopPlaceRef,
         stopPlaceIdForRemovingAdjacentSite,
       );
-
       return Object.assign({}, state, {
         stopHasBeenModified: true,
-        current: changedStopPlace,
+        current: mutableCurrentForRemove,
       });
 
     case types.SET_CENTER_AND_ZOOM:

@@ -23,7 +23,7 @@ import {
   savePathLink,
   saveStopPlaceBasedOnType,
   terminateStop,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
 import {
   shouldMutateParking,
@@ -83,7 +83,7 @@ export const useStopPlaceCRUD = (
           const finish = () => {
             dispatch(getStopPlaceVersions(id));
             dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-            dispatch(getStopPlaceWithAll(id));
+            dispatch(getStopPlaceWithAll(id, true));
           };
 
           if (needsPathLinkSave) {

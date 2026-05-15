@@ -110,6 +110,7 @@
   "confirm": "Vahvista",
   "connect_to_adjacent_stop": "Yhdistä viereiseen pysäkkiin",
   "connect_to_adjacent_stop_description": "Yhdistä tämä pysäkki johonkin seuraavista pysäkeistä",
+  "connect_to_adjacent_stop_no_options": "Tässä multimodaalisessa pysäkissä ei ole muita pysäkkejä, joihin yhdistää.",
   "connect_to_adjacent_stop_title": "Yhdistä viereiseen pysäkkiin",
   "connected_with_adjacent_stop_places": "Viereiset pysäkit",
   "coordinates": "Koordinaatit",

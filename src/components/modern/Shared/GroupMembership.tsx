@@ -19,7 +19,7 @@ import { flushSync } from "react-dom";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../../../actions";
-import { getGroupOfStopPlacesById } from "../../../actions/TiamatActions";
+import { getGroupOfStopPlacesById } from "../../../actions/TiamatActions.modern";
 import Routes from "../../../routes/";
 import { LoadingDialog } from "./LoadingDialog";
 

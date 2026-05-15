@@ -101,13 +101,17 @@ export const useMinimizedBarActions = ({
       onClick: onOpenKeyValuesDialog,
       tooltip: formatMessage({ id: "key_values_hint" }),
     },
-    {
-      id: "versions",
-      icon: React.createElement(HistoryIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "versions" }),
-      onClick: onOpenVersionsDialog,
-      tooltip: `${formatMessage({ id: "versions" })}${versions.length > 0 ? ` (${versions.length})` : ""}`,
-    },
+    ...(!stopPlace.isChildOfParent
+      ? [
+          {
+            id: "versions",
+            icon: React.createElement(HistoryIcon, { fontSize: "small" }),
+            label: formatMessage({ id: "versions" }),
+            onClick: onOpenVersionsDialog,
+            tooltip: `${formatMessage({ id: "versions" })}${versions.length > 0 ? ` (${versions.length})` : ""}`,
+          },
+        ]
+      : []),
   ];
 
   const terminateAction: MinimizedBarAction[] =

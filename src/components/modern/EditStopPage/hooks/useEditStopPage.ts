@@ -22,6 +22,7 @@ import { useStopPlaceForm } from "./useStopPlaceForm";
 import { useStopPlaceParking } from "./useStopPlaceParking";
 import { useStopPlaceQuays } from "./useStopPlaceQuays";
 import { useStopPlaceState } from "./useStopPlaceState";
+import { useStopPlaceVersions } from "./useStopPlaceVersions";
 
 /**
  * Orchestrator hook for the modern EditStopPage
@@ -39,8 +40,12 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     canEdit,
     canDelete,
     terminateStopDialogOpen,
-    versions,
   } = useStopPlaceState();
+
+  // 1b. Lazy version history — fetched only on first dialog open per stop
+  const { versions, versionsLoading, fetchVersions } = useStopPlaceVersions(
+    stopPlace?.id,
+  );
 
   // Promote newStop → current when a freshly placed stop first loads.
   // This ensures all field-change reducers (CHANGED_STOP_NAME, etc.) that
@@ -87,7 +92,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleOpenKeyValuesDialog,
     handleCloseKeyValuesDialog,
     versionsDialogOpen,
-    handleOpenVersionsDialog,
+    handleOpenVersionsDialog: openVersionsDialogRaw,
     handleCloseVersionsDialog,
     infoDialogOpen,
     handleOpenInfoDialog,
@@ -170,6 +175,12 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleCloseGoBackDialog();
   }, [handleCloseGoBackDialog]);
 
+  // Trigger the lazy versions fetch and open the dialog in one action
+  const handleOpenVersionsDialogWithFetch = useCallback(() => {
+    fetchVersions();
+    openVersionsDialogRaw();
+  }, [fetchVersions, openVersionsDialogRaw]);
+
   return {
     stopPlace,
     originalStopPlace,
@@ -178,6 +189,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     canDelete,
 
     versions,
+    versionsLoading,
 
     confirmSaveDialogOpen,
     confirmGoBackOpen,
@@ -215,7 +227,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleCloseAltNamesDialog,
     handleOpenKeyValuesDialog,
     handleCloseKeyValuesDialog,
-    handleOpenVersionsDialog,
+    handleOpenVersionsDialog: handleOpenVersionsDialogWithFetch,
     handleCloseVersionsDialog,
     infoDialogOpen,
     handleOpenInfoDialog,

@@ -32,7 +32,6 @@ export const useStopPlaceState = () => {
     (state: any) => state.stopPlace.stopHasBeenModified,
   );
   const isLoading = useSelector((state: any) => state.stopPlace.loading);
-  const versions = useSelector((state: any) => state.stopPlace.versions ?? []);
   const activeMap = useSelector((state: any) => state.mapUtils.activeMap);
   const terminateStopDialogOpen = useSelector(
     (state: any) => state.mapUtils.deleteStopDialogOpen,
@@ -51,6 +50,5 @@ export const useStopPlaceState = () => {
     canEdit,
     canDelete,
     terminateStopDialogOpen,
-    versions,
   };
 };

@@ -228,6 +228,7 @@ export interface StopPlaceDialogsProps {
   infoDialogOpen: boolean;
   nameDescriptionDialogOpen: boolean;
   versions: any[];
+  versionsLoading: boolean;
   handleSave: (userInput: any) => void;
   handleCloseSaveDialog: () => void;
   handleGoBack: () => void;
@@ -272,6 +273,7 @@ export interface UseEditStopPageReturn {
 
   // Versions
   versions: any[];
+  versionsLoading: boolean;
 
   // Dialog states
   confirmSaveDialogOpen: boolean;

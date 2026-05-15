@@ -15,6 +15,7 @@
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import LinkIcon from "@mui/icons-material/Link";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
@@ -34,6 +35,7 @@ interface StopPlacePopupProps {
   stopPlace: MapStopPlace;
   lat: number;
   lng: number;
+  onOpen?: () => void;
 }
 
 /**
@@ -46,6 +48,7 @@ export const StopPlacePopup = ({
   stopPlace,
   lat,
   lng,
+  onOpen,
 }: StopPlacePopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -79,7 +82,7 @@ export const StopPlacePopup = ({
   const showAdjustCentroid = !!stopPlace.isParent;
 
   const showConnectAdjacent =
-    hasSavedId && !expired && !stopPlace.isParent && canEdit;
+    hasSavedId && !expired && !!stopPlace.isChildOfParent && canEdit;
 
   const showRemoveFromGroup = isGroupMember && canEdit;
 
@@ -125,6 +128,20 @@ export const StopPlacePopup = ({
       lng={lng}
       minWidth={220}
     >
+      {onOpen && (
+        <Box sx={{ mt: 1 }}>
+          <Button
+            size="small"
+            variant="contained"
+            fullWidth
+            startIcon={<OpenInFullIcon />}
+            onClick={onOpen}
+          >
+            {formatMessage({ id: "open" })}
+          </Button>
+        </Box>
+      )}
+
       {/* Contextual action buttons */}
       {hasActions && (
         <>

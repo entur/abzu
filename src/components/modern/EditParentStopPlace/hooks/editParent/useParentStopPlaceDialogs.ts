@@ -24,7 +24,6 @@ export const useParentStopPlaceDialogs = () => {
   const [confirmUndoOpen, setConfirmUndoOpen] = useState(false);
   const [removeChildDialogOpen, setRemoveChildDialogOpen] = useState(false);
   const [addChildDialogOpen, setAddChildDialogOpen] = useState(false);
-  const [addAdjacentDialogOpen, setAddAdjacentDialogOpen] = useState(false);
   const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
   const [tagsDialogOpen, setTagsDialogOpen] = useState(false);
   const [coordinatesDialogOpen, setCoordinatesDialogOpen] = useState(false);
@@ -121,7 +120,6 @@ export const useParentStopPlaceDialogs = () => {
     confirmUndoOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
-    addAdjacentDialogOpen,
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,

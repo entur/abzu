@@ -23,7 +23,6 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { MarkerPopup } from "./MarkerPopup";
-import { QuayPathLinkActions } from "./QuayPathLinkActions";
 import type { MapQuay, MapStopPlace } from "./types";
 
 interface QuayPopupProps {
@@ -175,19 +174,6 @@ export const QuayPopup = ({
             </Button>
           )}
         </Box>
-      )}
-
-      {!disabled && (
-        <>
-          <Divider sx={{ my: 0.75 }} />
-          {quay.location && (
-            <QuayPathLinkActions
-              quayId={quay.id}
-              location={quay.location}
-              onAction={onClose}
-            />
-          )}
-        </>
       )}
 
       {(showMergeStart ||

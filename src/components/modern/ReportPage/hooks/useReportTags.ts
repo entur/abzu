@@ -14,7 +14,7 @@
 
 import { useCallback, useState } from "react";
 import { useIntl } from "react-intl";
-import { getTagsByName } from "../../../../actions/TiamatActions";
+import { getTagsByName } from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 
 export interface UseReportTagsResult {

@@ -14,6 +14,8 @@ limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -23,10 +25,13 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { getStopPlaceAndPathLinkByVersion } from "../../../actions/TiamatActions.modern";
+import { useAppDispatch } from "../../../store/hooks";
 
 interface Version {
   version?: number | string;
@@ -41,24 +46,37 @@ interface VersionsDialogProps {
   open: boolean;
   versions: Version[];
   handleClose: () => void;
+  loading?: boolean;
+  stopPlaceId: string;
+  currentVersion?: number | string;
 }
 
 /**
- * Read-only dialog showing the version history of a stop place.
- * Versions are displayed sorted descending by version number.
+ * Dialog showing the version history of a stop place.
+ * Clicking a row loads that specific version.
  */
 export const VersionsDialog: React.FC<VersionsDialogProps> = ({
   open,
   versions,
   handleClose,
+  loading = false,
+  stopPlaceId,
+  currentVersion,
 }) => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
 
-  const sorted = [...versions].sort((a, b) => {
-    const av = Number(a.version ?? 0);
-    const bv = Number(b.version ?? 0);
-    return bv - av;
-  });
+  const handleVersionClick = (version: number | string) => {
+    dispatch(getStopPlaceAndPathLinkByVersion(stopPlaceId, version) as any);
+    handleClose();
+  };
+
+  const sorted = versions
+    .filter(
+      (v, i, arr) =>
+        arr.findIndex((x) => String(x.version) === String(v.version)) === i,
+    )
+    .sort((a, b) => Number(b.version ?? 0) - Number(a.version ?? 0));
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
@@ -71,7 +89,11 @@ export const VersionsDialog: React.FC<VersionsDialogProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ p: 0 }}>
-        {sorted.length === 0 ? (
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+            <CircularProgress size={32} />
+          </Box>
+        ) : sorted.length === 0 ? (
           <Typography sx={{ p: 3, color: "text.secondary" }}>
             {formatMessage({ id: "no_versions_found" })}
           </Typography>
@@ -97,15 +119,42 @@ export const VersionsDialog: React.FC<VersionsDialogProps> = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {sorted.map((v, i) => (
-                <TableRow key={i} hover>
-                  <TableCell>{v.version ?? "—"}</TableCell>
-                  <TableCell>{v.fromDate ?? "—"}</TableCell>
-                  <TableCell>{v.toDate ?? "—"}</TableCell>
-                  <TableCell>{v.changedBy ?? "—"}</TableCell>
-                  <TableCell>{v.versionComment ?? "—"}</TableCell>
-                </TableRow>
-              ))}
+              {sorted.map((v, i) => {
+                const isCurrent =
+                  currentVersion !== undefined &&
+                  String(v.version) === String(currentVersion);
+                return (
+                  <Tooltip
+                    key={i}
+                    title={formatMessage({ id: "load_version" })}
+                    placement="left"
+                  >
+                    <TableRow
+                      hover
+                      onClick={() =>
+                        v.version !== undefined && handleVersionClick(v.version)
+                      }
+                      sx={{
+                        cursor: "pointer",
+                        ...(isCurrent && {
+                          bgcolor: "primary.main",
+                          "& .MuiTableCell-root": {
+                            color: "primary.contrastText",
+                            fontWeight: 600,
+                          },
+                          "&:hover": { bgcolor: "primary.dark" },
+                        }),
+                      }}
+                    >
+                      <TableCell>{v.version ?? "—"}</TableCell>
+                      <TableCell>{v.fromDate ?? "—"}</TableCell>
+                      <TableCell>{v.toDate ?? "—"}</TableCell>
+                      <TableCell>{v.changedBy ?? "—"}</TableCell>
+                      <TableCell>{v.versionComment ?? "—"}</TableCell>
+                    </TableRow>
+                  </Tooltip>
+                );
+              })}
             </TableBody>
           </Table>
         )}

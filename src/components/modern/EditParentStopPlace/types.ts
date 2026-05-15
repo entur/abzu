@@ -177,6 +177,7 @@ export interface UseEditParentStopPlaceReturn {
   canEdit: boolean;
   canDelete: boolean;
   versions: Array<{ version: number; fromDate: string }>;
+  versionsLoading: boolean;
   isLoading: boolean;
 
   // Dialog states
@@ -186,7 +187,6 @@ export interface UseEditParentStopPlaceReturn {
   terminateStopDialogOpen: boolean;
   removeChildDialogOpen: boolean;
   addChildDialogOpen: boolean;
-  addAdjacentDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   tagsDialogOpen: boolean;
   coordinatesDialogOpen: boolean;
@@ -223,8 +223,6 @@ export interface UseEditParentStopPlaceReturn {
   handleAddChildren: (stopPlaceIds: string[]) => void;
 
   handleOpenAddAdjacentDialog: () => void;
-  handleCloseAddAdjacentDialog: () => void;
-  handleAddAdjacentSite: (stopPlaceId1: string, stopPlaceId2: string) => void;
 
   handleOpenAltNamesDialog: () => void;
   handleCloseAltNamesDialog: () => void;

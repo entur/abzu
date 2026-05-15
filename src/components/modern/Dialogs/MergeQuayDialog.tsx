@@ -37,7 +37,7 @@ import { UserActions } from "../../../actions";
 import {
   getStopPlaceWithAll,
   mergeQuays,
-} from "../../../actions/TiamatActions";
+} from "../../../actions/TiamatActions.modern";
 import * as types from "../../../actions/Types";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 

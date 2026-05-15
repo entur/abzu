@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../../actions";
-import { getStopPlaceById } from "../../../actions/TiamatActions";
+import { getStopPlaceById } from "../../../actions/TiamatActions.modern";
 import formatHelpers from "../../../modelUtils/mapToClient";
 import Routes from "../../../routes";
 

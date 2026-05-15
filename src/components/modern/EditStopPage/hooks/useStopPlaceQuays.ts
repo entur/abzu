@@ -17,7 +17,7 @@ import { StopPlaceActions } from "../../../../actions";
 import {
   deleteQuay,
   getStopPlaceWithAll,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 
 /**
@@ -57,7 +57,7 @@ export const useStopPlaceQuays = (
       // Saved quay — server delete then reload
       dispatch(deleteQuay({ id: quay.id })).then(() => {
         if (stopPlace.id) {
-          dispatch(getStopPlaceWithAll(stopPlace.id));
+          dispatch(getStopPlaceWithAll(stopPlace.id, true));
         }
       });
     }

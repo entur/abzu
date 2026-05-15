@@ -231,16 +231,18 @@ export const StopPlaceGeneralSection: React.FC<
         >
           {formatMessage({ id: "key_values_hint" })}
         </Button>
-        {version !== undefined && version !== null && (
-          <Button
-            size="small"
-            startIcon={<HistoryIcon fontSize="small" />}
-            onClick={onOpenVersions}
-            variant="outlined"
-          >
-            {formatMessage({ id: "version" })} {version}
-          </Button>
-        )}
+        {version !== undefined &&
+          version !== null &&
+          !stopPlace.isChildOfParent && (
+            <Button
+              size="small"
+              startIcon={<HistoryIcon fontSize="small" />}
+              onClick={onOpenVersions}
+              variant="outlined"
+            >
+              {formatMessage({ id: "version" })} {version}
+            </Button>
+          )}
         {onOpenTimetable && (
           <Button
             size="small"

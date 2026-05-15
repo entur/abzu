@@ -19,7 +19,7 @@ import { StopPlaceActions, UserActions } from "../../../../../../actions";
 import {
   getGroupOfStopPlacesById,
   getStopPlaceById,
-} from "../../../../../../actions/TiamatActions";
+} from "../../../../../../actions/TiamatActions.modern";
 import { Entities } from "../../../../../../models/Entities";
 import formatHelpers from "../../../../../../modelUtils/mapToClient";
 import Routes from "../../../../../../routes";

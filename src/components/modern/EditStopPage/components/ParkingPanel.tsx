@@ -31,7 +31,7 @@ import { useIntl } from "react-intl";
 import {
   getStopPlaceWithAll,
   saveParking,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import PARKING_TYPE from "../../../../models/parkingType";
 import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
 import { useAppDispatch } from "../../../../store/hooks";
@@ -91,7 +91,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
       stopPlace.id,
     );
     dispatch(saveParking(variables)).then(() => {
-      dispatch(getStopPlaceWithAll(stopPlace.id!));
+      dispatch(getStopPlaceWithAll(stopPlace.id!, true));
     });
   };
 

@@ -67,6 +67,14 @@ export const NeighbourStopPopup = ({
   const expired = !!stop.hasExpired;
   const hasSavedId = !!stop.id;
 
+  const siblingIds: string[] = currentStopPlace?.isChildOfParent
+    ? (currentStopPlace?.parentStop?.children ?? []).map(
+        (c: any) => c.id as string,
+      )
+    : [];
+  const showConnectAdjacent =
+    siblingIds.includes(stop.id) && canEdit && !expired;
+
   const isGroupMember =
     isEditingGroup &&
     (groupCurrent.members ?? []).some((m: { id: string }) => m.id === stop.id);
@@ -103,7 +111,8 @@ export const NeighbourStopPopup = ({
     showRemoveFromGroup ||
     showCreateGroup ||
     showCreateMultimodal ||
-    showMergeStop;
+    showMergeStop ||
+    showConnectAdjacent;
 
   const handleOpen = () => {
     onClose();
@@ -134,6 +143,11 @@ export const NeighbourStopPopup = ({
   const handleMergeStop = () => {
     onClose();
     dispatch(UserActions.showMergeStopDialog(stop.id, stop.name));
+  };
+
+  const handleConnectAdjacent = () => {
+    onClose();
+    dispatch(UserActions.showAddAdjacentStopDialog(stop.id));
   };
 
   return (
@@ -216,6 +230,17 @@ export const NeighbourStopPopup = ({
                 fullWidth
               >
                 {formatMessage({ id: "merge_stop_here" })}
+              </Button>
+            )}
+            {showConnectAdjacent && (
+              <Button
+                size="small"
+                variant="outlined"
+                startIcon={<LinkIcon />}
+                onClick={handleConnectAdjacent}
+                fullWidth
+              >
+                {formatMessage({ id: "connect_to_adjacent_stop" })}
               </Button>
             )}
           </Box>

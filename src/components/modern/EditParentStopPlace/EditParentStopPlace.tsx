@@ -75,6 +75,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     originalStopPlace,
     isModified,
     versions,
+    versionsLoading,
     canEdit,
     canDelete,
     confirmSaveDialogOpen,
@@ -83,7 +84,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     terminateStopDialogOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
-    addAdjacentDialogOpen,
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
@@ -107,8 +107,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
     handleCloseAddChildDialog,
     handleAddChildren,
     handleOpenAddAdjacentDialog,
-    handleCloseAddAdjacentDialog,
-    handleAddAdjacentSite,
     handleOpenAltNamesDialog,
     handleCloseAltNamesDialog,
     handleOpenTagsDialog,
@@ -217,7 +215,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         terminateStopDialogOpen={terminateStopDialogOpen}
         removeChildDialogOpen={removeChildDialogOpen}
         addChildDialogOpen={addChildDialogOpen}
-        addAdjacentDialogOpen={addAdjacentDialogOpen}
         altNamesDialogOpen={altNamesDialogOpen}
         tagsDialogOpen={tagsDialogOpen}
         coordinatesDialogOpen={coordinatesDialogOpen}
@@ -226,6 +223,7 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         childrenDialogOpen={childrenDialogOpen}
         versionsDialogOpen={versionsDialogOpen}
         versions={versions}
+        versionsLoading={versionsLoading}
         handleSave={handleSave}
         handleCloseSaveDialog={handleCloseSaveDialog}
         handleGoBack={handleGoBack}
@@ -238,8 +236,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         handleCloseRemoveChildDialog={handleCloseRemoveChildDialog}
         handleAddChildren={handleAddChildren}
         handleCloseAddChildDialog={handleCloseAddChildDialog}
-        handleAddAdjacentSite={handleAddAdjacentSite}
-        handleCloseAddAdjacentDialog={handleCloseAddAdjacentDialog}
         handleCloseAltNamesDialog={handleCloseAltNamesDialog}
         handleCloseTagsDialog={handleCloseTagsDialog}
         handleSetCoordinates={handleSetCoordinates}

@@ -16,7 +16,7 @@ import { useCallback, useState } from "react";
 import {
   findStopForReport,
   getParkingForMultipleStopPlaces,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 import { buildReportSearchQuery } from "../../../../utils/URLhelpers";
 import { FilterState } from "../types";

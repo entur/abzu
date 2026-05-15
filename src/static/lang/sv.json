@@ -110,6 +110,7 @@
   "confirm": "Bekräfta",
   "connect_to_adjacent_stop": "Knyt samman med närliggande hållplats",
   "connect_to_adjacent_stop_description": "Koppla den här hållplatsen till ett av följande närliggande hållplatser",
+  "connect_to_adjacent_stop_no_options": "Det finns inga andra hållplatser i denna multimodala hållplats att ansluta till.",
   "connect_to_adjacent_stop_title": "Knyt samman med närliggande hållplats",
   "connected_with_adjacent_stop_places": "Närliggande hållplatser",
   "coordinates": "Koordinater",

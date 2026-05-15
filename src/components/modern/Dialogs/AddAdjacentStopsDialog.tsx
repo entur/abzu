@@ -27,7 +27,8 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
-import { useSelector } from "react-redux";
+import { StopPlaceActions, UserActions } from "../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import HasExpiredInfo from "../../MainPage/HasExpiredInfo";
 import ModalityIconImg from "../../MainPage/ModalityIconImg";
 
@@ -41,65 +42,58 @@ interface ChildStop {
   adjacentSites?: Array<{ ref: string }>;
 }
 
-interface RootState {
-  stopPlace: {
-    current: {
-      children?: ChildStop[];
-    };
-  };
-  user: {
-    adjacentStopDialogStopPlace?: string;
-  };
-}
-
-export interface AddAdjacentStopsDialogProps {
-  open: boolean;
-  handleClose: () => void;
-  handleConfirm: (stopPlaceId1: string, stopPlaceId2: string) => void;
-}
-
-export const AddAdjacentStopsDialog: React.FC<AddAdjacentStopsDialogProps> = ({
-  open,
-  handleClose,
-  handleConfirm,
-}) => {
+/**
+ * Self-contained dialog for connecting two sibling child stops as adjacent.
+ * Reads open state and stop data from Redux; dispatches close/confirm actions directly.
+ */
+export const AddAdjacentStopsDialog: React.FC = () => {
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
   const [selectedStopPlace, setSelectedStopPlace] = useState<string>("NONE");
 
-  const stopPlaceChildren =
-    useSelector((state: RootState) => state.stopPlace.current?.children) ?? [];
-  const currentStopPlaceId = useSelector(
-    (state: RootState) => state.user.adjacentStopDialogStopPlace,
+  const open = useAppSelector(
+    (state) => (state.user as any).adjacentStopDialogOpen as boolean,
   );
+  const currentStopPlaceId = useAppSelector(
+    (state) =>
+      (state.user as any).adjacentStopDialogStopPlace as string | undefined,
+  );
+  const current = useAppSelector((state) => state.stopPlace.current as any);
+  // When editing the parent: children are on current directly.
+  // When editing a child stop: siblings are on current.parentStop.children.
+  const stopPlaceChildren: ChildStop[] = current?.isParent
+    ? (current?.children ?? [])
+    : (current?.parentStop?.children ?? []);
 
-  const isCurrentChildStop = (childStop: ChildStop) => {
-    return childStop.id === currentStopPlaceId;
-  };
+  const isCurrentChildStop = (child: ChildStop) =>
+    child.id === currentStopPlaceId;
 
-  const isConnected = (childStop: ChildStop) => {
+  const isConnected = (child: ChildStop) => {
     const currentChild = stopPlaceChildren.find(
-      (child) => child.id === currentStopPlaceId,
+      (c) => c.id === currentStopPlaceId,
     );
-
-    // Avoid displaying already existing adjacent site as an option
     if (currentChild && Array.isArray(currentChild.adjacentSites)) {
-      return currentChild.adjacentSites.some(
-        (adjacentRef) => adjacentRef.ref === childStop.id,
-      );
+      return currentChild.adjacentSites.some((ref) => ref.ref === child.id);
     }
     return false;
   };
 
-  const handleCloseDialog = () => {
+  const handleClose = () => {
     setSelectedStopPlace("NONE");
-    handleClose();
+    dispatch(UserActions.hideAddAdjacentStopDialog());
   };
 
-  const handleConfirmDialog = () => {
+  const handleConfirm = () => {
     if (currentStopPlaceId && selectedStopPlace !== "NONE") {
-      handleConfirm(currentStopPlaceId, selectedStopPlace);
+      dispatch(
+        StopPlaceActions.addAdjacentConnection(
+          currentStopPlaceId,
+          selectedStopPlace,
+        ),
+      );
     }
     setSelectedStopPlace("NONE");
+    dispatch(UserActions.hideAddAdjacentStopDialog());
   };
 
   const filteredChildren = stopPlaceChildren.filter(
@@ -107,103 +101,121 @@ export const AddAdjacentStopsDialog: React.FC<AddAdjacentStopsDialogProps> = ({
   );
 
   return (
-    <Dialog open={open} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+    <Dialog open={!!open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", alignItems: "center", pr: 1 }}>
         <Typography variant="h6" component="span" sx={{ flex: 1 }}>
           {formatMessage({ id: "connect_to_adjacent_stop_title" })}
         </Typography>
-        <IconButton onClick={handleCloseDialog} size="small">
+        <IconButton onClick={handleClose} size="small">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
         <Box sx={{ pt: 1 }}>
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            {formatMessage({ id: "connect_to_adjacent_stop_description" })}
-          </Typography>
+          {filteredChildren.length === 0 ? (
+            <Typography
+              variant="body2"
+              sx={{ color: "text.secondary", fontStyle: "italic" }}
+            >
+              {formatMessage({ id: "connect_to_adjacent_stop_no_options" })}
+            </Typography>
+          ) : (
+            <>
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                {formatMessage({ id: "connect_to_adjacent_stop_description" })}
+              </Typography>
+              <RadioGroup
+                value={selectedStopPlace}
+                onChange={(e) => setSelectedStopPlace(e.target.value)}
+              >
+                {filteredChildren.map((child) => {
+                  const disabled = isConnected(child);
+                  const checked = selectedStopPlace === child.id || disabled;
 
-          <RadioGroup
-            value={selectedStopPlace}
-            onChange={(e) => setSelectedStopPlace(e.target.value)}
-          >
-            {filteredChildren.map((child) => {
-              const disabled = isConnected(child);
-              const checked = selectedStopPlace === child.id || disabled;
-
-              return (
-                <Box
-                  key={child.id}
-                  sx={{
-                    py: 0.5,
-                    opacity: disabled ? 0.6 : 1,
-                    transition: "opacity 0.3s",
-                  }}
-                >
-                  <FormControlLabel
-                    value={child.id}
-                    control={<Radio />}
-                    disabled={disabled}
-                    checked={checked}
-                    label={
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                      >
-                        {child.isParent ? (
-                          <Typography sx={{ fontWeight: 600, minWidth: 30 }}>
-                            MM
-                          </Typography>
-                        ) : (
-                          <Box sx={{ minWidth: 30 }}>
-                            <ModalityIconImg
-                              type={child.stopPlaceType}
-                              submode={child.submode}
+                  return (
+                    <Box
+                      key={child.id}
+                      sx={{
+                        py: 0.5,
+                        opacity: disabled ? 0.6 : 1,
+                        transition: "opacity 0.3s",
+                      }}
+                    >
+                      <FormControlLabel
+                        value={child.id}
+                        control={<Radio />}
+                        disabled={disabled}
+                        checked={checked}
+                        label={
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            {child.isParent ? (
+                              <Typography
+                                sx={{ fontWeight: 600, minWidth: 30 }}
+                              >
+                                MM
+                              </Typography>
+                            ) : (
+                              <Box sx={{ minWidth: 30 }}>
+                                <ModalityIconImg
+                                  type={child.stopPlaceType}
+                                  submode={child.submode}
+                                />
+                              </Box>
+                            )}
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                flex: 1,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                fontStyle: !child.name ? "italic" : "normal",
+                              }}
+                            >
+                              {child.name ||
+                                formatMessage({ id: "is_missing_name" })}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "text.secondary" }}
+                            >
+                              {child.id}
+                            </Typography>
+                            <HasExpiredInfo
+                              show={child.hasExpired}
+                              formatMessage={formatMessage}
                             />
                           </Box>
-                        )}
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            flex: 1,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            fontStyle: !child.name ? "italic" : "normal",
-                          }}
-                        >
-                          {child.name ||
-                            formatMessage({ id: "is_missing_name" })}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{ color: "text.secondary" }}
-                        >
-                          {child.id}
-                        </Typography>
-                        <HasExpiredInfo
-                          show={child.hasExpired}
-                          formatMessage={formatMessage}
-                        />
-                      </Box>
-                    }
-                  />
-                </Box>
-              );
-            })}
-          </RadioGroup>
+                        }
+                      />
+                    </Box>
+                  );
+                })}
+              </RadioGroup>
+            </>
+          )}
 
           <Box
             sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 2 }}
           >
-            <Button variant="outlined" onClick={handleCloseDialog}>
+            <Button variant="outlined" onClick={handleClose}>
               {formatMessage({ id: "cancel" })}
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleConfirmDialog}
-              disabled={selectedStopPlace === "NONE"}
-            >
-              {formatMessage({ id: "confirm" })}
-            </Button>
+            {filteredChildren.length > 0 && (
+              <Button
+                variant="contained"
+                onClick={handleConfirm}
+                disabled={selectedStopPlace === "NONE"}
+              >
+                {formatMessage({ id: "confirm" })}
+              </Button>
+            )}
           </Box>
         </Box>
       </DialogContent>

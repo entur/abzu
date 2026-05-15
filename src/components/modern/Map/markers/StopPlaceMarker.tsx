@@ -16,7 +16,9 @@ import { Box, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
+import { useNavigate } from "react-router-dom";
 import { StopPlaceActions } from "../../../../actions";
+import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
@@ -25,6 +27,73 @@ import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
 
 const MARKER_SIZE = 40;
+const CHILD_MARKER_SIZE = 34;
+
+interface ParentChildMarkerProps {
+  child: MapStopPlace;
+}
+
+const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
+  const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const scale = useMarkerScale();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  if (!child.location) return null;
+
+  const [lat, lng] = child.location as [number, number];
+  const icon = getSvgIconByTypeOrSubmode(child.submode, child.stopPlaceType);
+
+  const handleOpen = () => {
+    setPopupAnchor(null);
+    dispatch(StopPlaceActions.setStopPlaceLoading(true));
+    navigate(`/${AppRoutes.STOP_PLACE}/${child.id}`);
+  };
+
+  return (
+    <>
+      <Marker latitude={lat} longitude={lng} anchor="bottom">
+        <Tooltip title={child.name || ""} placement="top" arrow>
+          <Box
+            onClick={(e) => setPopupAnchor(e.currentTarget)}
+            sx={{
+              width: Math.round(CHILD_MARKER_SIZE * scale),
+              height: Math.round(CHILD_MARKER_SIZE * scale),
+              borderRadius: "50%",
+              bgcolor: "background.paper",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+              border: "3px solid",
+              borderColor: "primary.main",
+              "&:hover": { transform: "scale(1.1)" },
+              transition: "transform 0.15s",
+            }}
+          >
+            <img
+              src={icon}
+              alt=""
+              style={{
+                width: Math.round(20 * scale),
+                height: Math.round(20 * scale),
+              }}
+            />
+          </Box>
+        </Tooltip>
+      </Marker>
+      <StopPlacePopup
+        anchorEl={popupAnchor}
+        onClose={() => setPopupAnchor(null)}
+        stopPlace={child}
+        lat={lat}
+        lng={lng}
+        onOpen={handleOpen}
+      />
+    </>
+  );
+};
 
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
@@ -122,6 +191,11 @@ export const StopPlaceMarker = () => {
         lat={lat}
         lng={lng}
       />
+
+      {isParent &&
+        ((current as any).children ?? []).map((child: MapStopPlace) => (
+          <ParentChildMarker key={child.id} child={child} />
+        ))}
     </>
   );
 };

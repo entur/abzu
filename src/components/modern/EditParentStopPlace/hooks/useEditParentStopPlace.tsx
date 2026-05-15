@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { useCallback, useEffect } from "react";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { useStopPlaceVersions } from "../../EditStopPage/hooks/useStopPlaceVersions";
 import { UseEditParentStopPlaceReturn } from "../types";
 import { useParentStopPlaceChildren } from "./editParent/useParentStopPlaceChildren";
 import { useParentStopPlaceCRUD } from "./editParent/useParentStopPlaceCRUD";
@@ -35,12 +36,16 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     stopPlace,
     originalStopPlace,
     isModified,
-    versions,
     isLoading,
     activeMap,
     canEdit,
     canDelete,
   } = useParentStopPlaceState();
+
+  // Lazy-loaded version history (fetched only when dialog is opened)
+  const { versions, versionsLoading, fetchVersions } = useStopPlaceVersions(
+    stopPlace?.id,
+  );
 
   // Promote newStop → current when a freshly placed parent stop first loads.
   const hasCurrentInRedux = useAppSelector(
@@ -67,7 +72,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     confirmUndoOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
-    addAdjacentDialogOpen,
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
@@ -89,9 +93,14 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleCloseTagsDialog,
     handleOpenCoordinatesDialog,
     handleCloseCoordinatesDialog,
-    handleOpenVersionsDialog,
+    handleOpenVersionsDialog: openVersionsDialog,
     handleCloseVersionsDialog,
   } = useParentStopPlaceDialogs();
+
+  const handleOpenVersionsDialog = useCallback(() => {
+    fetchVersions();
+    openVersionsDialog();
+  }, [fetchVersions, openVersionsDialog]);
 
   // 3. CRUD operations (save, undo, go back, terminate)
   const {
@@ -116,8 +125,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleRemoveChild,
     handleAddChildren,
     handleOpenAddAdjacentDialog,
-    handleCloseAddAdjacentDialog,
-    handleAddAdjacentSite,
     handleRemoveAdjacentSite,
   } = useParentStopPlaceChildren(
     stopPlace,
@@ -158,6 +165,7 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     canEdit,
     canDelete,
     versions,
+    versionsLoading,
     isLoading,
     confirmSaveDialogOpen,
     confirmGoBackOpen,
@@ -165,7 +173,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     terminateStopDialogOpen,
     removeChildDialogOpen,
     addChildDialogOpen,
-    addAdjacentDialogOpen,
     altNamesDialogOpen,
     tagsDialogOpen,
     coordinatesDialogOpen,
@@ -189,8 +196,6 @@ export const useEditParentStopPlace = (): UseEditParentStopPlaceReturn => {
     handleCloseAddChildDialog,
     handleAddChildren,
     handleOpenAddAdjacentDialog,
-    handleCloseAddAdjacentDialog,
-    handleAddAdjacentSite,
     handleOpenAltNamesDialog,
     handleCloseAltNamesDialog,
     handleOpenTagsDialog,

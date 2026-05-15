@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import React from "react";
 import {
+  AddAdjacentStopsDialog,
   AltNamesDialog,
   ConfirmDialog,
   KeyValuesDialog,
@@ -53,6 +54,7 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   infoDialogOpen,
   nameDescriptionDialogOpen,
   versions,
+  versionsLoading,
   handleSave,
   handleCloseSaveDialog,
   handleGoBack,
@@ -189,7 +191,10 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
       <VersionsDialog
         open={versionsDialogOpen}
         versions={versions}
+        loading={versionsLoading}
         handleClose={handleCloseVersionsDialog}
+        stopPlaceId={stopPlace?.id || ""}
+        currentVersion={stopPlace?.version}
       />
 
       {/* 12. Info Dialog */}
@@ -224,6 +229,9 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
 
       {/* 17. Move Quay to New Stop Dialog */}
       <MoveQuayNewStopDialog />
+
+      {/* 18. Add Adjacent Stop Dialog */}
+      <AddAdjacentStopsDialog />
     </>
   );
 };

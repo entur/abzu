@@ -17,7 +17,7 @@ import { StopPlaceActions } from "../../../../actions";
 import {
   deleteParking,
   getStopPlaceWithAll,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 
 /**
@@ -59,7 +59,7 @@ export const useStopPlaceParking = (
       // Saved parking — server delete then reload
       dispatch(deleteParking(parking.id)).then(() => {
         if (stopPlace.id) {
-          dispatch(getStopPlaceWithAll(stopPlace.id));
+          dispatch(getStopPlaceWithAll(stopPlace.id, true));
         }
       });
     }

@@ -14,7 +14,7 @@
 
 import CheckIcon from "@mui/icons-material/Check";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
@@ -24,7 +24,8 @@ import type { MapQuay } from "./types";
 
 const LINE_LENGTH_PX = 100;
 const LINE_WIDTH_PX = 2;
-const HANDLE_SIZE = 36;
+const HANDLE_SIZE_DESKTOP = 36;
+const HANDLE_SIZE_TOUCH = 48;
 
 interface QuayBearingIndicatorProps {
   quay: MapQuay;
@@ -50,6 +51,8 @@ export const QuayBearingIndicator = ({
 }: QuayBearingIndicatorProps): React.JSX.Element | null => {
   const dispatch = useAppDispatch();
   const scale = useMarkerScale();
+  const isTouchDevice = useMediaQuery("(pointer: coarse)");
+  const handleSize = isTouchDevice ? HANDLE_SIZE_TOUCH : HANDLE_SIZE_DESKTOP;
   const quayCenterRef = useRef<HTMLDivElement>(null);
   const [liveBearing, setLiveBearing] = useState(quay.compassBearing ?? 0);
 
@@ -172,10 +175,10 @@ export const QuayBearingIndicator = ({
             onPointerDown={disabled ? undefined : handlePointerDown}
             sx={(t) => ({
               position: "absolute",
-              top: -HANDLE_SIZE / 2,
-              left: -(HANDLE_SIZE - LINE_WIDTH_PX) / 2,
-              width: HANDLE_SIZE,
-              height: HANDLE_SIZE,
+              top: -handleSize / 2,
+              left: -(handleSize - LINE_WIDTH_PX) / 2,
+              width: handleSize,
+              height: handleSize,
               borderRadius: "50%",
               bgcolor: "background.paper",
               border: "2.5px solid",
@@ -186,6 +189,7 @@ export const QuayBearingIndicator = ({
               justifyContent: "center",
               cursor: disabled ? "default" : "grab",
               pointerEvents: "auto",
+              touchAction: "none",
               boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
               transform: `rotate(-${liveBearing}deg)`,
               transition: "border-color 0.15s",

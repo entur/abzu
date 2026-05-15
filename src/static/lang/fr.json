@@ -110,6 +110,7 @@
   "confirm": "Valider",
   "connect_to_adjacent_stop": "Se connecter à l'arrêt adjacent",
   "connect_to_adjacent_stop_description": "Reliez cet endroit d'arrêt à l'un des arrêts adjacents suivants",
+  "connect_to_adjacent_stop_no_options": "Il n'y a pas d'autres arrêts disponibles dans cet arrêt multimodal pour établir une connexion.",
   "connect_to_adjacent_stop_title": "Se connecter à l'arrêt adjacent",
   "connected_with_adjacent_stop_places": "Places d'arrêt adjacentes",
   "coordinates": "Coordonnées",

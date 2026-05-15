@@ -13,7 +13,7 @@
  * limitations under the Licence. */
 
 import { Box, Drawer, Slide, useMediaQuery, useTheme } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../models/Entities";
 import { useAppSelector } from "../../../store/hooks";
@@ -58,6 +58,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const isOpenRef = useRef(isOpen);
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
   const [view, setView] = useState<View>({ type: "stopPlace" });
   const [wizardConfirmed, setWizardConfirmed] = useState(false);
 
@@ -74,27 +78,30 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         | undefined,
   );
 
-  // Navigate drawer when a map marker is focused
+  // Navigate drawer when a map marker is focused.
+  // Only changes view when the drawer is already open — never force-opens from a map click.
   useEffect(() => {
     if (!focusedElement) return;
     const { type, index } = focusedElement;
     if (index < 0) {
       setView({ type: "stopPlace" });
-    } else if (type === "quay") {
+      return;
+    }
+    if (!isOpenRef.current) return;
+    if (type === "quay") {
       setView({ type: "quay", index });
-      setInternalOpen(true);
     } else if (type === "parkAndRide" || type === "bikeParking") {
       setView({ type: "parking", index });
-      setInternalOpen(true);
     }
   }, [focusedElement]);
 
-  // Navigate to quay panel when a boarding position is focused
+  // Navigate to quay panel when a boarding position is focused.
+  // Same rule: only navigate if the drawer is open.
   useEffect(() => {
     if (!focusedBoardingPosition || focusedBoardingPosition.quayIndex < 0)
       return;
+    if (!isOpenRef.current) return;
     setView({ type: "quay", index: focusedBoardingPosition.quayIndex });
-    setInternalOpen(true);
   }, [focusedBoardingPosition]);
 
   const handleToggle = () => {
@@ -115,6 +122,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     canEdit,
     canDelete,
     versions,
+    versionsLoading,
     confirmSaveDialogOpen,
     confirmGoBackOpen,
     confirmUndoOpen,
@@ -409,6 +417,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         infoDialogOpen={infoDialogOpen}
         nameDescriptionDialogOpen={nameDescriptionDialogOpen}
         versions={versions}
+        versionsLoading={versionsLoading}
         handleSave={handleSave}
         handleCloseSaveDialog={handleCloseSaveDialog}
         handleGoBack={handleGoBack}

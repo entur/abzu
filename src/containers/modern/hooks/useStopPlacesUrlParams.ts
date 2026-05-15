@@ -17,7 +17,7 @@ import StopPlaceActions from "../../../actions/StopPlaceActions";
 import {
   getGroupOfStopPlacesById,
   getStopPlaceById,
-} from "../../../actions/TiamatActions";
+} from "../../../actions/TiamatActions.modern";
 import formatHelpers from "../../../modelUtils/mapToClient";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {

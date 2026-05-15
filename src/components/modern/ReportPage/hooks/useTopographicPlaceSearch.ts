@@ -16,7 +16,7 @@ import { useCallback } from "react";
 import {
   getTopographicPlaces,
   topographicalPlaceSearch,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { FilterState, TopographicChip } from "../types";
 

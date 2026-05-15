@@ -15,7 +15,7 @@ limitations under the Licence. */
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { StopPlacesGroupActions, UserActions } from "../../actions/";
-import { getGroupOfStopPlacesById } from "../../actions/TiamatActions";
+import { getGroupOfStopPlacesById } from "../../actions/TiamatActions.modern";
 import GroupErrorDialog from "../../components/Dialogs/GroupErrorDialog";
 import Loader from "../../components/Dialogs/Loader";
 import { EditGroupOfStopPlaces } from "../../components/modern/GroupOfStopPlaces";

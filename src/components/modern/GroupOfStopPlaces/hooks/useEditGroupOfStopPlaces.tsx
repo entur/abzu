@@ -18,7 +18,7 @@ import { StopPlacesGroupActions, UserActions } from "../../../../actions/";
 import {
   deleteGroupOfStopPlaces,
   mutateGroupOfStopPlace,
-} from "../../../../actions/TiamatActions";
+} from "../../../../actions/TiamatActions.modern";
 import * as types from "../../../../actions/Types";
 import mapHelper from "../../../../modelUtils/mapToQueryVariables";
 import Routes from "../../../../routes/";

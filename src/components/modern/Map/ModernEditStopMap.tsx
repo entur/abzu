@@ -22,7 +22,7 @@ import Map, {
 } from "react-map-gl/maplibre";
 import { useNavigate } from "react-router-dom";
 import { StopPlaceActions, UserActions } from "../../../actions";
-import { getNeighbourStops } from "../../../actions/TiamatActions";
+import { getNeighbourStops } from "../../../actions/TiamatActions.modern";
 import { ConfigContext, MapConfig } from "../../../config/ConfigContext";
 import AppRoutes from "../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";

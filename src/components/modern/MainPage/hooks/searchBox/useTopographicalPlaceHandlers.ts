@@ -15,7 +15,7 @@ limitations under the Licence. */
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../../../../../actions/";
-import { findTopographicalPlace } from "../../../../../actions/TiamatActions";
+import { findTopographicalPlace } from "../../../../../actions/TiamatActions.modern";
 import { TopographicalDataSource } from "../../types";
 
 /**

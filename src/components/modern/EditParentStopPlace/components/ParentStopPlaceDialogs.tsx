@@ -42,7 +42,6 @@ interface ParentStopPlaceDialogsProps {
   terminateStopDialogOpen: boolean;
   removeChildDialogOpen: boolean;
   addChildDialogOpen: boolean;
-  addAdjacentDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   tagsDialogOpen: boolean;
   coordinatesDialogOpen: boolean;
@@ -51,6 +50,7 @@ interface ParentStopPlaceDialogsProps {
   childrenDialogOpen: boolean;
   versionsDialogOpen: boolean;
   versions: any[];
+  versionsLoading?: boolean;
 
   // Dialog handlers
   handleSave: (userInput: any) => void;
@@ -70,8 +70,6 @@ interface ParentStopPlaceDialogsProps {
   handleCloseRemoveChildDialog: () => void;
   handleAddChildren: (stopPlaceIds: string[]) => void;
   handleCloseAddChildDialog: () => void;
-  handleAddAdjacentSite: (stopPlaceId1: string, stopPlaceId2: string) => void;
-  handleCloseAddAdjacentDialog: () => void;
   handleCloseAltNamesDialog: () => void;
   handleCloseTagsDialog: () => void;
   handleSetCoordinates: (position: [number, number]) => void;
@@ -110,7 +108,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   terminateStopDialogOpen,
   removeChildDialogOpen,
   addChildDialogOpen,
-  addAdjacentDialogOpen,
   altNamesDialogOpen,
   tagsDialogOpen,
   coordinatesDialogOpen,
@@ -119,6 +116,7 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   childrenDialogOpen,
   versionsDialogOpen,
   versions,
+  versionsLoading,
   handleSave,
   handleCloseSaveDialog,
   handleGoBack,
@@ -131,8 +129,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   handleCloseRemoveChildDialog,
   handleAddChildren,
   handleCloseAddChildDialog,
-  handleAddAdjacentSite,
-  handleCloseAddAdjacentDialog,
   handleCloseAltNamesDialog,
   handleCloseTagsDialog,
   handleSetCoordinates,
@@ -220,11 +216,7 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
       )}
 
       {/* Add Adjacent Stop Dialog */}
-      <AddAdjacentStopsDialog
-        open={addAdjacentDialogOpen}
-        handleClose={handleCloseAddAdjacentDialog}
-        handleConfirm={handleAddAdjacentSite}
-      />
+      <AddAdjacentStopsDialog />
 
       {/* Alternative Names Dialog */}
       <AltNamesDialog
@@ -287,7 +279,10 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
       <VersionsDialog
         open={versionsDialogOpen}
         versions={versions}
+        loading={versionsLoading}
         handleClose={handleCloseVersionsDialog}
+        stopPlaceId={stopPlace?.id || ""}
+        currentVersion={stopPlace?.version}
       />
 
       {/* Children Dialog */}

@@ -103,10 +103,21 @@ export const NeighbourMarkers = () => {
   const neighbourStops = useAppSelector(
     (state) => (state.stopPlace as any).neighbourStops as NeighbourStop[],
   );
+  const currentId = useAppSelector(
+    (state) => (state.stopPlace as any).current?.id as string | undefined,
+  );
+  const currentChildren = useAppSelector((state) => {
+    const current = (state.stopPlace as any).current;
+    return current?.isParent
+      ? ((current.children ?? []).map((c: any) => c.id as string) as string[])
+      : [];
+  });
 
   if (!neighbourStops?.length) return null;
 
-  const visibleStops = neighbourStops;
+  const visibleStops = neighbourStops.filter(
+    (stop) => stop.id !== currentId && !currentChildren.includes(stop.id),
+  );
 
   return (
     <>
