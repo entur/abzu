@@ -772,14 +772,13 @@ class SearchBox extends React.Component {
                       <MenuItem onClick={() => this.handleNewStop(false)}>
                         {formatMessage({ id: "new_stop" })}
                       </MenuItem>
-                      <MenuItem
-                        disabled={multiModalStopPlaceCreationDisabled}
-                        onClick={() => this.handleNewStop(true)}
-                      >
-                        {formatMessage({
-                          id: "new__multi_stop",
-                        })}
-                      </MenuItem>
+                      {!multiModalStopPlaceCreationDisabled && (
+                        <MenuItem onClick={() => this.handleNewStop(true)}>
+                          {formatMessage({
+                            id: "new__multi_stop",
+                          })}
+                        </MenuItem>
+                      )}
                     </Menu>
                   </div>
                 )}
