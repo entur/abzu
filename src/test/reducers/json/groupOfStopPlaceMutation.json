@@ -14,7 +14,7 @@
           "submode": null,
           "description": null,
           "geometry": {
-            "legacyCoordinates": [[5.742027, 58.954075]],
+            "coordinates": [5.742027, 58.954075],
             "type": "Point",
             "__typename": "GeoJSON"
           },
@@ -24,7 +24,7 @@
               "privateCode": null,
               "publicCode": "",
               "geometry": {
-                "legacyCoordinates": [[5.742127, 58.954487]],
+                "coordinates": [5.742127, 58.954487],
                 "type": "Point",
                 "__typename": "GeoJSON"
               },
@@ -35,7 +35,7 @@
               "privateCode": null,
               "publicCode": "",
               "geometry": {
-                "legacyCoordinates": [[5.741927, 58.953663]],
+                "coordinates": [5.741927, 58.953663],
                 "type": "Point",
                 "__typename": "GeoJSON"
               },
@@ -54,7 +54,7 @@
           "submode": "railReplacementBus",
           "description": null,
           "geometry": {
-            "legacyCoordinates": [[5.741593, 58.956267]],
+            "coordinates": [5.741593, 58.956267],
             "type": "Point",
             "__typename": "GeoJSON"
           },
@@ -64,7 +64,7 @@
               "privateCode": null,
               "publicCode": null,
               "geometry": {
-                "legacyCoordinates": [[5.741593, 58.956267]],
+                "coordinates": [5.741593, 58.956267],
                 "type": "Point",
                 "__typename": "GeoJSON"
               },
@@ -86,7 +86,7 @@
             "__typename": "EmbeddableMultilingualString"
           },
           "geometry": {
-            "legacyCoordinates": [[5.738058, 58.955028]],
+            "coordinates": [5.738058, 58.955028],
             "type": "Point",
             "__typename": "GeoJSON"
           },
@@ -96,7 +96,7 @@
               "privateCode": { "value": "", "__typename": "PrivateCode" },
               "publicCode": "",
               "geometry": {
-                "legacyCoordinates": [[5.738073, 58.95505]],
+                "coordinates": [5.738073, 58.95505],
                 "type": "Point",
                 "__typename": "GeoJSON"
               },
@@ -107,7 +107,7 @@
               "privateCode": { "value": "", "__typename": "PrivateCode" },
               "publicCode": "",
               "geometry": {
-                "legacyCoordinates": [[5.738042, 58.955006]],
+                "coordinates": [5.738042, 58.955006],
                 "type": "Point",
                 "__typename": "GeoJSON"
               },

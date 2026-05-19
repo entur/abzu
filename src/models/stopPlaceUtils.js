@@ -105,7 +105,7 @@ export const netexifyPlaceEquipment = (placeEquipments) => {
 export const simplifyBoardingPositions = (boardingPositions) => {
   if (boardingPositions) {
     return boardingPositions.map((bp) => {
-      let coordinates = bp.geometry.legacyCoordinates[0].slice();
+      let coordinates = bp.geometry.coordinates.slice();
       return {
         id: bp.id,
         publicCode: bp.publicCode,
@@ -124,7 +124,7 @@ export const netexifyBoardingPositions = (boardingPositions) => {
   return boardingPositions.map((bp) => {
     return {
       geometry: {
-        legacyCoordinates: [[bp.location[1], bp.location[0]]],
+        coordinates: [bp.location[1], bp.location[0]],
         type: "Point",
       },
       publicCode: bp.publicCode,

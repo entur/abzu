@@ -31,7 +31,7 @@ export const neighbourStopPlaceQuays = gql`
             id
             version
             geometry {
-              legacyCoordinates
+              coordinates
             }
             compassBearing
             publicCode
@@ -51,7 +51,7 @@ export const neighbourStopPlaceQuays = gql`
           id
           version
           geometry {
-            legacyCoordinates
+            coordinates
           }
           compassBearing
           publicCode
@@ -85,7 +85,7 @@ export const stopPlaceBBQuery = gql`
       id
       version
       geometry {
-        legacyCoordinates
+        coordinates
       }
       name {
         value
@@ -122,7 +122,7 @@ export const stopPlaceBBQuery = gql`
           stopPlaceType
           submode
           geometry {
-            legacyCoordinates
+            coordinates
           }
           topographicPlace {
             id
@@ -218,7 +218,7 @@ export const getStopById = gql`
         createdBy
       }
       geometry {
-        legacyCoordinates
+        coordinates
       }
       validBetween {
         fromDate
@@ -267,7 +267,7 @@ export const getStopById = gql`
           ...EntityPermissions
         }
         geometry {
-          legacyCoordinates
+          coordinates
           type
         }
         children {
@@ -282,7 +282,7 @@ export const getStopById = gql`
           transportMode
           submode
           geometry {
-            legacyCoordinates
+            coordinates
           }
           permissions {
             ...EntityPermissions
@@ -321,7 +321,7 @@ export const findStop = gql`
         }
         geometry {
           type
-          legacyCoordinates
+          coordinates
         }
         permissions {
           ...EntityPermissions
@@ -381,7 +381,7 @@ export const findStop = gql`
         createdBy
       }
       geometry {
-        legacyCoordinates
+        coordinates
       }
       validBetween {
         fromDate
@@ -424,7 +424,7 @@ export const findStop = gql`
       }
       ... on ParentStopPlace {
         geometry {
-          legacyCoordinates
+          coordinates
           type
         }
         children {
@@ -438,7 +438,7 @@ export const findStop = gql`
           transportMode
           submode
           geometry {
-            legacyCoordinates
+            coordinates
           }
           permissions {
             canEdit
@@ -672,7 +672,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
                 }
                 submode
                 geometry {
-                  legacyCoordinates
+                  coordinates
                 }
                 transportMode
                 stopPlaceType
@@ -698,7 +698,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
                   ...EntityPermissions
                 }
                 geometry {
-                  legacyCoordinates
+                  coordinates
                 }
                 children {
                     id
@@ -706,7 +706,7 @@ export const getStopPlacesById = (stopPlaceIds) => {
                     stopPlaceType
                     submode
                     geometry {
-                      legacyCoordinates
+                      coordinates
                     }
                 }
             }
@@ -781,7 +781,7 @@ export const findTariffZonesByIds = gql`
       }
       polygon {
         type
-        legacyCoordinates
+        coordinates
       }
     }
   }
@@ -799,7 +799,7 @@ export const findFareZones = gql`
       }
       polygon {
         type
-        legacyCoordinates
+        coordinates
       }
     }
   }

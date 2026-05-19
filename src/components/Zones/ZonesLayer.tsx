@@ -18,7 +18,7 @@ export const ZonesLayer = <T extends TariffZone>({
       {zones.map((zone) => (
         <Polygon
           key={zone.id}
-          positions={zone.polygon.legacyCoordinates}
+          positions={zone.polygon.coordinates}
           pathOptions={{
             fillColor: `#${getColor(zone)}`,
             color: `#${getColor(zone)}`,
