@@ -30,6 +30,10 @@ export interface Config {
    * Hides "Move quays to new stop place" button
    */
   disableMoveQuaysToNewStopPlace?: boolean;
+  /**
+   * These keys will always be shown in UI and cannot be deleted
+   */
+  mandatoryKeyValuesSet?: MandatoryKeyValuesSet;
 }
 
 export interface MapConfig {
@@ -64,6 +68,17 @@ export interface ModalityConfig {
    * Example: ["other", "someOtherType"]
    */
   hiddenStopTypes?: string[];
+}
+
+export type MandatoryKeyValuesSupportedTransportMode =
+  | "rail"
+  | "bus"
+  | "tram"
+  | "all";
+
+export interface MandatoryKeyValuesSet {
+  stopPlace: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
+  quay: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
 }
 
 export const ConfigContext = React.createContext<Config>({});
