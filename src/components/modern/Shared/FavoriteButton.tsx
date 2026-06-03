@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import {
-  StarBorder as StarBorderIcon,
-  Star as StarIcon,
+  BookmarkBorder as BookmarkBorderIcon,
+  Bookmark as BookmarkIcon,
 } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -102,9 +102,9 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
         }
       >
         {isFavorite ? (
-          <StarIcon sx={{ width: 20, height: 20 }} />
+          <BookmarkIcon sx={{ width: 20, height: 20 }} />
         ) : (
-          <StarBorderIcon sx={{ width: 20, height: 20 }} />
+          <BookmarkBorderIcon sx={{ width: 20, height: 20 }} />
         )}
       </IconButton>
     </Tooltip>

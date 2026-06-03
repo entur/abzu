@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import {
+  Bookmark as BookmarkIcon,
   FilterList as FilterIcon,
-  Star as StarIcon,
 } from "@mui/icons-material";
 import {
   Autocomplete,
@@ -107,7 +107,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           return (
             <TextField
               {...textFieldProps}
-              label={formatMessage({ id: "filter_by_name" })}
               variant="outlined"
               fullWidth
               size="small"
@@ -132,7 +131,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                               id: "toggle_favorites",
                             })}
                           >
-                            <StarIcon fontSize="small" />
+                            <BookmarkIcon fontSize="small" />
                           </IconButton>
                         </InputAdornment>
                       )}
@@ -168,7 +167,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                     </>
                   ),
                 },
-                htmlInput: safeNativeInputProps,
+                htmlInput: {
+                  ...safeNativeInputProps,
+                  placeholder: formatMessage({ id: "filter_by_name" }),
+                },
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -190,11 +192,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                       borderWidth: 0,
                       border: "none",
                     },
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  "&.Mui-focused": {
-                    color: "transparent",
                   },
                 },
               }}

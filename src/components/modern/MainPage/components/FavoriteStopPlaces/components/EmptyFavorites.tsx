@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Star as StarIcon } from "@mui/icons-material";
+import { BookmarkBorder as BookmarkBorderIcon } from "@mui/icons-material";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useIntl } from "react-intl";
 
@@ -26,7 +26,7 @@ export const EmptyFavorites: React.FC = () => {
 
   return (
     <Box sx={{ p: 2, textAlign: "center" }}>
-      <StarIcon
+      <BookmarkBorderIcon
         sx={{
           fontSize: 48,
           color: theme.palette.action.disabled,
