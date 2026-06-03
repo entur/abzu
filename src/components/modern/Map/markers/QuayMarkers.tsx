@@ -101,7 +101,7 @@ const QuayMarkerItem = ({
               sx={{
                 position: "absolute",
                 fontSize: `${scale}rem`,
-                color: focused ? "warning.main" : "success.main",
+                color: "warning.main",
                 left: "50%",
                 top: "50%",
                 pointerEvents: "none",
@@ -118,13 +118,13 @@ const QuayMarkerItem = ({
               width: Math.round(QUAY_SIZE * scale),
               height: Math.round(QUAY_SIZE * scale),
               borderRadius: "50%",
-              bgcolor: focused ? "warning.main" : "success.main",
+              bgcolor: "warning.main",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              border: "2px solid",
-              borderColor: "background.paper",
+              border: "3px solid",
+              borderColor: "warning.contrastText",
               boxShadow: focused
                 ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
                 : "0 2px 4px rgba(0,0,0,0.35)",
@@ -135,9 +135,7 @@ const QuayMarkerItem = ({
           >
             <Typography
               sx={{
-                color: focused
-                  ? "warning.contrastText"
-                  : "success.contrastText",
+                color: "warning.contrastText",
                 fontWeight: 800,
                 fontSize: `${0.75 * scale}rem`,
                 lineHeight: 1,
