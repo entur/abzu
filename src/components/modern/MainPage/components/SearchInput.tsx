@@ -85,8 +85,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             },
           },
           popper: {
+            placement: "bottom-start",
+            modifiers: [{ name: "flip", enabled: false }],
             sx: {
-              zIndex: theme.zIndex.modal + 10, // Higher than any dropdown content
+              zIndex: theme.zIndex.modal + 10,
               width: "100%",
               maxWidth: { xs: "calc(100vw - 32px)", sm: "460px" },
             },
