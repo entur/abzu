@@ -60,14 +60,14 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
               width: Math.round(CHILD_MARKER_SIZE * scale),
               height: Math.round(CHILD_MARKER_SIZE * scale),
               borderRadius: "50%",
-              bgcolor: "background.paper",
+              bgcolor: "primary.main",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
               boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
               border: "3px solid",
-              borderColor: "primary.main",
+              borderColor: "background.paper",
               "&:hover": { transform: "scale(1.1)" },
               transition: "transform 0.15s",
             }}
@@ -78,6 +78,7 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
               style={{
                 width: Math.round(20 * scale),
                 height: Math.round(20 * scale),
+                filter: "brightness(0) invert(1)",
               }}
             />
           </Box>
@@ -145,14 +146,14 @@ export const StopPlaceMarker = () => {
               width: Math.round(MARKER_SIZE * scale),
               height: Math.round(MARKER_SIZE * scale),
               borderRadius: "50%",
-              bgcolor: "background.paper",
+              bgcolor: "primary.main",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
               boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
               border: "3px solid",
-              borderColor: "primary.main",
+              borderColor: "background.paper",
               "&:hover": { transform: "scale(1.1)" },
               transition: "transform 0.15s",
             }}
@@ -160,7 +161,7 @@ export const StopPlaceMarker = () => {
             {isParent ? (
               <Typography
                 sx={{
-                  color: "text.primary",
+                  color: "primary.contrastText",
                   fontWeight: 800,
                   fontSize: `${0.85 * scale}rem`,
                   lineHeight: 1,
@@ -177,6 +178,7 @@ export const StopPlaceMarker = () => {
                 style={{
                   width: Math.round(24 * scale),
                   height: Math.round(24 * scale),
+                  filter: "brightness(0) invert(1)",
                 }}
               />
             )}

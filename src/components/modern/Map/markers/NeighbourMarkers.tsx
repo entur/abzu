@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Tooltip, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+
 import { useState } from "react";
 import { Marker } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
@@ -43,7 +43,7 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
         <Tooltip title={stop.name || stop.id} placement="top" arrow>
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
-            sx={(theme) => ({
+            sx={{
               width: Math.round(NEIGHBOUR_SIZE * scale),
               height: Math.round(NEIGHBOUR_SIZE * scale),
               borderRadius: "50%",
@@ -53,17 +53,17 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
               justifyContent: "center",
               cursor: "pointer",
               border: "2px solid",
-              borderColor: alpha(theme.palette.primary.main, 0.6),
+              borderColor: stop.hasExpired ? "error.main" : "primary.main",
               boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-              opacity: 0.7,
-              transition: "transform 0.15s, opacity 0.15s",
-              "&:hover": { transform: "scale(1.15)", opacity: 1 },
-            })}
+              opacity: stop.permanentlyTerminated || stop.hasExpired ? 0.5 : 1,
+              transition: "transform 0.15s",
+              "&:hover": { transform: "scale(1.15)" },
+            }}
           >
             {stop.isParent ? (
               <Typography
                 sx={{
-                  color: "text.disabled",
+                  color: "text.primary",
                   fontWeight: 800,
                   fontSize: `${0.7 * scale}rem`,
                   lineHeight: 1,
@@ -80,7 +80,6 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
                 style={{
                   width: Math.round(20 * scale),
                   height: Math.round(20 * scale),
-                  opacity: 0.6,
                 }}
               />
             )}

@@ -96,6 +96,7 @@ export interface NeighbourStop {
   isParent?: boolean;
   isChildOfParent?: boolean;
   hasExpired?: boolean;
+  permanentlyTerminated?: boolean;
   belongsToGroup?: boolean;
   permissions?: { canEdit: boolean };
   children?: ChildStop[];
