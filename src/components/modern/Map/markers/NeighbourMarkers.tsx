@@ -44,6 +44,7 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
             sx={{
+              position: "relative",
               width: Math.round(NEIGHBOUR_SIZE * scale),
               height: Math.round(NEIGHBOUR_SIZE * scale),
               borderRadius: "50%",
@@ -53,7 +54,10 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
               justifyContent: "center",
               cursor: "pointer",
               border: "2px solid",
-              borderColor: stop.hasExpired ? "error.main" : "primary.main",
+              borderColor:
+                stop.permanentlyTerminated || stop.hasExpired
+                  ? "error.main"
+                  : "primary.main",
               boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
               opacity: stop.permanentlyTerminated || stop.hasExpired ? 0.5 : 1,
               transition: "transform 0.15s",
@@ -82,6 +86,29 @@ const NeighbourMarkerItem = ({ stop }: NeighbourMarkerItemProps) => {
                   height: Math.round(20 * scale),
                 }}
               />
+            )}
+            {stop.permanentlyTerminated && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  pointerEvents: "none",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    width: "141%",
+                    height: "2px",
+                    bgcolor: "error.main",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%) rotate(45deg)",
+                  }}
+                />
+              </Box>
             )}
           </Box>
         </Tooltip>
