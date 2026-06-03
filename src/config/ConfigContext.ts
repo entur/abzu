@@ -31,6 +31,10 @@ export interface Config {
    */
   disableMoveQuaysToNewStopPlace?: boolean;
   /**
+   * These keys will always be shown in UI and cannot be deleted
+   */
+  mandatoryKeyValuesSet?: MandatoryKeyValuesSet;
+  /**
    * Path to a single custom theme config JSON file (legacy singular field).
    */
   themeConfig?: string;
@@ -80,6 +84,27 @@ export interface ModalityConfig {
    * Example: ["other", "someOtherType"]
    */
   hiddenStopTypes?: string[];
+  /**
+   * When true, all UI controls for creating new MultiModal (parent) StopPlaces are hidden.
+   * Existing MultiModal StopPlaces can still be viewed and edited.
+   */
+  disableMultiModalStopPlaceCreation?: boolean;
+  /**
+   * When true, all UI controls for creating new Group of Stop Places are hidden.
+   * Existing Groups of Stop Places can still be viewed and edited.
+   */
+  disableGroupOfStopPlacesCreation?: boolean;
+}
+
+export type MandatoryKeyValuesSupportedTransportMode =
+  | "rail"
+  | "bus"
+  | "tram"
+  | "all";
+
+export interface MandatoryKeyValuesSet {
+  stopPlace: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
+  quay: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
 }
 
 export const ConfigContext = React.createContext<Config>({});
