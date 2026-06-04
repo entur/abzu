@@ -10,8 +10,10 @@ const About = () => {
   const defaultLink =
     "https://www.fintraffic.fi/fi/digitaalisetpalvelut/fintrafficin-datapalvelut/liikkumisen-tietopalvelut/peti";
 
-  const swedishPrivacyPolicyLink = "https://www.fintraffic.fi/sites/default/files/2026-04/Dataskyddsbeskrivning_PETI.pdf";
-  const defaultPrivacyPolicyLink = "https://www.fintraffic.fi/sites/default/files/2026-04/Tietosuojaseloste_PETI.pdf";
+  const swedishPrivacyPolicyLink =
+    "https://www.fintraffic.fi/sites/default/files/2026-04/Dataskyddsbeskrivning_PETI.pdf";
+  const defaultPrivacyPolicyLink =
+    "https://www.fintraffic.fi/sites/default/files/2026-04/Tietosuojaseloste_PETI.pdf";
 
   return (
     <MoreMenuItem
@@ -37,7 +39,9 @@ const About = () => {
         localisationId={"Fintraffic-terms"}
       />
       <ExternalLinkMenuItem
-        href={locale == "sv" ? swedishPrivacyPolicyLink : defaultPrivacyPolicyLink}
+        href={
+          locale == "sv" ? swedishPrivacyPolicyLink : defaultPrivacyPolicyLink
+        }
         localisationId={"Fintraffic-privacy"}
       />
       <ExternalLinkMenuItem
