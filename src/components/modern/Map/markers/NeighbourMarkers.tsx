@@ -138,12 +138,19 @@ export const NeighbourMarkers = () => {
       ? ((current.children ?? []).map((c: any) => c.id as string) as string[])
       : [];
   });
+  const showExpiredStops = useAppSelector(
+    (state) => (state.stopPlace as any).showExpiredStops as boolean,
+  );
 
   if (!neighbourStops?.length) return null;
 
-  const visibleStops = neighbourStops.filter(
-    (stop) => stop.id !== currentId && !currentChildren.includes(stop.id),
-  );
+  const visibleStops = neighbourStops.filter((stop) => {
+    if (stop.id === currentId || currentChildren.includes(stop.id))
+      return false;
+    if (!showExpiredStops && (stop.hasExpired || stop.permanentlyTerminated))
+      return false;
+    return true;
+  });
 
   return (
     <>

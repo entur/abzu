@@ -16,6 +16,7 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -98,7 +99,39 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* ── Header ── */}
+      {/* ── Stop place context row ── */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          px: 1.5,
+          py: 0.75,
+          gap: 0.5,
+          bgcolor: "background.default",
+          flexShrink: 0,
+        }}
+      >
+        <LocationOnIcon
+          sx={{ fontSize: "0.9rem", color: "text.secondary", flexShrink: 0 }}
+        />
+        <Typography variant="caption" color="text.secondary" noWrap>
+          {stopPlace.name || formatMessage({ id: "new_stop_title" })}
+        </Typography>
+        {stopPlace.id && (
+          <Typography
+            variant="caption"
+            color="text.disabled"
+            noWrap
+            sx={{ ml: 0.25 }}
+          >
+            · {stopPlace.id}
+          </Typography>
+        )}
+      </Box>
+
+      <Divider />
+
+      {/* ── Quay header ── */}
       <Box
         sx={{
           display: "flex",

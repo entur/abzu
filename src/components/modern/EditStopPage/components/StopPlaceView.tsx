@@ -13,7 +13,7 @@
  * limitations under the Licence. */
 
 import AccessibleIcon from "@mui/icons-material/Accessible";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -97,9 +97,9 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
           gap: 0.5,
         }}
       >
-        <Tooltip title={formatMessage({ id: "go_back" })}>
+        <Tooltip title={formatMessage({ id: "close" })}>
           <IconButton size="small" onClick={onGoBack}>
-            <ArrowBackIcon fontSize="small" />
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Tooltip>
         <Box sx={{ flex: 1, minWidth: 0 }}>

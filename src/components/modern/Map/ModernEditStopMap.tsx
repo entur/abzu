@@ -112,6 +112,23 @@ export const ModernEditStopMap = () => {
     neighbourStateRef.current = { currentStopId, showExpiredStops };
   }, [currentStopId, showExpiredStops]);
 
+  // Re-fetch neighbour stops immediately when showExpiredStops changes,
+  // in case the map is already zoomed in and the user is not moving it.
+  useEffect(() => {
+    const map = mapRef.current?.getMap();
+    if (!map) return;
+    if (map.getZoom() <= NEIGHBOUR_STOPS_MIN_ZOOM) return;
+    dispatch(
+      getNeighbourStops(
+        neighbourStateRef.current.currentStopId,
+        map.getBounds(),
+        showExpiredStops,
+      ),
+    );
+    // currentStopId intentionally excluded — this only reacts to the toggle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showExpiredStops, dispatch]);
+
   const initialViewState = useMemo(
     () => ({
       latitude: centerPosition[0],

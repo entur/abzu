@@ -15,6 +15,7 @@ limitations under the Licence. */
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SaveIcon from "@mui/icons-material/Save";
 import {
   Box,
@@ -100,7 +101,39 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* Header */}
+      {/* ── Stop place context row ── */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          px: 1.5,
+          py: 0.75,
+          gap: 0.5,
+          bgcolor: "background.default",
+          flexShrink: 0,
+        }}
+      >
+        <LocationOnIcon
+          sx={{ fontSize: "0.9rem", color: "text.secondary", flexShrink: 0 }}
+        />
+        <Typography variant="caption" color="text.secondary" noWrap>
+          {stopPlace.name || formatMessage({ id: "new_stop_title" })}
+        </Typography>
+        {stopPlace.id && (
+          <Typography
+            variant="caption"
+            color="text.disabled"
+            noWrap
+            sx={{ ml: 0.25 }}
+          >
+            · {stopPlace.id}
+          </Typography>
+        )}
+      </Box>
+
+      <Divider />
+
+      {/* ── Parking header ── */}
       <Box
         sx={{
           display: "flex",
@@ -116,13 +149,16 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             <ArrowBackIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Typography
-          variant="subtitle1"
-          sx={{ flex: 1, fontWeight: 600 }}
-          noWrap
-        >
-          {displayName}
-        </Typography>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
+            {displayName}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {formatMessage({
+              id: `parking_item_title_${parking.parkingType || "parkAndRide"}`,
+            })}
+          </Typography>
+        </Box>
         {parking.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
             <Typography variant="caption" color="text.secondary">
@@ -138,17 +174,6 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             color="warning"
           />
         )}
-      </Box>
-
-      <Divider />
-
-      {/* Section title */}
-      <Box sx={{ px: 2, py: 1, bgcolor: "background.default" }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {formatMessage({
-            id: `parking_item_title_${parking.parkingType || "parkAndRide"}`,
-          })}
-        </Typography>
       </Box>
 
       <Divider />
