@@ -7,12 +7,13 @@ const UserGuide = () => {
   const { extUserGuideLink } = useConfig();
   const defaultUserGuideLink =
     "https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry";
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale, defaultLocale } = useIntl();
+  const userGuideLink = extUserGuideLink ? extUserGuideLink[locale || defaultLocale] : defaultUserGuideLink
 
   return (
     <MenuItem
       component={"a"}
-      href={extUserGuideLink || defaultUserGuideLink}
+      href={userGuideLink}
       target="_blank"
       style={{
         fontSize: 12,
