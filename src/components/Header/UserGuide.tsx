@@ -8,7 +8,9 @@ const UserGuide = () => {
   const defaultUserGuideLink =
     "https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/1225523302/User+guide+national+stop+place+registry";
   const { formatMessage, locale, defaultLocale } = useIntl();
-  const userGuideLink = extUserGuideLink ? extUserGuideLink[locale || defaultLocale] : defaultUserGuideLink
+  const userGuideLink = extUserGuideLink
+    ? extUserGuideLink[locale || defaultLocale]
+    : defaultUserGuideLink;
 
   return (
     <MenuItem
