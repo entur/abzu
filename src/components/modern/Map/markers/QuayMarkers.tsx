@@ -15,12 +15,14 @@ limitations under the Licence. */
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import type { CrosshairSetting } from "../crosshair";
+import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { QuayBearingIndicator } from "./QuayBearingIndicator";
 import { QuayPopup } from "./QuayPopup";
@@ -50,6 +52,8 @@ const QuayMarkerItem = ({
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
   const [isEditingBearing, setIsEditingBearing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
 
   if (!quay.location) return null;
@@ -69,7 +73,13 @@ const QuayMarkerItem = ({
 
   const handleEndEditBearing = () => setIsEditingBearing(false);
 
+  const handleDragStart = () => {
+    crosshairRef.current = getCrosshairPreference();
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: MarkerDragEvent) => {
+    setIsDragging(false);
     dispatch(
       StopPlaceActions.changeElementPosition(
         { markerIndex: index, type: "quay" },
@@ -77,6 +87,8 @@ const QuayMarkerItem = ({
       ),
     );
   };
+
+  const showCrosshair = isDragging && crosshairRef.current !== "none";
 
   return (
     <>
@@ -92,61 +104,68 @@ const QuayMarkerItem = ({
         latitude={lat}
         longitude={lng}
         draggable={!disabled}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
       >
-        <Box sx={{ position: "relative", display: "inline-flex" }}>
-          {showCompassBearing && hasBearing && !isEditingBearing && (
-            <NavigationIcon
-              sx={{
-                position: "absolute",
-                fontSize: `${scale}rem`,
-                color: "warning.main",
-                left: "50%",
-                top: "50%",
-                pointerEvents: "none",
-                transform: `translate(-50%, -50%) rotate(${quay.compassBearing}deg) translateY(-${Math.round((QUAY_SIZE / 2 + QUAY_ORBIT_OFFSET) * scale)}px)`,
+        {showCrosshair ? (
+          <DragCrosshair
+            type={crosshairRef.current as Exclude<CrosshairSetting, "none">}
+          />
+        ) : (
+          <Box sx={{ position: "relative", display: "inline-flex" }}>
+            {showCompassBearing && hasBearing && !isEditingBearing && (
+              <NavigationIcon
+                sx={{
+                  position: "absolute",
+                  fontSize: `${scale}rem`,
+                  color: "warning.main",
+                  left: "50%",
+                  top: "50%",
+                  pointerEvents: "none",
+                  transform: `translate(-50%, -50%) rotate(${quay.compassBearing}deg) translateY(-${Math.round((QUAY_SIZE / 2 + QUAY_ORBIT_OFFSET) * scale)}px)`,
+                }}
+              />
+            )}
+            <Box
+              onClick={(e) => {
+                dispatch(StopPlaceActions.setElementFocus(index, "quay"));
+                setPopupAnchor(e.currentTarget);
               }}
-            />
-          )}
-          <Box
-            onClick={(e) => {
-              dispatch(StopPlaceActions.setElementFocus(index, "quay"));
-              setPopupAnchor(e.currentTarget);
-            }}
-            sx={(theme) => ({
-              width: Math.round(QUAY_SIZE * scale),
-              height: Math.round(QUAY_SIZE * scale),
-              borderRadius: "50%",
-              bgcolor: "warning.main",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              border: "3px solid",
-              borderColor: "warning.contrastText",
-              boxShadow: focused
-                ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
-                : "0 2px 4px rgba(0,0,0,0.35)",
-              transform: focused ? "scale(1.2)" : "none",
-              transition: "all 0.15s",
-              "&:hover": { transform: "scale(1.25)" },
-            })}
-          >
-            <Typography
-              sx={{
-                color: "warning.contrastText",
-                fontWeight: 800,
-                fontSize: `${0.75 * scale}rem`,
-                lineHeight: 1,
-                letterSpacing: "0.01em",
-                userSelect: "none",
-              }}
+              sx={(theme) => ({
+                width: Math.round(QUAY_SIZE * scale),
+                height: Math.round(QUAY_SIZE * scale),
+                borderRadius: "50%",
+                bgcolor: "warning.main",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                border: "3px solid",
+                borderColor: "warning.contrastText",
+                boxShadow: focused
+                  ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
+                  : "0 2px 4px rgba(0,0,0,0.35)",
+                transform: focused ? "scale(1.2)" : "none",
+                transition: "all 0.15s",
+                "&:hover": { transform: "scale(1.25)" },
+              })}
             >
-              {label}
-            </Typography>
+              <Typography
+                sx={{
+                  color: "warning.contrastText",
+                  fontWeight: 800,
+                  fontSize: `${0.75 * scale}rem`,
+                  lineHeight: 1,
+                  letterSpacing: "0.01em",
+                  userSelect: "none",
+                }}
+              >
+                {label}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        )}
       </Marker>
 
       <QuayPopup

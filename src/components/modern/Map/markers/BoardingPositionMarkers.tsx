@@ -14,12 +14,14 @@ limitations under the Licence. */
 
 import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import type { CrosshairSetting } from "../crosshair";
+import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type {
@@ -46,6 +48,8 @@ const BoardingPositionItem = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
 
   if (!boardingPosition.location) return null;
@@ -53,7 +57,13 @@ const BoardingPositionItem = ({
   const [lat, lng] = boardingPosition.location;
   const label = boardingPosition.publicCode ?? "";
 
+  const handleDragStart = () => {
+    crosshairRef.current = getCrosshairPreference();
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: MarkerDragEvent) => {
+    setIsDragging(false);
     dispatch(
       StopPlaceActions.changeElementPosition(
         { markerIndex: bpIndex, type: "boarding-position", quayIndex },
@@ -62,49 +72,58 @@ const BoardingPositionItem = ({
     );
   };
 
+  const showCrosshair = isDragging && crosshairRef.current !== "none";
+
   return (
     <>
       <Marker
         latitude={lat}
         longitude={lng}
         draggable
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
       >
-        <Box
-          onClick={(e) => setPopupAnchor(e.currentTarget)}
-          sx={(theme) => ({
-            width: Math.round(BP_SIZE * scale),
-            height: Math.round(BP_SIZE * scale),
-            borderRadius: "50%",
-            bgcolor: focused ? "warning.main" : "background.paper",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            border: "2px solid",
-            borderColor: focused ? "warning.main" : "secondary.main",
-            boxShadow: focused
-              ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 4px rgba(0,0,0,0.4)`
-              : "0 1px 3px rgba(0,0,0,0.35)",
-            transform: focused ? "scale(1.2)" : "none",
-            transition: "all 0.15s",
-            "&:hover": { transform: "scale(1.25)" },
-          })}
-        >
-          <Typography
-            sx={{
-              color: focused ? "warning.contrastText" : "secondary.main",
-              fontWeight: 800,
-              fontSize: `${0.7 * scale}rem`,
-              lineHeight: 1,
-              letterSpacing: "0.01em",
-              userSelect: "none",
-            }}
+        {showCrosshair ? (
+          <DragCrosshair
+            type={crosshairRef.current as Exclude<CrosshairSetting, "none">}
+          />
+        ) : (
+          <Box
+            onClick={(e) => setPopupAnchor(e.currentTarget)}
+            sx={(theme) => ({
+              width: Math.round(BP_SIZE * scale),
+              height: Math.round(BP_SIZE * scale),
+              borderRadius: "50%",
+              bgcolor: focused ? "warning.main" : "background.paper",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              border: "2px solid",
+              borderColor: focused ? "warning.main" : "secondary.main",
+              boxShadow: focused
+                ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 4px rgba(0,0,0,0.4)`
+                : "0 1px 3px rgba(0,0,0,0.35)",
+              transform: focused ? "scale(1.2)" : "none",
+              transition: "all 0.15s",
+              "&:hover": { transform: "scale(1.25)" },
+            })}
           >
-            {label}
-          </Typography>
-        </Box>
+            <Typography
+              sx={{
+                color: focused ? "warning.contrastText" : "secondary.main",
+                fontWeight: 800,
+                fontSize: `${0.7 * scale}rem`,
+                lineHeight: 1,
+                letterSpacing: "0.01em",
+                userSelect: "none",
+              }}
+            >
+              {label}
+            </Typography>
+          </Box>
+        )}
       </Marker>
 
       <MarkerPopup

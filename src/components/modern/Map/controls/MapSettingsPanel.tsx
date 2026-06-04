@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { DefaultMapSettingsDialog } from "../../Dialogs/DefaultMapSettingsDialog";
+import { CrosshairPicker } from "../crosshair";
 
 export const MapSettingsPanel: React.FC = () => {
   const { formatMessage } = useIntl();
@@ -186,6 +187,9 @@ export const MapSettingsPanel: React.FC = () => {
           </MenuItem>
         ))}
       </MenuList>
+
+      <Divider sx={{ my: 1 }} />
+      <CrosshairPicker />
 
       <DefaultMapSettingsDialog
         open={showSettingsDialog}

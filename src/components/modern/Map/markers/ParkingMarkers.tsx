@@ -16,13 +16,15 @@ import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import { Box, Chip, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import type { CrosshairSetting } from "../crosshair";
+import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { MarkerPopup } from "./MarkerPopup";
 import type { FocusedElement, MapParking, MapStopPlace } from "./types";
@@ -46,6 +48,8 @@ const ParkingMarkerItem = ({
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
 
   if (!parking.location) return null;
@@ -57,7 +61,13 @@ const ParkingMarkerItem = ({
     : "parking_item_title_parkAndRide";
   const title = parking.name || formatMessage({ id: titleFallbackKey });
 
+  const handleDragStart = () => {
+    crosshairRef.current = getCrosshairPreference();
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: MarkerDragEvent) => {
+    setIsDragging(false);
     dispatch(
       StopPlaceActions.changeElementPosition(
         { markerIndex: index, type: "parking" },
@@ -66,54 +76,69 @@ const ParkingMarkerItem = ({
     );
   };
 
+  const showCrosshair = isDragging && crosshairRef.current !== "none";
+
   return (
     <>
       <Marker
         latitude={lat}
         longitude={lng}
         draggable={!disabled}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         anchor="center"
       >
-        <Box
-          onClick={(e) => {
-            dispatch(
-              StopPlaceActions.setElementFocus(
-                index,
-                isBike ? "bikeParking" : "parkAndRide",
-              ),
-            );
-            setPopupAnchor(e.currentTarget);
-          }}
-          sx={(theme) => ({
-            width: Math.round(PARKING_SIZE * scale),
-            height: Math.round(PARKING_SIZE * scale),
-            borderRadius: "50%",
-            bgcolor: focused ? "warning.main" : "info.main",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            border: "2px solid",
-            borderColor: "background.paper",
-            boxShadow: focused
-              ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
-              : "0 2px 4px rgba(0,0,0,0.35)",
-            transform: focused ? "scale(1.2)" : "none",
-            transition: "all 0.15s",
-            "&:hover": { transform: "scale(1.25)" },
-          })}
-        >
-          {isBike ? (
-            <DirectionsBikeIcon
-              sx={{ fontSize: `${1.1 * scale}rem`, color: "info.contrastText" }}
-            />
-          ) : (
-            <LocalParkingIcon
-              sx={{ fontSize: `${1.1 * scale}rem`, color: "info.contrastText" }}
-            />
-          )}
-        </Box>
+        {showCrosshair ? (
+          <DragCrosshair
+            type={crosshairRef.current as Exclude<CrosshairSetting, "none">}
+          />
+        ) : (
+          <Box
+            onClick={(e) => {
+              dispatch(
+                StopPlaceActions.setElementFocus(
+                  index,
+                  isBike ? "bikeParking" : "parkAndRide",
+                ),
+              );
+              setPopupAnchor(e.currentTarget);
+            }}
+            sx={(theme) => ({
+              width: Math.round(PARKING_SIZE * scale),
+              height: Math.round(PARKING_SIZE * scale),
+              borderRadius: "50%",
+              bgcolor: focused ? "warning.main" : "info.main",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              border: "2px solid",
+              borderColor: "background.paper",
+              boxShadow: focused
+                ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
+                : "0 2px 4px rgba(0,0,0,0.35)",
+              transform: focused ? "scale(1.2)" : "none",
+              transition: "all 0.15s",
+              "&:hover": { transform: "scale(1.25)" },
+            })}
+          >
+            {isBike ? (
+              <DirectionsBikeIcon
+                sx={{
+                  fontSize: `${1.1 * scale}rem`,
+                  color: "info.contrastText",
+                }}
+              />
+            ) : (
+              <LocalParkingIcon
+                sx={{
+                  fontSize: `${1.1 * scale}rem`,
+                  color: "info.contrastText",
+                }}
+              />
+            )}
+          </Box>
+        )}
       </Marker>
 
       <MarkerPopup

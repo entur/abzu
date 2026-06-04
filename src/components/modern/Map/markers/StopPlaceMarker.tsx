@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Tooltip, Typography } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,8 @@ import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import type { CrosshairSetting } from "../crosshair";
+import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
 import { StopPlacePopup } from "./StopPlacePopup";
 import type { MapStopPlace } from "./types";
@@ -99,6 +101,8 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 export const StopPlaceMarker = () => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
 
   const current = useAppSelector(
@@ -118,7 +122,13 @@ export const StopPlaceMarker = () => {
     current.stopPlaceType,
   );
 
+  const handleDragStart = () => {
+    crosshairRef.current = getCrosshairPreference();
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: MarkerDragEvent) => {
+    setIsDragging(false);
     dispatch(
       StopPlaceActions.changeCurrentStopPosition([
         event.lngLat.lat,
@@ -127,14 +137,17 @@ export const StopPlaceMarker = () => {
     );
   };
 
+  const showCrosshair = isDragging && crosshairRef.current !== "none";
+
   return (
     <>
       <Marker
         latitude={lat}
         longitude={lng}
         draggable={!disabled}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        anchor="bottom"
+        anchor={showCrosshair ? "center" : "bottom"}
       >
         <Tooltip title={current.name || ""} placement="top" arrow>
           <Box
@@ -147,7 +160,7 @@ export const StopPlaceMarker = () => {
               height: Math.round(MARKER_SIZE * scale),
               borderRadius: "50%",
               bgcolor: "primary.main",
-              display: "flex",
+              display: showCrosshair ? "none" : "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
@@ -184,6 +197,11 @@ export const StopPlaceMarker = () => {
             )}
           </Box>
         </Tooltip>
+        {showCrosshair && (
+          <DragCrosshair
+            type={crosshairRef.current as Exclude<CrosshairSetting, "none">}
+          />
+        )}
       </Marker>
 
       <StopPlacePopup
