@@ -191,6 +191,26 @@ export const allEntities = gql`
     ${Fragments.parking.verbose},
 `;
 
+export const allEntitiesWithoutVersions = gql`
+    query stopPlaceAndPathLink($id: String!) {
+        __typename
+        pathLink(stopPlaceId: $id) {
+            ...VerbosePathLink
+        },
+        stopPlace(id: $id, versionValidity: MAX_VERSION) {
+            ...VerboseStopPlace
+            ...VerboseParentStopPlace
+        }
+        parking: parking(stopPlaceId: $id) {
+            ...VerboseParking
+        },
+    }
+    ${Fragments.stopPlace.verbose},
+    ${Fragments.parentStopPlace.verbose},
+    ${Fragments.pathLink.verbose},
+    ${Fragments.parking.verbose},
+`;
+
 export const getStopById = gql`
   query getStopById($id: String!) {
     stopPlace(id: $id, versionValidity: MAX_VERSION) {

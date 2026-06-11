@@ -1,0 +1,153 @@
+{
+  "name": "Fintraffic Theme",
+  "version": "0.1",
+  "description": "Fintraffic theme configuration for Abzu Stop Place Registry",
+  "author": "",
+  "environment": {
+    "development": {
+      "color": "#457645",
+      "showBadge": true,
+      "label": "DEV"
+    },
+    "test": {
+      "color": "#ffe082",
+      "showBadge": true,
+      "label": "TEST"
+    },
+    "prod": {
+      "color": "#181c56",
+      "showBadge": false,
+      "label": "PROD"
+    }
+  },
+  "assets": {
+    "logo": "/fintraffic-logo.png",
+    "logoHeight": {
+      "xs": 20,
+      "sm": 24,
+      "md": 24
+    },
+    "favicon": "/favicon.ico"
+  },
+  "palette": {
+    "mode": "light",
+    "primary": {
+      "main": "#1777F8",
+      "dark": "#0D5FD9",
+      "light": "#5BA0FA",
+      "contrastText": "#FFFFFF"
+    },
+    "secondary": {
+      "main": "#505064",
+      "dark": "#3A3A4B",
+      "light": "#737387",
+      "contrastText": "#FFFFFF"
+    },
+    "background": {
+      "default": "#FFFFFF",
+      "paper": "#FFFFFF",
+      "tint": "#F7F7F7"
+    },
+    "text": {
+      "primary": "#000000",
+      "secondary": "#505064",
+      "disabled": "#9E9E9E"
+    },
+    "divider": "#E5E5E5",
+    "info": {
+      "main": "#1777F8",
+      "dark": "#0D5FD9",
+      "light": "#5BA0FA",
+      "contrastText": "#FFFFFF"
+    },
+    "success": {
+      "main": "#2E7D32",
+      "dark": "#1B5E20",
+      "light": "#81C784",
+      "contrastText": "#FFFFFF"
+    },
+    "warning": {
+      "main": "#ED6C02",
+      "dark": "#E65100",
+      "light": "#FFB74D",
+      "contrastText": "#000000"
+    },
+    "error": {
+      "main": "#D32F2F",
+      "dark": "#B71C1C",
+      "light": "#EF9A9A",
+      "contrastText": "#FFFFFF"
+    },
+    "action": {
+      "hover": "rgba(0, 0, 0, 0.04)",
+      "selected": "rgba(0, 0, 0, 0.08)",
+      "focus": "rgba(0, 0, 0, 0.12)",
+      "active": "rgba(0, 0, 0, 0.56)",
+      "disabled": "rgba(0, 0, 0, 0.38)",
+      "disabledBackground": "rgba(0, 0, 0, 0.12)"
+    }
+  },
+  "typography": {
+    "fontFamily": "\"Public Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen-Sans, Ubuntu, Cantarell, \"Helvetica Neue\", Arial, sans-serif",
+    "h1": { "fontSize": "3rem", "fontWeight": 700, "letterSpacing": "-0.5px" },
+    "h2": { "fontSize": "2.25rem", "fontWeight": 700 },
+    "h3": { "fontSize": "1.75rem", "fontWeight": 700 },
+    "subtitle1": { "fontSize": "1rem", "fontWeight": 600 },
+    "body1": { "fontSize": "1rem" },
+    "body2": { "fontSize": "0.875rem" },
+    "button": { "textTransform": "none", "fontWeight": 600 }
+  },
+  "shape": {
+    "borderRadius": 4
+  },
+  "components": {
+    "MuiCssBaseline": {
+      "styleOverrides": {
+        "body": {
+          "backgroundColor": "#FFFFFF",
+          "color": "#000000",
+          "fontFeatureSettings": "\"liga\" 1, \"kern\" 1"
+        }
+      }
+    },
+    "MuiButton": {
+      "defaultProps": { "disableElevation": true },
+      "styleOverrides": {
+        "root": { "textTransform": "none", "borderRadius": 4, "fontWeight": 600 },
+        "containedPrimary": { "backgroundColor": "#1777F8", "color": "#FFFFFF" },
+        "outlinedPrimary": { "borderColor": "#1777F8", "color": "#1777F8" }
+      }
+    },
+    "MuiLink": {
+      "styleOverrides": { "root": { "color": "#1777F8", "fontWeight": 600 } }
+    },
+    "MuiChip": {
+      "styleOverrides": {
+        "filled": { "backgroundColor": "#F7F7F7" },
+        "filledPrimary": { "backgroundColor": "#1777F8", "color": "#FFFFFF" },
+        "outlined": { "borderColor": "#E5E5E5" }
+      }
+    },
+    "MuiAppBar": {
+      "styleOverrides": {
+        "colorPrimary": { "backgroundColor": "#000000", "color": "#FFFFFF" }
+      }
+    },
+    "MuiPaper": { "styleOverrides": { "root": { "backgroundImage": "none" } } },
+    "MuiDialog": {
+      "styleOverrides": {
+        "paper": {
+          "boxShadow": "0px 300px 300px rgba(0, 0, 0, 0.2)"
+        }
+      }
+    },
+    "MuiAlert": {
+      "styleOverrides": {
+        "standardSuccess": { "backgroundColor": "#E8F5E9", "color": "#1B5E20" },
+        "standardWarning": { "backgroundColor": "#FFF3E0", "color": "#E65100" },
+        "standardError": { "backgroundColor": "#FFEBEE", "color": "#B71C1C" },
+        "standardInfo": { "backgroundColor": "#E6FFFA", "color": "#004D40" }
+      }
+    }
+  }
+}

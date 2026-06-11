@@ -1,0 +1,210 @@
+/*
+ *  Licensed under the EUPL, Version 1.2 or – as soon they will be approved by
+the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/software/page/eupl
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and
+limitations under the Licence. */
+
+import { Close as CloseIcon, Search as SearchIcon } from "@mui/icons-material";
+import {
+  Box,
+  Collapse,
+  Fab,
+  IconButton,
+  Paper,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
+import { useSelector } from "react-redux";
+import { LoadingDialog } from "../Shared";
+import { FavoriteSection, FilterSection, SearchInput } from "./components";
+import { useSearchBox } from "./hooks/useSearchBox";
+import {
+  searchBoxContent,
+  searchBoxHeader,
+  searchBoxPaper,
+  searchFab,
+} from "./SearchBox.styles";
+import { RootState, SearchBoxProps } from "./types";
+
+export const SearchBox: React.FC<SearchBoxProps> = () => {
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Local state for mobile collapse/expand
+  const [isExpanded, setIsExpanded] = useState(!isMobile);
+
+  // Handle responsive behavior
+  useEffect(() => {
+    setIsExpanded(!isMobile);
+  }, [isMobile]);
+
+  // Toggle handlers
+  const handleToggleSearchBox = () => {
+    if (isMobile) {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
+  const {
+    // State selectors
+    favorited,
+    stopTypeFilter,
+    topoiChips,
+    topographicalPlaces,
+    dataSource,
+    showFutureAndExpired,
+    searchText,
+    stopPlaceLoading,
+  } = useSelector((state: RootState) => ({
+    dataSource: state.stopPlace.searchResults || [],
+    stopTypeFilter: state.user.searchFilters.stopType,
+    topoiChips: state.user.searchFilters.topoiChips,
+    favorited: state.user.favorited,
+    searchText: state.user.searchFilters.text,
+    topographicalPlaces: state.stopPlace.topographicalPlaces || [],
+    showFutureAndExpired: state.user.searchFilters.showFutureAndExpired,
+    stopPlaceLoading: state.stopPlace.loading,
+  }));
+
+  const {
+    // Local state
+    showMoreFilterOptions,
+    loading,
+    loadingSelection,
+    loadingStopPlaceName,
+    stopPlaceSearchValue,
+    topographicPlaceFilterValue,
+
+    // Handlers
+    handleSearchUpdate,
+    handleNewRequest,
+    handleApplyModalityFilters,
+    handleToggleFilter: handleToggleFilterSection,
+    handleAddChip,
+    handleDeleteChip,
+    handleSaveAsFavorite,
+    handleRetrieveFilter,
+    handleTopographicalPlaceInput,
+    toggleShowFutureAndExpired,
+
+    // Computed values
+    menuItems,
+    topographicalPlacesDataSource,
+  } = useSearchBox({
+    dataSource,
+    stopTypeFilter,
+    topoiChips,
+    topographicalPlaces,
+    showFutureAndExpired,
+    searchText,
+    formatMessage,
+  });
+
+  // Calculate active filter count (after variables are declared)
+  const activeFilterCount =
+    stopTypeFilter.length + topoiChips.length + (showFutureAndExpired ? 1 : 0);
+
+  // Wrapper for filter toggle without parameters
+  const handleToggleFilters = () => {
+    handleToggleFilterSection(!showMoreFilterOptions);
+  };
+
+  return (
+    <>
+      {/* Loading Dialog */}
+      <LoadingDialog
+        open={loadingSelection || stopPlaceLoading}
+        message={
+          loadingStopPlaceName
+            ? `${formatMessage({ id: "loading" })} ${loadingStopPlaceName}`
+            : formatMessage({ id: "loading" })
+        }
+      />
+
+      {/* Floating Search Button for Mobile (when collapsed) */}
+      {isMobile && !isExpanded && (
+        <Fab
+          color="primary"
+          size="medium"
+          onClick={handleToggleSearchBox}
+          sx={searchFab(theme)}
+          aria-label={formatMessage({ id: "open_search" })}
+        >
+          <SearchIcon />
+        </Fab>
+      )}
+
+      {/* Collapsible Search Box */}
+      <Collapse in={isExpanded} timeout={300}>
+        <Paper elevation={0} sx={searchBoxPaper(theme)}>
+          <Box sx={searchBoxContent}>
+            {/* Mobile Close Button */}
+            {isMobile && (
+              <Box sx={searchBoxHeader}>
+                <IconButton
+                  onClick={handleToggleSearchBox}
+                  size="small"
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    zIndex: 1,
+                  }}
+                  aria-label={formatMessage({ id: "close_search" })}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            )}
+
+            <FavoriteSection
+              favorited={favorited}
+              stopTypeFilter={stopTypeFilter}
+              onRetrieveFilter={handleRetrieveFilter}
+              onSaveAsFavorite={handleSaveAsFavorite}
+            />
+
+            <Collapse in={showMoreFilterOptions} timeout={300}>
+              <FilterSection
+                showMoreFilterOptions={showMoreFilterOptions}
+                stopTypeFilter={stopTypeFilter}
+                topographicalPlacesDataSource={topographicalPlacesDataSource}
+                topographicPlaceFilterValue={topographicPlaceFilterValue}
+                topoiChips={topoiChips}
+                showFutureAndExpired={showFutureAndExpired}
+                onToggleFilter={handleToggleFilterSection}
+                onApplyModalityFilters={handleApplyModalityFilters}
+                onTopographicalPlaceInput={handleTopographicalPlaceInput}
+                onAddChip={handleAddChip}
+                onDeleteChip={handleDeleteChip}
+                onToggleShowFutureAndExpired={toggleShowFutureAndExpired}
+              />
+            </Collapse>
+
+            <SearchInput
+              menuItems={menuItems}
+              loading={loading}
+              stopPlaceSearchValue={stopPlaceSearchValue}
+              showFilters={showMoreFilterOptions}
+              activeFilterCount={activeFilterCount}
+              onSearchUpdate={handleSearchUpdate}
+              onNewRequest={handleNewRequest}
+              onToggleFilters={handleToggleFilters}
+            />
+          </Box>
+        </Paper>
+      </Collapse>
+    </>
+  );
+};

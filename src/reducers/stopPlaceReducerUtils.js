@@ -164,9 +164,10 @@ const getStateWithEntitiesFromQuery = (state, action) => {
     return state;
   }
 
-  const pathLink = action.result.data.pathLink
-    ? action.result.data.pathLink
-    : [];
+  // pathLink is only present in full queries (stopPlaceAndPathLink), not in
+  // mutation responses (updateChildOfParentStop, mutateParentStopPlace). Use
+  // null to distinguish "absent from response" from "explicitly empty array".
+  const pathLinkFromResponse = action.result.data.pathLink ?? null;
 
   const parking = action.result.data.parking ? action.result.data.parking : [];
 
@@ -185,10 +186,16 @@ const getStateWithEntitiesFromQuery = (state, action) => {
     current: currentStop,
     versions: getAllVersionFromResult(state, action),
     originalCurrent: originalCurrentStop,
-    originalPathLink: formatHelpers.mapPathLinkToClient(pathLink),
+    originalPathLink:
+      pathLinkFromResponse !== null
+        ? formatHelpers.mapPathLinkToClient(pathLinkFromResponse)
+        : state.originalPathLink,
     zoom: getProperZoomLevel(stopPlace, state.zoom),
     minZoom: stopPlace && stopPlace.geometry ? 14 : 7,
-    pathLink: formatHelpers.mapPathLinkToClient(pathLink),
+    pathLink:
+      pathLinkFromResponse !== null
+        ? formatHelpers.mapPathLinkToClient(pathLinkFromResponse)
+        : state.pathLink,
     neighbourStopQuays: {},
     centerPosition: currentStop.location,
     stopHasBeenModified: false,

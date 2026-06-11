@@ -6,6 +6,7 @@ export type FeatureFlags = {
   MatomoTracker: boolean;
   StopPlaceUrl: boolean;
   StopPlacePostalAddress: boolean;
+  LoadTimerBadge?: boolean;
 };
 
 export type Features = keyof FeatureFlags;
