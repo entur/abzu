@@ -15,6 +15,7 @@ limitations under the Licence. */
 import { ComponentToggle } from "@entur/react-component-toggle";
 import { Check } from "@mui/icons-material";
 import MdAccount from "@mui/icons-material/AccountCircle";
+import MdHistory from "@mui/icons-material/History";
 import MdMap from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MdReport from "@mui/icons-material/Report";
@@ -40,6 +41,14 @@ import ConfirmDialog from "./../Dialogs/ConfirmDialog";
 import MoreMenuItem from "./../MainPage/MoreMenuItem";
 import { LanguageMenu } from "./LanguageMenu";
 import UserGuide from "./UserGuide";
+
+const menuItemStyle = {
+  fontSize: 12,
+  padding: 0,
+  paddingBottom: 5,
+  paddingTop: 5,
+  width: 300,
+};
 
 class Header extends React.Component {
   constructor(props) {
@@ -92,6 +101,9 @@ class Header extends React.Component {
       case "GoToReports":
         this.goToReports();
         break;
+      case "GoToChangelog":
+        this.goToChangelog();
+        break;
       default:
         console.info("Invalid action", actionOnDone, " ignored");
         break;
@@ -125,6 +137,10 @@ class Header extends React.Component {
 
   goToReports() {
     this.props.dispatch(UserActions.navigateTo("reports", ""));
+  }
+
+  goToChangelog() {
+    this.props.dispatch(UserActions.navigateTo("changelog", ""));
   }
 
   handleTogglePublicCodePrivateCodeOnStopPlaces(value) {
@@ -200,6 +216,7 @@ class Header extends React.Component {
     const showPathLinks = formatMessage({ id: "show_path_links" });
     const showCompassBearing = formatMessage({ id: "show_compass_bearing" });
     const reportSite = formatMessage({ id: "report_site" });
+    const changelogLabel = formatMessage({ id: "changelog" });
     const expiredStopLabel = formatMessage({ id: "show_expired_stops" });
     const username = this.props.preferredName || "";
     const showMultimodalEdgesLabel = formatMessage({
@@ -306,37 +323,31 @@ class Header extends React.Component {
                     "GoToReports",
                   )
                 }
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
+                style={menuItemStyle}
               >
                 <MdReport color="#41c0c4" />
                 {reportSite}
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  this.handleConfirmChangeRoute(
+                    this.goToChangelog.bind(this),
+                    "GoToChangelog",
+                  )
+                }
+                style={menuItemStyle}
+              >
+                <MdHistory color="#41c0c4" />
+                {changelogLabel}
               </MenuItem>
               <MoreMenuItem
                 openLeft={true}
                 leftIcon={<MdSettings color="#41c0c4" />}
                 label={settings}
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
+                style={menuItemStyle}
               >
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleTogglePublicCodePrivateCodeOnStopPlaces(
                       !isPublicCodePrivateCodeOnStopPlacesEnabled,
@@ -355,22 +366,10 @@ class Header extends React.Component {
                 openLeft={true}
                 leftIcon={<MdMap color="#41c0c4" />}
                 label={mapSettings}
-                style={{
-                  fontSize: 12,
-                  padding: 0,
-                  paddingBottom: 5,
-                  paddingTop: 5,
-                  width: 300,
-                }}
+                style={menuItemStyle}
               >
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleToggleMultiPolylines(!isMultiPolylinesEnabled)
                   }
@@ -384,13 +383,7 @@ class Header extends React.Component {
                 </MenuItem>
 
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleToggleCompassBearing(!isCompassBearingEnabled)
                   }
@@ -404,13 +397,7 @@ class Header extends React.Component {
                 </MenuItem>
 
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleToggleShowExpiredStops(!showExpiredStops)
                   }
@@ -424,13 +411,7 @@ class Header extends React.Component {
                 </MenuItem>
 
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleToggleMultimodalEdges(!showMultimodalEdges)
                   }
@@ -445,24 +426,12 @@ class Header extends React.Component {
 
                 <MoreMenuItem
                   openLeft={false}
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   leftIcon={<div style={{ width: "24px", height: "24px" }} />}
                   label={quayCodeShowingLabel}
                 >
                   <MenuItem
-                    style={{
-                      fontSize: 12,
-                      padding: 0,
-                      paddingBottom: 5,
-                      paddingTop: 5,
-                      width: 300,
-                    }}
+                    style={menuItemStyle}
                     onClick={() => this.handleToggleShowPublicCode(true)}
                   >
                     {showPublicCode ? (
@@ -474,13 +443,7 @@ class Header extends React.Component {
                   </MenuItem>
 
                   <MenuItem
-                    style={{
-                      fontSize: 12,
-                      padding: 0,
-                      paddingBottom: 5,
-                      paddingTop: 5,
-                      width: 300,
-                    }}
+                    style={menuItemStyle}
                     onClick={() => this.handleToggleShowPublicCode(false)}
                   >
                     {!showPublicCode ? (
@@ -493,13 +456,7 @@ class Header extends React.Component {
                 </MoreMenuItem>
 
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() => this.handleToggleShowFareZones(!showFareZones)}
                 >
                   {showFareZones ? (
@@ -511,13 +468,7 @@ class Header extends React.Component {
                 </MenuItem>
 
                 <MenuItem
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                   onClick={() =>
                     this.handleToggleShowTariffZones(!showTariffZones)
                   }
@@ -543,13 +494,7 @@ class Header extends React.Component {
                 <MenuItem
                   leftIcon={<MdAccount color="#41c0c4" />}
                   onClick={() => this.handleLogOut()}
-                  style={{
-                    fontSize: 12,
-                    padding: 0,
-                    paddingBottom: 5,
-                    paddingTop: 5,
-                    width: 300,
-                  }}
+                  style={menuItemStyle}
                 >
                   <MdAccount color="#41c0c4" />
                   {`${logOut} ${username}`}
