@@ -10,10 +10,10 @@ jobs:
       checks: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.3
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         env:
           cache-name: cache-node-modules
         with:
@@ -54,7 +54,7 @@ jobs:
         run: cp .github/environments/firebase.json firebase.json
       - name: Copy firebase config
         run: cp .github/environments/.firebaserc .firebaserc
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         if: github.event.pull_request.head.repo.fork == false
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
