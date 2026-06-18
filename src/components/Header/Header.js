@@ -278,8 +278,15 @@ class Header extends React.Component {
                 <Button
                   variant="contained"
                   onClick={() => this.handleLogin()}
-                  sx={{ mr: 2 }}
-                  color={"primary2Color"}
+                  sx={{
+                    mr: 2,
+                    bgcolor: "#5AC39A",
+                    color: "#ffffff",
+                    textTransform: "uppercase",
+                    "&:hover": {
+                      bgcolor: "#4db085",
+                    },
+                  }}
                 >
                   {logIn}
                 </Button>
@@ -290,8 +297,9 @@ class Header extends React.Component {
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"
               onClick={this.handleClick}
+              sx={{ color: "#ffffff" }}
             >
-              <MoreVertIcon color={"alternateTextColor"} />
+              <MoreVertIcon />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -531,6 +539,23 @@ class Header extends React.Component {
                   {showTariffZonesLabel}
                 </MenuItem>
               </MoreMenuItem>
+              {this.props.config?.uiMode === "dual" && (
+                <MenuItem
+                  style={{
+                    fontSize: 12,
+                    padding: 0,
+                    paddingBottom: 5,
+                    paddingTop: 5,
+                    width: 300,
+                  }}
+                  onClick={() =>
+                    this.props.dispatch(UserActions.changeUIMode("modern"))
+                  }
+                >
+                  <MdSettings color="#41c0c4" />
+                  Modern UI
+                </MenuItem>
+              )}
               <LanguageMenu />
               <UserGuide />
 

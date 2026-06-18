@@ -54,7 +54,7 @@ class StopPlaces extends React.Component {
         }
         this.setState({ isLoading: false });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ isLoading: false });
       });
   }
@@ -80,7 +80,7 @@ class StopPlaces extends React.Component {
             removeIdParamFromURL("stopPlaceId");
           }
         })
-        .catch((err) => {
+        .catch(() => {
           removeIdParamFromURL("stopPlaceId");
           this.setState({ isLoading: false });
         });
@@ -131,6 +131,7 @@ class StopPlaces extends React.Component {
 
   render() {
     const { isLoading } = this.state;
+
     return (
       <div>
         {isLoading && <Loader />}

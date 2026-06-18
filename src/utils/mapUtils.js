@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import L from "leaflet";
-import { defaultCenterPosition } from "../components/Map/mapDefaults";
 import { getFetchedConfig } from "../config/fetchConfig";
+import { defaultCenterPosition } from "../config/mapDefaults";
 import { setDecimalPrecision } from "./";
 
 export const getCentroid = (latlngs = [[]], originalCentroid) => {
