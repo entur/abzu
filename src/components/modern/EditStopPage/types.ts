@@ -122,7 +122,6 @@ export interface StopPlaceGeneralSectionProps {
   onOpenTimetable?: () => void;
   onOpenTags: () => void;
   onOpenAltNames: () => void;
-  onOpenKeyValues: () => void;
 }
 
 export interface QuaysSectionProps {
@@ -205,7 +204,6 @@ export interface StopPlaceViewProps {
   onOpenTerminateDialog: () => void;
   onOpenTagsDialog: () => void;
   onOpenAltNamesDialog: () => void;
-  onOpenKeyValuesDialog: () => void;
   onOpenVersionsDialog: () => void;
 }
 
@@ -223,7 +221,6 @@ export interface StopPlaceDialogsProps {
   requiredFieldsMissingOpen: boolean;
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
-  keyValuesDialogOpen: boolean;
   versionsDialogOpen: boolean;
   infoDialogOpen: boolean;
   nameDescriptionDialogOpen: boolean;
@@ -253,7 +250,6 @@ export interface StopPlaceDialogsProps {
   handleRemoveTag: (name: string, idReference: string) => any;
   handleFindTagByName: (name: string) => any;
   handleCloseAltNamesDialog: () => void;
-  handleCloseKeyValuesDialog: () => void;
   handleCloseVersionsDialog: () => void;
   handleCloseInfoDialog: () => void;
   handleCloseNameDescriptionDialog: () => void;
@@ -285,7 +281,6 @@ export interface UseEditStopPageReturn {
   requiredFieldsMissingOpen: boolean;
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
-  keyValuesDialogOpen: boolean;
   versionsDialogOpen: boolean;
   infoDialogOpen: boolean;
   nameDescriptionDialogOpen: boolean;
@@ -318,8 +313,6 @@ export interface UseEditStopPageReturn {
   handleCloseTagsDialog: () => void;
   handleOpenAltNamesDialog: () => void;
   handleCloseAltNamesDialog: () => void;
-  handleOpenKeyValuesDialog: () => void;
-  handleCloseKeyValuesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
   handleOpenInfoDialog: () => void;

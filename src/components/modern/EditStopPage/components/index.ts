@@ -1,4 +1,5 @@
 export { BoardingPositionsTab } from "./BoardingPositionsTab";
+export { KeyValuesTab } from "./KeyValuesTab";
 export { NewStopWizard } from "./NewStopWizard";
 export { ParkAndRideFields } from "./ParkAndRideFields";
 export { ParkingItem } from "./ParkingItem";

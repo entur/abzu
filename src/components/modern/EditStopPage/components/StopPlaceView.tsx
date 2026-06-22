@@ -20,6 +20,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import UndoIcon from "@mui/icons-material/Undo";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
   Box,
   Button,
@@ -41,6 +42,7 @@ import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTa
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { StopPlaceViewProps } from "../types";
+import { KeyValuesTab } from "./KeyValuesTab";
 import { ParkingSection } from "./ParkingSection";
 import { QuaysSection } from "./QuaysSection";
 import { StopPlaceGeneralSection } from "./StopPlaceGeneralSection";
@@ -76,7 +78,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   onOpenTerminateDialog,
   onOpenTagsDialog,
   onOpenAltNamesDialog,
-  onOpenKeyValuesDialog,
   onOpenVersionsDialog,
 }) => {
   const { formatMessage } = useIntl();
@@ -176,6 +177,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
           >
             <Tab icon={<SupportAgentIcon fontSize="small" />} value={3} />
           </Tooltip>
+          <Tooltip
+            title={formatMessage({ id: "key_values_hint" })}
+            placement="bottom"
+          >
+            <Tab icon={<VpnKeyIcon fontSize="small" />} value={4} />
+          </Tooltip>
         </Tabs>
       </Box>
 
@@ -202,7 +209,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
               }
               onOpenTags={onOpenTagsDialog}
               onOpenAltNames={onOpenAltNamesDialog}
-              onOpenKeyValues={onOpenKeyValuesDialog}
             />
             <QuaysSection
               quays={stopPlace.quays || []}
@@ -232,6 +238,12 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
         )}
         {activeTab === 3 && (
           <AssistanceStopTab disabled={!canEdit} stopPlace={stopPlace as any} />
+        )}
+        {activeTab === 4 && (
+          <KeyValuesTab
+            keyValues={stopPlace.keyValues || []}
+            disabled={!canEdit}
+          />
         )}
       </Box>
 

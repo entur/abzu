@@ -20,7 +20,6 @@ import LabelIcon from "@mui/icons-material/Label";
 import SaveIcon from "@mui/icons-material/Save";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import UndoIcon from "@mui/icons-material/Undo";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import React from "react";
 import { useIntl } from "react-intl";
 import { MinimizedBarAction } from "../../Shared";
@@ -36,7 +35,6 @@ interface UseMinimizedBarActionsParams {
   onOpenNameDescriptionDialog: () => void;
   onOpenTagsDialog: () => void;
   onOpenAltNamesDialog: () => void;
-  onOpenKeyValuesDialog: () => void;
   onOpenVersionsDialog: () => void;
   onOpenTerminateDialog: () => void;
   onOpenUndoDialog: () => void;
@@ -57,7 +55,6 @@ export const useMinimizedBarActions = ({
   onOpenNameDescriptionDialog,
   onOpenTagsDialog,
   onOpenAltNamesDialog,
-  onOpenKeyValuesDialog,
   onOpenVersionsDialog,
   onOpenTerminateDialog,
   onOpenUndoDialog,
@@ -93,13 +90,6 @@ export const useMinimizedBarActions = ({
       label: formatMessage({ id: "alternative_names" }),
       onClick: onOpenAltNamesDialog,
       tooltip: formatMessage({ id: "alternative_names" }),
-    },
-    {
-      id: "key-values",
-      icon: React.createElement(VpnKeyIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "key_values_hint" }),
-      onClick: onOpenKeyValuesDialog,
-      tooltip: formatMessage({ id: "key_values_hint" }),
     },
     ...(!stopPlace.isChildOfParent
       ? [

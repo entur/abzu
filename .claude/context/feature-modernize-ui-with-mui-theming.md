@@ -1,272 +1,169 @@
 # Abzu UI Modernization
 
-Stop Place Registry app modernizing UI with dual-app architecture. **Core goal: fully responsive design** supporting mobile, tablet, and desktop.
+Stop Place Registry app modernizing its UI with a dual-app architecture. **Core goal: a fully responsive, modern MUI v7 experience** across mobile, tablet, and desktop, built without touching the legacy app.
+
+> **Current phase: user-feedback hardening.** The modern UI is feature-complete enough to be used. We are now iterating on real feedback in three sequential passes — see [Current Phase](#current-phase-user-feedback-hardening) below.
+
+## Current Phase: User-Feedback Hardening
+
+We are no longer building net-new features. We are polishing what exists based on user feedback, in **three ordered passes**. Finish a pass before moving to the next.
+
+### Pass 1 — Layout & Styling (active)
+Pure visual/structural correctness. No behavior changes.
+- Spacing, alignment, density, overflow, truncation, responsive breakpoints
+- Theme-token correctness (no hardcoded colours), contrast, dark/light parity
+- Drawer/panel/dialog sizing on mobile/tablet/desktop
+- Marker, popup, and map-control visual polish
+- **Rule:** if a change alters what a control *does* (not just how it looks), it belongs in Pass 2.
+
+### Pass 2 — Usability
+Interaction and flow improvements.
+- Navigation flows, focus management, keyboard access, loading/empty/error states
+- Affordance clarity (what's clickable, what state am I in), confirmations, undo
+- Reducing clicks/friction in common tasks (search → edit, quay/parking editing)
+
+### Pass 3 — Verification
+Confirm everything works as intended.
+- `npx tsc --noEmit` clean, `npm run build` passes
+- Manual test of both UIs, all breakpoints, all 5 languages
+- Regression check against legacy behavior where parity is expected
+
+When working an item, state which pass it belongs to. Defer cross-pass scope creep with a note rather than mixing concerns.
 
 ## Architecture
 
-**CRITICAL: Complete UI Separation - Zero mixing of legacy and modern code**
+**CRITICAL: Complete UI separation — zero mixing of legacy and modern code.**
 
-Dual-app structure: `AppRouter` (index.js) switches between `LegacyApp.js` and `modern/App.tsx` based on Redux `uiMode`.
+The app forks at the **root**, in `src/index.js`, based on `config.uiMode`:
 
-- **Legacy**: `/src/containers/LegacyApp.js`, `/src/components/` (JavaScript)
-- **Modern**: `/src/containers/modern/App.tsx`, `/src/components/modern/` (TypeScript + MUI v7)
-- **Shared**: Redux state, GraphQL client, map components (with `uiMode` prop), utilities
-
-### Shared Containers Pattern
-
-Some containers are shared by both apps but **MUST conditionally render** based on `uiMode`:
-
-**StopPlace.tsx** - Shared container that renders:
-- `uiMode === 'modern'` → `EditParentStopPlace` (modern) for parent stops
-- `uiMode === 'legacy'` → `EditParentGeneral` (legacy) for parent stops
-- Regular stops currently only have legacy `EditStopGeneral` (modern version not yet created)
-
-**Violation Example:**
-```typescript
-// ❌ WRONG - Always renders modern component
-<EditParentStopPlace />
-
-// ✅ CORRECT - Conditionally renders based on uiMode
-{uiMode === "modern" ? (
-  <EditParentStopPlace />
-) : (
-  <EditParentGeneral disabled={disabled} />
-)}
+```js
+// src/index.js
+const configUiMode = config.uiMode ?? "legacy";
+if (configUiMode === "legacy") return <LegacyApp />;          // locked to legacy
+return reduxUiMode === "modern" ? <ModernApp /> : <LegacyApp />; // "dual": user toggles
 ```
 
-**Rule:** Any container or component used by both apps MUST check `uiMode` to render the appropriate version.
+- `uiMode: "legacy"` (default) — always `LegacyApp`. Modern code never mounts.
+- `uiMode: "dual"` — user can switch; their choice persists in Redux `state.user.uiMode`.
 
-### Search Flow (Modern UI)
+Because the fork is at the top, **modern containers never render inside the legacy tree** (and vice-versa). There is no per-container `uiMode` branching anymore — that older pattern is gone.
 
-Direct navigation from search to edit page without intermediate panels:
+- **Legacy app**: `src/containers/LegacyApp.js`, `src/components/` (JavaScript, class components). **Untouched.**
+- **Modern app**: `src/containers/modern/App.tsx`, `src/containers/modern/*`, `src/components/modern/` (TypeScript + MUI v7).
+- **Shared**: Redux store/actions, GraphQL client, models, utilities. These are the only legitimate integration points.
 
-1. **Search execution** (`useSearchBox.tsx`): User types → debounced search (500ms) → results displayed
-2. **Selection** (`handleNewRequest`): Click result → set `loadingSelection=true` → fetch full stop place data
-3. **Map marker**: Set marker on map with coordinates → map animates to location (0.25s)
-4. **Navigation**: Navigate to edit route → URL changes → `StopPlace.tsx` detects new ID
-5. **Data loading**: `getStopPlaceWithAll()` fetches complete stop place data
-6. **Loading coverage**: LoadingDialog shows throughout entire flow (from click to data loaded)
-7. **Clean transition**: Edit boxes hidden during loading to prevent showing stale data
+### Modern App Shell & Routing
 
-**Key files**:
-- `src/components/modern/MainPage/hooks/useSearchBox.tsx` - Search logic and navigation
-- `src/containers/StopPlace.tsx` - Shared container with `uiMode` checks for loading states
-- `src/components/modern/Shared/LoadingDialog.tsx` - Centered loading dialog with animation
+`src/containers/modern/App.tsx` owns the modern shell:
+- `<ModernHeader>`, global/local loading indicators, `<SnackbarWrapper>`
+- A single `<PersistentMap>` mounted **inside the Router but outside `<Routes>`** — it survives route changes without remounting.
+- Theme provided via `AbzuThemeProvider` (overridable by a `CustomThemeProvider` feature toggle).
+
+Modern routes (own `<Routes>`, separate from legacy):
+
+| Route | Container (`src/containers/modern/`) |
+|---|---|
+| `/` | `StopPlaces.tsx` (search/main page) |
+| `/stop_place/:stopId` | `StopPlace.tsx` → `EditStopPage` / `EditParentStopPlace` |
+| `/group_of_stop_place/:groupId` | `GroupOfStopPlaces.tsx` |
+| `/reports` | `ReportPage.tsx` |
+
+`src/containers/modern/StopPlace.tsx` selects the editor by entity kind: parent stop → `EditParentStopPlace`, regular stop → `EditStopPage`. (Both modern; the legacy `EditStopGeneral`/`EditParentGeneral` live only in the legacy `src/containers/StopPlace.tsx`.)
+
+### Search-to-Edit Flow (Modern)
+
+Direct navigation from search to edit, no intermediate panels:
+1. Debounced search (500ms) in `MainPage/hooks/` → results.
+2. Select result → set loading state with entity name → fetch full entity (`getStopPlaceWithAll` / `getGroupOfStopPlacesById`).
+3. Place/animate map marker (fast ~0.25s transition).
+4. Navigate to edit route; container detects the new `:id` param and (re)fetches on change.
+5. `LoadingDialog` covers the whole flow; edit panels stay hidden until data is ready (no stale flash).
+
+This fetch-before-navigate pattern is applied consistently across search, favorites, and direct URL/route changes.
 
 ## Standards
 
-- **Responsive-first**: All modern components must work on mobile, tablet, desktop using `useMediaQuery` and MUI breakpoints
-- TypeScript with proper types, custom hooks for logic
-- MUI v7 APIs: `slotProps.htmlInput` not `inputProps`, `slotProps.input` not `InputProps`
-- Barrel exports via `index.ts`, theme colors via `sx` prop
+- **Responsive-first**: every modern component works on mobile/tablet/desktop via `useMediaQuery` + MUI breakpoints.
+- **TypeScript only** in modern code; explicit prop interfaces; explicit hook return types; no `any` except at the Redux/legacy-JS boundary (`state.x as any`).
+- **No classes** — functional components + custom hooks only.
+- **MUI v7 APIs**: `slotProps.htmlInput` (not `inputProps`), `slotProps.input` (not `InputProps`), `<Grid size={…}>` (not `item xs`).
+- **Theme tokens only** — no hardcoded hex in `sx`/inline styles (RGBA black shadows excepted). Use `*.contrastText`, `borderColor: "background.paper"`, and the `sx` theme-callback form for `alpha()`.
+- **Named exports**, barrel `index.ts` per feature.
+- **No `console.log`, no commented-out code** in committed work.
 
 ## Structure
 
-Modern UI: `/src/components/modern/` with Header, MainPage, GroupOfStopPlaces, Dialogs, Shared. Each feature has `types.ts`, components/, hooks/.
+`src/components/modern/` — one folder per feature, each typically with `components/`, `hooks/`, and `types.ts`:
+
+- **Header/** — `ModernHeader`, `NavigationMenu`, UI customization (theme/uiMode toggles)
+- **MainPage/** — search box, filters, results, `FavoriteStopPlaces`
+- **EditStopPage/** — regular stop editor: tabbed view (info / accessibility / facilities / assistance), `QuaysSection`/`QuayItem`/`QuayPanel`, `ParkingSection`/`ParkingItem`/`ParkingPanel`/`ParkAndRideFields`, `BoardingPositionsTab`, `NewStopWizard`, `TimetableDialog`, 8 dialogs, ~10 hooks
+- **EditParentStopPlace/** — parent stop editor
+- **GroupOfStopPlaces/** — group editor with collapsible drawer + `InfoDialog`
+- **ReportPage/** — filters, column toggles, pagination, CSV export, URL-synced state
+- **Dialogs/** — `TagsDialog`, `AltNamesDialog`, `TerminateStopPlaceDialog`
+- **Map/** — `ModernEditStopMap`, `FareZonesPanel`, `controls/`, `crosshair/`, `layers/`, `tile-sources/`, and `markers/` (StopPlace, Quay, Parking, BoardingPosition, Neighbour markers + popups + `QuayBearingIndicator`)
+- **Shared/** — `LoadingDialog`, `ModalityLoadingAnimation`, `MinimizedBar`, `CenterMapButton`, `CopyIdButton`, `FavoriteButton`, `GroupMembership`, `ParentMembership`, `drawerPreference`, `useNavigateToStopPlace`, etc.
 
 ## Theme System
 
-JSON config → MUI Theme via module augmentation (`theme-config.d.ts`). Custom properties: `theme.assets.logo`, `theme.environment.{env}`. Config loaded from `bootstrap.json` `themeConfigs` array. First = default, auto-hides switcher if <2 themes.
+JSON config → MUI theme via module augmentation (`theme-config.d.ts`). Custom tokens: `theme.assets.logo`, `theme.environment.{env}`, augmented `tertiary` palette.
+
+- Runtime theme JSONs live in `public/theme/` (fetched at runtime): `default-theme.json`, `entur-theme.json`, `fintraffic-theme.json`.
+- `src/theme/config/default-theme.json` is the bundled fallback (statically imported by `loader.ts` when fetch fails).
+- Configured via `themeConfigs: string[]` in bootstrap/environment JSON. **First entry = default**; switcher auto-hides if < 2 themes.
+
+**Semantic marker colours**: stop place → `primary.main`, quay → `success.main`, bike parking → `info.main`, P&R → `tertiary.main`, boarding position → `secondary.main`, focused → `warning.main`, neighbour → `alpha(primary.main, 0.6)`.
+
+## Map (MapLibre) Notes
+
+- Single persistent map; never torn down between routes.
+- **Coord order:** Redux stores `[lat, lng]`; MapLibre `flyTo`/`center`/`Marker` take `[lng, lat]` — always swap explicitly.
+- Neighbour stops load at `zoom > 14`, cleared at `zoom ≤ 14`.
+- Stable debounce: keep debounced callbacks in `useMemo([dispatch])`, pass fresh state via `useRef` — never put volatile state in the debounce dep array.
 
 ## Patterns
 
-**Dialogs**: CloseIcon top-right, buttons inline in DialogContent (no DialogActions)
-**Drawers**: Persistent (desktop) / temporary (mobile), FloatingActionButton for collapse
-**GroupOfStopPlaces**: X = close, chevron = collapse (horizontal on desktop, vertical on mobile)
-**Loading States**: Use LoadingDialog (modern UI) for data fetching, shows ModalityLoadingAnimation with optional message
+- **Dialogs**: CloseIcon top-right; action buttons inline in `DialogContent` (no `DialogActions`).
+- **Drawers**: persistent on desktop / temporary on mobile; collapse via FAB (desktop) or minimized bar (mobile). Open/closed state is sticky via `Shared/drawerPreference.ts` (localStorage), shared by all panel types.
+- **GroupOfStopPlaces**: X = close, chevron = collapse (horizontal desktop / vertical mobile).
+- **Loading states**: `LoadingDialog` with `ModalityLoadingAnimation` (white bg, shows entity name) throughout data fetches.
+- **flushSync before async navigation**: `flushSync(() => setLoading(true))` before dispatching an async fetch so the loading UI actually renders (React 18 batching would otherwise swallow it). Clear in `.finally()`.
 
-## Component Refactoring Best Practices
+## Component Refactoring Pattern
 
-**When to Refactor**: Components over ~300 lines, multiple responsibilities, difficult to test, or hard to understand.
+Refactor components over ~150 lines or with multiple responsibilities:
 
-### The Refactoring Pattern
-
-Follow this consistent pattern for splitting large components into maintainable pieces:
-
-**1. Directory Structure**
 ```
 ComponentName/
-├── hooks/
-│   └── useComponentName.ts      # Business logic and state
-├── components/
-│   ├── SubComponent1.tsx        # Focused UI components
-│   ├── SubComponent2.tsx
-│   └── index.ts                 # Barrel exports
-└── types.ts (optional)          # Shared types
+├── hooks/useComponentName.ts   # state + handlers (useCallback) + derived data (useMemo)
+├── components/                 # focused 50–150 line sub-components, single responsibility
+│   └── index.ts                # barrel exports
+└── types.ts                    # shared prop/data types
 ```
 
-**2. Extract Business Logic into Hooks**
-- Move all state management (`useState`, `useEffect`) into custom hook
-- Extract event handlers and business logic
-- Use `useCallback` for handlers to prevent unnecessary re-renders
-- Use `useMemo` for expensive computations or data transformations
-- Return clean interface for component consumption
+The main component becomes a thin orchestrator: call the hook, compose sub-components, handle conditional rendering. Hooks declare explicit return types. Naming: hooks `useX`, components `PascalCase`, files match names exactly.
 
-**Hook Pattern Example:**
-```typescript
-export const useComponentName = ({ prop1, prop2 }) => {
-  const [state, setState] = useState(initialState);
-
-  const handleAction = useCallback(() => {
-    // Business logic here
-  }, [dependencies]);
-
-  return {
-    state,
-    handleAction,
-    // Other handlers and computed values
-  };
-};
-```
-
-**3. Split UI into Focused Components**
-- Each component should have **single responsibility**
-- Break down by UI section or logical grouping
-- Keep components small (~50-150 lines)
-- Pass only needed props (avoid prop drilling)
-- Add JSDoc comments explaining purpose
-
-**Component Pattern Example:**
-```typescript
-interface SubComponentProps {
-  data: DataType;
-  onAction: () => void;
-}
-
-/**
- * Brief description of what this component does
- */
-export const SubComponent: React.FC<SubComponentProps> = ({
-  data,
-  onAction,
-}) => {
-  // Render focused UI section
-};
-```
-
-**4. Create Orchestrator Component**
-- Main component becomes clean orchestrator
-- Uses hook for business logic
-- Composes sub-components
-- Handles conditional rendering
-- Delegates responsibilities to focused components
-
-**Orchestrator Pattern Example:**
-```typescript
-export const MainComponent: React.FC<Props> = ({ prop1, prop2 }) => {
-  const {
-    state,
-    handleAction,
-  } = useMainComponent({ prop1, prop2 });
-
-  return (
-    <>
-      <SubComponent1 data={state.data1} onAction={handleAction} />
-      <SubComponent2 data={state.data2} />
-    </>
-  );
-};
-```
-
-**5. Use Barrel Exports**
-```typescript
-// components/index.ts
-export { SubComponent1 } from "./SubComponent1";
-export { SubComponent2 } from "./SubComponent2";
-```
-
-### Refactoring Examples
-
-**Completed Refactorings:**
-1. **EditGroupOfStopPlaces** (410 → 183 lines, 56% reduction)
-   - Pattern: MinimizedBar, DrawerContent, Dialogs separation
-   - Location: `src/components/modern/MainPage/components/EditGroupOfStopPlaces/`
-
-2. **FavoriteStopPlaces** (318 → 62 lines, 81% reduction)
-   - Pattern: Hook + EmptyState + List + ListItem
-   - Location: `src/components/modern/MainPage/components/FavoriteStopPlaces/`
-
-3. **TagsDialog** (323 → 106 lines, 67% reduction)
-   - Pattern: Hook + List + AddForm + Item
-   - Location: `src/components/modern/Dialogs/TagsDialog/`
-
-4. **TerminateStopPlaceDialog** (374 → 184 lines, 51% reduction)
-   - Pattern: Hook + Info + Warning + DateTime + Options
-   - Location: `src/components/modern/Dialogs/TerminateStopPlaceDialog/`
-
-5. **NavigationMenu** (311 → 81 lines, 74% reduction)
-   - Pattern: Hook + Mobile + Desktop + ItemRenderer
-   - Location: `src/components/modern/Header/components/NavigationMenu/`
-
-### Naming Conventions
-
-- **Hooks**: `useComponentName` (e.g., `useTagsDialog`, `useNavigationMenu`)
-- **Components**: `PascalCase` descriptive names (e.g., `DateTimeSelection`, `UsageWarning`)
-- **Files**: Match component/hook names exactly
-- **Directories**: Match main component name
-
-### Benefits
-
-- **Maintainability**: Small, focused files easy to understand
-- **Testability**: Isolated logic and UI can be tested independently
-- **Reusability**: Focused components can be reused elsewhere
-- **Readability**: Clear separation of concerns
-- **Type Safety**: Explicit prop interfaces prevent errors
-
-## Recent Work
-
-- Dual-app architecture (LegacyApp.js / modern/App.tsx)
-- Modern GroupOfStopPlaces with drawer (responsive, collapsible)
-- Theme system refactor (module augmentation, bootstrap.json config)
-- UX improvements (X=close, chevron=collapse, FAB on desktop, minimized bar on mobile)
-- Direct search-to-edit flow (modern UI): search → LoadingDialog → navigate to edit page
-  - LoadingDialog with ModalityLoadingAnimation (white background, shows stop place name)
-  - Fast map transitions (0.25s animation)
-  - Seamless loading coverage (no gaps, edit boxes hidden during load)
-  - Prevents map jumping during navigation
-
-### Group of Stop Places Improvements
-
-**Enhanced InfoDialog** - Comprehensive metadata display:
-- Name field with optional display
-- ID with integrated `CopyIdButton` for easy clipboard copy
-- Lat/long coordinates with 6-decimal precision formatting
-- Created/Modified/Version metadata
-- Monospace font for technical data (ID, coordinates)
-- Files: `InfoDialog.tsx`, `EditGroupOfStopPlaces.tsx`, `types.ts`, `MinimizedBar.tsx`
-
-**Fixed Navigation Issues** - Consistent data fetching across all entry points:
-- **Problem**: Navigating from one group to another via search/favorites did nothing; no loading animation
-- **Root cause**: Container only fetched on mount, not on route changes; search skipped data fetch for groups
-- **Solution**:
-  - `GroupOfStopPlaces.tsx`: Added `useParams`, refetch on `groupId` change, wrapped handlers in `useCallback`
-  - `useSearchBox.tsx`: Fetch group data via `getGroupOfStopPlacesById` before navigation
-  - `FavoriteStopPlaces.tsx`: Added same fetch-before-navigate pattern as search
-  - All paths now show LoadingDialog during data fetch
-
-**Data Fetching Pattern** - Applied consistently across search, favorites, and route changes:
-1. Set loading state with entity name
-2. Fetch entity data (`getGroupOfStopPlacesById` for groups, `getStopPlaceById` for stops)
-3. Update map markers (for stop places)
-4. Navigate to edit page
-5. Clear loading state in `.finally()`
-6. Show LoadingDialog throughout process
-
-**Result**: Reliable navigation with proper loading UX across all paths (search autocomplete, favorites panel, direct URL changes)
+**Reference refactorings** (pattern + location):
+- `EditGroupOfStopPlaces` — MinimizedBar / DrawerContent / Dialogs — `MainPage/components/EditGroupOfStopPlaces/`
+- `FavoriteStopPlaces` — Hook + EmptyState + List + ListItem — `MainPage/components/FavoriteStopPlaces/`
+- `TagsDialog` — Hook + List + AddForm + Item — `Dialogs/TagsDialog/`
+- `TerminateStopPlaceDialog` — Hook + Info + Warning + DateTime + Options — `Dialogs/TerminateStopPlaceDialog/`
+- `NavigationMenu` — Hook + Mobile + Desktop + ItemRenderer — `Header/components/NavigationMenu/`
 
 ## Guidelines
 
-**CRITICAL: Never mix legacy and modern**
-- ❌ Import modern into legacy, add `uiMode` checks in legacy
-- ✅ Create TypeScript copies in `/src/components/modern/`, keep legacy untouched
+**Never mix legacy and modern.**
+- ❌ Import modern into legacy, or add `uiMode` checks inside legacy components.
+- ✅ Build/extend TypeScript components in `src/components/modern/`; keep legacy untouched.
 
-**New components**: TypeScript in `/src/components/modern/`, MUI v7, barrel exports, custom hooks, **responsive on all screen sizes**
-**New routes**: Add to `modern/App.tsx` (not `LegacyApp.js`)
+**New routes**: add to `src/containers/modern/App.tsx` (never `LegacyApp.js`).
 
-**Translations (MANDATORY)**:
-- MUST add translations to ALL 5 language files: `/src/static/lang/{en,nb,sv,fi,fr}.json`
-- NEVER use hardcoded text in UI components
-- Check for existing similar translations to maintain consistency
-- Test in all languages before committing
+**Translations (mandatory)**: add every new key to **all 5** files `src/static/lang/{en,nb,sv,fi,fr}.json`. No hardcoded UI text. Reuse existing keys for consistency. Keys are alphabetically ordered.
 
-**Testing**: `npm run build`, test both UIs, **verify on mobile/tablet/desktop breakpoints**
+## Checks Before Finishing
+
+1. `npx tsc --noEmit` — zero errors.
+2. No hardcoded hex in `sx`/inline styles (RGBA black shadows excepted).
+3. All 5 language files updated for any new key.
+4. Verified on mobile / tablet / desktop breakpoints, both UIs where parity applies.

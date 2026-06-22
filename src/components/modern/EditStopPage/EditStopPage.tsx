@@ -132,7 +132,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     requiredFieldsMissingOpen,
     tagsDialogOpen,
     altNamesDialogOpen,
-    keyValuesDialogOpen,
     versionsDialogOpen,
     infoDialogOpen,
     nameDescriptionDialogOpen,
@@ -157,8 +156,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleCloseTagsDialog,
     handleOpenAltNamesDialog,
     handleCloseAltNamesDialog,
-    handleOpenKeyValuesDialog,
-    handleCloseKeyValuesDialog,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
     handleOpenInfoDialog,
@@ -198,7 +195,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     onOpenNameDescriptionDialog: handleOpenNameDescriptionDialog,
     onOpenTagsDialog: handleOpenTagsDialog,
     onOpenAltNamesDialog: handleOpenAltNamesDialog,
-    onOpenKeyValuesDialog: handleOpenKeyValuesDialog,
     onOpenVersionsDialog: handleOpenVersionsDialog,
     onOpenTerminateDialog: handleOpenTerminateDialog,
     onOpenUndoDialog: handleOpenUndoDialog,
@@ -296,7 +292,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         onOpenTerminateDialog={handleOpenTerminateDialog}
         onOpenTagsDialog={handleOpenTagsDialog}
         onOpenAltNamesDialog={handleOpenAltNamesDialog}
-        onOpenKeyValuesDialog={handleOpenKeyValuesDialog}
         onOpenVersionsDialog={handleOpenVersionsDialog}
       />
     );
@@ -412,7 +407,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         requiredFieldsMissingOpen={requiredFieldsMissingOpen}
         tagsDialogOpen={tagsDialogOpen}
         altNamesDialogOpen={altNamesDialogOpen}
-        keyValuesDialogOpen={keyValuesDialogOpen}
         versionsDialogOpen={versionsDialogOpen}
         infoDialogOpen={infoDialogOpen}
         nameDescriptionDialogOpen={nameDescriptionDialogOpen}
@@ -437,7 +431,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         handleRemoveTag={handleRemoveTag}
         handleFindTagByName={handleFindTagByName}
         handleCloseAltNamesDialog={handleCloseAltNamesDialog}
-        handleCloseKeyValuesDialog={handleCloseKeyValuesDialog}
         handleCloseVersionsDialog={handleCloseVersionsDialog}
         handleCloseInfoDialog={handleCloseInfoDialog}
         handleCloseNameDescriptionDialog={handleCloseNameDescriptionDialog}

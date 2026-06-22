@@ -4,7 +4,6 @@ export { AddStopPlaceToParentDialog } from "./AddStopPlaceToParentDialog";
 export { AltNamesDialog } from "./AltNamesDialog";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { CoordinatesDialog } from "./CoordinatesDialog";
-export { KeyValuesDialog } from "./KeyValuesDialog";
 export { MergeQuayDialog } from "./MergeQuayDialog";
 export { MergeStopPlaceDialog } from "./MergeStopPlaceDialog";
 export { MoveQuayDialog } from "./MoveQuayDialog";

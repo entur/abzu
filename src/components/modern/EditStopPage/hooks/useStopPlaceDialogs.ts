@@ -23,7 +23,6 @@ interface UseStopPlaceDialogsReturn {
   requiredFieldsMissingOpen: boolean;
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
-  keyValuesDialogOpen: boolean;
   versionsDialogOpen: boolean;
   infoDialogOpen: boolean;
   nameDescriptionDialogOpen: boolean;
@@ -43,8 +42,6 @@ interface UseStopPlaceDialogsReturn {
   handleCloseTagsDialog: () => void;
   handleOpenAltNamesDialog: () => void;
   handleCloseAltNamesDialog: () => void;
-  handleOpenKeyValuesDialog: () => void;
-  handleCloseKeyValuesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
   handleOpenInfoDialog: () => void;
@@ -67,7 +64,6 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
     useState(false);
   const [tagsDialogOpen, setTagsDialogOpen] = useState(false);
   const [altNamesDialogOpen, setAltNamesDialogOpen] = useState(false);
-  const [keyValuesDialogOpen, setKeyValuesDialogOpen] = useState(false);
   const [versionsDialogOpen, setVersionsDialogOpen] = useState(false);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
@@ -145,15 +141,6 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
     setAltNamesDialogOpen(false);
   }, []);
 
-  // Key values dialog
-  const handleOpenKeyValuesDialog = useCallback(() => {
-    setKeyValuesDialogOpen(true);
-  }, []);
-
-  const handleCloseKeyValuesDialog = useCallback(() => {
-    setKeyValuesDialogOpen(false);
-  }, []);
-
   // Versions dialog
   const handleOpenVersionsDialog = useCallback(() => {
     setVersionsDialogOpen(true);
@@ -206,9 +193,6 @@ export const useStopPlaceDialogs = (): UseStopPlaceDialogsReturn => {
     altNamesDialogOpen,
     handleOpenAltNamesDialog,
     handleCloseAltNamesDialog,
-    keyValuesDialogOpen,
-    handleOpenKeyValuesDialog,
-    handleCloseKeyValuesDialog,
     versionsDialogOpen,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,

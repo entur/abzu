@@ -16,7 +16,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HistoryIcon from "@mui/icons-material/History";
 import LabelIcon from "@mui/icons-material/Label";
 import ShortTextIcon from "@mui/icons-material/ShortText";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
   Box,
   Button,
@@ -53,7 +52,6 @@ export const StopPlaceGeneralSection: React.FC<
   onOpenTimetable,
   onOpenTags,
   onOpenAltNames,
-  onOpenKeyValues,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -222,14 +220,6 @@ export const StopPlaceGeneralSection: React.FC<
           variant="outlined"
         >
           {formatMessage({ id: "alternative_names" })}
-        </Button>
-        <Button
-          size="small"
-          startIcon={<VpnKeyIcon fontSize="small" />}
-          onClick={onOpenKeyValues}
-          variant="outlined"
-        >
-          {formatMessage({ id: "key_values_hint" })}
         </Button>
         {version !== undefined &&
           version !== null &&

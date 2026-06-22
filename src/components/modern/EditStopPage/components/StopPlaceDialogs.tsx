@@ -17,7 +17,6 @@ import {
   AddAdjacentStopsDialog,
   AltNamesDialog,
   ConfirmDialog,
-  KeyValuesDialog,
   MergeQuayDialog,
   MergeStopPlaceDialog,
   MoveQuayDialog,
@@ -49,7 +48,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   requiredFieldsMissingOpen,
   tagsDialogOpen,
   altNamesDialogOpen,
-  keyValuesDialogOpen,
   versionsDialogOpen,
   infoDialogOpen,
   nameDescriptionDialogOpen,
@@ -74,7 +72,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   handleRemoveTag,
   handleFindTagByName,
   handleCloseAltNamesDialog,
-  handleCloseKeyValuesDialog,
   handleCloseVersionsDialog,
   handleCloseInfoDialog,
   handleCloseNameDescriptionDialog,
@@ -179,15 +176,7 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         handleClose={handleCloseAltNamesDialog}
       />
 
-      {/* 10. Key Values Dialog */}
-      <KeyValuesDialog
-        open={keyValuesDialogOpen}
-        keyValues={stopPlace?.keyValues || []}
-        disabled={!canEdit}
-        handleClose={handleCloseKeyValuesDialog}
-      />
-
-      {/* 11. Versions Dialog */}
+      {/* 10. Versions Dialog */}
       <VersionsDialog
         open={versionsDialogOpen}
         versions={versions}
