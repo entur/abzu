@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { LatLngExpression } from "leaflet";
 import { Polygon, Tooltip } from "react-leaflet";
 import { TariffZone } from "../../models/TariffZone";
 
@@ -18,7 +19,12 @@ export const ZonesLayer = <T extends TariffZone>({
       {zones.map((zone) => (
         <Polygon
           key={zone.id}
-          positions={zone.polygon.coordinates}
+          positions={
+            zone.polygon.coordinates as
+              | LatLngExpression[]
+              | LatLngExpression[][]
+              | LatLngExpression[][][]
+          }
           pathOptions={{
             fillColor: `#${getColor(zone)}`,
             color: `#${getColor(zone)}`,
