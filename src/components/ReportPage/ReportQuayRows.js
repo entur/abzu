@@ -13,8 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { injectIntl } from "react-intl";
 import { ColumnTransformerQuaysJsx } from "../../models/columnTransformers";
+import { injectIntl } from "../../utils/injectIntl";
 
 class ReportQuayRows extends React.Component {
   render() {

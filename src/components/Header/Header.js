@@ -28,7 +28,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { Helmet } from "react-helmet";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import { getEnvColor, getLogo, getTiamatEnv } from "../../config/themeConfig";
@@ -36,6 +35,7 @@ import {
   toggleShowFareZonesInMap,
   toggleShowTariffZonesInMap,
 } from "../../reducers/zonesSlice";
+import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "./../Dialogs/ConfirmDialog";
 import MoreMenuItem from "./../MainPage/MoreMenuItem";
 import { LanguageMenu } from "./LanguageMenu";

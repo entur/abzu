@@ -2,7 +2,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import { IconButton, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 
 /**
  * A reusable button that copies a given text string to the clipboard.

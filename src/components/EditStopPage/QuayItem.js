@@ -29,12 +29,12 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import MdLess from "@mui/icons-material/ExpandLess";
 import FlatButton from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import { injectIntl } from "react-intl";
 import equipmentHelpers from "../../modelUtils/equipmentHelpers";
 import BusShelter from "../../static/icons/facilities/BusShelter";
 import { TicketMachine } from "../../static/icons/facilities/TicketMachine";
 import Sign512 from "../../static/icons/TransportSign";
 import { getIn } from "../../utils/";
+import { injectIntl } from "../../utils/injectIntl";
 import EditQuayAdditional from "./EditQuayAdditional";
 import ImportedId from "./ImportedId";
 

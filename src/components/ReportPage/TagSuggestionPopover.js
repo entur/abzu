@@ -21,9 +21,9 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { getTagsByName } from "../../actions/TiamatActions";
+import { injectIntl } from "../../utils/injectIntl";
 import ShowMoreMenuFooter from "./ShowMoreMenuFooter";
 
 class TagSuggestionPopover extends Component {

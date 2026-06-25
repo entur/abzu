@@ -15,10 +15,10 @@
 import ContentAdd from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import StopPlacesGroupActions from "../../actions/StopPlacesGroupActions";
 import { getPrimaryColor } from "../../config/themeConfig";
+import { injectIntl } from "../../utils/injectIntl";
 import AddMemberToGroup from "../Dialogs/AddMemberToGroup";
 import StopPlaceListItem from "../EditParentStopPage/StopPlaceListItem";
 

@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 
 import stopTypes from "../../models/stopTypes";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
