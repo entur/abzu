@@ -2,8 +2,8 @@ import WarningIcon from "@mui/icons-material/Warning";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { getPrimaryColor } from "../../config/themeConfig";
+import { injectIntl } from "../../utils/injectIntl";
 
 class AcceptChanges extends React.Component {
   render() {

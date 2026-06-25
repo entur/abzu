@@ -17,7 +17,7 @@ import EditorInsertLink from "@mui/icons-material/InsertLink";
 import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 
 class AdjacentStopConnection extends Component {
   handleRemoveAdjacentConnection = () => {

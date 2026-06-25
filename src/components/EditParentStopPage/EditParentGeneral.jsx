@@ -17,7 +17,6 @@ import MdSave from "@mui/icons-material/Save";
 import MdUndo from "@mui/icons-material/Undo";
 import FlatButton from "@mui/material/Button";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import {
@@ -36,6 +35,7 @@ import mapToMutationVariables from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes";
 import SettingsManager from "../../singletons/SettingsManager";
 import { getIsCurrentVersionMax } from "../../utils/";
+import { injectIntl } from "../../utils/injectIntl";
 import { getStopPermissions } from "../../utils/permissionsUtils";
 import AddAdjacentStopsDialog from "../Dialogs/AddAdjacentStopsDialog";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";

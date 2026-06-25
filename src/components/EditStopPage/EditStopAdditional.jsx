@@ -15,7 +15,7 @@ limitations under the Licence. */
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import AccessibilityStopTab from "./AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "./Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "./Facility/FacilitiesStopTab";

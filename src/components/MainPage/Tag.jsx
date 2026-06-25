@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import ToolTippable from "../EditStopPage/ToolTippable";
 
 class Tag extends Component {

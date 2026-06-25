@@ -13,10 +13,10 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions } from "../../actions";
 import { setDecimalPrecision } from "../../utils";
+import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 
 import newStopIcon from "../../static/icons/new-stop-icon-2x.png";

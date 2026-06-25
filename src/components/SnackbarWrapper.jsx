@@ -18,10 +18,10 @@ import MdInfo from "@mui/icons-material/InfoOutlined";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../actions/";
 import * as types from "../actions/Types";
+import { injectIntl } from "../utils/injectIntl";
 
 class SnackbarWrapper extends Component {
   constructor(props) {

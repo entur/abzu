@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import PropTypes from "prop-types";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import {
   StopPlaceActions,
@@ -25,6 +24,7 @@ import { getNeighbourStopPlaceQuays } from "../../actions/TiamatActions";
 import { Entities } from "../../models/Entities";
 import Routes from "../../routes/";
 import { getIn, setDecimalPrecision } from "../../utils";
+import { injectIntl } from "../../utils/injectIntl";
 import { getStopPermissions } from "../../utils/permissionsUtils";
 import BoardingPositionMarker from "./BoardingPositionMarker";
 import CoordinateMarker from "./CoordinateMarker";
