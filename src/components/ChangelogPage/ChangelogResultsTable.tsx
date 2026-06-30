@@ -18,11 +18,62 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { useIntl } from "react-intl";
 import { CHANGELOG_RESULT_LIMIT } from "../../graphql/Tiamat/queries";
 import { ChangelogResultRow } from "./ChangelogResultRow";
 import type { StopPlaceResult, VersionEntry } from "./types";
+
+type SortKey =
+  | "name"
+  | "id"
+  | "municipality"
+  | "type"
+  | "version"
+  | "changedAt"
+  | "changedBy";
+type SortDirection = "asc" | "desc";
+
+const getMunicipality = (stop: StopPlaceResult): string => {
+  const topo = stop.topographicPlace;
+  if (!topo) return "";
+  const countyName = topo.parentTopographicPlace?.name?.value;
+  return countyName ? `${topo.name.value}, ${countyName}` : topo.name.value;
+};
+
+const getSortValue = (stop: StopPlaceResult, key: SortKey): string | number => {
+  switch (key) {
+    case "name":
+      return stop.name?.value ?? "";
+    case "id":
+      return stop.id;
+    case "municipality":
+      return getMunicipality(stop);
+    case "type":
+      return stop.stopPlaceType ?? "";
+    case "version":
+      return stop.version;
+    case "changedAt":
+      return stop.validBetween?.fromDate ?? "";
+    case "changedBy":
+      return stop.changedBy ?? "";
+  }
+};
+
+const sortResults = (
+  results: StopPlaceResult[],
+  key: SortKey,
+  direction: SortDirection,
+): StopPlaceResult[] =>
+  [...results].sort((a, b) => {
+    const aVal = getSortValue(a, key);
+    const bVal = getSortValue(b, key);
+    if (aVal < bVal) return direction === "asc" ? -1 : 1;
+    if (aVal > bVal) return direction === "asc" ? 1 : -1;
+    return 0;
+  });
 
 interface Props {
   results: StopPlaceResult[] | null;
@@ -38,6 +89,27 @@ export const ChangelogResultsTable = ({
   onToggleVersions,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const [sortKey, setSortKey] = useState<SortKey>("changedAt");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortLabel = (key: SortKey, label: string) => (
+    <TableSortLabel
+      active={sortKey === key}
+      direction={sortKey === key ? sortDirection : "asc"}
+      onClick={() => handleSort(key)}
+    >
+      {label}
+    </TableSortLabel>
+  );
 
   if (results !== null && results.length === 0 && !isLoading) {
     return (
@@ -48,6 +120,8 @@ export const ChangelogResultsTable = ({
   }
 
   if (!results || results.length === 0) return null;
+
+  const sortedResults = sortResults(results, sortKey, sortDirection);
 
   return (
     <>
@@ -77,19 +151,35 @@ export const ChangelogResultsTable = ({
             >
               <TableCell padding="checkbox" />
               <TableCell>
-                {formatMessage({ id: "changelog_stop_name" })}
+                {sortLabel(
+                  "name",
+                  formatMessage({ id: "changelog_stop_name" }),
+                )}
               </TableCell>
-              <TableCell>ID</TableCell>
+              <TableCell>{sortLabel("id", "ID")}</TableCell>
               <TableCell>
-                {formatMessage({ id: "changelog_municipality" })}
-              </TableCell>
-              <TableCell>{formatMessage({ id: "type" })}</TableCell>
-              <TableCell>{formatMessage({ id: "version" })}</TableCell>
-              <TableCell>
-                {formatMessage({ id: "changelog_changed_at" })}
+                {sortLabel(
+                  "municipality",
+                  formatMessage({ id: "changelog_municipality" }),
+                )}
               </TableCell>
               <TableCell>
-                {formatMessage({ id: "changelog_changed_by" })}
+                {sortLabel("type", formatMessage({ id: "type" }))}
+              </TableCell>
+              <TableCell>
+                {sortLabel("version", formatMessage({ id: "version" }))}
+              </TableCell>
+              <TableCell>
+                {sortLabel(
+                  "changedAt",
+                  formatMessage({ id: "changelog_changed_at" }),
+                )}
+              </TableCell>
+              <TableCell>
+                {sortLabel(
+                  "changedBy",
+                  formatMessage({ id: "changelog_changed_by" }),
+                )}
               </TableCell>
               <TableCell>
                 {formatMessage({ id: "changelog_version_comment" })}
@@ -97,7 +187,7 @@ export const ChangelogResultsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {results.map((stop) => (
+            {sortedResults.map((stop) => (
               <ChangelogResultRow
                 key={stop.id}
                 stop={stop}
