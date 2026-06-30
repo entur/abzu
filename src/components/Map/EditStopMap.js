@@ -14,12 +14,12 @@ limitations under the Licence. */
 
 import debounce from "lodash.debounce";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import Settings from "../../singletons/SettingsManager";
 import { setDecimalPrecision } from "../../utils";
+import { injectIntl } from "../../utils/injectIntl";
 import CompassBearingDialog from "../Dialogs/CompassBearingDialog";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import LeafletMap from "./LeafletMap";

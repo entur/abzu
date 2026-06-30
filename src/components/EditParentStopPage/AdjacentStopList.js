@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import AdjacentStopConnection from "./AdjacentStopConnection";
 
 class AdjacentStopList extends Component {

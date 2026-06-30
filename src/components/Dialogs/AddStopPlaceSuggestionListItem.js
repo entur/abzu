@@ -16,7 +16,7 @@ import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import HasExpiredInfo from "../MainPage/HasExpiredInfo";
 import ModalityIconImg from "../MainPage/ModalityIconImg";
 

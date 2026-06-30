@@ -14,9 +14,9 @@ limitations under the Licence. */
 
 // React and Redux
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { replace } from "redux-first-history";
+import { injectIntl } from "../../utils/injectIntl";
 
 // Material UI Icons
 import MdBack from "@mui/icons-material/ArrowBack";

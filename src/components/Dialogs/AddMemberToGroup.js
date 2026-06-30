@@ -24,9 +24,9 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { getGroupMemberSuggestions } from "../../modelUtils/leafletUtils";
+import { injectIntl } from "../../utils/injectIntl";
 import AddStopPlaceSuggestionList from "./AddStopPlaceSuggestionList";
 
 class AddMemberToGroup extends Component {

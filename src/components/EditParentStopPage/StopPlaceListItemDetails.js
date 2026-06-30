@@ -17,7 +17,7 @@ import MdWarning from "@mui/icons-material/Warning";
 import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import AdjacentStopList from "./AdjacentStopList";
 import StopPlaceChildrenItems from "./StopPlaceChildrenItems";
 import StopPlaceListItemQuays from "./StopPlaceListItemQuays";

@@ -1,7 +1,7 @@
 import MdDelete from "@mui/icons-material/DeleteForever";
 import { IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import CopyIdButton from "../Shared/CopyIdButton";
 import { BoardingPosition } from "./BoardingPositionsTab";
 import Code from "./Code";

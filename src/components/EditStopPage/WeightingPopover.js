@@ -18,8 +18,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { injectIntl } from "react-intl";
 import weightTypes, { weightColors } from "../../models/weightTypes";
+import { injectIntl } from "../../utils/injectIntl";
 
 class WeightingPopover extends React.Component {
   render() {

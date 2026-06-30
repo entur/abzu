@@ -15,7 +15,7 @@ limitations under the Licence. */
 import Warning from "@mui/icons-material/Warning";
 import Tooltip from "@mui/material/Tooltip";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 
 class HasExpiredInfo extends Component {
   render() {

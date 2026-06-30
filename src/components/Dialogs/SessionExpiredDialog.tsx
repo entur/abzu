@@ -5,8 +5,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useEffect, useState } from "react";
-import { injectIntl, IntlShape } from "react-intl";
+import { IntlShape } from "react-intl";
 import { useAuth } from "../../auth/auth";
+import { injectIntl } from "../../utils/injectIntl";
 
 interface SessionExpiredDialogProps {
   intl: IntlShape;

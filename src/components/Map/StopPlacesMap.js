@@ -14,13 +14,13 @@ limitations under the Licence. */
 
 import debounce from "lodash.debounce";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { getNeighbourStops } from "../../actions/TiamatActions";
 import { getMarkersForMap } from "../../selectors/StopPlaceMap";
 import Settings from "../../singletons/SettingsManager";
 import { getIn } from "../../utils/";
+import { injectIntl } from "../../utils/injectIntl";
 import LeafletMap from "./LeafletMap";
 
 class StopPlacesMap extends React.Component {

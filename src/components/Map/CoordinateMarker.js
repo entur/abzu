@@ -14,13 +14,13 @@ limitations under the Licence. */
 
 import L from "leaflet";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { Marker, Popup } from "react-leaflet";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import coordinatesIcon from "../../static/icons/coordinates-marker.png";
 import mapCenterIcon from "../../static/icons/map-center.png";
 import mapZoomIn from "../../static/icons/map-zoom-in.png";
+import { injectIntl } from "../../utils/injectIntl";
 
 class CoordinateMarker extends React.Component {
   handleDragEnd(e) {

@@ -16,8 +16,8 @@ import AutoComplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import debounce from "lodash.debounce";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { toCamelCase } from "../../utils/";
+import { injectIntl } from "../../utils/injectIntl";
 
 class AddTagAutoComplete extends Component {
   constructor(props) {

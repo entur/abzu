@@ -16,10 +16,10 @@ import ContentAdd from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { getPrimaryColor } from "../../config/themeConfig";
+import { injectIntl } from "../../utils/injectIntl";
 import Loader from "../Dialogs/Loader";
 import StopPlaceListItem from "./StopPlaceListItem";
 

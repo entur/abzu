@@ -20,7 +20,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 
 class GroupErrorDialog extends Component {
   getErrorText(type, formatMessage) {

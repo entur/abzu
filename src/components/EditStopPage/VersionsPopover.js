@@ -16,8 +16,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { sortVersions } from "../../utils";
+import { injectIntl } from "../../utils/injectIntl";
 
 class VersionsPopover extends Component {
   constructor(props) {
