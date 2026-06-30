@@ -38,6 +38,7 @@ import {
   allEntities,
   allVersionsOfStopPlace,
   findStop,
+  findStopForChangelog as findStopForChangelogQuery,
   findStopForReport as findStopForReportQuery,
   findTagByNameQuery,
   getGroupOfStopPlaceQuery,
@@ -593,6 +594,15 @@ export const findStopForReport =
   (queryVariables) => async (dispatch, getState) =>
     handleQuery(getTiamatClient(), {
       query: findStopForReportQuery,
+      fetchPolicy: "network-only",
+      variables: queryVariables,
+      context: await getContext(getState().user.auth),
+    })(dispatch);
+
+export const findStopForChangelog =
+  (queryVariables) => async (dispatch, getState) =>
+    handleQuery(getTiamatClient(), {
+      query: findStopForChangelogQuery,
       fetchPolicy: "network-only",
       variables: queryVariables,
       context: await getContext(getState().user.auth),
