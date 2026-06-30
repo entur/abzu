@@ -16,7 +16,7 @@
         "url": null,
         "tags": [],
         "geometry": {
-          "legacyCoordinates": [[5.435734, 60.260427]]
+          "coordinates": [5.435734, 60.260427]
         },
         "validBetween": {
           "fromDate": "2017-05-26T14:52:10.096+0200",
@@ -56,7 +56,7 @@
               }
             ],
             "geometry": {
-              "legacyCoordinates": [[5.435734, 60.260427]]
+              "coordinates": [5.435734, 60.260427]
             },
             "publicCode": "1",
             "compassBearing": 344,
@@ -67,7 +67,7 @@
             "id": "NSR:Quay:1695",
             "facilities": [],
             "geometry": {
-              "legacyCoordinates": [[5.435734, 60.260427]]
+              "coordinates": [5.435734, 60.260427]
             },
             "publicCode": "2",
             "compassBearing": 164,

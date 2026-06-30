@@ -14,6 +14,28 @@ import { RootState } from "../store/store";
 
 const Settings = new SettingsManager();
 
+type GeoJsonGeometry = {
+  type: string;
+  coordinates: number[][][] | number[][][][];
+};
+
+const reverseCoord = (lnglat: number[]) => [lnglat[1], lnglat[0]];
+
+// Converts GeoJSON coordinates (lon/lat, any nesting) to Leaflet format (lat/lon, all rings preserved).
+export const normaliseZoneCoordinates = (
+  polygon: GeoJsonGeometry,
+): number[][][] | number[][][][] => {
+  if (polygon.type === "MultiPolygon") {
+    return (polygon.coordinates as number[][][][]).map((poly) =>
+      poly.map((ring) => ring.map(reverseCoord)),
+    );
+  }
+  // Polygon — pass all rings (outer ring + holes)
+  return (polygon.coordinates as number[][][]).map((ring) =>
+    ring.map(reverseCoord),
+  );
+};
+
 const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
   const map = new Map();
   prev.forEach((item) => map.set(item.id, item));
@@ -22,9 +44,7 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
       ...rest,
       polygon: {
         ...polygon,
-        legacyCoordinates: polygon.legacyCoordinates.map((lnglat: number[]) =>
-          lnglat.slice().reverse(),
-        ),
+        coordinates: normaliseZoneCoordinates(polygon),
       },
     }))
     .forEach((item) => map.set(item.id, { ...map.get(item.id), ...item }));

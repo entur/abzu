@@ -1,31 +1,23 @@
 import { FeatureComponent } from "@entur/react-component-toggle";
-import { useMemo } from "react";
-import { WMTSLayer } from "../../components/Map/WMTSLayer";
+import { TileLayer as LeafletTileLayer } from "react-leaflet";
 import { TileLayer } from "../../config/ConfigContext";
-import { useGktToken } from "./hooks/useGktToken";
+import { useNibToken } from "./hooks/useNibToken";
 
-const BASE_URL =
-  "https://gatekeeper1.geonorge.no/BaatGatekeeper/gk/gk.nib_web_mercator_wmts_v2";
+const TILE_URL =
+  "https://tilecache.norgeibilder.no/arcgis/rest/services/Nibcache_web_mercator_v2/MapServer/tile/{z}/{y}/{x}";
 
 export const KartverketFlyFotoLayer: FeatureComponent<TileLayer> = (props) => {
-  const token = useGktToken();
-
-  const params = useMemo(() => {
-    return {
-      gkt: token,
-    };
-  }, [token]);
+  const token = useNibToken();
 
   if (!token) {
     return null;
   }
 
   return (
-    <WMTSLayer
-      baseUrl={BASE_URL}
-      params={params}
-      attribution='&copy; <a href="http://www.kartverket.no">Kartverket'
-      maxZoom={props.maxZoom}
+    <LeafletTileLayer
+      url={`${TILE_URL}?token=${token}`}
+      attribution='&copy; <a href="https://www.norgeibilder.no/">Kartverket - Norge i bilder</a>'
+      maxZoom={props.maxZoom || 20}
       maxNativeZoom={props.maxNativeZoom}
     />
   );

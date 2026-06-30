@@ -4,7 +4,7 @@ export interface TariffZone {
     value: string;
   };
   polygon: {
-    type: "Polygon";
-    legacyCoordinates: [[number, number]];
+    type: "Polygon" | "MultiPolygon";
+    coordinates: number[][][] | number[][][][];
   };
 }

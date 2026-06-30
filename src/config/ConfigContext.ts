@@ -22,10 +22,18 @@ export interface Config {
    */
   extPath?: string;
   /**
-   * With this it's possible to specify a link that will be shown in User Guide section of the header menu;
+   * With this it's possible to specify localized links that will be shown in User Guide section of the header menu;
    * By default, Entur's user guide is used there.
    */
-  extUserGuideLink?: string;
+  extUserGuideLink?: Record<string, string>;
+  /**
+   * Hides "Move quays to new stop place" button
+   */
+  disableMoveQuaysToNewStopPlace?: boolean;
+  /**
+   * These keys will always be shown in UI and cannot be deleted
+   */
+  mandatoryKeyValuesSet?: MandatoryKeyValuesSet;
 }
 
 export interface MapConfig {
@@ -60,6 +68,27 @@ export interface ModalityConfig {
    * Example: ["other", "someOtherType"]
    */
   hiddenStopTypes?: string[];
+  /**
+   * When true, all UI controls for creating new MultiModal (parent) StopPlaces are hidden.
+   * Existing MultiModal StopPlaces can still be viewed and edited.
+   */
+  disableMultiModalStopPlaceCreation?: boolean;
+  /**
+   * When true, all UI controls for creating new Group of Stop Places are hidden.
+   * Existing Groups of Stop Places can still be viewed and edited.
+   */
+  disableGroupOfStopPlacesCreation?: boolean;
+}
+
+export type MandatoryKeyValuesSupportedTransportMode =
+  | "rail"
+  | "bus"
+  | "tram"
+  | "all";
+
+export interface MandatoryKeyValuesSet {
+  stopPlace: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
+  quay: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;
 }
 
 export const ConfigContext = React.createContext<Config>({});

@@ -47,8 +47,8 @@ class ParentStopPlace {
       permissions: child.permissions,
     };
 
-    if (child.geometry && child.geometry.legacyCoordinates) {
-      let coordinates = child.geometry.legacyCoordinates[0].slice();
+    if (child.geometry && child.geometry.coordinates) {
+      let coordinates = child.geometry.coordinates.slice();
       // Leaflet uses latLng, GeoJSON [long,lat]
       clientStop.location = [
         setDecimalPrecision(coordinates[1], 6),
@@ -158,8 +158,8 @@ class ParentStopPlace {
         clientStop.placeEquipments = stop.placeEquipments;
       }
 
-      if (stop.geometry && stop.geometry.legacyCoordinates) {
-        let coordinates = stop.geometry.legacyCoordinates[0].slice();
+      if (stop.geometry && stop.geometry.coordinates) {
+        let coordinates = stop.geometry.coordinates.slice();
         // Leaflet uses latLng, GeoJSON is [long,lat]
         clientStop.location = [
           setDecimalPrecision(coordinates[1], 6),
@@ -200,8 +200,8 @@ class ParentStopPlace {
           child.hasExpired = hasExpired(clientStop.validBetween);
           child.isChildOfParent = true;
 
-          if (child.geometry && child.geometry.legacyCoordinates) {
-            let coordinates = child.geometry.legacyCoordinates[0].slice();
+          if (child.geometry && child.geometry.coordinates) {
+            let coordinates = child.geometry.coordinates.slice();
             // Leaflet uses latLng, GeoJSON is [long,lat]
             child.location = [
               setDecimalPrecision(coordinates[1], 6),
