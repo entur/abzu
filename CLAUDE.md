@@ -1,5 +1,9 @@
 # Abzu — Claude Code Instructions
 
+## Workflow
+
+- **Never use browser automation (claude-in-chrome / MCP browser tools) on this project.** The user runs the dev server and does all in-browser verification themselves. Don't navigate, screenshot, or read console/network from a browser tab unless explicitly asked.
+
 ## Language & Style
 
 - **TypeScript only** for all new files. No `.js` new files in `src/components/modern/` or `src/containers/modern/`.

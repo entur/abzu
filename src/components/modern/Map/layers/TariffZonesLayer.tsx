@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import type { FeatureCollection, Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { TariffZone } from "../../../../models/TariffZone";
@@ -22,12 +22,15 @@ import {
   setSelectedTariffZones,
 } from "../../../../reducers/zonesSlice";
 import { getColorByCodespace } from "../../../Zones/getColorByCodespace";
+import { toZoneGeometry } from "../../../Zones/toZoneGeometry";
 import { useZones } from "../../../Zones/useZones";
 
 const FILL_OPACITY = 0.2;
 const OUTLINE_WIDTH = 2;
 
-const buildGeoJson = (zones: TariffZone[]): FeatureCollection<Polygon> => ({
+const buildGeoJson = (
+  zones: TariffZone[],
+): FeatureCollection<Polygon | MultiPolygon> => ({
   type: "FeatureCollection",
   features: zones.map((zone) => ({
     type: "Feature" as const,
@@ -35,11 +38,7 @@ const buildGeoJson = (zones: TariffZone[]): FeatureCollection<Polygon> => ({
     properties: {
       color: `#${getColorByCodespace(zone.id?.split(":")[0] ?? "default")}`,
     },
-    geometry: {
-      type: "Polygon" as const,
-      // polygon.coordinates is [lat, lng] (reversed by zonesSlice); GeoJSON/MapLibre requires [lng, lat]
-      coordinates: [zone.polygon.coordinates.map(([lat, lng]) => [lng, lat])],
-    },
+    geometry: toZoneGeometry(zone.polygon),
   })),
 });
 

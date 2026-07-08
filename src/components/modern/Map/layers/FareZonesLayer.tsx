@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Typography } from "@mui/material";
-import type { FeatureCollection, Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import { useEffect, useMemo, useState } from "react";
 import { Layer, Popup, Source, useMap } from "react-map-gl/maplibre";
 import { FareZone } from "../../../../models/FareZone";
@@ -23,6 +23,7 @@ import {
   setSelectedFareZones,
 } from "../../../../reducers/zonesSlice";
 import { getColorByCodespace } from "../../../Zones/getColorByCodespace";
+import { toZoneGeometry } from "../../../Zones/toZoneGeometry";
 import { useZones } from "../../../Zones/useZones";
 
 const FILL_OPACITY = 0.1;
@@ -37,7 +38,9 @@ interface ZonePopup {
   id: string;
 }
 
-const buildGeoJson = (zones: FareZone[]): FeatureCollection<Polygon> => ({
+const buildGeoJson = (
+  zones: FareZone[],
+): FeatureCollection<Polygon | MultiPolygon> => ({
   type: "FeatureCollection",
   features: zones.map((zone) => ({
     type: "Feature" as const,
@@ -46,13 +49,9 @@ const buildGeoJson = (zones: FareZone[]): FeatureCollection<Polygon> => ({
       color: `#${getColorByCodespace(zone.id?.split(":")[0] ?? "default")}`,
       zoneId: zone.id,
       name: zone.name.value,
-      privateCode: zone.privateCode.value,
+      privateCode: zone.privateCode?.value ?? "",
     },
-    geometry: {
-      type: "Polygon" as const,
-      // polygon.coordinates is [lat, lng] (reversed by zonesSlice); GeoJSON/MapLibre requires [lng, lat]
-      coordinates: [zone.polygon.coordinates.map(([lat, lng]) => [lng, lat])],
-    },
+    geometry: toZoneGeometry(zone.polygon),
   })),
 });
 
@@ -144,9 +143,11 @@ export const FareZonesLayer = () => {
         >
           <Box sx={{ p: 0.5 }}>
             <Typography variant="subtitle2">{popup.name}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {popup.privateCode}
-            </Typography>
+            {popup.privateCode && (
+              <Typography variant="body2" color="text.secondary">
+                {popup.privateCode}
+              </Typography>
+            )}
             <Typography variant="caption" color="text.secondary">
               {popup.id}
             </Typography>

@@ -225,7 +225,11 @@ export const FareZonesPanel: React.FC = () => {
                   }
                   label={
                     <ListItemText
-                      primary={`${zone.name.value} - ${zone.privateCode.value}`}
+                      primary={
+                        zone.privateCode
+                          ? `${zone.name.value} - ${zone.privateCode.value}`
+                          : zone.name.value
+                      }
                       secondary={zone.id}
                       slotProps={{
                         primary: {
