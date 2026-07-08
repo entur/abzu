@@ -22,10 +22,10 @@ export interface Config {
    */
   extPath?: string;
   /**
-   * With this it's possible to specify a link that will be shown in User Guide section of the header menu;
+   * With this it's possible to specify localized links that will be shown in User Guide section of the header menu;
    * By default, Entur's user guide is used there.
    */
-  extUserGuideLink?: string;
+  extUserGuideLink?: Record<string, string>;
   /**
    * Hides "Move quays to new stop place" button
    */

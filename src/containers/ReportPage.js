@@ -254,6 +254,8 @@ class ReportPage extends React.Component {
       withTags,
       tags,
       versionValidity: showFutureAndExpired ? "MAX_VERSION" : null,
+      // By default, the report page's search word input also uses this:
+      withQuayPublicAndPrivateCodes: true,
       municipalityReference: topoiChips
         .filter((topos) => topos.type === "municipality")
         .map((topos) => topos.id),
