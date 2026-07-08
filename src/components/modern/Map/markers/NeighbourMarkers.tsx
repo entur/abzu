@@ -141,6 +141,12 @@ export const NeighbourMarkers = () => {
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,
   );
+  const mergeSourceId = useAppSelector((state) =>
+    (state as any).stopPlace?.mergeStopDialog?.isOpen
+      ? ((state as any).stopPlace?.mergeStopDialog?.id as string | undefined)
+      : undefined,
+  );
+  const isMergingStop = !!mergeSourceId;
 
   if (!neighbourStops?.length) return null;
 
@@ -149,6 +155,7 @@ export const NeighbourMarkers = () => {
       return false;
     if (!showExpiredStops && (stop.hasExpired || stop.permanentlyTerminated))
       return false;
+    if (isMergingStop && stop.id !== mergeSourceId) return false;
     return true;
   });
 

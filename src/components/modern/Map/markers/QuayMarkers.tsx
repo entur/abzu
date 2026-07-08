@@ -201,8 +201,12 @@ export const QuayMarkers = () => {
   const showPublicCode = useAppSelector(
     (state) => (state.user as any).showPublicCode as boolean,
   );
+  const isMergingStop = useAppSelector(
+    (state) => !!(state as any).stopPlace?.mergeStopDialog?.isOpen,
+  );
 
   if (!current?.quays?.length) return null;
+  if (isMergingStop) return null;
 
   const disabled =
     !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;

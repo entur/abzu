@@ -191,8 +191,12 @@ export const ParkingMarkers = () => {
     (state) =>
       (state as any).mapUtils?.focusedElement as FocusedElement | undefined,
   );
+  const isMergingStop = useAppSelector(
+    (state) => !!(state as any).stopPlace?.mergeStopDialog?.isOpen,
+  );
 
   if (!current?.parking?.length) return null;
+  if (isMergingStop) return null;
 
   const disabled =
     !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;

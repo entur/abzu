@@ -28,6 +28,7 @@ import AppRoutes from "../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { AddElementFab } from "./controls/AddElementFab";
 import { MapControls } from "./controls/MapControls";
+import { MergeModeHint } from "./controls/MergeModeHint";
 import { useMapComponentLayers } from "./hooks/useMapComponentLayers";
 import { FareZonesLayer } from "./layers/FareZonesLayer";
 import { GroupEdgesLayer } from "./layers/GroupEdgesLayer";
@@ -260,6 +261,7 @@ export const ModernEditStopMap = () => {
       >
         <MapControls />
         <AddElementFab />
+        <MergeModeHint />
         <FareZonesLayer />
         <TariffZonesLayer />
         <StopGroupLayer />

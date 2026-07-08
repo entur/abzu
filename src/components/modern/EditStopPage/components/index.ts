@@ -10,5 +10,6 @@ export { QuayPanel } from "./QuayPanel";
 export { QuaysSection } from "./QuaysSection";
 export { StopPlaceDialogs } from "./StopPlaceDialogs";
 export { StopPlaceGeneralSection } from "./StopPlaceGeneralSection";
+export { StopPlaceHeader } from "./StopPlaceHeader";
 export { StopPlaceView } from "./StopPlaceView";
 export { TimetableDialog } from "./TimetableDialog";

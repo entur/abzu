@@ -17,13 +17,32 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import ExploreIcon from "@mui/icons-material/Explore";
 import ExploreOffIcon from "@mui/icons-material/ExploreOff";
+import MapIcon from "@mui/icons-material/Map";
 import MergeTypeIcon from "@mui/icons-material/MergeType";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import StreetviewIcon from "@mui/icons-material/Streetview";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useIntl } from "react-intl";
 import { StopPlaceActions, UserActions } from "../../../../actions";
+import { useConfig } from "../../../../config/ConfigContext";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { MarkerPopup } from "./MarkerPopup";
 import type { MapQuay, MapStopPlace } from "./types";
+
+const buildOsmEditUrl = (lat: number, lng: number) =>
+  `https://www.openstreetmap.org/edit#map=18/${lat}/${lng}`;
+
+const buildStreetViewUrl = (lat: number, lng: number) =>
+  `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`;
+
+const buildSvvUrl = (lat: number, lng: number) =>
+  `https://vegbilder.atlas.vegvesen.no/?lat=${lat}&lng=${lng}&zoom=16&view=image`;
 
 interface QuayPopupProps {
   anchorEl: HTMLElement | null;
@@ -56,6 +75,8 @@ export const QuayPopup = ({
 }: QuayPopupProps) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
+  const { featureFlags } = useConfig();
+  const showSvvLink = !!featureFlags?.SVVStreetViewLink;
 
   const current = useAppSelector(
     (state) => state.stopPlace.current as MapStopPlace | null,
@@ -119,6 +140,46 @@ export const QuayPopup = ({
       lat={lat}
       lng={lng}
     >
+      <Box sx={{ display: "flex", gap: 0.5, mt: 0.5 }}>
+        <Tooltip title={formatMessage({ id: "quay_link_osm" })}>
+          <IconButton
+            size="small"
+            component="a"
+            href={buildOsmEditUrl(lat, lng)}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: "text.secondary" }}
+          >
+            <MapIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={formatMessage({ id: "quay_link_street_view" })}>
+          <IconButton
+            size="small"
+            component="a"
+            href={buildStreetViewUrl(lat, lng)}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: "text.secondary" }}
+          >
+            <StreetviewIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        {showSvvLink && (
+          <Tooltip title={formatMessage({ id: "quay_link_svv" })}>
+            <IconButton
+              size="small"
+              component="a"
+              href={buildSvvUrl(lat, lng)}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: "text.secondary" }}
+            >
+              <MapIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Box>
       <Divider sx={{ my: 0.75 }} />
       {isEditingBearing ? (
         <Button
@@ -146,7 +207,7 @@ export const QuayPopup = ({
               {!disabled && (
                 <Button
                   size="small"
-                  variant="text"
+                  variant="outlined"
                   color="error"
                   startIcon={<ExploreOffIcon />}
                   onClick={() =>

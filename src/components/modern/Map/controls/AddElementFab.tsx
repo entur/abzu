@@ -41,6 +41,8 @@ interface StopAction {
   elementType: ElementType;
 }
 
+const DRAWER_WIDTH = 450;
+
 const STOP_ELEMENT_ACTIONS: StopAction[] = [
   {
     icon: <QuayIcon />,
@@ -106,6 +108,14 @@ export const AddElementFab = () => {
       ((state.stopPlace.current as any)?.parking as unknown[] | undefined)
         ?.length ?? 0,
   );
+  const focusedElement = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedElement as
+        | { type: string; index: number }
+        | undefined,
+  );
+  const isQuayFocused =
+    focusedElement?.type === "quay" && (focusedElement?.index ?? -1) >= 0;
 
   const pendingElementTypeRef = useRef(pendingElementType);
   useEffect(() => {
@@ -224,11 +234,12 @@ export const AddElementFab = () => {
         open={open}
         onOpen={() => !pendingElementType && setOpen(true)}
         onClose={() => setOpen(false)}
-        direction="up"
+        direction="down"
         sx={{
           position: "absolute",
-          bottom: 96,
-          right: 16,
+          top: 16,
+          left: hasStopSelected ? DRAWER_WIDTH + 8 : 8,
+          transition: "left 0.3s ease-in-out",
           "& .MuiSpeedDial-fab": {
             bgcolor: pendingElementType ? "warning.main" : "primary.main",
             color: pendingElementType
@@ -241,7 +252,10 @@ export const AddElementFab = () => {
         }}
       >
         {hasStopSelected
-          ? STOP_ELEMENT_ACTIONS.map((action) => (
+          ? STOP_ELEMENT_ACTIONS.filter(
+              (action) =>
+                action.elementType !== "boardingPosition" || isQuayFocused,
+            ).map((action) => (
               <SpeedDialAction
                 key={action.elementType}
                 icon={action.icon}

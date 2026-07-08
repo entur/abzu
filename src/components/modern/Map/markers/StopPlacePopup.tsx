@@ -132,7 +132,7 @@ export const StopPlacePopup = ({
         <Box sx={{ mt: 1 }}>
           <Button
             size="small"
-            variant="contained"
+            variant="outlined"
             fullWidth
             startIcon={<OpenInFullIcon />}
             onClick={onOpen}

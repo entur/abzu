@@ -36,7 +36,7 @@ import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { useAppSelector } from "../../../../store/hooks";
 import AccessibilityQuayTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityQuayTab";
 import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab";
-import { CopyIdButton, ImportedId } from "../../Shared";
+import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
 
@@ -148,21 +148,34 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
             <ArrowBackIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Typography
-          variant="subtitle1"
-          sx={{ flex: 1, fontWeight: 600 }}
-          noWrap
-        >
-          {displayCode}
-        </Typography>
-        {quay.id && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary">
-              {quay.id}
-            </Typography>
-            <CopyIdButton idToCopy={quay.id} size="small" />
-          </Box>
-        )}
+        <LocationOnIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
+            {displayCode}
+          </Typography>
+          {quay.id && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.25,
+                mt: -0.25,
+              }}
+            >
+              <Typography variant="caption" color="text.secondary" noWrap>
+                {quay.id}
+              </Typography>
+              <CopyIdButton idToCopy={quay.id} size="small" />
+            </Box>
+          )}
+        </Box>
+        <CenterMapButton
+          location={
+            quay.location
+              ? ([quay.location[0], quay.location[1]] as [number, number])
+              : stopPlace.location
+          }
+        />
       </Box>
 
       <Divider />

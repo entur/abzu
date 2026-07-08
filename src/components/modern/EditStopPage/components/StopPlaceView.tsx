@@ -13,39 +13,27 @@
  * limitations under the Licence. */
 
 import AccessibleIcon from "@mui/icons-material/Accessible";
-import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import UndoIcon from "@mui/icons-material/Undo";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Tab,
-  Tabs,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Tab, Tabs, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
-import { Entities } from "../../../../models/Entities";
 import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { useAppDispatch } from "../../../../store/hooks";
 import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
-import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { StopPlaceViewProps } from "../types";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { ParkingSection } from "./ParkingSection";
 import { QuaysSection } from "./QuaysSection";
 import { StopPlaceGeneralSection } from "./StopPlaceGeneralSection";
+import { StopPlaceHeader } from "./StopPlaceHeader";
 import { TimetableDialog } from "./TimetableDialog";
 
 /**
@@ -87,61 +75,13 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 
   return (
     <>
-      {/* Header */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          px: 1,
-          py: 0.5,
-          minHeight: 48,
-          gap: 0.5,
-        }}
-      >
-        <Tooltip title={formatMessage({ id: "close" })}>
-          <IconButton size="small" onClick={onGoBack}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
-            {stopName}
-          </Typography>
-          {stopPlace.id && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0.25,
-                mt: -0.25,
-              }}
-            >
-              <Typography variant="caption" color="text.secondary" noWrap>
-                {stopPlace.id}
-              </Typography>
-              <CopyIdButton idToCopy={stopPlace.id} size="small" />
-            </Box>
-          )}
-        </Box>
-        <CenterMapButton location={stopPlace.location} />
-        {stopPlace.id && (
-          <FavoriteButton
-            id={stopPlace.id}
-            name={stopPlace.name}
-            entityType={Entities.STOP_PLACE}
-            stopPlaceType={stopPlace.stopPlaceType}
-            submode={stopPlace.submode}
-            topographicPlace={stopPlace.topographicPlace}
-            parentTopographicPlace={stopPlace.parentTopographicPlace}
-            location={stopPlace.location}
-          />
-        )}
-        <Tooltip title={formatMessage({ id: "collapse" })}>
-          <IconButton size="small" onClick={onToggle}>
-            <ExpandLessIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <StopPlaceHeader
+        stopPlace={stopPlace}
+        stopName={stopName}
+        onClose={onGoBack}
+        onToggle={onToggle}
+        isExpanded={true}
+      />
 
       <Divider />
 

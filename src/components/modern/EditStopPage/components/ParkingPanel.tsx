@@ -15,6 +15,7 @@ limitations under the Licence. */
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -36,7 +37,7 @@ import {
 import PARKING_TYPE from "../../../../models/parkingType";
 import mapToMutationVariables from "../../../../modelUtils/mapToQueryVariables";
 import { useAppDispatch } from "../../../../store/hooks";
-import { CopyIdButton } from "../../Shared";
+import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
 
@@ -149,31 +150,39 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
             <ArrowBackIcon fontSize="small" />
           </IconButton>
         </Tooltip>
+        {isParkAndRide ? (
+          <LocalParkingIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
+        ) : (
+          <DirectionsBikeIcon sx={{ fontSize: "1.3rem", flexShrink: 0 }} />
+        )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
             {displayName}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {formatMessage({
-              id: `parking_item_title_${parking.parkingType || "parkAndRide"}`,
-            })}
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <Typography variant="caption" color="text.secondary">
+              {formatMessage({
+                id: `parking_item_title_${parking.parkingType || "parkAndRide"}`,
+              })}
+            </Typography>
+            {isExpired && (
+              <Chip
+                label={formatMessage({ id: "parking_expired" })}
+                size="small"
+                color="warning"
+              />
+            )}
+          </Box>
         </Box>
         {parking.id && (
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="text.secondary" noWrap>
               {parking.id}
             </Typography>
             <CopyIdButton idToCopy={parking.id} size="small" />
           </Box>
         )}
-        {isExpired && (
-          <Chip
-            label={formatMessage({ id: "parking_expired" })}
-            size="small"
-            color="warning"
-          />
-        )}
+        <CenterMapButton location={stopPlace.location} />
       </Box>
 
       <Divider />

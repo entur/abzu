@@ -57,6 +57,12 @@ export interface MinimizedBarProps {
 
   // Display mode
   isMobile: boolean;
+
+  // Optional expiry banner (used when customHeader is not provided)
+  hasExpired?: boolean;
+
+  // When provided, replaces the default MinimizedBarHeader row (and hasExpired banner)
+  customHeader?: React.ReactNode;
 }
 
 /**
@@ -70,6 +76,7 @@ export interface MinimizedBarHeaderProps {
   hasId: boolean;
   isMobile: boolean;
   onExpand: () => void;
+  centerLocation?: [number, number];
 }
 
 /**

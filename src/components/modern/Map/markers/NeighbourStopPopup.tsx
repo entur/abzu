@@ -12,7 +12,6 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import LinkIcon from "@mui/icons-material/Link";
 import MergeIcon from "@mui/icons-material/MergeType";
@@ -21,11 +20,7 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import {
-  StopPlaceActions,
-  StopPlacesGroupActions,
-  UserActions,
-} from "../../../../actions";
+import { StopPlacesGroupActions, UserActions } from "../../../../actions";
 import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { MarkerPopup } from "./MarkerPopup";
@@ -82,22 +77,6 @@ export const NeighbourStopPopup = ({
   const showAddToGroup = isEditingGroup && canEdit && !isGroupMember;
   const showRemoveFromGroup = isEditingGroup && canEdit && isGroupMember;
 
-  const showCreateGroup =
-    hasSavedId &&
-    !expired &&
-    !stop.isChildOfParent &&
-    !stop.isParent &&
-    canEdit &&
-    !isEditingGroup;
-
-  const showCreateMultimodal =
-    hasSavedId &&
-    !expired &&
-    !stop.isParent &&
-    !stop.isChildOfParent &&
-    canEdit &&
-    !isEditingGroup;
-
   const showMergeStop =
     hasSavedId &&
     !expired &&
@@ -109,14 +88,11 @@ export const NeighbourStopPopup = ({
   const hasActions =
     showAddToGroup ||
     showRemoveFromGroup ||
-    showCreateGroup ||
-    showCreateMultimodal ||
     showMergeStop ||
     showConnectAdjacent;
 
   const handleOpen = () => {
     onClose();
-    dispatch(StopPlaceActions.setStopPlaceLoading(true));
     navigate(`/${AppRoutes.STOP_PLACE}/${stop.id}`);
   };
 
@@ -128,16 +104,6 @@ export const NeighbourStopPopup = ({
   const handleRemoveFromGroup = () => {
     onClose();
     dispatch(StopPlacesGroupActions.removeMemberFromGroup(stop.id));
-  };
-
-  const handleCreateGroup = () => {
-    onClose();
-    dispatch(StopPlacesGroupActions.useStopPlaceIdForNewGroup(stop.id));
-  };
-
-  const handleCreateMultimodal = () => {
-    onClose();
-    dispatch(UserActions.createMultimodalWith(stop.id, false));
   };
 
   const handleMergeStop = () => {
@@ -163,7 +129,7 @@ export const NeighbourStopPopup = ({
       <Box sx={{ mt: 1 }}>
         <Button
           size="small"
-          variant="contained"
+          variant="outlined"
           fullWidth
           startIcon={<OpenInFullIcon />}
           onClick={handleOpen}
@@ -197,28 +163,6 @@ export const NeighbourStopPopup = ({
                 fullWidth
               >
                 {formatMessage({ id: "remove_from_group" })}
-              </Button>
-            )}
-            {showCreateGroup && (
-              <Button
-                size="small"
-                variant="outlined"
-                startIcon={<AccountTreeIcon />}
-                onClick={handleCreateGroup}
-                fullWidth
-              >
-                {formatMessage({ id: "create_group_of_stop_places" })}
-              </Button>
-            )}
-            {showCreateMultimodal && (
-              <Button
-                size="small"
-                variant="outlined"
-                startIcon={<LinkIcon />}
-                onClick={handleCreateMultimodal}
-                fullWidth
-              >
-                {formatMessage({ id: "new__multi_stop" })}
               </Button>
             )}
             {showMergeStop && (

@@ -13,9 +13,9 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
-import TrainIcon from "@mui/icons-material/DirectionsBus";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {
   Box,
   Chip,
@@ -71,7 +71,7 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
           userSelect: "none",
         }}
       >
-        <TrainIcon fontSize="small" color="action" />
+        <LocationOnIcon fontSize="small" color="action" />
         <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
           {formatMessage({ id: "quays" })}
         </Typography>

@@ -15,9 +15,7 @@
 import { Box, Drawer, Slide, useMediaQuery, useTheme } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
-import { Entities } from "../../../models/Entities";
 import { useAppSelector } from "../../../store/hooks";
-import ModalityIconImg from "../../MainPage/ModalityIconImg";
 import { MinimizedBar } from "../Shared";
 import {
   getDrawerPreference,
@@ -28,6 +26,7 @@ import {
   ParkingPanel,
   QuayPanel,
   StopPlaceDialogs,
+  StopPlaceHeader,
   StopPlaceView,
 } from "./components";
 import { useEditStopPage } from "./hooks/useEditStopPage";
@@ -299,23 +298,21 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   const minimizedBar = (
     <MinimizedBar
-      icon={
-        <ModalityIconImg
-          type={stopPlace.stopPlaceType || "other"}
-          submode={stopPlace.submode}
-          svgStyle={{ width: 24, height: 24 }}
-          iconStyle={{ display: "flex" }}
-        />
-      }
-      name={stopName}
-      id={originalStopPlace?.id}
-      entityType={Entities.STOP_PLACE}
+      icon={<span />}
       hasId={!!stopPlace.id}
       actions={minimizedBarActions}
       onExpand={handleToggle}
       onClose={handleAllowUserToGoBack}
-      centerLocation={stopPlace.location}
       isMobile={isMobile}
+      customHeader={
+        <StopPlaceHeader
+          stopPlace={stopPlace}
+          stopName={stopName}
+          onClose={handleAllowUserToGoBack}
+          onToggle={handleToggle}
+          isExpanded={false}
+        />
+      }
     />
   );
 

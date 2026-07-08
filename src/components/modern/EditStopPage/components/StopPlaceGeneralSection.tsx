@@ -24,9 +24,11 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
+import { useConfig } from "../../../../config/ConfigContext";
 import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
@@ -54,13 +56,31 @@ export const StopPlaceGeneralSection: React.FC<
   onOpenAltNames,
 }) => {
   const { formatMessage } = useIntl();
+  const { modalityConfig } = useConfig();
+  const hiddenStopTypes = modalityConfig?.hiddenStopTypes ?? [];
 
-  const currentType = stopPlace.stopPlaceType;
-  const availableSubmodes: string[] =
-    (currentType &&
-      ((stopTypes[currentType as keyof typeof stopTypes] as any)
-        ?.submodes as string[])) ||
-    [];
+  const pickerValue = `${stopPlace.stopPlaceType ?? ""}|${stopPlace.submode ?? ""}`;
+
+  const handlePickerChange = (value: string) => {
+    const separatorIndex = value.indexOf("|");
+    const type = value.slice(0, separatorIndex);
+    const submode = value.slice(separatorIndex + 1);
+    onTypeChange(type);
+    onSubmodeChange(submode);
+  };
+
+  const unifiedOptions = Object.entries(stopTypes)
+    .filter(([key]) => !hiddenStopTypes.includes(key))
+    .flatMap(([key, config]) => {
+      const typeLabel = formatMessage({ id: `stopTypes_${key}_name` });
+      const submodes = (config as any).submodes as string[] | null | undefined;
+      const bare = { value: `${key}|`, label: typeLabel };
+      const submodeItems = (submodes ?? []).map((sub) => ({
+        value: `${key}|${sub}`,
+        label: formatMessage({ id: `stopTypes_${key}_submodes_${sub}` }),
+      }));
+      return [bare, ...submodeItems];
+    });
 
   return (
     <Box sx={sx.container}>
@@ -106,7 +126,7 @@ export const StopPlaceGeneralSection: React.FC<
         />
       </Box>
 
-      {/* Stop type + submode on one row, icon on the left */}
+      {/* Unified stop type + submode picker */}
       <Box
         sx={{ ...sx.fieldRow, display: "flex", alignItems: "center", gap: 1 }}
       >
@@ -125,50 +145,20 @@ export const StopPlaceGeneralSection: React.FC<
             svgStyle={{ width: 28, height: 28 }}
           />
         </Box>
-        <FormControl
-          size="small"
-          disabled={!canEdit}
-          sx={{ flex: availableSubmodes.length ? 1.4 : 1 }}
-          fullWidth={availableSubmodes.length === 0}
-        >
+        <FormControl size="small" disabled={!canEdit} fullWidth>
           <InputLabel>{`${formatMessage({ id: "stopPlaceType" })} *`}</InputLabel>
           <Select
-            value={stopPlace.stopPlaceType || ""}
+            value={pickerValue}
             label={`${formatMessage({ id: "stopPlaceType" })} *`}
-            onChange={(e) => onTypeChange(e.target.value)}
+            onChange={(e) => handlePickerChange(e.target.value)}
           >
-            {Object.keys(stopTypes).map((key) => (
-              <MenuItem key={key} value={key}>
-                {formatMessage({ id: `stopTypes_${key}_name` })}
+            {unifiedOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        {availableSubmodes.length > 0 && (
-          <FormControl size="small" disabled={!canEdit} sx={{ flex: 1 }}>
-            <InputLabel>{formatMessage({ id: "submode" })}</InputLabel>
-            <Select
-              value={stopPlace.submode || ""}
-              label={formatMessage({ id: "submode" })}
-              onChange={(e) => onSubmodeChange(e.target.value)}
-            >
-              <MenuItem value="">
-                <em>
-                  {formatMessage({
-                    id: `stopTypes_${currentType}_submodes_unspecified`,
-                  })}
-                </em>
-              </MenuItem>
-              {availableSubmodes.map((submode) => (
-                <MenuItem key={submode} value={submode}>
-                  {formatMessage({
-                    id: `stopTypes_${currentType}_submodes_${submode}`,
-                  })}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
       </Box>
 
       {/* Interchange weighting */}
@@ -192,6 +182,52 @@ export const StopPlaceGeneralSection: React.FC<
             ))}
           </Select>
         </FormControl>
+      </Box>
+
+      {/* Municipality (read-only) */}
+      <Box sx={{ ...sx.fieldRow, display: "flex", gap: 1 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ minWidth: 80, pt: 0.25 }}
+        >
+          {formatMessage({ id: "municipality" })}
+        </Typography>
+        <Typography
+          variant="body2"
+          color={stopPlace.topographicPlace ? "text.primary" : "text.disabled"}
+        >
+          {stopPlace.topographicPlace
+            ? stopPlace.parentTopographicPlace
+              ? `${stopPlace.topographicPlace} (${stopPlace.parentTopographicPlace})`
+              : stopPlace.topographicPlace
+            : formatMessage({ id: "not_present" })}
+        </Typography>
+      </Box>
+
+      {/* Tariff zones (read-only) */}
+      <Box sx={{ ...sx.fieldRow, display: "flex", gap: 1 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ minWidth: 80, pt: 0.25 }}
+        >
+          {formatMessage({ id: "tariffZones" })}
+        </Typography>
+        <Typography
+          variant="body2"
+          color={
+            (stopPlace.tariffZones ?? []).length > 0
+              ? "text.primary"
+              : "text.disabled"
+          }
+        >
+          {(stopPlace.tariffZones ?? []).length > 0
+            ? stopPlace
+                .tariffZones!.map((tz) => tz.name?.value ?? tz.id)
+                .join(", ")
+            : formatMessage({ id: "not_present" })}
+        </Typography>
       </Box>
 
       {/* Tags tray (read-only display) */}

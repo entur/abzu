@@ -99,6 +99,7 @@ export interface StopPlace {
   version?: number;
   topographicPlace?: string;
   parentTopographicPlace?: string;
+  tariffZones?: Array<{ id: string; name?: { value: string } }>;
   location?: [number, number];
   weighting?: string;
 }

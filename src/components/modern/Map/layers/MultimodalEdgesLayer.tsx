@@ -98,6 +98,12 @@ export const MultimodalEdgesLayer = () => {
   return (
     <Source id="multimodal-edges" type="geojson" data={geoJson}>
       <Layer
+        id="multimodal-edges-casing"
+        type="line"
+        layout={{ "line-join": "round", "line-cap": "round" }}
+        paint={{ "line-color": "#ffffff", "line-width": 6, "line-opacity": 1 }}
+      />
+      <Layer
         id="multimodal-edges-line"
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
