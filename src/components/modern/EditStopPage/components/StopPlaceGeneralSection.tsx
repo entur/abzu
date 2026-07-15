@@ -46,8 +46,7 @@ export const StopPlaceGeneralSection: React.FC<
   canEdit,
   onNameChange,
   onDescriptionChange,
-  onTypeChange,
-  onSubmodeChange,
+  onModalityChange,
   onWeightingChange,
   version,
   onOpenVersions,
@@ -65,8 +64,10 @@ export const StopPlaceGeneralSection: React.FC<
     const separatorIndex = value.indexOf("|");
     const type = value.slice(0, separatorIndex);
     const submode = value.slice(separatorIndex + 1);
-    onTypeChange(type);
-    onSubmodeChange(submode);
+    // Single atomic change: the reducer sets stopPlaceType + submode together,
+    // so dispatching type and submode separately would let the second overwrite
+    // the first with a stale type.
+    onModalityChange(type, submode);
   };
 
   const unifiedOptions = Object.entries(stopTypes)

@@ -58,7 +58,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   onDeleteParking,
   onNameChange,
   onDescriptionChange,
-  onTypeChange,
   onSubmodeChange,
   onWeightingChange,
   onOpenSaveDialog,
@@ -137,10 +136,7 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
               canEdit={canEdit}
               onNameChange={onNameChange}
               onDescriptionChange={onDescriptionChange}
-              onTypeChange={onTypeChange}
-              onSubmodeChange={(submode) =>
-                onSubmodeChange(stopPlace.stopPlaceType || "", submode)
-              }
+              onModalityChange={onSubmodeChange}
               onWeightingChange={onWeightingChange}
               version={stopPlace.version}
               onOpenVersions={onOpenVersionsDialog}
@@ -183,6 +179,7 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
           <KeyValuesTab
             keyValues={stopPlace.keyValues || []}
             disabled={!canEdit}
+            origin={{ type: "stopPlace", index: 0 }}
           />
         )}
       </Box>

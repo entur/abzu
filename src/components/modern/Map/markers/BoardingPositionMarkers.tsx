@@ -91,7 +91,17 @@ const BoardingPositionItem = ({
           />
         ) : (
           <Box
-            onClick={(e) => setPopupAnchor(e.currentTarget)}
+            onClick={(e) => {
+              // Focus the boarding position so the quay panel jumps to its
+              // Boarding Positions tab (QuayPanel watches this focus state).
+              dispatch(
+                StopPlaceActions.setBoardingPositionElementFocus(
+                  bpIndex,
+                  quayIndex,
+                ),
+              );
+              setPopupAnchor(e.currentTarget);
+            }}
             sx={(theme) => ({
               width: Math.round(BP_SIZE * scale),
               height: Math.round(BP_SIZE * scale),

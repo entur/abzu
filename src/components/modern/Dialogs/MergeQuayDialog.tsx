@@ -158,9 +158,11 @@ export const MergeQuayDialog = () => {
                       <ListItem key={authority} disableGutters sx={{ py: 0 }}>
                         <ListItemText
                           primary={authority}
-                          primaryTypographyProps={{
-                            variant: "caption",
-                            fontStyle: "italic",
+                          slotProps={{
+                            primary: {
+                              variant: "caption",
+                              fontStyle: "italic",
+                            },
                           }}
                         />
                       </ListItem>

@@ -56,7 +56,7 @@ export const StopPlaceBreadcrumb: React.FC<StopPlaceBreadcrumbProps> = ({
       {stopPlace.id && (
         <Typography
           variant="caption"
-          color="text.secondary"
+          color="text.primary"
           noWrap
           sx={{ ml: 0.25 }}
         >

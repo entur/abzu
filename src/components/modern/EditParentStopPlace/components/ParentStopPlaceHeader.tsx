@@ -53,12 +53,6 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
           gap: 0.5,
         }}
       >
-        <Tooltip title={formatMessage({ id: "close" })}>
-          <IconButton size="small" onClick={onGoBack}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-
         <Box sx={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
           <LinkIcon sx={{ fontSize: "1.3rem" }} />
         </Box>
@@ -116,6 +110,12 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
             ) : (
               <ExpandMoreIcon fontSize="small" />
             )}
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title={formatMessage({ id: "close" })}>
+          <IconButton size="small" onClick={onGoBack}>
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </Box>

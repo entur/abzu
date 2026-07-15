@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
-import { StopPlaceActions } from "../../../../actions";
+import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 
 interface KeyValue {
@@ -38,9 +38,17 @@ interface KeyValue {
   values: string[];
 }
 
+/** Which element the key-value CRUD actions target. */
+export interface KeyValuesOrigin {
+  type: "stopPlace" | "quay";
+  index: number;
+}
+
 interface KeyValuesTabProps {
   keyValues: KeyValue[];
   disabled: boolean;
+  /** Targets the stop place or a specific quay for all edits. */
+  origin: KeyValuesOrigin;
 }
 
 type Mode = "list" | "create" | "edit";
@@ -52,9 +60,17 @@ type Mode = "list" | "create" | "edit";
 export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
   keyValues,
   disabled,
+  origin,
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
+
+  // The key-value CRUD thunks read the target element from
+  // state.user.keyValuesOrigin, so point it at this tab's element before each
+  // mutation (stop place vs a specific quay).
+  const applyOrigin = () => {
+    dispatch(UserActions.setKeyValuesOrigin(origin.type, origin.index));
+  };
 
   const [mode, setMode] = useState<Mode>("list");
   const [editingKey, setEditingKey] = useState("");
@@ -89,6 +105,7 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
       .map((v) => v.trim())
       .filter(Boolean);
 
+    applyOrigin();
     if (mode === "create") {
       dispatch(StopPlaceActions.createKeyValuesPair(key, values));
     } else if (mode === "edit") {
@@ -123,11 +140,12 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
                           <IconButton
                             edge="end"
                             size="small"
-                            onClick={() =>
+                            onClick={() => {
+                              applyOrigin();
                               dispatch(
                                 StopPlaceActions.deleteKeyValuesByKey(kv.key),
-                              )
-                            }
+                              );
+                            }}
                           >
                             <DeleteIcon fontSize="small" />
                           </IconButton>

@@ -29,6 +29,7 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { addItemButtonSx } from "../../Shared";
 import { Quay, QuaysSectionProps } from "../types";
 import { QuayItem } from "./QuayItem";
 
@@ -90,7 +91,7 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
                 onAddQuay();
               }}
               disabled={!canEdit}
-              color="primary"
+              sx={addItemButtonSx("success.main")}
             >
               <AddIcon fontSize="small" />
             </IconButton>

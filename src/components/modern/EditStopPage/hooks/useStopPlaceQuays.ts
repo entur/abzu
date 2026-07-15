@@ -54,12 +54,16 @@ export const useStopPlaceQuays = (
         StopPlaceActions.removeElementByType(pendingDeleteQuayIndex, "quay"),
       );
     } else {
-      // Saved quay — server delete then reload
-      dispatch(deleteQuay({ id: quay.id })).then(() => {
-        if (stopPlace.id) {
-          dispatch(getStopPlaceWithAll(stopPlace.id, true));
-        }
-      });
+      // Saved quay — server delete then reload.
+      // mutateDeleteQuay requires { stopPlaceId, quayId } — passing { id } left
+      // both variables undefined, so the mutation was silently rejected.
+      dispatch(deleteQuay({ stopPlaceId: stopPlace.id, quayId: quay.id })).then(
+        () => {
+          if (stopPlace.id) {
+            dispatch(getStopPlaceWithAll(stopPlace.id, true));
+          }
+        },
+      );
     }
     setPendingDeleteQuayIndex(null);
   }, [pendingDeleteQuayIndex, stopPlace, dispatch, onCloseDeleteQuayDialog]);

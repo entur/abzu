@@ -19,6 +19,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import SaveIcon from "@mui/icons-material/Save";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
   Box,
   Button,
@@ -39,6 +40,7 @@ import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab"
 import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
+import { KeyValuesTab } from "./KeyValuesTab";
 import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 /**
@@ -190,6 +192,12 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
           >
             <Tab icon={<NearMeIcon fontSize="small" />} value={3} />
           </Tooltip>
+          <Tooltip
+            title={formatMessage({ id: "key_values_hint" })}
+            placement="bottom"
+          >
+            <Tab icon={<VpnKeyIcon fontSize="small" />} value={4} />
+          </Tooltip>
         </Tabs>
       </Box>
 
@@ -291,6 +299,15 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
             quayIndex={quayIndex}
             stopPlace={stopPlace}
             canEdit={canEdit}
+          />
+        )}
+
+        {/* Tab 4 — Key Values */}
+        {activeTab === 4 && (
+          <KeyValuesTab
+            keyValues={quay.keyValues || []}
+            disabled={!canEdit}
+            origin={{ type: "quay", index: quayIndex }}
           />
         )}
       </Box>

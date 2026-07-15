@@ -21,7 +21,8 @@ import React, {
   useState,
 } from "react";
 import { useIntl } from "react-intl";
-import { useAppSelector } from "../../../store/hooks";
+import { StopPlaceActions } from "../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { MinimizedBar } from "../Shared";
 import {
   getDrawerPreference,
@@ -57,6 +58,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   open: controlledOpen,
 }) => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -117,10 +119,12 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     setInternalOpen(next);
   };
 
-  const handleBackToStopPlace = useCallback(
-    () => setView({ type: "stopPlace" }),
-    [],
-  );
+  const handleBackToStopPlace = useCallback(() => {
+    // Clear the focused quay so its map highlight and boarding-position markers
+    // don't linger while the stop panel is shown.
+    dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
+    setView({ type: "stopPlace" });
+  }, [dispatch]);
 
   const {
     stopPlace,
@@ -190,6 +194,14 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleParkingCapacityChange,
     handleAddParking,
   } = useEditStopPage();
+
+  // Whenever the current stop place identity changes (e.g. the user opens a
+  // different stop from the map), return to the main stop panel — a quay/parking
+  // sub-panel from the previously-open stop must not carry over.
+  const currentStopId = stopPlace?.id;
+  useEffect(() => {
+    setView({ type: "stopPlace" });
+  }, [currentStopId]);
 
   // useMinimizedBarActions uses useIntl internally — must be called before any early return
   const minimizedBarActions = useMinimizedBarActions({
@@ -291,7 +303,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         onDeleteParking={handleDeleteParking}
         onNameChange={handleNameChange}
         onDescriptionChange={handleDescriptionChange}
-        onTypeChange={handleTypeChange}
         onSubmodeChange={handleSubmodeChange}
         onWeightingChange={handleWeightingChange}
         onOpenSaveDialog={handleOpenSaveDialog}

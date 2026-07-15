@@ -299,6 +299,14 @@ const userReducer = (state = initialState, action) => {
         },
       });
 
+    case types.SET_KEY_VALUES_ORIGIN:
+      return Object.assign({}, state, {
+        keyValuesOrigin: {
+          type: action.payload.type,
+          index: action.payload.index,
+        },
+      });
+
     case types.CLOSED_KEY_VALUES_DIALOG:
       return Object.assign({}, state, {
         keyValuesDialogOpen: false,

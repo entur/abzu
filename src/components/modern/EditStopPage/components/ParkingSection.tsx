@@ -34,6 +34,7 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { addItemButtonSx } from "../../Shared";
 import { Parking, ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
 
@@ -101,7 +102,7 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
               size="small"
               onClick={handleAddClick}
               disabled={!canEdit}
-              color="primary"
+              sx={addItemButtonSx("info.main")}
             >
               <AddIcon fontSize="small" />
             </IconButton>

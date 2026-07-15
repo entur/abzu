@@ -126,14 +126,14 @@ const ParkingMarkerItem = ({
               <DirectionsBikeIcon
                 sx={{
                   fontSize: `${1.1 * scale}rem`,
-                  color: "info.contrastText",
+                  color: focused ? "warning.contrastText" : "info.contrastText",
                 }}
               />
             ) : (
               <LocalParkingIcon
                 sx={{
                   fontSize: `${1.1 * scale}rem`,
-                  color: "info.contrastText",
+                  color: focused ? "warning.contrastText" : "info.contrastText",
                 }}
               />
             )}

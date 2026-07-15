@@ -253,6 +253,8 @@
   "merge_quays_info": "Du fletter en quay inn i en annen quay. Alle data og historikk fra den opprinnelige quayen vil bli overført til den nye quayen. Den opprinnelige quayen vil deretter bli slettet.",
   "merge_quays_title": "Du fletter to quayer",
   "merge_quays_warning": "Alle ulagrede endringer vil bli forkastet!",
+  "merge_stop_effect_expire": "Dette vil utløpe stoppestedet {name} ({id}).",
+  "merge_stop_effect_move_quays": "Dette vil flytte {count, plural, one {# quay} other {# quayer}} til {name} ({id}).",
   "merge_stop_here": "Flett inn stoppested",
   "merge_stop_info": "Du fletter nå inn et annet stoppested. All data og historikk fra forrige stoppested vil bli kopiert over til dette. Det andre stoppet vil umiddelbart utløpe.",
   "merge_stop_new_quays": "Følgende quayer vil bli flyttet",

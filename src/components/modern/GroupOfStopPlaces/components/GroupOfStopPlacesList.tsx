@@ -28,6 +28,7 @@ import {
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { AddMemberToGroup } from "../../Dialogs";
+import { addItemButtonSx } from "../../Shared";
 import { GroupOfStopPlacesListProps } from "../types";
 import { StopPlaceListItem } from "./StopPlaceListItem";
 
@@ -81,12 +82,12 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
           <span>
             <IconButton
               size="small"
-              color="primary"
               onClick={(e) => {
                 e.stopPropagation();
                 setAddDialogOpen(true);
               }}
               disabled={!canEdit}
+              sx={addItemButtonSx("primary.main")}
             >
               <AddIcon fontSize="small" />
             </IconButton>

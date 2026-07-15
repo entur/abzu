@@ -14,6 +14,8 @@
 
 import CallMergeIcon from "@mui/icons-material/CallMerge";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import {
   Alert,
   Box,
@@ -34,11 +36,16 @@ import { useState } from "react";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
 import {
+  getNeighbourStops,
   getStopPlaceWithAll,
   mergeAllQuaysFromStop,
 } from "../../../actions/TiamatActions.modern";
 import * as types from "../../../actions/Types";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+
+// Matches the map's neighbour-visibility gate in ModernEditStopMap — below this
+// zoom neighbour markers aren't shown, so there's nothing to refresh.
+const NEIGHBOUR_STOPS_MIN_ZOOM = 13;
 
 /**
  * Dialog for merging a neighbouring stop place into the currently-edited stop.
@@ -70,6 +77,12 @@ export const MergeStopPlaceDialog = () => {
   );
   const stopHasBeenModified = useAppSelector(
     (state) => !!(state as any).stopPlace?.stopHasBeenModified,
+  );
+  const activeMap = useAppSelector(
+    (state) => (state as any).mapUtils?.activeMap as maplibregl.Map | undefined,
+  );
+  const showExpiredStops = useAppSelector(
+    (state) => !!(state as any).stopPlace?.showExpiredStops,
   );
 
   const [changesUnderstood, setChangesUnderstood] = useState(false);
@@ -106,6 +119,13 @@ export const MergeStopPlaceDialog = () => {
         dispatch(UserActions.openSnackbar(types.SUCCESS));
         handleClose();
         dispatch(getStopPlaceWithAll(toId));
+        // Refresh neighbour markers so the merged-away stop reflects its new
+        // expired state on the map (or drops out when expired stops are hidden).
+        if (activeMap && activeMap.getZoom() > NEIGHBOUR_STOPS_MIN_ZOOM) {
+          dispatch(
+            getNeighbourStops(toId, activeMap.getBounds(), showExpiredStops),
+          );
+        }
       })
       .finally(() => {
         setIsLoading(false);
@@ -134,30 +154,56 @@ export const MergeStopPlaceDialog = () => {
             </Typography>
           </Box>
         ) : (
-          <>
-            <Typography variant="caption" color="text.secondary">
-              {quays.length > 0
-                ? formatMessage({ id: "merge_stop_new_quays" })
-                : formatMessage({ id: "merge_stop_no_new_quays" })}
-            </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {/* Consequence 1 — the source stop place is expired */}
+            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+              <WarningAmberIcon
+                fontSize="small"
+                sx={{ color: "warning.main", mt: 0.25 }}
+              />
+              <Typography variant="body2">
+                {formatMessage(
+                  { id: "merge_stop_effect_expire" },
+                  { name: fromName, id: fromId },
+                )}
+              </Typography>
+            </Box>
+
+            {/* Consequence 2 — quays move into the current stop place */}
+            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+              <DriveFileMoveIcon
+                fontSize="small"
+                sx={{ color: "primary.main", mt: 0.25 }}
+              />
+              <Typography variant="body2">
+                {quays.length > 0
+                  ? formatMessage(
+                      { id: "merge_stop_effect_move_quays" },
+                      { count: quays.length, name: toName, id: toId },
+                    )
+                  : formatMessage({ id: "merge_stop_no_new_quays" })}
+              </Typography>
+            </Box>
+
             {quays.length > 0 && (
-              <List dense sx={{ py: 0 }}>
+              <List dense sx={{ py: 0, pl: 4 }}>
                 {quays.map((quay) => (
                   <ListItem key={quay.id} sx={{ py: 0.25, px: 0 }}>
                     <ListItemText
                       primary={`${quay.id}${quay.publicCode ? ` (${quay.publicCode})` : ""}`}
-                      primaryTypographyProps={{ variant: "caption" }}
+                      slotProps={{
+                        primary: {
+                          variant: "caption",
+                          color: "text.secondary",
+                        },
+                      }}
                     />
                   </ListItem>
                 ))}
               </List>
             )}
-          </>
+          </Box>
         )}
-
-        <Typography variant="body2" sx={{ mt: 1.5 }}>
-          {formatMessage({ id: "merge_stop_info" })}
-        </Typography>
 
         {stopHasBeenModified && (
           <FormControlLabel

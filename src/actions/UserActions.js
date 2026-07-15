@@ -612,6 +612,13 @@ UserActions.closeKeyValuesDialog = () => (dispatch) => {
   dispatch(createThunk(types.CLOSED_KEY_VALUES_DIALOG, null));
 };
 
+// Sets which element (stop place or a specific quay) the key-value CRUD actions
+// target, without opening the legacy key-values dialog. Used by the modern
+// inline KeyValuesTab so it can edit both stop-place and quay key values.
+UserActions.setKeyValuesOrigin = (type, index) => (dispatch) => {
+  dispatch(createThunk(types.SET_KEY_VALUES_ORIGIN, { type, index }));
+};
+
 UserActions.moveQuay = (quayProps) => (dispatch) => {
   dispatch(createThunk(types.REQUESTED_MOVE_QUAY, quayProps));
 };

@@ -96,6 +96,18 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
           >
             {stopName}
           </Typography>
+          {stopPlace.topographicPlace && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              noWrap
+              display="block"
+            >
+              {stopPlace.parentTopographicPlace
+                ? `${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`
+                : stopPlace.topographicPlace}
+            </Typography>
+          )}
           {stopPlace.id && (
             <Box
               sx={{

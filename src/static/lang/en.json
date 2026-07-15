@@ -253,6 +253,8 @@
   "merge_quays_info": "You are merging a quay into another quay. All data from the source quay including history will be copied over to the new quay, and deleted.",
   "merge_quays_title": "You are merging two quays",
   "merge_quays_warning": "All your unsaved changes will be discarded!",
+  "merge_stop_effect_expire": "This will expire stop place {name} ({id}).",
+  "merge_stop_effect_move_quays": "This will move {count, plural, one {# quay} other {# quays}} into {name} ({id}).",
   "merge_stop_here": "Merge into stop place",
   "merge_stop_info": "You are merging a stop place into this one. All data including history will be copied over in a new version. The other stop place will expire.",
   "merge_stop_new_quays": "Following quays will be moved",

@@ -115,8 +115,8 @@ export interface StopPlaceGeneralSectionProps {
   canEdit: boolean;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
-  onTypeChange: (type: string) => void;
-  onSubmodeChange: (submode: string) => void;
+  /** Single atomic modality change — sets stop type + submode together. */
+  onModalityChange: (stopPlaceType: string, submode: string) => void;
   onWeightingChange: (value: string) => void;
   version?: number;
   onOpenVersions: () => void;
@@ -197,7 +197,6 @@ export interface StopPlaceViewProps {
   onDeleteParking: (index: number) => void;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
-  onTypeChange: (type: string) => void;
   onSubmodeChange: (stopPlaceType: string, submode: string) => void;
   onWeightingChange: (value: string) => void;
   onOpenSaveDialog: () => void;

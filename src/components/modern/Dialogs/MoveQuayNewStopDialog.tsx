@@ -176,7 +176,7 @@ export const MoveQuayNewStopDialog = () => {
                   label={
                     <ListItemText
                       primary={label}
-                      primaryTypographyProps={{ variant: "body2" }}
+                      slotProps={{ primary: { variant: "body2" } }}
                     />
                   }
                 />

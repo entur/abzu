@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
+import { addItemButtonSx } from "../../Shared";
 import { ChildStopPlace } from "../types";
 import { ChildStopItem } from "./ChildStopItem";
 
@@ -80,12 +81,12 @@ export const ChildrenSection: React.FC<ChildrenSectionProps> = ({
           <span>
             <IconButton
               size="small"
-              color="primary"
               onClick={(e) => {
                 e.stopPropagation();
                 onAddChildren();
               }}
               disabled={!canEdit || isLoading}
+              sx={addItemButtonSx("primary.main")}
             >
               <AddIcon fontSize="small" />
             </IconButton>

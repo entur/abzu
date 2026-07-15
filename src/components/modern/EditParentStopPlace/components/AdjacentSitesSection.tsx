@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
+import { addItemButtonSx } from "../../Shared";
 import { AdjacentSite } from "../types";
 import { AdjacentSiteItem } from "./AdjacentSiteItem";
 
@@ -78,12 +79,12 @@ export const AdjacentSitesSection: React.FC<AdjacentSitesSectionProps> = ({
           <span>
             <IconButton
               size="small"
-              color="primary"
               onClick={(e) => {
                 e.stopPropagation();
                 onAddAdjacentSite();
               }}
               disabled={!canEdit}
+              sx={addItemButtonSx("primary.main")}
             >
               <AddIcon fontSize="small" />
             </IconButton>

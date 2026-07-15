@@ -17,9 +17,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import ExploreIcon from "@mui/icons-material/Explore";
 import ExploreOffIcon from "@mui/icons-material/ExploreOff";
-import MapIcon from "@mui/icons-material/Map";
 import MergeTypeIcon from "@mui/icons-material/MergeType";
-import StreetviewIcon from "@mui/icons-material/Streetview";
 import {
   Box,
   Button,
@@ -32,6 +30,11 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useConfig } from "../../../../config/ConfigContext";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import {
+  GoogleMapsIcon,
+  OpenStreetMapIcon,
+  VegvesenIcon,
+} from "./BrandLinkIcons";
 import { MarkerPopup } from "./MarkerPopup";
 import type { MapQuay, MapStopPlace } from "./types";
 
@@ -148,9 +151,8 @@ export const QuayPopup = ({
             href={buildOsmEditUrl(lat, lng)}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: "text.secondary" }}
           >
-            <MapIcon fontSize="small" />
+            <OpenStreetMapIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title={formatMessage({ id: "quay_link_street_view" })}>
@@ -160,9 +162,8 @@ export const QuayPopup = ({
             href={buildStreetViewUrl(lat, lng)}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: "text.secondary" }}
           >
-            <StreetviewIcon fontSize="small" />
+            <GoogleMapsIcon />
           </IconButton>
         </Tooltip>
         {showSvvLink && (
@@ -173,9 +174,8 @@ export const QuayPopup = ({
               href={buildSvvUrl(lat, lng)}
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ color: "text.secondary" }}
             >
-              <MapIcon fontSize="small" />
+              <VegvesenIcon />
             </IconButton>
           </Tooltip>
         )}
