@@ -16,6 +16,9 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Box, IconButton, Popover, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 
+/** Matches QuayMarkers' marker-scale transition and QuayItem's row transition, so focus-change feels like one motion. */
+const FOCUS_TRANSITION_MS = 200;
+
 interface MarkerPopupProps {
   anchorEl: HTMLElement | null;
   onClose: () => void;
@@ -51,6 +54,7 @@ export const MarkerPopup = ({
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       transformOrigin={{ vertical: "bottom", horizontal: "center" }}
       disableRestoreFocus
+      transitionDuration={FOCUS_TRANSITION_MS}
       sx={{ "& .MuiPopover-paper": { borderRadius: 2, minWidth } }}
     >
       <Box sx={{ p: 1.5 }}>

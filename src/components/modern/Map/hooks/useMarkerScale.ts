@@ -39,10 +39,21 @@ export const useMarkerScale = (): number => {
     const map = mapRef?.getMap();
     if (!map) return;
 
-    const handleZoom = () => setZoom(map.getZoom());
+    // Coalesce rapid zoom events to at most one state update per frame —
+    // every marker on the map calls this hook, so an unthrottled listener
+    // means one re-render per marker per zoom tick.
+    let rafId: number | null = null;
+    const handleZoom = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setZoom(map.getZoom());
+      });
+    };
     map.on("zoom", handleZoom);
     return () => {
       map.off("zoom", handleZoom);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, [mapRef]);
 

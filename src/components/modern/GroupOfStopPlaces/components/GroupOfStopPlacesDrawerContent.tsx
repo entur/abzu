@@ -105,7 +105,8 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
           groupOfStopPlaces={originalGOS}
           centerPosition={centerPosition}
           onGoBack={onGoBack}
-          onCollapse={onCollapse}
+          onToggle={onCollapse}
+          isExpanded={true}
         />
 
         <Divider />

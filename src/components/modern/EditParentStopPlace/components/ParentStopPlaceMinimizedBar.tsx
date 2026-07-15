@@ -18,15 +18,14 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import HistoryIcon from "@mui/icons-material/History";
 import InfoIcon from "@mui/icons-material/Info";
 import LabelIcon from "@mui/icons-material/Label";
-import Link from "@mui/icons-material/Link";
 import SaveIcon from "@mui/icons-material/Save";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Slide, useTheme } from "@mui/material";
 import { useMemo } from "react";
 import { IntlShape } from "react-intl";
-import { Entities } from "../../../../models/Entities";
 import { MinimizedBar, MinimizedBarAction } from "../../Shared";
+import { ParentStopPlaceHeader } from "./ParentStopPlaceHeader";
 
 interface ParentStopPlaceMinimizedBarProps {
   stopPlace: any;
@@ -195,27 +194,30 @@ export const ParentStopPlaceMinimizedBar: React.FC<
 
   if (isOpen || !originalStopPlace) return null;
 
+  const customHeader = (
+    <ParentStopPlaceHeader
+      stopPlace={stopPlace}
+      originalStopPlace={originalStopPlace}
+      onGoBack={onClose}
+      onToggle={onExpand}
+      isExpanded={false}
+    />
+  );
+
   return (
     <>
       {isMobile ? (
         <Slide direction="up" in={!isOpen} mountOnEnter unmountOnExit>
           <Box>
             <MinimizedBar
-              icon={<Link />}
-              name={
-                stopPlace?.id
-                  ? originalStopPlace.name ||
-                    formatMessage({ id: "parentStopPlace" })
-                  : formatMessage({ id: "new_stop_title" })
-              }
-              id={originalStopPlace.id}
-              entityType={Entities.STOP_PLACE}
+              icon={<span />}
               hasId={!!stopPlace?.id}
               actions={minimizedBarActions}
               onExpand={onExpand}
               onClose={onClose}
               centerLocation={centerLocation}
               isMobile={true}
+              customHeader={customHeader}
             />
           </Box>
         </Slide>
@@ -230,21 +232,14 @@ export const ParentStopPlaceMinimizedBar: React.FC<
           }}
         >
           <MinimizedBar
-            icon={<Link />}
-            name={
-              stopPlace?.id
-                ? originalStopPlace.name ||
-                  formatMessage({ id: "parentStopPlace" })
-                : formatMessage({ id: "new_stop_title" })
-            }
-            id={originalStopPlace.id}
-            entityType={Entities.STOP_PLACE}
+            icon={<span />}
             hasId={!!stopPlace?.id}
             actions={minimizedBarActions}
             onExpand={onExpand}
             onClose={onClose}
             centerLocation={centerLocation}
             isMobile={false}
+            customHeader={customHeader}
           />
         </Box>
       )}

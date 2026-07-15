@@ -30,7 +30,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { useAppSelector } from "../../../../store/hooks";
@@ -39,6 +39,7 @@ import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab"
 import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
 import { QuayPanelProps } from "../types";
 import { BoardingPositionsTab } from "./BoardingPositionsTab";
+import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 /**
  * Full quay editor panel.
@@ -73,7 +74,15 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
         | undefined,
   );
 
-  // Switch to boarding positions tab when a boarding position marker is clicked
+  // Reset to the General tab whenever the panel switches to a different quay,
+  // so a tab left open on the previous quay doesn't carry over.
+  useLayoutEffect(() => {
+    setActiveTab(0);
+  }, [quayIndex]);
+
+  // Switch to boarding positions tab when a boarding position marker is clicked.
+  // Runs after the reset above, so it wins when both fire in the same commit
+  // (e.g. clicking a boarding position that belongs to a different quay).
   useEffect(() => {
     if (
       focusedBoardingPosition &&
@@ -99,35 +108,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* ── Stop place context row ── */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          px: 1.5,
-          py: 0.75,
-          gap: 0.5,
-          bgcolor: "background.default",
-          flexShrink: 0,
-        }}
-      >
-        <LocationOnIcon
-          sx={{ fontSize: "0.9rem", color: "text.secondary", flexShrink: 0 }}
-        />
-        <Typography variant="caption" color="text.secondary" noWrap>
-          {stopPlace.name || formatMessage({ id: "new_stop_title" })}
-        </Typography>
-        {stopPlace.id && (
-          <Typography
-            variant="caption"
-            color="text.disabled"
-            noWrap
-            sx={{ ml: 0.25 }}
-          >
-            · {stopPlace.id}
-          </Typography>
-        )}
-      </Box>
+      <StopPlaceBreadcrumb stopPlace={stopPlace} />
 
       <Divider />
 

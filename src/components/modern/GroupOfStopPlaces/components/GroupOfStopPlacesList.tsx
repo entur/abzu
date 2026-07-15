@@ -41,7 +41,7 @@ export const GroupOfStopPlacesList: React.FC<GroupOfStopPlacesListProps> = ({
   onRemoveMember,
 }) => {
   const { formatMessage } = useIntl();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const handleAddMembers = (memberIds: string[]) => {

@@ -14,6 +14,8 @@
 
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
@@ -21,12 +23,13 @@ import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps } from "../types";
 
 /**
- * Header component for group of stop places editor
- * Matches EditStopPage header pattern: ArrowBack left, name+ID centre, actions right
+ * Header component for group of stop places editor.
+ * Shared between the full expanded drawer and the collapsed MinimizedBar
+ * (via its customHeader slot), matching StopPlaceHeader's contract.
  */
 export const GroupOfStopPlacesHeader: React.FC<
   GroupOfStopPlacesHeaderProps
-> = ({ groupOfStopPlaces, centerPosition, onGoBack, onCollapse }) => {
+> = ({ groupOfStopPlaces, centerPosition, onGoBack, onToggle, isExpanded }) => {
   const { formatMessage } = useIntl();
 
   const headerText = groupOfStopPlaces.id
@@ -49,6 +52,10 @@ export const GroupOfStopPlacesHeader: React.FC<
           <CloseIcon fontSize="small" />
         </IconButton>
       </Tooltip>
+
+      <Box sx={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
+        <GroupWorkIcon sx={{ fontSize: "1.3rem" }} />
+      </Box>
 
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
@@ -75,13 +82,17 @@ export const GroupOfStopPlacesHeader: React.FC<
         />
       )}
 
-      {onCollapse && (
-        <Tooltip title={formatMessage({ id: "collapse" })}>
-          <IconButton size="small" onClick={onCollapse}>
+      <Tooltip
+        title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
+      >
+        <IconButton size="small" onClick={onToggle}>
+          {isExpanded ? (
             <ExpandLessIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      )}
+          ) : (
+            <ExpandMoreIcon fontSize="small" />
+          )}
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 };

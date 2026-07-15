@@ -39,6 +39,7 @@ import {
   menuItemSecondary,
   menuListIndented,
 } from "../../styles";
+import { getLanguageOption } from "../languageOptions";
 
 interface LanguageMenuProps {
   onClose: () => void;
@@ -83,22 +84,25 @@ export const LanguageMenu: React.FC<LanguageMenuProps> = ({
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <MenuList sx={menuListIndented}>
-            {localeOptions.map((localeOption) => (
-              <MenuItem
-                key={"language-menu-" + localeOption}
-                onClick={() => updateSelectedLocale(localeOption)}
-                sx={menuItemSecondary(theme)}
-              >
-                <ListItemIcon sx={menuItemIconSecondary}>
-                  {locale === localeOption ? (
-                    <Check fontSize="small" color="primary" />
-                  ) : (
-                    <Box sx={emptyCheckbox} />
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={formatMessage({ id: localeOption })} />
-              </MenuItem>
-            ))}
+            {localeOptions.map((localeOption) => {
+              const { flag, nativeName } = getLanguageOption(localeOption);
+              return (
+                <MenuItem
+                  key={"language-menu-" + localeOption}
+                  onClick={() => updateSelectedLocale(localeOption)}
+                  sx={menuItemSecondary(theme)}
+                >
+                  <ListItemIcon sx={menuItemIconSecondary}>
+                    {locale === localeOption ? (
+                      <Check fontSize="small" color="primary" />
+                    ) : (
+                      <Box sx={emptyCheckbox} />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary={`${flag} ${nativeName}`} />
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Collapse>
       </Box>
@@ -116,22 +120,25 @@ export const LanguageMenu: React.FC<LanguageMenuProps> = ({
 
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
         <MenuList sx={menuListIndented}>
-          {localeOptions.map((localeOption) => (
-            <MenuItem
-              key={"language-menu-" + localeOption}
-              onClick={() => updateSelectedLocale(localeOption)}
-              sx={menuItemSecondary(theme)}
-            >
-              <ListItemIcon sx={menuItemIconSecondary}>
-                {locale === localeOption ? (
-                  <Check fontSize="small" color="primary" />
-                ) : (
-                  <Box sx={emptyCheckbox} />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={formatMessage({ id: localeOption })} />
-            </MenuItem>
-          ))}
+          {localeOptions.map((localeOption) => {
+            const { flag, nativeName } = getLanguageOption(localeOption);
+            return (
+              <MenuItem
+                key={"language-menu-" + localeOption}
+                onClick={() => updateSelectedLocale(localeOption)}
+                sx={menuItemSecondary(theme)}
+              >
+                <ListItemIcon sx={menuItemIconSecondary}>
+                  {locale === localeOption ? (
+                    <Check fontSize="small" color="primary" />
+                  ) : (
+                    <Box sx={emptyCheckbox} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={`${flag} ${nativeName}`} />
+              </MenuItem>
+            );
+          })}
         </MenuList>
       </Collapse>
     </Box>

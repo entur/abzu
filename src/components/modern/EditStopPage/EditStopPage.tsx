@@ -13,7 +13,13 @@
  * limitations under the Licence. */
 
 import { Box, Drawer, Slide, useMediaQuery, useTheme } from "@mui/material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useIntl } from "react-intl";
 import { useAppSelector } from "../../../store/hooks";
 import { MinimizedBar } from "../Shared";
@@ -79,7 +85,9 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
 
   // Navigate drawer when a map marker is focused.
   // Only changes view when the drawer is already open — never force-opens from a map click.
-  useEffect(() => {
+  // useLayoutEffect (not useEffect) so the panel swap commits in the same paint as the
+  // marker/popup's own focus animation, instead of one paint cycle later.
+  useLayoutEffect(() => {
     if (!focusedElement) return;
     const { type, index } = focusedElement;
     if (index < 0) {
@@ -95,8 +103,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   }, [focusedElement]);
 
   // Navigate to quay panel when a boarding position is focused.
-  // Same rule: only navigate if the drawer is open.
-  useEffect(() => {
+  // Same rule: only navigate if the drawer is open. Same useLayoutEffect reasoning as above.
+  useLayoutEffect(() => {
     if (!focusedBoardingPosition || focusedBoardingPosition.quayIndex < 0)
       return;
     if (!isOpenRef.current) return;

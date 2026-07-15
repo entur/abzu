@@ -16,7 +16,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SaveIcon from "@mui/icons-material/Save";
 import {
   Box,
@@ -40,6 +39,7 @@ import { useAppDispatch } from "../../../../store/hooks";
 import { CenterMapButton, CopyIdButton } from "../../Shared";
 import { ParkingPanelProps } from "../types";
 import { ParkAndRideFields } from "./ParkAndRideFields";
+import { StopPlaceBreadcrumb } from "./StopPlaceBreadcrumb";
 
 const STEP_FREE_VALUES = ["TRUE", "FALSE", "UNKNOWN"];
 
@@ -102,35 +102,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* ── Stop place context row ── */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          px: 1.5,
-          py: 0.75,
-          gap: 0.5,
-          bgcolor: "background.default",
-          flexShrink: 0,
-        }}
-      >
-        <LocationOnIcon
-          sx={{ fontSize: "0.9rem", color: "text.secondary", flexShrink: 0 }}
-        />
-        <Typography variant="caption" color="text.secondary" noWrap>
-          {stopPlace.name || formatMessage({ id: "new_stop_title" })}
-        </Typography>
-        {stopPlace.id && (
-          <Typography
-            variant="caption"
-            color="text.disabled"
-            noWrap
-            sx={{ ml: 0.25 }}
-          >
-            · {stopPlace.id}
-          </Typography>
-        )}
-      </Box>
+      <StopPlaceBreadcrumb stopPlace={stopPlace} />
 
       <Divider />
 

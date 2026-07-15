@@ -141,12 +141,13 @@ const ParkingMarkerItem = ({
         )}
       </Marker>
 
+      {/* Dismissing the popup (e.g. clicking elsewhere on the map) only hides the
+          popup bubble — it must not clear focus, since a click "elsewhere" is
+          often the user placing a new element via AddElementFab, which needs
+          focus to stay put. */}
       <MarkerPopup
         anchorEl={popupAnchor}
-        onClose={() => {
-          setPopupAnchor(null);
-          dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
-        }}
+        onClose={() => setPopupAnchor(null)}
         title={title}
         id={parking.id}
         lat={lat}

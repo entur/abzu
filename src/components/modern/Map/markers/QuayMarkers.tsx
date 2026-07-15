@@ -31,6 +31,8 @@ import type { FocusedElement, MapQuay, MapStopPlace } from "./types";
 const QUAY_SIZE = 32;
 /** Distance from quay dot edge to the center of the orbiting icon, in unscaled px. */
 const QUAY_ORBIT_OFFSET = 4;
+/** Shared with QuayItem's row transition and MarkerPopup's popup timeout, so focus-change feels like one motion. */
+const FOCUS_TRANSITION_MS = 200;
 
 interface QuayMarkerItemProps {
   quay: MapQuay;
@@ -147,7 +149,7 @@ const QuayMarkerItem = ({
                   ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 6px rgba(0,0,0,0.4)`
                   : "0 2px 4px rgba(0,0,0,0.35)",
                 transform: focused ? "scale(1.2)" : "none",
-                transition: "all 0.15s",
+                transition: `all ${FOCUS_TRANSITION_MS}ms`,
                 "&:hover": { transform: "scale(1.25)" },
               })}
             >
@@ -168,12 +170,13 @@ const QuayMarkerItem = ({
         )}
       </Marker>
 
+      {/* Dismissing the popup (e.g. clicking elsewhere on the map) only hides the
+          popup bubble — it must not clear quay focus, since a click "elsewhere"
+          is often the user placing a new element for this quay (e.g. a boarding
+          position) via AddElementFab, which needs focus to stay put. */}
       <QuayPopup
         anchorEl={popupAnchor}
-        onClose={() => {
-          setPopupAnchor(null);
-          dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
-        }}
+        onClose={() => setPopupAnchor(null)}
         quay={quay}
         index={index}
         disabled={disabled}

@@ -14,6 +14,9 @@ limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LinkIcon from "@mui/icons-material/Link";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
@@ -21,14 +24,16 @@ import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { ParentStopPlaceHeaderProps } from "../types";
 
 /**
- * Header component for parent stop place editor
- * Matches EditStopPage header pattern: ArrowBack left, name+ID centre, actions right
+ * Header component for parent stop place editor.
+ * Shared between the full expanded drawer and the collapsed MinimizedBar
+ * (via its customHeader slot), matching StopPlaceHeader's contract.
  */
 export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
   stopPlace,
   originalStopPlace,
   onGoBack,
-  onCollapse,
+  onToggle,
+  isExpanded,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -37,68 +42,106 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
     : formatMessage({ id: "new_stop_title" });
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        px: 1,
-        py: 0.5,
-        minHeight: 48,
-        gap: 0.5,
-      }}
-    >
-      <Tooltip title={formatMessage({ id: "close" })}>
-        <IconButton size="small" onClick={onGoBack}>
-          <CloseIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
-          {headerText}
-        </Typography>
-        {stopPlace.topographicPlace && (
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            noWrap
-            display="block"
-          >
-            {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
-          </Typography>
-        )}
-        {stopPlace.id && (
-          <Box
-            sx={{ display: "flex", alignItems: "center", gap: 0.25, mt: -0.25 }}
-          >
-            <Typography variant="caption" color="text.secondary" noWrap>
-              {stopPlace.id}
-            </Typography>
-            <CopyIdButton idToCopy={stopPlace.id} size="small" />
-          </Box>
-        )}
-      </Box>
-
-      <CenterMapButton location={stopPlace.location} />
-      {stopPlace.id && (
-        <FavoriteButton
-          id={stopPlace.id}
-          name={originalStopPlace.name}
-          entityType={Entities.STOP_PLACE}
-          isParent={true}
-          topographicPlace={stopPlace.topographicPlace}
-          parentTopographicPlace={stopPlace.parentTopographicPlace}
-          location={stopPlace.position}
-        />
-      )}
-
-      {onCollapse && (
-        <Tooltip title={formatMessage({ id: "collapse" })}>
-          <IconButton size="small" onClick={onCollapse}>
-            <ExpandLessIcon fontSize="small" />
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          px: 1,
+          py: 0.5,
+          minHeight: 48,
+          gap: 0.5,
+        }}
+      >
+        <Tooltip title={formatMessage({ id: "close" })}>
+          <IconButton size="small" onClick={onGoBack}>
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Tooltip>
+
+        <Box sx={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
+          <LinkIcon sx={{ fontSize: "1.3rem" }} />
+        </Box>
+
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
+            {headerText}
+          </Typography>
+          {stopPlace.topographicPlace && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              noWrap
+              display="block"
+            >
+              {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
+            </Typography>
+          )}
+          {stopPlace.id && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.25,
+                mt: -0.25,
+              }}
+            >
+              <Typography variant="caption" color="text.secondary" noWrap>
+                {stopPlace.id}
+              </Typography>
+              <CopyIdButton idToCopy={stopPlace.id} size="small" />
+            </Box>
+          )}
+        </Box>
+
+        <CenterMapButton location={stopPlace.location} />
+        {stopPlace.id && (
+          <FavoriteButton
+            id={stopPlace.id}
+            name={originalStopPlace.name}
+            entityType={Entities.STOP_PLACE}
+            isParent={true}
+            topographicPlace={stopPlace.topographicPlace}
+            parentTopographicPlace={stopPlace.parentTopographicPlace}
+            location={stopPlace.position}
+          />
+        )}
+
+        <Tooltip
+          title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
+        >
+          <IconButton size="small" onClick={onToggle}>
+            {isExpanded ? (
+              <ExpandLessIcon fontSize="small" />
+            ) : (
+              <ExpandMoreIcon fontSize="small" />
+            )}
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      {stopPlace.hasExpired && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 0.75,
+            px: 1.5,
+            py: 0.5,
+            bgcolor: "warning.main",
+            color: "warning.contrastText",
+          }}
+        >
+          <WarningAmberIcon sx={{ fontSize: "1rem", color: "inherit" }} />
+          <Typography
+            variant="caption"
+            color="inherit"
+            sx={{ fontWeight: 500 }}
+          >
+            {formatMessage({ id: "stop_has_expired_last_version" })}
+          </Typography>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };

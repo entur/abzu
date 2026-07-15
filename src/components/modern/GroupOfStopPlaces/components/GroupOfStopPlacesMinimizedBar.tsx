@@ -15,15 +15,14 @@ limitations under the Licence. */
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DescriptionIcon from "@mui/icons-material/Description";
-import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import InfoIcon from "@mui/icons-material/Info";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Slide, useTheme } from "@mui/material";
 import { useMemo } from "react";
 import { IntlShape } from "react-intl";
-import { Entities } from "../../../../models/Entities";
 import { MinimizedBar, MinimizedBarAction } from "../../Shared";
+import { GroupOfStopPlacesHeader } from "./GroupOfStopPlacesHeader";
 
 interface GroupOfStopPlacesMinimizedBarProps {
   groupOfStopPlaces: any;
@@ -154,27 +153,30 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
 
   if (isOpen) return null;
 
+  const customHeader = (
+    <GroupOfStopPlacesHeader
+      groupOfStopPlaces={originalGOS}
+      centerPosition={centerLocation}
+      onGoBack={onClose}
+      onToggle={onExpand}
+      isExpanded={false}
+    />
+  );
+
   return (
     <>
       {isMobile ? (
         <Slide direction="up" in={!isOpen} mountOnEnter unmountOnExit>
           <Box>
             <MinimizedBar
-              icon={<GroupWorkIcon />}
-              name={
-                originalGOS.id
-                  ? originalGOS.name ||
-                    formatMessage({ id: "group_of_stop_places" })
-                  : formatMessage({ id: "you_are_creating_group" })
-              }
-              id={originalGOS.id}
-              entityType={Entities.GROUP_OF_STOP_PLACE}
+              icon={<span />}
               hasId={!!groupOfStopPlaces.id}
               actions={minimizedBarActions}
               onExpand={onExpand}
               onClose={onClose}
               centerLocation={centerLocation}
               isMobile={true}
+              customHeader={customHeader}
             />
           </Box>
         </Slide>
@@ -189,21 +191,14 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
           }}
         >
           <MinimizedBar
-            icon={<GroupWorkIcon />}
-            name={
-              originalGOS.id
-                ? originalGOS.name ||
-                  formatMessage({ id: "group_of_stop_places" })
-                : formatMessage({ id: "you_are_creating_group" })
-            }
-            id={originalGOS.id}
-            entityType={Entities.GROUP_OF_STOP_PLACE}
+            icon={<span />}
             hasId={!!groupOfStopPlaces.id}
             actions={minimizedBarActions}
             onExpand={onExpand}
             onClose={onClose}
             centerLocation={centerLocation}
             isMobile={false}
+            customHeader={customHeader}
           />
         </Box>
       )}

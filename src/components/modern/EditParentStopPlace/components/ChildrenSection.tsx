@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -29,9 +28,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import ModalityIconImg from "../../../MainPage/ModalityIconImg";
-import { CopyIdButton } from "../../Shared";
 import { ChildStopPlace } from "../types";
+import { ChildStopItem } from "./ChildStopItem";
 
 interface ChildrenSectionProps {
   children: ChildStopPlace[];
@@ -51,7 +49,7 @@ export const ChildrenSection: React.FC<ChildrenSectionProps> = ({
   navigateTo,
 }) => {
   const { formatMessage } = useIntl();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <>
@@ -110,61 +108,12 @@ export const ChildrenSection: React.FC<ChildrenSectionProps> = ({
           </Box>
         )}
         {children.map((child) => (
-          <Box
+          <ChildStopItem
             key={child.id}
-            onClick={() => navigateTo(child.id, child.name)}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              px: 2,
-              py: 1,
-              borderBottom: "1px solid",
-              borderColor: "divider",
-              cursor: "pointer",
-              "&:hover": { bgcolor: "action.hover" },
-            }}
-          >
-            <Box sx={{ flexShrink: 0, mr: 1 }}>
-              <ModalityIconImg
-                type={child.stopPlaceType}
-                submode={child.submode}
-                svgStyle={{ width: 20, height: 20 }}
-              />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="body2" fontWeight={600} noWrap>
-                {child.name}
-              </Typography>
-              {child.id && (
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ fontFamily: "monospace" }}
-                  >
-                    {child.id}
-                  </Typography>
-                  <CopyIdButton idToCopy={child.id} size="small" />
-                </Box>
-              )}
-            </Box>
-            {canEdit && (
-              <Tooltip
-                title={formatMessage({ id: "remove_stop_from_parent_title" })}
-              >
-                <span onClick={(e) => e.stopPropagation()}>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => onRemoveChild(child.id)}
-                    sx={{ ml: 0.5 }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
-          </Box>
+            child={child}
+            onNavigate={navigateTo}
+            onRemove={canEdit ? onRemoveChild : undefined}
+          />
         ))}
       </Collapse>
     </>

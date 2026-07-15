@@ -76,7 +76,10 @@ export interface GroupOfStopPlacesHeaderProps {
   groupOfStopPlaces: GroupOfStopPlaces;
   centerPosition?: [number, number];
   onGoBack: () => void;
-  onCollapse?: () => void;
+  /** Called to toggle the drawer open/closed. */
+  onToggle: () => void;
+  /** True = drawer is open → show ExpandLess. False = drawer is collapsed → show ExpandMore. */
+  isExpanded: boolean;
 }
 
 export interface GroupOfStopPlacesDetailsProps {

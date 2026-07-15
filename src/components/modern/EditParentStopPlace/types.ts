@@ -107,7 +107,10 @@ export interface ParentStopPlaceHeaderProps {
   stopPlace: ParentStopPlace;
   originalStopPlace: ParentStopPlace;
   onGoBack: () => void;
-  onCollapse?: () => void;
+  /** Called to toggle the drawer open/closed. */
+  onToggle: () => void;
+  /** True = drawer is open → show ExpandLess. False = drawer is collapsed → show ExpandMore. */
+  isExpanded: boolean;
 }
 
 export interface ParentStopPlaceDetailsProps {
@@ -158,12 +161,14 @@ export interface ParentStopPlaceActionsProps {
 
 export interface ChildStopPlaceListItemProps {
   child: ChildStopPlace;
+  onNavigate: (id: string, name: string) => void;
   onRemove?: (stopPlaceId: string) => void;
   disabled?: boolean;
 }
 
 export interface AdjacentSiteListItemProps {
   site: AdjacentSite;
+  onNavigate: (id: string, name: string) => void;
   onRemove?: (stopPlaceId: string, adjacentRef: string) => void;
   disabled?: boolean;
 }

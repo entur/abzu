@@ -119,7 +119,8 @@ export const ParentStopPlaceDrawerContent: React.FC<
             stopPlace={stopPlace}
             originalStopPlace={originalStopPlace}
             onGoBack={onGoBack}
-            onCollapse={onCollapse}
+            onToggle={onCollapse}
+            isExpanded={true}
           />
         )}
 

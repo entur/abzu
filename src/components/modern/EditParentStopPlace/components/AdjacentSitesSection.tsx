@@ -14,7 +14,6 @@ limitations under the Licence. */
 
 import AddIcon from "@mui/icons-material/Add";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -28,8 +27,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import { CopyIdButton } from "../../Shared";
 import { AdjacentSite } from "../types";
+import { AdjacentSiteItem } from "./AdjacentSiteItem";
 
 interface AdjacentSitesSectionProps {
   adjacentSites: AdjacentSite[];
@@ -47,7 +46,7 @@ export const AdjacentSitesSection: React.FC<AdjacentSitesSectionProps> = ({
   navigateTo,
 }) => {
   const { formatMessage } = useIntl();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <>
@@ -95,53 +94,12 @@ export const AdjacentSitesSection: React.FC<AdjacentSitesSectionProps> = ({
       <Collapse in={expanded}>
         <Divider />
         {adjacentSites.map((site) => (
-          <Box
+          <AdjacentSiteItem
             key={site.ref}
-            onClick={() => site.id && navigateTo(site.id, site.name)}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              px: 2,
-              py: 1,
-              borderBottom: "1px solid",
-              borderColor: "divider",
-              cursor: site.id ? "pointer" : "default",
-              "&:hover": { bgcolor: "action.hover" },
-            }}
-          >
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="body2" fontWeight={600} noWrap>
-                {site.name}
-              </Typography>
-              {site.id && (
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.25 }}>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    noWrap
-                    sx={{ fontFamily: "monospace" }}
-                  >
-                    {site.id}
-                  </Typography>
-                  <CopyIdButton idToCopy={site.id} size="small" />
-                </Box>
-              )}
-            </Box>
-            {canEdit && (
-              <Tooltip title={formatMessage({ id: "remove" })}>
-                <span onClick={(e) => e.stopPropagation()}>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => onRemoveAdjacentSite(site.id, site.ref)}
-                    sx={{ ml: 0.5 }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
-          </Box>
+            site={site}
+            onNavigate={navigateTo}
+            onRemove={canEdit ? onRemoveAdjacentSite : undefined}
+          />
         ))}
       </Collapse>
     </>

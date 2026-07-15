@@ -27,6 +27,7 @@ import { MarkerPopup } from "./MarkerPopup";
 import type {
   BoardingPosition,
   FocusedBoardingPosition,
+  FocusedElement,
   MapStopPlace,
 } from "./types";
 
@@ -143,6 +144,10 @@ export const BoardingPositionMarkers = () => {
   const current = useAppSelector(
     (state) => state.stopPlace.current as MapStopPlace | null,
   );
+  const focusedElement = useAppSelector(
+    (state) =>
+      (state as any).mapUtils?.focusedElement as FocusedElement | undefined,
+  );
   const focusedBP = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedBoardingPositionElement as
@@ -151,22 +156,26 @@ export const BoardingPositionMarkers = () => {
   );
 
   if (!current?.quays?.length) return null;
+  if (focusedElement?.type !== "quay" || focusedElement.index < 0) return null;
+
+  const focusedQuayIndex = focusedElement.index;
+  const quay = current.quays[focusedQuayIndex];
+  if (!quay) return null;
 
   return (
     <>
-      {current.quays.map((quay, quayIndex) =>
-        (quay.boardingPositions ?? []).map((boardingPosition, bpIndex) => (
-          <BoardingPositionItem
-            key={boardingPosition.id || `${quayIndex}-${bpIndex}`}
-            boardingPosition={boardingPosition}
-            bpIndex={bpIndex}
-            quayIndex={quayIndex}
-            focused={
-              focusedBP?.quayIndex === quayIndex && focusedBP?.index === bpIndex
-            }
-          />
-        )),
-      )}
+      {(quay.boardingPositions ?? []).map((boardingPosition, bpIndex) => (
+        <BoardingPositionItem
+          key={boardingPosition.id || `${focusedQuayIndex}-${bpIndex}`}
+          boardingPosition={boardingPosition}
+          bpIndex={bpIndex}
+          quayIndex={focusedQuayIndex}
+          focused={
+            focusedBP?.quayIndex === focusedQuayIndex &&
+            focusedBP?.index === bpIndex
+          }
+        />
+      ))}
     </>
   );
 };

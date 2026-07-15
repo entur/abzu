@@ -20,6 +20,9 @@ import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
 import { QuayItemProps } from "../types";
 
+/** Matches QuayMarkers' marker-scale transition and MarkerPopup's timeout, so focus-change feels like one motion. */
+const FOCUS_TRANSITION_MS = 200;
+
 /**
  * Navigable quay row — clicking the row opens the QuayPanel
  */
@@ -51,7 +54,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         bgcolor: focused ? "action.selected" : "transparent",
         borderLeft: "3px solid",
         borderLeftColor: focused ? "success.main" : "transparent",
-        transition: "background-color 0.15s",
+        transition: `background-color ${FOCUS_TRANSITION_MS}ms, border-color ${FOCUS_TRANSITION_MS}ms`,
         "&:hover": { bgcolor: focused ? "action.selected" : "action.hover" },
       }}
       onClick={onNavigate}

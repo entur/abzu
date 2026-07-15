@@ -12,6 +12,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
@@ -123,6 +124,8 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
             </span>
           </Tooltip>
         )}
+
+        <ChevronRightIcon fontSize="small" color="action" />
       </Box>
     </>
   );
