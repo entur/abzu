@@ -136,7 +136,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       spacing={2}
       className={classes.mainGrid}
     >
-      <Grid item className={classes.gridItemMargin}>
+      <Grid className={classes.gridItemMargin}>
         <InputLabel htmlFor="select-parking-layout">
           {formatMessage({ id: "parking_layout" })}
         </InputLabel>
@@ -174,7 +174,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           ))}
         </Select>
       </Grid>
-      <Grid item>
+      <Grid>
         <Box
           display="flex"
           flexDirection="row"
@@ -251,7 +251,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           </Box>
         </Box>
       </Grid>
-      <Grid item>
+      <Grid>
         <ListSubheader>
           {formatMessage({ id: "parking_parkAndRide_capacity_sub_header" })} (
           {`${totalCapacity}`})
@@ -302,7 +302,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           />
         </Box>
       </Grid>
-      <Grid item>
+      <Grid>
         <ListSubheader>
           {formatMessage({ id: "parking_recharging_sub_header" })}
         </ListSubheader>
@@ -346,7 +346,7 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
         </Box>
       </Grid>
 
-      <Grid item>
+      <Grid>
         <ListSubheader>
           {formatMessage({ id: "parking_accessibility" })}
         </ListSubheader>
