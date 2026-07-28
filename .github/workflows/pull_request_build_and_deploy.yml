@@ -52,7 +52,7 @@ jobs:
       - name: Copy firebaserc
         run: cp .github/environments/.firebaserc .firebaserc
       - name: Archive deploy artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: build
           include-hidden-files: true
@@ -68,7 +68,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1.2.7
     with:
       gcp_project_id: ent-ror-abzu-dev
       environment: dev
