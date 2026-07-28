@@ -21,9 +21,7 @@ export const ZonesLayer = <T extends TariffZone>({
           key={zone.id}
           positions={
             zone.polygon.coordinates as
-              | LatLngExpression[]
-              | LatLngExpression[][]
-              | LatLngExpression[][][]
+              LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]
           }
           pathOptions={{
             fillColor: `#${getColor(zone)}`,
