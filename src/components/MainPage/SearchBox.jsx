@@ -29,7 +29,6 @@ import TextField from "@mui/material/TextField";
 import debounce from "lodash.debounce";
 import React from "react";
 import ReactDOM from "react-dom";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import {
@@ -44,6 +43,7 @@ import formatHelpers from "../../modelUtils/mapToClient";
 import Routes from "../../routes/";
 import FavoriteManager from "../../singletons/FavoriteManager";
 import MdSpinner from "../../static/icons/spinner";
+import { injectIntl } from "../../utils/injectIntl";
 import { getStopPermissions } from "../../utils/permissionsUtils";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
 import FavoriteNameDialog from "../Dialogs/FavoriteNameDialog";

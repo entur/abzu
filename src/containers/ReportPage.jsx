@@ -18,7 +18,6 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import {
   findStopForReport,
@@ -40,6 +39,7 @@ import {
   columnOptionsStopPlace,
 } from "../config/columnOptions";
 import MdSpinner from "../static/icons/spinner";
+import { injectIntl } from "../utils/injectIntl";
 import {
   buildReportSearchQuery,
   extractQueryParamsFromUrl,

@@ -22,8 +22,8 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
+import { injectIntl } from "../../utils/injectIntl";
 import AddStopPlaceSuggestionListItem from "./AddStopPlaceSuggestionListItem";
 
 class AddAdjacentStopDialog extends React.Component {

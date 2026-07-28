@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import React from "react";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../../utils/injectIntl";
 import Code from "./Code";
 import CompassBearingInfo from "./CompassBearingInfo";
 

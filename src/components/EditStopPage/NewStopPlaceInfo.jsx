@@ -15,11 +15,11 @@ limitations under the Licence. */
 import InformationIcon from "@mui/icons-material/Info";
 import FlatButton from "@mui/material/Button";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
 import { createStopPlaceHref } from "../../utils/";
+import { injectIntl } from "../../utils/injectIntl";
 
 class NewStopPlaceInfo extends React.Component {
   handleClose() {
