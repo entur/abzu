@@ -88,7 +88,6 @@ const MoreMenuItem: FC<MoreMenuItemProps> = ({
         <>
           <NavigateNextIcon />
           <Menu
-            TransitionProps={{ onExited: () => menuItemRef.current?.focus() }}
             disableRestoreFocus
             onKeyDown={handleMenuKeyDown}
             sx={{
@@ -97,9 +96,13 @@ const MoreMenuItem: FC<MoreMenuItemProps> = ({
                 pointerEvents: "auto",
               },
             }}
-            MenuListProps={{
-              ...MenuProps?.MenuListProps,
-              "aria-labelledby": normMenuItemId,
+            slotProps={{
+              transition: {
+                onExited: () => menuItemRef.current?.focus(),
+              },
+              list: {
+                "aria-labelledby": normMenuItemId,
+              },
             }}
             anchorEl={menuItemRef.current}
             open={isOpen}

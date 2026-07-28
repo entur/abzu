@@ -1,3 +1,4 @@
+import MenuList from "@mui/material/MenuList";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
@@ -36,7 +37,9 @@ const renderWithIntl = (
 ) =>
   render(
     <IntlProvider locale={locale} messages={messages}>
-      {ui}
+      {/* MUI v9 requires MenuItem to live within a MenuListContext; in the app
+          these items are always rendered inside a <Menu> (see StopPlaceDetails). */}
+      <MenuList>{ui}</MenuList>
     </IntlProvider>,
     options,
   );

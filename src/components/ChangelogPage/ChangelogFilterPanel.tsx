@@ -82,7 +82,7 @@ export const ChangelogFilterPanel = ({
       <div style={{ padding: "12px 16px 8px" }}>
         <Typography
           variant="overline"
-          display="block"
+          sx={{ display: "block" }}
           color="text.secondary"
           style={{ lineHeight: 1.4, marginBottom: 4 }}
         >
@@ -111,7 +111,7 @@ export const ChangelogFilterPanel = ({
         <div>
           <Typography
             variant="overline"
-            display="block"
+            sx={{ display: "block" }}
             color="text.secondary"
             style={{ lineHeight: 1.4, marginBottom: 4 }}
           >
@@ -171,7 +171,7 @@ export const ChangelogFilterPanel = ({
         <div>
           <Typography
             variant="overline"
-            display="block"
+            sx={{ display: "block" }}
             color="text.secondary"
             style={{ lineHeight: 1.4, marginBottom: 4 }}
           >
