@@ -14,12 +14,12 @@ limitations under the Licence. */
 
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { ConfigContext } from "../../config/ConfigContext";
 import {
   getInverseSubmodesWhitelist,
   getStopTypesForSubmodes,
 } from "../../modelUtils/modeUtils";
+import { injectIntl } from "../../utils/injectIntl";
 import ModalityIconSvg from "../MainPage/ModalityIconSvg";
 import MoreMenuItem from "../MainPage/MoreMenuItem";
 

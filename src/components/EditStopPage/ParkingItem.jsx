@@ -18,7 +18,6 @@ import FlatButton from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import PropTypes from "prop-types";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions, UserActions } from "../../actions/";
 import { deleteParking } from "../../actions/TiamatActions";
@@ -29,6 +28,7 @@ import {
 } from "../../models/AccessibilityLimitation";
 import PARKING_TYPE from "../../models/parkingType";
 import { getIn } from "../../utils";
+import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import CopyIdButton from "../Shared/CopyIdButton";
 import { accessibilityLimitationsKeys } from "./AccessibilityAssessment/types";

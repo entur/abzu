@@ -19,7 +19,6 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlaceActions } from "../../actions/";
 import {
@@ -33,6 +32,7 @@ import {
 import UserActions from "../../actions/UserActions";
 import { ConfigContext } from "../../config/ConfigContext";
 import { getPrimaryDarkerColor } from "../../config/themeConfig";
+import { injectIntl } from "../../utils/injectIntl";
 import AddStopPlaceToParent from "../Dialogs/AddStopPlaceToParent";
 import AltNamesDialog from "../Dialogs/AltNamesDialog";
 import CoordinatesDialog from "../Dialogs/CoordinatesDialog";

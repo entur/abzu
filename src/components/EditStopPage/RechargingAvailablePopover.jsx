@@ -5,8 +5,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { colors as rechargingAvailableColors } from "../../models/rechargingAvailable";
+import { injectIntl } from "../../utils/injectIntl";
 
 class RechargingAvailablePopover extends React.Component {
   constructor(props) {

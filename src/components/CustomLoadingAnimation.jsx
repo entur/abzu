@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { injectIntl } from "react-intl";
+import { injectIntl } from "../utils/injectIntl";
 
 const CustomLoadingAnimation = ({ intl }) => {
   const { formatMessage } = intl;

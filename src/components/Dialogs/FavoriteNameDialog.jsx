@@ -21,9 +21,9 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
+import { injectIntl } from "../../utils/injectIntl";
 
 class FavoriteNameDialog extends React.Component {
   constructor(props) {

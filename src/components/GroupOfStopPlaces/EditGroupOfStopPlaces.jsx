@@ -17,7 +17,6 @@ import MdSave from "@mui/icons-material/Save";
 import MdUndo from "@mui/icons-material/Undo";
 import FlatButton from "@mui/material/Button";
 import { Component } from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { StopPlacesGroupActions, UserActions } from "../../actions/";
 import {
@@ -27,6 +26,7 @@ import {
 import * as types from "../../actions/Types";
 import mapHelper from "../../modelUtils/mapToQueryVariables";
 import Routes from "../../routes/";
+import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
 import SaveGroupDialog from "../Dialogs/SaveGroupDialog";
 import CopyIdButton from "../Shared/CopyIdButton";

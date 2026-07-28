@@ -15,8 +15,8 @@ limitations under the Licence. */
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
+import { injectIntl } from "../../utils/injectIntl";
 import AccessibilityQuayTab from "./AccessibilityAssessment/AccessibilityQuayTab";
 import BoardingPositionsTab from "./BoardingPositionsTab";
 import FacilitiesQuayTab from "./Facility/FacilitiesQuayTab";
