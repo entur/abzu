@@ -57,7 +57,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
       onClick={onNavigate}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" fontWeight={600} noWrap>
+        <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
           {displayName}
         </Typography>
         {parking.parkingType && (
@@ -65,7 +65,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
             variant="caption"
             color="text.secondary"
             noWrap
-            display="block"
+            sx={{ display: "block" }}
           >
             {formatMessage({ id: `parking_item_title_${parking.parkingType}` })}
           </Typography>

@@ -101,7 +101,7 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
               variant="caption"
               color="text.secondary"
               noWrap
-              display="block"
+              sx={{ display: "block" }}
             >
               {stopPlace.parentTopographicPlace
                 ? `${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`

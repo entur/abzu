@@ -89,7 +89,7 @@ export const StopPlaceListItem: React.FC<StopPlaceListItemProps> = ({
 
         {/* Name + ID */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography variant="body2" fontWeight={600} noWrap>
+          <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
             {stopPlace.name}
           </Typography>
           {stopPlace.id && (

@@ -212,7 +212,11 @@ export const KeyValuesTab: React.FC<KeyValuesTabProps> = ({
             fullWidth
             helperText={formatMessage({ id: "key_values_hint" })}
           />
-          <Stack direction="row" spacing={1} justifyContent="flex-end">
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ justifyContent: "flex-end" }}
+          >
             <Button size="small" onClick={resetForm}>
               {formatMessage({ id: "cancel" })}
             </Button>

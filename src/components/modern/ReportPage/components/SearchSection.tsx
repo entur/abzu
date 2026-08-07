@@ -55,7 +55,10 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
 
   return (
     <Paper variant="outlined" sx={{ p: 1.5, flex: 1, minWidth: 0 }}>
-      <Typography variant="caption" fontWeight={600} display="block" mb={0.5}>
+      <Typography
+        variant="caption"
+        sx={{ fontWeight: 600, display: "block", mb: 0.5 }}
+      >
         {formatMessage({ id: "filter_by_tags" })}
       </Typography>
       <TagFilter
@@ -65,7 +68,7 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
         onLoadTags={onLoadTags}
       />
 
-      <Box display="flex" alignItems="flex-end" gap={1} mt={2}>
+      <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1, mt: 2 }}>
         <TextField
           variant="standard"
           type="search"

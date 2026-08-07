@@ -117,7 +117,11 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
         sx={{ display: "flex", alignItems: "center", gap: 1, pr: 6 }}
       >
         <DirectionsBusIcon fontSize="small" color="primary" />
-        <Typography variant="subtitle1" fontWeight={600} component="span">
+        <Typography
+          variant="subtitle1"
+          component="span"
+          sx={{ fontWeight: 600 }}
+        >
           {formatMessage({ id: "timetable" })}
         </Typography>
         <Typography
@@ -167,8 +171,7 @@ export const TimetableDialog: React.FC<TimetableDialogProps> = ({
               <Typography
                 variant="caption"
                 color="text.secondary"
-                fontWeight={600}
-                sx={{ display: "block", mb: 0.5 }}
+                sx={{ display: "block", mb: 0.5, fontWeight: 600 }}
               >
                 {authority}
               </Typography>

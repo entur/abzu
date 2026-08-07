@@ -66,7 +66,7 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
               variant="caption"
               color="text.secondary"
               noWrap
-              display="block"
+              sx={{ display: "block" }}
             >
               {`${stopPlace.topographicPlace}, ${stopPlace.parentTopographicPlace}`}
             </Typography>

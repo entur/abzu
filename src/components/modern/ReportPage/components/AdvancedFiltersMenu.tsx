@@ -45,7 +45,7 @@ export const AdvancedFiltersMenu: React.FC<AdvancedFiltersMenuProps> = ({
   const menuItemStyle = { display: "flex", alignItems: "center" };
 
   return (
-    <Box display="flex" gap={0.5} mt={0.5}>
+    <Box sx={{ display: "flex", gap: 0.5, mt: 0.5 }}>
       {/* General Filters */}
       <Button
         variant="contained"

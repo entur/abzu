@@ -35,7 +35,7 @@ export const NewStopHint = () => {
         borderRadius: 2,
       }}
     >
-      <Typography variant="body2" fontWeight={600}>
+      <Typography variant="body2" sx={{ fontWeight: 600 }}>
         {formatMessage({ id: "map_creating_stop_hint" })}
       </Typography>
     </Paper>

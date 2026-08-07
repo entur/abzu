@@ -128,7 +128,7 @@ export const BoardingPositionsTab: React.FC<BoardingPositionsTabProps> = ({
                 disabled={!canEdit}
                 size="small"
                 sx={{ flex: 1 }}
-                inputProps={{ maxLength: 3 }}
+                slotProps={{ htmlInput: { maxLength: 3 } }}
               />
               {canEdit && (
                 <Tooltip title={formatMessage({ id: "delete" })}>

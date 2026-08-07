@@ -32,14 +32,16 @@ export const LoadingDialog: React.FC<LoadingDialogProps> = ({
   return (
     <Dialog
       open={open}
-      PaperProps={{
-        sx: {
-          backgroundColor: "white",
-          boxShadow: 3,
-          overflow: "hidden",
-          borderRadius: 2,
-          minWidth: 320,
-          minHeight: 220,
+      slotProps={{
+        paper: {
+          sx: {
+            backgroundColor: "white",
+            boxShadow: 3,
+            overflow: "hidden",
+            borderRadius: 2,
+            minWidth: 320,
+            minHeight: 220,
+          },
         },
       }}
     >

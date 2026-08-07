@@ -16,7 +16,7 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import LinkIcon from "@mui/icons-material/Link";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { Box, Button, Divider } from "@mui/material";
 import { useIntl } from "react-intl";
 import {

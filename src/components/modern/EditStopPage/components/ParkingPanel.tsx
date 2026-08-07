@@ -205,7 +205,7 @@ export const ParkingPanel: React.FC<ParkingPanelProps> = ({
               size="small"
               type="number"
               fullWidth
-              inputProps={{ min: 0 }}
+              slotProps={{ htmlInput: { min: 0 } }}
             />
           </Box>
         )}

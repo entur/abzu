@@ -59,7 +59,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
 
   return (
     <Paper variant="outlined" sx={{ p: 1.5, flex: 1, minWidth: 0 }}>
-      <Typography variant="caption" fontWeight={600} display="block" mb={0.5}>
+      <Typography
+        variant="caption"
+        sx={{ fontWeight: 600, display: "block", mb: 0.5 }}
+      >
         {formatMessage({ id: "filter_report_by_modality" })}
       </Typography>
       <ModalityFilter
@@ -68,8 +71,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
         handleApplyFilters={onModalityChange}
       />
 
-      <Box mt={1}>
-        <Typography variant="caption" fontWeight={600} display="block" mb={0.5}>
+      <Box sx={{ mt: 1 }}>
+        <Typography
+          variant="caption"
+          sx={{ fontWeight: 600, display: "block", mb: 0.5 }}
+        >
           {formatMessage({ id: "filter_report_by_topography" })}
         </Typography>
         <Autocomplete
@@ -99,8 +105,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
           )}
           renderOption={(props, option) => (
             <MenuItem {...props} key={(option as TopographicChip).id}>
-              <Box display="flex" flexDirection="column" minWidth={300}>
-                <Box display="flex" justifyContent="space-between">
+              <Box
+                sx={{ display: "flex", flexDirection: "column", minWidth: 300 }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2">
                     {(option as TopographicChip).text}
                   </Typography>
@@ -115,7 +123,7 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
           )}
         />
 
-        <Box display="flex" flexWrap="wrap" mt={1} gap={0.5}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1, gap: 0.5 }}>
           {topoiChips.map((chip) => {
             const isCounty = chip.type === "county";
             return (

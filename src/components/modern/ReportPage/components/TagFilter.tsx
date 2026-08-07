@@ -59,7 +59,14 @@ export const TagFilter: React.FC<TagFilterProps> = ({
 
   return (
     <Box>
-      <Box display="flex" flexWrap="wrap" gap={0.5} alignItems="center">
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 0.5,
+          alignItems: "center",
+        }}
+      >
         <Button
           variant="contained"
           size="small"
@@ -90,7 +97,7 @@ export const TagFilter: React.FC<TagFilterProps> = ({
         onClose={() => setAnchorEl(null)}
         disableAutoFocus
       >
-        <Box px={1} pb={0.5}>
+        <Box sx={{ px: 1, pb: 0.5 }}>
           <TextField
             variant="standard"
             label={formatMessage({ id: "filter_tags_by_name" })}

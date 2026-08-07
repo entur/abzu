@@ -58,9 +58,9 @@ export const ReportResultRow: React.FC<ReportResultRowProps> = ({
   return (
     <Box>
       <Box
-        display="flex"
-        alignItems="center"
         sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
           background: containsError
             ? theme.palette.error.light
             : index % 2

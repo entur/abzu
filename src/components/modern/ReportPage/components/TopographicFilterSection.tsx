@@ -82,10 +82,12 @@ export const TopographicFilterSection: React.FC<
         renderOption={(props, option) => (
           <MenuItem {...props} key={(option as TopographicChip).id}>
             <Box
-              display="flex"
-              justifyContent="space-between"
-              width="100%"
-              gap={1}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                gap: 1,
+              }}
             >
               <Typography variant="body2">
                 {(option as TopographicChip).text}
@@ -93,7 +95,7 @@ export const TopographicFilterSection: React.FC<
               <Typography
                 variant="caption"
                 color="text.secondary"
-                flexShrink={0}
+                sx={{ flexShrink: 0 }}
               >
                 {formatMessage({ id: (option as TopographicChip).type })}
               </Typography>
@@ -101,7 +103,7 @@ export const TopographicFilterSection: React.FC<
           </MenuItem>
         )}
       />
-      <Box display="flex" flexWrap="wrap" mt={1} gap={0.5}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1, gap: 0.5 }}>
         {topoiChips.map((chip) => (
           <Chip
             key={chip.id}

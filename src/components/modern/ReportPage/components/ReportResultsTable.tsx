@@ -69,23 +69,25 @@ export const ReportResultsTable: React.FC<ReportResultsTableProps> = ({
   };
 
   return (
-    <Box pb={8} sx={{ overflowX: "auto" }}>
+    <Box sx={{ pb: 8, overflowX: "auto" }}>
       <Typography
         variant="caption"
-        fontWeight={600}
-        display="block"
-        textAlign="center"
-        mb={1}
+        sx={{
+          fontWeight: 600,
+          display: "block",
+          textAlign: "center",
+          mb: 1,
+        }}
       >
         {showingLabel}
       </Typography>
 
       <Box sx={{ minWidth: 600 }}>
         {/* Header row */}
-        <Box display="flex" fontWeight={600} pl={1.25}>
+        <Box sx={{ display: "flex", fontWeight: 600, pl: 1.25 }}>
           {columns.map((column) => (
             <Box key={"header-" + column} sx={cellSx}>
-              <Typography variant="caption" fontWeight={600}>
+              <Typography variant="caption" sx={{ fontWeight: 600 }}>
                 {formatMessage({ id: `report_columnNames_${column}` })}
               </Typography>
             </Box>

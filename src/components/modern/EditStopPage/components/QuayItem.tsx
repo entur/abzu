@@ -60,7 +60,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
       onClick={onNavigate}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" fontWeight={600} noWrap>
+        <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
           {displayCode}
         </Typography>
         {quay.description && (
@@ -68,7 +68,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
             variant="caption"
             color="text.secondary"
             noWrap
-            display="block"
+            sx={{ display: "block" }}
           >
             {quay.description}
           </Typography>

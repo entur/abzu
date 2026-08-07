@@ -170,7 +170,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
             size="small"
             type="number"
             fullWidth
-            inputProps={{ min: 0 }}
+            slotProps={{ htmlInput: { min: 0 } }}
           />
         </Box>
 
@@ -198,7 +198,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
             size="small"
             type="number"
             fullWidth
-            inputProps={{ min: 0 }}
+            slotProps={{ htmlInput: { min: 0 } }}
           />
         </Box>
       </Box>
@@ -211,8 +211,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
         <Typography
           variant="caption"
           color="text.secondary"
-          display="block"
-          sx={{ mt: 0.25, mb: 0.5, fontStyle: "italic" }}
+          sx={{ display: "block", mt: 0.25, mb: 0.5, fontStyle: "italic" }}
         >
           {formatMessage({ id: "parking_recharging_available_info" })}
         </Typography>
@@ -262,7 +261,7 @@ export const ParkAndRideFields: React.FC<ParkAndRideFieldsProps> = ({
           size="small"
           type="number"
           fullWidth
-          inputProps={{ min: 0 }}
+          slotProps={{ htmlInput: { min: 0 } }}
           sx={{ mt: 1 }}
         />
       </Box>

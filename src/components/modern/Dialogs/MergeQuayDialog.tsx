@@ -161,7 +161,7 @@ export const MergeQuayDialog = () => {
                           slotProps={{
                             primary: {
                               variant: "caption",
-                              fontStyle: "italic",
+                              sx: { fontStyle: "italic" },
                             },
                           }}
                         />

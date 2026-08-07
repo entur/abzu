@@ -95,15 +95,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           },
         }}
         renderInput={(params) => {
-          const {
-            InputProps: rawInputProps,
-            inputProps: nativeInputProps,
-            ...textFieldProps
-          } = params;
+          const { slotProps: paramsSlotProps, ...textFieldProps } = params;
           const { borderRadius: _brInput, ...InputProps } =
-            rawInputProps as any;
+            paramsSlotProps.input as any;
           const { borderRadius: _brNative, ...safeNativeInputProps } =
-            nativeInputProps as any;
+            paramsSlotProps.htmlInput as any;
           return (
             <TextField
               {...textFieldProps}

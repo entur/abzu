@@ -46,10 +46,10 @@ export const ReportQuayRows: React.FC<ReportQuayRowsProps> = ({
 
   return (
     <Box>
-      <Box display="flex" fontWeight={600} pl={1.25}>
+      <Box sx={{ display: "flex", fontWeight: 600, pl: 1.25 }}>
         {columns.map((column) => (
           <Box key={"quay-col-" + column} sx={cellSx}>
-            <Typography variant="caption" fontWeight={600}>
+            <Typography variant="caption" sx={{ fontWeight: 600 }}>
               {formatMessage({ id: `report_columnNames_${column}` })}
             </Typography>
           </Box>
@@ -58,8 +58,8 @@ export const ReportQuayRows: React.FC<ReportQuayRowsProps> = ({
       {quays.map((quay) => (
         <Box
           key={"quay-" + quay.id}
-          display="flex"
           sx={{
+            display: "flex",
             px: 1.25,
             border: "1px dotted grey",
           }}

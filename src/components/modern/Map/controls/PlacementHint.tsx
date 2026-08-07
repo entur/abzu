@@ -48,11 +48,14 @@ export const PlacementHint = ({ messageKey, labelKey, onCancel }: Props) => {
     >
       <Box>
         {labelKey && (
-          <Typography variant="caption" fontWeight={700} display="block">
+          <Typography
+            variant="caption"
+            sx={{ fontWeight: 700, display: "block" }}
+          >
             {formatMessage({ id: labelKey })}
           </Typography>
         )}
-        <Typography variant="body2" fontWeight={600}>
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>
           {formatMessage({ id: messageKey })}
         </Typography>
       </Box>

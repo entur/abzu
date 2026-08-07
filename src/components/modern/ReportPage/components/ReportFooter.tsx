@@ -56,7 +56,7 @@ export const ReportFooter: React.FC<ReportFooterProps> = ({
         minHeight: 48,
       }}
     >
-      <Box display="flex" alignItems="center" gap={1}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <Typography variant="body2" color="primary.contrastText">
           {formatMessage({ id: "page" })}:
         </Typography>

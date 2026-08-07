@@ -45,7 +45,7 @@ export const NewParentStopWizard = ({ open, onConfirm, onCancel }: Props) => {
   };
 
   return (
-    <Dialog open={open} maxWidth="xs" fullWidth disableEscapeKeyDown>
+    <Dialog open={open} maxWidth="xs" fullWidth>
       <DialogTitle>
         {formatMessage({ id: "new_stop_wizard_multimodal_title" })}
       </DialogTitle>

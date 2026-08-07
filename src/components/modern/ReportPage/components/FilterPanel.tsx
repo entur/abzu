@@ -64,12 +64,14 @@ const FilterPanelContent: React.FC<
   const sectionLabel = (labelId: string) => (
     <Typography
       variant="caption"
-      fontWeight={600}
-      display="block"
-      mb={0.5}
       color="text.secondary"
-      textTransform="uppercase"
-      letterSpacing={0.5}
+      sx={{
+        fontWeight: 600,
+        display: "block",
+        mb: 0.5,
+        textTransform: "uppercase",
+        letterSpacing: 0.5,
+      }}
     >
       {formatMessage({ id: labelId })}
     </Typography>
@@ -89,12 +91,14 @@ const FilterPanelContent: React.FC<
     >
       {/* Panel header */}
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={1.5}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 1.5,
+        }}
       >
-        <Typography variant="subtitle2" fontWeight={700}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
           {formatMessage({ id: "toggle_filters" })}
         </Typography>
         <IconButton

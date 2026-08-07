@@ -55,7 +55,7 @@ export const ChildStopItem: React.FC<ChildStopPlaceListItemProps> = ({
         />
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" fontWeight={600} noWrap>
+        <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
           {child.name}
         </Typography>
         {child.id && (
