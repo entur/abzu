@@ -15,7 +15,6 @@ limitations under the Licence. */
 import MdSearch from "@mui/icons-material/Search";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { connect } from "react-redux";
@@ -467,9 +466,9 @@ class ReportPage extends React.Component {
                     />
                   )}
                   renderOption={(props, option, { selected }) => (
-                    <MenuItem {...props} key={option.id}>
+                    <li {...props} key={option.id}>
                       {option.value}
-                    </MenuItem>
+                    </li>
                   )}
                 />
 

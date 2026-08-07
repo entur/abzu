@@ -38,14 +38,16 @@ const CompassBearingSelector = ({ bearing, onBearingChange }) => {
       ref={compassRef}
       onMouseMove={handleMouseMove}
       onClick={handleMouseClick}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      position="relative"
-      width={200}
-      height={200}
-      sx={{ userSelect: "none" }} // Disable text selection for the whole compass
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        width: 200,
+        height: 200,
+        userSelect: "none", // Disable text selection for the whole compass
+      }}
     >
       {/* Compass Background */}
       <Box

@@ -131,10 +131,10 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
   return (
     <StyledGrid
       container
-      alignItems="stretch"
       direction="column"
       spacing={2}
       className={classes.mainGrid}
+      sx={{ alignItems: "stretch" }}
     >
       <Grid className={classes.gridItemMargin}>
         <InputLabel htmlFor="select-parking-layout">
@@ -176,9 +176,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
       </Grid>
       <Grid>
         <Box
-          display="flex"
-          flexDirection="row"
           className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
         >
           <Box>
             <Payment style={parkingIconStyles(6)} />
@@ -257,9 +256,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           {`${totalCapacity}`})
         </ListSubheader>
         <Box
-          display="flex"
-          flexDirection="row"
           className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
         >
           <LocalParking style={parkingIconStyles()} />
           <TextField
@@ -279,9 +277,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           />
         </Box>
         <Box
-          display="flex"
-          flexDirection="row"
           className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
         >
           <Accessible style={parkingIconStyles()} />
           <TextField
@@ -310,9 +307,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           {formatMessage({ id: "parking_recharging_available_info" })}
         </Info>
         <Box
-          display="flex"
-          flexDirection="row"
           className={classes.boxFullWidth}
+          sx={{ display: "flex", flexDirection: "row" }}
         >
           <RechargingAvailablePopover
             disabled={disabled}
@@ -351,9 +347,8 @@ const ParkingItemPayAndRideExpandedFields = (props) => {
           {formatMessage({ id: "parking_accessibility" })}
         </ListSubheader>
         <Box
-          display="flex"
-          flexDirection="row"
           className={`${classes.boxFullWidth} ${classes.block}`}
+          sx={{ display: "flex", flexDirection: "row" }}
         >
           <PlaceFeatures
             name={AccessibilityLimitationEnum.STEP_FREE_ACCESS}
