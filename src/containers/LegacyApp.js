@@ -40,6 +40,7 @@ import AppRoutes from "../routes";
 import SettingsManager from "../singletons/SettingsManager";
 import { useAppSelector } from "../store/hooks";
 import { history } from "../store/store";
+import ChangelogPage from "./ChangelogPage";
 import GroupOfStopPlaces from "./GroupOfStopPlaces";
 import ReportPage from "./ReportPage";
 import { StopPlace } from "./StopPlace";
@@ -159,6 +160,10 @@ const LegacyApp = () => {
                       path={path + AppRoutes.REPORTS}
                       element={<ReportPage />}
                     />
+                    <Route
+                      path={path + AppRoutes.CHANGELOG}
+                      element={<ChangelogPage />}
+                    />
                   </Routes>
                 </Router>
                 <SnackbarWrapper />
@@ -185,6 +190,10 @@ const LegacyApp = () => {
                 <Route
                   path={path + AppRoutes.REPORTS}
                   element={<ReportPage />}
+                />
+                <Route
+                  path={path + AppRoutes.CHANGELOG}
+                  element={<ChangelogPage />}
                 />
               </Routes>
             </Router>

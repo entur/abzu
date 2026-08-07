@@ -1,0 +1,33 @@
+import Divider from "@mui/material/Divider";
+import React from "react";
+import { injectIntl } from "../../utils/injectIntl";
+import CoordinatesDialog from "../Dialogs/CoordinatesDialog";
+
+class Item extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      coordinatesDialogOpen: false,
+    };
+  }
+
+  render() {
+    const { children, intl, handleChangeCoordinates } = this.props;
+    return (
+      <div>
+        {children}
+        <Divider style={{ marginTop: 2 }} />
+        <CoordinatesDialog
+          open={this.state.coordinatesDialogOpen}
+          intl={intl}
+          handleConfirm={handleChangeCoordinates}
+          handleClose={() => {
+            this.setState({ coordinatesDialogOpen: false });
+          }}
+        />
+      </div>
+    );
+  }
+}
+
+export default injectIntl(Item);
