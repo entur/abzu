@@ -48,8 +48,7 @@ export const GroupEdgesLayer = () => {
   const members = useAppSelector(
     (state) =>
       (state as any).stopPlacesGroup?.current?.members as
-        | Array<{ location?: LatLng }>
-        | undefined,
+        Array<{ location?: LatLng }> | undefined,
   );
 
   const isEditingGroup = useAppSelector(

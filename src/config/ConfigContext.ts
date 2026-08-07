@@ -97,10 +97,7 @@ export interface ModalityConfig {
 }
 
 export type MandatoryKeyValuesSupportedTransportMode =
-  | "rail"
-  | "bus"
-  | "tram"
-  | "all";
+  "rail" | "bus" | "tram" | "all";
 
 export interface MandatoryKeyValuesSet {
   stopPlace: Record<MandatoryKeyValuesSupportedTransportMode, string[]>;

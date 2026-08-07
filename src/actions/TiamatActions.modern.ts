@@ -94,8 +94,7 @@ export const getStopPlaceWithAll =
     const payload = {
       query: stopPlaceWithAll,
       fetchPolicy: (networkOnly ? "network-only" : "cache-first") as
-        | "network-only"
-        | "cache-first",
+        "network-only" | "cache-first",
       variables: { id },
       context: await getContext((getState() as any).user.auth),
     };

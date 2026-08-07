@@ -81,8 +81,7 @@ export const ModernEditStopMap = () => {
   const currentLocation = useAppSelector(
     (state) =>
       (state.stopPlace.current as any)?.location as
-        | [number, number]
-        | undefined,
+        [number, number] | undefined,
   );
   const currentGroupId = useAppSelector(
     (state) =>
@@ -91,8 +90,7 @@ export const ModernEditStopMap = () => {
   const groupCenterPosition = useAppSelector(
     (state) =>
       (state as any).stopPlacesGroup?.centerPosition as
-        | [number, number]
-        | undefined,
+        [number, number] | undefined,
   );
   const showExpiredStops = useAppSelector(
     (state) => (state.stopPlace as any).showExpiredStops as boolean,

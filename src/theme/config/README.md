@@ -79,12 +79,8 @@ interface AbzuThemeConfig {
 
   components?: {
     // Component customizations
-    MuiButton?: {
-      /* ... */
-    };
-    MuiCard?: {
-      /* ... */
-    };
+    MuiButton?: {/* ... */};
+    MuiCard?: {/* ... */};
     // ... other components
   };
 

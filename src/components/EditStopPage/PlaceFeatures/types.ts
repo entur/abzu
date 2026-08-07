@@ -20,8 +20,7 @@ export const iconColorStates: Record<string, string> = {
  * This is to be extended with other enum-s once there a new feature with a popover menu to be added
  */
 export type FeaturePopoverMenuValue =
-  | FeaturePopoverMenuDefaults
-  | MobilityFacility;
+  FeaturePopoverMenuDefaults | MobilityFacility;
 
 export interface FeaturePopoverMenuOption<T = FeaturePopoverMenuValue> {
   value: T;

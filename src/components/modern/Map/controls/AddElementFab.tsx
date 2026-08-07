@@ -111,8 +111,7 @@ export const AddElementFab = () => {
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
-        | { type: string; index: number }
-        | undefined,
+        { type: string; index: number } | undefined,
   );
   const isQuayFocused =
     focusedElement?.type === "quay" && (focusedElement?.index ?? -1) >= 0;

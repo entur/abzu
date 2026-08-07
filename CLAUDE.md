@@ -39,7 +39,11 @@
 - For opacity-modified theme colours (e.g. focus rings), use the `sx` callback form: `sx={(theme) => ({ boxShadow: \`0 0 0 2px \${alpha(theme.palette.warning.main, 0.5)}\` })}`.
 - Use `borderColor: "background.paper"` instead of `border: "2px solid #fff"`.
 - Use `color: "*.contrastText"` on text inside coloured boxes instead of `color: "#fff"`.
-- **MUI version: v7.3.7**. Use `<Grid size={…}>` (not `item xs={…}`).
+- **MUI version: v9.2.0**. Use `<Grid size={…}>` (not `item xs={…}`).
+- **No raw system props on `Box`/`Typography`/`Stack`.** MUI v9 dropped inline system-prop support (e.g. `<Box display="flex">`, `<Typography fontWeight={600}>` no longer type-check) — always wrap layout/typography styles in `sx={{ display: "flex" }}`.
+- **`TextField`**: use `slotProps={{ htmlInput: {...} }}` instead of `inputProps`, and `slotProps={{ input: {...} }}` instead of `InputProps`.
+- **`Dialog`**: use `slotProps={{ paper: {...} }}` instead of `PaperProps`. `disableEscapeKeyDown` was removed entirely — control Escape-key behavior via `onClose`'s `reason` argument instead.
+- **`@mui/icons-material`**: bare aliases like `RemoveCircleOutline` no longer exist — import the explicit style-suffixed variant (e.g. `RemoveCircleOutlineOutlined`).
 
 ## Map (MapLibre)
 

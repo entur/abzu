@@ -161,8 +161,7 @@ export const BoardingPositionMarkers = () => {
   const focusedBP = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedBoardingPositionElement as
-        | FocusedBoardingPosition
-        | undefined,
+        FocusedBoardingPosition | undefined,
   );
 
   if (!current?.quays?.length) return null;

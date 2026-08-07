@@ -50,8 +50,7 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
-        | { type: string; index: number }
-        | undefined,
+        { type: string; index: number } | undefined,
   );
   const [expanded, setExpanded] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);

@@ -72,8 +72,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   const focusedBoardingPosition = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedBoardingPositionElement as
-        | { index: number; quayIndex: number }
-        | undefined,
+        { index: number; quayIndex: number } | undefined,
   );
 
   // Reset to the General tab whenever the panel switches to a different quay,

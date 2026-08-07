@@ -45,8 +45,7 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
-        | { type: string; index: number }
-        | undefined,
+        { type: string; index: number } | undefined,
   );
   const [expanded, setExpanded] = useState(false);
 

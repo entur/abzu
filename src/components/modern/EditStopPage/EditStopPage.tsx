@@ -75,14 +75,12 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   const focusedElement = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedElement as
-        | { type: string; index: number }
-        | undefined,
+        { type: string; index: number } | undefined,
   );
   const focusedBoardingPosition = useAppSelector(
     (state) =>
       (state as any).mapUtils?.focusedBoardingPositionElement as
-        | { index: number; quayIndex: number }
-        | undefined,
+        { index: number; quayIndex: number } | undefined,
   );
 
   // Navigate drawer when a map marker is focused.

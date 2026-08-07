@@ -77,8 +77,7 @@ export const StopGroupLayer = () => {
   const members = useAppSelector(
     (state) =>
       (state.stopPlacesGroup as any).current?.members as
-        | Array<{ location?: LatLng }>
-        | undefined,
+        Array<{ location?: LatLng }> | undefined,
   );
   const groupName = useAppSelector(
     (state) =>
