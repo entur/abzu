@@ -51,15 +51,8 @@ const mergeTariffZones = (prev: TariffZone[], next: TariffZone[]) => {
   return Array.from(map.values());
 };
 
-const sortByPrivateCode = (a: FareZone, b: FareZone) => {
-  if (a.privateCode.value > b.privateCode.value) {
-    return 1;
-  } else if (b.privateCode.value > a.privateCode.value) {
-    return -1;
-  } else {
-    return 0;
-  }
-};
+const sortByPrivateCode = (a: FareZone, b: FareZone): number =>
+  (a.privateCode?.value ?? "").localeCompare(b.privateCode?.value ?? "");
 
 export interface ZonesState {
   showFareZones: boolean;

@@ -5,6 +5,7 @@ interface UserState {
     stopPlaceId: string;
   };
   auth: any;
+  uiMode?: "legacy" | "modern";
 }
 
 declare const initialState: UserState;

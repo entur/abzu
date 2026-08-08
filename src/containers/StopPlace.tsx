@@ -34,19 +34,17 @@ import LoadingPage from "./LoadingPage";
 
 const selectProps = createSelector(
   (state: RootState) => state,
-  (state) => {
-    return {
-      isCreatingPolylines: state.stopPlace.isCreatingPolylines,
-      disabled:
-        (state.stopPlace.current &&
-          state.stopPlace.current.permanentlyTerminated) ||
-        !getStopPermissions(state.stopPlace.current).canEdit,
-      stopPlace: state.stopPlace.current || state.stopPlace.newStop,
-      newStopCreated: state.user.newStopCreated,
-      originalStopPlace: state.stopPlace.originalCurrent,
-      stopPlaceLoading: state.stopPlace.loading,
-    };
-  },
+  (state) => ({
+    isCreatingPolylines: state.stopPlace.isCreatingPolylines,
+    disabled:
+      (state.stopPlace.current &&
+        state.stopPlace.current.permanentlyTerminated) ||
+      !getStopPermissions(state.stopPlace.current).canEdit,
+    stopPlace: state.stopPlace.current || state.stopPlace.newStop,
+    newStopCreated: state.user.newStopCreated,
+    originalStopPlace: state.stopPlace.originalCurrent,
+    stopPlaceLoading: state.stopPlace.loading,
+  }),
 );
 
 export const StopPlace = () => {
@@ -143,12 +141,9 @@ export const StopPlace = () => {
       <Helmet title={title} />
       <Dialog
         open={error.showErrorDialog}
-        onClose={() => {
-          setError((prev) => ({
-            ...prev,
-            showErrorDialog: false,
-          }));
-        }}
+        onClose={() =>
+          setError((prev) => ({ ...prev, showErrorDialog: false }))
+        }
       >
         <DialogContent>
           {error.resourceNotFound
@@ -174,13 +169,10 @@ export const StopPlace = () => {
           title={formatMessage({ id: `pathLinks.title` })}
           ingress={formatMessage({ id: `pathLinks.ingress` })}
           body={formatMessage({ id: `pathLinks.body` })}
-          closeButtonTitle={formatMessage({
-            id: `pathLinks.closeButtonTitle`,
-          })}
+          closeButtonTitle={formatMessage({ id: `pathLinks.closeButtonTitle` })}
           handleOnClick={handleOnClickPathLinkInfo}
         />
       )}
-
       {!stopPlace && !error.showErrorDialog && (
         <>
           <LoadingPage />
@@ -189,17 +181,23 @@ export const StopPlace = () => {
       )}
       {stopPlaceLoading && <LoadingPage />}
       {stopPlace && !stopPlace.isParent && (
-        <div>
-          <NewElementsBox disabled={disabled || stopPlaceLoading} />
-          <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+        <>
+          {!stopPlaceLoading && (
+            <>
+              <NewElementsBox disabled={disabled || stopPlaceLoading} />
+              <EditStopGeneral disabled={disabled || stopPlaceLoading} />
+            </>
+          )}
           <EditStopMap disabled={disabled || stopPlaceLoading} />
-        </div>
+        </>
       )}
       {stopPlace && stopPlace.isParent && (
-        <div>
-          <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+        <>
+          {!stopPlaceLoading && (
+            <EditParentGeneral disabled={disabled || stopPlaceLoading} />
+          )}
           <EditStopMap disabled={disabled || stopPlaceLoading} />
-        </div>
+        </>
       )}
     </div>
   );
