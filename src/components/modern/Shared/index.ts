@@ -7,6 +7,7 @@ export { FavoriteButton } from "./FavoriteButton";
 export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";
 export { LoadingDialog } from "./LoadingDialog";
+export { StopPlaceMembership } from "./Membership";
 export * from "./MinimizedBar";
 export { ModalityFilter } from "./ModalityFilter";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";

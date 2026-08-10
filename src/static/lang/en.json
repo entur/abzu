@@ -532,6 +532,7 @@
   "stop_has_expired": "Current version has expired!",
   "stop_has_expired_last_version": "This stop has expired!",
   "stop_place": "stop place",
+  "stop_place_relations": "Relations",
   "stop_place_usages_found": "Warning: This stop place is in use",
   "stop_places": "Stop places",
   "sv": "Swedish",

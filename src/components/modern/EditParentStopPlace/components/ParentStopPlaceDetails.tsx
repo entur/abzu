@@ -27,7 +27,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useIntl } from "react-intl";
-import { GroupMembership, ImportedId, TagTray } from "../../Shared";
+import { ImportedId, StopPlaceMembership, TagTray } from "../../Shared";
 import { ParentStopPlaceDetailsProps } from "../types";
 
 /**
@@ -80,10 +80,9 @@ export const ParentStopPlaceDetails: React.FC<ParentStopPlaceDetailsProps> = ({
         />
       )}
 
-      {/* Group Membership */}
-      {belongsToGroup && groups && groups.length > 0 && (
-        <GroupMembership groups={groups} />
-      )}
+      {/* Group memberships — layout chosen under Utseende. A parent stop place
+          has no parent of its own, so only groups are passed. */}
+      {belongsToGroup && <StopPlaceMembership groups={groups} />}
 
       {/* Set Centroid (if no location) */}
       {!location && (

@@ -26,6 +26,8 @@ const enablePublicCodePrivateCodeOnStopPlaces =
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
 const uiModeKey = rootKey + "::uiMode";
+/** Which parent/group membership layout the stop place panel renders. */
+const membershipDisplayKey = rootKey + "::membershipDisplay";
 const initialLatitudeKey = rootKey + "::initialLatitude";
 const initialLongitudeKey = rootKey + "::initialLongitude";
 const initialZoomKey = rootKey + "::initialZoom";
@@ -133,6 +135,14 @@ class SettingsManager {
 
   setUIMode(value) {
     localStorage.setItem(uiModeKey, value);
+  }
+
+  getMembershipDisplay() {
+    return localStorage.getItem(membershipDisplayKey) || "chips";
+  }
+
+  setMembershipDisplay(value) {
+    localStorage.setItem(membershipDisplayKey, value);
   }
 
   getInitialLatitude() {

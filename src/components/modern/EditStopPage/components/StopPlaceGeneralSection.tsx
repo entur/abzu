@@ -32,7 +32,7 @@ import { useConfig } from "../../../../config/ConfigContext";
 import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
-import { GroupMembership, ParentMembership, TagTray } from "../../Shared";
+import { StopPlaceMembership, TagTray } from "../../Shared";
 import { StopPlaceGeneralSectionProps } from "../types";
 import { generalSectionStyles as sx } from "./StopPlaceGeneralSection.styles";
 
@@ -85,19 +85,14 @@ export const StopPlaceGeneralSection: React.FC<
 
   return (
     <Box sx={sx.container}>
-      {/* Parent stop place membership */}
-      {stopPlace.isChildOfParent && stopPlace.parentStop && (
-        <Box sx={sx.fieldRow}>
-          <ParentMembership parentStop={stopPlace.parentStop} />
-        </Box>
-      )}
-
-      {/* Group of stop places membership */}
-      {stopPlace.groups && stopPlace.groups.length > 0 && (
-        <Box sx={sx.fieldRow}>
-          <GroupMembership groups={stopPlace.groups} />
-        </Box>
-      )}
+      {/* Parent / group memberships — layout chosen under Utseende */}
+      <StopPlaceMembership
+        parentStop={
+          stopPlace.isChildOfParent ? stopPlace.parentStop : undefined
+        }
+        groups={stopPlace.groups}
+        currentName={stopPlace.name}
+      />
 
       {/* Name */}
       <Box sx={sx.fieldRow}>

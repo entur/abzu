@@ -44,6 +44,7 @@ export const initialState = {
   activeElementTab: 0,
   activeBaselayer: Settings.getMapLayer(),
   uiMode: Settings.getUIMode(),
+  membershipDisplay: Settings.getMembershipDisplay(),
   activeOverlays: Settings.getActiveOverlays(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
@@ -356,6 +357,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         uiMode: action.payload,
+      };
+
+    case types.CHANGED_MEMBERSHIP_DISPLAY:
+      return {
+        ...state,
+        membershipDisplay: action.payload,
       };
 
     default:

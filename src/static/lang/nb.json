@@ -532,6 +532,7 @@
   "stop_has_expired": "Denne versjonen er utløpt!",
   "stop_has_expired_last_version": "Dette stoppestedet har utløpt!",
   "stop_place": "stoppested",
+  "stop_place_relations": "Tilknytninger",
   "stop_place_usages_found": "Advarsel: Dette stoppestedet er i bruk!",
   "stop_places": "Stoppesteder",
   "sv": "Svensk",

@@ -264,6 +264,11 @@ UserActions.changeUIMode = (mode) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_UI_MODE, mode));
 };
 
+UserActions.changeMembershipDisplay = (variant) => (dispatch) => {
+  Settings.setMembershipDisplay(variant);
+  dispatch(createThunk(types.CHANGED_MEMBERSHIP_DISPLAY, variant));
+};
+
 UserActions.removeStopsNearbyForOverview = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null));
 };

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check, Palette } from "@mui/icons-material";
+import { Check, Hub, Palette } from "@mui/icons-material";
 import {
   Box,
   Collapse,
@@ -30,6 +30,7 @@ import { UserActions } from "../../../../actions";
 import { ConfigContext } from "../../../../config/ConfigContext";
 import { useAppDispatch } from "../../../../store/hooks";
 import { ThemeSwitcher } from "../../../../theme";
+import { MembershipDisplaySwitcher } from "../../Shared/Membership/MembershipDisplaySwitcher";
 import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
 
 interface UICustomizationSectionProps {
@@ -58,7 +59,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
   // Show UI mode toggle only when config allows switching
   const showUiModeToggle = config.uiMode === "dual";
 
-  if (!showThemeSwitcher && !showUiModeToggle) return null;
+  // No early return: the membership layout switcher is always available.
 
   // Translations
   const appearance = formatMessage({ id: "appearance" }) || "Appearance";
@@ -192,6 +193,31 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                 </Box>
               </MenuItem>
             )}
+
+            <MenuItem
+              sx={{
+                ...settingItemStyle,
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 1,
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <Hub fontSize="small" color="primary" />
+                </ListItemIcon>
+                <ListItemText primary="Memberships" />
+              </Box>
+              <Box sx={{ width: "100%", pl: 4 }}>
+                <MembershipDisplaySwitcher />
+              </Box>
+            </MenuItem>
           </MenuList>
         </Collapse>
       </Box>
@@ -273,6 +299,31 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
               </Box>
             </MenuItem>
           )}
+
+          <MenuItem
+            sx={{
+              ...settingItemStyle,
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                mb: 1,
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                <Hub fontSize="small" color="primary" />
+              </ListItemIcon>
+              <ListItemText primary="Memberships" />
+            </Box>
+            <Box sx={{ width: "100%", pl: 4 }}>
+              <MembershipDisplaySwitcher />
+            </Box>
+          </MenuItem>
         </MenuList>
       </Collapse>
     </Box>
