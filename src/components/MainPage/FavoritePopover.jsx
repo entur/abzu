@@ -17,6 +17,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { Popover } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 import React from "react";
 import { connect } from "react-redux";
 import { UserActions } from "../../actions/";
@@ -93,8 +94,8 @@ class FilterPopover extends React.Component {
             {text.title}
           </div>
           {favorites.length ? (
-            favorites.map((item, index) => {
-              return (
+            <MenuList>
+              {favorites.map((item, index) => (
                 <MenuItem
                   rightIcon={
                     <MdDelete
@@ -116,8 +117,8 @@ class FilterPopover extends React.Component {
                 >
                   {`${item.title}`}
                 </MenuItem>
-              );
-            })
+              ))}
+            </MenuList>
           ) : (
             <div
               style={{

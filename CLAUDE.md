@@ -2,7 +2,7 @@
 
 ## Workflow
 
-- **Never use browser automation (claude-in-chrome / MCP browser tools) on this project.** The user runs the dev server and does all in-browser verification themselves. Don't navigate, screenshot, or read console/network from a browser tab unless explicitly asked.
+- **Browser automation is allowed only as anonymous, read-only Playwright.** Never log in and never mutate data (no deleting, merging, or saving) — even if a control looks reachable. Drive a local dev server only, with Playwright installed in the session scratchpad, never as a devDependency. Use it for exhaustive regression sweeps (crash assertions, console/network errors, DOM scans across routes and locales). For spot-checking a single visual tweak, and for anything subjective, still ask the user to look — that's faster than automating it.
 
 ## Language & Style
 

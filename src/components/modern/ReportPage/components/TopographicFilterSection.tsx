@@ -12,14 +12,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import {
-  Autocomplete,
-  Box,
-  Chip,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { useIntl } from "react-intl";
 import { FilterState, TopographicChip } from "../types";
@@ -80,7 +73,7 @@ export const TopographicFilterSection: React.FC<
           />
         )}
         renderOption={(props, option) => (
-          <MenuItem {...props} key={(option as TopographicChip).id}>
+          <li {...props} key={(option as TopographicChip).id}>
             <Box
               sx={{
                 display: "flex",
@@ -100,7 +93,7 @@ export const TopographicFilterSection: React.FC<
                 {formatMessage({ id: (option as TopographicChip).type })}
               </Typography>
             </Box>
-          </MenuItem>
+          </li>
         )}
       />
       <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1, gap: 0.5 }}>

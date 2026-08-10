@@ -14,7 +14,7 @@ limitations under the Licence. */
 
 import { ComponentToggle } from "@entur/react-component-toggle";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { IconButton, List, SwipeableDrawer } from "@mui/material";
+import { IconButton, List, MenuList, SwipeableDrawer } from "@mui/material";
 import React from "react";
 import { MenuItemRenderer } from "./MenuItemRenderer";
 
@@ -98,10 +98,13 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
           ))}
         </List>
 
-        <ComponentToggle
-          feature={`${config.extPath}/AdditionalMenuSection`}
-          renderFallback={() => <></>}
-        />
+        {/* Extension sections render MenuItem, which requires MenuListContext */}
+        <MenuList>
+          <ComponentToggle
+            feature={`${config.extPath}/AdditionalMenuSection`}
+            renderFallback={() => <></>}
+          />
+        </MenuList>
       </SwipeableDrawer>
     </>
   );

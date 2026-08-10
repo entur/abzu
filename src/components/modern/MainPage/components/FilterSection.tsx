@@ -21,7 +21,6 @@ import {
   FormControlLabel,
   FormGroup,
   IconButton,
-  MenuItem,
   Paper,
   TextField,
   useTheme,
@@ -122,9 +121,9 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               />
             )}
             renderOption={(props, option) => (
-              <MenuItem {...props} key={option.id}>
+              <li {...props} key={option.id}>
                 {option.value}
-              </MenuItem>
+              </li>
             )}
           />
 

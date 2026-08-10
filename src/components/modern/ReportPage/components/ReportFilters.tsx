@@ -16,7 +16,6 @@ import {
   Autocomplete,
   Box,
   Chip,
-  MenuItem,
   Paper,
   TextField,
   Typography,
@@ -104,7 +103,7 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
             />
           )}
           renderOption={(props, option) => (
-            <MenuItem {...props} key={(option as TopographicChip).id}>
+            <li {...props} key={(option as TopographicChip).id}>
               <Box
                 sx={{ display: "flex", flexDirection: "column", minWidth: 300 }}
               >
@@ -119,7 +118,7 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
                   </Typography>
                 </Box>
               </Box>
-            </MenuItem>
+            </li>
           )}
         />
 

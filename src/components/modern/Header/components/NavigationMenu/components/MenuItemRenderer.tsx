@@ -14,12 +14,14 @@ limitations under the Licence. */
 
 import {
   Divider,
+  ListItem,
   ListItemIcon,
   ListItemText,
   MenuItem,
   useTheme,
 } from "@mui/material";
 import React from "react";
+import { menuItemPrimary } from "../../../../styles";
 import { LanguageMenu } from "../../LanguageMenu";
 import { SettingsMenuSection } from "../../SettingsMenuSection";
 import { UICustomizationSection } from "../../UICustomizationSection";
@@ -64,6 +66,7 @@ export const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
         <LanguageMenu
           key={item.key}
           onClose={onClose}
+          isMobile={isMobile}
           isOpen={isOpen}
           onToggle={onToggle}
         />
@@ -98,21 +101,8 @@ export const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
     return null;
   }
 
-  return (
-    <MenuItem
-      key={item.key}
-      onClick={item.onClick}
-      sx={{
-        py: 1,
-        px: 2,
-        borderRadius: 1,
-        mx: 1,
-        mb: 0.5,
-        "&:hover": {
-          backgroundColor: theme.palette.action.hover,
-        },
-      }}
-    >
+  const content = (
+    <>
       <ListItemIcon
         sx={{
           minWidth: 36,
@@ -122,6 +112,27 @@ export const MenuItemRenderer: React.FC<MenuItemRendererProps> = ({
         {item.icon}
       </ListItemIcon>
       <ListItemText primary={item.text} />
+    </>
+  );
+
+  // Mobile renders inside a plain <List>, which provides no MenuListContext.
+  // MUI v9's MenuItem throws without one, so use ListItem there — same as
+  // LanguageMenu, SettingsMenuSection and UICustomizationSection do.
+  if (isMobile) {
+    return (
+      <ListItem
+        key={item.key}
+        onClick={item.onClick}
+        sx={menuItemPrimary(theme)}
+      >
+        {content}
+      </ListItem>
+    );
+  }
+
+  return (
+    <MenuItem key={item.key} onClick={item.onClick} sx={menuItemPrimary(theme)}>
+      {content}
     </MenuItem>
   );
 };
