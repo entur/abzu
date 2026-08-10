@@ -49,6 +49,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
     <>
       <IconButton
         color="inherit"
+        aria-label="open navigation menu"
         aria-owns={anchorEl ? "navigation-menu" : undefined}
         aria-haspopup="true"
         onClick={handleClick}

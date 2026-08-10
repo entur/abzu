@@ -20,7 +20,10 @@ import { useAppSelector } from "../../../store/hooks";
 
 const BADGE_SX = {
   position: "fixed",
-  bottom: 56,
+  // Top-right, just under the header. The map controls own the bottom-right
+  // corner; this badge is dev-only diagnostics, so being covered by the
+  // navigation menu is acceptable (it is pointer-events: none anyway).
+  top: 72,
   right: 16,
   zIndex: 9999,
   fontFamily: "monospace",

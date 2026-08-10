@@ -18,7 +18,7 @@ import {
   GridOn as MapIcon,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
-import { Box, Fab, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
@@ -56,13 +56,21 @@ export const MapControls: React.FC = () => {
   const panelWidth = 320;
   const rightOffset = activePanel ? panelWidth + 24 : 16;
 
+  // The buttons now sit on a shared Paper, so they no longer carry their own
+  // surface colour — only a hover tint and a filled active state.
   const mapControlButtonSx = {
-    bgcolor: theme.palette.grey.A100,
     color: theme.palette.text.primary,
     transition: "background-color 0.2s, color 0.2s",
     "&:hover": {
-      bgcolor: theme.palette.grey[800],
-      color: theme.palette.common.white,
+      bgcolor: theme.palette.action.hover,
+    },
+  };
+
+  const mapControlButtonActiveSx = {
+    bgcolor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      bgcolor: theme.palette.primary.dark,
     },
   };
 
@@ -93,28 +101,37 @@ export const MapControls: React.FC = () => {
 
   return (
     <>
-      {/* Control Buttons - stacked vertically */}
-      <Box
+      {/* Control buttons, grouped on one surface so they read as a single map
+          widget instead of continuing the header's icon column. */}
+      <Paper
+        elevation={3}
         className="modern-map-controls-buttons"
         sx={{
           right: rightOffset,
+          p: 0.5,
+          borderRadius: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
         }}
       >
         {buttons.map((button) => (
           <Tooltip key={button.key} title={button.label} placement="left">
-            <Fab
-              size="small"
+            <IconButton
               onClick={button.onClick}
               aria-label={button.label}
-              color={activePanel === button.key ? "primary" : "default"}
               className="modern-map-control-button"
-              sx={activePanel !== button.key ? mapControlButtonSx : undefined}
+              sx={
+                activePanel === button.key
+                  ? mapControlButtonActiveSx
+                  : mapControlButtonSx
+              }
             >
               {button.icon}
-            </Fab>
+            </IconButton>
           </Tooltip>
         ))}
-      </Box>
+      </Paper>
 
       {/* Sliding Panels */}
       {activePanel && (

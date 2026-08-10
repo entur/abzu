@@ -25,10 +25,14 @@ import { SxProps, Theme } from "@mui/material";
 
 export const mapControlPanelContainer = (_theme: Theme): SxProps<Theme> => ({
   position: "absolute",
-  top: 2,
+  // Raw px, not spacing units — sx only applies the spacing scale to m/p/gap.
+  // Bottom-anchored to match .modern-map-controls-buttons, so the panel grows
+  // upward from the control card and stays clear of the header's nav menu.
+  bottom: 56,
   right: 2,
   width: 320,
-  maxHeight: "calc(100vh - 200px)",
+  // Capped so even the tallest panel cannot reach the nav menu's drop zone.
+  maxHeight: "calc(100vh - 420px)",
   zIndex: 999,
   overflow: "hidden",
   display: "flex",

@@ -21,12 +21,13 @@ limitations under the Licence. */
    Map Controls
    ============================================================================ */
 
+/* Anchored to the bottom of the map, clear of the 44px MapLibre attribution.
+   The header's navigation menu drops down from the top, so keeping the map
+   controls (and the panels they open) at the bottom means the two can never
+   overlap. Layout of the buttons inside the card lives in MapControls' sx. */
 .modern-map-controls-buttons {
   position: absolute;
-  top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  bottom: 56px;
   z-index: 1000;
   transition: right 0.3s ease-in-out;
 }
