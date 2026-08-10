@@ -20,7 +20,7 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
-import { GroupOfStopPlacesHeaderProps } from "../types";
+import { GroupOfStopPlacesHeaderProps, GroupTopographicPlace } from "../types";
 
 /**
  * Header component for group of stop places editor.
@@ -35,6 +35,14 @@ export const GroupOfStopPlacesHeader: React.FC<
   const headerText = groupOfStopPlaces.id
     ? groupOfStopPlaces.name
     : formatMessage({ id: "you_are_creating_group" });
+
+  // A group spans its members' municipalities, so this is a list rather than
+  // the single value StopPlaceHeader/ParentStopPlaceHeader show. Keep the
+  // header on one line: first place inline, the rest behind a "+N" tooltip.
+  const [firstPlace, ...otherPlaces] =
+    groupOfStopPlaces.topographicPlaces ?? [];
+  const formatPlace = (place: GroupTopographicPlace) =>
+    `${place.topographicPlace}, ${place.parentTopographicPlace}`;
 
   return (
     <Box
@@ -55,6 +63,34 @@ export const GroupOfStopPlacesHeader: React.FC<
         <Typography variant="subtitle1" sx={{ fontWeight: 600 }} noWrap>
           {headerText}
         </Typography>
+        {firstPlace && (
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            noWrap
+            sx={{ display: "block" }}
+          >
+            {formatPlace(firstPlace)}
+            {otherPlaces.length > 0 && (
+              <Tooltip
+                title={otherPlaces.map((place) => (
+                  <Box key={formatPlace(place)}>{formatPlace(place)}</Box>
+                ))}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    ml: 0.5,
+                    borderBottom: "1px dotted",
+                    cursor: "default",
+                  }}
+                >
+                  {`+${otherPlaces.length}`}
+                </Box>
+              </Tooltip>
+            )}
+          </Typography>
+        )}
         {groupOfStopPlaces.id && (
           <Box
             sx={{ display: "flex", alignItems: "center", gap: 0.25, mt: -0.25 }}

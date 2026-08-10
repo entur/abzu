@@ -40,11 +40,23 @@ export interface GroupOfStopPlacesPermissions {
   canDelete: boolean;
 }
 
+/**
+ * A {municipality, county} pair. Unlike a stop place — which has a single
+ * topographic place — a group derives a deduplicated *list* from its members,
+ * since a group may span several municipalities.
+ * Produced by GroupOfStopPlaces.getTopographicPlacesFromMembers().
+ */
+export interface GroupTopographicPlace {
+  topographicPlace: string;
+  parentTopographicPlace: string;
+}
+
 export interface GroupOfStopPlaces {
   id?: string;
   name: string;
   description?: string;
   members: StopPlace[];
+  topographicPlaces?: GroupTopographicPlace[];
   permissions?: GroupOfStopPlacesPermissions;
   created?: string;
   modified?: string;
