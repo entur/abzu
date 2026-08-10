@@ -335,9 +335,9 @@ class SearchBox extends React.Component {
           text: searchText,
           id: null,
           menuDiv: (
-            <MenuItem disabled={true}>
+            <div style={{ padding: "6px 16px", opacity: 0.5 }}>
               {formatMessage({ id: "no_results_found" })}
-            </MenuItem>
+            </div>
           ),
         },
       ];
@@ -346,30 +346,31 @@ class SearchBox extends React.Component {
       const filterNotification = {
         text: searchText,
         menuDiv: (
-          <MenuItem onClick={() => this.removeFiltersAndSearch()}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                minWidth: 340,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontWeight: 600, fontSize: "0.9em" }}>
-                  {formatMessage({ id: "filters_are_applied" })}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.8em",
-                    color: getPrimaryDarkerColor(),
-                    cursor: "pointer",
-                  }}
-                >
-                  {formatMessage({ id: "remove" })}
-                </div>
+          <div
+            onClick={() => this.removeFiltersAndSearch()}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              minWidth: 340,
+              padding: "6px 16px",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ fontWeight: 600, fontSize: "0.9em" }}>
+                {formatMessage({ id: "filters_are_applied" })}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8em",
+                  color: getPrimaryDarkerColor(),
+                  cursor: "pointer",
+                }}
+              >
+                {formatMessage({ id: "remove" })}
               </div>
             </div>
-          </MenuItem>
+          </div>
         ),
       };
 
@@ -589,9 +590,9 @@ class SearchBox extends React.Component {
                         />
                       )}
                       renderOption={(props, option, { selected }) => (
-                        <MenuItem {...props} key={option.id}>
+                        <li {...props} key={option.id}>
                           {option.value}
-                        </MenuItem>
+                        </li>
                       )}
                     />
                     <div>
@@ -639,28 +640,27 @@ class SearchBox extends React.Component {
               options={menuItems}
               loading={loading}
               loadingText={
-                <MenuItem>
-                  <div
-                    style={{
-                      fontWeight: 600,
-                      fontSize: "0.8em",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <MdSpinner />
-                    <div style={{ marginLeft: 5 }}>
-                      {formatMessage({ id: "loading" })}
-                    </div>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "0.8em",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "6px 16px",
+                  }}
+                >
+                  <MdSpinner />
+                  <div style={{ marginLeft: 5 }}>
+                    {formatMessage({ id: "loading" })}
                   </div>
-                </MenuItem>
+                </div>
               }
               onInputChange={this.handleSearchUpdate.bind(this)}
               inputValue={this.state.stopPlaceSearchValue}
               renderOption={(props, option, { selected }) => (
-                <MenuItem {...props} key={option.id}>
+                <li {...props} key={option.id}>
                   {option.menuDiv}
-                </MenuItem>
+                </li>
               )}
               onChange={this.handleNewRequest.bind(this)}
               getOptionLabel={(option) => option.text || ""}

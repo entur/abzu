@@ -21,7 +21,6 @@ import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -136,9 +135,9 @@ export const ChangelogFilterPanel = ({
               />
             )}
             renderOption={(props, option) => (
-              <MenuItem {...props} key={(option as TopoChip).id}>
+              <li {...props} key={(option as TopoChip).id}>
                 {(option as TopoChip).value}
-              </MenuItem>
+              </li>
             )}
           />
           {topoiChips.length > 0 && (
