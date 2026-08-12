@@ -249,14 +249,13 @@ export const removeStopPlaceFromMultiModalStop =
       context: await getContext(getState().user.auth),
     })(dispatch);
 
-export const deleteQuay = (variables) => async (dispatch, getState) => {
+export const deleteQuay = (variables) => async (dispatch, getState) =>
   handleMutation(getTiamatClient(), {
     mutation: mutateDeleteQuay,
     variables,
     fetchPolicy: "no-cache",
     context: await getContext(getState().user.auth),
   })(dispatch);
-};
 
 export const deleteStopPlace = (stopPlaceId) => async (dispatch, getState) =>
   handleMutation(getTiamatClient(), {

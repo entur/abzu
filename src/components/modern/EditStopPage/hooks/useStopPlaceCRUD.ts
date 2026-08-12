@@ -15,6 +15,8 @@ limitations under the Licence. */
 import { useCallback } from "react";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import {
+  deleteParking,
+  deleteQuay,
   deleteStopPlace,
   getNeighbourStops,
   getStopPlaceVersions,
@@ -30,6 +32,7 @@ import {
   shouldMutatePathLinks,
 } from "../../../../modelUtils/shouldMutate";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { findStagedDeletions } from "../utils/stagedDeletions";
 
 /**
  * Hook for CRUD operations on regular stop places
@@ -49,6 +52,9 @@ export const useStopPlaceCRUD = (
   const pathLink = useAppSelector((state) => (state.stopPlace as any).pathLink);
   const originalPathLink = useAppSelector(
     (state) => (state.stopPlace as any).originalPathLink,
+  );
+  const originalStopPlace = useAppSelector(
+    (state) => (state.stopPlace as any).originalCurrent,
   );
 
   const handleSave = useCallback(
@@ -73,37 +79,64 @@ export const useStopPlaceCRUD = (
       );
       const needsParkingSave = shouldMutateParking(stopPlace.parking);
 
-      dispatch(saveStopPlaceBasedOnType(stopPlace, userInput)).then(
-        (id: string) => {
-          const parkingVariables = mapToMutationVariables.mapParkingToVariables(
-            stopPlace.parking,
-            stopPlace.id || id,
-          );
+      // Quay and parking removals are staged in local state only, so commit them
+      // here. Deleting before the stop save means the arrays we then send already
+      // match server state, and bailing out on validation above touches nothing.
+      // Parking especially needs the explicit call: shouldMutateParking() is false
+      // for an empty list, so removing the last parking would otherwise save nothing.
+      const stagedDeletions = [
+        ...findStagedDeletions(originalStopPlace?.quays, stopPlace.quays).map(
+          (quayId) => deleteQuay({ stopPlaceId: stopPlace.id, quayId }),
+        ),
+        ...findStagedDeletions(
+          originalStopPlace?.parking,
+          stopPlace.parking,
+        ).map((parkingId) => deleteParking(parkingId)),
+      ];
 
-          const finish = () => {
-            dispatch(getStopPlaceVersions(id));
-            dispatch(getNeighbourStops(id, activeMap?.getBounds()));
-            dispatch(getStopPlaceWithAll(id, true));
-          };
+      const saveStop = () =>
+        dispatch(saveStopPlaceBasedOnType(stopPlace, userInput)).then(
+          (id: string) => {
+            const parkingVariables =
+              mapToMutationVariables.mapParkingToVariables(
+                stopPlace.parking,
+                stopPlace.id || id,
+              );
 
-          if (needsPathLinkSave) {
-            dispatch(savePathLink(pathLinkVariables)).then(() => {
-              if (needsParkingSave) {
-                dispatch(saveParking(parkingVariables)).then(finish);
-              } else {
-                finish();
-              }
-            });
-          } else if (needsParkingSave) {
-            dispatch(saveParking(parkingVariables)).then(finish);
-          } else {
-            finish();
-          }
-        },
+            const finish = () => {
+              dispatch(getStopPlaceVersions(id));
+              dispatch(getNeighbourStops(id, activeMap?.getBounds()));
+              dispatch(getStopPlaceWithAll(id, true));
+            };
+
+            if (needsPathLinkSave) {
+              dispatch(savePathLink(pathLinkVariables)).then(() => {
+                if (needsParkingSave) {
+                  dispatch(saveParking(parkingVariables)).then(finish);
+                } else {
+                  finish();
+                }
+              });
+            } else if (needsParkingSave) {
+              dispatch(saveParking(parkingVariables)).then(finish);
+            } else {
+              finish();
+            }
+          },
+        );
+
+      if (!stagedDeletions.length) {
+        saveStop();
+        return;
+      }
+
+      Promise.all(stagedDeletions.map((deletion) => dispatch(deletion))).then(
+        saveStop,
       );
     },
     [
       stopPlace,
+      originalStopPlace,
       pathLink,
       originalPathLink,
       dispatch,

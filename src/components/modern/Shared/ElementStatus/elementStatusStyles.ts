@@ -14,18 +14,27 @@ limitations under the Licence. */
 
 import type { Theme } from "@mui/material";
 import type { SystemStyleObject } from "@mui/system";
+import { ElementChangeStatus } from "./types";
+
+const GHOST_OPACITY = 0.45;
 
 /**
- * Shared styling for every "add new item" button: a white/paper circular button
- * whose icon carries the element's semantic colour, matching the map markers
- * (quays → success.main, parking → info.main, stop places → primary.main).
+ * Row styling for a staged deletion. `new` and `modified` are marked by the
+ * inline dot instead, so they need no row styling at all.
  *
- * Returns a plain style object rather than SxProps so callers can spread it and
- * override a property — SxProps permits arrays, which are not spreadable.
+ * Ghost rows render regardless of the affordance setting: a row that has
+ * vanished from the list is more confusing than one that is visibly struck out.
  */
-export const addItemButtonSx = (color: string): SystemStyleObject<Theme> => ({
-  bgcolor: "background.paper",
-  color,
-  boxShadow: 1,
-  "&:hover": { bgcolor: "background.paper" },
-});
+export const getElementRowStatusSx = (
+  status: ElementChangeStatus,
+): SystemStyleObject<Theme> => {
+  if (status !== "deleted") return {};
+
+  return {
+    opacity: GHOST_OPACITY,
+    cursor: "default",
+    textDecoration: "line-through",
+    bgcolor: "action.disabledBackground",
+    "&:hover": { bgcolor: "action.disabledBackground" },
+  };
+};

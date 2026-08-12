@@ -35,7 +35,8 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { addItemButtonSx } from "../../Shared";
-import { Parking, ParkingSectionProps } from "../types";
+import { buildElementListEntries } from "../../Shared/ElementStatus";
+import { ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
 
 export const ParkingSection: React.FC<ParkingSectionProps> = ({
@@ -52,8 +53,15 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
       (state as any).mapUtils?.focusedElement as
         { type: string; index: number } | undefined,
   );
+  const originalParking = useAppSelector(
+    (state) => (state.stopPlace as any).originalCurrent?.parking,
+  );
   const [expanded, setExpanded] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+
+  // Ghost rows for staged deletions come from the original snapshot, so the list
+  // shows what will happen on save rather than silently dropping the row.
+  const entries = buildElementListEntries(parking, originalParking);
 
   const handleAddClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -138,19 +146,25 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
       {/* Collapsible parking list */}
       <Collapse in={expanded}>
         <Divider />
-        {parking.map((p: Parking, index: number) => (
+        {entries.map((entry, position) => (
           <ParkingItem
-            key={p.id || `parking-${index}`}
-            parking={p}
-            index={index}
+            key={entry.element.id || `parking-${position}`}
+            parking={entry.element}
+            index={entry.index ?? position}
             canEdit={canEdit}
+            status={entry.status}
             focused={
+              entry.index !== null &&
               (focusedElement?.type === "parkAndRide" ||
                 focusedElement?.type === "bikeParking") &&
-              focusedElement?.index === index
+              focusedElement?.index === entry.index
             }
-            onDelete={() => onDeleteParking(index)}
-            onNavigate={() => onNavigateToParking(index)}
+            onDelete={() =>
+              entry.index !== null && onDeleteParking(entry.index)
+            }
+            onNavigate={() =>
+              entry.index !== null && onNavigateToParking(entry.index)
+            }
           />
         ))}
       </Collapse>

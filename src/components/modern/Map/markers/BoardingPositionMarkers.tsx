@@ -106,13 +106,16 @@ const BoardingPositionItem = ({
               width: Math.round(BP_SIZE * scale),
               height: Math.round(BP_SIZE * scale),
               borderRadius: "50%",
-              bgcolor: focused ? "warning.main" : "background.paper",
+              // Focus is shown by the ring and scale only, never by recolouring —
+              // matches QuayMarkers and ParkingMarkers so the base colour always
+              // identifies the element type.
+              bgcolor: "background.paper",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
               border: "2px solid",
-              borderColor: focused ? "warning.main" : "secondary.main",
+              borderColor: "secondary.main",
               boxShadow: focused
                 ? `0 0 0 2px ${alpha(theme.palette.warning.main, 0.5)}, 0 2px 4px rgba(0,0,0,0.4)`
                 : "0 1px 3px rgba(0,0,0,0.35)",
@@ -123,7 +126,7 @@ const BoardingPositionItem = ({
           >
             <Typography
               sx={{
-                color: focused ? "warning.contrastText" : "secondary.main",
+                color: "secondary.main",
                 fontWeight: 800,
                 fontSize: `${0.7 * scale}rem`,
                 lineHeight: 1,

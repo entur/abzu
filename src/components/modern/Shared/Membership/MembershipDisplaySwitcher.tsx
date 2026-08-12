@@ -30,6 +30,7 @@ const OPTIONS: { value: MembershipVariant; label: string }[] = [
   { value: "section", label: "4 · Collapsible section" },
   { value: "list", label: "5 · Uniform list" },
   { value: "identity", label: "6 · Identity row" },
+  { value: "stack", label: "7 · Section in the list stack" },
 ];
 
 export const MembershipDisplaySwitcher = () => {

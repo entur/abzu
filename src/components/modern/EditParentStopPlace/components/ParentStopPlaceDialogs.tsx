@@ -26,6 +26,7 @@ import {
   TerminateStopPlaceDialog,
   VersionsDialog,
 } from "../../Dialogs";
+import { useAppSelector } from "../../../../store/hooks";
 
 interface ParentStopPlaceDialogsProps {
   stopPlace: any;
@@ -149,6 +150,15 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   onCloseChildrenDialog,
   handleCloseVersionsDialog,
 }) => {
+  // Populated by UserActions.requestTerminateStopPlace, which handleOpenTerminateDialog
+  // dispatches — the OTP usage lookup that warns before a stop place is terminated.
+  const terminateWarning = useAppSelector(
+    (state) => (state.user as any).deleteStopDialogWarning,
+  );
+  const serverTimeDiff = useAppSelector(
+    (state) => (state.user as any).serverTimeDiff,
+  );
+
   return (
     <>
       {/* Save Confirmation Dialog */}
@@ -190,8 +200,8 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
         stopPlace={stopPlace as any}
         canDeleteStop={canDelete}
         isLoading={false}
-        serverTimeDiff={0}
-        warningInfo=""
+        serverTimeDiff={serverTimeDiff}
+        warningInfo={terminateWarning}
       />
 
       {/* Remove Child from Parent Dialog */}

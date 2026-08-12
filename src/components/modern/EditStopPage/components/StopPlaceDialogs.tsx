@@ -26,9 +26,11 @@ import {
   TerminateStopPlaceDialog,
   VersionsDialog,
 } from "../../Dialogs";
+import { useAppSelector } from "../../../../store/hooks";
 import { InfoDialog } from "../../EditParentStopPlace/components/InfoDialog";
 import { NameDescriptionDialog } from "../../EditParentStopPlace/components/NameDescriptionDialog";
 import { StopPlaceDialogsProps } from "../types";
+import { QuayUsageWarning } from "./QuayUsageWarning";
 
 /**
  * Centralized dialog rendering for the modern EditStopPage
@@ -44,6 +46,7 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   confirmUndoOpen,
   terminateStopDialogOpen,
   deleteQuayDialogOpen,
+  pendingDeleteQuayId,
   deleteParkingDialogOpen,
   requiredFieldsMissingOpen,
   tagsDialogOpen,
@@ -78,6 +81,15 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   handleNameChange,
   handleDescriptionChange,
 }) => {
+  // Populated by UserActions.requestTerminateStopPlace, which handleOpenTerminateDialog
+  // dispatches — the OTP usage lookup that warns before a stop place is terminated.
+  const terminateWarning = useAppSelector(
+    (state) => (state.user as any).deleteStopDialogWarning,
+  );
+  const serverTimeDiff = useAppSelector(
+    (state) => (state.user as any).serverTimeDiff,
+  );
+
   return (
     <>
       {/* 1. Save Confirmation */}
@@ -119,8 +131,8 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         stopPlace={stopPlace as any}
         canDeleteStop={canDelete}
         isLoading={false}
-        serverTimeDiff={0}
-        warningInfo=""
+        serverTimeDiff={serverTimeDiff}
+        warningInfo={terminateWarning}
       />
 
       {/* 5. Delete Quay Confirmation */}
@@ -132,6 +144,11 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         cancelText={formatMessage({ id: "cancel" })}
         onConfirm={handleConfirmDeleteQuay}
         onClose={handleCloseDeleteQuayDialog}
+        additionalContent={
+          deleteQuayDialogOpen ? (
+            <QuayUsageWarning quayId={pendingDeleteQuayId} />
+          ) : null
+        }
       />
 
       {/* 6. Delete Parking Confirmation */}

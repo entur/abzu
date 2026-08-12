@@ -14,10 +14,6 @@ limitations under the Licence. */
 
 import { useCallback, useState } from "react";
 import { StopPlaceActions } from "../../../../actions";
-import {
-  deleteQuay,
-  getStopPlaceWithAll,
-} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 
 /**
@@ -42,29 +38,25 @@ export const useStopPlaceQuays = (
     [onOpenDeleteQuayDialog],
   );
 
+  /** Drives the OTP usage lookup shown in the delete confirmation */
+  const pendingDeleteQuayId: string | null =
+    pendingDeleteQuayIndex === null
+      ? null
+      : (stopPlace?.quays?.[pendingDeleteQuayIndex]?.id ?? null);
+
+  /**
+   * Removes the quay from local state only — saved and unsaved quays behave
+   * identically. Deletions of already-saved quays are derived at save time by
+   * diffing against `originalCurrent` (see `findStagedDeletions`), so the
+   * server is not touched until the user presses Save, and Undo restores it.
+   */
   const handleConfirmDeleteQuay = useCallback(() => {
     if (pendingDeleteQuayIndex === null || !stopPlace?.quays) return;
-    const quay = stopPlace.quays[pendingDeleteQuayIndex];
 
     onCloseDeleteQuayDialog();
-
-    if (!quay?.id) {
-      // Unsaved quay — remove from local state only
-      dispatch(
-        StopPlaceActions.removeElementByType(pendingDeleteQuayIndex, "quay"),
-      );
-    } else {
-      // Saved quay — server delete then reload.
-      // mutateDeleteQuay requires { stopPlaceId, quayId } — passing { id } left
-      // both variables undefined, so the mutation was silently rejected.
-      dispatch(deleteQuay({ stopPlaceId: stopPlace.id, quayId: quay.id })).then(
-        () => {
-          if (stopPlace.id) {
-            dispatch(getStopPlaceWithAll(stopPlace.id, true));
-          }
-        },
-      );
-    }
+    dispatch(
+      StopPlaceActions.removeElementByType(pendingDeleteQuayIndex, "quay"),
+    );
     setPendingDeleteQuayIndex(null);
   }, [pendingDeleteQuayIndex, stopPlace, dispatch, onCloseDeleteQuayDialog]);
 
@@ -106,6 +98,7 @@ export const useStopPlaceQuays = (
   return {
     handleDeleteQuay,
     handleConfirmDeleteQuay,
+    pendingDeleteQuayId,
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,

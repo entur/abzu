@@ -18,6 +18,11 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
+import {
+  ElementStatusDot,
+  getElementRowStatusSx,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import { ParkingItemProps } from "../types";
 
 /**
@@ -30,8 +35,12 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
   focused,
   onDelete,
   onNavigate,
+  status = "unchanged",
 }) => {
   const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
+
+  const isGhost = status === "deleted";
 
   const displayName =
     parking.name ||
@@ -53,13 +62,17 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
         borderLeftColor: focused ? "info.main" : "transparent",
         transition: "background-color 0.15s",
         "&:hover": { bgcolor: focused ? "action.selected" : "action.hover" },
+        ...getElementRowStatusSx(status),
       }}
-      onClick={onNavigate}
+      onClick={isGhost ? undefined : onNavigate}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
-          {displayName}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <ElementStatusDot status={status} enabled={isStatusEnabled} />
+          <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
+            {displayName}
+          </Typography>
+        </Box>
         {parking.parkingType && (
           <Typography
             variant="caption"
@@ -80,7 +93,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
         )}
       </Box>
 
-      {canEdit && (
+      {canEdit && !isGhost && (
         <Tooltip title={formatMessage({ id: "delete_parking" })}>
           <IconButton
             size="small"
@@ -96,7 +109,7 @@ export const ParkingItem: React.FC<ParkingItemProps> = ({
         </Tooltip>
       )}
 
-      <ChevronRightIcon fontSize="small" color="action" />
+      {!isGhost && <ChevronRightIcon fontSize="small" color="action" />}
     </Box>
   );
 };

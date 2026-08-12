@@ -31,6 +31,7 @@ import { ConfigContext } from "../../../../config/ConfigContext";
 import { useAppDispatch } from "../../../../store/hooks";
 import { ThemeSwitcher } from "../../../../theme";
 import { MembershipDisplaySwitcher } from "../../Shared/Membership/MembershipDisplaySwitcher";
+import { useElementStatusEnabled } from "../../Shared/ElementStatus";
 import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
 
 interface UICustomizationSectionProps {
@@ -53,6 +54,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
   // Redux selectors
   const uiMode = useSelector((state: any) => state.user.uiMode);
+  const isElementStatusEnabled = useElementStatusEnabled();
 
   // Show theme switcher only if 2+ themes available
   const showThemeSwitcher = availableThemes.length >= 2;
@@ -69,6 +71,14 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
   const handleToggleUIMode = (value: boolean) => {
     const newMode = value ? "modern" : "legacy";
     dispatch(UserActions.changeUIMode(newMode));
+  };
+
+  const handleToggleElementStatus = () => {
+    dispatch(
+      UserActions.changeElementStatusDisplay(
+        isElementStatusEnabled ? "off" : "dot",
+      ),
+    );
   };
 
   const handleClick = () => {
@@ -218,6 +228,29 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                 <MembershipDisplaySwitcher />
               </Box>
             </MenuItem>
+
+            <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                {isElementStatusEnabled ? (
+                  <Check fontSize="small" color="primary" />
+                ) : (
+                  <Box sx={{ width: 20, height: 20 }} />
+                )}
+              </ListItemIcon>
+              <ListItemText
+                primary={formatMessage({ id: "element_status_setting" })}
+                slotProps={{
+                  primary: {
+                    sx: {
+                      fontSize: "0.8125rem",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      overflow: "hidden",
+                    },
+                  },
+                }}
+              />
+            </MenuItem>
           </MenuList>
         </Collapse>
       </Box>
@@ -323,6 +356,19 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
             <Box sx={{ width: "100%", pl: 4 }}>
               <MembershipDisplaySwitcher />
             </Box>
+          </MenuItem>
+
+          <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
+            <ListItemIcon sx={{ minWidth: 32 }}>
+              {isElementStatusEnabled ? (
+                <Check fontSize="small" color="primary" />
+              ) : (
+                <Box sx={{ width: 20, height: 20 }} />
+              )}
+            </ListItemIcon>
+            <ListItemText
+              primary={formatMessage({ id: "element_status_setting" })}
+            />
           </MenuItem>
         </MenuList>
       </Collapse>

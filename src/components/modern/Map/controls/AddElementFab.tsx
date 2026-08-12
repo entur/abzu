@@ -26,11 +26,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import { useMap } from "react-map-gl/maplibre";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { addItemButtonSx } from "../../Shared";
 import { PlacementHint } from "./PlacementHint";
 
 type ElementType = "quay" | "parkAndRide" | "bikeParking" | "boardingPosition";
@@ -168,6 +169,28 @@ export const AddElementFab = () => {
     };
   }, [mapRef, pendingElementType, dispatch]);
 
+  const handleCancelPlacement = useCallback(() => {
+    setPendingElementType(null);
+    if (isCreatingNewStop) {
+      dispatch(UserActions.toggleIsCreatingNewStop(false));
+    }
+    setOpen(false);
+  }, [isCreatingNewStop, dispatch]);
+
+  useEffect(() => {
+    if (!pendingElementType && !isCreatingNewStop) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleCancelPlacement();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [pendingElementType, isCreatingNewStop, handleCancelPlacement]);
+
+  // All hooks must run above this guard: the map stays mounted across the login
+  // transition, so returning early before a hook changes the hook count on the
+  // same component instance and React throws.
   if (!isAuthenticated) return null;
 
   const hasStopSelected = Boolean(currentStopId);
@@ -186,28 +209,6 @@ export const AddElementFab = () => {
     setOpen(false);
     dispatch(UserActions.toggleIsCreatingNewStop(true));
   };
-
-  const handleCancelPlacement = () => {
-    setPendingElementType(null);
-    if (isCreatingNewStop) {
-      dispatch(UserActions.toggleIsCreatingNewStop(false));
-    }
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if (!pendingElementType && !isCreatingNewStop) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleCancelPlacement();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-    // handleCancelPlacement is recreated each render; pendingElementType and isCreatingNewStop
-    // control when the listener is active
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingElementType, isCreatingNewStop]);
 
   const placementLabelKey = pendingElementType
     ? (STOP_ELEMENT_ACTIONS.find((a) => a.elementType === pendingElementType)
@@ -240,13 +241,13 @@ export const AddElementFab = () => {
           left: hasStopSelected ? DRAWER_WIDTH + 8 : 8,
           transition: "left 0.3s ease-in-out",
           "& .MuiSpeedDial-fab": {
-            bgcolor: pendingElementType ? "warning.main" : "primary.main",
-            color: pendingElementType
-              ? "warning.contrastText"
-              : "primary.contrastText",
-            "&:hover": {
-              bgcolor: pendingElementType ? "warning.dark" : "primary.dark",
-            },
+            // Inverted to match the section add buttons: paper background with a
+            // semantic icon colour, switching to warning while placing.
+            ...addItemButtonSx(
+              pendingElementType ? "warning.main" : "primary.main",
+            ),
+            // Floats over the map, so it needs more lift than an in-panel button.
+            boxShadow: 3,
           },
         }}
       >

@@ -13,12 +13,18 @@
  limitations under the Licence. */
 
 import { useSelector } from "react-redux";
-import { isMembershipVariant, MembershipProps } from "./types";
+import {
+  getMembershipPlacement,
+  isMembershipVariant,
+  MembershipPlacement,
+  MembershipProps,
+} from "./types";
 import { ChipRows } from "./variants/ChipRows";
 import { CollapsibleSection } from "./variants/CollapsibleSection";
 import { HierarchyPath } from "./variants/HierarchyPath";
 import { IdentityRow } from "./variants/IdentityRow";
 import { RelationList } from "./variants/RelationList";
+import { MembershipSection } from "./variants/MembershipSection";
 import { RelationsCard } from "./variants/RelationsCard";
 
 const VARIANTS = {
@@ -28,6 +34,7 @@ const VARIANTS = {
   section: CollapsibleSection,
   list: RelationList,
   identity: IdentityRow,
+  stack: MembershipSection,
 } as const;
 
 /**
@@ -36,7 +43,18 @@ const VARIANTS = {
  * be compared in the running app; once one wins, the others can be deleted and
  * this indirection collapsed.
  */
-export const StopPlaceMembership: React.FC<MembershipProps> = (props) => {
+interface Props extends MembershipProps {
+  /**
+   * Which mount point is asking. A variant renders only at its own placement, so
+   * both call sites can stay unconditional.
+   */
+  placement?: MembershipPlacement;
+}
+
+export const StopPlaceMembership: React.FC<Props> = ({
+  placement = "inline",
+  ...props
+}) => {
   const selected = useSelector(
     (state: any) => state.user?.membershipDisplay as unknown,
   );
@@ -45,6 +63,7 @@ export const StopPlaceMembership: React.FC<MembershipProps> = (props) => {
   const hasParent = !!props.parentStop;
   const hasGroups = !!props.groups?.length;
   if (!hasParent && !hasGroups) return null;
+  if (getMembershipPlacement(variant) !== placement) return null;
 
   const Variant = VARIANTS[variant];
   return <Variant {...props} />;

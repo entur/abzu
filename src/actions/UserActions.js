@@ -269,6 +269,11 @@ UserActions.changeMembershipDisplay = (variant) => (dispatch) => {
   dispatch(createThunk(types.CHANGED_MEMBERSHIP_DISPLAY, variant));
 };
 
+UserActions.changeElementStatusDisplay = (variant) => (dispatch) => {
+  Settings.setElementStatusDisplay(variant);
+  dispatch(createThunk(types.CHANGED_ELEMENT_STATUS_DISPLAY, variant));
+};
+
 UserActions.removeStopsNearbyForOverview = () => (dispatch) => {
   dispatch(createThunk(types.REMOVED_STOPS_NEARBY_FOR_OVERVIEW, null));
 };

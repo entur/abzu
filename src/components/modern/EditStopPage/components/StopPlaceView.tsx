@@ -29,6 +29,18 @@ import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
 import { StopPlaceViewProps } from "../types";
+import {
+  ACCESSIBILITY_TAB_KEYS,
+  ASSISTANCE_TAB_KEYS,
+  DirtyBadge,
+  FACILITIES_TAB_KEYS,
+  hasChangedKey,
+  hasGeneralTabChange,
+  KEY_VALUES_TAB_KEYS,
+  useElementStatusEnabled,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
+import { StopPlaceMembership } from "../../Shared";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { ParkingSection } from "./ParkingSection";
 import { QuaysSection } from "./QuaysSection";
@@ -70,6 +82,13 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState(0);
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
+
+  /** Tab 0 catches every changed key no other tab claims. */
+  const isTabDirty = (keys?: readonly string[]) =>
+    isStatusEnabled &&
+    (keys ? hasChangedKey(dirtyKeys, keys) : hasGeneralTabChange(dirtyKeys));
   const [timetableOpen, setTimetableOpen] = useState(false);
 
   return (
@@ -96,31 +115,66 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
             title={formatMessage({ id: "stopPlace" })}
             placement="bottom"
           >
-            <Tab icon={<InfoOutlinedIcon fontSize="small" />} value={0} />
+            <Tab
+              icon={
+                <DirtyBadge dirty={isTabDirty()}>
+                  <InfoOutlinedIcon fontSize="small" />
+                </DirtyBadge>
+              }
+              value={0}
+            />
           </Tooltip>
           <Tooltip
             title={formatMessage({ id: "accessibility" })}
             placement="bottom"
           >
-            <Tab icon={<AccessibleIcon fontSize="small" />} value={1} />
+            <Tab
+              icon={
+                <DirtyBadge dirty={isTabDirty(ACCESSIBILITY_TAB_KEYS)}>
+                  <AccessibleIcon fontSize="small" />
+                </DirtyBadge>
+              }
+              value={1}
+            />
           </Tooltip>
           <Tooltip
             title={formatMessage({ id: "facilities" })}
             placement="bottom"
           >
-            <Tab icon={<BusShelter sx={{ fontSize: "1.25rem" }} />} value={2} />
+            <Tab
+              icon={
+                <DirtyBadge dirty={isTabDirty(FACILITIES_TAB_KEYS)}>
+                  <BusShelter sx={{ fontSize: "1.25rem" }} />
+                </DirtyBadge>
+              }
+              value={2}
+            />
           </Tooltip>
           <Tooltip
             title={formatMessage({ id: "assistance" })}
             placement="bottom"
           >
-            <Tab icon={<SupportAgentIcon fontSize="small" />} value={3} />
+            <Tab
+              icon={
+                <DirtyBadge dirty={isTabDirty(ASSISTANCE_TAB_KEYS)}>
+                  <SupportAgentIcon fontSize="small" />
+                </DirtyBadge>
+              }
+              value={3}
+            />
           </Tooltip>
           <Tooltip
             title={formatMessage({ id: "key_values_hint" })}
             placement="bottom"
           >
-            <Tab icon={<VpnKeyIcon fontSize="small" />} value={4} />
+            <Tab
+              icon={
+                <DirtyBadge dirty={isTabDirty(KEY_VALUES_TAB_KEYS)}>
+                  <VpnKeyIcon fontSize="small" />
+                </DirtyBadge>
+              }
+              value={4}
+            />
           </Tooltip>
         </Tabs>
       </Box>
@@ -165,6 +219,16 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
                 dispatch(StopPlaceActions.setElementFocus(index, parkingType));
               }}
               onAddParking={onAddParking}
+            />
+            {/* Only renders for the "stack" variant — the other membership
+                layouts mount inline inside StopPlaceGeneralSection. */}
+            <StopPlaceMembership
+              placement="section"
+              parentStop={
+                stopPlace.isChildOfParent ? stopPlace.parentStop : undefined
+              }
+              groups={stopPlace.groups}
+              currentName={stopPlace.name}
             />
           </>
         )}

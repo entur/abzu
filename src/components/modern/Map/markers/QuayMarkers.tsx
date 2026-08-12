@@ -21,6 +21,12 @@ import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import {
+  buildElementStatusByIndex,
+  ElementStatusMapBadge,
+  isPendingStatus,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
@@ -41,6 +47,8 @@ interface QuayMarkerItemProps {
   focused: boolean;
   showCompassBearing: boolean;
   showPublicCode: boolean;
+  /** True when the quay is locally added or edited and not yet saved. */
+  isPending: boolean;
 }
 
 const QuayMarkerItem = ({
@@ -50,6 +58,7 @@ const QuayMarkerItem = ({
   focused,
   showCompassBearing,
   showPublicCode,
+  isPending,
 }: QuayMarkerItemProps) => {
   const dispatch = useAppDispatch();
   const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null);
@@ -57,6 +66,7 @@ const QuayMarkerItem = ({
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
+  const isStatusEnabled = useElementStatusEnabled();
 
   if (!quay.location) return null;
 
@@ -135,6 +145,10 @@ const QuayMarkerItem = ({
                 setPopupAnchor(e.currentTarget);
               }}
               sx={(theme) => ({
+                // Containing block for ElementStatusMapBadge. Without it the badge
+                // would anchor to the outer box while `transform` is "none", and
+                // to this box once focus/hover applies a transform.
+                position: "relative",
                 width: Math.round(QUAY_SIZE * scale),
                 height: Math.round(QUAY_SIZE * scale),
                 borderRadius: "50%",
@@ -165,6 +179,10 @@ const QuayMarkerItem = ({
               >
                 {label}
               </Typography>
+              <ElementStatusMapBadge
+                visible={isStatusEnabled && isPending}
+                scale={scale}
+              />
             </Box>
           </Box>
         )}
@@ -207,12 +225,17 @@ export const QuayMarkers = () => {
   const isMergingStop = useAppSelector(
     (state) => !!(state as any).stopPlace?.mergeStopDialog?.isOpen,
   );
+  const originalQuays = useAppSelector(
+    (state) => (state.stopPlace as any).originalCurrent?.quays,
+  );
 
   if (!current?.quays?.length) return null;
   if (isMergingStop) return null;
 
   const disabled =
     !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
+
+  const quayStatuses = buildElementStatusByIndex(current.quays, originalQuays);
 
   return (
     <>
@@ -227,6 +250,7 @@ export const QuayMarkers = () => {
           }
           showCompassBearing={isCompassBearingEnabled}
           showPublicCode={showPublicCode}
+          isPending={isPendingStatus(quayStatuses[index] ?? "unchanged")}
         />
       ))}
     </>

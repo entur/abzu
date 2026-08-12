@@ -14,10 +14,6 @@ limitations under the Licence. */
 
 import { useCallback, useState } from "react";
 import { StopPlaceActions } from "../../../../actions";
-import {
-  deleteParking,
-  getStopPlaceWithAll,
-} from "../../../../actions/TiamatActions.modern";
 import { useAppDispatch } from "../../../../store/hooks";
 
 /**
@@ -41,28 +37,22 @@ export const useStopPlaceParking = (
     [onOpenDeleteParkingDialog],
   );
 
+  /**
+   * Removes the parking from local state only — saved and unsaved parking behave
+   * identically. Deletions of already-saved parking are derived at save time by
+   * diffing against `originalCurrent` (see `findStagedDeletions`), so the server
+   * is not touched until the user presses Save, and Undo restores it.
+   */
   const handleConfirmDeleteParking = useCallback(() => {
     if (pendingDeleteParkingIndex === null || !stopPlace?.parking) return;
-    const parking = stopPlace.parking[pendingDeleteParkingIndex];
 
     onCloseDeleteParkingDialog();
-
-    if (!parking?.id) {
-      // Unsaved parking — remove from local state only
-      dispatch(
-        StopPlaceActions.removeElementByType(
-          pendingDeleteParkingIndex,
-          "parking",
-        ),
-      );
-    } else {
-      // Saved parking — server delete then reload
-      dispatch(deleteParking(parking.id)).then(() => {
-        if (stopPlace.id) {
-          dispatch(getStopPlaceWithAll(stopPlace.id, true));
-        }
-      });
-    }
+    dispatch(
+      StopPlaceActions.removeElementByType(
+        pendingDeleteParkingIndex,
+        "parking",
+      ),
+    );
     setPendingDeleteParkingIndex(null);
   }, [
     pendingDeleteParkingIndex,

@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { ElementChangeStatus } from "../Shared/ElementStatus";
+
 // --- Core domain types ---
 
 export interface Tag {
@@ -140,6 +142,8 @@ export interface QuayItemProps {
   focused: boolean;
   onDelete: () => void;
   onNavigate: () => void;
+  /** Pending-change state; `deleted` renders a non-interactive ghost row */
+  status?: ElementChangeStatus;
 }
 
 export interface ParkingSectionProps {
@@ -157,6 +161,8 @@ export interface ParkingItemProps {
   focused: boolean;
   onDelete: () => void;
   onNavigate: () => void;
+  /** Pending-change state; `deleted` renders a non-interactive ghost row */
+  status?: ElementChangeStatus;
 }
 
 export interface QuayPanelProps {
@@ -241,6 +247,8 @@ export interface StopPlaceDialogsProps {
   handleCloseTerminateDialog: () => void;
   handleConfirmDeleteQuay: () => void;
   handleCloseDeleteQuayDialog: () => void;
+  /** Quay queued for deletion, used to look up its timetable usage */
+  pendingDeleteQuayId: string | null;
   handleConfirmDeleteParking: () => void;
   handleCloseDeleteParkingDialog: () => void;
   handleCloseRequiredFieldsMissing: () => void;
@@ -305,6 +313,8 @@ export interface UseEditStopPageReturn {
   ) => void;
   handleCloseDeleteQuayDialog: () => void;
   handleConfirmDeleteQuay: () => void;
+  /** Quay queued for deletion, used to look up its timetable usage */
+  pendingDeleteQuayId: string | null;
   handleCloseDeleteParkingDialog: () => void;
   handleConfirmDeleteParking: () => void;
   handleOpenRequiredFieldsMissing: () => void;

@@ -135,6 +135,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
   const {
     handleDeleteQuay,
     handleConfirmDeleteQuay,
+    pendingDeleteQuayId,
     handleQuayPublicCodeChange,
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
@@ -213,6 +214,7 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleTerminate,
     handleCloseDeleteQuayDialog,
     handleConfirmDeleteQuay,
+    pendingDeleteQuayId,
     handleCloseDeleteParkingDialog,
     handleConfirmDeleteParking,
     handleOpenRequiredFieldsMissing,

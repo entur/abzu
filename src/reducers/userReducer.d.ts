@@ -7,6 +7,7 @@ interface UserState {
   auth: any;
   uiMode?: "legacy" | "modern";
   membershipDisplay?: string;
+  elementStatusDisplay?: string;
 }
 
 declare const initialState: UserState;

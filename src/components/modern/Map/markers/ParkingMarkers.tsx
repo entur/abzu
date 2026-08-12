@@ -23,6 +23,12 @@ import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import {
+  buildElementStatusByIndex,
+  ElementStatusMapBadge,
+  isPendingStatus,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
@@ -37,6 +43,8 @@ interface ParkingMarkerItemProps {
   index: number;
   disabled: boolean;
   focused: boolean;
+  /** True when the parking is locally added or edited and not yet saved. */
+  isPending: boolean;
 }
 
 const ParkingMarkerItem = ({
@@ -44,6 +52,7 @@ const ParkingMarkerItem = ({
   index,
   disabled,
   focused,
+  isPending,
 }: ParkingMarkerItemProps) => {
   const dispatch = useAppDispatch();
   const { formatMessage } = useIntl();
@@ -51,6 +60,7 @@ const ParkingMarkerItem = ({
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
+  const isStatusEnabled = useElementStatusEnabled();
 
   if (!parking.location) return null;
 
@@ -104,10 +114,14 @@ const ParkingMarkerItem = ({
               setPopupAnchor(e.currentTarget);
             }}
             sx={(theme) => ({
+              // Containing block for ElementStatusMapBadge — see QuayMarkers.
+              position: "relative",
               width: Math.round(PARKING_SIZE * scale),
               height: Math.round(PARKING_SIZE * scale),
               borderRadius: "50%",
-              bgcolor: focused ? "warning.main" : "info.main",
+              // Focus is shown by the ring and scale only, never by recolouring —
+              // matches QuayMarkers so the base colour always identifies the type.
+              bgcolor: "info.main",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -126,17 +140,21 @@ const ParkingMarkerItem = ({
               <DirectionsBikeIcon
                 sx={{
                   fontSize: `${1.1 * scale}rem`,
-                  color: focused ? "warning.contrastText" : "info.contrastText",
+                  color: "info.contrastText",
                 }}
               />
             ) : (
               <LocalParkingIcon
                 sx={{
                   fontSize: `${1.1 * scale}rem`,
-                  color: focused ? "warning.contrastText" : "info.contrastText",
+                  color: "info.contrastText",
                 }}
               />
             )}
+            <ElementStatusMapBadge
+              visible={isStatusEnabled && isPending}
+              scale={scale}
+            />
           </Box>
         )}
       </Marker>
@@ -196,11 +214,20 @@ export const ParkingMarkers = () => {
     (state) => !!(state as any).stopPlace?.mergeStopDialog?.isOpen,
   );
 
+  const originalParking = useAppSelector(
+    (state) => (state.stopPlace as any).originalCurrent?.parking,
+  );
+
   if (!current?.parking?.length) return null;
   if (isMergingStop) return null;
 
   const disabled =
     !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
+
+  const parkingStatuses = buildElementStatusByIndex(
+    current.parking,
+    originalParking,
+  );
 
   return (
     <>
@@ -215,6 +242,7 @@ export const ParkingMarkers = () => {
               focusedElement?.type === "bikeParking") &&
             focusedElement?.index === index
           }
+          isPending={isPendingStatus(parkingStatuses[index] ?? "unchanged")}
         />
       ))}
     </>

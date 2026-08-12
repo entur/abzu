@@ -45,6 +45,7 @@ export const initialState = {
   activeBaselayer: Settings.getMapLayer(),
   uiMode: Settings.getUIMode(),
   membershipDisplay: Settings.getMembershipDisplay(),
+  elementStatusDisplay: Settings.getElementStatusDisplay(),
   activeOverlays: Settings.getActiveOverlays(),
   showEditQuayAdditional: false,
   activeQuayAdditionalTab: 0,
@@ -363,6 +364,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         membershipDisplay: action.payload,
+      };
+
+    case types.CHANGED_ELEMENT_STATUS_DISPLAY:
+      return {
+        ...state,
+        elementStatusDisplay: action.payload,
       };
 
     default:

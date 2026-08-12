@@ -137,6 +137,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     confirmUndoOpen,
     terminateStopDialogOpen,
     deleteQuayDialogOpen,
+    pendingDeleteQuayId,
     deleteParkingDialogOpen,
     requiredFieldsMissingOpen,
     tagsDialogOpen,
@@ -417,6 +418,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         confirmUndoOpen={confirmUndoOpen}
         terminateStopDialogOpen={terminateStopDialogOpen}
         deleteQuayDialogOpen={deleteQuayDialogOpen}
+        pendingDeleteQuayId={pendingDeleteQuayId}
         deleteParkingDialogOpen={deleteParkingDialogOpen}
         requiredFieldsMissingOpen={requiredFieldsMissingOpen}
         tagsDialogOpen={tagsDialogOpen}

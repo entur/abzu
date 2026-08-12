@@ -30,7 +30,9 @@ import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { addItemButtonSx } from "../../Shared";
-import { Quay, QuaysSectionProps } from "../types";
+import { buildElementListEntries } from "../../Shared/ElementStatus";
+import { QuaysSectionProps } from "../types";
+
 import { QuayItem } from "./QuayItem";
 
 export const QuaysSection: React.FC<QuaysSectionProps> = ({
@@ -47,7 +49,16 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
       (state as any).mapUtils?.focusedElement as
         { type: string; index: number } | undefined,
   );
+  const originalQuays = useAppSelector(
+    (state) =>
+      (state.stopPlace as any).originalCurrent?.quays as
+        typeof quays | undefined,
+  );
   const [expanded, setExpanded] = useState(false);
+
+  // Ghost rows for staged deletions come from the original snapshot, so the list
+  // shows what will happen on save rather than silently dropping the row.
+  const entries = buildElementListEntries(quays, originalQuays);
 
   const handleToggle = () => {
     if (expanded) dispatch(StopPlaceActions.setElementFocus(-1, "quay"));
@@ -101,17 +112,22 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
       {/* Collapsible quay list */}
       <Collapse in={expanded}>
         <Divider />
-        {quays.map((quay: Quay, index: number) => (
+        {entries.map((entry, position) => (
           <QuayItem
-            key={quay.id || `quay-${index}`}
-            quay={quay}
-            index={index}
+            key={entry.element.id || `quay-${position}`}
+            quay={entry.element}
+            index={entry.index ?? position}
             canEdit={canEdit}
+            status={entry.status}
             focused={
-              focusedElement?.type === "quay" && focusedElement?.index === index
+              entry.index !== null &&
+              focusedElement?.type === "quay" &&
+              focusedElement?.index === entry.index
             }
-            onDelete={() => onDeleteQuay(index)}
-            onNavigate={() => onNavigateToQuay(index)}
+            onDelete={() => entry.index !== null && onDeleteQuay(entry.index)}
+            onNavigate={() =>
+              entry.index !== null && onNavigateToQuay(entry.index)
+            }
           />
         ))}
       </Collapse>

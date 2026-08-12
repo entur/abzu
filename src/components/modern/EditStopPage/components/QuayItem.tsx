@@ -18,6 +18,11 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { CopyIdButton } from "../../Shared";
+import {
+  ElementStatusDot,
+  getElementRowStatusSx,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import { QuayItemProps } from "../types";
 
 /** Matches QuayMarkers' marker-scale transition and MarkerPopup's timeout, so focus-change feels like one motion. */
@@ -33,8 +38,12 @@ export const QuayItem: React.FC<QuayItemProps> = ({
   focused,
   onDelete,
   onNavigate,
+  status = "unchanged",
 }) => {
   const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
+
+  const isGhost = status === "deleted";
 
   const displayCode =
     quay.publicCode ||
@@ -56,13 +65,17 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         borderLeftColor: focused ? "success.main" : "transparent",
         transition: `background-color ${FOCUS_TRANSITION_MS}ms, border-color ${FOCUS_TRANSITION_MS}ms`,
         "&:hover": { bgcolor: focused ? "action.selected" : "action.hover" },
+        ...getElementRowStatusSx(status),
       }}
-      onClick={onNavigate}
+      onClick={isGhost ? undefined : onNavigate}
     >
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
-          {displayCode}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <ElementStatusDot status={status} enabled={isStatusEnabled} />
+          <Typography variant="body2" noWrap sx={{ fontWeight: 600 }}>
+            {displayCode}
+          </Typography>
+        </Box>
         {quay.description && (
           <Typography
             variant="caption"
@@ -83,7 +96,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         )}
       </Box>
 
-      {canEdit && (
+      {canEdit && !isGhost && (
         <Tooltip title={formatMessage({ id: "delete_quay" })}>
           <IconButton
             size="small"
@@ -99,7 +112,7 @@ export const QuayItem: React.FC<QuayItemProps> = ({
         </Tooltip>
       )}
 
-      <ChevronRightIcon fontSize="small" color="action" />
+      {!isGhost && <ChevronRightIcon fontSize="small" color="action" />}
     </Box>
   );
 };

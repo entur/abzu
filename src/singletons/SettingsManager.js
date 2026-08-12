@@ -28,6 +28,7 @@ const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
 const uiModeKey = rootKey + "::uiMode";
 /** Which parent/group membership layout the stop place panel renders. */
 const membershipDisplayKey = rootKey + "::membershipDisplay";
+const elementStatusDisplayKey = rootKey + "::elementStatusDisplay";
 const initialLatitudeKey = rootKey + "::initialLatitude";
 const initialLongitudeKey = rootKey + "::initialLongitude";
 const initialZoomKey = rootKey + "::initialZoom";
@@ -139,6 +140,14 @@ class SettingsManager {
 
   getMembershipDisplay() {
     return localStorage.getItem(membershipDisplayKey) || "chips";
+  }
+
+  getElementStatusDisplay() {
+    return localStorage.getItem(elementStatusDisplayKey) || "off";
+  }
+
+  setElementStatusDisplay(value) {
+    localStorage.setItem(elementStatusDisplayKey, value);
   }
 
   setMembershipDisplay(value) {

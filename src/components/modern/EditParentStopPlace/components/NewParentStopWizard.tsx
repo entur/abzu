@@ -45,7 +45,16 @@ export const NewParentStopWizard = ({ open, onConfirm, onCancel }: Props) => {
   };
 
   return (
-    <Dialog open={open} maxWidth="xs" fullWidth>
+    <Dialog
+      open={open}
+      maxWidth="xs"
+      fullWidth
+      onClose={(_, reason) => {
+        // Escape routes through the same cleanup as Cancel. Backdrop clicks are
+        // deliberately ignored so a stray click cannot abandon a placed stop.
+        if (reason === "escapeKeyDown") handleCancel();
+      }}
+    >
       <DialogTitle>
         {formatMessage({ id: "new_stop_wizard_multimodal_title" })}
       </DialogTitle>

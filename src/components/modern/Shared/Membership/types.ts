@@ -34,9 +34,26 @@ export const MEMBERSHIP_VARIANTS = [
   "section",
   "list",
   "identity",
+  "stack",
 ] as const;
 
 export type MembershipVariant = (typeof MEMBERSHIP_VARIANTS)[number];
+
+/**
+ * Where a variant renders. Every layout except `stack` sits inline near the top
+ * of the General section; `stack` renders down in the section list beside Quays
+ * and Parking, so it must be mounted by StopPlaceView instead.
+ */
+export type MembershipPlacement = "inline" | "section";
+
+export const SECTION_PLACEMENT_VARIANTS: readonly MembershipVariant[] = [
+  "stack",
+];
+
+export const getMembershipPlacement = (
+  variant: MembershipVariant,
+): MembershipPlacement =>
+  SECTION_PLACEMENT_VARIANTS.includes(variant) ? "section" : "inline";
 
 export const isMembershipVariant = (v: unknown): v is MembershipVariant =>
   typeof v === "string" &&

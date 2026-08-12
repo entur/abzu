@@ -35,6 +35,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   cancelText,
   onConfirm,
   onClose,
+  additionalContent,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -54,9 +55,10 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Typography variant="body1" sx={{ mb: 3 }}>
+        <Typography variant="body1" sx={{ mb: additionalContent ? 2 : 3 }}>
           {body}
         </Typography>
+        {additionalContent}
         <div
           style={{
             display: "flex",

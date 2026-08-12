@@ -135,6 +135,8 @@ export interface ConfirmDialogProps {
   cancelText: string;
   onConfirm: () => void;
   onClose: () => void;
+  /** Rendered between the body and the buttons, e.g. a usage warning */
+  additionalContent?: React.ReactNode;
 }
 
 export interface SaveGroupDialogProps {

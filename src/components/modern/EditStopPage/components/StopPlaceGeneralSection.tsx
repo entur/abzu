@@ -33,6 +33,12 @@ import stopTypes from "../../../../models/stopTypes";
 import weightTypes from "../../../../models/weightTypes";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { StopPlaceMembership, TagTray } from "../../Shared";
+import {
+  DirtyBadge,
+  DirtyLabel,
+  useElementStatusEnabled,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
 import { StopPlaceGeneralSectionProps } from "../types";
 import { generalSectionStyles as sx } from "./StopPlaceGeneralSection.styles";
 
@@ -55,6 +61,10 @@ export const StopPlaceGeneralSection: React.FC<
   onOpenAltNames,
 }) => {
   const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
+  const isDirty = (...keys: string[]) =>
+    isStatusEnabled && keys.some((key) => dirtyKeys.has(key));
   const { modalityConfig } = useConfig();
   const hiddenStopTypes = modalityConfig?.hiddenStopTypes ?? [];
 
@@ -87,6 +97,7 @@ export const StopPlaceGeneralSection: React.FC<
     <Box sx={sx.container}>
       {/* Parent / group memberships — layout chosen under Utseende */}
       <StopPlaceMembership
+        placement="inline"
         parentStop={
           stopPlace.isChildOfParent ? stopPlace.parentStop : undefined
         }
@@ -97,7 +108,11 @@ export const StopPlaceGeneralSection: React.FC<
       {/* Name */}
       <Box sx={sx.fieldRow}>
         <TextField
-          label={`${formatMessage({ id: "name" })} *`}
+          label={
+            <DirtyLabel dirty={isDirty("name")}>
+              {`${formatMessage({ id: "name" })} *`}
+            </DirtyLabel>
+          }
           value={stopPlace.name || ""}
           onChange={(e) => onNameChange(e.target.value)}
           disabled={!canEdit}
@@ -110,7 +125,11 @@ export const StopPlaceGeneralSection: React.FC<
       {/* Description */}
       <Box sx={sx.fieldRow}>
         <TextField
-          label={formatMessage({ id: "description" })}
+          label={
+            <DirtyLabel dirty={isDirty("description")}>
+              {formatMessage({ id: "description" })}
+            </DirtyLabel>
+          }
           value={stopPlace.description || ""}
           onChange={(e) => onDescriptionChange(e.target.value)}
           disabled={!canEdit}
@@ -142,10 +161,18 @@ export const StopPlaceGeneralSection: React.FC<
           />
         </Box>
         <FormControl size="small" disabled={!canEdit} fullWidth>
-          <InputLabel>{`${formatMessage({ id: "stopPlaceType" })} *`}</InputLabel>
+          <InputLabel>
+            <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
+              {`${formatMessage({ id: "stopPlaceType" })} *`}
+            </DirtyLabel>
+          </InputLabel>
           <Select
             value={pickerValue}
-            label={`${formatMessage({ id: "stopPlaceType" })} *`}
+            label={
+              <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
+                {`${formatMessage({ id: "stopPlaceType" })} *`}
+              </DirtyLabel>
+            }
             onChange={(e) => handlePickerChange(e.target.value)}
           >
             {unifiedOptions.map((option) => (
@@ -161,11 +188,17 @@ export const StopPlaceGeneralSection: React.FC<
       <Box sx={sx.fieldRow}>
         <FormControl size="small" disabled={!canEdit} fullWidth>
           <InputLabel>
-            {formatMessage({ id: "interchange_weighting" })}
+            <DirtyLabel dirty={isDirty("weighting")}>
+              {formatMessage({ id: "interchange_weighting" })}
+            </DirtyLabel>
           </InputLabel>
           <Select
             value={stopPlace.weighting || ""}
-            label={formatMessage({ id: "interchange_weighting" })}
+            label={
+              <DirtyLabel dirty={isDirty("weighting")}>
+                {formatMessage({ id: "interchange_weighting" })}
+              </DirtyLabel>
+            }
             onChange={(e) => onWeightingChange(e.target.value)}
           >
             <MenuItem value="">
@@ -238,7 +271,11 @@ export const StopPlaceGeneralSection: React.FC<
         {canEdit && (
           <Button
             size="small"
-            startIcon={<LabelIcon fontSize="small" />}
+            startIcon={
+              <DirtyBadge dirty={isDirty("tags")}>
+                <LabelIcon fontSize="small" />
+              </DirtyBadge>
+            }
             onClick={onOpenTags}
             variant="outlined"
           >
@@ -247,7 +284,11 @@ export const StopPlaceGeneralSection: React.FC<
         )}
         <Button
           size="small"
-          startIcon={<ShortTextIcon fontSize="small" />}
+          startIcon={
+            <DirtyBadge dirty={isDirty("alternativeNames")}>
+              <ShortTextIcon fontSize="small" />
+            </DirtyBadge>
+          }
           onClick={onOpenAltNames}
           variant="outlined"
         >
