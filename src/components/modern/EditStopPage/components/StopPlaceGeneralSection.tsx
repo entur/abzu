@@ -271,11 +271,10 @@ export const StopPlaceGeneralSection: React.FC<
         {canEdit && (
           <Button
             size="small"
-            startIcon={
-              <DirtyBadge dirty={isDirty("tags")}>
-                <LabelIcon fontSize="small" />
-              </DirtyBadge>
-            }
+            /* No dirty dot: tags are a separate Tiamat entity attached by
+               idReference and mutated immediately, so they are never part of the
+               stop place's unsaved state. See stopPlaceFieldStatus.ts. */
+            startIcon={<LabelIcon fontSize="small" />}
             onClick={onOpenTags}
             variant="outlined"
           >

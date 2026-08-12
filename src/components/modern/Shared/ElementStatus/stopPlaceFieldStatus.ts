@@ -20,6 +20,14 @@ import { isDeepEqual } from "./elementChangeStatus";
  */
 export const CHILD_COLLECTION_KEYS = ["quays", "parking"] as const;
 
+/**
+ * Tags are a separate Tiamat entity attached by `idReference`, created and
+ * removed by their own mutations the moment the user acts, and absent from
+ * `mapStopToVariables`. They are never part of the stop place's unsaved state,
+ * so they must not raise a dot — `current.tags` only ever changes via a reload.
+ */
+const EXTERNALLY_SAVED_KEYS = ["tags"] as const;
+
 /** Bookkeeping the reducers maintain; never a user-visible edit. */
 const NON_FIELD_KEYS = [
   "__typename",
@@ -32,6 +40,7 @@ const NON_FIELD_KEYS = [
 
 const IGNORED_KEYS = new Set<string>([
   ...CHILD_COLLECTION_KEYS,
+  ...EXTERNALLY_SAVED_KEYS,
   ...NON_FIELD_KEYS,
 ]);
 

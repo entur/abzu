@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Alert,
   Box,
   CircularProgress,
   Dialog,
@@ -87,6 +88,13 @@ export const TagsDialog: React.FC<TagsDialogProps> = ({
       </DialogTitle>
       <DialogContent>
         <Box sx={{ pt: 1 }}>
+          {/* Tags are a separate Tiamat entity written by their own mutations, so
+              they do not participate in the stop place's staged edits. Saying so
+              here is the only signal the user gets — there is deliberately no
+              dirty dot on the Tags button. */}
+          <Alert severity="info" sx={{ mb: 2 }}>
+            {formatMessage({ id: "tags_saved_immediately" })}
+          </Alert>
           <TagsList tags={tags} onDeleteTag={handleDeleteTag} />
           <AddTagForm
             searchText={searchText}

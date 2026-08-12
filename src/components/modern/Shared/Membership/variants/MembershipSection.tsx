@@ -89,7 +89,7 @@ export const MembershipSection: React.FC<MembershipProps> = ({
       >
         <RelationsIcon fontSize="small" color="action" />
         <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
-          {formatMessage({ id: "memberships_relations" })}
+          {formatMessage({ id: "stop_place_relations" })}
         </Typography>
         <Chip label={rows.length} size="small" />
         {expanded ? (
