@@ -23,6 +23,7 @@ import { getFetchedConfig } from "../config/fetchConfig";
 import { getTiamatEnv } from "../config/themeConfig";
 import { createThemeFromConfig } from "./config/createThemeFromConfig";
 import { AbzuThemeConfig } from "./config/theme-config";
+import { useThemeBodyFont, useThemeFonts } from "./fonts";
 import { createAbzuThemeLegacy, Environment } from "./index";
 
 interface ThemeContextType {
@@ -63,6 +64,12 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   const [currentThemePath, setCurrentThemePath] = useState<string>("");
 
   const environment = getTiamatEnv() as Environment;
+
+  // Load the active theme's fonts, swapping them out on theme change
+  useThemeFonts(themeConfig?.fonts);
+
+  // Apply the theme's font family to <body>, which legacy CSS would otherwise own
+  useThemeBodyFont(theme);
 
   // Load theme configuration helper
   const loadThemeFromPath = async (themePath: string) => {

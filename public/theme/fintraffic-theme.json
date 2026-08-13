@@ -29,6 +29,18 @@
     },
     "favicon": "/favicon.ico"
   },
+  "fonts": {
+    "faces": [
+      {
+        "family": "Public Sans",
+        "src": "fonts/public-sans-variable.woff2",
+        "format": "woff2",
+        "weight": "100 900",
+        "style": "normal",
+        "display": "swap"
+      }
+    ]
+  },
   "palette": {
     "mode": "light",
     "primary": {
@@ -113,8 +125,15 @@
     "MuiButton": {
       "defaultProps": { "disableElevation": true },
       "styleOverrides": {
-        "root": { "textTransform": "none", "borderRadius": 4, "fontWeight": 600 },
-        "containedPrimary": { "backgroundColor": "#1777F8", "color": "#FFFFFF" },
+        "root": {
+          "textTransform": "none",
+          "borderRadius": 4,
+          "fontWeight": 600
+        },
+        "containedPrimary": {
+          "backgroundColor": "#1777F8",
+          "color": "#FFFFFF"
+        },
         "outlinedPrimary": { "borderColor": "#1777F8", "color": "#1777F8" }
       }
     },

@@ -15,6 +15,30 @@
 import type { ThemeOptions } from "@mui/material/styles";
 
 /**
+ * A single self-hosted @font-face declaration.
+ * `src` is resolved against the app's base URL unless it is already absolute.
+ * `weight` accepts a variable-font range, e.g. "100 900".
+ */
+export interface ThemeFontFace {
+  family: string;
+  src: string;
+  format?: string;
+  weight?: number | string;
+  style?: string;
+  display?: string;
+  unicodeRange?: string;
+}
+
+/**
+ * Font resources a theme needs loaded before its typography can apply.
+ * Prefer `faces` (self-hosted) over `stylesheets` (external CDN).
+ */
+export interface ThemeFonts {
+  stylesheets?: string[];
+  faces?: ThemeFontFace[];
+}
+
+/**
  * Abzu Theme Configuration
  * Extends MUI's ThemeOptions to include custom application-specific properties
  */
@@ -53,6 +77,9 @@ export interface AbzuThemeConfig extends ThemeOptions {
     };
     favicon?: string;
   };
+
+  // Font resources loaded while this theme is active
+  fonts?: ThemeFonts;
 
   // Custom properties for application configuration
   customProperties?: Record<string, any>;
@@ -100,6 +127,9 @@ declare module "@mui/material/styles" {
       favicon?: string;
     };
 
+    // Font resources loaded while this theme is active
+    fonts?: ThemeFonts;
+
     // Custom properties
     customProperties?: Record<string, any>;
   }
@@ -137,6 +167,8 @@ declare module "@mui/material/styles" {
       };
       favicon?: string;
     };
+
+    fonts?: ThemeFonts;
 
     customProperties?: Record<string, any>;
   }
