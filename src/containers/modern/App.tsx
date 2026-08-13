@@ -171,16 +171,18 @@ const App: React.FC<ModernAppProps> = () => {
       <ComponentToggle feature="CookieInformation" />
       <ComponentToggle feature="MatomoTracker" />
       <StyledEngineProvider injectFirst>
-        <ComponentToggle
-          feature={`${extPath}/CustomThemeProvider`}
-          renderFallback={() => (
-            <AbzuThemeProvider>
-              <HeaderSlotProvider>{appShell}</HeaderSlotProvider>
-            </AbzuThemeProvider>
-          )}
-        >
+        {/*
+         * The modern UI always themes through AbzuThemeProvider so that a
+         * deployment's theme JSON drives palette, assets, environment badge and
+         * fonts from one place. Per-deployment theming belongs in
+         * public/theme/<name>.json listed under bootstrap.json themeConfigs —
+         * not in an ext CustomThemeProvider, which only carries a palette and
+         * leaves the rest of the theme context unprovided. The ext provider is
+         * still used by the legacy app (see LegacyApp).
+         */}
+        <AbzuThemeProvider>
           <HeaderSlotProvider>{appShell}</HeaderSlotProvider>
-        </ComponentToggle>
+        </AbzuThemeProvider>
       </StyledEngineProvider>
     </IntlProvider>
   );
