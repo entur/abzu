@@ -13,10 +13,7 @@
  limitations under the Licence. */
 
 import { ApolloProvider } from "@apollo/client/react";
-import {
-  ComponentToggle,
-  ComponentToggleProvider,
-} from "@entur/react-component-toggle";
+import { ComponentToggleProvider } from "@entur/react-component-toggle";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import { useContext } from "react";
@@ -97,7 +94,6 @@ function renderIndex(config) {
       }}
     >
       <ConfigContext.Provider value={config}>
-        <ComponentToggle feature={`${config.extPath}/CustomStyle`} />
         <AuthProvider>
           <AuthenticatedApp />
         </AuthProvider>

@@ -55,34 +55,20 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   fullWidth = false,
   label = "Theme",
 }) => {
-  const { availableThemes, switchThemeConfig, themeConfig } = useTheme();
+  const { availableThemes, switchThemeConfig, currentThemePath } = useTheme();
 
-  // Extract theme names from paths for display
+  /**
+   * Only the active theme's JSON is loaded, so the other options have no `name`
+   * to show. The file name is therefore the label: `theme/entur-theme.json`
+   * becomes "Entur Theme". Name theme files after the brand they represent.
+   */
   const getThemeDisplayName = (themePath: string): string => {
     const fileName = themePath.split("/").pop()?.replace(".json", "") || "";
 
-    // Convert kebab-case to Title Case
     return fileName
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-  };
-
-  // Find current theme path from config name
-  const getCurrentThemePath = (): string => {
-    if (!themeConfig) return "";
-
-    // Try to match by theme name
-    const themeName = themeConfig.name?.toLowerCase() ?? "";
-    const matchingTheme = availableThemes.find((path) => {
-      const displayName = getThemeDisplayName(path);
-      return (
-        displayName.toLowerCase() === themeName ||
-        path.includes(themeName.replace(/\s+/g, "-"))
-      );
-    });
-
-    return matchingTheme || availableThemes[0] || "";
   };
 
   const handleChange = async (event: SelectChangeEvent<string>) => {
@@ -101,7 +87,7 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       <Select
         labelId="theme-switcher-label"
         id="theme-switcher"
-        value={getCurrentThemePath()}
+        value={currentThemePath}
         label={label}
         onChange={handleChange}
       >

@@ -17,36 +17,35 @@ import { resolveThemeAssetUrl } from "./resolveThemeAssetUrl";
 
 const FAVICON_SELECTOR = "link[rel~='icon']";
 const FAVICON_REL = "icon";
+const THEME_FAVICON_ATTRIBUTE = "data-abzu-theme-favicon";
 
 /**
- * Points the document favicon at the active theme's icon, restoring the previous
- * one when the theme changes, so switching themes at runtime does not leave the
- * old deployment's icon in the browser tab.
+ * Points the document favicon at the active theme's icon.
+ *
+ * The previous icon links are detached and re-attached on cleanup, so a runtime
+ * theme switch restores the document's original icon rather than leaving the
+ * outgoing theme's behind. A fresh <link> is created rather than mutating the
+ * existing one's href, because browsers may keep serving the cached icon when
+ * only the attribute changes.
  */
 export const useThemeFavicon = (favicon?: string): void => {
   useEffect(() => {
     if (!favicon) return;
 
-    const existingLink =
-      document.querySelector<HTMLLinkElement>(FAVICON_SELECTOR);
-    const link = existingLink ?? document.createElement("link");
-    const previousHref = existingLink?.getAttribute("href") ?? null;
+    const replacedLinks = Array.from(
+      document.querySelectorAll<HTMLLinkElement>(FAVICON_SELECTOR),
+    );
+    replacedLinks.forEach((link) => link.remove());
 
-    link.rel = FAVICON_REL;
-    link.href = resolveThemeAssetUrl(favicon);
-
-    if (!existingLink) document.head.appendChild(link);
+    const themeLink = document.createElement("link");
+    themeLink.rel = FAVICON_REL;
+    themeLink.href = resolveThemeAssetUrl(favicon);
+    themeLink.setAttribute(THEME_FAVICON_ATTRIBUTE, "");
+    document.head.appendChild(themeLink);
 
     return () => {
-      if (!existingLink) {
-        link.remove();
-        return;
-      }
-      if (previousHref === null) {
-        existingLink.removeAttribute("href");
-        return;
-      }
-      existingLink.setAttribute("href", previousHref);
+      themeLink.remove();
+      replacedLinks.forEach((link) => document.head.appendChild(link));
     };
   }, [favicon]);
 };

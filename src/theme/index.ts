@@ -79,5 +79,4 @@ export * from "./variants/light";
 
 // Export new theme system
 export { createThemeFromConfig } from "./config/createThemeFromConfig";
-export { loadThemeConfig } from "./config/loader";
 export type { AbzuThemeConfig } from "./config/theme-config";

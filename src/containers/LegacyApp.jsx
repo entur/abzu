@@ -136,6 +136,15 @@ const LegacyApp = () => {
       </Helmet>
       <ComponentToggle feature="CookieInformation" />
       <ComponentToggle feature="MatomoTracker" />
+      {/*
+       * Legacy-only by design. CustomStyle injects a deployment's global
+       * stylesheet, which predates the theme config system and relies on
+       * !important rules that would override the modern UI's theme. The modern
+       * UI gets the equivalent styling from its theme JSON instead, so this must
+       * not be hoisted above the legacy/modern split. Retiring the legacy app
+       * removes this mount along with it.
+       */}
+      <ComponentToggle feature={`${extPath}/CustomStyle`} />
       <StyledEngineProvider injectFirst>
         <ComponentToggle
           feature={`${extPath}/CustomThemeProvider`}

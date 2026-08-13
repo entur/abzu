@@ -32,7 +32,10 @@ interface ThemeContextType {
   themeConfig?: AbzuThemeConfig;
   isConfigLoaded: boolean;
   availableThemes: string[];
+  /** Display name from the active theme JSON's `name` field. */
   currentThemeName: string;
+  /** Path of the active theme, as listed in bootstrap.json `themeConfigs`. */
+  currentThemePath: string;
   switchThemeConfig: (themePath: string) => Promise<void>;
 }
 
@@ -78,7 +81,6 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
   // Load theme configuration helper
   const loadThemeFromPath = async (themePath: string) => {
     try {
-      console.log(`Loading theme config from: ${themePath}`);
       const response = await fetch(`${import.meta.env.BASE_URL}${themePath}`);
 
       if (!response.ok) {
@@ -88,7 +90,6 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
       }
 
       const config = await response.json();
-      console.log("Successfully loaded theme config:", config.name);
 
       setThemeConfig(config);
       setCurrentThemeName(config.name);
@@ -163,9 +164,6 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
           });
       } else {
         // No themes configured - use standard MUI theme
-        console.log(
-          "No themes configured in bootstrap.json, using standard MUI theme",
-        );
         setIsConfigLoaded(true);
       }
     }
@@ -188,7 +186,6 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
         }
       } else if (useConfigFiles && availableThemes.length === 0) {
         // No themes configured - use standard MUI theme
-        console.log("Using standard MUI theme (no custom themes configured)");
         setTheme(createTheme());
       } else {
         // Fallback to legacy theme
@@ -209,6 +206,7 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     isConfigLoaded,
     availableThemes,
     currentThemeName,
+    currentThemePath,
     switchThemeConfig,
   };
 
