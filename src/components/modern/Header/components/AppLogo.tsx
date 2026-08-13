@@ -12,11 +12,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { ComponentToggle } from "@entur/react-component-toggle";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
 import "../../modern.css";
 import { appLogoButton, appLogoImage } from "../../styles";
+
+/**
+ * The enclosing button already carries the accessible name, so the image itself
+ * is decorative and must not repeat it.
+ */
+const LOGO_ALT_TEXT = "";
 
 interface AppLogoProps {
   logo: string;
@@ -25,9 +30,6 @@ interface AppLogoProps {
     sm?: number;
     md?: number;
   };
-  config: {
-    extPath?: string;
-  };
   onClick: () => void;
   isMobile: boolean;
 }
@@ -35,7 +37,6 @@ interface AppLogoProps {
 export const AppLogo: React.FC<AppLogoProps> = ({
   logo,
   logoHeight,
-  config,
   onClick,
   isMobile,
 }) => {
@@ -48,16 +49,11 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       onClick={onClick}
       sx={appLogoButton}
     >
-      <ComponentToggle
-        feature={`${config.extPath}/CustomLogo`}
-        renderFallback={() => (
-          <Box
-            component="img"
-            src={logo}
-            alt="Abzu Logo"
-            sx={appLogoImage(logoHeight)}
-          />
-        )}
+      <Box
+        component="img"
+        src={logo}
+        alt={LOGO_ALT_TEXT}
+        sx={appLogoImage(logoHeight)}
       />
     </IconButton>
   );

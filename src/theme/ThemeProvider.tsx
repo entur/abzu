@@ -23,6 +23,7 @@ import { getFetchedConfig } from "../config/fetchConfig";
 import { getTiamatEnv } from "../config/themeConfig";
 import { createThemeFromConfig } from "./config/createThemeFromConfig";
 import { AbzuThemeConfig } from "./config/theme-config";
+import { useThemeFavicon } from "./assets";
 import { useThemeBodyFont, useThemeFonts } from "./fonts";
 import { createAbzuThemeLegacy, Environment } from "./index";
 
@@ -70,6 +71,9 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
 
   // Apply the theme's font family to <body>, which legacy CSS would otherwise own
   useThemeBodyFont(theme);
+
+  // Point the browser tab icon at the active theme's favicon
+  useThemeFavicon(themeConfig?.assets?.favicon);
 
   // Load theme configuration helper
   const loadThemeFromPath = async (themePath: string) => {

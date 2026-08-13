@@ -145,7 +145,6 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             <AppLogo
               logo={logo}
               logoHeight={logoHeight}
-              config={config}
               onClick={() => handleConfirmChangeRoute(goToMain, "GoToMain")}
               isMobile={isMobile}
             />
