@@ -34,8 +34,8 @@
 
 ## MUI Theming
 
-- **No hardcoded colours.** Use MUI theme tokens exclusively: `primary.main`, `success.main`, `info.main`, `tertiary.main`, `secondary.main`, `warning.main`, `background.paper`, `text.secondary`, etc.
-- **`tertiary` is type-augmented** — safe to use in `sx` and theme callbacks.
+- **No hardcoded colours.** Use MUI theme tokens exclusively: `primary.main`, `success.main`, `info.main`, `secondary.main`, `warning.main`, `background.paper`, `text.secondary`, etc.
+- **Theme JSONs are the source of colours** — see `THEME_CONFIG_GUIDE.md`. A token you use must exist in every theme under `public/theme/`, or that deployment falls back to MUI's default for it. `tertiary` is type-augmented and set in some theme files but referenced by no component; don't introduce new uses of it.
 - For opacity-modified theme colours (e.g. focus rings), use the `sx` callback form: `sx={(theme) => ({ boxShadow: \`0 0 0 2px \${alpha(theme.palette.warning.main, 0.5)}\` })}`.
 - Use `borderColor: "background.paper"` instead of `border: "2px solid #fff"`.
 - Use `color: "*.contrastText"` on text inside coloured boxes instead of `color: "#fff"`.
@@ -49,7 +49,13 @@
 
 - **Single persistent map**: `<PersistentMap>` in `App.tsx`, mounted once, never torn down between routes.
 - All map markers live in `src/components/modern/Map/markers/`. One file per element type.
-- Marker colours follow semantic roles: stop place → `primary.main`, quay → `success.main`, bike parking → `info.main`, P&R parking → `tertiary.main`, boarding position → `secondary.main`, focused state → `warning.main`, neighbour stops → `alpha(primary.main, 0.6)`.
+- Marker colours follow semantic roles — the base colour identifies the element **type**, never its state:
+  - stop place → filled `primary.main`
+  - quay → filled `warning.main`, border `warning.contrastText`
+  - parking (both bike and P&R) → filled `info.main`
+  - boarding position → filled `background.paper`, border and icon `secondary.main`
+  - neighbour stop → filled `background.paper`, border `primary.main` (`error.main` when expired or permanently terminated)
+- **Focus is never shown by recolouring.** Use a ring plus `transform: scale(1.2)`, so the type colour stays readable — see `QuayMarkers.tsx` and `ParkingMarkers.tsx`.
 - **Coord order**: Redux stores `[lat, lng]`. MapLibre `flyTo`/`center`/`Marker` takes `[lng, lat]`. Always swap explicitly.
 - Neighbour stops load at `zoom > 14`; cleared at `zoom ≤ 14` via `removeStopsNearbyForOverview`.
 - Stable debounce pattern: keep debounced callbacks in `useMemo([dispatch])` and use a `useRef` to pass fresh state into them — never add volatile state to the debounce dependency array.

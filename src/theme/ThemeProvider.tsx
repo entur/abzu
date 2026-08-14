@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { CssBaseline } from "@mui/material";
+import { Box, CircularProgress, CssBaseline } from "@mui/material";
 import {
   createTheme,
   ThemeProvider as MuiThemeProvider,
@@ -210,21 +210,22 @@ export const AbzuThemeProvider: React.FC<ThemeProviderProps> = ({
     switchThemeConfig,
   };
 
-  // Show loading state while theme is being created
+  // Show a neutral loading state while the theme is being fetched and created.
+  // No theme exists yet, so this deliberately uses no palette tokens and no theme
+  // font: a spinner needs neither, and it avoids inventing a brand-agnostic colour
+  // or an untranslated string for something visible for a fraction of a second.
   if (!theme || !isConfigLoaded) {
     return (
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          fontFamily: "Roboto, sans-serif",
-          color: "#666",
         }}
       >
-        Loading theme...
-      </div>
+        <CircularProgress aria-label="Loading" />
+      </Box>
     );
   }
 

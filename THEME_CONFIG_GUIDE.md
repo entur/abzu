@@ -9,6 +9,10 @@ The Entur theme (`public/theme/entur-theme.json`) is used throughout as the work
 > **Scope:** this covers the **modern UI** (`src/containers/modern/App.tsx`). The legacy UI
 > has its own separate theme and is not configurable this way — see
 > [Legacy UI](#legacy-ui) at the end.
+>
+> **MUI version: 9.3.0.** Component override slots changed in v9 — see
+> [`components`](#components--mui-component-overrides) before copying overrides from older
+> examples or from MUI v5/v6 documentation.
 
 ---
 
@@ -95,16 +99,52 @@ others have no `name` to read. **So name your file after the brand.**
 ### `palette` — colours
 
 ```json
-"palette": {
-  "primary":    { "main": "#181C56", "dark": "#0F1138", "light": "#4A4E7A", "contrastText": "#FFFFFF" },
-  "secondary":  { "main": "#FF5959", "dark": "#D93B3B", "light": "#FF8A8A", "contrastText": "#FFFFFF" },
-  "error":      { "main": "#D32F2F", "dark": "#B71C1C", "light": "#EF9A9A", "contrastText": "#FFFFFF" },
-  "warning":    { "main": "#ED6C02", "dark": "#E65100", "light": "#FFB74D", "contrastText": "#000000" },
-  "info":       { "main": "#1777F8", "dark": "#0D5FD9", "light": "#5BA0FA", "contrastText": "#FFFFFF" },
-  "success":    { "main": "#2E7D32", "dark": "#1B5E20", "light": "#81C784", "contrastText": "#FFFFFF" },
-  "background": { "default": "#FFFFFF", "paper": "#FFFFFF" },
-  "text":       { "primary": "#000000", "secondary": "#505064", "disabled": "#9E9E9E" },
-  "divider":    "#E5E5E5"
+{
+  "palette": {
+    "primary": {
+      "main": "#181C56",
+      "dark": "#0F1138",
+      "light": "#4A4E7A",
+      "contrastText": "#FFFFFF"
+    },
+    "secondary": {
+      "main": "#FF5959",
+      "dark": "#D93B3B",
+      "light": "#FF8A8A",
+      "contrastText": "#FFFFFF"
+    },
+    "error": {
+      "main": "#D32F2F",
+      "dark": "#B71C1C",
+      "light": "#EF9A9A",
+      "contrastText": "#FFFFFF"
+    },
+    "warning": {
+      "main": "#ED6C02",
+      "dark": "#E65100",
+      "light": "#FFB74D",
+      "contrastText": "#000000"
+    },
+    "info": {
+      "main": "#1777F8",
+      "dark": "#0D5FD9",
+      "light": "#5BA0FA",
+      "contrastText": "#FFFFFF"
+    },
+    "success": {
+      "main": "#2E7D32",
+      "dark": "#1B5E20",
+      "light": "#81C784",
+      "contrastText": "#FFFFFF"
+    },
+    "background": { "default": "#FFFFFF", "paper": "#FFFFFF" },
+    "text": {
+      "primary": "#000000",
+      "secondary": "#505064",
+      "disabled": "#9E9E9E"
+    },
+    "divider": "#E5E5E5"
+  }
 }
 ```
 
@@ -125,32 +165,53 @@ Anything you omit falls back to **MUI's defaults**, which are perfectly usable �
 minimal theme can define only `primary` and still work. `grey` and `common` are always
 provided by MUI; you rarely need to set them.
 
-**Dark mode:** set `"mode": "dark"` inside `palette` and MUI generates dark defaults for
-whatever you don't specify. There is no in-app light/dark toggle — a dark theme is just a
-theme, registered like any other.
+**Dark mode.** Two options, both supported by MUI v9:
+
+- **A dark theme** — set `"mode": "dark"` inside `palette`. MUI generates dark defaults for
+  whatever you don't specify. Register it like any other theme; users pick it from the
+  Appearance menu.
+- **One theme carrying both schemes** — use `colorSchemes` with `cssVariables`, MUI v9's
+  built-in mechanism.
+
+For the second option:
+
+```json
+{
+  "cssVariables": { "colorSchemeSelector": "class" },
+  "colorSchemes": {
+    "light": { "palette": { "primary": { "main": "#181C56" } } },
+    "dark": { "palette": { "primary": { "main": "#8A8FD0" } } }
+  }
+}
+```
+
+Abzu has **no in-app light/dark toggle**, so with `colorSchemes` the browser/OS preference
+decides. If you only need one appearance, `palette.mode` is simpler.
 
 ### `typography` and `fonts` — two separate jobs
 
 This trips people up: **loading** a font and **using** it are different fields.
 
 ```json
-"fonts": {
-  "faces": [
-    {
-      "family": "Inter",
-      "src": "fonts/inter-variable-latin.woff2",
-      "format": "woff2",
-      "weight": "100 900",
-      "style": "normal",
-      "display": "swap",
-      "unicodeRange": "U+0000-00FF, U+0131, …"
-    }
-  ]
-},
-"typography": {
-  "fontFamily": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
-  "h1": { "fontSize": "3rem", "fontWeight": 700 },
-  "button": { "textTransform": "none", "fontWeight": 600 }
+{
+  "fonts": {
+    "faces": [
+      {
+        "family": "Inter",
+        "src": "fonts/inter-variable-latin.woff2",
+        "format": "woff2",
+        "weight": "100 900",
+        "style": "normal",
+        "display": "swap",
+        "unicodeRange": "U+0000-00FF, U+0131, …"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+    "h1": { "fontSize": "3rem", "fontWeight": 700 },
+    "button": { "textTransform": "none", "fontWeight": 600 }
+  }
 }
 ```
 
@@ -165,10 +226,12 @@ See [Adding a font](#5-adding-a-font) for how to obtain and place the files.
 ### `assets` — logo and favicon
 
 ```json
-"assets": {
-  "logo": "/entur-logo.png",
-  "logoHeight": { "xs": 20, "sm": 24, "md": 24 },
-  "favicon": "/entur-favicon.png"
+{
+  "assets": {
+    "logo": "/entur-logo.png",
+    "logoHeight": { "xs": 20, "sm": 24, "md": 24 },
+    "favicon": "/entur-favicon.png"
+  }
 }
 ```
 
@@ -178,10 +241,12 @@ deployments work. `logoHeight` is per-breakpoint, in px.
 ### `environment` — the DEV/TEST badge
 
 ```json
-"environment": {
-  "development": { "color": "#457645", "showBadge": true,  "label": "DEV"  },
-  "test":        { "color": "#ffe082", "showBadge": true,  "label": "TEST" },
-  "prod":        { "color": "#181c56", "showBadge": false, "label": "PROD" }
+{
+  "environment": {
+    "development": { "color": "#457645", "showBadge": true, "label": "DEV" },
+    "test": { "color": "#ffe082", "showBadge": true, "label": "TEST" },
+    "prod": { "color": "#181c56", "showBadge": false, "label": "PROD" }
+  }
 }
 ```
 
@@ -191,22 +256,30 @@ Which block applies is decided by `window.config.tiamatEnv`. The keys must be ex
 ### `components` — MUI component overrides
 
 ```json
-"components": {
-  "MuiButton": {
-    "defaultProps": { "disableElevation": true },
-    "styleOverrides": {
-      "root": { "textTransform": "none", "borderRadius": 4, "fontWeight": 600 }
+{
+  "components": {
+    "MuiButton": {
+      "defaultProps": { "disableElevation": true },
+      "styleOverrides": {
+        "root": {
+          "textTransform": "none",
+          "borderRadius": 4,
+          "fontWeight": 600
+        }
+      }
+    },
+    "MuiAppBar": {
+      "styleOverrides": {
+        "colorPrimary": { "backgroundColor": "#000000", "color": "#FFFFFF" }
+      }
     }
-  },
-  "MuiAppBar": {
-    "styleOverrides": { "colorPrimary": { "backgroundColor": "#000000", "color": "#FFFFFF" } }
   }
 }
 ```
 
-**The one rule that matters:** React props go in `defaultProps`, CSS goes in
-`styleOverrides`. MUI treats unknown top-level keys as `defaultProps` and forwards them to
-the DOM, producing React warnings and no styling.
+**Rule 1 — React props go in `defaultProps`, CSS goes in `styleOverrides`.** MUI treats
+unknown top-level keys as `defaultProps` and forwards them to the DOM, producing React
+warnings and no styling.
 
 ```jsonc
 // WRONG — becomes a DOM attribute
@@ -216,9 +289,55 @@ the DOM, producing React warnings and no styling.
 "MuiButton": { "styleOverrides": { "root": { "textTransform": "none" } } }
 ```
 
-Useful named slots: `MuiButton.containedPrimary` / `outlinedPrimary`,
-`MuiAppBar.colorPrimary`, `MuiChip.filled` / `filledPrimary`, `MuiDialog.paper`,
-`MuiAlert.standardSuccess`, `MuiPaper.root`, `MuiCssBaseline.body`.
+**Rule 2 — there are no compound variant+colour slots.** This is the MUI v9 change most
+likely to bite you. v9 splits variant and colour into **separate classes**, so slots like
+`containedPrimary` simply do not exist and an override using one is silently ignored — no
+error, no styling.
+
+| Component   | Does **not** exist in v9                             | Real slots in v9                                                                                                             |
+| ----------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `MuiButton` | `containedPrimary`, `outlinedPrimary`, `textPrimary` | `contained`, `outlined`, `text`, `colorPrimary`, `colorSecondary`, `colorError`, `colorInfo`, `colorSuccess`, `colorWarning` |
+| `MuiChip`   | `filledPrimary`                                      | `filled`, `outlined`, `colorPrimary`, …                                                                                      |
+| `MuiAlert`  | `standardSuccess`, `standardError`, …                | `standard`, `filled`, `outlined`, `colorSuccess`, `colorError`, …                                                            |
+
+To style a **combination**, use the `variants` array — it sits beside `styleOverrides` and is
+plain JSON, so it works fine from a theme file:
+
+```json
+{
+  "MuiButton": {
+    "defaultProps": { "disableElevation": true },
+    "styleOverrides": {
+      "root": { "textTransform": "none", "borderRadius": 4, "fontWeight": 600 }
+    },
+    "variants": [
+      {
+        "props": { "variant": "contained", "color": "primary" },
+        "style": { "backgroundColor": "#1777F8", "color": "#FFFFFF" }
+      },
+      {
+        "props": { "variant": "outlined", "color": "primary" },
+        "style": { "borderColor": "#1777F8", "color": "#1777F8" }
+      }
+    ]
+  }
+}
+```
+
+Slots that **do** exist and are safe to use: `MuiAppBar.colorPrimary`, `MuiDialog.paper`,
+`MuiPaper.root`, `MuiChip.filled` / `outlined`, `MuiCssBaseline.body`, and every
+component's `root`.
+
+To check a slot name rather than guess, read the class list:
+
+```bash
+grep -oE "^\s+[a-zA-Z]+:" node_modules/@mui/material/Button/buttonClasses.d.ts
+```
+
+**Rule 3 — `defaultProps` can only set props that still exist.** MUI v9 removed some, so a
+theme setting them does nothing (and may type-error). Notably `Dialog`'s
+`disableEscapeKeyDown` is gone, and `TextField`'s `InputProps` / `inputProps` are replaced by
+`slotProps: { input, htmlInput }`.
 
 ### Other supported keys
 
@@ -437,10 +556,20 @@ THEME JSON SHAPE (all keys optional except name/version)
                                             src is relative to public/ (e.g. "fonts/x.woff2")
   assets{logo, logoHeight{xs,sm,md}, favicon}   paths relative to public/, leading slash ok
   environment{development,test,prod}{color,showBadge,label}   keys must be exactly these
-  components{Mui*}{defaultProps{}, styleOverrides{slot:{}}}
+  components{Mui*}{defaultProps{}, styleOverrides{slot:{}}, variants:[{props,style}]}
                                             CSS MUST go inside styleOverrides, never at the
-                                            component's top level
+                                            component's top level.
+                                            MUI v9 has NO compound variant+colour slots:
+                                            containedPrimary / outlinedPrimary / filledPrimary /
+                                            standardSuccess do NOT exist and are silently
+                                            ignored. Target combinations with `variants`:
+                                            {"props":{"variant":"contained","color":"primary"},
+                                             "style":{...}}
+                                            Verify a slot name before using it:
+                                            grep -oE '^\s+[a-zA-Z]+:' \
+                                              node_modules/@mui/material/Button/buttonClasses.d.ts
   shape{borderRadius}, spacing, breakpoints, customProperties{}
+  cssVariables + colorSchemes{light,dark}   optional; MUI v9 light/dark in one theme
 
 VERIFY
   npx tsc --noEmit                          must pass (should be unaffected)

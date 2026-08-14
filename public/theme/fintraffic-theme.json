@@ -101,13 +101,33 @@
   },
   "typography": {
     "fontFamily": "\"Public Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen-Sans, Ubuntu, Cantarell, \"Helvetica Neue\", Arial, sans-serif",
-    "h1": { "fontSize": "3rem", "fontWeight": 700, "letterSpacing": "-0.5px" },
-    "h2": { "fontSize": "2.25rem", "fontWeight": 700 },
-    "h3": { "fontSize": "1.75rem", "fontWeight": 700 },
-    "subtitle1": { "fontSize": "1rem", "fontWeight": 600 },
-    "body1": { "fontSize": "1rem" },
-    "body2": { "fontSize": "0.875rem" },
-    "button": { "textTransform": "none", "fontWeight": 600 }
+    "h1": {
+      "fontSize": "3rem",
+      "fontWeight": 700,
+      "letterSpacing": "-0.5px"
+    },
+    "h2": {
+      "fontSize": "2.25rem",
+      "fontWeight": 700
+    },
+    "h3": {
+      "fontSize": "1.75rem",
+      "fontWeight": 700
+    },
+    "subtitle1": {
+      "fontSize": "1rem",
+      "fontWeight": 600
+    },
+    "body1": {
+      "fontSize": "1rem"
+    },
+    "body2": {
+      "fontSize": "0.875rem"
+    },
+    "button": {
+      "textTransform": "none",
+      "fontWeight": 600
+    }
   },
   "shape": {
     "borderRadius": 4
@@ -123,36 +143,84 @@
       }
     },
     "MuiButton": {
-      "defaultProps": { "disableElevation": true },
+      "defaultProps": {
+        "disableElevation": true
+      },
       "styleOverrides": {
         "root": {
           "textTransform": "none",
           "borderRadius": 4,
           "fontWeight": 600
+        }
+      },
+      "variants": [
+        {
+          "props": {
+            "variant": "contained",
+            "color": "primary"
+          },
+          "style": {
+            "backgroundColor": "#1777F8",
+            "color": "#FFFFFF"
+          }
         },
-        "containedPrimary": {
-          "backgroundColor": "#1777F8",
-          "color": "#FFFFFF"
-        },
-        "outlinedPrimary": { "borderColor": "#1777F8", "color": "#1777F8" }
-      }
+        {
+          "props": {
+            "variant": "outlined",
+            "color": "primary"
+          },
+          "style": {
+            "borderColor": "#1777F8",
+            "color": "#1777F8"
+          }
+        }
+      ]
     },
     "MuiLink": {
-      "styleOverrides": { "root": { "color": "#1777F8", "fontWeight": 600 } }
+      "styleOverrides": {
+        "root": {
+          "color": "#1777F8",
+          "fontWeight": 600
+        }
+      }
     },
     "MuiChip": {
       "styleOverrides": {
-        "filled": { "backgroundColor": "#F7F7F7" },
-        "filledPrimary": { "backgroundColor": "#1777F8", "color": "#FFFFFF" },
-        "outlined": { "borderColor": "#E5E5E5" }
-      }
+        "filled": {
+          "backgroundColor": "#F7F7F7"
+        },
+        "outlined": {
+          "borderColor": "#E5E5E5"
+        }
+      },
+      "variants": [
+        {
+          "props": {
+            "variant": "filled",
+            "color": "primary"
+          },
+          "style": {
+            "backgroundColor": "#1777F8",
+            "color": "#FFFFFF"
+          }
+        }
+      ]
     },
     "MuiAppBar": {
       "styleOverrides": {
-        "colorPrimary": { "backgroundColor": "#000000", "color": "#FFFFFF" }
+        "colorPrimary": {
+          "backgroundColor": "#000000",
+          "color": "#FFFFFF"
+        }
       }
     },
-    "MuiPaper": { "styleOverrides": { "root": { "backgroundImage": "none" } } },
+    "MuiPaper": {
+      "styleOverrides": {
+        "root": {
+          "backgroundImage": "none"
+        }
+      }
+    },
     "MuiDialog": {
       "styleOverrides": {
         "paper": {
@@ -161,12 +229,48 @@
       }
     },
     "MuiAlert": {
-      "styleOverrides": {
-        "standardSuccess": { "backgroundColor": "#E8F5E9", "color": "#1B5E20" },
-        "standardWarning": { "backgroundColor": "#FFF3E0", "color": "#E65100" },
-        "standardError": { "backgroundColor": "#FFEBEE", "color": "#B71C1C" },
-        "standardInfo": { "backgroundColor": "#E6FFFA", "color": "#004D40" }
-      }
+      "variants": [
+        {
+          "props": {
+            "variant": "standard",
+            "severity": "success"
+          },
+          "style": {
+            "backgroundColor": "#E8F5E9",
+            "color": "#1B5E20"
+          }
+        },
+        {
+          "props": {
+            "variant": "standard",
+            "severity": "warning"
+          },
+          "style": {
+            "backgroundColor": "#FFF3E0",
+            "color": "#E65100"
+          }
+        },
+        {
+          "props": {
+            "variant": "standard",
+            "severity": "error"
+          },
+          "style": {
+            "backgroundColor": "#FFEBEE",
+            "color": "#B71C1C"
+          }
+        },
+        {
+          "props": {
+            "variant": "standard",
+            "severity": "info"
+          },
+          "style": {
+            "backgroundColor": "#E6FFFA",
+            "color": "#004D40"
+          }
+        }
+      ]
     }
   }
 }
