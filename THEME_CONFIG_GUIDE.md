@@ -223,6 +223,49 @@ Set only `fontFamily` and the browser silently falls back to a system font. Set 
 
 See [Adding a font](#5-adding-a-font) for how to obtain and place the files.
 
+#### More than one font family
+
+`fonts.faces` is a list, so a theme can load as many families as it likes — each entry
+carries its own `family`. Declaring an extra family costs nothing until something actually
+uses it: the browser downloads a face only when an element asks for it.
+
+To give a family a **role**, add a named key under `typography`. MUI resolves `sx`'s
+`fontFamily` through `theme.typography`, so a name defined there wins over the literal CSS
+value:
+
+```json
+{
+  "fonts": {
+    "faces": [
+      {
+        "family": "Public Sans",
+        "src": "fonts/public-sans-variable.woff2",
+        "format": "woff2",
+        "weight": "100 900"
+      },
+      {
+        "family": "Roboto Mono",
+        "src": "fonts/roboto-mono-latin.woff2",
+        "format": "woff2",
+        "weight": "100 700"
+      }
+    ]
+  },
+  "typography": {
+    "fontFamily": "\"Public Sans\", sans-serif",
+    "monospace": "\"Roboto Mono\", ui-monospace, Menlo, monospace"
+  }
+}
+```
+
+The app renders NeTEx IDs and quay codes with `sx={{ fontFamily: "monospace" }}`. With the
+key above, those call sites pick up Roboto Mono automatically — **no code change**. A theme
+that omits `typography.monospace` keeps the browser's default monospace, so this is
+backwards compatible.
+
+The same trick works for any role you want to theme: pick a name, define it under
+`typography`, and use that name as the `fontFamily` value in `sx`.
+
 ### `assets` — logo and favicon
 
 ```json
@@ -395,11 +438,11 @@ browser only downloads `latin-ext` when a character in that range actually appea
 
 ### What's already in the repo
 
-| Theme                   | Font                   | Licence    |
-| ----------------------- | ---------------------- | ---------- |
-| `default-theme.json`    | Roboto (variable)      | Apache 2.0 |
-| `entur-theme.json`      | Inter (variable)       | OFL 1.1    |
-| `fintraffic-theme.json` | Public Sans (variable) | OFL 1.1    |
+| Theme                   | Font                                      | Licence              |
+| ----------------------- | ----------------------------------------- | -------------------- |
+| `default-theme.json`    | Roboto (variable)                         | Apache 2.0           |
+| `entur-theme.json`      | Inter (variable)                          | OFL 1.1              |
+| `fintraffic-theme.json` | Public Sans + Roboto Mono (both variable) | OFL 1.1 / Apache 2.0 |
 
 ### Licensed fonts
 
@@ -550,7 +593,10 @@ THEME JSON SHAPE (all keys optional except name/version)
   palette{primary,secondary,error,warning,info,success,background,text,divider,action,mode}
                                             omitted keys fall back to MUI defaults, NOT to
                                             default-theme.json — there is no theme inheritance
-  typography{fontFamily, h1..h6, body1, body2, button{textTransform,fontWeight}}
+  typography{fontFamily, h1..h6, body1, body2, button{textTransform,fontWeight},
+             <roleName>}                  a named key here is resolvable from sx:
+                                          sx={{fontFamily:"monospace"}} picks up
+                                          typography.monospace. Used for NeTEx IDs.
   fonts{faces:[{family,src,format,weight,style,display,unicodeRange}], stylesheets:[url]}
                                             `faces` LOADS the font; typography.fontFamily USES it.
                                             src is relative to public/ (e.g. "fonts/x.woff2")
