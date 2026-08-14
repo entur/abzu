@@ -28,3 +28,9 @@ tmp/
 
 # Ignore bootstrap config file
 public/bootstrap.json
+
+# Licence-restricted fonts. Entur Nationale (Playtype Foundry) may only be used in
+# official Entur products, so it must never be committed to this public repository.
+# Deployments that are entitled to it place the files into build/fonts/ at deploy
+# time; copy them into public/fonts/ locally for development.
+public/fonts/Entur-Nationale-*

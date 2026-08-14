@@ -19,8 +19,10 @@ The Entur theme (`public/theme/entur-theme.json`) is used throughout as the work
 ## 1. How it works
 
 ```
-public/bootstrap.json                 →  which themes exist, and the default
-  └─ "themeConfigs": [ "theme/entur-theme.json", … ]
+public/bootstrap.json                 →  the deployment's main config
+  ├─ "uiMode": "modern"               →  gate: theming only applies to the modern UI
+  ├─ "tiamatEnv": "development"       →  picks the environment badge
+  └─ "themeConfigs": [ "theme/entur-theme.json", … ]   →  which themes exist; [0] is default
         │
         ▼
 public/theme/entur-theme.json         →  the theme itself (colours, fonts, assets, …)
@@ -46,6 +48,10 @@ Four things worth knowing up front:
 ---
 
 ## 2. Quick start
+
+> **Prerequisite:** `bootstrap.json` must set `"uiMode": "modern"` or `"dual"`. Theming is a
+> modern-UI feature, and `uiMode` defaults to `"legacy"` — see
+> [The bootstrap config](#4-the-bootstrap-config).
 
 **Step 1 — copy an existing theme as your starting point:**
 
@@ -390,14 +396,40 @@ MUI's `createTheme` accepts also works.
 
 ---
 
-## 4. Registering the theme
+## 4. The bootstrap config
 
-`themeConfigs` lives in the bootstrap config. The **first entry** is the default for new
-visitors.
+`bootstrap.json` is the deployment's main configuration file. It holds ~18 keys covering API
+URLs, auth, map layers and locales — **three of them decide theming**:
+
+| Key            | Effect on theming                                                       |
+| -------------- | ----------------------------------------------------------------------- |
+| `uiMode`       | Whether the modern UI runs at all. **Nothing here applies without it.** |
+| `themeConfigs` | Which themes exist, and which is the default                            |
+| `tiamatEnv`    | Which `environment` block of the theme supplies the badge               |
+
+### `uiMode` — the prerequisite
+
+Theming as described in this guide is a **modern-UI** feature. If the modern UI never
+renders, none of it takes effect.
+
+| Value      | Behaviour                                                 |
+| ---------- | --------------------------------------------------------- |
+| _(absent)_ | Same as `"legacy"` — the safe default                     |
+| `"legacy"` | Always the legacy UI. Theme JSONs are never loaded.       |
+| `"modern"` | Always the modern UI.                                     |
+| `"dual"`   | User chooses; the choice is remembered in `localStorage`. |
+
+So a new themed deployment needs **at least** `"uiMode": "modern"` (or `"dual"`).
+
+### `themeConfigs` — the theme list
+
+Paths are relative to `public/`. The **first entry** is what a new visitor gets.
 
 <!-- prettier-ignore -->
 ```json
 {
+  "uiMode": "modern",
+  "tiamatEnv": "development",
   "themeConfigs": [
     "theme/default-theme.json",
     "theme/entur-theme.json",
@@ -406,16 +438,48 @@ visitors.
 }
 ```
 
-**`public/bootstrap.json` is gitignored and generated at deploy time.** The deploy workflow
-does `cp .github/environments/dev.json build/bootstrap.json`. So:
+- **Two or more entries** → the theme switcher appears under **Appearance**
+- **One entry** → that theme is applied, no switcher
+- **Absent or empty** → plain MUI defaults, no custom theming
 
-- **Local development:** edit `public/bootstrap.json` (or run `./copy-dev-config.sh`)
+The **Appearance** menu itself is shown when there are ≥ 2 themes **or** `uiMode` is
+`"dual"` — otherwise there is nothing to configure and the entry is hidden.
+
+A legacy singular `"themeConfig": "theme/x.json"` is still honoured as a fallback when
+`themeConfigs` is absent. Prefer the array for anything new.
+
+### `tiamatEnv` — which environment badge shows
+
+Set to `development`, `test` or `prod`. It selects the matching block from the theme's
+[`environment`](#environment--the-devtest-badge) field. A value with no matching block
+means no badge.
+
+### Which file to edit
+
+**`public/bootstrap.json` is gitignored and generated at deploy time** — the workflow does
+`cp .github/environments/dev.json build/bootstrap.json`. So:
+
+- **Local development:** edit `public/bootstrap.json` directly
 - **Deployments:** edit the environment file in `.github/environments/`, or your own private
   deployment config
 
 Because it's deployment-generated, a private deployment can register a theme JSON that
 doesn't exist in this repository at all — useful for licence-restricted assets
 (see [Licensed fonts](#licensed-fonts)).
+
+### Minimal setup for a new themed deployment
+
+<!-- prettier-ignore -->
+```json
+{
+  "uiMode": "modern",
+  "tiamatEnv": "prod",
+  "themeConfigs": ["theme/mytransit-theme.json"]
+}
+```
+
+Everything else in `bootstrap.json` (API URLs, auth, map config) is unrelated to theming and
+is documented with the deployment configuration, not here.
 
 ---
 
@@ -475,6 +539,13 @@ default theme.
 That's fine — MUI's defaults are sane — but it means you cannot write a theme that "only
 overrides what differs from the Abzu default". If you want Abzu's default look as a base,
 copy the file and edit it.
+
+### My theme has no effect at all
+
+Check `uiMode` first. It defaults to `"legacy"`, and the legacy UI never loads theme JSONs —
+so a perfectly good theme file simply does nothing until `bootstrap.json` sets
+`"uiMode": "modern"` or `"dual"`. Second most likely: the theme isn't listed in
+`themeConfigs`, or you edited `build/bootstrap.json` instead of `public/bootstrap.json`.
 
 ### The switcher label comes from the filename
 
@@ -583,7 +654,10 @@ FILES TO CREATE / EDIT
   public/<x>-logo.png              logo asset (verify with `file` that bytes match extension)
   public/<x>-favicon.png           favicon asset (same check)
   public/fonts/<font>.woff2        font file, woff2 only, variable preferred
-  public/bootstrap.json            append "theme/<x>-theme.json" to themeConfigs
+  public/bootstrap.json            append "theme/<x>-theme.json" to themeConfigs, and
+                                   ensure "uiMode" is "modern" or "dual" (default is
+                                   "legacy", where theming does nothing) and "tiamatEnv"
+                                   is one of development|test|prod
 
 DO NOT EDIT
   any file under src/            adding a theme requires no code changes at all
@@ -618,6 +692,7 @@ THEME JSON SHAPE (all keys optional except name/version)
   cssVariables + colorSchemes{light,dark}   optional; MUI v9 light/dark in one theme
 
 VERIFY
+  bootstrap.json has uiMode modern|dual     otherwise nothing below will show
   npx tsc --noEmit                          must pass (should be unaffected)
   npx prettier --write <edited files>
   reload app, switch theme via header menu → Appearance
