@@ -45,49 +45,49 @@
     "mode": "light",
     "primary": {
       "main": "#1777F8",
-      "dark": "#0D5FD9",
-      "light": "#5BA0FA",
+      "dark": "#0034AC",
+      "light": "#90CEFE",
       "contrastText": "#FFFFFF"
     },
     "secondary": {
       "main": "#505064",
-      "dark": "#3A3A4B",
-      "light": "#737387",
+      "dark": "#2C2C44",
+      "light": "#9696AA",
       "contrastText": "#FFFFFF"
     },
     "background": {
       "default": "#FFFFFF",
       "paper": "#FFFFFF",
-      "tint": "#F7F7F7"
+      "tint": "#F6F6F6"
     },
     "text": {
       "primary": "#000000",
       "secondary": "#505064",
-      "disabled": "#9E9E9E"
+      "disabled": "#9696AA"
     },
-    "divider": "#E5E5E5",
+    "divider": "#E3E3E3",
     "info": {
       "main": "#1777F8",
-      "dark": "#0D5FD9",
-      "light": "#5BA0FA",
+      "dark": "#0034AC",
+      "light": "#90CEFE",
       "contrastText": "#FFFFFF"
     },
     "success": {
-      "main": "#2E7D32",
-      "dark": "#1B5E20",
-      "light": "#81C784",
-      "contrastText": "#FFFFFF"
+      "main": "#25A794",
+      "dark": "#005F61",
+      "light": "#82E8C3",
+      "contrastText": "#000000"
     },
     "warning": {
-      "main": "#ED6C02",
-      "dark": "#E65100",
-      "light": "#FFB74D",
+      "main": "#EEC200",
+      "dark": "#B47324",
+      "light": "#FFE37F",
       "contrastText": "#000000"
     },
     "error": {
-      "main": "#D32F2F",
-      "dark": "#B71C1C",
-      "light": "#EF9A9A",
+      "main": "#E55636",
+      "dark": "#B40000",
+      "light": "#FF9B87",
       "contrastText": "#FFFFFF"
     },
     "action": {
@@ -236,8 +236,8 @@
             "severity": "success"
           },
           "style": {
-            "backgroundColor": "#E8F5E9",
-            "color": "#1B5E20"
+            "backgroundColor": "#EAFFF8",
+            "color": "#004042"
           }
         },
         {
@@ -246,8 +246,8 @@
             "severity": "warning"
           },
           "style": {
-            "backgroundColor": "#FFF3E0",
-            "color": "#E65100"
+            "backgroundColor": "#FFFADB",
+            "color": "#6C3E05"
           }
         },
         {
@@ -256,8 +256,8 @@
             "severity": "error"
           },
           "style": {
-            "backgroundColor": "#FFEBEE",
-            "color": "#B71C1C"
+            "backgroundColor": "#FFF0ED",
+            "color": "#720000"
           }
         },
         {
@@ -266,8 +266,8 @@
             "severity": "info"
           },
           "style": {
-            "backgroundColor": "#E6FFFA",
-            "color": "#004D40"
+            "backgroundColor": "#EFF8FF",
+            "color": "#001C5B"
           }
         }
       ]
