@@ -25,6 +25,13 @@ const enablePublicCodePrivateCodeOnStopPlaces =
   rootKey + "::enablePublicCodePrivateCodeOnStopPlaces";
 const showFareZonesInMapKey = rootKey + "::showFareZonesInMap";
 const showTariffZonesInMapKey = rootKey + "::showTariffZonesInMap";
+const uiModeKey = rootKey + "::uiMode";
+/** Which parent/group membership layout the stop place panel renders. */
+const membershipDisplayKey = rootKey + "::membershipDisplay";
+const elementStatusDisplayKey = rootKey + "::elementStatusDisplay";
+const initialLatitudeKey = rootKey + "::initialLatitude";
+const initialLongitudeKey = rootKey + "::initialLongitude";
+const initialZoomKey = rootKey + "::initialZoom";
 const activeOverlaysKey = rootKey + "::activeOverlays";
 
 class SettingsManager {
@@ -121,6 +128,68 @@ class SettingsManager {
 
   setShowTariffZonesInMap(value) {
     localStorage.setItem(showTariffZonesInMapKey, value);
+  }
+
+  getUIMode() {
+    return localStorage.getItem(uiModeKey) || "legacy";
+  }
+
+  setUIMode(value) {
+    localStorage.setItem(uiModeKey, value);
+  }
+
+  getMembershipDisplay() {
+    return localStorage.getItem(membershipDisplayKey) || "chips";
+  }
+
+  getElementStatusDisplay() {
+    return localStorage.getItem(elementStatusDisplayKey) || "off";
+  }
+
+  setElementStatusDisplay(value) {
+    localStorage.setItem(elementStatusDisplayKey, value);
+  }
+
+  setMembershipDisplay(value) {
+    localStorage.setItem(membershipDisplayKey, value);
+  }
+
+  getInitialLatitude() {
+    const value = localStorage.getItem(initialLatitudeKey);
+    return value ? parseFloat(value) : null;
+  }
+
+  setInitialLatitude(value) {
+    localStorage.setItem(initialLatitudeKey, value);
+  }
+
+  getInitialLongitude() {
+    const value = localStorage.getItem(initialLongitudeKey);
+    return value ? parseFloat(value) : null;
+  }
+
+  setInitialLongitude(value) {
+    localStorage.setItem(initialLongitudeKey, value);
+  }
+
+  getInitialZoom() {
+    const value = localStorage.getItem(initialZoomKey);
+    return value ? parseInt(value, 10) : null;
+  }
+
+  setInitialZoom(value) {
+    localStorage.setItem(initialZoomKey, value);
+  }
+
+  getInitialPosition() {
+    const lat = this.getInitialLatitude();
+    const lng = this.getInitialLongitude();
+    return lat !== null && lng !== null ? [lat, lng] : null;
+  }
+
+  setInitialPosition(lat, lng) {
+    this.setInitialLatitude(lat);
+    this.setInitialLongitude(lng);
   }
 
   getActiveOverlays() {

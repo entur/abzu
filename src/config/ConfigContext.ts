@@ -34,6 +34,22 @@ export interface Config {
    * These keys will always be shown in UI and cannot be deleted
    */
   mandatoryKeyValuesSet?: MandatoryKeyValuesSet;
+  /**
+   * Path to a single custom theme config JSON file (legacy singular field).
+   */
+  themeConfig?: string;
+  /**
+   * Paths to one or more custom theme config JSON files.
+   * Takes priority over the singular themeConfig field.
+   */
+  themeConfigs?: string[];
+  /**
+   * Controls which UI is available.
+   * "legacy" (default) — only the legacy UI, no toggle shown.
+   * "dual" — both UIs available; user can switch via the header menu.
+   * "modern" — only the modern UI, no toggle shown.
+   */
+  uiMode?: "legacy" | "dual" | "modern";
 }
 
 export interface MapConfig {

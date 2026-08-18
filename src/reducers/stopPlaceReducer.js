@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import * as types from "../actions/Types";
-import { defaultCenterPosition } from "../components/Map/mapDefaults";
+import { defaultCenterPosition } from "../config/mapDefaults";
 import AdjacentStopAdder from "../modelUtils/adjacentStopAdder";
 import AdjacentStopRemover from "../modelUtils/adjacentStopRemover";
 import equipmentHelpers from "../modelUtils/equipmentHelpers";
@@ -29,10 +29,21 @@ const Settings = new SettingsManager();
 
 /**
  * If a custom centerPosition is set in bootstrap.json, it's going to override this initial value
+ * User's custom initial position/zoom from localStorage will also override the defaults
  */
+const getInitialCenterPosition = () => {
+  const customPosition = Settings.getInitialPosition();
+  return customPosition || defaultCenterPosition;
+};
+
+const getInitialZoom = () => {
+  const customZoom = Settings.getInitialZoom();
+  return customZoom !== null ? customZoom : 6;
+};
+
 const initialState = {
-  centerPosition: defaultCenterPosition,
-  zoom: 6,
+  centerPosition: getInitialCenterPosition(),
+  zoom: getInitialZoom(),
   minZoom: 14,
   isCompassBearingEnabled: Settings.getShowCompassBearing(),
   isCreatingPolylines: false,
@@ -107,34 +118,84 @@ const stopPlaceReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         stopHasBeenModified: false,
         current: JSON.parse(JSON.stringify(state.originalCurrent)),
-        pathLink: JSON.parse(JSON.stringify(state.originalPathLink)),
+        pathLink: JSON.parse(JSON.stringify(state.originalPathLink ?? [])),
       });
 
     case types.ADD_ADJACENT_SITE:
       const stopPlaceId1 = action.payload.stopPlaceId1;
       const stopPlaceId2 = action.payload.stopPlaceId2;
+
+      if (state.current.isChildOfParent && state.current.parentStop) {
+        const mutableParent = JSON.parse(
+          JSON.stringify(state.current.parentStop),
+        );
+        AdjacentStopAdder.addAdjacentStopReference(
+          mutableParent,
+          stopPlaceId1,
+          stopPlaceId2,
+        );
+        const updatedChild = mutableParent.children.find(
+          (c) => c.id === state.current.id,
+        );
+        return Object.assign({}, state, {
+          current: {
+            ...state.current,
+            adjacentSites:
+              updatedChild?.adjacentSites ?? state.current.adjacentSites,
+            parentStop: mutableParent,
+          },
+          stopHasBeenModified: true,
+        });
+      }
+
+      const mutableCurrentForAdd = JSON.parse(JSON.stringify(state.current));
       AdjacentStopAdder.addAdjacentStopReference(
-        state.current,
+        mutableCurrentForAdd,
         stopPlaceId1,
         stopPlaceId2,
       );
-
       return Object.assign({}, state, {
+        current: mutableCurrentForAdd,
         stopHasBeenModified: true,
       });
 
     case types.REMOVE_ADJACENT_SITE:
       const adjacentStopPlaceRef = action.payload.adjacentStopPlaceRef;
       const stopPlaceIdForRemovingAdjacentSite = action.payload.stopPlaceId;
-      const changedStopPlace = AdjacentStopRemover.removeAdjacentStop(
-        state.current,
+
+      if (state.current.isChildOfParent && state.current.parentStop) {
+        const mutableParentForRemove = JSON.parse(
+          JSON.stringify(state.current.parentStop),
+        );
+        AdjacentStopRemover.removeAdjacentStop(
+          mutableParentForRemove,
+          adjacentStopPlaceRef,
+          stopPlaceIdForRemovingAdjacentSite,
+        );
+        const updatedChildForRemove = mutableParentForRemove.children.find(
+          (c) => c.id === state.current.id,
+        );
+        return Object.assign({}, state, {
+          current: {
+            ...state.current,
+            adjacentSites:
+              updatedChildForRemove?.adjacentSites ??
+              state.current.adjacentSites,
+            parentStop: mutableParentForRemove,
+          },
+          stopHasBeenModified: true,
+        });
+      }
+
+      const mutableCurrentForRemove = JSON.parse(JSON.stringify(state.current));
+      AdjacentStopRemover.removeAdjacentStop(
+        mutableCurrentForRemove,
         adjacentStopPlaceRef,
         stopPlaceIdForRemovingAdjacentSite,
       );
-
       return Object.assign({}, state, {
         stopHasBeenModified: true,
-        current: changedStopPlace,
+        current: mutableCurrentForRemove,
       });
 
     case types.SET_CENTER_AND_ZOOM:
@@ -154,6 +215,8 @@ const stopPlaceReducer = (state = initialState, action) => {
           pathLink: [],
           current: null,
           newStop: null,
+          centerPosition: getInitialCenterPosition(),
+          zoom: getInitialZoom(),
         });
       } else {
         return state;
@@ -408,6 +471,12 @@ const stopPlaceReducer = (state = initialState, action) => {
       return newState;
 
     case types.SET_ACTIVE_MARKER:
+      if (action.payload === null) {
+        // Handle clearing the active marker
+        return Object.assign({}, state, {
+          activeSearchResult: null,
+        });
+      }
       return Object.assign({}, state, {
         activeSearchResult: action.payload,
         centerPosition: getProperCenterLocation(action.payload.location),

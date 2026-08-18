@@ -54,6 +54,7 @@ class GroupOfStopPlaceMap extends Component {
       enablePolylines,
       zoom,
       markers,
+      uiMode,
     } = this.props;
 
     return (
@@ -71,6 +72,7 @@ class GroupOfStopPlaceMap extends Component {
         handleOverlaysChanged={this.handleOverlaysChanged.bind(this)}
         enablePolylines={enablePolylines}
         handleDragEnd={() => {}}
+        uiMode={uiMode}
       />
     );
   }
@@ -84,6 +86,7 @@ const mapStateToProps = ({ stopPlace, user, stopPlacesGroup }) => ({
   markers: stopPlacesGroup.current.members
     .concat(stopPlace.neighbourStops || [])
     .filter((m) => !m.permanentlyTerminated),
+  uiMode: user.uiMode,
 });
 
 export default connect(mapStateToProps)(GroupOfStopPlaceMap);

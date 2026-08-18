@@ -203,6 +203,7 @@ class EditStopMap extends React.Component {
           minZoom={minZoom}
           handleZoomEnd={this.handleZoomEnd.bind(this)}
           handleSetCompassBearing={this.handleSetCompassBearing.bind(this)}
+          uiMode={this.props.uiMode}
         />
         <CoordinatesDialog
           intl={this.props.intl}
@@ -250,6 +251,7 @@ const mapStateToProps = (state) => {
     markers,
     ignoreStopId: state.stopPlace.current ? state.stopPlace.current.id : -1,
     minZoom: state.stopPlace.minZoom,
+    uiMode: state.user.uiMode,
   };
 };
 
