@@ -108,7 +108,8 @@ export const MultimodalEdgesLayer = () => {
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
         paint={{
-          "line-color": theme.palette.primary.main,
+          "line-color":
+            theme.palette.multimodal?.main ?? theme.palette.primary.main,
           "line-width": 3,
           "line-dasharray": [8, 2],
           "line-opacity": 0.9,

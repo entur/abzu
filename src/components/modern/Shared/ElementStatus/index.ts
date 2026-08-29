@@ -40,5 +40,6 @@ export {
   hasGeneralTabChange,
   KEY_VALUES_TAB_KEYS,
 } from "./stopPlaceFieldStatus";
+export { UnsavedDot } from "./UnsavedDot";
 export { useElementStatusEnabled } from "./useElementStatusDisplay";
 export { useStopPlaceDirtyKeys } from "./useStopPlaceDirtyKeys";

@@ -22,7 +22,16 @@ import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import ModalityIconImg from "../../../MainPage/ModalityIconImg";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
+import {
+  hasChangedKey,
+  useElementStatusEnabled,
+  UnsavedDot,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
 import { StopPlace } from "../types";
+
+/** The header owns no fields of its own; it mirrors the stop place name. */
+const HEADER_NAME_KEYS = ["name"] as const;
 
 const NAME_FONT_SIZE_SHORT = "1.5rem";
 const NAME_FONT_SIZE_MEDIUM = "1.3rem";
@@ -65,6 +74,10 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
   isExpanded,
 }) => {
   const { formatMessage } = useIntl();
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
+  const isNameDirty =
+    isStatusEnabled && hasChangedKey(dirtyKeys, HEADER_NAME_KEYS);
   const nameLength = stopName?.length ?? 0;
   const nameFontSize = resolveFontSize(nameLength);
 
@@ -89,13 +102,30 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: 600, fontSize: nameFontSize, lineHeight: 1.2 }}
-            noWrap={nameLength > NAME_LENGTH_THRESHOLD_MEDIUM}
+          {/* The dot is a sibling, not a child: an inline-flex wrapper inside the
+              Typography would defeat the noWrap ellipsis on long names. */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              minWidth: 0,
+            }}
           >
-            {stopName}
-          </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 600,
+                fontSize: nameFontSize,
+                lineHeight: 1.2,
+                minWidth: 0,
+              }}
+              noWrap={nameLength > NAME_LENGTH_THRESHOLD_MEDIUM}
+            >
+              {stopName}
+            </Typography>
+            {isNameDirty && <UnsavedDot />}
+          </Box>
           {stopPlace.topographicPlace && (
             <Typography
               variant="caption"

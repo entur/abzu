@@ -4,6 +4,10 @@
   "description": "Neutral default theme configuration for Abzu Stop Place Registry using Material Design 3 principles",
   "author": "Abzu",
   "palette": {
+    "multimodal": {
+      "main": "#5e35b1",
+      "contrastText": "#ffffff"
+    },
     "primary": {
       "main": "#1976d2",
       "dark": "#115293",

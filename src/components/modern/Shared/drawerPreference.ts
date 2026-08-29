@@ -14,16 +14,23 @@
 
 const KEY = "stopPlace.drawerOpen";
 
+/** Panel state on a user's first visit, before any preference has been stored. */
+const DEFAULT_DRAWER_OPEN = true;
+
 /**
  * Reads the user's sticky drawer preference from localStorage.
- * Defaults to false (collapsed) when no preference has been saved yet.
+ * Defaults to expanded on a first visit; an explicitly stored preference always wins,
+ * so a user who collapsed the panel keeps it collapsed.
  */
 export const getDrawerPreference = (): boolean => {
   try {
     const stored = localStorage.getItem(KEY);
+    if (stored === null) {
+      return DEFAULT_DRAWER_OPEN;
+    }
     return stored === "true";
   } catch {
-    return false;
+    return DEFAULT_DRAWER_OPEN;
   }
 };
 

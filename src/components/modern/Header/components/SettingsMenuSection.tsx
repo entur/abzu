@@ -29,6 +29,9 @@ import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 
+const SETTING_INDICATOR_SIZE = 20;
+const SETTING_INDICATOR_BORDER_WIDTH = 1.5;
+
 interface SettingsMenuSectionProps {
   onClose: () => void;
   isMobile: boolean;
@@ -130,7 +133,15 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
                   {item.checked ? (
                     <Check fontSize="small" color="primary" />
                   ) : (
-                    <Box sx={{ width: 20, height: 20 }} />
+                    <Box
+                      sx={{
+                        width: SETTING_INDICATOR_SIZE,
+                        height: SETTING_INDICATOR_SIZE,
+                        border: `${SETTING_INDICATOR_BORDER_WIDTH}px solid`,
+                        borderColor: "action.active",
+                        borderRadius: 0.5,
+                      }}
+                    />
                   )}
                 </ListItemIcon>
                 <ListItemText

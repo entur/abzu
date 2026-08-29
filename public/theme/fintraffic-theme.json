@@ -60,6 +60,10 @@
     ]
   },
   "palette": {
+    "multimodal": {
+      "main": "#7a4dd6",
+      "contrastText": "#ffffff"
+    },
     "mode": "light",
     "primary": {
       "main": "#1777F8",

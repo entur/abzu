@@ -4,6 +4,10 @@
   "description": "Entur's official theme configuration for Abzu Stop Place Registry",
   "author": "Entur",
   "palette": {
+    "multimodal": {
+      "main": "#6a4fbb",
+      "contrastText": "#ffffff"
+    },
     "primary": {
       "main": "#181c56",
       "dark": "#08091c",

@@ -22,6 +22,7 @@ import React, {
 } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../actions";
+import { offsetPositionForNewElement } from "./newElementPosition";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { MinimizedBar } from "../Shared";
 import {
@@ -227,20 +228,33 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
       ? DRAWER_WIDTH_TABLET
       : DRAWER_WIDTH_DESKTOP;
 
+  /* The live value comes first: the header, the panel field and the map bubble must
+   * never disagree about the name. Falling back to the saved name only covers the
+   * transient moment when the field has been cleared but not yet retyped. */
   const stopName =
-    originalStopPlace?.name ||
     stopPlace.name ||
+    originalStopPlace?.name ||
     formatMessage({ id: "new_stop_title" });
 
+  /* A new element is created offset from the stop place marker and immediately
+   * focused, so the user sees that something was created rather than having to
+   * hunt for a marker hidden under the stop place. */
   const handleAddAndNavigateToQuay = () => {
     const newIndex = stopPlace.quays?.length ?? 0;
-    handleAddQuay(stopPlace.location || [0, 0]);
+    handleAddQuay(
+      offsetPositionForNewElement(stopPlace.location || [0, 0], newIndex),
+    );
+    dispatch(StopPlaceActions.setElementFocus(newIndex, "quay"));
     setView({ type: "quay", index: newIndex });
   };
 
   const handleAddAndNavigateToParking = (type: string) => {
     const newIndex = stopPlace.parking?.length ?? 0;
-    handleAddParking(type, stopPlace.location || [0, 0]);
+    handleAddParking(
+      type,
+      offsetPositionForNewElement(stopPlace.location || [0, 0], newIndex),
+    );
+    dispatch(StopPlaceActions.setElementFocus(newIndex, type));
     setView({ type: "parking", index: newIndex });
   };
 
