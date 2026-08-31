@@ -416,6 +416,7 @@
   "report_columnNames_tags": "Tagger",
   "report_columnNames_waitingRoomEquipment": "Venterom",
   "report_columnNames_wheelchairAccess": "Rullestolvennlighet",
+  "report_search_placeholder": "Søk etter stoppested på navn eller ID",
   "report_site": "Rapporter",
   "required_fields_missing_action": "Sett de nødvendige verdiene for å kunne lagre ny versjon",
   "required_fields_missing_action_new": "Sett de nødvendige verdiene for å kunne opprette nytt stoppested",

@@ -91,12 +91,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     versionsDialogOpen,
     handleOpenVersionsDialog: openVersionsDialogRaw,
     handleCloseVersionsDialog,
-    infoDialogOpen,
-    handleOpenInfoDialog,
-    handleCloseInfoDialog,
-    nameDescriptionDialogOpen,
-    handleOpenNameDescriptionDialog,
-    handleCloseNameDescriptionDialog,
   } = useStopPlaceDialogs();
 
   // 3. CRUD (save, undo, go back, terminate)
@@ -225,12 +219,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleCloseAltNamesDialog,
     handleOpenVersionsDialog: handleOpenVersionsDialogWithFetch,
     handleCloseVersionsDialog,
-    infoDialogOpen,
-    handleOpenInfoDialog,
-    handleCloseInfoDialog,
-    nameDescriptionDialogOpen,
-    handleOpenNameDescriptionDialog,
-    handleCloseNameDescriptionDialog,
 
     handleNameChange,
     handleDescriptionChange,

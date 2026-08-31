@@ -39,6 +39,7 @@ import {
 } from "./components";
 import { useEditStopPage } from "./hooks/useEditStopPage";
 import { useMinimizedBarActions } from "./hooks/useMinimizedBarActions";
+import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
 import { EditStopPageProps } from "./types";
 
 const DRAWER_WIDTH_DESKTOP = 450;
@@ -71,6 +72,9 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     isOpenRef.current = isOpen;
   }, [isOpen]);
   const [view, setView] = useState<View>({ type: "stopPlace" });
+  /* Owned here rather than in StopPlaceView so a collapsed shortcut can select a
+   * tab and expand the panel in one action. */
+  const [activeTab, setActiveTab] = useState(DEFAULT_STOP_PLACE_TAB);
   const [wizardConfirmed, setWizardConfirmed] = useState(false);
 
   const focusedElement = useAppSelector(
@@ -118,6 +122,19 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     setInternalOpen(next);
   };
 
+  /**
+   * A collapsed-bar shortcut: select the tab, leave any quay/parking sub-panel,
+   * and expand. Editing then happens in the panel with its save button visible,
+   * instead of in a dialog floating over a collapsed bar.
+   */
+  const handleOpenTab = useCallback((tabIndex: number) => {
+    setActiveTab(tabIndex);
+    setView({ type: "stopPlace" });
+    if (isOpenRef.current) return;
+    setDrawerPreference(true);
+    setInternalOpen(true);
+  }, []);
+
   const handleBackToStopPlace = useCallback(() => {
     // Clear the focused quay so its map highlight and boarding-position markers
     // don't linger while the stop panel is shown.
@@ -144,8 +161,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     tagsDialogOpen,
     altNamesDialogOpen,
     versionsDialogOpen,
-    infoDialogOpen,
-    nameDescriptionDialogOpen,
     handleOpenSaveDialog,
     handleCloseSaveDialog,
     handleSave,
@@ -169,10 +184,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleCloseAltNamesDialog,
     handleOpenVersionsDialog,
     handleCloseVersionsDialog,
-    handleOpenInfoDialog,
-    handleCloseInfoDialog,
-    handleOpenNameDescriptionDialog,
-    handleCloseNameDescriptionDialog,
     handleNameChange,
     handleDescriptionChange,
     handleTypeChange,
@@ -206,15 +217,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   // useMinimizedBarActions uses useIntl internally — must be called before any early return
   const minimizedBarActions = useMinimizedBarActions({
     stopPlace: stopPlace ?? ({ name: "" } as any),
-    versions,
     isModified,
     canEdit,
     canDelete,
-    onOpenInfoDialog: handleOpenInfoDialog,
-    onOpenNameDescriptionDialog: handleOpenNameDescriptionDialog,
-    onOpenTagsDialog: handleOpenTagsDialog,
-    onOpenAltNamesDialog: handleOpenAltNamesDialog,
-    onOpenVersionsDialog: handleOpenVersionsDialog,
+    onOpenTab: handleOpenTab,
     onOpenTerminateDialog: handleOpenTerminateDialog,
     onOpenUndoDialog: handleOpenUndoDialog,
     onOpenSaveDialog: handleOpenSaveDialog,
@@ -305,6 +311,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
       <StopPlaceView
         stopPlace={stopPlace}
         stopName={stopName}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
         canEdit={canEdit}
         canDelete={canDelete}
         isModified={isModified}
@@ -438,8 +446,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         tagsDialogOpen={tagsDialogOpen}
         altNamesDialogOpen={altNamesDialogOpen}
         versionsDialogOpen={versionsDialogOpen}
-        infoDialogOpen={infoDialogOpen}
-        nameDescriptionDialogOpen={nameDescriptionDialogOpen}
         versions={versions}
         versionsLoading={versionsLoading}
         handleSave={handleSave}
@@ -462,10 +468,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         handleFindTagByName={handleFindTagByName}
         handleCloseAltNamesDialog={handleCloseAltNamesDialog}
         handleCloseVersionsDialog={handleCloseVersionsDialog}
-        handleCloseInfoDialog={handleCloseInfoDialog}
-        handleCloseNameDescriptionDialog={handleCloseNameDescriptionDialog}
-        handleNameChange={handleNameChange}
-        handleDescriptionChange={handleDescriptionChange}
       />
     </>
   );

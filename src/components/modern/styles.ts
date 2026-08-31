@@ -167,6 +167,32 @@ export const headerSearchContainer: SxProps<Theme> = {
   mx: 2,
 };
 
+/**
+ * The outlined-search treatment shared by the main page search and the report
+ * page search.
+ *
+ * The two search bars do different jobs — one looks up stop places live, the
+ * other submits a report query — but they sit in the same header slot and must
+ * read as the same control. Defined once so they cannot drift apart again.
+ */
+export const searchFieldSx = (theme: Theme) => ({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: 2,
+    backgroundColor: theme.palette.background.default,
+    "&:hover": {
+      "& > fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+    "&.Mui-focused": {
+      "& > fieldset": {
+        borderWidth: 0,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+});
+
 // ============================================================================
 // Header Search Styles
 // ============================================================================

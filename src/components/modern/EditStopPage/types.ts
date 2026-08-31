@@ -192,6 +192,9 @@ export interface ParkingPanelProps {
 export interface StopPlaceViewProps {
   stopPlace: StopPlace;
   stopName: string;
+  /** Index of the selected editor tab; owned by EditStopPage. */
+  activeTab: number;
+  onTabChange: (tabIndex: number) => void;
   canEdit: boolean;
   canDelete: boolean;
   isModified: boolean;
@@ -228,8 +231,6 @@ export interface StopPlaceDialogsProps {
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   versionsDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   versions: any[];
   versionsLoading: boolean;
   handleSave: (userInput: any) => void;
@@ -259,10 +260,6 @@ export interface StopPlaceDialogsProps {
   handleFindTagByName: (name: string) => any;
   handleCloseAltNamesDialog: () => void;
   handleCloseVersionsDialog: () => void;
-  handleCloseInfoDialog: () => void;
-  handleCloseNameDescriptionDialog: () => void;
-  handleNameChange: (name: string) => void;
-  handleDescriptionChange: (description: string) => void;
 }
 
 // --- Hook return types ---
@@ -290,8 +287,6 @@ export interface UseEditStopPageReturn {
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   versionsDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
 
   // Dialog handlers
   handleOpenSaveDialog: () => void;
@@ -325,10 +320,6 @@ export interface UseEditStopPageReturn {
   handleCloseAltNamesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
-  handleOpenInfoDialog: () => void;
-  handleCloseInfoDialog: () => void;
-  handleOpenNameDescriptionDialog: () => void;
-  handleCloseNameDescriptionDialog: () => void;
 
   // Form handlers
   handleNameChange: (value: string) => void;

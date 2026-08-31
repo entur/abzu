@@ -416,6 +416,7 @@
   "report_columnNames_tags": "Tags",
   "report_columnNames_waitingRoomEquipment": "Waiting room",
   "report_columnNames_wheelchairAccess": "Wheelchair access",
+  "report_search_placeholder": "Search stop places by name or ID",
   "report_site": "Reports",
   "required_fields_missing_action": "Set the required fields in order to save new version of stop place",
   "required_fields_missing_action_new": "Set the required fields in order to create new stop place",

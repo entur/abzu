@@ -13,103 +13,71 @@
  * limitations under the Licence. */
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import DescriptionIcon from "@mui/icons-material/Description";
-import HistoryIcon from "@mui/icons-material/History";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import LabelIcon from "@mui/icons-material/Label";
 import SaveIcon from "@mui/icons-material/Save";
-import ShortTextIcon from "@mui/icons-material/ShortText";
 import UndoIcon from "@mui/icons-material/Undo";
-import React from "react";
 import { useIntl } from "react-intl";
 import { MinimizedBarAction } from "../../Shared";
+import { DirtyBadge } from "../../Shared/ElementStatus";
+import { STOP_PLACE_TABS } from "../stopPlaceTabs";
 import { StopPlace } from "../types";
+import { useStopPlaceTabDirty } from "./useStopPlaceTabDirty";
 
 interface UseMinimizedBarActionsParams {
   stopPlace: StopPlace;
-  versions: any[];
   isModified: boolean;
   canEdit: boolean;
   canDelete: boolean;
-  onOpenInfoDialog: () => void;
-  onOpenNameDescriptionDialog: () => void;
-  onOpenTagsDialog: () => void;
-  onOpenAltNamesDialog: () => void;
-  onOpenVersionsDialog: () => void;
+  /** Expands the panel and selects the given tab. */
+  onOpenTab: (tabIndex: number) => void;
   onOpenTerminateDialog: () => void;
   onOpenUndoDialog: () => void;
   onOpenSaveDialog: () => void;
 }
 
 /**
- * Builds the MinimizedBarAction[] for the stop place editor toolbar.
- * Extracted to keep EditStopPage lean; the array is config-like and deserves its own home.
+ * Actions for the collapsed bar.
+ *
+ * The informational half is a shortcut per editor tab: clicking one expands the
+ * panel on that tab rather than opening a dialog. Editing therefore always
+ * happens in the panel, where the save button is visible — a floating form that
+ * had lost its context could never say what it was saving.
+ *
+ * Only genuine modal decisions remain as dialogs: terminate, undo and save.
  */
 export const useMinimizedBarActions = ({
   stopPlace,
-  versions,
   isModified,
   canEdit,
   canDelete,
-  onOpenInfoDialog,
-  onOpenNameDescriptionDialog,
-  onOpenTagsDialog,
-  onOpenAltNamesDialog,
-  onOpenVersionsDialog,
+  onOpenTab,
   onOpenTerminateDialog,
   onOpenUndoDialog,
   onOpenSaveDialog,
 }: UseMinimizedBarActionsParams): MinimizedBarAction[] => {
   const { formatMessage } = useIntl();
+  const isTabDirty = useStopPlaceTabDirty();
 
-  const baseActions: MinimizedBarAction[] = [
-    {
-      id: "info",
-      icon: React.createElement(InfoOutlinedIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "information" }),
-      onClick: onOpenInfoDialog,
-      tooltip: formatMessage({ id: "information" }),
-    },
-    {
-      id: "name-description",
-      icon: React.createElement(DescriptionIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "edit_name_and_description" }),
-      onClick: onOpenNameDescriptionDialog,
-      tooltip: formatMessage({ id: "edit_name_and_description" }),
-    },
-    {
-      id: "tags",
-      icon: React.createElement(LabelIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "tags" }),
-      onClick: onOpenTagsDialog,
-      tooltip: formatMessage({ id: "tags" }),
-    },
-    {
-      id: "alt-names",
-      icon: React.createElement(ShortTextIcon, { fontSize: "small" }),
-      label: formatMessage({ id: "alternative_names" }),
-      onClick: onOpenAltNamesDialog,
-      tooltip: formatMessage({ id: "alternative_names" }),
-    },
-    ...(!stopPlace.isChildOfParent
-      ? [
-          {
-            id: "versions",
-            icon: React.createElement(HistoryIcon, { fontSize: "small" }),
-            label: formatMessage({ id: "versions" }),
-            onClick: onOpenVersionsDialog,
-            tooltip: `${formatMessage({ id: "versions" })}${versions.length > 0 ? ` (${versions.length})` : ""}`,
-          },
-        ]
-      : []),
-  ];
+  const tabShortcuts: MinimizedBarAction[] = STOP_PLACE_TABS.map((tab) => {
+    const label = formatMessage({ id: tab.labelId });
+    return {
+      id: `tab-${tab.id}`,
+      icon: (
+        <DirtyBadge dirty={isTabDirty(tab.dirtyKeys)}>
+          {tab.renderIcon()}
+        </DirtyBadge>
+      ),
+      label,
+      tooltip: label,
+      onClick: () => onOpenTab(tab.index),
+    };
+  });
 
   const terminateAction: MinimizedBarAction[] =
     stopPlace.id && canDelete
       ? [
           {
             id: "terminate",
-            icon: React.createElement(DeleteIcon, { fontSize: "small" }),
+            icon: <DeleteIcon fontSize="small" />,
             label: formatMessage({
               id: stopPlace.hasExpired
                 ? "delete_stop_place"
@@ -131,7 +99,7 @@ export const useMinimizedBarActions = ({
     ? [
         {
           id: "undo",
-          icon: React.createElement(UndoIcon, { fontSize: "small" }),
+          icon: <UndoIcon fontSize="small" />,
           label: formatMessage({ id: "undo_changes" }),
           onClick: onOpenUndoDialog,
           disabled: !isModified,
@@ -140,7 +108,7 @@ export const useMinimizedBarActions = ({
         },
         {
           id: "save",
-          icon: React.createElement(SaveIcon, { fontSize: "small" }),
+          icon: <SaveIcon fontSize="small" />,
           label: formatMessage({ id: "save" }),
           onClick: onOpenSaveDialog,
           disabled: !isModified || !stopPlace.name,
@@ -151,5 +119,5 @@ export const useMinimizedBarActions = ({
       ]
     : [];
 
-  return [...baseActions, ...terminateAction, ...editActions];
+  return [...tabShortcuts, ...terminateAction, ...editActions];
 };

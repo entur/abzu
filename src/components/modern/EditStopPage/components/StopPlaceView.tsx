@@ -29,17 +29,9 @@ import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
 import { StopPlaceViewProps } from "../types";
-import {
-  ACCESSIBILITY_TAB_KEYS,
-  ASSISTANCE_TAB_KEYS,
-  DirtyBadge,
-  FACILITIES_TAB_KEYS,
-  hasChangedKey,
-  hasGeneralTabChange,
-  KEY_VALUES_TAB_KEYS,
-  useElementStatusEnabled,
-  useStopPlaceDirtyKeys,
-} from "../../Shared/ElementStatus";
+import { DirtyBadge } from "../../Shared/ElementStatus";
+import { useStopPlaceTabDirty } from "../hooks/useStopPlaceTabDirty";
+import { STOP_PLACE_TABS } from "../stopPlaceTabs";
 import { StopPlaceMembership } from "../../Shared";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { ParkingSection } from "./ParkingSection";
@@ -59,6 +51,8 @@ import { TimetableDialog } from "./TimetableDialog";
 export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   stopPlace,
   stopName,
+  activeTab,
+  onTabChange,
   canEdit,
   canDelete,
   isModified,
@@ -81,14 +75,7 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
-  const [activeTab, setActiveTab] = useState(0);
-  const isStatusEnabled = useElementStatusEnabled();
-  const dirtyKeys = useStopPlaceDirtyKeys();
-
-  /** Tab 0 catches every changed key no other tab claims. */
-  const isTabDirty = (keys?: readonly string[]) =>
-    isStatusEnabled &&
-    (keys ? hasChangedKey(dirtyKeys, keys) : hasGeneralTabChange(dirtyKeys));
+  const isTabDirty = useStopPlaceTabDirty();
   const [timetableOpen, setTimetableOpen] = useState(false);
 
   return (
@@ -103,79 +90,31 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 
       <Divider />
 
-      {/* Tabs */}
+      {/* Tabs — generated from STOP_PLACE_TABS, the same list that builds the
+          collapsed bar's shortcuts, so the two can never drift apart. */}
       <Box sx={{ flexShrink: 0, bgcolor: "background.default" }}>
         <Tabs
           value={activeTab}
-          onChange={(_, v) => setActiveTab(v)}
+          onChange={(_, value) => onTabChange(value)}
           variant="fullWidth"
           sx={{ minHeight: 40, "& .MuiTab-root": { minHeight: 40, py: 0 } }}
         >
-          <Tooltip
-            title={formatMessage({ id: "stopPlace" })}
-            placement="bottom"
-          >
-            <Tab
-              icon={
-                <DirtyBadge dirty={isTabDirty()}>
-                  <InfoOutlinedIcon fontSize="small" />
-                </DirtyBadge>
-              }
-              value={0}
-            />
-          </Tooltip>
-          <Tooltip
-            title={formatMessage({ id: "accessibility" })}
-            placement="bottom"
-          >
-            <Tab
-              icon={
-                <DirtyBadge dirty={isTabDirty(ACCESSIBILITY_TAB_KEYS)}>
-                  <AccessibleIcon fontSize="small" />
-                </DirtyBadge>
-              }
-              value={1}
-            />
-          </Tooltip>
-          <Tooltip
-            title={formatMessage({ id: "facilities" })}
-            placement="bottom"
-          >
-            <Tab
-              icon={
-                <DirtyBadge dirty={isTabDirty(FACILITIES_TAB_KEYS)}>
-                  <BusShelter sx={{ fontSize: "1.25rem" }} />
-                </DirtyBadge>
-              }
-              value={2}
-            />
-          </Tooltip>
-          <Tooltip
-            title={formatMessage({ id: "assistance" })}
-            placement="bottom"
-          >
-            <Tab
-              icon={
-                <DirtyBadge dirty={isTabDirty(ASSISTANCE_TAB_KEYS)}>
-                  <SupportAgentIcon fontSize="small" />
-                </DirtyBadge>
-              }
-              value={3}
-            />
-          </Tooltip>
-          <Tooltip
-            title={formatMessage({ id: "key_values_hint" })}
-            placement="bottom"
-          >
-            <Tab
-              icon={
-                <DirtyBadge dirty={isTabDirty(KEY_VALUES_TAB_KEYS)}>
-                  <VpnKeyIcon fontSize="small" />
-                </DirtyBadge>
-              }
-              value={4}
-            />
-          </Tooltip>
+          {STOP_PLACE_TABS.map((tab) => (
+            <Tooltip
+              key={tab.id}
+              title={formatMessage({ id: tab.labelId })}
+              placement="bottom"
+            >
+              <Tab
+                icon={
+                  <DirtyBadge dirty={isTabDirty(tab.dirtyKeys)}>
+                    {tab.renderIcon()}
+                  </DirtyBadge>
+                }
+                value={tab.index}
+              />
+            </Tooltip>
+          ))}
         </Tabs>
       </Box>
 

@@ -46,6 +46,9 @@ interface ReportPageProps {
  *   │ [Pages 1 2 3 ...]          [Export ▾]   │ ← ReportFooter
  *   └──────────────────────────────────────────┘
  */
+/** Height of the modern AppBar the report page sits beneath. */
+const APP_BAR_HEIGHT = 64;
+
 export const ReportPage: React.FC<ReportPageProps> = ({
   initialState = {},
 }) => {
@@ -128,7 +131,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "calc(100vh - 64px)",
+        height: `calc(100vh - ${APP_BAR_HEIGHT}px)`,
         overflow: "hidden",
       }}
     >
