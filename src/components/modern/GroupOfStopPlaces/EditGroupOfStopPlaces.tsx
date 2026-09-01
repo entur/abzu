@@ -49,6 +49,11 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
   // Local state for drawer and mini dialogs (sticky: remembers user preference)
   const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const [stopPlacesDialogOpen, setStopPlacesDialogOpen] = useState(false);
+  /* Removing a member is destructive enough to confirm, matching how deleting a
+     quay is gated in the stop place editor. Holds the id until confirmed. */
+  const [pendingRemoveMemberId, setPendingRemoveMemberId] = useState<
+    string | null
+  >(null);
 
   // Determine if we're using controlled or uncontrolled mode
   const isControlled = controlledOpen !== undefined;
@@ -142,7 +147,7 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
         onNameChange={handleNameChange}
         onDescriptionChange={handleDescriptionChange}
         onAddMembers={handleAddMembers}
-        onRemoveMember={handleRemoveMember}
+        onRemoveMember={setPendingRemoveMemberId}
         onOpenDelete={handleOpenDeleteDialog}
         onOpenUndo={handleOpenUndoDialog}
         onOpenSave={handleOpenSaveDialog}
@@ -168,6 +173,12 @@ export const EditGroupOfStopPlaces: React.FC<EditGroupOfStopPlacesProps> = ({
         handleCloseUndoDialog={handleCloseUndoDialog}
         handleDelete={handleDelete}
         handleCloseDeleteDialog={handleCloseDeleteDialog}
+        removeMemberDialogOpen={pendingRemoveMemberId !== null}
+        handleConfirmRemoveMember={() => {
+          if (pendingRemoveMemberId) handleRemoveMember(pendingRemoveMemberId);
+          setPendingRemoveMemberId(null);
+        }}
+        handleCloseRemoveMemberDialog={() => setPendingRemoveMemberId(null)}
         handleNameChange={handleNameChange}
         handleDescriptionChange={handleDescriptionChange}
         handleAddMembers={handleAddMembers}

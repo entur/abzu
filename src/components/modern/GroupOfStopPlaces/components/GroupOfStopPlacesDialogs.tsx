@@ -29,6 +29,7 @@ interface GroupOfStopPlacesDialogsProps {
   confirmGoBackOpen: boolean;
   confirmUndoOpen: boolean;
   confirmDeleteDialogOpen: boolean;
+  removeMemberDialogOpen: boolean;
 
   // Dialog handlers
   handleSave: () => void;
@@ -39,6 +40,8 @@ interface GroupOfStopPlacesDialogsProps {
   handleCloseUndoDialog: () => void;
   handleDelete: () => void;
   handleCloseDeleteDialog: () => void;
+  handleConfirmRemoveMember: () => void;
+  handleCloseRemoveMemberDialog: () => void;
   handleNameChange: (value: string) => void;
   handleDescriptionChange: (value: string) => void;
   handleAddMembers: (memberIds: string[]) => void;
@@ -63,6 +66,7 @@ export const GroupOfStopPlacesDialogs: React.FC<
   confirmGoBackOpen,
   confirmUndoOpen,
   confirmDeleteDialogOpen,
+  removeMemberDialogOpen,
   handleSave,
   handleCloseSaveDialog,
   handleGoBack,
@@ -71,6 +75,8 @@ export const GroupOfStopPlacesDialogs: React.FC<
   handleCloseUndoDialog,
   handleDelete,
   handleCloseDeleteDialog,
+  handleConfirmRemoveMember,
+  handleCloseRemoveMemberDialog,
   handleNameChange,
   handleDescriptionChange,
   handleAddMembers,
@@ -127,6 +133,17 @@ export const GroupOfStopPlacesDialogs: React.FC<
         cancelText={formatMessage({ id: "delete_group_cancel" })}
         onConfirm={handleDelete}
         onClose={handleCloseDeleteDialog}
+      />
+
+      {/* Removing a member from the group */}
+      <ConfirmDialog
+        open={removeMemberDialogOpen}
+        title={formatMessage({ id: "remove_stop_from_group_title" })}
+        body={formatMessage({ id: "remove_stop_from_group_confirm" })}
+        confirmText={formatMessage({ id: "remove" })}
+        cancelText={formatMessage({ id: "cancel" })}
+        onConfirm={handleConfirmRemoveMember}
+        onClose={handleCloseRemoveMemberDialog}
       />
     </>
   );

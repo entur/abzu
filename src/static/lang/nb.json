@@ -394,6 +394,8 @@
   "quays": "Quayer",
   "remove": "Fjern",
   "remove_from_group": "Fjern fra gruppen",
+  "remove_stop_from_group_confirm": "Fjern dette stoppestedet fra gruppen? Ingenting sendes til serveren før du lagrer gruppen, og Angre gjenoppretter det.",
+  "remove_stop_from_group_title": "Fjern stoppested fra gruppe",
   "remove_stop_from_parent_info": "Stoppestedet vil bli fjernet som referanse. Alle de øvrige endringer vil bli forkastet",
   "remove_stop_from_parent_title": "Fjerne stoppested fra multimodalt stoppested",
   "remove_stop_place": "Fjerne stoppested",

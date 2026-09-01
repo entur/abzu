@@ -394,6 +394,8 @@
   "quays": "Quays",
   "remove": "Remove",
   "remove_from_group": "Remove from group",
+  "remove_stop_from_group_confirm": "Remove this stop place from the group? Nothing is sent to the server until you save the group, and Undo restores it.",
+  "remove_stop_from_group_title": "Remove stop place from group",
   "remove_stop_from_parent_info": "The stop place will be removed as a reference. All other changes will be discarded.",
   "remove_stop_from_parent_title": "Remove stop place from multimodal stop place",
   "remove_stop_place": "Remove stop place",
