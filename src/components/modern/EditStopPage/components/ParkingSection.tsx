@@ -12,29 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import AddIcon from "@mui/icons-material/Add";
-import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import {
-  Box,
-  Chip,
-  Collapse,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { addItemButtonSx } from "../../Shared";
 import { buildElementListEntries } from "../../Shared/ElementStatus";
 import { ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
@@ -44,7 +29,6 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
   canEdit,
   onDeleteParking,
   onNavigateToParking,
-  onAddParking,
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -57,21 +41,9 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
     (state) => (state.stopPlace as any).originalCurrent?.parking,
   );
   const [expanded, setExpanded] = useState(false);
-  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
-
   // Ghost rows for staged deletions come from the original snapshot, so the list
   // shows what will happen on save rather than silently dropping the row.
   const entries = buildElementListEntries(parking, originalParking);
-
-  const handleAddClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    setMenuAnchor(e.currentTarget);
-  };
-
-  const handleMenuSelect = (type: string) => {
-    setMenuAnchor(null);
-    onAddParking(type);
-  };
 
   return (
     <Box>
@@ -103,45 +75,7 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
         ) : (
           <ExpandMoreIcon fontSize="small" color="action" />
         )}
-        <Tooltip title={formatMessage({ id: "new_parking" })}>
-          <span>
-            <IconButton
-              size="small"
-              onClick={handleAddClick}
-              disabled={!canEdit}
-              sx={addItemButtonSx("info.main")}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
       </Box>
-
-      {/* Parking type selection menu */}
-      <Menu
-        anchorEl={menuAnchor}
-        open={Boolean(menuAnchor)}
-        onClose={() => setMenuAnchor(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem onClick={() => handleMenuSelect("parkAndRide")}>
-          <ListItemIcon>
-            <LocalParkingIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            {formatMessage({ id: "parking_item_title_parkAndRide" })}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => handleMenuSelect("bikeParking")}>
-          <ListItemIcon>
-            <DirectionsBikeIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            {formatMessage({ id: "parking_item_title_bikeParking" })}
-          </ListItemText>
-        </MenuItem>
-      </Menu>
 
       {/* Collapsible parking list */}
       <Collapse in={expanded}>

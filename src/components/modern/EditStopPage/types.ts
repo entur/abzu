@@ -132,7 +132,6 @@ export interface QuaysSectionProps {
   canEdit: boolean;
   onDeleteQuay: (index: number) => void;
   onNavigateToQuay: (index: number) => void;
-  onAddQuay: () => void;
 }
 
 export interface QuayItemProps {
@@ -151,7 +150,6 @@ export interface ParkingSectionProps {
   canEdit: boolean;
   onDeleteParking: (index: number) => void;
   onNavigateToParking: (index: number) => void;
-  onAddParking: (type: string) => void;
 }
 
 export interface ParkingItemProps {
@@ -200,8 +198,6 @@ export interface StopPlaceViewProps {
   isModified: boolean;
   onGoBack: () => void;
   onToggle: () => void;
-  onAddQuay: () => void;
-  onAddParking: (type: string) => void;
   onDeleteQuay: (index: number) => void;
   onDeleteParking: (index: number) => void;
   onNameChange: (value: string) => void;
@@ -338,12 +334,10 @@ export interface UseEditStopPageReturn {
   handleQuayPrivateCodeChange: (index: number, value: string) => void;
   handleQuayDescriptionChange: (index: number, value: string) => void;
   handleQuayCompassBearingChange: (index: number, value: number | null) => void;
-  handleAddQuay: (position: [number, number]) => void;
 
   // Parking handlers
   handleDeleteParking: (index: number) => void;
   handleParkingNameChange: (index: number, value: string) => void;
   handleParkingTypeChange: (index: number, value: string) => void;
   handleParkingCapacityChange: (index: number, value: string) => void;
-  handleAddParking: (type: string, position: [number, number]) => void;
 }

@@ -12,24 +12,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import AddIcon from "@mui/icons-material/Add";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import {
-  Box,
-  Chip,
-  Collapse,
-  Divider,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, Collapse, Divider, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { addItemButtonSx } from "../../Shared";
 import { buildElementListEntries } from "../../Shared/ElementStatus";
 import { QuaysSectionProps } from "../types";
 
@@ -40,7 +30,6 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
   canEdit,
   onDeleteQuay,
   onNavigateToQuay,
-  onAddQuay,
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
@@ -92,21 +81,6 @@ export const QuaysSection: React.FC<QuaysSectionProps> = ({
         ) : (
           <ExpandMoreIcon fontSize="small" color="action" />
         )}
-        <Tooltip title={formatMessage({ id: "new_quay" })}>
-          <span>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddQuay();
-              }}
-              disabled={!canEdit}
-              sx={addItemButtonSx("success.main")}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
       </Box>
 
       {/* Collapsible quay list */}

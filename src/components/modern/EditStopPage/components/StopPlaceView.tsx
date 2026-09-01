@@ -12,18 +12,13 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import AccessibleIcon from "@mui/icons-material/Accessible";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import UndoIcon from "@mui/icons-material/Undo";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { Box, Button, Divider, Tab, Tabs, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
-import BusShelter from "../../../../static/icons/facilities/BusShelter";
 import { useAppDispatch } from "../../../../store/hooks";
 import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityStopTab";
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
@@ -58,8 +53,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
   isModified,
   onGoBack,
   onToggle,
-  onAddQuay,
-  onAddParking,
   onDeleteQuay,
   onDeleteParking,
   onNameChange,
@@ -146,7 +139,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
               onNavigateToQuay={(index) =>
                 dispatch(StopPlaceActions.setElementFocus(index, "quay"))
               }
-              onAddQuay={onAddQuay}
             />
             <ParkingSection
               parking={stopPlace.parking || []}
@@ -157,7 +149,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
                   stopPlace.parking?.[index]?.parkingType ?? "parkAndRide";
                 dispatch(StopPlaceActions.setElementFocus(index, parkingType));
               }}
-              onAddParking={onAddParking}
             />
             {/* Only renders for the "stack" variant — the other membership
                 layouts mount inline inside StopPlaceGeneralSection. */}

@@ -22,7 +22,6 @@ import React, {
 } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../actions";
-import { offsetPositionForNewElement } from "./newElementPosition";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { MinimizedBar } from "../Shared";
 import {
@@ -198,12 +197,10 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
     handleQuayCompassBearingChange,
-    handleAddQuay,
     handleDeleteParking,
     handleParkingNameChange,
     handleParkingTypeChange,
     handleParkingCapacityChange,
-    handleAddParking,
   } = useEditStopPage();
 
   // Whenever the current stop place identity changes (e.g. the user opens a
@@ -241,28 +238,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     stopPlace.name ||
     originalStopPlace?.name ||
     formatMessage({ id: "new_stop_title" });
-
-  /* A new element is created offset from the stop place marker and immediately
-   * focused, so the user sees that something was created rather than having to
-   * hunt for a marker hidden under the stop place. */
-  const handleAddAndNavigateToQuay = () => {
-    const newIndex = stopPlace.quays?.length ?? 0;
-    handleAddQuay(
-      offsetPositionForNewElement(stopPlace.location || [0, 0], newIndex),
-    );
-    dispatch(StopPlaceActions.setElementFocus(newIndex, "quay"));
-    setView({ type: "quay", index: newIndex });
-  };
-
-  const handleAddAndNavigateToParking = (type: string) => {
-    const newIndex = stopPlace.parking?.length ?? 0;
-    handleAddParking(
-      type,
-      offsetPositionForNewElement(stopPlace.location || [0, 0], newIndex),
-    );
-    dispatch(StopPlaceActions.setElementFocus(newIndex, type));
-    setView({ type: "parking", index: newIndex });
-  };
 
   const handleConfirmDeleteQuayAndBack = () => {
     handleConfirmDeleteQuay();
@@ -318,8 +293,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
         isModified={isModified}
         onGoBack={handleAllowUserToGoBack}
         onToggle={handleToggle}
-        onAddQuay={handleAddAndNavigateToQuay}
-        onAddParking={handleAddAndNavigateToParking}
         onDeleteQuay={handleDeleteQuay}
         onDeleteParking={handleDeleteParking}
         onNameChange={handleNameChange}

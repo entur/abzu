@@ -134,7 +134,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
     handleQuayCompassBearingChange,
-    handleAddQuay,
   } = useStopPlaceQuays(
     stopPlace,
     handleOpenDeleteQuayDialog,
@@ -148,7 +147,6 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleParkingNameChange,
     handleParkingTypeChange,
     handleParkingCapacityChange,
-    handleAddParking,
   } = useStopPlaceParking(
     stopPlace,
     handleOpenDeleteParkingDialog,
@@ -235,12 +233,10 @@ export const useEditStopPage = (): UseEditStopPageReturn => {
     handleQuayPrivateCodeChange,
     handleQuayDescriptionChange,
     handleQuayCompassBearingChange,
-    handleAddQuay,
 
     handleDeleteParking,
     handleParkingNameChange,
     handleParkingTypeChange,
     handleParkingCapacityChange,
-    handleAddParking,
   };
 };

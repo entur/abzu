@@ -101,7 +101,15 @@ export const MultimodalEdgesLayer = () => {
         id="multimodal-edges-casing"
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
-        paint={{ "line-color": "#ffffff", "line-width": 6, "line-opacity": 1 }}
+        paint={{
+          /* The casing is the MM line's contrast colour, so it follows the same
+             token rather than a fixed white that ignores the theme. */
+          "line-color":
+            theme.palette.multimodal?.contrastText ??
+            theme.palette.background.paper,
+          "line-width": 6,
+          "line-opacity": 1,
+        }}
       />
       <Layer
         id="multimodal-edges-line"
