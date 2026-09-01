@@ -20,7 +20,11 @@ import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { buildElementListEntries } from "../../Shared/ElementStatus";
+import {
+  buildElementListEntries,
+  DirtyBadge,
+  useElementStatusEnabled,
+} from "../../Shared/ElementStatus";
 import { ParkingSectionProps } from "../types";
 import { ParkingItem } from "./ParkingItem";
 
@@ -44,6 +48,12 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
   // Ghost rows for staged deletions come from the original snapshot, so the list
   // shows what will happen on save rather than silently dropping the row.
   const entries = buildElementListEntries(parking, originalParking);
+  const isStatusEnabled = useElementStatusEnabled();
+
+  /* The section is collapsed by default, so without a badge here a changed quay
+     is invisible in the panel — the row dot is hidden with the list. DirtyBadge
+     exists for exactly this: a surface that hides its contents. */
+  const hasPendingEntry = entries.some((entry) => entry.status !== "unchanged");
 
   return (
     <Box>
@@ -65,7 +75,9 @@ export const ParkingSection: React.FC<ParkingSectionProps> = ({
           userSelect: "none",
         }}
       >
-        <LocalParkingIcon fontSize="small" color="action" />
+        <DirtyBadge dirty={isStatusEnabled && hasPendingEntry}>
+          <LocalParkingIcon fontSize="small" color="action" />
+        </DirtyBadge>
         <Typography variant="subtitle2" sx={{ fontWeight: 600, flex: 1 }}>
           {formatMessage({ id: "parking" })}
         </Typography>

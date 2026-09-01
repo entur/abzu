@@ -32,12 +32,13 @@ import {
   NewStopWizard,
   ParkingPanel,
   QuayPanel,
+  StopPlaceActionBar,
   StopPlaceDialogs,
   StopPlaceHeader,
+  StopPlaceTabStrip,
   StopPlaceView,
 } from "./components";
 import { useEditStopPage } from "./hooks/useEditStopPage";
-import { useMinimizedBarActions } from "./hooks/useMinimizedBarActions";
 import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
 import { EditStopPageProps } from "./types";
 
@@ -128,7 +129,11 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
    */
   const handleOpenTab = useCallback((tabIndex: number) => {
     setActiveTab(tabIndex);
-    setView({ type: "stopPlace" });
+    /* Keep the same object when already on the stop place view, so re-selecting
+       the current tab doesn't trigger a pointless re-render. */
+    setView((current) =>
+      current.type === "stopPlace" ? current : { type: "stopPlace" },
+    );
     if (isOpenRef.current) return;
     setDrawerPreference(true);
     setInternalOpen(true);
@@ -210,18 +215,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
   useEffect(() => {
     setView({ type: "stopPlace" });
   }, [currentStopId]);
-
-  // useMinimizedBarActions uses useIntl internally — must be called before any early return
-  const minimizedBarActions = useMinimizedBarActions({
-    stopPlace: stopPlace ?? ({ name: "" } as any),
-    isModified,
-    canEdit,
-    canDelete,
-    onOpenTab: handleOpenTab,
-    onOpenTerminateDialog: handleOpenTerminateDialog,
-    onOpenUndoDialog: handleOpenUndoDialog,
-    onOpenSaveDialog: handleOpenSaveDialog,
-  });
 
   if (!stopPlace) return null;
 
@@ -313,7 +306,6 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
     <MinimizedBar
       icon={<span />}
       hasId={!!stopPlace.id}
-      actions={minimizedBarActions}
       onExpand={handleToggle}
       onClose={handleAllowUserToGoBack}
       isMobile={isMobile}
@@ -324,6 +316,20 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           onClose={handleAllowUserToGoBack}
           onToggle={handleToggle}
           isExpanded={false}
+        />
+      }
+      tabStrip={
+        <StopPlaceTabStrip activeTab={activeTab} onTabChange={handleOpenTab} />
+      }
+      actionBar={
+        <StopPlaceActionBar
+          stopPlace={stopPlace}
+          canEdit={canEdit}
+          canDelete={canDelete}
+          isModified={isModified}
+          onOpenTerminateDialog={handleOpenTerminateDialog}
+          onOpenUndoDialog={handleOpenUndoDialog}
+          onOpenSaveDialog={handleOpenSaveDialog}
         />
       }
     />

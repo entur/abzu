@@ -12,8 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
+import { useAppSelector } from "../../../../store/hooks";
 import {
   hasChangedKey,
+  hasChildCollectionChange,
   hasGeneralTabChange,
   useElementStatusEnabled,
   useStopPlaceDirtyKeys,
@@ -31,8 +33,24 @@ export const useStopPlaceTabDirty = (): IsTabDirty => {
   const isStatusEnabled = useElementStatusEnabled();
   const dirtyKeys = useStopPlaceDirtyKeys();
 
-  /** No keys means the General tab, which catches every key no other tab claims. */
-  return (keys?: readonly string[]) =>
-    isStatusEnabled &&
-    (keys ? hasChangedKey(dirtyKeys, keys) : hasGeneralTabChange(dirtyKeys));
+  const current = useAppSelector(
+    (state) => (state.stopPlace as any).current as Record<string, unknown>,
+  );
+  const original = useAppSelector(
+    (state) =>
+      (state.stopPlace as any).originalCurrent as Record<string, unknown>,
+  );
+
+  /**
+   * No keys means the General tab, which catches every key no other tab claims —
+   * plus the quay and parking lists it contains, so a moved quay marks the tab.
+   */
+  return (keys?: readonly string[]) => {
+    if (!isStatusEnabled) return false;
+    if (keys) return hasChangedKey(dirtyKeys, keys);
+    return (
+      hasGeneralTabChange(dirtyKeys) ||
+      hasChildCollectionChange(current, original)
+    );
+  };
 };

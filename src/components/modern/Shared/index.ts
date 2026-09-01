@@ -3,6 +3,8 @@ export { CenterMapButton } from "./CenterMapButton";
 export { CopyIdButton } from "./CopyIdButton";
 export { CountBadge } from "./CountBadge";
 export { ExpiredWarning } from "./ExpiredWarning";
+export { EntityTabStrip, type EntityTabDefinition } from "./EntityTabStrip";
+export { INFO_ONLY_TABS, INFO_TAB_INDEX } from "./infoOnlyTabs";
 export { FavoriteButton } from "./FavoriteButton";
 export { GroupMembership } from "./GroupMembership";
 export { ImportedId } from "./ImportedId";

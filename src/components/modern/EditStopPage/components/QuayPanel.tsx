@@ -34,7 +34,8 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import BusShelter from "../../../../static/icons/facilities/BusShelter";
-import { useAppSelector } from "../../../../store/hooks";
+import { StopPlaceActions } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import AccessibilityQuayTab from "../../../EditStopPage/AccessibilityAssessment/AccessibilityQuayTab";
 import FacilitiesQuayTab from "../../../EditStopPage/Facility/FacilitiesQuayTab";
 import { CenterMapButton, CopyIdButton, ImportedId } from "../../Shared";
@@ -66,6 +67,7 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   const BOARDING_POSITIONS_TAB = 3;
 
   const { formatMessage } = useIntl();
+  const dispatch = useAppDispatch();
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -80,6 +82,16 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
   useLayoutEffect(() => {
     setActiveTab(0);
   }, [quayIndex]);
+
+  /* Keep map focus on the quay this panel is showing. `addElementToStop` reads
+   * `mapUtils.focusedElement` to decide which quay a new boarding position
+   * attaches to, and the map's add button only offers boarding positions while a
+   * quay is focused. The boarding-positions tab used to assert this itself, just
+   * before adding; asserting it here means the guarantee survives that button's
+   * removal and holds for anything else in the panel that depends on focus. */
+  useEffect(() => {
+    dispatch(StopPlaceActions.setElementFocus(quayIndex, "quay"));
+  }, [dispatch, quayIndex]);
 
   // Switch to boarding positions tab when a boarding position marker is clicked.
   // Runs after the reset above, so it wins when both fire in the same commit
@@ -296,7 +308,6 @@ export const QuayPanel: React.FC<QuayPanelProps> = ({
           <BoardingPositionsTab
             quay={quay}
             quayIndex={quayIndex}
-            stopPlace={stopPlace}
             canEdit={canEdit}
           />
         )}

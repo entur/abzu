@@ -12,10 +12,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence. */
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import UndoIcon from "@mui/icons-material/Undo";
-import { Box, Button, Divider, Tab, Tabs, Tooltip } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import { StopPlaceActions } from "../../../../actions";
@@ -24,15 +21,14 @@ import AccessibilityStopTab from "../../../EditStopPage/AccessibilityAssessment/
 import AssistanceStopTab from "../../../EditStopPage/Assistance/AssistanceStopTab";
 import FacilitiesStopTab from "../../../EditStopPage/Facility/FacilitiesStopTab";
 import { StopPlaceViewProps } from "../types";
-import { DirtyBadge } from "../../Shared/ElementStatus";
-import { useStopPlaceTabDirty } from "../hooks/useStopPlaceTabDirty";
-import { STOP_PLACE_TABS } from "../stopPlaceTabs";
 import { StopPlaceMembership } from "../../Shared";
 import { KeyValuesTab } from "./KeyValuesTab";
 import { ParkingSection } from "./ParkingSection";
 import { QuaysSection } from "./QuaysSection";
 import { StopPlaceGeneralSection } from "./StopPlaceGeneralSection";
+import { StopPlaceActionBar } from "./StopPlaceActionBar";
 import { StopPlaceHeader } from "./StopPlaceHeader";
+import { StopPlaceTabStrip } from "./StopPlaceTabStrip";
 import { TimetableDialog } from "./TimetableDialog";
 
 /**
@@ -68,7 +64,6 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const dispatch = useAppDispatch();
-  const isTabDirty = useStopPlaceTabDirty();
   const [timetableOpen, setTimetableOpen] = useState(false);
 
   return (
@@ -83,32 +78,8 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 
       <Divider />
 
-      {/* Tabs — generated from STOP_PLACE_TABS, the same list that builds the
-          collapsed bar's shortcuts, so the two can never drift apart. */}
       <Box sx={{ flexShrink: 0, bgcolor: "background.default" }}>
-        <Tabs
-          value={activeTab}
-          onChange={(_, value) => onTabChange(value)}
-          variant="fullWidth"
-          sx={{ minHeight: 40, "& .MuiTab-root": { minHeight: 40, py: 0 } }}
-        >
-          {STOP_PLACE_TABS.map((tab) => (
-            <Tooltip
-              key={tab.id}
-              title={formatMessage({ id: tab.labelId })}
-              placement="bottom"
-            >
-              <Tab
-                icon={
-                  <DirtyBadge dirty={isTabDirty(tab.dirtyKeys)}>
-                    {tab.renderIcon()}
-                  </DirtyBadge>
-                }
-                value={tab.index}
-              />
-            </Tooltip>
-          ))}
-        </Tabs>
+        <StopPlaceTabStrip activeTab={activeTab} onTabChange={onTabChange} />
       </Box>
 
       <Divider />
@@ -180,57 +151,15 @@ export const StopPlaceView: React.FC<StopPlaceViewProps> = ({
 
       {/* Footer */}
       <Divider />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.paper",
-          flexWrap: "wrap",
-          flexShrink: 0,
-        }}
-      >
-        {stopPlace.id && canDelete && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            startIcon={<DeleteIcon />}
-            onClick={onOpenTerminateDialog}
-          >
-            {formatMessage({
-              id: stopPlace.hasExpired
-                ? "delete_stop_place"
-                : "terminate_stop_place",
-            })}
-          </Button>
-        )}
-        {canEdit && (
-          <>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<UndoIcon />}
-              onClick={onOpenUndoDialog}
-              disabled={!isModified}
-              sx={{ ml: "auto" }}
-            >
-              {formatMessage({ id: "undo_changes" })}
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              startIcon={<SaveIcon />}
-              onClick={onOpenSaveDialog}
-              disabled={!isModified || !stopPlace.name}
-            >
-              {formatMessage({ id: "save" })}
-            </Button>
-          </>
-        )}
-      </Box>
+      <StopPlaceActionBar
+        stopPlace={stopPlace}
+        canEdit={canEdit}
+        canDelete={canDelete}
+        isModified={isModified}
+        onOpenTerminateDialog={onOpenTerminateDialog}
+        onOpenUndoDialog={onOpenUndoDialog}
+        onOpenSaveDialog={onOpenSaveDialog}
+      />
 
       {/* Timetable dialog — owned locally since it's only relevant in stop view */}
       {stopPlace.id && (

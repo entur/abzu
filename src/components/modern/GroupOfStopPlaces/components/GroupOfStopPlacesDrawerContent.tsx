@@ -13,6 +13,8 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Divider, Drawer } from "@mui/material";
+import { useMemo } from "react";
+import { EntityTabStrip, INFO_ONLY_TABS, INFO_TAB_INDEX } from "../../Shared";
 import {
   GroupOfStopPlacesActions,
   GroupOfStopPlacesDetails,
@@ -67,6 +69,12 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
   onOpenUndo,
   onOpenSave,
 }) => {
+  /* One information tab; the dot marks unsaved changes. */
+  const tabs = useMemo(
+    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
+    [isModified],
+  );
+
   return (
     <Drawer
       variant="persistent"
@@ -110,6 +118,17 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
         />
 
         <Divider />
+
+        {/* Same strip the collapsed bar shows, so the two are one layout. */}
+        <Box sx={{ flexShrink: 0, bgcolor: "background.default" }}>
+          <EntityTabStrip
+            tabs={tabs}
+            activeTab={INFO_TAB_INDEX}
+            showLabels
+            /* Single tab: selecting it while expanded is already the current view. */
+            onTabChange={() => undefined}
+          />
+        </Box>
 
         {/* Scrollable Content */}
         <Box

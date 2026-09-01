@@ -51,11 +51,14 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
   isMobile,
   hasExpired,
   customHeader,
+  tabStrip,
+  actionBar,
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const barActions = actions ?? [];
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -125,60 +128,73 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
 
       {customHeader && <Divider />}
 
-      {/* Icons - Second Row */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 0.5,
-          ...(customHeader && { px: 1.5, py: 0.5 }),
-        }}
-      >
-        {/* Desktop: Show all action icons */}
-        <MinimizedBarActions actions={actions} isSmallScreen={isSmallScreen} />
+      {/* Mirror of the expanded panel: tab strip then action bar. Collapsing must
+          not hide which tab has unsaved edits, nor the means to save them. */}
+      {tabStrip || actionBar ? (
+        <>
+          {tabStrip}
+          {tabStrip && actionBar ? <Divider /> : null}
+          {actionBar}
+        </>
+      ) : (
+        /* Icons — second row, for bars that supply plain actions instead */
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
+            ...(customHeader && { px: 1.5, py: 0.5 }),
+          }}
+        >
+          {/* Desktop: Show all action icons */}
+          <MinimizedBarActions
+            actions={barActions}
+            isSmallScreen={isSmallScreen}
+          />
 
-        {/* Mobile/Tablet: Show overflow menu */}
-        {isSmallScreen && actions.length > 0 && (
-          <>
-            <IconButton
-              size="small"
-              onClick={handleMenuOpen}
-              sx={{
-                color: theme.palette.text.primary,
-                "&:hover": { bgcolor: theme.palette.action.hover },
-              }}
-            >
-              <MoreVertIcon fontSize="small" />
-            </IconButton>
+          {/* Mobile/Tablet: Show overflow menu */}
+          {isSmallScreen && barActions.length > 0 && (
+            <>
+              <IconButton
+                size="small"
+                onClick={handleMenuOpen}
+                sx={{
+                  color: theme.palette.text.primary,
+                  "&:hover": { bgcolor: theme.palette.action.hover },
+                }}
+              >
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
 
-            <MinimizedBarMenu
-              actions={actions}
-              anchorEl={menuAnchor}
-              open={Boolean(menuAnchor)}
-              onClose={handleMenuClose}
-            />
-          </>
-        )}
+              <MinimizedBarMenu
+                actions={barActions}
+                anchorEl={menuAnchor}
+                open={Boolean(menuAnchor)}
+                onClose={handleMenuClose}
+              />
+            </>
+          )}
 
-        {/* Center map — only shown in second row when using the default header */}
-        {!customHeader && <CenterMapButton location={centerLocation} />}
+          {/* Center map — only shown in second row when using the default header */}
+          {!customHeader && <CenterMapButton location={centerLocation} />}
 
-        {/* Close — suppressed when customHeader owns the X */}
-        {!customHeader && (
-          <Tooltip title={formatMessage({ id: "close" })} arrow>
-            <IconButton
-              size="small"
-              onClick={onClose}
-              sx={{
-                color: theme.palette.text.primary,
-                "&:hover": { bgcolor: theme.palette.action.hover },
-              }}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Box>
+          {/* Close — suppressed when customHeader owns the X */}
+          {!customHeader && (
+            <Tooltip title={formatMessage({ id: "close" })} arrow>
+              <IconButton
+                size="small"
+                onClick={onClose}
+                sx={{
+                  color: theme.palette.text.primary,
+                  "&:hover": { bgcolor: theme.palette.action.hover },
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
+      )}
     </Paper>
   );
 };

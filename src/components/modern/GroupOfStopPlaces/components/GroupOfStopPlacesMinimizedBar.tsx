@@ -12,16 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DescriptionIcon from "@mui/icons-material/Description";
-import InfoIcon from "@mui/icons-material/Info";
-import SaveIcon from "@mui/icons-material/Save";
-import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Slide, useTheme } from "@mui/material";
 import { useMemo } from "react";
+import { EntityTabStrip, INFO_ONLY_TABS, INFO_TAB_INDEX } from "../../Shared";
+import { GroupOfStopPlacesActions } from "./GroupOfStopPlacesActions";
 import { IntlShape } from "react-intl";
-import { MinimizedBar, MinimizedBarAction } from "../../Shared";
+import { MinimizedBar } from "../../Shared";
 import { GroupOfStopPlacesHeader } from "./GroupOfStopPlacesHeader";
 
 interface GroupOfStopPlacesMinimizedBarProps {
@@ -37,9 +33,6 @@ interface GroupOfStopPlacesMinimizedBarProps {
   formatMessage: IntlShape["formatMessage"];
   onExpand: () => void;
   onClose: () => void;
-  onOpenInfo: () => void;
-  onOpenNameDescription: () => void;
-  onOpenStopPlaces: () => void;
   onOpenDelete: () => void;
   onOpenUndo: () => void;
   onOpenSave: () => void;
@@ -64,9 +57,6 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
   formatMessage,
   onExpand,
   onClose,
-  onOpenInfo,
-  onOpenNameDescription,
-  onOpenStopPlaces,
   onOpenDelete,
   onOpenUndo,
   onOpenSave,
@@ -74,84 +64,29 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
   const theme = useTheme();
 
   // Define minimized bar actions
-  const minimizedBarActions: MinimizedBarAction[] = useMemo(
-    () => [
-      {
-        id: "info",
-        icon: <InfoIcon fontSize="small" />,
-        label: formatMessage({ id: "information" }),
-        onClick: onOpenInfo,
-        tooltip: formatMessage({ id: "information" }),
-      },
-      {
-        id: "name-description",
-        icon: <DescriptionIcon fontSize="small" />,
-        label: formatMessage({ id: "edit_name_and_description" }),
-        onClick: onOpenNameDescription,
-        tooltip: formatMessage({ id: "edit_name_and_description" }),
-      },
-      {
-        id: "stop-places",
-        icon: <AccountTreeIcon fontSize="small" />,
-        label: formatMessage({ id: "manage_stop_places" }),
-        onClick: onOpenStopPlaces,
-        tooltip: formatMessage({ id: "manage_stop_places" }),
-      },
-      ...(canEdit && groupOfStopPlaces.id
-        ? [
-            {
-              id: "remove",
-              icon: <DeleteIcon fontSize="small" />,
-              label: formatMessage({ id: "remove" }),
-              onClick: onOpenDelete,
-              disabled: !canDelete,
-              color: "error" as const,
-              group: "action" as const,
-              tooltip: formatMessage({ id: "remove" }),
-            },
-          ]
-        : []),
-      ...(canEdit
-        ? [
-            {
-              id: "undo",
-              icon: <UndoIcon fontSize="small" />,
-              label: formatMessage({ id: "undo_changes" }),
-              onClick: onOpenUndo,
-              disabled: !isModified,
-              group: "action" as const,
-              tooltip: formatMessage({ id: "undo_changes" }),
-            },
-            {
-              id: "save",
-              icon: <SaveIcon fontSize="small" />,
-              label: formatMessage({ id: "save" }),
-              onClick: onOpenSave,
-              disabled: !isModified || !groupOfStopPlaces.name,
-              color: "primary" as const,
-              group: "action" as const,
-              tooltip: formatMessage({ id: "save" }),
-            },
-          ]
-        : []),
-    ],
-    [
-      formatMessage,
-      canEdit,
-      canDelete,
-      isModified,
-      groupOfStopPlaces.id,
-      groupOfStopPlaces.name,
-      onOpenInfo,
-      onOpenNameDescription,
-      onOpenStopPlaces,
-      onOpenDelete,
-      onOpenUndo,
-      onOpenSave,
-    ],
-  );
 
   if (isOpen) return null;
+
+  /* One information tab, matching the stop place and parent editors. The dot
+     marks unsaved changes, so collapsing never hides them. */
+  const tabs = useMemo(
+    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
+    [isModified],
+  );
+
+  /* The same action bar the expanded panel renders. */
+  const actionBar = (
+    <GroupOfStopPlacesActions
+      hasId={!!groupOfStopPlaces?.id}
+      isModified={isModified}
+      canEdit={canEdit}
+      canDelete={canDelete}
+      hasName={!!groupOfStopPlaces?.name}
+      onRemove={onOpenDelete}
+      onUndo={onOpenUndo}
+      onSave={onOpenSave}
+    />
+  );
 
   const customHeader = (
     <GroupOfStopPlacesHeader
@@ -171,7 +106,15 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
             <MinimizedBar
               icon={<span />}
               hasId={!!groupOfStopPlaces.id}
-              actions={minimizedBarActions}
+              tabStrip={
+                <EntityTabStrip
+                  tabs={tabs}
+                  activeTab={INFO_TAB_INDEX}
+                  showLabels
+                  onTabChange={onExpand}
+                />
+              }
+              actionBar={actionBar}
               onExpand={onExpand}
               onClose={onClose}
               centerLocation={centerLocation}
@@ -193,7 +136,15 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
           <MinimizedBar
             icon={<span />}
             hasId={!!groupOfStopPlaces.id}
-            actions={minimizedBarActions}
+            tabStrip={
+              <EntityTabStrip
+                tabs={tabs}
+                activeTab={INFO_TAB_INDEX}
+                showLabels
+                onTabChange={onExpand}
+              />
+            }
+            actionBar={actionBar}
             onExpand={onExpand}
             onClose={onClose}
             centerLocation={centerLocation}

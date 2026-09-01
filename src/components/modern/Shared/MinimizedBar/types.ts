@@ -45,8 +45,8 @@ export interface MinimizedBarProps {
   hasId: boolean;
   isModified?: boolean;
 
-  // Actions
-  actions: MinimizedBarAction[];
+  // Actions — ignored when `tabStrip` / `actionBar` are provided
+  actions?: MinimizedBarAction[];
 
   // Control buttons
   onExpand: () => void;
@@ -63,6 +63,14 @@ export interface MinimizedBarProps {
 
   // When provided, replaces the default MinimizedBarHeader row (and hasExpired banner)
   customHeader?: React.ReactNode;
+
+  /**
+   * When provided, these replace the icon action row entirely, so the collapsed
+   * bar mirrors the expanded panel's layout — same tab strip, same action bar —
+   * instead of showing a separate toolbar of similar-looking icons.
+   */
+  tabStrip?: React.ReactNode;
+  actionBar?: React.ReactNode;
 }
 
 /**

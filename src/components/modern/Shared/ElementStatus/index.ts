@@ -37,6 +37,7 @@ export {
   FACILITIES_TAB_KEYS,
   getChangedKeys,
   hasChangedKey,
+  hasChildCollectionChange,
   hasGeneralTabChange,
   KEY_VALUES_TAB_KEYS,
 } from "./stopPlaceFieldStatus";

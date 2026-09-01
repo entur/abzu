@@ -12,19 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DescriptionIcon from "@mui/icons-material/Description";
-import HistoryIcon from "@mui/icons-material/History";
-import InfoIcon from "@mui/icons-material/Info";
-import LabelIcon from "@mui/icons-material/Label";
-import SaveIcon from "@mui/icons-material/Save";
-import ShortTextIcon from "@mui/icons-material/ShortText";
-import UndoIcon from "@mui/icons-material/Undo";
 import { Box, Slide, useTheme } from "@mui/material";
 import { useMemo } from "react";
+import { EntityTabStrip, INFO_ONLY_TABS, INFO_TAB_INDEX } from "../../Shared";
+import { ParentStopPlaceActions } from "./ParentStopPlaceActions";
 import { IntlShape } from "react-intl";
-import { MinimizedBar, MinimizedBarAction } from "../../Shared";
+import { MinimizedBar } from "../../Shared";
 import { ParentStopPlaceHeader } from "./ParentStopPlaceHeader";
 
 interface ParentStopPlaceMinimizedBarProps {
@@ -40,12 +33,6 @@ interface ParentStopPlaceMinimizedBarProps {
   formatMessage: IntlShape["formatMessage"];
   onExpand: () => void;
   onClose: () => void;
-  onOpenInfo: () => void;
-  onOpenNameDescription: () => void;
-  onOpenChildren: () => void;
-  onOpenAltNames: () => void;
-  onOpenTags: () => void;
-  onOpenVersions: () => void;
   onOpenTerminate: () => void;
   onOpenUndo: () => void;
   onOpenSave: () => void;
@@ -70,12 +57,6 @@ export const ParentStopPlaceMinimizedBar: React.FC<
   formatMessage,
   onExpand,
   onClose,
-  onOpenInfo,
-  onOpenNameDescription,
-  onOpenChildren,
-  onOpenAltNames,
-  onOpenTags,
-  onOpenVersions,
   onOpenTerminate,
   onOpenUndo,
   onOpenSave,
@@ -83,116 +64,32 @@ export const ParentStopPlaceMinimizedBar: React.FC<
   const theme = useTheme();
 
   // Define minimized bar actions
-  const minimizedBarActions: MinimizedBarAction[] = useMemo(
-    () => [
-      {
-        id: "info",
-        icon: <InfoIcon fontSize="small" />,
-        label: formatMessage({ id: "information" }),
-        onClick: onOpenInfo,
-        tooltip: formatMessage({ id: "information" }),
-      },
-      {
-        id: "name-description",
-        icon: <DescriptionIcon fontSize="small" />,
-        label: formatMessage({ id: "edit_name_and_description" }),
-        onClick: onOpenNameDescription,
-        tooltip: formatMessage({ id: "edit_name_and_description" }),
-      },
-      {
-        id: "children",
-        icon: <AccountTreeIcon fontSize="small" />,
-        label: formatMessage({ id: "children" }),
-        onClick: onOpenChildren,
-        tooltip: formatMessage({ id: "children" }),
-      },
-      {
-        id: "tags",
-        icon: <LabelIcon fontSize="small" />,
-        label: formatMessage({ id: "tags" }),
-        onClick: onOpenTags,
-        tooltip: formatMessage({ id: "tags" }),
-      },
-      {
-        id: "alt-names",
-        icon: <ShortTextIcon fontSize="small" />,
-        label: formatMessage({ id: "alternative_names" }),
-        onClick: onOpenAltNames,
-        tooltip: formatMessage({ id: "alternative_names" }),
-      },
-      {
-        id: "versions",
-        icon: <HistoryIcon fontSize="small" />,
-        label: formatMessage({ id: "versions" }),
-        onClick: onOpenVersions,
-        tooltip: formatMessage({ id: "versions" }),
-      },
-      ...(stopPlace?.id && canDelete
-        ? [
-            {
-              id: "terminate",
-              icon: <DeleteIcon fontSize="small" />,
-              label: formatMessage({
-                id: stopPlace?.hasExpired
-                  ? "delete_stop_place"
-                  : "terminate_stop_place",
-              }),
-              onClick: onOpenTerminate,
-              color: "error" as const,
-              group: "action" as const,
-              tooltip: formatMessage({
-                id: stopPlace?.hasExpired
-                  ? "delete_stop_place"
-                  : "terminate_stop_place",
-              }),
-            },
-          ]
-        : []),
-      ...(canEdit
-        ? [
-            {
-              id: "undo",
-              icon: <UndoIcon fontSize="small" />,
-              label: formatMessage({ id: "undo_changes" }),
-              onClick: onOpenUndo,
-              disabled: !isModified,
-              group: "action" as const,
-              tooltip: formatMessage({ id: "undo_changes" }),
-            },
-            {
-              id: "save",
-              icon: <SaveIcon fontSize="small" />,
-              label: formatMessage({ id: "save" }),
-              onClick: onOpenSave,
-              disabled: !isModified || !stopPlace?.name,
-              color: "primary" as const,
-              group: "action" as const,
-              tooltip: formatMessage({ id: "save" }),
-            },
-          ]
-        : []),
-    ],
-    [
-      formatMessage,
-      canEdit,
-      canDelete,
-      isModified,
-      stopPlace?.id,
-      stopPlace?.name,
-      stopPlace?.hasExpired,
-      onOpenInfo,
-      onOpenNameDescription,
-      onOpenChildren,
-      onOpenAltNames,
-      onOpenTags,
-      onOpenVersions,
-      onOpenTerminate,
-      onOpenUndo,
-      onOpenSave,
-    ],
-  );
 
   if (isOpen || !originalStopPlace) return null;
+
+  /* One information tab, mirroring the regular stop place's strip. The dot marks
+     unsaved changes, so collapsing never hides them. */
+  const tabs = useMemo(
+    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
+    [isModified],
+  );
+
+  /* The same action bar the expanded panel renders, so save, undo and terminate
+     stay reachable while collapsed. */
+  const actionBar = (
+    <ParentStopPlaceActions
+      hasId={!!stopPlace?.id}
+      isModified={isModified}
+      canEdit={canEdit}
+      canDelete={canDelete}
+      hasName={!!stopPlace?.name}
+      hasExpired={!!stopPlace?.hasExpired}
+      hasChildren={(stopPlace?.children?.length ?? 0) > 0}
+      onTerminate={onOpenTerminate}
+      onUndo={onOpenUndo}
+      onSave={onOpenSave}
+    />
+  );
 
   const customHeader = (
     <ParentStopPlaceHeader
@@ -212,7 +109,15 @@ export const ParentStopPlaceMinimizedBar: React.FC<
             <MinimizedBar
               icon={<span />}
               hasId={!!stopPlace?.id}
-              actions={minimizedBarActions}
+              tabStrip={
+                <EntityTabStrip
+                  tabs={tabs}
+                  activeTab={INFO_TAB_INDEX}
+                  showLabels
+                  onTabChange={onExpand}
+                />
+              }
+              actionBar={actionBar}
               onExpand={onExpand}
               onClose={onClose}
               centerLocation={centerLocation}
@@ -234,7 +139,15 @@ export const ParentStopPlaceMinimizedBar: React.FC<
           <MinimizedBar
             icon={<span />}
             hasId={!!stopPlace?.id}
-            actions={minimizedBarActions}
+            tabStrip={
+              <EntityTabStrip
+                tabs={tabs}
+                activeTab={INFO_TAB_INDEX}
+                showLabels
+                onTabChange={onExpand}
+              />
+            }
+            actionBar={actionBar}
             onExpand={onExpand}
             onClose={onClose}
             centerLocation={centerLocation}

@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { IntlShape } from "react-intl";
-import { InfoDialog, NameDescriptionDialog, StopPlacesDialog } from ".";
+import { StopPlacesDialog } from ".";
 import { ConfirmDialog, SaveGroupDialog } from "../../Dialogs";
 
 interface GroupOfStopPlacesDialogsProps {
@@ -24,8 +24,6 @@ interface GroupOfStopPlacesDialogsProps {
   formatMessage: IntlShape["formatMessage"];
 
   // Dialog states
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   stopPlacesDialogOpen: boolean;
   confirmSaveDialogOpen: boolean;
   confirmGoBackOpen: boolean;
@@ -45,8 +43,6 @@ interface GroupOfStopPlacesDialogsProps {
   handleDescriptionChange: (value: string) => void;
   handleAddMembers: (memberIds: string[]) => void;
   handleRemoveMember: (memberId: string) => void;
-  onCloseInfoDialog: () => void;
-  onCloseNameDescriptionDialog: () => void;
   onCloseStopPlacesDialog: () => void;
 }
 
@@ -62,8 +58,6 @@ export const GroupOfStopPlacesDialogs: React.FC<
   centerPosition,
   canEdit,
   formatMessage,
-  infoDialogOpen,
-  nameDescriptionDialogOpen,
   stopPlacesDialogOpen,
   confirmSaveDialogOpen,
   confirmGoBackOpen,
@@ -81,35 +75,10 @@ export const GroupOfStopPlacesDialogs: React.FC<
   handleDescriptionChange,
   handleAddMembers,
   handleRemoveMember,
-  onCloseInfoDialog,
-  onCloseNameDescriptionDialog,
   onCloseStopPlacesDialog,
 }) => {
   return (
     <>
-      {/* Info Dialog */}
-      <InfoDialog
-        open={infoDialogOpen}
-        name={originalGOS.name}
-        id={originalGOS.id || ""}
-        centerPosition={centerPosition}
-        created={originalGOS.created}
-        modified={originalGOS.modified}
-        version={originalGOS.version}
-        onClose={onCloseInfoDialog}
-      />
-
-      {/* Name and Description Dialog */}
-      <NameDescriptionDialog
-        open={nameDescriptionDialogOpen}
-        name={groupOfStopPlaces.name}
-        description={groupOfStopPlaces.description || ""}
-        canEdit={canEdit}
-        onClose={onCloseNameDescriptionDialog}
-        onNameChange={handleNameChange}
-        onDescriptionChange={handleDescriptionChange}
-      />
-
       {/* Stop Places Dialog */}
       <StopPlacesDialog
         open={stopPlacesDialogOpen}
