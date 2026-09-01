@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check, Hub, Palette } from "@mui/icons-material";
+import { Hub, Palette } from "@mui/icons-material";
 import {
   Box,
   Collapse,
@@ -33,6 +33,7 @@ import { ThemeSwitcher } from "../../../../theme";
 import { MembershipDisplaySwitcher } from "../../Shared/Membership/MembershipDisplaySwitcher";
 import { useElementStatusEnabled } from "../../Shared/ElementStatus";
 import { useTheme as useAbzuTheme } from "../../../../theme/ThemeProvider";
+import { SettingIndicator } from "../../Shared";
 
 interface UICustomizationSectionProps {
   onClose: () => void;
@@ -141,11 +142,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
                 sx={settingItemStyle}
               >
                 <ListItemIcon sx={{ minWidth: 32 }}>
-                  {uiMode === "modern" ? (
-                    <Check fontSize="small" color="primary" />
-                  ) : (
-                    <Box sx={{ width: 20, height: 20 }} />
-                  )}
+                  <SettingIndicator checked={uiMode === "modern"} />
                 </ListItemIcon>
                 <ListItemText
                   primary={modernUILabel}
@@ -231,11 +228,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
             <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
               <ListItemIcon sx={{ minWidth: 32 }}>
-                {isElementStatusEnabled ? (
-                  <Check fontSize="small" color="primary" />
-                ) : (
-                  <Box sx={{ width: 20, height: 20 }} />
-                )}
+                <SettingIndicator checked={isElementStatusEnabled} />
               </ListItemIcon>
               <ListItemText
                 primary={formatMessage({ id: "element_status_setting" })}
@@ -291,11 +284,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
               sx={settingItemStyle}
             >
               <ListItemIcon sx={{ minWidth: 32 }}>
-                {uiMode === "modern" ? (
-                  <Check fontSize="small" color="primary" />
-                ) : (
-                  <Box sx={{ width: 20, height: 20 }} />
-                )}
+                <SettingIndicator checked={uiMode === "modern"} />
               </ListItemIcon>
               <ListItemText primary={modernUILabel} />
             </MenuItem>
@@ -360,11 +349,7 @@ export const UICustomizationSection: React.FC<UICustomizationSectionProps> = ({
 
           <MenuItem onClick={handleToggleElementStatus} sx={settingItemStyle}>
             <ListItemIcon sx={{ minWidth: 32 }}>
-              {isElementStatusEnabled ? (
-                <Check fontSize="small" color="primary" />
-              ) : (
-                <Box sx={{ width: 20, height: 20 }} />
-              )}
+              <SettingIndicator checked={isElementStatusEnabled} />
             </ListItemIcon>
             <ListItemText
               primary={formatMessage({ id: "element_status_setting" })}

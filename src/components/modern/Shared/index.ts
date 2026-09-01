@@ -13,6 +13,7 @@ export { ModalityFilter } from "./ModalityFilter";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";
 export { ParentMembership } from "./ParentMembership";
 export { QuayCode } from "./QuayCode";
+export { SettingIndicator } from "./SettingIndicator";
 export { StopPlaceLink } from "./StopPlaceLink";
 export { Tags } from "./Tags";
 export { TagTray } from "./TagTray";

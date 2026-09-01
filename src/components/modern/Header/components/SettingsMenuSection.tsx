@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check, Settings } from "@mui/icons-material";
+import { Settings } from "@mui/icons-material";
 import {
   Box,
   Collapse,
@@ -28,9 +28,7 @@ import { useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
-
-const SETTING_INDICATOR_SIZE = 20;
-const SETTING_INDICATOR_BORDER_WIDTH = 1.5;
+import { SettingIndicator } from "../../Shared";
 
 interface SettingsMenuSectionProps {
   onClose: () => void;
@@ -130,19 +128,7 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
                 sx={settingItemStyle}
               >
                 <ListItemIcon sx={{ minWidth: 32 }}>
-                  {item.checked ? (
-                    <Check fontSize="small" color="primary" />
-                  ) : (
-                    <Box
-                      sx={{
-                        width: SETTING_INDICATOR_SIZE,
-                        height: SETTING_INDICATOR_SIZE,
-                        border: `${SETTING_INDICATOR_BORDER_WIDTH}px solid`,
-                        borderColor: "action.active",
-                        borderRadius: 0.5,
-                      }}
-                    />
-                  )}
+                  <SettingIndicator checked={item.checked} />
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}
@@ -200,11 +186,7 @@ export const SettingsMenuSection: React.FC<SettingsMenuSectionProps> = ({
               sx={settingItemStyle}
             >
               <ListItemIcon sx={{ minWidth: 32 }}>
-                {item.checked ? (
-                  <Check fontSize="small" color="primary" />
-                ) : (
-                  <Box sx={{ width: 20, height: 20 }} />
-                )}
+                <SettingIndicator checked={item.checked} />
               </ListItemIcon>
               <ListItemText primary={item.label} />
             </MenuItem>

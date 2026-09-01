@@ -12,9 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Check, MyLocationOutlined } from "@mui/icons-material";
+import { MyLocationOutlined } from "@mui/icons-material";
 import {
-  Box,
   Divider,
   ListItemIcon,
   ListItemText,
@@ -29,6 +28,7 @@ import { UserActions } from "../../../../actions";
 import { useAppDispatch } from "../../../../store/hooks";
 import { DefaultMapSettingsDialog } from "../../Dialogs/DefaultMapSettingsDialog";
 import { CrosshairPicker } from "../crosshair";
+import { SettingIndicator } from "../../Shared";
 
 export const MapSettingsPanel: React.FC = () => {
   const { formatMessage } = useIntl();
@@ -168,11 +168,7 @@ export const MapSettingsPanel: React.FC = () => {
             sx={settingItemStyle}
           >
             <ListItemIcon sx={{ minWidth: 32 }}>
-              {item.checked ? (
-                <Check fontSize="small" color="primary" />
-              ) : (
-                <Box sx={{ width: 20, height: 20 }} />
-              )}
+              <SettingIndicator checked={item.checked} />
             </ListItemIcon>
             <ListItemText
               primary={item.label}

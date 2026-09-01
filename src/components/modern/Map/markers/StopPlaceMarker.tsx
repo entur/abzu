@@ -120,6 +120,14 @@ export const StopPlaceMarker = () => {
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
+  const theme = useTheme();
+  /* Quays and parking carry their own badges, so this one means the stop place's
+   * own fields have unsaved edits — the same mark the panel and header use.
+   * Every hook stays above the `!current?.location` guard below: this component
+   * renders with no stop selected, so a hook after the guard would change the
+   * hook count between renders. */
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
 
   const current = useAppSelector(
     (state) =>
@@ -131,11 +139,6 @@ export const StopPlaceMarker = () => {
 
   const [lat, lng] = current.location;
   const isParent = !!current.isParent;
-  const theme = useTheme();
-  /* Quays and parking carry their own badges, so this one means the stop place's
-   * own fields have unsaved edits — the same mark the panel and header use. */
-  const isStatusEnabled = useElementStatusEnabled();
-  const dirtyKeys = useStopPlaceDirtyKeys();
   const hasUnsavedFields = isStatusEnabled && dirtyKeys.size > 0;
   const markerSize = isParent ? PARENT_MARKER_SIZE : MARKER_SIZE;
   const multimodalColor =
