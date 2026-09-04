@@ -284,6 +284,8 @@
   "name_is_required": "Navn er påkrevd",
   "name_type": "Navntype",
   "navigation": "Navigasjon",
+  "navigation_map": "Kart",
+  "navigation_opens_in_new_tab": "{label} (åpnes i ny fane)",
   "new__multi_stop": "Nytt multimodalt stoppested",
   "new_element_help_text": "Du kan legge til nye elementer i kartet ved å dra dem inn i kartet.",
   "new_elements": "Nye elementer",

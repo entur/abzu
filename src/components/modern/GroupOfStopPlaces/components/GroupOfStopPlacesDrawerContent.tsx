@@ -21,6 +21,7 @@ import {
   GroupOfStopPlacesHeader,
   GroupOfStopPlacesList,
 } from ".";
+import { appChromeTop, belowAppChromeHeight } from "../../Header/headerMetrics";
 
 interface GroupOfStopPlacesDrawerContentProps {
   groupOfStopPlaces: any;
@@ -87,8 +88,8 @@ export const GroupOfStopPlacesDrawerContent: React.FC<
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          top: { xs: 56, sm: 64 },
-          height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
+          top: appChromeTop,
+          height: belowAppChromeHeight,
           transform: isMobile
             ? isOpen
               ? "translateY(0)"

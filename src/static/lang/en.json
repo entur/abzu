@@ -284,6 +284,8 @@
   "name_is_required": "Name is required",
   "name_type": "Name type",
   "navigation": "Navigation",
+  "navigation_map": "Map",
+  "navigation_opens_in_new_tab": "{label} (opens in a new tab)",
   "new__multi_stop": "New multimodal stop place",
   "new_element_help_text": "You can add new elements to the map by dragging desired element into the map.",
   "new_elements": "New elements",

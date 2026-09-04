@@ -41,6 +41,7 @@ import {
 import { useEditStopPage } from "./hooks/useEditStopPage";
 import { DEFAULT_STOP_PLACE_TAB } from "./stopPlaceTabs";
 import { EditStopPageProps } from "./types";
+import { appChromeTop, belowAppChromeHeight } from "../Header/headerMetrics";
 
 const DRAWER_WIDTH_DESKTOP = 450;
 const DRAWER_WIDTH_TABLET = 380;
@@ -349,7 +350,7 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
               sx={{
                 position: "fixed",
                 left: 0,
-                top: 64,
+                top: appChromeTop,
                 width: drawerWidth,
                 zIndex: theme.zIndex.drawer,
               }}
@@ -372,8 +373,8 @@ export const EditStopPage: React.FC<EditStopPageProps> = ({
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            top: { xs: 56, sm: 64 },
-            height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
+            top: appChromeTop,
+            height: belowAppChromeHeight,
             transform: isMobile
               ? isOpen
                 ? "translateY(0)"

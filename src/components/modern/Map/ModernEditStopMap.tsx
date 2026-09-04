@@ -20,6 +20,8 @@ import Map, {
   MapRef,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
+import { Box } from "@mui/material";
+import { appChromeTop } from "../Header/headerMetrics";
 import { useNavigate } from "react-router-dom";
 import { StopPlaceActions, UserActions } from "../../../actions";
 import { getNeighbourStops } from "../../../actions/TiamatActions.modern";
@@ -232,10 +234,10 @@ export const ModernEditStopMap = () => {
   }, [config, activeBaseLayer]);
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         position: "fixed",
-        top: 64,
+        top: appChromeTop,
         left: 0,
         right: 0,
         bottom: 0,
@@ -270,6 +272,6 @@ export const ModernEditStopMap = () => {
         <ParkingMarkers />
         <BoardingPositionMarkers />
       </Map>
-    </div>
+    </Box>
   );
 };

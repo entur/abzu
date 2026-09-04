@@ -21,6 +21,7 @@ import {
   ParentStopPlaceDetails,
   ParentStopPlaceHeader,
 } from ".";
+import { appChromeTop, belowAppChromeHeight } from "../../Header/headerMetrics";
 
 interface ParentStopPlaceDrawerContentProps {
   stopPlace: any;
@@ -99,8 +100,8 @@ export const ParentStopPlaceDrawerContent: React.FC<
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          top: { xs: 56, sm: 64 }, // Match header height (56px mobile, 64px desktop)
-          height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
+          top: appChromeTop,
+          height: belowAppChromeHeight,
           // Custom slide animation
           transform: isMobile
             ? isOpen

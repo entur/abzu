@@ -19,6 +19,7 @@ import { ParentStopPlaceActions } from "./ParentStopPlaceActions";
 import { IntlShape } from "react-intl";
 import { MinimizedBar } from "../../Shared";
 import { ParentStopPlaceHeader } from "./ParentStopPlaceHeader";
+import { appChromeTop } from "../../Header/headerMetrics";
 
 interface ParentStopPlaceMinimizedBarProps {
   stopPlace: any;
@@ -131,7 +132,7 @@ export const ParentStopPlaceMinimizedBar: React.FC<
           sx={{
             position: "fixed",
             left: 0,
-            top: 64,
+            top: appChromeTop,
             width: drawerWidth,
             zIndex: theme.zIndex.drawer,
           }}

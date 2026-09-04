@@ -19,6 +19,7 @@ import { GroupOfStopPlacesActions } from "./GroupOfStopPlacesActions";
 import { IntlShape } from "react-intl";
 import { MinimizedBar } from "../../Shared";
 import { GroupOfStopPlacesHeader } from "./GroupOfStopPlacesHeader";
+import { appChromeTop } from "../../Header/headerMetrics";
 
 interface GroupOfStopPlacesMinimizedBarProps {
   groupOfStopPlaces: any;
@@ -128,7 +129,7 @@ export const GroupOfStopPlacesMinimizedBar: React.FC<
           sx={{
             position: "fixed",
             left: 0,
-            top: 64,
+            top: appChromeTop,
             width: drawerWidth,
             zIndex: theme.zIndex.drawer,
           }}
