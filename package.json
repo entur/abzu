@@ -82,7 +82,7 @@
     "@types/react-dom": "19.2.5",
     "@types/react-helmet": "6.1.11",
     "@types/redux-logger": "3.0.13",
-    "@vitejs/plugin-react": "6.1.0",
+    "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "4.1.11",
     "caniuse-lite": "1.0.30001810",
     "graphql-request": "7.4.0",
