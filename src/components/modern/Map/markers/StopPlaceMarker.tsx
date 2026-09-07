@@ -65,10 +65,14 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 
   return (
     <>
+      {/* Centre-anchored: the marker is a circle, not a pin, so its middle is
+          what sits on the coordinate. Every other marker type does the same,
+          and the multimodal edges are drawn to the raw coordinate — anchoring
+          anywhere else makes the line meet the marker off-centre. */}
       <Marker
         latitude={lat}
         longitude={lng}
-        anchor="bottom"
+        anchor="center"
         style={{ zIndex: CHILD_MARKER_Z_INDEX }}
       >
         <Tooltip title={child.name || ""} placement="top" arrow>
@@ -178,7 +182,7 @@ export const StopPlaceMarker = () => {
         draggable={!disabled}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        anchor={showCrosshair ? "center" : "bottom"}
+        anchor="center"
         style={{ zIndex: PARENT_MARKER_Z_INDEX }}
       >
         <Tooltip title={current.name || ""} placement="top" arrow>
