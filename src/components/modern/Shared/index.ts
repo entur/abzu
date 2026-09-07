@@ -13,6 +13,7 @@ export { StopPlaceMembership } from "./Membership";
 export * from "./MinimizedBar";
 export { ModalityFilter } from "./ModalityFilter";
 export { ModalityLoadingAnimation } from "./ModalityLoadingAnimation";
+export { PanelToggleIcon } from "./PanelToggleIcon";
 export { ParentMembership } from "./ParentMembership";
 export { QuayCode } from "./QuayCode";
 export { SettingIndicator } from "./SettingIndicator";

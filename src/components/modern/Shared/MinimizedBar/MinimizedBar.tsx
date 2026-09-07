@@ -101,7 +101,6 @@ export const MinimizedBar: React.FC<MinimizedBarProps> = ({
             id={id}
             entityType={entityType}
             hasId={hasId}
-            isMobile={isMobile}
             onExpand={onExpand}
           />
           {hasExpired && (

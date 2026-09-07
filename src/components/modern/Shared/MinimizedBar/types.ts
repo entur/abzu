@@ -82,7 +82,6 @@ export interface MinimizedBarHeaderProps {
   id?: string;
   entityType?: string;
   hasId: boolean;
-  isMobile: boolean;
   onExpand: () => void;
   centerLocation?: [number, number];
 }

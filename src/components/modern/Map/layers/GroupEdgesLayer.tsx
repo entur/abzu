@@ -17,6 +17,7 @@ import type { FeatureCollection, LineString } from "geojson";
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 import { useAppSelector } from "../../../../store/hooks";
+import { useIsEditingGroup } from "../hooks/useIsEditingGroup";
 import type { LatLng } from "../markers/types";
 
 const buildGeoJson = (locations: LatLng[]): FeatureCollection<LineString> => {
@@ -51,9 +52,7 @@ export const GroupEdgesLayer = () => {
         Array<{ location?: LatLng }> | undefined,
   );
 
-  const isEditingGroup = useAppSelector(
-    (state) => !!(state as any).stopPlacesGroup?.current?.id,
-  );
+  const isEditingGroup = useIsEditingGroup();
 
   const locations = useMemo(
     () =>

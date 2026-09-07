@@ -13,8 +13,6 @@
  * limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
@@ -29,6 +27,7 @@ import {
   useStopPlaceDirtyKeys,
 } from "../../Shared/ElementStatus";
 import { StopPlace } from "../types";
+import { PanelToggleIcon } from "../../Shared";
 
 /** The header owns no fields of its own; it mirrors the stop place name. */
 const HEADER_NAME_KEYS = ["name"] as const;
@@ -185,11 +184,7 @@ export const StopPlaceHeader: React.FC<StopPlaceHeaderProps> = ({
             title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
           >
             <IconButton size="small" onClick={onToggle}>
-              {isExpanded ? (
-                <ExpandLessIcon fontSize="small" />
-              ) : (
-                <ExpandMoreIcon fontSize="small" />
-              )}
+              <PanelToggleIcon isExpanded={isExpanded} />
             </IconButton>
           </Tooltip>
 

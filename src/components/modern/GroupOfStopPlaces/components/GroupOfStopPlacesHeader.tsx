@@ -13,14 +13,13 @@
  limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { GroupOfStopPlacesHeaderProps, GroupTopographicPlace } from "../types";
+import { PanelToggleIcon } from "../../Shared";
 
 /**
  * Header component for group of stop places editor.
@@ -116,11 +115,7 @@ export const GroupOfStopPlacesHeader: React.FC<
         title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
       >
         <IconButton size="small" onClick={onToggle}>
-          {isExpanded ? (
-            <ExpandLessIcon fontSize="small" />
-          ) : (
-            <ExpandMoreIcon fontSize="small" />
-          )}
+          <PanelToggleIcon isExpanded={isExpanded} />
         </IconButton>
       </Tooltip>
 
