@@ -1,0 +1,67 @@
+# publiccode.yml metadata, see https://yml.publiccode.tools/
+publiccodeYmlVersion: "0.7.0"
+
+name: Abzu
+url: https://github.com/entur/abzu
+
+platforms:
+  - web
+
+categories:
+  - geographic-information-systems
+  - data-collection
+
+developmentStatus: stable
+softwareType: standalone/web
+
+organisation:
+  name: Entur AS
+  uri: https://entur.no
+
+usedBy:
+  - Norway (nationwide), Entur AS
+
+intendedAudience:
+  scope:
+    - transportation
+  countries:
+    - "NO"
+
+description:
+  en:
+    localisedName: Abzu
+    shortDescription: Map-based web editor for the Norwegian National Stop Place Register.
+    longDescription: >
+      Abzu is the web front-end of the Norwegian National Stop Place Register (Nasjonalt stoppestedsregister, NSR).
+      It lets transport authorities and operators search, inspect and edit stop places, quays, parking, path links
+      and tariff zones on an interactive map, and to merge, move and version them. Abzu talks to the Tiamat backend
+      over GraphQL and authenticates users with OIDC, so it is not tied to a specific identity provider.
+      The application is a React single-page app; environment-specific settings are bootstrapped at load time from
+      a bootstrap.json file that is deployed alongside the static build.
+    documentation: https://github.com/entur/abzu/blob/master/README.md
+    features:
+      - Map-based search and editing of stop places and quays
+      - Merging, moving and versioning of stop places
+      - Editing of parking, path links and tariff zones
+      - GraphQL client for the Tiamat backend
+      - OIDC authentication, provider agnostic
+      - Deployment-time configuration through bootstrap.json
+
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Entur AS
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Entur ROR (Open Data and Journey Planning)
+      email: kollektivdata@entur.org
+
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - en
+    - nb
+    - sv
+    - fi
+    - fr
