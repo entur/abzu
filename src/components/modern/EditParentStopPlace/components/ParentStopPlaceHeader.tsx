@@ -13,8 +13,6 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import CloseIcon from "@mui/icons-material/Close";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LinkIcon from "@mui/icons-material/Link";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
@@ -22,6 +20,7 @@ import { useIntl } from "react-intl";
 import { Entities } from "../../../../models/Entities";
 import { CenterMapButton, CopyIdButton, FavoriteButton } from "../../Shared";
 import { ParentStopPlaceHeaderProps } from "../types";
+import { PanelToggleIcon } from "../../Shared";
 
 /**
  * Header component for parent stop place editor.
@@ -105,11 +104,7 @@ export const ParentStopPlaceHeader: React.FC<ParentStopPlaceHeaderProps> = ({
           title={formatMessage({ id: isExpanded ? "collapse" : "expand" })}
         >
           <IconButton size="small" onClick={onToggle}>
-            {isExpanded ? (
-              <ExpandLessIcon fontSize="small" />
-            ) : (
-              <ExpandMoreIcon fontSize="small" />
-            )}
+            <PanelToggleIcon isExpanded={isExpanded} />
           </IconButton>
         </Tooltip>
 

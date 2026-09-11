@@ -13,9 +13,10 @@
  * limitations under the Licence. */
 
 import FilterListIcon from "@mui/icons-material/FilterList";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Badge,
+  Box,
+  Button,
   CircularProgress,
   IconButton,
   InputAdornment,
@@ -23,6 +24,9 @@ import {
   useTheme,
 } from "@mui/material";
 import { useIntl } from "react-intl";
+import { headerSearchDesktopContainer, searchFieldSx } from "../../styles";
+
+const LOADING_SPINNER_SIZE = 14;
 
 interface ReportSearchBarProps {
   searchQuery: string;
@@ -56,81 +60,62 @@ export const ReportSearchBar: React.FC<ReportSearchBarProps> = ({
   };
 
   return (
-    <TextField
-      size="small"
-      value={searchQuery}
-      onChange={(e) => onQueryChange(e.target.value)}
-      onKeyDown={handleKeyDown}
-      label={formatMessage({ id: "optional_search_string" })}
-      variant="outlined"
-      sx={{
-        width: "100%",
-        maxWidth: 560,
-        "& .MuiOutlinedInput-root": {
-          borderRadius: 2,
-          backgroundColor: theme.palette.background.default,
-          "&:hover": {
-            "& > fieldset": {
-              borderColor: theme.palette.primary.main,
-            },
+    <Box sx={headerSearchDesktopContainer}>
+      <TextField
+        size="small"
+        fullWidth
+        value={searchQuery}
+        onChange={(e) => onQueryChange(e.target.value)}
+        onKeyDown={handleKeyDown}
+        variant="outlined"
+        sx={searchFieldSx(theme)}
+        slotProps={{
+          htmlInput: {
+            placeholder: formatMessage({ id: "report_search_placeholder" }),
           },
-          "&.Mui-focused": {
-            "& > fieldset": {
-              borderWidth: 0,
-              borderColor: theme.palette.primary.main,
-            },
+          input: {
+            endAdornment: (
+              <>
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={onToggleFilterPanel}
+                    aria-label={formatMessage({
+                      id: filterPanelOpen ? "close_filters" : "toggle_filters",
+                    })}
+                    sx={{
+                      color: filterPanelOpen
+                        ? theme.palette.warning.main
+                        : theme.palette.action.active,
+                    }}
+                  >
+                    <Badge badgeContent={activeFilterCount} color="error">
+                      <FilterListIcon fontSize="small" />
+                    </Badge>
+                  </IconButton>
+                </InputAdornment>
+                {/* A named action, not a bare magnifier: this search only runs when
+                    submitted, unlike the main page's search-as-you-type. */}
+                <InputAdornment position="end">
+                  <Button
+                    size="small"
+                    onClick={onSearch}
+                    disabled={isLoading}
+                    startIcon={
+                      isLoading ? (
+                        <CircularProgress size={LOADING_SPINNER_SIZE} />
+                      ) : undefined
+                    }
+                    sx={{ mr: -0.5, minWidth: "auto", whiteSpace: "nowrap" }}
+                  >
+                    {formatMessage({ id: "search" })}
+                  </Button>
+                </InputAdornment>
+              </>
+            ),
           },
-        },
-        "& .MuiInputLabel-root": {
-          "&.Mui-focused": {
-            color: "transparent",
-          },
-        },
-      }}
-      slotProps={{
-        input: {
-          endAdornment: (
-            <>
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={onToggleFilterPanel}
-                  aria-label={formatMessage({
-                    id: filterPanelOpen ? "close_filters" : "toggle_filters",
-                  })}
-                  sx={{
-                    color: filterPanelOpen
-                      ? theme.palette.warning.main
-                      : theme.palette.action.active,
-                  }}
-                >
-                  <Badge badgeContent={activeFilterCount} color="error">
-                    <FilterListIcon fontSize="small" />
-                  </Badge>
-                </IconButton>
-              </InputAdornment>
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={onSearch}
-                  disabled={isLoading}
-                  aria-label={formatMessage({ id: "search" })}
-                  sx={{ mr: -0.5 }}
-                >
-                  {isLoading ? (
-                    <CircularProgress
-                      size={16}
-                      sx={{ color: "action.active" }}
-                    />
-                  ) : (
-                    <SearchIcon fontSize="small" />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            </>
-          ),
-        },
-      }}
-    />
+        }}
+      />
+    </Box>
   );
 };

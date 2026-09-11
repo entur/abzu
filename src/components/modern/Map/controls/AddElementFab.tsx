@@ -28,10 +28,15 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
-import { useMap } from "react-map-gl/maplibre";
+import { Marker, useMap } from "react-map-gl/maplibre";
 import { StopPlaceActions, UserActions } from "../../../../actions";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { addItemButtonSx } from "../../Shared";
+import {
+  DragCrosshair,
+  getCrosshairPreference,
+  type CrosshairSetting,
+} from "../crosshair";
 import { PlacementHint } from "./PlacementHint";
 
 type ElementType = "quay" | "parkAndRide" | "bikeParking" | "boardingPosition";
@@ -141,6 +146,46 @@ export const AddElementFab = () => {
     };
   }, [mapRef, isCreatingNewStop]);
 
+  /* Placing an element and moving one should look the same, so placement follows
+   * the pointer with the user's chosen drag crosshair instead of just switching
+   * the CSS cursor. Read when placement starts, matching how a drag reads it. */
+  const [crosshairSetting, setCrosshairSetting] =
+    useState<CrosshairSetting>("none");
+  const [pointerPosition, setPointerPosition] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!pendingElementType) return;
+    setCrosshairSetting(getCrosshairPreference());
+  }, [pendingElementType]);
+
+  useEffect(() => {
+    if (!mapRef || !pendingElementType) {
+      setPointerPosition(null);
+      return;
+    }
+    const map = mapRef.getMap();
+
+    const handlePointerMove = (event: any) => {
+      setPointerPosition({
+        latitude: event.lngLat.lat,
+        longitude: event.lngLat.lng,
+      });
+    };
+    const handlePointerLeave = () => setPointerPosition(null);
+
+    map.on("mousemove", handlePointerMove);
+    map.on("mouseout", handlePointerLeave);
+
+    return () => {
+      map.off("mousemove", handlePointerMove);
+      map.off("mouseout", handlePointerLeave);
+      setPointerPosition(null);
+    };
+  }, [mapRef, pendingElementType]);
+
   useEffect(() => {
     if (!mapRef || !pendingElementType) return;
     const map = mapRef.getMap();
@@ -160,14 +205,17 @@ export const AddElementFab = () => {
       map.getCanvas().style.cursor = "";
     };
 
-    map.getCanvas().style.cursor = "crosshair";
+    /* With a crosshair marker following the pointer, the OS cursor would double
+       up — hide it. Falls back to the CSS crosshair when the user picked "none". */
+    map.getCanvas().style.cursor =
+      crosshairSetting === "none" ? "crosshair" : "none";
     map.on("click", handlePlacementClick);
 
     return () => {
       map.off("click", handlePlacementClick);
       map.getCanvas().style.cursor = "";
     };
-  }, [mapRef, pendingElementType, dispatch]);
+  }, [mapRef, pendingElementType, dispatch, crosshairSetting]);
 
   const handleCancelPlacement = useCallback(() => {
     setPendingElementType(null);
@@ -217,6 +265,18 @@ export const AddElementFab = () => {
 
   return (
     <>
+      {/* Same crosshair a drag uses, following the pointer until you click. */}
+      {pendingElementType && pointerPosition && crosshairSetting !== "none" && (
+        <Marker
+          latitude={pointerPosition.latitude}
+          longitude={pointerPosition.longitude}
+          anchor="center"
+          style={{ pointerEvents: "none" }}
+        >
+          <DragCrosshair type={crosshairSetting} />
+        </Marker>
+      )}
+
       {(pendingElementType || isCreatingNewStop) && (
         <PlacementHint
           messageKey={

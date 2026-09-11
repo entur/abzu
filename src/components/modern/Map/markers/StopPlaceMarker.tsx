@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip, Typography, useTheme } from "@mui/material";
 import { useRef, useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
@@ -22,6 +22,11 @@ import AppRoutes from "../../../../routes";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getSvgIconByTypeOrSubmode } from "../../../../utils/iconUtils";
 import { getStopPermissions } from "../../../../utils/permissionsUtils";
+import {
+  ElementStatusMapBadge,
+  useElementStatusEnabled,
+  useStopPlaceDirtyKeys,
+} from "../../Shared/ElementStatus";
 import type { CrosshairSetting } from "../crosshair";
 import { DragCrosshair, getCrosshairPreference } from "../crosshair";
 import { useMarkerScale } from "../hooks/useMarkerScale";
@@ -30,6 +35,12 @@ import type { MapStopPlace } from "./types";
 
 const MARKER_SIZE = 40;
 const CHILD_MARKER_SIZE = 34;
+
+/* The multimodal parent marker is drawn smaller than a regular stop place and stacked
+ * above its children, so the "MM" label stays readable where the circles overlap. */
+const PARENT_MARKER_SIZE = 32;
+const PARENT_MARKER_Z_INDEX = 2;
+const CHILD_MARKER_Z_INDEX = 1;
 
 interface ParentChildMarkerProps {
   child: MapStopPlace;
@@ -54,7 +65,16 @@ const ParentChildMarker = ({ child }: ParentChildMarkerProps) => {
 
   return (
     <>
-      <Marker latitude={lat} longitude={lng} anchor="bottom">
+      {/* Centre-anchored: the marker is a circle, not a pin, so its middle is
+          what sits on the coordinate. Every other marker type does the same,
+          and the multimodal edges are drawn to the raw coordinate — anchoring
+          anywhere else makes the line meet the marker off-centre. */}
+      <Marker
+        latitude={lat}
+        longitude={lng}
+        anchor="center"
+        style={{ zIndex: CHILD_MARKER_Z_INDEX }}
+      >
         <Tooltip title={child.name || ""} placement="top" arrow>
           <Box
             onClick={(e) => setPopupAnchor(e.currentTarget)}
@@ -104,6 +124,14 @@ export const StopPlaceMarker = () => {
   const [isDragging, setIsDragging] = useState(false);
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
+  const theme = useTheme();
+  /* Quays and parking carry their own badges, so this one means the stop place's
+   * own fields have unsaved edits — the same mark the panel and header use.
+   * Every hook stays above the `!current?.location` guard below: this component
+   * renders with no stop selected, so a hook after the guard would change the
+   * hook count between renders. */
+  const isStatusEnabled = useElementStatusEnabled();
+  const dirtyKeys = useStopPlaceDirtyKeys();
 
   const current = useAppSelector(
     (state) =>
@@ -115,6 +143,13 @@ export const StopPlaceMarker = () => {
 
   const [lat, lng] = current.location;
   const isParent = !!current.isParent;
+  const hasUnsavedFields = isStatusEnabled && dirtyKeys.size > 0;
+  const markerSize = isParent ? PARENT_MARKER_SIZE : MARKER_SIZE;
+  const multimodalColor =
+    theme.palette.multimodal?.main ?? theme.palette.primary.main;
+  const multimodalContrastText =
+    theme.palette.multimodal?.contrastText ??
+    theme.palette.primary.contrastText;
   const disabled =
     !!current.permanentlyTerminated || !getStopPermissions(current).canEdit;
   const icon = getSvgIconByTypeOrSubmode(
@@ -147,7 +182,8 @@ export const StopPlaceMarker = () => {
         draggable={!disabled}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        anchor={showCrosshair ? "center" : "bottom"}
+        anchor="center"
+        style={{ zIndex: PARENT_MARKER_Z_INDEX }}
       >
         <Tooltip title={current.name || ""} placement="top" arrow>
           <Box
@@ -156,10 +192,11 @@ export const StopPlaceMarker = () => {
               setPopupAnchor(e.currentTarget);
             }}
             sx={{
-              width: Math.round(MARKER_SIZE * scale),
-              height: Math.round(MARKER_SIZE * scale),
+              width: Math.round(markerSize * scale),
+              height: Math.round(markerSize * scale),
+              position: "relative",
               borderRadius: "50%",
-              bgcolor: "primary.main",
+              bgcolor: isParent ? multimodalColor : "primary.main",
               display: showCrosshair ? "none" : "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -174,7 +211,7 @@ export const StopPlaceMarker = () => {
             {isParent ? (
               <Typography
                 sx={{
-                  color: "primary.contrastText",
+                  color: multimodalContrastText,
                   fontWeight: 800,
                   fontSize: `${0.85 * scale}rem`,
                   lineHeight: 1,
@@ -195,6 +232,7 @@ export const StopPlaceMarker = () => {
                 }}
               />
             )}
+            <ElementStatusMapBadge visible={hasUnsavedFields} scale={scale} />
           </Box>
         </Tooltip>
         {showCrosshair && (

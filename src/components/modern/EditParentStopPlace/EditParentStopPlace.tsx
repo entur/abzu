@@ -50,9 +50,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
   // Local state for drawer and mini dialogs (sticky: remembers user preference)
   const [internalOpen, setInternalOpen] = useState(() => getDrawerPreference());
   const [wizardConfirmed, setWizardConfirmed] = useState(false);
-  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-  const [nameDescriptionDialogOpen, setNameDescriptionDialogOpen] =
-    useState(false);
   const [childrenDialogOpen, setChildrenDialogOpen] = useState(false);
 
   // Determine if we're using controlled or uncontrolled mode
@@ -152,12 +149,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         formatMessage={formatMessage}
         onExpand={handleToggle}
         onClose={handleAllowUserToGoBack}
-        onOpenInfo={() => setInfoDialogOpen(true)}
-        onOpenNameDescription={() => setNameDescriptionDialogOpen(true)}
-        onOpenChildren={() => setChildrenDialogOpen(true)}
-        onOpenAltNames={handleOpenAltNamesDialog}
-        onOpenTags={handleOpenTagsDialog}
-        onOpenVersions={handleOpenVersionsDialog}
         onOpenTerminate={handleOpenTerminateDialog}
         onOpenUndo={handleOpenUndoDialog}
         onOpenSave={handleOpenSaveDialog}
@@ -218,8 +209,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         altNamesDialogOpen={altNamesDialogOpen}
         tagsDialogOpen={tagsDialogOpen}
         coordinatesDialogOpen={coordinatesDialogOpen}
-        infoDialogOpen={infoDialogOpen}
-        nameDescriptionDialogOpen={nameDescriptionDialogOpen}
         childrenDialogOpen={childrenDialogOpen}
         versionsDialogOpen={versionsDialogOpen}
         versions={versions}
@@ -251,8 +240,6 @@ export const EditParentStopPlace: React.FC<EditParentStopPlaceProps> = ({
         handleOpenAddChildDialog={handleOpenAddChildDialog}
         handleOpenRemoveChildDialog={handleOpenRemoveChildDialog}
         handleOpenAddAdjacentDialog={handleOpenAddAdjacentDialog}
-        onCloseInfoDialog={() => setInfoDialogOpen(false)}
-        onCloseNameDescriptionDialog={() => setNameDescriptionDialogOpen(false)}
         onCloseChildrenDialog={() => setChildrenDialogOpen(false)}
         handleCloseVersionsDialog={handleCloseVersionsDialog}
       />
