@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { IntlShape } from "react-intl";
-import { ChildrenDialog, InfoDialog, NameDescriptionDialog } from ".";
+import { ChildrenDialog } from ".";
 import {
   AddAdjacentStopsDialog,
   AddStopPlaceToParentDialog,
@@ -46,8 +46,6 @@ interface ParentStopPlaceDialogsProps {
   altNamesDialogOpen: boolean;
   tagsDialogOpen: boolean;
   coordinatesDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   childrenDialogOpen: boolean;
   versionsDialogOpen: boolean;
   versions: any[];
@@ -86,8 +84,6 @@ interface ParentStopPlaceDialogsProps {
   handleOpenAddChildDialog: () => void;
   handleOpenRemoveChildDialog: (childId: string) => void;
   handleOpenAddAdjacentDialog: () => void;
-  onCloseInfoDialog: () => void;
-  onCloseNameDescriptionDialog: () => void;
   onCloseChildrenDialog: () => void;
   handleCloseVersionsDialog: () => void;
 }
@@ -112,8 +108,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   altNamesDialogOpen,
   tagsDialogOpen,
   coordinatesDialogOpen,
-  infoDialogOpen,
-  nameDescriptionDialogOpen,
   childrenDialogOpen,
   versionsDialogOpen,
   versions,
@@ -145,8 +139,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
   handleOpenAddChildDialog,
   handleOpenRemoveChildDialog,
   handleOpenAddAdjacentDialog,
-  onCloseInfoDialog,
-  onCloseNameDescriptionDialog,
   onCloseChildrenDialog,
   handleCloseVersionsDialog,
 }) => {
@@ -258,31 +250,6 @@ export const ParentStopPlaceDialogs: React.FC<ParentStopPlaceDialogsProps> = ({
         }
         handleClose={handleCloseCoordinatesDialog}
         handleConfirm={handleSetCoordinates}
-      />
-
-      {/* Info Dialog */}
-      <InfoDialog
-        open={infoDialogOpen}
-        name={originalStopPlace?.name}
-        id={originalStopPlace?.id || ""}
-        position={stopPlace?.position}
-        created={stopPlace?.validBetween?.fromDate}
-        modified={stopPlace?.validBetween?.toDate}
-        version={stopPlace?.version}
-        onClose={onCloseInfoDialog}
-      />
-
-      {/* Name and Description Dialog */}
-      <NameDescriptionDialog
-        open={nameDescriptionDialogOpen}
-        name={stopPlace?.name || ""}
-        description={stopPlace?.description}
-        url={stopPlace?.url}
-        canEdit={canEdit}
-        onClose={onCloseNameDescriptionDialog}
-        onNameChange={handleNameChange}
-        onDescriptionChange={handleDescriptionChange}
-        onUrlChange={handleUrlChange}
       />
 
       {/* Versions Dialog */}

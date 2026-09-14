@@ -37,8 +37,10 @@ export {
   FACILITIES_TAB_KEYS,
   getChangedKeys,
   hasChangedKey,
+  hasChildCollectionChange,
   hasGeneralTabChange,
   KEY_VALUES_TAB_KEYS,
 } from "./stopPlaceFieldStatus";
+export { UnsavedDot } from "./UnsavedDot";
 export { useElementStatusEnabled } from "./useElementStatusDisplay";
 export { useStopPlaceDirtyKeys } from "./useStopPlaceDirtyKeys";

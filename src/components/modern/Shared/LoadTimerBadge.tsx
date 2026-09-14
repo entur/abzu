@@ -18,12 +18,17 @@ import { version } from "../../../../package.json";
 import { useConfig } from "../../../config/ConfigContext";
 import { useAppSelector } from "../../../store/hooks";
 
+/* MapLibre's attribution control — the (i) in the bottom-right corner — is
+   about 44px tall including its margin. The badge sits directly above it. */
+const ATTRIBUTION_HEIGHT = 44;
+const BADGE_GAP = 8;
+
 const BADGE_SX = {
   position: "fixed",
-  // Top-right, just under the header. The map controls own the bottom-right
-  // corner; this badge is dev-only diagnostics, so being covered by the
-  // navigation menu is acceptable (it is pointer-events: none anyway).
-  top: 72,
+  // Bottom-right, tucked just above the map's (i). It used to sit top-right
+  // under the header, which was clear when the map controls were bottom-
+  // anchored — they moved back to the top, and the badge landed on them.
+  bottom: ATTRIBUTION_HEIGHT + BADGE_GAP,
   right: 16,
   zIndex: 9999,
   fontFamily: "monospace",

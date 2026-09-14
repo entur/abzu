@@ -23,6 +23,7 @@ import {
   ReportResultsTable,
   ReportSearchBar,
 } from "./components";
+import { belowAppChromeViewportHeight } from "../Header/headerMetrics";
 import { useReportPage } from "./hooks/useReportPage";
 import { FilterState } from "./types";
 
@@ -46,6 +47,8 @@ interface ReportPageProps {
  *   │ [Pages 1 2 3 ...]          [Export ▾]   │ ← ReportFooter
  *   └──────────────────────────────────────────┘
  */
+/** Height of the modern AppBar the report page sits beneath. */
+
 export const ReportPage: React.FC<ReportPageProps> = ({
   initialState = {},
 }) => {
@@ -128,7 +131,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "calc(100vh - 64px)",
+        height: belowAppChromeViewportHeight,
         overflow: "hidden",
       }}
     >

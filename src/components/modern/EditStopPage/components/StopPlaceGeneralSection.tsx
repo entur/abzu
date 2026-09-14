@@ -20,6 +20,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -65,6 +66,9 @@ export const StopPlaceGeneralSection: React.FC<
   const dirtyKeys = useStopPlaceDirtyKeys();
   const isDirty = (...keys: string[]) =>
     isStatusEnabled && keys.some((key) => dirtyKeys.has(key));
+  /* Required-but-empty blocks saving, so it reads as an error rather than a hint. */
+  const isNameMissing = !stopPlace.name?.trim();
+  const isStopPlaceTypeMissing = !stopPlace.stopPlaceType;
   const { modalityConfig } = useConfig();
   const hiddenStopTypes = modalityConfig?.hiddenStopTypes ?? [];
 
@@ -116,9 +120,16 @@ export const StopPlaceGeneralSection: React.FC<
           value={stopPlace.name || ""}
           onChange={(e) => onNameChange(e.target.value)}
           disabled={!canEdit}
+          error={isNameMissing}
+          helperText={
+            isNameMissing
+              ? formatMessage({ id: "name_is_required" })
+              : undefined
+          }
           fullWidth
           size="small"
           variant="outlined"
+          slotProps={{ htmlInput: { "aria-required": true } }}
         />
       </Box>
 
@@ -160,7 +171,12 @@ export const StopPlaceGeneralSection: React.FC<
             svgStyle={{ width: 28, height: 28 }}
           />
         </Box>
-        <FormControl size="small" disabled={!canEdit} fullWidth>
+        <FormControl
+          size="small"
+          disabled={!canEdit}
+          error={isStopPlaceTypeMissing}
+          fullWidth
+        >
           <InputLabel>
             <DirtyLabel dirty={isDirty("stopPlaceType", "submode")}>
               {`${formatMessage({ id: "stopPlaceType" })} *`}
@@ -181,6 +197,11 @@ export const StopPlaceGeneralSection: React.FC<
               </MenuItem>
             ))}
           </Select>
+          {isStopPlaceTypeMissing && (
+            <FormHelperText>
+              {formatMessage({ id: "field_is_required" })}
+            </FormHelperText>
+          )}
         </FormControl>
       </Box>
 
@@ -211,27 +232,6 @@ export const StopPlaceGeneralSection: React.FC<
             ))}
           </Select>
         </FormControl>
-      </Box>
-
-      {/* Municipality (read-only) */}
-      <Box sx={{ ...sx.fieldRow, display: "flex", gap: 1 }}>
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ minWidth: 80, pt: 0.25 }}
-        >
-          {formatMessage({ id: "municipality" })}
-        </Typography>
-        <Typography
-          variant="body2"
-          color={stopPlace.topographicPlace ? "text.primary" : "text.disabled"}
-        >
-          {stopPlace.topographicPlace
-            ? stopPlace.parentTopographicPlace
-              ? `${stopPlace.topographicPlace} (${stopPlace.parentTopographicPlace})`
-              : stopPlace.topographicPlace
-            : formatMessage({ id: "not_present" })}
-        </Typography>
       </Box>
 
       {/* Tariff zones (read-only) */}
