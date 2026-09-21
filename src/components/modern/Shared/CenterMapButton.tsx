@@ -14,6 +14,7 @@ limitations under the Licence. */
 
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { IconButton, Tooltip } from "@mui/material";
+import type { Map as MapLibreMap } from "maplibre-gl";
 import { useIntl } from "react-intl";
 import { useAppSelector } from "../../../store/hooks";
 
@@ -27,7 +28,7 @@ interface Props {
 export const CenterMapButton = ({ location }: Props) => {
   const { formatMessage } = useIntl();
   const activeMap = useAppSelector(
-    (state) => (state as any).mapUtils?.activeMap as maplibregl.Map | undefined,
+    (state) => (state as any).mapUtils?.activeMap as MapLibreMap | undefined,
   );
 
   if (!location) return null;
