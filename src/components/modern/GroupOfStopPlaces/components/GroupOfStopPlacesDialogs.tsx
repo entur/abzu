@@ -13,7 +13,7 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { IntlShape } from "react-intl";
-import { InfoDialog, NameDescriptionDialog, StopPlacesDialog } from ".";
+import { StopPlacesDialog } from ".";
 import { ConfirmDialog, SaveGroupDialog } from "../../Dialogs";
 
 interface GroupOfStopPlacesDialogsProps {
@@ -24,13 +24,12 @@ interface GroupOfStopPlacesDialogsProps {
   formatMessage: IntlShape["formatMessage"];
 
   // Dialog states
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   stopPlacesDialogOpen: boolean;
   confirmSaveDialogOpen: boolean;
   confirmGoBackOpen: boolean;
   confirmUndoOpen: boolean;
   confirmDeleteDialogOpen: boolean;
+  removeMemberDialogOpen: boolean;
 
   // Dialog handlers
   handleSave: () => void;
@@ -41,12 +40,12 @@ interface GroupOfStopPlacesDialogsProps {
   handleCloseUndoDialog: () => void;
   handleDelete: () => void;
   handleCloseDeleteDialog: () => void;
+  handleConfirmRemoveMember: () => void;
+  handleCloseRemoveMemberDialog: () => void;
   handleNameChange: (value: string) => void;
   handleDescriptionChange: (value: string) => void;
   handleAddMembers: (memberIds: string[]) => void;
   handleRemoveMember: (memberId: string) => void;
-  onCloseInfoDialog: () => void;
-  onCloseNameDescriptionDialog: () => void;
   onCloseStopPlacesDialog: () => void;
 }
 
@@ -62,13 +61,12 @@ export const GroupOfStopPlacesDialogs: React.FC<
   centerPosition,
   canEdit,
   formatMessage,
-  infoDialogOpen,
-  nameDescriptionDialogOpen,
   stopPlacesDialogOpen,
   confirmSaveDialogOpen,
   confirmGoBackOpen,
   confirmUndoOpen,
   confirmDeleteDialogOpen,
+  removeMemberDialogOpen,
   handleSave,
   handleCloseSaveDialog,
   handleGoBack,
@@ -77,39 +75,16 @@ export const GroupOfStopPlacesDialogs: React.FC<
   handleCloseUndoDialog,
   handleDelete,
   handleCloseDeleteDialog,
+  handleConfirmRemoveMember,
+  handleCloseRemoveMemberDialog,
   handleNameChange,
   handleDescriptionChange,
   handleAddMembers,
   handleRemoveMember,
-  onCloseInfoDialog,
-  onCloseNameDescriptionDialog,
   onCloseStopPlacesDialog,
 }) => {
   return (
     <>
-      {/* Info Dialog */}
-      <InfoDialog
-        open={infoDialogOpen}
-        name={originalGOS.name}
-        id={originalGOS.id || ""}
-        centerPosition={centerPosition}
-        created={originalGOS.created}
-        modified={originalGOS.modified}
-        version={originalGOS.version}
-        onClose={onCloseInfoDialog}
-      />
-
-      {/* Name and Description Dialog */}
-      <NameDescriptionDialog
-        open={nameDescriptionDialogOpen}
-        name={groupOfStopPlaces.name}
-        description={groupOfStopPlaces.description || ""}
-        canEdit={canEdit}
-        onClose={onCloseNameDescriptionDialog}
-        onNameChange={handleNameChange}
-        onDescriptionChange={handleDescriptionChange}
-      />
-
       {/* Stop Places Dialog */}
       <StopPlacesDialog
         open={stopPlacesDialogOpen}
@@ -158,6 +133,17 @@ export const GroupOfStopPlacesDialogs: React.FC<
         cancelText={formatMessage({ id: "delete_group_cancel" })}
         onConfirm={handleDelete}
         onClose={handleCloseDeleteDialog}
+      />
+
+      {/* Removing a member from the group */}
+      <ConfirmDialog
+        open={removeMemberDialogOpen}
+        title={formatMessage({ id: "remove_stop_from_group_title" })}
+        body={formatMessage({ id: "remove_stop_from_group_confirm" })}
+        confirmText={formatMessage({ id: "remove" })}
+        cancelText={formatMessage({ id: "cancel" })}
+        onConfirm={handleConfirmRemoveMember}
+        onClose={handleCloseRemoveMemberDialog}
       />
     </>
   );

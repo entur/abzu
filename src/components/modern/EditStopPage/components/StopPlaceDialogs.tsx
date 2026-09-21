@@ -27,8 +27,6 @@ import {
   VersionsDialog,
 } from "../../Dialogs";
 import { useAppSelector } from "../../../../store/hooks";
-import { InfoDialog } from "../../EditParentStopPlace/components/InfoDialog";
-import { NameDescriptionDialog } from "../../EditParentStopPlace/components/NameDescriptionDialog";
 import { StopPlaceDialogsProps } from "../types";
 import { QuayUsageWarning } from "./QuayUsageWarning";
 
@@ -52,8 +50,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   tagsDialogOpen,
   altNamesDialogOpen,
   versionsDialogOpen,
-  infoDialogOpen,
-  nameDescriptionDialogOpen,
   versions,
   versionsLoading,
   handleSave,
@@ -76,10 +72,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
   handleFindTagByName,
   handleCloseAltNamesDialog,
   handleCloseVersionsDialog,
-  handleCloseInfoDialog,
-  handleCloseNameDescriptionDialog,
-  handleNameChange,
-  handleDescriptionChange,
 }) => {
   // Populated by UserActions.requestTerminateStopPlace, which handleOpenTerminateDialog
   // dispatches — the OTP usage lookup that warns before a stop place is terminated.
@@ -201,27 +193,6 @@ export const StopPlaceDialogs: React.FC<StopPlaceDialogsProps> = ({
         handleClose={handleCloseVersionsDialog}
         stopPlaceId={stopPlace?.id || ""}
         currentVersion={stopPlace?.version}
-      />
-
-      {/* 12. Info Dialog */}
-      <InfoDialog
-        open={infoDialogOpen}
-        name={stopPlace?.name}
-        id={stopPlace?.id || ""}
-        position={stopPlace?.location as [number, number] | undefined}
-        version={stopPlace?.version}
-        onClose={handleCloseInfoDialog}
-      />
-
-      {/* 13. Name / Description Dialog */}
-      <NameDescriptionDialog
-        open={nameDescriptionDialogOpen}
-        name={stopPlace?.name || ""}
-        description={stopPlace?.description}
-        canEdit={canEdit}
-        onClose={handleCloseNameDescriptionDialog}
-        onNameChange={handleNameChange}
-        onDescriptionChange={handleDescriptionChange}
       />
 
       {/* 14. Merge Stop Place Dialog */}

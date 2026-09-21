@@ -23,6 +23,5 @@ export { ReportQuayRows } from "./ReportQuayRows";
 export { ReportResultRow } from "./ReportResultRow";
 export { ReportResultsTable } from "./ReportResultsTable";
 export { ReportSearchBar } from "./ReportSearchBar";
-export { SearchSection } from "./SearchSection";
 export { TagFilter } from "./TagFilter";
 export { TopographicFilterSection } from "./TopographicFilterSection";

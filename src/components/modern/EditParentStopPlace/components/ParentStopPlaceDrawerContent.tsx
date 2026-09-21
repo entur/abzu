@@ -13,12 +13,15 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box, Divider, Drawer } from "@mui/material";
+import { useMemo } from "react";
+import { EntityTabStrip, INFO_ONLY_TABS, INFO_TAB_INDEX } from "../../Shared";
 import {
   ParentStopPlaceActions,
   ParentStopPlaceChildren,
   ParentStopPlaceDetails,
   ParentStopPlaceHeader,
 } from ".";
+import { appChromeTop, belowAppChromeHeight } from "../../Header/headerMetrics";
 
 interface ParentStopPlaceDrawerContentProps {
   stopPlace: any;
@@ -79,6 +82,12 @@ export const ParentStopPlaceDrawerContent: React.FC<
   onOpenUndo,
   onOpenSave,
 }) => {
+  /* One information tab; the dot marks unsaved changes. */
+  const tabs = useMemo(
+    () => INFO_ONLY_TABS.map((tab) => ({ ...tab, dirty: isModified })),
+    [isModified],
+  );
+
   return (
     <Drawer
       variant="persistent"
@@ -91,8 +100,8 @@ export const ParentStopPlaceDrawerContent: React.FC<
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          top: { xs: 56, sm: 64 }, // Match header height (56px mobile, 64px desktop)
-          height: { xs: "calc(100% - 56px)", sm: "calc(100% - 64px)" },
+          top: appChromeTop,
+          height: belowAppChromeHeight,
           // Custom slide animation
           transform: isMobile
             ? isOpen
@@ -123,6 +132,19 @@ export const ParentStopPlaceDrawerContent: React.FC<
             isExpanded={true}
           />
         )}
+
+        <Divider />
+
+        {/* Same strip the collapsed bar shows, so the two are one layout. */}
+        <Box sx={{ flexShrink: 0, bgcolor: "background.default" }}>
+          <EntityTabStrip
+            tabs={tabs}
+            activeTab={INFO_TAB_INDEX}
+            showLabels
+            /* Single tab: selecting it while expanded is already the current view. */
+            onTabChange={() => undefined}
+          />
+        </Box>
 
         <Divider />
 

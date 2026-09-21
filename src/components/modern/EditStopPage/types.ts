@@ -132,7 +132,6 @@ export interface QuaysSectionProps {
   canEdit: boolean;
   onDeleteQuay: (index: number) => void;
   onNavigateToQuay: (index: number) => void;
-  onAddQuay: () => void;
 }
 
 export interface QuayItemProps {
@@ -151,7 +150,6 @@ export interface ParkingSectionProps {
   canEdit: boolean;
   onDeleteParking: (index: number) => void;
   onNavigateToParking: (index: number) => void;
-  onAddParking: (type: string) => void;
 }
 
 export interface ParkingItemProps {
@@ -192,13 +190,14 @@ export interface ParkingPanelProps {
 export interface StopPlaceViewProps {
   stopPlace: StopPlace;
   stopName: string;
+  /** Index of the selected editor tab; owned by EditStopPage. */
+  activeTab: number;
+  onTabChange: (tabIndex: number) => void;
   canEdit: boolean;
   canDelete: boolean;
   isModified: boolean;
   onGoBack: () => void;
   onToggle: () => void;
-  onAddQuay: () => void;
-  onAddParking: (type: string) => void;
   onDeleteQuay: (index: number) => void;
   onDeleteParking: (index: number) => void;
   onNameChange: (value: string) => void;
@@ -228,8 +227,6 @@ export interface StopPlaceDialogsProps {
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   versionsDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
   versions: any[];
   versionsLoading: boolean;
   handleSave: (userInput: any) => void;
@@ -259,10 +256,6 @@ export interface StopPlaceDialogsProps {
   handleFindTagByName: (name: string) => any;
   handleCloseAltNamesDialog: () => void;
   handleCloseVersionsDialog: () => void;
-  handleCloseInfoDialog: () => void;
-  handleCloseNameDescriptionDialog: () => void;
-  handleNameChange: (name: string) => void;
-  handleDescriptionChange: (description: string) => void;
 }
 
 // --- Hook return types ---
@@ -290,8 +283,6 @@ export interface UseEditStopPageReturn {
   tagsDialogOpen: boolean;
   altNamesDialogOpen: boolean;
   versionsDialogOpen: boolean;
-  infoDialogOpen: boolean;
-  nameDescriptionDialogOpen: boolean;
 
   // Dialog handlers
   handleOpenSaveDialog: () => void;
@@ -325,10 +316,6 @@ export interface UseEditStopPageReturn {
   handleCloseAltNamesDialog: () => void;
   handleOpenVersionsDialog: () => void;
   handleCloseVersionsDialog: () => void;
-  handleOpenInfoDialog: () => void;
-  handleCloseInfoDialog: () => void;
-  handleOpenNameDescriptionDialog: () => void;
-  handleCloseNameDescriptionDialog: () => void;
 
   // Form handlers
   handleNameChange: (value: string) => void;
@@ -347,12 +334,10 @@ export interface UseEditStopPageReturn {
   handleQuayPrivateCodeChange: (index: number, value: string) => void;
   handleQuayDescriptionChange: (index: number, value: string) => void;
   handleQuayCompassBearingChange: (index: number, value: number | null) => void;
-  handleAddQuay: (position: [number, number]) => void;
 
   // Parking handlers
   handleDeleteParking: (index: number) => void;
   handleParkingNameChange: (index: number, value: string) => void;
   handleParkingTypeChange: (index: number, value: string) => void;
   handleParkingCapacityChange: (index: number, value: string) => void;
-  handleAddParking: (type: string, position: [number, number]) => void;
 }

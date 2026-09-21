@@ -76,6 +76,15 @@ const buildGeoJson = (
   return { type: "FeatureCollection", features };
 };
 
+/* The parent's link to its children has to stay readable over aerial imagery,
+   so it is a chunky dash on a translucent white band rather than a hairline.
+   MapLibre measures `line-dasharray` in multiples of the line width, so at
+   EDGE_WIDTH 5 this is a 15px dash with a 7.5px gap. */
+const EDGE_WIDTH = 5;
+const EDGE_DASH_PATTERN = [3, 1.5];
+const EDGE_CASING_WIDTH = 9;
+const EDGE_CASING_OPACITY = 0.75;
+
 export const MultimodalEdgesLayer = () => {
   const theme = useTheme();
   const current = useAppSelector(
@@ -101,17 +110,31 @@ export const MultimodalEdgesLayer = () => {
         id="multimodal-edges-casing"
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
-        paint={{ "line-color": "#ffffff", "line-width": 6, "line-opacity": 1 }}
+        paint={{
+          /* A translucent white band, wider than the line and deliberately not
+             dashed: it shows through the gaps as well as around the edges, so
+             the dashes keep their contrast over dark aerial imagery without
+             painting a hard white stripe across the map. Follows the token's
+             own contrast colour rather than a fixed white. */
+          "line-color":
+            theme.palette.multimodal?.contrastText ??
+            theme.palette.background.paper,
+          "line-width": EDGE_CASING_WIDTH,
+          "line-opacity": EDGE_CASING_OPACITY,
+        }}
       />
       <Layer
         id="multimodal-edges-line"
         type="line"
         layout={{ "line-join": "round", "line-cap": "round" }}
         paint={{
-          "line-color": theme.palette.primary.main,
-          "line-width": 3,
-          "line-dasharray": [8, 2],
-          "line-opacity": 0.9,
+          /* Same token as the parent marker, so the line always leaves the
+             parent in the parent's own colour. */
+          "line-color":
+            theme.palette.multimodal?.main ?? theme.palette.primary.main,
+          "line-width": EDGE_WIDTH,
+          "line-dasharray": EDGE_DASH_PATTERN,
+          "line-opacity": 1,
         }}
       />
     </Source>

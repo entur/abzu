@@ -35,7 +35,10 @@ import {
   AppLogo,
   EnvironmentBadge,
   HeaderSearch,
-  NavigationMenu,
+  HelpControl,
+  LanguageControl,
+  NavigationLine,
+  SettingsControl,
   UserSection,
 } from "./components";
 import { useHeaderSlotContent } from "./HeaderSlotContext";
@@ -180,15 +183,21 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ config }) => {
             isMobile={isMobile}
           />
 
-          <NavigationMenu
-            config={config}
-            onConfirmChangeRoute={handleConfirmChangeRoute}
-            onGoToReports={() =>
-              handleConfirmChangeRoute(goToReports, "GoToReports")
-            }
-            isMobile={isMobile}
-          />
+          <LanguageControl />
+
+          <HelpControl extPath={config.extPath} />
+
+          <SettingsControl isMobile={isMobile} />
         </Toolbar>
+
+        <NavigationLine
+          onNavigateToMain={() =>
+            handleConfirmChangeRoute(goToMain, "GoToMain")
+          }
+          onNavigateToReports={() =>
+            handleConfirmChangeRoute(goToReports, "GoToReports")
+          }
+        />
       </AppBar>
 
       <ConfirmDialog
