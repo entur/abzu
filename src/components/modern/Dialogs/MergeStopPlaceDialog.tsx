@@ -32,6 +32,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import type { Map as MapLibreMap } from "maplibre-gl";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 import { UserActions } from "../../../actions";
@@ -79,7 +80,7 @@ export const MergeStopPlaceDialog = () => {
     (state) => !!(state as any).stopPlace?.stopHasBeenModified,
   );
   const activeMap = useAppSelector(
-    (state) => (state as any).mapUtils?.activeMap as maplibregl.Map | undefined,
+    (state) => (state as any).mapUtils?.activeMap as MapLibreMap | undefined,
   );
   const showExpiredStops = useAppSelector(
     (state) => !!(state as any).stopPlace?.showExpiredStops,
