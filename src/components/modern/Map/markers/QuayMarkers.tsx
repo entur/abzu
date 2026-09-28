@@ -15,7 +15,7 @@ limitations under the Licence. */
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { Box, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MarkerDragEvent } from "react-map-gl/maplibre";
 import { Marker } from "react-map-gl/maplibre";
 import { StopPlaceActions } from "../../../../actions";
@@ -67,6 +67,14 @@ const QuayMarkerItem = ({
   const crosshairRef = useRef<CrosshairSetting>("none");
   const scale = useMarkerScale();
   const isStatusEnabled = useElementStatusEnabled();
+
+  /* The bearing editor belongs to the quay you are looking at. `isEditingBearing`
+   * is per-marker state and nothing else ever cleared it, so every quay whose
+   * bearing had been touched kept its handle and line on the map. Ending it when
+   * focus moves away means at most one editor is ever open. */
+  useEffect(() => {
+    if (!focused) setIsEditingBearing(false);
+  }, [focused]);
 
   if (!quay.location) return null;
 

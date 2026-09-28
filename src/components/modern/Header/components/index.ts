@@ -15,10 +15,12 @@ limitations under the Licence. */
 export { AppLogo } from "./AppLogo";
 export { EnvironmentBadge } from "./EnvironmentBadge";
 export { HeaderSearch } from "./HeaderSearch";
+export { HelpControl } from "./HelpControl";
 export { InitialMapSettingsForm } from "./InitialMapSettingsForm";
-export { LanguageMenu } from "./LanguageMenu";
-export { NavigationMenu } from "./NavigationMenu";
+export { LanguageControl } from "./LanguageControl";
+export { NavigationLine } from "./NavigationLine";
 export { SearchDropdownContent } from "./SearchDropdownContent";
+export { SettingsControl } from "./SettingsControl";
 export { SettingsMenuSection } from "./SettingsMenuSection";
 export { UICustomizationSection } from "./UICustomizationSection";
 export { UserSection } from "./UserSection";

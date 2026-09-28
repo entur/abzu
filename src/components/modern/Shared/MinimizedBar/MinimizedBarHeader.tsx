@@ -12,13 +12,12 @@
  See the Licence for the specific language governing permissions and
  limitations under the Licence. */
 
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useIntl } from "react-intl";
 import { FavoriteButton } from "../FavoriteButton";
 import { MinimizedBarHeaderProps } from "./types";
+import { PanelToggleIcon } from "../PanelToggleIcon";
 
 /**
  * Header section of the minimized bar
@@ -30,7 +29,6 @@ export const MinimizedBarHeader: React.FC<MinimizedBarHeaderProps> = ({
   id,
   entityType,
   hasId,
-  isMobile,
   onExpand,
 }) => {
   const theme = useTheme();
@@ -84,11 +82,9 @@ export const MinimizedBarHeader: React.FC<MinimizedBarHeaderProps> = ({
             "&:hover": { bgcolor: theme.palette.action.selected },
           }}
         >
-          {isMobile ? (
-            <ExpandLessIcon fontSize="small" />
-          ) : (
-            <ExpandMoreIcon fontSize="small" />
-          )}
+          {/* The bar only exists while collapsed, so the arrow always
+              points the way expanding will move the panel. */}
+          <PanelToggleIcon isExpanded={false} />
         </IconButton>
       </Tooltip>
     </Box>

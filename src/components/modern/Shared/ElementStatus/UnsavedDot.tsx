@@ -13,27 +13,26 @@ See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
 import { Box } from "@mui/material";
-import React from "react";
-import { UnsavedDot } from "./UnsavedDot";
 
-interface DirtyLabelProps {
-  /** Caller folds in the affordance toggle; this component just renders. */
-  dirty: boolean;
-  children: React.ReactNode;
-}
+const DOT_SIZE = 6;
 
 /**
- * A field label with the dirty dot appended, for inputs whose value is visible
- * but whose *changed* state is not. Rendered as a span so it can be passed as a
- * TextField / InputLabel `label`, where a Badge would clash with the floating
- * label animation.
+ * The bare "unsaved" mark. Extracted so the field label, the header and any
+ * future surface render the identical dot from one definition — the whole point
+ * being that a single mark means "unsaved" wherever it appears.
+ *
+ * Rendered as a span with `flexShrink: 0` so it survives beside a name that is
+ * being ellipsised.
  */
-export const DirtyLabel = ({ dirty, children }: DirtyLabelProps) => (
+export const UnsavedDot = () => (
   <Box
     component="span"
-    sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
-  >
-    {children}
-    {dirty && <UnsavedDot />}
-  </Box>
+    sx={{
+      width: DOT_SIZE,
+      height: DOT_SIZE,
+      borderRadius: "50%",
+      bgcolor: "warning.main",
+      flexShrink: 0,
+    }}
+  />
 );

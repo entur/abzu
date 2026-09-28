@@ -96,3 +96,23 @@ const CLAIMED_TAB_KEYS: readonly string[] = [
 /** Everything not claimed by a specific tab belongs to the General tab. */
 export const hasGeneralTabChange = (changedKeys: Set<string>): boolean =>
   [...changedKeys].some((key) => !CLAIMED_TAB_KEYS.includes(key));
+
+/**
+ * True when any quay or parking differs from the snapshot.
+ *
+ * `getChangedKeys` deliberately ignores these collections so that moving a quay
+ * cannot make an unrelated *field* label look dirty. A tab badge means something
+ * else though — "this tab contains unsaved changes" — and the quay and parking
+ * lists live in the General tab, so it has to account for them. Without this, a
+ * dragged quay showed a dot on its map marker and its list row while the tab and
+ * the collapsed panel stayed silent.
+ */
+export const hasChildCollectionChange = (
+  current: Record<string, unknown> | null | undefined,
+  original: Record<string, unknown> | null | undefined,
+): boolean => {
+  if (!current || !original) return false;
+  return CHILD_COLLECTION_KEYS.some(
+    (key) => !isDeepEqual(current[key], original[key]),
+  );
+};
