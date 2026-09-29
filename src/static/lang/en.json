@@ -782,5 +782,6 @@
   "parking_item_title_unknown": "Parking (unknown type)",
   "parking_vehicle_types": "Vehicle types",
   "parking_vehicle_type_car": "Car",
+  "parking_vehicle_type_motorcycle": "Motorcycle",
   "parking_vehicle_type_pedalCycle": "Bicycle"
 }
