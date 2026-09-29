@@ -27,7 +27,7 @@ import {
   AccessibilityLimitationType,
 } from "../../models/AccessibilityLimitation";
 import { parkingTitleMessageId } from "../../models/parkingType";
-import { parkingVehicleTypes } from "../../models/parkingVehicleType";
+import { parkingVehicleTypeLabel } from "../../models/parkingVehicleType";
 import { getIn } from "../../utils";
 import { injectIntl } from "../../utils/injectIntl";
 import ConfirmDialog from "../Dialogs/ConfirmDialog";
@@ -170,11 +170,10 @@ class ParkingItem extends React.Component {
 
     const { formatMessage } = intl;
 
-    // Read-only. Tiamat owns the vehicle types. An unknown type has no
-    // message, so it is safer to omit it than to print a message key.
-    const vehicleTypeLabels = (parking.parkingVehicleTypes || [])
-      .filter((type) => parkingVehicleTypes.includes(type))
-      .map((type) => formatMessage({ id: `parking_vehicle_type_${type}` }));
+    // Read-only. Tiamat owns the vehicle types.
+    const vehicleTypeLabels = (parking.parkingVehicleTypes || []).map((type) =>
+      parkingVehicleTypeLabel(type, formatMessage),
+    );
 
     let totalCapacity = parking.totalCapacity || 0;
 
