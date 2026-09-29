@@ -14,15 +14,15 @@ limitations under the Licence. */
 
 const parkingVehicleType = Object.freeze({
   CAR: "car",
+  MOTORCYCLE: "motorcycle",
   PEDAL_CYCLE: "pedalCycle",
 });
 
 export const parkingVehicleTypes = Object.values(parkingVehicleType);
 
 // Tiamat stores a NeTEx VehicleTypeEnumeration value, which holds more values
-// than this file names. Dev data already carries `motorcycle`. Show the raw
-// value rather than dropping it, so a type this file does not know stays
-// visible to the editor.
+// than this file names. Show the raw value rather than dropping it, so a type
+// this file does not know stays visible to the editor.
 export const parkingVehicleTypeLabel = (type, formatMessage) =>
   parkingVehicleTypes.includes(type)
     ? formatMessage({ id: `parking_vehicle_type_${type}` })

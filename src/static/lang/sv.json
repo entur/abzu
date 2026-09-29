@@ -781,5 +781,6 @@
   "parking_item_title_unknown": "Parkering (okänd typ)",
   "parking_vehicle_types": "Fordonstyper",
   "parking_vehicle_type_car": "Bil",
+  "parking_vehicle_type_motorcycle": "Motorcykel",
   "parking_vehicle_type_pedalCycle": "Cykel"
 }
